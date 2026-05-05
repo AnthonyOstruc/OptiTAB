@@ -561,6 +561,7 @@ ELEVENLABS_VOICE_ID = os.getenv('ELEVENLABS_VOICE_ID', 'JBFqnCBsd6RMkjVDRZzb').s
 ELEVENLABS_MODEL_ID = os.getenv('ELEVENLABS_MODEL_ID', 'eleven_multilingual_v2').strip()
 ELEVENLABS_OUTPUT_FORMAT = os.getenv('ELEVENLABS_OUTPUT_FORMAT', 'mp3_44100_128').strip()
 ELEVENLABS_LANGUAGE_CODE = os.getenv('ELEVENLABS_LANGUAGE_CODE', 'fr').strip()
+ELEVENLABS_EXTRA_VOICES = os.getenv('ELEVENLABS_EXTRA_VOICES', '').strip()
 ELEVENLABS_API_URL = os.getenv(
     'ELEVENLABS_API_URL',
     'https://api.elevenlabs.io/v1/text-to-speech',

@@ -146,6 +146,34 @@ def list_provider_voices(provider):
     return voices
 
 
+def _provider_usage(provider):
+    if provider != PROVIDER_ELEVENLABS:
+        return None
+
+    from ..elevenlabs import (
+        ElevenLabsAPIError,
+        ElevenLabsConfigurationError,
+        get_subscription_usage,
+    )
+
+    try:
+        return get_subscription_usage()
+    except ElevenLabsConfigurationError as exc:
+        return {
+            'available': False,
+            'error_code': 'not_configured',
+            'error': str(exc),
+        }
+    except ElevenLabsAPIError as exc:
+        error = str(exc)
+        error_code = 'missing_permissions' if 'missing_permissions' in error else 'api_error'
+        return {
+            'available': False,
+            'error_code': error_code,
+            'error': error,
+        }
+
+
 def list_providers_payload():
     """Aggregate provider+voice info for the frontend dropdowns."""
     default_provider = get_default_provider()
@@ -162,11 +190,13 @@ def list_providers_payload():
             'configured': _provider_is_configured(provider),
             'default_voice_id': '',
             'voices': [],
+            'usage': None,
             'error': '',
         }
         try:
             item['default_voice_id'] = resolve_default_voice(provider)
             item['voices'] = list_provider_voices(provider)
+            item['usage'] = _provider_usage(provider)
         except TTSConfigurationError as exc:
             item['error'] = str(exc)
         except TTSAPIError as exc:

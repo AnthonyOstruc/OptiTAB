@@ -147,6 +147,45 @@
                   <span v-else-if="voiceOptionsError">{{ voiceOptionsError }}</span>
                 </label>
 
+                <div
+                  v-if="selectedProviderId === 'elevenlabs'"
+                  class="voice-usage"
+                  :class="{ 'voice-usage--error': !elevenLabsUsageAvailable }"
+                >
+                  <div class="voice-usage-header">
+                    <strong>Credits ElevenLabs</strong>
+                    <span v-if="elevenLabsUsageAvailable">{{ elevenLabsUsagePercentLabel }} utilises</span>
+                    <span v-else>Quota indisponible</span>
+                  </div>
+
+                  <template v-if="elevenLabsUsageAvailable">
+                    <div class="voice-usage-bar" aria-hidden="true">
+                      <span :style="elevenLabsUsageBarStyle"></span>
+                    </div>
+                    <dl class="voice-usage-grid">
+                      <div>
+                        <dt>Consomme</dt>
+                        <dd>{{ elevenLabsUsageConsumedLabel }}</dd>
+                      </div>
+                      <div>
+                        <dt>Total</dt>
+                        <dd>{{ elevenLabsUsageTotalLabel }}</dd>
+                      </div>
+                      <div>
+                        <dt>Restant</dt>
+                        <dd>{{ elevenLabsUsageRemainingLabel }}</dd>
+                      </div>
+                      <div>
+                        <dt>Pourcentage</dt>
+                        <dd>{{ elevenLabsUsagePercentLabel }}</dd>
+                      </div>
+                    </dl>
+                    <p v-if="elevenLabsUsageResetLabel">{{ elevenLabsUsageResetLabel }}</p>
+                  </template>
+
+                  <p v-else>{{ elevenLabsUsageErrorLabel }}</p>
+                </div>
+
                 <div class="speech-actions">
                   <button
                     class="btn-secondary"
@@ -428,6 +467,40 @@ const canGenerateSpeech = computed(() => Boolean(selectedProject.value?.id && pr
 const selectedProvider = computed(() => {
   return providers.value.find((p) => p.id === selectedProviderId.value) || null
 })
+const elevenLabsProvider = computed(() => {
+  return providers.value.find((p) => p.id === 'elevenlabs') || null
+})
+const elevenLabsUsage = computed(() => elevenLabsProvider.value?.usage || null)
+const elevenLabsUsageAvailable = computed(() => {
+  const usage = elevenLabsUsage.value
+  return Boolean(usage?.available && Number(usage.total) > 0)
+})
+const elevenLabsUsagePercent = computed(() => {
+  const percent = Number(elevenLabsUsage.value?.used_percent)
+  if (!Number.isFinite(percent)) return 0
+  return Math.max(0, Math.min(100, percent))
+})
+const elevenLabsUsageBarStyle = computed(() => ({
+  width: `${elevenLabsUsagePercent.value}%`,
+}))
+const elevenLabsUsageConsumedLabel = computed(() => formatCreditCount(elevenLabsUsage.value?.used))
+const elevenLabsUsageTotalLabel = computed(() => formatCreditCount(elevenLabsUsage.value?.total))
+const elevenLabsUsageRemainingLabel = computed(() => formatCreditCount(elevenLabsUsage.value?.remaining))
+const elevenLabsUsagePercentLabel = computed(() => `${formatPercent(elevenLabsUsagePercent.value)}%`)
+const elevenLabsUsageResetLabel = computed(() => {
+  const resetUnix = Number(elevenLabsUsage.value?.reset_unix)
+  if (!Number.isFinite(resetUnix) || resetUnix <= 0) return ''
+  const resetDate = new Date(resetUnix * 1000)
+  if (Number.isNaN(resetDate.getTime())) return ''
+  return `Reset le ${resetDate.toLocaleDateString('fr-FR')}`
+})
+const elevenLabsUsageErrorLabel = computed(() => {
+  const usage = elevenLabsUsage.value
+  if (usage?.error_code === 'missing_permissions') {
+    return 'Permission user_read manquante sur la cle ElevenLabs.'
+  }
+  return usage?.error || 'Impossible de lire les credits ElevenLabs.'
+})
 const selectedProviderConfigured = computed(() => Boolean(selectedProvider.value?.configured))
 const currentProviderVoices = computed(() => selectedProvider.value?.voices || [])
 const selectedProviderMeta = computed(() => {
@@ -492,7 +565,7 @@ const selectedVoiceWarning = computed(() => {
     return ''
   }
   if (selectedVoice.value.requires_subscription) {
-    return 'Voix professionnelle: abonnement ElevenLabs requis.'
+    return 'Voix professionnelle disponible avec ton abonnement ElevenLabs.'
   }
   if (selectedVoice.value.is_custom) {
     return 'ID personnalise: generation testee au moment de creer le MP3.'
@@ -512,7 +585,7 @@ function voiceOptionLabel(voice) {
   const label = String(voice.name || voice.voice_id || '').trim()
   const parts = []
   if (voice.category) parts.push(voice.category)
-  if (voice.api_usable === false) parts.push('abonnement requis')
+  if (voice.api_usable === false) parts.push('non disponible')
   return parts.length ? `${label} - ${parts.join(', ')}` : label
 }
 
@@ -530,6 +603,19 @@ function voiceQuotaPercentLabel(voice) {
   const percent = Number(quota.used_percent ?? voice?.quota_used_percent ?? 0)
   if (!Number.isFinite(percent)) return ''
   return `${Math.round(percent)}%`
+}
+
+function formatCreditCount(value) {
+  const number = Number(value)
+  if (!Number.isFinite(number)) return '0'
+  return Math.max(0, Math.round(number)).toLocaleString('fr-FR')
+}
+
+function formatPercent(value) {
+  const number = Number(value)
+  if (!Number.isFinite(number)) return '0'
+  if (number >= 10) return Math.round(number).toLocaleString('fr-FR')
+  return Number(number.toFixed(1)).toLocaleString('fr-FR')
 }
 
 function voiceQuotaUsageLabel(voice) {
@@ -883,11 +969,15 @@ function selectVoiceForCurrentProvider() {
     ''
 }
 
-function onProviderChange() {
+function resetTestAudio() {
   if (testAudioUrl.value) {
     window.URL.revokeObjectURL(testAudioUrl.value)
     testAudioUrl.value = ''
   }
+}
+
+function onProviderChange() {
+  resetTestAudio()
   selectVoiceForCurrentProvider()
   voiceOptions.value = currentProviderVoices.value
 }
@@ -914,9 +1004,7 @@ async function handleTestVoice() {
       text: previewText,
     })
 
-    if (testAudioUrl.value) {
-      window.URL.revokeObjectURL(testAudioUrl.value)
-    }
+    resetTestAudio()
     const blob = response?.data instanceof Blob ? response.data : new Blob([response?.data], { type: 'audio/mpeg' })
     testAudioUrl.value = window.URL.createObjectURL(blob)
 
@@ -1705,6 +1793,99 @@ onMounted(() => {
   color: #b45309;
 }
 
+.voice-usage {
+  box-sizing: border-box;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 12px;
+}
+
+.voice-usage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.voice-usage-header strong {
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.voice-usage-header span,
+.voice-usage p {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.voice-usage p {
+  margin: 0;
+}
+
+.voice-usage-bar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.voice-usage-bar span {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  border-radius: inherit;
+  background: #0284c7;
+}
+
+.voice-usage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.voice-usage-grid div {
+  min-width: 0;
+}
+
+.voice-usage-grid dt {
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.voice-usage-grid dd {
+  margin: 2px 0 0;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.voice-usage--error {
+  border-color: #fed7aa;
+  background: #fff7ed;
+}
+
+.voice-usage--error .voice-usage-header span,
+.voice-usage--error p {
+  color: #9a3412;
+}
+
 .speech-actions {
   box-sizing: border-box;
   display: grid;
@@ -1814,6 +1995,15 @@ onMounted(() => {
 
   .speech-controls {
     grid-template-columns: 1fr;
+  }
+
+  .voice-usage-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .voice-usage-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .speech-actions {

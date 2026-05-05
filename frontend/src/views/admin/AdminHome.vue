@@ -43,6 +43,7 @@ import {
   AcademicCapIcon,
   BanknotesIcon,
   BookOpenIcon,
+  ChartBarIcon,
   ClipboardDocumentCheckIcon,
   ClipboardDocumentListIcon,
   DocumentTextIcon,
@@ -53,6 +54,7 @@ import {
   QuestionMarkCircleIcon,
   Squares2X2Icon,
   TagIcon,
+  TrophyIcon,
   UserGroupIcon,
   ChevronRightIcon,
 } from '@heroicons/vue/24/outline'
@@ -102,6 +104,15 @@ const sections = [
       { label: 'Abonnés', description: 'Suivre les abonnés actifs.', to: '/admin/subscribers', icon: UserGroupIcon },
       { label: 'Passes', description: 'Gérer les accès temporaires.', to: '/admin/passes', icon: ClipboardDocumentCheckIcon },
       { label: 'Notation quiz', description: 'Corriger les quiz rendus.', to: '/admin/quiz-submissions', icon: ClipboardDocumentListIcon },
+    ],
+  },
+  {
+    title: 'Jeu Arena (privé tant que non publié)',
+    items: [
+      { label: 'Tableau de bord', description: 'KPIs, configuration et publication du jeu.', to: '/admin/arena', icon: ChartBarIcon },
+      { label: 'Chapitres Arena', description: 'Créer et organiser les chapitres du jeu.', to: '/admin/arena/chapters', icon: TrophyIcon },
+      { label: 'Niveaux Arena', description: 'Gérer les niveaux, difficulté et accès premium.', to: '/admin/arena/levels', icon: Squares2X2Icon },
+      { label: 'Questions Arena', description: 'Éditer les énoncés, réponses et explications.', to: '/admin/arena/questions', icon: QuestionMarkCircleIcon },
     ],
   },
 ]

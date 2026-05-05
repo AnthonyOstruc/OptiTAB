@@ -67,3 +67,11 @@ export function updateReelSlide(id, data) {
 export function deleteReelSlide(id) {
   return apiClient.delete(`${BASE}/slides/${id}/`)
 }
+
+export function testReelTTSVoice(data = {}) {
+  return apiClient.post(`${BASE}/test-voice/`, data, {
+    responseType: 'blob',
+    timeout: 60000,
+    headers: { Accept: '*/*' },
+  })
+}

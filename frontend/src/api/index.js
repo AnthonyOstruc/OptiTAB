@@ -136,6 +136,7 @@ export {
   deleteSynthesisImage
 } from './synthesis'
 export * from './quiz'
+export * from './arena'
 export * from './users'
 export * from './auth'
 export * from './calculator'

@@ -22,6 +22,8 @@ class VideoExportError(Exception):
 MAX_FRAME_BYTES = 20 * 1024 * 1024
 DEFAULT_AUDIO_BITRATE = '192k'
 DEFAULT_VIDEO_PRESET = 'veryfast'
+DEFAULT_AUDIO_TAIL_PADDING_SECONDS = 0.25
+DEFAULT_MAX_SEGMENT_SECONDS = 180.0
 
 
 def _get_ffmpeg_executable():
@@ -59,6 +61,20 @@ def _run_ffmpeg(command, *, timeout):
         stderr = re.sub(r'\s+', ' ', completed.stderr or '').strip()
         detail = stderr[-1200:] if stderr else 'Erreur FFmpeg inconnue.'
         raise VideoExportError(detail)
+
+
+def _get_ffprobe_executable(ffmpeg):
+    ffmpeg_dir = os.path.dirname(os.path.abspath(ffmpeg))
+    ffprobe_name = 'ffprobe.exe' if os.name == 'nt' else 'ffprobe'
+    bundled = os.path.join(ffmpeg_dir, ffprobe_name)
+    if os.path.exists(bundled):
+        return bundled
+
+    executable = shutil.which('ffprobe')
+    if executable:
+        return executable
+
+    return ''
 
 
 def _decode_frame_image(image_data):
@@ -123,6 +139,87 @@ def _safe_duration(value):
     return min(30.0, max(1.0, duration))
 
 
+def _max_segment_duration():
+    try:
+        configured = float(getattr(settings, 'REEL_VIDEO_MAX_SEGMENT_SECONDS', DEFAULT_MAX_SEGMENT_SECONDS) or DEFAULT_MAX_SEGMENT_SECONDS)
+    except (TypeError, ValueError):
+        configured = DEFAULT_MAX_SEGMENT_SECONDS
+    return max(30.0, configured)
+
+
+def _audio_tail_padding():
+    try:
+        configured = float(getattr(settings, 'REEL_VIDEO_AUDIO_TAIL_PADDING_SECONDS', DEFAULT_AUDIO_TAIL_PADDING_SECONDS) or DEFAULT_AUDIO_TAIL_PADDING_SECONDS)
+    except (TypeError, ValueError):
+        configured = DEFAULT_AUDIO_TAIL_PADDING_SECONDS
+    return min(2.0, max(0.0, configured))
+
+
+def _probe_audio_duration(audio_path, *, ffmpeg, timeout):
+    ffprobe = _get_ffprobe_executable(ffmpeg)
+    if ffprobe:
+        command = [
+            ffprobe,
+            '-v',
+            'error',
+            '-show_entries',
+            'format=duration',
+            '-of',
+            'default=noprint_wrappers=1:nokey=1',
+            audio_path,
+        ]
+        try:
+            completed = subprocess.run(
+                command,
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=min(timeout, 60),
+            )
+            if completed.returncode == 0:
+                duration = float((completed.stdout or '').strip())
+                if duration > 0:
+                    return duration
+        except (subprocess.TimeoutExpired, TypeError, ValueError):
+            pass
+
+    command = [ffmpeg, '-hide_banner', '-i', audio_path, '-f', 'null', '-']
+    try:
+        completed = subprocess.run(
+            command,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=min(timeout, 120),
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise VideoExportError('Timeout FFmpeg pendant la lecture de duree audio.') from exc
+
+    match = re.search(r'Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)', completed.stderr or '')
+    if not match:
+        raise VideoExportError('Impossible de lire la duree du MP3 de slide.')
+
+    hours, minutes, seconds = match.groups()
+    duration = (int(hours) * 3600) + (int(minutes) * 60) + float(seconds)
+    if duration <= 0:
+        raise VideoExportError('Duree MP3 de slide invalide.')
+    return duration
+
+
+def _segment_duration(*, requested_duration, audio_path, ffmpeg, timeout):
+    if not audio_path:
+        return _safe_duration(requested_duration)
+
+    audio_duration = _probe_audio_duration(audio_path, ffmpeg=ffmpeg, timeout=timeout)
+    duration = max(1.0, audio_duration + _audio_tail_padding())
+    max_duration = _max_segment_duration()
+    if duration > max_duration:
+        raise VideoExportError(
+            f'Audio de slide trop long pour l export video ({duration:.1f}s/{max_duration:.0f}s).'
+        )
+    return duration
+
+
 def _video_filter(width, height):
     return (
         f'scale={width}:{height}:force_original_aspect_ratio=decrease,'
@@ -145,6 +242,7 @@ def _build_segment(
     timeout,
 ):
     vf = _video_filter(width, height)
+    duration_text = f'{duration:.3f}'
     common_video = [
         '-vf',
         vf,
@@ -173,6 +271,8 @@ def _build_segment(
             '1',
             '-framerate',
             str(fps),
+            '-t',
+            duration_text,
             '-i',
             image_path,
             '-i',
@@ -182,14 +282,18 @@ def _build_segment(
             '-map',
             '1:a:0',
             *common_video,
+            '-af',
+            'aresample=async=1:first_pts=0,apad',
             *common_audio,
-            '-shortest',
+            '-t',
+            duration_text,
+            '-avoid_negative_ts',
+            'make_zero',
             '-movflags',
             '+faststart',
             output_path,
         ]
     else:
-        duration_text = f'{duration:.3f}'
         command = [
             ffmpeg,
             '-y',
@@ -213,7 +317,10 @@ def _build_segment(
             '1:a:0',
             *common_video,
             *common_audio,
-            '-shortest',
+            '-t',
+            duration_text,
+            '-avoid_negative_ts',
+            'make_zero',
             '-movflags',
             '+faststart',
             output_path,
@@ -223,63 +330,52 @@ def _build_segment(
 
 
 def _concat_segments(*, ffmpeg, segment_paths, output_path, fps, crf, preset, timeout):
-    concat_path = os.path.join(os.path.dirname(output_path), 'concat.txt')
-    with open(concat_path, 'w', encoding='utf-8') as concat_file:
-        for segment_path in segment_paths:
-            safe_path = os.path.abspath(segment_path).replace('\\', '/').replace("'", "'\\''")
-            concat_file.write(f"file '{safe_path}'\n")
-
-    copy_command = [
-        ffmpeg,
-        '-y',
-        '-f',
-        'concat',
-        '-safe',
-        '0',
-        '-i',
-        concat_path,
-        '-c',
-        'copy',
-        '-movflags',
-        '+faststart',
-        output_path,
-    ]
-
-    try:
-        _run_ffmpeg(copy_command, timeout=timeout)
+    if len(segment_paths) == 1:
+        shutil.copyfile(segment_paths[0], output_path)
         return
-    except VideoExportError:
-        if os.path.exists(output_path):
-            os.remove(output_path)
 
-    encode_command = [
+    command = [
         ffmpeg,
         '-y',
-        '-f',
-        'concat',
-        '-safe',
-        '0',
-        '-i',
-        concat_path,
-        '-r',
-        str(fps),
-        '-c:v',
-        'libx264',
-        '-preset',
-        preset,
-        '-crf',
-        str(crf),
-        '-pix_fmt',
-        'yuv420p',
-        '-c:a',
-        'aac',
-        '-b:a',
-        DEFAULT_AUDIO_BITRATE,
-        '-movflags',
-        '+faststart',
-        output_path,
     ]
-    _run_ffmpeg(encode_command, timeout=timeout)
+    for segment_path in segment_paths:
+        command.extend(['-i', segment_path])
+
+    concat_inputs = ''.join(f'[{index}:v:0][{index}:a:0]' for index in range(len(segment_paths)))
+    command.extend(
+        [
+            '-filter_complex',
+            f'{concat_inputs}concat=n={len(segment_paths)}:v=1:a=1[v][a]',
+            '-map',
+            '[v]',
+            '-map',
+            '[a]',
+            '-r',
+            str(fps),
+            '-c:v',
+            'libx264',
+            '-preset',
+            preset,
+            '-crf',
+            str(crf),
+            '-profile:v',
+            'high',
+            '-pix_fmt',
+            'yuv420p',
+            '-c:a',
+            'aac',
+            '-b:a',
+            DEFAULT_AUDIO_BITRATE,
+            '-ar',
+            '44100',
+            '-ac',
+            '2',
+            '-movflags',
+            '+faststart',
+            output_path,
+        ]
+    )
+    _run_ffmpeg(command, timeout=timeout)
 
 
 def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=18, preset=''):
@@ -306,12 +402,18 @@ def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=1
 
             _save_frame_png(frame.get('image'), image_path, width=width, height=height)
             has_audio = _copy_audio_file(slide.speech_audio, audio_path) if slide.speech_audio else False
+            segment_duration = _segment_duration(
+                requested_duration=frame.get('duration_seconds') or slide.duration_seconds,
+                audio_path=audio_path if has_audio else '',
+                ffmpeg=ffmpeg,
+                timeout=timeout,
+            )
             _build_segment(
                 ffmpeg=ffmpeg,
                 image_path=image_path,
                 audio_path=audio_path if has_audio else '',
                 output_path=segment_path,
-                duration=_safe_duration(frame.get('duration_seconds') or slide.duration_seconds),
+                duration=segment_duration,
                 width=width,
                 height=height,
                 fps=fps,

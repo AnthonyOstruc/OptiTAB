@@ -1,10 +1,11 @@
+import logging
 import re
 
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db import transaction
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.text import slugify
@@ -22,6 +23,7 @@ from .serializers import (
     ReelProjectSerializer,
     ReelSlideSerializer,
     ReelSpeechGenerateSerializer,
+    ReelTTSTestSerializer,
     ReelTemplateGenerateSerializer,
     ReelVideoExportSerializer,
 )
@@ -33,6 +35,19 @@ from .elevenlabs import (
     generate_speech_mp3,
     list_filtered_voices,
 )
+from .tts import (
+    PROVIDER_ELEVENLABS,
+    PROVIDER_GOOGLE,
+    SUPPORTED_PROVIDERS,
+    TTSAPIError,
+    TTSConfigurationError,
+    TTSQuotaExceeded,
+    generate_speech as tts_generate_speech,
+    list_providers_payload,
+)
+
+
+tts_logger = logging.getLogger('reel_studio.tts')
 from .video_export import (
     VideoExportConfigurationError,
     VideoExportError,
@@ -180,7 +195,48 @@ def _clear_project_video(project):
             pass
 
 
-def _generate_and_save_slide_speech(slide, *, speech_text, voice_id='', model_id='', output_format=''):
+def _speech_compare_text(value):
+    return re.sub(r'\s+', ' ', str(value or '')).strip()
+
+
+def _collect_video_export_audio_issues(project, frames):
+    slides_by_id = {slide.pk: slide for slide in project.slides.all()}
+    issues = []
+
+    for frame in frames:
+        slide_id = int(frame.get('slide_id') or 0)
+        slide = slides_by_id.get(slide_id)
+        if not slide:
+            continue
+
+        expected_speech = _speech_compare_text(build_slide_speech_text(slide))
+        if not expected_speech:
+            continue
+
+        slide_label = f'Slide {slide.order}'
+        if not slide.speech_audio:
+            issues.append(f'{slide_label}: MP3 voix manquant.')
+            continue
+
+        if slide.speech_status != ReelProject.SPEECH_STATUS_READY:
+            issues.append(f'{slide_label}: MP3 voix pas pret.')
+            continue
+
+        if _speech_compare_text(slide.speech_text) != expected_speech:
+            issues.append(f'{slide_label}: MP3 voix pas a jour, regenere la voix.')
+
+    return issues
+
+
+def _generate_and_save_slide_speech(
+    slide,
+    *,
+    speech_text,
+    provider='',
+    voice_id='',
+    model_id='',
+    output_format='',
+):
     safe_speech_text = str(speech_text or '').strip()
     if not safe_speech_text:
         raise ValueError('Aucun texte voix disponible pour cette slide.')
@@ -189,21 +245,31 @@ def _generate_and_save_slide_speech(slide, *, speech_text, voice_id='', model_id
     slide.speech_error = ''
     slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
 
-    generated = generate_speech_mp3(
+    result = tts_generate_speech(
         text=safe_speech_text,
+        provider=provider,
         voice_id=voice_id,
         model_id=model_id,
         output_format=output_format,
     )
 
+    tts_logger.info(
+        'Slide speech generated | slide_id=%s | provider=%s | voice=%s | chars=%d | cached=%s',
+        slide.pk,
+        result.provider,
+        result.voice_id,
+        result.character_count,
+        result.cached,
+    )
+
     try:
         previous_audio_name = slide.speech_audio.name if slide.speech_audio else ''
         filename = f'slide-{slide.pk}-speech-{timezone.now().strftime("%Y%m%d-%H%M%S")}.mp3'
-        slide.speech_audio.save(filename, ContentFile(generated['audio_bytes']), save=False)
+        slide.speech_audio.save(filename, ContentFile(result.audio_bytes), save=False)
         slide.speech_text = safe_speech_text
-        slide.speech_voice_id = generated['voice_id']
-        slide.speech_model_id = generated['model_id']
-        slide.speech_output_format = generated['output_format']
+        slide.speech_voice_id = result.voice_id
+        slide.speech_model_id = result.model_id
+        slide.speech_output_format = result.output_format
         slide.speech_status = ReelProject.SPEECH_STATUS_READY
         slide.speech_error = ''
         slide.speech_generated_at = timezone.now()
@@ -221,7 +287,7 @@ def _generate_and_save_slide_speech(slide, *, speech_text, voice_id='', model_id
             ]
         )
     except Exception as exc:
-        raise ElevenLabsAPIError(f'Erreur lors de la sauvegarde audio: {exc}') from exc
+        raise TTSAPIError(f'Erreur lors de la sauvegarde audio: {exc}') from exc
 
     if previous_audio_name and previous_audio_name != slide.speech_audio.name:
         try:
@@ -229,6 +295,7 @@ def _generate_and_save_slide_speech(slide, *, speech_text, voice_id='', model_id
         except Exception:
             pass
 
+    slide._tts_result = result  # piggyback, used by views to surface stats in the response
     return slide
 
 
@@ -261,6 +328,14 @@ _SLIDE_HEADER_PATTERN = re.compile(
     flags=re.IGNORECASE,
 )
 _SLIDE_SEPARATOR_PATTERN = re.compile(r'^\s*(?:---+|===+)\s*$')
+_INSTAGRAM_CAPTION_HEADER_PATTERN = re.compile(
+    r'^\s*(?:INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)\s*:\s*(.*)\s*$',
+    flags=re.IGNORECASE,
+)
+_INSTAGRAM_CAPTION_END_PATTERN = re.compile(
+    r'^\s*END_(?:INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)\s*$',
+    flags=re.IGNORECASE,
+)
 
 
 def _normalize_line(value):
@@ -277,6 +352,40 @@ def _append_multiline(record, field_name, value):
         return
     current = str(record.get(field_name) or '').strip()
     record[field_name] = f'{current}\n{clean_value}' if current else clean_value
+
+
+def _extract_instagram_caption(template_text):
+    kept_lines = []
+    caption_lines = []
+    capturing = False
+
+    for raw_line in str(template_text or '').splitlines():
+        line = str(raw_line or '').rstrip()
+        stripped = line.strip()
+
+        if capturing:
+            if _INSTAGRAM_CAPTION_END_PATTERN.match(stripped):
+                capturing = False
+                continue
+            if _SLIDE_HEADER_PATTERN.match(stripped):
+                capturing = False
+                kept_lines.append(line)
+                continue
+            caption_lines.append(line)
+            continue
+
+        caption_header = _INSTAGRAM_CAPTION_HEADER_PATTERN.match(stripped)
+        if caption_header:
+            capturing = True
+            first_line = caption_header.group(1).strip()
+            if first_line:
+                caption_lines.append(first_line)
+            continue
+
+        kept_lines.append(line)
+
+    caption = '\n'.join(caption_lines).strip()
+    return '\n'.join(kept_lines).strip(), caption
 
 
 def _parse_slide_type(raw_value):
@@ -543,7 +652,7 @@ def _to_aligned_katex(lines):
 
 
 def _build_template_slides(project, payload):
-    template_text = payload['template_text']
+    template_text, _ = _extract_instagram_caption(payload['template_text'])
     max_chars = int(payload['max_chars_per_line'])
     structured_slides = _parse_structured_template(template_text, max_chars)
     if structured_slides:
@@ -705,7 +814,8 @@ class ReelProjectGenerateDemoSlidesView(APIView):
 
             project.slide_count = len(slides_to_create)
             project.status = ReelProject.STATUS_DRAFT
-            project.save(update_fields=['slide_count', 'status', 'updated_at'])
+            project.instagram_caption = ''
+            project.save(update_fields=['slide_count', 'status', 'instagram_caption', 'updated_at'])
 
         project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
         serializer = _project_serializer(project, request, detail=True)
@@ -720,7 +830,14 @@ class ReelProjectGenerateFromTemplateView(APIView):
         serializer = ReelTemplateGenerateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        slides_payload = _build_template_slides(project, serializer.validated_data)
+        clean_template_text, instagram_caption = _extract_instagram_caption(
+            serializer.validated_data['template_text']
+        )
+        template_payload = {
+            **serializer.validated_data,
+            'template_text': clean_template_text,
+        }
+        slides_payload = _build_template_slides(project, template_payload)
         if not slides_payload:
             return Response(
                 {'detail': "Aucune ligne exploitable trouvée dans le template."},
@@ -752,7 +869,8 @@ class ReelProjectGenerateFromTemplateView(APIView):
 
             project.slide_count = len(slides_to_create)
             project.status = ReelProject.STATUS_DRAFT
-            project.save(update_fields=['slide_count', 'status', 'updated_at'])
+            project.instagram_caption = instagram_caption
+            project.save(update_fields=['slide_count', 'status', 'instagram_caption', 'updated_at'])
 
         project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
         return Response(_project_serializer(project, request, detail=True).data, status=status.HTTP_201_CREATED)
@@ -779,8 +897,9 @@ class ReelProjectGenerateSpeechView(APIView):
         project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
 
         try:
-            generated = generate_speech_mp3(
+            tts_result = tts_generate_speech(
                 text=speech_text,
+                provider=serializer.validated_data.get('provider', ''),
                 voice_id=serializer.validated_data.get('voice_id', ''),
                 model_id=serializer.validated_data.get('model_id', ''),
                 output_format=serializer.validated_data.get('output_format', ''),
@@ -790,24 +909,35 @@ class ReelProjectGenerateSpeechView(APIView):
             project.speech_error = str(exc)
             project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
             return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
-        except ElevenLabsConfigurationError as exc:
+        except TTSConfigurationError as exc:
             project.speech_status = ReelProject.SPEECH_STATUS_ERROR
             project.speech_error = str(exc)
             project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
             return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        except ElevenLabsAPIError as exc:
+        except TTSQuotaExceeded as exc:
+            project.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            project.speech_error = str(exc)
+            project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+        except TTSAPIError as exc:
             project.speech_status = ReelProject.SPEECH_STATUS_ERROR
             project.speech_error = str(exc)
             project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
             return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
 
+        tts_logger.info(
+            'Project speech generated | project_id=%s | provider=%s | voice=%s | chars=%d | cached=%s',
+            project.pk, tts_result.provider, tts_result.voice_id,
+            tts_result.character_count, tts_result.cached,
+        )
+
         previous_audio_name = project.speech_audio.name if project.speech_audio else ''
         filename = f'reel-{project.pk}-speech-{timezone.now().strftime("%Y%m%d-%H%M%S")}.mp3'
-        project.speech_audio.save(filename, ContentFile(generated['audio_bytes']), save=False)
+        project.speech_audio.save(filename, ContentFile(tts_result.audio_bytes), save=False)
         project.speech_text = speech_text
-        project.speech_voice_id = generated['voice_id']
-        project.speech_model_id = generated['model_id']
-        project.speech_output_format = generated['output_format']
+        project.speech_voice_id = tts_result.voice_id
+        project.speech_model_id = tts_result.model_id
+        project.speech_output_format = tts_result.output_format
         project.speech_status = ReelProject.SPEECH_STATUS_READY
         project.speech_error = ''
         project.speech_generated_at = timezone.now()
@@ -839,6 +969,9 @@ class ReelProjectGenerateSpeechView(APIView):
                     'status': project.speech_status,
                     'audio_url': _project_serializer(project, request).data.get('speech_audio_url'),
                     'text_length': len(speech_text),
+                    'character_count': tts_result.character_count,
+                    'cached': tts_result.cached,
+                    'provider': tts_result.provider,
                     'generated_at': project.speech_generated_at,
                     'voice_id': project.speech_voice_id,
                     'model_id': project.speech_model_id,
@@ -850,29 +983,94 @@ class ReelProjectGenerateSpeechView(APIView):
 
 
 class ReelVoiceListView(APIView):
+    """Return the available TTS providers and their voices.
+
+    Backwards compatible: still exposes ``voices`` + ``default_voice_id`` (the
+    historical ElevenLabs-only payload) at the top level when requested with
+    ``?provider=elevenlabs``. By default, returns the multi-provider payload
+    used by the new frontend dropdowns.
+    """
     permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
 
     def get(self, request):
-        language = str(request.query_params.get('language') or 'fr').strip().lower()
-        accent = str(request.query_params.get('accent') or 'parisian').strip().lower()
+        provider_filter = str(request.query_params.get('provider') or '').strip().lower()
+
+        # Legacy single-provider mode (kept for compatibility with old clients).
+        if provider_filter == PROVIDER_ELEVENLABS or request.query_params.get('legacy') == '1':
+            language = str(request.query_params.get('language') or 'fr').strip().lower()
+            accent = str(request.query_params.get('accent') or 'parisian').strip().lower()
+            try:
+                voices = list_filtered_voices(language=language, accent=accent, include_fallback=True)
+            except ElevenLabsConfigurationError as exc:
+                return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            except ElevenLabsAPIError as exc:
+                return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+            return Response(
+                {
+                    'voices': voices,
+                    'default_voice_id': getattr(settings, 'ELEVENLABS_VOICE_ID', ''),
+                    'filters': {'language': language, 'accent': accent},
+                }
+            )
+
+        payload = list_providers_payload()
+
+        # Also include a flat ``voices`` array for the *default* provider so that
+        # legacy clients that ignore the ``providers`` field keep working.
+        default_provider_id = payload['default_provider']
+        default_provider_payload = next(
+            (p for p in payload['providers'] if p['id'] == default_provider_id),
+            None,
+        )
+        if default_provider_payload:
+            payload['voices'] = default_provider_payload.get('voices', [])
+            payload['default_voice_id'] = default_provider_payload.get('default_voice_id', '')
+        else:
+            payload['voices'] = []
+            payload['default_voice_id'] = ''
+
+        return Response(payload)
+
+
+class ReelTTSTestVoiceView(APIView):
+    """Generate a short audio preview for a given provider+voice.
+
+    Returns ``audio/mpeg`` bytes directly so the frontend can play it via an
+    ``<audio>`` element without going through storage.
+    """
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request):
+        serializer = ReelTTSTestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
         try:
-            voices = list_filtered_voices(language=language, accent=accent, include_fallback=True)
-        except ElevenLabsConfigurationError as exc:
+            result = tts_generate_speech(
+                text=serializer.validated_data['text'],
+                provider=serializer.validated_data.get('provider', ''),
+                voice_id=serializer.validated_data.get('voice_id', ''),
+                use_cache=True,
+            )
+        except ValueError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        except TTSConfigurationError as exc:
             return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        except ElevenLabsAPIError as exc:
+        except TTSQuotaExceeded as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+        except TTSAPIError as exc:
             return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
 
-        return Response(
-            {
-                'voices': voices,
-                'default_voice_id': getattr(settings, 'ELEVENLABS_VOICE_ID', ''),
-                'filters': {
-                    'language': language,
-                    'accent': accent,
-                },
-            }
+        tts_logger.info(
+            'TTS test preview | provider=%s | voice=%s | chars=%d | cached=%s',
+            result.provider, result.voice_id, result.character_count, result.cached,
         )
+
+        response = HttpResponse(result.audio_bytes, content_type='audio/mpeg')
+        response['X-TTS-Provider'] = result.provider
+        response['X-TTS-Voice-Id'] = result.voice_id
+        response['X-TTS-Character-Count'] = str(result.character_count)
+        response['X-TTS-Cached'] = '1' if result.cached else '0'
+        return response
 
 
 class ReelProjectGenerateSlideSpeechesView(APIView):
@@ -885,6 +1083,9 @@ class ReelProjectGenerateSlideSpeechesView(APIView):
 
         generated_count = 0
         skipped_count = 0
+        cached_count = 0
+        total_characters = 0
+        last_provider = ''
 
         for slide in project.slides.all().order_by('order', 'id'):
             speech_text = build_slide_speech_text(slide)
@@ -897,22 +1098,34 @@ class ReelProjectGenerateSlideSpeechesView(APIView):
                 _generate_and_save_slide_speech(
                     slide,
                     speech_text=speech_text,
+                    provider=serializer.validated_data.get('provider', ''),
                     voice_id=serializer.validated_data.get('voice_id', ''),
                     model_id=serializer.validated_data.get('model_id', ''),
                     output_format=serializer.validated_data.get('output_format', ''),
                 )
                 generated_count += 1
+                tts_meta = getattr(slide, '_tts_result', None)
+                if tts_meta is not None:
+                    total_characters += tts_meta.character_count
+                    last_provider = tts_meta.provider
+                    if tts_meta.cached:
+                        cached_count += 1
             except ValueError as exc:
                 slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
                 slide.speech_error = str(exc)
                 slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
                 return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
-            except ElevenLabsConfigurationError as exc:
+            except TTSConfigurationError as exc:
                 slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
                 slide.speech_error = str(exc)
                 slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
                 return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-            except ElevenLabsAPIError as exc:
+            except TTSQuotaExceeded as exc:
+                slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+                slide.speech_error = str(exc)
+                slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+                return Response({'detail': str(exc)}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+            except TTSAPIError as exc:
                 slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
                 slide.speech_error = str(exc)
                 slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
@@ -927,6 +1140,9 @@ class ReelProjectGenerateSlideSpeechesView(APIView):
                 'speech': {
                     'generated_count': generated_count,
                     'skipped_count': skipped_count,
+                    'cached_count': cached_count,
+                    'character_count': total_characters,
+                    'provider': last_provider,
                 },
             },
             status=status.HTTP_201_CREATED,
@@ -950,6 +1166,22 @@ class ReelProjectExportVideoView(APIView):
             return Response(
                 {'detail': f'DB init error: {type(exc).__name__}: {exc}\n{_tb.format_exc()}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        audio_issues = _collect_video_export_audio_issues(project, serializer.validated_data['frames'])
+        if audio_issues:
+            detail = 'Export MP4 bloque: regenere les MP3 des slides avant l export. ' + ' '.join(audio_issues[:6])
+            if len(audio_issues) > 6:
+                detail += f' (+{len(audio_issues) - 6} autres)'
+            project.video_status = ReelProject.VIDEO_STATUS_ERROR
+            project.video_error = detail[:2000]
+            project.save(update_fields=['video_status', 'video_error', 'updated_at'])
+            return Response(
+                {
+                    'detail': detail,
+                    'issues': audio_issues,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         try:
@@ -1088,6 +1320,7 @@ class ReelSlideGenerateSpeechView(APIView):
             slide = _generate_and_save_slide_speech(
                 slide,
                 speech_text=speech_text,
+                provider=serializer.validated_data.get('provider', ''),
                 voice_id=serializer.validated_data.get('voice_id', ''),
                 model_id=serializer.validated_data.get('model_id', ''),
                 output_format=serializer.validated_data.get('output_format', ''),
@@ -1097,12 +1330,17 @@ class ReelSlideGenerateSpeechView(APIView):
             slide.speech_error = str(exc)
             slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
             return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
-        except ElevenLabsConfigurationError as exc:
+        except TTSConfigurationError as exc:
             slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
             slide.speech_error = str(exc)
             slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
             return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-        except ElevenLabsAPIError as exc:
+        except TTSQuotaExceeded as exc:
+            slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            slide.speech_error = str(exc)
+            slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+        except TTSAPIError as exc:
             slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
             slide.speech_error = str(exc)
             slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
@@ -1110,7 +1348,15 @@ class ReelSlideGenerateSpeechView(APIView):
 
         _clear_project_video(slide.reel_project)
         _touch_project(slide.reel_project_id)
-        return Response(_slide_serializer(slide, request).data, status=status.HTTP_201_CREATED)
+        slide_payload = _slide_serializer(slide, request).data
+        tts_meta = getattr(slide, '_tts_result', None)
+        if tts_meta is not None:
+            slide_payload['_tts'] = {
+                'provider': tts_meta.provider,
+                'character_count': tts_meta.character_count,
+                'cached': tts_meta.cached,
+            }
+        return Response(slide_payload, status=status.HTTP_201_CREATED)
 
 
 class ReelSlideDetailView(APIView):

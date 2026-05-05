@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('voices/', views.ReelVoiceListView.as_view(), name='reel-voice-list'),
+    path('test-voice/', views.ReelTTSTestVoiceView.as_view(), name='reel-tts-test-voice'),
     path('projects/', views.ReelProjectListCreateView.as_view(), name='reel-project-list-create'),
     path('projects/<int:pk>/', views.ReelProjectDetailView.as_view(), name='reel-project-detail'),
     path(

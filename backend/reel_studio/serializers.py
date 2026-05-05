@@ -28,6 +28,16 @@ class ReelSlideSerializer(serializers.ModelSerializer):
     def validate_katex_scale(self, value):
         return self._validate_scale(value)
 
+    def validate_katex_inline_offset_percent(self, value):
+        if value < -40 or value > 40:
+            raise serializers.ValidationError('Le decalage doit etre compris entre -40% et 40%.')
+        return value
+
+    def validate_katex_cumulative_gap_em(self, value):
+        if value < 0 or value > 1.5:
+            raise serializers.ValidationError('Le vide entre lignes doit etre compris entre 0 et 1.5em.')
+        return value
+
     @staticmethod
     def _validate_scale(value):
         if value < 0.5 or value > 2:
@@ -49,10 +59,13 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'screen_text_scale',
             'katex_scale',
             'katex_inline_with_previous',
+            'katex_inline_offset_percent',
+            'katex_cumulative_gap_em',
             'katex_reset_cumulative',
             'duration_seconds',
             'layout_status',
             'layout_notes',
+            'speech_text',
             'speech_audio',
             'speech_audio_url',
             'speech_voice_id',
@@ -66,6 +79,7 @@ class ReelSlideSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'id',
+            'speech_text',
             'speech_audio',
             'speech_audio_url',
             'speech_voice_id',
@@ -117,6 +131,7 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             'theme',
             'level',
             'format_type',
+            'instagram_caption',
             'target_duration_seconds',
             'slide_count',
             'status',
@@ -170,7 +185,7 @@ class ReelProjectDetailSerializer(ReelProjectSerializer):
 
 
 class ReelTemplateGenerateSerializer(serializers.Serializer):
-    template_text = serializers.CharField(max_length=12000)
+    template_text = serializers.CharField(max_length=18000)
     max_chars_per_line = serializers.IntegerField(min_value=12, max_value=120, default=38, required=False)
     include_hook = serializers.BooleanField(default=None, required=False, allow_null=True)
     include_cta = serializers.BooleanField(default=None, required=False, allow_null=True)
@@ -183,6 +198,13 @@ class ReelSpeechGenerateSerializer(serializers.Serializer):
     voice_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
     model_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
     output_format = serializers.CharField(max_length=64, allow_blank=True, required=False, default='')
+    provider = serializers.CharField(max_length=32, allow_blank=True, required=False, default='')
+
+
+class ReelTTSTestSerializer(serializers.Serializer):
+    text = serializers.CharField(max_length=600, allow_blank=False)
+    provider = serializers.CharField(max_length=32, allow_blank=True, required=False, default='')
+    voice_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
 
 
 class ReelVideoFrameSerializer(serializers.Serializer):

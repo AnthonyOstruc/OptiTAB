@@ -69,6 +69,7 @@ LOCAL_APPS = [
     'freecontent',
     'blog',
     'reel_studio',
+    'mathgame',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -586,6 +587,38 @@ ELEVENLABS_VOICE_STABILITY = _float_env('ELEVENLABS_VOICE_STABILITY', 0.45)
 ELEVENLABS_VOICE_SIMILARITY_BOOST = _float_env('ELEVENLABS_VOICE_SIMILARITY_BOOST', 0.8)
 ELEVENLABS_VOICE_STYLE = _float_env('ELEVENLABS_VOICE_STYLE', 0.0)
 ELEVENLABS_USE_SPEAKER_BOOST = os.getenv('ELEVENLABS_USE_SPEAKER_BOOST', 'True') == 'True'
+
+# ========================================
+# CONFIGURATION GOOGLE CLOUD TEXT-TO-SPEECH
+# ========================================
+# Default TTS provider for Reel Studio. Use Google Cloud TTS first to take
+# advantage of the generous free quota; ElevenLabs stays as a premium option.
+REEL_TTS_DEFAULT_PROVIDER = os.getenv('REEL_TTS_DEFAULT_PROVIDER', 'google').strip().lower()
+
+# Path (absolute or relative to BASE_DIR) to the Google Cloud service account
+# JSON key file. NEVER commit this file to git. Suggested location:
+#   backend/secrets/google-tts-service-account.json
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', '').strip()
+
+# Default French voice. Other Google free-quota families are exposed by
+# reel_studio.tts.google and grayed out locally when they reach the quota guard.
+GOOGLE_TTS_DEFAULT_VOICE = os.getenv('GOOGLE_TTS_DEFAULT_VOICE', 'fr-FR-Standard-F').strip()
+GOOGLE_TTS_DEFAULT_LANGUAGE = os.getenv('GOOGLE_TTS_DEFAULT_LANGUAGE', 'fr-FR').strip()
+
+try:
+    GOOGLE_TTS_TIMEOUT_SECONDS = float(os.getenv('GOOGLE_TTS_TIMEOUT_SECONDS', '60'))
+except (TypeError, ValueError):
+    GOOGLE_TTS_TIMEOUT_SECONDS = 60.0
+
+try:
+    GOOGLE_TTS_MAX_TEXT_CHARS = int(os.getenv('GOOGLE_TTS_MAX_TEXT_CHARS', '4500'))
+except (TypeError, ValueError):
+    GOOGLE_TTS_MAX_TEXT_CHARS = 4500
+
+try:
+    GOOGLE_TTS_QUOTA_DISABLE_RATIO = float(os.getenv('GOOGLE_TTS_QUOTA_DISABLE_RATIO', '0.90'))
+except (TypeError, ValueError):
+    GOOGLE_TTS_QUOTA_DISABLE_RATIO = 0.90
 
 # ========================================
 # CONFIGURATION TIKTOK EVENTS API

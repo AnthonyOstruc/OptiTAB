@@ -65,10 +65,34 @@
         </div>
       </div>
 
+      <div class="size-control">
+        <div class="size-control-header">
+          <span>Vide entre lignes cumulatives</span>
+          <strong>{{ cumulativeGapLabel(form.katex_cumulative_gap_em) }}</strong>
+        </div>
+        <div class="size-control-row">
+          <input v-model.number="form.katex_cumulative_gap_em" type="range" min="0" max="1.5" step="0.1" />
+          <input v-model.number="form.katex_cumulative_gap_em" class="scale-number" type="number" min="0" max="1.5" step="0.1" />
+          <button type="button" class="btn-reset" @click="form.katex_cumulative_gap_em = 0.4">Reset</button>
+        </div>
+      </div>
+
       <label class="checkbox-control">
         <input v-model="form.katex_inline_with_previous" type="checkbox" />
         <span>Afficher ce KaTeX sur la même ligne que la slide précédente</span>
       </label>
+
+      <div v-if="form.katex_inline_with_previous" class="size-control">
+        <div class="size-control-header">
+          <span>Position meme ligne</span>
+          <strong>{{ inlineOffsetLabel(form.katex_inline_offset_percent) }}</strong>
+        </div>
+        <div class="size-control-row">
+          <input v-model.number="form.katex_inline_offset_percent" type="range" min="-40" max="40" step="4" />
+          <input v-model.number="form.katex_inline_offset_percent" class="scale-number" type="number" min="-40" max="40" step="4" />
+          <button type="button" class="btn-reset" @click="form.katex_inline_offset_percent = 0">Reset</button>
+        </div>
+      </div>
 
       <label class="checkbox-control">
         <input v-model="form.katex_reset_cumulative" type="checkbox" />
@@ -130,6 +154,8 @@ const form = reactive({
   screen_text_scale: 1,
   katex_scale: 1,
   katex_inline_with_previous: false,
+  katex_inline_offset_percent: 0,
+  katex_cumulative_gap_em: 0.4,
   katex_reset_cumulative: false,
 })
 
@@ -139,6 +165,28 @@ function clampScale(value) {
 
 function scaleLabel(value) {
   return `${Math.round(clampScale(value) * 100)}%`
+}
+
+function clampInlineOffset(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return 0
+  return Math.min(40, Math.max(-40, numeric))
+}
+
+function inlineOffsetLabel(value) {
+  const offset = Math.round(clampInlineOffset(value))
+  if (!offset) return 'milieu'
+  return offset > 0 ? `+${offset}%` : `${offset}%`
+}
+
+function clampCumulativeGap(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return 0.4
+  return Math.min(1.5, Math.max(0, Number(numeric.toFixed(2))))
+}
+
+function cumulativeGapLabel(value) {
+  return `${clampCumulativeGap(value).toFixed(1)}em`
 }
 
 watch(
@@ -152,6 +200,8 @@ watch(
     form.screen_text_scale = clampScale(slide?.screen_text_scale)
     form.katex_scale = clampScale(slide?.katex_scale)
     form.katex_inline_with_previous = Boolean(slide?.katex_inline_with_previous)
+    form.katex_inline_offset_percent = clampInlineOffset(slide?.katex_inline_offset_percent)
+    form.katex_cumulative_gap_em = clampCumulativeGap(slide?.katex_cumulative_gap_em)
     form.katex_reset_cumulative = Boolean(slide?.katex_reset_cumulative)
   },
   { immediate: true, deep: true }
@@ -191,6 +241,8 @@ function handleSave() {
     screen_text_scale: clampScale(form.screen_text_scale),
     katex_scale: clampScale(form.katex_scale),
     katex_inline_with_previous: Boolean(form.katex_inline_with_previous),
+    katex_inline_offset_percent: clampInlineOffset(form.katex_inline_offset_percent),
+    katex_cumulative_gap_em: clampCumulativeGap(form.katex_cumulative_gap_em),
     katex_reset_cumulative: Boolean(form.katex_reset_cumulative),
   })
 }

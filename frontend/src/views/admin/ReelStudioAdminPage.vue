@@ -66,42 +66,109 @@
               @export-video="handleExportVideo"
             />
 
+            <section v-if="selectedProject" class="instagram-caption-panel">
+              <div class="instagram-caption-header">
+                <div>
+                  <h3>Description Instagram</h3>
+                  <p>Texte SEO pret a copier pour publier le reel.</p>
+                </div>
+                <button
+                  class="btn-secondary"
+                  type="button"
+                  :disabled="!instagramCaptionText"
+                  @click="copyInstagramCaption"
+                >
+                  Copier Instagram
+                </button>
+              </div>
+              <textarea
+                class="instagram-caption-text"
+                :value="instagramCaptionText || 'Ajoute un bloc INSTAGRAM_DESCRIPTION dans le template genere.'"
+                readonly
+                rows="10"
+                @focus="$event.target.select()"
+              ></textarea>
+            </section>
+
             <section v-if="selectedProject" class="speech-panel">
-              <div class="speech-toolbar">
+              <div class="speech-panel-header">
                 <div>
                   <h3>Voix par slide</h3>
                   <p>{{ speechStatusLabel }}</p>
                 </div>
-                <label class="voice-select">
-                  Voix FR - accent parisien
+
+                <div class="voice-charcount" :class="{ 'voice-charcount--warn': speechCharCountWarning }">
+                  <strong>{{ speechCharCount.toLocaleString('fr-FR') }}</strong>
+                  <span>caracteres a generer</span>
+                  <small v-if="speechCharCountWarning">{{ speechCharCountWarning }}</small>
+                </div>
+              </div>
+
+              <div class="speech-controls">
+                <label class="voice-select voice-select--provider">
+                  Fournisseur de voix
+                  <select
+                    v-model="selectedProviderId"
+                    :disabled="loadingVoiceOptions || generatingSpeech || generatingSpeechSlideId || testingVoice"
+                    @change="onProviderChange"
+                  >
+                    <option v-if="loadingVoiceOptions && !providers.length" value="">Chargement...</option>
+                    <option
+                      v-for="provider in providers"
+                      :key="provider.id"
+                      :value="provider.id"
+                      :disabled="!provider.configured"
+                    >
+                      {{ provider.label }}{{ provider.configured ? '' : ' (non configure)' }}
+                    </option>
+                  </select>
+                  <span v-if="selectedProviderMeta">{{ selectedProviderMeta }}</span>
+                </label>
+
+                <label class="voice-select voice-select--voice">
+                  Voix
                   <select
                     v-model="selectedVoiceId"
-                    :disabled="loadingVoiceOptions || generatingSpeech || generatingSpeechSlideId"
+                    :disabled="loadingVoiceOptions || generatingSpeech || generatingSpeechSlideId || testingVoice || !currentProviderVoices.length"
                   >
                     <option v-if="loadingVoiceOptions" value="">Chargement...</option>
-                    <option v-else-if="!voiceOptions.length" value="">Aucune voix trouvee</option>
+                    <option v-else-if="!currentProviderVoices.length" value="">Aucune voix trouvee</option>
                     <option
-                      v-for="voice in voiceOptions"
+                      v-for="voice in currentProviderVoices"
                       :key="voice.voice_id"
                       :value="voice.voice_id"
-                      :disabled="!voice.api_usable"
+                      :disabled="voice.api_usable === false"
                     >
-                      {{ voice.name }}{{ voice.category ? ` - ${voice.category}` : '' }}{{ voice.api_usable ? '' : ' (abonnement requis)' }}
+                      {{ voiceOptionLabel(voice) }}
                     </option>
                   </select>
                   <span v-if="selectedVoiceMeta">{{ selectedVoiceMeta }}</span>
                   <span v-if="selectedVoiceWarning" class="voice-warning">{{ selectedVoiceWarning }}</span>
                   <span v-else-if="voiceOptionsError">{{ voiceOptionsError }}</span>
                 </label>
-                <button
-                  class="btn-primary"
-                  type="button"
-                  :disabled="generatingSpeech || loadingVoiceOptions || !canGenerateSpeech || !selectedVoiceCanGenerate"
-                  @click="handleGenerateSpeech"
-                >
-                  {{ generatingSpeech ? 'Generation des MP3...' : 'Generer les MP3 slides' }}
-                </button>
+
+                <div class="speech-actions">
+                  <button
+                    class="btn-secondary"
+                    type="button"
+                    :disabled="testingVoice || loadingVoiceOptions || !selectedVoiceId || !selectedProviderConfigured || !selectedVoiceApiUsable"
+                    @click="handleTestVoice"
+                    title="Genere un court extrait audio pour preecouter la voix"
+                  >
+                    {{ testingVoice ? 'Lecture...' : 'Tester la voix' }}
+                  </button>
+
+                  <button
+                    class="btn-primary"
+                    type="button"
+                    :disabled="generatingSpeech || loadingVoiceOptions || !canGenerateSpeech || !selectedVoiceCanGenerate || !selectedProviderConfigured"
+                    @click="handleGenerateSpeech"
+                  >
+                    {{ generatingSpeech ? 'Generation des MP3...' : 'Generer les MP3 slides' }}
+                  </button>
+                </div>
               </div>
+              <audio v-if="testAudioUrl" :src="testAudioUrl" controls class="voice-test-audio" />
             </section>
 
             <section class="manual-editor-wrap">
@@ -150,6 +217,7 @@ import {
   getReelProject,
   listReelProjects,
   listReelVoices,
+  testReelTTSVoice,
   updateReelProject,
   updateReelSlide,
 } from '@/api/reelStudio'
@@ -180,6 +248,12 @@ const loadingVoiceOptions = ref(false)
 const voiceOptions = ref([])
 const selectedVoiceId = ref('')
 const voiceOptionsError = ref('')
+const providers = ref([])
+const selectedProviderId = ref('')
+const testingVoice = ref(false)
+const testAudioUrl = ref('')
+const SPEECH_CHAR_WARNING_THRESHOLD = 4000
+const SPEECH_CHAR_HARD_LIMIT = 4500
 const showManualEditor = ref(false)
 const projectFormOpen = ref(false)
 const editingProject = ref(null)
@@ -250,6 +324,19 @@ CTA recommandé:
   Sauvegarde ce Reel
   Commente ton résultat
 
+Description Instagram obligatoire:
+- Apres les slides, ajoute un bloc INSTAGRAM_DESCRIPTION copiable.
+- Objectif: description Instagram SEO avec style Semji/semantic SEO.
+- Commence par une accroche courte avec emoji + mot-cle principal.
+- Explique l'exercice en 2 a 4 phrases naturelles avec les mots-cles maths importants.
+- Ajoute 3 a 5 benefices/lignes "Dans ce reel".
+- Ajoute les appels a l'action: commentaire, sauvegarde, partage, abonnement.
+- Termine par exactement 5 hashtags pertinents, pas plus.
+- Format obligatoire:
+INSTAGRAM_DESCRIPTION:
+...
+END_INSTAGRAM_DESCRIPTION
+
 Types autorisés:
 - hook
 - katex
@@ -302,6 +389,28 @@ TEXT: Abonne-toi à OptiTAB
 Sauvegarde ce Reel
 Commente ton résultat
 VOICE: [warmly] Abonne-toi pour la suite.
+---
+INSTAGRAM_DESCRIPTION:
+🧠 Derivee piegeuse
+
+Essaie de deriver cette fonction avant de regarder la correction :
+
+f(x)=x\\ln(x)
+
+Un exercice classique de terminale pour revoir la derivee d'un produit et les proprietes du logarithme.
+
+Dans ce reel :
+✅ derivee d'un produit
+✅ derivee de ln(x)
+✅ simplification du resultat final
+
+✍️ Donne ta reponse en commentaire
+💾 Sauvegarde ce reel pour reviser
+📩 Partage-le a un ami
+➕ Abonne-toi a OptiTAB pour progresser en maths
+
+#maths #derivation #logarithme #terminale #bac
+END_INSTAGRAM_DESCRIPTION
 `
 
 const selectedSlide = computed(() => {
@@ -316,12 +425,49 @@ const projectSpeechText = computed(() => buildProjectSpeechText(selectedProject.
 const slidesSpeechCount = computed(() => countSlidesWithSpeechText(selectedProject.value))
 const generatedSlideSpeechCount = computed(() => countGeneratedSlideSpeeches(selectedProject.value))
 const canGenerateSpeech = computed(() => Boolean(selectedProject.value?.id && projectSpeechText.value))
-const selectedVoice = computed(() => {
-  return voiceOptions.value.find((voice) => voice.voice_id === selectedVoiceId.value) || null
+const selectedProvider = computed(() => {
+  return providers.value.find((p) => p.id === selectedProviderId.value) || null
 })
-const selectedVoiceCanGenerate = computed(() => Boolean(selectedVoice.value?.api_usable))
+const selectedProviderConfigured = computed(() => Boolean(selectedProvider.value?.configured))
+const currentProviderVoices = computed(() => selectedProvider.value?.voices || [])
+const selectedProviderMeta = computed(() => {
+  if (!selectedProvider.value) return ''
+  if (!selectedProvider.value.configured) {
+    return selectedProvider.value.error
+      ? `Non configure: ${selectedProvider.value.error}`
+      : 'Non configure (cle API ou credentials manquants)'
+  }
+  if (selectedProvider.value.id === 'elevenlabs') return 'Premium ElevenLabs (consomme le quota du compte)'
+  return ''
+})
+const selectedVoice = computed(() => {
+  return currentProviderVoices.value.find((voice) => voice.voice_id === selectedVoiceId.value) || null
+})
+const selectedVoiceApiUsable = computed(() => {
+  if (!selectedVoice.value) return false
+  if (selectedVoice.value.api_usable === false) return false
+  return true
+})
+const selectedVoiceCanGenerate = computed(() => {
+  if (!selectedVoiceApiUsable.value) return false
+  return selectedVoiceHasQuotaForCharacters(speechCharCount.value)
+})
+const speechCharCount = computed(() => projectSpeechText.value?.length || 0)
+const speechCharCountWarning = computed(() => {
+  if (!speechCharCount.value) return ''
+  if (speechCharCount.value > SPEECH_CHAR_HARD_LIMIT) {
+    return `au-dessus de la limite ${SPEECH_CHAR_HARD_LIMIT} caracteres (Google TTS): coupe le texte ou bascule sur ElevenLabs.`
+  }
+  if (speechCharCount.value > SPEECH_CHAR_WARNING_THRESHOLD) {
+    return `proche de la limite ${SPEECH_CHAR_HARD_LIMIT} caracteres.`
+  }
+  return ''
+})
 const selectedVoiceMeta = computed(() => {
   if (!selectedVoice.value) return ''
+  if (selectedProviderId.value === 'google') {
+    return voiceQuotaUsageLabel(selectedVoice.value)
+  }
   const labels = selectedVoice.value.labels || {}
   return [
     selectedVoice.value.matches_filter ? 'FR accent parisien' : 'compatible API',
@@ -333,6 +479,18 @@ const selectedVoiceMeta = computed(() => {
 })
 const selectedVoiceWarning = computed(() => {
   if (!selectedVoice.value) return ''
+  if (selectedProviderId.value === 'google') {
+    if (selectedVoice.value.api_usable === false) {
+      return selectedVoice.value.api_usable_reason || 'Seuil de quota Google atteint pour cette famille de voix.'
+    }
+    if (!selectedVoiceHasQuotaForCharacters(speechCharCount.value)) {
+      return 'Ce reel depasserait le seuil de 90% du quota gratuit pour cette famille de voix.'
+    }
+    if (selectedVoice.value.quota_status === 'near_limit') {
+      return 'Quota Google proche du seuil de grisage.'
+    }
+    return ''
+  }
   if (selectedVoice.value.requires_subscription) {
     return 'Voix professionnelle: abonnement ElevenLabs requis.'
   }
@@ -344,11 +502,72 @@ const selectedVoiceWarning = computed(() => {
   }
   return ''
 })
+
+function voiceOptionLabel(voice) {
+  if (!voice) return ''
+  if (voice.tier) {
+    return [compactGoogleVoiceName(voice), voiceQuotaPercentLabel(voice)].filter(Boolean).join(' ')
+  }
+  // ElevenLabs voices
+  const label = String(voice.name || voice.voice_id || '').trim()
+  const parts = []
+  if (voice.category) parts.push(voice.category)
+  if (voice.api_usable === false) parts.push('abonnement requis')
+  return parts.length ? `${label} - ${parts.join(', ')}` : label
+}
+
+function compactGoogleVoiceName(voice) {
+  const name = String(voice?.name || voice?.voice_id || '').trim()
+  const match = name.match(/^(.+?)\s*\(([^-)]+)(?:\s*-\s*[^)]*)?\)$/)
+  if (!match) return name
+  const voiceName = match[1].trim()
+  const model = match[2].trim()
+  return model ? `${voiceName} (${model})` : voiceName
+}
+
+function voiceQuotaPercentLabel(voice) {
+  const quota = voice?.quota || {}
+  const percent = Number(quota.used_percent ?? voice?.quota_used_percent ?? 0)
+  if (!Number.isFinite(percent)) return ''
+  return `${Math.round(percent)}%`
+}
+
+function voiceQuotaUsageLabel(voice) {
+  const quota = voice?.quota || {}
+  const used = Number(quota.used_characters ?? voice?.quota_used_characters)
+  const limit = Number(quota.free_monthly_character_limit ?? voice?.free_monthly_character_limit)
+  if (!Number.isFinite(used) || !Number.isFinite(limit) || limit <= 0) return ''
+  return `${Math.max(0, Math.round(used))}/${Math.max(0, Math.round(limit))}`
+}
+
+function selectedVoiceRemainingUntilDisable() {
+  const voice = selectedVoice.value
+  if (!voice || selectedProviderId.value !== 'google') return Number.POSITIVE_INFINITY
+  const quota = voice.quota || {}
+  return Number(
+    quota.remaining_until_disable_characters ??
+      voice.quota_remaining_until_disable_characters ??
+      Number.POSITIVE_INFINITY,
+  )
+}
+
+function selectedVoiceHasQuotaForCharacters(characterCount) {
+  if (selectedProviderId.value !== 'google') return true
+  if (!selectedVoiceApiUsable.value) return false
+  const count = Number(characterCount || 0)
+  const remaining = selectedVoiceRemainingUntilDisable()
+  return !Number.isFinite(remaining) || count <= remaining
+}
 const speechStatusLabel = computed(() => {
   if (!selectedProject.value?.id) return ''
   if (generatingSpeech.value) return 'Generation en cours'
   if (!projectSpeechText.value) return 'Texte voix indisponible'
   return `${generatedSlideSpeechCount.value}/${slidesSpeechCount.value} slides avec MP3`
+})
+const instagramCaptionText = computed(() => {
+  const projectCaption = String(selectedProject.value?.instagram_caption || '').trim()
+  if (projectCaption) return projectCaption
+  return extractInstagramCaption(templateDraft.value)
 })
 
 function setFeedback(type, text) {
@@ -390,6 +609,7 @@ function upsertProjectSummary(project) {
     theme: project.theme,
     level: project.level,
     format_type: project.format_type,
+    instagram_caption: project.instagram_caption,
     target_duration_seconds: project.target_duration_seconds,
     slide_count: Array.isArray(project.slides) ? project.slides.length : project.slide_count,
     status: project.status,
@@ -429,6 +649,73 @@ function splitFilledLines(value) {
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
+}
+
+function extractInstagramCaption(value) {
+  const lines = String(value || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n')
+  const captionLines = []
+  let capturing = false
+
+  for (const rawLine of lines) {
+    const line = String(rawLine || '').trimEnd()
+    const stripped = line.trim()
+    const startMatch = stripped.match(/^(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)\s*:\s*(.*)$/i)
+
+    if (capturing) {
+      if (/^END_(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)$/i.test(stripped)) {
+        break
+      }
+      captionLines.push(line)
+      continue
+    }
+
+    if (startMatch) {
+      capturing = true
+      if (startMatch[2]) captionLines.push(startMatch[2].trim())
+    }
+  }
+
+  return captionLines.join('\n').trim()
+}
+
+function appendInstagramCaptionBlock(value, caption) {
+  const safeCaption = String(caption || '').trim()
+  if (!safeCaption) return value
+
+  const body = String(value || '').trim()
+  const captionBlock = `INSTAGRAM_DESCRIPTION:\n${safeCaption}\nEND_INSTAGRAM_DESCRIPTION`
+  return body ? `${body}\n---\n${captionBlock}` : captionBlock
+}
+
+async function copyTextToClipboard(value) {
+  const text = String(value || '')
+  if (!text) return
+
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text)
+    return
+  }
+
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.setAttribute('readonly', '')
+  textarea.style.position = 'fixed'
+  textarea.style.left = '-9999px'
+  document.body.appendChild(textarea)
+  textarea.select()
+  document.execCommand('copy')
+  textarea.remove()
+}
+
+async function copyInstagramCaption() {
+  if (!instagramCaptionText.value) return
+
+  try {
+    await copyTextToClipboard(instagramCaptionText.value)
+    setFeedback('success', 'Description Instagram copiee.')
+  } catch (error) {
+    setFeedback('error', 'Impossible de copier la description Instagram.')
+  }
 }
 
 function normalizeSpeechLine(value) {
@@ -490,7 +777,7 @@ function serializeProjectSlides(project) {
   const slides = Array.isArray(project?.slides) ? [...project.slides] : []
   slides.sort((a, b) => Number(a.order || 0) - Number(b.order || 0) || Number(a.id || 0) - Number(b.id || 0))
 
-  return slides
+  const slidesText = slides
     .map((slide, index) => {
       const lines = [`SLIDE ${slide.order || index + 1} | ${slide.slide_type || 'katex'}`]
       appendTemplateField(lines, 'TITLE', slide.title)
@@ -500,6 +787,8 @@ function serializeProjectSlides(project) {
       return lines.join('\n')
     })
     .join('\n---\n')
+
+  return appendInstagramCaptionBlock(slidesText, project?.instagram_caption)
 }
 
 function scrollEditorIntoView() {
@@ -536,34 +825,127 @@ async function loadVoiceOptions() {
   loadingVoiceOptions.value = true
   voiceOptionsError.value = ''
   try {
-    const response = await listReelVoices({
-      language: 'fr',
-      accent: 'parisian',
-    })
-    const voices = Array.isArray(response?.data?.voices) ? response.data.voices : []
-    voiceOptions.value = voices
+    const response = await listReelVoices()
+    const data = response?.data || {}
+    const providerList = Array.isArray(data.providers) ? data.providers : []
+    providers.value = providerList
 
-    const currentSelectionExists = voices.some((voice) => voice.voice_id === selectedVoiceId.value && voice.api_usable)
-    if (!currentSelectionExists) {
-      const defaultVoiceId = response?.data?.default_voice_id || ''
-      selectedVoiceId.value =
-        voices.find((voice) => voice.voice_id === defaultVoiceId && voice.api_usable)?.voice_id ||
-        voices.find((voice) => voice.matches_filter && voice.api_usable)?.voice_id ||
-        voices.find((voice) => voice.api_usable)?.voice_id ||
+    // Pick the best initial provider: previous selection if still available + configured,
+    // else the backend-recommended default if configured, else first configured provider.
+    const currentProviderStillOk = providerList.some(
+      (p) => p.id === selectedProviderId.value && p.configured,
+    )
+    if (!currentProviderStillOk) {
+      const preferred = data.default_provider || ''
+      selectedProviderId.value =
+        providerList.find((p) => p.id === preferred && p.configured)?.id ||
+        providerList.find((p) => p.configured)?.id ||
+        providerList[0]?.id ||
         ''
     }
 
-    if (!voices.length) {
-      voiceOptionsError.value = 'Aucune voix disponible.'
-    } else if (!voices.some((voice) => voice.matches_filter && voice.api_usable)) {
-      voiceOptionsError.value = 'Aucune voix parisienne compatible API sur ce compte.'
+    // Sync legacy voiceOptions to current provider voices for any code that still reads it.
+    voiceOptions.value = currentProviderVoices.value
+
+    selectVoiceForCurrentProvider()
+
+    if (!providerList.length) {
+      voiceOptionsError.value = 'Aucun fournisseur de voix disponible.'
+    } else if (!selectedProvider.value?.configured) {
+      voiceOptionsError.value = selectedProvider.value?.error || 'Le fournisseur selectionne n est pas configure.'
     }
   } catch (error) {
+    providers.value = []
     voiceOptions.value = []
     selectedVoiceId.value = ''
     voiceOptionsError.value = extractErrorMessage(error, 'Impossible de charger les voix.')
   } finally {
     loadingVoiceOptions.value = false
+  }
+}
+
+function selectVoiceForCurrentProvider() {
+  const provider = selectedProvider.value
+  if (!provider) {
+    selectedVoiceId.value = ''
+    return
+  }
+  const voices = provider.voices || []
+  const currentExists = voices.some(
+    (v) => v.voice_id === selectedVoiceId.value && v.api_usable !== false,
+  )
+  if (currentExists) return
+
+  const defaultId = provider.default_voice_id || ''
+  selectedVoiceId.value =
+    voices.find((v) => v.voice_id === defaultId && v.api_usable !== false)?.voice_id ||
+    voices.find((v) => v.api_usable !== false)?.voice_id ||
+    ''
+}
+
+function onProviderChange() {
+  if (testAudioUrl.value) {
+    window.URL.revokeObjectURL(testAudioUrl.value)
+    testAudioUrl.value = ''
+  }
+  selectVoiceForCurrentProvider()
+  voiceOptions.value = currentProviderVoices.value
+}
+
+async function handleTestVoice() {
+  if (!selectedProviderId.value || !selectedVoiceId.value) return
+  if (!selectedVoiceApiUsable.value) return
+
+  // Build a short preview: take the first sentence of the project speech text,
+  // or fall back to a generic French sample.
+  const fullText = projectSpeechText.value || ''
+  const firstSentence = fullText.split(/[.!?\n]/).map((s) => s.trim()).find(Boolean) || ''
+  const previewText = (firstSentence || 'Bonjour, ceci est un test de voix OptiTAB.').slice(0, 240)
+  if (!selectedVoiceHasQuotaForCharacters(previewText.length)) {
+    setFeedback('error', 'Cette voix est trop proche du seuil de quota Google pour generer un apercu.')
+    return
+  }
+
+  testingVoice.value = true
+  try {
+    const response = await testReelTTSVoice({
+      provider: selectedProviderId.value,
+      voice_id: selectedVoiceId.value,
+      text: previewText,
+    })
+
+    if (testAudioUrl.value) {
+      window.URL.revokeObjectURL(testAudioUrl.value)
+    }
+    const blob = response?.data instanceof Blob ? response.data : new Blob([response?.data], { type: 'audio/mpeg' })
+    testAudioUrl.value = window.URL.createObjectURL(blob)
+
+    const cached = response?.headers?.['x-tts-cached'] === '1'
+    const chars = response?.headers?.['x-tts-character-count'] || previewText.length
+    setFeedback('success', `Apercu voix genere (${chars} caracteres${cached ? ', depuis le cache' : ''}).`)
+    if (!cached) loadVoiceOptions()
+  } catch (error) {
+    const blobMessage = await readBlobErrorMessage(error)
+    setFeedback('error', blobMessage || extractErrorMessage(error, 'Impossible de generer l apercu voix.'))
+  } finally {
+    testingVoice.value = false
+  }
+}
+
+async function readBlobErrorMessage(error) {
+  const data = error?.response?.data
+  if (!(data instanceof Blob)) return ''
+  try {
+    const text = await data.text()
+    if (!text) return ''
+    try {
+      const parsed = JSON.parse(text)
+      return parsed?.detail || parsed?.message || ''
+    } catch (_) {
+      return text.slice(0, 200)
+    }
+  } catch (_) {
+    return ''
   }
 }
 
@@ -690,11 +1072,15 @@ async function handleGenerateFromTemplate(payload) {
   if (!selectedProject.value?.id) return
 
   generatingTemplate.value = true
+  const submittedInstagramCaption = extractInstagramCaption(payload?.template_text)
   try {
     const response = await generateSlidesFromTemplate(selectedProject.value.id, payload)
     const updatedProject = normalizeProject(response?.data)
 
     if (updatedProject?.id) {
+      if (submittedInstagramCaption && !String(updatedProject.instagram_caption || '').trim()) {
+        updatedProject.instagram_caption = submittedInstagramCaption
+      }
       selectedProject.value = updatedProject
       selectedSlideId.value = updatedProject.slides?.[0]?.id || null
       templateDraft.value = serializeProjectSlides(updatedProject)
@@ -715,6 +1101,7 @@ async function handleGenerateSpeech() {
   generatingSpeech.value = true
   try {
     const response = await generateReelSlideSpeeches(selectedProject.value.id, {
+      provider: selectedProviderId.value,
       voice_id: selectedVoiceId.value,
     })
     const updatedProject = normalizeProject(response?.data?.project || response?.data)
@@ -724,8 +1111,16 @@ async function handleGenerateSpeech() {
       selectedSlideId.value = updatedProject.slides?.[0]?.id || selectedSlideId.value || null
       templateDraft.value = serializeProjectSlides(updatedProject)
       upsertProjectSummary(updatedProject)
-      const count = response?.data?.speech?.generated_count ?? countGeneratedSlideSpeeches(updatedProject)
-      setFeedback('success', `Voix par slide generees (${count} MP3).`)
+      const speechMeta = response?.data?.speech || {}
+      const count = speechMeta.generated_count ?? countGeneratedSlideSpeeches(updatedProject)
+      const charCount = Number(speechMeta.character_count || 0)
+      const cachedCount = Number(speechMeta.cached_count || 0)
+      const provider = speechMeta.provider || selectedProviderId.value
+      const parts = [`Voix par slide generees (${count} MP3, ${provider})`]
+      if (charCount) parts.push(`${charCount.toLocaleString('fr-FR')} caracteres`)
+      if (cachedCount) parts.push(`${cachedCount} reutilisees du cache`)
+      setFeedback('success', parts.join(' · ') + '.')
+      loadVoiceOptions()
     }
   } catch (error) {
     setFeedback('error', extractErrorMessage(error, 'Impossible de generer les voix par slide.'))
@@ -734,23 +1129,43 @@ async function handleGenerateSpeech() {
   }
 }
 
-async function handleGenerateSlideSpeech(slideId) {
+async function handleGenerateSlideSpeech(payload) {
+  const slideId = payload && typeof payload === 'object' ? payload.id : payload
+  const requestedText = payload && typeof payload === 'object' ? String(payload.text || '').trim() : ''
+  const requestedVoiceScript = payload && typeof payload === 'object' ? String(payload.voice_script || '').trim() : ''
+  const shouldSaveVoiceScript = Boolean(payload && typeof payload === 'object' && payload.save_voice_script)
+
   if (!slideId || !selectedProject.value?.slides) return
-  if (!selectedVoiceCanGenerate.value) {
+  if (!selectedVoiceApiUsable.value) {
     setFeedback('error', 'Selectionne une voix compatible API.')
     return
   }
-  const slide = selectedProject.value.slides.find((item) => Number(item.id) === Number(slideId))
-  const speechText = slideSpeechText(slide)
+  let slide = selectedProject.value.slides.find((item) => Number(item.id) === Number(slideId))
+  const speechText = requestedText || slideSpeechText(slide)
   if (!speechText) {
     setFeedback('error', 'Aucun texte vocal disponible pour cette slide.')
+    return
+  }
+  if (!selectedVoiceHasQuotaForCharacters(speechText.length)) {
+    setFeedback('error', 'Cette slide depasserait le seuil de 90% du quota gratuit Google pour cette voix.')
     return
   }
 
   generatingSpeechSlideId.value = Number(slideId)
   try {
+    if (shouldSaveVoiceScript && requestedVoiceScript !== String(slide?.voice_script || '').trim()) {
+      const saveResponse = await updateReelSlide(slideId, { voice_script: requestedVoiceScript })
+      const savedSlide = normalizeProject(saveResponse?.data)
+      if (savedSlide?.id) {
+        updateSelectedProjectSlide(savedSlide)
+        templateDraft.value = serializeProjectSlides(selectedProject.value)
+        slide = savedSlide
+      }
+    }
+
     const response = await generateReelSlideSpeech(slideId, {
       text: speechText,
+      provider: selectedProviderId.value,
       voice_id: selectedVoiceId.value,
     })
     const updatedSlide = normalizeProject(response?.data)
@@ -758,6 +1173,7 @@ async function handleGenerateSlideSpeech(slideId) {
     if (updatedSlide?.id) {
       updateSelectedProjectSlide(updatedSlide)
       setFeedback('success', `Voix de la slide ${updatedSlide.order || ''} generee.`.trim())
+      loadVoiceOptions()
     }
   } catch (error) {
     setFeedback('error', extractErrorMessage(error, 'Impossible de generer la voix de cette slide.'))
@@ -875,6 +1291,8 @@ async function handleSaveSlide(payload) {
       screen_text_scale: payload.screen_text_scale,
       katex_scale: payload.katex_scale,
       katex_inline_with_previous: payload.katex_inline_with_previous,
+      katex_inline_offset_percent: payload.katex_inline_offset_percent,
+      katex_cumulative_gap_em: payload.katex_cumulative_gap_em,
       katex_reset_cumulative: payload.katex_reset_cumulative,
     }
 
@@ -911,9 +1329,26 @@ async function handlePatchSlide(payload) {
   if (index === -1 || !Object.keys(patchData).length) return
 
   const previousSlide = { ...selectedProject.value.slides[index] }
+  const voiceScriptWillChange =
+    Object.prototype.hasOwnProperty.call(patchData, 'voice_script') &&
+    String(patchData.voice_script || '').trim() !== String(previousSlide.voice_script || '').trim()
+  const optimisticPatch = voiceScriptWillChange
+    ? {
+        ...patchData,
+        speech_audio: null,
+        speech_audio_url: null,
+        speech_text: '',
+        speech_voice_id: '',
+        speech_model_id: '',
+        speech_output_format: '',
+        speech_status: 'empty',
+        speech_error: '',
+        speech_generated_at: null,
+      }
+    : patchData
   selectedProject.value.slides.splice(index, 1, {
     ...selectedProject.value.slides[index],
-    ...patchData,
+    ...optimisticPatch,
   })
 
   try {
@@ -1063,6 +1498,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 14px;
+  min-width: 0;
   min-height: auto;
   flex-shrink: 0;
   scroll-margin-top: 96px;
@@ -1073,6 +1509,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
   min-height: auto;
 }
 
@@ -1129,56 +1566,126 @@ onMounted(() => {
   cursor: not-allowed;
 }
 
-.speech-panel {
+.instagram-caption-panel {
   border: 1px solid #dbe4ee;
   border-radius: 12px;
   background: #ffffff;
-  padding: 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.speech-toolbar {
+.instagram-caption-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
 
-.speech-toolbar h3 {
+.instagram-caption-header h3 {
   margin: 0;
   color: #0f172a;
   font-size: 18px;
 }
 
-.speech-toolbar p {
+.instagram-caption-header p {
   margin: 4px 0 0;
   color: #64748b;
   font-size: 13px;
   font-weight: 700;
 }
 
-.voice-select {
-  min-width: min(100%, 340px);
+.instagram-caption-text {
+  width: 100%;
+  min-height: 220px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #f8fbff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 12px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.speech-panel {
+  box-sizing: border-box;
+  border: 1px solid #dbe4ee;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 18px;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 16px;
+}
+
+.speech-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.speech-panel-header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.speech-panel-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.speech-controls {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.voice-select {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   color: #334155;
   font-size: 12px;
   font-weight: 800;
+  line-height: 1.25;
 }
 
 .voice-select select {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #bfdbfe;
   border-radius: 8px;
   background: #ffffff;
   color: #0f172a;
-  font: inherit;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 700;
-  padding: 8px 10px;
+  line-height: 1.35;
+  padding: 9px 10px;
+  min-height: 42px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .voice-select select:disabled {
@@ -1190,10 +1697,76 @@ onMounted(() => {
   color: #64748b;
   font-size: 11px;
   font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .voice-select .voice-warning {
   color: #b45309;
+}
+
+.speech-actions {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: min(100%, 480px);
+  max-width: 100%;
+  min-width: 0;
+  justify-self: end;
+}
+
+.speech-actions .btn-primary,
+.speech-actions .btn-secondary {
+  width: 100%;
+  min-height: 42px;
+  line-height: 1.2;
+  white-space: normal;
+}
+
+.voice-charcount {
+  font-size: 12px;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 9px 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 4px 6px;
+  max-width: 360px;
+  text-align: right;
+}
+
+.voice-charcount strong {
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.voice-charcount small {
+  flex-basis: 100%;
+  color: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.voice-charcount--warn {
+  color: #b45309;
+  background: #fef3c7;
+  border-color: #fde68a;
+}
+
+.voice-charcount--warn strong {
+  color: #92400e;
+}
+
+.voice-test-audio {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 360px;
 }
 
 .speech-audio {
@@ -1211,6 +1784,17 @@ onMounted(() => {
   .content-grid {
     grid-template-columns: 1fr;
   }
+
+  .speech-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .speech-actions {
+    grid-column: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-self: stretch;
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1223,9 +1807,27 @@ onMounted(() => {
     flex-direction: column;
   }
 
-  .speech-toolbar {
+  .speech-panel-header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .speech-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .speech-actions {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    min-width: 0;
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .voice-charcount {
+    justify-content: flex-start;
+    max-width: none;
+    text-align: left;
   }
 
   .page-header {

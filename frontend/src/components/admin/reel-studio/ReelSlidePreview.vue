@@ -8,8 +8,16 @@
     }"
     :style="slideCardStyle"
     @click="handleSelect"
+    @dblclick="handleOpen"
   >
-    <div class="reel-slide" :class="{ 'reel-slide--hook': isHookSlide, 'reel-slide--cta': isCtaSlide }">
+    <div
+      class="reel-slide"
+      :class="{
+        'reel-slide--hook': isHookSlide,
+        'reel-slide--cta': isCtaSlide,
+        'reel-slide--cover': isCoverSlide,
+      }"
+    >
       <section class="reel-slide-body" ref="bodyRef">
         <template v-if="showHookTemplate">
           <div ref="screenTextRef" class="hook-layout">
@@ -116,7 +124,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['select', 'diagnostic'])
+const emit = defineEmits(['select', 'diagnostic', 'open'])
 
 const screenTextRef = ref(null)
 const katexZoneRef = ref(null)
@@ -127,12 +135,20 @@ const safeSlide = computed(() => props.slide || {})
 
 const isHookSlide = computed(() => safeSlide.value.slide_type === 'hook')
 const isCtaSlide = computed(() => safeSlide.value.slide_type === 'cta')
+const isCoverSlide = computed(() => Boolean(safeSlide.value.is_virtual_cover || safeSlide.value.slide_type === 'cover'))
+const usesHookLayout = computed(() => isHookSlide.value || isCoverSlide.value)
 const isLargeDisplayMode = computed(() => ['fullscreen', 'export'].includes(props.displayMode))
 const isThumbnailMode = computed(() => !isLargeDisplayMode.value)
-const shouldAlignKatexLeft = computed(() => !isHookSlide.value && !isCtaSlide.value)
+const shouldAlignKatexLeft = computed(() => !usesHookLayout.value && !isCtaSlide.value)
 
 function clampSlideScale(value) {
   return Math.min(2, Math.max(0.5, Number(value) || 1))
+}
+
+function clampCumulativeGap(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return 0.4
+  return Math.min(1.5, Math.max(0, numeric))
 }
 
 const slideCardStyle = computed(() => {
@@ -140,6 +156,7 @@ const slideCardStyle = computed(() => {
   const titleScale = clampSlideScale(safeSlide.value.title_scale)
   const screenTextScale = clampSlideScale(safeSlide.value.screen_text_scale)
   const katexScale = clampSlideScale(safeSlide.value.katex_scale)
+  const rowGap = clampCumulativeGap(safeSlide.value.display_katex_row_gap_em ?? safeSlide.value.katex_cumulative_gap_em)
   const safeXScale = Math.min(1.4, Math.max(0.7, Number(props.safeZoneXScale) || 1))
   const safeYScale = Math.min(1.4, Math.max(0.7, Number(props.safeZoneYScale) || 1))
 
@@ -148,6 +165,7 @@ const slideCardStyle = computed(() => {
     '--reel-title-scale': titleScale,
     '--reel-screen-text-scale': screenTextScale,
     '--reel-math-scale': requestedScale * katexScale,
+    '--reel-katex-row-gap': `${rowGap.toFixed(2)}em`,
     '--reel-thumb-fit-scale': thumbnailFitScale.value,
     '--reel-safe-inline': `calc(6.5cqw * ${safeXScale.toFixed(3)})`,
     '--reel-safe-block': `calc(6.5cqw * ${safeYScale.toFixed(3)})`,
@@ -164,12 +182,23 @@ const katexContent = computed(() => {
   if (preferred) return preferred
   return String(safeSlide.value.katex || '').trim()
 })
+const katexRows = computed(() => {
+  const rows = Array.isArray(safeSlide.value.display_katex_rows) ? safeSlide.value.display_katex_rows : []
+  return rows
+    .map((row) => ({
+      parts: (Array.isArray(row?.parts) ? row.parts : [])
+        .map((part) => String(part || '').trim())
+        .filter(Boolean),
+      inlineOffsetPercent: clampInlineOffset(row?.inlineOffsetPercent),
+    }))
+    .filter((row) => row.parts.length)
+})
 const hasScreenText = computed(() => Boolean(screenTextContent.value))
 const hasKatex = computed(() => Boolean(katexContent.value))
 const hookTopText = computed(() => String(safeSlide.value.title || '').trim())
 const hookBottomText = computed(() => screenTextContent.value)
 const showHookTemplate = computed(
-  () => isHookSlide.value && Boolean(hasKatex.value || hookTopText.value || hookBottomText.value)
+  () => usesHookLayout.value && Boolean(hasKatex.value || hookTopText.value || hookBottomText.value)
 )
 const showCtaTemplate = computed(() => isCtaSlide.value)
 const DEFAULT_CTA_TEXT = 'Abonne-toi à OptiTAB\nSauvegarde ce Reel\nCommente ton résultat'
@@ -225,6 +254,12 @@ function splitKatexLines(value) {
     .split(/\n+/)
     .map((line) => line.trim().replace(/^&+\s*/, '').trim())
     .filter(Boolean)
+}
+
+function clampInlineOffset(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return 0
+  return Math.min(40, Math.max(-40, numeric))
 }
 
 function escapeHtml(value) {
@@ -326,6 +361,30 @@ const renderedKatex = computed(() => {
       return katex.renderToString(raw, { displayMode: true, throwOnError: false })
     }
 
+    if (katexRows.value.length) {
+      return katexRows.value
+        .map((row) => {
+          const parts = row.parts
+          if (parts.length === 1) {
+            const lineHtml = katex.renderToString(parts[0], { displayMode: true, throwOnError: false })
+            return `<div class="reel-katex-line">${lineHtml}</div>`
+          }
+
+          const offset = clampInlineOffset(row.inlineOffsetPercent)
+          const baseHtml = katex.renderToString(parts[0], { displayMode: false, throwOnError: false })
+          const inlineHtml = parts
+            .slice(1)
+            .map((part, index) => {
+              const partHtml = katex.renderToString(part, { displayMode: false, throwOnError: false })
+              const left = 50 + offset + index * 22
+              return `<span class="reel-katex-part reel-katex-part--inline" style="left:${left}%">${partHtml}</span>`
+            })
+            .join('')
+          return `<div class="reel-katex-line reel-katex-line--inline"><span class="reel-katex-part reel-katex-part--base">${baseHtml}</span>${inlineHtml}</div>`
+        })
+        .join('')
+    }
+
     return splitKatexLines(raw)
       .map((line) => {
         const lineHtml = katex.renderToString(line, { displayMode: true, throwOnError: false })
@@ -348,6 +407,11 @@ function handleSelect() {
   emit('select', safeSlide.value)
 }
 
+function handleOpen() {
+  if (!props.clickable) return
+  emit('open', safeSlide.value)
+}
+
 async function fitThumbnailContent() {
   const fitResult = { hasHardOverflow: false }
 
@@ -360,7 +424,7 @@ async function fitThumbnailContent() {
   }
 
   const zoneEl = katexZoneRef.value
-  const contentEl = (isHookSlide.value || isCtaSlide.value) ? screenTextRef.value : bodyRef.value
+  const contentEl = (usesHookLayout.value || isCtaSlide.value) ? screenTextRef.value : bodyRef.value
   if (!zoneEl && !contentEl) return fitResult
 
   const bodyEl = bodyRef.value
@@ -415,7 +479,7 @@ const evaluateLayout = async () => {
   if (textOverflowX) notes.push('Texte horizontalement trop long')
   if (formulaOverflowX) notes.push('Formule trop large')
 
-  const contentEl = (isHookSlide.value || isCtaSlide.value) ? screenTextRef.value : bodyEl
+  const contentEl = (usesHookLayout.value || isCtaSlide.value) ? screenTextRef.value : bodyEl
   const bodyOverflow = Boolean(
     (
       (bodyEl && bodyEl.scrollHeight > bodyEl.clientHeight)
@@ -464,6 +528,9 @@ watch(
     safeSlide.value.display_screen_text,
     safeSlide.value.katex,
     safeSlide.value.display_katex,
+    JSON.stringify(safeSlide.value.display_katex_rows || []),
+    safeSlide.value.display_katex_row_gap_em,
+    safeSlide.value.katex_cumulative_gap_em,
     safeSlide.value.slide_type,
     safeSlide.value.title_scale,
     safeSlide.value.screen_text_scale,
@@ -551,7 +618,8 @@ onUnmounted(() => {
 }
 
 .reel-slide--hook,
-.reel-slide--cta {
+.reel-slide--cta,
+.reel-slide--cover {
   display: block;
 }
 
@@ -564,6 +632,10 @@ onUnmounted(() => {
   background-position: center;
   background-repeat: no-repeat;
   z-index: 0;
+}
+
+.reel-slide--cover::before {
+  background-image: url('/CoverReel.png');
 }
 
 .reel-slide-body {
@@ -587,7 +659,8 @@ onUnmounted(() => {
   z-index: 1;
 }
 
-.reel-slide--hook .reel-slide-body {
+.reel-slide--hook .reel-slide-body,
+.reel-slide--cover .reel-slide-body {
   --reel-top-safe-offset: 0px;
   align-items: center;
   justify-content: center;
@@ -902,6 +975,10 @@ onUnmounted(() => {
   min-height: 1.45em;
 }
 
+.reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line + .reel-katex-line) {
+  margin-top: var(--reel-katex-row-gap, 0.4em);
+}
+
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line .katex-display) {
   width: 100%;
   margin: 0 !important;
@@ -914,6 +991,23 @@ onUnmounted(() => {
   text-align: left;
   white-space: nowrap;
   font-size: calc(0.9rem * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+}
+
+.reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline) {
+  position: relative;
+  min-height: calc(1.45em * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  overflow: visible;
+}
+
+.reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part) {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part--inline) {
+  position: absolute;
+  top: 0;
 }
 
 .slide-card--fullscreen .reel-slide-body {

@@ -99,9 +99,10 @@ export const useArenaStore = defineStore('arena', {
       try {
         const { data } = await submitArenaAttempt(levelId, payload)
         this.lastResult = data
-        if (Array.isArray(data?.ctas) && data.ctas.length) {
-          this.cta = data.ctas[0]
-        }
+        // Don't auto-open the modal: the result screen renders the CTA inline
+        // contextually. The modal is reserved for hard gates (locked level,
+        // daily limit reached) that interrupt navigation, not for post-attempt
+        // moments where the user has earned feedback first.
         // Refresh user state so XP/streak update everywhere.
         this.loadMe().catch(() => {})
         return data

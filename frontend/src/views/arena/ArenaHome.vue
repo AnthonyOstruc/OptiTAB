@@ -71,7 +71,12 @@ const daily = computed(() => arena.daily)
 const dailyAvailable = computed(() => Boolean(daily.value && daily.value.available))
 
 onMounted(async () => {
-  await Promise.all([arena.loadChapters(), arena.loadDaily(), arena.loadMe()])
+  await Promise.all([
+    arena.loadConfig(),
+    arena.loadChapters(),
+    arena.loadDaily(),
+    arena.loadMe(),
+  ])
   arena.track('game_started', {})
 })
 

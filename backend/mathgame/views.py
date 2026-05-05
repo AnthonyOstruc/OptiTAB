@@ -330,10 +330,44 @@ class ArenaAdminAnalyticsView(APIView):
             avg_accuracy=Avg('accuracy'),
             avg_xp=Avg('xp_awarded'),
         )
+        cutoff_30d = timezone.now() - timedelta(days=30)
+        # Content readiness — lets the admin gauge whether the game is ready
+        # to flip is_public, without leaving the dashboard.
+        active_questions = ArenaQuestion.objects.filter(level__is_active=True).count()
+        content = {
+            'chapters': ArenaChapter.objects.count(),
+            'chapters_active': ArenaChapter.objects.filter(is_active=True).count(),
+            'levels': ArenaLevel.objects.count(),
+            'levels_active': ArenaLevel.objects.filter(is_active=True).count(),
+            'questions': ArenaQuestion.objects.count(),
+            'questions_active': active_questions,
+            'daily_scheduled': ArenaDailyChallenge.objects
+                .filter(date__gte=timezone.localdate()).count(),
+            'daily_today': ArenaDailyChallenge.objects
+                .filter(date=timezone.localdate()).count(),
+        }
+        # Conversion funnel for the last 30 days. Counts only events that the
+        # frontend actually emits (game_started, level_started, level_completed,
+        # cta_displayed, cta_clicked, cta_dismissed). Click-through rate is
+        # derived client-side so the shape stays minimal.
+        funnel_names = [
+            'game_started', 'level_started', 'level_completed', 'level_failed',
+            'cta_displayed', 'cta_clicked', 'cta_dismissed',
+            'forge_opened', 'hint_used',
+        ]
+        funnel_counts = dict.fromkeys(funnel_names, 0)
+        for row in (
+            ArenaEvent.objects
+            .filter(created_at__gte=cutoff_30d, name__in=funnel_names)
+            .values('name').annotate(count=Count('id'))
+        ):
+            funnel_counts[row['name']] = row['count']
         return Response({
             'events_by_name': list(events_qs),
             'attempts': attempts,
             'unique_players_30d': ArenaAttempt.objects
-                .filter(created_at__gte=timezone.now() - timedelta(days=30))
+                .filter(created_at__gte=cutoff_30d)
                 .values('user_id').distinct().count(),
+            'content': content,
+            'funnel_30d': funnel_counts,
         })

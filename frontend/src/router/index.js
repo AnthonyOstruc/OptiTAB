@@ -252,13 +252,6 @@ const routes = [
   { path: '/calculator', name: 'Calculator', component: () => import('@/views/Calculator.vue') },
   { path: '/aide-grapheur', name: 'HelpGraphe', component: () => import('@/views/HelpGraphe.vue') },
   { path: '/test-filtrage-strict', name: 'TestFiltrageStrict', component: () => import('@/views/TestFiltrageStrict.vue') },
-
-  // ----- Arena (math game) — admin-only until ArenaConfig.is_public is flipped server-side
-  { path: '/jeu', name: 'ArenaHome', component: () => import('@/views/arena/ArenaHome.vue'), meta: { requiresAuth: true, requiresArenaVisible: true } },
-  { path: '/jeu/chapitre/:slug', name: 'ArenaChapter', component: () => import('@/views/arena/ArenaChapter.vue'), meta: { requiresAuth: true, requiresArenaVisible: true } },
-  { path: '/jeu/jouer/:levelId(\\d+)', name: 'ArenaPlay', component: () => import('@/views/arena/ArenaPlay.vue'), meta: { requiresAuth: true, requiresArenaVisible: true } },
-  { path: '/jeu/forge', name: 'ArenaForge', component: () => import('@/views/arena/ArenaForge.vue'), meta: { requiresAuth: true, requiresArenaVisible: true } },
-
   {
     path: '/admin',
     component: () => import('@/views/admin/AdminLayout.vue'),
@@ -287,12 +280,6 @@ const routes = [
       { path: 'reel-studio', name: 'AdminReelStudio', component: () => import('@/views/admin/ReelStudioAdminPage.vue') },
       { path: 'reel-background', name: 'AdminReelBackground', component: () => import('@/views/admin/AdminReelBackground.vue') },
       { path: 'blog', name: 'AdminBlog', component: () => import('@/views/admin/AdminBlog.vue') },
-
-      // ----- Arena (math game) admin
-      { path: 'arena', name: 'AdminArenaDashboard', component: () => import('@/views/admin/AdminArenaDashboard.vue') },
-      { path: 'arena/chapters', name: 'AdminArenaChapters', component: () => import('@/views/admin/AdminArenaChapters.vue') },
-      { path: 'arena/levels', name: 'AdminArenaLevels', component: () => import('@/views/admin/AdminArenaLevels.vue') },
-      { path: 'arena/questions', name: 'AdminArenaQuestions', component: () => import('@/views/admin/AdminArenaQuestions.vue') },
     ]
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound.vue') }
@@ -435,11 +422,6 @@ router.beforeEach(async (to, from, next) => {
   else if (to.meta.requiresAdmin && (!isAuthenticated || !isAdmin)) {
     const fallback = to.meta.onAdminDenied || 'Home'
     next({ name: fallback })
-  }
-  // Arena game admin-only gate (until ArenaConfig.is_public is flipped server-side
-  // and `requiresArenaVisible` meta is removed from /jeu routes).
-  else if (to.meta.requiresArenaVisible && (!isAuthenticated || !isAdmin)) {
-    next({ name: isAuthenticated ? 'Dashboard' : 'Home' })
   }
   // Redirection Home -> Dashboard pour utilisateurs connectés
   // MAIS seulement si on ne vient PAS déjà du Dashboard (évite les boucles)

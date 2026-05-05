@@ -19,7 +19,6 @@ urlpatterns = [
     path('api/free/', include('freecontent.urls')),
     path('api/blog/', include('blog.urls')),
     path('api/admin/reel-studio/', include('reel_studio.urls')),
-    path('api/arena/', include('mathgame.urls')),
     path('api/contact/send/', contact_send, name='contact_send'),
     # path('api/', include('niveaux.urls')),  # Removed - using NiveauPays in pays
     path('api/', include('pays.urls')),  # API pour les pays et niveaux par pays

@@ -65,6 +65,7 @@
         :safe-zone-x-scale="safeZoneXScale"
         :safe-zone-y-scale="getSafeZoneYScale(slide)"
         :clickable="!isVirtualCoverSlide(slide)"
+        :video-format="format"
         @select="handleSelectSlide(slide.id)"
         @open="handleOpenSlideFullscreen(slide.id)"
         @diagnostic="$emit('diagnostic', $event)"
@@ -87,6 +88,7 @@
           :math-scale="getMathScale(slide)"
           :safe-zone-x-scale="safeZoneXScale"
           :safe-zone-y-scale="getSafeZoneYScale(slide)"
+          :video-format="format"
           @diagnostic="$emit('diagnostic', $event)"
         />
       </div>
@@ -181,6 +183,7 @@
 
             <template v-else>
               <textarea
+                ref="katexTextareaRef"
                 class="speech-script"
                 :class="{ 'speech-script--dirty': activeKatexDraftDirty }"
                 v-model="katexDraft"
@@ -189,6 +192,19 @@
                 placeholder="KATEX de cette slide"
                 @keydown.stop
               ></textarea>
+
+              <div class="katex-color-row">
+                <span class="katex-color-label">Couleur</span>
+                <button
+                  v-for="color in KATEX_COLORS"
+                  :key="color.hex"
+                  class="katex-color-btn"
+                  :style="{ background: color.hex }"
+                  :title="color.label"
+                  type="button"
+                  @click="applyKatexColor(color.hex)"
+                ></button>
+              </div>
 
               <p class="speech-empty">
                 Modifie la formule KaTeX de cette slide, puis enregistre.
@@ -385,6 +401,7 @@
               :math-scale="getMathScale(activeSlide)"
               :safe-zone-x-scale="safeZoneXScale"
               :safe-zone-y-scale="getSafeZoneYScale(activeSlide)"
+              :video-format="format"
               @diagnostic="$emit('diagnostic', $event)"
             />
 
@@ -425,6 +442,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  format: {
+    type: String,
+    default: 'reel',
+  },
 })
 
 const emit = defineEmits(['select-slide', 'diagnostic', 'update-slide', 'generate-slide-speech', 'export-video'])
@@ -456,6 +477,15 @@ const katexDraft = ref('')
 const katexDraftSavedValue = ref('')
 const katexDraftSlideId = ref(null)
 const fullscreenEditorTab = ref('speech')
+const katexTextareaRef = ref(null)
+
+const KATEX_COLORS = [
+  { hex: '#e74c3c', label: 'Rouge' },
+  { hex: '#2980b9', label: 'Bleu' },
+  { hex: '#f39c12', label: 'Orange' },
+  { hex: '#27ae60', label: 'Vert' },
+  { hex: '#8e44ad', label: 'Violet' },
+]
 const speechPlayerRef = ref(null)
 const isFullPreviewPlaying = ref(false)
 const cumulativeGap = ref(0.4)
@@ -463,28 +493,6 @@ let fullPreviewTimerId = null
 
 const slidesSafe = computed(() => (Array.isArray(props.slides) ? props.slides : []))
 const NON_MATH_SLIDE_TYPES = new Set(['hook', 'cta'])
-const PNG_EXPORT_WIDTH = 1080
-const PNG_EXPORT_HEIGHT = 1920
-const VIDEO_EXPORT_PRESETS = {
-  fast: {
-    width: 720,
-    height: 1280,
-    fps: 24,
-    crf: 24,
-    ffmpegPreset: 'ultrafast',
-    imageType: 'image/jpeg',
-    imageQuality: 0.9,
-  },
-  hq: {
-    width: 1080,
-    height: 1920,
-    fps: 30,
-    crf: 18,
-    ffmpegPreset: 'veryfast',
-    imageType: 'image/png',
-    imageQuality: 1,
-  },
-}
 const INLINE_OFFSET_MIN = -40
 const INLINE_OFFSET_MAX = 40
 const INLINE_OFFSET_STEP = 4
@@ -502,6 +510,19 @@ const CUMULATIVE_GAP_STEP = 0.1
 const CUMULATIVE_GAP_DEFAULT = 0.4
 const COVER_SLIDE_ID = '__optitab_reel_cover__'
 const COVER_FILENAME = 'optitab-reel-cover.png'
+const isYoutubeFormat = computed(() => props.format === 'youtube')
+const PNG_EXPORT_WIDTH = computed(() => isYoutubeFormat.value ? 1920 : 1080)
+const PNG_EXPORT_HEIGHT = computed(() => isYoutubeFormat.value ? 1080 : 1920)
+const VIDEO_EXPORT_PRESETS = computed(() => isYoutubeFormat.value
+  ? {
+      fast: { width: 1280, height: 720, fps: 24, crf: 24, ffmpegPreset: 'ultrafast', imageType: 'image/jpeg', imageQuality: 0.9 },
+      hq: { width: 1920, height: 1080, fps: 30, crf: 18, ffmpegPreset: 'veryfast', imageType: 'image/png', imageQuality: 1 },
+    }
+  : {
+      fast: { width: 720, height: 1280, fps: 24, crf: 24, ffmpegPreset: 'ultrafast', imageType: 'image/jpeg', imageQuality: 0.9 },
+      hq: { width: 1080, height: 1920, fps: 30, crf: 18, ffmpegPreset: 'veryfast', imageType: 'image/png', imageQuality: 1 },
+    }
+)
 const mathSizePercent = computed(() => Math.round(getMathScale(activeSlide.value) * 100))
 const mathSizeLabel = computed(() => getActiveSlideTypeLabel('Taille'))
 const safeZoneXPercent = computed(() => Math.round(safeZoneXScale.value * 100))
@@ -1210,6 +1231,38 @@ function saveActiveKatexDraft() {
   return true
 }
 
+function applyKatexColor(colorHex) {
+  const el = katexTextareaRef.value
+  if (!el) return
+
+  const start = el.selectionStart
+  const end = el.selectionEnd
+  const current = katexDraft.value
+
+  if (start === end) {
+    const before = current.slice(0, start)
+    const after = current.slice(end)
+    const inserted = `\\textcolor{${colorHex}}{}`
+    katexDraft.value = before + inserted + after
+    nextTick(() => {
+      el.focus()
+      const cursorPos = start + inserted.length - 1
+      el.setSelectionRange(cursorPos, cursorPos)
+    })
+    return
+  }
+
+  const selected = current.slice(start, end)
+  const before = current.slice(0, start)
+  const after = current.slice(end)
+  const wrapped = `\\textcolor{${colorHex}}{${selected}}`
+  katexDraft.value = before + wrapped + after
+  nextTick(() => {
+    el.focus()
+    el.setSelectionRange(start, start + wrapped.length)
+  })
+}
+
 function clampMathScale(value) {
   return Math.min(1.3, Math.max(0.75, Number(value.toFixed(2))))
 }
@@ -1469,8 +1522,8 @@ async function renderExportCanvas(index, dimensions = {}) {
   const frame = exportSlideRefs.value[index]
   const target = frame?.querySelector('.reel-slide') || frame
   if (!target) return null
-  const width = dimensions.width || PNG_EXPORT_WIDTH
-  const height = dimensions.height || PNG_EXPORT_HEIGHT
+  const width = dimensions.width || PNG_EXPORT_WIDTH.value
+  const height = dimensions.height || PNG_EXPORT_HEIGHT.value
 
   return html2canvas(target, {
     backgroundColor: '#f8fbff',
@@ -1489,8 +1542,8 @@ async function renderExportCanvas(index, dimensions = {}) {
 async function exportAllSlidesPng() {
   if (!slidesForRender.value.length || exportingPng.value) return
 
-  exportFrameWidth.value = PNG_EXPORT_WIDTH
-  exportFrameHeight.value = PNG_EXPORT_HEIGHT
+  exportFrameWidth.value = PNG_EXPORT_WIDTH.value
+  exportFrameHeight.value = PNG_EXPORT_HEIGHT.value
   exportingPng.value = true
   pngExportMounted.value = true
   pngExportProgress.value = 0
@@ -1526,7 +1579,7 @@ async function exportAllSlidesPng() {
 async function exportAllSlidesVideo(mode = 'fast') {
   const videoSlides = videoSlidesForRender.value
   if (!videoSlides.length || isVideoExportBusy.value || exportingPng.value) return
-  const exportPreset = VIDEO_EXPORT_PRESETS[mode] || VIDEO_EXPORT_PRESETS.fast
+  const exportPreset = VIDEO_EXPORT_PRESETS.value[mode] || VIDEO_EXPORT_PRESETS.value.fast
 
   const slidesMissingAudio = videoSlides.filter((slide) => (
     slideSpeechText(slide) && !normalizeText(slide?.speech_audio_url)
@@ -2064,6 +2117,37 @@ onBeforeUnmount(() => {
   font-weight: 700;
   line-height: 1.4;
   padding: 10px;
+}
+
+.katex-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.katex-color-label {
+  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 2px;
+}
+
+.katex-color-btn {
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.katex-color-btn:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .speech-action-row {

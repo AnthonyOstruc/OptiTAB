@@ -5,6 +5,7 @@
       'slide-card--selected': isSelected,
       'slide-card--fullscreen': isLargeDisplayMode,
       'slide-card--clickable': clickable,
+      'slide-card--youtube': isYoutubeFormat,
     }"
     :style="slideCardStyle"
     @click="handleSelect"
@@ -106,6 +107,10 @@ const props = defineProps({
     type: String,
     default: 'thumb',
   },
+  videoFormat: {
+    type: String,
+    default: 'reel',
+  },
   clickable: {
     type: Boolean,
     default: true,
@@ -133,6 +138,7 @@ const thumbnailFitScale = ref(1)
 
 const safeSlide = computed(() => props.slide || {})
 
+const isYoutubeFormat = computed(() => props.videoFormat === 'youtube')
 const isHookSlide = computed(() => safeSlide.value.slide_type === 'hook')
 const isCtaSlide = computed(() => safeSlide.value.slide_type === 'cta')
 const isCoverSlide = computed(() => Boolean(safeSlide.value.is_virtual_cover || safeSlide.value.slide_type === 'cover'))
@@ -1041,7 +1047,8 @@ onUnmounted(() => {
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part--inline) {
   position: absolute;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .slide-card--fullscreen .reel-slide-body {
@@ -1212,6 +1219,29 @@ onUnmounted(() => {
   .slide-card--fullscreen {
     width: min(92vw, calc((100dvh - 190px) * 9 / 16));
     min-width: min(82vw, 340px);
+  }
+}
+
+.slide-card--youtube {
+  flex: 0 0 300px;
+  width: 300px;
+  min-width: 300px;
+}
+
+.slide-card--youtube .reel-slide {
+  aspect-ratio: 16 / 9;
+}
+
+.slide-card--youtube.slide-card--fullscreen {
+  width: min(80vw, calc((100dvh - 180px) * 16 / 9));
+  max-width: 860px;
+  min-width: min(55vw, 440px);
+}
+
+@media (max-width: 768px) {
+  .slide-card--youtube.slide-card--fullscreen {
+    width: min(92vw, calc((100dvh - 220px) * 16 / 9));
+    min-width: min(80vw, 320px);
   }
 }
 </style>

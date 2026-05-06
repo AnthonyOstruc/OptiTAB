@@ -15,14 +15,33 @@
     </p>
 
     <section v-else class="studio-stack">
+      <div class="studio-format-tabs">
+        <button
+          class="studio-format-tab"
+          :class="{ 'studio-format-tab--active': studioFormat === 'reel' }"
+          type="button"
+          @click="switchFormat('reel')"
+        >
+          Reel Instagram
+        </button>
+        <button
+          class="studio-format-tab"
+          :class="{ 'studio-format-tab--active': studioFormat === 'youtube' }"
+          type="button"
+          @click="switchFormat('youtube')"
+        >
+          YouTube
+        </button>
+      </div>
+
       <section class="project-panel">
         <div class="section-toolbar">
           <div>
-            <h2>Gestion des reels</h2>
-            <p>{{ projects.length }} reel{{ projects.length > 1 ? 's' : '' }} enregistre{{ projects.length > 1 ? 's' : '' }}</p>
+            <h2>{{ studioFormat === 'youtube' ? 'Gestion des vidéos YouTube' : 'Gestion des reels' }}</h2>
+            <p>{{ filteredProjects.length }} {{ studioFormat === 'youtube' ? 'vidéo' : 'reel' }}{{ filteredProjects.length > 1 ? 's' : '' }} enregistre{{ filteredProjects.length > 1 ? 's' : '' }}</p>
           </div>
           <button class="btn-primary" type="button" @click="openCreateProjectForm">
-            Nouveau reel
+            {{ studioFormat === 'youtube' ? 'Nouvelle vidéo YouTube' : 'Nouveau reel' }}
           </button>
         </div>
 
@@ -61,6 +80,7 @@
               :selected-slide-id="selectedSlideId"
               :generating-speech-slide-id="generatingSpeechSlideId"
               :exporting-video="exportingVideo"
+              :format="selectedProject?.format_type || studioFormat"
               @select-slide="selectedSlideId = $event"
               @diagnostic="handleSlideDiagnostic"
               @update-slide="handlePatchSlide"
@@ -393,7 +413,7 @@
 
       <section class="project-panel project-panel--list">
         <ReelProjectsList
-          :projects="projects"
+          :projects="filteredProjects"
           :selected-project-id="selectedProjectId"
           :loading="loadingProjects"
           @select="selectProject"
@@ -437,6 +457,7 @@ const userStore = useUserStore()
 const canManage = computed(() => Boolean(userStore.isAdmin))
 
 const projects = ref([])
+const studioFormat = ref('reel')
 const selectedProjectId = ref(null)
 const selectedProject = ref(null)
 const selectedSlideId = ref(null)
@@ -476,6 +497,25 @@ const projectFormOpen = ref(false)
 const editingProject = ref(null)
 const templateDraft = ref('')
 const editorSectionRef = ref(null)
+
+const filteredProjects = computed(() => {
+  return projects.value.filter((p) => {
+    const fmt = String(p.format_type || '').trim().toLowerCase()
+    if (studioFormat.value === 'youtube') return fmt === 'youtube'
+    return !fmt || fmt === 'reel'
+  })
+})
+
+function switchFormat(fmt) {
+  if (studioFormat.value === fmt) return
+  studioFormat.value = fmt
+  selectedProject.value = null
+  selectedProjectId.value = null
+  selectedSlideId.value = null
+  templateDraft.value = ''
+  projectFormOpen.value = false
+  editingProject.value = null
+}
 const ELEVENLABS_SETTINGS_STORAGE_KEY = 'reelStudio.elevenLabsSettings.v1'
 const ELEVENLABS_FAVORITE_VOICES_STORAGE_KEY = 'reelStudio.elevenLabsFavoriteVoices.v1'
 const ELEVENLABS_HIDDEN_FAVORITE_IDS_STORAGE_KEY = 'reelStudio.elevenLabsHiddenFavoriteIds.v1'
@@ -1666,7 +1706,6 @@ async function loadProjects() {
       selectedProject.value = null
       selectedProjectId.value = null
       selectedSlideId.value = null
-      openCreateProjectForm()
       return
     }
 
@@ -1703,7 +1742,7 @@ async function handleSubmitProject(payload) {
     }
     const response = projectId
       ? await updateReelProject(projectId, projectPayload)
-      : await createReelProject({ ...projectPayload, slide_count: 0 })
+      : await createReelProject({ ...projectPayload, slide_count: 0, format_type: studioFormat.value })
     const project = normalizeProject(response?.data)
 
     if (project?.id) {
@@ -2189,6 +2228,39 @@ onMounted(() => {
 .feedback--error {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.studio-format-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  padding: 4px;
+  align-self: flex-start;
+}
+
+.studio-format-tab {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #1e3a8a;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.studio-format-tab--active {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.studio-format-tab:hover:not(.studio-format-tab--active) {
+  background: #dbeafe;
 }
 
 .studio-stack {

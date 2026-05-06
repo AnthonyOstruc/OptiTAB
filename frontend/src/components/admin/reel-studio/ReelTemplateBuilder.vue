@@ -15,9 +15,19 @@
         ></textarea>
       </label>
 
-      <button class="btn-primary" type="submit" :disabled="disabled || loading || !canSubmit">
+      <div class="template-actions">
+      <button class="btn-primary" type="submit" :disabled="disabled || loading || saving || !canSubmit">
         {{ loading ? 'Génération...' : 'Générer depuis template' }}
       </button>
+      <button
+        class="btn-secondary"
+        type="button"
+        :disabled="disabled || loading || saving || !canSubmit"
+        @click="handleSave"
+      >
+        {{ saving ? 'Sauvegarde...' : 'Sauvegarder' }}
+      </button>
+      </div>
     </form>
   </section>
 </template>
@@ -34,13 +44,17 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  saving: {
+    type: Boolean,
+    default: false,
+  },
   templateText: {
     type: String,
     default: '',
   },
 })
 
-const emit = defineEmits(['generate', 'update:templateText'])
+const emit = defineEmits(['generate', 'save', 'update:templateText'])
 
 const templateTextModel = computed({
   get: () => props.templateText,
@@ -53,6 +67,14 @@ function handleSubmit() {
   if (!canSubmit.value) return
 
   emit('generate', {
+    template_text: String(templateTextModel.value || '').trim(),
+  })
+}
+
+function handleSave() {
+  if (!canSubmit.value) return
+
+  emit('save', {
     template_text: String(templateTextModel.value || '').trim(),
   })
 }
@@ -121,20 +143,38 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-.btn-primary {
+.template-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-primary,
+.btn-secondary {
   align-self: flex-start;
   border: 0;
   border-radius: 8px;
   padding: 10px 14px;
-  background: #1d4ed8;
-  color: #ffffff;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
 }
 
-.btn-primary:disabled {
+.btn-primary {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
   background: #94a3b8;
+  color: #ffffff;
   cursor: not-allowed;
 }
 

@@ -33,6 +33,16 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Le decalage doit etre compris entre -40% et 40%.')
         return value
 
+    def validate_katex_inline_separator(self, value):
+        safe_value = str(value or '').strip()
+        allowed = {
+            ReelSlide.INLINE_SEPARATOR_SEMICOLON,
+            ReelSlide.INLINE_SEPARATOR_ARROW,
+        }
+        if safe_value not in allowed:
+            raise serializers.ValidationError('Separateur de ligne invalide.')
+        return safe_value
+
     def validate_katex_cumulative_gap_em(self, value):
         if value < 0 or value > 1.5:
             raise serializers.ValidationError('Le vide entre lignes doit etre compris entre 0 et 1.5em.')
@@ -59,6 +69,7 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'screen_text_scale',
             'katex_scale',
             'katex_inline_with_previous',
+            'katex_inline_separator',
             'katex_inline_offset_percent',
             'katex_cumulative_gap_em',
             'katex_reset_cumulative',
@@ -96,6 +107,12 @@ class ReelSlideSerializer(serializers.ModelSerializer):
 class ReelProjectSerializer(serializers.ModelSerializer):
     speech_audio_url = serializers.SerializerMethodField()
     video_file_url = serializers.SerializerMethodField()
+
+    def validate_title(self, value):
+        safe_title = str(value or '').strip()
+        if not safe_title:
+            raise serializers.ValidationError('Le titre du reel est obligatoire.')
+        return safe_title
 
     def get_speech_audio_url(self, obj):
         if not obj.speech_audio:

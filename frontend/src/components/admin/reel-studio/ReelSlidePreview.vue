@@ -13,7 +13,7 @@
     <div
       class="reel-slide"
       :class="{
-        'reel-slide--hook': isHookSlide,
+        'reel-slide--hook': usesHookLayout,
         'reel-slide--cta': isCtaSlide,
         'reel-slide--cover': isCoverSlide,
       }"
@@ -189,6 +189,9 @@ const katexRows = computed(() => {
       parts: (Array.isArray(row?.parts) ? row.parts : [])
         .map((part) => String(part || '').trim())
         .filter(Boolean),
+      inlineSeparators: Array.isArray(row?.inlineSeparators)
+        ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
+        : [],
       inlineOffsetPercent: clampInlineOffset(row?.inlineOffsetPercent),
     }))
     .filter((row) => row.parts.length)
@@ -262,6 +265,15 @@ function clampInlineOffset(value) {
   return Math.min(40, Math.max(-40, numeric))
 }
 
+function normalizeInlineSeparator(value) {
+  const raw = String(value || '').trim()
+  return raw === 'arrow' ? 'arrow' : 'semicolon'
+}
+
+function inlineSeparatorKatex(value) {
+  return normalizeInlineSeparator(value) === 'arrow' ? '\\Rightarrow' : ';'
+}
+
 function escapeHtml(value) {
   return String(value || '')
     .replace(/&/g, '&amp;')
@@ -283,6 +295,14 @@ function renderTextKatex(expression, displayMode = false) {
   } catch (_) {
     return escapeHtml(expression)
   }
+}
+
+function renderInlineKatexPart(expression, separator = 'semicolon') {
+  const cleaned = String(expression || '').trim()
+  if (!cleaned) return ''
+  const alreadySeparated = /^(;|\\Rightarrow|\\to|\\rightarrow)/.test(cleaned)
+  const separatedExpression = alreadySeparated ? cleaned : `${inlineSeparatorKatex(separator)}\\quad ${cleaned}`
+  return katex.renderToString(separatedExpression, { displayMode: false, throwOnError: false })
 }
 
 function renderRichMathToken(token) {
@@ -372,10 +392,11 @@ const renderedKatex = computed(() => {
 
           const offset = clampInlineOffset(row.inlineOffsetPercent)
           const baseHtml = katex.renderToString(parts[0], { displayMode: false, throwOnError: false })
+          const inlineSeparators = Array.isArray(row.inlineSeparators) ? row.inlineSeparators : []
           const inlineHtml = parts
             .slice(1)
             .map((part, index) => {
-              const partHtml = katex.renderToString(part, { displayMode: false, throwOnError: false })
+              const partHtml = renderInlineKatexPart(part, inlineSeparators[index])
               const left = 50 + offset + index * 22
               return `<span class="reel-katex-part reel-katex-part--inline" style="left:${left}%">${partHtml}</span>`
             })
@@ -688,6 +709,10 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
+.reel-slide--hook:not(.reel-slide--cover) .hook-layout {
+  transform: translateY(-9cqw);
+}
+
 .hook-top,
 .hook-middle-text,
 .hook-bottom {
@@ -840,7 +865,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: flex-start;
   gap: calc(1.6cqw * var(--reel-user-scale, 1) * var(--reel-thumb-fit-scale, 1));
-  font-size: calc(32px * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  font-size: calc(25.6px * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
   font-weight: 500;
   text-align: left;
 }
@@ -1079,7 +1104,7 @@ onUnmounted(() => {
 }
 
 .slide-card--fullscreen .cta-main {
-  font-size: calc(44.8px * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1));
+  font-size: calc(35.84px * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1));
 }
 
 .slide-card--fullscreen .cta-katex :deep(.katex) {
@@ -1146,7 +1171,7 @@ onUnmounted(() => {
 
 .cta-main,
 .slide-card--fullscreen .cta-main {
-  font-size: calc(9.12cqw * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  font-size: calc(7.296cqw * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
 }
 
 .cta-katex :deep(.katex),

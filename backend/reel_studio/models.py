@@ -92,6 +92,8 @@ class ReelSlide(models.Model):
     TYPE_CUMULATIVE_KATEX = 'cumulative_katex'
     TYPE_RESULT = 'result'
     TYPE_CTA = 'cta'
+    INLINE_SEPARATOR_SEMICOLON = 'semicolon'
+    INLINE_SEPARATOR_ARROW = 'arrow'
 
     TYPE_CHOICES = [
         (TYPE_HOOK, 'Hook'),
@@ -99,6 +101,10 @@ class ReelSlide(models.Model):
         (TYPE_CUMULATIVE_KATEX, 'Cumulative KaTeX'),
         (TYPE_RESULT, 'Result'),
         (TYPE_CTA, 'CTA'),
+    ]
+    INLINE_SEPARATOR_CHOICES = [
+        (INLINE_SEPARATOR_SEMICOLON, 'Semicolon'),
+        (INLINE_SEPARATOR_ARROW, 'Arrow'),
     ]
 
     LAYOUT_UNCHECKED = 'unchecked'
@@ -124,6 +130,11 @@ class ReelSlide(models.Model):
     screen_text_scale = models.FloatField(default=1.0)
     katex_scale = models.FloatField(default=1.0)
     katex_inline_with_previous = models.BooleanField(default=False)
+    katex_inline_separator = models.CharField(
+        max_length=16,
+        choices=INLINE_SEPARATOR_CHOICES,
+        default=INLINE_SEPARATOR_SEMICOLON,
+    )
     katex_inline_offset_percent = models.FloatField(default=0.0)
     katex_cumulative_gap_em = models.FloatField(default=0.4)
     katex_reset_cumulative = models.BooleanField(default=False)

@@ -94,6 +94,18 @@
 
     <Teleport to="body">
       <div v-if="isFullscreen && activeSlide" class="fullscreen-backdrop" @click="closeFullscreen">
+        <div class="fullscreen-preview-controls" @click.stop>
+          <button
+            class="full-preview-button"
+            :class="{ 'full-preview-button--playing': isFullPreviewPlaying }"
+            type="button"
+            :disabled="fullPreviewButtonDisabled"
+            @click="toggleFullPreview"
+          >
+            {{ fullPreviewButtonLabel }}
+          </button>
+        </div>
+
         <div class="fullscreen-content" @click.stop>
           <aside class="fullscreen-speech-panel" aria-label="Voix de la slide">
             <div class="speech-panel-header">
@@ -112,11 +124,14 @@
 
             <audio
               v-if="activeSlideSpeechAudioUrl"
+              ref="speechPlayerRef"
               :key="activeSlideSpeechAudioUrl"
               class="speech-player"
               :src="activeSlideSpeechAudioUrl"
               controls
               preload="metadata"
+              @ended="handleSpeechEnded"
+              @error="handleSpeechError"
             ></audio>
 
             <p v-else class="speech-empty">{{ activeSlideSpeechStatusLabel }}</p>
@@ -196,7 +211,7 @@
               class="fullscreen-control-group"
               aria-label="Disposition KaTeX"
             >
-              <span class="control-label">KaTeX</span>
+              <div class="inline-layout-row">
               <button
                 class="size-reset line-mode-button"
                 :class="{ 'line-mode-button--active': activeSlideInline }"
@@ -207,6 +222,27 @@
                 {{ lineModeLabel }}
               </button>
               <template v-if="activeSlideInline">
+                <button
+                  class="size-button inline-separator-button"
+                  :class="{ 'line-mode-button--active': activeSlideInlineSeparator === 'semicolon' }"
+                  type="button"
+                  aria-label="Separateur point-virgule"
+                  @click="setActiveInlineSeparator('semicolon')"
+                >
+                  ;
+                </button>
+                <button
+                  class="size-button inline-separator-button"
+                  :class="{ 'line-mode-button--active': activeSlideInlineSeparator === 'arrow' }"
+                  type="button"
+                  aria-label="Separateur fleche"
+                  @click="setActiveInlineSeparator('arrow')"
+                >
+                  →
+                </button>
+              </template>
+              </div>
+              <div v-if="activeSlideInline" class="inline-layout-row inline-layout-row--offset">
                 <button
                   class="size-button inline-offset-button"
                   type="button"
@@ -225,7 +261,7 @@
                   →
                 </button>
                 <button class="size-reset" type="button" @click="resetActiveInlineOffset">0</button>
-              </template>
+              </div>
             </div>
 
             <div
@@ -233,7 +269,6 @@
               class="fullscreen-control-group"
               aria-label="Page de correction"
             >
-              <span class="control-label">Cumul</span>
               <button
                 class="size-reset line-mode-button"
                 :class="{ 'line-mode-button--active': activeSlideResetsCumulative }"
@@ -341,10 +376,11 @@ const previousBodyOverflow = ref('')
 const mathScaleCalcul = ref(1)
 const mathScaleHook = ref(1)
 const mathScaleCta = ref(1)
-const safeZoneXScale = ref(1)
-const safeZoneMathYScale = ref(1)
-const safeZoneHookYScale = ref(1)
-const safeZoneCtaYScale = ref(1)
+const SAFE_ZONE_DEFAULT_SCALE = 1.15
+const safeZoneXScale = ref(SAFE_ZONE_DEFAULT_SCALE)
+const safeZoneMathYScale = ref(SAFE_ZONE_DEFAULT_SCALE)
+const safeZoneHookYScale = ref(SAFE_ZONE_DEFAULT_SCALE)
+const safeZoneCtaYScale = ref(SAFE_ZONE_DEFAULT_SCALE)
 const exportingPng = ref(false)
 const preparingVideoFrames = ref(false)
 const pngExportMounted = ref(false)
@@ -357,7 +393,10 @@ const exportSlideRefs = ref([])
 const speechDraft = ref('')
 const speechDraftSavedValue = ref('')
 const speechDraftSlideId = ref(null)
+const speechPlayerRef = ref(null)
+const isFullPreviewPlaying = ref(false)
 const cumulativeGap = ref(0.4)
+let fullPreviewTimerId = null
 
 const slidesSafe = computed(() => (Array.isArray(props.slides) ? props.slides : []))
 const NON_MATH_SLIDE_TYPES = new Set(['hook', 'cta'])
@@ -386,6 +425,9 @@ const VIDEO_EXPORT_PRESETS = {
 const INLINE_OFFSET_MIN = -40
 const INLINE_OFFSET_MAX = 40
 const INLINE_OFFSET_STEP = 4
+const INLINE_SEPARATOR_SEMICOLON = 'semicolon'
+const INLINE_SEPARATOR_ARROW = 'arrow'
+const INLINE_SEPARATOR_VALUES = new Set([INLINE_SEPARATOR_SEMICOLON, INLINE_SEPARATOR_ARROW])
 const CUMULATIVE_GAP_MIN = 0
 const CUMULATIVE_GAP_MAX = 1.5
 const CUMULATIVE_GAP_STEP = 0.1
@@ -436,6 +478,11 @@ const videoHqExportButtonLabel = computed(() => {
   if (preparingVideoFrames.value && videoExportMode.value === 'hq') return `HQ ${videoFrameProgress.value}/${videoSlidesForRender.value.length}`
   return 'MP4 HQ'
 })
+const fullPreviewButtonLabel = computed(() => (isFullPreviewPlaying.value ? 'Stopper la lecture' : 'Ecouter tout'))
+const fullPreviewButtonDisabled = computed(() => (
+  !isFullPreviewPlaying.value &&
+  (!videoSlidesForRender.value.length || Boolean(props.generatingSpeechSlideId))
+))
 
 function normalizeText(value) {
   return String(value || '').trim()
@@ -494,6 +541,36 @@ function isSlideSpeechAudioStale(slide) {
   if (!expectedSpeech || !normalizeText(slide?.speech_audio_url)) return false
   if (!Object.prototype.hasOwnProperty.call(slide || {}, 'speech_text')) return false
   return normalizeSpeechLine(slide?.speech_text) !== normalizeSpeechLine(expectedSpeech)
+}
+
+function getVideoSlideLabel(slide) {
+  const videoIndex = videoSlidesForRender.value.findIndex((videoSlide) => Number(videoSlide.id) === Number(slide?.id))
+  return videoIndex === -1 ? 'Slide' : `Slide ${videoIndex + 1}`
+}
+
+function validateFullPreviewAudio() {
+  if (activeSpeechDraftDirty.value) {
+    window.alert('Speech modifie sur cette slide. Enregistre et regenere le MP3 avant la lecture complete.')
+    return false
+  }
+
+  const missingAudioSlides = videoSlidesForRender.value.filter((slide) => (
+    slideSpeechText(slide) && !normalizeText(slide?.speech_audio_url)
+  ))
+  const staleAudioSlides = videoSlidesForRender.value.filter((slide) => isSlideSpeechAudioStale(slide))
+
+  if (!missingAudioSlides.length && !staleAudioSlides.length) return true
+
+  const details = [
+    ...missingAudioSlides.map((slide) => `${getVideoSlideLabel(slide)}: MP3 manquant`),
+    ...staleAudioSlides.map((slide) => `${getVideoSlideLabel(slide)}: MP3 pas a jour`),
+  ].slice(0, 6)
+
+  const extraCount = missingAudioSlides.length + staleAudioSlides.length - details.length
+  window.alert(
+    `Lecture complete bloquee: genere ou regenere les MP3 avant de previsualiser. ${details.join('. ')}${extraCount > 0 ? ` (+${extraCount} autres)` : ''}.`
+  )
+  return false
 }
 
 function getSlideType(slide) {
@@ -597,6 +674,11 @@ function clampInlineOffset(value) {
   return Math.min(INLINE_OFFSET_MAX, Math.max(INLINE_OFFSET_MIN, numeric))
 }
 
+function normalizeInlineSeparator(value) {
+  const raw = String(value || '').trim()
+  return INLINE_SEPARATOR_VALUES.has(raw) ? raw : INLINE_SEPARATOR_SEMICOLON
+}
+
 function clampCumulativeGap(value) {
   const numeric = Number(value)
   if (!Number.isFinite(numeric)) return CUMULATIVE_GAP_DEFAULT
@@ -606,6 +688,7 @@ function clampCumulativeGap(value) {
 function makeKatexRow(line, inlineOffsetPercent = 0) {
   return {
     parts: [line],
+    inlineSeparators: [],
     inlineOffsetPercent: clampInlineOffset(inlineOffsetPercent),
   }
 }
@@ -613,6 +696,9 @@ function makeKatexRow(line, inlineOffsetPercent = 0) {
 function cloneKatexRows(rows) {
   return (Array.isArray(rows) ? rows : []).map((row) => ({
     parts: Array.isArray(row?.parts) ? [...row.parts] : [],
+    inlineSeparators: Array.isArray(row?.inlineSeparators)
+      ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
+      : [],
     inlineOffsetPercent: clampInlineOffset(row?.inlineOffsetPercent),
   }))
 }
@@ -629,9 +715,16 @@ function toAlignedKatexRows(rows, rowGap = CUMULATIVE_GAP_DEFAULT) {
   const prepared = (Array.isArray(rows) ? rows : [])
     .map((row) => {
       const rowLines = Array.isArray(row) ? row : (Array.isArray(row?.parts) ? row.parts : [row])
+      const inlineSeparators = Array.isArray(row?.inlineSeparators) ? row.inlineSeparators : []
       const rowContent = rowLines
-        .map((line) => String(line || '').trim())
-        .map((line) => line.replace(/^&+\s*/, ''))
+        .map((line, index) => {
+          const cleanLine = String(line || '').trim().replace(/^&+\s*/, '')
+          if (!cleanLine) return ''
+          if (index === 0) return cleanLine
+          const separator = normalizeInlineSeparator(inlineSeparators[index - 1])
+          const separatorKatex = separator === INLINE_SEPARATOR_ARROW ? '\\Rightarrow' : ';'
+          return `${separatorKatex}\\qquad ${cleanLine}`
+        })
         .filter(Boolean)
         .join('\\qquad ')
       return rowContent ? `&${rowContent}` : ''
@@ -675,6 +768,8 @@ const baseSlidesForRender = computed(() => {
       if (inlineWithPrevious && !addedInlineLine && cumulativeRows.length > 0) {
         const lastRow = cumulativeRows[cumulativeRows.length - 1]
         lastRow.parts.push(line)
+        lastRow.inlineSeparators = Array.isArray(lastRow.inlineSeparators) ? lastRow.inlineSeparators : []
+        lastRow.inlineSeparators.push(normalizeInlineSeparator(safeSlide.katex_inline_separator))
         lastRow.inlineOffsetPercent = clampInlineOffset(safeSlide.katex_inline_offset_percent)
         addedInlineLine = true
         continue
@@ -762,6 +857,7 @@ const activeSlide = computed(() => {
 
 const activeSlideInline = computed(() => Boolean(activeSlide.value?.katex_inline_with_previous))
 const activeSlideInlineOffset = computed(() => clampInlineOffset(activeSlide.value?.katex_inline_offset_percent))
+const activeSlideInlineSeparator = computed(() => normalizeInlineSeparator(activeSlide.value?.katex_inline_separator))
 const activeInlineOffsetLabel = computed(() => {
   const offset = Math.round(activeSlideInlineOffset.value)
   if (!offset) return 'milieu'
@@ -814,6 +910,14 @@ function firstVideoSlideIndex() {
   return slidesForRender.value.findIndex((slide) => !isVirtualCoverSlide(slide))
 }
 
+function findNextSequentialVideoSlideIndex(startIndex) {
+  for (let index = startIndex + 1; index < slidesForRender.value.length; index += 1) {
+    if (!isVirtualCoverSlide(slidesForRender.value[index])) return index
+  }
+
+  return -1
+}
+
 function findAdjacentVideoSlideIndex(startIndex, direction) {
   if (!slidesForRender.value.length) return -1
 
@@ -827,8 +931,141 @@ function findAdjacentVideoSlideIndex(startIndex, direction) {
 }
 
 function closeFullscreen() {
+  stopFullPreview()
   saveActiveSpeechDraft()
   isFullscreen.value = false
+}
+
+async function moveFullscreenToIndex(index) {
+  const slide = slidesForRender.value[index]
+  if (!slide?.id || isVirtualCoverSlide(slide)) return false
+
+  saveActiveSpeechDraft()
+  fullscreenIndex.value = index
+  selectSlideByIndex(index)
+  syncSpeechDraftFromActiveSlide({ force: true })
+  await nextTick()
+  return true
+}
+
+function stopFullPreview({ resetAudio = true } = {}) {
+  isFullPreviewPlaying.value = false
+  clearFullPreviewTimer()
+
+  if (!resetAudio) return
+  const audio = speechPlayerRef.value
+  if (!audio) return
+
+  audio.pause()
+  try {
+    audio.currentTime = 0
+  } catch (error) {
+    console.warn('Impossible de remettre la lecture audio au debut:', error)
+  }
+}
+
+function clearFullPreviewTimer() {
+  if (!fullPreviewTimerId || typeof window === 'undefined') return
+  window.clearTimeout(fullPreviewTimerId)
+  fullPreviewTimerId = null
+}
+
+function getFullPreviewSlideDurationMs(slide) {
+  const seconds = Number(slide?.duration_seconds)
+  const safeSeconds = Number.isFinite(seconds) && seconds > 0 ? seconds : 4
+  return Math.max(300, Math.round(safeSeconds * 1000))
+}
+
+function scheduleSilentFullPreviewAdvance() {
+  if (typeof window === 'undefined') {
+    advanceFullPreview()
+    return
+  }
+
+  clearFullPreviewTimer()
+  fullPreviewTimerId = window.setTimeout(() => {
+    fullPreviewTimerId = null
+    advanceFullPreview()
+  }, getFullPreviewSlideDurationMs(activeSlide.value))
+}
+
+async function playActiveSpeechForFullPreview() {
+  await nextTick()
+  if (!isFullPreviewPlaying.value) return
+
+  clearFullPreviewTimer()
+  const audio = speechPlayerRef.value
+  if (!audio || !activeSlideSpeechAudioUrl.value) {
+    scheduleSilentFullPreviewAdvance()
+    return
+  }
+
+  try {
+    audio.currentTime = 0
+    await audio.play()
+  } catch (error) {
+    console.error('Erreur lecture audio complete:', error)
+    stopFullPreview()
+    window.alert("Lecture audio bloquee par le navigateur. Clique a nouveau sur Ecouter tout.")
+  }
+}
+
+async function startFullPreview() {
+  if (isFullPreviewPlaying.value || !videoSlidesForRender.value.length) return
+  if (!validateFullPreviewAudio()) return
+
+  const firstSlideIndex = firstVideoSlideIndex()
+  if (firstSlideIndex === -1) {
+    window.alert('Aucune slide a lire pour ce reel.')
+    return
+  }
+
+  isFullPreviewPlaying.value = true
+  const moved = await moveFullscreenToIndex(firstSlideIndex)
+  if (!moved) {
+    stopFullPreview({ resetAudio: false })
+    return
+  }
+
+  await playActiveSpeechForFullPreview()
+}
+
+async function advanceFullPreview() {
+  if (!isFullPreviewPlaying.value) return
+
+  const nextSlideIndex = findNextSequentialVideoSlideIndex(fullscreenIndex.value)
+  if (nextSlideIndex === -1) {
+    stopFullPreview({ resetAudio: false })
+    return
+  }
+
+  const moved = await moveFullscreenToIndex(nextSlideIndex)
+  if (!moved) {
+    stopFullPreview({ resetAudio: false })
+    return
+  }
+
+  await playActiveSpeechForFullPreview()
+}
+
+function toggleFullPreview() {
+  if (isFullPreviewPlaying.value) {
+    stopFullPreview()
+    return
+  }
+
+  startFullPreview()
+}
+
+function handleSpeechEnded() {
+  if (!isFullPreviewPlaying.value) return
+  advanceFullPreview()
+}
+
+function handleSpeechError() {
+  if (!isFullPreviewPlaying.value) return
+  stopFullPreview({ resetAudio: false })
+  window.alert("Lecture complete arretee: le MP3 de cette slide n'a pas pu etre lu.")
 }
 
 function saveActiveSpeechDraft() {
@@ -880,7 +1117,7 @@ function increaseSafeZoneX() {
 }
 
 function resetSafeZoneX() {
-  safeZoneXScale.value = 1
+  safeZoneXScale.value = SAFE_ZONE_DEFAULT_SCALE
 }
 
 function decreaseSafeZoneY() {
@@ -894,7 +1131,7 @@ function increaseSafeZoneY() {
 }
 
 function resetSafeZoneY() {
-  getActiveSafeZoneYRef().value = 1
+  getActiveSafeZoneYRef().value = SAFE_ZONE_DEFAULT_SCALE
 }
 
 function patchActiveEdgeSlideScale(field, value) {
@@ -940,7 +1177,23 @@ function toggleActiveKatexLineMode() {
     id: activeSlide.value.id,
     patch: {
       katex_inline_with_previous: nextInline,
-      ...(nextInline ? { katex_inline_offset_percent: 0 } : {}),
+      ...(nextInline
+        ? {
+            katex_inline_offset_percent: 0,
+            katex_inline_separator: activeSlideInlineSeparator.value,
+          }
+        : {}),
+    },
+  })
+}
+
+function setActiveInlineSeparator(value) {
+  if (!activeSlide.value?.id || !activeSlideInline.value || isEdgeSlide(activeSlide.value)) return
+
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: {
+      katex_inline_separator: normalizeInlineSeparator(value),
     },
   })
 }
@@ -1243,22 +1496,18 @@ function openFromCurrent() {
 
 function goNext() {
   if (!slidesForRender.value.length) return
-  saveActiveSpeechDraft()
+  stopFullPreview()
   const nextIndex = findAdjacentVideoSlideIndex(fullscreenIndex.value, 1)
   if (nextIndex === -1) return
-  fullscreenIndex.value = nextIndex
-  selectSlideByIndex(nextIndex)
-  syncSpeechDraftFromActiveSlide({ force: true })
+  moveFullscreenToIndex(nextIndex)
 }
 
 function goPrev() {
   if (!slidesForRender.value.length) return
-  saveActiveSpeechDraft()
+  stopFullPreview()
   const prevIndex = findAdjacentVideoSlideIndex(fullscreenIndex.value, -1)
   if (prevIndex === -1) return
-  fullscreenIndex.value = prevIndex
-  selectSlideByIndex(prevIndex)
-  syncSpeechDraftFromActiveSlide({ force: true })
+  moveFullscreenToIndex(prevIndex)
 }
 
 function handleKeydown(event) {
@@ -1350,6 +1599,8 @@ watch(isFullscreen, (open) => {
 })
 
 onBeforeUnmount(() => {
+  stopFullPreview()
+
   if (typeof window !== 'undefined') {
     window.removeEventListener('keydown', handleKeydown)
   }
@@ -1516,12 +1767,58 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 72px 20px 20px;
+}
+
+.fullscreen-preview-controls {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-preview-button {
+  min-width: 176px;
+  border: 1px solid rgba(191, 219, 254, 0.82);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.24);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  padding: 13px 18px;
+  cursor: pointer;
+}
+
+.full-preview-button:hover:not(:disabled) {
+  background: #eff6ff;
+}
+
+.full-preview-button--playing {
+  background: #1d4ed8;
+  color: #ffffff;
+  border-color: rgba(147, 197, 253, 0.9);
+}
+
+.full-preview-button--playing:hover:not(:disabled) {
+  background: #1e40af;
+}
+
+.full-preview-button:disabled {
+  background: #e2e8f0;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .fullscreen-content {
   width: min(1500px, 100%);
-  max-height: calc(100dvh - 40px);
+  max-height: calc(100dvh - 92px);
   display: grid;
   grid-template-columns: minmax(230px, 310px) minmax(0, auto) minmax(230px, 300px);
   gap: 20px;
@@ -1533,7 +1830,7 @@ onBeforeUnmount(() => {
   grid-column: 1;
   grid-row: 1;
   width: 100%;
-  max-height: calc(100dvh - 56px);
+  max-height: calc(100dvh - 108px);
   border: 1px solid rgba(191, 219, 254, 0.72);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.96);
@@ -1647,7 +1944,7 @@ onBeforeUnmount(() => {
   grid-column: 3;
   grid-row: 1;
   width: 100%;
-  max-height: calc(100dvh - 56px);
+  max-height: calc(100dvh - 108px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1679,7 +1976,24 @@ onBeforeUnmount(() => {
   padding: 0 2px;
 }
 
+.inline-layout-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.inline-layout-row--offset {
+  padding-top: 2px;
+}
+
 .inline-offset-button {
+  min-width: 34px;
+}
+
+.inline-separator-button {
   min-width: 34px;
 }
 
@@ -1767,7 +2081,7 @@ onBeforeUnmount(() => {
 @media (max-width: 980px) {
   .fullscreen-content {
     width: 100%;
-    max-height: calc(100dvh - 40px);
+    max-height: calc(100dvh - 92px);
     grid-template-columns: 1fr;
     gap: 10px;
   }
@@ -1812,11 +2126,23 @@ onBeforeUnmount(() => {
   }
 
   .fullscreen-backdrop {
-    padding: 10px;
+    padding: 64px 10px 10px;
   }
 
   .fullscreen-content {
-    max-height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 74px);
+  }
+
+  .fullscreen-preview-controls {
+    top: 12px;
+    width: calc(100% - 20px);
+  }
+
+  .full-preview-button {
+    width: min(260px, 100%);
+    min-width: 0;
+    font-size: 13px;
+    padding: 12px 16px;
   }
 
   .fullscreen-toolbar {

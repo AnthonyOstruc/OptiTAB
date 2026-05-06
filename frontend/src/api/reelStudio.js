@@ -34,6 +34,10 @@ export function generateSlidesFromTemplate(id, data) {
   return apiClient.post(`${BASE}/projects/${id}/generate-from-template/`, data)
 }
 
+export function saveReelTemplate(id, data) {
+  return apiClient.post(`${BASE}/projects/${id}/save-template/`, data)
+}
+
 export function generateReelSpeech(id, data = {}) {
   return apiClient.post(`${BASE}/projects/${id}/generate-speech/`, data, { timeout: 120000 })
 }

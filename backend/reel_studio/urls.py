@@ -19,6 +19,11 @@ urlpatterns = [
         name='reel-project-generate-from-template',
     ),
     path(
+        'projects/<int:pk>/save-template/',
+        views.ReelProjectSaveTemplateView.as_view(),
+        name='reel-project-save-template',
+    ),
+    path(
         'projects/<int:pk>/generate-speech/',
         views.ReelProjectGenerateSpeechView.as_view(),
         name='reel-project-generate-speech',

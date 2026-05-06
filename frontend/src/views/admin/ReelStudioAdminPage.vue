@@ -50,8 +50,10 @@
             <ReelTemplateBuilder
               v-model:template-text="templateDraft"
               :loading="generatingTemplate"
+              :saving="savingTemplate"
               :disabled="!selectedProject"
               @generate="handleGenerateFromTemplate"
+              @save="handleSaveTemplate"
             />
 
             <ReelPreview
@@ -256,6 +258,7 @@ import {
   getReelProject,
   listReelProjects,
   listReelVoices,
+  saveReelTemplate,
   testReelTTSVoice,
   updateReelProject,
   updateReelSlide,
@@ -279,6 +282,7 @@ const loadingProjects = ref(false)
 const loadingProjectDetail = ref(false)
 const savingProject = ref(false)
 const generatingTemplate = ref(false)
+const savingTemplate = ref(false)
 const generatingSpeech = ref(false)
 const generatingSpeechSlideId = ref(null)
 const exportingVideo = ref(false)
@@ -510,7 +514,6 @@ const selectedProviderMeta = computed(() => {
       ? `Non configure: ${selectedProvider.value.error}`
       : 'Non configure (cle API ou credentials manquants)'
   }
-  if (selectedProvider.value.id === 'elevenlabs') return 'Premium ElevenLabs (consomme le quota du compte)'
   return ''
 })
 const selectedVoice = computed(() => {
@@ -541,6 +544,7 @@ const selectedVoiceMeta = computed(() => {
   if (selectedProviderId.value === 'google') {
     return voiceQuotaUsageLabel(selectedVoice.value)
   }
+  return ''
   const labels = selectedVoice.value.labels || {}
   return [
     selectedVoice.value.matches_filter ? 'FR accent parisien' : 'compatible API',
@@ -563,15 +567,6 @@ const selectedVoiceWarning = computed(() => {
       return 'Quota Google proche du seuil de grisage.'
     }
     return ''
-  }
-  if (selectedVoice.value.requires_subscription) {
-    return 'Voix professionnelle disponible avec ton abonnement ElevenLabs.'
-  }
-  if (selectedVoice.value.is_custom) {
-    return 'ID personnalise: generation testee au moment de creer le MP3.'
-  }
-  if (!selectedVoice.value.matches_filter) {
-    return 'Fallback compatible API: pas strictement accent parisien.'
   }
   return ''
 })
@@ -726,6 +721,11 @@ function closeProjectForm() {
 
 function openCreateProjectForm() {
   editingProject.value = null
+  selectedProject.value = null
+  selectedProjectId.value = null
+  selectedSlideId.value = null
+  templateDraft.value = ''
+  clearDiagnostics()
   projectFormOpen.value = true
 }
 
@@ -843,14 +843,45 @@ function countGeneratedSlideSpeeches(project) {
   return slides.filter((slide) => slide?.speech_audio_url).length
 }
 
+function splitSlideProjectPayload(payload) {
+  if (!payload || typeof payload !== 'object') {
+    return { slide: null, project: null }
+  }
+
+  const { project, ...slide } = payload
+  return {
+    slide: slide?.id ? slide : null,
+    project: project?.id ? project : null,
+  }
+}
+
+function applyProjectSummary(project) {
+  if (!project?.id || !selectedProject.value?.id) return
+  if (Number(project.id) !== Number(selectedProject.value.id)) return
+
+  const currentSlides = Array.isArray(selectedProject.value.slides) ? selectedProject.value.slides : []
+  selectedProject.value = {
+    ...selectedProject.value,
+    ...project,
+    slides: currentSlides,
+  }
+  upsertProjectSummary(selectedProject.value)
+}
+
 function updateSelectedProjectSlide(updatedSlide) {
-  if (!updatedSlide?.id || !selectedProject.value?.slides) return
-  const index = selectedProject.value.slides.findIndex((slide) => Number(slide.id) === Number(updatedSlide.id))
+  const { slide, project } = splitSlideProjectPayload(updatedSlide)
+  if (!slide?.id || !selectedProject.value?.slides) return
+
+  const index = selectedProject.value.slides.findIndex((item) => Number(item.id) === Number(slide.id))
   if (index === -1) return
 
-  selectedProject.value.slides.splice(index, 1, updatedSlide)
-  selectedProject.value.updated_at = new Date().toISOString()
-  upsertProjectSummary(selectedProject.value)
+  selectedProject.value.slides.splice(index, 1, slide)
+  if (project?.id) {
+    applyProjectSummary(project)
+  } else {
+    selectedProject.value.updated_at = new Date().toISOString()
+    upsertProjectSummary(selectedProject.value)
+  }
 }
 
 function appendTemplateField(lines, label, value) {
@@ -901,7 +932,9 @@ async function openEditProjectForm(project) {
 }
 
 function extractErrorMessage(error, fallback) {
-  const apiMessage = error?.response?.data?.detail || error?.response?.data?.message
+  const data = error?.response?.data || {}
+  const fieldMessage = Object.values(data).find((value) => Array.isArray(value) && value.length)
+  const apiMessage = data.detail || data.message || fieldMessage?.[0]
   return String(apiMessage || fallback)
 }
 
@@ -1071,12 +1104,22 @@ async function loadProjects() {
 async function handleSubmitProject(payload) {
   if (!canManage.value) return
 
+  const safeTitle = String(payload?.title || '').trim()
+  if (!safeTitle) {
+    setFeedback('error', 'Ajoute un titre avant de creer le reel.')
+    return
+  }
+
   savingProject.value = true
   try {
     const projectId = editingProject.value?.id
+    const projectPayload = {
+      ...payload,
+      title: safeTitle,
+    }
     const response = projectId
-      ? await updateReelProject(projectId, payload)
-      : await createReelProject({ ...payload, slide_count: 0 })
+      ? await updateReelProject(projectId, projectPayload)
+      : await createReelProject({ ...projectPayload, slide_count: 0 })
     const project = normalizeProject(response?.data)
 
     if (project?.id) {
@@ -1180,6 +1223,36 @@ async function handleGenerateFromTemplate(payload) {
     setFeedback('error', extractErrorMessage(error, 'Impossible de générer les slides depuis le template.'))
   } finally {
     generatingTemplate.value = false
+  }
+}
+
+async function handleSaveTemplate(payload) {
+  if (!selectedProject.value?.id) return
+
+  savingTemplate.value = true
+  const submittedInstagramCaption = extractInstagramCaption(payload?.template_text)
+  try {
+    const response = await saveReelTemplate(selectedProject.value.id, payload)
+    const updatedProject = normalizeProject(response?.data)
+
+    if (updatedProject?.id) {
+      if (submittedInstagramCaption && !String(updatedProject.instagram_caption || '').trim()) {
+        updatedProject.instagram_caption = submittedInstagramCaption
+      }
+      selectedProject.value = updatedProject
+      selectedSlideId.value = updatedProject.slides?.[0]?.id || selectedSlideId.value || null
+      templateDraft.value = serializeProjectSlides(updatedProject)
+      clearDiagnostics()
+      upsertProjectSummary(updatedProject)
+      const readyCount = countGeneratedSlideSpeeches(updatedProject)
+      const totalSlides = updatedProject.slides?.length || 0
+      const voicePart = readyCount ? ` Voix conservee sur ${readyCount}/${totalSlides} slide${totalSlides > 1 ? 's' : ''}.` : ''
+      setFeedback('success', `Reel sauvegarde (${totalSlides} slides).${voicePart}`)
+    }
+  } catch (error) {
+    setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder le template.'))
+  } finally {
+    savingTemplate.value = false
   }
 }
 
@@ -1379,6 +1452,7 @@ async function handleSaveSlide(payload) {
       screen_text_scale: payload.screen_text_scale,
       katex_scale: payload.katex_scale,
       katex_inline_with_previous: payload.katex_inline_with_previous,
+      katex_inline_separator: payload.katex_inline_separator,
       katex_inline_offset_percent: payload.katex_inline_offset_percent,
       katex_cumulative_gap_em: payload.katex_cumulative_gap_em,
       katex_reset_cumulative: payload.katex_reset_cumulative,
@@ -1393,13 +1467,8 @@ async function handleSaveSlide(payload) {
     const updatedSlide = normalizeProject(response?.data)
 
     if (updatedSlide?.id) {
-      const index = selectedProject.value.slides.findIndex((slide) => Number(slide.id) === Number(updatedSlide.id))
-      if (index !== -1) {
-        selectedProject.value.slides.splice(index, 1, updatedSlide)
-      }
-      selectedProject.value.updated_at = new Date().toISOString()
+      updateSelectedProjectSlide(updatedSlide)
       templateDraft.value = serializeProjectSlides(selectedProject.value)
-      upsertProjectSummary(selectedProject.value)
       setFeedback('success', 'Slide mise à jour.')
     }
   } catch (error) {
@@ -1417,10 +1486,9 @@ async function handlePatchSlide(payload) {
   if (index === -1 || !Object.keys(patchData).length) return
 
   const previousSlide = { ...selectedProject.value.slides[index] }
-  const voiceScriptWillChange =
-    Object.prototype.hasOwnProperty.call(patchData, 'voice_script') &&
-    String(patchData.voice_script || '').trim() !== String(previousSlide.voice_script || '').trim()
-  const optimisticPatch = voiceScriptWillChange
+  const nextSlide = { ...previousSlide, ...patchData }
+  const speechTextWillChange = slideSpeechText(nextSlide) !== slideSpeechText(previousSlide)
+  const optimisticPatch = speechTextWillChange
     ? {
         ...patchData,
         speech_audio: null,
@@ -1443,10 +1511,15 @@ async function handlePatchSlide(payload) {
     const response = await updateReelSlide(payload.id, patchData)
     const updatedSlide = normalizeProject(response?.data)
     if (updatedSlide?.id) {
-      selectedProject.value.slides.splice(index, 1, updatedSlide)
-      selectedProject.value.updated_at = new Date().toISOString()
+      const { slide, project } = splitSlideProjectPayload(updatedSlide)
+      selectedProject.value.slides.splice(index, 1, slide || updatedSlide)
+      if (project?.id) {
+        applyProjectSummary(project)
+      } else {
+        selectedProject.value.updated_at = new Date().toISOString()
+        upsertProjectSummary(selectedProject.value)
+      }
       templateDraft.value = serializeProjectSlides(selectedProject.value)
-      upsertProjectSummary(selectedProject.value)
     }
   } catch (error) {
     selectedProject.value.slides.splice(index, 1, previousSlide)

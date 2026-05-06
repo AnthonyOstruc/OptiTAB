@@ -50,6 +50,7 @@ const routes = [
       }
     }
   },
+  { path: '/jeux/math-run', name: 'MathRun', component: () => import('@/views/games/MathRunView.vue') },
   { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
   { path: '/plateforme-maths', name: 'GoogleAdsLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { path: '/bases-methode', name: 'BasesMethodeLanding', component: () => import('@/views/GoogleAdsLanding.vue') },

@@ -173,6 +173,36 @@ def _clear_slide_speech(slide):
             pass
 
 
+def _clear_project_speech(project):
+    previous_audio_name = project.speech_audio.name if project.speech_audio else ''
+    project.speech_audio = None
+    project.speech_text = ''
+    project.speech_voice_id = ''
+    project.speech_model_id = ''
+    project.speech_output_format = ''
+    project.speech_status = ReelProject.SPEECH_STATUS_EMPTY
+    project.speech_error = ''
+    project.speech_generated_at = None
+    project.save(
+        update_fields=[
+            'speech_audio',
+            'speech_text',
+            'speech_voice_id',
+            'speech_model_id',
+            'speech_output_format',
+            'speech_status',
+            'speech_error',
+            'speech_generated_at',
+            'updated_at',
+        ]
+    )
+    if previous_audio_name:
+        try:
+            default_storage.delete(previous_audio_name)
+        except Exception:
+            pass
+
+
 def _clear_project_video(project):
     previous_video_name = project.video_file.name if project.video_file else ''
     project.video_file = None
@@ -197,6 +227,100 @@ def _clear_project_video(project):
 
 def _speech_compare_text(value):
     return re.sub(r'\s+', ' ', str(value or '')).strip()
+
+
+def _common_slide_speech_value(slides, field_name):
+    values = {
+        str(getattr(slide, field_name, '') or '').strip()
+        for slide in slides
+        if str(getattr(slide, field_name, '') or '').strip()
+    }
+    if len(values) == 1:
+        return next(iter(values))
+    if len(values) > 1:
+        return 'mixed'
+    return ''
+
+
+def _sync_project_speech_from_slides(project_or_id):
+    if isinstance(project_or_id, ReelProject):
+        project = project_or_id
+    else:
+        project = ReelProject.objects.get(pk=project_or_id)
+
+    slides = list(project.slides.all().order_by('order', 'id'))
+    expected_entries = [
+        (slide, build_slide_speech_text(slide))
+        for slide in slides
+    ]
+    expected_entries = [
+        (slide, speech_text)
+        for slide, speech_text in expected_entries
+        if speech_text
+    ]
+
+    if not expected_entries:
+        _clear_project_speech(project)
+        return project
+
+    previous_audio_name = project.speech_audio.name if project.speech_audio else ''
+    ready_slides = []
+    error_slides = []
+
+    for slide, expected_text in expected_entries:
+        if slide.speech_status == ReelProject.SPEECH_STATUS_ERROR:
+            error_slides.append(slide)
+
+        if (
+            slide.speech_audio
+            and slide.speech_status == ReelProject.SPEECH_STATUS_READY
+            and _speech_compare_text(slide.speech_text) == _speech_compare_text(expected_text)
+        ):
+            ready_slides.append(slide)
+
+    project.speech_audio = None
+    project.speech_text = '\n\n'.join(speech_text for _, speech_text in expected_entries)
+    project.speech_voice_id = _common_slide_speech_value(ready_slides, 'speech_voice_id')
+    project.speech_model_id = _common_slide_speech_value(ready_slides, 'speech_model_id')
+    project.speech_output_format = _common_slide_speech_value(ready_slides, 'speech_output_format')
+
+    if len(ready_slides) == len(expected_entries):
+        project.speech_status = ReelProject.SPEECH_STATUS_READY
+        project.speech_error = ''
+    elif error_slides:
+        project.speech_status = ReelProject.SPEECH_STATUS_ERROR
+        project.speech_error = 'Un ou plusieurs MP3 de slide sont en erreur.'
+    else:
+        project.speech_status = ReelProject.SPEECH_STATUS_EMPTY
+        project.speech_error = ''
+
+    generated_dates = [
+        slide.speech_generated_at
+        for slide in ready_slides
+        if slide.speech_generated_at
+    ]
+    project.speech_generated_at = max(generated_dates) if generated_dates else None
+    project.save(
+        update_fields=[
+            'speech_audio',
+            'speech_text',
+            'speech_voice_id',
+            'speech_model_id',
+            'speech_output_format',
+            'speech_status',
+            'speech_error',
+            'speech_generated_at',
+            'updated_at',
+        ]
+    )
+
+    if previous_audio_name:
+        try:
+            default_storage.delete(previous_audio_name)
+        except Exception:
+            pass
+
+    return project
 
 
 def _collect_video_export_audio_issues(project, frames):
@@ -790,6 +914,7 @@ class ReelProjectGenerateDemoSlidesView(APIView):
         project = get_object_or_404(ReelProject, pk=pk)
 
         with transaction.atomic():
+            _clear_project_speech(project)
             _clear_project_video(project)
             project.slides.all().delete()
 
@@ -845,6 +970,7 @@ class ReelProjectGenerateFromTemplateView(APIView):
             )
 
         with transaction.atomic():
+            _clear_project_speech(project)
             _clear_project_video(project)
             project.slides.all().delete()
 
@@ -874,6 +1000,114 @@ class ReelProjectGenerateFromTemplateView(APIView):
 
         project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
         return Response(_project_serializer(project, request, detail=True).data, status=status.HTTP_201_CREATED)
+
+
+def _update_project_slides_from_template(project, slides_payload):
+    existing_slides = list(project.slides.select_for_update().order_by('order', 'id'))
+    changed = False
+
+    for index, payload in enumerate(slides_payload, start=1):
+        slide = existing_slides[index - 1] if index - 1 < len(existing_slides) else None
+        if slide is None:
+            ReelSlide.objects.create(
+                reel_project=project,
+                order=index,
+                slide_type=payload['slide_type'],
+                title=payload.get('title', ''),
+                screen_text=payload.get('screen_text', ''),
+                katex=payload.get('katex', ''),
+                voice_script=payload.get('voice_script', ''),
+                duration_seconds=payload.get('duration_seconds', DEFAULT_TEMPLATE_SLIDE_DURATION_SECONDS),
+                layout_status=ReelSlide.LAYOUT_UNCHECKED,
+                layout_notes='',
+            )
+            changed = True
+            continue
+
+        previous_speech_text = build_slide_speech_text(slide)
+        update_fields = []
+        field_values = {
+            'order': index,
+            'slide_type': payload['slide_type'],
+            'title': payload.get('title', ''),
+            'screen_text': payload.get('screen_text', ''),
+            'katex': payload.get('katex', ''),
+            'voice_script': payload.get('voice_script', ''),
+            'duration_seconds': payload.get('duration_seconds', DEFAULT_TEMPLATE_SLIDE_DURATION_SECONDS),
+        }
+
+        for field_name, field_value in field_values.items():
+            if getattr(slide, field_name) != field_value:
+                setattr(slide, field_name, field_value)
+                update_fields.append(field_name)
+
+        content_changed = any(
+            field_name in update_fields
+            for field_name in ('slide_type', 'title', 'screen_text', 'katex', 'voice_script', 'duration_seconds')
+        )
+        if content_changed:
+            slide.layout_status = ReelSlide.LAYOUT_UNCHECKED
+            slide.layout_notes = ''
+            update_fields.extend(['layout_status', 'layout_notes'])
+
+        if update_fields:
+            slide.save(update_fields=[*update_fields, 'updated_at'])
+            changed = True
+
+        if build_slide_speech_text(slide) != previous_speech_text:
+            _clear_slide_speech(slide)
+
+    for slide in existing_slides[len(slides_payload):]:
+        _clear_slide_speech(slide)
+        slide.delete()
+        changed = True
+
+    return changed
+
+
+class ReelProjectSaveTemplateView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        project = get_object_or_404(ReelProject, pk=pk)
+        serializer = ReelTemplateGenerateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        clean_template_text, instagram_caption = _extract_instagram_caption(
+            serializer.validated_data['template_text']
+        )
+        template_payload = {
+            **serializer.validated_data,
+            'template_text': clean_template_text,
+        }
+        slides_payload = _build_template_slides(project, template_payload)
+        if not slides_payload:
+            return Response(
+                {'detail': "Aucune ligne exploitable trouvee dans le template."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        with transaction.atomic():
+            project = ReelProject.objects.select_for_update().get(pk=project.pk)
+            slides_changed = _update_project_slides_from_template(project, slides_payload)
+            video_should_clear = slides_changed or project.slide_count != len(slides_payload)
+            project_changed = (
+                project.slide_count != len(slides_payload)
+                or project.status != ReelProject.STATUS_DRAFT
+                or project.instagram_caption != instagram_caption
+            )
+            project.slide_count = len(slides_payload)
+            project.status = ReelProject.STATUS_DRAFT
+            project.instagram_caption = instagram_caption
+            if project_changed:
+                project.save(update_fields=['slide_count', 'status', 'instagram_caption', 'updated_at'])
+
+            project = _sync_project_speech_from_slides(project.pk)
+            if video_should_clear:
+                _clear_project_video(project)
+
+        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        return Response(_project_serializer(project, request, detail=True).data)
 
 
 class ReelProjectGenerateSpeechView(APIView):
@@ -1131,7 +1365,7 @@ class ReelProjectGenerateSlideSpeechesView(APIView):
                 slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
                 return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
 
-        _touch_project(project.pk)
+        project = _sync_project_speech_from_slides(project.pk)
         _clear_project_video(project)
         project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
         return Response(
@@ -1346,9 +1580,10 @@ class ReelSlideGenerateSpeechView(APIView):
             slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
             return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
 
-        _clear_project_video(slide.reel_project)
-        _touch_project(slide.reel_project_id)
+        project = _sync_project_speech_from_slides(slide.reel_project_id)
+        _clear_project_video(project)
         slide_payload = _slide_serializer(slide, request).data
+        slide_payload['project'] = _project_serializer(project, request).data
         tts_meta = getattr(slide, '_tts_result', None)
         if tts_meta is not None:
             slide_payload['_tts'] = {
@@ -1364,15 +1599,20 @@ class ReelSlideDetailView(APIView):
 
     def patch(self, request, pk):
         slide = get_object_or_404(ReelSlide.objects.select_related('reel_project'), pk=pk)
-        previous_voice_script = slide.voice_script
+        previous_speech_text = build_slide_speech_text(slide)
         serializer = ReelSlideSerializer(slide, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         updated_slide = serializer.save()
-        if 'voice_script' in request.data and updated_slide.voice_script != previous_voice_script:
+        if build_slide_speech_text(updated_slide) != previous_speech_text:
             _clear_slide_speech(updated_slide)
-        _clear_project_video(updated_slide.reel_project)
-        _touch_project(updated_slide.reel_project_id)
-        return Response(_slide_serializer(updated_slide, request).data)
+            project = _sync_project_speech_from_slides(updated_slide.reel_project_id)
+        else:
+            project = updated_slide.reel_project
+            _touch_project(updated_slide.reel_project_id)
+        _clear_project_video(project)
+        slide_payload = _slide_serializer(updated_slide, request).data
+        slide_payload['project'] = _project_serializer(project, request).data
+        return Response(slide_payload)
 
     def delete(self, request, pk):
         slide = get_object_or_404(ReelSlide.objects.select_related('reel_project'), pk=pk)
@@ -1385,5 +1625,6 @@ class ReelSlideDetailView(APIView):
             slide_count=slide_count,
             updated_at=timezone.now(),
         )
+        project = _sync_project_speech_from_slides(project_id)
         _clear_project_video(project)
         return Response(status=status.HTTP_204_NO_CONTENT)

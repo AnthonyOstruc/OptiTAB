@@ -557,7 +557,7 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 # CONFIGURATION ELEVENLABS
 # ========================================
 ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY', '').strip()
-ELEVENLABS_VOICE_ID = os.getenv('ELEVENLABS_VOICE_ID', 'JBFqnCBsd6RMkjVDRZzb').strip()
+ELEVENLABS_VOICE_ID = os.getenv('ELEVENLABS_VOICE_ID', 'aQROLel5sQbj1vuIVi6B').strip()
 ELEVENLABS_MODEL_ID = os.getenv('ELEVENLABS_MODEL_ID', 'eleven_multilingual_v2').strip()
 ELEVENLABS_OUTPUT_FORMAT = os.getenv('ELEVENLABS_OUTPUT_FORMAT', 'mp3_44100_128').strip()
 ELEVENLABS_LANGUAGE_CODE = os.getenv('ELEVENLABS_LANGUAGE_CODE', 'fr').strip()
@@ -591,9 +591,8 @@ ELEVENLABS_USE_SPEAKER_BOOST = os.getenv('ELEVENLABS_USE_SPEAKER_BOOST', 'True')
 # ========================================
 # CONFIGURATION GOOGLE CLOUD TEXT-TO-SPEECH
 # ========================================
-# Default TTS provider for Reel Studio. Use Google Cloud TTS first to take
-# advantage of the generous free quota; ElevenLabs stays as a premium option.
-REEL_TTS_DEFAULT_PROVIDER = os.getenv('REEL_TTS_DEFAULT_PROVIDER', 'google').strip().lower()
+# Default TTS provider for Reel Studio.
+REEL_TTS_DEFAULT_PROVIDER = os.getenv('REEL_TTS_DEFAULT_PROVIDER', 'elevenlabs').strip().lower()
 
 # Path (absolute or relative to BASE_DIR) to the Google Cloud service account
 # JSON key file. NEVER commit this file to git. Suggested location:

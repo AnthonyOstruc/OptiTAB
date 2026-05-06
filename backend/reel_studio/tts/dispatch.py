@@ -212,7 +212,7 @@ def _provider_label(provider):
     if provider == PROVIDER_GOOGLE:
         return 'Google Cloud Text-to-Speech (quota gratuit)'
     if provider == PROVIDER_ELEVENLABS:
-        return 'ElevenLabs (premium)'
+        return 'ElevenLabs'
     return provider
 
 

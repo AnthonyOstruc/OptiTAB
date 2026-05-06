@@ -10,14 +10,16 @@
           type="text"
           maxlength="255"
           required
+          :aria-invalid="titleSubmitted && !canSubmitTitle"
           placeholder="Ex: Defi integrale"
         />
+        <span v-if="titleSubmitted && !canSubmitTitle" class="field-error">Titre obligatoire.</span>
       </label>
 
     </div>
 
     <div class="form-actions">
-      <button class="btn-primary" type="submit" :disabled="loading">
+      <button class="btn-primary" type="submit" :disabled="loading || !canSubmitTitle">
         {{ loading ? 'Sauvegarde...' : submitLabel }}
       </button>
       <button class="btn-secondary" type="button" @click="$emit('cancel')">Annuler</button>
@@ -26,7 +28,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 
 const DEFAULT_FORM = {
   title: '',
@@ -54,18 +56,25 @@ const props = defineProps({
 const emit = defineEmits(['submit', 'cancel'])
 
 const form = reactive({ ...DEFAULT_FORM })
+const titleSubmitted = ref(false)
+const titleValue = computed(() => String(form.title || '').trim())
+const canSubmitTitle = computed(() => titleValue.value.length > 0)
 
 watch(
   () => props.initialValues,
   (values) => {
     Object.assign(form, DEFAULT_FORM, values || {})
+    titleSubmitted.value = false
   },
   { immediate: true, deep: true }
 )
 
 function handleSubmit() {
+  titleSubmitted.value = true
+  if (!canSubmitTitle.value) return
+
   emit('submit', {
-    title: String(form.title || '').trim(),
+    title: titleValue.value,
   })
 }
 </script>
@@ -115,6 +124,12 @@ input:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.field-error {
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .form-actions {

@@ -10,6 +10,30 @@ logger = logging.getLogger(__name__)
 
 BUILTIN_EXTRA_VOICES = (
     {
+        'name': 'Nicolas',
+        'voice_id': 'aQROLel5sQbj1vuIVi6B',
+        'category': '',
+        'is_custom': False,
+        'sort_priority': 0,
+        'labels': {
+            'language': 'fr',
+            'accent': 'parisian',
+            'gender': 'male',
+        },
+    },
+    {
+        'name': 'Mylene',
+        'voice_id': 'WQKwBV2Uzw1gSGr69N8I',
+        'category': '',
+        'is_custom': False,
+        'sort_priority': 1,
+        'labels': {
+            'language': 'fr',
+            'accent': 'parisian',
+            'gender': 'female',
+        },
+    },
+    {
         'name': 'Victoria',
         'voice_id': 'O31r762Gb3WFygrEOGh0',
         'category': '',
@@ -253,6 +277,7 @@ def _custom_voice_item(
     labels=None,
     category='custom',
     is_custom=True,
+    sort_priority=100,
 ):
     safe_name = str(name or '').strip()
     safe_labels = labels or {}
@@ -264,6 +289,7 @@ def _custom_voice_item(
         'requires_subscription': False,
         'matches_filter': bool(matches_filter),
         'is_custom': bool(is_custom),
+        'sort_priority': int(sort_priority),
         'labels': {
             'language': safe_labels.get('language') or '',
             'accent': safe_labels.get('accent') or '',
@@ -284,6 +310,7 @@ def _extra_voice_items():
             labels=item.get('labels') or {},
             category=item.get('category', ''),
             is_custom=item.get('is_custom', False),
+            sort_priority=item.get('sort_priority', 100),
         )
         for item in BUILTIN_EXTRA_VOICES
     ]
@@ -323,6 +350,7 @@ def _apply_voice_override(existing, override):
         ),
         'matches_filter': bool(existing.get('matches_filter') or override.get('matches_filter')),
         'is_custom': override.get('is_custom', existing.get('is_custom', False)),
+        'sort_priority': override.get('sort_priority', existing.get('sort_priority', 100)),
         'labels': {
             **labels,
             **{key: value for key, value in override_labels.items() if value},
@@ -404,6 +432,7 @@ def list_filtered_voices(*, language='fr', accent='parisian', include_fallback=T
     return sorted(
         filtered,
         key=lambda item: (
+            item.get('sort_priority', 100),
             not item.get('is_custom'),
             not item.get('matches_filter'),
             not item.get('api_usable'),

@@ -127,27 +127,113 @@
                   <span v-if="selectedProviderMeta">{{ selectedProviderMeta }}</span>
                 </label>
 
-                <label class="voice-select voice-select--voice">
-                  Voix
-                  <select
-                    v-model="selectedVoiceId"
-                    :disabled="loadingVoiceOptions || generatingSpeech || generatingSpeechSlideId || testingVoice || !currentProviderVoices.length"
-                  >
-                    <option v-if="loadingVoiceOptions" value="">Chargement...</option>
-                    <option v-else-if="!currentProviderVoices.length" value="">Aucune voix trouvee</option>
-                    <option
-                      v-for="voice in currentProviderVoices"
-                      :key="voice.voice_id"
-                      :value="voice.voice_id"
-                      :disabled="voice.api_usable === false"
+                <div class="voice-select-row">
+                  <label class="voice-select voice-select--voice">
+                    {{ selectedProviderId === 'elevenlabs' ? 'Voix favoris' : 'Voix' }}
+                    <select
+                      v-model="selectedVoiceId"
+                      :disabled="loadingVoiceOptions || generatingSpeech || generatingSpeechSlideId || testingVoice || !currentProviderVoices.length"
+                      @change="onFavoriteVoiceChange"
                     >
-                      {{ voiceOptionLabel(voice) }}
-                    </option>
-                  </select>
-                  <span v-if="selectedVoiceMeta">{{ selectedVoiceMeta }}</span>
-                  <span v-if="selectedVoiceWarning" class="voice-warning">{{ selectedVoiceWarning }}</span>
-                  <span v-else-if="voiceOptionsError">{{ voiceOptionsError }}</span>
-                </label>
+                      <option v-if="loadingVoiceOptions" value="">Chargement...</option>
+                      <option v-else-if="!currentProviderVoices.length" value="">Aucune voix trouvee</option>
+                      <option
+                        v-for="voice in currentProviderVoices"
+                        :key="voice.voice_id"
+                        :value="voice.voice_id"
+                        :disabled="voice.api_usable === false"
+                      >
+                        {{ voiceOptionLabel(voice) }}
+                      </option>
+                    </select>
+                    <span v-if="selectedVoiceMeta">{{ selectedVoiceMeta }}</span>
+                    <span v-if="selectedVoiceWarning" class="voice-warning">{{ selectedVoiceWarning }}</span>
+                    <span v-else-if="voiceOptionsError">{{ voiceOptionsError }}</span>
+                  </label>
+
+                  <label v-if="selectedProviderId === 'elevenlabs'" class="voice-select voice-select--library">
+                    Explorer ElevenLabs
+                    <input
+                      v-model="voiceLibrarySearch"
+                      class="voice-library-search"
+                      type="search"
+                      placeholder="Rechercher un nom..."
+                      :disabled="loadingVoiceLibrary || generatingSpeech || generatingSpeechSlideId || testingVoice"
+                      @input="scheduleVoiceLibrarySearch"
+                      @keydown.enter.prevent="loadElevenLabsVoiceLibrary"
+                    />
+                    <div class="voice-library-filters">
+                      <select
+                        v-model="voiceLibraryFilters.gender"
+                        :disabled="loadingVoiceLibrary || generatingSpeech || generatingSpeechSlideId || testingVoice"
+                        @change="loadElevenLabsVoiceLibrary"
+                      >
+                        <option
+                          v-for="option in ELEVENLABS_LIBRARY_GENDER_OPTIONS"
+                          :key="option.value"
+                          :value="option.value"
+                        >
+                          {{ option.label }}
+                        </option>
+                      </select>
+                      <select
+                        v-model="voiceLibraryFilters.age"
+                        :disabled="loadingVoiceLibrary || generatingSpeech || generatingSpeechSlideId || testingVoice"
+                        @change="loadElevenLabsVoiceLibrary"
+                      >
+                        <option
+                          v-for="option in ELEVENLABS_LIBRARY_AGE_OPTIONS"
+                          :key="option.value"
+                          :value="option.value"
+                        >
+                          {{ option.label }}
+                        </option>
+                      </select>
+                      <select
+                        v-model="voiceLibraryFilters.quality"
+                        :disabled="loadingVoiceLibrary || generatingSpeech || generatingSpeechSlideId || testingVoice"
+                        @change="loadElevenLabsVoiceLibrary"
+                      >
+                        <option
+                          v-for="option in ELEVENLABS_LIBRARY_QUALITY_OPTIONS"
+                          :key="option.value"
+                          :value="option.value"
+                        >
+                          {{ option.label }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="voice-library-picker">
+                      <select
+                        v-model="selectedLibraryVoiceId"
+                        :disabled="loadingVoiceLibrary || generatingSpeech || generatingSpeechSlideId || testingVoice"
+                        @change="onLibraryVoiceChange"
+                      >
+                        <option value="">
+                          {{ loadingVoiceLibrary ? 'Chargement...' : 'Voix French / parisian' }}
+                        </option>
+                        <option
+                          v-for="voice in voiceLibraryOptions"
+                          :key="voice.voice_id"
+                          :value="voice.voice_id"
+                        >
+                          {{ libraryVoiceOptionLabel(voice) }}
+                        </option>
+                      </select>
+                      <button
+                        class="voice-favorite-toggle"
+                        type="button"
+                        :class="{ 'is-favorite': selectedLibraryVoiceIsFavorite }"
+                        :disabled="!selectedLibraryVoice || loadingVoiceLibrary || generatingSpeech || generatingSpeechSlideId || testingVoice"
+                        :title="selectedLibraryVoiceIsFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+                        @click="toggleSelectedLibraryVoiceFavorite"
+                      >
+                        {{ selectedLibraryVoiceIsFavorite ? '★' : '☆' }}
+                      </button>
+                    </div>
+                    <span v-if="voiceLibraryError" class="voice-warning">{{ voiceLibraryError }}</span>
+                  </label>
+                </div>
 
                 <section v-if="selectedProviderId === 'elevenlabs'" class="voice-advanced">
                   <div class="voice-advanced-header">
@@ -333,6 +419,7 @@ import {
   generateSlidesFromTemplate,
   getReelProject,
   listReelProjects,
+  listReelVoiceLibrary,
   listReelVoices,
   saveReelTemplate,
   testReelTTSVoice,
@@ -367,6 +454,16 @@ const loadingVoiceOptions = ref(false)
 const voiceOptions = ref([])
 const selectedVoiceId = ref('')
 const voiceOptionsError = ref('')
+const loadingVoiceLibrary = ref(false)
+const voiceLibraryOptions = ref([])
+const selectedLibraryVoiceId = ref('')
+const voiceLibraryError = ref('')
+const voiceLibrarySearch = ref('')
+const voiceLibraryFilters = reactive({
+  gender: '',
+  age: '',
+  quality: '',
+})
 const providers = ref([])
 const selectedProviderId = ref('')
 const testingVoice = ref(false)
@@ -380,10 +477,39 @@ const editingProject = ref(null)
 const templateDraft = ref('')
 const editorSectionRef = ref(null)
 const ELEVENLABS_SETTINGS_STORAGE_KEY = 'reelStudio.elevenLabsSettings.v1'
+const ELEVENLABS_FAVORITE_VOICES_STORAGE_KEY = 'reelStudio.elevenLabsFavoriteVoices.v1'
+const ELEVENLABS_HIDDEN_FAVORITE_IDS_STORAGE_KEY = 'reelStudio.elevenLabsHiddenFavoriteIds.v1'
 const ELEVENLABS_MODEL_OPTIONS = [
   { value: 'eleven_multilingual_v3', label: 'eleven_multilingual_v3' },
   { value: 'eleven_multilingual_v2', label: 'eleven_multilingual_v2' },
 ]
+const ELEVENLABS_LIBRARY_DEFAULT_FILTERS = Object.freeze({
+  language: 'fr',
+  accent: 'parisian',
+  page_size: 80,
+})
+const ELEVENLABS_LIBRARY_GENDER_OPTIONS = Object.freeze([
+  { value: '', label: 'Genre: tous' },
+  { value: 'male', label: 'Homme' },
+  { value: 'female', label: 'Femme' },
+  { value: 'neutral', label: 'Neutre' },
+])
+const ELEVENLABS_LIBRARY_AGE_OPTIONS = Object.freeze([
+  { value: '', label: 'Age: tous' },
+  { value: 'young', label: 'Jeune' },
+  { value: 'middle_aged', label: 'Adulte' },
+  { value: 'old', label: 'Senior' },
+])
+const ELEVENLABS_LIBRARY_QUALITY_OPTIONS = Object.freeze([
+  { value: '', label: 'Qualite: toutes' },
+  { value: 'high_quality', label: 'High quality' },
+  { value: 'featured', label: 'Selection ElevenLabs' },
+])
+const ELEVENLABS_LIBRARY_SEARCH_DEBOUNCE_MS = 350
+const ELEVENLABS_DEFAULT_FAVORITE_VOICE_IDS = Object.freeze([
+  'aQROLel5sQbj1vuIVi6B',
+  'WQKwBV2Uzw1gSGr69N8I',
+])
 const DEFAULT_ELEVENLABS_SETTINGS = Object.freeze({
   model_id: 'eleven_multilingual_v3',
   stability: 0.64,
@@ -395,6 +521,8 @@ const DEFAULT_ELEVENLABS_SETTINGS = Object.freeze({
   apply_text_normalization: 'on',
 })
 const elevenLabsSettings = reactive(loadStoredElevenLabsSettings())
+const elevenLabsFavoriteVoices = ref(loadStoredElevenLabsFavoriteVoices())
+const elevenLabsHiddenFavoriteVoiceIds = ref(loadStoredElevenLabsHiddenFavoriteVoiceIds())
 
 const feedback = reactive({
   type: 'info',
@@ -403,6 +531,8 @@ const feedback = reactive({
 
 const diagnosticsBySlideId = reactive({})
 let detailRequestId = 0
+let voiceLibrarySearchTimer = 0
+let voiceLibraryRequestId = 0
 const REEL_FORMAT_TEMPLATE = `FORMAT REEL STUDIO (PRO) - GÉNÉRATION COMPLÈTE
 
 Objectif:
@@ -599,7 +729,11 @@ const elevenLabsUsageErrorLabel = computed(() => {
   return usage?.error || 'Impossible de lire les credits ElevenLabs.'
 })
 const selectedProviderConfigured = computed(() => Boolean(selectedProvider.value?.configured))
-const currentProviderVoices = computed(() => selectedProvider.value?.voices || [])
+const baseCurrentProviderVoices = computed(() => selectedProvider.value?.voices || [])
+const currentProviderVoices = computed(() => {
+  if (selectedProviderId.value !== 'elevenlabs') return baseCurrentProviderVoices.value
+  return buildElevenLabsFavoriteVoices(baseCurrentProviderVoices.value)
+})
 const selectedProviderMeta = computed(() => {
   if (!selectedProvider.value) return ''
   if (!selectedProvider.value.configured) {
@@ -611,6 +745,13 @@ const selectedProviderMeta = computed(() => {
 })
 const selectedVoice = computed(() => {
   return currentProviderVoices.value.find((voice) => voice.voice_id === selectedVoiceId.value) || null
+})
+const favoriteVoiceIds = computed(() => new Set(currentProviderVoices.value.map((voice) => voice.voice_id)))
+const selectedLibraryVoice = computed(() => {
+  return voiceLibraryOptions.value.find((voice) => voice.voice_id === selectedLibraryVoiceId.value) || null
+})
+const selectedLibraryVoiceIsFavorite = computed(() => {
+  return Boolean(selectedLibraryVoice.value?.voice_id && favoriteVoiceIds.value.has(selectedLibraryVoice.value.voice_id))
 })
 const selectedVoiceApiUsable = computed(() => {
   if (!selectedVoice.value) return false
@@ -675,6 +816,167 @@ function voiceOptionLabel(voice) {
   if (voice.category) parts.push(voice.category)
   if (voice.api_usable === false) parts.push('non disponible')
   return parts.length ? `${label} - ${parts.join(', ')}` : label
+}
+
+function libraryVoiceOptionLabel(voice) {
+  if (!voice) return ''
+  const label = String(voice.name || voice.voice_id || '').trim()
+  const star = favoriteVoiceIds.value.has(voice.voice_id) ? '★' : '☆'
+  const labels = voice.labels || {}
+  const details = [
+    normalizeLibraryLabel(labels.gender),
+    normalizeLibraryLabel(labels.age),
+    normalizeLibraryLabel(voice.category),
+  ].filter(Boolean)
+  return details.length ? `${star} ${label} - ${details.join(', ')}` : `${star} ${label}`
+}
+
+function normalizeLibraryLabel(value) {
+  return String(value || '').trim().replace(/_/g, ' ')
+}
+
+function normalizeElevenLabsFavoriteVoice(voice) {
+  const voiceId = String(voice?.voice_id || '').trim()
+  if (!voiceId) return null
+  const labels = voice.labels && typeof voice.labels === 'object' ? voice.labels : {}
+  return {
+    voice_id: voiceId,
+    name: String(voice.name || voiceId).trim(),
+    category: String(voice.category || '').trim(),
+    api_usable: voice.api_usable !== false,
+    requires_subscription: Boolean(voice.requires_subscription),
+    matches_filter: voice.matches_filter !== false,
+    preview_url: String(voice.preview_url || '').trim(),
+    is_custom: Boolean(voice.is_custom),
+    is_library: Boolean(voice.is_library || voiceLibraryOptions.value.some((item) => item.voice_id === voiceId)),
+    sort_priority: Number.isFinite(Number(voice.sort_priority)) ? Number(voice.sort_priority) : 50,
+    labels: {
+      language: String(labels.language || '').trim(),
+      accent: String(labels.accent || '').trim(),
+      gender: String(labels.gender || '').trim(),
+      age: String(labels.age || '').trim(),
+      descriptive: String(labels.descriptive || '').trim(),
+      use_case: String(labels.use_case || '').trim(),
+    },
+  }
+}
+
+function normalizeStoredFavoriteVoices(value) {
+  if (!Array.isArray(value)) return []
+  const seen = new Set()
+  const voices = []
+  value.forEach((voice) => {
+    const normalized = normalizeElevenLabsFavoriteVoice(voice)
+    if (!normalized || seen.has(normalized.voice_id)) return
+    seen.add(normalized.voice_id)
+    voices.push(normalized)
+  })
+  return voices
+}
+
+function loadStoredElevenLabsFavoriteVoices() {
+  if (typeof window === 'undefined') return []
+  try {
+    return normalizeStoredFavoriteVoices(JSON.parse(window.localStorage.getItem(ELEVENLABS_FAVORITE_VOICES_STORAGE_KEY) || '[]'))
+  } catch (_) {
+    return []
+  }
+}
+
+function loadStoredElevenLabsHiddenFavoriteVoiceIds() {
+  if (typeof window === 'undefined') return []
+  try {
+    const ids = JSON.parse(window.localStorage.getItem(ELEVENLABS_HIDDEN_FAVORITE_IDS_STORAGE_KEY) || '[]')
+    if (!Array.isArray(ids)) return []
+    return [...new Set(ids.map((id) => String(id || '').trim()).filter(Boolean))]
+  } catch (_) {
+    return []
+  }
+}
+
+function persistElevenLabsFavoriteVoices() {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(
+      ELEVENLABS_FAVORITE_VOICES_STORAGE_KEY,
+      JSON.stringify(normalizeStoredFavoriteVoices(elevenLabsFavoriteVoices.value)),
+    )
+    window.localStorage.setItem(
+      ELEVENLABS_HIDDEN_FAVORITE_IDS_STORAGE_KEY,
+      JSON.stringify([...new Set(elevenLabsHiddenFavoriteVoiceIds.value)]),
+    )
+  } catch (_) {
+    // Local storage can be unavailable in private contexts.
+  }
+}
+
+function buildElevenLabsFavoriteVoices(baseVoices = []) {
+  const hiddenIds = new Set(elevenLabsHiddenFavoriteVoiceIds.value)
+  const seen = new Set()
+  const merged = []
+
+  baseVoices.forEach((voice) => {
+    const normalized = normalizeElevenLabsFavoriteVoice(voice)
+    if (
+      !normalized ||
+      !ELEVENLABS_DEFAULT_FAVORITE_VOICE_IDS.includes(normalized.voice_id) ||
+      hiddenIds.has(normalized.voice_id) ||
+      seen.has(normalized.voice_id)
+    ) {
+      return
+    }
+    seen.add(normalized.voice_id)
+    merged.push(normalized)
+  })
+
+  elevenLabsFavoriteVoices.value.forEach((voice) => {
+    const normalized = normalizeElevenLabsFavoriteVoice(voice)
+    if (!normalized || hiddenIds.has(normalized.voice_id) || seen.has(normalized.voice_id)) return
+    seen.add(normalized.voice_id)
+    merged.push(normalized)
+  })
+
+  return merged
+}
+
+function addElevenLabsFavoriteVoice(voice) {
+  const normalized = normalizeElevenLabsFavoriteVoice(voice)
+  if (!normalized) return false
+
+  elevenLabsHiddenFavoriteVoiceIds.value = elevenLabsHiddenFavoriteVoiceIds.value.filter(
+    (voiceId) => voiceId !== normalized.voice_id,
+  )
+
+  const nextFavorites = elevenLabsFavoriteVoices.value.filter(
+    (item) => item.voice_id !== normalized.voice_id,
+  )
+  nextFavorites.push(normalized)
+  elevenLabsFavoriteVoices.value = nextFavorites
+
+  persistElevenLabsFavoriteVoices()
+  selectedVoiceId.value = normalized.voice_id
+  return true
+}
+
+function removeElevenLabsFavoriteVoice(voice) {
+  const voiceId = String(voice?.voice_id || '').trim()
+  if (!voiceId) return false
+
+  elevenLabsFavoriteVoices.value = elevenLabsFavoriteVoices.value.filter(
+    (item) => item.voice_id !== voiceId,
+  )
+
+  const isDefaultFavorite = ELEVENLABS_DEFAULT_FAVORITE_VOICE_IDS.includes(voiceId)
+  if (isDefaultFavorite && !elevenLabsHiddenFavoriteVoiceIds.value.includes(voiceId)) {
+    elevenLabsHiddenFavoriteVoiceIds.value = [...elevenLabsHiddenFavoriteVoiceIds.value, voiceId]
+  }
+
+  persistElevenLabsFavoriteVoices()
+  if (selectedVoiceId.value === voiceId) {
+    selectedVoiceId.value = ''
+    selectVoiceForCurrentProvider()
+  }
+  return true
 }
 
 function compactGoogleVoiceName(voice) {
@@ -1136,6 +1438,13 @@ async function loadVoiceOptions() {
     voiceOptions.value = currentProviderVoices.value
 
     selectVoiceForCurrentProvider()
+    if (selectedProviderId.value === 'elevenlabs') {
+      loadElevenLabsVoiceLibrary()
+    } else {
+      voiceLibraryOptions.value = []
+      selectedLibraryVoiceId.value = ''
+      voiceLibraryError.value = ''
+    }
 
     if (!providerList.length) {
       voiceOptionsError.value = 'Aucun fournisseur de voix disponible.'
@@ -1150,6 +1459,57 @@ async function loadVoiceOptions() {
   } finally {
     loadingVoiceOptions.value = false
   }
+}
+
+async function loadElevenLabsVoiceLibrary() {
+  if (!canManage.value || selectedProviderId.value !== 'elevenlabs') return
+
+  const requestId = ++voiceLibraryRequestId
+  const search = String(voiceLibrarySearch.value || '').trim()
+  const gender = String(voiceLibraryFilters.gender || '').trim()
+  const age = String(voiceLibraryFilters.age || '').trim()
+  const quality = String(voiceLibraryFilters.quality || '').trim()
+  loadingVoiceLibrary.value = true
+  voiceLibraryError.value = ''
+  selectedLibraryVoiceId.value = ''
+  try {
+    const response = await listReelVoiceLibrary({
+      ...ELEVENLABS_LIBRARY_DEFAULT_FILTERS,
+      ...(search ? { search } : {}),
+      ...(gender ? { gender } : {}),
+      ...(age ? { age } : {}),
+      ...(quality === 'high_quality' ? { category: 'high_quality' } : {}),
+      ...(quality === 'featured' ? { featured: true } : {}),
+    })
+    if (requestId !== voiceLibraryRequestId) return
+    const data = response?.data || {}
+    const voices = Array.isArray(data.voices) ? data.voices : []
+    voiceLibraryOptions.value = voices
+    if (!voices.length) {
+      const hasFilters = Boolean(search || gender || age || quality)
+      voiceLibraryError.value = hasFilters
+        ? 'Aucune voix ElevenLabs trouvee avec ces filtres.'
+        : 'Aucune voix ElevenLabs trouvee avec French / parisian.'
+    }
+  } catch (error) {
+    if (requestId !== voiceLibraryRequestId) return
+    voiceLibraryOptions.value = []
+    voiceLibraryError.value = extractErrorMessage(error, 'Impossible de charger la Voice Library ElevenLabs.')
+  } finally {
+    if (requestId === voiceLibraryRequestId) {
+      loadingVoiceLibrary.value = false
+    }
+  }
+}
+
+function scheduleVoiceLibrarySearch() {
+  if (voiceLibrarySearchTimer) {
+    clearTimeout(voiceLibrarySearchTimer)
+  }
+  voiceLibrarySearchTimer = setTimeout(() => {
+    voiceLibrarySearchTimer = 0
+    loadElevenLabsVoiceLibrary()
+  }, ELEVENLABS_LIBRARY_SEARCH_DEBOUNCE_MS)
 }
 
 function selectVoiceForCurrentProvider() {
@@ -1173,7 +1533,9 @@ function selectVoiceForCurrentProvider() {
 
 function resetTestAudio() {
   if (testAudioUrl.value) {
-    window.URL.revokeObjectURL(testAudioUrl.value)
+    if (String(testAudioUrl.value).startsWith('blob:')) {
+      window.URL.revokeObjectURL(testAudioUrl.value)
+    }
     testAudioUrl.value = ''
   }
 }
@@ -1182,9 +1544,66 @@ function onProviderChange() {
   resetTestAudio()
   selectVoiceForCurrentProvider()
   voiceOptions.value = currentProviderVoices.value
+  if (selectedProviderId.value === 'elevenlabs') {
+    loadElevenLabsVoiceLibrary()
+  } else {
+    voiceLibraryOptions.value = []
+    selectedLibraryVoiceId.value = ''
+    voiceLibraryError.value = ''
+  }
+}
+
+function onFavoriteVoiceChange() {
+  selectedLibraryVoiceId.value = ''
+  resetTestAudio()
+}
+
+function onLibraryVoiceChange() {
+  const voice = selectedLibraryVoice.value
+  resetTestAudio()
+  if (!voice) return
+
+  const previewUrl = String(voice.preview_url || '').trim()
+  if (!previewUrl) {
+    setFeedback('error', 'Aucun apercu gratuit ElevenLabs disponible pour cette voix library.')
+    return
+  }
+
+  testAudioUrl.value = previewUrl
+  setFeedback('success', `Apercu gratuit ElevenLabs charge: ${voice.name || voice.voice_id}.`)
+}
+
+function toggleSelectedLibraryVoiceFavorite() {
+  const voice = selectedLibraryVoice.value
+  if (!voice) return
+
+  if (selectedLibraryVoiceIsFavorite.value) {
+    removeElevenLabsFavoriteVoice(voice)
+    setFeedback('success', `${voice.name || voice.voice_id} retiree des favoris.`)
+    return
+  }
+
+  addElevenLabsFavoriteVoice(voice)
+  setFeedback('success', `${voice.name || voice.voice_id} ajoutee aux favoris.`)
 }
 
 async function handleTestVoice() {
+  if (selectedProviderId.value === 'elevenlabs') {
+    const previewVoice = selectedLibraryVoice.value || selectedVoice.value
+    if (!previewVoice) return
+
+    const elevenLabsPreviewUrl = String(previewVoice.preview_url || '').trim()
+    if (!elevenLabsPreviewUrl) {
+      setFeedback('error', 'Aucun apercu gratuit ElevenLabs disponible pour cette voix.')
+      return
+    }
+
+    resetTestAudio()
+    testAudioUrl.value = elevenLabsPreviewUrl
+    setFeedback('success', 'Apercu gratuit ElevenLabs charge pour cette voix.')
+    return
+  }
+
   if (!selectedProviderId.value || !selectedVoiceId.value) return
   if (!selectedVoiceApiUsable.value) return
 
@@ -1994,6 +2413,36 @@ onMounted(() => {
   line-height: 1.25;
 }
 
+.voice-select-row {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.voice-library-picker {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.voice-library-filters {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  margin-bottom: 6px;
+}
+
+.voice-library-search,
+.voice-library-filters select,
 .voice-select select {
   box-sizing: border-box;
   width: 100%;
@@ -2013,9 +2462,46 @@ onMounted(() => {
   text-overflow: ellipsis;
 }
 
+.voice-library-search {
+  margin-bottom: 2px;
+}
+
+.voice-library-search::placeholder {
+  color: #94a3b8;
+}
+
+.voice-library-search:disabled,
+.voice-library-filters select:disabled,
 .voice-select select:disabled {
   background: #e2e8f0;
   color: #64748b;
+}
+
+.voice-favorite-toggle {
+  box-sizing: border-box;
+  width: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.voice-favorite-toggle.is-favorite {
+  background: #fef3c7;
+  border-color: #facc15;
+  color: #92400e;
+}
+
+.voice-favorite-toggle:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .voice-select span {
@@ -2350,6 +2836,14 @@ onMounted(() => {
   }
 
   .speech-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .voice-select-row {
+    grid-template-columns: 1fr;
+  }
+
+  .voice-library-filters {
     grid-template-columns: 1fr;
   }
 

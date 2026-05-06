@@ -34,6 +34,7 @@ from .elevenlabs import (
     build_project_speech_text,
     generate_speech_mp3,
     list_filtered_voices,
+    list_shared_voices,
 )
 from .tts import (
     PROVIDER_ELEVENLABS,
@@ -1289,6 +1290,41 @@ class ReelVoiceListView(APIView):
         else:
             payload['voices'] = []
             payload['default_voice_id'] = ''
+
+        return Response(payload)
+
+
+class ReelVoiceLibraryView(APIView):
+    """Return ElevenLabs Voice Library choices for exploration in the admin UI."""
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def get(self, request):
+        language = str(request.query_params.get('language') or 'fr').strip().lower()
+        accent = str(request.query_params.get('accent') or 'parisian').strip().lower()
+        category = str(request.query_params.get('category') or '').strip().lower()
+        gender = str(request.query_params.get('gender') or '').strip().lower()
+        age = str(request.query_params.get('age') or '').strip().lower()
+        search = str(request.query_params.get('search') or '').strip()
+        featured = request.query_params.get('featured')
+        page_size = request.query_params.get('page_size') or 60
+        page = request.query_params.get('page') or 0
+
+        try:
+            payload = list_shared_voices(
+                language=language,
+                accent=accent,
+                category=category,
+                gender=gender,
+                age=age,
+                search=search,
+                featured=featured,
+                page_size=page_size,
+                page=page,
+            )
+        except ElevenLabsConfigurationError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except ElevenLabsAPIError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
 
         return Response(payload)
 

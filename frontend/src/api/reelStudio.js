@@ -6,6 +6,10 @@ export function listReelVoices(params = {}) {
   return apiClient.get(`${BASE}/voices/`, { params })
 }
 
+export function listReelVoiceLibrary(params = {}) {
+  return apiClient.get(`${BASE}/voices/library/`, { params })
+}
+
 export function listReelProjects() {
   return apiClient.get(`${BASE}/projects/`)
 }

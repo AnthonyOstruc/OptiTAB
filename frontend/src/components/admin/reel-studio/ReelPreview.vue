@@ -290,6 +290,15 @@
                 >
                   →
                 </button>
+                <button
+                  class="size-button inline-separator-button inline-separator-button--none"
+                  :class="{ 'line-mode-button--active': activeSlideInlineSeparator === 'none' }"
+                  type="button"
+                  aria-label="Aucun separateur"
+                  @click="setActiveInlineSeparator('none')"
+                >
+                  rien
+                </button>
               </template>
               </div>
               <div v-if="activeSlideInline" class="inline-layout-row inline-layout-row--offset">
@@ -481,7 +490,12 @@ const INLINE_OFFSET_MAX = 40
 const INLINE_OFFSET_STEP = 4
 const INLINE_SEPARATOR_SEMICOLON = 'semicolon'
 const INLINE_SEPARATOR_ARROW = 'arrow'
-const INLINE_SEPARATOR_VALUES = new Set([INLINE_SEPARATOR_SEMICOLON, INLINE_SEPARATOR_ARROW])
+const INLINE_SEPARATOR_NONE = 'none'
+const INLINE_SEPARATOR_VALUES = new Set([
+  INLINE_SEPARATOR_SEMICOLON,
+  INLINE_SEPARATOR_ARROW,
+  INLINE_SEPARATOR_NONE,
+])
 const CUMULATIVE_GAP_MIN = 0
 const CUMULATIVE_GAP_MAX = 1.5
 const CUMULATIVE_GAP_STEP = 0.1
@@ -807,6 +821,7 @@ function toAlignedKatexRows(rows, rowGap = CUMULATIVE_GAP_DEFAULT) {
           if (!cleanLine) return ''
           if (index === 0) return cleanLine
           const separator = normalizeInlineSeparator(inlineSeparators[index - 1])
+          if (separator === INLINE_SEPARATOR_NONE) return cleanLine
           const separatorKatex = separator === INLINE_SEPARATOR_ARROW ? '\\Rightarrow' : ';'
           return `${separatorKatex}\\qquad ${cleanLine}`
         })
@@ -2147,6 +2162,10 @@ onBeforeUnmount(() => {
 
 .inline-separator-button {
   min-width: 34px;
+}
+
+.inline-separator-button--none {
+  min-width: 44px;
 }
 
 .inline-offset-value {

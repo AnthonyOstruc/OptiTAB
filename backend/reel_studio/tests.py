@@ -7,7 +7,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from .elevenlabs import generate_speech_mp3, list_filtered_voices
+from .elevenlabs import generate_speech_mp3, list_filtered_voices, list_shared_voices
 from .models import ReelProject, ReelSlide
 from .tts.base import TTSResult
 
@@ -183,6 +183,7 @@ class ReelStudioSpeechPersistenceTests(TestCase):
                             'voice_id': 'other-voice',
                             'name': 'Anna B',
                             'category': 'professional',
+                            'preview_url': 'https://example.com/anna-preview.mp3',
                             'labels': {'language': 'fr', 'accent': 'parisian'},
                         },
                     ]
@@ -196,6 +197,64 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(voices[0]['name'], 'Nicolas')
         self.assertEqual(voices[1]['voice_id'], 'WQKwBV2Uzw1gSGr69N8I')
         self.assertEqual(voices[1]['name'], 'Mylene')
+        anna_voice = next(voice for voice in voices if voice['voice_id'] == 'other-voice')
+        self.assertEqual(anna_voice['preview_url'], 'https://example.com/anna-preview.mp3')
+
+    @override_settings(ELEVENLABS_API_KEY='test-key')
+    def test_shared_voice_library_filters_and_preview(self):
+        class FakeResponse:
+            status_code = 200
+            reason = 'OK'
+
+            @staticmethod
+            def json():
+                return {
+                    'voices': [
+                        {
+                            'voice_id': 'library-voice',
+                            'name': 'Nicolas - Narrator',
+                            'category': 'professional',
+                            'language': 'fr',
+                            'accent': 'parisian',
+                            'gender': 'male',
+                            'age': 'middle_aged',
+                            'description': 'French narrator',
+                            'preview_url': 'https://example.com/library-preview.mp3',
+                            'cloned_by_count': 42,
+                        },
+                    ],
+                    'has_more': False,
+                    'total_count': 1,
+                }
+
+        with patch('reel_studio.elevenlabs.requests.get', return_value=FakeResponse()) as mocked_get:
+            payload = list_shared_voices(
+                language='fr',
+                accent='parisian',
+                category='high_quality',
+                gender='male',
+                age='middle aged',
+                search='Nicolas',
+                featured=True,
+                page_size=80,
+            )
+
+        request_kwargs = mocked_get.call_args.kwargs
+        self.assertEqual(mocked_get.call_args.args[0], 'https://api.elevenlabs.io/v1/shared-voices')
+        self.assertEqual(request_kwargs['params']['language'], 'fr')
+        self.assertEqual(request_kwargs['params']['accent'], 'parisian')
+        self.assertEqual(request_kwargs['params']['category'], 'high_quality')
+        self.assertEqual(request_kwargs['params']['gender'], 'male')
+        self.assertEqual(request_kwargs['params']['age'], 'middle_aged')
+        self.assertEqual(request_kwargs['params']['search'], 'Nicolas')
+        self.assertIs(request_kwargs['params']['featured'], True)
+        self.assertEqual(request_kwargs['params']['page_size'], 80)
+        self.assertEqual(payload['total_count'], 1)
+        self.assertEqual(payload['voices'][0]['voice_id'], 'library-voice')
+        self.assertEqual(payload['voices'][0]['preview_url'], 'https://example.com/library-preview.mp3')
+        self.assertEqual(payload['voices'][0]['labels']['gender'], 'male')
+        self.assertEqual(payload['filters']['age'], 'middle_aged')
+        self.assertTrue(payload['filters']['featured'])
 
     @override_settings(
         ELEVENLABS_API_KEY='test-key',

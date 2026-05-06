@@ -38,6 +38,7 @@ class ReelSlideSerializer(serializers.ModelSerializer):
         allowed = {
             ReelSlide.INLINE_SEPARATOR_SEMICOLON,
             ReelSlide.INLINE_SEPARATOR_ARROW,
+            ReelSlide.INLINE_SEPARATOR_NONE,
         }
         if safe_value not in allowed:
             raise serializers.ValidationError('Separateur de ligne invalide.')

@@ -267,11 +267,14 @@ function clampInlineOffset(value) {
 
 function normalizeInlineSeparator(value) {
   const raw = String(value || '').trim()
-  return raw === 'arrow' ? 'arrow' : 'semicolon'
+  if (raw === 'arrow' || raw === 'none') return raw
+  return 'semicolon'
 }
 
 function inlineSeparatorKatex(value) {
-  return normalizeInlineSeparator(value) === 'arrow' ? '\\Rightarrow' : ';'
+  const separator = normalizeInlineSeparator(value)
+  if (separator === 'none') return ''
+  return separator === 'arrow' ? '\\Rightarrow' : ';'
 }
 
 function escapeHtml(value) {
@@ -301,7 +304,10 @@ function renderInlineKatexPart(expression, separator = 'semicolon') {
   const cleaned = String(expression || '').trim()
   if (!cleaned) return ''
   const alreadySeparated = /^(;|\\Rightarrow|\\to|\\rightarrow)/.test(cleaned)
-  const separatedExpression = alreadySeparated ? cleaned : `${inlineSeparatorKatex(separator)}\\quad ${cleaned}`
+  const separatorKatex = inlineSeparatorKatex(separator)
+  const separatedExpression = alreadySeparated
+    ? cleaned
+    : `${separatorKatex ? `${separatorKatex}\\quad ` : '\\quad '}${cleaned}`
   return katex.renderToString(`\\displaystyle ${separatedExpression}`, { displayMode: false, throwOnError: false })
 }
 

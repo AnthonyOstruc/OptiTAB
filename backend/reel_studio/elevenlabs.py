@@ -357,6 +357,7 @@ def _serialize_voice(voice, *, matches_filter):
         'api_usable': True,
         'requires_subscription': requires_subscription,
         'matches_filter': bool(matches_filter),
+        'preview_url': voice.get('preview_url') or '',
         'labels': {
             'language': voice_language,
             'accent': voice_accent,
@@ -364,6 +365,67 @@ def _serialize_voice(voice, *, matches_filter):
             'age': labels.get('age') or '',
             'descriptive': labels.get('descriptive') or '',
             'use_case': labels.get('use_case') or '',
+        },
+    }
+
+
+def _first_verified_language_preview(voice, *, language='', accent=''):
+    normalized_language = str(language or '').strip().lower()
+    normalized_accent = str(accent or '').strip().lower()
+    verified_languages = voice.get('verified_languages') or []
+    if not isinstance(verified_languages, list):
+        return ''
+
+    fallback_preview = ''
+    for item in verified_languages:
+        if not isinstance(item, dict):
+            continue
+        preview_url = str(item.get('preview_url') or '').strip()
+        if not preview_url:
+            continue
+        if not fallback_preview:
+            fallback_preview = preview_url
+
+        item_language = str(item.get('language') or '').strip().lower()
+        item_accent = str(item.get('accent') or '').strip().lower()
+        language_matches = not normalized_language or item_language == normalized_language
+        accent_matches = not normalized_accent or item_accent == normalized_accent
+        if language_matches and accent_matches:
+            return preview_url
+
+    return fallback_preview
+
+
+def _serialize_shared_voice(voice, *, language='', accent=''):
+    safe_language = str(voice.get('language') or '').strip().lower()
+    safe_accent = str(voice.get('accent') or '').strip().lower()
+    preview_url = (
+        str(voice.get('preview_url') or '').strip()
+        or _first_verified_language_preview(voice, language=language, accent=accent)
+    )
+
+    return {
+        'voice_id': voice.get('voice_id') or '',
+        'name': voice.get('name') or '',
+        'category': voice.get('category') or '',
+        'api_usable': True,
+        'requires_subscription': False,
+        'matches_filter': True,
+        'preview_url': preview_url,
+        'description': voice.get('description') or '',
+        'public_owner_id': voice.get('public_owner_id') or '',
+        'is_library': True,
+        'is_added_by_user': bool(voice.get('is_added_by_user')),
+        'is_bookmarked': bool(voice.get('is_bookmarked')),
+        'free_users_allowed': bool(voice.get('free_users_allowed')),
+        'cloned_by_count': _safe_int(voice.get('cloned_by_count'), 0),
+        'labels': {
+            'language': safe_language,
+            'accent': safe_accent,
+            'gender': voice.get('gender') or '',
+            'age': voice.get('age') or '',
+            'descriptive': voice.get('descriptive') or '',
+            'use_case': voice.get('use_case') or '',
         },
     }
 
@@ -377,6 +439,7 @@ def _custom_voice_item(
     category='custom',
     is_custom=True,
     sort_priority=100,
+    preview_url='',
 ):
     safe_name = str(name or '').strip()
     safe_labels = labels or {}
@@ -389,6 +452,7 @@ def _custom_voice_item(
         'matches_filter': bool(matches_filter),
         'is_custom': bool(is_custom),
         'sort_priority': int(sort_priority),
+        'preview_url': str(preview_url or '').strip(),
         'labels': {
             'language': safe_labels.get('language') or '',
             'accent': safe_labels.get('accent') or '',
@@ -410,6 +474,7 @@ def _extra_voice_items():
             category=item.get('category', ''),
             is_custom=item.get('is_custom', False),
             sort_priority=item.get('sort_priority', 100),
+            preview_url=item.get('preview_url', ''),
         )
         for item in BUILTIN_EXTRA_VOICES
     ]
@@ -450,11 +515,114 @@ def _apply_voice_override(existing, override):
         'matches_filter': bool(existing.get('matches_filter') or override.get('matches_filter')),
         'is_custom': override.get('is_custom', existing.get('is_custom', False)),
         'sort_priority': override.get('sort_priority', existing.get('sort_priority', 100)),
+        'preview_url': override.get('preview_url') or existing.get('preview_url', ''),
         'labels': {
             **labels,
             **{key: value for key, value in override_labels.items() if value},
         },
     })
+
+
+def list_shared_voices(
+    *,
+    language='fr',
+    accent='parisian',
+    category='',
+    gender='',
+    age='',
+    search='',
+    featured=False,
+    page_size=60,
+    page=0,
+):
+    api_key = getattr(settings, 'ELEVENLABS_API_KEY', '').strip()
+    if not api_key:
+        raise ElevenLabsConfigurationError('ELEVENLABS_API_KEY non configure.')
+
+    safe_page_size = max(1, min(_safe_int(page_size, 60), 100))
+    safe_page = max(0, _safe_int(page, 0))
+    allowed_categories = {'professional', 'famous', 'high_quality'}
+    allowed_genders = {'male', 'female', 'neutral'}
+    allowed_ages = {'young', 'middle_aged', 'old'}
+    normalized_category = str(category or '').strip().lower()
+    normalized_gender = str(gender or '').strip().lower()
+    normalized_age = str(age or '').strip().lower().replace('-', '_').replace(' ', '_')
+    safe_featured = _safe_bool(featured, False)
+
+    params = {
+        'page_size': safe_page_size,
+        'page': safe_page,
+    }
+    for key, value in (
+        ('language', language),
+        ('accent', accent),
+        ('search', search),
+    ):
+        safe_value = str(value or '').strip()
+        if safe_value:
+            params[key] = safe_value
+
+    if normalized_category in allowed_categories:
+        params['category'] = normalized_category
+    if normalized_gender in allowed_genders:
+        params['gender'] = normalized_gender
+    if normalized_age in allowed_ages:
+        params['age'] = normalized_age
+    if safe_featured:
+        params['featured'] = True
+
+    try:
+        response = requests.get(
+            'https://api.elevenlabs.io/v1/shared-voices',
+            headers={'xi-api-key': api_key},
+            params=params,
+            timeout=float(getattr(settings, 'ELEVENLABS_TIMEOUT_SECONDS', 60) or 60),
+        )
+    except requests.Timeout as exc:
+        raise ElevenLabsAPIError('Timeout ElevenLabs pendant le chargement de la Voice Library.') from exc
+    except requests.RequestException as exc:
+        raise ElevenLabsAPIError('Erreur reseau ElevenLabs pendant le chargement de la Voice Library.') from exc
+
+    if response.status_code >= 400:
+        detail = _extract_error_detail(response)
+        raise ElevenLabsAPIError(f'ElevenLabs HTTP {response.status_code}: {detail}')
+
+    try:
+        payload = response.json()
+    except ValueError as exc:
+        raise ElevenLabsAPIError('ElevenLabs a retourne une Voice Library invalide.') from exc
+
+    if not isinstance(payload, dict):
+        payload = {}
+    voices = payload.get('voices', [])
+    if not isinstance(voices, list):
+        voices = []
+
+    normalized_language = str(language or '').strip().lower()
+    normalized_accent = str(accent or '').strip().lower()
+    serialized = [
+        _serialize_shared_voice(voice, language=normalized_language, accent=normalized_accent)
+        for voice in voices
+        if isinstance(voice, dict) and voice.get('voice_id')
+    ]
+
+    return {
+        'voices': serialized,
+        'has_more': bool(payload.get('has_more')),
+        'total_count': _safe_int(payload.get('total_count'), len(serialized)),
+        'last_sort_id': payload.get('last_sort_id') or '',
+        'filters': {
+            'language': normalized_language,
+            'accent': normalized_accent,
+            'category': normalized_category if normalized_category in allowed_categories else '',
+            'gender': normalized_gender if normalized_gender in allowed_genders else '',
+            'age': normalized_age if normalized_age in allowed_ages else '',
+            'search': str(search or '').strip(),
+            'featured': safe_featured,
+            'page_size': safe_page_size,
+            'page': safe_page,
+        },
+    }
 
 
 def list_filtered_voices(*, language='fr', accent='parisian', include_fallback=True):

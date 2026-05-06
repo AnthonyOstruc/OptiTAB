@@ -94,6 +94,7 @@ class ReelSlide(models.Model):
     TYPE_CTA = 'cta'
     INLINE_SEPARATOR_SEMICOLON = 'semicolon'
     INLINE_SEPARATOR_ARROW = 'arrow'
+    INLINE_SEPARATOR_NONE = 'none'
 
     TYPE_CHOICES = [
         (TYPE_HOOK, 'Hook'),
@@ -105,6 +106,7 @@ class ReelSlide(models.Model):
     INLINE_SEPARATOR_CHOICES = [
         (INLINE_SEPARATOR_SEMICOLON, 'Semicolon'),
         (INLINE_SEPARATOR_ARROW, 'Arrow'),
+        (INLINE_SEPARATOR_NONE, 'None'),
     ]
 
     LAYOUT_UNCHECKED = 'unchecked'

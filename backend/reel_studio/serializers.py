@@ -216,12 +216,37 @@ class ReelSpeechGenerateSerializer(serializers.Serializer):
     model_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
     output_format = serializers.CharField(max_length=64, allow_blank=True, required=False, default='')
     provider = serializers.CharField(max_length=32, allow_blank=True, required=False, default='')
+    stability = serializers.FloatField(min_value=0, max_value=1, required=False, allow_null=True)
+    similarity_boost = serializers.FloatField(min_value=0, max_value=1, required=False, allow_null=True)
+    style = serializers.FloatField(min_value=0, max_value=1, required=False, allow_null=True)
+    speed = serializers.FloatField(min_value=0.5, max_value=2, required=False, allow_null=True)
+    use_speaker_boost = serializers.BooleanField(required=False, allow_null=True)
+    language_code = serializers.CharField(max_length=16, allow_blank=True, required=False, default='')
+    apply_text_normalization = serializers.ChoiceField(
+        choices=['auto', 'on', 'off'],
+        allow_blank=True,
+        required=False,
+        default='',
+    )
 
 
 class ReelTTSTestSerializer(serializers.Serializer):
     text = serializers.CharField(max_length=600, allow_blank=False)
     provider = serializers.CharField(max_length=32, allow_blank=True, required=False, default='')
     voice_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
+    model_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
+    stability = serializers.FloatField(min_value=0, max_value=1, required=False, allow_null=True)
+    similarity_boost = serializers.FloatField(min_value=0, max_value=1, required=False, allow_null=True)
+    style = serializers.FloatField(min_value=0, max_value=1, required=False, allow_null=True)
+    speed = serializers.FloatField(min_value=0.5, max_value=2, required=False, allow_null=True)
+    use_speaker_boost = serializers.BooleanField(required=False, allow_null=True)
+    language_code = serializers.CharField(max_length=16, allow_blank=True, required=False, default='')
+    apply_text_normalization = serializers.ChoiceField(
+        choices=['auto', 'on', 'off'],
+        allow_blank=True,
+        required=False,
+        default='',
+    )
 
 
 class ReelVideoFrameSerializer(serializers.Serializer):

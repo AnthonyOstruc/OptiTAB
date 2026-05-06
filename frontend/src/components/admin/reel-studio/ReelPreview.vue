@@ -109,52 +109,102 @@
         <div class="fullscreen-content" @click.stop>
           <aside class="fullscreen-speech-panel" aria-label="Voix de la slide">
             <div class="speech-panel-header">
-              <h4>Speech</h4>
+              <div class="speech-tabs" role="tablist" aria-label="Edition slide">
+                <button
+                  class="speech-tab"
+                  :class="{ 'speech-tab--active': fullscreenEditorTab === 'speech' }"
+                  type="button"
+                  role="tab"
+                  :aria-selected="String(fullscreenEditorTab === 'speech')"
+                  @click="fullscreenEditorTab = 'speech'"
+                >
+                  Speech
+                </button>
+                <button
+                  class="speech-tab"
+                  :class="{ 'speech-tab--active': fullscreenEditorTab === 'katex' }"
+                  type="button"
+                  role="tab"
+                  :aria-selected="String(fullscreenEditorTab === 'katex')"
+                  @click="fullscreenEditorTab = 'katex'"
+                >
+                  KaTeX
+                </button>
+              </div>
               <span>{{ activeSlideIndexLabel }}</span>
             </div>
 
-            <textarea
-              class="speech-script"
-              :class="{ 'speech-script--dirty': activeSpeechDraftDirty }"
-              v-model="speechDraft"
-              rows="8"
-              maxlength="2500"
-              @keydown.stop
-            ></textarea>
+            <template v-if="fullscreenEditorTab === 'speech'">
+              <textarea
+                class="speech-script"
+                :class="{ 'speech-script--dirty': activeSpeechDraftDirty }"
+                v-model="speechDraft"
+                rows="8"
+                maxlength="2500"
+                @keydown.stop
+              ></textarea>
 
-            <audio
-              v-if="activeSlideSpeechAudioUrl"
-              ref="speechPlayerRef"
-              :key="activeSlideSpeechAudioUrl"
-              class="speech-player"
-              :src="activeSlideSpeechAudioUrl"
-              controls
-              preload="metadata"
-              @ended="handleSpeechEnded"
-              @error="handleSpeechError"
-            ></audio>
+              <audio
+                v-if="activeSlideSpeechAudioUrl"
+                ref="speechPlayerRef"
+                :key="activeSlideSpeechAudioUrl"
+                class="speech-player"
+                :src="activeSlideSpeechAudioUrl"
+                controls
+                preload="metadata"
+                @ended="handleSpeechEnded"
+                @error="handleSpeechError"
+              ></audio>
 
-            <p v-else class="speech-empty">{{ activeSlideSpeechStatusLabel }}</p>
+              <p v-else class="speech-empty">{{ activeSlideSpeechStatusLabel }}</p>
 
-            <div class="speech-action-row">
-              <button
-                class="speech-save-button"
-                type="button"
-                :disabled="isGeneratingActiveSpeech || !activeSpeechDraftDirty"
-                @click="saveActiveSpeechDraft"
-              >
-                Enregistrer speech
-              </button>
+              <div class="speech-action-row">
+                <button
+                  class="speech-save-button"
+                  type="button"
+                  :disabled="isGeneratingActiveSpeech || !activeSpeechDraftDirty"
+                  @click="saveActiveSpeechDraft"
+                >
+                  Enregistrer speech
+                </button>
 
-              <button
-                class="speech-generate-button"
-                type="button"
-                :disabled="isGeneratingActiveSpeech || !activeSpeechDraftText"
-                @click="generateActiveSlideSpeech"
-              >
-                {{ speechGenerateButtonLabel }}
-              </button>
-            </div>
+                <button
+                  class="speech-generate-button"
+                  type="button"
+                  :disabled="isGeneratingActiveSpeech || !activeSpeechDraftText"
+                  @click="generateActiveSlideSpeech"
+                >
+                  {{ speechGenerateButtonLabel }}
+                </button>
+              </div>
+            </template>
+
+            <template v-else>
+              <textarea
+                class="speech-script"
+                :class="{ 'speech-script--dirty': activeKatexDraftDirty }"
+                v-model="katexDraft"
+                rows="8"
+                maxlength="5000"
+                placeholder="KATEX de cette slide"
+                @keydown.stop
+              ></textarea>
+
+              <p class="speech-empty">
+                Modifie la formule KaTeX de cette slide, puis enregistre.
+              </p>
+
+              <div class="speech-action-row">
+                <button
+                  class="speech-save-button"
+                  type="button"
+                  :disabled="!activeKatexDraftDirty"
+                  @click="saveActiveKatexDraft"
+                >
+                  Enregistrer KaTeX
+                </button>
+              </div>
+            </template>
           </aside>
 
           <div class="fullscreen-toolbar">
@@ -393,6 +443,10 @@ const exportSlideRefs = ref([])
 const speechDraft = ref('')
 const speechDraftSavedValue = ref('')
 const speechDraftSlideId = ref(null)
+const katexDraft = ref('')
+const katexDraftSavedValue = ref('')
+const katexDraftSlideId = ref(null)
+const fullscreenEditorTab = ref('speech')
 const speechPlayerRef = ref(null)
 const isFullPreviewPlaying = ref(false)
 const cumulativeGap = ref(0.4)
@@ -452,6 +506,10 @@ const activeSpeechDraftText = computed(() => normalizeSpeechLine(speechDraft.val
 const activeSpeechDraftDirty = computed(() => (
   normalizeSpeechDraftForCompare(speechDraft.value) !== normalizeSpeechDraftForCompare(speechDraftSavedValue.value)
 ))
+const activeKatexDraftText = computed(() => normalizeKatexDraft(katexDraft.value))
+const activeKatexDraftDirty = computed(() => (
+  normalizeKatexDraftForCompare(katexDraft.value) !== normalizeKatexDraftForCompare(katexDraftSavedValue.value)
+))
 const activeSlideSpeechAudioUrl = computed(() => normalizeText(activeSlide.value?.speech_audio_url))
 const isGeneratingActiveSpeech = computed(() => (
   activeSlide.value?.id &&
@@ -502,6 +560,14 @@ function normalizeSpeechDraftForCompare(value) {
   return String(value || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim()
 }
 
+function normalizeKatexDraft(value) {
+  return String(value || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim()
+}
+
+function normalizeKatexDraftForCompare(value) {
+  return normalizeKatexDraft(value)
+}
+
 function slideSpeechText(slide) {
   const voice = normalizeSpeechLine(slide?.voice_script)
   if (voice) return voice
@@ -534,6 +600,25 @@ function syncSpeechDraftFromActiveSlide({ force = false } = {}) {
   speechDraft.value = source
   speechDraftSavedValue.value = source
   speechDraftSlideId.value = nextSlideId
+}
+
+function syncKatexDraftFromActiveSlide({ force = false } = {}) {
+  const slide = activeSlide.value
+  if (!slide?.id) {
+    katexDraft.value = ''
+    katexDraftSavedValue.value = ''
+    katexDraftSlideId.value = null
+    return
+  }
+
+  const nextSlideId = Number(slide.id)
+  const slideChanged = Number(katexDraftSlideId.value) !== nextSlideId
+  if (!force && !slideChanged && activeKatexDraftDirty.value) return
+
+  const source = normalizeKatexDraft(slide.katex)
+  katexDraft.value = source
+  katexDraftSavedValue.value = source
+  katexDraftSlideId.value = nextSlideId
 }
 
 function isSlideSpeechAudioStale(slide) {
@@ -902,8 +987,10 @@ function openFullscreenAt(index) {
 
   fullscreenIndex.value = normalizedIndex
   isFullscreen.value = true
+  fullscreenEditorTab.value = 'speech'
   selectSlideByIndex(normalizedIndex)
   syncSpeechDraftFromActiveSlide({ force: true })
+  syncKatexDraftFromActiveSlide({ force: true })
 }
 
 function firstVideoSlideIndex() {
@@ -933,6 +1020,7 @@ function findAdjacentVideoSlideIndex(startIndex, direction) {
 function closeFullscreen() {
   stopFullPreview()
   saveActiveSpeechDraft()
+  saveActiveKatexDraft()
   isFullscreen.value = false
 }
 
@@ -941,9 +1029,12 @@ async function moveFullscreenToIndex(index) {
   if (!slide?.id || isVirtualCoverSlide(slide)) return false
 
   saveActiveSpeechDraft()
+  saveActiveKatexDraft()
+  fullscreenEditorTab.value = 'speech'
   fullscreenIndex.value = index
   selectSlideByIndex(index)
   syncSpeechDraftFromActiveSlide({ force: true })
+  syncKatexDraftFromActiveSlide({ force: true })
   await nextTick()
   return true
 }
@@ -1080,6 +1171,24 @@ function saveActiveSpeechDraft() {
     id: activeSlide.value.id,
     patch: {
       voice_script: voiceScript,
+    },
+  })
+
+  return true
+}
+
+function saveActiveKatexDraft() {
+  if (!activeSlide.value?.id || !activeKatexDraftDirty.value || isVirtualCoverSlide(activeSlide.value)) return false
+
+  const katexValue = activeKatexDraftText.value
+  katexDraft.value = katexValue
+  katexDraftSavedValue.value = katexValue
+  katexDraftSlideId.value = Number(activeSlide.value.id)
+
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: {
+      katex: katexValue,
     },
   })
 
@@ -1548,10 +1657,19 @@ watch(
     ) {
       saveActiveSpeechDraft()
     }
+    if (
+      activeKatexDraftDirty.value &&
+      activeSlide.value?.id &&
+      Number(activeSlide.value.id) !== Number(slideId)
+    ) {
+      saveActiveKatexDraft()
+    }
     const index = findIndexById(slideId)
     if (index !== -1) {
       fullscreenIndex.value = index
+      fullscreenEditorTab.value = 'speech'
       syncSpeechDraftFromActiveSlide({ force: true })
+      syncKatexDraftFromActiveSlide({ force: true })
     }
   }
 )
@@ -1562,9 +1680,11 @@ watch(
     activeSlide.value?.voice_script,
     activeSlide.value?.title,
     activeSlide.value?.screen_text,
+    activeSlide.value?.katex,
   ],
   () => {
     syncSpeechDraftFromActiveSlide()
+    syncKatexDraftFromActiveSlide()
   },
   { immediate: true }
 )
@@ -1853,6 +1973,38 @@ onBeforeUnmount(() => {
   margin: 0;
   color: #0f172a;
   font-size: 15px;
+}
+
+.speech-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  padding: 3px;
+}
+
+.speech-tab {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #1e3a8a;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.speech-tab--active {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.speech-tab:hover:not(.speech-tab--active) {
+  background: #dbeafe;
 }
 
 .speech-panel-header span {

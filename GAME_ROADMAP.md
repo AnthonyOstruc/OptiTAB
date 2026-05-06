@@ -146,12 +146,21 @@ All core files have been created. The game is at MVP state.
 - [x] Add pause system (ESC/P + ⏸ button; overlay with Resume / Change Category)
 - [x] Per-category high scores (`mathrun_hs_<category>` localStorage keys)
 - [x] Streak / combo system (×2 at 3, ×3 at 5, ×5 at 10 — floating bonus text + "COMBO ×N !" banner)
+- [x] Countdown 3-2-1-GO ! before first question each game
+- [x] Question bank expanded 30 → 70 questions (16+16+24+14)
+- [x] MenuScene shows per-category HS badge (★ N) + updated question counts
+- [x] Timer bar (green→yellow→red) synced to block fall duration
+- [x] Auth gate in MathRunView.vue (login prompt if not authenticated)
+- [x] XP reward on game end (score × 10 XP via updateUserXPInstantly + Vue notification)
+- [x] Leaderboard panel below canvas (top 10 per category, with tab switcher)
+- [x] Backend Django app `mini_games` — MathRunScore model, migrations applied
+- [x] `POST /api/mini-games/math-run/score/` — saves best per user/category
+- [x] `GET /api/mini-games/math-run/leaderboard/?category=all` — top 10 per category
+- [x] Score submitted silently to API on game over (via CustomEvent bridge Phaser→Vue)
 
 **Remaining future improvements:**
-- [ ] Connect to Django API for questions
-- [ ] Add XP reward on game end (connect to OptiTAB gamification system)
-- [ ] Add leaderboard
-- [ ] Add premium access gate (subscription check)
+- [ ] Connect to Django API for questions (replace static questions.js with API fetch)
+- [ ] Premium access gate (subscription check — currently any logged-in user can play)
 
 ---
 

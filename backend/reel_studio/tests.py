@@ -7,7 +7,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from .elevenlabs import list_filtered_voices
+from .elevenlabs import generate_speech_mp3, list_filtered_voices
 from .models import ReelProject, ReelSlide
 from .tts.base import TTSResult
 
@@ -196,3 +196,40 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(voices[0]['name'], 'Nicolas')
         self.assertEqual(voices[1]['voice_id'], 'WQKwBV2Uzw1gSGr69N8I')
         self.assertEqual(voices[1]['name'], 'Mylene')
+
+    @override_settings(
+        ELEVENLABS_API_KEY='test-key',
+        ELEVENLABS_VOICE_ID='voice-default',
+        ELEVENLABS_MODEL_ID='eleven_multilingual_v2',
+        ELEVENLABS_OUTPUT_FORMAT='mp3_44100_128',
+    )
+    def test_elevenlabs_generation_uses_advanced_settings(self):
+        class FakeResponse:
+            status_code = 200
+            reason = 'OK'
+            content = b'audio-bytes'
+
+        with patch('reel_studio.elevenlabs.requests.post', return_value=FakeResponse()) as mocked_post:
+            result = generate_speech_mp3(
+                text='Bonjour',
+                voice_id='voice-1',
+                model_id='eleven_multilingual_v3',
+                stability=0.64,
+                similarity_boost=0.84,
+                style=0.10,
+                speed=1,
+                use_speaker_boost=True,
+                language_code='fr',
+                apply_text_normalization='on',
+            )
+
+        payload = mocked_post.call_args.kwargs['json']
+        self.assertEqual(payload['model_id'], 'eleven_v3')
+        self.assertEqual(payload['language_code'], 'fr')
+        self.assertEqual(payload['apply_text_normalization'], 'on')
+        self.assertEqual(payload['voice_settings']['stability'], 0.64)
+        self.assertEqual(payload['voice_settings']['similarity_boost'], 0.84)
+        self.assertEqual(payload['voice_settings']['style'], 0.10)
+        self.assertEqual(payload['voice_settings']['speed'], 1)
+        self.assertIs(payload['voice_settings']['use_speaker_boost'], True)
+        self.assertEqual(result['model_id'], 'eleven_v3')

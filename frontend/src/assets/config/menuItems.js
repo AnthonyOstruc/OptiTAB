@@ -12,7 +12,8 @@ import {
   QuestionMarkCircleIcon, // <- icône quiz
   InformationCircleIcon, // <- icône about
   UserGroupIcon, // <- icône cours particuliers
-  SparklesIcon // <- icône ressources gratuites
+  SparklesIcon, // <- icône ressources gratuites
+  PuzzlePieceIcon, // <- icône mini-jeux
 } from '@heroicons/vue/24/outline'
 const DashboardIcon = Squares2X2Icon;
 // Centralized menu configuration for OptiTAB
@@ -80,6 +81,13 @@ export const menuItems = [
     icon: QuestionMarkCircleIcon,
     href: '/quiz',
     description: 'Quiz à choix multiples'
+  },
+  {
+    key: 'games',
+    text: 'Mini-jeux',
+    icon: PuzzlePieceIcon,
+    href: '/jeux/math-run',
+    description: 'Math Run — le runner mathématique'
   },
   {
     key: 'contact',

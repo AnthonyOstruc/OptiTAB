@@ -28,11 +28,11 @@ const MOBILE_BTN_OFFSET = 52
 
 // Speed tiers: [minScore, fallDuration, stripeSpeed]
 const SPEED_TIERS = [
-  [0,  2800, 65],
-  [5,  2300, 90],
-  [10, 1900, 120],
-  [15, 1500, 155],
-  [20, 1200, 190],
+  [0,  5800, 65],
+  [5,  5300, 90],
+  [10, 4900, 120],
+  [15, 4500, 155],
+  [20, 4200, 190],
 ]
 
 export default class GameScene extends Phaser.Scene {
@@ -51,8 +51,9 @@ export default class GameScene extends Phaser.Scene {
     this.currentTier = 0
     this.runTick = 0
     this.streak = 0
+    this.timerElapsed = 0
+    this.questionDuration = 0
     this.category = data?.category || 'all'
-    this.isPaused = false
   }
 
   create() {
@@ -74,12 +75,13 @@ export default class GameScene extends Phaser.Scene {
     this._buildPlayer()
     this._buildMobileControls()
     this._bindKeys()
-    this._buildPauseOverlay()
 
-    this.input.keyboard.on('keydown-ESC', () => this._togglePause())
-    this.input.keyboard.on('keydown-P',   () => this._togglePause())
+    this.input.keyboard.on('keydown-ESC', () => {
+      this.cameras.main.fadeOut(200, 0, 10, 40)
+      this.time.delayedCall(200, () => this.scene.start('MenuScene'))
+    })
 
-    this.time.delayedCall(400, () => this._nextQuestion())
+    this._startCountdown()
   }
 
   // ─── Lane backgrounds ──────────────────────────────────────────────────────
@@ -182,6 +184,10 @@ export default class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(11)
+
+    // Timer bar — background strip at bottom of question panel
+    this.add.rectangle(this.W / 2, HUD_H + Q_H - 3, this.W, 6, 0x0b1530).setDepth(10)
+    this.timerBarGfx = this.add.graphics().setDepth(11)
   }
 
   // ─── Player character (drawn with Graphics) ───────────────────────────────
@@ -201,41 +207,98 @@ export default class GameScene extends Phaser.Scene {
     const x = this.playerPos.x
     const y = this.playerY
 
-    const t = this.runTick * Math.PI * 2
-    const bounce  = Math.abs(Math.sin(t * 2)) * 2.5  // body up/down 2.5 px
-    const legSwing = Math.sin(t) * 9                  // shoes forward/back 9 px
-    const armSwing = Math.sin(t + Math.PI) * 7        // arms opposite phase
+    const t   = this.runTick * Math.PI * 2
+    const bob = Math.abs(Math.sin(t * 2)) * 3
+    const leg = Math.sin(t)           // -1..+1 : leg phase
+    const arm = Math.sin(t + Math.PI) // opposite to leg
 
-    // ── Legs (thighs then shoes, drawn behind body) ───────────────────────────
-    g.fillStyle(0xe6a800, 1)                           // slightly darker than body
-    g.fillRoundedRect(x - 13, y + 19 - bounce, 11, 17, 3)  // left thigh
-    g.fillRoundedRect(x + 2,  y + 19 - bounce, 11, 17, 3)  // right thigh
+    // Palette
+    const SKIN  = 0xf5c5a3
+    const HAIR  = 0x2d1b0e
+    const SHIRT = 0x2563eb
+    const NAVY  = 0x1e3a8a
+    const SHOE  = 0x1c1c2e
+    const SOLE  = 0xdddddd
 
-    g.fillStyle(C.PLAYER_SHOES, 1)
-    g.fillRoundedRect(x - 17 + legSwing, y + 32 - bounce, 14, 9, 4)   // left shoe
-    g.fillRoundedRect(x + 3  - legSwing, y + 32 - bounce, 14, 9, 4)   // right shoe
+    const by = -bob  // vertical bounce (upward)
 
-    // ── Body ─────────────────────────────────────────────────────────────────
-    g.fillStyle(C.PLAYER_BODY, 1)
-    g.fillRoundedRect(x - 13, y - 18 - bounce, 26, 38, 6)
+    // ── BACK LEG ─────────────────────────────────────────────────────────────
+    const rLeg  = -leg
+    const rShoe = x - 15 + rLeg * 7
+    g.fillStyle(NAVY, 1)
+    g.fillRoundedRect(x - 15, y + 15 + by + rLeg * 3, 12, 14, 4)
+    g.fillStyle(SKIN, 1)
+    g.fillRoundedRect(x - 15 + rLeg * 4, y + 27 + by + rLeg * 3, 11, 13, 3)
+    g.fillStyle(SHOE, 1)
+    g.fillRoundedRect(rShoe - 1, y + 38 + by, 17, 8, 4)
+    g.fillStyle(SOLE, 1)
+    g.fillRect(rShoe - 1, y + 44 + by, 17, 2)
 
-    // ── Arms ─────────────────────────────────────────────────────────────────
-    g.fillStyle(C.PLAYER_HEAD, 1)
-    g.fillRoundedRect(x - 20, y - 12 - bounce + armSwing,  8, 20, 4)  // left arm
-    g.fillRoundedRect(x + 12, y - 12 - bounce - armSwing,  8, 20, 4)  // right arm
+    // ── BACK ARM ─────────────────────────────────────────────────────────────
+    g.fillStyle(SHIRT, 1)
+    g.fillRoundedRect(x - 22, y - 16 + by + arm * 6, 8, 13, 4)
+    g.fillStyle(SKIN, 1)
+    g.fillRoundedRect(x - 21, y - 5 + by + arm * 9, 7, 10, 3)
 
-    // ── Head ─────────────────────────────────────────────────────────────────
-    g.fillStyle(C.PLAYER_HEAD, 1)
-    g.fillCircle(x, y - 34 - bounce, 17)
+    // ── TORSO ─────────────────────────────────────────────────────────────────
+    g.fillStyle(SHIRT, 1)
+    g.fillRoundedRect(x - 14, y - 22 + by, 28, 30, 6)
+    g.fillStyle(0x60a5fa, 1)                            // jersey stripe
+    g.fillRoundedRect(x - 2, y - 22 + by, 4, 11, 2)
+    g.fillStyle(NAVY, 1)                                // shorts
+    g.fillRoundedRect(x - 14, y + 6 + by, 28, 11, 4)
 
-    // ── Eyes ─────────────────────────────────────────────────────────────────
-    g.fillStyle(0x1a237e, 1)
-    g.fillCircle(x - 6, y - 36 - bounce, 5)
-    g.fillCircle(x + 6, y - 36 - bounce, 5)
+    // ── FRONT LEG ────────────────────────────────────────────────────────────
+    const fShoe = x + 3 + leg * 7
+    g.fillStyle(NAVY, 1)
+    g.fillRoundedRect(x + 3, y + 15 + by + leg * 3, 12, 14, 4)
+    g.fillStyle(SKIN, 1)
+    g.fillRoundedRect(x + 4 + leg * 4, y + 27 + by + leg * 3, 11, 13, 3)
+    g.fillStyle(SHOE, 1)
+    g.fillRoundedRect(fShoe - 1, y + 38 + by, 17, 8, 4)
+    g.fillStyle(SOLE, 1)
+    g.fillRect(fShoe - 1, y + 44 + by, 17, 2)
 
+    // ── FRONT ARM ────────────────────────────────────────────────────────────
+    g.fillStyle(SHIRT, 1)
+    g.fillRoundedRect(x + 14, y - 16 + by - arm * 6, 8, 13, 4)
+    g.fillStyle(SKIN, 1)
+    g.fillRoundedRect(x + 14, y - 5 + by - arm * 9, 7, 10, 3)
+
+    // ── NECK ─────────────────────────────────────────────────────────────────
+    g.fillStyle(SKIN, 1)
+    g.fillRoundedRect(x - 5, y - 25 + by, 10, 7, 3)
+
+    // ── HEAD ─────────────────────────────────────────────────────────────────
+    g.fillStyle(SKIN, 1)
+    g.fillEllipse(x, y - 37 + by, 26, 28)
+
+    // ── HAIR ─────────────────────────────────────────────────────────────────
+    g.fillStyle(HAIR, 1)
+    g.fillEllipse(x, y - 47 + by, 28, 14)
+    g.fillRoundedRect(x - 14, y - 50 + by, 5, 12, 2)
+    g.fillRoundedRect(x + 9,  y - 50 + by, 5, 12, 2)
+
+    // ── FACE ─────────────────────────────────────────────────────────────────
+    // Eye whites
     g.fillStyle(0xffffff, 1)
-    g.fillCircle(x - 5, y - 38 - bounce, 2)
-    g.fillCircle(x + 7, y - 38 - bounce, 2)
+    g.fillEllipse(x - 6, y - 38 + by, 9, 8)
+    g.fillEllipse(x + 6, y - 38 + by, 9, 8)
+    // Pupils
+    g.fillStyle(0x1a237e, 1)
+    g.fillCircle(x - 6, y - 38 + by, 3)
+    g.fillCircle(x + 6, y - 38 + by, 3)
+    // Eye highlights
+    g.fillStyle(0xffffff, 1)
+    g.fillCircle(x - 5, y - 39 + by, 1.2)
+    g.fillCircle(x + 7, y - 39 + by, 1.2)
+    // Eyebrows
+    g.fillStyle(HAIR, 1)
+    g.fillRoundedRect(x - 9, y - 44 + by, 7, 2, 1)
+    g.fillRoundedRect(x + 2,  y - 44 + by, 7, 2, 1)
+    // Mouth
+    g.fillStyle(0xd4956a, 1)
+    g.fillRoundedRect(x - 4, y - 31 + by, 8, 2.5, 1)
   }
 
   // ─── Mobile controls ──────────────────────────────────────────────────────
@@ -245,7 +308,10 @@ export default class GameScene extends Phaser.Scene {
     const btnH = 52
 
     this._makeBtn(this.W * 0.08, y, btnW, btnH, '◀', () => this._moveLeft())
-    this._makeBtn(this.W / 2,    y, 58,   btnH, '⏸', () => this._togglePause())
+    this._makeBtn(this.W / 2,    y, 58,   btnH, '≡', () => {
+      this.cameras.main.fadeOut(200, 0, 10, 40)
+      this.time.delayedCall(200, () => this.scene.start('MenuScene'))
+    })
     this._makeBtn(this.W * 0.92, y, btnW, btnH, '▶', () => this._moveRight())
   }
 
@@ -362,6 +428,7 @@ export default class GameScene extends Phaser.Scene {
     this.questionTxt.setAlpha(0).setText(q.question)
     this.tweens.add({ targets: this.questionTxt, alpha: 1, duration: 250 })
 
+    this.timerElapsed = 0
     this._spawnBlocks(q)
   }
 
@@ -400,6 +467,7 @@ export default class GameScene extends Phaser.Scene {
           if (!this.isEvaluating) this._evaluate()
         },
       })
+      this.questionDuration = fallDuration
 
       this.answerBlocks.push({ container, answer: q.answers[i] })
       this.blockTweens.push(tween)
@@ -417,6 +485,8 @@ export default class GameScene extends Phaser.Scene {
   _evaluate() {
     if (this.isEvaluating) return
     this.isEvaluating = true
+    this.questionDuration = 0
+    this.timerBarGfx.clear()
 
     this.blockTweens.forEach(t => { if (t?.isPlaying?.()) t.stop() })
 
@@ -429,6 +499,7 @@ export default class GameScene extends Phaser.Scene {
       this.score += mult
       this.scoreTxt.setText('Score : ' + this.score)
       this._updateStreakDisplay()
+      window.dispatchEvent(new CustomEvent('mathrun:correct'))
       if (this.streak === 3 || this.streak === 5 || this.streak === 10) {
         this.time.delayedCall(220, () => this._showCombo(this.streak))
         this._emitParticles(this.W / 2, this.H * 0.5, C.PLAYER_BODY, 22)
@@ -569,109 +640,58 @@ export default class GameScene extends Phaser.Scene {
     this.livesTxt.setText(hearts || '—')
   }
 
-  // ─── Pause system ─────────────────────────────────────────────────────────
-  _buildPauseOverlay() {
-    const W = this.W
-    const H = this.H
-    const panelW = 284
-    const panelH = 196
-    const panelX = W / 2 - panelW / 2
-    const panelY = H / 2 - panelH / 2
+  // ─── Countdown before first question ──────────────────────────────────────
+  _startCountdown() {
+    const labels = ['3', '2', '1', 'GO !']
+    const colors = ['#e2e8f0', '#e2e8f0', '#ffd54f', '#4ade80']
+    const sizes  = ['80px', '80px', '80px', '56px']
+    let idx = 0
 
-    this.pauseBg = this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.72).setDepth(30)
+    const tick = () => {
+      if (idx >= labels.length) {
+        this.isEvaluating = false
+        this._nextQuestion()
+        return
+      }
 
-    this.pausePanel = this.add.graphics().setDepth(31)
-    this.pausePanel.fillStyle(0x0c1a38, 1)
-    this.pausePanel.fillRoundedRect(panelX, panelY, panelW, panelH, 16)
-    this.pausePanel.lineStyle(2, 0x2563eb, 0.9)
-    this.pausePanel.strokeRoundedRect(panelX, panelY, panelW, panelH, 16)
+      if (idx < 3) sfx.laneSwitch()
+      else sfx.correct()
 
-    this.pauseTitle = this.add
-      .text(W / 2, H / 2 - 67, '⏸  PAUSE', {
-        fontSize: '22px',
-        fontFamily: "'Segoe UI', Arial, sans-serif",
-        color: '#e2e8f0',
-        fontStyle: 'bold',
+      const txt = this.add
+        .text(this.W / 2, this.H / 2, labels[idx], {
+          fontSize: sizes[idx],
+          fontFamily: "'Segoe UI', Arial, sans-serif",
+          color: colors[idx],
+          fontStyle: 'bold',
+          stroke: '#000c1a',
+          strokeThickness: 5,
+        })
+        .setOrigin(0.5)
+        .setAlpha(0)
+        .setScale(1.6)
+        .setDepth(35)
+
+      this.tweens.add({
+        targets: txt,
+        alpha: 1,
+        scaleX: 1,
+        scaleY: 1,
+        duration: 180,
+        ease: 'Back.easeOut',
+        onComplete: () => {
+          this.tweens.add({
+            targets: txt,
+            alpha: 0,
+            delay: idx < 3 ? 480 : 320,
+            duration: 160,
+            onComplete: () => { txt.destroy(); idx++; tick() },
+          })
+        },
       })
-      .setOrigin(0.5)
-      .setDepth(32)
+    }
 
-    // Resume button
-    this.resumeBg = this.add.graphics().setDepth(32)
-    const resumeY = H / 2 - 12
-    this._drawPauseBtn(this.resumeBg, W / 2, resumeY, 228, 48, false)
-    this.resumeBtn = this.add
-      .text(W / 2, resumeY, '▶  Reprendre', {
-        fontSize: '18px',
-        fontFamily: "'Segoe UI', Arial, sans-serif",
-        color: '#ffffff',
-        fontStyle: 'bold',
-      })
-      .setOrigin(0.5)
-      .setDepth(33)
-      .setInteractive({ useHandCursor: true })
-    this.resumeBtn.on('pointerover', () => this._drawPauseBtn(this.resumeBg, W / 2, resumeY, 228, 48, true))
-    this.resumeBtn.on('pointerout',  () => this._drawPauseBtn(this.resumeBg, W / 2, resumeY, 228, 48, false))
-    this.resumeBtn.on('pointerdown', () => this._resumeGame())
-
-    // Change category button
-    this.menuBg = this.add.graphics().setDepth(32)
-    const menuY = H / 2 + 50
-    this._drawMenuBtn(this.menuBg, W / 2, menuY, 228, 42, false)
-    this.menuBtn = this.add
-      .text(W / 2, menuY, '≡  Changer de catégorie', {
-        fontSize: '15px',
-        fontFamily: "'Segoe UI', Arial, sans-serif",
-        color: '#93c5fd',
-      })
-      .setOrigin(0.5)
-      .setDepth(33)
-      .setInteractive({ useHandCursor: true })
-    this.menuBtn.on('pointerover', () => this._drawMenuBtn(this.menuBg, W / 2, menuY, 228, 42, true))
-    this.menuBtn.on('pointerout',  () => this._drawMenuBtn(this.menuBg, W / 2, menuY, 228, 42, false))
-    this.menuBtn.on('pointerdown', () => {
-      this.tweens.resumeAll()
-      this.cameras.main.fadeOut(200, 0, 10, 40)
-      this.time.delayedCall(200, () => this.scene.start('MenuScene'))
-    })
-
-    this._pauseObjs = [
-      this.pauseBg, this.pausePanel, this.pauseTitle,
-      this.resumeBg, this.resumeBtn,
-      this.menuBg, this.menuBtn,
-    ]
-    this._pauseObjs.forEach(o => o.setVisible(false))
-  }
-
-  _drawPauseBtn(g, x, y, w, h, hover) {
-    g.clear()
-    g.fillStyle(hover ? 0x1d4ed8 : 0x2563eb, 1)
-    g.fillRoundedRect(x - w / 2, y - h / 2, w, h, 10)
-  }
-
-  _drawMenuBtn(g, x, y, w, h, hover) {
-    g.clear()
-    g.fillStyle(hover ? 0x1a2f5a : 0x0c1a38, 1)
-    g.lineStyle(1, 0x3b82f6, hover ? 0.9 : 0.5)
-    g.strokeRoundedRect(x - w / 2, y - h / 2, w, h, 10)
-  }
-
-  _togglePause() {
-    if (this.isEvaluating) return  // no pause during answer feedback
-    if (this.isPaused) this._resumeGame()
-    else this._pauseGame()
-  }
-
-  _pauseGame() {
-    this.isPaused = true
-    this.tweens.pauseAll()
-    this._pauseObjs.forEach(o => o.setVisible(true))
-  }
-
-  _resumeGame() {
-    this._pauseObjs.forEach(o => o.setVisible(false))
-    this.tweens.resumeAll()
-    this.isPaused = false
+    this.isEvaluating = true
+    this.time.delayedCall(300, tick)
   }
 
   // ─── Combo / streak system ────────────────────────────────────────────────
@@ -744,8 +764,6 @@ export default class GameScene extends Phaser.Scene {
 
   // ─── Update loop ──────────────────────────────────────────────────────────
   update(time, delta) {
-    if (this.isPaused) return
-
     // Scrolling lane stripes
     const speed = this.stripeSpeed * (delta / 1000)
     this.stripes.forEach(stripe => {
@@ -756,5 +774,18 @@ export default class GameScene extends Phaser.Scene {
     // Player run animation (full cycle every 320 ms)
     this.runTick = (this.runTick + delta / 320) % 1
     this._drawPlayer()
+
+    // Timer bar
+    if (!this.isEvaluating && this.questionDuration > 0) {
+      this.timerElapsed += delta
+      const ratio = Math.max(0, 1 - this.timerElapsed / this.questionDuration)
+      const barW = ratio * this.W
+      const color = ratio > 0.5 ? 0x22c55e : ratio > 0.25 ? 0xf59e0b : 0xef4444
+      this.timerBarGfx.clear()
+      if (barW > 0) {
+        this.timerBarGfx.fillStyle(color, 1)
+        this.timerBarGfx.fillRect(0, HUD_H + Q_H - 6, barW, 6)
+      }
+    }
   }
 }

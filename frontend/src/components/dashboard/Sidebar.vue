@@ -231,6 +231,7 @@ const isActiveRoute = (menuKey) => {
     'fiches': ['/sheets'],
     'tables-formules': ['/tables-formules', '/tables-formules-notion'],
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
+    'games': ['/jeux/math-run'],
     'progress': '/progress',
     'calculator': '/calculator',
     'abonnement': ['/billing', '/subscription'],
@@ -315,6 +316,8 @@ async function handleSidebarClick(item) {
     router.push('/billing')
   } else if (item.key === 'cours-particuliers') {
     router.push('/cours-particuliers')
+  } else if (item.key === 'games') {
+    router.push('/jeux/math-run')
   }
   // Routes intelligentes avec matière
   else if (['exercices', 'fiches', 'tables-formules', 'quiz', 'cours'].includes(item.key)) {

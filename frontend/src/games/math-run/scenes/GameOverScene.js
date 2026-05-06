@@ -21,6 +21,13 @@ export default class GameOverScene extends Phaser.Scene {
     if (isNewRecord) localStorage.setItem(hsKey, String(this.finalScore))
     const highScore = isNewRecord ? this.finalScore : stored
 
+    // Notify Vue wrapper: save score to API + award XP
+    if (this.finalScore > 0) {
+      window.dispatchEvent(new CustomEvent('mathrun:gameover', {
+        detail: { score: this.finalScore, category: this.category }
+      }))
+    }
+
     // Background
     this.add.rectangle(W / 2, H / 2, W, H, 0x060e1e)
 

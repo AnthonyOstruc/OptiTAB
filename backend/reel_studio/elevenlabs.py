@@ -46,6 +46,14 @@ BUILTIN_EXTRA_VOICES = (
     },
 )
 
+MODEL_ID_ALIASES = {
+    # The UI keeps the user-facing name requested for Reel Studio while the
+    # ElevenLabs API currently exposes v3 as ``eleven_v3``.
+    'eleven_multilingual_v3': 'eleven_v3',
+}
+
+TEXT_NORMALIZATION_MODES = {'auto', 'on', 'off'}
+
 
 class ElevenLabsConfigurationError(Exception):
     pass
@@ -117,6 +125,80 @@ def _safe_int(value, default=0):
         return default
 
 
+def _safe_float(value, default):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _safe_bool(value, default):
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    normalized = str(value).strip().lower()
+    if normalized in {'1', 'true', 'yes', 'on'}:
+        return True
+    if normalized in {'0', 'false', 'no', 'off'}:
+        return False
+    return default
+
+
+def _normalize_model_id(value):
+    model_id = str(value or getattr(settings, 'ELEVENLABS_MODEL_ID', '') or '').strip()
+    return MODEL_ID_ALIASES.get(model_id, model_id)
+
+
+def _normalize_text_normalization(value):
+    normalized = str(value or getattr(settings, 'ELEVENLABS_APPLY_TEXT_NORMALIZATION', 'on') or '').strip().lower()
+    return normalized if normalized in TEXT_NORMALIZATION_MODES else 'on'
+
+
+def build_generation_options(
+    *,
+    model_id='',
+    output_format='',
+    stability=None,
+    similarity_boost=None,
+    style=None,
+    speed=None,
+    use_speaker_boost=None,
+    language_code='',
+    apply_text_normalization='',
+):
+    return {
+        'model_id': _normalize_model_id(model_id),
+        'output_format': (
+            output_format or getattr(settings, 'ELEVENLABS_OUTPUT_FORMAT', 'mp3_44100_128')
+        ).strip(),
+        'stability': _safe_float(
+            stability,
+            _safe_float(getattr(settings, 'ELEVENLABS_VOICE_STABILITY', 0.64), 0.64),
+        ),
+        'similarity_boost': _safe_float(
+            similarity_boost,
+            _safe_float(getattr(settings, 'ELEVENLABS_VOICE_SIMILARITY_BOOST', 0.84), 0.84),
+        ),
+        'style': _safe_float(
+            style,
+            _safe_float(getattr(settings, 'ELEVENLABS_VOICE_STYLE', 0.10), 0.10),
+        ),
+        'speed': _safe_float(
+            speed,
+            _safe_float(getattr(settings, 'ELEVENLABS_VOICE_SPEED', 1.0), 1.0),
+        ),
+        'use_speaker_boost': _safe_bool(
+            use_speaker_boost,
+            _safe_bool(getattr(settings, 'ELEVENLABS_USE_SPEAKER_BOOST', True), True),
+        ),
+        'language_code': str(
+            language_code or getattr(settings, 'ELEVENLABS_LANGUAGE_CODE', 'fr') or ''
+        ).strip(),
+        'apply_text_normalization': _normalize_text_normalization(apply_text_normalization),
+    }
+
+
 def get_subscription_usage():
     api_key = getattr(settings, 'ELEVENLABS_API_KEY', '').strip()
     if not api_key:
@@ -174,14 +256,29 @@ def generate_speech_mp3(
     voice_id='',
     model_id='',
     output_format='',
+    stability=None,
+    similarity_boost=None,
+    style=None,
+    speed=None,
+    use_speaker_boost=None,
+    language_code='',
+    apply_text_normalization='',
 ):
     api_key = getattr(settings, 'ELEVENLABS_API_KEY', '').strip()
     resolved_voice_id = (voice_id or getattr(settings, 'ELEVENLABS_VOICE_ID', '')).strip()
-    resolved_model_id = (model_id or getattr(settings, 'ELEVENLABS_MODEL_ID', '')).strip()
-    resolved_output_format = (
-        output_format or getattr(settings, 'ELEVENLABS_OUTPUT_FORMAT', 'mp3_44100_128')
-    ).strip()
-    language_code = getattr(settings, 'ELEVENLABS_LANGUAGE_CODE', '').strip()
+    options = build_generation_options(
+        model_id=model_id,
+        output_format=output_format,
+        stability=stability,
+        similarity_boost=similarity_boost,
+        style=style,
+        speed=speed,
+        use_speaker_boost=use_speaker_boost,
+        language_code=language_code,
+        apply_text_normalization=apply_text_normalization,
+    )
+    resolved_model_id = options['model_id']
+    resolved_output_format = options['output_format']
     max_chars = int(getattr(settings, 'ELEVENLABS_MAX_TEXT_CHARS', 10000) or 10000)
 
     safe_text = str(text or '').strip()
@@ -202,14 +299,16 @@ def generate_speech_mp3(
         'text': safe_text,
         'model_id': resolved_model_id,
         'voice_settings': {
-            'stability': float(getattr(settings, 'ELEVENLABS_VOICE_STABILITY', 0.45)),
-            'similarity_boost': float(getattr(settings, 'ELEVENLABS_VOICE_SIMILARITY_BOOST', 0.8)),
-            'style': float(getattr(settings, 'ELEVENLABS_VOICE_STYLE', 0.0)),
-            'use_speaker_boost': bool(getattr(settings, 'ELEVENLABS_USE_SPEAKER_BOOST', True)),
+            'stability': options['stability'],
+            'similarity_boost': options['similarity_boost'],
+            'style': options['style'],
+            'speed': options['speed'],
+            'use_speaker_boost': options['use_speaker_boost'],
         },
+        'apply_text_normalization': options['apply_text_normalization'],
     }
-    if language_code:
-        payload['language_code'] = language_code
+    if options['language_code']:
+        payload['language_code'] = options['language_code']
 
     try:
         response = requests.post(

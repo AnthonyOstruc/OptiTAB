@@ -89,7 +89,10 @@ export default class BootScene extends Phaser.Scene {
     })
 
     // High score badge
-    const hiScore = Math.max(...['all', 'addition', 'subtraction', 'multiplication', 'division'].map(c => parseInt(localStorage.getItem(`mathrun_hs_${c}`) || '0', 10)))
+    const hiScore = Math.max(...[
+      'all', 'addition', 'subtraction', 'multiplication', 'division',
+      'limits', 'derivatives', 'integrals', 'sequences',
+    ].map(c => parseInt(localStorage.getItem(`mathrun_hs_${c}`) || '0', 10)))
     if (hiScore > 0) {
       const hsBg = this.add.graphics().setAlpha(0)
       hsBg.fillStyle(0x1e3a8a, 0.8)

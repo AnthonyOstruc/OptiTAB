@@ -5,6 +5,7 @@ Adds a thin caching layer (Django cache + storage backend) so that the same
 """
 
 import hashlib
+import json
 import logging
 
 from django.conf import settings
@@ -26,7 +27,7 @@ from . import google as google_provider
 logger = logging.getLogger(__name__)
 
 
-CACHE_PREFIX = 'reel_tts_cache_v1'
+CACHE_PREFIX = 'reel_tts_cache_v2'
 CACHE_STORAGE_FOLDER = 'reel_studio/tts_cache'
 
 
@@ -52,27 +53,33 @@ def get_default_provider():
     return raw if raw in SUPPORTED_PROVIDERS else PROVIDER_GOOGLE
 
 
-def _hash_text(text):
-    digest = hashlib.sha256(str(text or '').encode('utf-8')).hexdigest()
+def _hash_text(text, options=None):
+    cache_payload = {
+        'text': str(text or ''),
+        'options': options or {},
+    }
+    digest = hashlib.sha256(
+        json.dumps(cache_payload, sort_keys=True, separators=(',', ':')).encode('utf-8')
+    ).hexdigest()
     return digest[:48]
 
 
-def _cache_key(provider, voice_id, text):
-    return f'{CACHE_PREFIX}:{provider}:{voice_id}:{_hash_text(text)}'
+def _cache_key(provider, voice_id, text, options=None):
+    return f'{CACHE_PREFIX}:{provider}:{voice_id}:{_hash_text(text, options)}'
 
 
-def _cache_storage_path(provider, voice_id, text):
-    return f'{CACHE_STORAGE_FOLDER}/{provider}/{voice_id}/{_hash_text(text)}.mp3'
+def _cache_storage_path(provider, voice_id, text, options=None):
+    return f'{CACHE_STORAGE_FOLDER}/{provider}/{voice_id}/{_hash_text(text, options)}.mp3'
 
 
-def _read_cached_audio(provider, voice_id, text):
+def _read_cached_audio(provider, voice_id, text, options=None):
     """Look up a previously generated MP3 for the same (provider, voice, text)."""
-    key = _cache_key(provider, voice_id, text)
+    key = _cache_key(provider, voice_id, text, options)
     storage_path = cache.get(key)
 
     if not storage_path:
         # Fallback: probe storage directly so cache evictions do not force regeneration.
-        candidate = _cache_storage_path(provider, voice_id, text)
+        candidate = _cache_storage_path(provider, voice_id, text, options)
         if default_storage.exists(candidate):
             storage_path = candidate
             try:
@@ -95,10 +102,10 @@ def _read_cached_audio(provider, voice_id, text):
         return None, key
 
 
-def _store_cached_audio(provider, voice_id, text, audio_bytes):
+def _store_cached_audio(provider, voice_id, text, audio_bytes, options=None):
     if not audio_bytes:
         return ''
-    storage_path = _cache_storage_path(provider, voice_id, text)
+    storage_path = _cache_storage_path(provider, voice_id, text, options)
     try:
         if default_storage.exists(storage_path):
             default_storage.delete(storage_path)
@@ -112,7 +119,7 @@ def _store_cached_audio(provider, voice_id, text, audio_bytes):
         return ''
 
     try:
-        cache.set(_cache_key(provider, voice_id, text), storage_path, timeout=60 * 60 * 24 * 30)
+        cache.set(_cache_key(provider, voice_id, text, options), storage_path, timeout=60 * 60 * 24 * 30)
     except Exception:
         pass
 
@@ -228,7 +235,22 @@ def _provider_is_configured(provider):
     return False
 
 
-def generate_speech(*, text, provider='', voice_id='', model_id='', output_format='', use_cache=True):
+def generate_speech(
+    *,
+    text,
+    provider='',
+    voice_id='',
+    model_id='',
+    output_format='',
+    stability=None,
+    similarity_boost=None,
+    style=None,
+    speed=None,
+    use_speaker_boost=None,
+    language_code='',
+    apply_text_normalization='',
+    use_cache=True,
+):
     """Top-level entry point used by the views.
 
     - Validates provider/voice
@@ -246,8 +268,36 @@ def generate_speech(*, text, provider='', voice_id='', model_id='', output_forma
     if not resolved_voice_id:
         raise TTSConfigurationError(f"Aucune voix configuree pour le provider '{resolved_provider}'.")
 
+    effective_model_id = model_id or resolved_voice_id
+    effective_output_format = output_format or 'mp3'
+    cache_options = {
+        'model_id': model_id or '',
+        'output_format': output_format or '',
+    }
+    if resolved_provider == PROVIDER_ELEVENLABS:
+        from ..elevenlabs import build_generation_options
+
+        cache_options = build_generation_options(
+            model_id=model_id,
+            output_format=output_format,
+            stability=stability,
+            similarity_boost=similarity_boost,
+            style=style,
+            speed=speed,
+            use_speaker_boost=use_speaker_boost,
+            language_code=language_code,
+            apply_text_normalization=apply_text_normalization,
+        )
+        effective_model_id = cache_options.get('model_id') or effective_model_id
+        effective_output_format = cache_options.get('output_format') or effective_output_format
+
     if use_cache:
-        cached_bytes, cache_key = _read_cached_audio(resolved_provider, resolved_voice_id, safe_text)
+        cached_bytes, cache_key = _read_cached_audio(
+            resolved_provider,
+            resolved_voice_id,
+            safe_text,
+            cache_options,
+        )
         if cached_bytes:
             logger.info(
                 'TTS cache hit | provider=%s | voice=%s | chars=%d',
@@ -257,14 +307,14 @@ def generate_speech(*, text, provider='', voice_id='', model_id='', output_forma
                 audio_bytes=cached_bytes,
                 provider=resolved_provider,
                 voice_id=resolved_voice_id,
-                model_id=model_id or resolved_voice_id,
-                output_format=output_format or 'mp3',
+                model_id=effective_model_id,
+                output_format=effective_output_format,
                 character_count=len(safe_text),
                 cached=True,
                 cache_key=cache_key,
             )
     else:
-        cache_key = _cache_key(resolved_provider, resolved_voice_id, safe_text)
+        cache_key = _cache_key(resolved_provider, resolved_voice_id, safe_text, cache_options)
 
     # Cache miss -> call the provider.
     if resolved_provider == PROVIDER_GOOGLE:
@@ -286,6 +336,13 @@ def generate_speech(*, text, provider='', voice_id='', model_id='', output_forma
                 voice_id=resolved_voice_id,
                 model_id=model_id,
                 output_format=output_format,
+                stability=stability,
+                similarity_boost=similarity_boost,
+                style=style,
+                speed=speed,
+                use_speaker_boost=use_speaker_boost,
+                language_code=language_code,
+                apply_text_normalization=apply_text_normalization,
             )
         except ElevenLabsConfigurationError as exc:
             raise TTSConfigurationError(str(exc)) from exc
@@ -301,7 +358,7 @@ def generate_speech(*, text, provider='', voice_id='', model_id='', output_forma
         raise TTSAPIError(f'{resolved_provider}: audio vide.')
 
     if use_cache:
-        _store_cached_audio(resolved_provider, resolved_voice_id, safe_text, audio_bytes)
+        _store_cached_audio(resolved_provider, resolved_voice_id, safe_text, audio_bytes, cache_options)
 
     logger.info(
         'TTS generate | provider=%s | voice=%s | chars=%d | bytes=%d | cached=%s',

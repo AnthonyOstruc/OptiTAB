@@ -51,6 +51,20 @@
 
 
 
+    <!-- Mini-jeux -->
+    <div class="section games-section">
+      <router-link to="/jeux/math-run" class="math-run-card">
+        <div class="math-run-card-left">
+          <span class="math-run-card-emoji">🏃</span>
+          <div>
+            <div class="math-run-card-title">Math Run</div>
+            <div class="math-run-card-sub">Runner mathématique — réponds vite !</div>
+          </div>
+        </div>
+        <span class="math-run-card-badge">Jouer →</span>
+      </router-link>
+    </div>
+
     <!-- Historique des quiz -->
     <QuizHistory />
 
@@ -574,6 +588,35 @@ watch(shouldShowSubscriptionPrompt, (canShow) => {
 .section { margin-top: 1.25rem; }
 .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: .5rem; }
 .section-title { margin:0; font-size:1.1rem; font-weight:800; color:#1f2937; }
+
+/* Math Run card */
+.math-run-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #0a1628 0%, #1e3a8a 100%);
+  border: 1px solid #2563eb;
+  border-radius: 14px;
+  padding: 16px 20px;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.math-run-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(37,99,235,0.25);
+}
+.math-run-card-left { display: flex; align-items: center; gap: 14px; }
+.math-run-card-emoji { font-size: 32px; }
+.math-run-card-title { color: #ffd54f; font-weight: 700; font-size: 15px; }
+.math-run-card-sub { color: #93c5fd; font-size: 13px; margin-top: 2px; }
+.math-run-card-badge {
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+}
 
 /* Single card container (pour remplacer quick-grid quand il n'y a qu'un seul élément) */
 .single-card-container {

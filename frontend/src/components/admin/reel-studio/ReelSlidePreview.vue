@@ -302,7 +302,7 @@ function renderInlineKatexPart(expression, separator = 'semicolon') {
   if (!cleaned) return ''
   const alreadySeparated = /^(;|\\Rightarrow|\\to|\\rightarrow)/.test(cleaned)
   const separatedExpression = alreadySeparated ? cleaned : `${inlineSeparatorKatex(separator)}\\quad ${cleaned}`
-  return katex.renderToString(separatedExpression, { displayMode: false, throwOnError: false })
+  return katex.renderToString(`\\displaystyle ${separatedExpression}`, { displayMode: false, throwOnError: false })
 }
 
 function renderRichMathToken(token) {
@@ -391,7 +391,7 @@ const renderedKatex = computed(() => {
           }
 
           const offset = clampInlineOffset(row.inlineOffsetPercent)
-          const baseHtml = katex.renderToString(parts[0], { displayMode: false, throwOnError: false })
+          const baseHtml = katex.renderToString(`\\displaystyle ${parts[0]}`, { displayMode: false, throwOnError: false })
           const inlineSeparators = Array.isArray(row.inlineSeparators) ? row.inlineSeparators : []
           const inlineHtml = parts
             .slice(1)
@@ -1023,7 +1023,7 @@ onUnmounted(() => {
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline) {
   position: relative;
-  min-height: calc(1.45em * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  min-height: calc(2.05em * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
   overflow: visible;
 }
 

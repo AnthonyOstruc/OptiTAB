@@ -1,0 +1,7 @@
+from django.apps import AppConfig
+
+
+class MiniGamesConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'mini_games'
+    verbose_name = 'Mini-jeux'

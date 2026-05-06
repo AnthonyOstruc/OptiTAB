@@ -149,6 +149,82 @@
                   <span v-else-if="voiceOptionsError">{{ voiceOptionsError }}</span>
                 </label>
 
+                <section v-if="selectedProviderId === 'elevenlabs'" class="voice-advanced">
+                  <div class="voice-advanced-header">
+                    <button
+                      class="voice-advanced-toggle"
+                      type="button"
+                      :aria-expanded="String(showElevenLabsAdvanced)"
+                      @click="showElevenLabsAdvanced = !showElevenLabsAdvanced"
+                    >
+                      <span class="voice-advanced-arrow" :class="{ 'is-open': showElevenLabsAdvanced }">></span>
+                      <span>Options avancees</span>
+                    </button>
+                    <button
+                      v-if="showElevenLabsAdvanced"
+                      class="btn-secondary"
+                      type="button"
+                      @click="resetElevenLabsSettings"
+                    >
+                      Reset
+                    </button>
+                  </div>
+
+                  <div v-if="showElevenLabsAdvanced" class="voice-advanced-grid">
+                    <label class="voice-advanced-field voice-advanced-field--wide">
+                      Model
+                      <select v-model="elevenLabsSettings.model_id">
+                        <option
+                          v-for="model in ELEVENLABS_MODEL_OPTIONS"
+                          :key="model.value"
+                          :value="model.value"
+                        >
+                          {{ model.label }}
+                        </option>
+                      </select>
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Stability
+                      <input v-model.number="elevenLabsSettings.stability" type="number" min="0" max="1" step="0.01" />
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Similarity boost
+                      <input v-model.number="elevenLabsSettings.similarity_boost" type="number" min="0" max="1" step="0.01" />
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Style
+                      <input v-model.number="elevenLabsSettings.style" type="number" min="0" max="1" step="0.01" />
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Speed
+                      <input v-model.number="elevenLabsSettings.speed" type="number" min="0.5" max="2" step="0.01" />
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Language code
+                      <input v-model.trim="elevenLabsSettings.language_code" type="text" maxlength="16" />
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Text normalization
+                      <select v-model="elevenLabsSettings.apply_text_normalization">
+                        <option value="on">on</option>
+                        <option value="auto">auto</option>
+                        <option value="off">off</option>
+                      </select>
+                    </label>
+
+                    <label class="voice-toggle">
+                      <input v-model="elevenLabsSettings.use_speaker_boost" type="checkbox" />
+                      <span>Use speaker boost</span>
+                    </label>
+                  </div>
+                </section>
+
                 <div
                   v-if="selectedProviderId === 'elevenlabs'"
                   class="voice-usage"
@@ -244,7 +320,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
 import {
   createReelProject,
@@ -298,10 +374,27 @@ const testAudioUrl = ref('')
 const SPEECH_CHAR_WARNING_THRESHOLD = 4000
 const SPEECH_CHAR_HARD_LIMIT = 4500
 const showManualEditor = ref(false)
+const showElevenLabsAdvanced = ref(false)
 const projectFormOpen = ref(false)
 const editingProject = ref(null)
 const templateDraft = ref('')
 const editorSectionRef = ref(null)
+const ELEVENLABS_SETTINGS_STORAGE_KEY = 'reelStudio.elevenLabsSettings.v1'
+const ELEVENLABS_MODEL_OPTIONS = [
+  { value: 'eleven_multilingual_v3', label: 'eleven_multilingual_v3' },
+  { value: 'eleven_multilingual_v2', label: 'eleven_multilingual_v2' },
+]
+const DEFAULT_ELEVENLABS_SETTINGS = Object.freeze({
+  model_id: 'eleven_multilingual_v3',
+  stability: 0.64,
+  similarity_boost: 0.84,
+  style: 0.10,
+  speed: 1,
+  use_speaker_boost: true,
+  language_code: 'fr',
+  apply_text_normalization: 'on',
+})
+const elevenLabsSettings = reactive(loadStoredElevenLabsSettings())
 
 const feedback = reactive({
   type: 'info',
@@ -639,6 +732,82 @@ function selectedVoiceHasQuotaForCharacters(characterCount) {
   const remaining = selectedVoiceRemainingUntilDisable()
   return !Number.isFinite(remaining) || count <= remaining
 }
+
+function clampNumber(value, fallback, min, max) {
+  const number = Number(value)
+  if (!Number.isFinite(number)) return fallback
+  return Math.max(min, Math.min(max, number))
+}
+
+function normalizeElevenLabsSettings(value = {}) {
+  const modelIds = ELEVENLABS_MODEL_OPTIONS.map((item) => item.value)
+  const modelId = modelIds.includes(value.model_id)
+    ? value.model_id
+    : DEFAULT_ELEVENLABS_SETTINGS.model_id
+  const normalizationModes = ['auto', 'on', 'off']
+  const textNormalization = normalizationModes.includes(value.apply_text_normalization)
+    ? value.apply_text_normalization
+    : DEFAULT_ELEVENLABS_SETTINGS.apply_text_normalization
+
+  return {
+    model_id: modelId,
+    stability: clampNumber(value.stability, DEFAULT_ELEVENLABS_SETTINGS.stability, 0, 1),
+    similarity_boost: clampNumber(value.similarity_boost, DEFAULT_ELEVENLABS_SETTINGS.similarity_boost, 0, 1),
+    style: clampNumber(value.style, DEFAULT_ELEVENLABS_SETTINGS.style, 0, 1),
+    speed: clampNumber(value.speed, DEFAULT_ELEVENLABS_SETTINGS.speed, 0.5, 2),
+    use_speaker_boost: typeof value.use_speaker_boost === 'boolean'
+      ? value.use_speaker_boost
+      : DEFAULT_ELEVENLABS_SETTINGS.use_speaker_boost,
+    language_code: String(value.language_code || DEFAULT_ELEVENLABS_SETTINGS.language_code).trim() || 'fr',
+    apply_text_normalization: textNormalization,
+  }
+}
+
+function loadStoredElevenLabsSettings() {
+  if (typeof window === 'undefined') return { ...DEFAULT_ELEVENLABS_SETTINGS }
+  try {
+    const raw = window.localStorage.getItem(ELEVENLABS_SETTINGS_STORAGE_KEY)
+    if (!raw) return { ...DEFAULT_ELEVENLABS_SETTINGS }
+    return normalizeElevenLabsSettings(JSON.parse(raw))
+  } catch (_) {
+    return { ...DEFAULT_ELEVENLABS_SETTINGS }
+  }
+}
+
+function persistElevenLabsSettings() {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(
+      ELEVENLABS_SETTINGS_STORAGE_KEY,
+      JSON.stringify(normalizeElevenLabsSettings(elevenLabsSettings)),
+    )
+  } catch (_) {
+    // Local storage can be unavailable in private contexts.
+  }
+}
+
+function resetElevenLabsSettings() {
+  Object.assign(elevenLabsSettings, DEFAULT_ELEVENLABS_SETTINGS)
+}
+
+function getElevenLabsSettingsPayload() {
+  return normalizeElevenLabsSettings(elevenLabsSettings)
+}
+
+function buildSpeechGenerationPayload(extra = {}) {
+  const payload = {
+    ...extra,
+    provider: selectedProviderId.value,
+    voice_id: selectedVoiceId.value,
+  }
+  if (selectedProviderId.value === 'elevenlabs') {
+    Object.assign(payload, getElevenLabsSettingsPayload())
+  }
+  return payload
+}
+
+watch(elevenLabsSettings, persistElevenLabsSettings, { deep: true })
+
 const speechStatusLabel = computed(() => {
   if (!selectedProject.value?.id) return ''
   if (generatingSpeech.value) return 'Generation en cours'
@@ -1031,11 +1200,7 @@ async function handleTestVoice() {
 
   testingVoice.value = true
   try {
-    const response = await testReelTTSVoice({
-      provider: selectedProviderId.value,
-      voice_id: selectedVoiceId.value,
-      text: previewText,
-    })
+    const response = await testReelTTSVoice(buildSpeechGenerationPayload({ text: previewText }))
 
     resetTestAudio()
     const blob = response?.data instanceof Blob ? response.data : new Blob([response?.data], { type: 'audio/mpeg' })
@@ -1261,10 +1426,10 @@ async function handleGenerateSpeech() {
 
   generatingSpeech.value = true
   try {
-    const response = await generateReelSlideSpeeches(selectedProject.value.id, {
-      provider: selectedProviderId.value,
-      voice_id: selectedVoiceId.value,
-    })
+    const response = await generateReelSlideSpeeches(
+      selectedProject.value.id,
+      buildSpeechGenerationPayload(),
+    )
     const updatedProject = normalizeProject(response?.data?.project || response?.data)
 
     if (updatedProject?.id) {
@@ -1324,11 +1489,10 @@ async function handleGenerateSlideSpeech(payload) {
       }
     }
 
-    const response = await generateReelSlideSpeech(slideId, {
-      text: speechText,
-      provider: selectedProviderId.value,
-      voice_id: selectedVoiceId.value,
-    })
+    const response = await generateReelSlideSpeech(
+      slideId,
+      buildSpeechGenerationPayload({ text: speechText }),
+    )
     const updatedSlide = normalizeProject(response?.data)
 
     if (updatedSlide?.id) {
@@ -1866,6 +2030,125 @@ onMounted(() => {
   color: #b45309;
 }
 
+.voice-advanced {
+  box-sizing: border-box;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.voice-advanced-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.voice-advanced-toggle {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #1e3a8a;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.voice-advanced-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.voice-advanced-arrow.is-open {
+  transform: rotate(90deg);
+}
+
+.voice-advanced-header .btn-secondary {
+  min-height: 30px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.voice-advanced-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+.voice-advanced-field,
+.voice-toggle {
+  box-sizing: border-box;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.voice-advanced-field--wide {
+  grid-column: span 2;
+}
+
+.voice-advanced-field input,
+.voice-advanced-field select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+  min-height: 36px;
+  padding: 7px 9px;
+}
+
+.voice-toggle {
+  justify-content: end;
+  flex-direction: row;
+  align-items: center;
+}
+
+.voice-toggle input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.voice-toggle span {
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
 .voice-usage {
   box-sizing: border-box;
   display: grid;
@@ -2077,6 +2360,14 @@ onMounted(() => {
 
   .voice-usage-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .voice-advanced-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .voice-advanced-field--wide {
+    grid-column: span 2;
   }
 
   .speech-actions {

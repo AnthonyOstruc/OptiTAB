@@ -360,6 +360,13 @@ def _generate_and_save_slide_speech(
     voice_id='',
     model_id='',
     output_format='',
+    stability=None,
+    similarity_boost=None,
+    style=None,
+    speed=None,
+    use_speaker_boost=None,
+    language_code='',
+    apply_text_normalization='',
 ):
     safe_speech_text = str(speech_text or '').strip()
     if not safe_speech_text:
@@ -375,6 +382,13 @@ def _generate_and_save_slide_speech(
         voice_id=voice_id,
         model_id=model_id,
         output_format=output_format,
+        stability=stability,
+        similarity_boost=similarity_boost,
+        style=style,
+        speed=speed,
+        use_speaker_boost=use_speaker_boost,
+        language_code=language_code,
+        apply_text_normalization=apply_text_normalization,
     )
 
     tts_logger.info(
@@ -421,6 +435,22 @@ def _generate_and_save_slide_speech(
 
     slide._tts_result = result  # piggyback, used by views to surface stats in the response
     return slide
+
+
+def _speech_generation_kwargs(validated_data):
+    return {
+        'provider': validated_data.get('provider', ''),
+        'voice_id': validated_data.get('voice_id', ''),
+        'model_id': validated_data.get('model_id', ''),
+        'output_format': validated_data.get('output_format', ''),
+        'stability': validated_data.get('stability'),
+        'similarity_boost': validated_data.get('similarity_boost'),
+        'style': validated_data.get('style'),
+        'speed': validated_data.get('speed'),
+        'use_speaker_boost': validated_data.get('use_speaker_boost'),
+        'language_code': validated_data.get('language_code', ''),
+        'apply_text_normalization': validated_data.get('apply_text_normalization', ''),
+    }
 
 
 def _normalize_cta_text(value):
@@ -1133,10 +1163,7 @@ class ReelProjectGenerateSpeechView(APIView):
         try:
             tts_result = tts_generate_speech(
                 text=speech_text,
-                provider=serializer.validated_data.get('provider', ''),
-                voice_id=serializer.validated_data.get('voice_id', ''),
-                model_id=serializer.validated_data.get('model_id', ''),
-                output_format=serializer.validated_data.get('output_format', ''),
+                **_speech_generation_kwargs(serializer.validated_data),
             )
         except ValueError as exc:
             project.speech_status = ReelProject.SPEECH_STATUS_ERROR
@@ -1281,8 +1308,7 @@ class ReelTTSTestVoiceView(APIView):
         try:
             result = tts_generate_speech(
                 text=serializer.validated_data['text'],
-                provider=serializer.validated_data.get('provider', ''),
-                voice_id=serializer.validated_data.get('voice_id', ''),
+                **_speech_generation_kwargs(serializer.validated_data),
                 use_cache=True,
             )
         except ValueError as exc:
@@ -1332,10 +1358,7 @@ class ReelProjectGenerateSlideSpeechesView(APIView):
                 _generate_and_save_slide_speech(
                     slide,
                     speech_text=speech_text,
-                    provider=serializer.validated_data.get('provider', ''),
-                    voice_id=serializer.validated_data.get('voice_id', ''),
-                    model_id=serializer.validated_data.get('model_id', ''),
-                    output_format=serializer.validated_data.get('output_format', ''),
+                    **_speech_generation_kwargs(serializer.validated_data),
                 )
                 generated_count += 1
                 tts_meta = getattr(slide, '_tts_result', None)
@@ -1554,10 +1577,7 @@ class ReelSlideGenerateSpeechView(APIView):
             slide = _generate_and_save_slide_speech(
                 slide,
                 speech_text=speech_text,
-                provider=serializer.validated_data.get('provider', ''),
-                voice_id=serializer.validated_data.get('voice_id', ''),
-                model_id=serializer.validated_data.get('model_id', ''),
-                output_format=serializer.validated_data.get('output_format', ''),
+                **_speech_generation_kwargs(serializer.validated_data),
             )
         except ValueError as exc:
             slide.speech_status = ReelProject.SPEECH_STATUS_ERROR

@@ -86,6 +86,19 @@
           Slide vide
         </p>
       </section>
+
+      <AnnotationLayer
+        :annotations="safeSlide.annotations || []"
+        :editable="annotationEditable"
+        :active-tool="annotationActiveTool"
+        :active-color="annotationActiveColor"
+        :stroke-width="annotationStrokeWidth"
+        :selected-id="annotationSelectedId"
+        @add="$emit('annotation-add', $event)"
+        @update="$emit('annotation-update', $event)"
+        @update:selectedId="$emit('annotation-update-selected-id', $event)"
+        @delete="$emit('annotation-delete', $event)"
+      />
     </div>
   </article>
 </template>
@@ -93,6 +106,7 @@
 <script setup>
 import katex from 'katex'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import AnnotationLayer from './AnnotationLayer.vue'
 
 const props = defineProps({
   slide: {
@@ -127,9 +141,37 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  annotationEditable: {
+    type: Boolean,
+    default: false,
+  },
+  annotationActiveTool: {
+    type: String,
+    default: 'select',
+  },
+  annotationActiveColor: {
+    type: String,
+    default: '#e74c3c',
+  },
+  annotationStrokeWidth: {
+    type: Number,
+    default: 3,
+  },
+  annotationSelectedId: {
+    type: String,
+    default: null,
+  },
 })
 
-const emit = defineEmits(['select', 'diagnostic', 'open'])
+const emit = defineEmits([
+  'select',
+  'diagnostic',
+  'open',
+  'annotation-add',
+  'annotation-update',
+  'annotation-update-selected-id',
+  'annotation-delete',
+])
 
 const screenTextRef = ref(null)
 const katexZoneRef = ref(null)

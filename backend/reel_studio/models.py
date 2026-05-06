@@ -76,6 +76,7 @@ class ReelProject(models.Model):
     video_width = models.PositiveIntegerField(default=1080)
     video_height = models.PositiveIntegerField(default=1920)
     video_fps = models.PositiveIntegerField(default=30)
+    pronunciation_overrides = models.JSONField(blank=True, default=list)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

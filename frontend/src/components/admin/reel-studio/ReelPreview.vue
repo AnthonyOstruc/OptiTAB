@@ -95,6 +95,78 @@
     </div>
 
     <Teleport to="body">
+      <div
+        v-if="pronunciationEditorOpen"
+        class="pronunciation-modal-backdrop"
+        @click.self="closePronunciationEditor"
+      >
+        <div class="pronunciation-modal" role="dialog" aria-label="Éditer la prononciation">
+          <h4 class="pronunciation-modal-title">Prononciation</h4>
+          <p class="pronunciation-modal-word">
+            Mot : <strong>{{ pronunciationEditorWord }}</strong>
+          </p>
+          <label class="pronunciation-modal-label" for="pronunciation-input">
+            Comment ce mot doit être prononcé ?
+          </label>
+          <input
+            id="pronunciation-input"
+            ref="pronunciationInputRef"
+            v-model="pronunciationEditorPronunciation"
+            class="pronunciation-modal-input"
+            type="text"
+            maxlength="160"
+            placeholder="Ex : Optitabe"
+            @keydown.enter.prevent="commitPronunciationFromEditor"
+            @keydown.esc.prevent="closePronunciationEditor"
+            @keydown.stop
+          />
+
+          <label class="pronunciation-modal-label" for="pronunciation-language">
+            Langue de prononciation
+          </label>
+          <select
+            id="pronunciation-language"
+            v-model="pronunciationEditorLanguage"
+            class="pronunciation-modal-input pronunciation-modal-select"
+            @keydown.stop
+          >
+            <option v-for="lang in PRONUNCIATION_LANGUAGES" :key="lang.code" :value="lang.code">
+              {{ lang.label }}
+            </option>
+          </select>
+
+          <p class="pronunciation-modal-hint">
+            Saisis l'écriture phonétique souhaitée. Si tu choisis une langue différente du français, le mot sera signalé au moteur vocal pour qu'il l'articule dans cette langue.
+          </p>
+          <div class="pronunciation-modal-actions">
+            <button
+              class="pronunciation-modal-btn pronunciation-modal-btn--remove"
+              type="button"
+              :disabled="!pronunciationOverridesByLowerWord.has(pronunciationEditorWord.toLowerCase())"
+              @click="removePronunciationFromEditor"
+            >
+              Retirer
+            </button>
+            <button
+              class="pronunciation-modal-btn pronunciation-modal-btn--cancel"
+              type="button"
+              @click="closePronunciationEditor"
+            >
+              Annuler
+            </button>
+            <button
+              class="pronunciation-modal-btn pronunciation-modal-btn--save"
+              type="button"
+              @click="commitPronunciationFromEditor"
+            >
+              Enregistrer
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <Teleport to="body">
       <div v-if="isFullscreen && activeSlide" class="fullscreen-backdrop" @click="closeFullscreen">
         <div class="fullscreen-preview-controls" @click.stop>
           <button
@@ -159,6 +231,42 @@
               ></audio>
 
               <p v-else class="speech-empty">{{ activeSlideSpeechStatusLabel }}</p>
+
+              <div v-if="speechWordTokens.length" class="pronunciation-section" aria-label="Prononciation des mots">
+                <div class="pronunciation-header">
+                  <span class="pronunciation-title">Prononciation</span>
+                  <span class="pronunciation-hint">Clique un mot pour corriger sa prononciation</span>
+                </div>
+                <div class="pronunciation-text">
+                  <template v-for="token in speechWordTokens" :key="token.key">
+                    <button
+                      v-if="token.type === 'word'"
+                      class="pronunciation-word"
+                      :class="{ 'pronunciation-word--has-override': Boolean(token.override) }"
+                      type="button"
+                      :title="token.override ? `Prononcé : ${token.override.pronunciation}` : 'Définir la prononciation'"
+                      @click="openPronunciationEditor(token, $event)"
+                    >{{ token.text }}</button>
+                    <span v-else class="pronunciation-sep">{{ token.text }}</span>
+                  </template>
+                </div>
+
+                <div v-if="safePronunciationOverrides.length" class="pronunciation-list">
+                  <span class="pronunciation-list-label">Surcharges actives :</span>
+                  <span
+                    v-for="override in safePronunciationOverrides"
+                    :key="override.word"
+                    class="pronunciation-chip"
+                    :class="{ 'pronunciation-chip--foreign': normalizeOverrideLanguage(override.language) !== 'fr' }"
+                    :title="`Prononcé : ${override.pronunciation} (${PRONUNCIATION_LANGUAGE_LABELS[normalizeOverrideLanguage(override.language)] || 'FR'})`"
+                  >
+                    <span class="pronunciation-chip-lang">{{ PRONUNCIATION_LANGUAGE_LABELS[normalizeOverrideLanguage(override.language)] || 'FR' }}</span>
+                    <strong>{{ override.word }}</strong>
+                    <span class="pronunciation-chip-arrow">→</span>
+                    <em>{{ override.pronunciation }}</em>
+                  </span>
+                </div>
+              </div>
 
               <div class="speech-action-row">
                 <button
@@ -380,6 +488,109 @@
               <button class="size-reset" type="button" @click="resetCumulativeGap">Reset</button>
             </div>
 
+            <div
+              v-if="activeSlide && !isVirtualCoverSlide(activeSlide)"
+              class="fullscreen-control-group ann-group"
+              aria-label="Annotations"
+            >
+              <span class="control-label">Annotations</span>
+
+              <div class="ann-tools">
+                <button
+                  class="ann-tool-btn"
+                  :class="{ 'ann-tool-btn--active': annotationActiveTool === 'select' }"
+                  type="button"
+                  title="Sélectionner, déplacer, redimensionner"
+                  @click="setAnnotationTool('select')"
+                >
+                  <svg class="ann-tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M3 2 L3 13 L6 10 L8.5 13.5 L10 12.5 L7.5 9 L12 8 Z" fill="currentColor" />
+                  </svg>
+                  <span class="ann-tool-label">Sélection</span>
+                </button>
+                <button
+                  class="ann-tool-btn"
+                  :class="{ 'ann-tool-btn--active': annotationActiveTool === 'circle' }"
+                  type="button"
+                  title="Tracer un cercle"
+                  @click="setAnnotationTool('circle')"
+                >
+                  <svg class="ann-tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+                    <circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.7" />
+                  </svg>
+                  <span class="ann-tool-label">Cercle</span>
+                </button>
+                <button
+                  class="ann-tool-btn"
+                  :class="{ 'ann-tool-btn--active': annotationActiveTool === 'rect' }"
+                  type="button"
+                  title="Tracer un rectangle"
+                  @click="setAnnotationTool('rect')"
+                >
+                  <svg class="ann-tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+                    <rect x="2.5" y="3" width="11" height="10" fill="none" stroke="currentColor" stroke-width="1.7" rx="1" />
+                  </svg>
+                  <span class="ann-tool-label">Carré</span>
+                </button>
+                <button
+                  class="ann-tool-btn"
+                  :class="{ 'ann-tool-btn--active': annotationActiveTool === 'arrow' }"
+                  type="button"
+                  title="Tracer une flèche"
+                  @click="setAnnotationTool('arrow')"
+                >
+                  <svg class="ann-tool-icon" viewBox="0 0 16 16" aria-hidden="true">
+                    <line x1="2" y1="13" x2="12" y2="3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <polygon points="13.5,2 14,7 9,4" fill="currentColor" />
+                  </svg>
+                  <span class="ann-tool-label">Flèche</span>
+                </button>
+              </div>
+
+              <p class="ann-help">
+                Astuce&nbsp;: clic-droit sur une forme pour changer la couleur, l'épaisseur ou la supprimer.
+              </p>
+
+              <div class="ann-colors">
+                <button
+                  v-for="col in ANNOTATION_COLORS"
+                  :key="col"
+                  class="ann-color-btn"
+                  :class="{ 'ann-color-btn--active': annotationActiveColor === col }"
+                  :style="{ background: col }"
+                  type="button"
+                  :title="col"
+                  @click="annotationActiveColor = col"
+                ></button>
+              </div>
+
+              <div class="ann-stroke">
+                <span class="ann-stroke-label">Épais.</span>
+                <button class="size-button" type="button" @click="decreaseAnnotationStroke">-</button>
+                <span class="size-value ann-stroke-value">{{ annotationStrokeWidth }}px</span>
+                <button class="size-button" type="button" @click="increaseAnnotationStroke">+</button>
+              </div>
+
+              <div class="ann-actions">
+                <button
+                  class="ann-action-btn"
+                  type="button"
+                  :disabled="!annotationSelectedId"
+                  @click="deleteSelectedAnnotation"
+                >
+                  Supprimer
+                </button>
+                <button
+                  class="ann-action-btn ann-action-btn--danger"
+                  type="button"
+                  :disabled="!activeSlide?.annotations?.length"
+                  @click="clearAllAnnotations"
+                >
+                  Effacer tout
+                </button>
+              </div>
+            </div>
+
           </div>
 
           <div class="fullscreen-stage">
@@ -402,7 +613,16 @@
               :safe-zone-x-scale="safeZoneXScale"
               :safe-zone-y-scale="getSafeZoneYScale(activeSlide)"
               :video-format="format"
+              :annotation-editable="!isVirtualCoverSlide(activeSlide)"
+              :annotation-active-tool="annotationActiveTool"
+              :annotation-active-color="annotationActiveColor"
+              :annotation-stroke-width="annotationStrokeWidth"
+              :annotation-selected-id="annotationSelectedId"
               @diagnostic="$emit('diagnostic', $event)"
+              @annotation-add="handleAnnotationAdd"
+              @annotation-update="handleAnnotationUpdate"
+              @annotation-update-selected-id="annotationSelectedId = $event"
+              @annotation-delete="handleAnnotationDelete"
             />
 
             <button
@@ -446,9 +666,20 @@ const props = defineProps({
     type: String,
     default: 'reel',
   },
+  pronunciationOverrides: {
+    type: Array,
+    default: () => [],
+  },
 })
 
-const emit = defineEmits(['select-slide', 'diagnostic', 'update-slide', 'generate-slide-speech', 'export-video'])
+const emit = defineEmits([
+  'select-slide',
+  'diagnostic',
+  'update-slide',
+  'generate-slide-speech',
+  'export-video',
+  'update-pronunciation-overrides',
+])
 
 const isFullscreen = ref(false)
 const fullscreenIndex = ref(0)
@@ -486,7 +717,32 @@ const KATEX_COLORS = [
   { hex: '#27ae60', label: 'Vert' },
   { hex: '#8e44ad', label: 'Violet' },
 ]
+const ANNOTATION_COLORS = ['#e74c3c', '#2980b9', '#f39c12', '#27ae60', '#8e44ad']
 const speechPlayerRef = ref(null)
+
+const annotationActiveTool = ref('select')
+const annotationActiveColor = ref('#e74c3c')
+const annotationStrokeWidth = ref(3)
+const annotationSelectedId = ref(null)
+
+const pronunciationEditorOpen = ref(false)
+const pronunciationEditorWord = ref('')
+const pronunciationEditorPronunciation = ref('')
+const pronunciationEditorLanguage = ref('fr')
+const pronunciationEditorAnchor = ref(null)
+const pronunciationInputRef = ref(null)
+
+const PRONUNCIATION_LANGUAGES = [
+  { code: 'fr', label: 'Français', short: 'FR' },
+  { code: 'en', label: 'English', short: 'EN' },
+  { code: 'es', label: 'Español', short: 'ES' },
+  { code: 'de', label: 'Deutsch', short: 'DE' },
+  { code: 'it', label: 'Italiano', short: 'IT' },
+  { code: 'pt', label: 'Português', short: 'PT' },
+]
+const PRONUNCIATION_LANGUAGE_LABELS = Object.fromEntries(
+  PRONUNCIATION_LANGUAGES.map((l) => [l.code, l.short])
+)
 const isFullPreviewPlaying = ref(false)
 const cumulativeGap = ref(0.4)
 let fullPreviewTimerId = null
@@ -1024,6 +1280,8 @@ function openFullscreenAt(index) {
   fullscreenIndex.value = normalizedIndex
   isFullscreen.value = true
   fullscreenEditorTab.value = 'speech'
+  annotationActiveTool.value = 'select'
+  annotationSelectedId.value = null
   selectSlideByIndex(normalizedIndex)
   syncSpeechDraftFromActiveSlide({ force: true })
   syncKatexDraftFromActiveSlide({ force: true })
@@ -1057,6 +1315,8 @@ function closeFullscreen() {
   stopFullPreview()
   saveActiveSpeechDraft()
   saveActiveKatexDraft()
+  annotationActiveTool.value = 'select'
+  annotationSelectedId.value = null
   isFullscreen.value = false
 }
 
@@ -1067,6 +1327,7 @@ async function moveFullscreenToIndex(index) {
   saveActiveSpeechDraft()
   saveActiveKatexDraft()
   fullscreenEditorTab.value = 'speech'
+  annotationSelectedId.value = null
   fullscreenIndex.value = index
   selectSlideByIndex(index)
   syncSpeechDraftFromActiveSlide({ force: true })
@@ -1425,6 +1686,161 @@ function resetCumulativeGap() {
   setCumulativeGap(CUMULATIVE_GAP_DEFAULT)
 }
 
+function setAnnotationTool(tool) {
+  annotationActiveTool.value = tool
+  if (tool !== 'select') annotationSelectedId.value = null
+}
+
+function decreaseAnnotationStroke() {
+  annotationStrokeWidth.value = Math.max(1, annotationStrokeWidth.value - 1)
+}
+
+function increaseAnnotationStroke() {
+  annotationStrokeWidth.value = Math.min(10, annotationStrokeWidth.value + 1)
+}
+
+function handleAnnotationAdd(shape) {
+  if (!activeSlide.value?.id || isVirtualCoverSlide(activeSlide.value)) return
+  const current = Array.isArray(activeSlide.value.annotations) ? activeSlide.value.annotations : []
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: { annotations: [...current, shape] },
+  })
+}
+
+function handleAnnotationUpdate(updated) {
+  if (!activeSlide.value?.id || isVirtualCoverSlide(activeSlide.value)) return
+  const current = Array.isArray(activeSlide.value.annotations) ? activeSlide.value.annotations : []
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: { annotations: current.map((a) => (a.id === updated.id ? updated : a)) },
+  })
+}
+
+function deleteSelectedAnnotation() {
+  if (!annotationSelectedId.value || !activeSlide.value?.id || isVirtualCoverSlide(activeSlide.value)) return
+  const current = Array.isArray(activeSlide.value.annotations) ? activeSlide.value.annotations : []
+  const idToDelete = annotationSelectedId.value
+  annotationSelectedId.value = null
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: { annotations: current.filter((a) => a.id !== idToDelete) },
+  })
+}
+
+function handleAnnotationDelete(shapeId) {
+  if (!shapeId || !activeSlide.value?.id || isVirtualCoverSlide(activeSlide.value)) return
+  const current = Array.isArray(activeSlide.value.annotations) ? activeSlide.value.annotations : []
+  if (annotationSelectedId.value === shapeId) {
+    annotationSelectedId.value = null
+  }
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: { annotations: current.filter((a) => a.id !== shapeId) },
+  })
+}
+
+function clearAllAnnotations() {
+  if (!activeSlide.value?.id || isVirtualCoverSlide(activeSlide.value)) return
+  annotationSelectedId.value = null
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: { annotations: [] },
+  })
+}
+
+const safePronunciationOverrides = computed(() => (
+  Array.isArray(props.pronunciationOverrides)
+    ? props.pronunciationOverrides.filter((o) => o && o.word && o.pronunciation)
+    : []
+))
+
+const pronunciationOverridesByLowerWord = computed(() => {
+  const map = new Map()
+  for (const override of safePronunciationOverrides.value) {
+    map.set(String(override.word).toLowerCase(), override)
+  }
+  return map
+})
+
+const speechWordTokens = computed(() => {
+  const text = String(speechDraft.value || '')
+  if (!text) return []
+
+  const tokens = []
+  const regex = /([\p{L}\p{M}][\p{L}\p{M}\p{N}'’-]*)|([^\p{L}\p{M}\p{N}]+)/gu
+  let key = 0
+  for (const match of text.matchAll(regex)) {
+    const word = match[1]
+    const separator = match[2]
+    if (word) {
+      const override = pronunciationOverridesByLowerWord.value.get(word.toLowerCase()) || null
+      tokens.push({ key: key++, type: 'word', text: word, override })
+    } else if (separator) {
+      tokens.push({ key: key++, type: 'sep', text: separator })
+    }
+  }
+  return tokens
+})
+
+function normalizeOverrideLanguage(value) {
+  const raw = String(value || '').trim().toLowerCase()
+  return PRONUNCIATION_LANGUAGE_LABELS[raw] ? raw : 'fr'
+}
+
+function openPronunciationEditor(token, event) {
+  if (!token || token.type !== 'word') return
+  pronunciationEditorWord.value = token.text
+  pronunciationEditorPronunciation.value = token.override?.pronunciation || ''
+  pronunciationEditorLanguage.value = normalizeOverrideLanguage(token.override?.language)
+  pronunciationEditorAnchor.value = event?.currentTarget || null
+  pronunciationEditorOpen.value = true
+  nextTick(() => {
+    pronunciationInputRef.value?.focus()
+    pronunciationInputRef.value?.select?.()
+  })
+}
+
+function closePronunciationEditor() {
+  pronunciationEditorOpen.value = false
+  pronunciationEditorWord.value = ''
+  pronunciationEditorPronunciation.value = ''
+  pronunciationEditorLanguage.value = 'fr'
+  pronunciationEditorAnchor.value = null
+}
+
+function commitPronunciationFromEditor() {
+  const word = String(pronunciationEditorWord.value || '').trim()
+  const pronunciation = String(pronunciationEditorPronunciation.value || '').trim()
+  const language = normalizeOverrideLanguage(pronunciationEditorLanguage.value)
+  if (!word) {
+    closePronunciationEditor()
+    return
+  }
+
+  const lowerWord = word.toLowerCase()
+  const filtered = safePronunciationOverrides.value.filter(
+    (o) => String(o.word).toLowerCase() !== lowerWord
+  )
+  const next = pronunciation ? [...filtered, { word, pronunciation, language }] : filtered
+  emit('update-pronunciation-overrides', next)
+  closePronunciationEditor()
+}
+
+function removePronunciationFromEditor() {
+  const word = String(pronunciationEditorWord.value || '').trim()
+  if (!word) {
+    closePronunciationEditor()
+    return
+  }
+  const lowerWord = word.toLowerCase()
+  const next = safePronunciationOverrides.value.filter(
+    (o) => String(o.word).toLowerCase() !== lowerWord
+  )
+  emit('update-pronunciation-overrides', next)
+  closePronunciationEditor()
+}
+
 function generateActiveSlideSpeech() {
   if (!activeSlide.value?.id || !activeSpeechDraftText.value || isGeneratingActiveSpeech.value) return
 
@@ -1693,7 +2109,19 @@ function handleKeydown(event) {
 
   if (event.key === 'Escape') {
     event.preventDefault()
-    closeFullscreen()
+    if (annotationSelectedId.value) {
+      annotationSelectedId.value = null
+    } else if (annotationActiveTool.value !== 'select') {
+      annotationActiveTool.value = 'select'
+    } else {
+      closeFullscreen()
+    }
+    return
+  }
+
+  if ((event.key === 'Delete' || event.key === 'Backspace') && annotationSelectedId.value) {
+    event.preventDefault()
+    deleteSelectedAnnotation()
     return
   }
 
@@ -2413,5 +2841,432 @@ onBeforeUnmount(() => {
   .fullscreen-stage {
     gap: 8px;
   }
+}
+
+/* ── Annotation panel ── */
+
+.ann-group {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.ann-tools {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.ann-tool-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 11px;
+  line-height: 1;
+  padding: 8px 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.12s, border-color 0.12s, transform 0.1s;
+}
+
+.ann-tool-btn:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.ann-tool-btn:active {
+  transform: scale(0.97);
+}
+
+.ann-tool-btn--active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(29, 78, 216, 0.32);
+}
+
+.ann-tool-btn--active:hover {
+  background: #1e40af;
+}
+
+.ann-tool-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.ann-tool-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.ann-help {
+  margin: 0;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  padding: 6px 8px;
+}
+
+.ann-colors {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ann-color-btn {
+  width: 24px;
+  height: 24px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.1s, border-color 0.1s;
+}
+
+.ann-color-btn:hover {
+  transform: scale(1.18);
+}
+
+.ann-color-btn--active {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px #1d4ed8;
+  transform: scale(1.12);
+}
+
+.ann-stroke {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ann-stroke-label {
+  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 2px;
+}
+
+.ann-stroke-value {
+  min-width: 32px;
+  text-align: center;
+}
+
+.ann-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ann-action-btn {
+  border: 0;
+  border-radius: 8px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.12s;
+}
+
+.ann-action-btn:hover:not(:disabled) {
+  background: #fde68a;
+}
+
+.ann-action-btn--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.ann-action-btn--danger:hover:not(:disabled) {
+  background: #fecaca;
+}
+
+.ann-action-btn:disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* ── Pronunciation editor ── */
+
+.pronunciation-section {
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pronunciation-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pronunciation-title {
+  color: #1e3a8a;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pronunciation-hint {
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pronunciation-text {
+  display: block;
+  line-height: 1.55;
+  color: #0f172a;
+  font-size: 13px;
+  word-wrap: break-word;
+}
+
+.pronunciation-word {
+  display: inline;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 1px 2px;
+  margin: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  border-bottom: 1px dashed transparent;
+}
+
+.pronunciation-word:hover {
+  background: #dbeafe;
+  border-bottom-color: #3b82f6;
+}
+
+.pronunciation-word--has-override {
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 700;
+  border-bottom: 1px solid #f59e0b;
+}
+
+.pronunciation-word--has-override:hover {
+  background: #fde68a;
+}
+
+.pronunciation-sep {
+  white-space: pre-wrap;
+}
+
+.pronunciation-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+}
+
+.pronunciation-list-label {
+  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 2px;
+}
+
+.pronunciation-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #fcd34d;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+.pronunciation-chip--foreign {
+  border-color: #93c5fd;
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+.pronunciation-chip-lang {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  padding: 1px 4px;
+}
+
+.pronunciation-chip--foreign .pronunciation-chip-lang {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.pronunciation-chip strong {
+  font-weight: 800;
+}
+
+.pronunciation-chip-arrow {
+  opacity: 0.6;
+}
+
+.pronunciation-chip em {
+  font-style: italic;
+}
+
+.pronunciation-modal-select {
+  appearance: auto;
+  padding: 8px 10px;
+}
+
+.pronunciation-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 27000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.pronunciation-modal {
+  width: min(420px, 100%);
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #bfdbfe;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.4);
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pronunciation-modal-title {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.pronunciation-modal-word {
+  margin: 0;
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.pronunciation-modal-word strong {
+  color: #1d4ed8;
+}
+
+.pronunciation-modal-label {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pronunciation-modal-input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 10px;
+  font: inherit;
+  font-size: 14px;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+.pronunciation-modal-input:focus {
+  outline: none;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.18);
+}
+
+.pronunciation-modal-hint {
+  margin: 0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.pronunciation-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pronunciation-modal-btn {
+  border: 0;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.pronunciation-modal-btn--cancel {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.pronunciation-modal-btn--cancel:hover {
+  background: #cbd5e1;
+}
+
+.pronunciation-modal-btn--remove {
+  background: #fee2e2;
+  color: #991b1b;
+  margin-right: auto;
+}
+
+.pronunciation-modal-btn--remove:hover:not(:disabled) {
+  background: #fecaca;
+}
+
+.pronunciation-modal-btn--remove:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.pronunciation-modal-btn--save {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.pronunciation-modal-btn--save:hover {
+  background: #1e40af;
 }
 </style>

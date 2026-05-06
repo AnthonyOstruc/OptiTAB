@@ -116,6 +116,42 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Le titre du reel est obligatoire.')
         return safe_title
 
+    def validate_pronunciation_overrides(self, value):
+        if value in (None, ''):
+            return []
+        if not isinstance(value, list):
+            raise serializers.ValidationError('Les surcharges de prononciation doivent etre une liste.')
+
+        allowed_languages = {'fr', 'en', 'es', 'de', 'it', 'pt'}
+        cleaned = []
+        seen_words = set()
+        for item in value:
+            if not isinstance(item, dict):
+                raise serializers.ValidationError('Chaque entree de prononciation doit etre un objet.')
+
+            word = str(item.get('word') or '').strip()
+            pronunciation = str(item.get('pronunciation') or '').strip()
+            if not word or not pronunciation:
+                continue
+            if len(word) > 80 or len(pronunciation) > 160:
+                raise serializers.ValidationError('Mot ou prononciation trop long.')
+
+            language = str(item.get('language') or 'fr').strip().lower()
+            if language not in allowed_languages:
+                language = 'fr'
+
+            key = word.lower()
+            if key in seen_words:
+                continue
+            seen_words.add(key)
+            cleaned.append({
+                'word': word,
+                'pronunciation': pronunciation,
+                'language': language,
+            })
+
+        return cleaned
+
     def get_speech_audio_url(self, obj):
         if not obj.speech_audio:
             return None
@@ -170,6 +206,7 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             'video_width',
             'video_height',
             'video_fps',
+            'pronunciation_overrides',
             'created_at',
             'updated_at',
         ]

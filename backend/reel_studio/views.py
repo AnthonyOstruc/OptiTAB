@@ -353,6 +353,39 @@ def _collect_video_export_audio_issues(project, frames):
     return issues
 
 
+def _apply_pronunciation_overrides(text, overrides, *, base_language='fr'):
+    safe_text = str(text or '')
+    if not safe_text or not overrides:
+        return safe_text
+
+    safe_base_language = str(base_language or 'fr').strip().lower() or 'fr'
+
+    sorted_overrides = sorted(
+        (o for o in overrides if isinstance(o, dict)),
+        key=lambda o: len(str(o.get('word') or '')),
+        reverse=True,
+    )
+
+    for override in sorted_overrides:
+        word = str(override.get('word') or '').strip()
+        pronunciation = str(override.get('pronunciation') or '').strip()
+        if not word or not pronunciation:
+            continue
+
+        language = str(override.get('language') or safe_base_language).strip().lower() or safe_base_language
+        if language != safe_base_language:
+            replacement = f', {pronunciation}, '
+        else:
+            replacement = pronunciation
+
+        pattern = re.compile(rf'(?<!\w){re.escape(word)}(?!\w)', re.IGNORECASE)
+        safe_text = pattern.sub(replacement, safe_text)
+
+    safe_text = re.sub(r'\s+', ' ', safe_text).strip()
+    safe_text = re.sub(r'\s+,', ',', safe_text)
+    return safe_text
+
+
 def _generate_and_save_slide_speech(
     slide,
     *,
@@ -373,12 +406,18 @@ def _generate_and_save_slide_speech(
     if not safe_speech_text:
         raise ValueError('Aucun texte voix disponible pour cette slide.')
 
+    overrides = []
+    project = getattr(slide, 'reel_project', None)
+    if project is not None:
+        overrides = getattr(project, 'pronunciation_overrides', None) or []
+    tts_text = _apply_pronunciation_overrides(safe_speech_text, overrides)
+
     slide.speech_status = ReelProject.SPEECH_STATUS_EMPTY
     slide.speech_error = ''
     slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
 
     result = tts_generate_speech(
-        text=safe_speech_text,
+        text=tts_text,
         provider=provider,
         voice_id=voice_id,
         model_id=model_id,
@@ -1161,9 +1200,14 @@ class ReelProjectGenerateSpeechView(APIView):
         project.speech_error = ''
         project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
 
+        tts_text = _apply_pronunciation_overrides(
+            speech_text,
+            project.pronunciation_overrides or [],
+        )
+
         try:
             tts_result = tts_generate_speech(
-                text=speech_text,
+                text=tts_text,
                 **_speech_generation_kwargs(serializer.validated_data),
             )
         except ValueError as exc:

@@ -81,11 +81,13 @@
               :generating-speech-slide-id="generatingSpeechSlideId"
               :exporting-video="exportingVideo"
               :format="selectedProject?.format_type || studioFormat"
+              :pronunciation-overrides="selectedProject?.pronunciation_overrides || []"
               @select-slide="selectedSlideId = $event"
               @diagnostic="handleSlideDiagnostic"
               @update-slide="handlePatchSlide"
               @generate-slide-speech="handleGenerateSlideSpeech"
               @export-video="handleExportVideo"
+              @update-pronunciation-overrides="handleUpdatePronunciationOverrides"
             />
 
             <section v-if="selectedProject" class="instagram-caption-panel">
@@ -2097,6 +2099,41 @@ async function handleSaveSlide(payload) {
     setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder la slide.'))
   } finally {
     savingSlide.value = false
+  }
+}
+
+async function handleUpdatePronunciationOverrides(nextOverrides) {
+  if (!selectedProject.value?.id) return
+
+  const cleanList = Array.isArray(nextOverrides)
+    ? nextOverrides
+        .filter((entry) => entry && typeof entry === 'object')
+        .map((entry) => ({
+          word: String(entry.word || '').trim(),
+          pronunciation: String(entry.pronunciation || '').trim(),
+        }))
+        .filter((entry) => entry.word && entry.pronunciation)
+    : []
+
+  const previousOverrides = Array.isArray(selectedProject.value.pronunciation_overrides)
+    ? [...selectedProject.value.pronunciation_overrides]
+    : []
+  selectedProject.value.pronunciation_overrides = cleanList
+
+  try {
+    const response = await updateReelProject(selectedProject.value.id, {
+      pronunciation_overrides: cleanList,
+    })
+    const updatedProject = normalizeProject(response?.data)
+    if (updatedProject?.id) {
+      selectedProject.value.pronunciation_overrides = updatedProject.pronunciation_overrides || []
+      selectedProject.value.updated_at = updatedProject.updated_at || selectedProject.value.updated_at
+      upsertProjectSummary(selectedProject.value)
+    }
+    setFeedback('success', 'Prononciations mises à jour.')
+  } catch (error) {
+    selectedProject.value.pronunciation_overrides = previousOverrides
+    setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder les prononciations.'))
   }
 }
 

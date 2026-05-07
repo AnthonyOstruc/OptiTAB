@@ -74,6 +74,8 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'katex_inline_offset_percent',
             'katex_cumulative_gap_em',
             'katex_reset_cumulative',
+            'katex_reveal_with_speech',
+            'katex_drop_previous_line',
             'duration_seconds',
             'layout_status',
             'layout_notes',

@@ -352,6 +352,45 @@
                 </button>
               </div>
             </template>
+
+            <div class="speech-side-controls" aria-label="Options voix et lecture">
+              <div class="speech-side-control" aria-label="Sous-titres">
+                <span class="control-label speech-side-control-label">Sous-titres</span>
+                <button
+                  class="size-reset line-mode-button subtitles-toggle subtitles-toggle--inline"
+                  :class="{ 'subtitles-toggle--active': showSubtitles, 'line-mode-button--active': showSubtitles }"
+                  type="button"
+                  :aria-pressed="showSubtitles ? 'true' : 'false'"
+                  @click="toggleSubtitles"
+                >
+                  <svg class="subtitles-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                    <rect x="6.5" y="11" width="4.5" height="1.6" rx="0.8" fill="currentColor"/>
+                    <rect x="12.5" y="11" width="5" height="1.6" rx="0.8" fill="currentColor"/>
+                    <rect x="6.5" y="14.5" width="6.5" height="1.6" rx="0.8" fill="currentColor"/>
+                    <rect x="14.5" y="14.5" width="3" height="1.6" rx="0.8" fill="currentColor"/>
+                  </svg>
+                  <span>{{ showSubtitles ? 'Activés' : 'Désactivés' }}</span>
+                </button>
+              </div>
+
+              <div
+                v-if="activeSlideCanAnimateKatex"
+                class="speech-side-control"
+                aria-label="Animation KaTeX avec la voix"
+              >
+                <span class="control-label speech-side-control-label">KaTeX voix</span>
+                <button
+                  class="size-reset line-mode-button"
+                  :class="{ 'line-mode-button--active': activeSlideKatexRevealWithSpeech }"
+                  type="button"
+                  :aria-pressed="activeSlideKatexRevealWithSpeech ? 'true' : 'false'"
+                  @click="toggleActiveKatexSpeechReveal"
+                >
+                  {{ katexSpeechRevealLabel }}
+                </button>
+              </div>
+            </div>
           </aside>
 
           <div class="fullscreen-toolbar">
@@ -488,6 +527,21 @@
             <div
               v-if="activeSlide && !isEdgeSlide(activeSlide)"
               class="fullscreen-control-group"
+              aria-label="Suppression de la ligne precedente"
+            >
+              <button
+                class="size-reset line-mode-button"
+                :class="{ 'line-mode-button--active': activeSlideDropsPreviousLine }"
+                type="button"
+                @click="toggleActiveDropPreviousLine"
+              >
+                {{ dropPreviousLineLabel }}
+              </button>
+            </div>
+
+            <div
+              v-if="activeSlide && !isEdgeSlide(activeSlide)"
+              class="fullscreen-control-group"
               aria-label="Espacement cumulatif"
             >
               <span class="control-label">Espacement</span>
@@ -509,26 +563,6 @@
                 +
               </button>
               <button class="size-reset" type="button" @click="resetCumulativeGap">Reset</button>
-            </div>
-
-            <div class="fullscreen-control-group" aria-label="Sous-titres">
-              <span class="control-label">Sous-titres</span>
-              <button
-                class="size-reset line-mode-button subtitles-toggle subtitles-toggle--inline"
-                :class="{ 'subtitles-toggle--active': showSubtitles, 'line-mode-button--active': showSubtitles }"
-                type="button"
-                :aria-pressed="showSubtitles ? 'true' : 'false'"
-                @click="toggleSubtitles"
-              >
-                <svg class="subtitles-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                  <rect x="6.5" y="11" width="4.5" height="1.6" rx="0.8" fill="currentColor"/>
-                  <rect x="12.5" y="11" width="5" height="1.6" rx="0.8" fill="currentColor"/>
-                  <rect x="6.5" y="14.5" width="6.5" height="1.6" rx="0.8" fill="currentColor"/>
-                  <rect x="14.5" y="14.5" width="3" height="1.6" rx="0.8" fill="currentColor"/>
-                </svg>
-                <span>{{ showSubtitles ? 'Activés' : 'Désactivés' }}</span>
-              </button>
             </div>
 
             <div
@@ -1245,6 +1279,33 @@ const baseSlidesForRender = computed(() => {
     }
   }
 
+  function dropPreviousCumulativeLine() {
+    if (!cumulativeRows.length) return
+
+    const lastRow = cumulativeRows[cumulativeRows.length - 1]
+    const parts = Array.isArray(lastRow?.parts) ? lastRow.parts : []
+    if (!parts.length) {
+      cumulativeRows.pop()
+      cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
+      return
+    }
+
+    const removedLine = parts.pop()
+    if (Array.isArray(lastRow.inlineSeparators) && lastRow.inlineSeparators.length) {
+      lastRow.inlineSeparators.pop()
+    }
+    if (!parts.length) {
+      cumulativeRows.pop()
+    }
+
+    const removedKey = normalizeKatexLine(removedLine)
+    if (removedKey) {
+      cumulativeLineKeys.delete(removedKey)
+    } else {
+      cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
+    }
+  }
+
   return slidesSafe.value.map((slide) => {
     const safeSlide = slide && typeof slide === 'object' ? slide : {}
     const slideType = normalizeText(safeSlide.slide_type).toLowerCase()
@@ -1268,6 +1329,9 @@ const baseSlidesForRender = computed(() => {
     const displayScreenText = baseText || carriedScreenText
     if (slideType === 'katex') {
       const currentLines = splitKatexLines(baseKatex)
+      if (safeSlide.katex_drop_previous_line) {
+        dropPreviousCumulativeLine()
+      }
       const inlineWithPrevious = Boolean(safeSlide.katex_inline_with_previous) && cumulativeRows.length > 0
       appendKatexLines(currentLines, safeSlide, inlineWithPrevious)
       if (safeSlide.katex_reset_cumulative) {
@@ -1285,6 +1349,9 @@ const baseSlidesForRender = computed(() => {
 
     if (slideType === 'cumulative_katex' || slideType === 'result') {
       const currentLines = splitKatexLines(baseKatex)
+      if (safeSlide.katex_drop_previous_line) {
+        dropPreviousCumulativeLine()
+      }
       const inlineWithPrevious = Boolean(safeSlide.katex_inline_with_previous) && cumulativeRows.length > 0
       appendKatexLines(currentLines, safeSlide, inlineWithPrevious)
       if (safeSlide.katex_reset_cumulative) {
@@ -1331,6 +1398,18 @@ const activeInlineOffsetLabel = computed(() => {
 })
 const cumulativeGapLabel = computed(() => `${cumulativeGap.value.toFixed(1)}em`)
 const activeSlideResetsCumulative = computed(() => Boolean(activeSlide.value?.katex_reset_cumulative))
+const activeSlideDropsPreviousLine = computed(() => Boolean(activeSlide.value?.katex_drop_previous_line))
+const activeSlideKatexRevealWithSpeech = computed(() => Boolean(activeSlide.value?.katex_reveal_with_speech))
+const activeSlideCanAnimateKatex = computed(() => (
+  Boolean(activeSlide.value?.id)
+  && !isVirtualCoverSlide(activeSlide.value)
+  && Boolean(
+    activeKatexDraftText.value
+    || normalizeText(activeSlide.value?.katex)
+    || normalizeText(activeSlide.value?.display_katex)
+  )
+))
+const katexSpeechRevealLabel = computed(() => (activeSlideKatexRevealWithSpeech.value ? 'Activée' : 'Désactivée'))
 const canToggleKatexLineMode = computed(() => {
   if (!activeSlide.value || isEdgeSlide(activeSlide.value)) return false
 
@@ -1346,6 +1425,7 @@ const canToggleKatexLineMode = computed(() => {
 })
 const lineModeLabel = computed(() => (activeSlideInline.value ? 'Même ligne' : 'Nouvelle ligne'))
 const resetCumulativeLabel = computed(() => 'Nouvelle page')
+const dropPreviousLineLabel = computed(() => (activeSlideDropsPreviousLine.value ? 'Ligne préc. supprimée' : 'Suppr. ligne préc.'))
 
 function findIndexById(slideId) {
   return slidesForRender.value.findIndex((slide) => Number(slide.id) === Number(slideId))
@@ -1437,8 +1517,10 @@ function stopFullPreview({ resetAudio = true } = {}) {
   if (!audio) return
 
   audio.pause()
+  speechAudioPlaying.value = false
   try {
     audio.currentTime = 0
+    speechAudioCurrentTime.value = 0
   } catch (error) {
     console.warn('Impossible de remettre la lecture audio au debut:', error)
   }
@@ -1482,6 +1564,7 @@ async function playActiveSpeechForFullPreview() {
 
   try {
     audio.currentTime = 0
+    speechAudioCurrentTime.value = 0
     await audio.play()
   } catch (error) {
     console.error('Erreur lecture audio complete:', error)
@@ -1782,6 +1865,28 @@ function toggleActiveResetCumulative() {
   })
 }
 
+function toggleActiveDropPreviousLine() {
+  if (!activeSlide.value?.id || isEdgeSlide(activeSlide.value)) return
+
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: {
+      katex_drop_previous_line: !activeSlideDropsPreviousLine.value,
+    },
+  })
+}
+
+function toggleActiveKatexSpeechReveal() {
+  if (!activeSlideCanAnimateKatex.value) return
+
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: {
+      katex_reveal_with_speech: !activeSlideKatexRevealWithSpeech.value,
+    },
+  })
+}
+
 function setCumulativeGap(value) {
   cumulativeGap.value = clampCumulativeGap(value)
 }
@@ -1979,13 +2084,34 @@ function setExportSlideRef(el, index) {
 }
 
 function waitForNextPaint() {
-  if (typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') {
+  if (typeof window === 'undefined') {
     return Promise.resolve()
   }
 
+  const isDocumentHidden = typeof document !== 'undefined' && document.hidden
+  if (isDocumentHidden || typeof window.requestAnimationFrame !== 'function') {
+    return new Promise((resolve) => window.setTimeout(resolve, isDocumentHidden ? 80 : 0))
+  }
+
   return new Promise((resolve) => {
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(resolve)
+    let resolved = false
+    let firstFrameId = null
+    let secondFrameId = null
+    let timeoutId = null
+
+    const finish = () => {
+      if (resolved) return
+      resolved = true
+      if (firstFrameId !== null) window.cancelAnimationFrame(firstFrameId)
+      if (secondFrameId !== null) window.cancelAnimationFrame(secondFrameId)
+      if (timeoutId !== null) window.clearTimeout(timeoutId)
+      resolve()
+    }
+
+    timeoutId = window.setTimeout(finish, 250)
+    firstFrameId = window.requestAnimationFrame(() => {
+      firstFrameId = null
+      secondFrameId = window.requestAnimationFrame(finish)
     })
   })
 }
@@ -2776,6 +2902,35 @@ onBeforeUnmount(() => {
   background: #94a3b8;
   color: #ffffff;
   cursor: not-allowed;
+}
+
+.speech-side-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.speech-side-control {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.speech-side-control-label {
+  flex: 0 0 86px;
+  padding: 0;
+}
+
+.speech-side-control .line-mode-button {
+  flex: 1 1 150px;
+}
+
+.speech-side-control .subtitles-toggle--inline {
+  width: auto;
 }
 
 .fullscreen-toolbar {

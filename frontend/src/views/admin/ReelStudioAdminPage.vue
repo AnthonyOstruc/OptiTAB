@@ -2080,6 +2080,8 @@ async function handleSaveSlide(payload) {
       katex_inline_offset_percent: payload.katex_inline_offset_percent,
       katex_cumulative_gap_em: payload.katex_cumulative_gap_em,
       katex_reset_cumulative: payload.katex_reset_cumulative,
+      katex_reveal_with_speech: payload.katex_reveal_with_speech,
+      katex_drop_previous_line: payload.katex_drop_previous_line,
     }
 
     if (diagnostic?.status) {

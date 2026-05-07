@@ -27,6 +27,7 @@
               v-if="hasKatex"
               ref="katexZoneRef"
               class="katex-zone hook-katex"
+              :class="katexZoneClass"
               v-html="renderedKatex"
             ></div>
             <div
@@ -50,6 +51,7 @@
               v-if="hasKatex"
               ref="katexZoneRef"
               class="katex-zone cta-katex"
+              :class="katexZoneClass"
               v-html="renderedKatex"
             ></div>
 
@@ -76,6 +78,7 @@
             v-if="hasKatex"
             ref="katexZoneRef"
             class="katex-zone"
+            :class="katexZoneClass"
             v-html="renderedKatex"
           ></div>
         </template>
@@ -254,6 +257,14 @@ const screenTextContent = computed(() => {
   if (preferred) return preferred
   return String(safeSlide.value.screen_text || '').trim()
 })
+
+function stripSubtitleControlTags(value) {
+  return String(value || '')
+    .replace(/\[[^\]\r\n]*[A-Za-zÀ-ÖØ-öø-ÿ][^\]\r\n]*\]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 const subtitleText = computed(() => {
   const candidates = [
     safeSlide.value.voice_script,
@@ -267,7 +278,8 @@ const subtitleText = computed(() => {
       .map((line) => line.replace(/\s+/g, ' ').trim())
       .filter(Boolean)
       .join(' ')
-    if (cleaned) return cleaned
+    const subtitleCleaned = stripSubtitleControlTags(cleaned)
+    if (subtitleCleaned) return subtitleCleaned
   }
   return ''
 })
@@ -279,7 +291,7 @@ const subtitleWordTimings = computed(() => {
   return words
     .map((entry) => {
       if (!entry || typeof entry !== 'object') return null
-      const text = String(entry.text || '').trim()
+      const text = stripSubtitleControlTags(entry.text)
       const start = Number(entry.start)
       const end = Number(entry.end)
       if (!text || !Number.isFinite(start) || !Number.isFinite(end)) return null
@@ -330,6 +342,24 @@ const katexRows = computed(() => {
 })
 const hasScreenText = computed(() => Boolean(screenTextContent.value))
 const hasKatex = computed(() => Boolean(katexContent.value))
+const katexRevealWithSpeech = computed(() => (
+  Boolean(safeSlide.value.katex_reveal_with_speech)
+  && props.displayMode === 'fullscreen'
+  && hasKatex.value
+))
+const katexRevealActive = computed(() => (
+  katexRevealWithSpeech.value
+  && (props.audioPlaying || Number(props.audioCurrentTime) > 0.03)
+))
+const katexZoneClass = computed(() => ({
+  'katex-zone--speech-reveal': katexRevealWithSpeech.value,
+  'katex-zone--speech-reveal-active': katexRevealActive.value,
+}))
+const currentKatexRevealKeys = computed(() => new Set(
+  splitKatexLines(safeSlide.value.katex)
+    .map((line) => normalizeKatexRevealKey(line))
+    .filter(Boolean)
+))
 const hookTopText = computed(() => String(safeSlide.value.title || '').trim())
 const hookBottomText = computed(() => screenTextContent.value)
 const showHookTemplate = computed(
@@ -389,6 +419,30 @@ function splitKatexLines(value) {
     .split(/\n+/)
     .map((line) => line.trim().replace(/^&+\s*/, '').trim())
     .filter(Boolean)
+}
+
+function normalizeKatexRevealKey(value) {
+  return String(value || '')
+    .replace(/\\displaystyle/g, '')
+    .replace(/^&+\s*/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function isKatexRevealTargetPart(value) {
+  if (!katexRevealWithSpeech.value) return false
+  const key = normalizeKatexRevealKey(value)
+  if (!key) return false
+  const currentKeys = currentKatexRevealKeys.value
+  if (!currentKeys.size) return true
+  return currentKeys.has(key)
+}
+
+function katexRevealWeight(value) {
+  const key = normalizeKatexRevealKey(value)
+    .replace(/\\[a-zA-Z]+/g, 'x')
+    .replace(/[{}_^]/g, '')
+  return Math.max(1, key.length)
 }
 
 function clampInlineOffset(value) {
@@ -515,8 +569,26 @@ const renderedKatex = computed(() => {
   const raw = katexContent.value
   if (!raw) return ''
   try {
+    let revealIndex = 0
+    const revealTargetAttrs = (part) => {
+      if (!isKatexRevealTargetPart(part)) return { className: '', attrs: '' }
+      const attrs = [
+        `data-reel-katex-reveal-index="${revealIndex}"`,
+        `data-reel-katex-reveal-weight="${katexRevealWeight(part)}"`,
+      ].join(' ')
+      revealIndex += 1
+      return {
+        className: ' reel-katex-reveal-target',
+        attrs: ` ${attrs}`,
+      }
+    }
+
     if (!shouldAlignKatexLeft.value) {
-      return katex.renderToString(raw, { displayMode: true, throwOnError: false })
+      const formulaHtml = katex.renderToString(raw, { displayMode: true, throwOnError: false })
+      const revealAttrs = revealTargetAttrs(raw)
+      return revealAttrs.attrs
+        ? `<span class="reel-katex-reveal-target"${revealAttrs.attrs}>${formulaHtml}</span>`
+        : formulaHtml
     }
 
     if (katexRows.value.length) {
@@ -525,21 +597,27 @@ const renderedKatex = computed(() => {
           const parts = row.parts
           if (parts.length === 1) {
             const lineHtml = katex.renderToString(parts[0], { displayMode: true, throwOnError: false })
-            return `<div class="reel-katex-line">${lineHtml}</div>`
+            const revealAttrs = revealTargetAttrs(parts[0])
+            const lineContent = revealAttrs.attrs
+              ? `<span class="reel-katex-reveal-target"${revealAttrs.attrs}>${lineHtml}</span>`
+              : lineHtml
+            return `<div class="reel-katex-line">${lineContent}</div>`
           }
 
           const offset = clampInlineOffset(row.inlineOffsetPercent)
           const baseHtml = katex.renderToString(`\\displaystyle ${parts[0]}`, { displayMode: false, throwOnError: false })
+          const baseRevealAttrs = revealTargetAttrs(parts[0])
           const inlineSeparators = Array.isArray(row.inlineSeparators) ? row.inlineSeparators : []
           const inlineHtml = parts
             .slice(1)
             .map((part, index) => {
               const partHtml = renderInlineKatexPart(part, inlineSeparators[index])
               const left = 50 + offset + index * 22
-              return `<span class="reel-katex-part reel-katex-part--inline" style="left:${left}%">${partHtml}</span>`
+              const revealAttrs = revealTargetAttrs(part)
+              return `<span class="reel-katex-part reel-katex-part--inline${revealAttrs.className}" style="left:${left}%"${revealAttrs.attrs}>${partHtml}</span>`
             })
             .join('')
-          return `<div class="reel-katex-line reel-katex-line--inline"><span class="reel-katex-part reel-katex-part--base">${baseHtml}</span>${inlineHtml}</div>`
+          return `<div class="reel-katex-line reel-katex-line--inline"><span class="reel-katex-part reel-katex-part--base${baseRevealAttrs.className}"${baseRevealAttrs.attrs}>${baseHtml}</span>${inlineHtml}</div>`
         })
         .join('')
     }
@@ -547,7 +625,11 @@ const renderedKatex = computed(() => {
     return splitKatexLines(raw)
       .map((line) => {
         const lineHtml = katex.renderToString(line, { displayMode: true, throwOnError: false })
-        return `<div class="reel-katex-line">${lineHtml}</div>`
+        const revealAttrs = revealTargetAttrs(line)
+        const lineContent = revealAttrs.attrs
+          ? `<span class="reel-katex-reveal-target"${revealAttrs.attrs}>${lineHtml}</span>`
+          : lineHtml
+        return `<div class="reel-katex-line">${lineContent}</div>`
       })
       .join('')
   } catch (_) {
@@ -680,6 +762,53 @@ const evaluateLayout = async () => {
   })
 }
 
+function clamp01(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return 0
+  return Math.min(1, Math.max(0, numeric))
+}
+
+function katexRevealTimelineDuration() {
+  const words = subtitleWordTimings.value
+  const lastWordEnd = words.reduce((maxEnd, word) => Math.max(maxEnd, Number(word.end) || 0), 0)
+  const slideDuration = Number(safeSlide.value.duration_seconds) || 0
+  return Math.max(0.5, lastWordEnd || slideDuration || 4)
+}
+
+function setKatexRevealProgress(target, progress) {
+  const safeProgress = clamp01(progress)
+  const clipPercent = Math.round((1 - safeProgress) * 1000) / 10
+  target.style.setProperty('--reel-katex-reveal-clip', `${clipPercent}%`)
+  target.classList.toggle('reel-katex-reveal-target--active', safeProgress > 0.01 && safeProgress < 0.99)
+}
+
+function updateKatexRevealProgress() {
+  const zoneEl = katexZoneRef.value
+  if (!zoneEl) return
+
+  const targets = Array.from(zoneEl.querySelectorAll('.reel-katex-reveal-target'))
+    .sort((a, b) => Number(a.dataset.reelKatexRevealIndex || 0) - Number(b.dataset.reelKatexRevealIndex || 0))
+  if (!targets.length) return
+
+  if (!katexRevealActive.value) {
+    targets.forEach((target) => setKatexRevealProgress(target, 1))
+    return
+  }
+
+  const weights = targets.map((target) => Math.max(1, Number(target.dataset.reelKatexRevealWeight) || 1))
+  const totalWeight = weights.reduce((sum, weight) => sum + weight, 0) || 1
+  const revealDuration = katexRevealTimelineDuration() * 0.94
+  const elapsedWeight = clamp01((Number(props.audioCurrentTime) || 0) / Math.max(0.3, revealDuration)) * totalWeight
+
+  let consumedWeight = 0
+  targets.forEach((target, index) => {
+    const weight = weights[index]
+    const progress = (elapsedWeight - consumedWeight) / weight
+    setKatexRevealProgress(target, progress)
+    consumedWeight += weight
+  })
+}
+
 watch(
   () => [
     safeSlide.value.title,
@@ -703,6 +832,19 @@ watch(
     evaluateLayout()
   },
   { immediate: true }
+)
+
+watch(
+  () => [
+    props.audioCurrentTime,
+    props.audioPlaying,
+    katexRevealWithSpeech.value,
+    renderedKatex.value,
+  ],
+  () => {
+    updateKatexRevealProgress()
+  },
+  { immediate: true, flush: 'post' }
 )
 
 function handleResize() {
@@ -1173,6 +1315,28 @@ onUnmounted(() => {
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part--inline) {
   position: absolute;
   top: 0;
+}
+
+.katex-zone--speech-reveal :deep(.reel-katex-reveal-target) {
+  --reel-katex-reveal-clip: 0%;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+  clip-path: inset(0 var(--reel-katex-reveal-clip, 0%) 0 0);
+  will-change: clip-path;
+}
+
+.katex-zone--speech-reveal :deep(.reel-katex-reveal-target > .katex-display) {
+  width: auto !important;
+  display: inline-block;
+}
+
+.katex-zone--speech-reveal-active :deep(.reel-katex-reveal-target) {
+  transition: clip-path 0.08s linear;
+}
+
+.katex-zone--speech-reveal-active :deep(.reel-katex-reveal-target--active) {
+  filter: drop-shadow(0 0 0.04em rgba(37, 99, 235, 0.28));
 }
 
 .slide-card--fullscreen .reel-slide-body {

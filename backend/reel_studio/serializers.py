@@ -87,6 +87,7 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'speech_status',
             'speech_error',
             'speech_generated_at',
+            'speech_word_timings',
             'created_at',
             'updated_at',
         ]
@@ -101,6 +102,7 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'speech_status',
             'speech_error',
             'speech_generated_at',
+            'speech_word_timings',
             'created_at',
             'updated_at',
         ]

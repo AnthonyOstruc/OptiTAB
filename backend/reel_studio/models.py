@@ -156,6 +156,7 @@ class ReelSlide(models.Model):
     )
     speech_error = models.TextField(blank=True, default='')
     speech_generated_at = models.DateTimeField(blank=True, null=True)
+    speech_word_timings = models.JSONField(blank=True, null=True, default=None)
     annotations = models.JSONField(blank=True, default=list)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

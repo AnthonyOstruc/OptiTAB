@@ -99,6 +99,23 @@
         @update:selectedId="$emit('annotation-update-selected-id', $event)"
         @delete="$emit('annotation-delete', $event)"
       />
+
+      <div v-if="showSubtitles && subtitleText" class="reel-subtitles" aria-hidden="true">
+        <span class="reel-subtitles-text">
+          <template v-if="subtitleHasKaraokeData">
+            <template v-for="(word, idx) in subtitleWordTimings" :key="`sub-w-${idx}`">
+              <span
+                class="reel-subtitles-word"
+                :class="{
+                  'reel-subtitles-word--active': idx === subtitleActiveWordIndex,
+                  'reel-subtitles-word--past': idx < subtitleActiveWordIndex,
+                }"
+              >{{ word.text }}</span>{{ idx < subtitleWordTimings.length - 1 ? ' ' : '' }}
+            </template>
+          </template>
+          <template v-else>{{ subtitleText }}</template>
+        </span>
+      </div>
     </div>
   </article>
 </template>
@@ -160,6 +177,18 @@ const props = defineProps({
   annotationSelectedId: {
     type: String,
     default: null,
+  },
+  showSubtitles: {
+    type: Boolean,
+    default: false,
+  },
+  audioCurrentTime: {
+    type: Number,
+    default: 0,
+  },
+  audioPlaying: {
+    type: Boolean,
+    default: false,
   },
 })
 
@@ -224,6 +253,61 @@ const screenTextContent = computed(() => {
   const preferred = String(safeSlide.value.display_screen_text || '').trim()
   if (preferred) return preferred
   return String(safeSlide.value.screen_text || '').trim()
+})
+const subtitleText = computed(() => {
+  const candidates = [
+    safeSlide.value.voice_script,
+    safeSlide.value.speech_text,
+  ]
+  for (const candidate of candidates) {
+    const cleaned = String(candidate || '')
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .split('\n')
+      .map((line) => line.replace(/\s+/g, ' ').trim())
+      .filter(Boolean)
+      .join(' ')
+    if (cleaned) return cleaned
+  }
+  return ''
+})
+
+const subtitleWordTimings = computed(() => {
+  const raw = safeSlide.value.speech_word_timings
+  if (!raw || typeof raw !== 'object') return []
+  const words = Array.isArray(raw.words) ? raw.words : []
+  return words
+    .map((entry) => {
+      if (!entry || typeof entry !== 'object') return null
+      const text = String(entry.text || '').trim()
+      const start = Number(entry.start)
+      const end = Number(entry.end)
+      if (!text || !Number.isFinite(start) || !Number.isFinite(end)) return null
+      return { text, start, end }
+    })
+    .filter(Boolean)
+})
+
+const subtitleHasKaraokeData = computed(() => subtitleWordTimings.value.length > 0)
+
+const subtitleActiveWordIndex = computed(() => {
+  const words = subtitleWordTimings.value
+  if (!words.length) return -1
+  const t = Number(props.audioCurrentTime) || 0
+  if (!props.audioPlaying && t <= 0) return -1
+  let activeIndex = -1
+  for (let i = 0; i < words.length; i += 1) {
+    const word = words[i]
+    if (t >= word.start && t <= word.end + 0.05) {
+      return i
+    }
+    if (t >= word.start) {
+      activeIndex = i
+    } else {
+      break
+    }
+  }
+  return activeIndex
 })
 const katexContent = computed(() => {
   const preferred = String(safeSlide.value.display_katex || '').trim()
@@ -1077,20 +1161,18 @@ onUnmounted(() => {
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline) {
   position: relative;
-  min-height: calc(2.05em * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
   overflow: visible;
 }
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part) {
   display: inline-block;
   white-space: nowrap;
-  vertical-align: baseline;
+  vertical-align: top;
 }
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part--inline) {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
 }
 
 .slide-card--fullscreen .reel-slide-body {
@@ -1285,5 +1367,59 @@ onUnmounted(() => {
     width: min(92vw, calc((100dvh - 220px) * 16 / 9));
     min-width: min(80vw, 320px);
   }
+}
+
+.reel-subtitles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 14cqw 6cqw 5cqw;
+  background: linear-gradient(to top, rgba(15, 40, 100, 0.88) 0%, rgba(15, 40, 100, 0.5) 45%, transparent 100%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.reel-subtitles-text {
+  display: inline;
+  max-width: 88%;
+  background: none;
+  color: #ffffff;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: calc(3.8cqw * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95), 0 2px 12px rgba(0, 0, 0, 0.7);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.reel-slide--cta .reel-subtitles,
+.reel-slide--hook .reel-subtitles {
+  padding-bottom: 4cqw;
+}
+
+.reel-subtitles-word {
+  display: inline;
+  color: rgba(255, 255, 255, 0.72);
+  transition: color 0.08s ease, background 0.08s ease, text-shadow 0.08s ease;
+  border-radius: 3px;
+  padding: 0.05em 0.18em;
+}
+
+.reel-subtitles-word--past {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.reel-subtitles-word--active {
+  color: #ffffff;
+  background: #2563eb;
+  text-shadow: none;
+  border-radius: 4px;
 }
 </style>

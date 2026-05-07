@@ -343,6 +343,79 @@ def generate_speech_mp3(
     }
 
 
+def force_align_speech(*, audio_bytes, text, audio_mime='audio/mpeg', audio_filename='audio.mp3'):
+    """Aligne un fichier audio existant avec un texte connu via ElevenLabs.
+
+    Renvoie un dict {'words': [{text, start, end}, ...], 'characters': [...]}
+    ou un dict vide si l'API n'est pas accessible.
+    """
+    api_key = getattr(settings, 'ELEVENLABS_API_KEY', '').strip()
+    if not api_key:
+        raise ElevenLabsConfigurationError('ELEVENLABS_API_KEY non configure.')
+
+    safe_text = str(text or '').strip()
+    if not safe_text:
+        raise ValueError('Aucun texte a aligner.')
+    if not audio_bytes:
+        raise ValueError('Aucun audio a aligner.')
+
+    timeout = float(getattr(settings, 'ELEVENLABS_TIMEOUT_SECONDS', 60) or 60)
+    url = 'https://api.elevenlabs.io/v1/forced-alignment'
+
+    try:
+        response = requests.post(
+            url,
+            headers={'xi-api-key': api_key},
+            files={'file': (audio_filename, audio_bytes, audio_mime)},
+            data={'text': safe_text},
+            timeout=timeout,
+        )
+    except requests.Timeout as exc:
+        raise ElevenLabsAPIError('Timeout ElevenLabs pendant l\'alignement audio.') from exc
+    except requests.RequestException as exc:
+        raise ElevenLabsAPIError('Erreur reseau ElevenLabs pendant l\'alignement audio.') from exc
+
+    if response.status_code >= 400:
+        detail = _extract_error_detail(response)
+        raise ElevenLabsAPIError(f'ElevenLabs HTTP {response.status_code}: {detail}')
+
+    try:
+        payload = response.json()
+    except ValueError as exc:
+        raise ElevenLabsAPIError('ElevenLabs a retourne un alignement invalide.') from exc
+
+    if not isinstance(payload, dict):
+        return {'words': [], 'characters': []}
+
+    raw_words = payload.get('words') if isinstance(payload.get('words'), list) else []
+    raw_chars = payload.get('characters') if isinstance(payload.get('characters'), list) else []
+
+    def _serialize_segment(item):
+        if not isinstance(item, dict):
+            return None
+        text_value = item.get('text')
+        if text_value is None:
+            text_value = item.get('character') or item.get('word') or ''
+        start = _safe_float(item.get('start'), -1)
+        end = _safe_float(item.get('end'), -1)
+        if start < 0 or end < 0:
+            return None
+        return {
+            'text': str(text_value),
+            'start': round(start, 3),
+            'end': round(end, 3),
+        }
+
+    words = [seg for seg in (_serialize_segment(item) for item in raw_words) if seg]
+    characters = [seg for seg in (_serialize_segment(item) for item in raw_chars) if seg]
+
+    return {
+        'words': words,
+        'characters': characters,
+        'loss': _safe_float(payload.get('loss'), 0.0),
+    }
+
+
 def _serialize_voice(voice, *, matches_filter):
     labels = voice.get('labels') or {}
     category = voice.get('category') or ''

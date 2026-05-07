@@ -32,6 +32,7 @@ from .elevenlabs import (
     ElevenLabsConfigurationError,
     build_slide_speech_text,
     build_project_speech_text,
+    force_align_speech,
     generate_speech_mp3,
     list_filtered_voices,
     list_shared_voices,
@@ -440,6 +441,22 @@ def _generate_and_save_slide_speech(
         result.cached,
     )
 
+    word_timings_payload = None
+    try:
+        alignment = force_align_speech(audio_bytes=result.audio_bytes, text=safe_speech_text)
+        if alignment and alignment.get('words'):
+            word_timings_payload = {
+                'words': alignment['words'],
+                'text': safe_speech_text,
+                'aligned_at': timezone.now().isoformat(),
+            }
+    except (ElevenLabsAPIError, ElevenLabsConfigurationError, ValueError) as align_exc:
+        tts_logger.warning(
+            'Slide speech alignment failed | slide_id=%s | error=%s',
+            slide.pk,
+            align_exc,
+        )
+
     try:
         previous_audio_name = slide.speech_audio.name if slide.speech_audio else ''
         filename = f'slide-{slide.pk}-speech-{timezone.now().strftime("%Y%m%d-%H%M%S")}.mp3'
@@ -451,6 +468,7 @@ def _generate_and_save_slide_speech(
         slide.speech_status = ReelProject.SPEECH_STATUS_READY
         slide.speech_error = ''
         slide.speech_generated_at = timezone.now()
+        slide.speech_word_timings = word_timings_payload
         slide.save(
             update_fields=[
                 'speech_audio',
@@ -461,6 +479,7 @@ def _generate_and_save_slide_speech(
                 'speech_status',
                 'speech_error',
                 'speech_generated_at',
+                'speech_word_timings',
                 'updated_at',
             ]
         )

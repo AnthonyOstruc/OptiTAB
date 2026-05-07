@@ -24,6 +24,23 @@
           <button class="size-button" type="button" @click="increaseMathSize">A+</button>
           <button class="size-reset" type="button" @click="resetMathSize">Reset</button>
         </div>
+        <button
+          class="subtitles-toggle"
+          :class="{ 'subtitles-toggle--active': showSubtitles }"
+          type="button"
+          :aria-pressed="showSubtitles ? 'true' : 'false'"
+          aria-label="Afficher ou masquer les sous-titres"
+          @click="toggleSubtitles"
+        >
+          <svg class="subtitles-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <rect x="6.5" y="11" width="4.5" height="1.6" rx="0.8" fill="currentColor"/>
+            <rect x="12.5" y="11" width="5" height="1.6" rx="0.8" fill="currentColor"/>
+            <rect x="6.5" y="14.5" width="6.5" height="1.6" rx="0.8" fill="currentColor"/>
+            <rect x="14.5" y="14.5" width="3" height="1.6" rx="0.8" fill="currentColor"/>
+          </svg>
+          <span class="subtitles-toggle-label">Sous-titres</span>
+        </button>
         <div
           v-if="slidesForRender.length"
           class="preview-gap-controls"
@@ -66,6 +83,7 @@
         :safe-zone-y-scale="getSafeZoneYScale(slide)"
         :clickable="!isVirtualCoverSlide(slide)"
         :video-format="format"
+        :show-subtitles="showSubtitles"
         @select="handleSelectSlide(slide.id)"
         @open="handleOpenSlideFullscreen(slide.id)"
         @diagnostic="$emit('diagnostic', $event)"
@@ -89,6 +107,7 @@
           :safe-zone-x-scale="safeZoneXScale"
           :safe-zone-y-scale="getSafeZoneYScale(slide)"
           :video-format="format"
+          :show-subtitles="showSubtitles"
           @diagnostic="$emit('diagnostic', $event)"
         />
       </div>
@@ -228,6 +247,10 @@
                 preload="metadata"
                 @ended="handleSpeechEnded"
                 @error="handleSpeechError"
+                @timeupdate="handleSpeechTimeUpdate"
+                @play="handleSpeechPlay"
+                @pause="handleSpeechPause"
+                @seeked="handleSpeechTimeUpdate"
               ></audio>
 
               <p v-else class="speech-empty">{{ activeSlideSpeechStatusLabel }}</p>
@@ -488,6 +511,26 @@
               <button class="size-reset" type="button" @click="resetCumulativeGap">Reset</button>
             </div>
 
+            <div class="fullscreen-control-group" aria-label="Sous-titres">
+              <span class="control-label">Sous-titres</span>
+              <button
+                class="size-reset line-mode-button subtitles-toggle subtitles-toggle--inline"
+                :class="{ 'subtitles-toggle--active': showSubtitles, 'line-mode-button--active': showSubtitles }"
+                type="button"
+                :aria-pressed="showSubtitles ? 'true' : 'false'"
+                @click="toggleSubtitles"
+              >
+                <svg class="subtitles-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <rect x="6.5" y="11" width="4.5" height="1.6" rx="0.8" fill="currentColor"/>
+                  <rect x="12.5" y="11" width="5" height="1.6" rx="0.8" fill="currentColor"/>
+                  <rect x="6.5" y="14.5" width="6.5" height="1.6" rx="0.8" fill="currentColor"/>
+                  <rect x="14.5" y="14.5" width="3" height="1.6" rx="0.8" fill="currentColor"/>
+                </svg>
+                <span>{{ showSubtitles ? 'Activés' : 'Désactivés' }}</span>
+              </button>
+            </div>
+
             <div
               v-if="activeSlide && !isVirtualCoverSlide(activeSlide)"
               class="fullscreen-control-group ann-group"
@@ -546,10 +589,6 @@
                   <span class="ann-tool-label">Flèche</span>
                 </button>
               </div>
-
-              <p class="ann-help">
-                Astuce&nbsp;: clic-droit sur une forme pour changer la couleur, l'épaisseur ou la supprimer.
-              </p>
 
               <div class="ann-colors">
                 <button
@@ -613,6 +652,9 @@
               :safe-zone-x-scale="safeZoneXScale"
               :safe-zone-y-scale="getSafeZoneYScale(activeSlide)"
               :video-format="format"
+              :show-subtitles="showSubtitles"
+              :audio-current-time="speechAudioCurrentTime"
+              :audio-playing="speechAudioPlaying"
               :annotation-editable="!isVirtualCoverSlide(activeSlide)"
               :annotation-active-tool="annotationActiveTool"
               :annotation-active-color="annotationActiveColor"
@@ -724,6 +766,53 @@ const annotationActiveTool = ref('select')
 const annotationActiveColor = ref('#e74c3c')
 const annotationStrokeWidth = ref(3)
 const annotationSelectedId = ref(null)
+
+const SUBTITLES_STORAGE_KEY = 'reelStudio.showSubtitles'
+const showSubtitles = ref(loadSubtitlesPreference())
+
+const speechAudioCurrentTime = ref(0)
+const speechAudioPlaying = ref(false)
+let speechAudioRafId = null
+
+function stopSpeechAudioRaf() {
+  if (speechAudioRafId !== null) {
+    cancelAnimationFrame(speechAudioRafId)
+    speechAudioRafId = null
+  }
+}
+
+function startSpeechAudioRaf() {
+  stopSpeechAudioRaf()
+  const tick = () => {
+    const audio = speechPlayerRef.value
+    if (!audio || audio.paused || audio.ended) {
+      speechAudioRafId = null
+      return
+    }
+    speechAudioCurrentTime.value = Number(audio.currentTime) || 0
+    speechAudioRafId = requestAnimationFrame(tick)
+  }
+  speechAudioRafId = requestAnimationFrame(tick)
+}
+
+function loadSubtitlesPreference() {
+  if (typeof window === 'undefined' || !window.localStorage) return false
+  try {
+    return window.localStorage.getItem(SUBTITLES_STORAGE_KEY) === '1'
+  } catch (_) {
+    return false
+  }
+}
+
+function toggleSubtitles() {
+  showSubtitles.value = !showSubtitles.value
+  if (typeof window === 'undefined' || !window.localStorage) return
+  try {
+    window.localStorage.setItem(SUBTITLES_STORAGE_KEY, showSubtitles.value ? '1' : '0')
+  } catch (_) {
+    /* noop */
+  }
+}
 
 const pronunciationEditorOpen = ref(false)
 const pronunciationEditorWord = ref('')
@@ -1329,6 +1418,9 @@ async function moveFullscreenToIndex(index) {
   fullscreenEditorTab.value = 'speech'
   annotationSelectedId.value = null
   fullscreenIndex.value = index
+  speechAudioCurrentTime.value = 0
+  speechAudioPlaying.value = false
+  stopSpeechAudioRaf()
   selectSlideByIndex(index)
   syncSpeechDraftFromActiveSlide({ force: true })
   syncKatexDraftFromActiveSlide({ force: true })
@@ -1446,14 +1538,34 @@ function toggleFullPreview() {
 }
 
 function handleSpeechEnded() {
+  speechAudioPlaying.value = false
+  stopSpeechAudioRaf()
   if (!isFullPreviewPlaying.value) return
   advanceFullPreview()
 }
 
 function handleSpeechError() {
+  speechAudioPlaying.value = false
+  stopSpeechAudioRaf()
   if (!isFullPreviewPlaying.value) return
   stopFullPreview({ resetAudio: false })
   window.alert("Lecture complete arretee: le MP3 de cette slide n'a pas pu etre lu.")
+}
+
+function handleSpeechTimeUpdate(event) {
+  const audio = event?.target
+  if (!audio) return
+  speechAudioCurrentTime.value = Number(audio.currentTime) || 0
+}
+
+function handleSpeechPlay() {
+  speechAudioPlaying.value = true
+  startSpeechAudioRaf()
+}
+
+function handleSpeechPause() {
+  speechAudioPlaying.value = false
+  stopSpeechAudioRaf()
 }
 
 function saveActiveSpeechDraft() {
@@ -2308,6 +2420,53 @@ onBeforeUnmount(() => {
   background: #e2e8f0;
   color: #64748b;
   cursor: not-allowed;
+}
+
+.subtitles-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #cbd5f5;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 10px;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.subtitles-toggle:hover {
+  background: #eef2ff;
+  border-color: #93c5fd;
+}
+
+.subtitles-toggle--active {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.subtitles-toggle--active:hover {
+  background: #1e40af;
+  border-color: #1e40af;
+  color: #ffffff;
+}
+
+.subtitles-toggle-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.subtitles-toggle-label {
+  white-space: nowrap;
+}
+
+.subtitles-toggle--inline {
+  width: 100%;
+  justify-content: center;
 }
 
 .size-value {

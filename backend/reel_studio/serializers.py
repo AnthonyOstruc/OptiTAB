@@ -120,40 +120,51 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Le titre du reel est obligatoire.')
         return safe_title
 
-    def validate_pronunciation_overrides(self, value):
-        if value in (None, ''):
-            return []
-        if not isinstance(value, list):
-            raise serializers.ValidationError('Les surcharges de prononciation doivent etre une liste.')
-
+    def _clean_pronunciation_list(self, items):
         allowed_languages = {'fr', 'en', 'es', 'de', 'it', 'pt'}
         cleaned = []
         seen_words = set()
-        for item in value:
+        for item in items:
             if not isinstance(item, dict):
                 raise serializers.ValidationError('Chaque entree de prononciation doit etre un objet.')
-
             word = str(item.get('word') or '').strip()
             pronunciation = str(item.get('pronunciation') or '').strip()
             if not word or not pronunciation:
                 continue
             if len(word) > 80 or len(pronunciation) > 160:
                 raise serializers.ValidationError('Mot ou prononciation trop long.')
-
             language = str(item.get('language') or 'fr').strip().lower()
             if language not in allowed_languages:
                 language = 'fr'
-
             key = word.lower()
             if key in seen_words:
                 continue
             seen_words.add(key)
-            cleaned.append({
-                'word': word,
-                'pronunciation': pronunciation,
-                'language': language,
-            })
+            cleaned.append({'word': word, 'pronunciation': pronunciation, 'language': language})
+        return cleaned
 
+    def validate_pronunciation_overrides(self, value):
+        if value in (None, ''):
+            return []
+        if not isinstance(value, list):
+            raise serializers.ValidationError('Les surcharges de prononciation doivent etre une liste.')
+        return self._clean_pronunciation_list(value)
+
+    def validate_pronunciation_overrides_by_voice(self, value):
+        if value in (None, '', {}):
+            return {}
+        if not isinstance(value, dict):
+            raise serializers.ValidationError('Les surcharges par voix doivent etre un objet.')
+        cleaned = {}
+        for voice_id, overrides in value.items():
+            voice_key = str(voice_id or '').strip()
+            if not voice_key or len(voice_key) > 128:
+                continue
+            if not isinstance(overrides, list):
+                continue
+            voice_cleaned = self._clean_pronunciation_list(overrides)
+            if voice_cleaned:
+                cleaned[voice_key] = voice_cleaned
         return cleaned
 
     def get_speech_audio_url(self, obj):
@@ -211,6 +222,7 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             'video_height',
             'video_fps',
             'pronunciation_overrides',
+            'pronunciation_overrides_by_voice',
             'created_at',
             'updated_at',
         ]

@@ -410,7 +410,11 @@ def _generate_and_save_slide_speech(
     overrides = []
     project = getattr(slide, 'reel_project', None)
     if project is not None:
-        overrides = getattr(project, 'pronunciation_overrides', None) or []
+        global_overrides = list(getattr(project, 'pronunciation_overrides', None) or [])
+        by_voice = getattr(project, 'pronunciation_overrides_by_voice', None) or {}
+        voice_overrides = list(by_voice.get(str(voice_id or '').strip(), []))
+        voice_words_lower = {str(o.get('word') or '').lower() for o in voice_overrides}
+        overrides = voice_overrides + [o for o in global_overrides if str(o.get('word') or '').lower() not in voice_words_lower]
     tts_text = _apply_pronunciation_overrides(safe_speech_text, overrides)
 
     slide.speech_status = ReelProject.SPEECH_STATUS_EMPTY

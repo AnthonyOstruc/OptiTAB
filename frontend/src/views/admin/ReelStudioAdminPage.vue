@@ -82,12 +82,16 @@
               :exporting-video="exportingVideo"
               :format="selectedProject?.format_type || studioFormat"
               :pronunciation-overrides="selectedProject?.pronunciation_overrides || []"
+              :pronunciation-overrides-by-voice="selectedProject?.pronunciation_overrides_by_voice || {}"
+              :active-voice-id="selectedVoiceId"
+              :voice-list="currentProviderVoices"
               @select-slide="selectedSlideId = $event"
               @diagnostic="handleSlideDiagnostic"
               @update-slide="handlePatchSlide"
               @generate-slide-speech="handleGenerateSlideSpeech"
               @export-video="handleExportVideo"
               @update-pronunciation-overrides="handleUpdatePronunciationOverrides"
+              @update-pronunciation-overrides-by-voice="handleUpdatePronunciationOverridesByVoice"
             />
 
             <section v-if="selectedProject" class="instagram-caption-panel">
@@ -2135,6 +2139,49 @@ async function handleUpdatePronunciationOverrides(nextOverrides) {
     setFeedback('success', 'Prononciations mises à jour.')
   } catch (error) {
     selectedProject.value.pronunciation_overrides = previousOverrides
+    setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder les prononciations.'))
+  }
+}
+
+async function handleUpdatePronunciationOverridesByVoice({ voiceId, overrides }) {
+  if (!selectedProject.value?.id || !voiceId) return
+
+  const current = selectedProject.value.pronunciation_overrides_by_voice || {}
+  const previous = { ...current }
+
+  const cleanList = Array.isArray(overrides)
+    ? overrides
+        .filter((entry) => entry && typeof entry === 'object')
+        .map((entry) => ({
+          word: String(entry.word || '').trim(),
+          pronunciation: String(entry.pronunciation || '').trim(),
+          language: String(entry.language || 'fr').trim(),
+        }))
+        .filter((entry) => entry.word && entry.pronunciation)
+    : []
+
+  const next = { ...current }
+  if (cleanList.length > 0) {
+    next[voiceId] = cleanList
+  } else {
+    delete next[voiceId]
+  }
+
+  selectedProject.value.pronunciation_overrides_by_voice = next
+
+  try {
+    const response = await updateReelProject(selectedProject.value.id, {
+      pronunciation_overrides_by_voice: next,
+    })
+    const updatedProject = normalizeProject(response?.data)
+    if (updatedProject?.id) {
+      selectedProject.value.pronunciation_overrides_by_voice = updatedProject.pronunciation_overrides_by_voice || {}
+      selectedProject.value.updated_at = updatedProject.updated_at || selectedProject.value.updated_at
+      upsertProjectSummary(selectedProject.value)
+    }
+    setFeedback('success', 'Prononciations de la voix mises à jour.')
+  } catch (error) {
+    selectedProject.value.pronunciation_overrides_by_voice = previous
     setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder les prononciations.'))
   }
 }

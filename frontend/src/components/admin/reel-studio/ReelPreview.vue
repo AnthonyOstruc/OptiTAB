@@ -289,6 +289,57 @@
                     <em>{{ override.pronunciation }}</em>
                   </span>
                 </div>
+
+                <div v-if="hasAnyVoiceOverrides" class="voice-overrides-panel">
+                  <button
+                    class="voice-overrides-toggle"
+                    type="button"
+                    @click="showVoiceOverridesPanel = !showVoiceOverridesPanel"
+                  >
+                    <span class="voice-overrides-arrow" :class="{ 'is-open': showVoiceOverridesPanel }">›</span>
+                    Surcharges par voix
+                  </button>
+
+                  <div v-if="showVoiceOverridesPanel" class="voice-overrides-body">
+                    <div
+                      v-for="entry in allVoiceOverrideEntries"
+                      :key="entry.voiceId"
+                      class="voice-overrides-group"
+                      :class="{ 'voice-overrides-group--active': entry.voiceId === activeVoiceId }"
+                    >
+                      <div class="voice-overrides-group-header">
+                        <span class="voice-overrides-name">
+                          {{ entry.voiceName }}
+                          <span v-if="entry.voiceId === activeVoiceId" class="voice-overrides-badge">active</span>
+                        </span>
+                        <button
+                          class="voice-overrides-clear"
+                          type="button"
+                          :title="`Supprimer toutes les surcharges de ${entry.voiceName}`"
+                          @click="clearAllVoiceOverrides(entry.voiceId)"
+                        >Tout effacer</button>
+                      </div>
+                      <div class="voice-overrides-list">
+                        <div
+                          v-for="override in entry.overrides"
+                          :key="override.word"
+                          class="voice-override-item"
+                        >
+                          <span class="voice-override-item-lang">{{ PRONUNCIATION_LANGUAGE_LABELS[normalizeOverrideLanguage(override.language)] || 'FR' }}</span>
+                          <strong class="voice-override-item-word">{{ override.word }}</strong>
+                          <span class="voice-override-item-arrow">→</span>
+                          <em class="voice-override-item-pron">{{ override.pronunciation }}</em>
+                          <button
+                            class="voice-override-item-delete"
+                            type="button"
+                            :title="`Supprimer la surcharge de « ${override.word} »`"
+                            @click="removeVoiceWordOverride(entry.voiceId, override.word)"
+                          >×</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="speech-action-row">
@@ -746,6 +797,18 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  pronunciationOverridesByVoice: {
+    type: Object,
+    default: () => ({}),
+  },
+  activeVoiceId: {
+    type: String,
+    default: '',
+  },
+  voiceList: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const emit = defineEmits([
@@ -755,6 +818,7 @@ const emit = defineEmits([
   'generate-slide-speech',
   'export-video',
   'update-pronunciation-overrides',
+  'update-pronunciation-overrides-by-voice',
 ])
 
 const isFullscreen = ref(false)
@@ -1966,11 +2030,19 @@ function clearAllAnnotations() {
   })
 }
 
-const safePronunciationOverrides = computed(() => (
-  Array.isArray(props.pronunciationOverrides)
+const safePronunciationOverrides = computed(() => {
+  const voiceId = String(props.activeVoiceId || '').trim()
+  if (voiceId) {
+    const byVoice = props.pronunciationOverridesByVoice || {}
+    const voiceList = byVoice[voiceId]
+    if (Array.isArray(voiceList)) {
+      return voiceList.filter((o) => o && o.word && o.pronunciation)
+    }
+  }
+  return Array.isArray(props.pronunciationOverrides)
     ? props.pronunciationOverrides.filter((o) => o && o.word && o.pronunciation)
     : []
-))
+})
 
 const pronunciationOverridesByLowerWord = computed(() => {
   const map = new Map()
@@ -2026,6 +2098,15 @@ function closePronunciationEditor() {
   pronunciationEditorAnchor.value = null
 }
 
+function emitPronunciationUpdate(nextOverrides) {
+  const voiceId = String(props.activeVoiceId || '').trim()
+  if (voiceId) {
+    emit('update-pronunciation-overrides-by-voice', { voiceId, overrides: nextOverrides })
+  } else {
+    emit('update-pronunciation-overrides', nextOverrides)
+  }
+}
+
 function commitPronunciationFromEditor() {
   const word = String(pronunciationEditorWord.value || '').trim()
   const pronunciation = String(pronunciationEditorPronunciation.value || '').trim()
@@ -2040,7 +2121,7 @@ function commitPronunciationFromEditor() {
     (o) => String(o.word).toLowerCase() !== lowerWord
   )
   const next = pronunciation ? [...filtered, { word, pronunciation, language }] : filtered
-  emit('update-pronunciation-overrides', next)
+  emitPronunciationUpdate(next)
   closePronunciationEditor()
 }
 
@@ -2054,8 +2135,43 @@ function removePronunciationFromEditor() {
   const next = safePronunciationOverrides.value.filter(
     (o) => String(o.word).toLowerCase() !== lowerWord
   )
-  emit('update-pronunciation-overrides', next)
+  emitPronunciationUpdate(next)
   closePronunciationEditor()
+}
+
+const showVoiceOverridesPanel = ref(false)
+
+const voiceNameById = computed(() => {
+  const map = new Map()
+  for (const v of (props.voiceList || [])) {
+    if (v?.voice_id) map.set(String(v.voice_id), String(v.name || v.voice_id))
+  }
+  return map
+})
+
+const allVoiceOverrideEntries = computed(() => {
+  const byVoice = props.pronunciationOverridesByVoice || {}
+  return Object.entries(byVoice)
+    .map(([voiceId, overrides]) => ({
+      voiceId,
+      voiceName: voiceNameById.value.get(voiceId) || voiceId,
+      overrides: Array.isArray(overrides) ? overrides.filter((o) => o?.word && o?.pronunciation) : [],
+    }))
+    .filter((entry) => entry.overrides.length > 0)
+})
+
+const hasAnyVoiceOverrides = computed(() => allVoiceOverrideEntries.value.length > 0)
+
+function removeVoiceWordOverride(voiceId, word) {
+  const byVoice = props.pronunciationOverridesByVoice || {}
+  const currentList = Array.isArray(byVoice[voiceId]) ? byVoice[voiceId] : []
+  const lowerWord = String(word || '').toLowerCase()
+  const next = currentList.filter((o) => String(o.word || '').toLowerCase() !== lowerWord)
+  emit('update-pronunciation-overrides-by-voice', { voiceId, overrides: next })
+}
+
+function clearAllVoiceOverrides(voiceId) {
+  emit('update-pronunciation-overrides-by-voice', { voiceId, overrides: [] })
 }
 
 function generateActiveSlideSpeech() {
@@ -3582,5 +3698,172 @@ onBeforeUnmount(() => {
 
 .pronunciation-modal-btn--save:hover {
   background: #1e40af;
+}
+
+/* ── Voice overrides panel ── */
+
+.voice-overrides-panel {
+  margin-top: 8px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 8px;
+}
+
+.voice-overrides-toggle {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 0;
+  user-select: none;
+}
+
+.voice-overrides-toggle:hover {
+  color: #1d4ed8;
+}
+
+.voice-overrides-arrow {
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+
+.voice-overrides-arrow.is-open {
+  transform: rotate(90deg);
+}
+
+.voice-overrides-body {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.voice-overrides-group {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.voice-overrides-group--active {
+  border-color: #93c5fd;
+}
+
+.voice-overrides-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  background: #f1f5f9;
+  gap: 6px;
+}
+
+.voice-overrides-group--active .voice-overrides-group-header {
+  background: #eff6ff;
+}
+
+.voice-overrides-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.voice-overrides-badge {
+  background: #2563eb;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.voice-overrides-clear {
+  all: unset;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  color: #dc2626;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid #fca5a5;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.voice-overrides-clear:hover {
+  background: #fef2f2;
+}
+
+.voice-overrides-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.voice-override-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.voice-override-item-lang {
+  font-size: 9px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  background: #e2e8f0;
+  padding: 1px 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.voice-override-item-word {
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.voice-override-item-arrow {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.voice-override-item-pron {
+  color: #0f766e;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.voice-override-item-delete {
+  all: unset;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+
+.voice-override-item-delete:hover {
+  color: #dc2626;
+  background: #fef2f2;
 }
 </style>

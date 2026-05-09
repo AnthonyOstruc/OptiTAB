@@ -1,6 +1,6 @@
 <template>
   <main class="reel-studio-admin">
-    <FormatHelp :format-template="REEL_FORMAT_TEMPLATE" :show-notes="false" :initial-show="false" />
+    <FormatHelp :format-template="studioFormat === 'youtube' ? YOUTUBE_FORMAT_TEMPLATE : REEL_FORMAT_TEMPLATE" :show-notes="false" :initial-show="false" />
 
     <header class="page-header">
       <div>
@@ -97,8 +97,8 @@
             <section v-if="selectedProject" class="instagram-caption-panel">
               <div class="instagram-caption-header">
                 <div>
-                  <h3>Description Instagram</h3>
-                  <p>Texte SEO pret a copier pour publier le reel.</p>
+                  <h3>{{ studioFormat === 'youtube' ? 'Description YouTube' : 'Description Instagram' }}</h3>
+                  <p>{{ studioFormat === 'youtube' ? 'Description SEO prete a copier pour YouTube.' : 'Texte SEO pret a copier pour publier le reel.' }}</p>
                 </div>
                 <button
                   class="btn-secondary"
@@ -106,12 +106,12 @@
                   :disabled="!instagramCaptionText"
                   @click="copyInstagramCaption"
                 >
-                  Copier Instagram
+                  {{ studioFormat === 'youtube' ? 'Copier YouTube' : 'Copier Instagram' }}
                 </button>
               </div>
               <textarea
                 class="instagram-caption-text"
-                :value="instagramCaptionText || 'Ajoute un bloc INSTAGRAM_DESCRIPTION dans le template genere.'"
+                :value="instagramCaptionText || (studioFormat === 'youtube' ? 'Ajoute un bloc YOUTUBE_DESCRIPTION dans le template genere.' : 'Ajoute un bloc INSTAGRAM_DESCRIPTION dans le template genere.')"
                 readonly
                 rows="10"
                 @focus="$event.target.select()"
@@ -725,6 +725,141 @@ Dans ce reel :
 END_INSTAGRAM_DESCRIPTION
 `
 
+const YOUTUBE_FORMAT_TEMPLATE = `FORMAT YOUTUBE STUDIO (PRO) - GÉNÉRATION COMPLÈTE
+
+Objectif:
+- Écrire toutes les slides d'une vidéo YouTube en un seul bloc
+- Format 16:9 paysage — plus large qu'un reel, plus de contenu par slide possible
+- Jusqu'à 6-8 lignes KATEX par slide (vs 3-4 pour un reel)
+- Utilise "même ligne" (KATEX sur 2 colonnes) pour montrer étapes en parallèle
+- L'ordre SLIDE 1, 2, 3... détermine la timeline finale
+
+Structure:
+SLIDE <numéro> | <type>
+TITLE: ...
+TEXT: ...
+KATEX: ...
+VOICE: ...
+---
+
+Voix ElevenLabs (eleven_v3):
+- Chaque slide doit avoir son VOICE: pour générer son MP3 indépendant.
+- Ajoute les indications de jeu directement dans VOICE avec des tags entre crochets.
+- Les tags ne s'affichent pas dans la vidéo: ils servent seulement à guider la voix.
+- Format recommandé: VOICE: [thoughtful] On cherche d'abord la bonne identité.
+- Mets le tag juste avant le passage concerné, ou juste après une phrase s'il sert de réaction.
+- N'en mets pas trop: 1 à 2 tags par slide suffisent souvent.
+- Utilise aussi la ponctuation: ... pour une pause/hésitation, ? pour une intonation interrogative, MAJUSCULES pour insister.
+
+Tags utiles selon ElevenLabs:
+- Emotions/direction: [thoughtful], [curious], [excited], [happy], [sad], [surprised], [sarcastic]
+- Livraison: [whispers], [shouts], [dramatically], [warmly], [calm]
+- Réactions: [laughs], [chuckles], [sighs], [exhales], [clears throat]
+- Pauses: [short pause], [long pause]
+
+Hook recommandé:
+- La slide hook présente l'exercice ou le cours.
+- Utilise TITLE pour le sujet (ex: "Fractions rationnelles"), KATEX pour la question/formule centrale.
+- TEXT pour la consigne ou la question posée à l'élève.
+- Pas besoin d'être très court: en YouTube tu peux donner plus de contexte.
+
+Correction recommandée:
+- La slide 2 doit toujours être l'énoncé, indépendante du cumul: utilise TEXT: Énoncé : et remets la consigne/formule de départ.
+- La correction commence seulement à partir de la slide 3 avec TEXT: Correction : (ou "Méthode :", "Démonstration :", selon le contenu).
+- Les lignes KATEX de la slide 2 ne doivent pas être reprises dans le cumulative des slides suivantes.
+- En YouTube, tu peux mettre plus de lignes KATEX par slide qu'en reel.
+- Pour montrer une factorisation et son résultat sur la même slide, utilise KATEX normal + cumulative_katex.
+- Si une slide contient un calcul ET son identité remarquable associée: utilise "même ligne" en préfixant avec \\ (dans le template AI, c'est géré automatiquement).
+
+CTA recommandé:
+- La slide cta contient le résultat final et l'appel à l'action YouTube.
+- Utilise TITLE pour "Résultat", KATEX pour la formule finale, TEXT pour l'appel à l'action.
+- TEXT recommandé sur 3 lignes:
+  Like et commente ta réponse
+  Abonne-toi à OptiTAB
+  Active la cloche pour les prochains exercices
+
+Description YouTube obligatoire:
+- Après les slides, ajoute un bloc YOUTUBE_DESCRIPTION copiable.
+- Commence par une description courte et accrochante de l'exercice (2-3 phrases).
+- Explique ce que l'élève va apprendre dans la vidéo.
+- Ajoute un timestamp si plusieurs parties (optionnel).
+- Ajoute les appels à l'action: like, commentaire, abonnement.
+- Termine par 5-8 hashtags maths pertinents.
+- Format obligatoire:
+YOUTUBE_DESCRIPTION:
+...
+END_YOUTUBE_DESCRIPTION
+
+Types autorisés:
+- hook
+- katex
+- cumulative_katex
+- result
+- cta
+
+Conseils spécifiques YouTube 16:9:
+- Une slide peut contenir jusqu'à 8 lignes KATEX simples ou 5 lignes avec fractions.
+- Profite de la largeur: utilise "même ligne" pour montrer A = ... ; B = ... côte à côte.
+- Le texte (TEXT:) peut être plus long qu'en reel (3-4 lignes max).
+- Chaque slide dure en général 5-10 secondes en YouTube (vs 3-5 pour un reel).
+
+Exemple prêt à copier:
+SLIDE 1 | hook
+TITLE: Fractions rationnelles
+KATEX: I=\\int_0^1 \\frac{3x+5}{x^2+3x+2}\\,dx
+TEXT: On va calculer cette intégrale pas à pas.
+VOICE: [curious] Voici l'intégrale à calculer... prends quelques secondes pour observer le dénominateur.
+---
+SLIDE 2 | katex
+TEXT: Énoncé :
+KATEX: I=\\int_0^1 \\frac{3x+5}{x^2+3x+2}\\,dx
+VOICE: [calm] Énoncé: on cherche la valeur exacte de cette intégrale sur l'intervalle de 0 à 1.
+---
+SLIDE 3 | katex
+TEXT: Correction :
+KATEX: x^2+3x+2=(x+1)(x+2)
+KATEX: \\frac{3x+5}{(x+1)(x+2)}=\\frac{a}{x+1}+\\frac{b}{x+2}
+KATEX: 3x+5=a(x+2)+b(x+1)
+VOICE: [thoughtful] On factorise le dénominateur... puis on décompose en éléments simples.
+---
+SLIDE 4 | cumulative_katex
+KATEX: x=-1 \\Rightarrow a=2
+KATEX: x=-2 \\Rightarrow b=1
+KATEX: \\frac{3x+5}{(x+1)(x+2)}=\\frac{2}{x+1}+\\frac{1}{x+2}
+VOICE: [calm] On identifie a et b par substitution.
+---
+SLIDE 5 | result
+TITLE: Résultat
+KATEX: I=\\Big[2\\ln|x+1|+\\ln|x+2|\\Big]_0^1
+KATEX: I=\\ln 6-\\ln 2=\\ln 3
+VOICE: [excited] On intègre terme par terme... et on obtient ln 3 !
+---
+SLIDE 6 | cta
+TITLE: Résultat
+KATEX: I=\\ln 3
+TEXT: Like et commente ta réponse
+Abonne-toi à OptiTAB
+Active la cloche pour les prochains exercices
+VOICE: [warmly] Abonne-toi pour la suite des exercices.
+---
+YOUTUBE_DESCRIPTION:
+🧮 Décomposition en éléments simples — Intégrale de fraction rationnelle
+
+Dans cette vidéo, on calcule pas à pas l'intégrale de (3x+5)/(x²+3x+2) sur [0,1] en utilisant la décomposition en éléments simples.
+
+Au programme :
+✅ Factorisation du dénominateur
+✅ Décomposition en éléments simples
+✅ Identification des coefficients
+✅ Calcul de l'intégrale
+
+👇 Donne ta réponse en commentaire avant de regarder la correction !
+
+#maths #intégrale #terminale #fractionsrationnelles #bac #mathématiques #lycée #exercicemaths
+END_YOUTUBE_DESCRIPTION
+`
+
 const selectedSlide = computed(() => {
   if (!selectedProject.value?.slides?.length) return null
   return selectedProject.value.slides.find((slide) => Number(slide.id) === Number(selectedSlideId.value)) || null
@@ -1262,10 +1397,12 @@ function extractInstagramCaption(value) {
   for (const rawLine of lines) {
     const line = String(rawLine || '').trimEnd()
     const stripped = line.trim()
-    const startMatch = stripped.match(/^(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)\s*:\s*(.*)$/i)
+    const startMatch = stripped.match(
+      /^(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE)\s*:\s*(.*)$/i
+    )
 
     if (capturing) {
-      if (/^END_(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)$/i.test(stripped)) {
+      if (/^END_(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE)$/i.test(stripped)) {
         break
       }
       captionLines.push(line)
@@ -1281,12 +1418,14 @@ function extractInstagramCaption(value) {
   return captionLines.join('\n').trim()
 }
 
-function appendInstagramCaptionBlock(value, caption) {
+function appendInstagramCaptionBlock(value, caption, formatType) {
   const safeCaption = String(caption || '').trim()
   if (!safeCaption) return value
 
   const body = String(value || '').trim()
-  const captionBlock = `INSTAGRAM_DESCRIPTION:\n${safeCaption}\nEND_INSTAGRAM_DESCRIPTION`
+  const isYoutube = String(formatType || '').toLowerCase() === 'youtube'
+  const tag = isYoutube ? 'YOUTUBE_DESCRIPTION' : 'INSTAGRAM_DESCRIPTION'
+  const captionBlock = `${tag}:\n${safeCaption}\nEND_${tag}`
   return body ? `${body}\n---\n${captionBlock}` : captionBlock
 }
 
@@ -1422,7 +1561,7 @@ function serializeProjectSlides(project) {
     })
     .join('\n---\n')
 
-  return appendInstagramCaptionBlock(slidesText, project?.instagram_caption)
+  return appendInstagramCaptionBlock(slidesText, project?.instagram_caption, project?.format_type)
 }
 
 function scrollEditorIntoView() {
@@ -2082,6 +2221,7 @@ async function handleSaveSlide(payload) {
       katex_inline_with_previous: payload.katex_inline_with_previous,
       katex_inline_separator: payload.katex_inline_separator,
       katex_inline_offset_percent: payload.katex_inline_offset_percent,
+      katex_inline_vertical_offset_em: payload.katex_inline_vertical_offset_em,
       katex_cumulative_gap_em: payload.katex_cumulative_gap_em,
       katex_reset_cumulative: payload.katex_reset_cumulative,
       katex_reveal_with_speech: payload.katex_reveal_with_speech,

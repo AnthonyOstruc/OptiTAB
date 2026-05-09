@@ -33,6 +33,11 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Le decalage doit etre compris entre -40% et 40%.')
         return value
 
+    def validate_katex_inline_vertical_offset_em(self, value):
+        if value < -1 or value > 1:
+            raise serializers.ValidationError('Le decalage vertical doit etre compris entre -1em et 1em.')
+        return value
+
     def validate_katex_inline_separator(self, value):
         safe_value = str(value or '').strip()
         allowed = {
@@ -72,6 +77,7 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'katex_inline_with_previous',
             'katex_inline_separator',
             'katex_inline_offset_percent',
+            'katex_inline_vertical_offset_em',
             'katex_cumulative_gap_em',
             'katex_reset_cumulative',
             'katex_reveal_with_speech',
@@ -257,7 +263,7 @@ class ReelProjectDetailSerializer(ReelProjectSerializer):
 
 
 class ReelTemplateGenerateSerializer(serializers.Serializer):
-    template_text = serializers.CharField(max_length=18000)
+    template_text = serializers.CharField()
     max_chars_per_line = serializers.IntegerField(min_value=12, max_value=120, default=38, required=False)
     include_hook = serializers.BooleanField(default=None, required=False, allow_null=True)
     include_cta = serializers.BooleanField(default=None, required=False, allow_null=True)
@@ -327,3 +333,4 @@ class ReelVideoExportSerializer(serializers.Serializer):
     fps = serializers.IntegerField(min_value=24, max_value=60, required=False, default=30)
     crf = serializers.IntegerField(min_value=16, max_value=28, required=False, default=18)
     preset = serializers.ChoiceField(choices=PRESET_CHOICES, required=False, default='veryfast')
+    show_subtitles = serializers.BooleanField(required=False, default=False)

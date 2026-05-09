@@ -165,6 +165,7 @@ const form = reactive({
   katex_scale: 1,
   katex_inline_with_previous: false,
   katex_inline_offset_percent: 0,
+  katex_inline_vertical_offset_em: 0,
   katex_cumulative_gap_em: 0.4,
   katex_reset_cumulative: false,
   katex_reveal_with_speech: false,
@@ -213,6 +214,7 @@ watch(
     form.katex_scale = clampScale(slide?.katex_scale)
     form.katex_inline_with_previous = Boolean(slide?.katex_inline_with_previous)
     form.katex_inline_offset_percent = clampInlineOffset(slide?.katex_inline_offset_percent)
+    form.katex_inline_vertical_offset_em = Math.min(1, Math.max(-1, Number(slide?.katex_inline_vertical_offset_em) || 0))
     form.katex_cumulative_gap_em = clampCumulativeGap(slide?.katex_cumulative_gap_em)
     form.katex_reset_cumulative = Boolean(slide?.katex_reset_cumulative)
     form.katex_reveal_with_speech = Boolean(slide?.katex_reveal_with_speech)
@@ -256,6 +258,7 @@ function handleSave() {
     katex_scale: clampScale(form.katex_scale),
     katex_inline_with_previous: Boolean(form.katex_inline_with_previous),
     katex_inline_offset_percent: clampInlineOffset(form.katex_inline_offset_percent),
+    katex_inline_vertical_offset_em: Math.min(1, Math.max(-1, Number(form.katex_inline_vertical_offset_em) || 0)),
     katex_cumulative_gap_em: clampCumulativeGap(form.katex_cumulative_gap_em),
     katex_reset_cumulative: Boolean(form.katex_reset_cumulative),
     katex_reveal_with_speech: Boolean(form.katex_reveal_with_speech),

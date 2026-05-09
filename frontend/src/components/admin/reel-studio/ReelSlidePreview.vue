@@ -17,6 +17,7 @@
         'reel-slide--hook': usesHookLayout,
         'reel-slide--cta': isCtaSlide,
         'reel-slide--cover': isCoverSlide,
+        'reel-slide--subtitled': hasVisibleSubtitles,
       }"
     >
       <section class="reel-slide-body" ref="bodyRef">
@@ -103,21 +104,26 @@
         @delete="$emit('annotation-delete', $event)"
       />
 
-      <div v-if="showSubtitles && subtitleText" class="reel-subtitles" aria-hidden="true">
-        <span class="reel-subtitles-text">
-          <template v-if="subtitleHasKaraokeData">
-            <template v-for="(word, idx) in subtitleWordTimings" :key="`sub-w-${idx}`">
-              <span
-                class="reel-subtitles-word"
-                :class="{
-                  'reel-subtitles-word--active': idx === subtitleActiveWordIndex,
-                  'reel-subtitles-word--past': idx < subtitleActiveWordIndex,
-                }"
-              >{{ word.text }}</span>{{ idx < subtitleWordTimings.length - 1 ? ' ' : '' }}
-            </template>
-          </template>
-          <template v-else>{{ subtitleText }}</template>
-        </span>
+      <div v-if="hasVisibleSubtitles" class="reel-subtitles" aria-hidden="true">
+        <template v-if="false">
+          <span class="reel-subtitles-text">{{ subtitleText }}</span>
+        </template>
+        <template v-else>
+          <Transition v-if="subtitleHasKaraokeData" name="subtitle-line" mode="out-in">
+            <span v-if="subtitleCurrentLine" :key="subtitleCurrentLineIndex" class="reel-subtitles-text">
+              <template v-for="(word, idx) in subtitleCurrentLine" :key="`sub-w-${word.globalIndex}`">
+                <span
+                  class="reel-subtitles-word"
+                  :class="{
+                    'reel-subtitles-word--active': word.globalIndex === subtitleActiveWordIndex,
+                    'reel-subtitles-word--past': word.globalIndex < subtitleActiveWordIndex,
+                  }"
+                >{{ word.text }}</span>{{ idx < subtitleCurrentLine.length - 1 ? ' ' : '' }}
+              </template>
+            </span>
+          </Transition>
+          <span v-else class="reel-subtitles-text">{{ subtitleText }}</span>
+        </template>
       </div>
     </div>
   </article>
@@ -219,6 +225,7 @@ const isCoverSlide = computed(() => Boolean(safeSlide.value.is_virtual_cover || 
 const usesHookLayout = computed(() => isHookSlide.value || isCoverSlide.value)
 const isLargeDisplayMode = computed(() => ['fullscreen', 'export'].includes(props.displayMode))
 const isThumbnailMode = computed(() => !isLargeDisplayMode.value)
+const shouldSkipLayoutEvaluation = computed(() => isYoutubeFormat.value && props.displayMode === 'fullscreen')
 const shouldAlignKatexLeft = computed(() => !usesHookLayout.value && !isCtaSlide.value)
 
 function clampSlideScale(value) {
@@ -237,8 +244,16 @@ const slideCardStyle = computed(() => {
   const screenTextScale = clampSlideScale(safeSlide.value.screen_text_scale)
   const katexScale = clampSlideScale(safeSlide.value.katex_scale)
   const rowGap = clampCumulativeGap(safeSlide.value.display_katex_row_gap_em ?? safeSlide.value.katex_cumulative_gap_em)
-  const safeXScale = Math.min(1.4, Math.max(0.7, Number(props.safeZoneXScale) || 1))
-  const safeYScale = Math.min(1.4, Math.max(0.7, Number(props.safeZoneYScale) || 1))
+  const isYt = isYoutubeFormat.value
+  const safeXScale = isYt
+    ? Math.min(1.4, Math.max(0, Number(props.safeZoneXScale) || 0))
+    : Math.min(1.4, Math.max(0.7, Number(props.safeZoneXScale) || 1))
+  const safeYScale = isYt
+    ? Math.min(1.4, Math.max(0, Number(props.safeZoneYScale) || 0))
+    : Math.min(1.4, Math.max(0.7, Number(props.safeZoneYScale) || 1))
+  const safeInlineUnit = isYt ? '3cqw' : '6.5cqw'
+  const safeBlockUnit = isYt ? '2.5cqw' : '6.5cqw'
+  const safeTopUnit = isYt ? '0cqw' : '16cqw'
 
   return {
     '--reel-user-scale': requestedScale,
@@ -247,9 +262,9 @@ const slideCardStyle = computed(() => {
     '--reel-math-scale': requestedScale * katexScale,
     '--reel-katex-row-gap': `${rowGap.toFixed(2)}em`,
     '--reel-thumb-fit-scale': thumbnailFitScale.value,
-    '--reel-safe-inline': `calc(6.5cqw * ${safeXScale.toFixed(3)})`,
-    '--reel-safe-block': `calc(6.5cqw * ${safeYScale.toFixed(3)})`,
-    '--reel-safe-top': `calc(16cqw * ${safeYScale.toFixed(3)})`,
+    '--reel-safe-inline': `calc(${safeInlineUnit} * ${safeXScale.toFixed(3)})`,
+    '--reel-safe-block': `calc(${safeBlockUnit} * ${safeYScale.toFixed(3)})`,
+    '--reel-safe-top': `calc(${safeTopUnit} * ${safeYScale.toFixed(3)})`,
   }
 })
 const screenTextContent = computed(() => {
@@ -283,6 +298,12 @@ const subtitleText = computed(() => {
   }
   return ''
 })
+
+const hasVisibleSubtitles = computed(() => (
+  props.showSubtitles
+  && Boolean(subtitleText.value)
+  && props.displayMode !== 'export'
+))
 
 const subtitleWordTimings = computed(() => {
   const raw = safeSlide.value.speech_word_timings
@@ -321,6 +342,48 @@ const subtitleActiveWordIndex = computed(() => {
   }
   return activeIndex
 })
+
+const SUBTITLE_LINE_MAX_CHARS = 30
+
+const subtitleLines = computed(() => {
+  const words = subtitleWordTimings.value
+  if (!words.length) return []
+  const lines = []
+  let line = []
+  let chars = 0
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i]
+    const sep = line.length ? 1 : 0
+    if (line.length > 0 && chars + sep + w.text.length > SUBTITLE_LINE_MAX_CHARS) {
+      lines.push(line)
+      line = [{ ...w, globalIndex: i }]
+      chars = w.text.length
+    } else {
+      line.push({ ...w, globalIndex: i })
+      chars += sep + w.text.length
+    }
+  }
+  if (line.length) lines.push(line)
+  return lines
+})
+
+const subtitleCurrentLineIndex = computed(() => {
+  const lines = subtitleLines.value
+  if (!lines.length) return -1
+  const t = Number(props.audioCurrentTime) || 0
+  if (!props.audioPlaying && t <= 0) return -1
+  let found = -1
+  for (let i = 0; i < lines.length; i++) {
+    if (t >= lines[i][0].start - 0.05) found = i
+    else break
+  }
+  return found
+})
+
+const subtitleCurrentLine = computed(() => {
+  const idx = subtitleCurrentLineIndex.value
+  return idx >= 0 ? subtitleLines.value[idx] : null
+})
 const katexContent = computed(() => {
   const preferred = String(safeSlide.value.display_katex || '').trim()
   if (preferred) return preferred
@@ -331,12 +394,13 @@ const katexRows = computed(() => {
   return rows
     .map((row) => ({
       parts: (Array.isArray(row?.parts) ? row.parts : [])
-        .map((part) => String(part || '').trim())
+        .map((part) => stripKatexAlignmentMarkers(part))
         .filter(Boolean),
       inlineSeparators: Array.isArray(row?.inlineSeparators)
         ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
         : [],
       inlineOffsetPercent: clampInlineOffset(row?.inlineOffsetPercent),
+      inlineVerticalOffsetEm: clampInlineVerticalOffset(row?.inlineVerticalOffsetEm),
     }))
     .filter((row) => row.parts.length)
 })
@@ -367,6 +431,8 @@ const showHookTemplate = computed(
 )
 const showCtaTemplate = computed(() => isCtaSlide.value)
 const DEFAULT_CTA_TEXT = 'Abonne-toi à OptiTAB\nSauvegarde ce Reel\nCommente ton résultat'
+const INLINE_RIGHT_FRACTION_ONLY_NUDGE_EM = 0.16
+const INLINE_LEFT_FRACTION_ONLY_NUDGE_EM = -0.16
 const LEGACY_CTA_TEXTS = new Set([
   "Abonne-toi à OptiTAB pour d'autres défis maths",
   "Abonne-toi à OptiTAB\npour d'autres défis maths",
@@ -407,6 +473,14 @@ function unwrapAlignedBlock(value) {
     .trim()
 }
 
+function stripKatexAlignmentMarkers(value) {
+  return String(value || '')
+    .trim()
+    .replace(/(^|[^\\])&+/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 function splitKatexLines(value) {
   const raw = String(value || '').trim()
   if (!raw) return []
@@ -417,14 +491,13 @@ function splitKatexLines(value) {
 
   return source
     .split(/\n+/)
-    .map((line) => line.trim().replace(/^&+\s*/, '').trim())
+    .map((line) => stripKatexAlignmentMarkers(line))
     .filter(Boolean)
 }
 
 function normalizeKatexRevealKey(value) {
-  return String(value || '')
+  return stripKatexAlignmentMarkers(value)
     .replace(/\\displaystyle/g, '')
-    .replace(/^&+\s*/, '')
     .replace(/\s+/g, ' ')
     .trim()
 }
@@ -451,6 +524,12 @@ function clampInlineOffset(value) {
   return Math.min(40, Math.max(-40, numeric))
 }
 
+function clampInlineVerticalOffset(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return 0
+  return Math.min(1, Math.max(-1, Number(numeric.toFixed(3))))
+}
+
 function normalizeInlineSeparator(value) {
   const raw = String(value || '').trim()
   if (raw === 'arrow' || raw === 'none') return raw
@@ -461,6 +540,62 @@ function inlineSeparatorKatex(value) {
   const separator = normalizeInlineSeparator(value)
   if (separator === 'none') return ''
   return separator === 'arrow' ? '\\Rightarrow' : ';'
+}
+
+function parseKatexEmStyle(style, property) {
+  const escapedProperty = property.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const match = String(style || '').match(new RegExp(`(?:^|;)\\s*${escapedProperty}\\s*:\\s*(-?\\d+(?:\\.\\d+)?)em`))
+  return match ? Number(match[1]) : 0
+}
+
+function katexVerticalMetricsFromHtml(html) {
+  let foundStrut = false
+  let aboveBaseline = 0
+  let belowBaseline = 0
+  const strutRegex = /<span class="strut" style="([^"]*)"><\/span>/g
+
+  for (const match of String(html || '').matchAll(strutRegex)) {
+    foundStrut = true
+    const style = match[1]
+    const height = parseKatexEmStyle(style, 'height')
+    const verticalAlign = parseKatexEmStyle(style, 'vertical-align')
+    aboveBaseline = Math.max(aboveBaseline, height + verticalAlign)
+    belowBaseline = Math.max(belowBaseline, -verticalAlign)
+  }
+
+  if (!foundStrut) {
+    return { aboveBaseline: 0.6944, belowBaseline: 0 }
+  }
+
+  return {
+    aboveBaseline: Math.max(0, aboveBaseline),
+    belowBaseline: Math.max(0, belowBaseline),
+  }
+}
+
+function formatKatexEmMetric(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric) || Math.abs(numeric) < 0.0005) return '0'
+  return String(Number(numeric.toFixed(4)))
+}
+
+function inlineKatexTopOffsetAttr(offsetEm) {
+  const metric = formatKatexEmMetric(offsetEm)
+  if (metric === '0') return ''
+  return ` top:calc(${metric} * var(--reel-katex-inline-em));`
+}
+
+function isTallKatexPart(metrics) {
+  const safeMetrics = metrics || {}
+  return safeMetrics.belowBaseline > 0.5 || safeMetrics.aboveBaseline > 1.2
+}
+
+function inlineKatexVisualNudge(baseMetrics, inlineMetrics) {
+  const baseIsTall = isTallKatexPart(baseMetrics)
+  const inlineIsTall = isTallKatexPart(inlineMetrics)
+  if (inlineIsTall && !baseIsTall) return INLINE_RIGHT_FRACTION_ONLY_NUDGE_EM
+  if (baseIsTall && !inlineIsTall) return INLINE_LEFT_FRACTION_ONLY_NUDGE_EM
+  return 0
 }
 
 function escapeHtml(value) {
@@ -486,14 +621,15 @@ function renderTextKatex(expression, displayMode = false) {
   }
 }
 
-function renderInlineKatexPart(expression, separator = 'semicolon') {
+function renderInlineKatexPart(expression, separator = 'semicolon', { compact = false } = {}) {
   const cleaned = String(expression || '').trim()
   if (!cleaned) return ''
   const alreadySeparated = /^(;|\\Rightarrow|\\to|\\rightarrow)/.test(cleaned)
   const separatorKatex = inlineSeparatorKatex(separator)
+  const separatorSpacing = compact ? '\\;' : '\\quad '
   const separatedExpression = alreadySeparated
     ? cleaned
-    : `${separatorKatex ? `${separatorKatex}\\quad ` : '\\quad '}${cleaned}`
+    : `${separatorKatex ? `${separatorKatex}${separatorSpacing}` : separatorSpacing}${cleaned}`
   return katex.renderToString(`\\displaystyle ${separatedExpression}`, { displayMode: false, throwOnError: false })
 }
 
@@ -604,20 +740,64 @@ const renderedKatex = computed(() => {
             return `<div class="reel-katex-line">${lineContent}</div>`
           }
 
-          const offset = clampInlineOffset(row.inlineOffsetPercent)
-          const baseHtml = katex.renderToString(`\\displaystyle ${parts[0]}`, { displayMode: false, throwOnError: false })
-          const baseRevealAttrs = revealTargetAttrs(parts[0])
+          const basePart = parts[0]
+          const baseHtml = katex.renderToString(`\\displaystyle ${basePart}`, { displayMode: false, throwOnError: false })
+          const baseMetrics = katexVerticalMetricsFromHtml(baseHtml)
+          const baseRevealAttrs = revealTargetAttrs(basePart)
           const inlineSeparators = Array.isArray(row.inlineSeparators) ? row.inlineSeparators : []
-          const inlineHtml = parts
+          const useCompactInlineLayout = isYoutubeFormat.value
+          const inlineParts = parts
             .slice(1)
             .map((part, index) => {
-              const partHtml = renderInlineKatexPart(part, inlineSeparators[index])
-              const left = 50 + offset + index * 22
+              const partHtml = renderInlineKatexPart(part, inlineSeparators[index], { compact: useCompactInlineLayout })
               const revealAttrs = revealTargetAttrs(part)
-              return `<span class="reel-katex-part reel-katex-part--inline${revealAttrs.className}" style="left:${left}%"${revealAttrs.attrs}>${partHtml}</span>`
+              const metrics = katexVerticalMetricsFromHtml(partHtml)
+              return {
+                html: partHtml,
+                metrics,
+                visualNudge: inlineKatexVisualNudge(baseMetrics, metrics),
+                revealAttrs,
+              }
+            })
+          const maxAboveBaseline = Math.max(
+            baseMetrics.aboveBaseline,
+            ...inlineParts.map((part) => part.metrics.aboveBaseline)
+          )
+          const maxBelowBaseline = Math.max(
+            baseMetrics.belowBaseline,
+            ...inlineParts.map((part) => part.metrics.belowBaseline)
+          )
+          const maxVisualNudge = Math.max(0, ...inlineParts.map((part) => part.visualNudge))
+          const rowHeight = maxAboveBaseline + maxBelowBaseline + maxVisualNudge
+          const baseIsTall = isTallKatexPart(baseMetrics)
+          const allNotTall = !baseIsTall && inlineParts.every((p) => !isTallKatexPart(p.metrics))
+          const onlyInlineTall = !baseIsTall && inlineParts.some((p) => isTallKatexPart(p.metrics))
+          const rowStyle = (rowHeight > 1.88 && !onlyInlineTall)
+            ? ` style="min-height:calc(${formatKatexEmMetric(rowHeight)} * var(--reel-katex-inline-em));"`
+            : ''
+          const baselineRef = onlyInlineTall ? baseMetrics.aboveBaseline : maxAboveBaseline
+          const lineExtraClass = `${allNotTall ? ' reel-katex-line--inline-centered' : ''}${useCompactInlineLayout ? ' reel-katex-line--inline-compact' : ''}`
+          const baseStyle = (allNotTall || onlyInlineTall) ? '' : inlineKatexTopOffsetAttr(maxAboveBaseline - baseMetrics.aboveBaseline)
+          const baseStyleAttr = baseStyle ? ` style="${baseStyle.trim()}"` : ''
+          const offset = clampInlineOffset(row.inlineOffsetPercent)
+          const verticalOffset = clampInlineVerticalOffset(row.inlineVerticalOffsetEm)
+          const inlineHtml = inlineParts
+            .map((inlinePart, index) => {
+              const baseTopEm = allNotTall
+                ? -0.04
+                : (baselineRef - inlinePart.metrics.aboveBaseline + inlinePart.visualNudge)
+              const finalTopEm = baseTopEm + verticalOffset
+              const topOffset = ` top:calc(${formatKatexEmMetric(finalTopEm)} * var(--reel-katex-inline-em));`
+              if (useCompactInlineLayout) {
+                const style = `position:relative; left:auto;${topOffset}`
+                return `<span class="reel-katex-part reel-katex-part--inline reel-katex-part--inline-compact${inlinePart.revealAttrs.className}" style="${style}"${inlinePart.revealAttrs.attrs}>${inlinePart.html}</span>`
+              }
+              const left = 50 + offset + index * 22
+              const style = `left:${left}%;${topOffset}`
+              return `<span class="reel-katex-part reel-katex-part--inline${inlinePart.revealAttrs.className}" style="${style}"${inlinePart.revealAttrs.attrs}>${inlinePart.html}</span>`
             })
             .join('')
-          return `<div class="reel-katex-line reel-katex-line--inline"><span class="reel-katex-part reel-katex-part--base${baseRevealAttrs.className}"${baseRevealAttrs.attrs}>${baseHtml}</span>${inlineHtml}</div>`
+          return `<div class="reel-katex-line reel-katex-line--inline${lineExtraClass}"${rowStyle}><span class="reel-katex-part reel-katex-part--base${baseRevealAttrs.className}"${baseStyleAttr}${baseRevealAttrs.attrs}>${baseHtml}</span>${inlineHtml}</div>`
         })
         .join('')
     }
@@ -692,6 +872,11 @@ async function fitThumbnailContent() {
 }
 
 const evaluateLayout = async () => {
+  if (shouldSkipLayoutEvaluation.value) {
+    thumbnailFitScale.value = 1
+    return
+  }
+
   await nextTick()
   const fitResult = await fitThumbnailContent()
 
@@ -824,6 +1009,7 @@ watch(
     safeSlide.value.screen_text_scale,
     safeSlide.value.katex_scale,
     props.displayMode,
+    props.videoFormat,
     props.mathScale,
     props.safeZoneXScale,
     props.safeZoneYScale,
@@ -1302,6 +1488,7 @@ onUnmounted(() => {
 }
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline) {
+  --reel-katex-inline-em: calc(5cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
   position: relative;
   overflow: visible;
 }
@@ -1309,13 +1496,18 @@ onUnmounted(() => {
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part) {
   display: inline-block;
   white-space: nowrap;
+  top: 0;
   vertical-align: top;
+}
+
+.reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part--base) {
+  position: relative;
 }
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-part--inline) {
   position: absolute;
-  top: 0;
 }
+
 
 .katex-zone--speech-reveal :deep(.reel-katex-reveal-target) {
   --reel-katex-reveal-clip: 0%;
@@ -1510,14 +1702,129 @@ onUnmounted(() => {
   }
 }
 
-.slide-card--youtube {
-  flex: 0 0 300px;
-  width: 300px;
-  min-width: 300px;
+.slide-card--youtube:not(.slide-card--fullscreen) {
+  flex: 0 0 min(680px, calc(100vw - 64px));
+  width: min(680px, calc(100vw - 64px));
+  min-width: min(680px, calc(100vw - 64px));
 }
 
 .slide-card--youtube .reel-slide {
   aspect-ratio: 16 / 9;
+}
+
+.slide-card--youtube .reel-slide-body,
+.slide-card--youtube.slide-card--fullscreen .reel-slide-body {
+  gap: calc(2.4cqw * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .hook-top,
+.slide-card--youtube .hook-middle-text,
+.slide-card--youtube .hook-bottom,
+.slide-card--youtube .cta-top,
+.slide-card--youtube .cta-main {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #244b9f;
+}
+
+.slide-card--youtube .hook-layout,
+.slide-card--youtube.slide-card--fullscreen .hook-layout {
+  box-sizing: border-box;
+  gap: calc(3.4cqw * var(--reel-user-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .reel-slide--hook:not(.reel-slide--cover) .hook-layout {
+  transform: translateY(-5cqw);
+}
+
+.slide-card--youtube .reel-slide--subtitled.reel-slide--hook:not(.reel-slide--cover) .hook-layout {
+  transform: translateY(-7cqw);
+  padding-bottom: 5cqw;
+}
+
+.slide-card--youtube .hook-top,
+.slide-card--youtube.slide-card--fullscreen .hook-top {
+  font-size: calc(7.8cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.slide-card--youtube .hook-bottom,
+.slide-card--youtube.slide-card--fullscreen .hook-bottom {
+  font-size: calc(5.2cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.slide-card--youtube .hook-middle-text,
+.slide-card--youtube.slide-card--fullscreen .hook-middle-text {
+  font-size: calc(5.8cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.12;
+}
+
+.slide-card--youtube .hook-katex :deep(.katex),
+.slide-card--youtube.slide-card--fullscreen .hook-katex :deep(.katex) {
+  font-size: calc(2.5cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+}
+
+.slide-card--youtube .cta-layout,
+.slide-card--youtube.slide-card--fullscreen .cta-layout {
+  gap: calc(4.2cqw * var(--reel-user-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .cta-top,
+.slide-card--youtube.slide-card--fullscreen .cta-top {
+  font-size: calc(7.6cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .cta-main,
+.slide-card--youtube.slide-card--fullscreen .cta-main {
+  font-size: calc(4.8cqw * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .cta-katex :deep(.katex),
+.slide-card--youtube.slide-card--fullscreen .cta-katex :deep(.katex) {
+  font-size: calc(3.1cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+}
+
+.slide-card--youtube .screen-text,
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .screen-text,
+.slide-card--youtube.slide-card--fullscreen .screen-text {
+  font-size: calc(3cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.3;
+}
+
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex),
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line .katex),
+.slide-card--youtube.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex) {
+  font-size: calc(1.6cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+}
+
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone,
+.slide-card--youtube.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone {
+  gap: calc(2.2cqw * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line),
+.slide-card--youtube.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line) {
+  min-height: calc(2.9cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline),
+.slide-card--youtube.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline) {
+  --reel-katex-inline-em: calc(1.6cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline-compact),
+.slide-card--youtube.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline-compact) {
+  white-space: nowrap;
+}
+
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline-compact .reel-katex-part--inline),
+.slide-card--youtube.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline-compact .reel-katex-part--inline) {
+  position: relative !important;
+  left: auto !important;
 }
 
 .slide-card--youtube.slide-card--fullscreen {
@@ -1568,6 +1875,21 @@ onUnmounted(() => {
   padding-bottom: 4cqw;
 }
 
+.slide-card--youtube .reel-subtitles {
+  padding: 8cqw 7cqw 2.8cqw;
+}
+
+.slide-card--youtube .reel-slide--cta .reel-subtitles,
+.slide-card--youtube .reel-slide--hook .reel-subtitles {
+  padding-bottom: 2.8cqw;
+}
+
+.slide-card--youtube .reel-subtitles-text {
+  max-width: 82%;
+  font-size: calc(2.7cqw * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.25;
+}
+
 .reel-subtitles-word {
   display: inline;
   color: rgba(255, 255, 255, 0.72);
@@ -1585,5 +1907,19 @@ onUnmounted(() => {
   background: #2563eb;
   text-shadow: none;
   border-radius: 4px;
+}
+
+.subtitle-line-enter-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.subtitle-line-leave-active {
+  transition: opacity 0.1s ease;
+}
+.subtitle-line-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.subtitle-line-leave-to {
+  opacity: 0;
 }
 </style>

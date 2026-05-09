@@ -227,6 +227,239 @@ def _video_filter(width, height):
     )
 
 
+def _ass_timestamp(seconds):
+    seconds = max(0.0, float(seconds or 0))
+    h = int(seconds // 3600)
+    m = int((seconds % 3600) // 60)
+    s = int(seconds % 60)
+    cs = int(round((seconds - int(seconds)) * 100))
+    if cs >= 100:
+        cs = 99
+    return f'{h:01d}:{m:02d}:{s:02d}.{cs:02d}'
+
+
+_ASS_CONTROL_TAG_RE = re.compile(r'\[[^\]\r\n]*[A-Za-zÀ-ÖØ-öø-ÿ][^\]\r\n]*\]')
+
+
+def _ass_clean_text(value):
+    cleaned = _ASS_CONTROL_TAG_RE.sub(' ', str(value or ''))
+    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+    return cleaned
+
+
+def _build_ass_subtitles_for_slide(slide, *, width, height, segment_duration, max_chars=30):
+    raw_timings = getattr(slide, 'speech_word_timings', None)
+    if not isinstance(raw_timings, dict):
+        return ''
+    raw_words = raw_timings.get('words')
+    if not isinstance(raw_words, list) or not raw_words:
+        return ''
+
+    parsed = []
+    for entry in raw_words:
+        if not isinstance(entry, dict):
+            continue
+        text = _ass_clean_text(entry.get('text'))
+        if not text:
+            continue
+        try:
+            start = float(entry.get('start'))
+            end = float(entry.get('end'))
+        except (TypeError, ValueError):
+            continue
+        if not (start >= 0 and end >= start):
+            continue
+        parsed.append({'text': text, 'start': start, 'end': end})
+
+    if not parsed:
+        return ''
+
+    lines = []
+    current = []
+    chars = 0
+    for word in parsed:
+        sep = 1 if current else 0
+        if current and chars + sep + len(word['text']) > max_chars:
+            lines.append(current)
+            current = [word]
+            chars = len(word['text'])
+        else:
+            current.append(word)
+            chars += sep + len(word['text'])
+    if current:
+        lines.append(current)
+    if not lines:
+        return ''
+
+    # Detect vertical (Reel/TikTok 9:16) vs horizontal (YouTube 16:9) format.
+    # Vertical platforms overlay UI (caption + actions) on the bottom ~25% of the frame,
+    # so subtitles must sit *above* that zone to stay visible.
+    is_vertical = height > width
+
+    # Font size: 3.8% of video width — matches preview's 3.8cqw
+    font_size = max(28, int(round(width * 0.038)))
+    margin_h = max(40, int(round(width * 0.04)))
+
+    if is_vertical:
+        # Place subtitles around 75% from the top (= 25% from the bottom),
+        # just above Instagram/TikTok's UI overlay zone.
+        margin_v = max(int(round(height * 0.25)), 200)
+        # Use BorderStyle 3 (opaque box) — a clean dark-blue plate around the text
+        # gives readable subtitles when the gradient PNG isn't usable mid-screen.
+        border_style = 3
+        outline_value = 12  # padding inside the box
+        # BackColour: rgba(15, 40, 100, 0.85) → alpha 0x26 (15% transparent)
+        back_colour = '&H2664280F'
+        outline_colour = '&H00000000'
+        shadow_value = 0
+    else:
+        # Horizontal — subtitles stay at the bottom; the gradient PNG provides background.
+        margin_v = max(36, int(round(width * 0.05)))
+        border_style = 1
+        outline_value = 0
+        back_colour = '&H00000000'
+        outline_colour = '&H80000000'
+        shadow_value = 1
+
+    # ASS colour format: &HAABBGGRR  (AA: 00=fully opaque, FF=fully transparent)
+    primary_white = '&H00FFFFFF'   # bright white — past / spoken words
+    secondary_white = '&H47FFFFFF'  # 72% opaque white — future / unspoken words
+    active_blue = '&H00EB6325'      # #2563eb in BGR — active word highlight
+
+    header = [
+        '[Script Info]',
+        'ScriptType: v4.00+',
+        f'PlayResX: {int(width)}',
+        f'PlayResY: {int(height)}',
+        'WrapStyle: 0',
+        'ScaledBorderAndShadow: yes',
+        'YCbCr Matrix: TV.709',
+        '',
+        '[V4+ Styles]',
+        ('Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, '
+         'OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, '
+         'ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, '
+         'Alignment, MarginL, MarginR, MarginV, Encoding'),
+        (f'Style: Default,Arial,{font_size},{primary_white},{secondary_white},'
+         f'{outline_colour},{back_colour},1,0,0,0,100,100,0,0,'
+         f'{border_style},{outline_value},{shadow_value},2,'
+         f'{margin_h},{margin_h},{margin_v},1'),
+        '',
+        '[Events]',
+        'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
+    ]
+
+    events = []
+    last_end = max(0.0, float(segment_duration or 0))
+
+    for i, line_words in enumerate(lines):
+        line_start = line_words[0]['start']
+        if i + 1 < len(lines):
+            line_end = lines[i + 1][0]['start']
+        else:
+            line_end = max(line_words[-1]['end'] + 0.4, last_end)
+        if last_end > 0:
+            line_end = min(line_end, last_end)
+        if line_end <= line_start:
+            line_end = line_start + 0.2
+
+        # Per-state events: one Dialogue per word's active interval.
+        # In each event the whole line is rendered with per-word colour overrides:
+        #   • past words (already spoken)   → bright white (`primary_white`)
+        #   • active word (currently spoken)→ white text with thick blue outline = blue highlight
+        #   • future words (not yet spoken) → 72% opaque white (`secondary_white`)
+        for j, active_word in enumerate(line_words):
+            interval_start = active_word['start']
+            if j + 1 < len(line_words):
+                interval_end = line_words[j + 1]['start']
+            else:
+                interval_end = line_end
+            interval_end = min(interval_end, line_end)
+            if interval_end <= interval_start:
+                continue
+
+            text_parts = []
+            for k, word in enumerate(line_words):
+                word_text = word['text'].replace('\\', '\\\\').replace('{', '\\{').replace('}', '\\}')
+                if k < j:
+                    # Past — bright white
+                    if is_vertical:
+                        overrides = f'\\1c{primary_white}'
+                    else:
+                        overrides = f'\\1c{primary_white}\\bord0\\3a&HFF&'
+                elif k == j:
+                    # Active word
+                    if is_vertical:
+                        # BorderStyle 3 ignores \bord halos, so swap to bright blue text
+                        # — readable on the dark-blue box background.
+                        overrides = f'\\1c{active_blue}'
+                    else:
+                        # Horizontal: white text with thick blue outline (halo = blue highlight)
+                        overrides = f'\\1c{primary_white}\\bord6\\3c{active_blue}\\3a&H00&'
+                else:
+                    # Future — dim white
+                    if is_vertical:
+                        overrides = f'\\1c{secondary_white}'
+                    else:
+                        overrides = f'\\1c{secondary_white}\\bord0\\3a&HFF&'
+
+                tag = f'{{{overrides}}}'
+                if k == 0:
+                    text_parts.append(f'{tag}{word_text}')
+                else:
+                    text_parts.append(f' {tag}{word_text}')
+
+            text = ''.join(text_parts)
+            events.append(
+                f'Dialogue: 0,{_ass_timestamp(interval_start)},{_ass_timestamp(interval_end)},'
+                f'Default,,0,0,0,,{text}'
+            )
+
+    return '\n'.join(header + events) + '\n'
+
+
+def _ffmpeg_subtitles_path(path):
+    # Escape for ffmpeg's subtitles filter (which uses libass)
+    escaped = path.replace('\\', '/').replace(':', '\\:').replace("'", "\\'")
+    return escaped
+
+
+def _create_subtitle_gradient_png(output_path, *, width, bar_height):
+    """Render the subtitle gradient bar to a PNG (RGBA) for ffmpeg overlay.
+
+    Reproduces the preview's CSS gradient pixel-perfectly:
+      `linear-gradient(to top, rgba(15,40,100,0.88) 0%, rgba(15,40,100,0.5) 45%, transparent 100%)`
+
+    A real per-pixel alpha gradient avoids the visible "stair-step" banding
+    that stacking ASS rectangles produces.
+    """
+    if width <= 0 or bar_height <= 0:
+        return
+
+    R, G, B = 15, 40, 100
+
+    # Build a single-pixel-wide column with the gradient, then resize horizontally.
+    # NEAREST keeps each row's alpha intact.
+    column = Image.new('RGBA', (1, bar_height), (R, G, B, 0))
+    denom = max(1, bar_height - 1)
+    for y in range(bar_height):
+        # Position from the BOTTOM of the bar (0 = bottom, 1 = top of bar)
+        pos_from_bottom = 1 - (y / denom)
+        if pos_from_bottom <= 0.45:
+            # Stop range [0%, 45%] from bottom: alpha 0.88 → 0.5
+            t = pos_from_bottom / 0.45
+            alpha = 0.88 + (0.5 - 0.88) * t
+        else:
+            # Stop range [45%, 100%] from bottom: alpha 0.5 → 0
+            t = (pos_from_bottom - 0.45) / 0.55
+            alpha = 0.5 * (1 - t)
+        a = max(0, min(255, int(round(alpha * 255))))
+        column.putpixel((0, y), (R, G, B, a))
+
+    img = column.resize((width, bar_height), Image.NEAREST)
+    img.save(output_path, 'PNG')
+
+
 def _build_segment(
     *,
     ffmpeg,
@@ -240,91 +473,84 @@ def _build_segment(
     crf,
     preset,
     timeout,
+    subtitle_path='',
+    gradient_path='',
 ):
-    vf = _video_filter(width, height)
     duration_text = f'{duration:.3f}'
-    common_video = [
-        '-vf',
-        vf,
-        '-r',
-        str(fps),
-        '-c:v',
-        'libx264',
-        '-preset',
-        preset,
-        '-crf',
-        str(crf),
-        '-tune',
-        'stillimage',
-        '-profile:v',
-        'high',
-        '-pix_fmt',
-        'yuv420p',
-    ]
-    common_audio = ['-c:a', 'aac', '-b:a', DEFAULT_AUDIO_BITRATE, '-ar', '44100', '-ac', '2']
+    base_vf = _video_filter(width, height)
+    has_gradient = bool(gradient_path)
+    has_subtitles = bool(subtitle_path)
 
-    if audio_path:
-        command = [
-            ffmpeg,
-            '-y',
-            '-loop',
-            '1',
-            '-framerate',
-            str(fps),
-            '-t',
-            duration_text,
-            '-i',
-            image_path,
-            '-i',
-            audio_path,
-            '-map',
-            '0:v:0',
-            '-map',
-            '1:a:0',
-            *common_video,
-            '-af',
-            'aresample=async=1:first_pts=0,apad',
-            *common_audio,
-            '-t',
-            duration_text,
-            '-avoid_negative_ts',
-            'make_zero',
-            '-movflags',
-            '+faststart',
-            output_path,
+    # Inputs: [0]=image, [1]=gradient (if any), [audio_idx]=audio (real or anullsrc)
+    inputs = [
+        '-loop', '1', '-framerate', str(fps), '-t', duration_text, '-i', image_path,
+    ]
+    if has_gradient:
+        inputs.extend([
+            '-loop', '1', '-framerate', str(fps), '-t', duration_text, '-i', gradient_path,
+        ])
+        audio_idx = 2
+    else:
+        audio_idx = 1
+
+    has_audio = bool(audio_path)
+    if has_audio:
+        inputs.extend(['-i', audio_path])
+    else:
+        inputs.extend([
+            '-f', 'lavfi', '-t', duration_text,
+            '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100',
+        ])
+
+    # Build the video pipeline. When a gradient PNG is supplied, switch to
+    # filter_complex so we can overlay it onto the base image, then burn the
+    # subtitles on top.
+    if has_gradient:
+        chain_parts = [f'[0:v]{base_vf}[bg]']
+        chain_parts.append('[1:v]format=rgba[grad]')
+        if has_subtitles:
+            chain_parts.append('[bg][grad]overlay=0:H-h[merged]')
+            chain_parts.append(f"[merged]subtitles='{_ffmpeg_subtitles_path(subtitle_path)}'[v]")
+        else:
+            chain_parts.append('[bg][grad]overlay=0:H-h[v]')
+        filter_complex = ';'.join(chain_parts)
+        video_args = [
+            '-filter_complex', filter_complex,
+            '-map', '[v]',
+            '-map', f'{audio_idx}:a:0',
         ]
     else:
-        command = [
-            ffmpeg,
-            '-y',
-            '-loop',
-            '1',
-            '-framerate',
-            str(fps),
-            '-t',
-            duration_text,
-            '-i',
-            image_path,
-            '-f',
-            'lavfi',
-            '-t',
-            duration_text,
-            '-i',
-            'anullsrc=channel_layout=stereo:sample_rate=44100',
-            '-map',
-            '0:v:0',
-            '-map',
-            '1:a:0',
-            *common_video,
-            *common_audio,
-            '-t',
-            duration_text,
-            '-avoid_negative_ts',
-            'make_zero',
-            '-movflags',
-            '+faststart',
-            output_path,
+        vf = f"{base_vf},subtitles='{_ffmpeg_subtitles_path(subtitle_path)}'" if has_subtitles else base_vf
+        video_args = [
+            '-vf', vf,
+            '-map', '0:v:0',
+            '-map', f'{audio_idx}:a:0',
         ]
+
+    common_video = [
+        '-r', str(fps),
+        '-c:v', 'libx264',
+        '-preset', preset,
+        '-crf', str(crf),
+        '-tune', 'stillimage',
+        '-profile:v', 'high',
+        '-pix_fmt', 'yuv420p',
+    ]
+    common_audio = ['-c:a', 'aac', '-b:a', DEFAULT_AUDIO_BITRATE, '-ar', '44100', '-ac', '2']
+    af_args = ['-af', 'aresample=async=1:first_pts=0,apad'] if has_audio else []
+
+    command = [
+        ffmpeg, '-y',
+        *inputs,
+        *video_args,
+        *common_video,
+        *af_args,
+        *common_audio,
+        '-t', duration_text,
+        '-avoid_negative_ts', 'make_zero',
+        '-movflags', '+faststart',
+        output_path,
+    ]
 
     _run_ffmpeg(command, timeout=timeout)
 
@@ -378,7 +604,7 @@ def _concat_segments(*, ffmpeg, segment_paths, output_path, fps, crf, preset, ti
     _run_ffmpeg(command, timeout=timeout)
 
 
-def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=18, preset=''):
+def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=18, preset='', show_subtitles=False):
     frame_items = list(frames or [])
     if not frame_items:
         raise VideoExportError('Aucune image de slide fournie pour exporter la video.')
@@ -390,6 +616,17 @@ def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=1
     segment_paths = []
 
     with tempfile.TemporaryDirectory(prefix='optitab-reel-video-') as temp_dir:
+        # Pre-render the subtitle gradient PNG once — same shape for every slide.
+        # Used only for horizontal (YouTube 16:9): vertical formats put subtitles
+        # mid-screen with an opaque-box style instead, so a bottom gradient would
+        # be unrelated to the text area.
+        gradient_path = ''
+        is_vertical = height > width
+        if show_subtitles and not is_vertical:
+            gradient_height = max(200, int(round(height * 0.25)))
+            gradient_path = os.path.join(temp_dir, 'subtitle_gradient.png')
+            _create_subtitle_gradient_png(gradient_path, width=width, bar_height=gradient_height)
+
         for index, frame in enumerate(frame_items, start=1):
             slide_id = int(frame.get('slide_id') or 0)
             slide = slides_by_id.get(slide_id)
@@ -408,6 +645,23 @@ def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=1
                 ffmpeg=ffmpeg,
                 timeout=timeout,
             )
+
+            subtitle_path = ''
+            segment_gradient_path = ''
+            if show_subtitles and has_audio:
+                ass_content = _build_ass_subtitles_for_slide(
+                    slide,
+                    width=width,
+                    height=height,
+                    segment_duration=segment_duration,
+                )
+                if ass_content:
+                    subtitle_path = os.path.join(temp_dir, f'subtitle_{index:03d}.ass')
+                    with open(subtitle_path, 'w', encoding='utf-8') as fh:
+                        fh.write(ass_content)
+                    # Overlay gradient only on slides that actually display subtitles
+                    segment_gradient_path = gradient_path
+
             _build_segment(
                 ffmpeg=ffmpeg,
                 image_path=image_path,
@@ -420,6 +674,8 @@ def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=1
                 crf=crf,
                 preset=resolved_preset,
                 timeout=timeout,
+                subtitle_path=subtitle_path,
+                gradient_path=segment_gradient_path,
             )
             segment_paths.append(segment_path)
 

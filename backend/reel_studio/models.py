@@ -140,6 +140,7 @@ class ReelSlide(models.Model):
         default=INLINE_SEPARATOR_SEMICOLON,
     )
     katex_inline_offset_percent = models.FloatField(default=0.0)
+    katex_inline_vertical_offset_em = models.FloatField(default=0.0)
     katex_cumulative_gap_em = models.FloatField(default=0.4)
     katex_reset_cumulative = models.BooleanField(default=False)
     katex_reveal_with_speech = models.BooleanField(default=False)

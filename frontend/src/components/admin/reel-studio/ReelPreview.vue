@@ -67,12 +67,13 @@
           <button class="size-reset" type="button" @click="resetCumulativeGap">Reset</button>
         </div>
         <span v-if="slidesForRender.length" class="preview-count">{{ slidesForRender.length }} slides</span>
+        <span v-if="totalReelDurationLabel" class="preview-count preview-count--duration">{{ totalReelDurationLabel }}</span>
       </div>
     </div>
 
     <p v-if="!slidesForRender.length" class="empty-state">Aucune slide à afficher.</p>
 
-    <div v-else class="reel-preview-list">
+    <div v-else v-show="!isYoutubeFormat || !isFullscreen" class="reel-preview-list">
       <ReelSlidePreview
         v-for="slide in slidesForRender"
         :key="slide.id"
@@ -185,8 +186,25 @@
       </div>
     </Teleport>
 
+    <!-- Hidden audio element dedicated to full preview playback (separate from the visible controls player) -->
+    <audio
+      ref="fullPreviewPlayerRef"
+      preload="auto"
+      style="display:none"
+      @ended="handleSpeechEnded"
+      @error="handleSpeechError"
+      @timeupdate="handleSpeechTimeUpdate"
+      @play="handleSpeechPlay"
+      @pause="handleSpeechPause"
+    ></audio>
+
     <Teleport to="body">
-      <div v-if="isFullscreen && activeSlide" class="fullscreen-backdrop" @click="closeFullscreen">
+      <div
+        v-if="isFullscreen && activeSlide"
+        class="fullscreen-backdrop"
+        :class="{ 'fullscreen-backdrop--youtube': isYoutubeFormat }"
+        @click="closeFullscreen"
+      >
         <div class="fullscreen-preview-controls" @click.stop>
           <button
             class="full-preview-button"
@@ -199,7 +217,11 @@
           </button>
         </div>
 
-        <div class="fullscreen-content" @click.stop>
+        <div
+          class="fullscreen-content"
+          :class="{ 'fullscreen-content--youtube': isYoutubeFormat }"
+          @click.stop
+        >
           <aside class="fullscreen-speech-panel" aria-label="Voix de la slide">
             <div class="speech-panel-header">
               <div class="speech-tabs" role="tablist" aria-label="Edition slide">
@@ -240,17 +262,17 @@
               <audio
                 v-if="activeSlideSpeechAudioUrl"
                 ref="speechPlayerRef"
-                :key="activeSlideSpeechAudioUrl"
                 class="speech-player"
                 :src="activeSlideSpeechAudioUrl"
                 controls
-                preload="metadata"
+                preload="auto"
                 @ended="handleSpeechEnded"
                 @error="handleSpeechError"
                 @timeupdate="handleSpeechTimeUpdate"
                 @play="handleSpeechPlay"
                 @pause="handleSpeechPause"
                 @seeked="handleSpeechTimeUpdate"
+                @loadedmetadata="handleSpeechLoadedMetadata"
               ></audio>
 
               <p v-else class="speech-empty">{{ activeSlideSpeechStatusLabel }}</p>
@@ -558,6 +580,26 @@
                 </button>
                 <button class="size-reset" type="button" @click="resetActiveInlineOffset">0</button>
               </div>
+              <div v-if="activeSlideInline" class="inline-layout-row inline-layout-row--offset">
+                <button
+                  class="size-button inline-offset-button"
+                  type="button"
+                  aria-label="Remonter la formule"
+                  @click="decreaseActiveInlineVerticalOffset"
+                >
+                  ↑
+                </button>
+                <span class="size-value inline-offset-value">{{ activeInlineVerticalOffsetLabel }}</span>
+                <button
+                  class="size-button inline-offset-button"
+                  type="button"
+                  aria-label="Descendre la formule"
+                  @click="increaseActiveInlineVerticalOffset"
+                >
+                  ↓
+                </button>
+                <button class="size-reset" type="button" @click="resetActiveInlineVerticalOffset">0</button>
+              </div>
             </div>
 
             <div
@@ -728,7 +770,7 @@
             </button>
 
             <ReelSlidePreview
-              :key="activeSlide.id"
+              :key="isYoutubeFormat ? 'youtube-fullscreen-slide' : activeSlide.id"
               :slide="activeSlide"
               :is-selected="true"
               display-mode="fullscreen"
@@ -824,10 +866,14 @@ const emit = defineEmits([
 const isFullscreen = ref(false)
 const fullscreenIndex = ref(0)
 const previousBodyOverflow = ref('')
-const mathScaleCalcul = ref(1)
-const mathScaleHook = ref(1)
-const mathScaleCta = ref(1)
 const SAFE_ZONE_DEFAULT_SCALE = 1.15
+const SAFE_ZONE_DEFAULT_SCALE_YOUTUBE = 1.0
+const MATH_SCALE_DEFAULT_REEL = 1.0
+const MATH_SCALE_DEFAULT_YOUTUBE = 1.0
+const CUMULATIVE_GAP_DEFAULT_YOUTUBE = 0.35
+const mathScaleCalcul = ref(MATH_SCALE_DEFAULT_REEL)
+const mathScaleHook = ref(MATH_SCALE_DEFAULT_REEL)
+const mathScaleCta = ref(MATH_SCALE_DEFAULT_REEL)
 const safeZoneXScale = ref(SAFE_ZONE_DEFAULT_SCALE)
 const safeZoneMathYScale = ref(SAFE_ZONE_DEFAULT_SCALE)
 const safeZoneHookYScale = ref(SAFE_ZONE_DEFAULT_SCALE)
@@ -859,6 +905,7 @@ const KATEX_COLORS = [
 ]
 const ANNOTATION_COLORS = ['#e74c3c', '#2980b9', '#f39c12', '#27ae60', '#8e44ad']
 const speechPlayerRef = ref(null)
+const fullPreviewPlayerRef = ref(null)
 
 const annotationActiveTool = ref('select')
 const annotationActiveColor = ref('#e74c3c')
@@ -872,6 +919,10 @@ const speechAudioCurrentTime = ref(0)
 const speechAudioPlaying = ref(false)
 let speechAudioRafId = null
 
+const SPEECH_FADE_MS = 70
+let speechFadeRafId = null
+let speechFullPreviewTargetVolume = 1
+
 function stopSpeechAudioRaf() {
   if (speechAudioRafId !== null) {
     cancelAnimationFrame(speechAudioRafId)
@@ -879,10 +930,47 @@ function stopSpeechAudioRaf() {
   }
 }
 
+function clearSpeechFadeTimers() {
+  if (speechFadeRafId !== null) {
+    cancelAnimationFrame(speechFadeRafId)
+    speechFadeRafId = null
+  }
+}
+
+function rampSpeechVolume(audio, from, to, durationMs) {
+  if (!audio || typeof window === 'undefined') return
+  if (speechFadeRafId !== null) {
+    cancelAnimationFrame(speechFadeRafId)
+    speechFadeRafId = null
+  }
+  const start = performance.now()
+  const startVolume = Math.max(0, Math.min(1, from))
+  const targetVolume = Math.max(0, Math.min(1, to))
+  audio.volume = startVolume
+  const duration = Math.max(1, durationMs)
+  const tick = (now) => {
+    const ratio = Math.max(0, Math.min(1, (now - start) / duration))
+    const nextVolume = startVolume + (targetVolume - startVolume) * ratio
+    audio.volume = Math.max(0, Math.min(1, nextVolume))
+    if (ratio < 1) {
+      speechFadeRafId = requestAnimationFrame(tick)
+    } else {
+      audio.volume = targetVolume
+      speechFadeRafId = null
+    }
+  }
+  speechFadeRafId = requestAnimationFrame(tick)
+}
+
+
+function getActiveSpeechPlayer() {
+  return isFullPreviewPlaying.value ? fullPreviewPlayerRef.value : speechPlayerRef.value
+}
+
 function startSpeechAudioRaf() {
   stopSpeechAudioRaf()
   const tick = () => {
-    const audio = speechPlayerRef.value
+    const audio = getActiveSpeechPlayer()
     if (!audio || audio.paused || audio.ended) {
       speechAudioRafId = null
       return
@@ -933,12 +1021,26 @@ const PRONUNCIATION_LANGUAGE_LABELS = Object.fromEntries(
 const isFullPreviewPlaying = ref(false)
 const cumulativeGap = ref(0.4)
 let fullPreviewTimerId = null
+const localSlidePatches = ref({})
+const pendingYoutubeInlinePatches = new Map()
+const youtubeInlinePatchTimers = new Map()
 
-const slidesSafe = computed(() => (Array.isArray(props.slides) ? props.slides : []))
+const YOUTUBE_INLINE_PATCH_DEBOUNCE_MS = 450
+const slidesSafe = computed(() => {
+  const slides = Array.isArray(props.slides) ? props.slides : []
+  const patches = localSlidePatches.value || {}
+  return slides.map((slide) => {
+    const patch = slide?.id ? patches[String(slide.id)] : null
+    return patch ? { ...slide, ...patch } : slide
+  })
+})
 const NON_MATH_SLIDE_TYPES = new Set(['hook', 'cta'])
 const INLINE_OFFSET_MIN = -40
 const INLINE_OFFSET_MAX = 40
 const INLINE_OFFSET_STEP = 4
+const INLINE_VERTICAL_OFFSET_MIN = -1
+const INLINE_VERTICAL_OFFSET_MAX = 1
+const INLINE_VERTICAL_OFFSET_STEP = 0.05
 const INLINE_SEPARATOR_SEMICOLON = 'semicolon'
 const INLINE_SEPARATOR_ARROW = 'arrow'
 const INLINE_SEPARATOR_NONE = 'none'
@@ -1206,7 +1308,7 @@ function unwrapAlignedBlock(value) {
 function splitAlignedLines(innerBlock) {
   return String(innerBlock || '')
     .split(/\\\\(?:\[[^\]]*\])?/)
-    .map((line) => line.trim())
+    .map((line) => normalizeKatexLine(line))
     .filter(Boolean)
 }
 
@@ -1220,13 +1322,14 @@ function splitKatexLines(block) {
 
   return raw
     .split(/\\\\(?:\[[^\]]*\])?/)
-    .map((line) => line.trim())
+    .map((line) => normalizeKatexLine(line))
     .filter(Boolean)
 }
 
 function normalizeKatexLine(line) {
   return String(line || '')
-    .replace(/^&\s*/, '')
+    .trim()
+    .replace(/(^|[^\\])&+/g, '$1')
     .replace(/\s+/g, ' ')
     .trim()
 }
@@ -1235,6 +1338,13 @@ function clampInlineOffset(value) {
   const numeric = Number(value)
   if (!Number.isFinite(numeric)) return 0
   return Math.min(INLINE_OFFSET_MAX, Math.max(INLINE_OFFSET_MIN, numeric))
+}
+
+function clampInlineVerticalOffset(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return 0
+  const clamped = Math.min(INLINE_VERTICAL_OFFSET_MAX, Math.max(INLINE_VERTICAL_OFFSET_MIN, numeric))
+  return Number(clamped.toFixed(3))
 }
 
 function normalizeInlineSeparator(value) {
@@ -1248,11 +1358,12 @@ function clampCumulativeGap(value) {
   return Math.min(CUMULATIVE_GAP_MAX, Math.max(CUMULATIVE_GAP_MIN, Number(numeric.toFixed(2))))
 }
 
-function makeKatexRow(line, inlineOffsetPercent = 0) {
+function makeKatexRow(line, inlineOffsetPercent = 0, inlineVerticalOffsetEm = 0) {
   return {
     parts: [line],
     inlineSeparators: [],
     inlineOffsetPercent: clampInlineOffset(inlineOffsetPercent),
+    inlineVerticalOffsetEm: clampInlineVerticalOffset(inlineVerticalOffsetEm),
   }
 }
 
@@ -1263,6 +1374,7 @@ function cloneKatexRows(rows) {
       ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
       : [],
     inlineOffsetPercent: clampInlineOffset(row?.inlineOffsetPercent),
+    inlineVerticalOffsetEm: clampInlineVerticalOffset(row?.inlineVerticalOffsetEm),
   }))
 }
 
@@ -1281,7 +1393,7 @@ function toAlignedKatexRows(rows, rowGap = CUMULATIVE_GAP_DEFAULT) {
       const inlineSeparators = Array.isArray(row?.inlineSeparators) ? row.inlineSeparators : []
       const rowContent = rowLines
         .map((line, index) => {
-          const cleanLine = String(line || '').trim().replace(/^&+\s*/, '')
+          const cleanLine = normalizeKatexLine(line)
           if (!cleanLine) return ''
           if (index === 0) return cleanLine
           const separator = normalizeInlineSeparator(inlineSeparators[index - 1])
@@ -1322,6 +1434,22 @@ const baseSlidesForRender = computed(() => {
   let cumulativeLineKeys = new Set()
   let carriedScreenText = ''
 
+  function resetCumulativeState() {
+    cumulativeRows = []
+    cumulativeLineKeys = new Set()
+  }
+
+  function isYoutubeStatementSlide(index, slideType) {
+    return isYoutubeFormat.value && index === 1 && !NON_MATH_SLIDE_TYPES.has(slideType)
+  }
+
+  function statementScreenText(baseText) {
+    const text = normalizeText(baseText)
+    if (!text) return 'Énoncé :'
+    const plainText = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    return /^enonce\s*:/.test(plainText) ? text : `Énoncé :\n${text}`
+  }
+
   function appendKatexLines(currentLines, safeSlide, inlineWithPrevious) {
     let addedInlineLine = false
     for (const line of currentLines) {
@@ -1335,6 +1463,7 @@ const baseSlidesForRender = computed(() => {
         lastRow.inlineSeparators = Array.isArray(lastRow.inlineSeparators) ? lastRow.inlineSeparators : []
         lastRow.inlineSeparators.push(normalizeInlineSeparator(safeSlide.katex_inline_separator))
         lastRow.inlineOffsetPercent = clampInlineOffset(safeSlide.katex_inline_offset_percent)
+        lastRow.inlineVerticalOffsetEm = clampInlineVerticalOffset(safeSlide.katex_inline_vertical_offset_em)
         addedInlineLine = true
         continue
       }
@@ -1370,19 +1499,30 @@ const baseSlidesForRender = computed(() => {
     }
   }
 
-  return slidesSafe.value.map((slide) => {
+  return slidesSafe.value.map((slide, index) => {
     const safeSlide = slide && typeof slide === 'object' ? slide : {}
     const slideType = normalizeText(safeSlide.slide_type).toLowerCase()
     const baseText = normalizeText(safeSlide.screen_text)
     const baseKatex = normalizeText(safeSlide.katex)
 
     if (NON_MATH_SLIDE_TYPES.has(slideType)) {
-      cumulativeRows = []
-      cumulativeLineKeys = new Set()
+      resetCumulativeState()
       carriedScreenText = ''
       return {
         ...safeSlide,
         display_screen_text: baseText,
+        display_katex: baseKatex,
+      }
+    }
+
+    if (isYoutubeStatementSlide(index, slideType)) {
+      resetCumulativeState()
+      carriedScreenText = ''
+      return {
+        ...safeSlide,
+        display_screen_text: statementScreenText(baseText),
+        display_katex_row_gap_em: cumulativeGap.value,
+        display_katex_rows: [],
         display_katex: baseKatex,
       }
     }
@@ -1446,6 +1586,17 @@ const slidesForRender = computed(() => {
 })
 const videoSlidesForRender = computed(() => slidesForRender.value.filter((slide) => !isVirtualCoverSlide(slide)))
 
+const totalReelDurationLabel = computed(() => {
+  const total = videoSlidesForRender.value.reduce((sum, slide) => {
+    const s = Number(slide?.duration_seconds)
+    return sum + (Number.isFinite(s) && s > 0 ? s : 4)
+  }, 0)
+  if (!total) return null
+  const mins = Math.floor(total / 60)
+  const secs = Math.round(total % 60)
+  return mins > 0 ? `${mins}m${secs > 0 ? String(secs).padStart(2, '0') + 's' : ''}` : `${secs}s`
+})
+
 const activeSlide = computed(() => {
   if (!slidesForRender.value.length) return null
   const index = Math.min(Math.max(fullscreenIndex.value, 0), slidesForRender.value.length - 1)
@@ -1455,10 +1606,16 @@ const activeSlide = computed(() => {
 const activeSlideInline = computed(() => Boolean(activeSlide.value?.katex_inline_with_previous))
 const activeSlideInlineOffset = computed(() => clampInlineOffset(activeSlide.value?.katex_inline_offset_percent))
 const activeSlideInlineSeparator = computed(() => normalizeInlineSeparator(activeSlide.value?.katex_inline_separator))
+const activeSlideInlineVerticalOffset = computed(() => clampInlineVerticalOffset(activeSlide.value?.katex_inline_vertical_offset_em))
 const activeInlineOffsetLabel = computed(() => {
   const offset = Math.round(activeSlideInlineOffset.value)
   if (!offset) return 'milieu'
   return offset > 0 ? `+${offset}%` : `${offset}%`
+})
+const activeInlineVerticalOffsetLabel = computed(() => {
+  const offset = activeSlideInlineVerticalOffset.value
+  if (!offset) return '0'
+  return offset > 0 ? `+${offset.toFixed(2)}em` : `${offset.toFixed(2)}em`
 })
 const cumulativeGapLabel = computed(() => `${cumulativeGap.value.toFixed(1)}em`)
 const activeSlideResetsCumulative = computed(() => Boolean(activeSlide.value?.katex_reset_cumulative))
@@ -1546,17 +1703,22 @@ function findAdjacentVideoSlideIndex(startIndex, direction) {
 
 function closeFullscreen() {
   stopFullPreview()
+  flushYoutubeInlinePatch()
   saveActiveSpeechDraft()
   saveActiveKatexDraft()
+  if (isYoutubeFormat.value && activeSlide.value?.id && !isVirtualCoverSlide(activeSlide.value)) {
+    emit('select-slide', activeSlide.value.id)
+  }
   annotationActiveTool.value = 'select'
   annotationSelectedId.value = null
   isFullscreen.value = false
 }
 
-async function moveFullscreenToIndex(index) {
+async function moveFullscreenToIndex(index, { syncSelection = !isYoutubeFormat.value, waitForDom = false } = {}) {
   const slide = slidesForRender.value[index]
   if (!slide?.id || isVirtualCoverSlide(slide)) return false
 
+  flushYoutubeInlinePatch(activeSlide.value?.id)
   saveActiveSpeechDraft()
   saveActiveKatexDraft()
   fullscreenEditorTab.value = 'speech'
@@ -1565,22 +1727,29 @@ async function moveFullscreenToIndex(index) {
   speechAudioCurrentTime.value = 0
   speechAudioPlaying.value = false
   stopSpeechAudioRaf()
-  selectSlideByIndex(index)
+  clearSpeechFadeTimers()
+  if (syncSelection) {
+    selectSlideByIndex(index)
+  }
   syncSpeechDraftFromActiveSlide({ force: true })
   syncKatexDraftFromActiveSlide({ force: true })
-  await nextTick()
+  if (waitForDom) {
+    await nextTick()
+  }
   return true
 }
 
 function stopFullPreview({ resetAudio = true } = {}) {
   isFullPreviewPlaying.value = false
   clearFullPreviewTimer()
+  clearSpeechFadeTimers()
 
   if (!resetAudio) return
-  const audio = speechPlayerRef.value
+  const audio = fullPreviewPlayerRef.value
   if (!audio) return
 
   audio.pause()
+  audio.volume = speechFullPreviewTargetVolume
   speechAudioPlaying.value = false
   try {
     audio.currentTime = 0
@@ -1620,16 +1789,20 @@ async function playActiveSpeechForFullPreview() {
   if (!isFullPreviewPlaying.value) return
 
   clearFullPreviewTimer()
-  const audio = speechPlayerRef.value
+  clearSpeechFadeTimers()
+  const audio = fullPreviewPlayerRef.value
   if (!audio || !activeSlideSpeechAudioUrl.value) {
     scheduleSilentFullPreviewAdvance()
     return
   }
 
   try {
+    audio.src = activeSlideSpeechAudioUrl.value
     audio.currentTime = 0
     speechAudioCurrentTime.value = 0
+    audio.volume = 0
     await audio.play()
+    rampSpeechVolume(audio, 0, speechFullPreviewTargetVolume, SPEECH_FADE_MS)
   } catch (error) {
     console.error('Erreur lecture audio complete:', error)
     stopFullPreview()
@@ -1713,7 +1886,10 @@ function handleSpeechPlay() {
 function handleSpeechPause() {
   speechAudioPlaying.value = false
   stopSpeechAudioRaf()
+  clearSpeechFadeTimers()
 }
+
+function handleSpeechLoadedMetadata() {}
 
 function saveActiveSpeechDraft() {
   if (!activeSlide.value?.id || !activeSpeechDraftDirty.value) return false
@@ -1802,7 +1978,8 @@ function resetMathSize() {
 }
 
 function clampSafeZoneScale(value) {
-  return Math.min(1.4, Math.max(0.7, Number(value.toFixed(2))))
+  const min = isYoutubeFormat.value ? 0 : 0.7
+  return Math.min(1.4, Math.max(min, Number(value.toFixed(2))))
 }
 
 function decreaseSafeZoneX() {
@@ -1813,8 +1990,12 @@ function increaseSafeZoneX() {
   safeZoneXScale.value = clampSafeZoneScale(safeZoneXScale.value + 0.05)
 }
 
+function safeZoneDefaultForFormat() {
+  return isYoutubeFormat.value ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE : SAFE_ZONE_DEFAULT_SCALE
+}
+
 function resetSafeZoneX() {
-  safeZoneXScale.value = SAFE_ZONE_DEFAULT_SCALE
+  safeZoneXScale.value = safeZoneDefaultForFormat()
 }
 
 function decreaseSafeZoneY() {
@@ -1828,7 +2009,22 @@ function increaseSafeZoneY() {
 }
 
 function resetSafeZoneY() {
-  getActiveSafeZoneYRef().value = SAFE_ZONE_DEFAULT_SCALE
+  getActiveSafeZoneYRef().value = safeZoneDefaultForFormat()
+}
+
+function applyFormatDefaults() {
+  const isYt = isYoutubeFormat.value
+  const safeDefault = isYt ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE : SAFE_ZONE_DEFAULT_SCALE
+  const mathDefault = isYt ? MATH_SCALE_DEFAULT_YOUTUBE : MATH_SCALE_DEFAULT_REEL
+  const gapDefault = isYt ? CUMULATIVE_GAP_DEFAULT_YOUTUBE : CUMULATIVE_GAP_DEFAULT
+  safeZoneXScale.value = safeDefault
+  safeZoneMathYScale.value = safeDefault
+  safeZoneHookYScale.value = safeDefault
+  safeZoneCtaYScale.value = safeDefault
+  mathScaleCalcul.value = mathDefault
+  mathScaleHook.value = mathDefault
+  mathScaleCta.value = mathDefault
+  cumulativeGap.value = gapDefault
 }
 
 function patchActiveEdgeSlideScale(field, value) {
@@ -1877,6 +2073,7 @@ function toggleActiveKatexLineMode() {
       ...(nextInline
         ? {
             katex_inline_offset_percent: 0,
+            katex_inline_vertical_offset_em: 0,
             katex_inline_separator: activeSlideInlineSeparator.value,
           }
         : {}),
@@ -1887,22 +2084,76 @@ function toggleActiveKatexLineMode() {
 function setActiveInlineSeparator(value) {
   if (!activeSlide.value?.id || !activeSlideInline.value || isEdgeSlide(activeSlide.value)) return
 
-  emit('update-slide', {
-    id: activeSlide.value.id,
-    patch: {
-      katex_inline_separator: normalizeInlineSeparator(value),
-    },
+  patchActiveYoutubeInlineLayout({
+    katex_inline_separator: normalizeInlineSeparator(value),
   })
 }
 
-function patchActiveInlineOffset(value) {
+function applyLocalSlidePatch(slideId, patch) {
+  if (!slideId || !patch || typeof patch !== 'object') return
+
+  const key = String(slideId)
+  localSlidePatches.value = {
+    ...localSlidePatches.value,
+    [key]: {
+      ...(localSlidePatches.value[key] || {}),
+      ...patch,
+    },
+  }
+}
+
+function emitSlidePatch(slideId, patch) {
+  if (!slideId || !patch || typeof patch !== 'object' || !Object.keys(patch).length) return
+  emit('update-slide', { id: slideId, patch })
+}
+
+function flushYoutubeInlinePatch(slideId = null) {
+  const keys = slideId ? [String(slideId)] : Array.from(pendingYoutubeInlinePatches.keys())
+  keys.forEach((key) => {
+    const timer = youtubeInlinePatchTimers.get(key)
+    if (timer) {
+      clearTimeout(timer)
+      youtubeInlinePatchTimers.delete(key)
+    }
+
+    const patch = pendingYoutubeInlinePatches.get(key)
+    pendingYoutubeInlinePatches.delete(key)
+    if (patch) {
+      emitSlidePatch(key, patch)
+    }
+  })
+}
+
+function patchActiveYoutubeInlineLayout(patch) {
   if (!activeSlide.value?.id || !activeSlideInline.value || isEdgeSlide(activeSlide.value)) return
 
-  emit('update-slide', {
-    id: activeSlide.value.id,
-    patch: {
-      katex_inline_offset_percent: clampInlineOffset(value),
-    },
+  const slideId = activeSlide.value.id
+  if (!isYoutubeFormat.value || !isFullscreen.value) {
+    emitSlidePatch(slideId, patch)
+    return
+  }
+
+  const key = String(slideId)
+  applyLocalSlidePatch(slideId, patch)
+  pendingYoutubeInlinePatches.set(key, {
+    ...(pendingYoutubeInlinePatches.get(key) || {}),
+    ...patch,
+  })
+
+  const currentTimer = youtubeInlinePatchTimers.get(key)
+  if (currentTimer) clearTimeout(currentTimer)
+
+  youtubeInlinePatchTimers.set(key, window.setTimeout(() => {
+    youtubeInlinePatchTimers.delete(key)
+    const pendingPatch = pendingYoutubeInlinePatches.get(key)
+    pendingYoutubeInlinePatches.delete(key)
+    emitSlidePatch(slideId, pendingPatch)
+  }, YOUTUBE_INLINE_PATCH_DEBOUNCE_MS))
+}
+
+function patchActiveInlineOffset(value) {
+  patchActiveYoutubeInlineLayout({
+    katex_inline_offset_percent: clampInlineOffset(value),
   })
 }
 
@@ -1916,6 +2167,24 @@ function increaseActiveInlineOffset() {
 
 function resetActiveInlineOffset() {
   patchActiveInlineOffset(0)
+}
+
+function patchActiveInlineVerticalOffset(value) {
+  patchActiveYoutubeInlineLayout({
+    katex_inline_vertical_offset_em: clampInlineVerticalOffset(value),
+  })
+}
+
+function decreaseActiveInlineVerticalOffset() {
+  patchActiveInlineVerticalOffset(activeSlideInlineVerticalOffset.value - INLINE_VERTICAL_OFFSET_STEP)
+}
+
+function increaseActiveInlineVerticalOffset() {
+  patchActiveInlineVerticalOffset(activeSlideInlineVerticalOffset.value + INLINE_VERTICAL_OFFSET_STEP)
+}
+
+function resetActiveInlineVerticalOffset() {
+  patchActiveInlineVerticalOffset(0)
 }
 
 function toggleActiveResetCumulative() {
@@ -2412,6 +2681,7 @@ async function exportAllSlidesVideo(mode = 'fast') {
       fps: exportPreset.fps,
       crf: exportPreset.crf,
       preset: exportPreset.ffmpegPreset,
+      show_subtitles: showSubtitles.value,
     })
   } catch (error) {
     console.error('Erreur export video:', error)
@@ -2554,6 +2824,10 @@ watch(
   }
 )
 
+watch(isYoutubeFormat, () => {
+  applyFormatDefaults()
+}, { immediate: true })
+
 watch(isFullscreen, (open) => {
   if (typeof window === 'undefined' || typeof document === 'undefined') return
 
@@ -2569,6 +2843,7 @@ watch(isFullscreen, (open) => {
 })
 
 onBeforeUnmount(() => {
+  flushYoutubeInlinePatch()
   stopFullPreview()
 
   if (typeof window !== 'undefined') {
@@ -2752,13 +3027,17 @@ onBeforeUnmount(() => {
 }
 
 .preview-count {
-  margin-left: 16px;
+  margin-left: 8px;
   font-size: 12px;
   font-weight: 700;
   color: #1d4ed8;
   background: #dbeafe;
   border-radius: 999px;
   padding: 4px 10px;
+}
+
+.preview-count--duration::before {
+  content: '⏱ ';
 }
 
 .empty-state {
@@ -2841,6 +3120,18 @@ onBeforeUnmount(() => {
   gap: 20px;
   align-items: center;
   justify-content: center;
+}
+
+.fullscreen-backdrop--youtube {
+  padding-inline: clamp(12px, 2vw, 24px);
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: none;
+}
+
+.fullscreen-content--youtube {
+  width: min(1760px, calc(100dvw - 40px));
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(220px, 280px);
+  gap: clamp(10px, 1.1vw, 16px);
 }
 
 .fullscreen-speech-panel {
@@ -3133,6 +3424,37 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-items: center;
   gap: 14px;
+}
+
+.fullscreen-content--youtube .fullscreen-stage {
+  width: 100%;
+  min-width: 0;
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.fullscreen-content--youtube :deep(.slide-card--youtube.slide-card--fullscreen) {
+  width: min(100%, calc((100dvh - 180px) * 16 / 9));
+  min-width: 0;
+}
+
+.fullscreen-content--youtube .nav-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 8;
+  width: 44px;
+  height: 44px;
+  font-size: 30px;
+  transform: translateY(-50%);
+}
+
+.fullscreen-content--youtube .nav-arrow:first-child {
+  left: clamp(8px, 1vw, 14px);
+}
+
+.fullscreen-content--youtube .nav-arrow:last-child {
+  right: clamp(8px, 1vw, 14px);
 }
 
 .nav-arrow {

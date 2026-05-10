@@ -191,6 +191,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  subtitleOffsetPercent: {
+    type: Number,
+    default: null,
+  },
   audioCurrentTime: {
     type: Number,
     default: 0,
@@ -265,7 +269,15 @@ const slideCardStyle = computed(() => {
     '--reel-safe-inline': `calc(${safeInlineUnit} * ${safeXScale.toFixed(3)})`,
     '--reel-safe-block': `calc(${safeBlockUnit} * ${safeYScale.toFixed(3)})`,
     '--reel-safe-top': `calc(${safeTopUnit} * ${safeYScale.toFixed(3)})`,
+    '--reel-subtitle-offset': `${subtitleOffsetPercentResolved.value}%`,
   }
+})
+
+const subtitleOffsetPercentResolved = computed(() => {
+  const v = Number(props.subtitleOffsetPercent)
+  if (Number.isFinite(v)) return Math.max(0, Math.min(50, v))
+  // Defaults: 20% from bottom for vertical (Reel/TikTok), 5% for horizontal (YouTube)
+  return isYoutubeFormat.value ? 5 : 20
 })
 const screenTextContent = computed(() => {
   const preferred = String(safeSlide.value.display_screen_text || '').trim()
@@ -1844,9 +1856,9 @@ onUnmounted(() => {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
-  padding: 14cqw 6cqw 5cqw;
-  background: linear-gradient(to top, rgba(15, 40, 100, 0.88) 0%, rgba(15, 40, 100, 0.5) 45%, transparent 100%);
+  bottom: var(--reel-subtitle-offset, 20%);
+  padding: 1cqw 6cqw;
+  background: none;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -1865,23 +1877,17 @@ onUnmounted(() => {
   line-height: 1.4;
   letter-spacing: 0.01em;
   text-align: center;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95), 0 2px 12px rgba(0, 0, 0, 0.7);
+  /* Multi-shadow trick = thick black outline so text stays readable on any slide */
+  text-shadow:
+    -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+    -2px 0 0 #000, 2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000,
+    0 0 8px rgba(0, 0, 0, 0.65);
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-.reel-slide--cta .reel-subtitles,
-.reel-slide--hook .reel-subtitles {
-  padding-bottom: 4cqw;
-}
-
 .slide-card--youtube .reel-subtitles {
-  padding: 8cqw 7cqw 2.8cqw;
-}
-
-.slide-card--youtube .reel-slide--cta .reel-subtitles,
-.slide-card--youtube .reel-slide--hook .reel-subtitles {
-  padding-bottom: 2.8cqw;
+  padding: 1cqw 7cqw;
 }
 
 .slide-card--youtube .reel-subtitles-text {
@@ -1893,20 +1899,21 @@ onUnmounted(() => {
 .reel-subtitles-word {
   display: inline;
   color: rgba(255, 255, 255, 0.72);
-  transition: color 0.08s ease, background 0.08s ease, text-shadow 0.08s ease;
-  border-radius: 3px;
-  padding: 0.05em 0.18em;
+  transition: color 0.08s ease, text-shadow 0.08s ease;
+  padding: 0;
 }
 
 .reel-subtitles-word--past {
-  color: rgba(255, 255, 255, 0.9);
+  color: #ffffff;
 }
 
 .reel-subtitles-word--active {
   color: #ffffff;
-  background: #2563eb;
-  text-shadow: none;
-  border-radius: 4px;
+  /* Thick blue halo replaces the black outline → clearly highlights the active word */
+  text-shadow:
+    -3px -3px 0 #2563eb, 3px -3px 0 #2563eb, -3px 3px 0 #2563eb, 3px 3px 0 #2563eb,
+    -3px 0 0 #2563eb, 3px 0 0 #2563eb, 0 -3px 0 #2563eb, 0 3px 0 #2563eb,
+    0 0 12px rgba(37, 99, 235, 0.7);
 }
 
 .subtitle-line-enter-active {

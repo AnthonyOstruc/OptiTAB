@@ -1554,6 +1554,7 @@ class ReelProjectExportVideoView(APIView):
                 crf=serializer.validated_data.get('crf', 18),
                 preset=serializer.validated_data.get('preset', 'veryfast'),
                 show_subtitles=serializer.validated_data.get('show_subtitles', False),
+                subtitle_offset_percent=serializer.validated_data.get('subtitle_offset_percent'),
             )
         except VideoExportConfigurationError as exc:
             project.video_status = ReelProject.VIDEO_STATUS_ERROR

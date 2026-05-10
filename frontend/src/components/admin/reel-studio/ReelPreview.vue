@@ -42,6 +42,31 @@
           <span class="subtitles-toggle-label">Sous-titres</span>
         </button>
         <div
+          v-if="showSubtitles"
+          class="preview-gap-controls"
+          aria-label="Position verticale des sous-titres"
+        >
+          <span class="preview-gap-label">Pos. ST</span>
+          <button
+            class="size-button"
+            type="button"
+            aria-label="Descendre les sous-titres"
+            @click="decreaseSubtitleOffset"
+          >
+            ↓
+          </button>
+          <span class="size-value">{{ subtitleOffsetResolved }}%</span>
+          <button
+            class="size-button"
+            type="button"
+            aria-label="Monter les sous-titres"
+            @click="increaseSubtitleOffset"
+          >
+            ↑
+          </button>
+          <button class="size-reset" type="button" @click="resetSubtitleOffset">Reset</button>
+        </div>
+        <div
           v-if="slidesForRender.length"
           class="preview-gap-controls"
           aria-label="Espacement vertical entre les lignes"
@@ -85,6 +110,7 @@
         :clickable="!isVirtualCoverSlide(slide)"
         :video-format="format"
         :show-subtitles="showSubtitles"
+        :subtitle-offset-percent="subtitleOffsetResolved"
         @select="handleSelectSlide(slide.id)"
         @open="handleOpenSlideFullscreen(slide.id)"
         @diagnostic="$emit('diagnostic', $event)"
@@ -109,6 +135,7 @@
           :safe-zone-y-scale="getSafeZoneYScale(slide)"
           :video-format="format"
           :show-subtitles="showSubtitles"
+        :subtitle-offset-percent="subtitleOffsetResolved"
           @diagnostic="$emit('diagnostic', $event)"
         />
       </div>
@@ -447,6 +474,16 @@
                 </button>
               </div>
 
+              <div v-if="showSubtitles" class="speech-side-control" aria-label="Position verticale des sous-titres">
+                <span class="control-label speech-side-control-label">Position ST</span>
+                <div class="size-control-row">
+                  <button class="size-button" type="button" aria-label="Descendre" @click="decreaseSubtitleOffset">↓</button>
+                  <span class="size-value">{{ subtitleOffsetResolved }}%</span>
+                  <button class="size-button" type="button" aria-label="Monter" @click="increaseSubtitleOffset">↑</button>
+                  <button class="size-reset" type="button" @click="resetSubtitleOffset">Reset</button>
+                </div>
+              </div>
+
               <div
                 v-if="activeSlideCanAnimateKatex"
                 class="speech-side-control"
@@ -780,6 +817,7 @@
               :safe-zone-y-scale="getSafeZoneYScale(activeSlide)"
               :video-format="format"
               :show-subtitles="showSubtitles"
+        :subtitle-offset-percent="subtitleOffsetResolved"
               :audio-current-time="speechAudioCurrentTime"
               :audio-playing="speechAudioPlaying"
               :annotation-editable="!isVirtualCoverSlide(activeSlide)"
@@ -913,7 +951,14 @@ const annotationStrokeWidth = ref(3)
 const annotationSelectedId = ref(null)
 
 const SUBTITLES_STORAGE_KEY = 'reelStudio.showSubtitles'
+const SUBTITLE_OFFSET_STORAGE_KEY = 'reelStudio.subtitleOffsetPercent'
+const SUBTITLE_OFFSET_MIN = 0
+const SUBTITLE_OFFSET_MAX = 50
+const SUBTITLE_OFFSET_STEP = 2
+const SUBTITLE_OFFSET_DEFAULT_REEL = 20
+const SUBTITLE_OFFSET_DEFAULT_YOUTUBE = 5
 const showSubtitles = ref(loadSubtitlesPreference())
+const subtitleOffsetPercent = ref(loadSubtitleOffsetPreference())
 
 const speechAudioCurrentTime = ref(0)
 const speechAudioPlaying = ref(false)
@@ -998,6 +1043,62 @@ function toggleSubtitles() {
   } catch (_) {
     /* noop */
   }
+}
+
+function loadSubtitleOffsetPreference() {
+  if (typeof window === 'undefined' || !window.localStorage) return null
+  try {
+    const raw = window.localStorage.getItem(SUBTITLE_OFFSET_STORAGE_KEY)
+    if (raw === null) return null
+    const v = Number(raw)
+    if (!Number.isFinite(v)) return null
+    return clampSubtitleOffset(v)
+  } catch (_) {
+    return null
+  }
+}
+
+function clampSubtitleOffset(v) {
+  const num = Number(v)
+  if (!Number.isFinite(num)) return SUBTITLE_OFFSET_DEFAULT_REEL
+  return Math.max(SUBTITLE_OFFSET_MIN, Math.min(SUBTITLE_OFFSET_MAX, Math.round(num)))
+}
+
+function persistSubtitleOffset(value) {
+  if (typeof window === 'undefined' || !window.localStorage) return
+  try {
+    if (value === null || value === undefined) {
+      window.localStorage.removeItem(SUBTITLE_OFFSET_STORAGE_KEY)
+    } else {
+      window.localStorage.setItem(SUBTITLE_OFFSET_STORAGE_KEY, String(value))
+    }
+  } catch (_) {
+    /* noop */
+  }
+}
+
+const subtitleOffsetResolved = computed(() => {
+  if (subtitleOffsetPercent.value !== null && subtitleOffsetPercent.value !== undefined) {
+    return clampSubtitleOffset(subtitleOffsetPercent.value)
+  }
+  return isYoutubeFormat.value ? SUBTITLE_OFFSET_DEFAULT_YOUTUBE : SUBTITLE_OFFSET_DEFAULT_REEL
+})
+
+function decreaseSubtitleOffset() {
+  const next = clampSubtitleOffset(subtitleOffsetResolved.value - SUBTITLE_OFFSET_STEP)
+  subtitleOffsetPercent.value = next
+  persistSubtitleOffset(next)
+}
+
+function increaseSubtitleOffset() {
+  const next = clampSubtitleOffset(subtitleOffsetResolved.value + SUBTITLE_OFFSET_STEP)
+  subtitleOffsetPercent.value = next
+  persistSubtitleOffset(next)
+}
+
+function resetSubtitleOffset() {
+  subtitleOffsetPercent.value = null
+  persistSubtitleOffset(null)
 }
 
 const pronunciationEditorOpen = ref(false)
@@ -2682,6 +2783,7 @@ async function exportAllSlidesVideo(mode = 'fast') {
       crf: exportPreset.crf,
       preset: exportPreset.ffmpegPreset,
       show_subtitles: showSubtitles.value,
+      subtitle_offset_percent: subtitleOffsetResolved.value,
     })
   } catch (error) {
     console.error('Erreur export video:', error)

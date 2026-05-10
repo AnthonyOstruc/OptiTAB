@@ -334,3 +334,4 @@ class ReelVideoExportSerializer(serializers.Serializer):
     crf = serializers.IntegerField(min_value=16, max_value=28, required=False, default=18)
     preset = serializers.ChoiceField(choices=PRESET_CHOICES, required=False, default='veryfast')
     show_subtitles = serializers.BooleanField(required=False, default=False)
+    subtitle_offset_percent = serializers.FloatField(min_value=0, max_value=50, required=False, allow_null=True, default=None)

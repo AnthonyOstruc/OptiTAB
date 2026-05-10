@@ -402,6 +402,10 @@ def _generate_and_save_slide_speech(
     use_speaker_boost=None,
     language_code='',
     apply_text_normalization='',
+    google_speaking_rate=None,
+    google_pitch=None,
+    google_volume_gain_db=None,
+    google_effects_profile_id='',
 ):
     safe_speech_text = str(speech_text or '').strip()
     if not safe_speech_text:
@@ -434,6 +438,10 @@ def _generate_and_save_slide_speech(
         use_speaker_boost=use_speaker_boost,
         language_code=language_code,
         apply_text_normalization=apply_text_normalization,
+        google_speaking_rate=google_speaking_rate,
+        google_pitch=google_pitch,
+        google_volume_gain_db=google_volume_gain_db,
+        google_effects_profile_id=google_effects_profile_id,
     )
 
     tts_logger.info(
@@ -513,6 +521,10 @@ def _speech_generation_kwargs(validated_data):
         'use_speaker_boost': validated_data.get('use_speaker_boost'),
         'language_code': validated_data.get('language_code', ''),
         'apply_text_normalization': validated_data.get('apply_text_normalization', ''),
+        'google_speaking_rate': validated_data.get('google_speaking_rate'),
+        'google_pitch': validated_data.get('google_pitch'),
+        'google_volume_gain_db': validated_data.get('google_volume_gain_db'),
+        'google_effects_profile_id': validated_data.get('google_effects_profile_id', ''),
     }
 
 

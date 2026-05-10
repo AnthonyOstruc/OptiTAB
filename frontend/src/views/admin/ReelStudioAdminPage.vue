@@ -337,6 +337,58 @@
                   </div>
                 </section>
 
+                <section v-if="selectedProviderId === 'google'" class="voice-advanced">
+                  <div class="voice-advanced-header">
+                    <button
+                      class="voice-advanced-toggle"
+                      type="button"
+                      :aria-expanded="String(showGoogleAdvanced)"
+                      @click="showGoogleAdvanced = !showGoogleAdvanced"
+                    >
+                      <span class="voice-advanced-arrow" :class="{ 'is-open': showGoogleAdvanced }">></span>
+                      <span>Options avancees</span>
+                    </button>
+                    <button
+                      v-if="showGoogleAdvanced"
+                      class="btn-secondary"
+                      type="button"
+                      @click="resetGoogleTtsSettings"
+                    >
+                      Reset
+                    </button>
+                  </div>
+
+                  <div v-if="showGoogleAdvanced" class="voice-advanced-grid">
+                    <label class="voice-advanced-field">
+                      Vitesse
+                      <input v-model.number="googleTtsSettings.speaking_rate" type="number" min="0.25" max="4" step="0.05" />
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Pitch
+                      <input v-model.number="googleTtsSettings.pitch" type="number" min="-20" max="20" step="0.5" />
+                    </label>
+
+                    <label class="voice-advanced-field">
+                      Volume dB
+                      <input v-model.number="googleTtsSettings.volume_gain_db" type="number" min="-96" max="16" step="0.5" />
+                    </label>
+
+                    <label class="voice-advanced-field voice-advanced-field--wide">
+                      Profil audio
+                      <select v-model="googleTtsSettings.effects_profile_id">
+                        <option
+                          v-for="profile in GOOGLE_EFFECTS_PROFILE_OPTIONS"
+                          :key="profile.value"
+                          :value="profile.value"
+                        >
+                          {{ profile.label }}
+                        </option>
+                      </select>
+                    </label>
+                  </div>
+                </section>
+
                 <div
                   v-if="selectedProviderId === 'elevenlabs'"
                   class="voice-usage"
@@ -374,6 +426,45 @@
                   </template>
 
                   <p v-else>{{ elevenLabsUsageErrorLabel }}</p>
+                </div>
+
+                <div
+                  v-if="selectedProviderId === 'google'"
+                  class="voice-usage"
+                  :class="{ 'voice-usage--error': !googleUsageAvailable }"
+                >
+                  <div class="voice-usage-header">
+                    <strong>Quota gratuit Google</strong>
+                    <span v-if="googleUsageAvailable">{{ googleUsagePercentLabel }} utilisés</span>
+                    <span v-else>Quota indisponible</span>
+                  </div>
+
+                  <template v-if="googleUsageAvailable">
+                    <div class="voice-usage-bar" aria-hidden="true">
+                      <span :style="googleUsageBarStyle"></span>
+                    </div>
+                    <dl class="voice-usage-grid">
+                      <div>
+                        <dt>Consommé</dt>
+                        <dd>{{ googleUsageConsumedLabel }}</dd>
+                      </div>
+                      <div>
+                        <dt>Total free</dt>
+                        <dd>{{ googleUsageTotalLabel }}</dd>
+                      </div>
+                      <div>
+                        <dt>Restant</dt>
+                        <dd>{{ googleUsageRemainingLabel }}</dd>
+                      </div>
+                      <div>
+                        <dt>Pourcentage</dt>
+                        <dd>{{ googleUsagePercentLabel }}</dd>
+                      </div>
+                    </dl>
+                    <p>{{ googleUsageDetailsLabel }}</p>
+                  </template>
+
+                  <p v-else>{{ googleUsageErrorLabel }}</p>
                 </div>
 
                 <div class="speech-actions">
@@ -499,6 +590,7 @@ const SPEECH_CHAR_WARNING_THRESHOLD = 4000
 const SPEECH_CHAR_HARD_LIMIT = 4500
 const showManualEditor = ref(false)
 const showElevenLabsAdvanced = ref(false)
+const showGoogleAdvanced = ref(false)
 const projectFormOpen = ref(false)
 const editingProject = ref(null)
 const templateDraft = ref('')
@@ -523,6 +615,7 @@ function switchFormat(fmt) {
   editingProject.value = null
 }
 const ELEVENLABS_SETTINGS_STORAGE_KEY = 'reelStudio.elevenLabsSettings.v1'
+const GOOGLE_TTS_SETTINGS_STORAGE_KEY = 'reelStudio.googleTtsSettings.v1'
 const ELEVENLABS_FAVORITE_VOICES_STORAGE_KEY = 'reelStudio.elevenLabsFavoriteVoices.v1'
 const ELEVENLABS_HIDDEN_FAVORITE_IDS_STORAGE_KEY = 'reelStudio.elevenLabsHiddenFavoriteIds.v1'
 const ELEVENLABS_MODEL_OPTIONS = [
@@ -553,6 +646,7 @@ const ELEVENLABS_LIBRARY_QUALITY_OPTIONS = Object.freeze([
 ])
 const ELEVENLABS_LIBRARY_SEARCH_DEBOUNCE_MS = 350
 const ELEVENLABS_DEFAULT_FAVORITE_VOICE_IDS = Object.freeze([
+  '6FXyooAOTqUK8m2HWm32',
   'aQROLel5sQbj1vuIVi6B',
   'WQKwBV2Uzw1gSGr69N8I',
 ])
@@ -566,7 +660,25 @@ const DEFAULT_ELEVENLABS_SETTINGS = Object.freeze({
   language_code: 'fr',
   apply_text_normalization: 'on',
 })
+const GOOGLE_EFFECTS_PROFILE_OPTIONS = Object.freeze([
+  { value: '', label: 'Aucun profil' },
+  { value: 'headphone-class-device', label: 'Casque / ecouteurs' },
+  { value: 'handset-class-device', label: 'Smartphone' },
+  { value: 'small-bluetooth-speaker-class-device', label: 'Petite enceinte' },
+  { value: 'medium-bluetooth-speaker-class-device', label: 'Enceinte moyenne' },
+  { value: 'large-home-entertainment-class-device', label: 'TV / home cinema' },
+  { value: 'large-automotive-class-device', label: 'Voiture' },
+  { value: 'telephony-class-application', label: 'Telephone' },
+  { value: 'wearable-class-device', label: 'Montre / wearable' },
+])
+const DEFAULT_GOOGLE_TTS_SETTINGS = Object.freeze({
+  speaking_rate: 1,
+  pitch: 0,
+  volume_gain_db: 0,
+  effects_profile_id: '',
+})
 const elevenLabsSettings = reactive(loadStoredElevenLabsSettings())
+const googleTtsSettings = reactive(loadStoredGoogleTtsSettings())
 const elevenLabsFavoriteVoices = ref(loadStoredElevenLabsFavoriteVoices())
 const elevenLabsHiddenFavoriteVoiceIds = ref(loadStoredElevenLabsHiddenFavoriteVoiceIds())
 
@@ -597,7 +709,7 @@ KATEX: ...
 VOICE: ...
 ---
 
-Voix ElevenLabs (eleven_v3):
+Voix ElevenLabs (eleven_multilingual_v3):
 - Chaque slide doit avoir son VOICE: pour generer son MP3 independant.
 - Ajoute les indications de jeu directement dans VOICE avec des tags entre crochets.
 - Les tags ne s'affichent pas dans le reel: ils servent seulement a guider la voix.
@@ -613,7 +725,7 @@ Tags utiles selon ElevenLabs:
 - Pauses: [short pause], [long pause]
 - A eviter pour OptiTAB: tags visuels ou non vocaux comme [standing], [grinning], [music].
 - Si un tag ne marche pas, teste une variante ou change de voix: ElevenLabs precise que l'effet depend beaucoup de la voix choisie.
-- Pour plus d'expressivite, garde ELEVENLABS_MODEL_ID=eleven_v3 et une stabilite proche Creative/Natural; Robust rend les tags moins reactifs.
+- Pour plus d'expressivite, garde ELEVENLABS_MODEL_ID=eleven_multilingual_v3 et une stabilite proche Creative/Natural; Robust rend les tags moins reactifs.
 
 Hook recommandé:
 - La slide hook doit contenir une phrase courte + le défi mathématique + une question.
@@ -742,7 +854,7 @@ KATEX: ...
 VOICE: ...
 ---
 
-Voix ElevenLabs (eleven_v3):
+Voix ElevenLabs (eleven_multilingual_v3):
 - Chaque slide doit avoir son VOICE: pour générer son MP3 indépendant.
 - Ajoute les indications de jeu directement dans VOICE avec des tags entre crochets.
 - Les tags ne s'affichent pas dans la vidéo: ils servent seulement à guider la voix.
@@ -908,6 +1020,46 @@ const elevenLabsUsageErrorLabel = computed(() => {
     return 'Permission user_read manquante sur la cle ElevenLabs.'
   }
   return usage?.error || 'Impossible de lire les credits ElevenLabs.'
+})
+const googleUsage = computed(() => {
+  if (selectedProviderId.value !== 'google') return null
+  return selectedVoice.value?.quota || null
+})
+const googleUsageAvailable = computed(() => {
+  const usage = googleUsage.value
+  return Boolean(usage && Number(usage.free_monthly_character_limit) > 0)
+})
+const googleUsagePercent = computed(() => {
+  const percent = Number(googleUsage.value?.used_percent)
+  return Number.isFinite(percent) ? Math.max(0, Math.min(100, percent)) : 0
+})
+const googleUsageBarStyle = computed(() => ({
+  width: `${googleUsagePercent.value}%`,
+}))
+const googleUsageConsumedLabel = computed(() => formatCreditCount(googleUsage.value?.used_characters))
+const googleUsageTotalLabel = computed(() => formatCreditCount(googleUsage.value?.free_monthly_character_limit))
+const googleUsageRemainingLabel = computed(() => formatCreditCount(googleUsage.value?.remaining_free_characters))
+const googleUsagePercentLabel = computed(() => `${formatPercent(googleUsagePercent.value)}%`)
+const googleUsageDetailsLabel = computed(() => {
+  const usage = googleUsage.value || {}
+  const bucket = String(usage.bucket || '').trim()
+  const month = String(usage.month || '').trim()
+  const disableRatio = Number(usage.disable_ratio)
+  const remainingUntilDisable = Number(usage.remaining_until_disable_characters)
+  const parts = []
+  if (bucket) parts.push(`Famille ${bucket}`)
+  if (month) parts.push(`mois ${month}`)
+  if (Number.isFinite(disableRatio) && disableRatio > 0) {
+    parts.push(`seuil sécurité ${Math.round(disableRatio * 100)}%`)
+  }
+  if (Number.isFinite(remainingUntilDisable)) {
+    parts.push(`${formatCreditCount(remainingUntilDisable)} avant seuil`)
+  }
+  return parts.join(' · ')
+})
+const googleUsageErrorLabel = computed(() => {
+  if (!selectedVoice.value) return 'Sélectionne une voix Google.'
+  return 'Quota gratuit indisponible pour cette famille de voix.'
 })
 const selectedProviderConfigured = computed(() => Boolean(selectedProvider.value?.configured))
 const baseCurrentProviderVoices = computed(() => selectedProvider.value?.voices || [])
@@ -1257,6 +1409,31 @@ function loadStoredElevenLabsSettings() {
   }
 }
 
+function normalizeGoogleTtsSettings(value = {}) {
+  const effectProfileIds = GOOGLE_EFFECTS_PROFILE_OPTIONS.map((item) => item.value)
+  const effectsProfileId = effectProfileIds.includes(value.effects_profile_id)
+    ? value.effects_profile_id
+    : DEFAULT_GOOGLE_TTS_SETTINGS.effects_profile_id
+
+  return {
+    speaking_rate: clampNumber(value.speaking_rate, DEFAULT_GOOGLE_TTS_SETTINGS.speaking_rate, 0.25, 4),
+    pitch: clampNumber(value.pitch, DEFAULT_GOOGLE_TTS_SETTINGS.pitch, -20, 20),
+    volume_gain_db: clampNumber(value.volume_gain_db, DEFAULT_GOOGLE_TTS_SETTINGS.volume_gain_db, -96, 16),
+    effects_profile_id: effectsProfileId,
+  }
+}
+
+function loadStoredGoogleTtsSettings() {
+  if (typeof window === 'undefined') return { ...DEFAULT_GOOGLE_TTS_SETTINGS }
+  try {
+    const raw = window.localStorage.getItem(GOOGLE_TTS_SETTINGS_STORAGE_KEY)
+    if (!raw) return { ...DEFAULT_GOOGLE_TTS_SETTINGS }
+    return normalizeGoogleTtsSettings(JSON.parse(raw))
+  } catch (_) {
+    return { ...DEFAULT_GOOGLE_TTS_SETTINGS }
+  }
+}
+
 function persistElevenLabsSettings() {
   if (typeof window === 'undefined') return
   try {
@@ -1269,12 +1446,38 @@ function persistElevenLabsSettings() {
   }
 }
 
+function persistGoogleTtsSettings() {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(
+      GOOGLE_TTS_SETTINGS_STORAGE_KEY,
+      JSON.stringify(normalizeGoogleTtsSettings(googleTtsSettings)),
+    )
+  } catch (_) {
+    // Local storage can be unavailable in private contexts.
+  }
+}
+
 function resetElevenLabsSettings() {
   Object.assign(elevenLabsSettings, DEFAULT_ELEVENLABS_SETTINGS)
 }
 
+function resetGoogleTtsSettings() {
+  Object.assign(googleTtsSettings, DEFAULT_GOOGLE_TTS_SETTINGS)
+}
+
 function getElevenLabsSettingsPayload() {
   return normalizeElevenLabsSettings(elevenLabsSettings)
+}
+
+function getGoogleTtsSettingsPayload() {
+  const normalized = normalizeGoogleTtsSettings(googleTtsSettings)
+  return {
+    google_speaking_rate: normalized.speaking_rate,
+    google_pitch: normalized.pitch,
+    google_volume_gain_db: normalized.volume_gain_db,
+    google_effects_profile_id: normalized.effects_profile_id,
+  }
 }
 
 function buildSpeechGenerationPayload(extra = {}) {
@@ -1285,11 +1488,14 @@ function buildSpeechGenerationPayload(extra = {}) {
   }
   if (selectedProviderId.value === 'elevenlabs') {
     Object.assign(payload, getElevenLabsSettingsPayload())
+  } else if (selectedProviderId.value === 'google') {
+    Object.assign(payload, getGoogleTtsSettingsPayload())
   }
   return payload
 }
 
 watch(elevenLabsSettings, persistElevenLabsSettings, { deep: true })
+watch(googleTtsSettings, persistGoogleTtsSettings, { deep: true })
 
 const speechStatusLabel = computed(() => {
   if (!selectedProject.value?.id) return ''

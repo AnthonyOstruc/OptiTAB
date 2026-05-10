@@ -289,6 +289,10 @@ class ReelSpeechGenerateSerializer(serializers.Serializer):
         required=False,
         default='',
     )
+    google_speaking_rate = serializers.FloatField(min_value=0.25, max_value=4, required=False, allow_null=True)
+    google_pitch = serializers.FloatField(min_value=-20, max_value=20, required=False, allow_null=True)
+    google_volume_gain_db = serializers.FloatField(min_value=-96, max_value=16, required=False, allow_null=True)
+    google_effects_profile_id = serializers.CharField(max_length=96, allow_blank=True, required=False, default='')
 
 
 class ReelTTSTestSerializer(serializers.Serializer):
@@ -308,6 +312,10 @@ class ReelTTSTestSerializer(serializers.Serializer):
         required=False,
         default='',
     )
+    google_speaking_rate = serializers.FloatField(min_value=0.25, max_value=4, required=False, allow_null=True)
+    google_pitch = serializers.FloatField(min_value=-20, max_value=20, required=False, allow_null=True)
+    google_volume_gain_db = serializers.FloatField(min_value=-96, max_value=16, required=False, allow_null=True)
+    google_effects_profile_id = serializers.CharField(max_length=96, allow_blank=True, required=False, default='')
 
 
 class ReelVideoFrameSerializer(serializers.Serializer):

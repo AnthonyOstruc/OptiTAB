@@ -249,6 +249,10 @@ def generate_speech(
     use_speaker_boost=None,
     language_code='',
     apply_text_normalization='',
+    google_speaking_rate=None,
+    google_pitch=None,
+    google_volume_gain_db=None,
+    google_effects_profile_id='',
     use_cache=True,
 ):
     """Top-level entry point used by the views.
@@ -290,6 +294,15 @@ def generate_speech(
         )
         effective_model_id = cache_options.get('model_id') or effective_model_id
         effective_output_format = cache_options.get('output_format') or effective_output_format
+    elif resolved_provider == PROVIDER_GOOGLE:
+        cache_options = google_provider.build_generation_options(
+            output_format=output_format or 'mp3',
+            speaking_rate=google_speaking_rate,
+            pitch=google_pitch,
+            volume_gain_db=google_volume_gain_db,
+            effects_profile_id=google_effects_profile_id,
+        )
+        effective_output_format = cache_options.get('audioEncoding', effective_output_format).lower()
 
     if use_cache:
         cached_bytes, cache_key = _read_cached_audio(
@@ -323,6 +336,10 @@ def generate_speech(
             voice_id=resolved_voice_id,
             model_id=model_id,
             output_format=output_format or 'mp3',
+            speaking_rate=google_speaking_rate,
+            pitch=google_pitch,
+            volume_gain_db=google_volume_gain_db,
+            effects_profile_id=google_effects_profile_id,
         )
     elif resolved_provider == PROVIDER_ELEVENLABS:
         from ..elevenlabs import (

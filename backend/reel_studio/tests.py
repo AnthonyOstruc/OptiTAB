@@ -10,6 +10,7 @@ from rest_framework.test import APIClient
 from .elevenlabs import generate_speech_mp3, list_filtered_voices, list_shared_voices
 from .models import ReelProject, ReelSlide
 from .tts.base import TTSResult
+from .tts.google import synthesize as synthesize_google_speech
 
 
 class ReelStudioSpeechPersistenceTests(TestCase):
@@ -61,14 +62,26 @@ class ReelStudioSpeechPersistenceTests(TestCase):
             voice_script='Deuxieme script voix.',
         )
 
-        with patch('reel_studio.views.tts_generate_speech', side_effect=self.fake_tts_result):
+        with patch('reel_studio.views.tts_generate_speech', side_effect=self.fake_tts_result) as mocked_tts:
             response = self.client.post(
                 reverse('reel-project-generate-slide-speeches', args=[project.pk]),
-                {'provider': 'google', 'voice_id': 'fr-FR-Standard-F'},
+                {
+                    'provider': 'google',
+                    'voice_id': 'fr-FR-Standard-F',
+                    'google_speaking_rate': 1.1,
+                    'google_pitch': -1.5,
+                    'google_volume_gain_db': 2,
+                    'google_effects_profile_id': 'headphone-class-device',
+                },
                 format='json',
             )
 
         self.assertEqual(response.status_code, 201)
+        first_call_kwargs = mocked_tts.call_args_list[0].kwargs
+        self.assertEqual(first_call_kwargs['google_speaking_rate'], 1.1)
+        self.assertEqual(first_call_kwargs['google_pitch'], -1.5)
+        self.assertEqual(first_call_kwargs['google_volume_gain_db'], 2)
+        self.assertEqual(first_call_kwargs['google_effects_profile_id'], 'headphone-class-device')
         first_slide.refresh_from_db()
         second_slide.refresh_from_db()
         project.refresh_from_db()
@@ -169,7 +182,7 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(project.speech_status, ReelProject.SPEECH_STATUS_READY)
         self.assertEqual(project.instagram_caption, 'Description sauvegardee.')
 
-    @override_settings(ELEVENLABS_API_KEY='test-key', ELEVENLABS_VOICE_ID='aQROLel5sQbj1vuIVi6B')
+    @override_settings(ELEVENLABS_API_KEY='test-key', ELEVENLABS_VOICE_ID='6FXyooAOTqUK8m2HWm32')
     def test_builtin_voices_are_first_elevenlabs_choices(self):
         class FakeResponse:
             status_code = 200
@@ -193,10 +206,10 @@ class ReelStudioSpeechPersistenceTests(TestCase):
             voices = list_filtered_voices(language='fr', accent='parisian', include_fallback=True)
 
         self.assertGreaterEqual(len(voices), 2)
-        self.assertEqual(voices[0]['voice_id'], 'aQROLel5sQbj1vuIVi6B')
-        self.assertEqual(voices[0]['name'], 'Nicolas')
-        self.assertEqual(voices[1]['voice_id'], 'WQKwBV2Uzw1gSGr69N8I')
-        self.assertEqual(voices[1]['name'], 'Mylene')
+        self.assertEqual(voices[0]['voice_id'], '6FXyooAOTqUK8m2HWm32')
+        self.assertEqual(voices[0]['name'], 'Marine - Premium Conversational AI')
+        self.assertEqual(voices[1]['voice_id'], 'aQROLel5sQbj1vuIVi6B')
+        self.assertEqual(voices[1]['name'], 'Nicolas')
         anna_voice = next(voice for voice in voices if voice['voice_id'] == 'other-voice')
         self.assertEqual(anna_voice['preview_url'], 'https://example.com/anna-preview.mp3')
 
@@ -292,3 +305,34 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(payload['voice_settings']['speed'], 1)
         self.assertIs(payload['voice_settings']['use_speaker_boost'], True)
         self.assertEqual(result['model_id'], 'eleven_v3')
+
+    def test_google_generation_uses_advanced_settings(self):
+        class FakeResponse:
+            status_code = 200
+            reason = 'OK'
+
+            @staticmethod
+            def json():
+                return {'audioContent': 'YXVkaW8='}
+
+        with (
+            patch('reel_studio.tts.google._get_access_token', return_value='token'),
+            patch('reel_studio.tts.google.requests.post', return_value=FakeResponse()) as mocked_post,
+        ):
+            result = synthesize_google_speech(
+                text='Bonjour',
+                voice_id='fr-FR-Standard-F',
+                speaking_rate=1.15,
+                pitch=-1.5,
+                volume_gain_db=2,
+                effects_profile_id='headphone-class-device',
+            )
+
+        payload = mocked_post.call_args.kwargs['json']
+        audio_config = payload['audioConfig']
+        self.assertEqual(audio_config['audioEncoding'], 'MP3')
+        self.assertEqual(audio_config['speakingRate'], 1.15)
+        self.assertEqual(audio_config['pitch'], -1.5)
+        self.assertEqual(audio_config['volumeGainDb'], 2)
+        self.assertEqual(audio_config['effectsProfileId'], ['headphone-class-device'])
+        self.assertEqual(result['audio_bytes'], b'audio')

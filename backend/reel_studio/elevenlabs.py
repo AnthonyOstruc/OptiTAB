@@ -10,11 +10,23 @@ logger = logging.getLogger(__name__)
 
 BUILTIN_EXTRA_VOICES = (
     {
+        'name': 'Marine - Premium Conversational AI',
+        'voice_id': '6FXyooAOTqUK8m2HWm32',
+        'category': 'professional',
+        'is_custom': False,
+        'sort_priority': 0,
+        'labels': {
+            'language': 'fr',
+            'accent': 'parisian',
+            'gender': 'female',
+        },
+    },
+    {
         'name': 'Nicolas',
         'voice_id': 'aQROLel5sQbj1vuIVi6B',
         'category': '',
         'is_custom': False,
-        'sort_priority': 0,
+        'sort_priority': 1,
         'labels': {
             'language': 'fr',
             'accent': 'parisian',
@@ -26,7 +38,7 @@ BUILTIN_EXTRA_VOICES = (
         'voice_id': 'WQKwBV2Uzw1gSGr69N8I',
         'category': '',
         'is_custom': False,
-        'sort_priority': 1,
+        'sort_priority': 2,
         'labels': {
             'language': 'fr',
             'accent': 'parisian',

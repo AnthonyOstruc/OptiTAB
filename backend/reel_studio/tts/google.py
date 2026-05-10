@@ -40,6 +40,18 @@ GOOGLE_TTS_FREE_TIER_LIMITS = {
     'chirp3-hd': 1_000_000,
 }
 
+GOOGLE_TTS_EFFECTS_PROFILE_IDS = {
+    '',
+    'wearable-class-device',
+    'handset-class-device',
+    'headphone-class-device',
+    'small-bluetooth-speaker-class-device',
+    'medium-bluetooth-speaker-class-device',
+    'large-home-entertainment-class-device',
+    'large-automotive-class-device',
+    'telephony-class-application',
+}
+
 
 _CHIRP3_HD_VOICES = [
     ('Achernar', 'FEMALE'),
@@ -169,6 +181,16 @@ def _safe_int(value, default=0):
         return int(value)
     except (TypeError, ValueError):
         return default
+
+
+def _optional_float(value, *, minimum, maximum):
+    if value is None:
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return min(max(number, minimum), maximum)
 
 
 def _tier_free_limit(tier):
@@ -370,6 +392,39 @@ def _resolve_audio_encoding(output_format):
     return 'MP3'
 
 
+def build_generation_options(
+    *,
+    output_format='mp3',
+    speaking_rate=None,
+    pitch=None,
+    volume_gain_db=None,
+    effects_profile_id='',
+):
+    audio_config = {
+        'audioEncoding': _resolve_audio_encoding(output_format),
+    }
+
+    normalized_speaking_rate = _optional_float(speaking_rate, minimum=0.25, maximum=4.0)
+    if normalized_speaking_rate is not None:
+        audio_config['speakingRate'] = normalized_speaking_rate
+
+    normalized_pitch = _optional_float(pitch, minimum=-20.0, maximum=20.0)
+    if normalized_pitch is not None:
+        audio_config['pitch'] = normalized_pitch
+
+    normalized_volume_gain = _optional_float(volume_gain_db, minimum=-96.0, maximum=16.0)
+    if normalized_volume_gain is not None:
+        audio_config['volumeGainDb'] = normalized_volume_gain
+
+    normalized_profile = str(effects_profile_id or '').strip()
+    if normalized_profile:
+        if normalized_profile not in GOOGLE_TTS_EFFECTS_PROFILE_IDS:
+            raise TTSConfigurationError(f"Profil audio Google TTS non autorise: '{normalized_profile}'.")
+        audio_config['effectsProfileId'] = [normalized_profile]
+
+    return audio_config
+
+
 def _normalize_voice_id(voice_id):
     resolved = str(voice_id or '').strip() or get_default_voice_id()
     if resolved not in _allowed_voice_ids():
@@ -399,7 +454,17 @@ def _max_text_chars():
         return 4500
 
 
-def synthesize(*, text, voice_id='', model_id='', output_format='mp3'):
+def synthesize(
+    *,
+    text,
+    voice_id='',
+    model_id='',
+    output_format='mp3',
+    speaking_rate=None,
+    pitch=None,
+    volume_gain_db=None,
+    effects_profile_id='',
+):
     """Generate MP3 bytes via Google Cloud TTS.
 
     Returns a dict matching ``TTSResult`` fields (audio_bytes, voice_id, ...).
@@ -420,7 +485,14 @@ def synthesize(*, text, voice_id='', model_id='', output_format='mp3'):
     assert_quota_available(resolved_voice_id, len(safe_text))
     voice_meta = _voice_metadata(resolved_voice_id)
     language_code = voice_meta.get('language_code') or get_default_language_code()
-    audio_encoding = _resolve_audio_encoding(output_format)
+    audio_config = build_generation_options(
+        output_format=output_format,
+        speaking_rate=speaking_rate,
+        pitch=pitch,
+        volume_gain_db=volume_gain_db,
+        effects_profile_id=effects_profile_id,
+    )
+    audio_encoding = audio_config['audioEncoding']
 
     try:
         token = _get_access_token()
@@ -433,9 +505,7 @@ def synthesize(*, text, voice_id='', model_id='', output_format='mp3'):
             'languageCode': language_code,
             'name': resolved_voice_id,
         },
-        'audioConfig': {
-            'audioEncoding': audio_encoding,
-        },
+        'audioConfig': audio_config,
     }
 
     timeout = float(getattr(settings, 'GOOGLE_TTS_TIMEOUT_SECONDS', 60) or 60)

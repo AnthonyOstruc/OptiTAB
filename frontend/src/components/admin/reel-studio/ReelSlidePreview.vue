@@ -276,8 +276,8 @@ const slideCardStyle = computed(() => {
 const subtitleOffsetPercentResolved = computed(() => {
   const v = Number(props.subtitleOffsetPercent)
   if (Number.isFinite(v)) return Math.max(0, Math.min(50, v))
-  // Defaults: 20% from bottom for vertical (Reel/TikTok), 5% for horizontal (YouTube)
-  return isYoutubeFormat.value ? 5 : 20
+  // Defaults: 20% from bottom for vertical (Reel/TikTok), 12% for horizontal (YouTube)
+  return isYoutubeFormat.value ? 12 : 20
 })
 const screenTextContent = computed(() => {
   const preferred = String(safeSlide.value.display_screen_text || '').trim()

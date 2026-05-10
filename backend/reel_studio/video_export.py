@@ -301,9 +301,9 @@ def _build_ass_subtitles_for_slide(slide, *, width, height, segment_duration, ma
     # Subtitle vertical position: % distance from the bottom edge of the frame.
     # Caller can override; defaults differ per orientation:
     #   • vertical (Reel/TikTok): 20% — well above the platform UI overlay.
-    #   • horizontal (YouTube):    5% — close to bottom (no UI overlay).
+    #   • horizontal (YouTube):   12% — readable without sitting on the bottom edge.
     if subtitle_offset_percent is None:
-        subtitle_offset_percent = 20.0 if is_vertical else 5.0
+        subtitle_offset_percent = 20.0 if is_vertical else 12.0
     subtitle_offset_percent = max(0.0, min(50.0, float(subtitle_offset_percent)))
     margin_v = max(int(round(height * subtitle_offset_percent / 100)), 30)
 

@@ -956,7 +956,7 @@ const SUBTITLE_OFFSET_MIN = 0
 const SUBTITLE_OFFSET_MAX = 50
 const SUBTITLE_OFFSET_STEP = 2
 const SUBTITLE_OFFSET_DEFAULT_REEL = 20
-const SUBTITLE_OFFSET_DEFAULT_YOUTUBE = 5
+const SUBTITLE_OFFSET_DEFAULT_YOUTUBE = 12
 const showSubtitles = ref(loadSubtitlesPreference())
 const subtitleOffsetPercent = ref(loadSubtitleOffsetPreference())
 

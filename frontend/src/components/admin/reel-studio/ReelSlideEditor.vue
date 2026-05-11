@@ -99,6 +99,11 @@
         <span>Repartir sur une nouvelle page de correction à partir de cette slide</span>
       </label>
 
+      <label v-if="form.katex_reset_cumulative" class="checkbox-control">
+        <input v-model="form.katex_reset_keep_previous_line" type="checkbox" />
+        <span>Garder la ligne precedente sur la nouvelle page</span>
+      </label>
+
       <label class="checkbox-control">
         <input v-model="form.katex_drop_previous_line" type="checkbox" />
         <span>Supprimer la dernière ligne précédente</span>
@@ -168,6 +173,7 @@ const form = reactive({
   katex_inline_vertical_offset_em: 0,
   katex_cumulative_gap_em: 0.4,
   katex_reset_cumulative: false,
+  katex_reset_keep_previous_line: true,
   katex_reveal_with_speech: false,
   katex_drop_previous_line: false,
 })
@@ -217,6 +223,7 @@ watch(
     form.katex_inline_vertical_offset_em = Math.min(1, Math.max(-1, Number(slide?.katex_inline_vertical_offset_em) || 0))
     form.katex_cumulative_gap_em = clampCumulativeGap(slide?.katex_cumulative_gap_em)
     form.katex_reset_cumulative = Boolean(slide?.katex_reset_cumulative)
+    form.katex_reset_keep_previous_line = slide?.katex_reset_keep_previous_line !== false
     form.katex_reveal_with_speech = Boolean(slide?.katex_reveal_with_speech)
     form.katex_drop_previous_line = Boolean(slide?.katex_drop_previous_line)
   },
@@ -261,6 +268,9 @@ function handleSave() {
     katex_inline_vertical_offset_em: Math.min(1, Math.max(-1, Number(form.katex_inline_vertical_offset_em) || 0)),
     katex_cumulative_gap_em: clampCumulativeGap(form.katex_cumulative_gap_em),
     katex_reset_cumulative: Boolean(form.katex_reset_cumulative),
+    katex_reset_keep_previous_line: form.katex_reset_cumulative
+      ? form.katex_reset_keep_previous_line !== false
+      : true,
     katex_reveal_with_speech: Boolean(form.katex_reveal_with_speech),
     katex_drop_previous_line: Boolean(form.katex_drop_previous_line),
   })

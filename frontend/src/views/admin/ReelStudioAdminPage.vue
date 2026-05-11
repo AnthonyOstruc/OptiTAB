@@ -846,12 +846,28 @@ Objectif:
 - Utilise "même ligne" (KATEX sur 2 colonnes) pour montrer étapes en parallèle
 - L'ordre SLIDE 1, 2, 3... détermine la timeline finale
 
-Structure:
+Structure (slide standard):
 SLIDE <numéro> | <type>
 TITLE: ...
 TEXT: ...
 KATEX: ...
 VOICE: ...
+---
+
+Structure (slide "méthode à savoir", standalone):
+SLIDE <numéro> | <type> | method
+TITLE: ...
+KATEX: ...
+VOICE: ...
+---
+
+Structure (slide en split, reprend la méthode déclarée plus haut):
+SLIDE <numéro> | <type> | split
+VOICE: ...
+LEFT:
+TEXT: ...
+KATEX: ...
+RIGHT (repeat)
 ---
 
 Voix ElevenLabs (eleven_multilingual_v3):
@@ -910,65 +926,114 @@ Types autorisés:
 - result
 - cta
 
+Layouts autorisés (optionnel, après le type, séparé par |):
+- (rien) → layout plein écran par défaut
+- method → slide standalone "Méthode à savoir" — son TITLE devient le label, son KATEX devient la formule de référence, et tout est mémorisé pour les slides split qui suivent
+- split → split-screen 60% / 40%, réservé au 16:9 YouTube
+
+Ordre recommandé pour une correction YouTube:
+1. SLIDE 1 | hook
+2. SLIDE 2 | katex (énoncé)
+3. SLIDE 3 | katex | method   ← affichage plein écran de la méthode
+4. SLIDE 4..N | cumulative_katex | split   avec RIGHT (repeat) → l'étape à gauche, la méthode (slide 3) à droite
+5. SLIDE final | cta   (toujours indépendant, pas de split)
+
+Mode METHOD (slide standalone):
+- S'utilise une seule fois, juste après l'énoncé.
+- Présente en grand la formule ou la méthode clé.
+- TITLE: devient le label encadré reproduit ensuite à droite (ex: "Méthode IPP").
+- KATEX: la formule de référence (1 à 2 lignes max).
+- Le slide est rendu en plein écran comme un slide katex normal — pas de split sur cette slide.
+- Son contenu est mémorisé et automatiquement repris à droite des slides | split suivantes.
+
+Mode SPLIT (16:9 uniquement):
+- S'applique aux slides katex / cumulative_katex (jamais aux hook, method, result, cta).
+- Colonne GAUCHE (60% largeur): l'étape de calcul en cours, change à chaque slide.
+- Colonne DROITE (40% largeur, panneau indigo clair): la formule/méthode déclarée par la slide method précédente.
+- Écris simplement RIGHT (repeat) — pas besoin de re-déclarer le contenu, il provient de la slide method.
+- (Optionnel) Tu peux quand même écrire un bloc RIGHT: + LABEL: + KATEX: si tu veux changer la référence en cours de route.
+- Max 2 lignes KATEX dans LEFT.
+- VOICE: reste au niveau de la slide (au-dessus de LEFT:), jamais à l'intérieur de LEFT/RIGHT.
+- TITLE: et TEXT: sont autorisés dans LEFT.
+- Les slides non-split (hook, cta, result, method, et slides katex standard) ne sont pas affectées.
+
 Conseils spécifiques YouTube 16:9:
-- Une slide peut contenir jusqu'à 8 lignes KATEX simples ou 5 lignes avec fractions.
-- Profite de la largeur: utilise "même ligne" pour montrer A = ... ; B = ... côte à côte.
+- Une slide peut contenir jusqu'à 8 lignes KATEX simples ou 5 lignes avec fractions (en plein écran).
+- En mode split, limite à 2 lignes KATEX par colonne pour rester lisible.
+- Profite de la largeur: utilise "même ligne" pour montrer A = ... ; B = ... côte à côte (plein écran) ou le mode split pour garder la méthode visible en permanence (correction).
 - Le texte (TEXT:) peut être plus long qu'en reel (3-4 lignes max).
 - Chaque slide dure en général 5-10 secondes en YouTube (vs 3-5 pour un reel).
 
-Exemple prêt à copier:
+Exemple prêt à copier (intégration par parties, slide méthode + slides split):
 SLIDE 1 | hook
-TITLE: Fractions rationnelles
-KATEX: I=\\int_0^1 \\frac{3x+5}{x^2+3x+2}\\,dx
-TEXT: On va calculer cette intégrale pas à pas.
-VOICE: [curious] Voici l'intégrale à calculer... prends quelques secondes pour observer le dénominateur.
+TITLE: Intégration par parties
+KATEX: I=\\int_0^1 x\\,e^x\\,dx
+TEXT: On calcule cette intégrale avec la méthode IPP.
+VOICE: [curious] Voici une intégrale classique... le produit d'un polynôme et d'une exponentielle, parfait pour l'IPP.
 ---
 SLIDE 2 | katex
 TEXT: Énoncé :
-KATEX: I=\\int_0^1 \\frac{3x+5}{x^2+3x+2}\\,dx
-VOICE: [calm] Énoncé: on cherche la valeur exacte de cette intégrale sur l'intervalle de 0 à 1.
+KATEX: I=\\int_0^1 x\\,e^x\\,dx
+VOICE: [calm] Énoncé: on cherche la valeur exacte de l'intégrale de x fois e puissance x, entre 0 et 1.
 ---
-SLIDE 3 | katex
+SLIDE 3 | katex | method
+TITLE: Méthode IPP
+KATEX: \\int_a^b u\\,v' = \\Big[u\\,v\\Big]_a^b - \\int_a^b u'\\,v
+VOICE: [thoughtful] Voici la formule d'intégration par parties qui va nous guider toute la correction.
+---
+SLIDE 4 | cumulative_katex | split
+VOICE: [calm] On pose u égal x et v prime égal e puissance x.
+LEFT:
 TEXT: Correction :
-KATEX: x^2+3x+2=(x+1)(x+2)
-KATEX: \\frac{3x+5}{(x+1)(x+2)}=\\frac{a}{x+1}+\\frac{b}{x+2}
-KATEX: 3x+5=a(x+2)+b(x+1)
-VOICE: [thoughtful] On factorise le dénominateur... puis on décompose en éléments simples.
+KATEX: u = x \\qquad v' = e^x
+RIGHT (repeat)
 ---
-SLIDE 4 | cumulative_katex
-KATEX: x=-1 \\Rightarrow a=2
-KATEX: x=-2 \\Rightarrow b=1
-KATEX: \\frac{3x+5}{(x+1)(x+2)}=\\frac{2}{x+1}+\\frac{1}{x+2}
-VOICE: [calm] On identifie a et b par substitution.
+SLIDE 5 | cumulative_katex | split
+VOICE: [thoughtful] On dérive u et on intègre v prime: u prime vaut 1, v vaut e puissance x.
+LEFT:
+KATEX: u' = 1 \\qquad v = e^x
+RIGHT (repeat)
 ---
-SLIDE 5 | result
+SLIDE 6 | cumulative_katex | split
+VOICE: [thoughtful] On applique la formule: u v entre 0 et 1, moins l'intégrale de u prime v.
+LEFT:
+KATEX: I=\\Big[x\\,e^x\\Big]_0^1 - \\int_0^1 e^x\\,dx
+RIGHT (repeat)
+---
+SLIDE 7 | cumulative_katex | split
+VOICE: [calm] Le crochet vaut e moins zéro, et l'intégrale de e puissance x donne e moins 1.
+LEFT:
+KATEX: I = e - \\Big[e^x\\Big]_0^1
+KATEX: I = e - (e - 1)
+RIGHT (repeat)
+---
+SLIDE 8 | result
 TITLE: Résultat
-KATEX: I=\\Big[2\\ln|x+1|+\\ln|x+2|\\Big]_0^1
-KATEX: I=\\ln 6-\\ln 2=\\ln 3
-VOICE: [excited] On intègre terme par terme... et on obtient ln 3 !
+KATEX: I = \\int_0^1 x\\,e^x\\,dx = 1
+VOICE: [excited] Tout se simplifie... et on obtient un résultat magnifique: 1 !
 ---
-SLIDE 6 | cta
+SLIDE 9 | cta
 TITLE: Résultat
-KATEX: I=\\ln 3
+KATEX: I = 1
 TEXT: Like et commente ta réponse
 Abonne-toi à OptiTAB
 Active la cloche pour les prochains exercices
-VOICE: [warmly] Abonne-toi pour la suite des exercices.
+VOICE: [warmly] Abonne-toi pour la suite des exercices d'intégration.
 ---
 YOUTUBE_DESCRIPTION:
-🧮 Décomposition en éléments simples — Intégrale de fraction rationnelle
+🧮 Intégration par parties — Calcul de ∫₀¹ x·eˣ dx
 
-Dans cette vidéo, on calcule pas à pas l'intégrale de (3x+5)/(x²+3x+2) sur [0,1] en utilisant la décomposition en éléments simples.
+Dans cette vidéo, on calcule pas à pas l'intégrale de x·eˣ entre 0 et 1 avec la méthode d'intégration par parties (IPP). La formule de référence reste visible en permanence sur la droite de l'écran pour bien comprendre chaque étape.
 
 Au programme :
-✅ Factorisation du dénominateur
-✅ Décomposition en éléments simples
-✅ Identification des coefficients
-✅ Calcul de l'intégrale
+✅ Choix de u et v'
+✅ Calcul de u' et v
+✅ Application de la formule IPP
+✅ Simplification et résultat final
 
 👇 Donne ta réponse en commentaire avant de regarder la correction !
 
-#maths #intégrale #terminale #fractionsrationnelles #bac #mathématiques #lycée #exercicemaths
+#maths #intégrale #IPP #intégrationparparties #terminale #bac #mathématiques #lycée #exercicemaths
 END_YOUTUBE_DESCRIPTION
 `
 
@@ -2430,6 +2495,7 @@ async function handleSaveSlide(payload) {
       katex_inline_vertical_offset_em: payload.katex_inline_vertical_offset_em,
       katex_cumulative_gap_em: payload.katex_cumulative_gap_em,
       katex_reset_cumulative: payload.katex_reset_cumulative,
+      katex_reset_keep_previous_line: payload.katex_reset_keep_previous_line,
       katex_reveal_with_speech: payload.katex_reveal_with_speech,
       katex_drop_previous_line: payload.katex_drop_previous_line,
     }

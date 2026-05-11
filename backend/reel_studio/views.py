@@ -1,3 +1,4 @@
+import json
 import logging
 import re
 
@@ -553,10 +554,16 @@ _TEMPLATE_MARKER_PATTERN = re.compile(
     flags=re.IGNORECASE,
 )
 _SLIDE_HEADER_PATTERN = re.compile(
-    r'^\s*SLIDE\s*(?P<index>\d+)\s*(?:[\|\-:]\s*)?(?P<slide_type>hook|katex|cumulative_katex|result|cta)?\s*$',
+    r'^\s*SLIDE\s*(?P<index>\d+)\s*'
+    r'(?:[\|\-:]\s*(?P<slide_type>hook|katex|cumulative_katex|result|cta))?'
+    r'(?:\s*\|\s*[A-Za-z0-9_\-]+)*\s*$',
     flags=re.IGNORECASE,
 )
 _SLIDE_SEPARATOR_PATTERN = re.compile(r'^\s*(?:---+|===+)\s*$')
+_SPLIT_ZONE_PATTERN = re.compile(
+    r'^\s*(?P<zone>LEFT|RIGHT|LABEL)\b\s*(?P<repeat>\(\s*repeat\s*\))?\s*:?\s*(?P<value>.*)$',
+    flags=re.IGNORECASE,
+)
 _INSTAGRAM_CAPTION_HEADER_PATTERN = re.compile(
     r'^\s*(?:INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)\s*:\s*(.*)\s*$',
     flags=re.IGNORECASE,
@@ -704,6 +711,7 @@ def _build_slide_payload(
     screen_text='',
     katex='',
     voice_script='',
+    layout_notes='',
 ):
     normalized_type = _parse_slide_type(slide_type) or ReelSlide.TYPE_KATEX
     if normalized_type not in _SLIDE_TYPES:
@@ -724,6 +732,7 @@ def _build_slide_payload(
         'katex': safe_katex,
         'voice_script': safe_voice,
         'duration_seconds': safe_duration,
+        'layout_notes': str(layout_notes or ''),
     }
 
 
@@ -737,6 +746,14 @@ def _parse_structured_template(template_text, max_chars):
     slides_raw = []
     current_slide = None
     has_structured_headers = False
+    last_right_block = None
+
+    def begin_split_state(slide_dict, is_split):
+        slide_dict['_split'] = bool(is_split)
+        slide_dict['_zone'] = 'left'
+        slide_dict['_right_label'] = ''
+        slide_dict['_right_katex'] = []
+        slide_dict['_right_repeat'] = False
 
     for raw_line in lines:
         line = str(raw_line or '').rstrip()
@@ -752,6 +769,8 @@ def _parse_structured_template(template_text, max_chars):
 
             header_index = int(header_match.group('index'))
             header_type = _parse_slide_type(header_match.group('slide_type') or '')
+            is_split = bool(re.search(r'\bsplit\b', stripped, flags=re.IGNORECASE))
+            is_method = bool(re.search(r'\bmethod\b', stripped, flags=re.IGNORECASE))
             current_slide = {
                 '_order_hint': header_index,
                 '_position': len(slides_raw),
@@ -760,7 +779,9 @@ def _parse_structured_template(template_text, max_chars):
                 'screen_text': '',
                 'katex': '',
                 'voice_script': '',
+                '_method': is_method,
             }
+            begin_split_state(current_slide, is_split)
             continue
 
         if _SLIDE_SEPARATOR_PATTERN.match(stripped):
@@ -771,6 +792,32 @@ def _parse_structured_template(template_text, max_chars):
 
         if not has_structured_headers or current_slide is None:
             continue
+
+        zone_match = _SPLIT_ZONE_PATTERN.match(stripped)
+        if zone_match:
+            zone_kind = zone_match.group('zone').upper()
+            zone_repeat = bool(zone_match.group('repeat'))
+            zone_value = zone_match.group('value').strip()
+            if zone_kind == 'LEFT':
+                current_slide['_zone'] = 'left'
+            elif zone_kind == 'RIGHT':
+                current_slide['_zone'] = 'right'
+                if zone_repeat:
+                    current_slide['_right_repeat'] = True
+            elif zone_kind == 'LABEL':
+                if current_slide.get('_split') and current_slide.get('_zone') == 'right':
+                    if zone_value:
+                        current = current_slide.get('_right_label') or ''
+                        current_slide['_right_label'] = (
+                            f'{current}\n{zone_value}' if current else zone_value
+                        )
+                elif zone_value:
+                    _append_multiline(current_slide, 'title', zone_value)
+            continue
+
+        in_right_zone = bool(
+            current_slide.get('_split') and current_slide.get('_zone') == 'right'
+        )
 
         marker_match = _TEMPLATE_MARKER_PATTERN.match(stripped)
         if marker_match:
@@ -784,6 +831,18 @@ def _parse_structured_template(template_text, max_chars):
             elif marker == 'DURATION':
                 # Ignored in V1: real duration will come from voice generation in a later step.
                 pass
+            elif marker == 'VOICE':
+                _append_multiline(current_slide, 'voice_script', value)
+            elif in_right_zone:
+                if marker == 'KATEX':
+                    for split_line in _split_katex_line_by_width(value, max_chars):
+                        current_slide['_right_katex'].append(split_line)
+                elif marker == 'TITLE':
+                    current = current_slide.get('_right_label') or ''
+                    current_slide['_right_label'] = (
+                        f'{current}\n{value}' if current else value
+                    )
+                # TEXT/QUESTION inside RIGHT block: ignored (RIGHT is reference-only)
             elif marker == 'TITLE':
                 _append_multiline(current_slide, 'title', value)
             elif marker in {'TEXT', 'QUESTION', 'HOOK', 'CTA'}:
@@ -794,11 +853,12 @@ def _parse_structured_template(template_text, max_chars):
                 _append_multiline(current_slide, 'screen_text', value)
             elif marker == 'KATEX':
                 _append_katex_lines(current_slide, value, max_chars)
-            elif marker == 'VOICE':
-                _append_multiline(current_slide, 'voice_script', value)
             continue
 
-        if current_slide['slide_type'] in {ReelSlide.TYPE_HOOK, ReelSlide.TYPE_CTA}:
+        if in_right_zone:
+            for split_line in _split_katex_line_by_width(stripped, max_chars):
+                current_slide['_right_katex'].append(split_line)
+        elif current_slide['slide_type'] in {ReelSlide.TYPE_HOOK, ReelSlide.TYPE_CTA}:
             _append_multiline(current_slide, 'screen_text', stripped)
         else:
             _append_katex_lines(current_slide, stripped, max_chars)
@@ -813,14 +873,69 @@ def _parse_structured_template(template_text, max_chars):
 
     slides = []
     for slide in slides_raw:
+        layout_notes = ''
+        if slide.get('_method'):
+            method_label = (slide.get('title') or '').strip()
+            method_katex = (slide.get('katex') or '').strip()
+            if method_label or method_katex:
+                last_right_block = {
+                    'label': method_label,
+                    'katex': method_katex,
+                }
+            try:
+                layout_notes = json.dumps(
+                    {'method': {
+                        'label': method_label,
+                        'katex': method_katex,
+                    }},
+                    ensure_ascii=False,
+                )
+            except (TypeError, ValueError):
+                layout_notes = ''
+        elif slide.get('_split'):
+            right_block = None
+            collected_lines = [ln for ln in (slide.get('_right_katex') or []) if ln]
+            collected_label = (slide.get('_right_label') or '').strip()
+            wants_repeat = bool(slide.get('_right_repeat'))
+            if not collected_lines and not collected_label:
+                wants_repeat = True
+
+            if wants_repeat and last_right_block:
+                right_block = last_right_block
+            elif collected_lines or collected_label:
+                right_block = {
+                    'label': collected_label,
+                    'katex': '\n'.join(collected_lines),
+                }
+                last_right_block = right_block
+
+            if right_block:
+                try:
+                    layout_notes = json.dumps(
+                        {'split': {
+                            'label': right_block.get('label', ''),
+                            'right_katex': right_block.get('katex', ''),
+                        }},
+                        ensure_ascii=False,
+                    )
+                except (TypeError, ValueError):
+                    layout_notes = ''
+
         payload = _build_slide_payload(
             slide_type=slide.get('slide_type'),
             title=slide.get('title', ''),
             screen_text=slide.get('screen_text', ''),
             katex=slide.get('katex', ''),
             voice_script=slide.get('voice_script', ''),
+            layout_notes=layout_notes,
         )
-        if payload['screen_text'] or payload['katex'] or payload['voice_script'] or payload['title']:
+        if (
+            payload['screen_text']
+            or payload['katex']
+            or payload['voice_script']
+            or payload['title']
+            or payload['layout_notes']
+        ):
             slides.append(payload)
     return slides
 
@@ -1092,7 +1207,7 @@ class ReelProjectGenerateFromTemplateView(APIView):
                         voice_script=payload.get('voice_script', ''),
                         duration_seconds=payload.get('duration_seconds', 4),
                         layout_status=ReelSlide.LAYOUT_UNCHECKED,
-                        layout_notes='',
+                        layout_notes=payload.get('layout_notes', ''),
                     )
                 )
 
@@ -1124,7 +1239,7 @@ def _update_project_slides_from_template(project, slides_payload):
                 voice_script=payload.get('voice_script', ''),
                 duration_seconds=payload.get('duration_seconds', DEFAULT_TEMPLATE_SLIDE_DURATION_SECONDS),
                 layout_status=ReelSlide.LAYOUT_UNCHECKED,
-                layout_notes='',
+                layout_notes=payload.get('layout_notes', ''),
             )
             changed = True
             continue
@@ -1150,10 +1265,13 @@ def _update_project_slides_from_template(project, slides_payload):
             field_name in update_fields
             for field_name in ('slide_type', 'title', 'screen_text', 'katex', 'voice_script', 'duration_seconds')
         )
+        new_layout_notes = payload.get('layout_notes', '') or ''
         if content_changed:
             slide.layout_status = ReelSlide.LAYOUT_UNCHECKED
-            slide.layout_notes = ''
-            update_fields.extend(['layout_status', 'layout_notes'])
+            update_fields.append('layout_status')
+        if (slide.layout_notes or '') != new_layout_notes:
+            slide.layout_notes = new_layout_notes
+            update_fields.append('layout_notes')
 
         if update_fields:
             slide.save(update_fields=[*update_fields, 'updated_at'])

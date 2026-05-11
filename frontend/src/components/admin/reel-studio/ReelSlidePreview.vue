@@ -68,25 +68,67 @@
         </template>
 
         <template v-else>
-          <div
-            v-if="hasScreenText"
-            ref="screenTextRef"
-            class="screen-text rich-text"
-            v-html="renderRichText(screenTextContent)"
-          ></div>
+          <div v-if="splitMeta" class="reel-slide-split">
+            <div class="reel-slide-split__left">
+              <div
+                v-if="hasNormalTitle"
+                class="slide-title rich-text"
+                v-html="renderRichText(normalTitleText)"
+              ></div>
 
-          <div
-            v-if="hasKatex"
-            ref="katexZoneRef"
-            class="katex-zone"
-            :class="katexZoneClass"
-            v-html="renderedKatex"
-          ></div>
+              <div
+                v-if="hasScreenText"
+                ref="screenTextRef"
+                class="screen-text rich-text"
+                v-html="renderRichText(screenTextContent)"
+              ></div>
+
+              <div
+                v-if="hasKatex"
+                ref="katexZoneRef"
+                class="katex-zone"
+                :class="katexZoneClass"
+                v-html="renderedKatex"
+              ></div>
+            </div>
+
+            <aside class="reel-slide-split__right" aria-label="Méthode de référence">
+              <p v-if="splitMeta.label" class="reel-slide-split__label">{{ splitMeta.label }}</p>
+              <div
+                v-if="renderedSplitRightKatex"
+                class="reel-slide-split__katex"
+                v-html="renderedSplitRightKatex"
+              ></div>
+            </aside>
+          </div>
+
+          <template v-else>
+            <div
+              v-if="hasNormalTitle"
+              class="slide-title rich-text"
+              v-html="renderRichText(normalTitleText)"
+            ></div>
+
+            <div
+              v-if="hasScreenText"
+              ref="screenTextRef"
+              class="screen-text rich-text"
+              v-html="renderRichText(screenTextContent)"
+            ></div>
+
+            <div
+              v-if="hasKatex"
+              ref="katexZoneRef"
+              class="katex-zone"
+              :class="katexZoneClass"
+              v-html="renderedKatex"
+            ></div>
+          </template>
         </template>
 
         <p v-if="katexError" class="screen-text screen-text--error">Formule KaTeX invalide</p>
 
-        <p v-if="!showHookTemplate && !hasScreenText && !hasKatex" class="screen-text screen-text--placeholder">
+        <p v-if="!showHookTemplate && !hasNormalTitle && !hasScreenText && !hasKatex" class="screen-text screen-text--placeholder">
           Slide vide
         </p>
       </section>
@@ -159,6 +201,10 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  splitRightScale: {
+    type: Number,
+    default: 1,
+  },
   safeZoneXScale: {
     type: Number,
     default: 1,
@@ -222,6 +268,37 @@ const thumbnailFitScale = ref(1)
 
 const safeSlide = computed(() => props.slide || {})
 
+const splitMeta = computed(() => {
+  const raw = String(safeSlide.value.layout_notes || '').trim()
+  if (!raw) return null
+  let parsed = null
+  try {
+    parsed = JSON.parse(raw)
+  } catch (_) {
+    return null
+  }
+  const block = parsed && typeof parsed === 'object' ? parsed.split : null
+  if (!block || typeof block !== 'object') return null
+  const label = String(block.label || '').trim()
+  const rightKatex = String(block.right_katex || '').trim()
+  if (!label && !rightKatex) return null
+  return { label, rightKatex }
+})
+
+const renderedSplitRightKatex = computed(() => {
+  const meta = splitMeta.value
+  if (!meta || !meta.rightKatex) return ''
+  return splitKatexLines(meta.rightKatex)
+    .map((line) => {
+      try {
+        return `<div class="reel-slide-split__katex-line">${katex.renderToString(line, { displayMode: true, throwOnError: false })}</div>`
+      } catch (_) {
+        return `<div class="reel-slide-split__katex-line">${escapeHtml(line)}</div>`
+      }
+    })
+    .join('')
+})
+
 const isYoutubeFormat = computed(() => props.videoFormat === 'youtube')
 const isHookSlide = computed(() => safeSlide.value.slide_type === 'hook')
 const isCtaSlide = computed(() => safeSlide.value.slide_type === 'cta')
@@ -239,16 +316,19 @@ function clampSlideScale(value) {
 function clampCumulativeGap(value) {
   const numeric = Number(value)
   if (!Number.isFinite(numeric)) return 0.4
-  return Math.min(1.5, Math.max(0, numeric))
+  return Number(numeric.toFixed(2))
 }
 
 const slideCardStyle = computed(() => {
-  const requestedScale = Math.min(1.3, Math.max(0.75, Number(props.mathScale) || 1))
+  const numericScale = Number(props.mathScale)
+  const requestedScale = Number.isFinite(numericScale) ? Math.max(0.05, numericScale) : 1
   const titleScale = clampSlideScale(safeSlide.value.title_scale)
   const screenTextScale = clampSlideScale(safeSlide.value.screen_text_scale)
   const katexScale = clampSlideScale(safeSlide.value.katex_scale)
   const rowGap = clampCumulativeGap(safeSlide.value.display_katex_row_gap_em ?? safeSlide.value.katex_cumulative_gap_em)
   const isYt = isYoutubeFormat.value
+  const numericSplitRightScale = Number(props.splitRightScale)
+  const splitRightScale = Number.isFinite(numericSplitRightScale) ? Math.max(0.05, numericSplitRightScale) : 1
   const safeXScale = isYt
     ? Math.min(1.4, Math.max(0, Number(props.safeZoneXScale) || 0))
     : Math.min(1.4, Math.max(0.7, Number(props.safeZoneXScale) || 1))
@@ -264,6 +344,7 @@ const slideCardStyle = computed(() => {
     '--reel-title-scale': titleScale,
     '--reel-screen-text-scale': screenTextScale,
     '--reel-math-scale': requestedScale * katexScale,
+    '--reel-split-right-scale': splitRightScale,
     '--reel-katex-row-gap': `${rowGap.toFixed(2)}em`,
     '--reel-thumb-fit-scale': thumbnailFitScale.value,
     '--reel-safe-inline': `calc(${safeInlineUnit} * ${safeXScale.toFixed(3)})`,
@@ -283,6 +364,32 @@ const screenTextContent = computed(() => {
   const preferred = String(safeSlide.value.display_screen_text || '').trim()
   if (preferred) return preferred
   return String(safeSlide.value.screen_text || '').trim()
+})
+
+function normalizeTitleCompare(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '')
+    .trim()
+}
+
+const normalTitleText = computed(() => {
+  if (usesHookLayout.value || isCtaSlide.value) return ''
+  const title = String(safeSlide.value.title || '').trim()
+  if (!title) return ''
+  const firstTextLine = screenTextContent.value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find(Boolean) || ''
+  if (
+    firstTextLine
+    && normalizeTitleCompare(firstTextLine) === normalizeTitleCompare(title)
+  ) {
+    return ''
+  }
+  return title
 })
 
 function stripSubtitleControlTags(value) {
@@ -404,18 +511,45 @@ const katexContent = computed(() => {
 const katexRows = computed(() => {
   const rows = Array.isArray(safeSlide.value.display_katex_rows) ? safeSlide.value.display_katex_rows : []
   return rows
-    .map((row) => ({
-      parts: (Array.isArray(row?.parts) ? row.parts : [])
+    .map((row) => {
+      const parts = (Array.isArray(row?.parts) ? row.parts : [])
         .map((part) => stripKatexAlignmentMarkers(part))
-        .filter(Boolean),
-      inlineSeparators: Array.isArray(row?.inlineSeparators)
-        ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
-        : [],
-      inlineOffsetPercent: clampInlineOffset(row?.inlineOffsetPercent),
-      inlineVerticalOffsetEm: clampInlineVerticalOffset(row?.inlineVerticalOffsetEm),
-    }))
+        .filter(Boolean)
+      const inlineCount = Math.max(parts.length - 1, 0)
+      const fallbackOffset = clampInlineOffset(row?.inlineOffsetPercent)
+      const fallbackVerticalOffset = clampInlineVerticalOffset(row?.inlineVerticalOffsetEm)
+      const inlineOffsetPercents = Array.isArray(row?.inlineOffsetPercents)
+        ? row.inlineOffsetPercents.slice(0, inlineCount).map((value) => clampInlineOffset(value))
+        : []
+      const inlineVerticalOffsetEms = Array.isArray(row?.inlineVerticalOffsetEms)
+        ? row.inlineVerticalOffsetEms.slice(0, inlineCount).map((value) => clampInlineVerticalOffset(value))
+        : []
+
+      while (inlineOffsetPercents.length < inlineCount) {
+        inlineOffsetPercents.push(fallbackOffset)
+      }
+      while (inlineVerticalOffsetEms.length < inlineCount) {
+        inlineVerticalOffsetEms.push(fallbackVerticalOffset)
+      }
+
+      return {
+        parts,
+        inlineSeparators: Array.isArray(row?.inlineSeparators)
+          ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
+          : [],
+        inlineOffsetPercents,
+        inlineVerticalOffsetEms,
+        inlineOffsetPercent: inlineOffsetPercents.length
+          ? inlineOffsetPercents[inlineOffsetPercents.length - 1]
+          : fallbackOffset,
+        inlineVerticalOffsetEm: inlineVerticalOffsetEms.length
+          ? inlineVerticalOffsetEms[inlineVerticalOffsetEms.length - 1]
+          : fallbackVerticalOffset,
+      }
+    })
     .filter((row) => row.parts.length)
 })
+const hasNormalTitle = computed(() => Boolean(normalTitleText.value))
 const hasScreenText = computed(() => Boolean(screenTextContent.value))
 const hasKatex = computed(() => Boolean(katexContent.value))
 const katexRevealWithSpeech = computed(() => (
@@ -497,11 +631,16 @@ function splitKatexLines(value) {
   const raw = String(value || '').trim()
   if (!raw) return []
 
-  const source = (isAlignedKatexBlock(raw) ? unwrapAlignedBlock(raw) : raw)
+  if (isAlignedKatexBlock(raw)) {
+    return unwrapAlignedBlock(raw)
+      .split(/\\\\(?:\[[^\]]*\])?/)
+      .map((line) => stripKatexAlignmentMarkers(line))
+      .filter(Boolean)
+  }
+
+  return raw
     .replace(/\\\\(?:\[[^\]]*\])?/g, '\n')
     .replace(/\\\[[^\]]*\]/g, '\n')
-
-  return source
     .split(/\n+/)
     .map((line) => stripKatexAlignmentMarkers(line))
     .filter(Boolean)
@@ -757,6 +896,8 @@ const renderedKatex = computed(() => {
           const baseMetrics = katexVerticalMetricsFromHtml(baseHtml)
           const baseRevealAttrs = revealTargetAttrs(basePart)
           const inlineSeparators = Array.isArray(row.inlineSeparators) ? row.inlineSeparators : []
+          const inlineOffsetPercents = Array.isArray(row.inlineOffsetPercents) ? row.inlineOffsetPercents : []
+          const inlineVerticalOffsetEms = Array.isArray(row.inlineVerticalOffsetEms) ? row.inlineVerticalOffsetEms : []
           const useCompactInlineLayout = isYoutubeFormat.value
           const inlineParts = parts
             .slice(1)
@@ -791,17 +932,17 @@ const renderedKatex = computed(() => {
           const lineExtraClass = `${allNotTall ? ' reel-katex-line--inline-centered' : ''}${useCompactInlineLayout ? ' reel-katex-line--inline-compact' : ''}`
           const baseStyle = (allNotTall || onlyInlineTall) ? '' : inlineKatexTopOffsetAttr(maxAboveBaseline - baseMetrics.aboveBaseline)
           const baseStyleAttr = baseStyle ? ` style="${baseStyle.trim()}"` : ''
-          const offset = clampInlineOffset(row.inlineOffsetPercent)
-          const verticalOffset = clampInlineVerticalOffset(row.inlineVerticalOffsetEm)
           const inlineHtml = inlineParts
             .map((inlinePart, index) => {
+              const offset = clampInlineOffset(inlineOffsetPercents[index] ?? row.inlineOffsetPercent)
+              const verticalOffset = clampInlineVerticalOffset(inlineVerticalOffsetEms[index] ?? row.inlineVerticalOffsetEm)
               const baseTopEm = allNotTall
                 ? -0.04
                 : (baselineRef - inlinePart.metrics.aboveBaseline + inlinePart.visualNudge)
               const finalTopEm = baseTopEm + verticalOffset
               const topOffset = ` top:calc(${formatKatexEmMetric(finalTopEm)} * var(--reel-katex-inline-em));`
               if (useCompactInlineLayout) {
-                const style = `position:relative; left:auto;${topOffset}`
+                const style = `position:relative; left:${formatKatexEmMetric(offset)}%;${topOffset}`
                 return `<span class="reel-katex-part reel-katex-part--inline reel-katex-part--inline-compact${inlinePart.revealAttrs.className}" style="${style}"${inlinePart.revealAttrs.attrs}>${inlinePart.html}</span>`
               }
               const left = 50 + offset + index * 22
@@ -1023,6 +1164,7 @@ watch(
     props.displayMode,
     props.videoFormat,
     props.mathScale,
+    props.splitRightScale,
     props.safeZoneXScale,
     props.safeZoneYScale,
   ],
@@ -1400,6 +1542,19 @@ onUnmounted(() => {
   overflow-wrap: anywhere;
 }
 
+.slide-title {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  color: #1e3a8a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: calc(18px * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  font-weight: 700;
+  line-height: 1.12;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
 .screen-text--placeholder {
   color: #60a5fa;
   font-size: 13px;
@@ -1554,6 +1709,10 @@ onUnmounted(() => {
   line-height: 1.3;
 }
 
+.slide-card--fullscreen .slide-title {
+  font-size: clamp(24px, 2.5vw, 38px);
+}
+
 .slide-card--fullscreen .screen-text--placeholder {
   font-size: clamp(16px, 1.7vw, 20px);
 }
@@ -1690,6 +1849,12 @@ onUnmounted(() => {
   font-size: calc(4.8cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
 }
 
+.slide-title,
+.reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .slide-title,
+.slide-card--fullscreen .slide-title {
+  font-size: calc(5.4cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex),
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line .katex),
 .slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex) {
@@ -1729,31 +1894,38 @@ onUnmounted(() => {
   gap: calc(2.4cqw * var(--reel-thumb-fit-scale, 1));
 }
 
-.slide-card--youtube .hook-top,
-.slide-card--youtube .hook-middle-text,
-.slide-card--youtube .hook-bottom,
-.slide-card--youtube .cta-top,
-.slide-card--youtube .cta-main {
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-top,
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-middle-text,
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-bottom,
+.slide-card--youtube:not(.slide-card--fullscreen) .cta-top,
+.slide-card--youtube:not(.slide-card--fullscreen) .cta-main,
+.slide-card--youtube.slide-card--fullscreen .hook-top,
+.slide-card--youtube.slide-card--fullscreen .hook-middle-text,
+.slide-card--youtube.slide-card--fullscreen .hook-bottom,
+.slide-card--youtube.slide-card--fullscreen .cta-top,
+.slide-card--youtube.slide-card--fullscreen .cta-main {
   font-family: Georgia, 'Times New Roman', serif;
   color: #244b9f;
 }
 
-.slide-card--youtube .hook-layout,
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-layout,
 .slide-card--youtube.slide-card--fullscreen .hook-layout {
   box-sizing: border-box;
   gap: calc(3.4cqw * var(--reel-user-scale, 1) * var(--reel-thumb-fit-scale, 1));
 }
 
-.slide-card--youtube .reel-slide--hook:not(.reel-slide--cover) .hook-layout {
+.slide-card--youtube:not(.slide-card--fullscreen) .reel-slide--hook:not(.reel-slide--cover) .hook-layout,
+.slide-card--youtube.slide-card--fullscreen .reel-slide--hook:not(.reel-slide--cover) .hook-layout {
   transform: translateY(-5cqw);
 }
 
-.slide-card--youtube .reel-slide--subtitled.reel-slide--hook:not(.reel-slide--cover) .hook-layout {
+.slide-card--youtube:not(.slide-card--fullscreen) .reel-slide--subtitled.reel-slide--hook:not(.reel-slide--cover) .hook-layout,
+.slide-card--youtube.slide-card--fullscreen .reel-slide--subtitled.reel-slide--hook:not(.reel-slide--cover) .hook-layout {
   transform: translateY(-7cqw);
   padding-bottom: 5cqw;
 }
 
-.slide-card--youtube .hook-top,
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-top,
 .slide-card--youtube.slide-card--fullscreen .hook-top {
   font-size: calc(7.8cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
   line-height: 1.08;
@@ -1761,7 +1933,7 @@ onUnmounted(() => {
   white-space: normal;
 }
 
-.slide-card--youtube .hook-bottom,
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-bottom,
 .slide-card--youtube.slide-card--fullscreen .hook-bottom {
   font-size: calc(5.2cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
   line-height: 1.12;
@@ -1769,15 +1941,15 @@ onUnmounted(() => {
   white-space: normal;
 }
 
-.slide-card--youtube .hook-middle-text,
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-middle-text,
 .slide-card--youtube.slide-card--fullscreen .hook-middle-text {
   font-size: calc(5.8cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
   line-height: 1.12;
 }
 
-.slide-card--youtube .hook-katex :deep(.katex),
+.slide-card--youtube:not(.slide-card--fullscreen) .hook-katex :deep(.katex),
 .slide-card--youtube.slide-card--fullscreen .hook-katex :deep(.katex) {
-  font-size: calc(2.5cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+  font-size: calc(5cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
 }
 
 .slide-card--youtube .cta-layout,
@@ -1797,7 +1969,7 @@ onUnmounted(() => {
 
 .slide-card--youtube .cta-katex :deep(.katex),
 .slide-card--youtube.slide-card--fullscreen .cta-katex :deep(.katex) {
-  font-size: calc(3.1cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+  font-size: calc(6.2cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
 }
 
 .slide-card--youtube .screen-text,
@@ -1805,6 +1977,13 @@ onUnmounted(() => {
 .slide-card--youtube.slide-card--fullscreen .screen-text {
   font-size: calc(3cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
   line-height: 1.3;
+}
+
+.slide-card--youtube .slide-title,
+.slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .slide-title,
+.slide-card--youtube.slide-card--fullscreen .slide-title {
+  font-size: calc(3.4cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.12;
 }
 
 .slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex),
@@ -1836,7 +2015,6 @@ onUnmounted(() => {
 .slide-card--youtube .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline-compact .reel-katex-part--inline),
 .slide-card--youtube.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line--inline-compact .reel-katex-part--inline) {
   position: relative !important;
-  left: auto !important;
 }
 
 .slide-card--youtube.slide-card--fullscreen {
@@ -1905,6 +2083,138 @@ onUnmounted(() => {
 
 .reel-subtitles-word--past {
   color: #ffffff;
+}
+
+.reel-slide-split {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 60fr) minmax(0, 40fr);
+  gap: 2.2cqw;
+  align-items: stretch;
+}
+
+.reel-slide-split__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.reel-slide-split__right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: calc(1.4cqw * var(--reel-split-right-scale, 1));
+  padding: 1.8cqw 1.6cqw;
+  background: linear-gradient(160deg, #f8fafc 0%, #eef2ff 55%, #e0e7ff 100%);
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  border-radius: 1cqw;
+  box-shadow:
+    0 1.2cqw 2.4cqw rgba(30, 41, 59, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  color: #1e293b;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.reel-slide-split__right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(140% 90% at 50% 0%, rgba(99, 102, 241, 0.08), transparent 60%);
+  pointer-events: none;
+}
+
+.reel-slide-split__label {
+  position: relative;
+  margin: 0;
+  padding-bottom: 1cqw;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: calc(1.45cqw * var(--reel-split-right-scale, 1));
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #4f46e5;
+  text-align: left;
+  white-space: pre-line;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.18);
+}
+
+.reel-slide-split__katex {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: calc(1.2cqw * var(--reel-split-right-scale, 1));
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line) {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+  text-align: left;
+}
+
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex-display) {
+  margin: 0;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-align: left !important;
+}
+
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex-display > .katex) {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  text-align: left !important;
+}
+
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mord),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mop),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mbin),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mrel),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mopen),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mclose),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mpunct),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .minner),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mathnormal),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mathit),
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex .mathrm) {
+  color: #1e293b;
+}
+
+.reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex) {
+  font-size: calc(1.85cqw * var(--reel-split-right-scale, 1)) !important;
+  max-width: 100%;
+}
+
+.slide-card:not(.slide-card--fullscreen) .reel-slide-split__right {
+  padding: calc(1.8cqw * var(--reel-thumb-fit-scale, 1))
+    calc(1.6cqw * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card:not(.slide-card--fullscreen) .reel-slide-split__label {
+  font-size: calc(1.45cqw * var(--reel-split-right-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card:not(.slide-card--fullscreen) .reel-slide-split__katex :deep(.reel-slide-split__katex-line .katex) {
+  font-size: calc(1.85cqw * var(--reel-split-right-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
 }
 
 .reel-subtitles-word--active {

@@ -143,6 +143,7 @@ class ReelSlide(models.Model):
     katex_inline_vertical_offset_em = models.FloatField(default=0.0)
     katex_cumulative_gap_em = models.FloatField(default=0.4)
     katex_reset_cumulative = models.BooleanField(default=False)
+    katex_reset_keep_previous_line = models.BooleanField(default=True)
     katex_reveal_with_speech = models.BooleanField(default=False)
     katex_drop_previous_line = models.BooleanField(default=False)
     duration_seconds = models.PositiveIntegerField(default=4)

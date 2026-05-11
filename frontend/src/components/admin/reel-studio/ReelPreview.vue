@@ -105,6 +105,7 @@
         :slide="slide"
         :is-selected="Number(selectedSlideId) === Number(slide.id)"
         :math-scale="getMathScale(slide)"
+        :split-right-scale="splitRightScale"
         :safe-zone-x-scale="safeZoneXScale"
         :safe-zone-y-scale="getSafeZoneYScale(slide)"
         :clickable="!isVirtualCoverSlide(slide)"
@@ -131,6 +132,7 @@
           display-mode="export"
           :clickable="false"
           :math-scale="getMathScale(slide)"
+          :split-right-scale="splitRightScale"
           :safe-zone-x-scale="safeZoneXScale"
           :safe-zone-y-scale="getSafeZoneYScale(slide)"
           :video-format="format"
@@ -244,12 +246,45 @@
           </button>
         </div>
 
+        <button
+          class="fullscreen-side-toggle fullscreen-side-toggle--left"
+          :class="{ 'fullscreen-side-toggle--collapsed': fullscreenLeftPanelCollapsed }"
+          type="button"
+          :aria-pressed="fullscreenLeftPanelCollapsed ? 'true' : 'false'"
+          :aria-label="fullscreenLeftPanelCollapsed ? 'Afficher le panneau gauche' : 'Masquer le panneau gauche'"
+          @click.stop="fullscreenLeftPanelCollapsed = !fullscreenLeftPanelCollapsed"
+        >
+          <svg class="fullscreen-side-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="4" width="4" height="16" rx="1.2" fill="currentColor" opacity="0.28" />
+            <path d="M11 7h8M11 12h8M11 17h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <button
+          class="fullscreen-side-toggle fullscreen-side-toggle--right"
+          :class="{ 'fullscreen-side-toggle--collapsed': fullscreenRightPanelCollapsed }"
+          type="button"
+          :aria-pressed="fullscreenRightPanelCollapsed ? 'true' : 'false'"
+          :aria-label="fullscreenRightPanelCollapsed ? 'Afficher le panneau droit' : 'Masquer le panneau droit'"
+          @click.stop="fullscreenRightPanelCollapsed = !fullscreenRightPanelCollapsed"
+        >
+          <svg class="fullscreen-side-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 7h8M5 12h8M5 17h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <rect x="16" y="4" width="4" height="16" rx="1.2" fill="currentColor" opacity="0.28" />
+          </svg>
+        </button>
+
         <div
           class="fullscreen-content"
-          :class="{ 'fullscreen-content--youtube': isYoutubeFormat }"
+          :class="{
+            'fullscreen-content--youtube': isYoutubeFormat,
+            'fullscreen-content--left-collapsed': fullscreenLeftPanelCollapsed,
+            'fullscreen-content--right-collapsed': fullscreenRightPanelCollapsed,
+            'fullscreen-content--both-collapsed': fullscreenLeftPanelCollapsed && fullscreenRightPanelCollapsed,
+          }"
           @click.stop
         >
-          <aside class="fullscreen-speech-panel" aria-label="Voix de la slide">
+          <aside v-show="!fullscreenLeftPanelCollapsed" class="fullscreen-speech-panel" aria-label="Voix de la slide">
             <div class="speech-panel-header">
               <div class="speech-tabs" role="tablist" aria-label="Edition slide">
                 <button
@@ -503,13 +538,25 @@
             </div>
           </aside>
 
-          <div class="fullscreen-toolbar">
+          <div v-show="!fullscreenRightPanelCollapsed" class="fullscreen-toolbar">
             <div class="fullscreen-control-group" aria-label="Taille des formules">
               <span class="control-label">{{ mathSizeLabel }}</span>
               <button class="size-button" type="button" @click="decreaseMathSize">A-</button>
               <span class="size-value">{{ mathSizePercent }}%</span>
               <button class="size-button" type="button" @click="increaseMathSize">A+</button>
               <button class="size-reset" type="button" @click="resetMathSize">Reset</button>
+            </div>
+
+            <div
+              v-if="activeSlideHasSplitRightPanel"
+              class="fullscreen-control-group"
+              aria-label="Taille de la méthode à droite"
+            >
+              <span class="control-label">Méthode droite</span>
+              <button class="size-button" type="button" @click="decreaseSplitRightSize">M-</button>
+              <span class="size-value">{{ splitRightSizePercent }}%</span>
+              <button class="size-button" type="button" @click="increaseSplitRightSize">M+</button>
+              <button class="size-reset" type="button" @click="resetSplitRightSize">Reset</button>
             </div>
 
             <div
@@ -652,6 +699,24 @@
               >
                 {{ resetCumulativeLabel }}
               </button>
+              <div v-if="activeSlideResetsCumulative" class="inline-layout-row reset-page-options">
+                <button
+                  class="size-reset line-mode-button reset-page-option"
+                  :class="{ 'line-mode-button--active': activeResetKeepsPreviousLine }"
+                  type="button"
+                  @click="setActiveResetKeepPreviousLine(true)"
+                >
+                  avec prec.
+                </button>
+                <button
+                  class="size-reset line-mode-button reset-page-option"
+                  :class="{ 'line-mode-button--active': !activeResetKeepsPreviousLine }"
+                  type="button"
+                  @click="setActiveResetKeepPreviousLine(false)"
+                >
+                  vide
+                </button>
+              </div>
             </div>
 
             <div
@@ -813,6 +878,7 @@
               display-mode="fullscreen"
               :clickable="false"
               :math-scale="getMathScale(activeSlide)"
+              :split-right-scale="splitRightScale"
               :safe-zone-x-scale="safeZoneXScale"
               :safe-zone-y-scale="getSafeZoneYScale(activeSlide)"
               :video-format="format"
@@ -903,15 +969,21 @@ const emit = defineEmits([
 
 const isFullscreen = ref(false)
 const fullscreenIndex = ref(0)
+const fullscreenLeftPanelCollapsed = ref(false)
+const fullscreenRightPanelCollapsed = ref(false)
 const previousBodyOverflow = ref('')
 const SAFE_ZONE_DEFAULT_SCALE = 1.15
 const SAFE_ZONE_DEFAULT_SCALE_YOUTUBE = 1.0
 const MATH_SCALE_DEFAULT_REEL = 1.0
-const MATH_SCALE_DEFAULT_YOUTUBE = 1.0
+const MATH_SCALE_DEFAULT_YOUTUBE_CALCUL = 2.0
+const MATH_SCALE_DEFAULT_YOUTUBE_EDGE = 1.0
+const MATH_SCALE_MIN = 0.05
+const SPLIT_RIGHT_SCALE_DEFAULT = 1.0
 const CUMULATIVE_GAP_DEFAULT_YOUTUBE = 0.35
 const mathScaleCalcul = ref(MATH_SCALE_DEFAULT_REEL)
 const mathScaleHook = ref(MATH_SCALE_DEFAULT_REEL)
 const mathScaleCta = ref(MATH_SCALE_DEFAULT_REEL)
+const splitRightScale = ref(SPLIT_RIGHT_SCALE_DEFAULT)
 const safeZoneXScale = ref(SAFE_ZONE_DEFAULT_SCALE)
 const safeZoneMathYScale = ref(SAFE_ZONE_DEFAULT_SCALE)
 const safeZoneHookYScale = ref(SAFE_ZONE_DEFAULT_SCALE)
@@ -1150,8 +1222,6 @@ const INLINE_SEPARATOR_VALUES = new Set([
   INLINE_SEPARATOR_ARROW,
   INLINE_SEPARATOR_NONE,
 ])
-const CUMULATIVE_GAP_MIN = 0
-const CUMULATIVE_GAP_MAX = 1.5
 const CUMULATIVE_GAP_STEP = 0.1
 const CUMULATIVE_GAP_DEFAULT = 0.4
 const COVER_SLIDE_ID = '__optitab_reel_cover__'
@@ -1171,6 +1241,7 @@ const VIDEO_EXPORT_PRESETS = computed(() => isYoutubeFormat.value
 )
 const mathSizePercent = computed(() => Math.round(getMathScale(activeSlide.value) * 100))
 const mathSizeLabel = computed(() => getActiveSlideTypeLabel('Taille'))
+const splitRightSizePercent = computed(() => Math.round(splitRightScale.value * 100))
 const safeZoneXPercent = computed(() => Math.round(safeZoneXScale.value * 100))
 const safeZoneYPercent = computed(() => Math.round(getSafeZoneYScale(activeSlide.value) * 100))
 const safeZoneYLabel = computed(() => getActiveSlideTypeLabel('Safe V'))
@@ -1355,6 +1426,19 @@ function isEdgeSlide(slide) {
   return isVirtualCoverSlide(slide) || NON_MATH_SLIDE_TYPES.has(getSlideType(slide))
 }
 
+function hasSplitRightPanel(slide) {
+  const raw = String(slide?.layout_notes || '').trim()
+  if (!raw) return false
+  try {
+    const parsed = JSON.parse(raw)
+    const split = parsed && typeof parsed === 'object' ? parsed.split : null
+    if (!split || typeof split !== 'object') return false
+    return Boolean(String(split.label || '').trim() || String(split.right_katex || '').trim())
+  } catch (_) {
+    return false
+  }
+}
+
 function getActiveSlideTypeLabel(prefix) {
   const slideType = getSlideType(activeSlide.value)
   if (slideType === 'hook') return `${prefix} Hook`
@@ -1374,6 +1458,13 @@ function getMathScale(slide) {
   if (isHookLikeSlide(slide)) return mathScaleHook.value
   if (slideType === 'cta') return mathScaleCta.value
   return mathScaleCalcul.value
+}
+
+function getMathScaleDefault(slide) {
+  if (!isYoutubeFormat.value) return MATH_SCALE_DEFAULT_REEL
+  const slideType = getSlideType(slide)
+  if (isHookLikeSlide(slide) || slideType === 'cta') return MATH_SCALE_DEFAULT_YOUTUBE_EDGE
+  return MATH_SCALE_DEFAULT_YOUTUBE_CALCUL
 }
 
 function getActiveSafeZoneYRef() {
@@ -1456,27 +1547,55 @@ function normalizeInlineSeparator(value) {
 function clampCumulativeGap(value) {
   const numeric = Number(value)
   if (!Number.isFinite(numeric)) return CUMULATIVE_GAP_DEFAULT
-  return Math.min(CUMULATIVE_GAP_MAX, Math.max(CUMULATIVE_GAP_MIN, Number(numeric.toFixed(2))))
+  return Number(numeric.toFixed(2))
 }
 
 function makeKatexRow(line, inlineOffsetPercent = 0, inlineVerticalOffsetEm = 0) {
   return {
     parts: [line],
     inlineSeparators: [],
+    inlineOffsetPercents: [],
+    inlineVerticalOffsetEms: [],
     inlineOffsetPercent: clampInlineOffset(inlineOffsetPercent),
     inlineVerticalOffsetEm: clampInlineVerticalOffset(inlineVerticalOffsetEm),
   }
 }
 
 function cloneKatexRows(rows) {
-  return (Array.isArray(rows) ? rows : []).map((row) => ({
-    parts: Array.isArray(row?.parts) ? [...row.parts] : [],
-    inlineSeparators: Array.isArray(row?.inlineSeparators)
-      ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
-      : [],
-    inlineOffsetPercent: clampInlineOffset(row?.inlineOffsetPercent),
-    inlineVerticalOffsetEm: clampInlineVerticalOffset(row?.inlineVerticalOffsetEm),
-  }))
+  return (Array.isArray(rows) ? rows : []).map((row) => {
+    const parts = Array.isArray(row?.parts) ? [...row.parts] : []
+    const inlineCount = Math.max(parts.length - 1, 0)
+    const fallbackOffset = clampInlineOffset(row?.inlineOffsetPercent)
+    const fallbackVerticalOffset = clampInlineVerticalOffset(row?.inlineVerticalOffsetEm)
+    const inlineOffsetPercents = Array.isArray(row?.inlineOffsetPercents)
+      ? row.inlineOffsetPercents.slice(0, inlineCount).map((value) => clampInlineOffset(value))
+      : []
+    const inlineVerticalOffsetEms = Array.isArray(row?.inlineVerticalOffsetEms)
+      ? row.inlineVerticalOffsetEms.slice(0, inlineCount).map((value) => clampInlineVerticalOffset(value))
+      : []
+
+    while (inlineOffsetPercents.length < inlineCount) {
+      inlineOffsetPercents.push(fallbackOffset)
+    }
+    while (inlineVerticalOffsetEms.length < inlineCount) {
+      inlineVerticalOffsetEms.push(fallbackVerticalOffset)
+    }
+
+    return {
+      parts,
+      inlineSeparators: Array.isArray(row?.inlineSeparators)
+        ? row.inlineSeparators.map((value) => normalizeInlineSeparator(value))
+        : [],
+      inlineOffsetPercents,
+      inlineVerticalOffsetEms,
+      inlineOffsetPercent: inlineOffsetPercents.length
+        ? inlineOffsetPercents[inlineOffsetPercents.length - 1]
+        : fallbackOffset,
+      inlineVerticalOffsetEm: inlineVerticalOffsetEms.length
+        ? inlineVerticalOffsetEms[inlineVerticalOffsetEms.length - 1]
+        : fallbackVerticalOffset,
+    }
+  })
 }
 
 function getKatexRowsLineKeys(rows) {
@@ -1560,11 +1679,17 @@ const baseSlidesForRender = computed(() => {
 
       if (inlineWithPrevious && !addedInlineLine && cumulativeRows.length > 0) {
         const lastRow = cumulativeRows[cumulativeRows.length - 1]
+        const inlineOffset = clampInlineOffset(safeSlide.katex_inline_offset_percent)
+        const inlineVerticalOffset = clampInlineVerticalOffset(safeSlide.katex_inline_vertical_offset_em)
         lastRow.parts.push(line)
         lastRow.inlineSeparators = Array.isArray(lastRow.inlineSeparators) ? lastRow.inlineSeparators : []
+        lastRow.inlineOffsetPercents = Array.isArray(lastRow.inlineOffsetPercents) ? lastRow.inlineOffsetPercents : []
+        lastRow.inlineVerticalOffsetEms = Array.isArray(lastRow.inlineVerticalOffsetEms) ? lastRow.inlineVerticalOffsetEms : []
         lastRow.inlineSeparators.push(normalizeInlineSeparator(safeSlide.katex_inline_separator))
-        lastRow.inlineOffsetPercent = clampInlineOffset(safeSlide.katex_inline_offset_percent)
-        lastRow.inlineVerticalOffsetEm = clampInlineVerticalOffset(safeSlide.katex_inline_vertical_offset_em)
+        lastRow.inlineOffsetPercents.push(inlineOffset)
+        lastRow.inlineVerticalOffsetEms.push(inlineVerticalOffset)
+        lastRow.inlineOffsetPercent = inlineOffset
+        lastRow.inlineVerticalOffsetEm = inlineVerticalOffset
         addedInlineLine = true
         continue
       }
@@ -1584,12 +1709,27 @@ const baseSlidesForRender = computed(() => {
       return
     }
 
+    const removedInlinePart = parts.length > 1
     const removedLine = parts.pop()
-    if (Array.isArray(lastRow.inlineSeparators) && lastRow.inlineSeparators.length) {
+    if (removedInlinePart && Array.isArray(lastRow.inlineSeparators) && lastRow.inlineSeparators.length) {
       lastRow.inlineSeparators.pop()
+    }
+    if (removedInlinePart && Array.isArray(lastRow.inlineOffsetPercents) && lastRow.inlineOffsetPercents.length) {
+      lastRow.inlineOffsetPercents.pop()
+    }
+    if (removedInlinePart && Array.isArray(lastRow.inlineVerticalOffsetEms) && lastRow.inlineVerticalOffsetEms.length) {
+      lastRow.inlineVerticalOffsetEms.pop()
     }
     if (!parts.length) {
       cumulativeRows.pop()
+    } else {
+      const lastInlineIndex = parts.length - 2
+      lastRow.inlineOffsetPercent = lastInlineIndex >= 0
+        ? clampInlineOffset(lastRow.inlineOffsetPercents?.[lastInlineIndex])
+        : 0
+      lastRow.inlineVerticalOffsetEm = lastInlineIndex >= 0
+        ? clampInlineVerticalOffset(lastRow.inlineVerticalOffsetEms?.[lastInlineIndex])
+        : 0
     }
 
     const removedKey = normalizeKatexLine(removedLine)
@@ -1600,6 +1740,21 @@ const baseSlidesForRender = computed(() => {
     }
   }
 
+  function isMethodSlide(safeSlide) {
+    const raw = String(safeSlide?.layout_notes || '').trim()
+    if (!raw) return false
+    try {
+      const parsed = JSON.parse(raw)
+      return Boolean(parsed && typeof parsed === 'object' && parsed.method)
+    } catch (_) {
+      return false
+    }
+  }
+
+  function resetKeepsPreviousLine(safeSlide) {
+    return safeSlide?.katex_reset_keep_previous_line !== false
+  }
+
   return slidesSafe.value.map((slide, index) => {
     const safeSlide = slide && typeof slide === 'object' ? slide : {}
     const slideType = normalizeText(safeSlide.slide_type).toLowerCase()
@@ -1607,6 +1762,16 @@ const baseSlidesForRender = computed(() => {
     const baseKatex = normalizeText(safeSlide.katex)
 
     if (NON_MATH_SLIDE_TYPES.has(slideType)) {
+      resetCumulativeState()
+      carriedScreenText = ''
+      return {
+        ...safeSlide,
+        display_screen_text: baseText,
+        display_katex: baseKatex,
+      }
+    }
+
+    if (isMethodSlide(safeSlide)) {
       resetCumulativeState()
       carriedScreenText = ''
       return {
@@ -1634,12 +1799,16 @@ const baseSlidesForRender = computed(() => {
     const displayScreenText = baseText || carriedScreenText
     if (slideType === 'katex') {
       const currentLines = splitKatexLines(baseKatex)
-      if (safeSlide.katex_drop_previous_line) {
+      const resetCumulative = Boolean(safeSlide.katex_reset_cumulative)
+      const keepPreviousOnReset = resetKeepsPreviousLine(safeSlide)
+      if (resetCumulative && !keepPreviousOnReset) {
+        resetCumulativeState()
+      } else if (safeSlide.katex_drop_previous_line) {
         dropPreviousCumulativeLine()
       }
       const inlineWithPrevious = Boolean(safeSlide.katex_inline_with_previous) && cumulativeRows.length > 0
       appendKatexLines(currentLines, safeSlide, inlineWithPrevious)
-      if (safeSlide.katex_reset_cumulative) {
+      if (resetCumulative && keepPreviousOnReset) {
         cumulativeRows = cloneKatexRows(cumulativeRows).slice(-2)
         cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
       }
@@ -1654,12 +1823,16 @@ const baseSlidesForRender = computed(() => {
 
     if (slideType === 'cumulative_katex' || slideType === 'result') {
       const currentLines = splitKatexLines(baseKatex)
-      if (safeSlide.katex_drop_previous_line) {
+      const resetCumulative = Boolean(safeSlide.katex_reset_cumulative)
+      const keepPreviousOnReset = resetKeepsPreviousLine(safeSlide)
+      if (resetCumulative && !keepPreviousOnReset) {
+        resetCumulativeState()
+      } else if (safeSlide.katex_drop_previous_line) {
         dropPreviousCumulativeLine()
       }
       const inlineWithPrevious = Boolean(safeSlide.katex_inline_with_previous) && cumulativeRows.length > 0
       appendKatexLines(currentLines, safeSlide, inlineWithPrevious)
-      if (safeSlide.katex_reset_cumulative) {
+      if (resetCumulative && keepPreviousOnReset) {
         cumulativeRows = cloneKatexRows(cumulativeRows).slice(-2)
         cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
       }
@@ -1720,6 +1893,7 @@ const activeInlineVerticalOffsetLabel = computed(() => {
 })
 const cumulativeGapLabel = computed(() => `${cumulativeGap.value.toFixed(1)}em`)
 const activeSlideResetsCumulative = computed(() => Boolean(activeSlide.value?.katex_reset_cumulative))
+const activeResetKeepsPreviousLine = computed(() => activeSlide.value?.katex_reset_keep_previous_line !== false)
 const activeSlideDropsPreviousLine = computed(() => Boolean(activeSlide.value?.katex_drop_previous_line))
 const activeSlideKatexRevealWithSpeech = computed(() => Boolean(activeSlide.value?.katex_reveal_with_speech))
 const activeSlideCanAnimateKatex = computed(() => (
@@ -1730,6 +1904,11 @@ const activeSlideCanAnimateKatex = computed(() => (
     || normalizeText(activeSlide.value?.katex)
     || normalizeText(activeSlide.value?.display_katex)
   )
+))
+const activeSlideHasSplitRightPanel = computed(() => (
+  isYoutubeFormat.value
+  && Boolean(activeSlide.value)
+  && hasSplitRightPanel(activeSlide.value)
 ))
 const katexSpeechRevealLabel = computed(() => (activeSlideKatexRevealWithSpeech.value ? 'Activée' : 'Désactivée'))
 const canToggleKatexLineMode = computed(() => {
@@ -1770,6 +1949,8 @@ function openFullscreenAt(index) {
 
   fullscreenIndex.value = normalizedIndex
   isFullscreen.value = true
+  fullscreenLeftPanelCollapsed.value = false
+  fullscreenRightPanelCollapsed.value = false
   fullscreenEditorTab.value = 'speech'
   annotationActiveTool.value = 'select'
   annotationSelectedId.value = null
@@ -2061,7 +2242,9 @@ function applyKatexColor(colorHex) {
 }
 
 function clampMathScale(value) {
-  return Math.min(1.3, Math.max(0.75, Number(value.toFixed(2))))
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return MATH_SCALE_DEFAULT_REEL
+  return Math.max(MATH_SCALE_MIN, Number(numeric.toFixed(2)))
 }
 
 function decreaseMathSize() {
@@ -2075,7 +2258,19 @@ function increaseMathSize() {
 }
 
 function resetMathSize() {
-  getActiveMathScaleRef().value = 1
+  getActiveMathScaleRef().value = getMathScaleDefault(activeSlide.value)
+}
+
+function decreaseSplitRightSize() {
+  splitRightScale.value = clampMathScale(splitRightScale.value - 0.05)
+}
+
+function increaseSplitRightSize() {
+  splitRightScale.value = clampMathScale(splitRightScale.value + 0.05)
+}
+
+function resetSplitRightSize() {
+  splitRightScale.value = SPLIT_RIGHT_SCALE_DEFAULT
 }
 
 function clampSafeZoneScale(value) {
@@ -2116,15 +2311,15 @@ function resetSafeZoneY() {
 function applyFormatDefaults() {
   const isYt = isYoutubeFormat.value
   const safeDefault = isYt ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE : SAFE_ZONE_DEFAULT_SCALE
-  const mathDefault = isYt ? MATH_SCALE_DEFAULT_YOUTUBE : MATH_SCALE_DEFAULT_REEL
   const gapDefault = isYt ? CUMULATIVE_GAP_DEFAULT_YOUTUBE : CUMULATIVE_GAP_DEFAULT
   safeZoneXScale.value = safeDefault
   safeZoneMathYScale.value = safeDefault
   safeZoneHookYScale.value = safeDefault
   safeZoneCtaYScale.value = safeDefault
-  mathScaleCalcul.value = mathDefault
-  mathScaleHook.value = mathDefault
-  mathScaleCta.value = mathDefault
+  mathScaleCalcul.value = isYt ? MATH_SCALE_DEFAULT_YOUTUBE_CALCUL : MATH_SCALE_DEFAULT_REEL
+  mathScaleHook.value = isYt ? MATH_SCALE_DEFAULT_YOUTUBE_EDGE : MATH_SCALE_DEFAULT_REEL
+  mathScaleCta.value = isYt ? MATH_SCALE_DEFAULT_YOUTUBE_EDGE : MATH_SCALE_DEFAULT_REEL
+  splitRightScale.value = SPLIT_RIGHT_SCALE_DEFAULT
   cumulativeGap.value = gapDefault
 }
 
@@ -2291,10 +2486,23 @@ function resetActiveInlineVerticalOffset() {
 function toggleActiveResetCumulative() {
   if (!activeSlide.value?.id || isEdgeSlide(activeSlide.value)) return
 
+  const nextReset = !activeSlideResetsCumulative.value
   emit('update-slide', {
     id: activeSlide.value.id,
     patch: {
-      katex_reset_cumulative: !activeSlideResetsCumulative.value,
+      katex_reset_cumulative: nextReset,
+      katex_reset_keep_previous_line: true,
+    },
+  })
+}
+
+function setActiveResetKeepPreviousLine(keepPrevious) {
+  if (!activeSlide.value?.id || isEdgeSlide(activeSlide.value) || !activeSlideResetsCumulative.value) return
+
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: {
+      katex_reset_keep_previous_line: Boolean(keepPrevious),
     },
   })
 }
@@ -3179,6 +3387,49 @@ onBeforeUnmount(() => {
   justify-content: center;
 }
 
+.fullscreen-side-toggle {
+  position: absolute;
+  top: 18px;
+  z-index: 3;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(191, 219, 254, 0.82);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #1e3a8a;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.24);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+}
+
+.fullscreen-side-toggle:hover {
+  background: #eff6ff;
+  border-color: rgba(147, 197, 253, 0.95);
+}
+
+.fullscreen-side-toggle--collapsed {
+  background: #1d4ed8;
+  color: #ffffff;
+  border-color: rgba(147, 197, 253, 0.95);
+}
+
+.fullscreen-side-toggle--left {
+  left: 20px;
+}
+
+.fullscreen-side-toggle--right {
+  right: 20px;
+}
+
+.fullscreen-side-toggle-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
 .full-preview-button {
   min-width: 176px;
   border: 1px solid rgba(191, 219, 254, 0.82);
@@ -3215,11 +3466,15 @@ onBeforeUnmount(() => {
 }
 
 .fullscreen-content {
+  --fullscreen-left-col: minmax(230px, 310px);
+  --fullscreen-center-col: minmax(0, auto);
+  --fullscreen-right-col: minmax(230px, 300px);
+  --fullscreen-gap: 20px;
   width: min(1500px, 100%);
   max-height: calc(100dvh - 92px);
   display: grid;
-  grid-template-columns: minmax(230px, 310px) minmax(0, auto) minmax(230px, 300px);
-  gap: 20px;
+  grid-template-columns: var(--fullscreen-left-col) var(--fullscreen-center-col) var(--fullscreen-right-col);
+  gap: var(--fullscreen-gap);
   align-items: center;
   justify-content: center;
 }
@@ -3231,9 +3486,25 @@ onBeforeUnmount(() => {
 }
 
 .fullscreen-content--youtube {
+  --fullscreen-left-col: minmax(220px, 280px);
+  --fullscreen-center-col: minmax(0, 1fr);
+  --fullscreen-right-col: minmax(220px, 280px);
+  --fullscreen-gap: clamp(10px, 1.1vw, 16px);
   width: min(1760px, calc(100dvw - 40px));
-  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(220px, 280px);
-  gap: clamp(10px, 1.1vw, 16px);
+}
+
+.fullscreen-content--left-collapsed {
+  --fullscreen-left-col: 0px;
+  --fullscreen-gap: 10px;
+}
+
+.fullscreen-content--right-collapsed {
+  --fullscreen-right-col: 0px;
+  --fullscreen-gap: 10px;
+}
+
+.fullscreen-content--both-collapsed {
+  --fullscreen-gap: 0px;
 }
 
 .fullscreen-speech-panel {
@@ -3491,6 +3762,14 @@ onBeforeUnmount(() => {
   padding-top: 2px;
 }
 
+.reset-page-options {
+  padding-top: 6px;
+}
+
+.reset-page-option {
+  min-width: 86px;
+}
+
 .inline-offset-button {
   min-width: 34px;
 }
@@ -3675,8 +3954,27 @@ onBeforeUnmount(() => {
     width: calc(100% - 20px);
   }
 
+  .fullscreen-side-toggle {
+    top: 12px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .fullscreen-side-toggle--left {
+    left: 10px;
+  }
+
+  .fullscreen-side-toggle--right {
+    right: 10px;
+  }
+
+  .fullscreen-side-toggle-icon {
+    width: 22px;
+    height: 22px;
+  }
+
   .full-preview-button {
-    width: min(260px, 100%);
+    width: min(180px, calc(100% - 120px));
     min-width: 0;
     font-size: 13px;
     padding: 12px 16px;

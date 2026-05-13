@@ -1,6 +1,12 @@
 from django.urls import path
 from .views import RootView
-from .newsletter_views import newsletter_subscribe, newsletter_unsubscribe, newsletter_subscribers_list, newsletter_broadcast
+from .newsletter_views import (
+    newsletter_subscribe,
+    newsletter_unsubscribe,
+    newsletter_subscribers_list,
+    newsletter_broadcast,
+    diagnostic_lead,
+)
 
 app_name = 'core'
 
@@ -10,4 +16,5 @@ urlpatterns = [
     path('api/newsletter/unsubscribe/<str:token>/', newsletter_unsubscribe, name='newsletter_unsubscribe'),
     path('api/newsletter/subscribers/', newsletter_subscribers_list, name='newsletter_subscribers_list'),
     path('api/newsletter/broadcast/', newsletter_broadcast, name='newsletter_broadcast'),
+    path('api/newsletter/diagnostic-lead/', diagnostic_lead, name='diagnostic_lead'),
 ]

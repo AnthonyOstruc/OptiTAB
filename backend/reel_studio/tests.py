@@ -182,6 +182,35 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(project.speech_status, ReelProject.SPEECH_STATUS_READY)
         self.assertEqual(project.instagram_caption, 'Description sauvegardee.')
 
+    def test_auto_template_result_slide_is_standalone(self):
+        project = ReelProject.objects.create(title='Reel auto', slide_count=0)
+
+        response = self.client.post(
+            reverse('reel-project-generate-from-template', args=[project.pk]),
+            {
+                'template_text': '\n'.join([
+                    'TITLE: Calcul test',
+                    'HOOK: Defi express',
+                    'KATEX: x=1',
+                    'TEXT: Tu trouves combien ?',
+                    'TEXT: Correction :',
+                    'KATEX: x=2',
+                    'KATEX: x=3',
+                ]),
+            },
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, 201)
+        slides = response.data['slides']
+        result_slide = next(slide for slide in slides if slide['slide_type'] == ReelSlide.TYPE_RESULT)
+        correction_slide = next(slide for slide in slides if slide['screen_text'] == 'Correction :')
+
+        self.assertEqual(correction_slide['slide_type'], ReelSlide.TYPE_KATEX)
+        self.assertEqual(result_slide['screen_text'], '')
+        self.assertIn('x=3', result_slide['katex'])
+        self.assertNotIn('x=2', result_slide['katex'])
+
     @override_settings(ELEVENLABS_API_KEY='test-key', ELEVENLABS_VOICE_ID='6FXyooAOTqUK8m2HWm32')
     def test_builtin_voices_are_first_elevenlabs_choices(self):
         class FakeResponse:

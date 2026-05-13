@@ -4,12 +4,19 @@ from rest_framework import status
 from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponse
+from django.utils import timezone
 
 from .services import ResponseService, EmailService
-from .models import NewsletterSubscriber
+from .models import NewsletterSubscriber, DiagnosticLead
+import logging
 import re
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+logger = logging.getLogger(__name__)
+
+_VALID_LEVELS = {choice[0] for choice in DiagnosticLead.LEVEL_CHOICES}
+_VALID_DIFFICULTIES = {choice[0] for choice in DiagnosticLead.DIFFICULTY_CHOICES}
+_VALID_FORM_LOCATIONS = {choice[0] for choice in DiagnosticLead.FORM_LOCATION_CHOICES}
 
 
 @api_view(["POST"])
@@ -60,6 +67,199 @@ def newsletter_subscribe(request):
         message="Inscription prise en compte. Un email de bienvenue vient d'être envoyé.",
         data={"email": sub.email},
         status_code=status.HTTP_200_OK
+    )
+
+
+def _client_ip(request):
+    """Récupère l'IP client en tenant compte du reverse proxy."""
+    forwarded = request.META.get('HTTP_X_FORWARDED_FOR', '')
+    if forwarded:
+        return forwarded.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR')
+
+
+def _truncate(value, max_length):
+    if value is None:
+        return ''
+    return str(value)[:max_length]
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+@authentication_classes([])
+def diagnostic_lead(request):
+    """Capture d'un lead pour le diagnostic gratuit maths.
+
+    Endpoint public, sans authentification.
+    Body JSON :
+      {
+        "firstName": "Léa",
+        "email": "lea@example.fr",
+        "level": "terminale",
+        "difficulty": "cours_vs_exercices",
+        "consentEmailMarketing": true,
+        "consentTimestamp": "2026-05-13T14:32:00.000Z",
+        "formLocation": "main",
+        "leadMagnet": "diagnostic_maths",
+        "context": {
+          "utm_source": "...",
+          "utm_medium": "...",
+          "utm_campaign": "...",
+          "utm_content": "...",
+          "utm_term": "...",
+          "gclid": "...",
+          "fbclid": "...",
+          "ttclid": "...",
+          "msclkid": "...",
+          "referrer": "...",
+          "landing_path": "/diagnostic-maths-gratuit"
+        }
+      }
+    """
+    data = request.data or {}
+
+    # Honeypot anti-bot : si le champ "website" est rempli, on simule un succès
+    # sans rien enregistrer (le formulaire frontend cache ce champ aux humains).
+    if (data.get('website') or '').strip():
+        return ResponseService.success(
+            message="Diagnostic en cours d'envoi.",
+            data={"lead_id": None},
+            status_code=status.HTTP_200_OK,
+        )
+
+    email = (data.get('email') or '').strip().lower()
+    first_name = (data.get('firstName') or '').strip()
+    level = (data.get('level') or '').strip().lower()
+    difficulty = (data.get('difficulty') or '').strip().lower()
+    consent = bool(data.get('consentEmailMarketing'))
+    form_location = (data.get('formLocation') or 'main').strip().lower()
+    lead_magnet = (data.get('leadMagnet') or 'diagnostic_maths').strip().lower()
+    context = data.get('context') or {}
+    if not isinstance(context, dict):
+        context = {}
+
+    # Validation
+    errors = {}
+    if not email or not EMAIL_REGEX.match(email):
+        errors['email'] = "Email invalide"
+    if not first_name:
+        errors['firstName'] = "Prénom requis"
+    if level not in _VALID_LEVELS:
+        errors['level'] = "Niveau invalide"
+    if difficulty not in _VALID_DIFFICULTIES:
+        errors['difficulty'] = "Difficulté invalide"
+    if errors:
+        return ResponseService.validation_error(errors)
+
+    if form_location not in _VALID_FORM_LOCATIONS:
+        form_location = 'main'
+
+    ip = _client_ip(request)
+
+    # Date du consentement : on accepte celle envoyée par le client (qui doit être
+    # honnête), mais on tombe sur "now" si invalide / absente.
+    consent_timestamp = None
+    raw_ts = (data.get('consentTimestamp') or '').strip()
+    if raw_ts:
+        try:
+            from django.utils.dateparse import parse_datetime
+            consent_timestamp = parse_datetime(raw_ts)
+        except Exception:
+            consent_timestamp = None
+    if consent_timestamp is None and consent:
+        consent_timestamp = timezone.now()
+
+    # Création du lead
+    try:
+        lead = DiagnosticLead.objects.create(
+            email=email,
+            first_name=first_name[:120],
+            level=level,
+            difficulty=difficulty,
+            consent_email_marketing=consent,
+            consent_timestamp=consent_timestamp,
+            consent_ip=ip,
+            form_location=form_location,
+            lead_magnet=lead_magnet[:60],
+            landing_path=_truncate(context.get('landing_path'), 255),
+            referrer=_truncate(context.get('referrer'), 500),
+            utm_source=_truncate(context.get('utm_source'), 100),
+            utm_medium=_truncate(context.get('utm_medium'), 100),
+            utm_campaign=_truncate(context.get('utm_campaign'), 100),
+            utm_content=_truncate(context.get('utm_content'), 100),
+            utm_term=_truncate(context.get('utm_term'), 100),
+            gclid=_truncate(context.get('gclid'), 255),
+            fbclid=_truncate(context.get('fbclid'), 255),
+            ttclid=_truncate(context.get('ttclid'), 255),
+            msclkid=_truncate(context.get('msclkid'), 255),
+        )
+    except Exception as exc:
+        logger.exception("Erreur création DiagnosticLead: %s", exc)
+        return ResponseService.error(
+            message="Une erreur est survenue. Réessaie dans quelques secondes.",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+    # Si l'utilisateur a coché l'opt-in marketing, on l'ajoute aussi à la
+    # newsletter (réutilise la mécanique existante : email de bienvenue +
+    # lien de désinscription unique).
+    if consent:
+        try:
+            sub = NewsletterSubscriber.objects.filter(email__iexact=email).first()
+            changed = False
+            if not sub:
+                sub = NewsletterSubscriber.objects.create(
+                    email=email,
+                    first_name=first_name[:120],
+                    last_name='',
+                    consent_ip=ip,
+                    est_actif=True,
+                    source='diagnostic_landing',
+                )
+            else:
+                if first_name and sub.first_name != first_name[:120]:
+                    sub.first_name = first_name[:120]
+                    changed = True
+                if not sub.est_actif or sub.unsubscribed_at is not None:
+                    sub.reactivate(save=False)
+                    changed = True
+                if ip and sub.consent_ip != ip:
+                    sub.consent_ip = ip
+                    changed = True
+                if sub.source != 'diagnostic_landing':
+                    sub.source = 'diagnostic_landing'
+                    changed = True
+                if changed:
+                    sub.save()
+
+            lead.linked_subscriber = sub
+            lead.save(update_fields=['linked_subscriber', 'date_modification'])
+
+            # Email de bienvenue (réutilise le template existant). Le PDF du
+            # diagnostic est envoyé séparément (par Brevo automation ou tâche
+            # asynchrone branchée sur le segment `source=diagnostic_landing`).
+            try:
+                unsub_url = request.build_absolute_uri(
+                    reverse('core:newsletter_unsubscribe', args=[sub.unsubscribe_token])
+                )
+                EmailService.send_newsletter_welcome(sub, unsub_url)
+            except Exception as exc:
+                logger.warning("Email diagnostic non envoyé pour %s : %s", email, exc)
+        except Exception as exc:
+            # Le lead est enregistré, on n'échoue pas la requête à cause de la
+            # newsletter — on log et on continue.
+            logger.warning("Échec liaison newsletter pour lead %s : %s", lead.id, exc)
+
+    return ResponseService.success(
+        message="Diagnostic envoyé ! Vérifie ta boîte mail.",
+        data={
+            "lead_id": lead.id,
+            "email": lead.email,
+            "level": lead.level,
+            "difficulty": lead.difficulty,
+            "newsletter_subscribed": consent and lead.linked_subscriber_id is not None,
+        },
+        status_code=status.HTTP_200_OK,
     )
 
 

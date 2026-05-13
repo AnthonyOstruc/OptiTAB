@@ -7,6 +7,16 @@ export async function subscribeToNewsletter(email, firstName = '', lastName = ''
   return data
 }
 
+// Lead capture pour la landing diagnostic gratuit maths
+// Le backend doit exposer POST /api/newsletter/diagnostic-lead/
+// Champs attendus côté serveur :
+//   firstName, email, level, difficulty, consentEmailMarketing,
+//   consentTimestamp, leadMagnet, formLocation, context (utm, gclid, referrer, landing_path)
+export async function submitDiagnosticLead(payload) {
+  const { data } = await apiClient.post('/api/newsletter/diagnostic-lead/', payload)
+  return data
+}
+
 export async function getNewsletterSubscribers(params = {}) {
   const { q = '', active = true, limit = 100, offset = 0 } = params
   const response = await apiClient.get('/api/newsletter/subscribers/', { params: { q, active, limit, offset } })
@@ -22,6 +32,7 @@ export async function broadcastNewsletter({ subject, text = '', html = '', limit
 
 export default {
   subscribeToNewsletter,
+  submitDiagnosticLead,
   getNewsletterSubscribers,
   broadcastNewsletter,
 }

@@ -1,16 +1,16 @@
-from django.db.models import Max, F
+from django.db.models import Max
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import MathRunScore
+from .permissions import IsStaffOrSuperuser
 from .serializers import MathRunScoreSubmitSerializer
 from users.models import CustomUser
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsStaffOrSuperuser])
 def submit_score(request):
     serializer = MathRunScoreSubmitSerializer(data=request.data)
     if not serializer.is_valid():
@@ -39,7 +39,7 @@ def submit_score(request):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsStaffOrSuperuser])
 def get_leaderboard(request):
     category = request.query_params.get('category', 'all')
     if category not in ['all', 'addition', 'subtraction', 'multiplication', 'division']:

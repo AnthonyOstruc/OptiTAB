@@ -1298,6 +1298,36 @@ function normalizeText(value) {
   return String(value || '').trim()
 }
 
+function normalizeTextForCompare(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '')
+    .trim()
+}
+
+function isResultLikeSlide(slideType, slide) {
+  const normalizedTitle = normalizeTextForCompare(slide?.title)
+  return (
+    slideType === 'result'
+    || normalizedTitle === 'resultat'
+    || normalizedTitle.startsWith('resultatfinal')
+  )
+}
+
+function startsWithCorrectionHeading(value) {
+  const firstLine = String(value || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find(Boolean)
+  return ['correction', 'corrige'].includes(normalizeTextForCompare(firstLine))
+}
+
+function resultScreenText(baseText) {
+  return startsWithCorrectionHeading(baseText) ? '' : baseText
+}
+
 function normalizeSpeechLine(value) {
   return String(value || '')
     .replace(/\r\n/g, '\n')
@@ -1760,6 +1790,7 @@ const baseSlidesForRender = computed(() => {
     const slideType = normalizeText(safeSlide.slide_type).toLowerCase()
     const baseText = normalizeText(safeSlide.screen_text)
     const baseKatex = normalizeText(safeSlide.katex)
+    const resultLikeSlide = isResultLikeSlide(slideType, safeSlide)
 
     if (NON_MATH_SLIDE_TYPES.has(slideType)) {
       resetCumulativeState()
@@ -1793,10 +1824,35 @@ const baseSlidesForRender = computed(() => {
       }
     }
 
-    if (baseText) {
+    if (baseText && !resultLikeSlide) {
       carriedScreenText = baseText
     }
-    const displayScreenText = baseText || carriedScreenText
+    const displayScreenText = resultLikeSlide
+      ? resultScreenText(baseText)
+      : (baseText || carriedScreenText)
+
+    if (resultLikeSlide) {
+      const currentLines = splitKatexLines(baseKatex)
+      let resultRows = currentLines
+        .filter((line) => {
+          const key = normalizeKatexLine(line)
+          return key && !cumulativeLineKeys.has(key)
+        })
+        .map((line) => makeKatexRow(line))
+
+      if (!resultRows.length && currentLines.length) {
+        resultRows = [makeKatexRow(currentLines[currentLines.length - 1])]
+      }
+
+      return {
+        ...safeSlide,
+        display_screen_text: displayScreenText,
+        display_katex_row_gap_em: cumulativeGap.value,
+        display_katex_rows: resultRows,
+        display_katex: toAlignedKatexRows(resultRows, cumulativeGap.value) || baseKatex,
+      }
+    }
+
     if (slideType === 'katex') {
       const currentLines = splitKatexLines(baseKatex)
       const resetCumulative = Boolean(safeSlide.katex_reset_cumulative)
@@ -1821,7 +1877,7 @@ const baseSlidesForRender = computed(() => {
       }
     }
 
-    if (slideType === 'cumulative_katex' || slideType === 'result') {
+    if (slideType === 'cumulative_katex') {
       const currentLines = splitKatexLines(baseKatex)
       const resetCumulative = Boolean(safeSlide.katex_reset_cumulative)
       const keepPreviousOnReset = resetKeepsPreviousLine(safeSlide)

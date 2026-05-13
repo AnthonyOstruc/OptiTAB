@@ -50,7 +50,12 @@ const routes = [
       }
     }
   },
-  { path: '/jeux/math-run', name: 'MathRun', component: () => import('@/views/games/MathRunView.vue') },
+  {
+    path: '/jeux/math-run',
+    name: 'MathRun',
+    component: () => import('@/views/games/MathRunView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'Dashboard' }
+  },
   { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
   { path: '/plateforme-maths', name: 'GoogleAdsLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { path: '/bases-methode', name: 'BasesMethodeLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
@@ -59,6 +64,17 @@ const routes = [
     alias: ['/exercices-corriges-pas-a-pas'],
     name: 'ExercicesCorrigesLanding',
     component: () => import('@/views/GoogleAdsLanding.vue')
+  },
+  {
+    path: '/diagnostic-maths-gratuit',
+    name: 'DiagnosticLanding',
+    component: () => import('@/views/DiagnosticLanding.vue')
+  },
+  {
+    path: '/diagnostic-merci',
+    name: 'DiagnosticMerci',
+    component: () => import('@/views/DiagnosticMerci.vue'),
+    meta: { robots: 'noindex,nofollow' }
   },
   { 
     path: '/ressources-gratuites', 

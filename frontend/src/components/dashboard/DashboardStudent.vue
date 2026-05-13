@@ -52,7 +52,7 @@
 
 
     <!-- Mini-jeux -->
-    <div class="section games-section">
+    <div v-if="userStore.isAdmin" class="section games-section">
       <router-link to="/jeux/math-run" class="math-run-card">
         <div class="math-run-card-left">
           <span class="math-run-card-emoji">🏃</span>

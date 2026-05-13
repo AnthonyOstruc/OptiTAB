@@ -895,6 +895,8 @@ Correction recommandée:
 - La slide 2 doit toujours être l'énoncé, indépendante du cumul: utilise TEXT: Énoncé : et remets la consigne/formule de départ.
 - La correction commence seulement à partir de la slide 3 avec TEXT: Correction : (ou "Méthode :", "Démonstration :", selon le contenu).
 - Les lignes KATEX de la slide 2 ne doivent pas être reprises dans le cumulative des slides suivantes.
+- La slide result est toujours autonome: elle ne reprend ni TEXT: Correction : ni les lignes cumulative_katex précédentes.
+- Pour le résultat final, utilise SLIDE N | result avec TITLE: Résultat et uniquement la ou les KATEX du résultat final.
 - En YouTube, tu peux mettre plus de lignes KATEX par slide qu'en reel.
 - Pour montrer une factorisation et son résultat sur la même slide, utilise KATEX normal + cumulative_katex.
 - Si une slide contient un calcul ET son identité remarquable associée: utilise "même ligne" en préfixant avec \\ (dans le template AI, c'est géré automatiquement).
@@ -923,7 +925,7 @@ Types autorisés:
 - hook
 - katex
 - cumulative_katex
-- result
+- result (résultat final autonome, jamais cumulatif)
 - cta
 
 Layouts autorisés (optionnel, après le type, séparé par |):
@@ -936,7 +938,8 @@ Ordre recommandé pour une correction YouTube:
 2. SLIDE 2 | katex (énoncé)
 3. SLIDE 3 | katex | method   ← affichage plein écran de la méthode
 4. SLIDE 4..N | cumulative_katex | split   avec RIGHT (repeat) → l'étape à gauche, la méthode (slide 3) à droite
-5. SLIDE final | cta   (toujours indépendant, pas de split)
+5. SLIDE résultat | result   → résultat final seul, sans cumul ni TEXT: Correction :
+6. SLIDE final | cta   (toujours indépendant, pas de split)
 
 Mode METHOD (slide standalone):
 - S'utilise une seule fois, juste après l'énoncé.
@@ -962,6 +965,7 @@ Conseils spécifiques YouTube 16:9:
 - En mode split, limite à 2 lignes KATEX par colonne pour rester lisible.
 - Profite de la largeur: utilise "même ligne" pour montrer A = ... ; B = ... côte à côte (plein écran) ou le mode split pour garder la méthode visible en permanence (correction).
 - Le texte (TEXT:) peut être plus long qu'en reel (3-4 lignes max).
+- Utilise result seulement pour la formule finale isolée; garde l'appel à l'action dans cta.
 - Chaque slide dure en général 5-10 secondes en YouTube (vs 3-5 pour un reel).
 
 Exemple prêt à copier (intégration par parties, slide méthode + slides split):

@@ -582,6 +582,12 @@ def _normalize_line(value):
     return cleaned.strip()
 
 
+def _template_screen_text_for_slide(slide_type, text_lines):
+    if slide_type == ReelSlide.TYPE_RESULT:
+        return ''
+    return '\n'.join(text_lines)
+
+
 def _append_multiline(record, field_name, value):
     clean_value = str(value or '').strip()
     if not clean_value:
@@ -1065,11 +1071,16 @@ def _build_template_slides(project, payload):
             slide_type = ReelSlide.TYPE_CUMULATIVE_KATEX
 
         slide_title = 'Résultat' if slide_type == ReelSlide.TYPE_RESULT else step_title
+        slide_katex_lines = (
+            [katex_lines[index]]
+            if slide_type == ReelSlide.TYPE_RESULT and index < len(katex_lines)
+            else cumulative_katex
+        )
         slides_payload.append({
             'slide_type': slide_type,
             'title': slide_title,
-            'screen_text': '\n'.join(cumulative_text),
-            'katex': _to_aligned_katex(cumulative_katex),
+            'screen_text': _template_screen_text_for_slide(slide_type, cumulative_text),
+            'katex': _to_aligned_katex(slide_katex_lines),
             'voice_script': '',
             'duration_seconds': DEFAULT_TEMPLATE_SLIDE_DURATION_SECONDS,
         })

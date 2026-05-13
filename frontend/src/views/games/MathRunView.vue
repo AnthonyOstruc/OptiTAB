@@ -18,10 +18,20 @@
         <div class="mr-gate-icon">∫</div>
         <h2 class="mr-gate-title">Connecte-toi pour jouer</h2>
         <p class="mr-gate-sub">
-          Math Run est disponible gratuitement pour tous les comptes OptiTAB.
-          Entraîne-toi, grimpe dans le classement et gagne des XP.
+          Math Run est réservé aux administrateurs pour le moment.
         </p>
         <router-link to="/login" class="mr-gate-btn">Se connecter</router-link>
+      </div>
+    </div>
+
+    <div v-else-if="!userStore.isAdmin" class="mr-auth-gate">
+      <div class="mr-gate-box">
+        <div class="mr-gate-icon">BETA</div>
+        <h2 class="mr-gate-title">Accès réservé</h2>
+        <p class="mr-gate-sub">
+          Math Run est accessible uniquement aux administrateurs pour le moment.
+        </p>
+        <router-link to="/dashboard" class="mr-gate-btn">Retour au tableau de bord</router-link>
       </div>
     </div>
 
@@ -79,7 +89,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue'
 import Phaser from 'phaser'
 import { createPhaserConfig } from '@/games/math-run/config.js'
 import { useUserStore } from '@/stores/user'
@@ -90,6 +100,7 @@ const userStore = useUserStore()
 const { updateUserXPInstantly } = useXP()
 const gameContainer = ref(null)
 let game = null
+const canAccessMathRun = computed(() => userStore.isAuthenticated && userStore.isAdmin)
 
 const xpFlash = ref({ visible: false, amount: 0 })
 let xpEarned  = 0
@@ -123,12 +134,13 @@ async function switchLeaderboard(category) {
 }
 
 function handleCorrectAnswer() {
-  if (!userStore.isAuthenticated) return
+  if (!canAccessMathRun.value) return
   xpEarned++
   updateUserXPInstantly(1, 'math_run')
 }
 
 async function handleGameOver(event) {
+  if (!canAccessMathRun.value) return
   const { score, category } = event.detail
   submitMathRunScore(score, category)
   if (userStore.isAuthenticated && xpEarned > 0) {
@@ -144,7 +156,7 @@ async function handleGameOver(event) {
 onMounted(async () => {
   window.addEventListener('mathrun:gameover', handleGameOver)
   window.addEventListener('mathrun:correct',  handleCorrectAnswer)
-  if (!userStore.isAuthenticated) return
+  if (!canAccessMathRun.value) return
   await nextTick()
   if (!gameContainer.value) return
   const config = createPhaserConfig(gameContainer.value)

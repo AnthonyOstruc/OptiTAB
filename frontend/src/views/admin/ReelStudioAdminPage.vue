@@ -736,6 +736,7 @@ Correction recommandée:
 - La slide 2 doit commencer par TEXT: Correction :
 - Ensuite, mets les lignes KATEX de résolution.
 - Toutes les slides de calcul suivantes doivent continuer la même correction.
+- La slide result, juste avant la CTA, doit être cumulative: elle reprend les lignes de calcul précédentes et ajoute la conclusion finale. Elle ne doit jamais afficher seulement la formule finale.
 - Le mot "Correction :" n'est pas ajouté automatiquement: il faut l'écrire explicitement dans TEXT.
 - Si la correction devient trop pleine, coche "Nouvelle page" sur une slide: le cumul repart de cette slide en gardant le texte de correction.
 
@@ -802,6 +803,9 @@ VOICE: [calm] On dérive chaque facteur.
 ---
 SLIDE 5 | result
 TITLE: Résultat
+KATEX: f(x)=x\\ln(x)
+KATEX: u=x \\qquad v=\\ln(x)
+KATEX: u'=1 \\qquad v'=\\frac{1}{x}
 KATEX: f'(x)=u'v+uv'
 KATEX: f'(x)=\\ln(x)+1
 VOICE: [excited] Résultat final: ln de x plus un.

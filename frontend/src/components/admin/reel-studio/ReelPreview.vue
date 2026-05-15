@@ -1683,10 +1683,32 @@ const baseSlidesForRender = computed(() => {
   let cumulativeRows = []
   let cumulativeLineKeys = new Set()
   let carriedScreenText = ''
+  let lastDisplayedMathRows = []
 
   function resetCumulativeState() {
     cumulativeRows = []
     cumulativeLineKeys = new Set()
+  }
+
+  function rememberDisplayedMathRows(rows) {
+    lastDisplayedMathRows = cloneKatexRows(rows)
+  }
+
+  function mergeUniqueKatexRows(...rowsGroups) {
+    const mergedRows = []
+    const mergedKeys = new Set()
+
+    rowsGroups.forEach((rows) => {
+      cloneKatexRows(rows).forEach((row) => {
+        const rowKeys = getKatexRowsLineKeys([row])
+        if (!rowKeys.length || rowKeys.every((key) => mergedKeys.has(key))) return
+
+        rowKeys.forEach((key) => mergedKeys.add(key))
+        mergedRows.push(row)
+      })
+    })
+
+    return mergedRows
   }
 
   function isYoutubeStatementSlide(index, slideType) {
@@ -1794,6 +1816,7 @@ const baseSlidesForRender = computed(() => {
 
     if (NON_MATH_SLIDE_TYPES.has(slideType)) {
       resetCumulativeState()
+      lastDisplayedMathRows = []
       carriedScreenText = ''
       return {
         ...safeSlide,
@@ -1804,6 +1827,7 @@ const baseSlidesForRender = computed(() => {
 
     if (isMethodSlide(safeSlide)) {
       resetCumulativeState()
+      lastDisplayedMathRows = []
       carriedScreenText = ''
       return {
         ...safeSlide,
@@ -1868,17 +1892,20 @@ const baseSlidesForRender = computed(() => {
         cumulativeRows = cloneKatexRows(cumulativeRows).slice(-2)
         cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
       }
+      const displayRows = cloneKatexRows(cumulativeRows)
+      rememberDisplayedMathRows(displayRows)
       return {
         ...safeSlide,
         display_screen_text: displayScreenText,
         display_katex_row_gap_em: cumulativeGap.value,
-        display_katex_rows: cloneKatexRows(cumulativeRows),
-        display_katex: toAlignedKatexRows(cumulativeRows, cumulativeGap.value) || baseKatex,
+        display_katex_rows: displayRows,
+        display_katex: toAlignedKatexRows(displayRows, cumulativeGap.value) || baseKatex,
       }
     }
 
     if (slideType === 'cumulative_katex') {
       const currentLines = splitKatexLines(baseKatex)
+      const previousDisplayedMathRows = cloneKatexRows(lastDisplayedMathRows)
       const resetCumulative = Boolean(safeSlide.katex_reset_cumulative)
       const keepPreviousOnReset = resetKeepsPreviousLine(safeSlide)
       if (resetCumulative && !keepPreviousOnReset) {
@@ -1892,12 +1919,19 @@ const baseSlidesForRender = computed(() => {
         cumulativeRows = cloneKatexRows(cumulativeRows).slice(-2)
         cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
       }
+      let displayRows = cloneKatexRows(cumulativeRows)
+      if (!isYoutubeFormat.value && slideType === 'result' && previousDisplayedMathRows.length) {
+        displayRows = mergeUniqueKatexRows(previousDisplayedMathRows, displayRows)
+        cumulativeRows = cloneKatexRows(displayRows)
+        cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
+      }
+      rememberDisplayedMathRows(displayRows)
       return {
         ...safeSlide,
         display_screen_text: displayScreenText,
         display_katex_row_gap_em: cumulativeGap.value,
-        display_katex_rows: cloneKatexRows(cumulativeRows),
-        display_katex: toAlignedKatexRows(cumulativeRows, cumulativeGap.value),
+        display_katex_rows: displayRows,
+        display_katex: toAlignedKatexRows(displayRows, cumulativeGap.value),
       }
     }
 

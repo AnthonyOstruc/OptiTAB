@@ -1,11 +1,11 @@
 <template>
   <section class="reel-projects-list">
     <div class="list-header">
-      <h3>Reels en base</h3>
+      <h3>{{ title }}</h3>
     </div>
 
-    <p v-if="loading" class="state-text">Chargement des reels...</p>
-    <p v-else-if="!projects.length" class="state-text">Aucun reel enregistre.</p>
+    <p v-if="loading" class="state-text">{{ loadingLabel }}</p>
+    <p v-else-if="!projects.length" class="state-text">{{ emptyLabel }}</p>
 
     <div v-else class="table-scroll">
       <table class="projects-table">
@@ -63,6 +63,18 @@ defineProps({
   loading: {
     type: Boolean,
     default: false,
+  },
+  title: {
+    type: String,
+    default: 'Reels en base',
+  },
+  emptyLabel: {
+    type: String,
+    default: 'Aucun reel enregistre.',
+  },
+  loadingLabel: {
+    type: String,
+    default: 'Chargement des reels...',
   },
 })
 

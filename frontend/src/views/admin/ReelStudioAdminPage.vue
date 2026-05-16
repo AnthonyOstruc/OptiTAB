@@ -1,6 +1,6 @@
 <template>
   <main class="reel-studio-admin">
-    <FormatHelp :format-template="studioFormat === 'youtube' ? YOUTUBE_FORMAT_TEMPLATE : REEL_FORMAT_TEMPLATE" :show-notes="false" :initial-show="false" />
+    <FormatHelp :format-template="formatHelpTemplate" :show-notes="false" :initial-show="false" />
 
     <header class="page-header">
       <div>
@@ -17,31 +17,25 @@
     <section v-else class="studio-stack">
       <div class="studio-format-tabs">
         <button
+          v-for="tab in FORMAT_TABS"
+          :key="tab.value"
           class="studio-format-tab"
-          :class="{ 'studio-format-tab--active': studioFormat === 'reel' }"
+          :class="{ 'studio-format-tab--active': studioFormat === tab.value }"
           type="button"
-          @click="switchFormat('reel')"
+          @click="switchFormat(tab.value)"
         >
-          Reel Instagram
-        </button>
-        <button
-          class="studio-format-tab"
-          :class="{ 'studio-format-tab--active': studioFormat === 'youtube' }"
-          type="button"
-          @click="switchFormat('youtube')"
-        >
-          YouTube
+          {{ tab.label }}
         </button>
       </div>
 
       <section class="project-panel">
         <div class="section-toolbar">
           <div>
-            <h2>{{ studioFormat === 'youtube' ? 'Gestion des vidéos YouTube' : 'Gestion des reels' }}</h2>
-            <p>{{ filteredProjects.length }} {{ studioFormat === 'youtube' ? 'vidéo' : 'reel' }}{{ filteredProjects.length > 1 ? 's' : '' }} enregistre{{ filteredProjects.length > 1 ? 's' : '' }}</p>
+            <h2>{{ studioFormatConfig.managementTitle }}</h2>
+            <p>{{ filteredProjects.length }} {{ filteredProjects.length > 1 ? studioFormatConfig.countPlural : studioFormatConfig.countSingular }} enregistre{{ filteredProjects.length > 1 ? 's' : '' }}</p>
           </div>
           <button class="btn-primary" type="button" @click="openCreateProjectForm">
-            {{ studioFormat === 'youtube' ? 'Nouvelle vidéo YouTube' : 'Nouveau reel' }}
+            {{ studioFormatConfig.createButtonLabel }}
           </button>
         </div>
 
@@ -63,7 +57,7 @@
 
           <template v-else>
             <p v-if="!selectedProject" class="empty-editor-state">
-              Selectionne un reel en base ou cree un nouveau reel.
+              {{ studioFormatConfig.emptySelectionLabel }}
             </p>
 
             <ReelTemplateBuilder
@@ -71,6 +65,9 @@
               :loading="generatingTemplate"
               :saving="savingTemplate"
               :disabled="!selectedProject"
+              :title="studioFormatConfig.templateBuilderTitle"
+              :textarea-label="studioFormatConfig.templateTextareaLabel"
+              :placeholder="studioFormatConfig.templatePlaceholder"
               @generate="handleGenerateFromTemplate"
               @save="handleSaveTemplate"
             />
@@ -97,8 +94,8 @@
             <section v-if="selectedProject" class="instagram-caption-panel">
               <div class="instagram-caption-header">
                 <div>
-                  <h3>{{ studioFormat === 'youtube' ? 'Description YouTube' : 'Description Instagram' }}</h3>
-                  <p>{{ studioFormat === 'youtube' ? 'Description SEO prete a copier pour YouTube.' : 'Texte SEO pret a copier pour publier le reel.' }}</p>
+                  <h3>{{ studioFormatConfig.descriptionTitle }}</h3>
+                  <p>{{ studioFormatConfig.descriptionHelp }}</p>
                 </div>
                 <button
                   class="btn-secondary"
@@ -106,19 +103,19 @@
                   :disabled="!instagramCaptionText"
                   @click="copyInstagramCaption"
                 >
-                  {{ studioFormat === 'youtube' ? 'Copier YouTube' : 'Copier Instagram' }}
+                  {{ studioFormatConfig.copyDescriptionLabel }}
                 </button>
               </div>
               <textarea
                 class="instagram-caption-text"
-                :value="instagramCaptionText || (studioFormat === 'youtube' ? 'Ajoute un bloc YOUTUBE_DESCRIPTION dans le template genere.' : 'Ajoute un bloc INSTAGRAM_DESCRIPTION dans le template genere.')"
+                :value="instagramCaptionText || studioFormatConfig.emptyDescriptionLabel"
                 readonly
                 rows="10"
                 @focus="$event.target.select()"
               ></textarea>
             </section>
 
-            <section v-if="selectedProject" class="speech-panel">
+            <section v-if="selectedProject && !isCarouselProject" class="speech-panel">
               <div class="speech-panel-header">
                 <div>
                   <h3>Voix par slide</h3>
@@ -500,6 +497,8 @@
                 v-if="showManualEditor"
                 :slide="selectedSlide"
                 :saving="savingSlide"
+                :show-voice-fields="!isCarouselProject"
+                :show-cumulative-fields="!isCarouselProject"
                 @save="handleSaveSlide"
                 @delete="handleDeleteSlide"
               />
@@ -513,6 +512,9 @@
           :projects="filteredProjects"
           :selected-project-id="selectedProjectId"
           :loading="loadingProjects"
+          :title="studioFormatConfig.listTitle"
+          :empty-label="studioFormatConfig.emptyListLabel"
+          :loading-label="studioFormatConfig.loadingListLabel"
           @select="selectProject"
           @edit="openEditProjectForm"
           @delete="handleDeleteProject"
@@ -596,9 +598,23 @@ const editingProject = ref(null)
 const templateDraft = ref('')
 const editorSectionRef = ref(null)
 
+const FORMAT_TABS = Object.freeze([
+  { value: 'reel', label: 'Reel Instagram' },
+  { value: 'youtube', label: 'YouTube' },
+  { value: 'carousel', label: 'Carrousel acquisition' },
+])
+
+function normalizeFormatType(value) {
+  return String(value || '').trim().toLowerCase()
+}
+
 const filteredProjects = computed(() => {
   return projects.value.filter((p) => {
-    const fmt = String(p.format_type || '').trim().toLowerCase()
+    const fmt = normalizeFormatType(p.format_type)
+    if (studioFormat.value === 'reel') {
+      return !fmt || fmt === 'reel'
+    }
+    if (studioFormat.value === 'carousel') return fmt === 'carousel'
     if (studioFormat.value === 'youtube') return fmt === 'youtube'
     return !fmt || fmt === 'reel'
   })
@@ -1045,14 +1061,239 @@ Au programme :
 END_YOUTUBE_DESCRIPTION
 `
 
+const CAROUSEL_FORMAT_TEMPLATE = `FORMAT CARROUSEL ACQUISITION OPTITAB (PRO)
+
+Objectif:
+- Créer un carrousel marketing premium prêt pour Instagram / Facebook / TikTok
+- But principal: donner envie d'aller sur optitab.net et de s'abonner
+- Audience: élèves, parents, lycéens, étudiants qui veulent progresser en maths
+- Format recommandé: 4:5 portrait, export PNG 1080x1350
+- Chaque SLIDE devient une image indépendante du carrousel
+- Les slides ne sont jamais cumulatives: une slide ne doit pas reprendre le texte, les formules ou les lignes d'une slide précédente
+- Aucun script voix, aucun sous-titre, aucun contenu vidéo
+- Ne fais pas un exercice de maths: vends la plateforme, la méthode et le résultat attendu
+- Style: propre, clair, crédible, professionnel, orienté conversion
+
+Structure:
+SLIDE <numéro> | <type>
+TITLE: ...
+TEXT: ...
+---
+
+Types autorisés:
+- hook
+- katex
+- cta
+
+Angle recommandé:
+- SLIDE 1: douleur ou promesse forte, immédiatement compréhensible.
+- SLIDE 2: ce qu'OptiTAB apporte concrètement.
+- SLIDE 3: preuves / contenu disponible: +150 chapitres, +150 résumés, +150 cours, +1000 exercices.
+- SLIDE 4: bénéfices utilisateur: comprendre, réviser, progresser, gagner en autonomie.
+- SLIDE 5: offre et CTA: optitab.net, abonnement sans engagement, accès immédiat.
+
+Règles de rédaction:
+- Pas de VOICE.
+- Pas de sous-titres.
+- Pas d'exercice détaillé.
+- Pas de slide cumulative, pas de slide result cumulative.
+- Pas de texte trop long: 2 à 5 lignes par slide.
+- Chaque slide doit pouvoir être comprise en 2 secondes.
+- Chaque slide doit fonctionner seule visuellement et textuellement.
+- Utilise "OptiTAB" et "optitab.net" dans le carrousel.
+- Le CTA doit pousser vers le site et l'abonnement, pas seulement sauvegarder le post.
+
+Description obligatoire:
+- Après les slides, ajoute un bloc CAROUSEL_DESCRIPTION copiable.
+- Objectif: légende Instagram/Facebook/TikTok qui donne envie de visiter optitab.net.
+- Mentionne l'abonnement sans engagement, l'accès immédiat et la progression en maths.
+- Termine par exactement 5 hashtags pertinents.
+- Format obligatoire:
+CAROUSEL_DESCRIPTION:
+...
+END_CAROUSEL_DESCRIPTION
+
+Exemple prêt à copier:
+SLIDE 1 | hook
+TITLE: Les maths ne devraient pas bloquer ton année.
+TEXT: Reprends le contrôle avec une plateforme claire, structurée et disponible à tout moment.
+---
+SLIDE 2 | katex
+TITLE: Ce que tu trouves sur OptiTAB
+TEXT: Cours clairs
+Fiches de synthèse
+Exercices corrigés pas à pas
+---
+SLIDE 3 | katex
+TITLE: Une base solide pour progresser
+TEXT: +150 chapitres
++150 résumés
++150 cours
++1000 exercices
+---
+SLIDE 4 | katex
+TITLE: L'objectif
+TEXT: Comprendre plus vite
+Réviser plus efficacement
+Gagner en autonomie
+Arriver plus serein aux contrôles
+---
+SLIDE 5 | cta
+TITLE: Découvre OptiTAB
+TEXT: Va sur optitab.net
+Choisis ton niveau
+Abonne-toi sans engagement
+Accès immédiat
+---
+CAROUSEL_DESCRIPTION:
+OptiTAB aide les élèves à progresser en maths avec des cours clairs, des fiches de synthèse et des exercices corrigés pas à pas.
+
+La plateforme est pensée pour réviser efficacement, comprendre les méthodes et avancer à son rythme.
+
+Abonnement sans engagement, accès immédiat.
+
+Découvre OptiTAB sur optitab.net.
+
+#optitab #maths #revision #lycee #soutienscolaire
+END_CAROUSEL_DESCRIPTION
+`
+
+const TEMPLATE_PLACEHOLDERS = Object.freeze({
+  reel: `MODE AUTO (IA décide le nombre de slides)
+TITLE: Dérivation produit
+HOOK: Défi bac
+KATEX: f(x)=x\\ln(x)
+KATEX: u=x \\qquad v=\\ln(x)
+KATEX: u'=1 \\qquad v'=\\frac{1}{x}
+KATEX: f'(x)=\\ln(x)+1
+CTA: Abonne-toi à OptiTAB | Sauvegarde ce Reel | Commente ton résultat`,
+  youtube: `SLIDE 1 | hook
+TITLE: Intégration par parties
+KATEX: I=\\int_0^1 x\\,e^x\\,dx
+TEXT: On calcule cette intégrale avec la méthode IPP.
+VOICE: [curious] Voici une intégrale classique.
+---
+SLIDE 2 | katex
+TEXT: Énoncé :
+KATEX: I=\\int_0^1 x\\,e^x\\,dx
+VOICE: On pose l'énoncé.`,
+  carousel: `SLIDE 1 | hook
+TITLE: Les maths ne devraient pas bloquer ton année.
+TEXT: Reprends le contrôle avec OptiTAB.
+---
+SLIDE 2 | katex
+TITLE: Tout pour progresser
+TEXT: Cours clairs
+Fiches de synthèse
+Exercices corrigés pas à pas
+---
+SLIDE 3 | cta
+TITLE: Découvre OptiTAB
+TEXT: Va sur optitab.net
+Choisis ton niveau
+Abonne-toi sans engagement
+---
+CAROUSEL_DESCRIPTION:
+Découvre OptiTAB sur optitab.net et progresse en maths avec une plateforme claire, structurée et accessible immédiatement.
+END_CAROUSEL_DESCRIPTION`,
+})
+
+const FORMAT_CONFIGS = Object.freeze({
+  reel: {
+    managementTitle: 'Gestion des reels',
+    countSingular: 'reel',
+    countPlural: 'reels',
+    createButtonLabel: 'Nouveau reel',
+    emptySelectionLabel: 'Selectionne un reel en base ou cree un nouveau reel.',
+    descriptionTitle: 'Description Instagram',
+    descriptionHelp: 'Texte SEO pret a copier pour publier le reel.',
+    copyDescriptionLabel: 'Copier Instagram',
+    emptyDescriptionLabel: 'Ajoute un bloc INSTAGRAM_DESCRIPTION dans le template genere.',
+    listTitle: 'Reels en base',
+    emptyListLabel: 'Aucun reel enregistre.',
+    loadingListLabel: 'Chargement des reels...',
+    newProjectTitle: 'Nouveau reel',
+    editProjectTitle: 'Modifier le reel',
+    createSubmitLabel: 'Creer le reel',
+    updateSubmitLabel: 'Mettre a jour',
+    templateBuilderTitle: 'Création Reel',
+    templateTextareaLabel: 'Format / Script (par slides)',
+    templatePlaceholder: TEMPLATE_PLACEHOLDERS.reel,
+    formatTemplate: REEL_FORMAT_TEMPLATE,
+    entityWithArticle: 'le reel',
+    entityDefaultSlug: 'optitab-reel',
+  },
+  youtube: {
+    managementTitle: 'Gestion des vidéos YouTube',
+    countSingular: 'vidéo',
+    countPlural: 'vidéos',
+    createButtonLabel: 'Nouvelle vidéo YouTube',
+    emptySelectionLabel: 'Selectionne une vidéo YouTube en base ou cree une nouvelle vidéo.',
+    descriptionTitle: 'Description YouTube',
+    descriptionHelp: 'Description SEO prete a copier pour YouTube.',
+    copyDescriptionLabel: 'Copier YouTube',
+    emptyDescriptionLabel: 'Ajoute un bloc YOUTUBE_DESCRIPTION dans le template genere.',
+    listTitle: 'Vidéos YouTube en base',
+    emptyListLabel: 'Aucune vidéo YouTube enregistree.',
+    loadingListLabel: 'Chargement des vidéos YouTube...',
+    newProjectTitle: 'Nouvelle vidéo YouTube',
+    editProjectTitle: 'Modifier la vidéo YouTube',
+    createSubmitLabel: 'Creer la vidéo',
+    updateSubmitLabel: 'Mettre a jour',
+    templateBuilderTitle: 'Création YouTube',
+    templateTextareaLabel: 'Format / Script YouTube (par slides)',
+    templatePlaceholder: TEMPLATE_PLACEHOLDERS.youtube,
+    formatTemplate: YOUTUBE_FORMAT_TEMPLATE,
+    entityWithArticle: 'la vidéo',
+    entityDefaultSlug: 'optitab-youtube',
+  },
+  carousel: {
+    managementTitle: 'Gestion des carrousels acquisition',
+    countSingular: 'carrousel',
+    countPlural: 'carrousels',
+    createButtonLabel: 'Nouveau carrousel',
+    emptySelectionLabel: 'Selectionne un carrousel en base ou cree un nouveau carrousel.',
+    descriptionTitle: 'Description carrousel',
+    descriptionHelp: 'Texte pret a copier pour attirer vers optitab.net et l abonnement.',
+    copyDescriptionLabel: 'Copier description',
+    emptyDescriptionLabel: 'Ajoute un bloc CAROUSEL_DESCRIPTION dans le template genere.',
+    listTitle: 'Carrousels en base',
+    emptyListLabel: 'Aucun carrousel enregistre.',
+    loadingListLabel: 'Chargement des carrousels...',
+    newProjectTitle: 'Nouveau carrousel',
+    editProjectTitle: 'Modifier le carrousel',
+    createSubmitLabel: 'Creer le carrousel',
+    updateSubmitLabel: 'Mettre a jour',
+    templateBuilderTitle: 'Création Carrousel acquisition',
+    templateTextareaLabel: 'Format carrousel acquisition (1 slide = 1 image, pas de voix)',
+    templatePlaceholder: TEMPLATE_PLACEHOLDERS.carousel,
+    formatTemplate: CAROUSEL_FORMAT_TEMPLATE,
+    entityWithArticle: 'le carrousel',
+    entityDefaultSlug: 'optitab-carousel',
+  },
+})
+
+const studioFormatConfig = computed(() => FORMAT_CONFIGS[studioFormat.value] || FORMAT_CONFIGS.reel)
+const formatHelpTemplate = computed(() => studioFormatConfig.value.formatTemplate)
+const selectedProjectFormat = computed(() => normalizeFormatType(selectedProject.value?.format_type || studioFormat.value))
+const isCarouselProject = computed(() => selectedProjectFormat.value === 'carousel')
+
 const selectedSlide = computed(() => {
   if (!selectedProject.value?.slides?.length) return null
   return selectedProject.value.slides.find((slide) => Number(slide.id) === Number(selectedSlideId.value)) || null
 })
 
 const projectFormInitialValues = computed(() => editingProject.value || {})
-const projectFormTitle = computed(() => (editingProject.value?.id ? 'Modifier le reel' : 'Nouveau reel'))
-const projectFormSubmitLabel = computed(() => (editingProject.value?.id ? 'Mettre a jour' : 'Creer le reel'))
+const projectFormTitle = computed(() => (
+  editingProject.value?.id
+    ? studioFormatConfig.value.editProjectTitle
+    : studioFormatConfig.value.newProjectTitle
+))
+const projectFormSubmitLabel = computed(() => (
+  editingProject.value?.id
+    ? studioFormatConfig.value.updateSubmitLabel
+    : studioFormatConfig.value.createSubmitLabel
+))
 const projectSpeechText = computed(() => buildProjectSpeechText(selectedProject.value))
 const slidesSpeechCount = computed(() => countSlidesWithSpeechText(selectedProject.value))
 const generatedSlideSpeechCount = computed(() => countGeneratedSlideSpeeches(selectedProject.value))
@@ -1201,7 +1442,7 @@ const selectedVoiceWarning = computed(() => {
       return selectedVoice.value.api_usable_reason || 'Seuil de quota Google atteint pour cette famille de voix.'
     }
     if (!selectedVoiceHasQuotaForCharacters(speechCharCount.value)) {
-      return 'Ce reel depasserait le seuil de 90% du quota gratuit pour cette famille de voix.'
+      return 'Ce projet depasserait le seuil de 90% du quota gratuit pour cette famille de voix.'
     }
     if (selectedVoice.value.quota_status === 'near_limit') {
       return 'Quota Google proche du seuil de grisage.'
@@ -1672,16 +1913,18 @@ function extractInstagramCaption(value) {
   const lines = String(value || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n')
   const captionLines = []
   let capturing = false
+  const captionStartPattern =
+    /^(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE|CAROUSEL_DESCRIPTION|DESCRIPTION_CAROUSEL|SOCIAL_DESCRIPTION|DESCRIPTION_SOCIAL)\s*:\s*(.*)$/i
+  const captionEndPattern =
+    /^END_(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE|CAROUSEL_DESCRIPTION|DESCRIPTION_CAROUSEL|SOCIAL_DESCRIPTION|DESCRIPTION_SOCIAL)$/i
 
   for (const rawLine of lines) {
     const line = String(rawLine || '').trimEnd()
     const stripped = line.trim()
-    const startMatch = stripped.match(
-      /^(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE)\s*:\s*(.*)$/i
-    )
+    const startMatch = stripped.match(captionStartPattern)
 
     if (capturing) {
-      if (/^END_(INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE)$/i.test(stripped)) {
+      if (captionEndPattern.test(stripped)) {
         break
       }
       captionLines.push(line)
@@ -1702,8 +1945,12 @@ function appendInstagramCaptionBlock(value, caption, formatType) {
   if (!safeCaption) return value
 
   const body = String(value || '').trim()
-  const isYoutube = String(formatType || '').toLowerCase() === 'youtube'
-  const tag = isYoutube ? 'YOUTUBE_DESCRIPTION' : 'INSTAGRAM_DESCRIPTION'
+  const normalizedFormat = normalizeFormatType(formatType)
+  const tag = normalizedFormat === 'youtube'
+    ? 'YOUTUBE_DESCRIPTION'
+    : normalizedFormat === 'carousel'
+      ? 'CAROUSEL_DESCRIPTION'
+      : 'INSTAGRAM_DESCRIPTION'
   const captionBlock = `${tag}:\n${safeCaption}\nEND_${tag}`
   return body ? `${body}\n---\n${captionBlock}` : captionBlock
 }
@@ -1733,9 +1980,9 @@ async function copyInstagramCaption() {
 
   try {
     await copyTextToClipboard(instagramCaptionText.value)
-    setFeedback('success', 'Description Instagram copiee.')
+    setFeedback('success', `${studioFormatConfig.value.descriptionTitle} copiee.`)
   } catch (error) {
-    setFeedback('error', 'Impossible de copier la description Instagram.')
+    setFeedback('error', `Impossible de copier: ${studioFormatConfig.value.descriptionTitle.toLowerCase()}.`)
   }
 }
 
@@ -1760,6 +2007,7 @@ function slideSpeechText(slide) {
 }
 
 function buildProjectSpeechText(project) {
+  if (normalizeFormatType(project?.format_type) === 'carousel') return ''
   const slides = Array.isArray(project?.slides) ? [...project.slides] : []
   slides.sort((a, b) => Number(a.order || 0) - Number(b.order || 0) || Number(a.id || 0) - Number(b.id || 0))
   return slides
@@ -1828,14 +2076,22 @@ function appendTemplateField(lines, label, value) {
 function serializeProjectSlides(project) {
   const slides = Array.isArray(project?.slides) ? [...project.slides] : []
   slides.sort((a, b) => Number(a.order || 0) - Number(b.order || 0) || Number(a.id || 0) - Number(b.id || 0))
+  const isCarousel = normalizeFormatType(project?.format_type) === 'carousel'
+  const includeVoice = !isCarousel
 
   const slidesText = slides
     .map((slide, index) => {
-      const lines = [`SLIDE ${slide.order || index + 1} | ${slide.slide_type || 'katex'}`]
+      const rawSlideType = normalizeFormatType(slide.slide_type) || 'katex'
+      const slideType = isCarousel && ['cumulative_katex', 'result'].includes(rawSlideType)
+        ? 'katex'
+        : rawSlideType
+      const lines = [`SLIDE ${slide.order || index + 1} | ${slideType}`]
       appendTemplateField(lines, 'TITLE', slide.title)
       appendTemplateField(lines, 'TEXT', slide.screen_text)
       appendTemplateField(lines, 'KATEX', slide.katex)
-      appendTemplateField(lines, 'VOICE', slide.voice_script)
+      if (includeVoice) {
+        appendTemplateField(lines, 'VOICE', slide.voice_script)
+      }
       return lines.join('\n')
     })
     .join('\n---\n')
@@ -1860,7 +2116,7 @@ async function openEditProjectForm(project) {
   templateDraft.value = serializeProjectSlides(projectToEdit || selectedProject.value)
 
   if (!templateDraft.value) {
-    setFeedback('info', 'Ce reel n a pas encore de slides a modifier.')
+    setFeedback('info', `Ce projet n a pas encore de slides a modifier.`)
   }
 
   scrollEditorIntoView()
@@ -2153,7 +2409,7 @@ async function handleSubmitProject(payload) {
 
   const safeTitle = String(payload?.title || '').trim()
   if (!safeTitle) {
-    setFeedback('error', 'Ajoute un titre avant de creer le reel.')
+    setFeedback('error', `Ajoute un titre avant de creer ${studioFormatConfig.value.entityWithArticle}.`)
     return
   }
 
@@ -2177,10 +2433,10 @@ async function handleSubmitProject(payload) {
       templateDraft.value = serializeProjectSlides(project)
       clearDiagnostics()
       closeProjectForm()
-      setFeedback('success', projectId ? 'Reel mis a jour.' : 'Reel cree en base.')
+      setFeedback('success', projectId ? 'Projet mis a jour.' : 'Projet cree en base.')
     }
   } catch (error) {
-    setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder le reel.'))
+    setFeedback('error', extractErrorMessage(error, `Impossible de sauvegarder ${studioFormatConfig.value.entityWithArticle}.`))
   } finally {
     savingProject.value = false
   }
@@ -2188,7 +2444,7 @@ async function handleSubmitProject(payload) {
 
 async function handleDeleteProject(project) {
   if (!project?.id || !canManage.value) return
-  if (!window.confirm(`Supprimer le reel "${project.title || project.id}" et toutes ses slides ?`)) return
+  if (!window.confirm(`Supprimer ${studioFormatConfig.value.entityWithArticle} "${project.title || project.id}" et toutes ses slides ?`)) return
 
   savingProject.value = true
   try {
@@ -2211,9 +2467,9 @@ async function handleDeleteProject(project) {
       openCreateProjectForm()
     }
 
-    setFeedback('success', 'Reel supprime.')
+    setFeedback('success', 'Projet supprime.')
   } catch (error) {
-    setFeedback('error', extractErrorMessage(error, 'Impossible de supprimer le reel.'))
+    setFeedback('error', extractErrorMessage(error, `Impossible de supprimer ${studioFormatConfig.value.entityWithArticle}.`))
   } finally {
     savingProject.value = false
   }
@@ -2294,7 +2550,7 @@ async function handleSaveTemplate(payload) {
       const readyCount = countGeneratedSlideSpeeches(updatedProject)
       const totalSlides = updatedProject.slides?.length || 0
       const voicePart = readyCount ? ` Voix conservee sur ${readyCount}/${totalSlides} slide${totalSlides > 1 ? 's' : ''}.` : ''
-      setFeedback('success', `Reel sauvegarde (${totalSlides} slides).${voicePart}`)
+      setFeedback('success', `Projet sauvegarde (${totalSlides} slides).${voicePart}`)
     }
   } catch (error) {
     setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder le template.'))
@@ -2390,12 +2646,13 @@ async function handleGenerateSlideSpeech(payload) {
 }
 
 function buildVideoFilename(project) {
-  const safeTitle = String(project?.title || 'optitab-reel')
+  const fallbackSlug = FORMAT_CONFIGS[normalizeFormatType(project?.format_type)]?.entityDefaultSlug || 'optitab-reel'
+  const safeTitle = String(project?.title || fallbackSlug)
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-zA-Z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
-    .toLowerCase() || 'optitab-reel'
+    .toLowerCase() || fallbackSlug
   return `${safeTitle}.mp4`
 }
 

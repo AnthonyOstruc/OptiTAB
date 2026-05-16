@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <div class="size-control">
+      <div v-if="showCumulativeFields" class="size-control">
         <div class="size-control-header">
           <span>Vide entre lignes cumulatives</span>
           <strong>{{ cumulativeGapLabel(form.katex_cumulative_gap_em) }}</strong>
@@ -77,12 +77,12 @@
         </div>
       </div>
 
-      <label class="checkbox-control">
+      <label v-if="showCumulativeFields" class="checkbox-control">
         <input v-model="form.katex_inline_with_previous" type="checkbox" />
         <span>Afficher ce KaTeX sur la même ligne que la slide précédente</span>
       </label>
 
-      <div v-if="form.katex_inline_with_previous" class="size-control">
+      <div v-if="showCumulativeFields && form.katex_inline_with_previous" class="size-control">
         <div class="size-control-header">
           <span>Position meme ligne</span>
           <strong>{{ inlineOffsetLabel(form.katex_inline_offset_percent) }}</strong>
@@ -94,22 +94,22 @@
         </div>
       </div>
 
-      <label class="checkbox-control">
+      <label v-if="showCumulativeFields" class="checkbox-control">
         <input v-model="form.katex_reset_cumulative" type="checkbox" />
         <span>Repartir sur une nouvelle page de correction à partir de cette slide</span>
       </label>
 
-      <label v-if="form.katex_reset_cumulative" class="checkbox-control">
+      <label v-if="showCumulativeFields && form.katex_reset_cumulative" class="checkbox-control">
         <input v-model="form.katex_reset_keep_previous_line" type="checkbox" />
         <span>Garder la ligne precedente sur la nouvelle page</span>
       </label>
 
-      <label class="checkbox-control">
+      <label v-if="showCumulativeFields" class="checkbox-control">
         <input v-model="form.katex_drop_previous_line" type="checkbox" />
         <span>Supprimer la dernière ligne précédente</span>
       </label>
 
-      <label class="checkbox-control">
+      <label v-if="showVoiceFields" class="checkbox-control">
         <input v-model="form.katex_reveal_with_speech" type="checkbox" />
         <span>Animer le KaTeX avec la voix</span>
       </label>
@@ -118,7 +118,7 @@
 
       <div v-if="katexPreviewHtml" class="katex-preview" v-html="katexPreviewHtml"></div>
 
-      <label>
+      <label v-if="showVoiceFields">
         Script voix
         <textarea
           v-model="form.voice_script"
@@ -127,7 +127,7 @@
           placeholder="[thoughtful] On commence par identifier la bonne formule..."
         ></textarea>
       </label>
-      <p class="voice-help">
+      <p v-if="showVoiceFields" class="voice-help">
         Tags ElevenLabs utiles: [thoughtful], [curious], [excited], [warmly], [whispers], [sighs], [short pause].
       </p>
 
@@ -155,6 +155,14 @@ const props = defineProps({
   saving: {
     type: Boolean,
     default: false,
+  },
+  showVoiceFields: {
+    type: Boolean,
+    default: true,
+  },
+  showCumulativeFields: {
+    type: Boolean,
+    default: true,
   },
 })
 
@@ -259,20 +267,20 @@ function handleSave() {
     title: String(form.title || '').trim(),
     screen_text: String(form.screen_text || '').trim(),
     katex: String(form.katex || '').trim(),
-    voice_script: String(form.voice_script || '').trim(),
+    voice_script: props.showVoiceFields ? String(form.voice_script || '').trim() : '',
     title_scale: clampScale(form.title_scale),
     screen_text_scale: clampScale(form.screen_text_scale),
     katex_scale: clampScale(form.katex_scale),
-    katex_inline_with_previous: Boolean(form.katex_inline_with_previous),
-    katex_inline_offset_percent: clampInlineOffset(form.katex_inline_offset_percent),
-    katex_inline_vertical_offset_em: Math.min(1, Math.max(-1, Number(form.katex_inline_vertical_offset_em) || 0)),
-    katex_cumulative_gap_em: clampCumulativeGap(form.katex_cumulative_gap_em),
-    katex_reset_cumulative: Boolean(form.katex_reset_cumulative),
-    katex_reset_keep_previous_line: form.katex_reset_cumulative
+    katex_inline_with_previous: props.showCumulativeFields ? Boolean(form.katex_inline_with_previous) : false,
+    katex_inline_offset_percent: props.showCumulativeFields ? clampInlineOffset(form.katex_inline_offset_percent) : 0,
+    katex_inline_vertical_offset_em: props.showCumulativeFields ? Math.min(1, Math.max(-1, Number(form.katex_inline_vertical_offset_em) || 0)) : 0,
+    katex_cumulative_gap_em: props.showCumulativeFields ? clampCumulativeGap(form.katex_cumulative_gap_em) : 0.4,
+    katex_reset_cumulative: props.showCumulativeFields ? Boolean(form.katex_reset_cumulative) : false,
+    katex_reset_keep_previous_line: props.showCumulativeFields && form.katex_reset_cumulative
       ? form.katex_reset_keep_previous_line !== false
       : true,
-    katex_reveal_with_speech: Boolean(form.katex_reveal_with_speech),
-    katex_drop_previous_line: Boolean(form.katex_drop_previous_line),
+    katex_reveal_with_speech: props.showVoiceFields ? Boolean(form.katex_reveal_with_speech) : false,
+    katex_drop_previous_line: props.showCumulativeFields ? Boolean(form.katex_drop_previous_line) : false,
   })
 }
 

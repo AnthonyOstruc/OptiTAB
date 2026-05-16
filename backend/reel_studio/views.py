@@ -251,6 +251,10 @@ def _sync_project_speech_from_slides(project_or_id):
     else:
         project = ReelProject.objects.get(pk=project_or_id)
 
+    if _project_is_carousel(project):
+        _clear_project_speech(project)
+        return project
+
     slides = list(project.slides.all().order_by('order', 'id'))
     expected_entries = [
         (slide, build_slide_speech_text(slide))
@@ -565,11 +569,11 @@ _SPLIT_ZONE_PATTERN = re.compile(
     flags=re.IGNORECASE,
 )
 _INSTAGRAM_CAPTION_HEADER_PATTERN = re.compile(
-    r'^\s*(?:INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)\s*:\s*(.*)\s*$',
+    r'^\s*(?:INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE|CAROUSEL_DESCRIPTION|DESCRIPTION_CAROUSEL|SOCIAL_DESCRIPTION|DESCRIPTION_SOCIAL)\s*:\s*(.*)\s*$',
     flags=re.IGNORECASE,
 )
 _INSTAGRAM_CAPTION_END_PATTERN = re.compile(
-    r'^\s*END_(?:INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM)\s*$',
+    r'^\s*END_(?:INSTAGRAM_DESCRIPTION|DESCRIPTION_INSTAGRAM|INSTAGRAM_CAPTION|CAPTION_INSTAGRAM|INSTAGRAM|YOUTUBE_DESCRIPTION|DESCRIPTION_YOUTUBE|CAROUSEL_DESCRIPTION|DESCRIPTION_CAROUSEL|SOCIAL_DESCRIPTION|DESCRIPTION_SOCIAL)\s*$',
     flags=re.IGNORECASE,
 )
 
@@ -1100,6 +1104,26 @@ def _build_template_slides(project, payload):
     return slides_payload
 
 
+def _project_is_carousel(project):
+    return str(getattr(project, 'format_type', '') or '').strip().lower() == 'carousel'
+
+
+def _prepare_carousel_slides(slides_payload):
+    for payload in slides_payload:
+        if payload.get('slide_type') in {ReelSlide.TYPE_CUMULATIVE_KATEX, ReelSlide.TYPE_RESULT}:
+            payload['slide_type'] = ReelSlide.TYPE_KATEX
+        payload['voice_script'] = ''
+        payload['katex_inline_with_previous'] = False
+        payload['katex_inline_offset_percent'] = 0
+        payload['katex_inline_vertical_offset_em'] = 0
+        payload['katex_cumulative_gap_em'] = 0.4
+        payload['katex_reset_cumulative'] = False
+        payload['katex_reset_keep_previous_line'] = True
+        payload['katex_reveal_with_speech'] = False
+        payload['katex_drop_previous_line'] = False
+    return slides_payload
+
+
 class ReelProjectListCreateView(APIView):
     permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
 
@@ -1194,6 +1218,8 @@ class ReelProjectGenerateFromTemplateView(APIView):
             'template_text': clean_template_text,
         }
         slides_payload = _build_template_slides(project, template_payload)
+        if _project_is_carousel(project):
+            slides_payload = _prepare_carousel_slides(slides_payload)
         if not slides_payload:
             return Response(
                 {'detail': "Aucune ligne exploitable trouvée dans le template."},
@@ -1216,6 +1242,14 @@ class ReelProjectGenerateFromTemplateView(APIView):
                         screen_text=payload.get('screen_text', ''),
                         katex=payload.get('katex', ''),
                         voice_script=payload.get('voice_script', ''),
+                        katex_inline_with_previous=payload.get('katex_inline_with_previous', False),
+                        katex_inline_offset_percent=payload.get('katex_inline_offset_percent', 0),
+                        katex_inline_vertical_offset_em=payload.get('katex_inline_vertical_offset_em', 0),
+                        katex_cumulative_gap_em=payload.get('katex_cumulative_gap_em', 0.4),
+                        katex_reset_cumulative=payload.get('katex_reset_cumulative', False),
+                        katex_reset_keep_previous_line=payload.get('katex_reset_keep_previous_line', True),
+                        katex_reveal_with_speech=payload.get('katex_reveal_with_speech', False),
+                        katex_drop_previous_line=payload.get('katex_drop_previous_line', False),
                         duration_seconds=payload.get('duration_seconds', 4),
                         layout_status=ReelSlide.LAYOUT_UNCHECKED,
                         layout_notes=payload.get('layout_notes', ''),
@@ -1248,6 +1282,14 @@ def _update_project_slides_from_template(project, slides_payload):
                 screen_text=payload.get('screen_text', ''),
                 katex=payload.get('katex', ''),
                 voice_script=payload.get('voice_script', ''),
+                katex_inline_with_previous=payload.get('katex_inline_with_previous', False),
+                katex_inline_offset_percent=payload.get('katex_inline_offset_percent', 0),
+                katex_inline_vertical_offset_em=payload.get('katex_inline_vertical_offset_em', 0),
+                katex_cumulative_gap_em=payload.get('katex_cumulative_gap_em', 0.4),
+                katex_reset_cumulative=payload.get('katex_reset_cumulative', False),
+                katex_reset_keep_previous_line=payload.get('katex_reset_keep_previous_line', True),
+                katex_reveal_with_speech=payload.get('katex_reveal_with_speech', False),
+                katex_drop_previous_line=payload.get('katex_drop_previous_line', False),
                 duration_seconds=payload.get('duration_seconds', DEFAULT_TEMPLATE_SLIDE_DURATION_SECONDS),
                 layout_status=ReelSlide.LAYOUT_UNCHECKED,
                 layout_notes=payload.get('layout_notes', ''),
@@ -1266,6 +1308,18 @@ def _update_project_slides_from_template(project, slides_payload):
             'voice_script': payload.get('voice_script', ''),
             'duration_seconds': payload.get('duration_seconds', DEFAULT_TEMPLATE_SLIDE_DURATION_SECONDS),
         }
+        for field_name in (
+            'katex_inline_with_previous',
+            'katex_inline_offset_percent',
+            'katex_inline_vertical_offset_em',
+            'katex_cumulative_gap_em',
+            'katex_reset_cumulative',
+            'katex_reset_keep_previous_line',
+            'katex_reveal_with_speech',
+            'katex_drop_previous_line',
+        ):
+            if field_name in payload:
+                field_values[field_name] = payload[field_name]
 
         for field_name, field_value in field_values.items():
             if getattr(slide, field_name) != field_value:
@@ -1315,6 +1369,8 @@ class ReelProjectSaveTemplateView(APIView):
             'template_text': clean_template_text,
         }
         slides_payload = _build_template_slides(project, template_payload)
+        if _project_is_carousel(project):
+            slides_payload = _prepare_carousel_slides(slides_payload)
         if not slides_payload:
             return Response(
                 {'detail': "Aucune ligne exploitable trouvee dans le template."},
@@ -1351,6 +1407,12 @@ class ReelProjectGenerateSpeechView(APIView):
         project = get_object_or_404(ReelProject.objects.prefetch_related('slides'), pk=pk)
         serializer = ReelSpeechGenerateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        if _project_is_carousel(project):
+            return Response(
+                {'detail': 'Les carrousels OptiTAB sont exportes en images: aucune voix a generer.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         requested_text = str(serializer.validated_data.get('text') or '').strip()
         speech_text = requested_text or build_project_speech_text(project)
@@ -1585,6 +1647,12 @@ class ReelProjectGenerateSlideSpeechesView(APIView):
         serializer = ReelSpeechGenerateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        if _project_is_carousel(project):
+            return Response(
+                {'detail': 'Les carrousels OptiTAB sont exportes en images: aucune voix a generer.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         generated_count = 0
         skipped_count = 0
         cached_count = 0
@@ -1816,6 +1884,12 @@ class ReelSlideGenerateSpeechView(APIView):
         serializer = ReelSpeechGenerateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        if _project_is_carousel(slide.reel_project):
+            return Response(
+                {'detail': 'Les carrousels OptiTAB sont exportes en images: aucune voix a generer.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         requested_text = str(serializer.validated_data.get('text') or '').strip()
         speech_text = requested_text or build_slide_speech_text(slide)
 
@@ -1868,6 +1942,19 @@ class ReelSlideDetailView(APIView):
         previous_speech_text = build_slide_speech_text(slide)
         serializer = ReelSlideSerializer(slide, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
+        if _project_is_carousel(slide.reel_project):
+            next_slide_type = serializer.validated_data.get('slide_type', slide.slide_type)
+            if next_slide_type in {ReelSlide.TYPE_CUMULATIVE_KATEX, ReelSlide.TYPE_RESULT}:
+                serializer.validated_data['slide_type'] = ReelSlide.TYPE_KATEX
+            serializer.validated_data['voice_script'] = ''
+            serializer.validated_data['katex_inline_with_previous'] = False
+            serializer.validated_data['katex_inline_offset_percent'] = 0
+            serializer.validated_data['katex_inline_vertical_offset_em'] = 0
+            serializer.validated_data['katex_cumulative_gap_em'] = 0.4
+            serializer.validated_data['katex_reset_cumulative'] = False
+            serializer.validated_data['katex_reset_keep_previous_line'] = True
+            serializer.validated_data['katex_reveal_with_speech'] = False
+            serializer.validated_data['katex_drop_previous_line'] = False
         updated_slide = serializer.save()
         if build_slide_speech_text(updated_slide) != previous_speech_text:
             _clear_slide_speech(updated_slide)

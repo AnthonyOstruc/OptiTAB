@@ -11,6 +11,7 @@
           {{ exportingPng ? `PNG ${pngExportProgress}/${slidesForRender.length}` : 'Exporter PNG' }}
         </button>
         <button
+          v-if="!isCarouselFormat"
           class="btn-fullscreen btn-video-export"
           type="button"
           :disabled="!videoSlidesForRender.length || exportingPng || isVideoExportBusy"
@@ -25,6 +26,7 @@
           <button class="size-reset" type="button" @click="resetMathSize">Reset</button>
         </div>
         <button
+          v-if="!isCarouselFormat"
           class="subtitles-toggle"
           :class="{ 'subtitles-toggle--active': showSubtitles }"
           type="button"
@@ -42,7 +44,7 @@
           <span class="subtitles-toggle-label">Sous-titres</span>
         </button>
         <div
-          v-if="showSubtitles"
+          v-if="!isCarouselFormat && showSubtitles"
           class="preview-gap-controls"
           aria-label="Position verticale des sous-titres"
         >
@@ -67,7 +69,7 @@
           <button class="size-reset" type="button" @click="resetSubtitleOffset">Reset</button>
         </div>
         <div
-          v-if="slidesForRender.length"
+          v-if="!isCarouselFormat && slidesForRender.length"
           class="preview-gap-controls"
           aria-label="Espacement vertical entre les lignes"
         >
@@ -92,7 +94,7 @@
           <button class="size-reset" type="button" @click="resetCumulativeGap">Reset</button>
         </div>
         <span v-if="slidesForRender.length" class="preview-count">{{ slidesForRender.length }} slides</span>
-        <span v-if="totalReelDurationLabel" class="preview-count preview-count--duration">{{ totalReelDurationLabel }}</span>
+        <span v-if="!isCarouselFormat && totalReelDurationLabel" class="preview-count preview-count--duration">{{ totalReelDurationLabel }}</span>
       </div>
     </div>
 
@@ -110,7 +112,7 @@
         :safe-zone-y-scale="getSafeZoneYScale(slide)"
         :clickable="!isVirtualCoverSlide(slide)"
         :video-format="format"
-        :show-subtitles="showSubtitles"
+        :show-subtitles="subtitlesEnabled"
         :subtitle-offset-percent="subtitleOffsetResolved"
         @select="handleSelectSlide(slide.id)"
         @open="handleOpenSlideFullscreen(slide.id)"
@@ -136,7 +138,7 @@
           :safe-zone-x-scale="safeZoneXScale"
           :safe-zone-y-scale="getSafeZoneYScale(slide)"
           :video-format="format"
-          :show-subtitles="showSubtitles"
+          :show-subtitles="subtitlesEnabled"
         :subtitle-offset-percent="subtitleOffsetResolved"
           @diagnostic="$emit('diagnostic', $event)"
         />
@@ -236,6 +238,7 @@
       >
         <div class="fullscreen-preview-controls" @click.stop>
           <button
+            v-if="!isCarouselFormat"
             class="full-preview-button"
             :class="{ 'full-preview-button--playing': isFullPreviewPlaying }"
             type="button"
@@ -247,6 +250,7 @@
         </div>
 
         <button
+          v-if="!isCarouselFormat"
           class="fullscreen-side-toggle fullscreen-side-toggle--left"
           :class="{ 'fullscreen-side-toggle--collapsed': fullscreenLeftPanelCollapsed }"
           type="button"
@@ -278,13 +282,13 @@
           class="fullscreen-content"
           :class="{
             'fullscreen-content--youtube': isYoutubeFormat,
-            'fullscreen-content--left-collapsed': fullscreenLeftPanelCollapsed,
+            'fullscreen-content--left-collapsed': effectiveFullscreenLeftPanelCollapsed,
             'fullscreen-content--right-collapsed': fullscreenRightPanelCollapsed,
-            'fullscreen-content--both-collapsed': fullscreenLeftPanelCollapsed && fullscreenRightPanelCollapsed,
+            'fullscreen-content--both-collapsed': effectiveFullscreenLeftPanelCollapsed && fullscreenRightPanelCollapsed,
           }"
           @click.stop
         >
-          <aside v-show="!fullscreenLeftPanelCollapsed" class="fullscreen-speech-panel" aria-label="Voix de la slide">
+          <aside v-if="!isCarouselFormat" v-show="!fullscreenLeftPanelCollapsed" class="fullscreen-speech-panel" aria-label="Voix de la slide">
             <div class="speech-panel-header">
               <div class="speech-tabs" role="tablist" aria-label="Edition slide">
                 <button
@@ -600,7 +604,7 @@
             </div>
 
             <div
-              v-if="activeSlide && !isEdgeSlide(activeSlide)"
+              v-if="!isCarouselFormat && activeSlide && !isEdgeSlide(activeSlide)"
               class="fullscreen-control-group"
               aria-label="Disposition KaTeX"
             >
@@ -687,7 +691,7 @@
             </div>
 
             <div
-              v-if="activeSlide && !isEdgeSlide(activeSlide)"
+              v-if="!isCarouselFormat && activeSlide && !isEdgeSlide(activeSlide)"
               class="fullscreen-control-group"
               aria-label="Page de correction"
             >
@@ -720,7 +724,7 @@
             </div>
 
             <div
-              v-if="activeSlide && !isEdgeSlide(activeSlide)"
+              v-if="!isCarouselFormat && activeSlide && !isEdgeSlide(activeSlide)"
               class="fullscreen-control-group"
               aria-label="Suppression de la ligne precedente"
             >
@@ -735,7 +739,7 @@
             </div>
 
             <div
-              v-if="activeSlide && !isEdgeSlide(activeSlide)"
+              v-if="!isCarouselFormat && activeSlide && !isEdgeSlide(activeSlide)"
               class="fullscreen-control-group"
               aria-label="Espacement cumulatif"
             >
@@ -882,7 +886,7 @@
               :safe-zone-x-scale="safeZoneXScale"
               :safe-zone-y-scale="getSafeZoneYScale(activeSlide)"
               :video-format="format"
-              :show-subtitles="showSubtitles"
+              :show-subtitles="subtitlesEnabled"
         :subtitle-offset-percent="subtitleOffsetResolved"
               :audio-current-time="speechAudioCurrentTime"
               :audio-playing="speechAudioPlaying"
@@ -974,12 +978,15 @@ const fullscreenRightPanelCollapsed = ref(false)
 const previousBodyOverflow = ref('')
 const SAFE_ZONE_DEFAULT_SCALE = 1.15
 const SAFE_ZONE_DEFAULT_SCALE_YOUTUBE = 1.0
+const SAFE_ZONE_DEFAULT_SCALE_CAROUSEL = 1.0
 const MATH_SCALE_DEFAULT_REEL = 1.0
+const MATH_SCALE_DEFAULT_CAROUSEL = 0.9
 const MATH_SCALE_DEFAULT_YOUTUBE_CALCUL = 2.0
 const MATH_SCALE_DEFAULT_YOUTUBE_EDGE = 1.0
 const MATH_SCALE_MIN = 0.05
 const SPLIT_RIGHT_SCALE_DEFAULT = 1.0
 const CUMULATIVE_GAP_DEFAULT_YOUTUBE = 0.35
+const CUMULATIVE_GAP_DEFAULT_CAROUSEL = 0.28
 const mathScaleCalcul = ref(MATH_SCALE_DEFAULT_REEL)
 const mathScaleHook = ref(MATH_SCALE_DEFAULT_REEL)
 const mathScaleCta = ref(MATH_SCALE_DEFAULT_REEL)
@@ -1227,18 +1234,36 @@ const CUMULATIVE_GAP_DEFAULT = 0.4
 const COVER_SLIDE_ID = '__optitab_reel_cover__'
 const COVER_FILENAME = 'optitab-reel-cover.png'
 const isYoutubeFormat = computed(() => props.format === 'youtube')
-const PNG_EXPORT_WIDTH = computed(() => isYoutubeFormat.value ? 1920 : 1080)
-const PNG_EXPORT_HEIGHT = computed(() => isYoutubeFormat.value ? 1080 : 1920)
-const VIDEO_EXPORT_PRESETS = computed(() => isYoutubeFormat.value
-  ? {
+const isCarouselFormat = computed(() => props.format === 'carousel')
+const subtitlesEnabled = computed(() => !isCarouselFormat.value && showSubtitles.value)
+const effectiveFullscreenLeftPanelCollapsed = computed(() => isCarouselFormat.value || fullscreenLeftPanelCollapsed.value)
+const PNG_EXPORT_WIDTH = computed(() => {
+  if (isYoutubeFormat.value) return 1920
+  return 1080
+})
+const PNG_EXPORT_HEIGHT = computed(() => {
+  if (isYoutubeFormat.value) return 1080
+  if (isCarouselFormat.value) return 1350
+  return 1920
+})
+const VIDEO_EXPORT_PRESETS = computed(() => {
+  if (isYoutubeFormat.value) {
+    return {
       fast: { width: 1280, height: 720, fps: 24, crf: 24, ffmpegPreset: 'ultrafast', imageType: 'image/jpeg', imageQuality: 0.9 },
       hq: { width: 1920, height: 1080, fps: 30, crf: 18, ffmpegPreset: 'veryfast', imageType: 'image/png', imageQuality: 1 },
     }
-  : {
-      fast: { width: 720, height: 1280, fps: 24, crf: 24, ffmpegPreset: 'ultrafast', imageType: 'image/jpeg', imageQuality: 0.9 },
-      hq: { width: 1080, height: 1920, fps: 30, crf: 18, ffmpegPreset: 'veryfast', imageType: 'image/png', imageQuality: 1 },
+  }
+  if (isCarouselFormat.value) {
+    return {
+      fast: { width: 720, height: 900, fps: 24, crf: 24, ffmpegPreset: 'ultrafast', imageType: 'image/jpeg', imageQuality: 0.9 },
+      hq: { width: 1080, height: 1350, fps: 30, crf: 18, ffmpegPreset: 'veryfast', imageType: 'image/png', imageQuality: 1 },
     }
-)
+  }
+  return {
+    fast: { width: 720, height: 1280, fps: 24, crf: 24, ffmpegPreset: 'ultrafast', imageType: 'image/jpeg', imageQuality: 0.9 },
+    hq: { width: 1080, height: 1920, fps: 30, crf: 18, ffmpegPreset: 'veryfast', imageType: 'image/png', imageQuality: 1 },
+  }
+})
 const mathSizePercent = computed(() => Math.round(getMathScale(activeSlide.value) * 100))
 const mathSizeLabel = computed(() => getActiveSlideTypeLabel('Taille'))
 const splitRightSizePercent = computed(() => Math.round(splitRightScale.value * 100))
@@ -1283,6 +1308,11 @@ const exportFrameStyle = computed(() => ({
   '--export-width': `${exportFrameWidth.value}px`,
   '--export-height': `${exportFrameHeight.value}px`,
 }))
+const exportSlideFilenamePrefix = computed(() => {
+  if (isYoutubeFormat.value) return 'optitab-youtube-slide'
+  if (isCarouselFormat.value) return 'optitab-carousel-slide'
+  return 'optitab-reel-slide'
+})
 const videoHqExportButtonLabel = computed(() => {
   if (props.exportingVideo && videoExportMode.value === 'hq') return 'Assemblage HQ...'
   if (preparingVideoFrames.value && videoExportMode.value === 'hq') return `HQ ${videoFrameProgress.value}/${videoSlidesForRender.value.length}`
@@ -1290,8 +1320,11 @@ const videoHqExportButtonLabel = computed(() => {
 })
 const fullPreviewButtonLabel = computed(() => (isFullPreviewPlaying.value ? 'Stopper la lecture' : 'Ecouter tout'))
 const fullPreviewButtonDisabled = computed(() => (
-  !isFullPreviewPlaying.value &&
-  (!videoSlidesForRender.value.length || Boolean(props.generatingSpeechSlideId))
+  isCarouselFormat.value ||
+  (
+    !isFullPreviewPlaying.value &&
+    (!videoSlidesForRender.value.length || Boolean(props.generatingSpeechSlideId))
+  )
 ))
 
 function normalizeText(value) {
@@ -1491,6 +1524,7 @@ function getMathScale(slide) {
 }
 
 function getMathScaleDefault(slide) {
+  if (isCarouselFormat.value) return MATH_SCALE_DEFAULT_CAROUSEL
   if (!isYoutubeFormat.value) return MATH_SCALE_DEFAULT_REEL
   const slideType = getSlideType(slide)
   if (isHookLikeSlide(slide) || slideType === 'cta') return MATH_SCALE_DEFAULT_YOUTUBE_EDGE
@@ -1814,6 +1848,21 @@ const baseSlidesForRender = computed(() => {
     const baseKatex = normalizeText(safeSlide.katex)
     const resultLikeSlide = isResultLikeSlide(slideType, safeSlide)
 
+    if (isCarouselFormat.value) {
+      const ownRows = splitKatexLines(baseKatex).map((line) => makeKatexRow(line))
+      return {
+        ...safeSlide,
+        display_screen_text: baseText,
+        display_katex_row_gap_em: cumulativeGap.value,
+        display_katex_rows: ownRows,
+        display_katex: ownRows.length ? toAlignedKatexRows(ownRows, cumulativeGap.value) || baseKatex : baseKatex,
+        katex_inline_with_previous: false,
+        katex_reset_cumulative: false,
+        katex_reset_keep_previous_line: true,
+        katex_drop_previous_line: false,
+      }
+    }
+
     if (NON_MATH_SLIDE_TYPES.has(slideType)) {
       resetCumulativeState()
       lastDisplayedMathRows = []
@@ -1852,11 +1901,52 @@ const baseSlidesForRender = computed(() => {
       carriedScreenText = baseText
     }
     const displayScreenText = resultLikeSlide
-      ? resultScreenText(baseText)
+      ? (
+          isYoutubeFormat.value
+            ? resultScreenText(baseText)
+            : (resultScreenText(baseText) || carriedScreenText)
+        )
       : (baseText || carriedScreenText)
 
     if (resultLikeSlide) {
       const currentLines = splitKatexLines(baseKatex)
+
+      if (!isYoutubeFormat.value) {
+        const previousDisplayedMathRows = cloneKatexRows(lastDisplayedMathRows)
+        const resetCumulative = Boolean(safeSlide.katex_reset_cumulative)
+        const keepPreviousOnReset = resetKeepsPreviousLine(safeSlide)
+        if (resetCumulative && !keepPreviousOnReset) {
+          resetCumulativeState()
+        } else if (safeSlide.katex_drop_previous_line) {
+          dropPreviousCumulativeLine()
+        }
+        const inlineWithPrevious = Boolean(safeSlide.katex_inline_with_previous) && cumulativeRows.length > 0
+        appendKatexLines(currentLines, safeSlide, inlineWithPrevious)
+        if (resetCumulative && keepPreviousOnReset) {
+          cumulativeRows = cloneKatexRows(cumulativeRows).slice(-2)
+          cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
+        }
+
+        let displayRows = cloneKatexRows(cumulativeRows)
+        if (previousDisplayedMathRows.length) {
+          displayRows = mergeUniqueKatexRows(previousDisplayedMathRows, displayRows)
+        }
+        if (!displayRows.length && currentLines.length) {
+          displayRows = [makeKatexRow(currentLines[currentLines.length - 1])]
+        }
+        cumulativeRows = cloneKatexRows(displayRows)
+        cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
+        rememberDisplayedMathRows(displayRows)
+
+        return {
+          ...safeSlide,
+          display_screen_text: displayScreenText,
+          display_katex_row_gap_em: cumulativeGap.value,
+          display_katex_rows: displayRows,
+          display_katex: toAlignedKatexRows(displayRows, cumulativeGap.value) || baseKatex,
+        }
+      }
+
       let resultRows = currentLines
         .filter((line) => {
           const key = normalizeKatexLine(line)
@@ -1905,7 +1995,6 @@ const baseSlidesForRender = computed(() => {
 
     if (slideType === 'cumulative_katex') {
       const currentLines = splitKatexLines(baseKatex)
-      const previousDisplayedMathRows = cloneKatexRows(lastDisplayedMathRows)
       const resetCumulative = Boolean(safeSlide.katex_reset_cumulative)
       const keepPreviousOnReset = resetKeepsPreviousLine(safeSlide)
       if (resetCumulative && !keepPreviousOnReset) {
@@ -1919,12 +2008,7 @@ const baseSlidesForRender = computed(() => {
         cumulativeRows = cloneKatexRows(cumulativeRows).slice(-2)
         cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
       }
-      let displayRows = cloneKatexRows(cumulativeRows)
-      if (!isYoutubeFormat.value && slideType === 'result' && previousDisplayedMathRows.length) {
-        displayRows = mergeUniqueKatexRows(previousDisplayedMathRows, displayRows)
-        cumulativeRows = cloneKatexRows(displayRows)
-        cumulativeLineKeys = new Set(getKatexRowsLineKeys(cumulativeRows))
-      }
+      const displayRows = cloneKatexRows(cumulativeRows)
       rememberDisplayedMathRows(displayRows)
       return {
         ...safeSlide,
@@ -1943,7 +2027,7 @@ const baseSlidesForRender = computed(() => {
   })
 })
 
-const coverSlide = computed(() => makeCoverSlide(baseSlidesForRender.value[0]))
+const coverSlide = computed(() => (isCarouselFormat.value ? null : makeCoverSlide(baseSlidesForRender.value[0])))
 const slidesForRender = computed(() => {
   const cover = coverSlide.value
   return cover ? [cover, ...baseSlidesForRender.value] : baseSlidesForRender.value
@@ -1951,6 +2035,7 @@ const slidesForRender = computed(() => {
 const videoSlidesForRender = computed(() => slidesForRender.value.filter((slide) => !isVirtualCoverSlide(slide)))
 
 const totalReelDurationLabel = computed(() => {
+  if (isCarouselFormat.value) return null
   const total = videoSlidesForRender.value.reduce((sum, slide) => {
     const s = Number(slide?.duration_seconds)
     return sum + (Number.isFinite(s) && s > 0 ? s : 4)
@@ -1967,7 +2052,7 @@ const activeSlide = computed(() => {
   return slidesForRender.value[index] || null
 })
 
-const activeSlideInline = computed(() => Boolean(activeSlide.value?.katex_inline_with_previous))
+const activeSlideInline = computed(() => !isCarouselFormat.value && Boolean(activeSlide.value?.katex_inline_with_previous))
 const activeSlideInlineOffset = computed(() => clampInlineOffset(activeSlide.value?.katex_inline_offset_percent))
 const activeSlideInlineSeparator = computed(() => normalizeInlineSeparator(activeSlide.value?.katex_inline_separator))
 const activeSlideInlineVerticalOffset = computed(() => clampInlineVerticalOffset(activeSlide.value?.katex_inline_vertical_offset_em))
@@ -2377,6 +2462,7 @@ function increaseSafeZoneX() {
 }
 
 function safeZoneDefaultForFormat() {
+  if (isCarouselFormat.value) return SAFE_ZONE_DEFAULT_SCALE_CAROUSEL
   return isYoutubeFormat.value ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE : SAFE_ZONE_DEFAULT_SCALE
 }
 
@@ -2400,15 +2486,36 @@ function resetSafeZoneY() {
 
 function applyFormatDefaults() {
   const isYt = isYoutubeFormat.value
-  const safeDefault = isYt ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE : SAFE_ZONE_DEFAULT_SCALE
-  const gapDefault = isYt ? CUMULATIVE_GAP_DEFAULT_YOUTUBE : CUMULATIVE_GAP_DEFAULT
+  const isCarousel = isCarouselFormat.value
+  const safeDefault = isYt
+    ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE
+    : isCarousel
+      ? SAFE_ZONE_DEFAULT_SCALE_CAROUSEL
+      : SAFE_ZONE_DEFAULT_SCALE
+  const gapDefault = isYt
+    ? CUMULATIVE_GAP_DEFAULT_YOUTUBE
+    : isCarousel
+      ? CUMULATIVE_GAP_DEFAULT_CAROUSEL
+      : CUMULATIVE_GAP_DEFAULT
   safeZoneXScale.value = safeDefault
   safeZoneMathYScale.value = safeDefault
   safeZoneHookYScale.value = safeDefault
   safeZoneCtaYScale.value = safeDefault
-  mathScaleCalcul.value = isYt ? MATH_SCALE_DEFAULT_YOUTUBE_CALCUL : MATH_SCALE_DEFAULT_REEL
-  mathScaleHook.value = isYt ? MATH_SCALE_DEFAULT_YOUTUBE_EDGE : MATH_SCALE_DEFAULT_REEL
-  mathScaleCta.value = isYt ? MATH_SCALE_DEFAULT_YOUTUBE_EDGE : MATH_SCALE_DEFAULT_REEL
+  mathScaleCalcul.value = isYt
+    ? MATH_SCALE_DEFAULT_YOUTUBE_CALCUL
+    : isCarousel
+      ? MATH_SCALE_DEFAULT_CAROUSEL
+      : MATH_SCALE_DEFAULT_REEL
+  mathScaleHook.value = isYt
+    ? MATH_SCALE_DEFAULT_YOUTUBE_EDGE
+    : isCarousel
+      ? MATH_SCALE_DEFAULT_CAROUSEL
+      : MATH_SCALE_DEFAULT_REEL
+  mathScaleCta.value = isYt
+    ? MATH_SCALE_DEFAULT_YOUTUBE_EDGE
+    : isCarousel
+      ? MATH_SCALE_DEFAULT_CAROUSEL
+      : MATH_SCALE_DEFAULT_REEL
   splitRightScale.value = SPLIT_RIGHT_SCALE_DEFAULT
   cumulativeGap.value = gapDefault
 }
@@ -2999,7 +3106,7 @@ async function exportAllSlidesPng() {
       if (!isCover) exportedSlideNumber += 1
       const filename = isCover
         ? COVER_FILENAME
-        : `optitab-reel-slide-${String(exportedSlideNumber).padStart(2, '0')}.png`
+        : `${exportSlideFilenamePrefix.value}-${String(exportedSlideNumber).padStart(2, '0')}.png`
       await downloadCanvasPng(canvas, filename)
       pngExportProgress.value = index + 1
       await new Promise((resolve) => window.setTimeout(resolve, 180))
@@ -3015,6 +3122,7 @@ async function exportAllSlidesPng() {
 }
 
 async function exportAllSlidesVideo(mode = 'fast') {
+  if (isCarouselFormat.value) return
   const videoSlides = videoSlidesForRender.value
   if (!videoSlides.length || isVideoExportBusy.value || exportingPng.value) return
   const exportPreset = VIDEO_EXPORT_PRESETS.value[mode] || VIDEO_EXPORT_PRESETS.value.fast
@@ -3080,7 +3188,7 @@ async function exportAllSlidesVideo(mode = 'fast') {
       fps: exportPreset.fps,
       crf: exportPreset.crf,
       preset: exportPreset.ffmpegPreset,
-      show_subtitles: showSubtitles.value,
+      show_subtitles: subtitlesEnabled.value,
       subtitle_offset_percent: subtitleOffsetResolved.value,
     })
   } catch (error) {
@@ -3224,7 +3332,7 @@ watch(
   }
 )
 
-watch(isYoutubeFormat, () => {
+watch(() => props.format, () => {
   applyFormatDefaults()
 }, { immediate: true })
 

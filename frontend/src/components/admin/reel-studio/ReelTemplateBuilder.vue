@@ -1,16 +1,16 @@
 <template>
   <section class="template-builder">
     <div class="template-header">
-      <h3>Création Reel</h3>
+      <h3>{{ title }}</h3>
     </div>
 
     <form class="template-form" @submit.prevent="handleSubmit">
       <label>
-        Format / Script (par slides)
+        {{ textareaLabel }}
         <textarea
           v-model="templateTextModel"
           rows="18"
-          placeholder="MODE AUTO (IA décide le nombre de slides)&#10;TITLE: Dérivation produit&#10;HOOK: Défi bac&#10;f(x)=x\ln(x)&#10;u=x \qquad v=\ln(x)&#10;u'=1 \qquad v'=\frac{1}{x}&#10;f'(x)=\ln(x)+1&#10;CTA: Abonne-toi à OptiTAB | Sauvegarde ce Reel | Commente ton résultat&#10;&#10;OU MODE MANUEL:&#10;SLIDE 1 | hook&#10;TITLE: Défi bac&#10;KATEX: f(x)=x\ln(x)&#10;TEXT: Tu trouves combien ?&#10;VOICE: [curious] Défi bac... tu trouves combien ?&#10;---&#10;SLIDE 2 | katex&#10;TEXT: Correction :&#10;KATEX: f(x)=x\ln(x)&#10;VOICE: [thoughtful] On commence par identifier la fonction.&#10;---&#10;SLIDE 3 | cta&#10;TITLE: Résultat&#10;KATEX: f'(x)=\ln(x)+1&#10;TEXT: Abonne-toi à OptiTAB&#10;Sauvegarde ce Reel&#10;Commente ton résultat&#10;VOICE: [warmly] Abonne-toi pour la suite."
+          :placeholder="placeholder"
         ></textarea>
       </label>
 
@@ -48,6 +48,18 @@ const props = defineProps({
     default: false,
   },
   templateText: {
+    type: String,
+    default: '',
+  },
+  title: {
+    type: String,
+    default: 'Création Reel',
+  },
+  textareaLabel: {
+    type: String,
+    default: 'Format / Script (par slides)',
+  },
+  placeholder: {
     type: String,
     default: '',
   },

@@ -6,6 +6,7 @@
       'slide-card--fullscreen': isLargeDisplayMode,
       'slide-card--clickable': clickable,
       'slide-card--youtube': isYoutubeFormat,
+      'slide-card--carousel': isCarouselFormat,
     }"
     :style="slideCardStyle"
     @click="handleSelect"
@@ -300,6 +301,7 @@ const renderedSplitRightKatex = computed(() => {
 })
 
 const isYoutubeFormat = computed(() => props.videoFormat === 'youtube')
+const isCarouselFormat = computed(() => props.videoFormat === 'carousel')
 const isHookSlide = computed(() => safeSlide.value.slide_type === 'hook')
 const isCtaSlide = computed(() => safeSlide.value.slide_type === 'cta')
 const isCoverSlide = computed(() => Boolean(safeSlide.value.is_virtual_cover || safeSlide.value.slide_type === 'cover'))
@@ -327,6 +329,7 @@ const slideCardStyle = computed(() => {
   const katexScale = clampSlideScale(safeSlide.value.katex_scale)
   const rowGap = clampCumulativeGap(safeSlide.value.display_katex_row_gap_em ?? safeSlide.value.katex_cumulative_gap_em)
   const isYt = isYoutubeFormat.value
+  const isCarousel = isCarouselFormat.value
   const numericSplitRightScale = Number(props.splitRightScale)
   const splitRightScale = Number.isFinite(numericSplitRightScale) ? Math.max(0.05, numericSplitRightScale) : 1
   const safeXScale = isYt
@@ -335,9 +338,9 @@ const slideCardStyle = computed(() => {
   const safeYScale = isYt
     ? Math.min(1.4, Math.max(0, Number(props.safeZoneYScale) || 0))
     : Math.min(1.4, Math.max(0.7, Number(props.safeZoneYScale) || 1))
-  const safeInlineUnit = isYt ? '3cqw' : '6.5cqw'
-  const safeBlockUnit = isYt ? '2.5cqw' : '6.5cqw'
-  const safeTopUnit = isYt ? '0cqw' : '16cqw'
+  const safeInlineUnit = isYt ? '3cqw' : isCarousel ? '5.2cqw' : '6.5cqw'
+  const safeBlockUnit = isYt ? '2.5cqw' : isCarousel ? '4.5cqw' : '6.5cqw'
+  const safeTopUnit = isYt ? '0cqw' : isCarousel ? '8cqw' : '16cqw'
 
   return {
     '--reel-user-scale': requestedScale,
@@ -358,7 +361,9 @@ const subtitleOffsetPercentResolved = computed(() => {
   const v = Number(props.subtitleOffsetPercent)
   if (Number.isFinite(v)) return Math.max(0, Math.min(50, v))
   // Defaults: 20% from bottom for vertical (Reel/TikTok), 12% for horizontal (YouTube)
-  return isYoutubeFormat.value ? 12 : 20
+  if (isYoutubeFormat.value) return 12
+  if (isCarouselFormat.value) return 16
+  return 20
 })
 const screenTextContent = computed(() => {
   const preferred = String(safeSlide.value.display_screen_text || '').trim()
@@ -2027,6 +2032,121 @@ onUnmounted(() => {
   .slide-card--youtube.slide-card--fullscreen {
     width: min(92vw, calc((100dvh - 220px) * 16 / 9));
     min-width: min(80vw, 320px);
+  }
+}
+
+.slide-card--carousel:not(.slide-card--fullscreen) {
+  flex: 0 0 250px;
+  width: 250px;
+  min-width: 250px;
+}
+
+.slide-card--carousel .reel-slide {
+  aspect-ratio: 4 / 5;
+  border-color: #d7e4f8;
+  background: #f8fbff;
+}
+
+.slide-card--carousel .reel-slide::before {
+  background-image: url('/OptiTAB_bg.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.slide-card--carousel.slide-card--fullscreen {
+  width: min(82vw, calc((100dvh - 150px) * 4 / 5));
+  max-width: 560px;
+  min-width: min(72vw, 320px);
+}
+
+.slide-card--carousel .reel-slide-body,
+.slide-card--carousel.slide-card--fullscreen .reel-slide-body {
+  gap: calc(2.8cqw * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--carousel:not(.slide-card--fullscreen) .hook-layout,
+.slide-card--carousel.slide-card--fullscreen .hook-layout,
+.slide-card--carousel .cta-layout,
+.slide-card--carousel.slide-card--fullscreen .cta-layout {
+  gap: calc(4cqw * var(--reel-user-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--carousel:not(.slide-card--fullscreen) .reel-slide--hook:not(.reel-slide--cover) .hook-layout,
+.slide-card--carousel.slide-card--fullscreen .reel-slide--hook:not(.reel-slide--cover) .hook-layout {
+  transform: translateY(-4cqw);
+}
+
+.slide-card--carousel:not(.slide-card--fullscreen) .hook-top,
+.slide-card--carousel.slide-card--fullscreen .hook-top,
+.slide-card--carousel .cta-top,
+.slide-card--carousel.slide-card--fullscreen .cta-top {
+  font-size: calc(8.4cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.slide-card--carousel:not(.slide-card--fullscreen) .hook-middle-text,
+.slide-card--carousel.slide-card--fullscreen .hook-middle-text {
+  font-size: calc(8.8cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.1;
+}
+
+.slide-card--carousel:not(.slide-card--fullscreen) .hook-bottom,
+.slide-card--carousel.slide-card--fullscreen .hook-bottom {
+  font-size: calc(5.8cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.14;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.slide-card--carousel:not(.slide-card--fullscreen) .hook-katex :deep(.katex),
+.slide-card--carousel.slide-card--fullscreen .hook-katex :deep(.katex),
+.slide-card--carousel .cta-katex :deep(.katex),
+.slide-card--carousel.slide-card--fullscreen .cta-katex :deep(.katex) {
+  font-size: calc(6.2cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+}
+
+.slide-card--carousel .cta-main,
+.slide-card--carousel.slide-card--fullscreen .cta-main {
+  font-size: calc(5cqw * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.16;
+}
+
+.slide-card--carousel .screen-text,
+.slide-card--carousel .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .screen-text,
+.slide-card--carousel.slide-card--fullscreen .screen-text {
+  font-size: calc(3.8cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.28;
+}
+
+.slide-card--carousel .slide-title,
+.slide-card--carousel .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .slide-title,
+.slide-card--carousel.slide-card--fullscreen .slide-title {
+  font-size: calc(4.2cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  line-height: 1.1;
+}
+
+.slide-card--carousel .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone,
+.slide-card--carousel.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone {
+  gap: calc(2.4cqw * var(--reel-thumb-fit-scale, 1));
+}
+
+.slide-card--carousel .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex),
+.slide-card--carousel .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line .katex),
+.slide-card--carousel.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex) {
+  font-size: calc(3.8cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1)) !important;
+}
+
+.slide-card--carousel .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line),
+.slide-card--carousel.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line) {
+  min-height: calc(6.4cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+@media (max-width: 768px) {
+  .slide-card--carousel.slide-card--fullscreen {
+    width: min(92vw, calc((100dvh - 190px) * 4 / 5));
+    min-width: min(82vw, 320px);
   }
 }
 

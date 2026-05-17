@@ -1,11 +1,15 @@
 import json
 import logging
 import re
+import uuid
+from io import BytesIO
+from decimal import Decimal
 
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db import transaction
+from django.db.models import Sum
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -16,10 +20,12 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from PIL import Image, ImageOps, UnidentifiedImageError
 
-from .models import ReelProject, ReelSlide
+from .models import GeminiUsageLog, ReelProject, ReelSlide
 from .permissions import IsStaffOrSuperuser
 from .serializers import (
+    ReelGeminiCarouselGenerateSerializer,
     ReelProjectDetailSerializer,
     ReelProjectSerializer,
     ReelSlideSerializer,
@@ -27,6 +33,13 @@ from .serializers import (
     ReelTTSTestSerializer,
     ReelTemplateGenerateSerializer,
     ReelVideoExportSerializer,
+)
+from .gemini import (
+    GeminiAPIError,
+    GeminiConfigurationError,
+    generate_carousel_image,
+    generate_carousel_template,
+    list_gemini_models,
 )
 from .elevenlabs import (
     ElevenLabsAPIError,
@@ -553,8 +566,10 @@ _SLIDE_TYPES = {
     ReelSlide.TYPE_CTA,
 }
 
+_VISUAL_MARKERS = {'VISUAL', 'VISUEL', 'IMAGE', 'IMAGE_PROMPT'}
+
 _TEMPLATE_MARKER_PATTERN = re.compile(
-    r'^\s*(HOOK|CTA|TEXT|QUESTION|TITLE|KATEX|VOICE|DURATION|TYPE)\s*:\s*(.*)\s*$',
+    r'^\s*(HOOK|CTA|TEXT|QUESTION|TITLE|KATEX|VOICE|DURATION|TYPE|VISUAL|VISUEL|IMAGE|IMAGE_PROMPT)\s*:\s*(.*)\s*$',
     flags=re.IGNORECASE,
 )
 _SLIDE_HEADER_PATTERN = re.compile(
@@ -722,6 +737,7 @@ def _build_slide_payload(
     katex='',
     voice_script='',
     layout_notes='',
+    visual_prompt='',
 ):
     normalized_type = _parse_slide_type(slide_type) or ReelSlide.TYPE_KATEX
     if normalized_type not in _SLIDE_TYPES:
@@ -735,6 +751,20 @@ def _build_slide_payload(
 
     safe_katex = _normalize_katex_block(safe_katex)
 
+    safe_layout_notes = str(layout_notes or '').strip()
+    safe_visual_prompt = str(visual_prompt or '').strip()
+    if safe_visual_prompt:
+        layout_meta = {}
+        if safe_layout_notes:
+            try:
+                parsed_layout = json.loads(safe_layout_notes)
+                if isinstance(parsed_layout, dict):
+                    layout_meta.update(parsed_layout)
+            except (TypeError, ValueError):
+                layout_meta['notes'] = safe_layout_notes
+        layout_meta['visual_prompt'] = safe_visual_prompt
+        safe_layout_notes = json.dumps(layout_meta, ensure_ascii=False)
+
     return {
         'slide_type': normalized_type,
         'title': safe_title,
@@ -742,7 +772,7 @@ def _build_slide_payload(
         'katex': safe_katex,
         'voice_script': safe_voice,
         'duration_seconds': safe_duration,
-        'layout_notes': str(layout_notes or ''),
+        'layout_notes': safe_layout_notes,
     }
 
 
@@ -843,6 +873,8 @@ def _parse_structured_template(template_text, max_chars):
                 pass
             elif marker == 'VOICE':
                 _append_multiline(current_slide, 'voice_script', value)
+            elif marker in _VISUAL_MARKERS:
+                _append_multiline(current_slide, 'visual_prompt', value)
             elif in_right_zone:
                 if marker == 'KATEX':
                     for split_line in _split_katex_line_by_width(value, max_chars):
@@ -938,6 +970,7 @@ def _parse_structured_template(template_text, max_chars):
             katex=slide.get('katex', ''),
             voice_script=slide.get('voice_script', ''),
             layout_notes=layout_notes,
+            visual_prompt=slide.get('visual_prompt', ''),
         )
         if (
             payload['screen_text']
@@ -976,6 +1009,8 @@ def _parse_template(template_text):
                 raw_text_lines.append(value)
             elif marker == 'KATEX' and value:
                 raw_katex_lines.append(value)
+            elif marker in _VISUAL_MARKERS and value:
+                raw_text_lines.append(f'Visuel: {value}')
             continue
 
         raw_katex_lines.append(cleaned)
@@ -1124,6 +1159,296 @@ def _prepare_carousel_slides(slides_payload):
     return slides_payload
 
 
+def _slide_layout_meta(slide_or_payload):
+    raw_notes = ''
+    if isinstance(slide_or_payload, dict):
+        raw_notes = slide_or_payload.get('layout_notes', '')
+    else:
+        raw_notes = getattr(slide_or_payload, 'layout_notes', '')
+    raw_notes = str(raw_notes or '').strip()
+    if not raw_notes:
+        return {}
+    try:
+        parsed = json.loads(raw_notes)
+    except (TypeError, ValueError):
+        return {}
+    return parsed if isinstance(parsed, dict) else {}
+
+
+def _slide_visual_prompt(slide):
+    return str(_slide_layout_meta(slide).get('visual_prompt') or '').strip()
+
+
+def _normalize_carousel_image_png(image_bytes):
+    try:
+        with Image.open(BytesIO(image_bytes)) as source:
+            image = ImageOps.exif_transpose(source).convert('RGB')
+            image = ImageOps.fit(
+                image,
+                (1080, 1350),
+                method=Image.Resampling.LANCZOS,
+                centering=(0.5, 0.5),
+            )
+            output = BytesIO()
+            image.save(output, format='PNG', optimize=True)
+            return output.getvalue()
+    except (UnidentifiedImageError, OSError, ValueError) as exc:
+        raise GeminiAPIError('Image Gemini invalide ou illisible.') from exc
+
+
+def _build_carousel_slide_image_prompt(*, project, slide, total_slides):
+    visual_prompt = _slide_visual_prompt(slide)
+    slide_type = str(slide.slide_type or '').strip().lower()
+    is_first = int(slide.order or 0) == 1
+    is_last = bool(int(slide.order or 0) == int(total_slides or 0) and total_slides)
+
+    if slide_type == 'hook' or is_first:
+        composition_hint = (
+            "Composition centrée façon affiche premium. Laisser une grande zone vide au centre et en bas "
+            "pour qu'un overlay typographique soit ajouté ensuite par l'application."
+        )
+        scene_hint = (
+            "Hero éditorial OptiTAB: mockup d'ordinateur stylisé avec une interface bleue/blanche (cartes "
+            "et formes abstraites, sans texte lisible), cahier propre à côté, lumière douce."
+        )
+    elif slide_type == 'cta' or is_last:
+        composition_hint = (
+            "Composition finale invitante. Le sujet visuel occupe le haut ou un côté, et au moins 60% de l'image "
+            "(centre + bas) reste un aplat doux pour overlay texte."
+        )
+        scene_hint = (
+            "Ordinateur portable et smartphone montrant un mockup de plateforme éducative OptiTAB (cartes "
+            "abstraites bleu/blanc, sans texte lisible), fond lumineux, ambiance premium."
+        )
+    else:
+        composition_hint = (
+            "Composition asymétrique éditoriale: sujet visuel sur un côté ou en haut, au moins 50% de l'image "
+            "(idéalement le bas et un côté) reste un aplat doux propre pour overlay texte."
+        )
+        scene_hint = (
+            "Scène pédagogique premium OptiTAB: mockup d'interface (cartes de chapitres, fiche, exercice), "
+            "formes abstraites bleu/blanc, sans aucun texte lisible."
+        )
+
+    visual_block = visual_prompt or scene_hint
+
+    return (
+        "Generate an image. Output ONLY an image (no text response).\n\n"
+        "TASK: Produce a clean background visual for an Instagram carousel slide for OptiTAB (optitab.net), "
+        "a French math learning platform. The image will be used as a background, and a clean text overlay "
+        "will be added later by the app.\n\n"
+        f"SLIDE: {slide.order} of {total_slides} (type: {slide_type or 'content'})\n"
+        f"PROJECT: {project.title or 'Carrousel OptiTAB'}\n\n"
+        "VISUAL SUBJECT:\n"
+        f"{visual_block}\n\n"
+        "COMPOSITION:\n"
+        f"{composition_hint}\n\n"
+        "ART DIRECTION (must stay consistent across the carousel):\n"
+        "- Aspect ratio 4:5 portrait (1080x1350 px).\n"
+        "- Palette: OptiTAB deep blue (#1f4ed8 / #2563eb), soft blue, off-white, cool pastel accents.\n"
+        "- Style: premium editorial education, clean, modern, bright, lots of soft blue/white space.\n"
+        "- Render: clean 3D / vector / soft photo, sharp lines, gentle shadows.\n\n"
+        "STRICT RULES:\n"
+        "- NO readable text, words, letters, digits, or logos anywhere in the image. "
+        "Any UI mockup must use blurred or abstract shapes only.\n"
+        "- No other brand logos, no watermark, no signature.\n"
+        "- No recognizable photoreal faces (prefer silhouettes, hands, back views, or illustrations).\n"
+        "- No fake prices, no sensational claims, no clutter.\n\n"
+        "OUTPUT: a single clean, premium, TEXT-FREE background image ready for a typographic overlay."
+    )
+
+
+def _generate_carousel_slide_images(*, project, user):
+    slides = list(project.slides.order_by('order', 'id'))
+    image_model_id = str(getattr(settings, 'GEMINI_IMAGE_MODEL_ID', 'gemini-2.5-flash-image') or 'gemini-2.5-flash-image').strip()
+    generated = []
+    errors = []
+
+    for slide in slides:
+        prompt = _build_carousel_slide_image_prompt(
+            project=project,
+            slide=slide,
+            total_slides=len(slides),
+        )
+        try:
+            result = generate_carousel_image(
+                prompt=prompt,
+                model_id=image_model_id,
+                aspect_ratio='3:4',
+                return_metadata=True,
+            )
+            image_bytes = _normalize_carousel_image_png(result.get('image_bytes') or b'')
+        except (GeminiConfigurationError, GeminiAPIError) as exc:
+            errors.append({
+                'slide_id': slide.id,
+                'order': slide.order,
+                'detail': str(exc),
+            })
+            continue
+
+        filename = f'carousel_slide_{slide.order}_{uuid.uuid4().hex[:10]}.png'
+        slide.generated_image.save(filename, ContentFile(image_bytes), save=False)
+        slide.generated_image_prompt = prompt
+        slide.generated_image_model_id = result.get('model_id') or image_model_id
+        slide.generated_image_generated_at = timezone.now()
+        slide.save(update_fields=[
+            'generated_image',
+            'generated_image_prompt',
+            'generated_image_model_id',
+            'generated_image_generated_at',
+            'updated_at',
+        ])
+        usage_log = _record_gemini_usage(
+            project=project,
+            user=user,
+            model_id=result.get('model_id') or image_model_id,
+            prompt=prompt,
+            generated_text='[image]',
+            usage=result.get('usage') or {},
+            cost=result.get('cost') or {},
+            request_type='carousel_image_generation',
+        )
+        generated.append({
+            'slide_id': slide.id,
+            'order': slide.order,
+            'usage_log_id': usage_log.id,
+            'model_id': usage_log.model_id,
+            'total_cost_usd': _decimal_to_float(usage_log.total_cost_usd),
+            'display_cost': _decimal_to_float(_gemini_display_amount(usage_log.total_cost_usd)),
+        })
+
+    return {
+        'generated': generated,
+        'errors': errors,
+    }
+
+
+def _decimal_to_float(value):
+    if value is None:
+        return 0.0
+    return float(value)
+
+
+def _current_month_start():
+    now = timezone.now()
+    return now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+
+def _gemini_display_amount(usd_value):
+    currency = str(getattr(settings, 'GEMINI_DISPLAY_CURRENCY', 'USD') or 'USD').upper()
+    amount = Decimal(str(usd_value or 0))
+    if currency == 'EUR':
+        amount *= Decimal(str(getattr(settings, 'GEMINI_EUR_PER_USD', 0.92) or 0.92))
+    return amount
+
+
+def _gemini_usage_summary():
+    month_start = _current_month_start()
+    queryset = GeminiUsageLog.objects.filter(created_at__gte=month_start)
+    spent = queryset.aggregate(total=Sum('total_cost_usd')).get('total') or Decimal('0')
+    display_currency = str(getattr(settings, 'GEMINI_DISPLAY_CURRENCY', 'USD') or 'USD').upper()
+    if display_currency == 'EUR':
+        display_spent = _gemini_display_amount(spent)
+        display_budget = Decimal(str(getattr(settings, 'GEMINI_MONTHLY_BUDGET_EUR', 0) or 0))
+    else:
+        display_spent = spent
+        display_budget = Decimal(str(getattr(settings, 'GEMINI_MONTHLY_BUDGET_USD', 0) or 0))
+    display_remaining = max(display_budget - display_spent, Decimal('0')) if display_budget > 0 else None
+    recent = []
+
+    for item in queryset.select_related('reel_project', 'user')[:10]:
+        display_item_cost = _gemini_display_amount(item.total_cost_usd)
+        recent.append({
+            'id': item.id,
+            'created_at': item.created_at,
+            'model_id': item.model_id,
+            'project_id': item.reel_project_id,
+            'project_title': item.reel_project.title if item.reel_project else '',
+            'prompt_token_count': item.prompt_token_count,
+            'candidates_token_count': item.candidates_token_count,
+            'thoughts_token_count': item.thoughts_token_count,
+            'total_token_count': item.total_token_count,
+            'total_cost_usd': _decimal_to_float(item.total_cost_usd),
+            'display_cost': _decimal_to_float(display_item_cost),
+        })
+
+    return {
+        'month_start': month_start,
+        'spent_usd': _decimal_to_float(spent),
+        'budget_usd': _decimal_to_float(Decimal(str(getattr(settings, 'GEMINI_MONTHLY_BUDGET_USD', 0) or 0))) or None,
+        'remaining_usd': None,
+        'display_currency': display_currency,
+        'display_spent': _decimal_to_float(display_spent),
+        'display_budget': _decimal_to_float(display_budget) if display_budget > 0 else None,
+        'display_remaining': _decimal_to_float(display_remaining) if display_remaining is not None else None,
+        'eur_per_usd': _decimal_to_float(Decimal(str(getattr(settings, 'GEMINI_EUR_PER_USD', 0.92) or 0.92))),
+        'usage_count': queryset.count(),
+        'recent': recent,
+    }
+
+
+def _record_gemini_usage(*, project, user, model_id, prompt, generated_text, usage, cost, request_type='carousel_generation'):
+    usage = usage or {}
+    cost = cost or {}
+    return GeminiUsageLog.objects.create(
+        request_type=request_type,
+        reel_project=project,
+        user=user if getattr(user, 'is_authenticated', False) else None,
+        model_id=model_id,
+        prompt_token_count=usage.get('prompt_token_count') or 0,
+        candidates_token_count=usage.get('candidates_token_count') or 0,
+        thoughts_token_count=usage.get('thoughts_token_count') or 0,
+        total_token_count=usage.get('total_token_count') or 0,
+        input_cost_usd=cost.get('input_cost_usd') or Decimal('0'),
+        output_cost_usd=cost.get('output_cost_usd') or Decimal('0'),
+        total_cost_usd=cost.get('total_cost_usd') or Decimal('0'),
+        pricing_source=cost.get('pricing_source') or '',
+        prompt_chars=len(str(prompt or '')),
+        response_chars=len(str(generated_text or '')),
+    )
+
+
+def _replace_project_slides(project, slides_payload, instagram_caption=''):
+    with transaction.atomic():
+        _clear_project_speech(project)
+        _clear_project_video(project)
+        project.slides.all().delete()
+
+        slides_to_create = []
+        for index, payload in enumerate(slides_payload, start=1):
+            slides_to_create.append(
+                ReelSlide(
+                    reel_project=project,
+                    order=index,
+                    slide_type=payload['slide_type'],
+                    title=payload.get('title', ''),
+                    screen_text=payload.get('screen_text', ''),
+                    katex=payload.get('katex', ''),
+                    voice_script=payload.get('voice_script', ''),
+                    katex_inline_with_previous=payload.get('katex_inline_with_previous', False),
+                    katex_inline_offset_percent=payload.get('katex_inline_offset_percent', 0),
+                    katex_inline_vertical_offset_em=payload.get('katex_inline_vertical_offset_em', 0),
+                    katex_cumulative_gap_em=payload.get('katex_cumulative_gap_em', 0.4),
+                    katex_reset_cumulative=payload.get('katex_reset_cumulative', False),
+                    katex_reset_keep_previous_line=payload.get('katex_reset_keep_previous_line', True),
+                    katex_reveal_with_speech=payload.get('katex_reveal_with_speech', False),
+                    katex_drop_previous_line=payload.get('katex_drop_previous_line', False),
+                    duration_seconds=payload.get('duration_seconds', 4),
+                    layout_status=ReelSlide.LAYOUT_UNCHECKED,
+                    layout_notes=payload.get('layout_notes', ''),
+                )
+            )
+
+        ReelSlide.objects.bulk_create(slides_to_create)
+
+        project.slide_count = len(slides_to_create)
+        project.status = ReelProject.STATUS_DRAFT
+        project.instagram_caption = instagram_caption
+        project.save(update_fields=['slide_count', 'status', 'instagram_caption', 'updated_at'])
+
+    return ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+
+
 class ReelProjectListCreateView(APIView):
     permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
 
@@ -1138,6 +1463,17 @@ class ReelProjectListCreateView(APIView):
         project = serializer.save()
         detail_serializer = _project_serializer(project, request, detail=True)
         return Response(detail_serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ReelGeminiOptionsView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def get(self, request):
+        return Response({
+            'models': list_gemini_models(),
+            'default_model_id': getattr(settings, 'GEMINI_MODEL_ID', 'gemini-2.5-flash') or 'gemini-2.5-flash',
+            'usage': _gemini_usage_summary(),
+        })
 
 
 class ReelProjectDetailView(APIView):
@@ -1226,45 +1562,125 @@ class ReelProjectGenerateFromTemplateView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        with transaction.atomic():
-            _clear_project_speech(project)
-            _clear_project_video(project)
-            project.slides.all().delete()
-
-            slides_to_create = []
-            for index, payload in enumerate(slides_payload, start=1):
-                slides_to_create.append(
-                    ReelSlide(
-                        reel_project=project,
-                        order=index,
-                        slide_type=payload['slide_type'],
-                        title=payload.get('title', ''),
-                        screen_text=payload.get('screen_text', ''),
-                        katex=payload.get('katex', ''),
-                        voice_script=payload.get('voice_script', ''),
-                        katex_inline_with_previous=payload.get('katex_inline_with_previous', False),
-                        katex_inline_offset_percent=payload.get('katex_inline_offset_percent', 0),
-                        katex_inline_vertical_offset_em=payload.get('katex_inline_vertical_offset_em', 0),
-                        katex_cumulative_gap_em=payload.get('katex_cumulative_gap_em', 0.4),
-                        katex_reset_cumulative=payload.get('katex_reset_cumulative', False),
-                        katex_reset_keep_previous_line=payload.get('katex_reset_keep_previous_line', True),
-                        katex_reveal_with_speech=payload.get('katex_reveal_with_speech', False),
-                        katex_drop_previous_line=payload.get('katex_drop_previous_line', False),
-                        duration_seconds=payload.get('duration_seconds', 4),
-                        layout_status=ReelSlide.LAYOUT_UNCHECKED,
-                        layout_notes=payload.get('layout_notes', ''),
-                    )
-                )
-
-            ReelSlide.objects.bulk_create(slides_to_create)
-
-            project.slide_count = len(slides_to_create)
-            project.status = ReelProject.STATUS_DRAFT
-            project.instagram_caption = instagram_caption
-            project.save(update_fields=['slide_count', 'status', 'instagram_caption', 'updated_at'])
-
-        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        project = _replace_project_slides(project, slides_payload, instagram_caption)
         return Response(_project_serializer(project, request, detail=True).data, status=status.HTTP_201_CREATED)
+
+
+class ReelProjectGenerateCarouselWithGeminiView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        project = get_object_or_404(ReelProject, pk=pk)
+        if not _project_is_carousel(project):
+            return Response(
+                {'detail': 'La génération Gemini est disponible uniquement pour les carrousels.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = ReelGeminiCarouselGenerateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            gemini_result = generate_carousel_template(
+                prompt=serializer.validated_data['prompt'],
+                model_id=serializer.validated_data.get('model_id', ''),
+                return_metadata=True,
+            )
+        except GeminiConfigurationError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except GeminiAPIError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        if isinstance(gemini_result, dict):
+            generated_template_text = gemini_result.get('text', '')
+            resolved_model_id = gemini_result.get('model_id') or serializer.validated_data.get('model_id', '')
+            usage = gemini_result.get('usage') or {}
+            cost = gemini_result.get('cost') or {}
+        else:
+            generated_template_text = str(gemini_result or '')
+            resolved_model_id = serializer.validated_data.get('model_id', '') or getattr(settings, 'GEMINI_MODEL_ID', 'gemini-2.5-flash')
+            usage = {}
+            cost = {}
+
+        clean_template_text, instagram_caption = _extract_instagram_caption(generated_template_text)
+        template_payload = {
+            'template_text': clean_template_text,
+            'max_chars_per_line': serializer.validated_data.get('max_chars_per_line', 38),
+        }
+        slides_payload = _prepare_carousel_slides(_build_template_slides(project, template_payload))
+        if not slides_payload:
+            return Response(
+                {
+                    'detail': 'Gemini a repondu, mais aucune slide exploitable n a ete trouvee.',
+                    'template_text': generated_template_text,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        project = _replace_project_slides(project, slides_payload, instagram_caption)
+        usage_log = _record_gemini_usage(
+            project=project,
+            user=request.user,
+            model_id=resolved_model_id,
+            prompt=serializer.validated_data['prompt'],
+            generated_text=generated_template_text,
+            usage=usage,
+            cost=cost,
+        )
+        image_generation = {'generated': [], 'errors': []}
+        if serializer.validated_data.get('generate_images', True):
+            image_generation = _generate_carousel_slide_images(project=project, user=request.user)
+            project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+
+        return Response(
+            {
+                'project': _project_serializer(project, request, detail=True).data,
+                'template_text': generated_template_text,
+                'image_generation': image_generation,
+                'gemini_usage': {
+                    'id': usage_log.id,
+                    'model_id': usage_log.model_id,
+                    'prompt_token_count': usage_log.prompt_token_count,
+                    'candidates_token_count': usage_log.candidates_token_count,
+                    'thoughts_token_count': usage_log.thoughts_token_count,
+                    'total_token_count': usage_log.total_token_count,
+                    'input_cost_usd': _decimal_to_float(usage_log.input_cost_usd),
+                    'output_cost_usd': _decimal_to_float(usage_log.output_cost_usd),
+                    'total_cost_usd': _decimal_to_float(usage_log.total_cost_usd),
+                    'display_cost': _decimal_to_float(_gemini_display_amount(usage_log.total_cost_usd)),
+                },
+                'gemini_summary': _gemini_usage_summary(),
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class ReelProjectRegenerateCarouselImagesView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        project = get_object_or_404(ReelProject.objects.prefetch_related('slides'), pk=pk)
+        if not _project_is_carousel(project):
+            return Response(
+                {'detail': 'La régénération d images Gemini est disponible uniquement pour les carrousels.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if not project.slides.exists():
+            return Response(
+                {'detail': 'Ce carrousel n a pas encore de slides. Génère d abord le texte.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        image_generation = _generate_carousel_slide_images(project=project, user=request.user)
+        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        return Response(
+            {
+                'project': _project_serializer(project, request, detail=True).data,
+                'image_generation': image_generation,
+                'gemini_summary': _gemini_usage_summary(),
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 def _update_project_slides_from_template(project, slides_payload):

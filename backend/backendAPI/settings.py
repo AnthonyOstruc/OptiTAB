@@ -555,6 +555,53 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # ========================================
+# CONFIGURATION GEMINI
+# ========================================
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '').strip()
+GEMINI_MODEL_ID = os.getenv('GEMINI_MODEL_ID', 'gemini-2.5-flash').strip()
+GEMINI_IMAGE_MODEL_ID = os.getenv('GEMINI_IMAGE_MODEL_ID', 'gemini-2.5-flash-image').strip()
+GEMINI_API_URL = os.getenv(
+    'GEMINI_API_URL',
+    'https://generativelanguage.googleapis.com/v1beta',
+).rstrip('/')
+
+try:
+    GEMINI_TIMEOUT_SECONDS = float(os.getenv('GEMINI_TIMEOUT_SECONDS', '60'))
+except (TypeError, ValueError):
+    GEMINI_TIMEOUT_SECONDS = 60.0
+try:
+    GEMINI_IMAGE_TIMEOUT_SECONDS = float(os.getenv('GEMINI_IMAGE_TIMEOUT_SECONDS', '180'))
+except (TypeError, ValueError):
+    GEMINI_IMAGE_TIMEOUT_SECONDS = 180.0
+
+try:
+    GEMINI_MAX_OUTPUT_TOKENS = int(os.getenv('GEMINI_MAX_OUTPUT_TOKENS', '8192'))
+except (TypeError, ValueError):
+    GEMINI_MAX_OUTPUT_TOKENS = 8192
+
+try:
+    GEMINI_TEMPERATURE = float(os.getenv('GEMINI_TEMPERATURE', '0.65'))
+except (TypeError, ValueError):
+    GEMINI_TEMPERATURE = 0.65
+
+try:
+    GEMINI_MONTHLY_BUDGET_USD = float(os.getenv('GEMINI_MONTHLY_BUDGET_USD', '0'))
+except (TypeError, ValueError):
+    GEMINI_MONTHLY_BUDGET_USD = 0.0
+try:
+    GEMINI_MONTHLY_BUDGET_EUR = float(os.getenv('GEMINI_MONTHLY_BUDGET_EUR', '0'))
+except (TypeError, ValueError):
+    GEMINI_MONTHLY_BUDGET_EUR = 0.0
+try:
+    GEMINI_EUR_PER_USD = float(os.getenv('GEMINI_EUR_PER_USD', '0.92'))
+except (TypeError, ValueError):
+    GEMINI_EUR_PER_USD = 0.92
+GEMINI_DISPLAY_CURRENCY = os.getenv(
+    'GEMINI_DISPLAY_CURRENCY',
+    'EUR' if GEMINI_MONTHLY_BUDGET_EUR > 0 else 'USD',
+).strip().upper()
+
+# ========================================
 # CONFIGURATION ELEVENLABS
 # ========================================
 ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY', '').strip()

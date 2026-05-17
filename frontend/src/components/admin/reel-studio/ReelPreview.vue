@@ -114,9 +114,11 @@
         :video-format="format"
         :show-subtitles="subtitlesEnabled"
         :subtitle-offset-percent="subtitleOffsetResolved"
+        :total-slides="slidesForRender.length"
         @select="handleSelectSlide(slide.id)"
         @open="handleOpenSlideFullscreen(slide.id)"
         @diagnostic="$emit('diagnostic', $event)"
+        @toggle-carousel-image="$emit('toggle-carousel-image', $event)"
       />
     </div>
 
@@ -140,6 +142,7 @@
           :video-format="format"
           :show-subtitles="subtitlesEnabled"
         :subtitle-offset-percent="subtitleOffsetResolved"
+          :total-slides="slidesForRender.length"
           @diagnostic="$emit('diagnostic', $event)"
         />
       </div>
@@ -888,8 +891,10 @@
               :video-format="format"
               :show-subtitles="subtitlesEnabled"
         :subtitle-offset-percent="subtitleOffsetResolved"
+              :total-slides="slidesForRender.length"
               :audio-current-time="speechAudioCurrentTime"
               :audio-playing="speechAudioPlaying"
+              @toggle-carousel-image="$emit('toggle-carousel-image', $event)"
               :annotation-editable="!isVirtualCoverSlide(activeSlide)"
               :annotation-active-tool="annotationActiveTool"
               :annotation-active-color="annotationActiveColor"
@@ -969,6 +974,7 @@ const emit = defineEmits([
   'export-video',
   'update-pronunciation-overrides',
   'update-pronunciation-overrides-by-voice',
+  'toggle-carousel-image',
 ])
 
 const isFullscreen = ref(false)

@@ -7,6 +7,7 @@ urlpatterns = [
     path('voices/', views.ReelVoiceListView.as_view(), name='reel-voice-list'),
     path('voices/library/', views.ReelVoiceLibraryView.as_view(), name='reel-voice-library'),
     path('test-voice/', views.ReelTTSTestVoiceView.as_view(), name='reel-tts-test-voice'),
+    path('gemini/options/', views.ReelGeminiOptionsView.as_view(), name='reel-gemini-options'),
     path('projects/', views.ReelProjectListCreateView.as_view(), name='reel-project-list-create'),
     path('projects/<int:pk>/', views.ReelProjectDetailView.as_view(), name='reel-project-detail'),
     path(
@@ -18,6 +19,16 @@ urlpatterns = [
         'projects/<int:pk>/generate-from-template/',
         views.ReelProjectGenerateFromTemplateView.as_view(),
         name='reel-project-generate-from-template',
+    ),
+    path(
+        'projects/<int:pk>/generate-carousel-gemini/',
+        views.ReelProjectGenerateCarouselWithGeminiView.as_view(),
+        name='reel-project-generate-carousel-gemini',
+    ),
+    path(
+        'projects/<int:pk>/regenerate-carousel-images/',
+        views.ReelProjectRegenerateCarouselImagesView.as_view(),
+        name='reel-project-regenerate-carousel-images',
     ),
     path(
         'projects/<int:pk>/save-template/',

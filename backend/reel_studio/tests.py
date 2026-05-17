@@ -1,3 +1,5 @@
+import base64
+import json
 import shutil
 import tempfile
 from unittest.mock import patch
@@ -8,7 +10,8 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from .elevenlabs import generate_speech_mp3, list_filtered_voices, list_shared_voices
-from .models import ReelProject, ReelSlide
+from .gemini import generate_carousel_template
+from .models import GeminiUsageLog, ReelProject, ReelSlide
 from .tts.base import TTSResult
 from .tts.google import synthesize as synthesize_google_speech
 
@@ -210,6 +213,136 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(result_slide['screen_text'], '')
         self.assertIn('x=3', result_slide['katex'])
         self.assertNotIn('x=2', result_slide['katex'])
+
+    @override_settings(GEMINI_MODEL_ID='gemini-2.5-flash')
+    def test_generate_carousel_with_gemini_creates_carousel_slides(self):
+        project = ReelProject.objects.create(
+            title='OptiTAB promo',
+            format_type='carousel',
+            slide_count=0,
+        )
+        gemini_template = '\n'.join([
+            'SLIDE 1 | hook',
+            'TITLE: Les maths deviennent plus simples',
+            'VISUEL: Mockup premium OptiTAB bleu et blanc avec cartes de cours.',
+            'TEXT: Reprends le controle avec OptiTAB',
+            '---',
+            'SLIDE 2 | cta',
+            'TITLE: Decouvre OptiTAB',
+            'VISUEL: Ecran final avec optitab.net et bouton commencer.',
+            'TEXT: Va sur optitab.net',
+            'Abonne-toi sans engagement',
+            '---',
+            'CAROUSEL_DESCRIPTION:',
+            'Decouvre OptiTAB sur optitab.net.',
+            'END_CAROUSEL_DESCRIPTION',
+        ])
+
+        fake_image = {
+            'image_bytes': base64.b64decode(
+                'iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAE0lEQVR4nGOUCzjBAANMcBbxHABNJgFAdBA0/gAAAABJRU5ErkJggg=='
+            ),
+            'mime_type': 'image/png',
+            'text': '',
+            'model_id': 'gemini-2.5-flash-image',
+            'usage': {
+                'prompt_token_count': 1,
+                'candidates_token_count': 1290,
+                'thoughts_token_count': 0,
+                'total_token_count': 1291,
+                'billable_output_token_count': 1290,
+            },
+            'cost': {},
+        }
+
+        with (
+            patch('reel_studio.views.generate_carousel_template', return_value=gemini_template) as mocked_generate,
+            patch('reel_studio.views.generate_carousel_image', return_value=fake_image) as mocked_image,
+        ):
+            response = self.client.post(
+                reverse('reel-project-generate-carousel-gemini', args=[project.pk]),
+                {'prompt': 'Prompt carousel OptiTAB'},
+                format='json',
+            )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(mocked_generate.call_args.kwargs['prompt'], 'Prompt carousel OptiTAB')
+        self.assertEqual(response.data['template_text'], gemini_template)
+        self.assertIn('gemini_summary', response.data)
+        self.assertEqual(len(response.data['image_generation']['generated']), 2)
+        self.assertEqual(mocked_image.call_count, 2)
+
+        project.refresh_from_db()
+        slides = list(project.slides.order_by('order'))
+        usage_log = GeminiUsageLog.objects.get(reel_project=project, request_type='carousel_generation')
+        self.assertEqual(project.slide_count, 2)
+        self.assertEqual(project.instagram_caption, 'Decouvre OptiTAB sur optitab.net.')
+        self.assertEqual(slides[0].slide_type, ReelSlide.TYPE_HOOK)
+        self.assertEqual(slides[0].voice_script, '')
+        self.assertTrue(slides[0].generated_image.name)
+        self.assertEqual(
+            json.loads(slides[0].layout_notes)['visual_prompt'],
+            'Mockup premium OptiTAB bleu et blanc avec cartes de cours.',
+        )
+        self.assertEqual(slides[1].slide_type, ReelSlide.TYPE_CTA)
+        self.assertEqual(slides[1].voice_script, '')
+        self.assertEqual(usage_log.model_id, 'gemini-2.5-flash')
+
+    def test_generate_carousel_with_gemini_rejects_non_carousel_project(self):
+        project = ReelProject.objects.create(title='Reel promo', format_type='reel', slide_count=0)
+
+        with patch('reel_studio.views.generate_carousel_template') as mocked_generate:
+            response = self.client.post(
+                reverse('reel-project-generate-carousel-gemini', args=[project.pk]),
+                {'prompt': 'Prompt carousel OptiTAB'},
+                format='json',
+            )
+
+        self.assertEqual(response.status_code, 400)
+        mocked_generate.assert_not_called()
+
+    @override_settings(
+        GEMINI_API_KEY='test-key',
+        GEMINI_MODEL_ID='gemini-test',
+        GEMINI_API_URL='https://gemini.example/v1beta',
+        GEMINI_TIMEOUT_SECONDS=12,
+        GEMINI_MAX_OUTPUT_TOKENS=2048,
+        GEMINI_TEMPERATURE=0.4,
+    )
+    def test_gemini_template_generation_uses_generate_content_endpoint(self):
+        class FakeResponse:
+            status_code = 200
+            reason = 'OK'
+            text = ''
+
+            @staticmethod
+            def json():
+                return {
+                    'candidates': [
+                        {
+                            'content': {
+                                'parts': [
+                                    {'text': '```text\nSLIDE 1 | hook\nTITLE: Test\nTEXT: OptiTAB\n```'}
+                                ]
+                            }
+                        }
+                    ]
+                }
+
+        with patch('reel_studio.gemini.requests.post', return_value=FakeResponse()) as mocked_post:
+            result = generate_carousel_template(prompt='Prompt')
+
+        self.assertEqual(result, 'SLIDE 1 | hook\nTITLE: Test\nTEXT: OptiTAB')
+        self.assertEqual(
+            mocked_post.call_args.args[0],
+            'https://gemini.example/v1beta/models/gemini-test:generateContent',
+        )
+        self.assertEqual(mocked_post.call_args.kwargs['headers']['x-goog-api-key'], 'test-key')
+        self.assertEqual(mocked_post.call_args.kwargs['timeout'], 12)
+        payload = mocked_post.call_args.kwargs['json']
+        self.assertEqual(payload['contents'][0]['parts'][0]['text'], 'Prompt')
+        self.assertEqual(payload['generationConfig']['temperature'], 0.4)
+        self.assertEqual(payload['generationConfig']['maxOutputTokens'], 2048)
 
     @override_settings(ELEVENLABS_API_KEY='test-key', ELEVENLABS_VOICE_ID='6FXyooAOTqUK8m2HWm32')
     def test_builtin_voices_are_first_elevenlabs_choices(self):

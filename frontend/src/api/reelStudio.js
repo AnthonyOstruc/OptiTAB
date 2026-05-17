@@ -38,6 +38,14 @@ export function generateSlidesFromTemplate(id, data) {
   return apiClient.post(`${BASE}/projects/${id}/generate-from-template/`, data)
 }
 
+export function generateCarouselWithGemini(id, data) {
+  return apiClient.post(`${BASE}/projects/${id}/generate-carousel-gemini/`, data, { timeout: 900000 })
+}
+
+export function regenerateCarouselImages(id) {
+  return apiClient.post(`${BASE}/projects/${id}/regenerate-carousel-images/`, {}, { timeout: 900000 })
+}
+
 export function saveReelTemplate(id, data) {
   return apiClient.post(`${BASE}/projects/${id}/save-template/`, data)
 }
@@ -82,4 +90,8 @@ export function testReelTTSVoice(data = {}) {
     timeout: 60000,
     headers: { Accept: '*/*' },
   })
+}
+
+export function getGeminiOptions() {
+  return apiClient.get(`${BASE}/gemini/options/`, { timeout: 60000 })
 }

@@ -15,17 +15,27 @@
       </label>
 
       <div class="template-actions">
-      <button class="btn-primary" type="submit" :disabled="disabled || loading || saving || !canSubmit">
-        {{ loading ? 'Génération...' : 'Générer depuis template' }}
-      </button>
-      <button
-        class="btn-secondary"
-        type="button"
-        :disabled="disabled || loading || saving || !canSubmit"
-        @click="handleSave"
-      >
-        {{ saving ? 'Sauvegarde...' : 'Sauvegarder' }}
-      </button>
+        <button
+          v-if="showAiGenerate"
+          class="btn-ai"
+          type="button"
+          :disabled="disabled || loading || saving || aiLoading || !canAiGenerate"
+          @click="handleAiGenerate"
+        >
+          <SparklesIcon class="btn-icon" aria-hidden="true" />
+          {{ aiLoading ? aiLoadingLabel : aiGenerateLabel }}
+        </button>
+        <button class="btn-primary" type="submit" :disabled="disabled || loading || saving || aiLoading || !canSubmit">
+          {{ loading ? 'Génération...' : 'Générer depuis template' }}
+        </button>
+        <button
+          class="btn-secondary"
+          type="button"
+          :disabled="disabled || loading || saving || aiLoading || !canSubmit"
+          @click="handleSave"
+        >
+          {{ saving ? 'Sauvegarde...' : 'Sauvegarder' }}
+        </button>
       </div>
     </form>
   </section>
@@ -33,6 +43,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { SparklesIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   loading: {
@@ -63,9 +74,29 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  showAiGenerate: {
+    type: Boolean,
+    default: false,
+  },
+  aiLoading: {
+    type: Boolean,
+    default: false,
+  },
+  aiGenerateLabel: {
+    type: String,
+    default: 'Générer avec Gemini',
+  },
+  aiLoadingLabel: {
+    type: String,
+    default: 'Gemini...',
+  },
+  aiPromptFallback: {
+    type: String,
+    default: '',
+  },
 })
 
-const emit = defineEmits(['generate', 'save', 'update:templateText'])
+const emit = defineEmits(['generate', 'save', 'ai-generate', 'update:templateText'])
 
 const templateTextModel = computed({
   get: () => props.templateText,
@@ -73,6 +104,8 @@ const templateTextModel = computed({
 })
 
 const canSubmit = computed(() => String(templateTextModel.value || '').trim().length > 0)
+const aiPromptText = computed(() => String(templateTextModel.value || props.aiPromptFallback || '').trim())
+const canAiGenerate = computed(() => aiPromptText.value.length > 0)
 
 function handleSubmit() {
   if (!canSubmit.value) return
@@ -87,6 +120,14 @@ function handleSave() {
 
   emit('save', {
     template_text: String(templateTextModel.value || '').trim(),
+  })
+}
+
+function handleAiGenerate() {
+  if (!canAiGenerate.value) return
+
+  emit('ai-generate', {
+    prompt: aiPromptText.value,
   })
 }
 </script>
@@ -162,7 +203,8 @@ textarea:focus {
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-ai {
   align-self: flex-start;
   border: 0;
   border-radius: 8px;
@@ -177,13 +219,27 @@ textarea:focus {
   color: #ffffff;
 }
 
+.btn-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
 .btn-secondary {
   background: #e2e8f0;
   color: #1e293b;
 }
 
 .btn-primary:disabled,
-.btn-secondary:disabled {
+.btn-secondary:disabled,
+.btn-ai:disabled {
   background: #94a3b8;
   color: #ffffff;
   cursor: not-allowed;

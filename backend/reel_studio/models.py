@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -15,6 +16,12 @@ def reel_slide_speech_upload_to(instance, filename):
     project_id = instance.reel_project_id or 'new'
     slide_id = instance.pk or 'new'
     return f'reel_studio/speech/project_{project_id}/slides/slide_{slide_id}/{filename}'
+
+
+def reel_slide_generated_image_upload_to(instance, filename):
+    project_id = instance.reel_project_id or 'new'
+    slide_id = instance.pk or 'new'
+    return f'reel_studio/carousel/project_{project_id}/slides/slide_{slide_id}/{filename}'
 
 
 class ReelProject(models.Model):
@@ -149,6 +156,10 @@ class ReelSlide(models.Model):
     duration_seconds = models.PositiveIntegerField(default=4)
     layout_status = models.CharField(max_length=32, choices=LAYOUT_STATUS_CHOICES, default=LAYOUT_UNCHECKED)
     layout_notes = models.TextField(blank=True, default='')
+    generated_image = models.ImageField(upload_to=reel_slide_generated_image_upload_to, blank=True, null=True)
+    generated_image_prompt = models.TextField(blank=True, default='')
+    generated_image_model_id = models.CharField(max_length=128, blank=True, default='')
+    generated_image_generated_at = models.DateTimeField(blank=True, null=True)
     speech_audio = models.FileField(upload_to=reel_slide_speech_upload_to, blank=True, null=True)
     speech_text = models.TextField(blank=True, default='')
     speech_voice_id = models.CharField(max_length=128, blank=True, default='')
@@ -172,3 +183,43 @@ class ReelSlide(models.Model):
 
     def __str__(self):
         return f'{self.reel_project_id} - Slide {self.order}'
+
+
+class GeminiUsageLog(models.Model):
+    request_type = models.CharField(max_length=64, default='carousel_generation')
+    model_id = models.CharField(max_length=128)
+    reel_project = models.ForeignKey(
+        ReelProject,
+        on_delete=models.SET_NULL,
+        related_name='gemini_usage_logs',
+        blank=True,
+        null=True,
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    prompt_token_count = models.PositiveIntegerField(default=0)
+    candidates_token_count = models.PositiveIntegerField(default=0)
+    thoughts_token_count = models.PositiveIntegerField(default=0)
+    total_token_count = models.PositiveIntegerField(default=0)
+    input_cost_usd = models.DecimalField(max_digits=12, decimal_places=8, default=0)
+    output_cost_usd = models.DecimalField(max_digits=12, decimal_places=8, default=0)
+    total_cost_usd = models.DecimalField(max_digits=12, decimal_places=8, default=0)
+    currency = models.CharField(max_length=8, default='USD')
+    pricing_source = models.CharField(max_length=255, blank=True, default='')
+    prompt_chars = models.PositiveIntegerField(default=0)
+    response_chars = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at', '-id']
+        indexes = [
+            models.Index(fields=['created_at']),
+            models.Index(fields=['model_id']),
+        ]
+
+    def __str__(self):
+        return f'{self.model_id} - ${self.total_cost_usd}'

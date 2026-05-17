@@ -19,9 +19,109 @@
         'reel-slide--cta': isCtaSlide,
         'reel-slide--cover': isCoverSlide,
         'reel-slide--subtitled': hasVisibleSubtitles,
+        'reel-slide--generated': hasGeneratedImage,
       }"
     >
-      <section class="reel-slide-body" ref="bodyRef">
+      <img
+        v-if="hasGeneratedImage"
+        class="reel-slide-generated-image"
+        :src="safeSlide.generated_image_url"
+        alt=""
+        crossorigin="anonymous"
+        decoding="async"
+      />
+      <div
+        v-if="hasGeneratedImage && isCarouselFormat"
+        class="reel-slide-generated-scrim"
+        aria-hidden="true"
+      ></div>
+
+      <section v-if="isCarouselFormat" class="carousel-template" :class="{
+        'carousel-template--cover': isCarouselCoverSlide,
+        'carousel-template--content': isCarouselContentSlide,
+        'carousel-template--cta': isCarouselCtaSlide,
+        'carousel-template--on-image': hasGeneratedImage,
+      }" ref="bodyRef">
+        <header class="carousel-template__topbar">
+          <span class="carousel-template__brand">
+            <span class="carousel-template__brand-dot" aria-hidden="true"></span>
+            <span class="carousel-template__brand-name">OptiTAB</span>
+          </span>
+          <span v-if="carouselPageLabel" class="carousel-template__page">{{ carouselPageLabel }}</span>
+        </header>
+
+        <div class="carousel-template__main">
+          <template v-if="isCarouselCoverSlide">
+            <span class="carousel-template__eyebrow">optitab.net</span>
+            <h1
+              v-if="carouselTitleText"
+              class="carousel-template__cover-title rich-text"
+              v-html="renderRichText(carouselTitleText)"
+            ></h1>
+            <p
+              v-if="carouselCoverSubtitle"
+              class="carousel-template__cover-sub rich-text"
+              v-html="renderRichText(carouselCoverSubtitle)"
+            ></p>
+            <div v-if="hasKatex" class="carousel-template__cover-katex" v-html="renderedKatex"></div>
+            <span class="carousel-template__swipe" aria-hidden="true">
+              <span class="carousel-template__swipe-text">Glisse</span>
+              <span class="carousel-template__swipe-arrow">→</span>
+            </span>
+          </template>
+
+          <template v-else-if="isCarouselCtaSlide">
+            <span class="carousel-template__cta-eyebrow">À toi de jouer</span>
+            <h2
+              v-if="carouselTitleText"
+              class="carousel-template__cta-title rich-text"
+              v-html="renderRichText(carouselTitleText)"
+            ></h2>
+            <ul v-if="carouselTextLines.length" class="carousel-template__cta-list">
+              <li
+                v-for="(line, i) in carouselTextLines"
+                :key="`cta-line-${i}-${line}`"
+                class="carousel-template__cta-item rich-text"
+                v-html="renderRichTextLine(line)"
+              ></li>
+            </ul>
+            <div v-if="hasKatex" class="carousel-template__cta-katex" v-html="renderedKatex"></div>
+            <div class="carousel-template__cta-url-wrap">
+              <span class="carousel-template__cta-url">optitab.net</span>
+              <span class="carousel-template__cta-underline" aria-hidden="true"></span>
+            </div>
+            <div class="carousel-template__cta-button">
+              <span>Abonne-toi sans engagement</span>
+              <span class="carousel-template__cta-button-arrow" aria-hidden="true">→</span>
+            </div>
+          </template>
+
+          <template v-else>
+            <span class="carousel-template__step" aria-hidden="true">{{ String(safeSlide.order || '').padStart(2, '0') }}</span>
+            <h2
+              v-if="carouselTitleText"
+              class="carousel-template__title rich-text"
+              v-html="renderRichText(carouselTitleText)"
+            ></h2>
+            <div class="carousel-template__accent" aria-hidden="true"></div>
+            <ul v-if="carouselTextLines.length" class="carousel-template__text-list">
+              <li
+                v-for="(line, i) in carouselTextLines"
+                :key="`ct-line-${i}-${line}`"
+                class="carousel-template__text-item rich-text"
+                v-html="renderRichTextLine(line)"
+              ></li>
+            </ul>
+            <div v-if="hasKatex" class="carousel-template__katex" v-html="renderedKatex"></div>
+          </template>
+        </div>
+
+        <footer class="carousel-template__bottombar" v-if="!isCarouselCoverSlide">
+          <span class="carousel-template__url">optitab.net</span>
+        </footer>
+      </section>
+
+      <section v-if="!hasGeneratedImage && !isCarouselFormat" class="reel-slide-body" ref="bodyRef">
         <template v-if="showHookTemplate">
           <div ref="screenTextRef" class="hook-layout">
             <p v-if="hookTopText" class="hook-top">{{ hookTopText }}</p>
@@ -169,6 +269,34 @@
         </template>
       </div>
     </div>
+
+    <button
+      v-if="showCarouselImageToggle"
+      type="button"
+      class="carousel-image-toggle"
+      :class="{ 'carousel-image-toggle--off': carouselImageHidden }"
+      :title="carouselImageHidden ? 'Afficher l image Gemini sur cette slide' : 'Masquer l image Gemini sur cette slide'"
+      :aria-label="carouselImageHidden ? 'Afficher l image Gemini' : 'Masquer l image Gemini'"
+      @click.stop="toggleCarouselImage"
+      @dblclick.stop
+    >
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path
+          v-if="!carouselImageHidden"
+          d="M4 5h16v14H4zM4 15l4.5-4.5L13 15l3-3 4 4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+        />
+        <g v-else fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 5h16v14H4z" />
+          <path d="M4 5l16 14" />
+        </g>
+      </svg>
+      <span class="carousel-image-toggle__label">{{ carouselImageHidden ? 'Image OFF' : 'Image ON' }}</span>
+    </button>
   </article>
 </template>
 
@@ -250,6 +378,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  totalSlides: {
+    type: Number,
+    default: 0,
+  },
 })
 
 const emit = defineEmits([
@@ -260,6 +392,7 @@ const emit = defineEmits([
   'annotation-update',
   'annotation-update-selected-id',
   'annotation-delete',
+  'toggle-carousel-image',
 ])
 
 const screenTextRef = ref(null)
@@ -302,13 +435,28 @@ const renderedSplitRightKatex = computed(() => {
 
 const isYoutubeFormat = computed(() => props.videoFormat === 'youtube')
 const isCarouselFormat = computed(() => props.videoFormat === 'carousel')
+const carouselImageHidden = computed(() => {
+  const raw = String(safeSlide.value.layout_notes || '').trim()
+  if (!raw) return false
+  try {
+    const parsed = JSON.parse(raw)
+    return Boolean(parsed && parsed.hide_carousel_image)
+  } catch (_) {
+    return false
+  }
+})
+const hasGeneratedImageRaw = computed(() => Boolean(safeSlide.value.generated_image_url))
+const hasGeneratedImage = computed(() => (
+  hasGeneratedImageRaw.value
+  && !(isCarouselFormat.value && carouselImageHidden.value)
+))
 const isHookSlide = computed(() => safeSlide.value.slide_type === 'hook')
 const isCtaSlide = computed(() => safeSlide.value.slide_type === 'cta')
 const isCoverSlide = computed(() => Boolean(safeSlide.value.is_virtual_cover || safeSlide.value.slide_type === 'cover'))
 const usesHookLayout = computed(() => isHookSlide.value || isCoverSlide.value)
 const isLargeDisplayMode = computed(() => ['fullscreen', 'export'].includes(props.displayMode))
 const isThumbnailMode = computed(() => !isLargeDisplayMode.value)
-const shouldSkipLayoutEvaluation = computed(() => isYoutubeFormat.value && props.displayMode === 'fullscreen')
+const shouldSkipLayoutEvaluation = computed(() => isCarouselFormat.value || hasGeneratedImage.value || (isYoutubeFormat.value && props.displayMode === 'fullscreen'))
 const shouldAlignKatexLeft = computed(() => !usesHookLayout.value && !isCtaSlide.value)
 
 function clampSlideScale(value) {
@@ -577,6 +725,51 @@ const currentKatexRevealKeys = computed(() => new Set(
 ))
 const hookTopText = computed(() => String(safeSlide.value.title || '').trim())
 const hookBottomText = computed(() => screenTextContent.value)
+
+const isCarouselCoverSlide = computed(() => (
+  isCarouselFormat.value
+  && (isHookSlide.value || isCoverSlide.value || Number(safeSlide.value.order || 0) === 1)
+))
+const isCarouselCtaSlide = computed(() => (
+  isCarouselFormat.value
+  && !isCarouselCoverSlide.value
+  && (
+    isCtaSlide.value
+    || (props.totalSlides > 0 && Number(safeSlide.value.order || 0) === Number(props.totalSlides))
+  )
+))
+const isCarouselContentSlide = computed(() => (
+  isCarouselFormat.value && !isCarouselCoverSlide.value && !isCarouselCtaSlide.value
+))
+const carouselTitleText = computed(() => String(safeSlide.value.title || '').trim())
+const carouselTextLines = computed(() => {
+  const raw = screenTextContent.value || ''
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+})
+const carouselCoverSubtitle = computed(() => carouselTextLines.value.join(' '))
+const carouselPageLabel = computed(() => {
+  const order = Number(safeSlide.value.order || 0)
+  if (!order) return ''
+  if (props.totalSlides && props.totalSlides > 0) {
+    return `${String(order).padStart(2, '0')} / ${String(props.totalSlides).padStart(2, '0')}`
+  }
+  return String(order).padStart(2, '0')
+})
+const showCarouselImageToggle = computed(() => (
+  isCarouselFormat.value
+  && hasGeneratedImageRaw.value
+  && props.displayMode !== 'export'
+))
+function toggleCarouselImage() {
+  if (!showCarouselImageToggle.value) return
+  emit('toggle-carousel-image', {
+    id: safeSlide.value.id,
+    hide: !carouselImageHidden.value,
+  })
+}
 const showHookTemplate = computed(
   () => usesHookLayout.value && Boolean(hasKatex.value || hookTopText.value || hookBottomText.value)
 )
@@ -1278,6 +1471,54 @@ onUnmounted(() => {
   background-position: center;
   background-repeat: no-repeat;
   z-index: 0;
+}
+
+.reel-slide--generated::before {
+  display: none;
+}
+
+.reel-slide-generated-image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.reel-slide-generated-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(8, 18, 48, 0.55) 0%, rgba(8, 18, 48, 0.10) 28%, rgba(8, 18, 48, 0.10) 58%, rgba(8, 18, 48, 0.78) 100%);
+}
+
+.slide-card--carousel .reel-slide--generated .reel-slide-body {
+  z-index: 3;
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(8, 18, 48, 0.55), 0 1px 2px rgba(8, 18, 48, 0.45);
+}
+
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.slide-title),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.screen-text),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.hook-top),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.hook-middle-text),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.hook-bottom),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.cta-top),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.cta-main),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.cta-line) {
+  color: #ffffff;
+}
+
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.katex),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.katex .mord),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.katex .mbin),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.katex .mrel),
+.slide-card--carousel .reel-slide--generated .reel-slide-body :deep(.katex .mop) {
+  color: #ffffff;
 }
 
 .reel-slide--cover::before {
@@ -2141,6 +2382,505 @@ onUnmounted(() => {
 .slide-card--carousel .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line),
 .slide-card--carousel.slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line) {
   min-height: calc(6.4cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+/* === Carousel per-slide image toggle =================================== */
+
+.carousel-image-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 12;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 78, 216, 0.35);
+  background: rgba(255, 255, 255, 0.92);
+  color: #1f4ed8;
+  font: 600 10px/1 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18);
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+  pointer-events: auto;
+  opacity: 0;
+}
+
+.slide-card:hover .carousel-image-toggle,
+.slide-card--selected .carousel-image-toggle,
+.carousel-image-toggle:focus-visible {
+  opacity: 1;
+}
+
+.carousel-image-toggle:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+}
+
+.carousel-image-toggle--off {
+  background: rgba(15, 23, 42, 0.82);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.carousel-image-toggle--off:hover {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.carousel-image-toggle svg {
+  flex: 0 0 auto;
+}
+
+.carousel-image-toggle__label {
+  white-space: nowrap;
+}
+
+.slide-card--fullscreen .carousel-image-toggle {
+  top: 18px;
+  right: 18px;
+  padding: 8px 14px;
+  font-size: 12px;
+  gap: 8px;
+}
+
+.slide-card--fullscreen .carousel-image-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* === Carousel template (Instagram-ready) ============================== */
+
+.slide-card--carousel .reel-slide {
+  --ct-brand: #1f4ed8;
+  --ct-brand-soft: #2563eb;
+  --ct-ink: #0b1733;
+  --ct-ink-soft: #334a7a;
+  --ct-line: rgba(31, 78, 216, 0.18);
+  --ct-bg: #f8fbff;
+}
+
+.carousel-template {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 5.5cqw 6cqw 5cqw;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ct-ink);
+  gap: 3cqw;
+}
+
+.carousel-template__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2cqw;
+  font-size: 2.6cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ct-brand);
+  font-weight: 700;
+}
+
+.carousel-template__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4cqw;
+}
+
+.carousel-template__brand-dot {
+  width: 2.2cqw;
+  height: 2.2cqw;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  box-shadow: 0 0 0 0.5cqw rgba(31, 78, 216, 0.12);
+  flex: 0 0 auto;
+}
+
+.carousel-template__brand-name {
+  font-weight: 800;
+  font-size: 2.8cqw;
+  letter-spacing: 0.04em;
+}
+
+.carousel-template__page {
+  font-variant-numeric: tabular-nums;
+  color: var(--ct-ink-soft);
+  font-weight: 600;
+  font-size: 2.4cqw;
+  letter-spacing: 0.18em;
+}
+
+.carousel-template__main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2.4cqw;
+  min-height: 0;
+  text-align: left;
+}
+
+/* --- Cover slide --- */
+
+.carousel-template--cover .carousel-template__main {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 3cqw;
+}
+
+.carousel-template__eyebrow {
+  display: inline-block;
+  padding: 1cqw 2.6cqw;
+  border-radius: 999px;
+  background: rgba(31, 78, 216, 0.12);
+  color: var(--ct-brand);
+  font-size: 2.4cqw;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.carousel-template__cover-title {
+  margin: 0;
+  font-size: 11cqw;
+  line-height: 1.02;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--ct-ink);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.carousel-template__cover-sub {
+  margin: 0;
+  font-size: 4.2cqw;
+  line-height: 1.32;
+  color: var(--ct-ink-soft);
+  font-weight: 500;
+  max-width: 92%;
+  overflow-wrap: anywhere;
+}
+
+.carousel-template__cover-katex {
+  font-size: 4.2cqw;
+  color: var(--ct-ink);
+}
+
+.carousel-template__swipe {
+  margin-top: 2cqw;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.6cqw;
+  padding: 1.6cqw 3.2cqw;
+  border-radius: 999px;
+  background: var(--ct-brand);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 3cqw;
+  letter-spacing: 0.06em;
+  box-shadow: 0 1.2cqw 2.4cqw rgba(31, 78, 216, 0.28);
+}
+
+.carousel-template__swipe-arrow {
+  font-size: 3.6cqw;
+  line-height: 1;
+  transform: translateY(-0.05em);
+}
+
+/* --- Content slide --- */
+
+.carousel-template--content .carousel-template__main {
+  justify-content: flex-start;
+  padding-top: 1.5cqw;
+}
+
+.carousel-template__step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 9cqw;
+  padding: 0.8cqw 2.4cqw;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 3cqw;
+  letter-spacing: 0.18em;
+  box-shadow: 0 0.8cqw 1.8cqw rgba(31, 78, 216, 0.22);
+}
+
+.carousel-template__title {
+  margin: 1cqw 0 0;
+  font-size: 7.4cqw;
+  line-height: 1.06;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  color: var(--ct-ink);
+  overflow-wrap: anywhere;
+}
+
+.carousel-template__accent {
+  width: 14cqw;
+  height: 0.9cqw;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  margin: 0.5cqw 0 1cqw;
+}
+
+.carousel-template__text-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8cqw;
+  width: 100%;
+}
+
+.carousel-template__text-item {
+  position: relative;
+  padding-left: 4.6cqw;
+  font-size: 4.2cqw;
+  line-height: 1.32;
+  color: var(--ct-ink);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.carousel-template__text-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 2.6cqw;
+  height: 0.7cqw;
+  border-radius: 999px;
+  background: var(--ct-brand);
+}
+
+.carousel-template__katex {
+  margin-top: 1cqw;
+  font-size: 4.2cqw;
+  color: var(--ct-ink);
+}
+
+/* --- CTA slide --- */
+
+.carousel-template--cta .carousel-template__main {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2.4cqw;
+}
+
+.carousel-template__cta-eyebrow {
+  display: inline-block;
+  padding: 1cqw 2.6cqw;
+  border-radius: 999px;
+  background: rgba(31, 78, 216, 0.12);
+  color: var(--ct-brand);
+  font-size: 2.4cqw;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.carousel-template__cta-title {
+  margin: 0;
+  font-size: 8cqw;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--ct-ink);
+  text-align: center;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+.carousel-template__cta-url-wrap {
+  position: relative;
+  display: inline-block;
+  padding: 0 1cqw;
+}
+
+.carousel-template__cta-url {
+  position: relative;
+  z-index: 1;
+  font-size: 7cqw;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ct-brand);
+}
+
+.carousel-template__cta-underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.6cqw;
+  height: 2cqw;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(31, 78, 216, 0.18) 0%, rgba(37, 99, 235, 0.32) 100%);
+  z-index: 0;
+}
+
+.carousel-template__cta-list {
+  list-style: none;
+  margin: 1cqw 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4cqw;
+  align-items: center;
+}
+
+.carousel-template__cta-item {
+  position: relative;
+  font-size: 3.8cqw;
+  line-height: 1.32;
+  color: var(--ct-ink-soft);
+  font-weight: 500;
+  padding-left: 3.4cqw;
+}
+
+.carousel-template__cta-item::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--ct-brand);
+  font-weight: 800;
+  font-size: 3.6cqw;
+}
+
+.carousel-template__cta-katex {
+  font-size: 4cqw;
+  color: var(--ct-ink);
+}
+
+.carousel-template__cta-button {
+  margin-top: 2cqw;
+  display: inline-flex;
+  align-items: center;
+  gap: 2cqw;
+  padding: 2.4cqw 3.6cqw;
+  border-radius: 1.8cqw;
+  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 3.4cqw;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1.6cqw 3cqw rgba(31, 78, 216, 0.32);
+}
+
+.carousel-template__cta-button-arrow {
+  font-size: 4cqw;
+  line-height: 1;
+}
+
+/* --- Footer (all non-cover slides) --- */
+
+.carousel-template__bottombar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.6cqw;
+  font-size: 2.6cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ct-brand);
+  font-weight: 700;
+}
+
+.carousel-template__url {
+  position: relative;
+  padding-left: 3.4cqw;
+}
+
+.carousel-template__url::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.2cqw;
+  height: 2.2cqw;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+}
+
+/* --- On-image variant: white text + shadow for legibility --- */
+
+.carousel-template--on-image {
+  color: #ffffff;
+}
+
+.carousel-template--on-image .carousel-template__topbar,
+.carousel-template--on-image .carousel-template__brand,
+.carousel-template--on-image .carousel-template__page,
+.carousel-template--on-image .carousel-template__bottombar,
+.carousel-template--on-image .carousel-template__url,
+.carousel-template--on-image .carousel-template__cta-eyebrow {
+  color: #ffffff;
+}
+
+.carousel-template--on-image .carousel-template__brand-dot,
+.carousel-template--on-image .carousel-template__url::before {
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.carousel-template--on-image .carousel-template__cover-title,
+.carousel-template--on-image .carousel-template__cover-sub,
+.carousel-template--on-image .carousel-template__title,
+.carousel-template--on-image .carousel-template__cta-title,
+.carousel-template--on-image .carousel-template__text-item,
+.carousel-template--on-image .carousel-template__cta-url,
+.carousel-template--on-image .carousel-template__cta-item,
+.carousel-template--on-image .carousel-template__katex,
+.carousel-template--on-image .carousel-template__cta-katex,
+.carousel-template--on-image .carousel-template__cover-katex {
+  color: #ffffff;
+  text-shadow: 0 0.4cqw 1.6cqw rgba(8, 18, 48, 0.55), 0 0.2cqw 0.5cqw rgba(8, 18, 48, 0.45);
+}
+
+.carousel-template--on-image .carousel-template__eyebrow {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  backdrop-filter: blur(6px);
+}
+
+.carousel-template--on-image .carousel-template__cta-underline {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.carousel-template--on-image .carousel-template__text-item::before {
+  background: #ffffff;
+}
+
+.carousel-template--on-image .carousel-template__cta-item::before {
+  color: #ffffff;
+  background: transparent;
+}
+
+.carousel-template--on-image .carousel-template__accent {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.carousel-template--on-image .carousel-template__step,
+.carousel-template--on-image .carousel-template__swipe,
+.carousel-template--on-image .carousel-template__cta-button {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ct-brand);
+  text-shadow: none;
+  box-shadow: 0 0.8cqw 2cqw rgba(8, 18, 48, 0.35);
 }
 
 @media (max-width: 768px) {

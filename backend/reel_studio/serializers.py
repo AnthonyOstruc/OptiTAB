@@ -5,12 +5,19 @@ from .models import ReelProject, ReelSlide
 
 class ReelSlideSerializer(serializers.ModelSerializer):
     speech_audio_url = serializers.SerializerMethodField()
+    generated_image_url = serializers.SerializerMethodField()
 
     def get_speech_audio_url(self, obj):
-        if not obj.speech_audio:
+        return self._file_url(obj.speech_audio)
+
+    def get_generated_image_url(self, obj):
+        return self._file_url(obj.generated_image)
+
+    def _file_url(self, file_field):
+        if not file_field:
             return None
         try:
-            url = obj.speech_audio.url
+            url = file_field.url
         except ValueError:
             return None
 
@@ -87,6 +94,11 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'layout_status',
             'layout_notes',
             'annotations',
+            'generated_image',
+            'generated_image_url',
+            'generated_image_prompt',
+            'generated_image_model_id',
+            'generated_image_generated_at',
             'speech_text',
             'speech_audio',
             'speech_audio_url',
@@ -102,6 +114,11 @@ class ReelSlideSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'id',
+            'generated_image',
+            'generated_image_url',
+            'generated_image_prompt',
+            'generated_image_model_id',
+            'generated_image_generated_at',
             'speech_text',
             'speech_audio',
             'speech_audio_url',
@@ -270,6 +287,13 @@ class ReelTemplateGenerateSerializer(serializers.Serializer):
     include_cta = serializers.BooleanField(default=None, required=False, allow_null=True)
     hook_text = serializers.CharField(max_length=255, allow_blank=True, required=False, default='')
     cta_text = serializers.CharField(max_length=255, allow_blank=True, required=False, default='')
+
+
+class ReelGeminiCarouselGenerateSerializer(serializers.Serializer):
+    prompt = serializers.CharField(max_length=30000)
+    model_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
+    max_chars_per_line = serializers.IntegerField(min_value=12, max_value=120, default=38, required=False)
+    generate_images = serializers.BooleanField(required=False, default=True)
 
 
 class ReelSpeechGenerateSerializer(serializers.Serializer):

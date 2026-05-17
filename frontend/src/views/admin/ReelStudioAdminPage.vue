@@ -68,8 +68,14 @@
               :title="studioFormatConfig.templateBuilderTitle"
               :textarea-label="studioFormatConfig.templateTextareaLabel"
               :placeholder="studioFormatConfig.templatePlaceholder"
+              :show-ai-generate="isCarouselProject"
+              :ai-loading="generatingCarouselGemini"
+              ai-generate-label="Créer les images avec Gemini"
+              ai-loading-label="Gemini génère les images..."
+              :ai-prompt-fallback="studioFormatConfig.formatTemplate"
               @generate="handleGenerateFromTemplate"
               @save="handleSaveTemplate"
+              @ai-generate="handleGenerateCarouselWithGemini"
             />
 
             <ReelPreview
@@ -89,7 +95,87 @@
               @export-video="handleExportVideo"
               @update-pronunciation-overrides="handleUpdatePronunciationOverrides"
               @update-pronunciation-overrides-by-voice="handleUpdatePronunciationOverridesByVoice"
+              @toggle-carousel-image="handleToggleCarouselImage"
             />
+
+            <section v-if="isCarouselProject" class="gemini-panel">
+              <div class="gemini-panel-header">
+                <label class="gemini-model-select">
+                  Modèle Gemini
+                  <input
+                    v-model="geminiModelSearch"
+                    class="gemini-model-search"
+                    type="search"
+                    placeholder="Rechercher un modèle..."
+                    :disabled="loadingGeminiOptions || generatingCarouselGemini"
+                  />
+                  <select
+                    v-model="selectedGeminiModelId"
+                    :disabled="loadingGeminiOptions || generatingCarouselGemini"
+                  >
+                    <option v-if="!filteredGeminiModels.length" disabled value="">
+                      Aucun modèle trouvé
+                    </option>
+                    <option
+                      v-for="model in filteredGeminiModels"
+                      :key="model.id"
+                      :value="model.id"
+                    >
+                      {{ modelLabel(model) }}
+                    </option>
+                  </select>
+                </label>
+                <button
+                  class="btn-secondary btn-compact"
+                  type="button"
+                  :disabled="loadingGeminiOptions || generatingCarouselGemini"
+                  @click="loadGeminiOptions"
+                >
+                  {{ loadingGeminiOptions ? 'Chargement...' : 'Actualiser' }}
+                </button>
+                <button
+                  class="btn-secondary btn-compact"
+                  type="button"
+                  :disabled="regeneratingCarouselImages || generatingCarouselGemini || !canRegenerateCarouselImages"
+                  :title="canRegenerateCarouselImages ? 'Recréer uniquement les images Gemini sans toucher au texte' : 'Génère d abord les slides'"
+                  @click="handleRegenerateCarouselImages"
+                >
+                  {{ regeneratingCarouselImages ? 'Images en cours...' : 'Régénérer images seulement' }}
+                </button>
+              </div>
+
+              <div class="gemini-usage-grid">
+                <div class="gemini-usage-card">
+                  <span>Dépensé ce mois</span>
+                  <strong>{{ formatGeminiMoney(geminiUsage.display_spent) }}</strong>
+                </div>
+                <div class="gemini-usage-card">
+                  <span>Reste</span>
+                  <strong>{{ geminiRemainingLabel }}</strong>
+                </div>
+                <div class="gemini-usage-card">
+                  <span>Générations</span>
+                  <strong>{{ geminiUsage.usage_count || 0 }}</strong>
+                </div>
+                <div class="gemini-usage-card">
+                  <span>Dernier coût</span>
+                  <strong>{{ formatGeminiMoney(lastGeminiUsageDisplayCost) }}</strong>
+                </div>
+              </div>
+
+              <p v-if="geminiOptionsError" class="gemini-error">{{ geminiOptionsError }}</p>
+
+              <div v-if="geminiRecentUsage.length" class="gemini-recent">
+                <span>Dernières générations</span>
+                <ul>
+                  <li v-for="item in geminiRecentUsage" :key="item.id">
+                    <strong>{{ formatGeminiMoney(item.display_cost) }}</strong>
+                    <span>{{ item.model_id }}</span>
+                    <small>{{ formatDateTime(item.created_at) }}</small>
+                  </li>
+                </ul>
+              </div>
+            </section>
 
             <section v-if="selectedProject" class="instagram-caption-panel">
               <div class="instagram-caption-header">
@@ -533,9 +619,12 @@ import {
   deleteReelSlide,
   downloadReelVideo,
   exportReelVideo,
+  generateCarouselWithGemini,
+  regenerateCarouselImages,
   generateReelSlideSpeech,
   generateReelSlideSpeeches,
   generateSlidesFromTemplate,
+  getGeminiOptions,
   getReelProject,
   listReelProjects,
   listReelVoiceLibrary,
@@ -565,6 +654,8 @@ const loadingProjects = ref(false)
 const loadingProjectDetail = ref(false)
 const savingProject = ref(false)
 const generatingTemplate = ref(false)
+const generatingCarouselGemini = ref(false)
+const regeneratingCarouselImages = ref(false)
 const savingTemplate = ref(false)
 const generatingSpeech = ref(false)
 const generatingSpeechSlideId = ref(null)
@@ -597,11 +688,30 @@ const projectFormOpen = ref(false)
 const editingProject = ref(null)
 const templateDraft = ref('')
 const editorSectionRef = ref(null)
+const DEFAULT_GEMINI_MODEL_ID = 'gemini-2.5-flash'
+const selectedGeminiModelId = ref(DEFAULT_GEMINI_MODEL_ID)
+const geminiModelSearch = ref('')
+const geminiModels = ref([{ id: DEFAULT_GEMINI_MODEL_ID, display_name: 'Gemini 2.5 Flash' }])
+const geminiUsage = ref({
+  spent_usd: 0,
+  budget_usd: null,
+  remaining_usd: null,
+  display_currency: 'EUR',
+  display_spent: 0,
+  display_budget: 10,
+  display_remaining: 10,
+  eur_per_usd: 0.92,
+  usage_count: 0,
+  recent: [],
+})
+const lastGeminiUsage = ref(null)
+const loadingGeminiOptions = ref(false)
+const geminiOptionsError = ref('')
 
 const FORMAT_TABS = Object.freeze([
-  { value: 'reel', label: 'Reel Instagram' },
+  { value: 'reel', label: 'Reel' },
+  { value: 'carousel', label: 'Carrousel' },
   { value: 'youtube', label: 'YouTube' },
-  { value: 'carousel', label: 'Carrousel acquisition' },
 ])
 
 function normalizeFormatType(value) {
@@ -1061,94 +1171,128 @@ Au programme :
 END_YOUTUBE_DESCRIPTION
 `
 
-const CAROUSEL_FORMAT_TEMPLATE = `FORMAT CARROUSEL ACQUISITION OPTITAB (PRO)
+const CAROUSEL_FORMAT_TEMPLATE = `FORMAT CARROUSEL OPTITAB (PRO)
 
 Objectif:
-- Créer un carrousel marketing premium prêt pour Instagram / Facebook / TikTok
-- But principal: donner envie d'aller sur optitab.net et de s'abonner
-- Audience: élèves, parents, lycéens, étudiants qui veulent progresser en maths
-- Format recommandé: 4:5 portrait, export PNG 1080x1350
-- Chaque SLIDE devient une image indépendante du carrousel
-- Les slides ne sont jamais cumulatives: une slide ne doit pas reprendre le texte, les formules ou les lignes d'une slide précédente
-- Aucun script voix, aucun sous-titre, aucun contenu vidéo
-- Ne fais pas un exercice de maths: vends la plateforme, la méthode et le résultat attendu
-- Style: propre, clair, crédible, professionnel, orienté conversion
+- Carrousel marketing premium prêt pour Instagram / Facebook / TikTok.
+- But principal: donner envie d'aller sur optitab.net et de s'abonner.
+- Audience: élèves, parents, lycéens, étudiants qui veulent progresser en maths.
+- Format: 4:5 portrait, 1080x1350 px.
+- Chaque SLIDE = 1 image indépendante. Pas de cumul entre slides.
+- Aucune voix, aucun sous-titre, aucun contenu vidéo, aucun exercice détaillé.
+- Style: propre, clair, crédible, professionnel, premium, orienté conversion.
 
-Structure:
+ÉLÉMENTS AUTO-AJOUTÉS PAR LE TEMPLATE (NE LES ÉCRIS PAS DANS LE TEXT):
+- Logo "OptiTAB" en haut à gauche de chaque slide (auto).
+- Numéro de slide "01 / 07" en haut à droite (auto).
+- Mention "optitab.net" en bas de chaque slide (sauf la cover) (auto).
+- Bouton "Glisse →" sur la slide 1 (auto).
+- Bouton "Abonne-toi sans engagement →" sur la slide CTA (auto).
+- URL "optitab.net" mise en avant sur la slide CTA (auto).
+⚠️ N'écris PAS ces éléments dans TITLE ni TEXT, sinon ils apparaîtront en double.
+
+Structure obligatoire de chaque slide:
 SLIDE <numéro> | <type>
-TITLE: ...
-TEXT: ...
+TITLE: <titre court, déjà mis en gros par le template>
+VISUEL: <description précise d'une image IA, sans texte dans l'image>
+TEXT: <une ligne courte; pour plusieurs lignes répéter TEXT: à chaque fois>
 ---
 
 Types autorisés:
-- hook
-- katex
-- cta
+- hook  → slide 1, COUVERTURE. Titre énorme centré. TEXT = 1 sous-titre court.
+- katex → slides intermédiaires, CONTENU. Titre + 1 à 4 puces (bullets) tirées des TEXT.
+- cta   → DERNIÈRE slide. Titre = grande promesse. TEXT = 2 à 4 bénéfices courts.
 
-Angle recommandé:
-- SLIDE 1: douleur ou promesse forte, immédiatement compréhensible.
-- SLIDE 2: ce qu'OptiTAB apporte concrètement.
-- SLIDE 3: preuves / contenu disponible: +150 chapitres, +150 résumés, +150 cours, +1000 exercices.
-- SLIDE 4: bénéfices utilisateur: comprendre, réviser, progresser, gagner en autonomie.
-- SLIDE 5: offre et CTA: optitab.net, abonnement sans engagement, accès immédiat.
+Architecture obligatoire (7 slides):
+- SLIDE 1 | hook: COUVERTURE. Le meilleur hook possible. TITLE court et fort, 1 ligne TEXT = sous-titre. ❌ Pas de "Glisse", pas de "optitab.net" (auto).
+- SLIDE 2 | katex: PROBLÈME / FRUSTRATION. TITLE + 1-2 TEXT.
+- SLIDE 3 | katex: SOLUTION OPTITAB. TITLE + 1-2 TEXT.
+- SLIDE 4 | katex: MÉTHODE / FONCTIONNALITÉ PHARE (cours, fiches, corrections pas à pas). TITLE + 2-3 TEXT.
+- SLIDE 5 | katex: PREUVES CHIFFRÉES. TITLE + 3-4 TEXT (ex: "+150 chapitres").
+- SLIDE 6 | katex: RÉSULTAT / BÉNÉFICE FINAL. TITLE + 2-3 TEXT (verbes d'action).
+- SLIDE 7 | cta: CTA FINAL. TITLE = grande promesse style "Prêt à débloquer ton potentiel ?". TEXT = 2-3 bénéfices courts. ❌ Pas de "Abonne-toi", pas de "Va sur optitab.net", pas de "Visite optitab.net" (auto).
 
-Règles de rédaction:
-- Pas de VOICE.
-- Pas de sous-titres.
-- Pas d'exercice détaillé.
-- Pas de slide cumulative, pas de slide result cumulative.
-- Pas de texte trop long: 2 à 5 lignes par slide.
-- Chaque slide doit pouvoir être comprise en 2 secondes.
-- Chaque slide doit fonctionner seule visuellement et textuellement.
-- Utilise "OptiTAB" et "optitab.net" dans le carrousel.
-- Le CTA doit pousser vers le site et l'abonnement, pas seulement sauvegarder le post.
+Règles TITLE:
+- TITLE court, percutant, professionnel.
+- 3 à 7 mots maximum. Pas de point final inutile.
+- Pas de hashtag, pas d'emoji.
 
-Description obligatoire:
-- Après les slides, ajoute un bloc CAROUSEL_DESCRIPTION copiable.
-- Objectif: légende Instagram/Facebook/TikTok qui donne envie de visiter optitab.net.
-- Mentionne l'abonnement sans engagement, l'accès immédiat et la progression en maths.
-- Termine par exactement 5 hashtags pertinents.
-- Format obligatoire:
+Règles TEXT (= les puces affichées sous le titre):
+- 1 ligne TEXT = 1 puce visuelle. Pour plusieurs puces, répète TEXT: à chaque ligne.
+- Chaque TEXT: 4 à 12 mots maximum. Court, lisible en 1 seconde.
+- 1 à 4 lignes TEXT par slide. Au-delà de 4 c'est trop chargé.
+- Pas de mots collés type "Apprendsplusvite". Phrases naturelles.
+- Pas d'exagération irréaliste, pas de faux prix, pas de fausses promesses.
+
+Règles VISUEL (servira à générer un FOND sans texte):
+- Décris une scène/image précise: composition, sujet, ambiance.
+- Univers OptiTAB: maths, cours, fiches de synthèse, exercices corrigés, dashboard, interface bleue/blanche, plateforme éducative premium.
+- Préfère: mockup d'interface (cartes, écran), élève qui révise (de dos ou silhouette), composition éditoriale.
+- Évite: photos stock génériques, gros plans de visages reconnaissables, capture d'un site réel.
+- ⚠️ Le visuel sera généré SANS texte (le texte est ajouté par le template). Donc précise des écrans floutés / formes abstraites pour tout mockup.
+- Laisse de l'espace VIDE dans la composition (centre-bas, ou un côté) pour que le texte du template reste lisible.
+
+Description Instagram (obligatoire, à la fin):
+- Bloc CAROUSEL_DESCRIPTION copiable.
+- Objectif: légende qui donne envie de visiter optitab.net.
+- Mentionne l'abonnement sans engagement, l'accès immédiat, la progression en maths.
+- Termine par EXACTEMENT 5 hashtags pertinents.
+- Format:
 CAROUSEL_DESCRIPTION:
 ...
 END_CAROUSEL_DESCRIPTION
 
-Exemple prêt à copier:
+Exemple prêt à copier (à adapter, ne pas recopier tel quel):
 SLIDE 1 | hook
-TITLE: Les maths ne devraient pas bloquer ton année.
-TEXT: Reprends le contrôle avec une plateforme claire, structurée et disponible à tout moment.
+TITLE: Tes maths méritent mieux
+VISUEL: Composition éditoriale bleu/blanc avec un écran d'ordinateur stylisé montrant un mockup OptiTAB (cartes floutées, aucun texte lisible), cahier propre à côté, lumière douce, grand espace vide en bas pour overlay.
+TEXT: La plateforme qui structure tes révisions de A à Z.
 ---
 SLIDE 2 | katex
-TITLE: Ce que tu trouves sur OptiTAB
-TEXT: Cours clairs
-Fiches de synthèse
-Exercices corrigés pas à pas
+TITLE: Tu te perds dans tes cours
+VISUEL: Bureau avec plusieurs onglets de navigateur ouverts en arrière-plan flou, cahier en désordre, ambiance frustration douce, palette bleu/gris, large zone vide à droite.
+TEXT: Trop d'onglets, trop de PDF, aucune méthode.
+TEXT: Tu révises sans savoir si tu progresses vraiment.
 ---
 SLIDE 3 | katex
-TITLE: Une base solide pour progresser
-TEXT: +150 chapitres
-+150 résumés
-+150 cours
-+1000 exercices
+TITLE: Un seul endroit, tout structuré
+VISUEL: Mockup d'interface OptiTAB sur écran, cartes "Cours" "Fiches" "Exercices" alignées (sans texte lisible dedans), barre latérale épurée, palette OptiTAB.
+TEXT: Cours, fiches et corrections au même endroit.
+TEXT: Tu sais quoi faire, dans quel ordre.
 ---
 SLIDE 4 | katex
-TITLE: L'objectif
-TEXT: Comprendre plus vite
-Réviser plus efficacement
-Gagner en autonomie
-Arriver plus serein aux contrôles
+TITLE: Des corrections pas à pas
+VISUEL: Mockup de fiche d'exercice corrigé OptiTAB, étapes alignées verticalement (boîtes floutées, aucun texte lisible), repère bleu, fond clair, espace libre à gauche.
+TEXT: Comprends la méthode, pas juste le résultat.
+TEXT: Repère chaque étape clé.
+TEXT: Avance à ton rythme.
 ---
-SLIDE 5 | cta
-TITLE: Découvre OptiTAB
-TEXT: Va sur optitab.net
-Choisis ton niveau
-Abonne-toi sans engagement
-Accès immédiat
+SLIDE 5 | katex
+TITLE: Une vraie base de travail
+VISUEL: Composition isométrique avec piles de cartes représentant chapitres / fiches / cours / exercices (formes abstraites floutées, aucun texte), style dashboard premium, ambiance studieuse.
+TEXT: +150 chapitres complets
+TEXT: +150 fiches de synthèse
+TEXT: +150 cours détaillés
+TEXT: +1000 exercices corrigés
+---
+SLIDE 6 | katex
+TITLE: Progresse avec méthode
+VISUEL: Élève de dos devant un ordinateur ouvert sur la plateforme (écran flouté), cahier propre, ambiance lumineuse et confiante, large espace vide en bas.
+TEXT: Comprends plus vite.
+TEXT: Révise plus efficacement.
+TEXT: Gagne en autonomie.
+---
+SLIDE 7 | cta
+TITLE: Prêt à débloquer ton potentiel ?
+VISUEL: Écran final centré, ordinateur et smartphone montrant le mockup OptiTAB (cartes floutées, AUCUN texte lisible), ambiance premium bleu/blanc, fond lumineux, grande zone vide au centre et en bas pour overlay.
+TEXT: Choisis ton niveau en 30 secondes.
+TEXT: Accès immédiat à toute la plateforme.
+TEXT: Sans engagement, résiliable à tout moment.
 ---
 CAROUSEL_DESCRIPTION:
 OptiTAB aide les élèves à progresser en maths avec des cours clairs, des fiches de synthèse et des exercices corrigés pas à pas.
 
-La plateforme est pensée pour réviser efficacement, comprendre les méthodes et avancer à son rythme.
+La plateforme est pensée pour réviser efficacement, comprendre les méthodes et avancer à ton rythme.
 
 Abonnement sans engagement, accès immédiat.
 
@@ -1178,23 +1322,57 @@ TEXT: Énoncé :
 KATEX: I=\\int_0^1 x\\,e^x\\,dx
 VOICE: On pose l'énoncé.`,
   carousel: `SLIDE 1 | hook
-TITLE: Les maths ne devraient pas bloquer ton année.
-TEXT: Reprends le contrôle avec OptiTAB.
+TITLE: Tes maths méritent mieux
+VISUEL: Composition éditoriale bleu/blanc, écran d'ordinateur stylisé montrant un mockup OptiTAB (cartes floutées, aucun texte lisible), cahier propre à côté, lumière douce, grand espace vide en bas.
+TEXT: La plateforme qui structure tes révisions de A à Z.
 ---
 SLIDE 2 | katex
-TITLE: Tout pour progresser
-TEXT: Cours clairs
-Fiches de synthèse
-Exercices corrigés pas à pas
+TITLE: Tu te perds dans tes cours
+VISUEL: Bureau avec plusieurs onglets de navigateur ouverts en arrière-plan flou, cahier en désordre, ambiance frustration douce, palette bleu/gris, large zone vide à droite.
+TEXT: Trop d'onglets, trop de PDF, aucune méthode.
+TEXT: Tu révises sans savoir si tu progresses.
 ---
-SLIDE 3 | cta
-TITLE: Découvre OptiTAB
-TEXT: Va sur optitab.net
-Choisis ton niveau
-Abonne-toi sans engagement
+SLIDE 3 | katex
+TITLE: Un seul endroit, tout structuré
+VISUEL: Mockup d'interface OptiTAB, cartes "Cours" "Fiches" "Exercices" alignées (sans texte lisible dedans), barre latérale épurée, palette OptiTAB.
+TEXT: Cours, fiches et corrections au même endroit.
+TEXT: Tu sais quoi faire, dans quel ordre.
+---
+SLIDE 4 | katex
+TITLE: Des corrections pas à pas
+VISUEL: Mockup fiche d'exercice corrigé OptiTAB, étapes alignées verticalement (boîtes floutées, aucun texte lisible), repère bleu, espace libre à gauche.
+TEXT: Comprends la méthode, pas juste le résultat.
+TEXT: Repère chaque étape clé.
+TEXT: Avance à ton rythme.
+---
+SLIDE 5 | katex
+TITLE: Une vraie base de travail
+VISUEL: Composition isométrique avec piles de cartes (formes abstraites floutées, aucun texte), style dashboard premium, ambiance studieuse.
+TEXT: +150 chapitres complets
+TEXT: +150 fiches de synthèse
+TEXT: +150 cours détaillés
+TEXT: +1000 exercices corrigés
+---
+SLIDE 6 | katex
+TITLE: Progresse avec méthode
+VISUEL: Élève de dos devant un ordinateur ouvert sur la plateforme (écran flouté), cahier propre, ambiance lumineuse et confiante, espace vide en bas.
+TEXT: Comprends plus vite.
+TEXT: Révise plus efficacement.
+TEXT: Gagne en autonomie.
+---
+SLIDE 7 | cta
+TITLE: Prêt à débloquer ton potentiel ?
+VISUEL: Écran final centré, ordinateur et smartphone montrant le mockup OptiTAB (cartes floutées, aucun texte lisible), ambiance premium bleu/blanc, fond lumineux, grande zone vide au centre et en bas.
+TEXT: Choisis ton niveau en 30 secondes.
+TEXT: Accès immédiat à toute la plateforme.
+TEXT: Sans engagement, résiliable à tout moment.
 ---
 CAROUSEL_DESCRIPTION:
 Découvre OptiTAB sur optitab.net et progresse en maths avec une plateforme claire, structurée et accessible immédiatement.
+
+Abonnement sans engagement, accès immédiat.
+
+#optitab #maths #revision #lycee #soutienscolaire
 END_CAROUSEL_DESCRIPTION`,
 })
 
@@ -1248,7 +1426,7 @@ const FORMAT_CONFIGS = Object.freeze({
     entityDefaultSlug: 'optitab-youtube',
   },
   carousel: {
-    managementTitle: 'Gestion des carrousels acquisition',
+    managementTitle: 'Gestion des carrousels',
     countSingular: 'carrousel',
     countPlural: 'carrousels',
     createButtonLabel: 'Nouveau carrousel',
@@ -1264,8 +1442,8 @@ const FORMAT_CONFIGS = Object.freeze({
     editProjectTitle: 'Modifier le carrousel',
     createSubmitLabel: 'Creer le carrousel',
     updateSubmitLabel: 'Mettre a jour',
-    templateBuilderTitle: 'Création Carrousel acquisition',
-    templateTextareaLabel: 'Format carrousel acquisition (1 slide = 1 image, pas de voix)',
+    templateBuilderTitle: 'Création Carrousel',
+    templateTextareaLabel: 'Format carrousel (1 slide = 1 image, pas de voix)',
     templatePlaceholder: TEMPLATE_PLACEHOLDERS.carousel,
     formatTemplate: CAROUSEL_FORMAT_TEMPLATE,
     entityWithArticle: 'le carrousel',
@@ -1277,6 +1455,48 @@ const studioFormatConfig = computed(() => FORMAT_CONFIGS[studioFormat.value] || 
 const formatHelpTemplate = computed(() => studioFormatConfig.value.formatTemplate)
 const selectedProjectFormat = computed(() => normalizeFormatType(selectedProject.value?.format_type || studioFormat.value))
 const isCarouselProject = computed(() => selectedProjectFormat.value === 'carousel')
+const canRegenerateCarouselImages = computed(() => (
+  isCarouselProject.value && Array.isArray(selectedProject.value?.slides) && selectedProject.value.slides.length > 0
+))
+const filteredGeminiModels = computed(() => {
+  const search = String(geminiModelSearch.value || '').trim().toLowerCase()
+  const models = Array.isArray(geminiModels.value) ? geminiModels.value : []
+  if (!search) return models
+
+  const selectedModel = models.find((model) => model.id === selectedGeminiModelId.value)
+  const matches = models.filter((model) => {
+    const haystack = [
+      model.id,
+      model.display_name,
+      model.input_price_per_1m_tokens,
+      model.output_price_per_1m_tokens,
+    ].filter(Boolean).join(' ').toLowerCase()
+    return haystack.includes(search)
+  })
+
+  if (selectedModel && !matches.some((model) => model.id === selectedModel.id)) {
+    return [selectedModel, ...matches]
+  }
+  return matches
+})
+const geminiRecentUsage = computed(() => Array.isArray(geminiUsage.value?.recent) ? geminiUsage.value.recent : [])
+const geminiRemainingLabel = computed(() => {
+  if (geminiUsage.value?.display_remaining === null || geminiUsage.value?.display_remaining === undefined) {
+    return 'Budget non défini'
+  }
+  return formatGeminiMoney(geminiUsage.value.display_remaining)
+})
+const lastGeminiUsageDisplayCost = computed(() => {
+  if (!lastGeminiUsage.value) return 0
+  if (lastGeminiUsage.value.display_cost !== undefined && lastGeminiUsage.value.display_cost !== null) {
+    return lastGeminiUsage.value.display_cost
+  }
+  const usdCost = Number(lastGeminiUsage.value.total_cost_usd || 0)
+  if ((geminiUsage.value?.display_currency || 'USD') === 'EUR') {
+    return usdCost * Number(geminiUsage.value?.eur_per_usd || 0.92)
+  }
+  return usdCost
+})
 
 const selectedSlide = computed(() => {
   if (!selectedProject.value?.slides?.length) return null
@@ -2073,6 +2293,17 @@ function appendTemplateField(lines, label, value) {
   })
 }
 
+function slideVisualPrompt(slide) {
+  const raw = String(slide?.layout_notes || '').trim()
+  if (!raw) return ''
+  try {
+    const parsed = JSON.parse(raw)
+    return String(parsed?.visual_prompt || '').trim()
+  } catch (_) {
+    return ''
+  }
+}
+
 function serializeProjectSlides(project) {
   const slides = Array.isArray(project?.slides) ? [...project.slides] : []
   slides.sort((a, b) => Number(a.order || 0) - Number(b.order || 0) || Number(a.id || 0) - Number(b.id || 0))
@@ -2087,6 +2318,7 @@ function serializeProjectSlides(project) {
         : rawSlideType
       const lines = [`SLIDE ${slide.order || index + 1} | ${slideType}`]
       appendTemplateField(lines, 'TITLE', slide.title)
+      appendTemplateField(lines, 'VISUEL', slideVisualPrompt(slide))
       appendTemplateField(lines, 'TEXT', slide.screen_text)
       appendTemplateField(lines, 'KATEX', slide.katex)
       if (includeVoice) {
@@ -2127,6 +2359,116 @@ function extractErrorMessage(error, fallback) {
   const fieldMessage = Object.values(data).find((value) => Array.isArray(value) && value.length)
   const apiMessage = data.detail || data.message || fieldMessage?.[0]
   return String(apiMessage || fallback)
+}
+
+function formatGeminiMoney(value) {
+  const amount = Number(value || 0)
+  const currency = geminiUsage.value?.display_currency || 'USD'
+  if (!Number.isFinite(amount)) return currency === 'EUR' ? '0,0000 €' : '$0.0000'
+  return new Intl.NumberFormat('fr-FR', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: amount < 0.01 ? 4 : 2,
+    maximumFractionDigits: amount < 0.01 ? 4 : 2,
+  }).format(amount)
+}
+
+function formatDateTime(value) {
+  if (!value) return ''
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return ''
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
+}
+
+function modelLabel(model) {
+  const label = model?.display_name || model?.id || ''
+  const inputPrice = model?.input_price_per_1m_tokens
+  const outputPrice = model?.output_price_per_1m_tokens
+  if (!inputPrice || !outputPrice) return label
+  return `${label} ($${inputPrice}/$${outputPrice})`
+}
+
+function applyGeminiOptions(payload) {
+  const models = Array.isArray(payload?.models) ? payload.models : []
+  geminiModels.value = models.length
+    ? models
+    : [{ id: DEFAULT_GEMINI_MODEL_ID, display_name: 'Gemini 2.5 Flash' }]
+
+  const defaultModel = payload?.default_model_id || DEFAULT_GEMINI_MODEL_ID
+  const hasSelectedModel = geminiModels.value.some((model) => model.id === selectedGeminiModelId.value)
+  if (!hasSelectedModel) {
+    const preferredModel =
+      geminiModels.value.find((model) => model.id === defaultModel) ||
+      geminiModels.value.find((model) => model.id === DEFAULT_GEMINI_MODEL_ID) ||
+      geminiModels.value[0]
+    selectedGeminiModelId.value = preferredModel?.id || DEFAULT_GEMINI_MODEL_ID
+  }
+
+  if (payload?.usage) {
+    geminiUsage.value = {
+      spent_usd: payload.usage.spent_usd || 0,
+      budget_usd: payload.usage.budget_usd ?? null,
+      remaining_usd: payload.usage.remaining_usd ?? null,
+      display_currency: payload.usage.display_currency || 'USD',
+      display_spent: payload.usage.display_spent || 0,
+      display_budget: payload.usage.display_budget ?? null,
+      display_remaining: payload.usage.display_remaining ?? null,
+      eur_per_usd: payload.usage.eur_per_usd || 0.92,
+      usage_count: payload.usage.usage_count || 0,
+      recent: Array.isArray(payload.usage.recent) ? payload.usage.recent : [],
+    }
+  }
+}
+
+async function loadGeminiOptions() {
+  if (!canManage.value) return
+
+  loadingGeminiOptions.value = true
+  geminiOptionsError.value = ''
+  try {
+    const response = await getGeminiOptions()
+    applyGeminiOptions(response?.data)
+  } catch (error) {
+    geminiOptionsError.value = extractErrorMessage(error, 'Impossible de charger les modèles Gemini.')
+  } finally {
+    loadingGeminiOptions.value = false
+  }
+}
+
+function buildCarouselGeminiPrompt(rawPrompt) {
+  const userPrompt = String(rawPrompt || '').trim()
+  const looksLikeExistingCarousel = /^\s*(SLIDE\s+\d+|FORMAT CARROUSEL|CAROUSEL_DESCRIPTION:)/im.test(userPrompt)
+  const userBrief = userPrompt && !looksLikeExistingCarousel ? userPrompt : ''
+  const project = selectedProject.value || {}
+  const contextLines = [
+    project.title ? `Titre du projet: ${project.title}` : '',
+    project.theme ? `Theme: ${project.theme}` : '',
+    project.level ? `Niveau: ${project.level}` : '',
+  ].filter(Boolean)
+  const carouselRules = [
+    'Contraintes non négociables:',
+    '- Fais un carrousel professionnel OptiTAB, pas un exercice de maths.',
+    '- 7 slides exactement: 1 hook (cover) + 5 katex (contenu) + 1 cta (final).',
+    '- TITLE court (3 à 7 mots), TEXT court (4 à 12 mots par ligne, max 4 lignes par slide).',
+    '- Chaque slide doit contenir une ligne VISUEL décrivant une SCÈNE SANS TEXTE: tout mockup d écran doit avoir des éléments floutés/abstraits, aucune lettre lisible.',
+    '- Laisse de l espace vide dans la composition du VISUEL pour que l overlay texte du template reste lisible.',
+    '- N écris PAS dans TEXT: "Glisse", "Va sur optitab.net", "Visite optitab.net", "Abonne-toi", "optitab.net" — ces éléments sont ajoutés automatiquement par le template.',
+    '- SLIDE 7 (cta): le TITLE est une grande promesse (ex: "Prêt à débloquer ton potentiel ?"), les TEXT sont 2-3 bénéfices concrets.',
+  ].join('\n')
+
+  return [
+    CAROUSEL_FORMAT_TEMPLATE,
+    carouselRules,
+    userBrief ? `Brief utilisateur facultatif:\n${userBrief}` : '',
+    contextLines.length ? `Contexte a utiliser:\n${contextLines.join('\n')}` : '',
+    'Genere maintenant un carrousel original pret a copier pour OptiTAB.',
+    'Reponds uniquement avec les blocs SLIDE et CAROUSEL_DESCRIPTION. Aucun markdown, aucune explication autour.',
+  ].filter(Boolean).join('\n\n')
 }
 
 async function loadVoiceOptions() {
@@ -2499,6 +2841,108 @@ async function selectProject(projectId) {
     if (requestId === detailRequestId) {
       loadingProjectDetail.value = false
     }
+  }
+}
+
+async function handleGenerateCarouselWithGemini(payload) {
+  if (!selectedProject.value?.id || !isCarouselProject.value) return
+
+  generatingCarouselGemini.value = true
+  try {
+    const response = await generateCarouselWithGemini(selectedProject.value.id, {
+      prompt: buildCarouselGeminiPrompt(payload?.prompt),
+      model_id: selectedGeminiModelId.value || DEFAULT_GEMINI_MODEL_ID,
+      max_chars_per_line: 38,
+      generate_images: true,
+    })
+    const updatedProject = normalizeProject(response?.data?.project)
+    const generatedTemplateText = String(response?.data?.template_text || '').trim()
+    lastGeminiUsage.value = response?.data?.gemini_usage || null
+    if (response?.data?.gemini_summary) {
+      geminiUsage.value = response.data.gemini_summary
+    }
+
+    if (updatedProject?.id) {
+      selectedProject.value = updatedProject
+      selectedSlideId.value = updatedProject.slides?.[0]?.id || null
+      templateDraft.value = generatedTemplateText || serializeProjectSlides(updatedProject)
+      clearDiagnostics()
+      upsertProjectSummary(updatedProject)
+      const imageGen = response?.data?.image_generation || {}
+      const imageCount = Array.isArray(imageGen.generated) ? imageGen.generated.length : 0
+      const errorsList = Array.isArray(imageGen.errors) ? imageGen.errors : []
+      const imageErrors = errorsList.length
+      const slidesCount = updatedProject.slides?.length || 0
+      if (imageErrors && !imageCount) {
+        const firstDetail = String(errorsList[0]?.detail || '').slice(0, 220)
+        setFeedback(
+          'error',
+          `Carrousel généré (${slidesCount} slides) mais AUCUNE image Gemini n'a pu être créée. `
+          + `${imageErrors} erreur(s). Détail: ${firstDetail || 'inconnu'}`,
+        )
+      } else if (imageErrors) {
+        const firstDetail = String(errorsList[0]?.detail || '').slice(0, 200)
+        setFeedback(
+          'warning',
+          `Carrousel généré (${slidesCount} slides). ${imageCount} images OK, ${imageErrors} en erreur. `
+          + `Premier détail: ${firstDetail || 'inconnu'}`,
+        )
+      } else {
+        setFeedback(
+          'success',
+          `Carrousel généré avec Gemini (${slidesCount} slides). ${imageCount} images générées.`,
+        )
+      }
+    }
+  } catch (error) {
+    const generatedTemplateText = String(error?.response?.data?.template_text || '').trim()
+    if (generatedTemplateText) {
+      templateDraft.value = generatedTemplateText
+    }
+    setFeedback('error', extractErrorMessage(error, 'Impossible de générer le carrousel avec Gemini.'))
+  } finally {
+    generatingCarouselGemini.value = false
+  }
+}
+
+async function handleRegenerateCarouselImages() {
+  if (!selectedProject.value?.id || !canRegenerateCarouselImages.value) return
+
+  regeneratingCarouselImages.value = true
+  try {
+    const response = await regenerateCarouselImages(selectedProject.value.id)
+    const updatedProject = normalizeProject(response?.data?.project)
+    if (response?.data?.gemini_summary) {
+      geminiUsage.value = response.data.gemini_summary
+    }
+
+    if (updatedProject?.id) {
+      selectedProject.value = updatedProject
+      upsertProjectSummary(updatedProject)
+      const imageGen = response?.data?.image_generation || {}
+      const imageCount = Array.isArray(imageGen.generated) ? imageGen.generated.length : 0
+      const errorsList = Array.isArray(imageGen.errors) ? imageGen.errors : []
+      const imageErrors = errorsList.length
+      if (imageErrors && !imageCount) {
+        const firstDetail = String(errorsList[0]?.detail || '').slice(0, 220)
+        setFeedback(
+          'error',
+          `AUCUNE image Gemini n'a pu être créée. ${imageErrors} erreur(s). Détail: ${firstDetail || 'inconnu'}`,
+        )
+      } else if (imageErrors) {
+        const firstDetail = String(errorsList[0]?.detail || '').slice(0, 200)
+        setFeedback(
+          'warning',
+          `${imageCount} images OK, ${imageErrors} en erreur. Premier détail: ${firstDetail || 'inconnu'}`,
+        )
+      } else {
+        setFeedback('success', `${imageCount} images Gemini régénérées.`)
+      }
+    }
+  } catch (error) {
+    setFeedback('error', extractErrorMessage(error, 'Impossible de régénérer les images Gemini.'))
+  } finally {
+    regeneratingCarouselImages.value = false
   }
 }
 
@@ -2912,6 +3356,31 @@ async function handlePatchSlide(payload) {
   }
 }
 
+async function handleToggleCarouselImage(payload) {
+  if (!payload?.id || !selectedProject.value) return
+  const slide = selectedProject.value.slides?.find((item) => Number(item.id) === Number(payload.id))
+  if (!slide) return
+
+  let layoutMeta = {}
+  const raw = String(slide.layout_notes || '').trim()
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw)
+      if (parsed && typeof parsed === 'object') layoutMeta = parsed
+    } catch (_) {
+      layoutMeta = {}
+    }
+  }
+  if (payload.hide) {
+    layoutMeta.hide_carousel_image = true
+  } else {
+    delete layoutMeta.hide_carousel_image
+  }
+  const nextLayoutNotes = Object.keys(layoutMeta).length ? JSON.stringify(layoutMeta) : ''
+
+  await handlePatchSlide({ id: payload.id, patch: { layout_notes: nextLayoutNotes } })
+}
+
 async function handleDeleteSlide(slideId) {
   if (!slideId || !selectedProject.value?.id) return
   if (!window.confirm('Supprimer cette slide ?')) return
@@ -2940,6 +3409,7 @@ async function handleDeleteSlide(slideId) {
 
 onMounted(() => {
   loadVoiceOptions()
+  loadGeminiOptions()
   loadProjects()
 })
 </script>
@@ -3111,6 +3581,149 @@ onMounted(() => {
   padding: 16px;
   font-size: 14px;
   font-weight: 800;
+}
+
+.gemini-panel {
+  border: 1px solid #dbe4ee;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+.gemini-panel-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gemini-model-select {
+  flex: 1 1 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.gemini-model-search,
+.gemini-model-select select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+}
+
+.gemini-model-search {
+  font-weight: 700;
+}
+
+.gemini-model-search::placeholder {
+  color: #94a3b8;
+}
+
+.gemini-model-search:focus,
+.gemini-model-select select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.btn-compact {
+  padding: 10px 12px;
+}
+
+.gemini-usage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.gemini-usage-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 10px 12px;
+  min-width: 0;
+}
+
+.gemini-usage-card span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.gemini-usage-card strong {
+  display: block;
+  margin-top: 4px;
+  color: #0f172a;
+  font-size: 16px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.gemini-error {
+  margin: 0;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.gemini-recent {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gemini-recent > span {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.gemini-recent ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.gemini-recent li {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) 90px;
+  align-items: center;
+  gap: 10px;
+  color: #475569;
+  font-size: 12px;
+}
+
+.gemini-recent li strong {
+  color: #0f172a;
+}
+
+.gemini-recent li span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gemini-recent li small {
+  color: #64748b;
+  text-align: right;
 }
 
 .btn-primary {
@@ -3653,6 +4266,10 @@ onMounted(() => {
     justify-self: stretch;
     width: 100%;
   }
+
+  .gemini-usage-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -3689,6 +4306,24 @@ onMounted(() => {
 
   .voice-usage-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gemini-panel-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .gemini-usage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gemini-recent li {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .gemini-recent li small {
+    text-align: left;
   }
 
   .voice-advanced-grid {

@@ -44,11 +44,24 @@
       }" ref="bodyRef">
         <header class="carousel-template__topbar">
           <span class="carousel-template__brand">
-            <span class="carousel-template__brand-dot" aria-hidden="true"></span>
-            <span class="carousel-template__brand-name">OptiTAB</span>
+            <img
+              src="/Logo_bg.png"
+              alt="OptiTAB"
+              class="carousel-template__brand-logo"
+              draggable="false"
+            />
           </span>
           <span v-if="carouselPageLabel" class="carousel-template__page">{{ carouselPageLabel }}</span>
         </header>
+
+        <span
+          v-if="hasGeneratedImage && isCarouselCoverSlide"
+          class="carousel-template__floating-eyebrow carousel-template__floating-eyebrow--cover"
+        >optitab.net</span>
+        <span
+          v-if="hasGeneratedImage && isCarouselCtaSlide"
+          class="carousel-template__floating-eyebrow carousel-template__floating-eyebrow--cta"
+        >À toi de jouer</span>
 
         <div class="carousel-template__main">
           <template v-if="isCarouselCoverSlide">
@@ -486,9 +499,12 @@ const slideCardStyle = computed(() => {
   const safeYScale = isYt
     ? Math.min(1.4, Math.max(0, Number(props.safeZoneYScale) || 0))
     : Math.min(1.4, Math.max(0.7, Number(props.safeZoneYScale) || 1))
-  const safeInlineUnit = isYt ? '3cqw' : isCarousel ? '5.2cqw' : '6.5cqw'
-  const safeBlockUnit = isYt ? '2.5cqw' : isCarousel ? '4.5cqw' : '6.5cqw'
-  const safeTopUnit = isYt ? '0cqw' : isCarousel ? '8cqw' : '16cqw'
+  const safeInlineUnit = isYt ? '3cqw' : isCarousel ? '6cqw' : '6.5cqw'
+  const safeBlockUnit = isYt ? '2.5cqw' : isCarousel ? '5cqw' : '6.5cqw'
+  const safeTopUnit = isYt ? '0cqw' : isCarousel ? '0.5cqw' : '16cqw'
+  const carouselContentScale = isCarousel
+    ? Math.min(1.6, Math.max(0.55, requestedScale / 0.9))
+    : requestedScale
 
   return {
     '--reel-user-scale': requestedScale,
@@ -496,6 +512,7 @@ const slideCardStyle = computed(() => {
     '--reel-screen-text-scale': screenTextScale,
     '--reel-math-scale': requestedScale * katexScale,
     '--reel-split-right-scale': splitRightScale,
+    '--reel-carousel-scale': carouselContentScale,
     '--reel-katex-row-gap': `${rowGap.toFixed(2)}em`,
     '--reel-thumb-fit-scale': thumbnailFitScale.value,
     '--reel-safe-inline': `calc(${safeInlineUnit} * ${safeXScale.toFixed(3)})`,
@@ -1020,15 +1037,28 @@ function renderRichTextLine(line) {
   return html
 }
 
+const ALIGN_PREFIX_RE = /^\[(left|center|right)\]/i
+const COLOR_PREFIX_RE = /^\{(#[0-9a-fA-F]{3,8})\}/
+
 function renderRichText(value) {
   return String(value || '')
     .replace(/\r\n/g, '\n')
     .split('\n')
     .map((line) => {
-      if (!line.trim()) {
-        return '<span class="rich-text-line rich-text-line--empty">&nbsp;</span>'
+      const alignMatch = line.match(ALIGN_PREFIX_RE)
+      const align = alignMatch ? alignMatch[1].toLowerCase() : null
+      let rest = align ? line.slice(alignMatch[0].length) : line
+      const colorMatch = rest.match(COLOR_PREFIX_RE)
+      const color = colorMatch ? colorMatch[1] : null
+      if (color) rest = rest.slice(colorMatch[0].length)
+      const styles = []
+      if (align) styles.push(`text-align:${align}`)
+      if (color) styles.push(`color:${color}`)
+      const styleAttr = styles.length ? ` style="${styles.join(';')}"` : ''
+      if (!rest.trim()) {
+        return `<span class="rich-text-line rich-text-line--empty"${styleAttr}>&nbsp;</span>`
       }
-      return `<span class="rich-text-line">${renderRichTextLine(line)}</span>`
+      return `<span class="rich-text-line"${styleAttr}>${renderRichTextLine(rest)}</span>`
     })
     .join('')
 }
@@ -2285,7 +2315,10 @@ onUnmounted(() => {
 .slide-card--carousel .reel-slide {
   aspect-ratio: 4 / 5;
   border-color: #d7e4f8;
-  background: #f8fbff;
+  background:
+    radial-gradient(circle at 85% 12%, rgba(58, 91, 184, 0.10) 0%, transparent 38%),
+    radial-gradient(circle at 12% 92%, rgba(41, 66, 142, 0.08) 0%, transparent 40%),
+    linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
 }
 
 .slide-card--carousel .reel-slide::before {
@@ -2396,7 +2429,7 @@ onUnmounted(() => {
   gap: 6px;
   padding: 5px 9px;
   border-radius: 999px;
-  border: 1px solid rgba(31, 78, 216, 0.35);
+  border: 1px solid rgba(41, 66, 142, 0.35);
   background: rgba(255, 255, 255, 0.92);
   color: #1f4ed8;
   font: 600 10px/1 'Inter', system-ui, sans-serif;
@@ -2454,11 +2487,13 @@ onUnmounted(() => {
 /* === Carousel template (Instagram-ready) ============================== */
 
 .slide-card--carousel .reel-slide {
-  --ct-brand: #1f4ed8;
-  --ct-brand-soft: #2563eb;
+  --ct-brand: #274ec3;
+  --ct-brand-deep: #1c3070;
+  --ct-brand-soft: #3a5bb8;
+  --ct-brand-glow: rgba(41, 66, 142, 0.18);
   --ct-ink: #0b1733;
-  --ct-ink-soft: #334a7a;
-  --ct-line: rgba(31, 78, 216, 0.18);
+  --ct-ink-soft: #4a5d86;
+  --ct-line: rgba(41, 66, 142, 0.18);
   --ct-bg: #f8fbff;
 }
 
@@ -2468,10 +2503,17 @@ onUnmounted(() => {
   z-index: 3;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  padding: 5.5cqw 6cqw 5cqw;
+  padding:
+    calc(var(--reel-safe-block, 5cqw) + var(--reel-safe-top, 0.5cqw))
+    var(--reel-safe-inline, 6cqw)
+    var(--reel-safe-block, 5cqw);
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   color: var(--ct-ink);
   gap: 3cqw;
+}
+
+.slide-card--carousel :deep(.annotation-layer) {
+  z-index: 5;
 }
 
 .carousel-template__topbar {
@@ -2492,27 +2534,28 @@ onUnmounted(() => {
   gap: 1.4cqw;
 }
 
-.carousel-template__brand-dot {
-  width: 2.2cqw;
-  height: 2.2cqw;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
-  box-shadow: 0 0 0 0.5cqw rgba(31, 78, 216, 0.12);
-  flex: 0 0 auto;
-}
-
-.carousel-template__brand-name {
-  font-weight: 800;
-  font-size: 2.8cqw;
-  letter-spacing: 0.04em;
+.carousel-template__brand-logo {
+  height: 5.4cqw;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 0.4cqw 0.8cqw rgba(41, 66, 142, 0.15));
 }
 
 .carousel-template__page {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8cqw 2cqw;
+  border-radius: 999px;
+  background: rgba(41, 66, 142, 0.08);
+  border: 0.18cqw solid rgba(41, 66, 142, 0.18);
   font-variant-numeric: tabular-nums;
-  color: var(--ct-ink-soft);
-  font-weight: 600;
-  font-size: 2.4cqw;
-  letter-spacing: 0.18em;
+  color: var(--ct-brand);
+  font-weight: 700;
+  font-size: 2.3cqw;
+  letter-spacing: 0.22em;
 }
 
 .carousel-template__main {
@@ -2524,6 +2567,8 @@ onUnmounted(() => {
   gap: 2.4cqw;
   min-height: 0;
   text-align: left;
+  transform: scale(var(--reel-carousel-scale, 1));
+  transform-origin: left center;
 }
 
 /* --- Cover slide --- */
@@ -2533,34 +2578,47 @@ onUnmounted(() => {
   justify-content: center;
   text-align: center;
   gap: 3cqw;
+  transform-origin: center center;
 }
 
 .carousel-template__eyebrow {
-  display: inline-block;
-  padding: 1cqw 2.6cqw;
+  display: inline-flex;
+  align-items: center;
+  gap: 1cqw;
+  padding: 1.2cqw 3cqw;
   border-radius: 999px;
-  background: rgba(31, 78, 216, 0.12);
+  background: rgba(41, 66, 142, 0.10);
+  border: 0.18cqw solid rgba(41, 66, 142, 0.22);
   color: var(--ct-brand);
   font-size: 2.4cqw;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.carousel-template__eyebrow::before {
+  content: '';
+  width: 1.4cqw;
+  height: 1.4cqw;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
 }
 
 .carousel-template__cover-title {
   margin: 0;
-  font-size: 11cqw;
+  font-size: calc(11cqw * var(--reel-title-scale, 1));
   line-height: 1.02;
   font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--ct-ink);
+  letter-spacing: -0.025em;
+  color: var(--ct-brand);
   max-width: 100%;
   overflow-wrap: anywhere;
+  text-shadow: 0 0.6cqw 1.4cqw rgba(41, 66, 142, 0.08);
 }
 
 .carousel-template__cover-sub {
   margin: 0;
-  font-size: 4.2cqw;
+  font-size: calc(4.2cqw * var(--reel-screen-text-scale, 1));
   line-height: 1.32;
   color: var(--ct-ink-soft);
   font-weight: 500;
@@ -2574,18 +2632,19 @@ onUnmounted(() => {
 }
 
 .carousel-template__swipe {
-  margin-top: 2cqw;
+  margin-top: 2.4cqw;
   display: inline-flex;
   align-items: center;
   gap: 1.6cqw;
-  padding: 1.6cqw 3.2cqw;
+  padding: 1.8cqw 3.6cqw;
   border-radius: 999px;
   background: var(--ct-brand);
   color: #ffffff;
-  font-weight: 700;
-  font-size: 3cqw;
-  letter-spacing: 0.06em;
-  box-shadow: 0 1.2cqw 2.4cqw rgba(31, 78, 216, 0.28);
+  font-weight: 800;
+  font-size: 3.1cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 1.4cqw 2.8cqw rgba(41, 66, 142, 0.34);
 }
 
 .carousel-template__swipe-arrow {
@@ -2599,39 +2658,46 @@ onUnmounted(() => {
 .carousel-template--content .carousel-template__main {
   justify-content: flex-start;
   padding-top: 1.5cqw;
+  transform-origin: left top;
 }
 
 .carousel-template__step {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 9cqw;
-  padding: 0.8cqw 2.4cqw;
+  width: 11.2cqw;
+  min-width: 11.2cqw;
+  height: 7.2cqw;
+  padding: 0;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  background: var(--ct-brand);
   color: #ffffff;
   font-weight: 800;
-  font-size: 3cqw;
-  letter-spacing: 0.18em;
-  box-shadow: 0 0.8cqw 1.8cqw rgba(31, 78, 216, 0.22);
+  font-size: 3.2cqw;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  line-height: 1;
+  text-align: center;
+  box-shadow: 0 1cqw 2.2cqw rgba(41, 66, 142, 0.30);
 }
 
 .carousel-template__title {
   margin: 1cqw 0 0;
-  font-size: 7.4cqw;
-  line-height: 1.06;
+  font-size: calc(7.8cqw * var(--reel-title-scale, 1));
+  line-height: 1.04;
   font-weight: 900;
-  letter-spacing: -0.015em;
-  color: var(--ct-ink);
+  letter-spacing: -0.02em;
+  color: var(--ct-brand);
   overflow-wrap: anywhere;
 }
 
 .carousel-template__accent {
-  width: 14cqw;
-  height: 0.9cqw;
+  width: 16cqw;
+  height: 1cqw;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
-  margin: 0.5cqw 0 1cqw;
+  margin: 1cqw 0 1.4cqw;
+  box-shadow: 0 0.4cqw 1cqw rgba(41, 66, 142, 0.28);
 }
 
 .carousel-template__text-list {
@@ -2646,11 +2712,11 @@ onUnmounted(() => {
 
 .carousel-template__text-item {
   position: relative;
-  padding-left: 4.6cqw;
-  font-size: 4.2cqw;
-  line-height: 1.32;
+  padding-left: 5cqw;
+  font-size: calc(4.2cqw * var(--reel-screen-text-scale, 1));
+  line-height: 1.34;
   color: var(--ct-ink);
-  font-weight: 500;
+  font-weight: 600;
   overflow-wrap: anywhere;
 }
 
@@ -2658,11 +2724,12 @@ onUnmounted(() => {
   content: '';
   position: absolute;
   left: 0;
-  top: 0.65em;
-  width: 2.6cqw;
-  height: 0.7cqw;
+  top: 0.55em;
+  width: 3cqw;
+  height: 0.8cqw;
   border-radius: 999px;
-  background: var(--ct-brand);
+  background: linear-gradient(90deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  box-shadow: 0 0.3cqw 0.6cqw rgba(41, 66, 142, 0.28);
 }
 
 .carousel-template__katex {
@@ -2674,17 +2741,18 @@ onUnmounted(() => {
 /* --- CTA slide --- */
 
 .carousel-template--cta .carousel-template__main {
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   gap: 2.4cqw;
+  transform-origin: center center;
 }
 
 .carousel-template__cta-eyebrow {
   display: inline-block;
   padding: 1cqw 2.6cqw;
   border-radius: 999px;
-  background: rgba(31, 78, 216, 0.12);
+  background: rgba(41, 66, 142, 0.12);
   color: var(--ct-brand);
   font-size: 2.4cqw;
   font-weight: 700;
@@ -2694,12 +2762,12 @@ onUnmounted(() => {
 
 .carousel-template__cta-title {
   margin: 0;
-  font-size: 8cqw;
+  font-size: calc(8.4cqw * var(--reel-title-scale, 1));
   line-height: 1.05;
   font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--ct-ink);
-  text-align: center;
+  letter-spacing: -0.025em;
+  color: var(--ct-brand);
+  text-align: left;
   overflow-wrap: anywhere;
   max-width: 100%;
 }
@@ -2708,6 +2776,7 @@ onUnmounted(() => {
   position: relative;
   display: inline-block;
   padding: 0 1cqw;
+  align-self: center;
 }
 
 .carousel-template__cta-url {
@@ -2727,7 +2796,7 @@ onUnmounted(() => {
   bottom: 0.6cqw;
   height: 2cqw;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(31, 78, 216, 0.18) 0%, rgba(37, 99, 235, 0.32) 100%);
+  background: linear-gradient(90deg, rgba(41, 66, 142, 0.18) 0%, rgba(58, 91, 184, 0.32) 100%);
   z-index: 0;
 }
 
@@ -2738,12 +2807,13 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 1.4cqw;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .carousel-template__cta-item {
   position: relative;
-  font-size: 3.8cqw;
+  font-size: calc(3.8cqw * var(--reel-screen-text-scale, 1));
   line-height: 1.32;
   color: var(--ct-ink-soft);
   font-weight: 500;
@@ -2766,42 +2836,58 @@ onUnmounted(() => {
 }
 
 .carousel-template__cta-button {
-  margin-top: 2cqw;
+  position: relative;
+  margin-top: 2.4cqw;
+  align-self: center;
   display: inline-flex;
   align-items: center;
-  gap: 2cqw;
-  padding: 2.4cqw 3.6cqw;
-  border-radius: 1.8cqw;
-  background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  gap: 1.6cqw;
+  padding: 1.8cqw 3.6cqw;
+  border-radius: 999px;
+  background: var(--ct-brand);
   color: #ffffff;
   font-weight: 800;
-  font-size: 3.4cqw;
-  letter-spacing: 0.02em;
-  box-shadow: 0 1.6cqw 3cqw rgba(31, 78, 216, 0.32);
+  font-size: 3.1cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 1.4cqw 2.8cqw rgba(41, 66, 142, 0.34);
 }
 
 .carousel-template__cta-button-arrow {
-  font-size: 4cqw;
+  font-size: 3.6cqw;
   line-height: 1;
+  transform: translateY(-0.05em);
 }
 
 /* --- Footer (all non-cover slides) --- */
 
 .carousel-template__bottombar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 1.6cqw;
-  font-size: 2.6cqw;
-  letter-spacing: 0.12em;
+  font-size: 2.5cqw;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ct-brand);
-  font-weight: 700;
+  font-weight: 800;
+  padding-top: 2cqw;
+}
+
+.carousel-template__bottombar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0.18cqw;
+  background: linear-gradient(90deg, transparent 0%, rgba(41, 66, 142, 0.22) 50%, transparent 100%);
 }
 
 .carousel-template__url {
   position: relative;
-  padding-left: 3.4cqw;
+  padding-left: 3.6cqw;
 }
 
 .carousel-template__url::before {
@@ -2810,59 +2896,209 @@ onUnmounted(() => {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 2.2cqw;
-  height: 2.2cqw;
+  width: 2.4cqw;
+  height: 2.4cqw;
   border-radius: 999px;
   background: linear-gradient(135deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
+  box-shadow: 0 0 0 0.5cqw rgba(41, 66, 142, 0.14);
 }
 
-/* --- On-image variant: white text + shadow for legibility --- */
+/* --- Image hero variant: image as framed card on top, text in clean zone below --- */
+
+/* Full-bleed background image with a strong premium overlay for legibility.
+   This is the editorial pattern used by top brand carousels (Apple, Stripe,
+   Notion): the image fills the slide, and the text sits in a dark gradient
+   zone at the bottom that doubles as a brand-color tint. */
+.slide-card--carousel .reel-slide--generated .reel-slide-generated-image {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border-radius: 0;
+  box-shadow: none;
+  object-fit: cover;
+  object-position: center;
+  background: #0b1733;
+}
+
+/* Premium scrim: subtle dark top (for topbar legibility) + strong OptiTAB blue
+   gradient on the bottom 60% so the text zone is bulletproof regardless of
+   what Gemini puts in the image. */
+.slide-card--carousel .reel-slide--generated .reel-slide-generated-scrim {
+  display: block;
+  z-index: 2;
+  background:
+    linear-gradient(180deg,
+      rgba(8, 18, 48, 0.55) 0%,
+      rgba(8, 18, 48, 0.20) 18%,
+      rgba(8, 18, 48, 0.00) 38%,
+      rgba(8, 18, 48, 0.00) 48%,
+      rgba(8, 18, 48, 0.55) 68%,
+      rgba(11, 23, 51, 0.92) 100%);
+}
 
 .carousel-template--on-image {
+  background: transparent;
   color: #ffffff;
 }
 
+/* Main content is anchored to the bottom 50% of the slide so it lives entirely
+   inside the dark scrim zone -- guaranteed legibility. */
+.carousel-template--on-image .carousel-template__main {
+  position: absolute;
+  top: auto;
+  left: 6cqw;
+  right: 6cqw;
+  bottom: 9cqw;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 2.4cqw;
+  z-index: 5;
+  transform: none;
+}
+
+.carousel-template--on-image.carousel-template--cover .carousel-template__main,
+.carousel-template--on-image.carousel-template--cta .carousel-template__main {
+  align-items: center;
+  text-align: center;
+}
+
+/* Topbar / brand: white on the image with a subtle dark drop-shadow */
 .carousel-template--on-image .carousel-template__topbar,
 .carousel-template--on-image .carousel-template__brand,
-.carousel-template--on-image .carousel-template__page,
 .carousel-template--on-image .carousel-template__bottombar,
-.carousel-template--on-image .carousel-template__url,
-.carousel-template--on-image .carousel-template__cta-eyebrow {
+.carousel-template--on-image .carousel-template__url {
   color: #ffffff;
+}
+
+.carousel-template--on-image .carousel-template__brand-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 0.4cqw 0.8cqw rgba(0, 0, 0, 0.45));
+}
+
+.carousel-template--on-image .carousel-template__page {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.30);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .carousel-template--on-image .carousel-template__brand-dot,
 .carousel-template--on-image .carousel-template__url::before {
   background: #ffffff;
-  box-shadow: none;
+  box-shadow: 0 0 0 0.4cqw rgba(255, 255, 255, 0.20);
 }
 
+/* (CTA eyebrow on image is rendered via the floating-eyebrow element above.) */
+
+/* When on image, hide the in-main eyebrows -- they are replaced by the
+   floating eyebrows positioned at the top of the slide (siblings of main). */
+.carousel-template--on-image .carousel-template__eyebrow,
+.carousel-template--on-image .carousel-template__cta-eyebrow {
+  display: none;
+}
+
+/* When on image, the bottombar (footer with "optitab.net") becomes duplicate:
+   - the floating eyebrow at the top already carries the brand
+   - the CTA slide already shows its own cta-url in the main content
+   So we hide it to avoid overlap with the content. */
+.carousel-template--on-image .carousel-template__bottombar {
+  display: none;
+}
+
+/* Floating brand chip pinned to the top zone of the slide. As a direct child
+   of .carousel-template (which is inset: 0 of the slide), it is positioned
+   relative to the SLIDE, not relative to .main. */
+.carousel-template__floating-eyebrow {
+  position: absolute;
+  top: 14cqw;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 1cqw;
+  padding: 1.3cqw 3.4cqw;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--ct-brand);
+  font-size: 2.6cqw;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow:
+    0 0.8cqw 2cqw rgba(8, 18, 48, 0.32),
+    0 0.2cqw 0.6cqw rgba(8, 18, 48, 0.18);
+}
+
+.carousel-template__floating-eyebrow::before {
+  content: '';
+  width: 1.2cqw;
+  height: 1.2cqw;
+  border-radius: 999px;
+  background: var(--ct-brand);
+  box-shadow: 0 0 0 0.4cqw rgba(41, 66, 142, 0.14);
+}
+
+/* Titles: white with strong shadow for premium magazine feel */
 .carousel-template--on-image .carousel-template__cover-title,
-.carousel-template--on-image .carousel-template__cover-sub,
 .carousel-template--on-image .carousel-template__title,
-.carousel-template--on-image .carousel-template__cta-title,
+.carousel-template--on-image .carousel-template__cta-title {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: #ffffff;
+  text-shadow:
+    0 0.6cqw 2cqw rgba(8, 18, 48, 0.55),
+    0 0.2cqw 0.5cqw rgba(8, 18, 48, 0.55);
+}
+
+/* Sized slightly down so they fit in the bottom zone */
+.carousel-template--on-image .carousel-template__cover-title {
+  font-size: calc(9cqw * var(--reel-title-scale, 1));
+  line-height: 1.04;
+  font-weight: 900;
+}
+
+.carousel-template--on-image .carousel-template__cta-title {
+  font-size: calc(7cqw * var(--reel-title-scale, 1));
+  line-height: 1.06;
+  font-weight: 900;
+}
+
+.carousel-template--on-image .carousel-template__cover-sub,
 .carousel-template--on-image .carousel-template__text-item,
-.carousel-template--on-image .carousel-template__cta-url,
 .carousel-template--on-image .carousel-template__cta-item,
+.carousel-template--on-image .carousel-template__cta-url,
 .carousel-template--on-image .carousel-template__katex,
 .carousel-template--on-image .carousel-template__cta-katex,
 .carousel-template--on-image .carousel-template__cover-katex {
-  color: #ffffff;
-  text-shadow: 0 0.4cqw 1.6cqw rgba(8, 18, 48, 0.55), 0 0.2cqw 0.5cqw rgba(8, 18, 48, 0.45);
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 0.3cqw 1.2cqw rgba(8, 18, 48, 0.50);
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
 }
 
-.carousel-template--on-image .carousel-template__eyebrow {
-  background: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  backdrop-filter: blur(6px);
+.carousel-template--on-image .carousel-template__cover-sub {
+  font-size: calc(3.6cqw * var(--reel-screen-text-scale, 1));
+  line-height: 1.34;
 }
 
-.carousel-template--on-image .carousel-template__cta-underline {
-  background: rgba(255, 255, 255, 0.32);
+.carousel-template--on-image .carousel-template__cta-item {
+  font-size: calc(3.4cqw * var(--reel-screen-text-scale, 1));
 }
 
 .carousel-template--on-image .carousel-template__text-item::before {
   background: #ffffff;
+}
+
+.carousel-template--on-image .carousel-template__cta-underline {
+  background: rgba(255, 255, 255, 0.36);
 }
 
 .carousel-template--on-image .carousel-template__cta-item::before {
@@ -2877,10 +3113,14 @@ onUnmounted(() => {
 .carousel-template--on-image .carousel-template__step,
 .carousel-template--on-image .carousel-template__swipe,
 .carousel-template--on-image .carousel-template__cta-button {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   color: var(--ct-brand);
   text-shadow: none;
-  box-shadow: 0 0.8cqw 2cqw rgba(8, 18, 48, 0.35);
+  box-shadow:
+    0 1cqw 2.4cqw rgba(8, 18, 48, 0.38),
+    0 0.2cqw 0.6cqw rgba(8, 18, 48, 0.22);
+  padding: 1.6cqw 3.4cqw;
+  font-size: 2.9cqw;
 }
 
 @media (max-width: 768px) {

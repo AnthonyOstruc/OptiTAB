@@ -294,6 +294,22 @@ class ReelGeminiCarouselGenerateSerializer(serializers.Serializer):
     model_id = serializers.CharField(max_length=128, allow_blank=True, required=False, default='')
     max_chars_per_line = serializers.IntegerField(min_value=12, max_value=120, default=38, required=False)
     generate_images = serializers.BooleanField(required=False, default=True)
+    slide_image_strategy = serializers.ChoiceField(
+        choices=['hook_cta', 'hook', 'cta', 'all', 'none', 'custom'],
+        required=False,
+        default='hook_cta',
+    )
+    slide_image_ids = serializers.ListField(
+        child=serializers.IntegerField(min_value=1),
+        required=False,
+        default=list,
+    )
+    carousel_type = serializers.ChoiceField(
+        choices=['marketing', 'quiz', 'tips', 'avantapres', 'story', 'notion'],
+        required=False,
+        default='marketing',
+    )
+    use_site_references = serializers.BooleanField(required=False, default=True)
 
 
 class ReelSpeechGenerateSerializer(serializers.Serializer):

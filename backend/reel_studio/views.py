@@ -37,9 +37,12 @@ from .serializers import (
 from .gemini import (
     GeminiAPIError,
     GeminiConfigurationError,
+    IMAGE_INSTRUCTIONS_MAX_LENGTH,
     generate_carousel_image,
     generate_carousel_template,
     list_gemini_models,
+    read_image_instructions,
+    write_image_instructions,
 )
 from .elevenlabs import (
     ElevenLabsAPIError,
@@ -1196,41 +1199,149 @@ def _normalize_carousel_image_png(image_bytes):
         raise GeminiAPIError('Image Gemini invalide ou illisible.') from exc
 
 
-def _build_carousel_slide_image_prompt(*, project, slide, total_slides):
+CAROUSEL_TYPE_STYLE_HINTS = {
+    'marketing': {
+        'label': 'Marketing / Conversion',
+        'mood': 'premium editorial, ambiance studio creatif tech, magazine business',
+        'scene_hook': (
+            "Hero produit OptiTAB: mockup d'interface elegant sur ordinateur portable (cartes "
+            "abstraites bleu/blanc, sans texte lisible), lumiere douce de studio, ambiance "
+            "premium agence creative, espace negatif pour overlay typographique."
+        ),
+        'scene_cta': (
+            "Mockup d'ecran OptiTAB ouvert sur smartphone et ordinateur, ambiance lumineuse, "
+            "esprit pro editorial, beaucoup d'espace propre pour CTA."
+        ),
+        'scene_content': (
+            "Composition editoriale premium type magazine business, motifs geometriques discrets "
+            "bleu/blanc, fond creme ou bleu pale, espace propre pour overlay typographique."
+        ),
+    },
+    'quiz': {
+        'label': 'Quiz / QCM',
+        'mood': 'ludique, energique, gamifie, accents colores doux mais dynamiques',
+        'scene_hook': (
+            "Composition ludique premium: grands points d'interrogation abstraits en 3D doux, "
+            "formes geometriques flottantes bleu/blanc, ambiance jeu pedagogique haut de gamme, "
+            "espace central libre pour overlay typographique."
+        ),
+        'scene_cta': (
+            "Trophee abstrait stylise ou icone de validation en 3D soft, accents dores tres "
+            "discrets, fond bleu lumineux, ambiance recompense ludique premium, espace pour CTA."
+        ),
+        'scene_content': (
+            "Cartes flottantes type QCM (cartes vides sans texte), formes geometriques ludiques, "
+            "fond clair, ambiance jeu pedagogique premium, espace propre pour question/reponse."
+        ),
+    },
+    'tips': {
+        'label': 'Conseils & Astuces',
+        'mood': 'inspirant, lumineux, ambiance conseil bienveillant',
+        'scene_hook': (
+            "Ampoule stylisee en 3D soft moderne (sans cliche), accents bleu OptiTAB, halo lumineux "
+            "discret, ambiance inspiration premium, espace central libre pour overlay."
+        ),
+        'scene_cta': (
+            "Composition inspirante: carnet ouvert et stylo elegants stylises, lumiere douce, "
+            "ambiance bureau premium, espace propre pour CTA."
+        ),
+        'scene_content': (
+            "Post-it modernes stylises ou cartes de conseils abstraites (sans texte lisible), fond "
+            "creme ou bleu pale, ambiance editoriale conseil, espace pour overlay typographique."
+        ),
+    },
+    'avantapres': {
+        'label': 'Avant / Apres',
+        'mood': 'split-screen, transformation, contraste maitrise',
+        'scene_hook': (
+            "Composition split-screen subtile: cote gauche terne et brouillon (papier froisse "
+            "abstrait, ambiance grise), cote droit lumineux et organise (interface OptiTAB "
+            "abstraite bleu/blanc, sans texte), transition douce au centre, espace pour overlay."
+        ),
+        'scene_cta': (
+            "Mockup d'eleve transforme: bureau propre, ordinateur ouvert sur interface OptiTAB "
+            "abstraite, ambiance succes premium, lumiere chaude, espace pour CTA."
+        ),
+        'scene_content': (
+            "Split-screen elegant avant/apres ou progression visuelle abstraite, contraste maitrise, "
+            "fond clair, espace pour overlay typographique."
+        ),
+    },
+    'story': {
+        'label': 'Storytelling',
+        'mood': 'narratif, cinematographique, ambiance recit premium',
+        'scene_hook': (
+            "Scene narrative cinematographique: silhouette d'eleve de dos face a un ordinateur "
+            "stylise, lumiere de fenetre douce, ambiance recit premium, espace pour overlay."
+        ),
+        'scene_cta': (
+            "Plan large cinematographique: bureau eclaire, ordinateur ouvert sur interface "
+            "abstraite OptiTAB, ambiance fin de chapitre premium, espace pour CTA."
+        ),
+        'scene_content': (
+            "Composition narrative editoriale: livre ouvert stylise, cahier, lumiere douce de "
+            "fenetre, ambiance recit premium, espace propre pour texte."
+        ),
+    },
+    'notion': {
+        'label': 'Notion pedagogique',
+        'mood': 'pedagogique premium, tableau noir moderne, formules abstraites',
+        'scene_hook': (
+            "Tableau noir moderne stylise avec formules mathematiques tres abstraites (sans "
+            "texte ni symbole lisible), accents bleu OptiTAB, ambiance prof premium, espace "
+            "central libre pour overlay typographique."
+        ),
+        'scene_cta': (
+            "Bureau d'etudiant premium: cahier ouvert stylise, calculatrice moderne abstraite, "
+            "lumiere douce, ambiance reussite scolaire, espace pour CTA."
+        ),
+        'scene_content': (
+            "Tableau noir ou whiteboard premium avec formes mathematiques tres abstraites "
+            "(courbes, formes geometriques, sans texte lisible), accents bleu OptiTAB, fond "
+            "neutre, espace propre pour overlay typographique."
+        ),
+    },
+}
+
+DEFAULT_CAROUSEL_TYPE = 'marketing'
+
+
+def _resolve_carousel_type(carousel_type):
+    key = str(carousel_type or '').strip().lower()
+    if key in CAROUSEL_TYPE_STYLE_HINTS:
+        return key
+    return DEFAULT_CAROUSEL_TYPE
+
+
+def _build_carousel_slide_image_prompt(*, project, slide, total_slides, carousel_type=DEFAULT_CAROUSEL_TYPE):
     visual_prompt = _slide_visual_prompt(slide)
     slide_type = str(slide.slide_type or '').strip().lower()
     is_first = int(slide.order or 0) == 1
     is_last = bool(int(slide.order or 0) == int(total_slides or 0) and total_slides)
 
+    style = CAROUSEL_TYPE_STYLE_HINTS.get(_resolve_carousel_type(carousel_type)) or CAROUSEL_TYPE_STYLE_HINTS[DEFAULT_CAROUSEL_TYPE]
+
     if slide_type == 'hook' or is_first:
         composition_hint = (
-            "Composition centrée façon affiche premium. Laisser une grande zone vide au centre et en bas "
-            "pour qu'un overlay typographique soit ajouté ensuite par l'application."
+            "Composition centree facon affiche premium. Laisser une grande zone vide au centre et en bas "
+            "pour qu'un overlay typographique soit ajoute ensuite par l'application."
         )
-        scene_hint = (
-            "Hero éditorial OptiTAB: mockup d'ordinateur stylisé avec une interface bleue/blanche (cartes "
-            "et formes abstraites, sans texte lisible), cahier propre à côté, lumière douce."
-        )
+        scene_hint = style['scene_hook']
     elif slide_type == 'cta' or is_last:
         composition_hint = (
-            "Composition finale invitante. Le sujet visuel occupe le haut ou un côté, et au moins 60% de l'image "
+            "Composition finale invitante. Le sujet visuel occupe le haut ou un cote, et au moins 60% de l'image "
             "(centre + bas) reste un aplat doux pour overlay texte."
         )
-        scene_hint = (
-            "Ordinateur portable et smartphone montrant un mockup de plateforme éducative OptiTAB (cartes "
-            "abstraites bleu/blanc, sans texte lisible), fond lumineux, ambiance premium."
-        )
+        scene_hint = style['scene_cta']
     else:
         composition_hint = (
-            "Composition asymétrique éditoriale: sujet visuel sur un côté ou en haut, au moins 50% de l'image "
-            "(idéalement le bas et un côté) reste un aplat doux propre pour overlay texte."
+            "Composition asymetrique editoriale: sujet visuel sur un cote ou en haut, au moins 50% de l'image "
+            "(idealement le bas et un cote) reste un aplat doux propre pour overlay texte."
         )
-        scene_hint = (
-            "Scène pédagogique premium OptiTAB: mockup d'interface (cartes de chapitres, fiche, exercice), "
-            "formes abstraites bleu/blanc, sans aucun texte lisible."
-        )
+        scene_hint = style['scene_content']
 
     visual_block = visual_prompt or scene_hint
+    mood_hint = style.get('mood') or ''
 
     return (
         "Generate an image. Output ONLY an image (no text response).\n\n"
@@ -1238,37 +1349,103 @@ def _build_carousel_slide_image_prompt(*, project, slide, total_slides):
         "a French math learning platform. The image will be used as a background, and a clean text overlay "
         "will be added later by the app.\n\n"
         f"SLIDE: {slide.order} of {total_slides} (type: {slide_type or 'content'})\n"
-        f"PROJECT: {project.title or 'Carrousel OptiTAB'}\n\n"
+        f"PROJECT: {project.title or 'Carrousel OptiTAB'}\n"
+        f"CAROUSEL STYLE: {style['label']} -- {mood_hint}\n\n"
         "VISUAL SUBJECT:\n"
         f"{visual_block}\n\n"
         "COMPOSITION:\n"
         f"{composition_hint}\n\n"
         "ART DIRECTION (must stay consistent across the carousel):\n"
         "- Aspect ratio 4:5 portrait (1080x1350 px).\n"
-        "- Palette: OptiTAB deep blue (#1f4ed8 / #2563eb), soft blue, off-white, cool pastel accents.\n"
+        "- Palette: OptiTAB deep blue (#29428e), soft blue, off-white, cool pastel accents.\n"
         "- Style: premium editorial education, clean, modern, bright, lots of soft blue/white space.\n"
         "- Render: clean 3D / vector / soft photo, sharp lines, gentle shadows.\n\n"
+        "SCREEN MOCKUPS (when the scene contains an ordinateur / smartphone / tablette):\n"
+        "- The screen content MUST faithfully replicate the OptiTAB interface visible in the "
+        "REFERENCE IMAGES attached above (same colored cards, same blue header, same sidebar "
+        "navigation, same dashboard / leaderboard / chapter cards layout, same OptiTAB logo "
+        "placement, same typography style).\n"
+        "- Text inside the mockup screens CAN be present and slightly readable to make it look "
+        "like the real OptiTAB product (chapter names, XP, level, button labels). Keep it "
+        "natural and short, do NOT invent fake brand text or unrelated copy.\n"
+        "- The OptiTAB logo can appear inside the mockup screens, but nowhere else in the image.\n\n"
+        "OUTSIDE the screen mockups (environment, background, surroundings):\n"
+        "- NO readable text, words, headlines or fake quotes floating in the environment.\n"
+        "- Keep large clean / soft areas (around 50%-60% of the image) free of busy detail so a "
+        "typographic overlay can be added on top by the app.\n\n"
         "STRICT RULES:\n"
-        "- NO readable text, words, letters, digits, or logos anywhere in the image. "
-        "Any UI mockup must use blurred or abstract shapes only.\n"
-        "- No other brand logos, no watermark, no signature.\n"
+        "- No other brand logos (Apple, Google, etc.), no watermark, no signature.\n"
         "- No recognizable photoreal faces (prefer silhouettes, hands, back views, or illustrations).\n"
         "- No fake prices, no sensational claims, no clutter.\n\n"
-        "OUTPUT: a single clean, premium, TEXT-FREE background image ready for a typographic overlay."
+        "OUTPUT: a single premium image where the device screens look like the real OptiTAB "
+        "product (per the reference images) and the rest of the image leaves room for a "
+        "typographic overlay added later by the app."
     )
 
 
-def _generate_carousel_slide_images(*, project, user):
+SLIDE_IMAGE_STRATEGIES = {'hook_cta', 'hook', 'cta', 'all', 'none', 'custom'}
+DEFAULT_SLIDE_IMAGE_STRATEGY = 'hook_cta'
+
+
+def _is_hook_slide(slide):
+    return str(slide.slide_type or '').strip().lower() == 'hook' or int(slide.order or 0) == 1
+
+
+def _is_cta_slide(slide, total):
+    if str(slide.slide_type or '').strip().lower() == 'cta':
+        return True
+    if total and int(slide.order or 0) == int(total):
+        return True
+    return False
+
+
+def _filter_slides_for_image_generation(slides, strategy, slide_ids=None):
+    strategy = (strategy or DEFAULT_SLIDE_IMAGE_STRATEGY).strip().lower()
+    if strategy not in SLIDE_IMAGE_STRATEGIES:
+        strategy = DEFAULT_SLIDE_IMAGE_STRATEGY
+    if strategy == 'none':
+        return []
+    if strategy == 'all':
+        return list(slides)
+    if strategy == 'custom':
+        try:
+            ids = {int(sid) for sid in (slide_ids or [])}
+        except (TypeError, ValueError):
+            ids = set()
+        return [s for s in slides if s.id in ids]
+
+    total = len(slides)
+    hook = next((s for s in slides if _is_hook_slide(s)), None)
+    cta = next((s for s in reversed(slides) if _is_cta_slide(s, total)), None)
+    if cta is hook:
+        cta = None
+    if strategy == 'hook':
+        return [hook] if hook else []
+    if strategy == 'cta':
+        return [cta] if cta else []
+    # hook_cta default
+    result = []
+    if hook:
+        result.append(hook)
+    if cta:
+        result.append(cta)
+    return result
+
+
+def _generate_carousel_slide_images(*, project, user, strategy=DEFAULT_SLIDE_IMAGE_STRATEGY, slide_ids=None, carousel_type=DEFAULT_CAROUSEL_TYPE, use_site_references=True):
     slides = list(project.slides.order_by('order', 'id'))
+    targets = _filter_slides_for_image_generation(slides, strategy, slide_ids=slide_ids)
     image_model_id = str(getattr(settings, 'GEMINI_IMAGE_MODEL_ID', 'gemini-2.5-flash-image') or 'gemini-2.5-flash-image').strip()
     generated = []
     errors = []
+    resolved_type = _resolve_carousel_type(carousel_type)
 
-    for slide in slides:
+    for slide in targets:
         prompt = _build_carousel_slide_image_prompt(
             project=project,
             slide=slide,
             total_slides=len(slides),
+            carousel_type=resolved_type,
         )
         try:
             result = generate_carousel_image(
@@ -1276,6 +1453,7 @@ def _generate_carousel_slide_images(*, project, user):
                 model_id=image_model_id,
                 aspect_ratio='3:4',
                 return_metadata=True,
+                use_site_references=use_site_references,
             )
             image_bytes = _normalize_carousel_image_png(result.get('image_bytes') or b'')
         except (GeminiConfigurationError, GeminiAPIError) as exc:
@@ -1320,6 +1498,10 @@ def _generate_carousel_slide_images(*, project, user):
     return {
         'generated': generated,
         'errors': errors,
+        'strategy': strategy,
+        'carousel_type': resolved_type,
+        'targeted_count': len(targets),
+        'total_slides': len(slides),
     }
 
 
@@ -1629,7 +1811,14 @@ class ReelProjectGenerateCarouselWithGeminiView(APIView):
         )
         image_generation = {'generated': [], 'errors': []}
         if serializer.validated_data.get('generate_images', True):
-            image_generation = _generate_carousel_slide_images(project=project, user=request.user)
+            image_generation = _generate_carousel_slide_images(
+                project=project,
+                user=request.user,
+                strategy=serializer.validated_data.get('slide_image_strategy') or DEFAULT_SLIDE_IMAGE_STRATEGY,
+                slide_ids=serializer.validated_data.get('slide_image_ids') or None,
+                carousel_type=serializer.validated_data.get('carousel_type') or DEFAULT_CAROUSEL_TYPE,
+                use_site_references=bool(serializer.validated_data.get('use_site_references', True)),
+            )
             project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
 
         return Response(
@@ -1671,13 +1860,173 @@ class ReelProjectRegenerateCarouselImagesView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        image_generation = _generate_carousel_slide_images(project=project, user=request.user)
+        body = request.data if isinstance(request.data, dict) else {}
+        strategy = str(body.get('slide_image_strategy') or DEFAULT_SLIDE_IMAGE_STRATEGY).strip().lower()
+        if strategy not in SLIDE_IMAGE_STRATEGIES:
+            strategy = DEFAULT_SLIDE_IMAGE_STRATEGY
+        carousel_type = _resolve_carousel_type(body.get('carousel_type'))
+        slide_ids = body.get('slide_image_ids') if strategy == 'custom' else None
+        use_site_references = body.get('use_site_references')
+        use_site_references = True if use_site_references is None else bool(use_site_references)
+
+        image_generation = _generate_carousel_slide_images(
+            project=project,
+            user=request.user,
+            strategy=strategy,
+            slide_ids=slide_ids,
+            carousel_type=carousel_type,
+            use_site_references=use_site_references,
+        )
         project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
         return Response(
             {
                 'project': _project_serializer(project, request, detail=True).data,
                 'image_generation': image_generation,
                 'gemini_summary': _gemini_usage_summary(),
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class ReelSlideGenerateImageView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        slide = get_object_or_404(ReelSlide.objects.select_related('reel_project'), pk=pk)
+        project = slide.reel_project
+        if not _project_is_carousel(project):
+            return Response(
+                {'detail': "La génération d'image est disponible uniquement pour les carrousels."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        body = request.data if isinstance(request.data, dict) else {}
+        custom_prompt = str(body.get('prompt') or '').strip()
+        carousel_type = _resolve_carousel_type(body.get('carousel_type'))
+        model_id = str(body.get('model_id') or getattr(settings, 'GEMINI_IMAGE_MODEL_ID', 'gemini-2.5-flash-image') or '').strip()
+        use_site_references_raw = body.get('use_site_references')
+        use_site_references = True if use_site_references_raw is None else bool(use_site_references_raw)
+
+        total_slides = project.slides.count()
+        if custom_prompt:
+            prompt = custom_prompt
+        else:
+            prompt = _build_carousel_slide_image_prompt(
+                project=project,
+                slide=slide,
+                total_slides=total_slides,
+                carousel_type=carousel_type,
+            )
+
+        try:
+            result = generate_carousel_image(
+                prompt=prompt,
+                model_id=model_id,
+                aspect_ratio='3:4',
+                return_metadata=True,
+                use_site_references=use_site_references,
+            )
+            image_bytes = _normalize_carousel_image_png(result.get('image_bytes') or b'')
+        except (GeminiConfigurationError, GeminiAPIError) as exc:
+            return Response(
+                {'detail': str(exc)},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+        filename = f'carousel_slide_{slide.order}_{uuid.uuid4().hex[:10]}.png'
+        slide.generated_image.save(filename, ContentFile(image_bytes), save=False)
+        slide.generated_image_prompt = prompt
+        slide.generated_image_model_id = result.get('model_id') or model_id
+        slide.generated_image_generated_at = timezone.now()
+        slide.save(update_fields=[
+            'generated_image',
+            'generated_image_prompt',
+            'generated_image_model_id',
+            'generated_image_generated_at',
+            'updated_at',
+        ])
+
+        usage_log = _record_gemini_usage(
+            project=project,
+            user=request.user,
+            model_id=result.get('model_id') or model_id,
+            prompt=prompt,
+            generated_text='[image]',
+            usage=result.get('usage') or {},
+            cost=result.get('cost') or {},
+            request_type='carousel_image_generation',
+        )
+
+        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        return Response(
+            {
+                'project': _project_serializer(project, request, detail=True).data,
+                'slide_id': slide.id,
+                'prompt': prompt,
+                'used_custom_prompt': bool(custom_prompt),
+                'model_id': usage_log.model_id,
+                'gemini_summary': _gemini_usage_summary(),
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class ReelSlideClearImageView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        slide = get_object_or_404(ReelSlide.objects.select_related('reel_project'), pk=pk)
+        project = slide.reel_project
+        if not _project_is_carousel(project):
+            return Response(
+                {'detail': "Cette action est disponible uniquement pour les carrousels."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if slide.generated_image:
+            slide.generated_image.delete(save=False)
+        slide.generated_image = None
+        slide.generated_image_prompt = ''
+        slide.generated_image_model_id = ''
+        slide.generated_image_generated_at = None
+        slide.save(update_fields=[
+            'generated_image',
+            'generated_image_prompt',
+            'generated_image_model_id',
+            'generated_image_generated_at',
+            'updated_at',
+        ])
+
+        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        return Response(
+            {
+                'project': _project_serializer(project, request, detail=True).data,
+                'slide_id': slide.id,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class ReelImageInstructionsView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def get(self, request):
+        return Response(
+            {
+                'instructions': read_image_instructions(),
+                'max_length': IMAGE_INSTRUCTIONS_MAX_LENGTH,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    def put(self, request):
+        body = request.data if isinstance(request.data, dict) else {}
+        text = str(body.get('instructions') or '')
+        saved = write_image_instructions(text)
+        return Response(
+            {
+                'instructions': saved,
+                'max_length': IMAGE_INSTRUCTIONS_MAX_LENGTH,
             },
             status=status.HTTP_200_OK,
         )

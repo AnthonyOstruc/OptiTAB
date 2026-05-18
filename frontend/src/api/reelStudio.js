@@ -42,8 +42,8 @@ export function generateCarouselWithGemini(id, data) {
   return apiClient.post(`${BASE}/projects/${id}/generate-carousel-gemini/`, data, { timeout: 900000 })
 }
 
-export function regenerateCarouselImages(id) {
-  return apiClient.post(`${BASE}/projects/${id}/regenerate-carousel-images/`, {}, { timeout: 900000 })
+export function regenerateCarouselImages(id, data = {}) {
+  return apiClient.post(`${BASE}/projects/${id}/regenerate-carousel-images/`, data, { timeout: 900000 })
 }
 
 export function saveReelTemplate(id, data) {
@@ -80,6 +80,14 @@ export function updateReelSlide(id, data) {
   return apiClient.patch(`${BASE}/slides/${id}/`, data)
 }
 
+export function generateReelSlideImage(id, data = {}) {
+  return apiClient.post(`${BASE}/slides/${id}/generate-image/`, data, { timeout: 600000 })
+}
+
+export function clearReelSlideImage(id) {
+  return apiClient.post(`${BASE}/slides/${id}/clear-image/`, {}, { timeout: 60000 })
+}
+
 export function deleteReelSlide(id) {
   return apiClient.delete(`${BASE}/slides/${id}/`)
 }
@@ -94,4 +102,12 @@ export function testReelTTSVoice(data = {}) {
 
 export function getGeminiOptions() {
   return apiClient.get(`${BASE}/gemini/options/`, { timeout: 60000 })
+}
+
+export function getGeminiImageInstructions() {
+  return apiClient.get(`${BASE}/gemini/image-instructions/`, { timeout: 30000 })
+}
+
+export function saveGeminiImageInstructions(instructions) {
+  return apiClient.put(`${BASE}/gemini/image-instructions/`, { instructions }, { timeout: 30000 })
 }

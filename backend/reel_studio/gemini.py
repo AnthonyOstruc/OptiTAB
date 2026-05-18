@@ -1,9 +1,41 @@
 import base64
 import re
 from decimal import Decimal, ROUND_HALF_UP
+from pathlib import Path
 
 import requests
 from django.conf import settings
+
+
+SITE_REFERENCE_DIR = Path(__file__).resolve().parent / 'site_references'
+SITE_REFERENCE_MAX_BYTES = 4 * 1024 * 1024
+SITE_REFERENCE_MAX_COUNT = 6
+SITE_REFERENCE_MIME_BY_SUFFIX = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.webp': 'image/webp',
+}
+
+IMAGE_INSTRUCTIONS_FILE = Path(__file__).resolve().parent / 'image_instructions.txt'
+IMAGE_INSTRUCTIONS_MAX_LENGTH = 6000
+
+
+def read_image_instructions():
+    try:
+        text = IMAGE_INSTRUCTIONS_FILE.read_text(encoding='utf-8')
+    except OSError:
+        return ''
+    return text.strip()
+
+
+def write_image_instructions(text):
+    cleaned = str(text or '').replace('\r\n', '\n').strip()
+    if len(cleaned) > IMAGE_INSTRUCTIONS_MAX_LENGTH:
+        cleaned = cleaned[:IMAGE_INSTRUCTIONS_MAX_LENGTH]
+    IMAGE_INSTRUCTIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    IMAGE_INSTRUCTIONS_FILE.write_text(cleaned, encoding='utf-8')
+    return cleaned
 
 
 class GeminiConfigurationError(Exception):
@@ -18,27 +50,32 @@ PRICING_SOURCE = 'https://ai.google.dev/gemini-api/docs/pricing'
 USD_PRECISION = Decimal('0.00000001')
 
 GEMINI_PRICING_STANDARD = {
-    'gemini-3.1-flash-image-preview': {'input': Decimal('0.50'), 'output': Decimal('60.00')},
-    'gemini-3-pro-image-preview': {'input': Decimal('2.00'), 'output': Decimal('90.00')},
+    # Image generation models (Nano Banana family)
     'gemini-2.5-flash-image': {'input': Decimal('0.30'), 'output': Decimal('30.00')},
-    'gemini-3.1-pro-preview': {'input': Decimal('2.00'), 'output': Decimal('12.00')},
-    'gemini-3.1-pro-preview-customtools': {'input': Decimal('2.00'), 'output': Decimal('12.00')},
-    'gemini-3-flash-preview': {'input': Decimal('0.50'), 'output': Decimal('3.00')},
-    'gemini-3.1-flash-lite': {'input': Decimal('0.25'), 'output': Decimal('1.50')},
-    'gemini-3.1-flash-lite-preview': {'input': Decimal('0.25'), 'output': Decimal('1.50')},
+    'gemini-3.1-flash-image-preview': {'input': Decimal('0.30'), 'output': Decimal('30.00')},
+    'gemini-3-pro-image-preview': {'input': Decimal('1.25'), 'output': Decimal('60.00')},
+    # Text / multimodal models
     'gemini-2.5-pro': {'input': Decimal('1.25'), 'output': Decimal('10.00')},
     'gemini-2.5-flash': {'input': Decimal('0.30'), 'output': Decimal('2.50')},
     'gemini-2.5-flash-lite': {'input': Decimal('0.10'), 'output': Decimal('0.40')},
-    'gemini-2.5-flash-lite-preview-09-2025': {'input': Decimal('0.10'), 'output': Decimal('0.40')},
+    'gemini-2.0-flash': {'input': Decimal('0.10'), 'output': Decimal('0.40')},
+    'gemini-2.0-flash-lite': {'input': Decimal('0.075'), 'output': Decimal('0.30')},
+    'gemini-1.5-pro': {'input': Decimal('1.25'), 'output': Decimal('5.00')},
+    'gemini-1.5-flash': {'input': Decimal('0.075'), 'output': Decimal('0.30')},
 }
 
 FALLBACK_GEMINI_MODELS = [
     {'id': 'gemini-2.5-flash', 'display_name': 'Gemini 2.5 Flash'},
     {'id': 'gemini-2.5-pro', 'display_name': 'Gemini 2.5 Pro'},
     {'id': 'gemini-2.5-flash-lite', 'display_name': 'Gemini 2.5 Flash-Lite'},
-    {'id': 'gemini-3-flash-preview', 'display_name': 'Gemini 3 Flash Preview'},
-    {'id': 'gemini-3.1-pro-preview', 'display_name': 'Gemini 3.1 Pro Preview'},
-    {'id': 'gemini-3.1-flash-lite', 'display_name': 'Gemini 3.1 Flash-Lite'},
+    {'id': 'gemini-2.0-flash', 'display_name': 'Gemini 2.0 Flash'},
+]
+
+# Real native image generation models (Nano Banana family)
+FALLBACK_GEMINI_IMAGE_MODELS = [
+    {'id': 'gemini-2.5-flash-image', 'display_name': 'Nano Banana (Gemini 2.5 Flash Image)'},
+    {'id': 'gemini-3.1-flash-image-preview', 'display_name': 'Nano Banana 2 (Gemini 3.1 Flash Image preview)'},
+    {'id': 'gemini-3-pro-image-preview', 'display_name': 'Nano Banana Pro (Gemini 3 Pro Image preview)'},
 ]
 
 
@@ -104,6 +141,42 @@ def _extract_image_payload(data):
     if detail:
         raise GeminiAPIError(f'Gemini a renvoye du texte au lieu d une image: {detail[:300]}')
     raise GeminiAPIError('Gemini n a renvoye aucune image exploitable.')
+
+
+def _load_site_reference_parts():
+    if not SITE_REFERENCE_DIR.exists():
+        return []
+    parts = []
+    try:
+        entries = sorted(SITE_REFERENCE_DIR.iterdir(), key=lambda p: p.name.lower())
+    except OSError:
+        return []
+    for path in entries:
+        if len(parts) >= SITE_REFERENCE_MAX_COUNT:
+            break
+        if not path.is_file():
+            continue
+        mime = SITE_REFERENCE_MIME_BY_SUFFIX.get(path.suffix.lower())
+        if not mime:
+            continue
+        try:
+            size = path.stat().st_size
+        except OSError:
+            continue
+        if size <= 0 or size > SITE_REFERENCE_MAX_BYTES:
+            continue
+        try:
+            with open(path, 'rb') as fh:
+                raw = fh.read()
+        except OSError:
+            continue
+        parts.append({
+            'inlineData': {
+                'mimeType': mime,
+                'data': base64.b64encode(raw).decode('ascii'),
+            }
+        })
+    return parts
 
 
 def _error_detail(response):
@@ -311,7 +384,7 @@ def generate_carousel_template(*, prompt, model_id='', return_metadata=False):
 _GEMINI_SUPPORTED_ASPECT_RATIOS = {'1:1', '3:4', '4:3', '9:16', '16:9'}
 
 
-def generate_carousel_image(*, prompt, model_id='', aspect_ratio='4:5', return_metadata=False):
+def generate_carousel_image(*, prompt, model_id='', aspect_ratio='4:5', return_metadata=False, use_site_references=True):
     api_key = str(getattr(settings, 'GEMINI_API_KEY', '') or '').strip()
     if not api_key:
         raise GeminiConfigurationError('GEMINI_API_KEY manquant cote backend.')
@@ -328,16 +401,51 @@ def generate_carousel_image(*, prompt, model_id='', aspect_ratio='4:5', return_m
 
     requested_ratio = str(aspect_ratio or '').strip()
     api_ratio = requested_ratio if requested_ratio in _GEMINI_SUPPORTED_ASPECT_RATIOS else '3:4'
+
+    user_instructions = read_image_instructions()
+    reference_parts = _load_site_reference_parts() if use_site_references else []
+    if reference_parts:
+        prompt_text = (
+            "REFERENCE IMAGES: the attached images are real screenshots of the "
+            "OptiTAB interface (optitab.net). They define EXACTLY how the product "
+            "looks: palette (OptiTAB blue #29428e, white, soft pastel accents), "
+            "blue header bar, left sidebar navigation, dashboard with leaderboard "
+            "and XP cards, chapter / lesson cards layout, button styles, OptiTAB "
+            "logo, typography.\n\n"
+            "IMPORTANT: when the scene you generate contains any device screen "
+            "(laptop, smartphone, tablet), REPRODUCE the OptiTAB interface shown "
+            "in the references as faithfully as possible inside that screen. "
+            "Match the cards, colors, sidebar, header, layout, logo placement, "
+            "and overall feel. Use the references as the single source of truth "
+            "for what OptiTAB looks like.\n\n"
+            "The environment AROUND the device (desk, light, background) is "
+            "what you compose freely, while keeping clean space for a text "
+            "overlay added later.\n\n"
+            + safe_prompt
+        )
+    else:
+        prompt_text = safe_prompt
+
+    if user_instructions:
+        prompt_text = (
+            "PERMANENT USER INSTRUCTIONS (apply to every image you generate, "
+            "they override any conflicting default direction below):\n"
+            f"{user_instructions}\n\n---\n\n"
+            + prompt_text
+        )
+
     payload = {
         'contents': [
             {
                 'role': 'user',
-                'parts': [{'text': safe_prompt}],
+                'parts': [
+                    *reference_parts,
+                    {'text': prompt_text},
+                ],
             }
         ],
         'generationConfig': {
-            'responseModalities': ['Image'],
-            'responseFormat': {'image': {'aspectRatio': api_ratio}},
+            'responseModalities': ['IMAGE'],
         },
     }
 

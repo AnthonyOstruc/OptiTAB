@@ -4,6 +4,11 @@ from . import views
 
 
 urlpatterns = [
+    path(
+        'gemini/image-instructions/',
+        views.ReelImageInstructionsView.as_view(),
+        name='reel-gemini-image-instructions',
+    ),
     path('voices/', views.ReelVoiceListView.as_view(), name='reel-voice-list'),
     path('voices/library/', views.ReelVoiceLibraryView.as_view(), name='reel-voice-library'),
     path('test-voice/', views.ReelTTSTestVoiceView.as_view(), name='reel-tts-test-voice'),
@@ -59,6 +64,16 @@ urlpatterns = [
         'slides/<int:pk>/generate-speech/',
         views.ReelSlideGenerateSpeechView.as_view(),
         name='reel-slide-generate-speech',
+    ),
+    path(
+        'slides/<int:pk>/generate-image/',
+        views.ReelSlideGenerateImageView.as_view(),
+        name='reel-slide-generate-image',
+    ),
+    path(
+        'slides/<int:pk>/clear-image/',
+        views.ReelSlideClearImageView.as_view(),
+        name='reel-slide-clear-image',
     ),
     path('slides/<int:pk>/', views.ReelSlideDetailView.as_view(), name='reel-slide-detail'),
 ]

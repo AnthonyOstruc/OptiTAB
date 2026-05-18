@@ -253,7 +253,6 @@
         </div>
 
         <button
-          v-if="!isCarouselFormat"
           class="fullscreen-side-toggle fullscreen-side-toggle--left"
           :class="{ 'fullscreen-side-toggle--collapsed': fullscreenLeftPanelCollapsed }"
           type="button"
@@ -291,6 +290,254 @@
           }"
           @click.stop
         >
+          <!-- ── Carousel left edit panel ── -->
+          <aside
+            v-if="isCarouselFormat"
+            v-show="!fullscreenLeftPanelCollapsed"
+            class="fullscreen-speech-panel fullscreen-carousel-edit-panel"
+            aria-label="Édition de la slide carrousel"
+            @click.stop
+          >
+            <div class="speech-panel-header">
+              <div class="carousel-edit-header-label">
+                <span class="carousel-edit-slide-type">{{ carouselEditSlideTypeLabel }}</span>
+                <span class="carousel-edit-slide-num">{{ activeSlideIndexLabel }}</span>
+              </div>
+
+              <div class="speech-tabs carousel-edit-tabs" role="tablist" aria-label="Édition slide">
+                <button
+                  class="speech-tab"
+                  :class="{ 'speech-tab--active': carouselEditTab === 'text' }"
+                  type="button"
+                  role="tab"
+                  :aria-selected="String(carouselEditTab === 'text')"
+                  @click="carouselEditTab = 'text'"
+                >
+                  ✏️ Texte
+                </button>
+                <button
+                  class="speech-tab"
+                  :class="{ 'speech-tab--active': carouselEditTab === 'image' }"
+                  type="button"
+                  role="tab"
+                  :aria-selected="String(carouselEditTab === 'image')"
+                  @click="carouselEditTab = 'image'"
+                >
+                  🖼️ Image
+                </button>
+              </div>
+            </div>
+
+            <template v-if="carouselEditTab === 'text'">
+            <div class="carousel-edit-field">
+              <label class="carousel-edit-label">Titre</label>
+              <textarea
+                class="carousel-edit-textarea carousel-edit-textarea--title"
+                :class="{ 'carousel-edit-textarea--dirty': carouselTitleDraftDirty }"
+                v-model="carouselTitleDraft"
+                rows="3"
+                maxlength="255"
+                placeholder="Titre de la slide…"
+                @keydown.stop
+              ></textarea>
+
+              <!-- Per-line alignment + color -->
+              <div
+                v-if="carouselTitleDraftLines.length"
+                class="carousel-align-rows"
+              >
+                <div
+                  v-for="(line, i) in carouselTitleDraftLines"
+                  :key="i"
+                  class="carousel-align-row"
+                >
+                  <!-- Line preview -->
+                  <span class="carousel-align-row__preview">{{ stripLinePrefix(line) || '(vide)' }}</span>
+
+                  <!-- Controls row -->
+                  <div class="carousel-line-controls">
+                    <!-- Alignment -->
+                    <div class="carousel-align-btns">
+                      <button
+                        v-for="al in ['left','center','right']"
+                        :key="al"
+                        type="button"
+                        class="carousel-align-btn"
+                        :class="{ 'carousel-align-btn--active': getLineAlign(line) === al }"
+                        :title="al"
+                        @click="setTitleLineAlign(i, al)"
+                      >
+                        <svg v-if="al==='left'" viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                        <svg v-else-if="al==='center'" viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M4 8h8M3 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                        <svg v-else viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M6 8h8M4 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+
+                    <!-- Separator -->
+                    <span class="carousel-line-sep" aria-hidden="true"></span>
+
+                    <!-- Color swatches -->
+                    <div class="carousel-color-btns">
+                      <button
+                        v-for="preset in TITLE_COLOR_PRESETS"
+                        :key="preset.value ?? 'reset'"
+                        type="button"
+                        class="carousel-color-btn"
+                        :class="{ 'carousel-color-btn--active': getLineColor(line) === preset.value }"
+                        :style="preset.value ? { background: preset.value, border: '2px solid transparent' } : {}"
+                        :title="preset.label"
+                        @click="setTitleLineColor(i, getLineColor(line) === preset.value ? null : preset.value)"
+                      >
+                        <span v-if="!preset.value" class="carousel-color-reset-icon">↺</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="carousel-edit-field">
+              <label class="carousel-edit-label">
+                Texte
+                <span class="carousel-edit-hint">1 ligne = 1 puce</span>
+              </label>
+              <textarea
+                class="carousel-edit-textarea"
+                :class="{ 'carousel-edit-textarea--dirty': carouselTextDraftDirty }"
+                v-model="carouselTextDraft"
+                rows="6"
+                maxlength="1200"
+                placeholder="Ligne 1&#10;Ligne 2&#10;Ligne 3…"
+                @keydown.stop
+              ></textarea>
+            </div>
+
+            <button
+              class="carousel-edit-save"
+              :class="{ 'carousel-edit-save--dirty': carouselDraftDirty }"
+              type="button"
+              :disabled="!carouselDraftDirty"
+              @click="saveCarouselDraft"
+            >
+              {{ carouselDraftDirty ? '💾 Enregistrer' : '✓ Enregistré' }}
+            </button>
+
+            <p v-if="carouselEditSaved" class="carousel-edit-saved-msg">✅ Sauvegardé !</p>
+            </template>
+
+            <template v-else-if="carouselEditTab === 'image'">
+              <div class="carousel-image-tab">
+                <button
+                  type="button"
+                  class="carousel-image-instructions-btn"
+                  @click="imageInstructionsDialogOpen = true"
+                  title="Définir des consignes qui s'appliqueront à toutes les prochaines générations d'image"
+                >
+                  📝 Mes instructions permanentes pour Gemini
+                </button>
+
+                <div class="carousel-image-preview" :class="{ 'carousel-image-preview--empty': !activeSlideImageUrl }">
+                  <img
+                    v-if="activeSlideImageUrl"
+                    :src="activeSlideImageUrl"
+                    alt="Image de la slide"
+                    class="carousel-image-preview__img"
+                  />
+                  <div v-else class="carousel-image-preview__empty">
+                    <span class="carousel-image-preview__icon">🖼️</span>
+                    <span>Aucune image générée pour cette slide</span>
+                  </div>
+                </div>
+
+                <div class="carousel-edit-field">
+                  <label class="carousel-edit-label">
+                    Style visuel
+                    <span class="carousel-edit-hint">type de carrousel</span>
+                  </label>
+                  <div class="carousel-image-type-grid">
+                    <button
+                      v-for="opt in CAROUSEL_IMAGE_TYPES"
+                      :key="opt.id"
+                      type="button"
+                      class="carousel-image-type-btn"
+                      :class="{ 'carousel-image-type-btn--active': carouselImageCarouselType === opt.id }"
+                      :disabled="carouselSlideImageGenerating"
+                      @click="carouselImageCarouselType = opt.id"
+                    >
+                      {{ opt.label }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="carousel-edit-field">
+                  <label class="carousel-edit-label">
+                    Prompt personnalisé
+                    <span class="carousel-edit-hint">optionnel — laisse vide pour auto</span>
+                  </label>
+                  <textarea
+                    class="carousel-edit-textarea"
+                    v-model="carouselImagePromptDraft"
+                    rows="5"
+                    maxlength="4000"
+                    placeholder="Décris ce que tu veux dans l'image. Ex : Bureau premium avec laptop ouvert sur OptiTAB, lumière douce de fenêtre, fond crème. Laisse VIDE pour qu'on génère automatiquement depuis le contexte de la slide."
+                    :disabled="carouselSlideImageGenerating"
+                    @keydown.stop
+                  ></textarea>
+                </div>
+
+                <label
+                  class="carousel-image-references-toggle"
+                  :class="{ 'carousel-image-references-toggle--active': carouselImageUseReferences }"
+                >
+                  <input
+                    type="checkbox"
+                    v-model="carouselImageUseReferences"
+                    :disabled="carouselSlideImageGenerating"
+                  />
+                  <span class="carousel-image-references-toggle__info">
+                    <span class="carousel-image-references-toggle__label">
+                      {{ carouselImageUseReferences ? '✅ Utiliser les screenshots de référence' : '⛔ Ignorer les screenshots' }}
+                    </span>
+                    <span class="carousel-image-references-toggle__desc">
+                      {{ carouselImageUseReferences
+                        ? "Gemini verra tes captures du site OptiTAB pour reproduire l'UI."
+                        : "Gemini génère librement, sans regarder les captures." }}
+                    </span>
+                  </span>
+                </label>
+
+                <button
+                  class="carousel-edit-save carousel-image-generate-btn"
+                  type="button"
+                  :disabled="carouselSlideImageGenerating || !activeSlide?.id"
+                  @click="handleGenerateSlideImage"
+                >
+                  <span v-if="carouselSlideImageGenerating">⏳ Gemini génère…</span>
+                  <span v-else-if="activeSlideImageUrl">🔄 Régénérer l'image</span>
+                  <span v-else>✨ Générer l'image</span>
+                </button>
+
+                <button
+                  v-if="activeSlideImageUrl"
+                  class="carousel-image-clear-btn"
+                  type="button"
+                  :disabled="carouselSlideImageGenerating"
+                  @click="handleClearSlideImage"
+                >
+                  🗑️ Supprimer l'image
+                </button>
+
+                <p
+                  v-if="carouselSlideImageMsg"
+                  class="carousel-image-msg"
+                  :class="`carousel-image-msg--${carouselSlideImageMsgType}`"
+                >
+                  {{ carouselSlideImageMsg }}
+                </p>
+              </div>
+            </template>
+          </aside>
+
           <aside v-if="!isCarouselFormat" v-show="!fullscreenLeftPanelCollapsed" class="fullscreen-speech-panel" aria-label="Voix de la slide">
             <div class="speech-panel-header">
               <div class="speech-tabs" role="tablist" aria-label="Edition slide">
@@ -567,7 +814,7 @@
             </div>
 
             <div
-              v-if="activeSlide && isEdgeSlide(activeSlide)"
+              v-if="activeSlide && (isCarouselFormat || isEdgeSlide(activeSlide))"
               class="fullscreen-control-group"
               aria-label="Taille du titre hook ou cta"
             >
@@ -579,7 +826,7 @@
             </div>
 
             <div
-              v-if="activeSlide && isEdgeSlide(activeSlide)"
+              v-if="activeSlide && (isCarouselFormat || isEdgeSlide(activeSlide))"
               class="fullscreen-control-group"
               aria-label="Taille du texte hook ou cta"
             >
@@ -919,6 +1166,11 @@
         </div>
       </div>
     </Teleport>
+
+    <GeminiImageInstructionsDialog
+      :open="imageInstructionsDialogOpen"
+      @close="imageInstructionsDialogOpen = false"
+    />
   </section>
 </template>
 
@@ -926,6 +1178,7 @@
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import html2canvas from 'html2canvas'
 import ReelSlidePreview from './ReelSlidePreview.vue'
+import GeminiImageInstructionsDialog from './GeminiImageInstructionsDialog.vue'
 
 const props = defineProps({
   slides: {
@@ -937,6 +1190,10 @@ const props = defineProps({
     default: null,
   },
   generatingSpeechSlideId: {
+    type: [Number, String, null],
+    default: null,
+  },
+  generatingImageSlideId: {
     type: [Number, String, null],
     default: null,
   },
@@ -975,16 +1232,19 @@ const emit = defineEmits([
   'update-pronunciation-overrides',
   'update-pronunciation-overrides-by-voice',
   'toggle-carousel-image',
+  'generate-slide-image',
+  'clear-slide-image',
 ])
 
 const isFullscreen = ref(false)
 const fullscreenIndex = ref(0)
-const fullscreenLeftPanelCollapsed = ref(false)
+const fullscreenLeftPanelCollapsed = ref(true)
 const fullscreenRightPanelCollapsed = ref(false)
 const previousBodyOverflow = ref('')
 const SAFE_ZONE_DEFAULT_SCALE = 1.15
 const SAFE_ZONE_DEFAULT_SCALE_YOUTUBE = 1.0
 const SAFE_ZONE_DEFAULT_SCALE_CAROUSEL = 1.0
+const SAFE_ZONE_DEFAULT_SCALE_CAROUSEL_Y = 1.4
 const MATH_SCALE_DEFAULT_REEL = 1.0
 const MATH_SCALE_DEFAULT_CAROUSEL = 0.9
 const MATH_SCALE_DEFAULT_YOUTUBE_CALCUL = 2.0
@@ -1017,7 +1277,32 @@ const katexDraft = ref('')
 const katexDraftSavedValue = ref('')
 const katexDraftSlideId = ref(null)
 const fullscreenEditorTab = ref('speech')
+
+// Carousel left panel edit state
+const carouselTitleDraft = ref('')
+const carouselTextDraft = ref('')
+const carouselTitleDraftSaved = ref('')
+const carouselTextDraftSaved = ref('')
+const carouselDraftSlideId = ref(null)
+const carouselEditSaved = ref(false)
+const carouselEditTab = ref('text')
+const carouselImagePromptDraft = ref('')
+const carouselImageCarouselType = ref('marketing')
+const carouselImageUseReferences = ref(true)
+const carouselSlideImageBusy = ref(false)
+const carouselSlideImageMsg = ref('')
+const carouselSlideImageMsgType = ref('info')
+const imageInstructionsDialogOpen = ref(false)
 const katexTextareaRef = ref(null)
+
+const CAROUSEL_IMAGE_TYPES = [
+  { id: 'marketing', label: '🚀 Marketing' },
+  { id: 'notion', label: '📐 Notion' },
+  { id: 'tips', label: '💡 Conseils' },
+  { id: 'quiz', label: '🎯 Quiz' },
+  { id: 'avantapres', label: '🔄 Avant/Après' },
+  { id: 'story', label: '📖 Story' },
+]
 
 const KATEX_COLORS = [
   { hex: '#e74c3c', label: 'Rouge' },
@@ -1242,7 +1527,7 @@ const COVER_FILENAME = 'optitab-reel-cover.png'
 const isYoutubeFormat = computed(() => props.format === 'youtube')
 const isCarouselFormat = computed(() => props.format === 'carousel')
 const subtitlesEnabled = computed(() => !isCarouselFormat.value && showSubtitles.value)
-const effectiveFullscreenLeftPanelCollapsed = computed(() => isCarouselFormat.value || fullscreenLeftPanelCollapsed.value)
+const effectiveFullscreenLeftPanelCollapsed = computed(() => fullscreenLeftPanelCollapsed.value)
 const PNG_EXPORT_WIDTH = computed(() => {
   if (isYoutubeFormat.value) return 1920
   return 1080
@@ -1290,6 +1575,76 @@ const activeSpeechDraftDirty = computed(() => (
   normalizeSpeechDraftForCompare(speechDraft.value) !== normalizeSpeechDraftForCompare(speechDraftSavedValue.value)
 ))
 const activeKatexDraftText = computed(() => normalizeKatexDraft(katexDraft.value))
+
+// Carousel panel computed
+const CAROUSEL_ALIGN_RE = /^\[(left|center|right)\]/i
+const CAROUSEL_COLOR_RE = /^\{(#[0-9a-fA-F]{3,8})\}/
+
+const TITLE_COLOR_PRESETS = [
+  { value: null,      label: 'Couleur par défaut' },
+  { value: '#29428e', label: 'Bleu OptiTAB' },
+  { value: '#1c3070', label: 'Bleu foncé' },
+  { value: '#0b1733', label: 'Noir encre' },
+  { value: '#3a5bb8', label: 'Bleu clair' },
+  { value: '#16a34a', label: 'Vert' },
+  { value: '#ffffff', label: 'Blanc' },
+  { value: '#dc2626', label: 'Rouge' },
+]
+const carouselTitleDraftDirty = computed(() => carouselTitleDraft.value !== carouselTitleDraftSaved.value)
+const carouselTextDraftDirty = computed(() => carouselTextDraft.value !== carouselTextDraftSaved.value)
+
+const activeSlideImageUrl = computed(() => activeSlide.value?.generated_image_url || '')
+const carouselSlideImageGenerating = computed(() => (
+  Number(props.generatingImageSlideId) === Number(activeSlide.value?.id || -1)
+  || carouselSlideImageBusy.value
+))
+const carouselDraftDirty = computed(() => carouselTitleDraftDirty.value || carouselTextDraftDirty.value)
+const carouselTitleDraftLines = computed(() => carouselTitleDraft.value.split('\n'))
+const carouselEditSlideTypeLabel = computed(() => {
+  const slide = activeSlide.value
+  if (!slide) return ''
+  const order = Number(slide.order || 0)
+  const total = props.slides?.length || 0
+  if (order === 1) return 'Cover'
+  if (order === total) return 'CTA'
+  return `Contenu`
+})
+
+function getLineAlign(line) {
+  const m = line.match(CAROUSEL_ALIGN_RE)
+  return m ? m[1].toLowerCase() : null
+}
+
+function getLineColor(line) {
+  const afterAlign = line.replace(CAROUSEL_ALIGN_RE, '')
+  const m = afterAlign.match(CAROUSEL_COLOR_RE)
+  return m ? m[1] : null
+}
+
+function stripLinePrefix(line) {
+  return line.replace(CAROUSEL_ALIGN_RE, '').replace(CAROUSEL_COLOR_RE, '')
+}
+
+function setTitleLineAlign(lineIndex, align) {
+  const lines = carouselTitleDraft.value.split('\n')
+  const raw = lines[lineIndex] ?? ''
+  const alignMatch = raw.match(CAROUSEL_ALIGN_RE)
+  const currentAlign = alignMatch ? alignMatch[1].toLowerCase() : null
+  const withoutAlign = alignMatch ? raw.slice(alignMatch[0].length) : raw
+  lines[lineIndex] = (currentAlign === align ? '' : `[${align}]`) + withoutAlign
+  carouselTitleDraft.value = lines.join('\n')
+}
+
+function setTitleLineColor(lineIndex, color) {
+  const lines = carouselTitleDraft.value.split('\n')
+  const raw = lines[lineIndex] ?? ''
+  const alignMatch = raw.match(CAROUSEL_ALIGN_RE)
+  const alignPrefix = alignMatch ? alignMatch[0] : ''
+  const afterAlign = alignMatch ? raw.slice(alignMatch[0].length) : raw
+  const cleanText = afterAlign.replace(CAROUSEL_COLOR_RE, '')
+  lines[lineIndex] = alignPrefix + (color ? `{${color}}` : '') + cleanText
+  carouselTitleDraft.value = lines.join('\n')
+}
 const activeKatexDraftDirty = computed(() => (
   normalizeKatexDraftForCompare(katexDraft.value) !== normalizeKatexDraftForCompare(katexDraftSavedValue.value)
 ))
@@ -1440,6 +1795,30 @@ function syncKatexDraftFromActiveSlide({ force = false } = {}) {
   katexDraft.value = source
   katexDraftSavedValue.value = source
   katexDraftSlideId.value = nextSlideId
+}
+
+function syncCarouselDraftFromActiveSlide({ force = false } = {}) {
+  const slide = activeSlide.value
+  if (!slide?.id) {
+    carouselTitleDraft.value = ''
+    carouselTextDraft.value = ''
+    carouselTitleDraftSaved.value = ''
+    carouselTextDraftSaved.value = ''
+    carouselDraftSlideId.value = null
+    return
+  }
+  const nextSlideId = Number(slide.id)
+  const slideChanged = Number(carouselDraftSlideId.value) !== nextSlideId
+  if (!force && !slideChanged && carouselDraftDirty.value) return
+
+  const title = String(slide.title || '').trim()
+  const text = String(slide.screen_text || '').trim()
+  carouselTitleDraft.value = title
+  carouselTitleDraftSaved.value = title
+  carouselTextDraft.value = text
+  carouselTextDraftSaved.value = text
+  carouselDraftSlideId.value = nextSlideId
+  carouselEditSaved.value = false
 }
 
 function isSlideSpeechAudioStale(slide) {
@@ -2138,6 +2517,7 @@ function openFullscreenAt(index) {
   selectSlideByIndex(normalizedIndex)
   syncSpeechDraftFromActiveSlide({ force: true })
   syncKatexDraftFromActiveSlide({ force: true })
+  syncCarouselDraftFromActiveSlide({ force: true })
 }
 
 function firstVideoSlideIndex() {
@@ -2390,6 +2770,79 @@ function saveActiveKatexDraft() {
   return true
 }
 
+function saveCarouselDraft() {
+  if (!activeSlide.value?.id || !carouselDraftDirty.value) return
+
+  const title = carouselTitleDraft.value
+  const screenText = carouselTextDraft.value
+
+  // Build patch BEFORE resetting saved values (dirty computed would flip to false otherwise)
+  const patch = {}
+  if (carouselTitleDraftDirty.value) patch.title = title
+  if (carouselTextDraftDirty.value) patch.screen_text = screenText
+
+  carouselTitleDraftSaved.value = title
+  carouselTextDraftSaved.value = screenText
+  carouselDraftSlideId.value = Number(activeSlide.value.id)
+
+  if (!Object.keys(patch).length) return
+
+  emit('update-slide', { id: activeSlide.value.id, patch })
+
+  carouselEditSaved.value = true
+  setTimeout(() => { carouselEditSaved.value = false }, 2000)
+}
+
+function setCarouselImageMsg(type, text, autoclear = true) {
+  carouselSlideImageMsgType.value = type
+  carouselSlideImageMsg.value = text
+  if (autoclear) {
+    setTimeout(() => {
+      if (carouselSlideImageMsg.value === text) carouselSlideImageMsg.value = ''
+    }, 4500)
+  }
+}
+
+function handleGenerateSlideImage() {
+  if (!activeSlide.value?.id || carouselSlideImageGenerating.value) return
+  carouselSlideImageMsg.value = ''
+  carouselSlideImageBusy.value = true
+  const slideId = activeSlide.value.id
+  emit('generate-slide-image', {
+    slideId,
+    prompt: carouselImagePromptDraft.value.trim(),
+    carouselType: carouselImageCarouselType.value,
+    useReferences: carouselImageUseReferences.value,
+    onDone: (result) => {
+      carouselSlideImageBusy.value = false
+      if (result?.error) {
+        setCarouselImageMsg('error', `Erreur Gemini : ${result.error}`, false)
+      } else {
+        setCarouselImageMsg('success', '✅ Image générée avec succès.')
+      }
+    },
+  })
+}
+
+function handleClearSlideImage() {
+  if (!activeSlide.value?.id || carouselSlideImageGenerating.value) return
+  if (!activeSlideImageUrl.value) return
+  carouselSlideImageMsg.value = ''
+  carouselSlideImageBusy.value = true
+  const slideId = activeSlide.value.id
+  emit('clear-slide-image', {
+    slideId,
+    onDone: (result) => {
+      carouselSlideImageBusy.value = false
+      if (result?.error) {
+        setCarouselImageMsg('error', `Erreur : ${result.error}`, false)
+      } else {
+        setCarouselImageMsg('success', '🗑️ Image supprimée.')
+      }
+    },
+  })
+}
+
 function applyKatexColor(colorHex) {
   const el = katexTextareaRef.value
   if (!el) return
@@ -2467,8 +2920,10 @@ function increaseSafeZoneX() {
   safeZoneXScale.value = clampSafeZoneScale(safeZoneXScale.value + 0.05)
 }
 
-function safeZoneDefaultForFormat() {
-  if (isCarouselFormat.value) return SAFE_ZONE_DEFAULT_SCALE_CAROUSEL
+function safeZoneDefaultForFormat(axis = 'x') {
+  if (isCarouselFormat.value) {
+    return axis === 'y' ? SAFE_ZONE_DEFAULT_SCALE_CAROUSEL_Y : SAFE_ZONE_DEFAULT_SCALE_CAROUSEL
+  }
   return isYoutubeFormat.value ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE : SAFE_ZONE_DEFAULT_SCALE
 }
 
@@ -2487,26 +2942,31 @@ function increaseSafeZoneY() {
 }
 
 function resetSafeZoneY() {
-  getActiveSafeZoneYRef().value = safeZoneDefaultForFormat()
+  getActiveSafeZoneYRef().value = safeZoneDefaultForFormat('y')
 }
 
 function applyFormatDefaults() {
   const isYt = isYoutubeFormat.value
   const isCarousel = isCarouselFormat.value
-  const safeDefault = isYt
+  const safeXDefault = isYt
     ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE
     : isCarousel
       ? SAFE_ZONE_DEFAULT_SCALE_CAROUSEL
+      : SAFE_ZONE_DEFAULT_SCALE
+  const safeYDefault = isYt
+    ? SAFE_ZONE_DEFAULT_SCALE_YOUTUBE
+    : isCarousel
+      ? SAFE_ZONE_DEFAULT_SCALE_CAROUSEL_Y
       : SAFE_ZONE_DEFAULT_SCALE
   const gapDefault = isYt
     ? CUMULATIVE_GAP_DEFAULT_YOUTUBE
     : isCarousel
       ? CUMULATIVE_GAP_DEFAULT_CAROUSEL
       : CUMULATIVE_GAP_DEFAULT
-  safeZoneXScale.value = safeDefault
-  safeZoneMathYScale.value = safeDefault
-  safeZoneHookYScale.value = safeDefault
-  safeZoneCtaYScale.value = safeDefault
+  safeZoneXScale.value = safeXDefault
+  safeZoneMathYScale.value = safeYDefault
+  safeZoneHookYScale.value = safeYDefault
+  safeZoneCtaYScale.value = safeYDefault
   mathScaleCalcul.value = isYt
     ? MATH_SCALE_DEFAULT_YOUTUBE_CALCUL
     : isCarousel
@@ -2527,7 +2987,7 @@ function applyFormatDefaults() {
 }
 
 function patchActiveEdgeSlideScale(field, value) {
-  if (!activeSlide.value?.id || !isEdgeSlide(activeSlide.value)) return
+  if (!activeSlide.value?.id || (!isCarouselFormat.value && !isEdgeSlide(activeSlide.value))) return
 
   emit('update-slide', {
     id: activeSlide.value.id,
@@ -3304,6 +3764,7 @@ watch(
       fullscreenEditorTab.value = 'speech'
       syncSpeechDraftFromActiveSlide({ force: true })
       syncKatexDraftFromActiveSlide({ force: true })
+      syncCarouselDraftFromActiveSlide({ force: true })
     }
   }
 )
@@ -3319,6 +3780,7 @@ watch(
   () => {
     syncSpeechDraftFromActiveSlide()
     syncKatexDraftFromActiveSlide()
+    syncCarouselDraftFromActiveSlide()
   },
   { immediate: true }
 )
@@ -3725,6 +4187,455 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+}
+
+/* Carousel edit panel */
+.fullscreen-carousel-edit-panel {
+  gap: 12px;
+}
+
+.carousel-edit-header-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.carousel-edit-slide-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(41, 66, 142, 0.1);
+  color: #29428e;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.carousel-edit-slide-num {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.carousel-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.carousel-edit-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.carousel-edit-hint {
+  font-size: 10px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.carousel-edit-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.carousel-edit-input:focus {
+  border-color: #29428e;
+  background: #fff;
+}
+.carousel-edit-input--dirty {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.carousel-edit-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f172a;
+  background: #f8fafc;
+  resize: vertical;
+  min-height: 100px;
+  outline: none;
+  line-height: 1.55;
+  transition: border-color 0.15s, background 0.15s;
+}
+.carousel-edit-textarea:focus {
+  border-color: #29428e;
+  background: #fff;
+}
+.carousel-edit-textarea--dirty {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.carousel-edit-save {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #1c3070 0%, #29428e 60%, #3a5bb8 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.12s;
+  box-shadow: 0 4px 12px rgba(41, 66, 142, 0.28);
+}
+.carousel-edit-save:disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  box-shadow: none;
+  cursor: default;
+}
+.carousel-edit-save--dirty:not(:disabled):hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.carousel-edit-saved-msg {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+/* --- Carousel image tab --- */
+.carousel-edit-tabs {
+  margin-top: 8px;
+}
+
+.carousel-image-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.carousel-image-preview {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px dashed #e2e8f0;
+  background: #f8faff;
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-image-preview--empty {
+  background: linear-gradient(180deg, #f8faff 0%, #eef2ff 100%);
+}
+
+.carousel-image-preview__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-image-preview__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 12px;
+  text-align: center;
+  padding: 16px;
+}
+
+.carousel-image-preview__icon {
+  font-size: 36px;
+  opacity: 0.55;
+}
+
+.carousel-image-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.carousel-image-type-btn {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+  text-align: left;
+}
+.carousel-image-type-btn:hover:not(:disabled) {
+  border-color: #c7d2fe;
+  background: #f8faff;
+}
+.carousel-image-type-btn--active {
+  border-color: #29428e !important;
+  background: #eef2ff !important;
+  box-shadow: 0 0 0 2px rgba(41, 66, 142, 0.12);
+}
+.carousel-image-type-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.carousel-image-generate-btn {
+  background: linear-gradient(135deg, #29428e 0%, #1c3070 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(41, 66, 142, 0.28);
+}
+.carousel-image-generate-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.carousel-image-instructions-btn {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px dashed #c7d2fe;
+  background: linear-gradient(180deg, #f4f6ff 0%, #eef2ff 100%);
+  color: #29428e;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.12s;
+}
+.carousel-image-instructions-btn:hover {
+  border-style: solid;
+  background: #eef2ff;
+  box-shadow: 0 2px 8px rgba(41, 66, 142, 0.14);
+}
+
+.carousel-image-references-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fafbff;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.carousel-image-references-toggle:hover { border-color: #c7d2fe; background: #f4f6ff; }
+.carousel-image-references-toggle--active {
+  border-color: #29428e;
+  background: #eef2ff;
+  box-shadow: 0 0 0 2px rgba(41, 66, 142, 0.10);
+}
+.carousel-image-references-toggle input {
+  margin-top: 3px;
+  accent-color: #29428e;
+}
+.carousel-image-references-toggle__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.carousel-image-references-toggle__label {
+  font-weight: 700;
+  font-size: 12px;
+  color: #1e293b;
+}
+.carousel-image-references-toggle__desc {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.36;
+}
+
+.carousel-image-clear-btn {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1.5px solid #fecaca;
+  background: #fff5f5;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.carousel-image-clear-btn:hover:not(:disabled) {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+.carousel-image-clear-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.carousel-image-msg {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+.carousel-image-msg--success {
+  color: #16a34a;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+.carousel-image-msg--error {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+.carousel-image-msg--info {
+  color: #29428e;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+}
+
+.carousel-edit-textarea--title {
+  font-family: inherit;
+  min-height: 64px;
+  resize: vertical;
+}
+
+.carousel-align-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.carousel-align-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 5px 8px;
+}
+
+.carousel-align-row__preview {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  color: #475569;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.carousel-align-btns {
+  display: flex;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.carousel-align-btn {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.carousel-align-btn:hover {
+  background: #eef2ff;
+  color: #29428e;
+  border-color: #c7d2fe;
+}
+.carousel-align-btn--active {
+  background: #29428e;
+  color: #fff;
+  border-color: #29428e;
+}
+
+.carousel-align-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  display: block;
+}
+
+.carousel-line-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.carousel-line-sep {
+  width: 1px;
+  height: 18px;
+  background: #e2e8f0;
+  flex: 0 0 auto;
+}
+
+.carousel-color-btns {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.carousel-color-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, border-color 0.1s;
+  background: #f1f5f9;
+  flex: 0 0 auto;
+}
+.carousel-color-btn:hover { transform: scale(1.18); }
+.carousel-color-btn--active { border-color: #0f172a !important; box-shadow: 0 0 0 2px rgba(15,23,42,0.18); }
+
+.carousel-color-reset-icon {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1;
+  font-weight: 700;
 }
 
 .speech-panel-header {

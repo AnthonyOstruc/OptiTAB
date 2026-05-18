@@ -1,6 +1,11 @@
 <template>
   <main class="reel-studio-admin">
-    <FormatHelp :format-template="formatHelpTemplate" :show-notes="false" :initial-show="false" />
+    <FormatHelp
+      :format-template="formatHelpTemplate"
+      :formats="studioFormat === 'carousel' ? CAROUSEL_FORMATS : []"
+      :show-notes="false"
+      :initial-show="false"
+    />
 
     <header class="page-header">
       <div>
@@ -82,6 +87,7 @@
               :slides="selectedProject?.slides || []"
               :selected-slide-id="selectedSlideId"
               :generating-speech-slide-id="generatingSpeechSlideId"
+              :generating-image-slide-id="generatingImageSlideId"
               :exporting-video="exportingVideo"
               :format="selectedProject?.format_type || studioFormat"
               :pronunciation-overrides="selectedProject?.pronunciation_overrides || []"
@@ -96,7 +102,33 @@
               @update-pronunciation-overrides="handleUpdatePronunciationOverrides"
               @update-pronunciation-overrides-by-voice="handleUpdatePronunciationOverridesByVoice"
               @toggle-carousel-image="handleToggleCarouselImage"
+              @generate-slide-image="handleGenerateSlideImage"
+              @clear-slide-image="handleClearSlideImage"
             />
+
+            <section v-if="selectedProject" class="instagram-caption-panel">
+              <div class="instagram-caption-header">
+                <div>
+                  <h3>{{ studioFormatConfig.descriptionTitle }}</h3>
+                  <p>{{ studioFormatConfig.descriptionHelp }}</p>
+                </div>
+                <button
+                  class="btn-secondary"
+                  type="button"
+                  :disabled="!instagramCaptionText"
+                  @click="copyInstagramCaption"
+                >
+                  {{ studioFormatConfig.copyDescriptionLabel }}
+                </button>
+              </div>
+              <textarea
+                class="instagram-caption-text"
+                :value="instagramCaptionText || studioFormatConfig.emptyDescriptionLabel"
+                readonly
+                rows="10"
+                @focus="$event.target.select()"
+              ></textarea>
+            </section>
 
             <section v-if="isCarouselProject" class="gemini-panel">
               <div class="gemini-panel-header">
@@ -142,6 +174,14 @@
                 >
                   {{ regeneratingCarouselImages ? 'Images en cours...' : 'Régénérer images seulement' }}
                 </button>
+                <button
+                  class="btn-secondary btn-compact btn-instructions"
+                  type="button"
+                  title="Définir des consignes qui s'appliqueront à toutes les prochaines générations d'image"
+                  @click="imageInstructionsDialogOpen = true"
+                >
+                  📝 Mes instructions
+                </button>
               </div>
 
               <div class="gemini-usage-grid">
@@ -164,41 +204,6 @@
               </div>
 
               <p v-if="geminiOptionsError" class="gemini-error">{{ geminiOptionsError }}</p>
-
-              <div v-if="geminiRecentUsage.length" class="gemini-recent">
-                <span>Dernières générations</span>
-                <ul>
-                  <li v-for="item in geminiRecentUsage" :key="item.id">
-                    <strong>{{ formatGeminiMoney(item.display_cost) }}</strong>
-                    <span>{{ item.model_id }}</span>
-                    <small>{{ formatDateTime(item.created_at) }}</small>
-                  </li>
-                </ul>
-              </div>
-            </section>
-
-            <section v-if="selectedProject" class="instagram-caption-panel">
-              <div class="instagram-caption-header">
-                <div>
-                  <h3>{{ studioFormatConfig.descriptionTitle }}</h3>
-                  <p>{{ studioFormatConfig.descriptionHelp }}</p>
-                </div>
-                <button
-                  class="btn-secondary"
-                  type="button"
-                  :disabled="!instagramCaptionText"
-                  @click="copyInstagramCaption"
-                >
-                  {{ studioFormatConfig.copyDescriptionLabel }}
-                </button>
-              </div>
-              <textarea
-                class="instagram-caption-text"
-                :value="instagramCaptionText || studioFormatConfig.emptyDescriptionLabel"
-                readonly
-                rows="10"
-                @focus="$event.target.select()"
-              ></textarea>
             </section>
 
             <section v-if="selectedProject && !isCarouselProject" class="speech-panel">
@@ -607,6 +612,26 @@
         />
       </section>
     </section>
+
+    <GeminiImageOptionsDialog
+      :open="geminiImageDialogOpen"
+      :title="geminiImageDialogMode === 'regenerate' ? 'Régénérer les images Gemini' : 'Générer le carrousel avec Gemini'"
+      :subtitle="geminiImageDialogMode === 'regenerate'
+        ? 'Choisis le style visuel et les slides à régénérer pour un rendu cohérent et premium.'
+        : 'Choisis le style visuel et la portée des images pour un carrousel pro et incitant.'"
+      :confirm-label="geminiImageDialogMode === 'regenerate' ? 'Régénérer les images' : 'Générer le carrousel'"
+      :total-slides="selectedProject?.slides?.length || 0"
+      :initial-carousel-type="lastGeminiCarouselType"
+      :initial-strategy="lastGeminiSlideStrategy"
+      :initial-use-references="lastGeminiUseReferences"
+      @close="closeGeminiImageDialog"
+      @confirm="handleGeminiImageDialogConfirm"
+    />
+
+    <GeminiImageInstructionsDialog
+      :open="imageInstructionsDialogOpen"
+      @close="imageInstructionsDialogOpen = false"
+    />
   </main>
 </template>
 
@@ -623,6 +648,8 @@ import {
   regenerateCarouselImages,
   generateReelSlideSpeech,
   generateReelSlideSpeeches,
+  generateReelSlideImage,
+  clearReelSlideImage,
   generateSlidesFromTemplate,
   getGeminiOptions,
   getReelProject,
@@ -640,6 +667,8 @@ import ReelProjectsList from '@/components/admin/reel-studio/ReelProjectsList.vu
 import ReelSlideEditor from '@/components/admin/reel-studio/ReelSlideEditor.vue'
 import ReelTemplateBuilder from '@/components/admin/reel-studio/ReelTemplateBuilder.vue'
 import FormatHelp from '@/components/admin/FormatHelp.vue'
+import GeminiImageOptionsDialog from '@/components/admin/reel-studio/GeminiImageOptionsDialog.vue'
+import GeminiImageInstructionsDialog from '@/components/admin/reel-studio/GeminiImageInstructionsDialog.vue'
 
 const userStore = useUserStore()
 const canManage = computed(() => Boolean(userStore.isAdmin))
@@ -656,6 +685,14 @@ const savingProject = ref(false)
 const generatingTemplate = ref(false)
 const generatingCarouselGemini = ref(false)
 const regeneratingCarouselImages = ref(false)
+const generatingImageSlideId = ref(null)
+const geminiImageDialogOpen = ref(false)
+const geminiImageDialogMode = ref('generate') // 'generate' | 'regenerate'
+const pendingGeneratePayload = ref(null)
+const lastGeminiCarouselType = ref('marketing')
+const lastGeminiSlideStrategy = ref('hook_cta')
+const lastGeminiUseReferences = ref(true)
+const imageInstructionsDialogOpen = ref(false)
 const savingTemplate = ref(false)
 const generatingSpeech = ref(false)
 const generatingSpeechSlideId = ref(null)
@@ -702,7 +739,6 @@ const geminiUsage = ref({
   display_remaining: 10,
   eur_per_usd: 0.92,
   usage_count: 0,
-  recent: [],
 })
 const lastGeminiUsage = ref(null)
 const loadingGeminiOptions = ref(false)
@@ -1302,6 +1338,335 @@ Découvre OptiTAB sur optitab.net.
 END_CAROUSEL_DESCRIPTION
 `
 
+const CAROUSEL_FORMAT_QUIZ = `FORMAT CARROUSEL QUIZ / QCM
+
+Objectif:
+- Carrousel interactif : pose 1 question par slide (sauf cover et réponse finale).
+- But: engager l'audience (commentaires, saves, partages), teaser le contenu OptiTAB.
+- 7 slides : cover → 4 questions → 1 reveal des réponses → cta.
+- Aucune voix, aucun sous-titre.
+
+ÉLÉMENTS AUTO-AJOUTÉS (NE LES ÉCRIS PAS):
+- Logo OptiTAB en haut à gauche, numéro de slide en haut à droite.
+- "optitab.net" en bas (sauf cover).
+- Bouton "Glisse →" slide 1, bouton CTA slide 7.
+
+Structure:
+SLIDE <n> | <type>
+TITLE: <question ou titre>
+VISUEL: <description image IA sans texte>
+TEXT: <réponse / choix / reveal — 1 ligne = 1 puce>
+---
+
+Architecture (7 slides):
+- SLIDE 1 | hook: TITLE = accroche style "Saurais-tu répondre ?". TEXT = 1 ligne teaser.
+- SLIDE 2 | katex: TITLE = 1ère question courte. TEXT = A) … / B) … / C) … (3 choix).
+- SLIDE 3 | katex: TITLE = 2e question. TEXT = 3 choix.
+- SLIDE 4 | katex: TITLE = 3e question. TEXT = 3 choix.
+- SLIDE 5 | katex: TITLE = 4e question. TEXT = 3 choix.
+- SLIDE 6 | katex: TITLE = "Les réponses 👇". TEXT = 1 ligne par réponse correcte + explication courte.
+- SLIDE 7 | cta: TITLE = grande promesse. TEXT = 2–3 bénéfices courts.
+
+Exemple:
+SLIDE 1 | hook
+TITLE: Teste tes maths en 4 questions
+VISUEL: Composition épurée bleu/blanc, cartes quiz empilées avec points d'interrogation stylisés (aucun texte lisible), fond clair, espace vide en bas.
+TEXT: Glisse pour voir si tu es au niveau.
+---
+SLIDE 2 | katex
+TITLE: Qu'est-ce qu'une dérivée ?
+VISUEL: Tableau blanc avec courbe esquissée en flouté, craie, ambiance salle de classe premium.
+TEXT: A) La vitesse de variation d'une fonction
+TEXT: B) L'aire sous une courbe
+TEXT: C) Un type d'équation
+---
+SLIDE 7 | cta
+TITLE: Envie de tout maîtriser ?
+VISUEL: Écran OptiTAB flouté avec cartes chapitres, ambiance studieuse premium.
+TEXT: Cours, fiches et exercices au même endroit.
+TEXT: Accès immédiat, sans engagement.
+---
+CAROUSEL_DESCRIPTION:
+Tu as répondu à toutes les questions ? Découvre toutes les notions en détail sur OptiTAB.
+
+Des cours clairs, des fiches de synthèse et des exercices corrigés pour progresser en maths.
+
+Abonnement sans engagement — accès immédiat.
+
+Rejoins-nous sur optitab.net.
+
+#optitab #maths #quiz #revision #lycee
+END_CAROUSEL_DESCRIPTION
+`
+
+const CAROUSEL_FORMAT_TIPS = `FORMAT CARROUSEL CONSEILS & ASTUCES
+
+Objectif:
+- Carrousel "X astuces / méthodes / erreurs" ultra lisible et partageables.
+- Chaque slide de contenu = 1 conseil autonome, compréhensible en 2 secondes.
+- But: save + partage + trafic vers optitab.net.
+- 7 slides : cover → 5 conseils → cta.
+
+ÉLÉMENTS AUTO-AJOUTÉS (NE LES ÉCRIS PAS):
+- Logo, numéro, "optitab.net" footer, boutons Glisse/CTA.
+
+Structure:
+SLIDE <n> | <type>
+TITLE: <titre du conseil ou numéro>
+VISUEL: <description image IA sans texte>
+TEXT: <explication courte — 1 puce = 1 TEXT:>
+---
+
+Architecture (7 slides):
+- SLIDE 1 | hook: TITLE = accroche "X astuces pour…". TEXT = 1 promesse courte.
+- SLIDE 2–6 | katex: 1 astuce/conseil par slide. TITLE = intitulé de l'astuce. TEXT = 1–3 lignes max.
+- SLIDE 7 | cta: TITLE = promesse finale. TEXT = 2–3 bénéfices.
+
+Exemple:
+SLIDE 1 | hook
+TITLE: 5 astuces pour réviser les maths efficacement
+VISUEL: Compositions de fiches stylisées bleu/blanc, cahier propre, stylo, lumière froide premium, espace vide bas.
+TEXT: Des méthodes simples qui changent tout.
+---
+SLIDE 2 | katex
+TITLE: Commence par la méthode, pas l'exercice
+VISUEL: Mockup fiche méthode OptiTAB (texte flouté), repères visuels colorés, fond blanc épuré.
+TEXT: Lire la méthode avant de faire l'exercice = 2× plus efficace.
+TEXT: Tu évites les erreurs de départ.
+---
+SLIDE 7 | cta
+TITLE: Mets ces conseils en pratique dès aujourd'hui
+VISUEL: Élève de dos devant écran OptiTAB (flouté), ambiance studieuse, lumière confiante.
+TEXT: Cours + fiches + corrections au même endroit.
+TEXT: Accès immédiat, sans engagement.
+---
+CAROUSEL_DESCRIPTION:
+Ces 5 astuces peuvent vraiment changer ta façon de réviser les maths.
+
+Chez OptiTAB, on a structuré toute la méthode pour toi : cours clairs, fiches de synthèse, exercices corrigés pas à pas.
+
+Sans engagement, accès immédiat sur optitab.net.
+
+#optitab #maths #astuces #revision #methode
+END_CAROUSEL_DESCRIPTION
+`
+
+const CAROUSEL_FORMAT_AVANTAPRES = `FORMAT CARROUSEL AVANT / APRÈS (TRANSFORMATION)
+
+Objectif:
+- Montrer la transformation que vit un élève grâce à OptiTAB.
+- Contraste fort : "avant" = douleur / galère → "après" = clarté / confiance.
+- 7 slides : cover → 3 slides "avant" → 2 slides "après" → cta.
+
+ÉLÉMENTS AUTO-AJOUTÉS (NE LES ÉCRIS PAS):
+- Logo, numéro, footer URL, boutons auto.
+
+Structure:
+SLIDE <n> | <type>
+TITLE: <titre percutant>
+VISUEL: <description image IA sans texte>
+TEXT: <ligne courte — 1 TEXT: = 1 puce>
+---
+
+Architecture (7 slides):
+- SLIDE 1 | hook: TITLE = accroche sur la douleur ou la transformation. TEXT = 1 promesse.
+- SLIDE 2 | katex: AVANT 1 — La situation avant. TITLE négatif / frustration. TEXT = 2–3 symptômes.
+- SLIDE 3 | katex: AVANT 2 — Les conséquences. TITLE = ce que ça coûte. TEXT = 2–3 lignes.
+- SLIDE 4 | katex: AVANT 3 — La cause racine. TITLE = pourquoi ça arrive. TEXT = 1–2 lignes.
+- SLIDE 5 | katex: APRÈS 1 — La solution. TITLE = ce qui change. TEXT = 2–3 lignes.
+- SLIDE 6 | katex: APRÈS 2 — Le résultat concret. TITLE = bénéfice chiffré ou visuel. TEXT = 3–4 bénéfices.
+- SLIDE 7 | cta: TITLE = invitation à la transformation. TEXT = 2–3 bénéfices + urgence douce.
+
+Exemple:
+SLIDE 1 | hook
+TITLE: Avant OptiTAB vs. Après OptiTAB
+VISUEL: Composition deux zones distinctes — côté gauche flouté/sombre (cahier en désordre), côté droit lumineux/épuré (interface OptiTAB), séparation nette, espace texte en bas.
+TEXT: Ce que ça change vraiment.
+---
+SLIDE 2 | katex
+TITLE: Tu révises mais rien ne rentre
+VISUEL: Bureau encombré, plusieurs PDF ouverts, cahier avec ratures, ambiance fatigue, palette gris-bleu désaturé.
+TEXT: Des cours partout, aucune méthode claire.
+TEXT: Tu refais les mêmes erreurs sans comprendre pourquoi.
+TEXT: Tu perds du temps à chercher les bons docs.
+---
+SLIDE 7 | cta
+TITLE: Ta progression commence maintenant
+VISUEL: Écran OptiTAB flouté, ambiance lumineuse confiante, smartphone + ordinateur, espace vide central.
+TEXT: Cours + fiches + corrections au même endroit.
+TEXT: Choisis ton niveau en 30 secondes.
+TEXT: Sans engagement, résiliable à tout moment.
+---
+CAROUSEL_DESCRIPTION:
+Avant OptiTAB : trop d'onglets, aucune méthode, des révisions inefficaces.
+
+Après OptiTAB : une progression structurée, des cours clairs et des exercices corrigés pas à pas.
+
+La différence ? Une plateforme pensée pour toi.
+
+Abonnement sans engagement sur optitab.net.
+
+#optitab #maths #avantapres #revision #lycee
+END_CAROUSEL_DESCRIPTION
+`
+
+const CAROUSEL_FORMAT_STORYTELLING = `FORMAT CARROUSEL STORYTELLING / NARRATIF
+
+Objectif:
+- Raconter une histoire courte et émotionnelle qui aboutit sur OptiTAB.
+- Format narratif = personnage → problème → tournant → solution → résultat → invitation.
+- 7 slides : setup → tension → tournant → résolution → preuve → bénéfice → cta.
+
+ÉLÉMENTS AUTO-AJOUTÉS (NE LES ÉCRIS PAS):
+- Logo, numéro, footer, boutons auto.
+
+Structure:
+SLIDE <n> | <type>
+TITLE: <titre de l'acte>
+VISUEL: <image IA sans texte — doit refléter l'émotion du moment>
+TEXT: <narration courte — 1 TEXT: = 1 phrase/puce>
+---
+
+Architecture (7 slides):
+- SLIDE 1 | hook: SETUP. TITLE = accroche narrative forte. TEXT = présentation du personnage / contexte.
+- SLIDE 2 | katex: TENSION. TITLE = le problème. TEXT = frustrations concrètes.
+- SLIDE 3 | katex: POINT DE RUPTURE. TITLE = le déclic. TEXT = ce qui a tout changé.
+- SLIDE 4 | katex: DÉCOUVERTE. TITLE = découverte d'OptiTAB. TEXT = ce qu'il a trouvé.
+- SLIDE 5 | katex: RÉSULTAT. TITLE = ce qui a changé concrètement. TEXT = 3–4 résultats mesurables.
+- SLIDE 6 | katex: LEÇON. TITLE = la leçon universelle. TEXT = 2–3 phrases inspirantes.
+- SLIDE 7 | cta: INVITATION. TITLE = et toi ? TEXT = 2–3 bénéfices + appel à l'action doux.
+
+Exemple:
+SLIDE 1 | hook
+TITLE: Il avait 8 en maths en seconde
+VISUEL: Silhouette d'élève de dos devant un bureau, lumière d'écran, ambiance soir studieux, palette bleu froid.
+TEXT: Aujourd'hui il est en prépa.
+TEXT: Voici ce qui a tout changé.
+---
+SLIDE 7 | cta
+TITLE: Et toi, tu commences quand ?
+VISUEL: Écran OptiTAB flouté avec interface chapitres, ambiance lumineuse motivante.
+TEXT: Accès immédiat à tous les cours.
+TEXT: Avance à ton rythme, sans pression.
+TEXT: Sans engagement.
+---
+CAROUSEL_DESCRIPTION:
+Une méthode claire peut tout changer.
+
+Chez OptiTAB, on accompagne les élèves avec des cours structurés, des fiches de synthèse et des exercices corrigés pas à pas.
+
+Rejoins des milliers d'élèves qui ont repris confiance en maths.
+
+Accès immédiat, sans engagement — optitab.net.
+
+#optitab #maths #motivation #revision #reussite
+END_CAROUSEL_DESCRIPTION
+`
+
+const CAROUSEL_FORMAT_NOTION = `FORMAT CARROUSEL NOTION PÉDAGOGIQUE
+
+Objectif:
+- Expliquer une notion de maths en 7 slides claires et pédagogiques.
+- Chaque slide = 1 étape de compréhension. Peut inclure des formules (KaTeX).
+- But: crédibilité / valeur ajoutée → envie de s'abonner à OptiTAB.
+
+ÉLÉMENTS AUTO-AJOUTÉS (NE LES ÉCRIS PAS):
+- Logo, numéro, footer, boutons auto.
+
+Structure:
+SLIDE <n> | <type>
+TITLE: <titre de l'étape>
+VISUEL: <image IA sans texte>
+TEXT: <explication courte — 1 TEXT: = 1 puce>
+KATEX: <formule LaTeX si pertinent — facultatif>
+---
+
+Architecture (7 slides):
+- SLIDE 1 | hook: TITLE = titre de la notion + accroche. TEXT = 1 promesse pédagogique.
+- SLIDE 2 | katex: DÉFINITION. TITLE + 1–2 TEXT + 1 KATEX (définition formelle).
+- SLIDE 3 | katex: INTUITION / VISUALISATION. TITLE + 2 TEXT — l'idée géométrique ou physique.
+- SLIDE 4 | katex: FORMULE CLÉ. TITLE + KATEX principal. TEXT = lecture de la formule.
+- SLIDE 5 | katex: MÉTHODE PAS À PAS. TITLE + 3–4 TEXT (étapes numérotées).
+- SLIDE 6 | katex: EXEMPLE RÉSOLU. TITLE + KATEX intermédiaires + TEXT.
+- SLIDE 7 | cta: TITLE = invitation à aller plus loin. TEXT = 2–3 bénéfices.
+
+Exemple:
+SLIDE 1 | hook
+TITLE: La dérivée en 6 slides
+VISUEL: Courbe mathématique esquissée sur tableau blanc épuré (flouté, sans texte lisible), couleurs OptiTAB, espace vide bas.
+TEXT: Comprendre le concept une fois pour toutes.
+---
+SLIDE 4 | katex
+TITLE: La formule fondamentale
+VISUEL: Fiche méthode stylisée (texte flouté), repère visuel bleu, fond blanc.
+KATEX: f'(x)=\\lim_{h\\to 0}\\frac{f(x+h)-f(x)}{h}
+TEXT: Le taux de variation quand h tend vers 0.
+---
+SLIDE 7 | cta
+TITLE: Maîtrise toutes les notions du lycée
+VISUEL: Interface OptiTAB floutée avec liste de chapitres, ambiance studieuse premium.
+TEXT: +150 chapitres complets disponibles.
+TEXT: Cours, fiches et exercices corrigés.
+TEXT: Accès immédiat, sans engagement.
+---
+CAROUSEL_DESCRIPTION:
+Tu veux vraiment comprendre les maths, pas juste mémoriser ?
+
+OptiTAB propose +150 chapitres complets : cours clairs, fiches de synthèse, exercices corrigés pas à pas.
+
+Rejoins la plateforme et progresse à ton rythme.
+
+Abonnement sans engagement — optitab.net.
+
+#optitab #maths #cours #derivee #lycee
+END_CAROUSEL_DESCRIPTION
+`
+
+const CAROUSEL_FORMATS = [
+  {
+    id: 'marketing',
+    label: 'Marketing / Conversion',
+    icon: '🚀',
+    description: 'Présenter OptiTAB, convertir en abonnés',
+    template: CAROUSEL_FORMAT_TEMPLATE,
+  },
+  {
+    id: 'notion',
+    label: 'Notion pédagogique',
+    icon: '📐',
+    description: 'Expliquer une notion de maths en 7 slides',
+    template: CAROUSEL_FORMAT_NOTION,
+  },
+  {
+    id: 'tips',
+    label: 'Conseils & Astuces',
+    icon: '💡',
+    description: '5 conseils / méthodes — très partageable',
+    template: CAROUSEL_FORMAT_TIPS,
+  },
+  {
+    id: 'quiz',
+    label: 'Quiz / QCM',
+    icon: '🎯',
+    description: '4 questions + reveal — engagement max',
+    template: CAROUSEL_FORMAT_QUIZ,
+  },
+  {
+    id: 'avantapres',
+    label: 'Avant / Après',
+    icon: '🔄',
+    description: 'Transformation émotionnelle — save & share',
+    template: CAROUSEL_FORMAT_AVANTAPRES,
+  },
+  {
+    id: 'story',
+    label: 'Storytelling',
+    icon: '📖',
+    description: 'Histoire narrative avec personnage — émotion',
+    template: CAROUSEL_FORMAT_STORYTELLING,
+  },
+]
+
 const TEMPLATE_PLACEHOLDERS = Object.freeze({
   reel: `MODE AUTO (IA décide le nombre de slides)
 TITLE: Dérivation produit
@@ -1479,7 +1844,6 @@ const filteredGeminiModels = computed(() => {
   }
   return matches
 })
-const geminiRecentUsage = computed(() => Array.isArray(geminiUsage.value?.recent) ? geminiUsage.value.recent : [])
 const geminiRemainingLabel = computed(() => {
   if (geminiUsage.value?.display_remaining === null || geminiUsage.value?.display_remaining === undefined) {
     return 'Budget non défini'
@@ -2373,18 +2737,6 @@ function formatGeminiMoney(value) {
   }).format(amount)
 }
 
-function formatDateTime(value) {
-  if (!value) return ''
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return ''
-  return new Intl.DateTimeFormat('fr-FR', {
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date)
-}
-
 function modelLabel(model) {
   const label = model?.display_name || model?.id || ''
   const inputPrice = model?.input_price_per_1m_tokens
@@ -2420,7 +2772,6 @@ function applyGeminiOptions(payload) {
       display_remaining: payload.usage.display_remaining ?? null,
       eur_per_usd: payload.usage.eur_per_usd || 0.92,
       usage_count: payload.usage.usage_count || 0,
-      recent: Array.isArray(payload.usage.recent) ? payload.usage.recent : [],
     }
   }
 }
@@ -2844,7 +3195,47 @@ async function selectProject(projectId) {
   }
 }
 
-async function handleGenerateCarouselWithGemini(payload) {
+function handleGenerateCarouselWithGemini(payload) {
+  if (!selectedProject.value?.id || !isCarouselProject.value) return
+  pendingGeneratePayload.value = payload || null
+  geminiImageDialogMode.value = 'generate'
+  geminiImageDialogOpen.value = true
+}
+
+function handleRegenerateCarouselImages() {
+  if (!selectedProject.value?.id || !canRegenerateCarouselImages.value) return
+  pendingGeneratePayload.value = null
+  geminiImageDialogMode.value = 'regenerate'
+  geminiImageDialogOpen.value = true
+}
+
+function closeGeminiImageDialog() {
+  geminiImageDialogOpen.value = false
+  pendingGeneratePayload.value = null
+}
+
+function handleGeminiImageDialogConfirm({ carouselType, strategy, useReferences } = {}) {
+  const safeType = carouselType || 'marketing'
+  const safeStrategy = strategy || 'hook_cta'
+  const safeUseReferences = useReferences !== false
+  lastGeminiCarouselType.value = safeType
+  lastGeminiSlideStrategy.value = safeStrategy
+  lastGeminiUseReferences.value = safeUseReferences
+  geminiImageDialogOpen.value = false
+  if (geminiImageDialogMode.value === 'regenerate') {
+    runRegenerateCarouselImages({ carouselType: safeType, strategy: safeStrategy, useReferences: safeUseReferences })
+  } else {
+    runGenerateCarouselWithGemini({
+      payload: pendingGeneratePayload.value,
+      carouselType: safeType,
+      strategy: safeStrategy,
+      useReferences: safeUseReferences,
+    })
+    pendingGeneratePayload.value = null
+  }
+}
+
+async function runGenerateCarouselWithGemini({ payload, carouselType, strategy, useReferences }) {
   if (!selectedProject.value?.id || !isCarouselProject.value) return
 
   generatingCarouselGemini.value = true
@@ -2853,7 +3244,10 @@ async function handleGenerateCarouselWithGemini(payload) {
       prompt: buildCarouselGeminiPrompt(payload?.prompt),
       model_id: selectedGeminiModelId.value || DEFAULT_GEMINI_MODEL_ID,
       max_chars_per_line: 38,
-      generate_images: true,
+      generate_images: strategy !== 'none',
+      slide_image_strategy: strategy,
+      carousel_type: carouselType,
+      use_site_references: useReferences !== false,
     })
     const updatedProject = normalizeProject(response?.data?.project)
     const generatedTemplateText = String(response?.data?.template_text || '').trim()
@@ -2905,12 +3299,20 @@ async function handleGenerateCarouselWithGemini(payload) {
   }
 }
 
-async function handleRegenerateCarouselImages() {
+async function runRegenerateCarouselImages({ carouselType, strategy, useReferences } = {}) {
   if (!selectedProject.value?.id || !canRegenerateCarouselImages.value) return
+  if (strategy === 'none') {
+    setFeedback('info', 'Aucune image à générer (option "Aucune image" sélectionnée).')
+    return
+  }
 
   regeneratingCarouselImages.value = true
   try {
-    const response = await regenerateCarouselImages(selectedProject.value.id)
+    const response = await regenerateCarouselImages(selectedProject.value.id, {
+      slide_image_strategy: strategy || 'hook_cta',
+      carousel_type: carouselType || 'marketing',
+      use_site_references: useReferences !== false,
+    })
     const updatedProject = normalizeProject(response?.data?.project)
     if (response?.data?.gemini_summary) {
       geminiUsage.value = response.data.gemini_summary
@@ -2943,6 +3345,62 @@ async function handleRegenerateCarouselImages() {
     setFeedback('error', extractErrorMessage(error, 'Impossible de régénérer les images Gemini.'))
   } finally {
     regeneratingCarouselImages.value = false
+  }
+}
+
+async function handleGenerateSlideImage(payload) {
+  const slideId = Number(payload?.slideId || 0)
+  if (!slideId || !selectedProject.value?.id) {
+    payload?.onDone?.({ error: 'Aucune slide sélectionnée.' })
+    return
+  }
+
+  generatingImageSlideId.value = slideId
+  try {
+    const response = await generateReelSlideImage(slideId, {
+      prompt: payload?.prompt || '',
+      carousel_type: payload?.carouselType || 'marketing',
+      model_id: selectedGeminiModelId.value || DEFAULT_GEMINI_MODEL_ID,
+      use_site_references: payload?.useReferences !== false,
+    })
+
+    const updatedProject = normalizeProject(response?.data?.project)
+    if (updatedProject?.id) {
+      selectedProject.value = updatedProject
+      upsertProjectSummary(updatedProject)
+    }
+    if (response?.data?.gemini_summary) {
+      geminiUsage.value = response.data.gemini_summary
+    }
+    payload?.onDone?.({ ok: true })
+  } catch (error) {
+    const message = extractErrorMessage(error, 'Impossible de générer l\'image Gemini.')
+    setFeedback('error', message)
+    payload?.onDone?.({ error: message })
+  } finally {
+    generatingImageSlideId.value = null
+  }
+}
+
+async function handleClearSlideImage(payload) {
+  const slideId = Number(payload?.slideId || 0)
+  if (!slideId || !selectedProject.value?.id) {
+    payload?.onDone?.({ error: 'Aucune slide sélectionnée.' })
+    return
+  }
+
+  try {
+    const response = await clearReelSlideImage(slideId)
+    const updatedProject = normalizeProject(response?.data?.project)
+    if (updatedProject?.id) {
+      selectedProject.value = updatedProject
+      upsertProjectSummary(updatedProject)
+    }
+    payload?.onDone?.({ ok: true })
+  } catch (error) {
+    const message = extractErrorMessage(error, 'Impossible de supprimer l\'image.')
+    setFeedback('error', message)
+    payload?.onDone?.({ error: message })
   }
 }
 
@@ -3642,6 +4100,17 @@ onMounted(() => {
   padding: 10px 12px;
 }
 
+.btn-instructions {
+  background: linear-gradient(180deg, #f4f6ff 0%, #eef2ff 100%);
+  border-color: #c7d2fe;
+  color: #29428e;
+  font-weight: 700;
+}
+.btn-instructions:hover:not(:disabled) {
+  background: #eef2ff;
+  border-color: #29428e;
+}
+
 .gemini-usage-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3677,53 +4146,6 @@ onMounted(() => {
   color: #b91c1c;
   font-size: 13px;
   font-weight: 700;
-}
-
-.gemini-recent {
-  border-top: 1px solid #e2e8f0;
-  padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.gemini-recent > span {
-  color: #334155;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.gemini-recent ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 6px;
-}
-
-.gemini-recent li {
-  display: grid;
-  grid-template-columns: 90px minmax(0, 1fr) 90px;
-  align-items: center;
-  gap: 10px;
-  color: #475569;
-  font-size: 12px;
-}
-
-.gemini-recent li strong {
-  color: #0f172a;
-}
-
-.gemini-recent li span {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.gemini-recent li small {
-  color: #64748b;
-  text-align: right;
 }
 
 .btn-primary {
@@ -4315,15 +4737,6 @@ onMounted(() => {
 
   .gemini-usage-grid {
     grid-template-columns: 1fr;
-  }
-
-  .gemini-recent li {
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-
-  .gemini-recent li small {
-    text-align: left;
   }
 
   .voice-advanced-grid {

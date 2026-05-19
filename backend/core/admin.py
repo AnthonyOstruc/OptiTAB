@@ -315,7 +315,7 @@ class DiagnosticLeadAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (_('Lead'), {
-            'fields': ('email', 'first_name', 'level', 'difficulty', 'form_location', 'lead_magnet')
+            'fields': ('email', 'first_name', 'level', 'difficulty', 'difficulty_other', 'form_location', 'lead_magnet')
         }),
         (_('Consentement RGPD'), {
             'fields': ('consent_email_marketing', 'consent_timestamp', 'consent_ip'),
@@ -368,6 +368,7 @@ class DiagnosticLeadAdmin(admin.ModelAdmin):
             'first_name',
             'level',
             'difficulty',
+            'difficulty_other',
             'consent_email_marketing',
             'consent_timestamp',
             'consent_ip',
@@ -395,6 +396,7 @@ class DiagnosticLeadAdmin(admin.ModelAdmin):
                 lead.first_name,
                 lead.get_level_display(),
                 lead.get_difficulty_display(),
+                lead.difficulty_other,
                 'oui' if lead.consent_email_marketing else 'non',
                 lead.consent_timestamp.isoformat() if lead.consent_timestamp else '',
                 lead.consent_ip or '',

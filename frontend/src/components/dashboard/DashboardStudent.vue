@@ -23,18 +23,21 @@
 
     <!-- Notification de reset gamification désactivée -->
     
-    <div class="dashboard-center-top">
+    <div class="dashboard-hero">
       <div v-if="userStore.isLoading" class="dashboard-spinner">
         <span class="spinner"></span>
       </div>
-      <h1 v-else>
-        Bienvenue {{ userStore.firstName }} sur votre tableau de bord
-      </h1>
+      <template v-else>
+        <h1 class="dashboard-hero-title">
+          Bienvenue <span class="dashboard-hero-name">{{ userStore.firstName }}</span>
+        </h1>
+        <p class="dashboard-hero-subtitle">Voici votre tableau de bord — bon travail !</p>
+      </template>
     </div>
 
     <!-- Notifications de corrections en attente -->
     <PendingCorrections />
-    
+
     <!-- Classement + Niveau + Objectifs -->
     <div class="section leaderboard-section">
       <div class="leaderboard-grid">
@@ -367,11 +370,35 @@ watch(shouldShowSubscriptionPrompt, (canShow) => {
   padding-bottom: 40px;
 }
 
-.dashboard-center-top {
+.dashboard-hero {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
+  text-align: center;
+  margin: 0.5rem 0 1.75rem;
+  padding: 1.25rem 1rem 0;
+}
+
+.dashboard-hero-title {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.dashboard-hero-name {
+  background: linear-gradient(135deg, #2563eb 0%, #6366f1 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.dashboard-hero-subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
 .dashboard-spinner {
@@ -507,13 +534,13 @@ watch(shouldShowSubscriptionPrompt, (canShow) => {
 /* Quick actions */
 /* Leaderboard section */
 .leaderboard-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .leaderboard-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: 1.75rem;
   align-items: start;
 }
 
@@ -585,7 +612,7 @@ watch(shouldShowSubscriptionPrompt, (canShow) => {
 .progress-bar.small { height: 8px; margin-top: 6px; }
 
 /* Sections */
-.section { margin-top: 1.25rem; }
+.section { margin-top: 1.75rem; }
 .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: .5rem; }
 .section-title { margin:0; font-size:1.1rem; font-weight:800; color:#1f2937; }
 
@@ -630,11 +657,20 @@ watch(shouldShowSubscriptionPrompt, (canShow) => {
 @media (max-width: 1000px) {
   .leaderboard-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 }
 
 @media (max-width: 768px) {
   .quick-grid { grid-template-columns: 1fr; }
+
+  .dashboard-hero {
+    margin: 0.25rem 0 1.25rem;
+    padding: 0.75rem 0.5rem 0;
+  }
+
+  .dashboard-hero-subtitle {
+    font-size: 0.88rem;
+  }
 }
 </style>

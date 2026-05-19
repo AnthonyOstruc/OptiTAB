@@ -141,6 +141,7 @@ class DiagnosticLead(BaseModel):
         ('methode', 'Pas de méthode claire'),
         ('bac', 'Préparation Bac'),
         ('motivation', 'Motivation'),
+        ('autre', 'Autre (texte libre)'),
     ]
 
     FORM_LOCATION_CHOICES = [
@@ -154,6 +155,7 @@ class DiagnosticLead(BaseModel):
     first_name = models.CharField(max_length=120, blank=True, default="", verbose_name="Prénom")
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, db_index=True, verbose_name="Niveau")
     difficulty = models.CharField(max_length=30, choices=DIFFICULTY_CHOICES, db_index=True, verbose_name="Difficulté principale")
+    difficulty_other = models.TextField(max_length=1000, blank=True, default="", verbose_name="Difficulté précisée (texte libre)")
 
     # Consentement RGPD
     consent_email_marketing = models.BooleanField(default=False, verbose_name="Consentement marketing email")

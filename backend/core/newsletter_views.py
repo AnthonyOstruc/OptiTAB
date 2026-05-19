@@ -131,6 +131,7 @@ def diagnostic_lead(request):
     first_name = (data.get('firstName') or '').strip()
     level = (data.get('level') or '').strip().lower()
     difficulty = (data.get('difficulty') or '').strip().lower()
+    difficulty_other = (data.get('difficultyOther') or '').strip()
     consent = bool(data.get('consentEmailMarketing'))
     form_location = (data.get('formLocation') or 'main').strip().lower()
     lead_magnet = (data.get('leadMagnet') or 'diagnostic_maths').strip().lower()
@@ -148,8 +149,14 @@ def diagnostic_lead(request):
         errors['level'] = "Niveau invalide"
     if difficulty not in _VALID_DIFFICULTIES:
         errors['difficulty'] = "Difficulté invalide"
+    if difficulty == 'autre' and not difficulty_other:
+        errors['difficultyOther'] = "Précise ta difficulté"
     if errors:
         return ResponseService.validation_error(errors)
+
+    # Texte libre : requis si difficulty='autre' (validé plus haut),
+    # facultatif sinon (contexte additionnel). On limite la taille dans tous les cas.
+    difficulty_other = difficulty_other[:1000]
 
     if form_location not in _VALID_FORM_LOCATIONS:
         form_location = 'main'
@@ -176,6 +183,7 @@ def diagnostic_lead(request):
             first_name=first_name[:120],
             level=level,
             difficulty=difficulty,
+            difficulty_other=difficulty_other,
             consent_email_marketing=consent,
             consent_timestamp=consent_timestamp,
             consent_ip=ip,
@@ -199,6 +207,17 @@ def diagnostic_lead(request):
             message="Une erreur est survenue. Réessaie dans quelques secondes.",
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
+    # Email transactionnel de confirmation : envoyé à TOUS les leads, qu'ils
+    # aient ou non opt-in marketing. C'est l'objet même de la demande
+    # (RGPD : base légale = exécution de la prestation demandée).
+    diagnostic_email_sent = False
+    try:
+        diagnostic_email_sent = EmailService.send_diagnostic_confirmation(lead)
+        if diagnostic_email_sent:
+            lead.mark_diagnostic_sent(save=True)
+    except Exception as exc:
+        logger.warning("Email diagnostic transactionnel non envoyé pour %s : %s", email, exc)
 
     # Si l'utilisateur a coché l'opt-in marketing, on l'ajoute aussi à la
     # newsletter (réutilise la mécanique existante : email de bienvenue +

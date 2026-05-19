@@ -1016,6 +1016,159 @@ class EmailService:
             return False
 
     @staticmethod
+    def send_diagnostic_confirmation(lead) -> bool:
+        """Envoie l'email transactionnel de confirmation du diagnostic.
+
+        Envoyé à chaque soumission de DiagnosticLead, indépendamment du
+        consentement marketing (email transactionnel : objet de la demande).
+        Contient un récap personnalisé + l'annonce que le diagnostic complet
+        arrive sous 24h (en attendant l'automation Brevo).
+        """
+        try:
+            to_email = getattr(lead, 'email', None) or ''
+            if not to_email:
+                return False
+
+            first_name = (getattr(lead, 'first_name', '') or '').strip() or 'cher élève'
+            level_label = lead.get_level_display() if hasattr(lead, 'get_level_display') else (getattr(lead, 'level', '') or '')
+            difficulty_label = lead.get_difficulty_display() if hasattr(lead, 'get_difficulty_display') else (getattr(lead, 'difficulty', '') or '')
+            difficulty_other = (getattr(lead, 'difficulty_other', '') or '').strip()
+            frontend_url = getattr(settings, 'FRONTEND_URL', getattr(settings, 'FRONTEND_BASE_URL', 'https://www.optitab.net')).rstrip('/')
+            logo_url = EmailService._resolve_logo_url()
+
+            subject = f"Ton diagnostic OptiTAB arrive, {first_name}"
+
+            difficulty_block_text = difficulty_label or ''
+            if difficulty_other and (getattr(lead, 'difficulty', '') == 'autre'):
+                # Pour "autre", le texte libre remplace l'étiquette générique.
+                difficulty_block_text = difficulty_other
+            extra_context_text = ''
+            if difficulty_other and (getattr(lead, 'difficulty', '') != 'autre'):
+                # Sinon, on l'affiche comme contexte additionnel.
+                extra_context_text = difficulty_other
+
+            extra_line = f"• Contexte ajouté : {extra_context_text}\n" if extra_context_text else ""
+            text_body = (
+                f"Bonjour {first_name},\n\n"
+                "Merci d'avoir demandé ton diagnostic OptiTAB. Voici ce qu'on a noté :\n\n"
+                f"• Niveau : {level_label}\n"
+                f"• Difficulté principale : {difficulty_block_text}\n"
+                f"{extra_line}\n"
+                "Ce qui se passe ensuite :\n"
+                "1. On prépare ton diagnostic personnalisé (priorités, plan 7 jours, méthode).\n"
+                "2. Tu le reçois par email sous 24h.\n"
+                "3. En attendant, tu peux découvrir la plateforme : "
+                f"{frontend_url}/plateforme-maths\n\n"
+                "Si tu as une question, réponds simplement à cet email.\n\n"
+                "À très vite,\n"
+                "L'équipe OptiTAB\n"
+                "www.optitab.net"
+            )
+
+            difficulty_html = ''
+            if difficulty_block_text:
+                difficulty_html = (
+                    f'<tr><td style="padding:8px 14px;border:1px solid #d6e1ff;border-radius:10px;'
+                    f'background:#f5f8ff;color:#1e3a8a;font-size:14px;font-weight:600">'
+                    f'Difficulté&nbsp;: <span style="color:#0f172a;font-weight:500">{difficulty_block_text}</span>'
+                    f'</td></tr>'
+                )
+
+            extra_context_html = ''
+            if extra_context_text:
+                extra_context_html = (
+                    f'<tr><td style="height:8px;line-height:8px">&nbsp;</td></tr>'
+                    f'<tr><td style="padding:10px 14px;border:1px dashed #d6e1ff;border-radius:10px;'
+                    f'background:#fbfcfe;color:#475569;font-size:13px;line-height:1.5;font-style:italic">'
+                    f'<span style="color:#1e3a8a;font-style:normal;font-weight:700">Contexte&nbsp;ajouté&nbsp;:</span> '
+                    f'{extra_context_text}'
+                    f'</td></tr>'
+                )
+
+            level_html = ''
+            if level_label:
+                level_html = (
+                    f'<tr><td style="padding:8px 14px;border:1px solid #d6e1ff;border-radius:10px;'
+                    f'background:#f5f8ff;color:#1e3a8a;font-size:14px;font-weight:600;margin-bottom:8px">'
+                    f'Niveau&nbsp;: <span style="color:#0f172a;font-weight:500">{level_label}</span>'
+                    f'</td></tr><tr><td style="height:8px;line-height:8px">&nbsp;</td></tr>'
+                )
+
+            html_body = f"""
+                <div style="background:#f3f4f6;padding:24px 0">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%">
+                    <tr>
+                      <td align="center">
+                        <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="width:600px;max-width:100%;background:#ffffff;border:1px solid #e6ecf5;border-radius:14px;overflow:hidden">
+                          <tr>
+                            <td style="padding:24px 28px 0 28px">
+                              {f'<img src="{logo_url}" alt="OptiTAB" style="height:48px;width:auto;display:block"/>' if logo_url else ''}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:18px 28px 0 28px">
+                              <p style="margin:0;display:inline-block;padding:6px 12px;background:#eef4ff;color:#2a38b7;font-size:12px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;border-radius:999px">Diagnostic en cours</p>
+                              <h1 style="margin:14px 0 8px 0;font-size:22px;line-height:1.25;color:#1e3a8a;letter-spacing:-0.01em">Ton diagnostic OptiTAB arrive, {first_name}&nbsp;👋</h1>
+                              <p style="margin:0;color:#475569;font-size:15px;line-height:1.5">Merci pour ta demande. Voici ce qu'on a bien noté&nbsp;:</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:18px 28px 0 28px">
+                              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%">
+                                {level_html}
+                                {difficulty_html}
+                                {extra_context_html}
+                              </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:22px 28px 0 28px">
+                              <h2 style="margin:0 0 12px 0;font-size:15px;color:#0f172a;letter-spacing:-0.005em">Ce qui se passe maintenant</h2>
+                              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;font-size:14px;line-height:1.55;color:#1e293b">
+                                <tr><td style="padding:6px 0"><strong style="color:#2a38b7">1.</strong>&nbsp;&nbsp;On prépare ton diagnostic personnalisé : priorités, plan 7 jours, méthode.</td></tr>
+                                <tr><td style="padding:6px 0"><strong style="color:#2a38b7">2.</strong>&nbsp;&nbsp;Tu reçois ton diagnostic complet par email <strong>sous 24h</strong>.</td></tr>
+                                <tr><td style="padding:6px 0"><strong style="color:#2a38b7">3.</strong>&nbsp;&nbsp;En attendant, découvre la plateforme.</td></tr>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:22px 28px 8px 28px">
+                              <a href="{frontend_url}/plateforme-maths" style="display:inline-block;background:linear-gradient(180deg,#2f6df4 0%,#2155d8 100%);color:#ffffff;text-decoration:none;padding:13px 22px;border-radius:10px;font-weight:700;font-size:14px;border:1px solid #2a38b7">Découvrir OptiTAB</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:18px 28px 22px 28px">
+                              <p style="margin:0;color:#64748b;font-size:13px;line-height:1.55">Une question ? Réponds simplement à cet email, on lit toutes les réponses.</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="border-top:1px solid #e6ecf5;padding:16px 28px;color:#94a3b8;font-size:12px;line-height:1.5">
+                              Cet email transactionnel confirme ta demande de diagnostic sur OptiTAB.<br/>
+                              <a href="{frontend_url}" style="color:#2155d8;text-decoration:none">www.optitab.net</a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            """
+
+            email_msg = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[to_email],
+            )
+            email_msg.attach_alternative(html_body, "text/html")
+            email_msg.send(fail_silently=False)
+            logger.info("Email diagnostic transactionnel envoyé à %s (lead %s)", to_email, getattr(lead, 'id', '?'))
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi email diagnostic: %s", e)
+            return False
+
+    @staticmethod
     def render_newsletter_template(subject: str, content_html: str, unsubscribe_url: str) -> str:
         """Construit un HTML d'email avec entête (logo) et pied de page (désabonnement).
 

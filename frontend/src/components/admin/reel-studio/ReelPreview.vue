@@ -100,7 +100,7 @@
 
     <p v-if="!slidesForRender.length" class="empty-state">Aucune slide à afficher.</p>
 
-    <div v-else v-show="!isYoutubeFormat || !isFullscreen" class="reel-preview-list">
+    <div v-else v-show="!isYoutubeFormat || !isFullscreen" class="reel-preview-list" :style="carouselColorVars">
       <ReelSlidePreview
         v-for="slide in slidesForRender"
         :key="slide.id"
@@ -312,8 +312,10 @@
                   role="tab"
                   :aria-selected="String(carouselEditTab === 'text')"
                   @click="carouselEditTab = 'text'"
+                  aria-label="Texte"
+                  title="Texte"
                 >
-                  ✏️ Texte
+                  ✏️
                 </button>
                 <button
                   class="speech-tab"
@@ -322,8 +324,10 @@
                   role="tab"
                   :aria-selected="String(carouselEditTab === 'image')"
                   @click="carouselEditTab = 'image'"
+                  aria-label="Image"
+                  title="Image"
                 >
-                  🖼️ Image
+                  🖼️
                 </button>
               </div>
             </div>
@@ -410,6 +414,51 @@
                 placeholder="Ligne 1&#10;Ligne 2&#10;Ligne 3…"
                 @keydown.stop
               ></textarea>
+
+              <div
+                v-if="carouselTextDraftLines.length"
+                class="carousel-align-rows"
+              >
+                <div
+                  v-for="(line, i) in carouselTextDraftLines"
+                  :key="`txt-${i}`"
+                  class="carousel-align-row"
+                >
+                  <span class="carousel-align-row__preview">{{ stripLinePrefix(line) || '(vide)' }}</span>
+                  <div class="carousel-line-controls">
+                    <div class="carousel-align-btns">
+                      <button
+                        v-for="al in ['left','center','right']"
+                        :key="al"
+                        type="button"
+                        class="carousel-align-btn"
+                        :class="{ 'carousel-align-btn--active': getLineAlign(line) === al }"
+                        :title="al"
+                        @click="setTextLineAlign(i, al)"
+                      >
+                        <svg v-if="al==='left'" viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                        <svg v-else-if="al==='center'" viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M4 8h8M3 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                        <svg v-else viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M6 8h8M4 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="carousel-line-sep" aria-hidden="true"></span>
+                    <div class="carousel-color-btns">
+                      <button
+                        v-for="preset in TITLE_COLOR_PRESETS"
+                        :key="preset.value ?? 'reset'"
+                        type="button"
+                        class="carousel-color-btn"
+                        :class="{ 'carousel-color-btn--active': getLineColor(line) === preset.value }"
+                        :style="preset.value ? { background: preset.value, border: '2px solid transparent' } : {}"
+                        :title="preset.label"
+                        @click="setTextLineColor(i, getLineColor(line) === preset.value ? null : preset.value)"
+                      >
+                        <span v-if="!preset.value" class="carousel-color-reset-icon">↺</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <button
@@ -837,6 +886,62 @@
               <button class="size-reset" type="button" @click="resetActiveTextSize">Reset</button>
             </div>
 
+            <div
+              v-if="activeSlideIsQuiz"
+              class="fullscreen-control-group"
+              aria-label="Espacement entre les options du quiz"
+            >
+              <span class="control-label">Quiz</span>
+              <button class="size-button" type="button" @click="decreaseActiveQuizGap">Q-</button>
+              <span class="size-value">{{ activeQuizGapLabel }}</span>
+              <button class="size-button" type="button" @click="increaseActiveQuizGap">Q+</button>
+              <button class="size-reset" type="button" @click="resetActiveQuizGap">Reset</button>
+            </div>
+
+            <div
+              v-if="isCarouselFormat"
+              class="fullscreen-control-group fullscreen-control-group--colors"
+              aria-label="Couleurs du carrousel"
+            >
+              <span class="control-label">Couleur titre</span>
+              <div class="carousel-color-btns carousel-color-btns--sidebar">
+                <button
+                  v-for="preset in CAROUSEL_COLOR_PALETTE"
+                  :key="`title-${preset.value || 'default'}`"
+                  type="button"
+                  class="carousel-color-btn"
+                  :class="{ 'carousel-color-btn--active': carouselTitleColor === preset.value }"
+                  :style="preset.value ? { background: preset.value, border: '2px solid transparent' } : {}"
+                  :title="preset.label"
+                  @click="setCarouselColor('title', preset.value)"
+                >
+                  <span v-if="!preset.value" class="carousel-color-reset-icon">↺</span>
+                </button>
+              </div>
+            </div>
+
+            <div
+              v-if="isCarouselFormat"
+              class="fullscreen-control-group fullscreen-control-group--colors"
+              aria-label="Couleurs du carrousel"
+            >
+              <span class="control-label">Couleur texte</span>
+              <div class="carousel-color-btns carousel-color-btns--sidebar">
+                <button
+                  v-for="preset in CAROUSEL_COLOR_PALETTE"
+                  :key="`text-${preset.value || 'default'}`"
+                  type="button"
+                  class="carousel-color-btn"
+                  :class="{ 'carousel-color-btn--active': carouselTextColor === preset.value }"
+                  :style="preset.value ? { background: preset.value, border: '2px solid transparent' } : {}"
+                  :title="preset.label"
+                  @click="setCarouselColor('text', preset.value)"
+                >
+                  <span v-if="!preset.value" class="carousel-color-reset-icon">↺</span>
+                </button>
+              </div>
+            </div>
+
             <div class="fullscreen-control-group" aria-label="Safe zone horizontale">
               <span class="control-label">Safe H</span>
               <button class="size-button" type="button" @click="decreaseSafeZoneX">H-</button>
@@ -1115,7 +1220,7 @@
 
           </div>
 
-          <div class="fullscreen-stage">
+          <div class="fullscreen-stage" :style="carouselColorVars">
             <button
               class="nav-arrow"
               type="button"
@@ -1221,12 +1326,17 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  project: {
+    type: Object,
+    default: () => ({}),
+  },
 })
 
 const emit = defineEmits([
   'select-slide',
   'diagnostic',
   'update-slide',
+  'update-project',
   'generate-slide-speech',
   'export-video',
   'update-pronunciation-overrides',
@@ -1563,6 +1673,49 @@ const safeZoneYPercent = computed(() => Math.round(getSafeZoneYScale(activeSlide
 const safeZoneYLabel = computed(() => getActiveSlideTypeLabel('Safe V'))
 const activeTitleSizePercent = computed(() => Math.round(getSlideScale(activeSlide.value?.title_scale) * 100))
 const activeTextSizePercent = computed(() => Math.round(getSlideScale(activeSlide.value?.screen_text_scale) * 100))
+const QUIZ_OPTION_LINE_RE = /^[A-D]\s*[\)\.\-:]/i
+function stripAlignAndColor(line) {
+  return String(line || '')
+    .replace(CAROUSEL_ALIGN_RE, '')
+    .replace(CAROUSEL_COLOR_RE, '')
+}
+const activeSlideIsQuiz = computed(() => {
+  const slide = activeSlide.value
+  if (!slide || !isCarouselFormat.value) return false
+  const order = Number(slide.order || 0)
+  const total = props.slides?.length || 0
+  if (order === 1 || order === total) return false
+  const raw = String(slide.screen_text || '')
+  return raw.split(/\r?\n/).some((line) => QUIZ_OPTION_LINE_RE.test(stripAlignAndColor(line).trim()))
+})
+const activeQuizGapEm = computed(() => {
+  const value = Number(activeSlide.value?.quiz_option_gap_em)
+  return Number.isFinite(value) ? value : 0.7
+})
+const activeQuizGapLabel = computed(() => `${activeQuizGapEm.value.toFixed(2)}em`)
+const CAROUSEL_COLOR_PALETTE = [
+  { value: '',        label: 'Défaut' },
+  { value: '#1c3070', label: 'Bleu foncé' },
+  { value: '#274ec3', label: 'Bleu OptiTAB' },
+  { value: '#244b9f', label: 'Bleu encre' },
+  { value: '#0b1733', label: 'Noir encre' },
+  { value: '#16a34a', label: 'Vert' },
+  { value: '#dc2626', label: 'Rouge' },
+  { value: '#ffffff', label: 'Blanc' },
+]
+const carouselTitleColor = computed(() => String(props.project?.carousel_title_color || '').trim())
+const carouselTextColor = computed(() => String(props.project?.carousel_text_color || '').trim())
+const carouselColorVars = computed(() => {
+  const style = {}
+  if (carouselTitleColor.value) style['--carousel-title-color'] = carouselTitleColor.value
+  if (carouselTextColor.value) style['--carousel-text-color'] = carouselTextColor.value
+  return style
+})
+function setCarouselColor(kind, color) {
+  if (!props.project?.id) return
+  const field = kind === 'title' ? 'carousel_title_color' : 'carousel_text_color'
+  emit('update-project', { id: props.project.id, patch: { [field]: color || '' } })
+}
 const activeSlideIndexLabel = computed(() => {
   if (!videoSlidesForRender.value.length || !activeSlide.value) return ''
   const videoIndex = videoSlidesForRender.value.findIndex((slide) => slide.id === activeSlide.value.id)
@@ -1600,6 +1753,7 @@ const carouselSlideImageGenerating = computed(() => (
 ))
 const carouselDraftDirty = computed(() => carouselTitleDraftDirty.value || carouselTextDraftDirty.value)
 const carouselTitleDraftLines = computed(() => carouselTitleDraft.value.split('\n'))
+const carouselTextDraftLines = computed(() => carouselTextDraft.value.split('\n'))
 const carouselEditSlideTypeLabel = computed(() => {
   const slide = activeSlide.value
   if (!slide) return ''
@@ -1644,6 +1798,27 @@ function setTitleLineColor(lineIndex, color) {
   const cleanText = afterAlign.replace(CAROUSEL_COLOR_RE, '')
   lines[lineIndex] = alignPrefix + (color ? `{${color}}` : '') + cleanText
   carouselTitleDraft.value = lines.join('\n')
+}
+
+function setTextLineAlign(lineIndex, align) {
+  const lines = carouselTextDraft.value.split('\n')
+  const raw = lines[lineIndex] ?? ''
+  const alignMatch = raw.match(CAROUSEL_ALIGN_RE)
+  const currentAlign = alignMatch ? alignMatch[1].toLowerCase() : null
+  const withoutAlign = alignMatch ? raw.slice(alignMatch[0].length) : raw
+  lines[lineIndex] = (currentAlign === align ? '' : `[${align}]`) + withoutAlign
+  carouselTextDraft.value = lines.join('\n')
+}
+
+function setTextLineColor(lineIndex, color) {
+  const lines = carouselTextDraft.value.split('\n')
+  const raw = lines[lineIndex] ?? ''
+  const alignMatch = raw.match(CAROUSEL_ALIGN_RE)
+  const alignPrefix = alignMatch ? alignMatch[0] : ''
+  const afterAlign = alignMatch ? raw.slice(alignMatch[0].length) : raw
+  const cleanText = afterAlign.replace(CAROUSEL_COLOR_RE, '')
+  lines[lineIndex] = alignPrefix + (color ? `{${color}}` : '') + cleanText
+  carouselTextDraft.value = lines.join('\n')
 }
 const activeKatexDraftDirty = computed(() => (
   normalizeKatexDraftForCompare(katexDraft.value) !== normalizeKatexDraftForCompare(katexDraftSavedValue.value)
@@ -3019,6 +3194,43 @@ function increaseActiveTextSize() {
 
 function resetActiveTextSize() {
   patchActiveEdgeSlideScale('screen_text_scale', 1)
+}
+
+function quizSlideIds() {
+  return (props.slides || [])
+    .filter((slide) => {
+      const order = Number(slide?.order || 0)
+      const total = props.slides?.length || 0
+      if (order === 1 || order === total) return false
+      const raw = String(slide?.screen_text || '')
+      return raw.split(/\r?\n/).some((line) => QUIZ_OPTION_LINE_RE.test(stripAlignAndColor(line).trim()))
+    })
+    .map((slide) => slide.id)
+    .filter((id) => id !== undefined && id !== null)
+}
+
+function patchActiveQuizGap(value) {
+  const clamped = Math.max(0, Math.min(2, Math.round(value * 100) / 100))
+  const ids = quizSlideIds()
+  if (!ids.length) return
+  ids.forEach((id) => {
+    emit('update-slide', {
+      id,
+      patch: { quiz_option_gap_em: clamped },
+    })
+  })
+}
+
+function decreaseActiveQuizGap() {
+  patchActiveQuizGap(activeQuizGapEm.value - 0.1)
+}
+
+function increaseActiveQuizGap() {
+  patchActiveQuizGap(activeQuizGapEm.value + 0.1)
+}
+
+function resetActiveQuizGap() {
+  patchActiveQuizGap(0.7)
 }
 
 function toggleActiveKatexLineMode() {
@@ -4854,6 +5066,13 @@ onBeforeUnmount(() => {
   background: rgba(255, 255, 255, 0.96);
   padding: 8px;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.22);
+}
+
+.carousel-color-btns--sidebar {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .control-label {

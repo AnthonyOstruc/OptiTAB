@@ -85,6 +85,8 @@ class ReelProject(models.Model):
     video_fps = models.PositiveIntegerField(default=30)
     pronunciation_overrides = models.JSONField(blank=True, default=list)
     pronunciation_overrides_by_voice = models.JSONField(blank=True, null=True, default=dict)
+    carousel_title_color = models.CharField(max_length=16, blank=True, default='')
+    carousel_text_color = models.CharField(max_length=16, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -149,6 +151,7 @@ class ReelSlide(models.Model):
     katex_inline_offset_percent = models.FloatField(default=0.0)
     katex_inline_vertical_offset_em = models.FloatField(default=0.0)
     katex_cumulative_gap_em = models.FloatField(default=0.4)
+    quiz_option_gap_em = models.FloatField(default=0.7)
     katex_reset_cumulative = models.BooleanField(default=False)
     katex_reset_keep_previous_line = models.BooleanField(default=True)
     katex_reveal_with_speech = models.BooleanField(default=False)

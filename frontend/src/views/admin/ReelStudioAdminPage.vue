@@ -94,9 +94,11 @@
               :pronunciation-overrides-by-voice="selectedProject?.pronunciation_overrides_by_voice || {}"
               :active-voice-id="selectedVoiceId"
               :voice-list="currentProviderVoices"
+              :project="selectedProject || {}"
               @select-slide="selectedSlideId = $event"
               @diagnostic="handleSlideDiagnostic"
               @update-slide="handlePatchSlide"
+              @update-project="handlePatchProjectInline"
               @generate-slide-speech="handleGenerateSlideSpeech"
               @export-video="handleExportVideo"
               @update-pronunciation-overrides="handleUpdatePronunciationOverrides"
@@ -1341,15 +1343,16 @@ END_CAROUSEL_DESCRIPTION
 const CAROUSEL_FORMAT_QUIZ = `FORMAT CARROUSEL QUIZ / QCM
 
 Objectif:
-- Carrousel interactif : pose 1 question par slide (sauf cover et réponse finale).
+- Carrousel interactif : pose 1 question par slide (sauf cover et reveal/cta).
 - But: engager l'audience (commentaires, saves, partages), teaser le contenu OptiTAB.
-- 7 slides : cover → 4 questions → 1 reveal des réponses → cta.
+- Nombre de slides FLEXIBLE: minimum 5, idéalement 7–10. Adapte selon le sujet.
+- Structure: cover → N questions (N ≥ 3) → 1 slide reveal des réponses → cta.
 - Aucune voix, aucun sous-titre.
 
 ÉLÉMENTS AUTO-AJOUTÉS (NE LES ÉCRIS PAS):
 - Logo OptiTAB en haut à gauche, numéro de slide en haut à droite.
 - "optitab.net" en bas (sauf cover).
-- Bouton "Glisse →" slide 1, bouton CTA slide 7.
+- Bouton "Glisse →" slide 1, bouton CTA dernière slide.
 
 Structure:
 SLIDE <n> | <type>
@@ -1358,14 +1361,17 @@ VISUEL: <description image IA sans texte>
 TEXT: <réponse / choix / reveal — 1 ligne = 1 puce>
 ---
 
-Architecture (7 slides):
+Architecture (nombre de slides variable):
 - SLIDE 1 | hook: TITLE = accroche style "Saurais-tu répondre ?". TEXT = 1 ligne teaser.
-- SLIDE 2 | katex: TITLE = 1ère question courte. TEXT = A) … / B) … / C) … (3 choix).
-- SLIDE 3 | katex: TITLE = 2e question. TEXT = 3 choix.
-- SLIDE 4 | katex: TITLE = 3e question. TEXT = 3 choix.
-- SLIDE 5 | katex: TITLE = 4e question. TEXT = 3 choix.
-- SLIDE 6 | katex: TITLE = "Les réponses 👇". TEXT = 1 ligne par réponse correcte + explication courte.
-- SLIDE 7 | cta: TITLE = grande promesse. TEXT = 2–3 bénéfices courts.
+- SLIDES 2 à N-1 | katex: chaque slide = 1 question. TITLE = la question courte. TEXT = A) … / B) … / C) … / D) … (3 ou 4 choix, A–D max). Ajoute autant de slides questions que nécessaire (3 minimum, jusqu'à 8 si le sujet le mérite).
+- AVANT-DERNIÈRE SLIDE | katex: TITLE = "Les réponses 👇". TEXT = 1 ligne par réponse correcte + explication courte.
+- DERNIÈRE SLIDE | cta: TITLE = grande promesse. TEXT = 2–3 bénéfices courts.
+
+Règles propositions:
+- Lettres autorisées: A, B, C, D uniquement (jamais E ni plus).
+- Format obligatoire pour chaque option: "X) contenu" où X ∈ {A, B, C, D}.
+- 3 choix minimum, 4 choix maximum par question.
+- Nombre de questions à toi de juger selon la profondeur du sujet (3 à 8 questions).
 
 Exemple:
 SLIDE 1 | hook
@@ -1379,8 +1385,9 @@ VISUEL: Tableau blanc avec courbe esquissée en flouté, craie, ambiance salle d
 TEXT: A) La vitesse de variation d'une fonction
 TEXT: B) L'aire sous une courbe
 TEXT: C) Un type d'équation
+TEXT: D) Une intégrale définie
 ---
-SLIDE 7 | cta
+SLIDE N | cta   (où N = numéro de la dernière slide)
 TITLE: Envie de tout maîtriser ?
 VISUEL: Écran OptiTAB flouté avec cartes chapitres, ambiance studieuse premium.
 TEXT: Cours, fiches et exercices au même endroit.
@@ -3762,6 +3769,28 @@ async function handleUpdatePronunciationOverridesByVoice({ voiceId, overrides })
   } catch (error) {
     selectedProject.value.pronunciation_overrides_by_voice = previous
     setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder les prononciations.'))
+  }
+}
+
+async function handlePatchProjectInline(payload) {
+  if (!payload?.id || !selectedProject.value) return
+  if (Number(payload.id) !== Number(selectedProject.value.id)) return
+  const patch = payload.patch && typeof payload.patch === 'object' ? payload.patch : {}
+  if (!Object.keys(patch).length) return
+
+  const previous = { ...selectedProject.value }
+  Object.assign(selectedProject.value, patch)
+
+  try {
+    const response = await updateReelProject(selectedProject.value.id, patch)
+    const updatedProject = normalizeProject(response?.data)
+    if (updatedProject?.id) {
+      Object.assign(selectedProject.value, updatedProject)
+      upsertProjectSummary(selectedProject.value)
+    }
+  } catch (error) {
+    Object.assign(selectedProject.value, previous)
+    setFeedback('error', extractErrorMessage(error, 'Impossible de sauvegarder la modification.'))
   }
 }
 

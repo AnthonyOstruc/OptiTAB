@@ -41,7 +41,7 @@
         'carousel-template--content': isCarouselContentSlide,
         'carousel-template--cta': isCarouselCtaSlide,
         'carousel-template--on-image': hasGeneratedImage,
-      }" ref="bodyRef">
+      }" :style="carouselTemplateStyle" ref="bodyRef">
         <header class="carousel-template__topbar">
           <span class="carousel-template__brand">
             <img
@@ -95,7 +95,8 @@
                 v-for="(line, i) in carouselTextLines"
                 :key="`cta-line-${i}-${line}`"
                 class="carousel-template__cta-item rich-text"
-                v-html="renderRichTextLine(line)"
+                :style="lineInlineStyle(line)"
+                v-html="renderRichTextLine(lineBody(line))"
               ></li>
             </ul>
             <div v-if="hasKatex" class="carousel-template__cta-katex" v-html="renderedKatex"></div>
@@ -117,13 +118,33 @@
               v-html="renderRichText(carouselTitleText)"
             ></h2>
             <div class="carousel-template__accent" aria-hidden="true"></div>
-            <ul v-if="carouselTextLines.length" class="carousel-template__text-list">
+            <ul
+              v-if="carouselTextLines.length"
+              class="carousel-template__text-list"
+              :class="{
+                'carousel-template__text-list--quiz': isQuizSlide,
+                'carousel-template__text-list--reveal': isAnswerRevealSlide,
+              }"
+            >
               <li
                 v-for="(line, i) in carouselTextLines"
                 :key="`ct-line-${i}-${line}`"
                 class="carousel-template__text-item rich-text"
-                v-html="renderRichTextLine(line)"
-              ></li>
+                :class="{
+                  'carousel-template__text-item--quiz-question': quizLineKind(line) === 'question',
+                  'carousel-template__text-item--quiz-option': quizLineKind(line) === 'option',
+                  'carousel-template__text-item--reveal': isAnswerRevealSlide,
+                }"
+                :style="lineInlineStyle(line)"
+              >
+                <template v-if="quizLineKind(line) === 'option'">
+                  <span class="carousel-template__quiz-letter">{{ quizLetter(line) }}</span>
+                  <span class="carousel-template__quiz-content" v-html="renderRichTextLine(quizContent(line))"></span>
+                </template>
+                <template v-else>
+                  <span v-html="renderRichTextLine(lineBody(line))"></span>
+                </template>
+              </li>
             </ul>
             <div v-if="hasKatex" class="carousel-template__katex" v-html="renderedKatex"></div>
           </template>
@@ -766,7 +787,59 @@ const carouselTextLines = computed(() => {
     .map((line) => line.trim())
     .filter(Boolean)
 })
-const carouselCoverSubtitle = computed(() => carouselTextLines.value.join(' '))
+const QUIZ_OPTION_RE = /^[A-D]\s*[\)\.\-:]/i
+function parseLinePrefixes(line) {
+  let rest = String(line || '')
+  const am = rest.match(ALIGN_PREFIX_RE)
+  const align = am ? am[1].toLowerCase() : null
+  if (align) rest = rest.slice(am[0].length)
+  const cm = rest.match(COLOR_PREFIX_RE)
+  const color = cm ? cm[1] : null
+  if (color) rest = rest.slice(cm[0].length)
+  return { body: rest, align, color }
+}
+function lineBody(line) {
+  return parseLinePrefixes(line).body
+}
+function lineInlineStyle(line) {
+  const { align, color } = parseLinePrefixes(line)
+  const parts = []
+  if (align) parts.push(`text-align:${align}`)
+  if (color) parts.push(`color:${color}`)
+  return parts.join(';')
+}
+const ANSWER_REVEAL_RE = /^\d+\s*[\)\.\-:]/
+const isQuizSlide = computed(() => (
+  isCarouselContentSlide.value
+  && carouselTextLines.value.some((line) => QUIZ_OPTION_RE.test(lineBody(line)))
+))
+const isAnswerRevealSlide = computed(() => (
+  isCarouselContentSlide.value
+  && !isQuizSlide.value
+  && carouselTextLines.value.length > 0
+  && carouselTextLines.value.every((line) => ANSWER_REVEAL_RE.test(lineBody(line)))
+))
+const quizOptionGapEm = computed(() => {
+  const value = Number(safeSlide.value?.quiz_option_gap_em)
+  return Number.isFinite(value) ? value : 0.7
+})
+const carouselTemplateStyle = computed(() => ({
+  '--quiz-option-gap': `${quizOptionGapEm.value}em`,
+}))
+function quizLineKind(line) {
+  if (!isQuizSlide.value) return null
+  return QUIZ_OPTION_RE.test(lineBody(line)) ? 'option' : 'question'
+}
+const QUIZ_OPTION_SPLIT_RE = /^([A-D])\s*[\)\.\-:]\s*(.*)$/i
+function quizLetter(line) {
+  const m = lineBody(line).match(QUIZ_OPTION_SPLIT_RE)
+  return m ? m[1].toUpperCase() : ''
+}
+function quizContent(line) {
+  const m = lineBody(line).match(QUIZ_OPTION_SPLIT_RE)
+  return m ? m[2] : lineBody(line)
+}
+const carouselCoverSubtitle = computed(() => carouselTextLines.value.map(lineBody).join(' '))
 const carouselPageLabel = computed(() => {
   const order = Number(safeSlide.value.order || 0)
   if (!order) return ''
@@ -2610,7 +2683,7 @@ onUnmounted(() => {
   line-height: 1.02;
   font-weight: 900;
   letter-spacing: -0.025em;
-  color: var(--ct-brand);
+  color: var(--carousel-title-color, var(--ct-brand));
   max-width: 100%;
   overflow-wrap: anywhere;
   text-shadow: 0 0.6cqw 1.4cqw rgba(41, 66, 142, 0.08);
@@ -2687,7 +2760,7 @@ onUnmounted(() => {
   line-height: 1.04;
   font-weight: 900;
   letter-spacing: -0.02em;
-  color: var(--ct-brand);
+  color: var(--carousel-title-color, var(--ct-brand));
   overflow-wrap: anywhere;
 }
 
@@ -2715,7 +2788,7 @@ onUnmounted(() => {
   padding-left: 5cqw;
   font-size: calc(4.2cqw * var(--reel-screen-text-scale, 1));
   line-height: 1.34;
-  color: var(--ct-ink);
+  color: var(--carousel-text-color, var(--ct-ink));
   font-weight: 600;
   overflow-wrap: anywhere;
 }
@@ -2730,6 +2803,79 @@ onUnmounted(() => {
   border-radius: 999px;
   background: linear-gradient(90deg, var(--ct-brand) 0%, var(--ct-brand-soft) 100%);
   box-shadow: 0 0.3cqw 0.6cqw rgba(41, 66, 142, 0.28);
+}
+
+.carousel-template__text-list--quiz {
+  gap: 0;
+}
+
+.carousel-template__text-list--quiz .carousel-template__text-item--quiz-option + .carousel-template__text-item--quiz-option {
+  margin-top: var(--quiz-option-gap, 0.7em);
+}
+
+.carousel-template__text-item--quiz-question,
+.carousel-template__text-item--quiz-option {
+  padding-left: 0;
+}
+
+.carousel-template__text-item--quiz-question::before,
+.carousel-template__text-item--quiz-option::before,
+.carousel-template__text-item--reveal::before {
+  content: none;
+}
+
+.carousel-template__text-item--reveal {
+  padding-left: 0;
+}
+
+.carousel-template__text-item--quiz-question {
+  font-size: calc(5.04cqw * var(--reel-screen-text-scale, 1));
+  font-weight: 500;
+  margin-bottom: 2.6cqw;
+  color: var(--carousel-text-color, var(--ct-brand-deep));
+  letter-spacing: -0.005em;
+  line-height: 1.28;
+  text-align: left !important;
+}
+
+.carousel-template__text-item--quiz-option {
+  display: flex;
+  align-items: baseline;
+  gap: 2.4cqw;
+  padding-left: 6cqw;
+  font-size: calc(4.68cqw * var(--reel-screen-text-scale, 1));
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--carousel-text-color, var(--ct-brand-deep));
+}
+
+.carousel-template__quiz-letter {
+  flex: 0 0 auto;
+  min-width: 1.2em;
+  font-weight: 800;
+  color: var(--carousel-text-color, var(--ct-brand-deep));
+  letter-spacing: 0.01em;
+}
+
+.carousel-template__quiz-letter::after {
+  content: '.';
+  margin-left: 0.05em;
+  color: var(--carousel-text-color, var(--ct-brand-deep));
+}
+
+.carousel-template__quiz-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: inherit;
+}
+
+.carousel-template__text-item--quiz-option .katex,
+.carousel-template__text-item--quiz-question .katex {
+  color: inherit;
+}
+
+.carousel-template__text-item--quiz-option .katex {
+  font-size: 1.3em;
 }
 
 .carousel-template__katex {
@@ -2766,7 +2912,7 @@ onUnmounted(() => {
   line-height: 1.05;
   font-weight: 900;
   letter-spacing: -0.025em;
-  color: var(--ct-brand);
+  color: var(--carousel-title-color, var(--ct-brand));
   text-align: left;
   overflow-wrap: anywhere;
   max-width: 100%;
@@ -2815,7 +2961,7 @@ onUnmounted(() => {
   position: relative;
   font-size: calc(3.8cqw * var(--reel-screen-text-scale, 1));
   line-height: 1.32;
-  color: var(--ct-ink-soft);
+  color: var(--carousel-text-color, var(--ct-ink-soft));
   font-weight: 500;
   padding-left: 3.4cqw;
 }

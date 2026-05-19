@@ -61,6 +61,11 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Le vide entre lignes doit etre compris entre 0 et 1.5em.')
         return value
 
+    def validate_quiz_option_gap_em(self, value):
+        if value < 0 or value > 2:
+            raise serializers.ValidationError("L'espacement quiz doit etre compris entre 0 et 2em.")
+        return value
+
     @staticmethod
     def _validate_scale(value):
         if value < 0.5 or value > 2:
@@ -86,6 +91,7 @@ class ReelSlideSerializer(serializers.ModelSerializer):
             'katex_inline_offset_percent',
             'katex_inline_vertical_offset_em',
             'katex_cumulative_gap_em',
+            'quiz_option_gap_em',
             'katex_reset_cumulative',
             'katex_reset_keep_previous_line',
             'katex_reveal_with_speech',
@@ -174,6 +180,21 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Les surcharges de prononciation doivent etre une liste.')
         return self._clean_pronunciation_list(value)
 
+    def _validate_color_hex(self, value):
+        safe = str(value or '').strip()
+        if not safe:
+            return ''
+        import re
+        if not re.fullmatch(r'#[0-9a-fA-F]{3,8}', safe):
+            raise serializers.ValidationError('Couleur invalide (format hex attendu, ex: #1c3070).')
+        return safe
+
+    def validate_carousel_title_color(self, value):
+        return self._validate_color_hex(value)
+
+    def validate_carousel_text_color(self, value):
+        return self._validate_color_hex(value)
+
     def validate_pronunciation_overrides_by_voice(self, value):
         if value in (None, '', {}):
             return {}
@@ -247,6 +268,8 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             'video_fps',
             'pronunciation_overrides',
             'pronunciation_overrides_by_voice',
+            'carousel_title_color',
+            'carousel_text_color',
             'created_at',
             'updated_at',
         ]

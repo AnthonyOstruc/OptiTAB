@@ -461,6 +461,68 @@
               </div>
             </div>
 
+            <div
+              v-if="showCarouselKatexEditor"
+              class="carousel-edit-field"
+            >
+              <label class="carousel-edit-label">
+                KaTeX
+                <span class="carousel-edit-hint">contenu + align + couleur</span>
+              </label>
+              <textarea
+                class="carousel-edit-textarea carousel-edit-textarea--katex"
+                :class="{ 'carousel-edit-textarea--dirty': carouselKatexDraftDirty }"
+                v-model="carouselKatexBody"
+                rows="4"
+                placeholder="\frac{A}{B}, \displaystyle\ldots"
+                spellcheck="false"
+                @keydown.stop
+              ></textarea>
+              <div class="carousel-katex-size-row" aria-label="Taille KaTeX (slide active uniquement)">
+                <span class="carousel-katex-size-label">Taille</span>
+                <button class="size-button" type="button" @click="decreaseCarouselKatexScale">K-</button>
+                <span class="size-value">{{ carouselKatexScalePercent }}%</span>
+                <button class="size-button" type="button" @click="increaseCarouselKatexScale">K+</button>
+                <button class="size-reset" type="button" @click="resetCarouselKatexScale">Reset</button>
+              </div>
+              <div class="carousel-align-rows">
+                <div class="carousel-align-row">
+                  <div class="carousel-line-controls carousel-line-controls--full">
+                    <div class="carousel-align-btns">
+                      <button
+                        v-for="al in ['left','center','right']"
+                        :key="`katex-${al}`"
+                        type="button"
+                        class="carousel-align-btn"
+                        :class="{ 'carousel-align-btn--active': carouselKatexAlign === al }"
+                        :title="al"
+                        @click="setCarouselKatexAlign(al)"
+                      >
+                        <svg v-if="al==='left'" viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                        <svg v-else-if="al==='center'" viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M4 8h8M3 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                        <svg v-else viewBox="0 0 16 16" class="carousel-align-icon" aria-hidden="true"><path d="M2 4h12M6 8h8M4 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="carousel-line-sep" aria-hidden="true"></span>
+                    <div class="carousel-color-btns">
+                      <button
+                        v-for="preset in TITLE_COLOR_PRESETS"
+                        :key="`katex-color-${preset.value ?? 'reset'}`"
+                        type="button"
+                        class="carousel-color-btn"
+                        :class="{ 'carousel-color-btn--active': carouselKatexColor === preset.value }"
+                        :style="preset.value ? { background: preset.value, border: '2px solid transparent' } : {}"
+                        :title="preset.label"
+                        @click="setCarouselKatexColor(carouselKatexColor === preset.value ? null : preset.value)"
+                      >
+                        <span v-if="!preset.value" class="carousel-color-reset-icon">↺</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <button
               class="carousel-edit-save"
               :class="{ 'carousel-edit-save--dirty': carouselDraftDirty }"
@@ -1391,8 +1453,10 @@ const fullscreenEditorTab = ref('speech')
 // Carousel left panel edit state
 const carouselTitleDraft = ref('')
 const carouselTextDraft = ref('')
+const carouselKatexDraft = ref('')
 const carouselTitleDraftSaved = ref('')
 const carouselTextDraftSaved = ref('')
+const carouselKatexDraftSaved = ref('')
 const carouselDraftSlideId = ref(null)
 const carouselEditSaved = ref(false)
 const carouselEditTab = ref('text')
@@ -1745,15 +1809,50 @@ const TITLE_COLOR_PRESETS = [
 ]
 const carouselTitleDraftDirty = computed(() => carouselTitleDraft.value !== carouselTitleDraftSaved.value)
 const carouselTextDraftDirty = computed(() => carouselTextDraft.value !== carouselTextDraftSaved.value)
+const carouselKatexDraftDirty = computed(() => carouselKatexDraft.value !== carouselKatexDraftSaved.value)
 
 const activeSlideImageUrl = computed(() => activeSlide.value?.generated_image_url || '')
 const carouselSlideImageGenerating = computed(() => (
   Number(props.generatingImageSlideId) === Number(activeSlide.value?.id || -1)
   || carouselSlideImageBusy.value
 ))
-const carouselDraftDirty = computed(() => carouselTitleDraftDirty.value || carouselTextDraftDirty.value)
+const carouselDraftDirty = computed(() => (
+  carouselTitleDraftDirty.value
+  || carouselTextDraftDirty.value
+  || carouselKatexDraftDirty.value
+))
 const carouselTitleDraftLines = computed(() => carouselTitleDraft.value.split('\n'))
 const carouselTextDraftLines = computed(() => carouselTextDraft.value.split('\n'))
+const carouselKatexAlign = computed(() => {
+  const m = carouselKatexDraft.value.match(CAROUSEL_ALIGN_RE)
+  return m ? m[1].toLowerCase() : null
+})
+const carouselKatexColor = computed(() => {
+  const afterAlign = carouselKatexDraft.value.replace(CAROUSEL_ALIGN_RE, '')
+  const m = afterAlign.match(CAROUSEL_COLOR_RE)
+  return m ? m[1] : null
+})
+const carouselKatexBody = computed({
+  get() {
+    return carouselKatexDraft.value
+      .replace(CAROUSEL_ALIGN_RE, '')
+      .replace(CAROUSEL_COLOR_RE, '')
+  },
+  set(value) {
+    const raw = carouselKatexDraft.value
+    const alignMatch = raw.match(CAROUSEL_ALIGN_RE)
+    const alignPrefix = alignMatch ? alignMatch[0] : ''
+    const afterAlign = alignMatch ? raw.slice(alignMatch[0].length) : raw
+    const colorMatch = afterAlign.match(CAROUSEL_COLOR_RE)
+    const colorPrefix = colorMatch ? colorMatch[0] : ''
+    carouselKatexDraft.value = alignPrefix + colorPrefix + String(value ?? '')
+  },
+})
+const showCarouselKatexEditor = computed(() => (
+  isCarouselFormat.value
+  && Boolean(activeSlide.value)
+  && !isEdgeSlide(activeSlide.value)
+))
 const carouselEditSlideTypeLabel = computed(() => {
   const slide = activeSlide.value
   if (!slide) return ''
@@ -1820,6 +1919,46 @@ function setTextLineColor(lineIndex, color) {
   lines[lineIndex] = alignPrefix + (color ? `{${color}}` : '') + cleanText
   carouselTextDraft.value = lines.join('\n')
 }
+
+function setCarouselKatexAlign(align) {
+  const raw = carouselKatexDraft.value
+  const alignMatch = raw.match(CAROUSEL_ALIGN_RE)
+  const currentAlign = alignMatch ? alignMatch[1].toLowerCase() : null
+  const withoutAlign = alignMatch ? raw.slice(alignMatch[0].length) : raw
+  const nextAlign = currentAlign === align ? '' : `[${align}]`
+  carouselKatexDraft.value = nextAlign + withoutAlign
+}
+
+function setCarouselKatexColor(color) {
+  const raw = carouselKatexDraft.value
+  const alignMatch = raw.match(CAROUSEL_ALIGN_RE)
+  const alignPrefix = alignMatch ? alignMatch[0] : ''
+  const afterAlign = alignMatch ? raw.slice(alignMatch[0].length) : raw
+  const cleanBody = afterAlign.replace(CAROUSEL_COLOR_RE, '')
+  carouselKatexDraft.value = alignPrefix + (color ? `{${color}}` : '') + cleanBody
+}
+
+function getActiveKatexSlideScale() {
+  const value = Number(activeSlide.value?.katex_scale)
+  if (!Number.isFinite(value) || value <= 0) return 1
+  return Math.min(2, Math.max(0.5, value))
+}
+function patchActiveKatexScale(nextScale) {
+  if (!activeSlide.value?.id) return
+  const clamped = Math.min(2, Math.max(0.5, Number(nextScale) || 1))
+  const rounded = Number(clamped.toFixed(2))
+  emit('update-slide', { id: activeSlide.value.id, patch: { katex_scale: rounded } })
+}
+function decreaseCarouselKatexScale() {
+  patchActiveKatexScale(getActiveKatexSlideScale() - 0.1)
+}
+function increaseCarouselKatexScale() {
+  patchActiveKatexScale(getActiveKatexSlideScale() + 0.1)
+}
+function resetCarouselKatexScale() {
+  patchActiveKatexScale(1)
+}
+const carouselKatexScalePercent = computed(() => Math.round(getActiveKatexSlideScale() * 100))
 const activeKatexDraftDirty = computed(() => (
   normalizeKatexDraftForCompare(katexDraft.value) !== normalizeKatexDraftForCompare(katexDraftSavedValue.value)
 ))
@@ -1977,8 +2116,10 @@ function syncCarouselDraftFromActiveSlide({ force = false } = {}) {
   if (!slide?.id) {
     carouselTitleDraft.value = ''
     carouselTextDraft.value = ''
+    carouselKatexDraft.value = ''
     carouselTitleDraftSaved.value = ''
     carouselTextDraftSaved.value = ''
+    carouselKatexDraftSaved.value = ''
     carouselDraftSlideId.value = null
     return
   }
@@ -1988,10 +2129,13 @@ function syncCarouselDraftFromActiveSlide({ force = false } = {}) {
 
   const title = String(slide.title || '').trim()
   const text = String(slide.screen_text || '').trim()
+  const katex = String(slide.katex || '').trim()
   carouselTitleDraft.value = title
   carouselTitleDraftSaved.value = title
   carouselTextDraft.value = text
   carouselTextDraftSaved.value = text
+  carouselKatexDraft.value = katex
+  carouselKatexDraftSaved.value = katex
   carouselDraftSlideId.value = nextSlideId
   carouselEditSaved.value = false
 }
@@ -2409,13 +2553,15 @@ const baseSlidesForRender = computed(() => {
     const resultLikeSlide = isResultLikeSlide(slideType, safeSlide)
 
     if (isCarouselFormat.value) {
-      const ownRows = splitKatexLines(baseKatex).map((line) => makeKatexRow(line))
+      // Carousel renders the whole KaTeX as one displayMode block (no line-by-line reveal),
+      // so we keep the user's raw LaTeX intact — this preserves \begin{aligned}…&=…\end{aligned}
+      // alignment that would otherwise be destroyed by splitKatexLines + toAlignedKatexRows.
       return {
         ...safeSlide,
         display_screen_text: baseText,
         display_katex_row_gap_em: cumulativeGap.value,
-        display_katex_rows: ownRows,
-        display_katex: ownRows.length ? toAlignedKatexRows(ownRows, cumulativeGap.value) || baseKatex : baseKatex,
+        display_katex_rows: [],
+        display_katex: baseKatex,
         katex_inline_with_previous: false,
         katex_reset_cumulative: false,
         katex_reset_keep_previous_line: true,
@@ -2950,14 +3096,17 @@ function saveCarouselDraft() {
 
   const title = carouselTitleDraft.value
   const screenText = carouselTextDraft.value
+  const katex = carouselKatexDraft.value
 
   // Build patch BEFORE resetting saved values (dirty computed would flip to false otherwise)
   const patch = {}
   if (carouselTitleDraftDirty.value) patch.title = title
   if (carouselTextDraftDirty.value) patch.screen_text = screenText
+  if (carouselKatexDraftDirty.value) patch.katex = katex
 
   carouselTitleDraftSaved.value = title
   carouselTextDraftSaved.value = screenText
+  carouselKatexDraftSaved.value = katex
   carouselDraftSlideId.value = Number(activeSlide.value.id)
 
   if (!Object.keys(patch).length) return
@@ -4766,6 +4915,42 @@ onBeforeUnmount(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
+}
+
+.carousel-align-row__preview--katex {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 10.5px;
+  color: #334155;
+}
+
+.carousel-edit-textarea--katex {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.carousel-katex-size-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px 2px;
+}
+
+.carousel-katex-size-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+
+.carousel-line-controls--full {
+  width: 100%;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .carousel-align-btns {

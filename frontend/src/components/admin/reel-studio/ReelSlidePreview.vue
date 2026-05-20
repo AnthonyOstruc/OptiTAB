@@ -76,7 +76,7 @@
               class="carousel-template__cover-sub rich-text"
               v-html="renderRichText(carouselCoverSubtitle)"
             ></p>
-            <div v-if="hasKatex" class="carousel-template__cover-katex" v-html="renderedKatex"></div>
+            <div v-if="hasKatex" class="carousel-template__cover-katex" :style="carouselKatexInlineStyle" v-html="renderedKatex"></div>
             <span class="carousel-template__swipe" aria-hidden="true">
               <span class="carousel-template__swipe-text">Glisse</span>
               <span class="carousel-template__swipe-arrow">→</span>
@@ -99,7 +99,7 @@
                 v-html="renderRichTextLine(lineBody(line))"
               ></li>
             </ul>
-            <div v-if="hasKatex" class="carousel-template__cta-katex" v-html="renderedKatex"></div>
+            <div v-if="hasKatex" class="carousel-template__cta-katex" :style="carouselKatexInlineStyle" v-html="renderedKatex"></div>
             <div class="carousel-template__cta-url-wrap">
               <span class="carousel-template__cta-url">optitab.net</span>
               <span class="carousel-template__cta-underline" aria-hidden="true"></span>
@@ -146,7 +146,7 @@
                 </template>
               </li>
             </ul>
-            <div v-if="hasKatex" class="carousel-template__katex" v-html="renderedKatex"></div>
+            <div v-if="hasKatex" class="carousel-template__katex" :style="carouselKatexInlineStyle" v-html="renderedKatex"></div>
           </template>
         </div>
 
@@ -491,7 +491,7 @@ const usesHookLayout = computed(() => isHookSlide.value || isCoverSlide.value)
 const isLargeDisplayMode = computed(() => ['fullscreen', 'export'].includes(props.displayMode))
 const isThumbnailMode = computed(() => !isLargeDisplayMode.value)
 const shouldSkipLayoutEvaluation = computed(() => isCarouselFormat.value || hasGeneratedImage.value || (isYoutubeFormat.value && props.displayMode === 'fullscreen'))
-const shouldAlignKatexLeft = computed(() => !usesHookLayout.value && !isCtaSlide.value)
+const shouldAlignKatexLeft = computed(() => !usesHookLayout.value && !isCtaSlide.value && !isCarouselFormat.value)
 
 function clampSlideScale(value) {
   return Math.min(2, Math.max(0.5, Number(value) || 1))
@@ -696,15 +696,23 @@ const subtitleCurrentLine = computed(() => {
 })
 const katexContent = computed(() => {
   const preferred = String(safeSlide.value.display_katex || '').trim()
-  if (preferred) return preferred
-  return String(safeSlide.value.katex || '').trim()
+  const raw = preferred || String(safeSlide.value.katex || '').trim()
+  return parseLinePrefixes(raw).body.trim()
+})
+const carouselKatexMeta = computed(() => parseLinePrefixes(safeSlide.value.katex))
+const carouselKatexInlineStyle = computed(() => {
+  const { align, color } = carouselKatexMeta.value
+  const parts = []
+  if (align) parts.push(`text-align:${align}`)
+  if (color) parts.push(`color:${color}`)
+  return parts.join(';') || null
 })
 const katexRows = computed(() => {
   const rows = Array.isArray(safeSlide.value.display_katex_rows) ? safeSlide.value.display_katex_rows : []
   return rows
     .map((row) => {
       const parts = (Array.isArray(row?.parts) ? row.parts : [])
-        .map((part) => stripKatexAlignmentMarkers(part))
+        .map((part) => stripKatexAlignmentMarkers(parseLinePrefixes(part).body))
         .filter(Boolean)
       const inlineCount = Math.max(parts.length - 1, 0)
       const fallbackOffset = clampInlineOffset(row?.inlineOffsetPercent)
@@ -757,7 +765,7 @@ const katexZoneClass = computed(() => ({
   'katex-zone--speech-reveal-active': katexRevealActive.value,
 }))
 const currentKatexRevealKeys = computed(() => new Set(
-  splitKatexLines(safeSlide.value.katex)
+  splitKatexLines(parseLinePrefixes(safeSlide.value.katex).body)
     .map((line) => normalizeKatexRevealKey(line))
     .filter(Boolean)
 ))
@@ -2700,8 +2708,25 @@ onUnmounted(() => {
 }
 
 .carousel-template__cover-katex {
-  font-size: 4.2cqw;
-  color: var(--ct-ink);
+  font-size: calc(4.2cqw * var(--reel-math-scale, 1));
+  color: var(--carousel-text-color, var(--ct-ink));
+}
+
+.carousel-template__cover-katex :deep(.katex),
+.carousel-template__cover-katex :deep(.katex .mord),
+.carousel-template__cover-katex :deep(.katex .mbin),
+.carousel-template__cover-katex :deep(.katex .mrel),
+.carousel-template__cover-katex :deep(.katex .mop),
+.carousel-template__cover-katex :deep(.katex .mopen),
+.carousel-template__cover-katex :deep(.katex .mclose),
+.carousel-template__cover-katex :deep(.katex .mpunct),
+.carousel-template__cover-katex :deep(.katex .minner),
+.carousel-template__cover-katex :deep(.katex .mathnormal),
+.carousel-template__cover-katex :deep(.katex .mathit),
+.carousel-template__cover-katex :deep(.katex .mathrm),
+.carousel-template__cover-katex :deep(.katex .mfrac .frac-line) {
+  color: inherit;
+  border-color: inherit;
 }
 
 .carousel-template__swipe {
@@ -2880,8 +2905,25 @@ onUnmounted(() => {
 
 .carousel-template__katex {
   margin-top: 1cqw;
-  font-size: 4.2cqw;
-  color: var(--ct-ink);
+  font-size: calc(4.2cqw * var(--reel-math-scale, 1));
+  color: var(--carousel-text-color, var(--ct-ink));
+}
+
+.carousel-template__katex :deep(.katex),
+.carousel-template__katex :deep(.katex .mord),
+.carousel-template__katex :deep(.katex .mbin),
+.carousel-template__katex :deep(.katex .mrel),
+.carousel-template__katex :deep(.katex .mop),
+.carousel-template__katex :deep(.katex .mopen),
+.carousel-template__katex :deep(.katex .mclose),
+.carousel-template__katex :deep(.katex .mpunct),
+.carousel-template__katex :deep(.katex .minner),
+.carousel-template__katex :deep(.katex .mathnormal),
+.carousel-template__katex :deep(.katex .mathit),
+.carousel-template__katex :deep(.katex .mathrm),
+.carousel-template__katex :deep(.katex .mfrac .frac-line) {
+  color: inherit;
+  border-color: inherit;
 }
 
 /* --- CTA slide --- */
@@ -2977,8 +3019,25 @@ onUnmounted(() => {
 }
 
 .carousel-template__cta-katex {
-  font-size: 4cqw;
-  color: var(--ct-ink);
+  font-size: calc(4cqw * var(--reel-math-scale, 1));
+  color: var(--carousel-text-color, var(--ct-ink));
+}
+
+.carousel-template__cta-katex :deep(.katex),
+.carousel-template__cta-katex :deep(.katex .mord),
+.carousel-template__cta-katex :deep(.katex .mbin),
+.carousel-template__cta-katex :deep(.katex .mrel),
+.carousel-template__cta-katex :deep(.katex .mop),
+.carousel-template__cta-katex :deep(.katex .mopen),
+.carousel-template__cta-katex :deep(.katex .mclose),
+.carousel-template__cta-katex :deep(.katex .mpunct),
+.carousel-template__cta-katex :deep(.katex .minner),
+.carousel-template__cta-katex :deep(.katex .mathnormal),
+.carousel-template__cta-katex :deep(.katex .mathit),
+.carousel-template__cta-katex :deep(.katex .mathrm),
+.carousel-template__cta-katex :deep(.katex .mfrac .frac-line) {
+  color: inherit;
+  border-color: inherit;
 }
 
 .carousel-template__cta-button {

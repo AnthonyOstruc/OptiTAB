@@ -122,13 +122,13 @@
       />
     </div>
 
-    <div v-if="pngExportMounted" class="png-export-area" :style="exportFrameStyle" aria-hidden="true">
+    <div v-if="pngExportMounted" class="png-export-area" :style="[exportFrameStyle, carouselColorVars]" aria-hidden="true">
       <div
         v-for="(slide, index) in slidesForRender"
         :key="`png-export-${slide.id || index}`"
         :ref="(el) => setExportSlideRef(el, index)"
         class="png-export-frame"
-        :style="exportFrameStyle"
+        :style="[exportFrameStyle, carouselColorVars]"
       >
         <ReelSlidePreview
           :slide="slide"

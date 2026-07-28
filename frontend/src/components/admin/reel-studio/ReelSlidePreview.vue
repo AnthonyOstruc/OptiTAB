@@ -4,6 +4,7 @@
     :class="{
       'slide-card--selected': isSelected,
       'slide-card--fullscreen': isLargeDisplayMode,
+      'slide-card--export': props.displayMode === 'export',
       'slide-card--clickable': clickable,
       'slide-card--youtube': isYoutubeFormat,
       'slide-card--carousel': isCarouselFormat,
@@ -459,7 +460,7 @@ const renderedSplitRightKatex = computed(() => {
   return splitKatexLines(meta.rightKatex)
     .map((line) => {
       try {
-        return `<div class="reel-slide-split__katex-line">${katex.renderToString(line, { displayMode: true, throwOnError: false })}</div>`
+        return `<div class="reel-slide-split__katex-line">${renderKatexHtml(line, { displayMode: true, throwOnError: false })}</div>`
       } catch (_) {
         return `<div class="reel-slide-split__katex-line">${escapeHtml(line)}</div>`
       }
@@ -875,6 +876,9 @@ const showCtaTemplate = computed(() => isCtaSlide.value)
 const DEFAULT_CTA_TEXT = 'Abonne-toi à OptiTAB\nSauvegarde ce Reel\nCommente ton résultat'
 const INLINE_RIGHT_FRACTION_ONLY_NUDGE_EM = 0.16
 const INLINE_LEFT_FRACTION_ONLY_NUDGE_EM = -0.16
+const KATEX_CANCEL_SVG_RE = /<svg\b[^>]*>[\s\S]*?<\/svg>/g
+const KATEX_CANCEL_LINE_RE = /<line\b([^>]*)\/?>/g
+const KATEX_CANCEL_ATTR_RE = /([:\w-]+)="([^"]*)"/g
 const LEGACY_CTA_TEXTS = new Set([
   "Abonne-toi à OptiTAB pour d'autres défis maths",
   "Abonne-toi à OptiTAB\npour d'autres défis maths",
@@ -915,12 +919,106 @@ function unwrapAlignedBlock(value) {
     .trim()
 }
 
+function katexEnvironmentTokenAt(value, index) {
+  return String(value || '').slice(index).match(/^\\(begin|end)\{[^{}]+\}/)
+}
+
 function stripKatexAlignmentMarkers(value) {
-  return String(value || '')
-    .trim()
-    .replace(/(^|[^\\])&+/g, '$1')
+  const raw = String(value || '').trim()
+  let result = ''
+  let groupDepth = 0
+  let environmentDepth = 0
+
+  for (let index = 0; index < raw.length;) {
+    const environmentToken = raw[index] === '\\'
+      ? katexEnvironmentTokenAt(raw, index)
+      : null
+    if (environmentToken) {
+      if (environmentToken[1] === 'begin') environmentDepth += 1
+      else environmentDepth = Math.max(0, environmentDepth - 1)
+      result += environmentToken[0]
+      index += environmentToken[0].length
+      continue
+    }
+
+    const current = raw[index]
+    const next = raw[index + 1]
+    if (current === '\\' && next && '{}&%$#_'.includes(next)) {
+      result += current + next
+      index += 2
+      continue
+    }
+    if (current === '{') groupDepth += 1
+    if (current === '}') groupDepth = Math.max(0, groupDepth - 1)
+    if (current !== '&' || groupDepth > 0 || environmentDepth > 0) {
+      result += current
+    }
+    index += 1
+  }
+
+  return result
     .replace(/\s+/g, ' ')
     .trim()
+}
+
+function splitTopLevelKatexRows(value) {
+  const raw = String(value || '').trim()
+  if (!raw) return []
+
+  // Matrix/array row separators belong to their nested environment, not to the slide layout.
+  const rows = []
+  let currentRow = ''
+  let groupDepth = 0
+  let environmentDepth = 0
+
+  const pushCurrentRow = () => {
+    const cleaned = stripKatexAlignmentMarkers(currentRow)
+    if (cleaned) rows.push(cleaned)
+    currentRow = ''
+  }
+
+  for (let index = 0; index < raw.length;) {
+    const environmentToken = raw[index] === '\\'
+      ? katexEnvironmentTokenAt(raw, index)
+      : null
+    if (environmentToken) {
+      if (environmentToken[1] === 'begin') environmentDepth += 1
+      else environmentDepth = Math.max(0, environmentDepth - 1)
+      currentRow += environmentToken[0]
+      index += environmentToken[0].length
+      continue
+    }
+
+    const current = raw[index]
+    const next = raw[index + 1]
+    const isTopLevel = groupDepth === 0 && environmentDepth === 0
+    if (current === '\\' && next === '\\' && isTopLevel) {
+      pushCurrentRow()
+      index += 2
+      if (raw[index] === '[') {
+        const spacingEnd = raw.indexOf(']', index + 1)
+        if (spacingEnd !== -1) index = spacingEnd + 1
+      }
+      continue
+    }
+    if ((current === '\n' || current === '\r') && isTopLevel) {
+      pushCurrentRow()
+      index += current === '\r' && next === '\n' ? 2 : 1
+      continue
+    }
+    if (current === '\\' && next && '{}&%$#_'.includes(next)) {
+      currentRow += current + next
+      index += 2
+      continue
+    }
+    if (current === '{') groupDepth += 1
+    if (current === '}') groupDepth = Math.max(0, groupDepth - 1)
+    currentRow += current
+    index += 1
+  }
+
+  pushCurrentRow()
+  return rows
 }
 
 function splitKatexLines(value) {
@@ -928,18 +1026,10 @@ function splitKatexLines(value) {
   if (!raw) return []
 
   if (isAlignedKatexBlock(raw)) {
-    return unwrapAlignedBlock(raw)
-      .split(/\\\\(?:\[[^\]]*\])?/)
-      .map((line) => stripKatexAlignmentMarkers(line))
-      .filter(Boolean)
+    return splitTopLevelKatexRows(unwrapAlignedBlock(raw))
   }
 
-  return raw
-    .replace(/\\\\(?:\[[^\]]*\])?/g, '\n')
-    .replace(/\\\[[^\]]*\]/g, '\n')
-    .split(/\n+/)
-    .map((line) => stripKatexAlignmentMarkers(line))
-    .filter(Boolean)
+  return splitTopLevelKatexRows(raw)
 }
 
 function normalizeKatexRevealKey(value) {
@@ -1054,12 +1144,54 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;')
 }
 
+function parseHtmlAttributes(value) {
+  const attrs = {}
+  for (const match of String(value || '').matchAll(KATEX_CANCEL_ATTR_RE)) {
+    attrs[match[1]] = match[2]
+  }
+  return attrs
+}
+
+function svgCoordToNumber(value, fallback = 0) {
+  const numeric = Number.parseFloat(String(value || '').replace('%', ''))
+  return Number.isFinite(numeric) ? numeric : fallback
+}
+
+function katexCancelFallbackLineClass(lineAttributes) {
+  const y1 = svgCoordToNumber(lineAttributes.y1)
+  const y2 = svgCoordToNumber(lineAttributes.y2)
+  return y1 > y2
+    ? 'reel-katex-cancel-line--up'
+    : 'reel-katex-cancel-line--down'
+}
+
+function addKatexCancelFallbacks(html) {
+  return String(html || '').replace(KATEX_CANCEL_SVG_RE, (svgMarkup) => {
+    const lineFallbacks = Array.from(svgMarkup.matchAll(KATEX_CANCEL_LINE_RE))
+      .map((match) => {
+        const attrs = parseHtmlAttributes(match[1])
+        if (!attrs.x1 || !attrs.x2 || attrs.y1 === undefined || attrs.y2 === undefined) return ''
+        const directionClass = katexCancelFallbackLineClass(attrs)
+        return `<span class="reel-katex-cancel-line ${directionClass}"></span>`
+      })
+      .filter(Boolean)
+      .join('')
+
+    if (!lineFallbacks) return svgMarkup
+    return `<span class="reel-katex-cancel-fallback" aria-hidden="true">${lineFallbacks}</span>${svgMarkup}`
+  })
+}
+
+function renderKatexHtml(expression, options = {}) {
+  return addKatexCancelFallbacks(katex.renderToString(expression, options))
+}
+
 function renderTextKatex(expression, displayMode = false) {
   const cleaned = String(expression || '').trim()
   if (!cleaned) return ''
 
   try {
-    return katex.renderToString(cleaned, {
+    return renderKatexHtml(cleaned, {
       displayMode,
       throwOnError: false,
     })
@@ -1077,7 +1209,7 @@ function renderInlineKatexPart(expression, separator = 'semicolon', { compact = 
   const separatedExpression = alreadySeparated
     ? cleaned
     : `${separatorKatex ? `${separatorKatex}${separatorSpacing}` : separatorSpacing}${cleaned}`
-  return katex.renderToString(`\\displaystyle ${separatedExpression}`, { displayMode: false, throwOnError: false })
+  return renderKatexHtml(`\\displaystyle ${separatedExpression}`, { displayMode: false, throwOnError: false })
 }
 
 function renderRichMathToken(token) {
@@ -1180,7 +1312,7 @@ const renderedKatex = computed(() => {
     }
 
     if (!shouldAlignKatexLeft.value) {
-      const formulaHtml = katex.renderToString(raw, { displayMode: true, throwOnError: false })
+      const formulaHtml = renderKatexHtml(raw, { displayMode: true, throwOnError: false })
       const revealAttrs = revealTargetAttrs(raw)
       return revealAttrs.attrs
         ? `<span class="reel-katex-reveal-target"${revealAttrs.attrs}>${formulaHtml}</span>`
@@ -1192,7 +1324,7 @@ const renderedKatex = computed(() => {
         .map((row) => {
           const parts = row.parts
           if (parts.length === 1) {
-            const lineHtml = katex.renderToString(parts[0], { displayMode: true, throwOnError: false })
+            const lineHtml = renderKatexHtml(parts[0], { displayMode: true, throwOnError: false })
             const revealAttrs = revealTargetAttrs(parts[0])
             const lineContent = revealAttrs.attrs
               ? `<span class="reel-katex-reveal-target"${revealAttrs.attrs}>${lineHtml}</span>`
@@ -1201,7 +1333,7 @@ const renderedKatex = computed(() => {
           }
 
           const basePart = parts[0]
-          const baseHtml = katex.renderToString(`\\displaystyle ${basePart}`, { displayMode: false, throwOnError: false })
+          const baseHtml = renderKatexHtml(`\\displaystyle ${basePart}`, { displayMode: false, throwOnError: false })
           const baseMetrics = katexVerticalMetricsFromHtml(baseHtml)
           const baseRevealAttrs = revealTargetAttrs(basePart)
           const inlineSeparators = Array.isArray(row.inlineSeparators) ? row.inlineSeparators : []
@@ -1266,7 +1398,7 @@ const renderedKatex = computed(() => {
 
     return splitKatexLines(raw)
       .map((line) => {
-        const lineHtml = katex.renderToString(line, { displayMode: true, throwOnError: false })
+        const lineHtml = renderKatexHtml(line, { displayMode: true, throwOnError: false })
         const revealAttrs = revealTargetAttrs(line)
         const lineContent = revealAttrs.attrs
           ? `<span class="reel-katex-reveal-target"${revealAttrs.attrs}>${lineHtml}</span>`
@@ -1938,6 +2070,53 @@ onUnmounted(() => {
 .katex-zone :deep(.katex) {
   font-size: calc(0.9rem * var(--reel-math-scale, 1));
   color: #1e3a8a;
+}
+
+:deep(.reel-katex-cancel-fallback) {
+  display: none;
+}
+
+.slide-card--export :deep(.svg-align > span:not(.pstrut)) {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: inherit;
+}
+
+.slide-card--export :deep(.reel-katex-cancel-fallback) {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  color: currentColor;
+  pointer-events: none;
+}
+
+.slide-card--export :deep(:has(> .reel-katex-cancel-fallback)) {
+  position: relative;
+}
+
+.slide-card--export :deep(.reel-katex-cancel-fallback + svg) {
+  visibility: hidden;
+}
+
+.slide-card--export :deep(.reel-katex-cancel-line) {
+  position: absolute;
+  left: -8%;
+  top: 50%;
+  width: 116%;
+  height: 0.09em;
+  border-radius: 999px;
+  background: #1e3a8a;
+  transform-origin: center;
+}
+
+.slide-card--export :deep(.reel-katex-cancel-line--up) {
+  transform: translateY(-50%) rotate(-12deg);
+}
+
+.slide-card--export :deep(.reel-katex-cancel-line--down) {
+  transform: translateY(-50%) rotate(12deg);
 }
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex) {

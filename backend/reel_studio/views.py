@@ -22,6 +22,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from PIL import Image, ImageOps, UnidentifiedImageError
 
+from .katex import repair_common_katex_input
 from .models import GeminiUsageLog, ReelProject, ReelSlide
 from .permissions import IsStaffOrSuperuser
 from .serializers import (
@@ -670,7 +671,7 @@ def _parse_slide_type(raw_value):
 
 
 def _normalize_katex_block(raw_value):
-    content = str(raw_value or '').strip()
+    content = repair_common_katex_input(raw_value).strip()
     if not content:
         return ''
     if '\\begin{' in content and '\\end{' in content:

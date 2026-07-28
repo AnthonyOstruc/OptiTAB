@@ -11,6 +11,7 @@ from rest_framework.test import APIClient
 
 from .elevenlabs import generate_speech_mp3, list_filtered_voices, list_shared_voices
 from .gemini import generate_carousel_template
+from .katex import repair_common_katex_input
 from .models import GeminiUsageLog, ReelProject, ReelSlide
 from .tts.base import TTSResult
 from .tts.google import synthesize as synthesize_google_speech
@@ -184,6 +185,74 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(slide.speech_status, ReelProject.SPEECH_STATUS_READY)
         self.assertEqual(project.speech_status, ReelProject.SPEECH_STATUS_READY)
         self.assertEqual(project.instagram_caption, 'Description sauvegardee.')
+
+    def test_save_template_repairs_common_array_katex_mistakes(self):
+        project = ReelProject.objects.create(title='Pivot de Gauss', slide_count=0)
+        malformed_system = (
+            r'\left{\begin{array}{l}'
+            r'2x+y-z=1\x+y+z=6\3x-y+2z=7'
+            r'\end{array}\right.'
+        )
+
+        response = self.client.post(
+            reverse('reel-project-save-template', args=[project.pk]),
+            {
+                'template_text': '\n'.join([
+                    'SLIDE 1 | katex',
+                    f'KATEX: {malformed_system}',
+                    'VOICE: Systeme de depart.',
+                    '---',
+                ])
+            },
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        slide = ReelSlide.objects.get(reel_project=project, order=1)
+        self.assertEqual(
+            slide.katex,
+            r'\left\{\begin{array}{l}'
+            r'2x+y-z=1\\x+y+z=6\\3x-y+2z=7'
+            r'\end{array}\right.',
+        )
+
+    def test_slide_patch_repairs_common_matrix_katex_mistakes(self):
+        project = ReelProject.objects.create(title='Matrice', slide_count=1)
+        slide = ReelSlide.objects.create(
+            reel_project=project,
+            order=1,
+            slide_type=ReelSlide.TYPE_KATEX,
+            katex='x=1',
+        )
+        malformed_matrix = (
+            r'\left(\begin{array}{ccc|c}'
+            r'2&1&-1&1\1&1&1&6\3&-1&2&7'
+            r'\end{array}\right)'
+        )
+
+        response = self.client.patch(
+            reverse('reel-slide-detail', args=[slide.pk]),
+            {'katex': malformed_matrix},
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        slide.refresh_from_db()
+        self.assertEqual(
+            slide.katex,
+            r'\left(\begin{array}{ccc|c}'
+            r'2&1&-1&1\\1&1&1&6\\3&-1&2&7'
+            r'\end{array}\right)',
+        )
+
+    def test_katex_repair_preserves_valid_commands_and_row_separators(self):
+        valid_katex = (
+            r'\left\{\begin{array}{cc}'
+            r'\frac{1}{2}&\alpha+\S+\P+\i+\j+\ x\\x&y'
+            r'\end{array}\right.'
+        )
+
+        self.assertEqual(repair_common_katex_input(valid_katex), valid_katex)
 
     def test_auto_template_result_slide_is_standalone(self):
         project = ReelProject.objects.create(title='Reel auto', slide_count=0)

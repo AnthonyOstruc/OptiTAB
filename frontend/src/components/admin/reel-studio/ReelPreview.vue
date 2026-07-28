@@ -2265,33 +2265,115 @@ function unwrapAlignedBlock(value) {
     .trim()
 }
 
-function splitAlignedLines(innerBlock) {
-  return String(innerBlock || '')
-    .split(/\\\\(?:\[[^\]]*\])?/)
-    .map((line) => normalizeKatexLine(line))
-    .filter(Boolean)
+function katexEnvironmentTokenAt(value, index) {
+  return String(value || '').slice(index).match(/^\\(begin|end)\{[^{}]+\}/)
+}
+
+function normalizeKatexLine(line) {
+  const raw = String(line || '').trim()
+  let result = ''
+  let groupDepth = 0
+  let environmentDepth = 0
+
+  for (let index = 0; index < raw.length;) {
+    const environmentToken = raw[index] === '\\'
+      ? katexEnvironmentTokenAt(raw, index)
+      : null
+    if (environmentToken) {
+      if (environmentToken[1] === 'begin') environmentDepth += 1
+      else environmentDepth = Math.max(0, environmentDepth - 1)
+      result += environmentToken[0]
+      index += environmentToken[0].length
+      continue
+    }
+
+    const current = raw[index]
+    const next = raw[index + 1]
+    if (current === '\\' && next && '{}&%$#_'.includes(next)) {
+      result += current + next
+      index += 2
+      continue
+    }
+    if (current === '{') groupDepth += 1
+    if (current === '}') groupDepth = Math.max(0, groupDepth - 1)
+    if (current !== '&' || groupDepth > 0 || environmentDepth > 0) {
+      result += current
+    }
+    index += 1
+  }
+
+  return result
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function splitTopLevelKatexRows(value) {
+  const raw = String(value || '').trim()
+  if (!raw) return []
+
+  // Matrix/array row separators belong to their nested environment, not to the Reel layout.
+  const rows = []
+  let currentRow = ''
+  let groupDepth = 0
+  let environmentDepth = 0
+
+  const pushCurrentRow = () => {
+    const cleaned = normalizeKatexLine(currentRow)
+    if (cleaned) rows.push(cleaned)
+    currentRow = ''
+  }
+
+  for (let index = 0; index < raw.length;) {
+    const environmentToken = raw[index] === '\\'
+      ? katexEnvironmentTokenAt(raw, index)
+      : null
+    if (environmentToken) {
+      if (environmentToken[1] === 'begin') environmentDepth += 1
+      else environmentDepth = Math.max(0, environmentDepth - 1)
+      currentRow += environmentToken[0]
+      index += environmentToken[0].length
+      continue
+    }
+
+    const current = raw[index]
+    const next = raw[index + 1]
+    const isTopLevel = groupDepth === 0 && environmentDepth === 0
+    if (current === '\\' && next === '\\' && isTopLevel) {
+      pushCurrentRow()
+      index += 2
+      if (raw[index] === '[') {
+        const spacingEnd = raw.indexOf(']', index + 1)
+        if (spacingEnd !== -1) index = spacingEnd + 1
+      }
+      continue
+    }
+    if ((current === '\n' || current === '\r') && isTopLevel) {
+      pushCurrentRow()
+      index += current === '\r' && next === '\n' ? 2 : 1
+      continue
+    }
+    if (current === '\\' && next && '{}&%$#_'.includes(next)) {
+      currentRow += current + next
+      index += 2
+      continue
+    }
+    if (current === '{') groupDepth += 1
+    if (current === '}') groupDepth = Math.max(0, groupDepth - 1)
+    currentRow += current
+    index += 1
+  }
+
+  pushCurrentRow()
+  return rows
 }
 
 function splitKatexLines(block) {
   const raw = normalizeText(block)
   if (!raw) return []
 
-  if (isAlignedKatexBlock(raw)) {
-    return splitAlignedLines(unwrapAlignedBlock(raw))
-  }
-
-  return raw
-    .split(/\\\\(?:\[[^\]]*\])?/)
-    .map((line) => normalizeKatexLine(line))
-    .filter(Boolean)
-}
-
-function normalizeKatexLine(line) {
-  return String(line || '')
-    .trim()
-    .replace(/(^|[^\\])&+/g, '$1')
-    .replace(/\s+/g, ' ')
-    .trim()
+  return splitTopLevelKatexRows(
+    isAlignedKatexBlock(raw) ? unwrapAlignedBlock(raw) : raw
+  )
 }
 
 function clampInlineOffset(value) {
@@ -2432,6 +2514,50 @@ const baseSlidesForRender = computed(() => {
     lastDisplayedMathRows = cloneKatexRows(rows)
   }
 
+  function removeKatexKeysFromRow(row, keysToRemove) {
+    const clonedRow = cloneKatexRows([row])[0]
+    const parts = Array.isArray(clonedRow?.parts) ? clonedRow.parts : []
+    if (!parts.length || !keysToRemove?.size) return clonedRow || null
+
+    const entries = parts.map((part, index) => ({
+      part,
+      key: normalizeKatexLine(part),
+      separator: index > 0 ? normalizeInlineSeparator(clonedRow.inlineSeparators?.[index - 1]) : null,
+      offset: index > 0 ? clampInlineOffset(clonedRow.inlineOffsetPercents?.[index - 1]) : 0,
+      verticalOffset: index > 0 ? clampInlineVerticalOffset(clonedRow.inlineVerticalOffsetEms?.[index - 1]) : 0,
+    }))
+    const keptEntries = entries.filter((entry) => !entry.key || !keysToRemove.has(entry.key))
+    if (!keptEntries.length) return null
+
+    const nextRow = {
+      ...clonedRow,
+      parts: keptEntries.map((entry) => entry.part),
+      inlineSeparators: [],
+      inlineOffsetPercents: [],
+      inlineVerticalOffsetEms: [],
+    }
+
+    keptEntries.slice(1).forEach((entry) => {
+      nextRow.inlineSeparators.push(normalizeInlineSeparator(entry.separator))
+      nextRow.inlineOffsetPercents.push(clampInlineOffset(entry.offset))
+      nextRow.inlineVerticalOffsetEms.push(clampInlineVerticalOffset(entry.verticalOffset))
+    })
+
+    const lastInlineIndex = nextRow.parts.length - 2
+    nextRow.inlineOffsetPercent = lastInlineIndex >= 0
+      ? clampInlineOffset(nextRow.inlineOffsetPercents[lastInlineIndex])
+      : 0
+    nextRow.inlineVerticalOffsetEm = lastInlineIndex >= 0
+      ? clampInlineVerticalOffset(nextRow.inlineVerticalOffsetEms[lastInlineIndex])
+      : 0
+
+    return nextRow
+  }
+
+  function rebuildMergedKatexKeys(rows) {
+    return new Set(getKatexRowsLineKeys(rows))
+  }
+
   function mergeUniqueKatexRows(...rowsGroups) {
     const mergedRows = []
     const mergedKeys = new Set()
@@ -2439,7 +2565,21 @@ const baseSlidesForRender = computed(() => {
     rowsGroups.forEach((rows) => {
       cloneKatexRows(rows).forEach((row) => {
         const rowKeys = getKatexRowsLineKeys([row])
-        if (!rowKeys.length || rowKeys.every((key) => mergedKeys.has(key))) return
+        if (!rowKeys.length) return
+
+        const overlapKeys = rowKeys.filter((key) => mergedKeys.has(key))
+        if (overlapKeys.length === rowKeys.length) return
+
+        if (overlapKeys.length) {
+          const overlapSet = new Set(overlapKeys)
+          const dedupedRows = mergedRows
+            .map((existingRow) => removeKatexKeysFromRow(existingRow, overlapSet))
+            .filter(Boolean)
+
+          mergedRows.splice(0, mergedRows.length, ...dedupedRows)
+          mergedKeys.clear()
+          rebuildMergedKatexKeys(mergedRows).forEach((key) => mergedKeys.add(key))
+        }
 
         rowKeys.forEach((key) => mergedKeys.add(key))
         mergedRows.push(row)
@@ -3890,25 +4030,355 @@ async function canvasToImageDataUrl(canvas, exportPreset) {
   return canvas.toDataURL(imageType, imageQuality)
 }
 
+const SVG_EXPORT_PAINT_SELECTOR = 'line,path,polyline,polygon,circle,ellipse,rect'
+const SVG_XMLNS = 'http://www.w3.org/2000/svg'
+
+function meaningfulPaint(value) {
+  const normalized = String(value || '').trim()
+  if (!normalized || normalized === 'none') return ''
+  return normalized
+}
+
+function computedStyleForElement(element) {
+  if (!element || typeof window === 'undefined') return null
+  return window.getComputedStyle(element)
+}
+
+function elementFontSizePx(element, fallback = 16) {
+  const style = computedStyleForElement(element)
+  const value = Number.parseFloat(style?.fontSize || '')
+  if (Number.isFinite(value) && value > 0) return value
+
+  if (element?.parentElement) {
+    return elementFontSizePx(element.parentElement, fallback)
+  }
+
+  return fallback
+}
+
+function cssLengthToPx(value, contextElement, relativeSize = 0, fallback = 1) {
+  const raw = String(value || '').trim().toLowerCase()
+  if (!raw || raw === 'medium' || raw === 'thin' || raw === 'thick') return fallback
+
+  const numeric = Number.parseFloat(raw)
+  if (!Number.isFinite(numeric)) return fallback
+
+  if (raw.endsWith('rem')) {
+    const rootElement = typeof document !== 'undefined' ? document.documentElement : null
+    return numeric * elementFontSizePx(rootElement, 16)
+  }
+  if (raw.endsWith('em')) {
+    return numeric * elementFontSizePx(contextElement, 16)
+  }
+  if (raw.endsWith('%')) {
+    return relativeSize > 0 ? (numeric / 100) * relativeSize : fallback
+  }
+
+  return numeric
+}
+
+function resolveSvgPaint(value, ...elements) {
+  const normalized = meaningfulPaint(value)
+  if (!normalized) return ''
+  if (!/^currentcolor$/i.test(normalized)) return normalized
+
+  for (const element of elements) {
+    const color = meaningfulPaint(computedStyleForElement(element)?.color)
+    if (color && !/^currentcolor$/i.test(color)) return color
+  }
+
+  return '#1e3a8a'
+}
+
+function svgExportStyleDeclaration(computed) {
+  const properties = [
+    ['color', computed.color],
+    ['fill', computed.fill],
+    ['fill-rule', computed.fillRule],
+    ['fill-opacity', computed.fillOpacity],
+    ['stroke', computed.stroke],
+    ['stroke-width', computed.strokeWidth],
+    ['stroke-linecap', computed.strokeLinecap],
+    ['stroke-linejoin', computed.strokeLinejoin],
+    ['stroke-miterlimit', computed.strokeMiterlimit],
+    ['stroke-dasharray', computed.strokeDasharray],
+    ['stroke-dashoffset', computed.strokeDashoffset],
+    ['stroke-opacity', computed.strokeOpacity],
+    ['font-size', computed.fontSize],
+    ['overflow', 'visible'],
+  ]
+
+  return properties
+    .filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== '')
+    .map(([name, value]) => `${name}:${value}`)
+    .join(';')
+}
+
+function cloneSvgForCanvasExport(svg, rect) {
+  const clone = svg.cloneNode(true)
+  clone.setAttribute('xmlns', SVG_XMLNS)
+  clone.setAttribute('width', String(Math.max(1, Math.ceil(rect.width))))
+  clone.setAttribute('height', String(Math.max(1, Math.ceil(rect.height))))
+
+  const computed = window.getComputedStyle(svg)
+  const inlineStyle = clone.getAttribute('style') || ''
+  clone.setAttribute(
+    'style',
+    `${inlineStyle};${svgExportStyleDeclaration(computed)}`
+  )
+
+  const sourcePaintNodes = Array.from(svg.querySelectorAll(SVG_EXPORT_PAINT_SELECTOR))
+  const clonePaintNodes = Array.from(clone.querySelectorAll(SVG_EXPORT_PAINT_SELECTOR))
+  sourcePaintNodes.forEach((sourceNode, index) => {
+    const cloneNode = clonePaintNodes[index]
+    if (!cloneNode) return
+
+    const sourceStyle = window.getComputedStyle(sourceNode)
+    const stroke = meaningfulPaint(sourceStyle.stroke)
+    const fill = meaningfulPaint(sourceStyle.fill)
+    const strokeWidth = meaningfulPaint(sourceStyle.strokeWidth)
+
+    if (stroke) cloneNode.setAttribute('stroke', stroke)
+    if (fill) cloneNode.setAttribute('fill', fill)
+    if (strokeWidth) cloneNode.setAttribute('stroke-width', strokeWidth)
+  })
+
+  return clone
+}
+
+function isLineOnlySvg(svg) {
+  return (
+    svg.querySelector('line')
+    && !svg.querySelector('path,polyline,polygon,circle,ellipse,rect')
+  )
+}
+
+function parseSvgCoordinate(value, size, viewBox, axis) {
+  const raw = String(value || '').trim()
+  if (!raw) return 0
+  if (raw.endsWith('%')) {
+    const percent = Number(raw.slice(0, -1))
+    return Number.isFinite(percent) ? (percent / 100) * size : 0
+  }
+
+  const numeric = Number(raw)
+  if (!Number.isFinite(numeric)) return 0
+  const viewBoxSize = axis === 'y' ? viewBox?.height : viewBox?.width
+  const viewBoxOffset = axis === 'y' ? viewBox?.y : viewBox?.x
+  if (viewBoxSize > 0) return ((numeric - (viewBoxOffset || 0)) / viewBoxSize) * size
+  return numeric
+}
+
+function parseSvgViewBox(svg) {
+  const parts = String(svg.getAttribute('viewBox') || '')
+    .trim()
+    .split(/[\s,]+/)
+    .map((value) => Number(value))
+  if (parts.length !== 4 || parts.some((value) => !Number.isFinite(value))) {
+    return null
+  }
+  return { x: parts[0], y: parts[1], width: parts[2], height: parts[3] }
+}
+
+function createSvgLineOverlays(svg, targetRect) {
+  if (!isLineOnlySvg(svg)) return []
+
+  const rect = svg.getBoundingClientRect()
+  if (!rect.width || !rect.height || !targetRect.width || !targetRect.height) return []
+
+  const viewBox = parseSvgViewBox(svg)
+
+  return Array.from(svg.querySelectorAll('line'))
+    .map((line) => {
+      const style = window.getComputedStyle(line)
+      const svgStyle = window.getComputedStyle(svg)
+      const stroke = (
+        resolveSvgPaint(style.stroke, line, svg)
+        || resolveSvgPaint(line.getAttribute('stroke'), line, svg)
+        || resolveSvgPaint(svgStyle.stroke, svg)
+        || resolveSvgPaint(svgStyle.color, svg)
+      )
+      if (!stroke) return null
+
+      const x1 = parseSvgCoordinate(line.getAttribute('x1'), rect.width, viewBox, 'x')
+      const y1 = parseSvgCoordinate(line.getAttribute('y1'), rect.height, viewBox, 'y')
+      const x2 = parseSvgCoordinate(line.getAttribute('x2'), rect.width, viewBox, 'x')
+      const y2 = parseSvgCoordinate(line.getAttribute('y2'), rect.height, viewBox, 'y')
+      const fallbackStrokeWidth = cssLengthToPx(svgStyle.strokeWidth, svg, Math.max(rect.width, rect.height), 2.5)
+      const strokeWidth = cssLengthToPx(
+        line.getAttribute('stroke-width') || style.strokeWidth,
+        line,
+        Math.max(rect.width, rect.height),
+        fallbackStrokeWidth
+      )
+
+      return {
+        svg,
+        x1Ratio: (rect.left - targetRect.left + x1) / targetRect.width,
+        y1Ratio: (rect.top - targetRect.top + y1) / targetRect.height,
+        x2Ratio: (rect.left - targetRect.left + x2) / targetRect.width,
+        y2Ratio: (rect.top - targetRect.top + y2) / targetRect.height,
+        stroke,
+        strokeWidthRatio: strokeWidth / targetRect.width,
+        lineCap: style.strokeLinecap || svgStyle.strokeLinecap || 'butt',
+      }
+    })
+    .filter(Boolean)
+}
+
+function svgMarkupToImage(serializedSvg) {
+  return new Promise((resolve, reject) => {
+    const blob = new Blob([serializedSvg], { type: 'image/svg+xml;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const image = new Image()
+
+    image.onload = () => {
+      // Keep the Blob URL alive until the overlay has actually been painted.
+      // Large 1080x1920 html2canvas captures may otherwise outlive the decoded
+      // image resource and produce missing KaTeX delimiters.
+      resolve({ image, objectUrl: url })
+    }
+    image.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('SVG export image load failed'))
+    }
+    image.src = url
+  })
+}
+
+async function createSvgOverlay(svg, targetRect) {
+  const rect = svg.getBoundingClientRect()
+  if (!rect.width || !rect.height || !targetRect.width || !targetRect.height) return null
+
+  const clone = cloneSvgForCanvasExport(svg, rect)
+  const serialized = new XMLSerializer().serializeToString(clone)
+  const { image, objectUrl } = await svgMarkupToImage(serialized)
+
+  return {
+    svg,
+    image,
+    objectUrl,
+    xRatio: (rect.left - targetRect.left) / targetRect.width,
+    yRatio: (rect.top - targetRect.top) / targetRect.height,
+    widthRatio: rect.width / targetRect.width,
+    heightRatio: rect.height / targetRect.height,
+  }
+}
+
+async function prepareSvgOverlaysForCanvas(target) {
+  const targetRect = target.getBoundingClientRect()
+  const svgs = Array.from(target.querySelectorAll('svg'))
+  const overlays = []
+  const lineOverlays = []
+  const hiddenSvgs = new Set()
+
+  for (const svg of svgs) {
+    const svgLineOverlays = createSvgLineOverlays(svg, targetRect)
+    if (svgLineOverlays.length) {
+      lineOverlays.push(...svgLineOverlays)
+      hiddenSvgs.add(svg)
+      continue
+    }
+
+    // html2canvas loses the vertical offset of KaTeX SVG delimiters (large
+    // parentheses, brackets, radicals). Rasterize them at their measured DOM
+    // position and composite them back after the main frame capture.
+    if (svg.closest('.katex')) {
+      try {
+        const overlay = await createSvgOverlay(svg, targetRect)
+        if (overlay) {
+          overlays.push(overlay)
+          hiddenSvgs.add(svg)
+        }
+      } catch (error) {
+        console.warn('KaTeX SVG overlay export failed:', error)
+      }
+    }
+  }
+
+  const restoreFns = Array.from(hiddenSvgs).map((svg) => {
+    const previousVisibility = svg.style.visibility
+    svg.style.visibility = 'hidden'
+    return () => {
+      svg.style.visibility = previousVisibility
+    }
+  })
+
+  return {
+    overlays,
+    lineOverlays,
+    restore() {
+      restoreFns.forEach((restore) => restore())
+      overlays.forEach((overlay) => {
+        if (overlay.objectUrl) URL.revokeObjectURL(overlay.objectUrl)
+      })
+    },
+  }
+}
+
+function drawSvgOverlaysOnCanvas(canvas, overlays, lineOverlays = []) {
+  if (!overlays.length && !lineOverlays.length) return
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  // The export target is mounted far outside the viewport. html2canvas keeps
+  // that compensating translation on its 2D context, so subsequent drawings
+  // would also land off-canvas unless the transform is reset first.
+  ctx.save()
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
+  try {
+    overlays.forEach((overlay) => {
+      ctx.drawImage(
+        overlay.image,
+        overlay.xRatio * canvas.width,
+        overlay.yRatio * canvas.height,
+        overlay.widthRatio * canvas.width,
+        overlay.heightRatio * canvas.height
+      )
+    })
+
+    lineOverlays.forEach((line) => {
+      ctx.save()
+      ctx.strokeStyle = line.stroke
+      ctx.lineWidth = Math.max(2.5, line.strokeWidthRatio * canvas.width)
+      ctx.lineCap = line.lineCap
+      ctx.beginPath()
+      ctx.moveTo(line.x1Ratio * canvas.width, line.y1Ratio * canvas.height)
+      ctx.lineTo(line.x2Ratio * canvas.width, line.y2Ratio * canvas.height)
+      ctx.stroke()
+      ctx.restore()
+    })
+  } finally {
+    ctx.restore()
+  }
+}
+
 async function renderExportCanvas(index, dimensions = {}) {
   const frame = exportSlideRefs.value[index]
   const target = frame?.querySelector('.reel-slide') || frame
   if (!target) return null
   const width = dimensions.width || PNG_EXPORT_WIDTH.value
   const height = dimensions.height || PNG_EXPORT_HEIGHT.value
+  const svgExport = await prepareSvgOverlaysForCanvas(target)
 
-  return html2canvas(target, {
-    backgroundColor: '#f8fbff',
-    height,
-    logging: false,
-    scale: 1,
-    scrollX: 0,
-    scrollY: 0,
-    useCORS: true,
-    width,
-    windowHeight: height,
-    windowWidth: width,
-  })
+  try {
+    const canvas = await html2canvas(target, {
+      backgroundColor: '#f8fbff',
+      height,
+      logging: false,
+      scale: 1,
+      scrollX: 0,
+      scrollY: 0,
+      useCORS: true,
+      width,
+      windowHeight: height,
+      windowWidth: width,
+    })
+    drawSvgOverlaysOnCanvas(canvas, svgExport.overlays, svgExport.lineOverlays)
+    return canvas
+  } finally {
+    svgExport.restore()
+  }
 }
 
 async function exportAllSlidesPng() {

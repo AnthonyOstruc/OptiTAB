@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from .katex import repair_common_katex_input
 from .models import ReelProject, ReelSlide
 
 
@@ -34,6 +35,9 @@ class ReelSlideSerializer(serializers.ModelSerializer):
 
     def validate_katex_scale(self, value):
         return self._validate_scale(value)
+
+    def validate_katex(self, value):
+        return repair_common_katex_input(value)
 
     def validate_katex_inline_offset_percent(self, value):
         if value < -40 or value > 40:

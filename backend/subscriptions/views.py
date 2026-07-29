@@ -12,6 +12,7 @@ from decimal import Decimal
 import logging
 
 from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPass
+from .lesson_payment_views import handle_lesson_payment_completed
 from pays.models import Niveau
 from django.db import DatabaseError
 from django.db.models import Q
@@ -2377,8 +2378,13 @@ def _handle_webhook_event(event):
     # Gérer les différents types d'événements
     if event_type == 'checkout.session.completed':
         session = event['data']['object']
-        # Si la session est un abonnement
-        if session.get('subscription'):
+        session_kind = (session.get('metadata') or {}).get('kind')
+
+        # Un versement pour cours particulier n'ouvre aucun acces plateforme :
+        # il ne doit surtout pas passer par le traitement des pass.
+        if session_kind == 'lesson_payment':
+            handle_lesson_payment_completed(session)
+        elif session.get('subscription'):
             handle_checkout_session_completed(session)
         else:
             handle_checkout_session_payment_completed(session)

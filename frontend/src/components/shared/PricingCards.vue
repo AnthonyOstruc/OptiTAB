@@ -64,7 +64,7 @@
           </div>
 
           <div class="card-price">
-            <div class="price-amount">{{ card.price.toFixed(2) }}€</div>
+            <div class="price-amount">{{ formatPrice(card.price) }}</div>
             <div v-if="card.per" class="price-period">{{ card.per }}</div>
           </div>
 
@@ -149,6 +149,14 @@ const plans = ref(DEFAULT_PLANS)
 const loading = ref(true)
 const activeTab = ref('recurring')
 
+// Offre portant le badge « Le plus populaire ». Une seule ligne a changer
+// pour deplacer la mise en avant sur une autre formule.
+const RECOMMENDED_PLAN_TYPE = 'accompagne'
+
+// Format francais : virgule decimale et espace insecable avant l'euro.
+const formatPrice = (value) =>
+  `${Number(value || 0).toFixed(2).replace('.', ',')} €`
+
 const normalizePeriod = (period) => {
   if (!period) return ''
   const p = period.toLowerCase()
@@ -202,24 +210,30 @@ const cards = computed(() => {
     yearly: 'Économique sur 12 mois'
   }
 
-  // La formule mensuelle la moins chere reste celle mise en avant.
+  // Offre mise en avant. `savings` reste sur la formule mensuelle : ce
+  // pourcentage compare l'hebdomadaire au mensuel, il n'aurait aucun sens
+  // sur une autre carte.
   const baseMonthly = subs
     .filter((p) => normalizePeriod(p.billing_period) === 'monthly')
     .slice()
     .sort((a, b) => Number(a.price || 0) - Number(b.price || 0))[0]
 
+  const recommended =
+    subs.find((p) => p.plan_type === RECOMMENDED_PLAN_TYPE) || baseMonthly
+
   subs
     .slice()
     .sort((a, b) => {
-      // L'offre recommandee garde la premiere position, comme auparavant.
-      const aBase = baseMonthly && a.id === baseMonthly.id ? 0 : 1
-      const bBase = baseMonthly && b.id === baseMonthly.id ? 0 : 1
-      if (aBase !== bBase) return aBase - bBase
+      // L'hebdomadaire ferme la marche : c'est une option de depannage,
+      // pas une etape de la gamme.
+      const aWeekly = normalizePeriod(a.billing_period) === 'weekly' ? 1 : 0
+      const bWeekly = normalizePeriod(b.billing_period) === 'weekly' ? 1 : 0
+      if (aWeekly !== bWeekly) return aWeekly - bWeekly
+      // Le reste se lit comme une montee en gamme.
       return Number(a.price || 0) - Number(b.price || 0)
     })
     .forEach((plan) => {
       const period = normalizePeriod(plan.billing_period)
-      const isBase = Boolean(baseMonthly && plan.id === baseMonthly.id)
       recurringCards.push({
         key: `s-${plan.id}`,
         title: plan.name,
@@ -229,8 +243,8 @@ const cards = computed(() => {
         features: plan.features?.length ? plan.features : baseFeatures,
         priceId: plan.stripe_price_id,
         cta: "S'abonner",
-        recommended: isBase,
-        savings: isBase ? savings : null,
+        recommended: Boolean(recommended && plan.id === recommended.id),
+        savings: baseMonthly && plan.id === baseMonthly.id ? savings : null,
         type: 'recurring'
       })
     })
@@ -412,27 +426,14 @@ onMounted(async () => {
   max-width: 800px;
 }
 
-.pricing-grid--3 {
-  grid-template-columns: repeat(3, 1fr);
-  max-width: 1060px;
-  gap: 1.35rem;
-}
-
+/* Jamais plus de deux colonnes : au-dela, les cartes deviennent trop
+   etroites, les listes d'atouts se replient sur plusieurs lignes et
+   l'ensemble donne une impression de catalogue encombre. */
+.pricing-grid--3,
 .pricing-grid--4 {
-  grid-template-columns: repeat(4, 1fr);
-  max-width: 1240px;
-  gap: 1.15rem;
-}
-
-/* Palier intermediaire : 4 offres sur une seule ligne deviennent illisibles
-   sous 1200px, on repasse en 2x2 avant de tomber sur une colonne. */
-@media (max-width: 1200px) {
-  .pricing-grid--3,
-  .pricing-grid--4 {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 800px;
-    gap: 1.5rem;
-  }
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 860px;
+  gap: 1.6rem;
 }
 
 @media (max-width: 768px) {

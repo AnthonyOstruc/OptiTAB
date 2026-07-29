@@ -22,8 +22,22 @@ from .views import (
     AdminSubscriptionCancelView,
 )
 
+from .lesson_payment_views import (
+    lesson_payment_config,
+    lesson_payment_create_session,
+    lesson_payment_status,
+    admin_lesson_payments,
+)
+
 urlpatterns = [
     path('plans/', PlansListView.as_view(), name='plans-list'),
+
+    # Versements ponctuels pour cours particuliers (montant libre)
+    path('lesson-payment/config/', lesson_payment_config, name='lesson-payment-config'),
+    path('lesson-payment/create-session/', lesson_payment_create_session, name='lesson-payment-create'),
+    path('lesson-payment/status/', lesson_payment_status, name='lesson-payment-status'),
+    path('admin/lesson-payments/', admin_lesson_payments, name='admin-lesson-payments'),
+
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('guest-checkout-session/', GuestCheckoutSessionView.as_view(), name='guest-checkout-session'),
     path('guest-checkout/status/', GuestCheckoutStatusView.as_view(), name='guest-checkout-status'),

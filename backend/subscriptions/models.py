@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -233,3 +235,78 @@ class PaymentHistory(models.Model):
     def __str__(self):
         level_info = f" · {self.niveau_label}" if self.niveau_label else ''
         return f"{_user_identifier(self.user)} - {self.amount}€ ({self.status}){level_info}"
+class LessonPayment(models.Model):
+    """Versement ponctuel pour un cours particulier.
+
+    Le professeur envoie un lien, la personne saisit le montant et paie.
+    Aucun compte OptiTAB n'est requis : c'est un simple encaissement,
+    sans acces plateforme ni abonnement associe.
+    """
+
+    STATUS_CHOICES = [
+        ('pending', 'En attente de paiement'),
+        ('paid', 'Paye'),
+        ('expired', 'Abandonne'),
+        ('refunded', 'Rembourse'),
+    ]
+
+    amount = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        verbose_name="Montant",
+        help_text="Montant reellement demande a Stripe, en euros.",
+    )
+    label = models.CharField(
+        max_length=140,
+        blank=True,
+        verbose_name="Objet",
+        help_text="Ex. « Cours du 12 mars, 2h ». Visible par le payeur.",
+    )
+    payer_name = models.CharField(max_length=120, blank=True, verbose_name="Nom du payeur")
+    payer_email = models.EmailField(blank=True, verbose_name="Email du payeur")
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        db_index=True,
+        verbose_name="Statut",
+    )
+
+    stripe_session_id = models.CharField(max_length=200, unique=True, db_index=True)
+    stripe_payment_intent_id = models.CharField(
+        max_length=200, unique=True, null=True, blank=True
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    paid_at = models.DateTimeField(null=True, blank=True, verbose_name="Paye le")
+
+    class Meta:
+        verbose_name = "Versement cours particulier"
+        verbose_name_plural = "Versements cours particuliers"
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['status', '-created_at']),
+        ]
+
+    def __str__(self):
+        objet = self.label or 'Cours particulier'
+        return f"{self.amount}€ - {objet} ({self.get_status_display()})"
+
+    def mark_paid(self, *, payment_intent_id=None, payer_email='', payer_name=''):
+        """Confirme le versement. Idempotent : un webhook rejoue ne fausse rien."""
+        if self.status == 'paid':
+            return False
+
+        self.status = 'paid'
+        self.paid_at = timezone.now()
+        if payment_intent_id:
+            self.stripe_payment_intent_id = payment_intent_id
+        if payer_email and not self.payer_email:
+            self.payer_email = payer_email
+        if payer_name and not self.payer_name:
+            self.payer_name = payer_name
+        self.save(update_fields=[
+            'status', 'paid_at', 'stripe_payment_intent_id', 'payer_email', 'payer_name',
+        ])
+        return True

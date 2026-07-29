@@ -745,7 +745,10 @@ const NOINDEX_ROUTE_NAMES = new Set([
   'PasswordReset',
   'NotFound',
   'Calculator',
-  'TestFiltrageStrict'
+  'TestFiltrageStrict',
+  // Pages de versement : lien envoye au cas par cas, aucun interet a l'indexer.
+  'LessonPayment',
+  'LessonPaymentThanks'
 ])
 
 export function applyRouteSeo(route) {

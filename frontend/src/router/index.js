@@ -55,6 +55,16 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'Dashboard' }
   },
   { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
+
+  // Versement ponctuel pour un cours particulier : lien envoye au cas par cas.
+  // Le noindex est declare dans NOINDEX_ROUTE_NAMES (services/seo.js) :
+  // `meta.robots` n'est pas lu par applyRouteSeo.
+  { path: '/paiement', name: 'LessonPayment', component: () => import('@/views/LessonPayment.vue') },
+  {
+    path: '/paiement/merci',
+    name: 'LessonPaymentThanks',
+    component: () => import('@/views/LessonPaymentThanks.vue')
+  },
   { path: '/plateforme-maths', name: 'GoogleAdsLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { path: '/bases-methode', name: 'BasesMethodeLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   {

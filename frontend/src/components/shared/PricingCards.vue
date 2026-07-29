@@ -169,7 +169,6 @@ const cards = computed(() => {
 
   const monthly = subs.find((p) => normalizePeriod(p.billing_period) === 'monthly')
   const weekly = subs.find((p) => normalizePeriod(p.billing_period) === 'weekly')
-  const yearly = subs.find((p) => normalizePeriod(p.billing_period) === 'yearly')
   const passYear = passes.find((p) => normalizePeriod(p.billing_period) === 'yearly')
   const passMonth = passes.find((p) => (p.access_days || 0) >= 28 && (p.access_days || 0) < 365 && normalizePeriod(p.billing_period) !== 'yearly')
   const passDay = passes.find((p) => Number(p.access_days) === 1 || normalizePeriod(p.billing_period) === 'daily')
@@ -186,50 +185,55 @@ const cards = computed(() => {
   const recurringCards = []
   const passCards = []
 
-  if (monthly) recurringCards.push({
-    key: `m-${monthly.id}`,
-    title: 'Mensuel',
-    subtitle: 'Sans engagement',
-    price: Number(monthly.price || 0),
-    per: '/ mois',
-    features: monthly.features?.length ? monthly.features : baseFeatures,
-    priceId: monthly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: true,
-    savings,
-    type: 'recurring'
-  })
+  // Toutes les offres recurrentes sont rendues. L'ancienne version n'en
+  // retenait qu'une par periode (`subs.find(...)`), ce qui masquait
+  // silencieusement toute nouvelle formule partageant une periode existante.
+  const PERIOD_SUFFIX = {
+    daily: '/ jour',
+    weekly: '/ semaine',
+    monthly: '/ mois',
+    yearly: '/ an'
+  }
 
-  if (weekly) recurringCards.push({
-    key: `w-${weekly.id}`,
-    title: 'Hebdomadaire',
-    subtitle: 'Flexibilité semaine par semaine',
-    price: Number(weekly.price || 0),
-    per: '/ semaine',
-    features: weekly.features?.length ? weekly.features : [
-      'Accès complet à OptiTAB',
-      'Idéal pour réviser un contrôle',
-      'Sans engagement',
-      'Annulable à tout moment'
-    ],
-    priceId: weekly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: false,
-    type: 'recurring'
-  })
+  const PERIOD_SUBTITLE = {
+    daily: 'Accès à la journée',
+    weekly: 'Flexibilité semaine par semaine',
+    monthly: 'Sans engagement',
+    yearly: 'Économique sur 12 mois'
+  }
 
-  if (yearly) recurringCards.push({
-    key: `y-${yearly.id}`,
-    title: 'Annuel',
-    subtitle: 'Économique sur 12 mois',
-    price: Number(yearly.price || 0),
-    per: '/ an',
-    features: yearly.features?.length ? yearly.features : baseFeatures,
-    priceId: yearly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: false,
-    type: 'recurring'
-  })
+  // La formule mensuelle la moins chere reste celle mise en avant.
+  const baseMonthly = subs
+    .filter((p) => normalizePeriod(p.billing_period) === 'monthly')
+    .slice()
+    .sort((a, b) => Number(a.price || 0) - Number(b.price || 0))[0]
+
+  subs
+    .slice()
+    .sort((a, b) => {
+      // L'offre recommandee garde la premiere position, comme auparavant.
+      const aBase = baseMonthly && a.id === baseMonthly.id ? 0 : 1
+      const bBase = baseMonthly && b.id === baseMonthly.id ? 0 : 1
+      if (aBase !== bBase) return aBase - bBase
+      return Number(a.price || 0) - Number(b.price || 0)
+    })
+    .forEach((plan) => {
+      const period = normalizePeriod(plan.billing_period)
+      const isBase = Boolean(baseMonthly && plan.id === baseMonthly.id)
+      recurringCards.push({
+        key: `s-${plan.id}`,
+        title: plan.name,
+        subtitle: PERIOD_SUBTITLE[period] || 'Sans engagement',
+        price: Number(plan.price || 0),
+        per: PERIOD_SUFFIX[period] || '',
+        features: plan.features?.length ? plan.features : baseFeatures,
+        priceId: plan.stripe_price_id,
+        cta: "S'abonner",
+        recommended: isBase,
+        savings: isBase ? savings : null,
+        type: 'recurring'
+      })
+    })
 
   if (passYear) passCards.push({
     key: `py-${passYear.id}`,

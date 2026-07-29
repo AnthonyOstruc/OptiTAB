@@ -39,7 +39,7 @@
         <p>Aucune offre disponible pour le moment.</p>
       </div>
 
-      <div v-else class="pricing-grid">
+      <div v-else class="pricing-grid" :class="gridSizeClass">
         <article
           v-for="card in displayedCards"
           :key="card.key"
@@ -279,6 +279,12 @@ const displayedCards = computed(() => {
   return cards.value.all
 })
 
+// Le nombre de colonnes suit le nombre d'offres : ajouter une formule dans
+// l'admin ne doit pas obliger a retoucher le CSS.
+const gridSizeClass = computed(
+  () => `pricing-grid--${Math.min(Math.max(displayedCards.value.length, 2), 4)}`
+)
+
 const isCurrentPlan = (card) => {
   if (!props.showCurrentPlan || !props.currentPriceId) return false
   return card.priceId === props.currentPriceId && props.levelAlreadyUnlocked
@@ -387,19 +393,51 @@ onMounted(async () => {
   flex-shrink: 0;
 }
 
+/* La grille s'adapte au nombre d'offres : figee a 2 colonnes dans 800px,
+   elle ecrasait les cartes des qu'on depassait deux formules. */
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 1.75rem;
   align-items: start;
-  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
 
+.pricing-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 800px;
+}
+
+.pricing-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1060px;
+  gap: 1.35rem;
+}
+
+.pricing-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1240px;
+  gap: 1.15rem;
+}
+
+/* Palier intermediaire : 4 offres sur une seule ligne deviennent illisibles
+   sous 1200px, on repasse en 2x2 avant de tomber sur une colonne. */
+@media (max-width: 1200px) {
+  .pricing-grid--3,
+  .pricing-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+    gap: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .pricing-grid {
+  .pricing-grid,
+  .pricing-grid--2,
+  .pricing-grid--3,
+  .pricing-grid--4 {
     grid-template-columns: 1fr;
+    max-width: 460px;
   }
 }
 

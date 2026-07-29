@@ -12,6 +12,8 @@
           <select v-model="form.plan_type">
             <option value="basic">Basic</option>
             <option value="premium">Premium</option>
+            <option value="accompagne">Accompagné (questions illimitées)</option>
+            <option value="particuliers">Cours particuliers</option>
           </select>
         </label>
         <label>Mode

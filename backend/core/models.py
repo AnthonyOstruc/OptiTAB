@@ -211,3 +211,190 @@ class DiagnosticLead(BaseModel):
         self.diagnostic_sent_at = timezone.now()
         if save:
             self.save(update_fields=['diagnostic_sent_at', 'date_modification'])
+
+
+def testimonial_image_upload_to(instance, filename):
+    """Range les captures par annee/mois, comme les images du blog."""
+    return timezone.now().strftime('temoignages/%Y/%m/') + filename
+
+
+class Testimonial(BaseModel):
+    """Capture d'un avis recu par WhatsApp ou SMS, affichee sur la page « lien en bio ».
+
+    On ne stocke que de vraies captures : la page ne reconstitue jamais de
+    fausse conversation. Le champ `consent_confirmed` est un garde-fou RGPD,
+    un message prive reste une donnee personnelle meme anonymisee.
+    """
+
+    CHANNEL_WHATSAPP = 'whatsapp'
+    CHANNEL_SMS = 'sms'
+    CHANNEL_CHOICES = [
+        (CHANNEL_WHATSAPP, 'WhatsApp'),
+        (CHANNEL_SMS, 'SMS'),
+    ]
+
+    # Aucun nom ni prenom n'est stocke : on ne decrit que le profil.
+    # Un temoignage sans identite nominative reste parlant (« Maman d'eleve,
+    # Terminale ») et ne peut pas trahir une famille par recoupement.
+    # Doit rester aligne avec PROFILE_OPTIONS dans AdminTestimonials.vue :
+    # DRF valide la valeur recue contre cette liste, accents compris.
+    PROFILE_CHOICES = [
+        ("Maman d'élève", "Maman d'élève"),
+        ("Papa d'élève", "Papa d'élève"),
+        ("Parent d'élève", "Parent d'élève"),
+        ("Élève", "Élève"),
+        ("Étudiant", "Étudiant"),
+        ("Étudiante", "Étudiante"),
+    ]
+
+    author = models.CharField(
+        max_length=80,
+        blank=True,
+        choices=PROFILE_CHOICES,
+        verbose_name="Profil",
+        help_text="Qui a ecrit le message. Jamais de nom ni de prenom.",
+    )
+    role = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Niveau",
+        help_text="Ex. « Terminale », « Prepa MPSI ». Sans prenom d'enfant.",
+    )
+
+    # Affichage du prenom : refuse par defaut (protection par defaut, RGPD
+    # art. 25). Il faut un accord explicite et distinct de celui qui autorise
+    # la publication de la capture : accepter d'etre cite n'est pas la meme
+    # chose qu'accepter d'etre nomme.
+    name_consent = models.BooleanField(
+        default=False,
+        verbose_name="Accord pour le prenom",
+        help_text="La personne autorise explicitement l'affichage de son prenom.",
+    )
+    display_name = models.CharField(
+        max_length=60,
+        blank=True,
+        verbose_name="Prenom affiche",
+        help_text="Prenom + initiale, ex. « Sandra M. ». Jamais le nom complet.",
+    )
+    channel = models.CharField(
+        max_length=20,
+        choices=CHANNEL_CHOICES,
+        default=CHANNEL_WHATSAPP,
+        verbose_name="Canal",
+    )
+    image = models.ImageField(
+        upload_to=testimonial_image_upload_to,
+        verbose_name="Capture",
+        help_text="Numero, photo de profil et nom complet doivent etre masques avant l'envoi.",
+    )
+    alt_text = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Texte alternatif",
+        help_text="Decrit la capture pour l'accessibilite et le referencement.",
+    )
+    # Champ conserve pour la tracabilite interne (admin Django) mais il ne
+    # conditionne plus la publication : choix explicite du proprietaire du site.
+    consent_confirmed = models.BooleanField(
+        default=False,
+        verbose_name="Accord obtenu",
+        help_text="Trace interne. Ne bloque pas la publication.",
+    )
+    is_published = models.BooleanField(default=False, verbose_name="Publie")
+    is_featured = models.BooleanField(
+        default=False,
+        verbose_name="Mis en avant",
+        help_text="Affiche aussi dans le hero. Un seul temoignage a la fois.",
+    )
+    ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
+
+    objects = BaseManager()
+
+    class Meta:
+        verbose_name = "Temoignage"
+        verbose_name_plural = "Temoignages"
+        ordering = ['ordre', '-date_creation']
+        indexes = [
+            models.Index(fields=['is_published', 'ordre']),
+        ]
+
+    @property
+    def public_name(self):
+        """Prenom affichable, ou chaine vide si l'accord manque."""
+        return self.display_name if (self.name_consent and self.display_name) else ''
+
+    @property
+    def display_label(self):
+        """Libelle affiche sur la carte, jamais vide."""
+        parts = [part for part in (self.public_name or self.author, self.role) if part]
+        return ' · '.join(parts) if parts else 'Temoignage'
+
+    def __str__(self):
+        return f"{self.display_label} ({self.get_channel_display()})"
+
+    def save(self, *args, **kwargs):
+        if not self.is_published:
+            self.is_featured = False
+
+        # Pas d'accord nominatif => on n'a aucune raison de conserver le
+        # prenom. On l'efface plutot que de le garder « au cas ou » : une
+        # donnee qu'on ne stocke pas ne peut pas fuiter.
+        if not self.name_consent:
+            self.display_name = ''
+
+        super().save(*args, **kwargs)
+
+        # Un seul temoignage en avant : on retire le drapeau des autres.
+        if self.is_featured:
+            Testimonial.objects.filter(is_featured=True).exclude(pk=self.pk).update(
+                is_featured=False,
+                date_modification=timezone.now(),
+            )
+
+
+class BioLandingSettings(BaseModel):
+    """Reglages de la page « lien en bio » (/avis), pilotes depuis le studio.
+
+    Enregistrement unique (pk=1) : il n'y a qu'une page a piloter, autant
+    l'assumer plutot que de bricoler une table de cles/valeurs generique.
+    """
+
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name="Page en ligne",
+        help_text="Decoche : seuls les administrateurs voient la page.",
+    )
+
+    objects = BaseManager()
+
+    class Meta:
+        verbose_name = "Reglages page avis"
+        verbose_name_plural = "Reglages page avis"
+
+    def __str__(self):
+        return 'Page /avis : en ligne' if self.is_published else 'Page /avis : hors ligne'
+
+    def save(self, *args, **kwargs):
+        # Singleton : on force l'identifiant pour qu'aucun second
+        # enregistrement ne puisse apparaitre et creer une ambiguite.
+        self.pk = 1
+
+        # Forcer le pk sur une instance neuve declencherait un UPDATE avec
+        # date_creation a NULL (auto_now_add ne s'applique qu'a l'insertion).
+        # On reprend donc la date de la ligne existante.
+        if self._state.adding:
+            existing = type(self).objects.filter(pk=1).first()
+            if existing is not None:
+                self.date_creation = existing.date_creation
+                self._state.adding = False
+
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        # On ne supprime pas un singleton de configuration.
+        pass
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj

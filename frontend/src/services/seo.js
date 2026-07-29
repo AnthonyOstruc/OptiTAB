@@ -1,6 +1,7 @@
 import { faq as homeFaq } from '@/config/homeFaq.js'
 import { FREE_RESOURCES_FAQ_BY_ROUTE } from '@/config/freeResourcesAuthority'
 import { getManualSeoOverrideByPath } from '@/config/manualSeoOverrides'
+import { FAQ as BIO_LANDING_FAQ } from '@/config/bioLandingContent'
 
 const DEFAULT_SITE_NAME = 'OptiTAB'
 const DEFAULT_TITLE = 'Plateforme de maths & cours particuliers en ligne'
@@ -652,6 +653,14 @@ const ROUTE_SEO = {
     title: 'Plateforme de maths en ligne — Cours, fiches et exercices corriges | OptiTAB',
     description: 'Abonne-toi a OptiTAB : cours de maths structures, fiches de synthese et exercices corriges pas a pas du lycee. Sans engagement, acces immediat.',
     canonicalPath: '/plateforme-maths'
+  },
+  BioLanding: {
+    title: 'Aide en maths du college a la prepa : parlons de votre enfant | OptiTAB',
+    description:
+      'Cours clairs, fiches de synthese et exercices corriges pas a pas, plus un suivi par message 7j/7. Decouvrez les retours des parents et ecrivez-nous sur WhatsApp.',
+    canonicalPath: '/avis',
+    breadcrumbLabel: 'Aide en maths',
+    faq: BIO_LANDING_FAQ
   },
   ExercicesCorrigesLanding: {
     title: 'Exercices corriges pas a pas : comprendre chaque etape | OptiTAB',

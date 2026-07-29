@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 from django.utils import timezone
 
-from .models import NewsletterSubscriber, DiagnosticLead
+from .models import NewsletterSubscriber, DiagnosticLead, Testimonial
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -432,3 +432,50 @@ class DiagnosticLeadAdmin(admin.ModelAdmin):
         self.message_user(request, f"{updated} lead(s) marqué(s) comme diagnostic envoyé.")
 
     mark_diagnostic_sent.short_description = _("Marquer comme diagnostic envoyé")
+
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    """Les temoignages se gerent surtout depuis le studio (/admin/temoignages).
+
+    Cet ecran Django reste disponible en secours et pour la moderation.
+    """
+
+    list_display = ('apercu', 'display_label', 'channel', 'name_consent', 'consent_confirmed', 'is_published', 'is_featured', 'ordre')
+    list_filter = ('channel', 'is_published', 'is_featured', 'consent_confirmed', 'name_consent')
+    search_fields = ('author', 'role', 'display_name', 'alt_text')
+    list_editable = ('ordre',)
+    readonly_fields = ('apercu_grand', 'date_creation', 'date_modification')
+    fieldsets = (
+        (_("Capture"), {'fields': ('image', 'apercu_grand', 'alt_text')}),
+        (_("Identite"), {
+            'fields': ('author', 'role', 'channel'),
+            'description': _("Aucun nom ni prenom ici : la liste est fermee."),
+        }),
+        (_("Prenom (optionnel)"), {
+            'fields': ('name_consent', 'display_name'),
+            'description': _(
+                "Anonyme par defaut. Le prenom n'est affiche que si la personne "
+                "l'a explicitement autorise ; sans accord il est efface a l'enregistrement."
+            ),
+        }),
+        (_("Diffusion"), {
+            'fields': ('consent_confirmed', 'is_published', 'is_featured', 'ordre'),
+            'description': _("Accord obtenu : trace interne, ne bloque pas la publication."),
+        }),
+        (_("Suivi"), {'fields': ('est_actif', 'date_creation', 'date_modification')}),
+    )
+
+    def apercu(self, obj):
+        if not obj.image:
+            return '—'
+        return format_html('<img src="{}" style="height:60px;border-radius:6px;" />', obj.image.url)
+
+    apercu.short_description = _("Apercu")
+
+    def apercu_grand(self, obj):
+        if not obj.image:
+            return _("Aucune capture")
+        return format_html('<img src="{}" style="max-height:420px;border-radius:10px;" />', obj.image.url)
+
+    apercu_grand.short_description = _("Apercu")

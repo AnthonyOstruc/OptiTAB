@@ -30,26 +30,24 @@ const routes = [
   { path: '/', name: 'Home', component: () => import('@/views/Home.vue') },
   { path: '/start', name: 'StartLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { path: '/commencer', redirect: '/start' },
-  {
-    path: '/instagram',
+  // Page "lien en bio" partagee sur tous les reseaux sociaux.
+  // Sa mise en ligne se pilote depuis le studio (/admin/temoignages) : la vue
+  // interroge l'API au chargement et renvoie les visiteurs a l'accueil tant
+  // que la page n'est pas publiee. Pas de garde de routeur ici, sinon il
+  // faudrait un appel reseau avant chaque navigation du site.
+  { path: '/avis', name: 'BioLanding', component: () => import('@/views/BioLanding.vue') },
+  // Ancienne adresse conservee : un lien deja partage ne doit jamais casser.
+  { path: '/optitab', redirect: '/avis' },
+  ...['instagram', 'facebook', 'tiktok', 'youtube', 'snapchat'].map((network) => ({
+    path: `/${network}`,
     redirect: {
-      path: '/start',
+      path: '/avis',
       query: {
-        utm_source: 'instagram',
+        utm_source: network,
         utm_medium: 'bio'
       }
     }
-  },
-  {
-    path: '/facebook',
-    redirect: {
-      path: '/start',
-      query: {
-        utm_source: 'facebook',
-        utm_medium: 'social'
-      }
-    }
-  },
+  })),
   {
     path: '/jeux/math-run',
     name: 'MathRun',
@@ -297,6 +295,7 @@ const routes = [
       { path: 'reel-studio', name: 'AdminReelStudio', component: () => import('@/views/admin/ReelStudioAdminPage.vue') },
       { path: 'reel-background', name: 'AdminReelBackground', component: () => import('@/views/admin/AdminReelBackground.vue') },
       { path: 'blog', name: 'AdminBlog', component: () => import('@/views/admin/AdminBlog.vue') },
+      { path: 'temoignages', name: 'AdminTestimonials', component: () => import('@/views/admin/AdminTestimonials.vue') },
     ]
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound.vue') }

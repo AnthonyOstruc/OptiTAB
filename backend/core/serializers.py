@@ -4,6 +4,8 @@ Core serializers providing base functionality and common patterns.
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
+from .models import Testimonial
+
 
 class BaseModelSerializer(serializers.ModelSerializer):
     """
@@ -154,3 +156,75 @@ class WriteSerializer(BaseModelSerializer):
         """
         # Add any common update logic here
         return super().update(instance, validated_data)
+
+
+# ---------------------------------------------------------------------------
+# Temoignages (captures WhatsApp / SMS affichees sur la page « lien en bio »)
+# ---------------------------------------------------------------------------
+
+class TestimonialPublicSerializer(serializers.ModelSerializer):
+    """Charge utile minimale envoyee a la landing publique."""
+
+    src = serializers.SerializerMethodField()
+    alt = serializers.CharField(source='alt_text', read_only=True)
+    featured = serializers.BooleanField(source='is_featured', read_only=True)
+    # `public_name` renvoie '' si l'accord nominatif manque : le prenom ne
+    # peut donc pas sortir de l'API, meme si la colonne contenait une valeur.
+    name = serializers.CharField(source='public_name', read_only=True)
+
+    class Meta:
+        model = Testimonial
+        fields = ['id', 'name', 'author', 'role', 'channel', 'src', 'alt', 'featured']
+
+    def get_src(self, obj):
+        if not obj.image:
+            return None
+        request = self.context.get('request')
+        return request.build_absolute_uri(obj.image.url) if request else obj.image.url
+
+
+class TestimonialAdminSerializer(serializers.ModelSerializer):
+    """Serializer complet pour le studio d'administration."""
+
+    src = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Testimonial
+        fields = [
+            'id', 'author', 'role', 'channel', 'image', 'src', 'alt_text',
+            'name_consent', 'display_name',
+            'consent_confirmed', 'is_published', 'is_featured', 'ordre',
+            'date_creation', 'date_modification',
+        ]
+        read_only_fields = ['date_creation', 'date_modification']
+        extra_kwargs = {'image': {'write_only': True, 'required': False}}
+
+    def get_src(self, obj):
+        if not obj.image:
+            return None
+        request = self.context.get('request')
+        return request.build_absolute_uri(obj.image.url) if request else obj.image.url
+
+    def validate_author(self, value):
+        # Le profil est facultatif : un temoignage peut n'afficher que le niveau.
+        return str(value or '').strip()
+
+    def validate(self, attrs):
+        instance = getattr(self, 'instance', None)
+
+        if not instance and not attrs.get('image'):
+            raise serializers.ValidationError({'image': 'Une capture est obligatoire.'})
+
+        # Un prenom ne peut etre renseigne que si la personne l'a autorise.
+        name_consent = attrs.get(
+            'name_consent', getattr(instance, 'name_consent', False)
+        )
+        display_name = attrs.get(
+            'display_name', getattr(instance, 'display_name', '')
+        )
+        if display_name and not name_consent:
+            raise serializers.ValidationError({
+                'name_consent': "Confirmez l'accord de la personne avant d'afficher son prenom.",
+            })
+
+        return attrs

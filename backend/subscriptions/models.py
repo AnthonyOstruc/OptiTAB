@@ -24,9 +24,14 @@ def _user_identifier(user):
 
 class SubscriptionPlan(models.Model):
     """Plans d'abonnement disponibles"""
+    # `unique_together` porte sur (plan_type, billing_period, plan_mode) :
+    # deux offres mensuelles recurrentes doivent donc avoir des types
+    # differents. D'ou ces types metier plutot qu'un simple basic/premium.
     PLAN_TYPES = [
         ('basic', 'Basic'),
         ('premium', 'Premium'),
+        ('accompagne', 'Accompagne (questions illimitees)'),
+        ('particuliers', 'Cours particuliers'),
     ]
     
     BILLING_PERIODS = [

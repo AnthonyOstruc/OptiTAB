@@ -43,6 +43,7 @@ import {
   AcademicCapIcon,
   BanknotesIcon,
   BookOpenIcon,
+  ChatBubbleLeftRightIcon,
   ClipboardDocumentCheckIcon,
   ClipboardDocumentListIcon,
   DocumentTextIcon,
@@ -97,6 +98,7 @@ const sections = [
   {
     title: 'Communication et paiements',
     items: [
+      { label: 'Témoignages', description: 'Publier les avis WhatsApp et SMS.', to: '/admin/temoignages', icon: ChatBubbleLeftRightIcon },
       { label: 'Newsletter', description: 'Piloter les envois newsletter.', to: '/admin/newsletter', icon: EnvelopeIcon },
       { label: 'Abonnements', description: 'Configurer les offres.', to: '/admin/subscriptions', icon: BanknotesIcon },
       { label: 'Abonnés', description: 'Suivre les abonnés actifs.', to: '/admin/subscribers', icon: UserGroupIcon },

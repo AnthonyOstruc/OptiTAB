@@ -79,12 +79,6 @@ const props = defineProps({
   max-width: 1200px;
   margin: 48px auto 0 auto;
   padding: 0 2vw;
-  
-  @media (max-width: 700px) {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 0 4vw;
-  }
 }
 .intro-feature-card {
   background: #fff;
@@ -118,18 +112,6 @@ const props = defineProps({
   background: none !important;
   border-radius: 50%;
   box-shadow: none;
-  
-  @media (max-width: 700px) {
-    width: 64px;
-    height: 64px;
-    font-size: 2.8rem;
-  }
-  
-  @media (max-width: 350px) {
-    width: 48px;
-    height: 48px;
-    font-size: 2rem;
-  }
 }
 .intro-feature-content {
   flex: 1 1 0%;
@@ -153,57 +135,80 @@ const props = defineProps({
   text-align: left;
   line-height: 1.7;
 }
-@media (max-width: 700px) {
+@media (max-width: 800px) {
+  .intro-features-section {
+    padding: 56px 24px 40px;
+  }
+  .intro-features-header {
+    max-width: 620px;
+    margin-bottom: 32px;
+  }
   .intro-features-title {
-    font-size: 2rem;
+    font-size: clamp(1.65rem, 5.5vw, 2.1rem);
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .intro-features-desc {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .intro-features-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 620px;
+    gap: 20px;
+    margin-top: 32px;
+    padding: 0;
   }
   .intro-feature-card {
-    padding: 28px 20px 24px 20px;
+    min-width: 0;
+    padding: 24px;
     flex-direction: column;
     align-items: center;
-    border-radius: 22px;
-    min-height: 200px;
+    border-radius: 20px;
+    min-height: 0;
+    box-shadow: 0 4px 24px rgba($bleu-principal, 0.08);
+    border: 1px solid #e8edf5;
+
+    &:hover {
+      transform: none;
+    }
   }
   .intro-feature-icon.left {
+    min-width: 56px;
     margin-right: 0;
     margin-bottom: 16px;
     align-items: center;
     justify-content: center;
   }
+  .feature-svg {
+    width: 56px;
+    height: 56px;
+    font-size: 2.5rem;
+  }
+  .intro-feature-content {
+    min-width: 0;
+    width: 100%;
+  }
   .intro-feature-title {
-    margin-bottom: 12px;
+    font-size: 1.15rem;
+    margin-bottom: 10px;
     text-align: center;
+    text-wrap: balance;
   }
   .intro-feature-desc {
+    font-size: 1rem;
     text-align: center;
     line-height: 1.6;
   }
 }
 
-@media (max-width: 350px) {
-  .intro-features-title {
-    font-size: 1.75rem;
-  }
-  .intro-features-desc {
-    font-size: 1rem;
+@media (max-width: 600px) {
+  .intro-features-section {
+    padding: 48px 16px 32px;
   }
   .intro-feature-card {
-    padding: 24px 16px 20px 16px;
-    border-radius: 18px;
-    min-height: 160px;
-  }
-  .intro-feature-icon.left {
-    min-width: 48px;
-    margin-bottom: 12px;
-  }
-  .intro-feature-title {
-    font-size: 1.05rem;
-    margin-bottom: 10px;
-    line-height: 1.3;
-  }
-  .intro-feature-desc {
-    font-size: 0.9rem;
-    line-height: 1.6;
+    padding: 24px 20px;
   }
 }
 </style> 

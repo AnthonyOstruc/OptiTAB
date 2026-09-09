@@ -9,7 +9,7 @@
     </div>
 
     <!-- Pricing Cards Component -->
-    <PricingCards 
+    <PricingCards
       :submitting="submitting"
       cta-location="pricing"
       @select="handleSubscribe"
@@ -25,6 +25,7 @@
         <button
           class="modal-close"
           type="button"
+          aria-label="Fermer le choix du niveau"
           :disabled="submitting"
           @click="closeLevelModal"
         >
@@ -307,7 +308,7 @@ async function confirmSubscription() {
   font-size: 1.5rem;
   color: #64748b;
   cursor: pointer;
-  
+
   &:hover {
     color: #0f172a;
   }
@@ -316,7 +317,7 @@ async function confirmSubscription() {
 .modal-header {
   text-align: center;
   margin-bottom: 1.5rem;
-  
+
   h3 {
     font-size: 1.5rem;
     margin: 0.5rem 0;
@@ -346,7 +347,7 @@ async function confirmSubscription() {
 .modal-loading {
   text-align: center;
   padding: 2rem 0;
-  
+
   .spinner {
     width: 48px;
     height: 48px;
@@ -356,7 +357,7 @@ async function confirmSubscription() {
     animation: spin 0.8s linear infinite;
     margin: 0 auto 20px;
   }
-  
+
   p {
     color: #64748b;
     font-size: 1rem;
@@ -393,7 +394,7 @@ async function confirmSubscription() {
   padding: 0.85rem 1rem;
   font-size: 1rem;
   background: #f8fafc;
-  
+
   &:focus {
     outline: none;
     border-color: #6366f1;
@@ -461,27 +462,126 @@ async function confirmSubscription() {
   margin: 0 auto 0.8rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .pricing-plans-section {
-    padding: 60px 0;
+    padding: 56px 20px;
   }
-  
+
   .pricing-header {
-    margin-bottom: 48px;
+    max-width: 560px;
+    padding: 0;
+    margin-bottom: 28px;
   }
-  
+
   .pricing-title {
-    font-size: 2rem;
+    font-size: clamp(1.75rem, 5.5vw, 2rem);
+    line-height: 1.25;
+    text-wrap: balance;
   }
-  
+
   .pricing-desc {
     font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  :deep(.pricing-tabs) {
+    max-width: 460px;
+    gap: 4px;
+    margin-bottom: 24px;
+  }
+
+  :deep(.pricing-tab) {
+    min-width: 0;
+    min-height: 52px;
+    padding: 10px 8px;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  :deep(.pricing-grid) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 460px;
+    gap: 20px;
+  }
+
+  :deep(.pricing-card) {
+    min-width: 0;
+    padding: 24px 20px;
+  }
+
+  :deep(.card-badge-area:empty) {
+    display: none;
+  }
+
+  :deep(.card-title) {
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  :deep(.card-features li) {
+    gap: 10px;
+    line-height: 1.55;
+  }
+
+  :deep(.card-reviews) {
+    text-align: center;
+  }
+
+  :deep(.google-reviews-compact) {
+    justify-content: center;
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+
+  :deep(.card-button) {
+    min-height: 48px;
+    padding: 14px 16px;
+  }
+
+  :deep(.card-note) {
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  .level-modal-overlay {
+    z-index: 13000;
+  }
+
+  .level-modal {
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    padding: 48px 20px 24px;
+  }
+
+  .modal-close {
+    top: 8px;
+    right: 8px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .modal-subtitle,
+  .modal-hint,
+  .modal-signup-hint {
+    line-height: 1.55;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-btn,
+  .modal-btn.primary {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    line-height: 1.4;
   }
 }
 
 @media (max-width: 480px) {
-  .pricing-title {
-    font-size: 1.75rem;
+  :deep(.tab-icon) {
+    display: none;
   }
 }
 </style>

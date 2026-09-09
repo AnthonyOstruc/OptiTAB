@@ -72,4 +72,63 @@ function navigateToCoursParticuliers() {
   gap: 30px;
   justify-items: center;
 }
-</style> 
+
+@media (max-width: 800px) {
+  .subjects-section {
+    padding: 56px 20px;
+  }
+
+  .subjects-section h2 {
+    font-size: clamp(1.75rem, 5.5vw, 2rem);
+    line-height: 1.25;
+    margin: 0 0 28px;
+    padding: 0;
+    text-wrap: balance;
+  }
+
+  .subjects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .subjects-grid :deep(.base-card) {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    min-height: 0;
+    padding: 24px 20px;
+  }
+
+  .subjects-grid :deep(.base-card__icon-svg) {
+    width: 64px;
+    height: 64px;
+  }
+
+  .subjects-grid :deep(.base-card__title) {
+    line-height: 1.35;
+  }
+
+  .subjects-grid :deep(.base-card__desc) {
+    line-height: 1.6;
+  }
+
+  .subjects-grid :deep(.base-card__help-indicator) {
+    justify-content: center;
+    opacity: 1;
+    transform: none;
+  }
+
+  .subjects-grid :deep(.help-text) {
+    white-space: normal;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 600px) {
+  .subjects-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 460px;
+  }
+}
+</style>

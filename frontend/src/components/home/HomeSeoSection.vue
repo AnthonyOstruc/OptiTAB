@@ -248,9 +248,9 @@ const handleContactSuccess = (message) => {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .offers-section {
-    padding: 48px 0;
+    padding: 56px 0;
   }
 
   .offers-section__inner {
@@ -258,25 +258,25 @@ const handleContactSuccess = (message) => {
   }
 
   .offers-section__header {
-    margin-bottom: 36px;
+    max-width: 560px;
+    margin: 0 auto 28px;
   }
 
   .offers-section__title {
-    font-size: 1.6rem;
-  }
-
-  .offers-section__intro {
-    font-size: 0.95rem;
+    font-size: clamp(1.75rem, 5.5vw, 2rem);
+    text-wrap: balance;
   }
 
   .offers-section__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 460px;
     gap: 20px;
-    margin-bottom: 32px;
+    margin: 0 auto 28px;
   }
 
   .offer-card {
-    padding: 28px 24px;
+    min-width: 0;
+    padding: 24px 20px;
     border-radius: 16px;
   }
 
@@ -287,7 +287,7 @@ const handleContactSuccess = (message) => {
   }
 
   .offer-card__title {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 16px;
   }
 
@@ -296,7 +296,7 @@ const handleContactSuccess = (message) => {
   }
 
   .offer-card__list li {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     margin-bottom: 8px;
     padding-left: 20px;
   }
@@ -308,22 +308,35 @@ const handleContactSuccess = (message) => {
   }
 
   .offer-card__cta {
-    padding: 14px 24px;
+    min-height: 48px;
+    padding: 14px 12px;
     font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.4;
     border-radius: 10px;
   }
 
   .offer-card__hint {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
   }
 
   .offers-section__nav {
-    margin-bottom: 40px;
-    gap: 8px;
+    flex-direction: column;
+    margin-bottom: 0;
+    gap: 0;
   }
 
   .offers-section__link {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+
+  .offers-section__separator {
+    display: none;
   }
 }
 </style>

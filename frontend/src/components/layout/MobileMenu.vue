@@ -1,27 +1,32 @@
 <template>
   <div class="mobile-menu">
     <!-- Hamburger Button -->
-    <button 
+    <button
+      type="button"
       class="hamburger-button"
       @click="toggleMenu"
-      aria-label="Toggle mobile menu"
+      :aria-label="isOpen ? 'Fermer le menu' : 'Ouvrir le menu'"
+      :aria-expanded="isOpen"
+      aria-controls="public-mobile-navigation"
     >
       <HamburgerIcon :is-active="isOpen" />
     </button>
 
-    <!-- Mobile Menu Overlay -->
+    <Teleport to="body">
+    <!-- Keep the fixed drawer outside the transformed header. -->
     <div 
       class="mobile-overlay"
       :class="{ 'is-open': isOpen }"
+      aria-hidden="true"
       @click="closeMenu"
     />
 
     <!-- Mobile Menu Panel -->
-    <div class="mobile-panel" :class="{ 'is-open': isOpen }">
+    <div id="public-mobile-navigation" class="mobile-panel" :class="{ 'is-open': isOpen }" :inert="!isOpen" :aria-hidden="!isOpen">
       <!-- Panel Header -->
       <div class="panel-header">
         <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
-        <button class="close-button" @click="closeMenu" aria-label="Close menu">
+        <button type="button" class="close-button" @click="closeMenu" aria-label="Fermer le menu">
           <CloseIcon />
         </button>
       </div>
@@ -77,6 +82,7 @@
         </div>
       </div>
     </div>
+    </Teleport>
   </div>
 </template>
 
@@ -212,13 +218,21 @@ export default {
       }
     }
 
+    const handleResize = () => {
+      if (window.innerWidth > 880 && isOpen.value) {
+        closeMenu()
+      }
+    }
+
     // Lifecycle hooks
     onMounted(() => {
       document.addEventListener('keydown', handleKeydown)
+      window.addEventListener('resize', handleResize)
     })
 
     onUnmounted(() => {
       document.removeEventListener('keydown', handleKeydown)
+      window.removeEventListener('resize', handleResize)
       unlockBodyScroll(SCROLL_LOCK_KEY)
     })
 
@@ -252,6 +266,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 }
 
 // Hamburger Button
@@ -265,6 +280,9 @@ export default {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  color: $text-color;
   
   &:hover {
     background: $background-light;
@@ -298,18 +316,23 @@ export default {
   top: 0;
   right: -100%;
   width: 300px;
+  max-width: 100%;
   height: 100vh;
   height: 100dvh; // utiliser la hauteur dynamique pour iOS Safari
   background: $white;
   z-index: 12003;
-  transition: right 0.3s ease;
+  visibility: hidden;
+  transition: right 0.3s ease, visibility 0.3s ease;
   display: flex;
   flex-direction: column;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
   overflow: hidden; // Prévenir le débordement du contenu
+  box-sizing: border-box;
+  touch-action: pan-y;
 
   &.is-open {
     right: 0;
+    visibility: visible;
   }
 }
 
@@ -320,6 +343,8 @@ export default {
   justify-content: space-between;
   padding: 20px;
   border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+  padding-top: calc(20px + env(safe-area-inset-top, 0px));
 }
 
 .close-button {
@@ -329,6 +354,11 @@ export default {
   border-radius: 6px;
   transition: all 0.2s ease;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 
   &:hover {
     background: $background-light;
@@ -341,6 +371,7 @@ export default {
   padding: 20px 0;
   overflow-y: auto;
   min-height: 0; // Important pour le flex scrolling
+  overscroll-behavior: contain;
 }
 
 .navigation-item {

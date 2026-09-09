@@ -166,41 +166,54 @@ button:hover {
   clip: rect(0,0,0,0);
   border: 0;
 }
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .newsletter {
-    padding: 48px 4vw;
+    padding: 48px 20px 56px;
+    gap: 24px;
+    max-width: 680px;
   }
-  
+
   .content h3 {
-    font-size: 1.35rem;
+    font-size: clamp(1.5rem, 5vw, 1.75rem);
+    line-height: 1.3;
+    margin: 0 0 12px;
+    text-wrap: balance;
   }
-  
+
   .content p {
     font-size: 1rem;
+  }
+
+  .form {
+    max-width: 460px;
+  }
+
+  .input-group {
+    min-width: 0;
+  }
+
+  .input-group input {
+    min-height: 50px;
+    box-sizing: border-box;
+  }
+
+  button {
+    min-height: 50px;
+    line-height: 1.4;
   }
 }
 
 @media (max-width: 600px) {
-  .newsletter {
-    padding: 40px 4vw;
-  }
-  
-  .content h3 {
-    font-size: 1.25rem;
-  }
-  
   .form {
     flex-direction: column;
-    gap: 12px;
   }
-  
+
   .input-group {
-    min-width: 100%;
+    width: 100%;
   }
-  
+
   button {
     width: 100%;
   }
 }
 </style>
-

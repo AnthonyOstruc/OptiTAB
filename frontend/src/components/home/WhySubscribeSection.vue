@@ -832,29 +832,44 @@ $radius-sm:  8px;
 // ─────────────────────────────────────────
 // Responsive
 // ─────────────────────────────────────────
-@media (max-width: 700px) {
+@media (max-width: 800px) {
   .cmp-wrap { display: none; }
   .mob-cards { display: block; }
 
   .why-section { padding: 64px 0 48px; }
-  .why-title { font-size: 1.75rem; }
-  .why-header { margin-bottom: 36px; }
+  .why-container { max-width: 668px; }
+  .why-title {
+    font-size: clamp(1.65rem, 5.5vw, 2.1rem);
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .why-desc { font-size: 1rem; }
+  .why-header { margin-bottom: 32px; }
+  .mob-premium { border-radius: 18px; margin-bottom: 24px; }
+  .mob-premium-title-row .tier-icon,
+  .mob-free-card-head .tier-icon { flex-shrink: 0; }
+  .mob-features li { font-size: 0.95rem; line-height: 1.55; }
+  .mob-plan-price { font-size: 0.95rem; }
+  .mob-security { font-size: 0.8rem; line-height: 1.5; }
+  .mob-sep { text-align: center; line-height: 1.5; }
+  .mob-sep span { min-width: 0; }
+  .mob-free-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .mob-free-card { min-width: 0; padding: 20px; border-radius: 16px; }
+  .mob-free-name { font-size: 1rem; }
+  .mob-free-badge { font-size: 0.75rem; line-height: 1.5; }
+  .mob-free-hook { font-size: 0.95rem; line-height: 1.5; }
+  .mob-free-list { gap: 8px; margin-bottom: 20px; }
+  .mob-free-list li { font-size: 0.9rem; line-height: 1.5; }
+  .mob-free-btn,
+  .mob-subscribe-btn { min-height: 48px; padding: 12px 16px; font-size: 0.95rem; line-height: 1.45; }
+  .why-footnote { padding: 20px; line-height: 1.65; }
 }
 
 @media (max-width: 600px) {
+  .why-section { padding: 56px 0 40px; }
   .why-container { padding: 0 16px; }
-  .why-title { font-size: 1.55rem; }
-  .mob-tier-sub { display: none; }
-}
-
-@media (max-width: 420px) {
-  .why-section { padding: 44px 0 36px; }
-  .why-container { padding: 0 12px; }
-  .why-title { font-size: 1.35rem; line-height: 1.25; }
-  .why-desc { font-size: 0.88rem; }
-  .mob-premium-top { padding: 18px 18px 16px; }
-  .mob-premium-body { padding: 18px 18px 20px; }
-  .mob-free-card { padding: 14px 10px 14px; }
-  .mob-free-hook { font-size: 0.72rem; }
+  .mob-premium-top { padding: 20px; }
+  .mob-premium-body { padding: 20px; }
+  .mob-free-grid { grid-template-columns: minmax(0, 1fr); }
 }
 </style>

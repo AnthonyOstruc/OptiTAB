@@ -1,5 +1,5 @@
 <template>
-  <header :class="['header', { 'header--no-shadow': isFreeResourcePage, 'header--landing': isLandingVariant }]" ref="headerRef">
+  <header :class="['header', { 'header--no-shadow': isFreeResourcePage, 'header--landing': isLandingVariant, 'header--home': isHomePage }]" ref="headerRef">
     <div class="header-desktop">
       <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
       <Navigation :variant="variant" @open-login="handleLogin" @open-contact="openLandingContactModal" />
@@ -199,6 +199,7 @@ export default {
     })
 
     const isCalculatorPage = computed(() => route.path === '/calculator')
+    const isHomePage = computed(() => route.path === '/')
 
     const handleTouchStart = (e) => {
       if (e.touches.length > 1) {
@@ -254,6 +255,7 @@ export default {
       headerRef,
       isFreeResourcePage,
       isCalculatorPage,
+      isHomePage,
       isLandingVariant,
       isPlateformeMathsLanding,
       landingPrimaryCtaLabel,
@@ -502,6 +504,47 @@ export default {
   .mobile-quick-icon {
     width: 14px;
     height: 14px;
+  }
+}
+
+@media (max-width: 530px) {
+  .header--home {
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
+    border-bottom: 1px solid #edf0f7;
+  }
+
+  .header--home .header-mobile {
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .header--home .header-mobile-top :deep(a) {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .header--home :deep(.logo-full) {
+    display: block;
+  }
+
+  .header--home :deep(.logo-icon),
+  .header--home .mobile-quick-link--left {
+    display: none;
+  }
+
+  .header--home .mobile-quick-link--login {
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 10px;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .header--home .mobile-quick-icon {
+    width: 16px;
+    height: 16px;
   }
 }
 

@@ -143,7 +143,7 @@ const resolvedImageAlt = computed(() => {
   @media (max-width: 800px) {
     flex-direction: column;
     text-align: center;
-    padding: 120px 4vw 32px 4vw;
+    padding: 40px 24px 40px;
     border-radius: 0;
     gap: 0px;
     min-height: auto;
@@ -151,7 +151,7 @@ const resolvedImageAlt = computed(() => {
   }
   
   @media (max-width: 480px) {
-    padding: 100px 4vw 28px 4vw;
+    padding: 32px 20px 36px;
   }
 }
 
@@ -229,12 +229,10 @@ const resolvedImageAlt = computed(() => {
   @media (max-width: 800px) {
     margin: 0 auto;
     text-align: center;
-    max-width: 100%;
-    padding: 0 1rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 0 0.5rem;
+    width: 100%;
+    max-width: 560px;
+    min-width: 0;
+    padding: 0;
   }
 }
 
@@ -344,25 +342,11 @@ const resolvedImageAlt = computed(() => {
   }
   
   @media (max-width: 800px) {
-    font-size: clamp(1.68rem, 5.8vw, 2.04rem);
+    font-size: clamp(1.75rem, 6.5vw, 2.5rem);
     margin-bottom: 16px;
     line-height: 1.18;
-  }
-  
-  @media (max-width: 600px) {
-    font-size: 1.52rem;
-    margin-bottom: 14px;
-    max-width: 100%;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 1.42rem;
-    margin-bottom: 12px;
-    line-height: 1.25;
-  }
-  
-  @media (max-width: 360px) {
-    font-size: 1.28rem;
+    max-width: 22ch;
+    text-wrap: balance;
   }
 }
 
@@ -415,9 +399,9 @@ const resolvedImageAlt = computed(() => {
   }
   
   @media (max-width: 480px) {
-    font-size: 0.93rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
-    padding: 0 0.5rem;
+    padding: 0;
   }
 }
 
@@ -445,6 +429,16 @@ const resolvedImageAlt = computed(() => {
   display: block;
 }
 
+@media (max-width: 800px) {
+  .subtitle-line {
+    display: inline;
+
+    &:not(:last-child)::after {
+      content: ' ';
+    }
+  }
+}
+
 @media (min-width: 1024px) {
   .subtitle-line {
     white-space: nowrap;
@@ -466,8 +460,8 @@ const resolvedImageAlt = computed(() => {
 }
 
 .section-hero__mini-levels-mobile {
-  font-size: 0.78rem;
-  color: #94a3b8;
+  font-size: 0.8125rem;
+  color: #64748b;
   margin: 0.75rem 0 0 0;
   font-weight: 500;
   text-align: center;
@@ -565,7 +559,7 @@ const resolvedImageAlt = computed(() => {
     margin-top: 1rem;
     
     .reassurance-text {
-      font-size: 0.8rem;
+      font-size: 0.8125rem;
       color: #64748b;
       font-weight: 500;
       text-align: center;
@@ -594,7 +588,7 @@ const resolvedImageAlt = computed(() => {
   letter-spacing: 0;
   
   @media (max-width: 480px) {
-    font-size: 0.68rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -703,27 +697,24 @@ const resolvedImageAlt = computed(() => {
   
   @media (max-width: 800px) {
     width: 100%;
-    max-width: 360px;
+    max-width: 400px;
+    min-width: 0;
     justify-content: center;
     padding: 11px 18px;
-    font-size: 0.95rem;
+    font-size: 1rem;
     min-height: 64px;
-    white-space: nowrap;
+    white-space: normal;
+
+    &.secondary {
+      min-width: 0;
+      min-height: 52px;
+    }
   }
   
   @media (max-width: 480px) {
     max-width: 100%;
     padding: 10px 16px;
-    font-size: 0.88rem;
-    border-radius: 10px;
-    white-space: nowrap;
-  }
-  
-  @media (max-width: 360px) {
-    max-width: 100%;
-    padding: 10px 14px;
-    font-size: 0.82rem;
-    white-space: nowrap;
+    border-radius: 12px;
   }
 }
 .section-hero__image-wrapper {
@@ -750,17 +741,18 @@ const resolvedImageAlt = computed(() => {
   
   @media (max-width: 800px) {
     margin-top: 24px;
-    padding: 12px;
+    width: 100%;
+    max-width: 400px;
+    min-width: 0;
+    padding: 0;
     animation: fadeInUp 0.8s ease-out 0.6s both;
   }
   
   @media (max-width: 600px) {
-    padding: 10px;
     margin-top: 20px;
   }
   
   @media (max-width: 480px) {
-    padding: 8px;
     margin-top: 18px;
   }
 }
@@ -820,7 +812,8 @@ const resolvedImageAlt = computed(() => {
     align-items: center;
     margin-top: 24px;
     width: 100%;
-    padding: 0 4vw;
+    max-width: 400px;
+    padding: 0;
     z-index: 2;
     position: relative;
   }
@@ -828,7 +821,7 @@ const resolvedImageAlt = computed(() => {
   @media (max-width: 480px) {
     margin-top: 20px;
     gap: 0.625rem;
-    padding: 0 4vw;
+    padding: 0;
   }
 }
 

@@ -99,11 +99,12 @@ function handleBlur() { showTooltip.value = false }
 }
 @media (max-width: 600px) {
   .whatsapp-chat-btn-wrapper {
-    right: 10px;
-    bottom: 10px;
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     left: auto;
     top: auto;
     transform: none;
+    z-index: 11000;
   }
   .whatsapp-chat-btn {
     width: 48px;
@@ -117,6 +118,12 @@ function handleBlur() { showTooltip.value = false }
     font-size: 0.92rem;
     padding: 6px 10px;
     margin-right: 8px;
+    max-width: calc(100vw - 104px);
+    width: max-content;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
   }
 }
 </style> 

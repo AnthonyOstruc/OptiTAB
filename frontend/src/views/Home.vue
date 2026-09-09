@@ -41,16 +41,13 @@ const { openModal } = useModalManager()
 const homeContentRef = ref(null)
 
 function computeHomeZoom(width) {
+  // Sur mobile, les composants s'adaptent à la largeur réelle de l'écran.
+  if (width <= 800) return 1
   if (width >= 1400) return 1
   if (width >= 1200) return 0.95
   if (width >= 1024) return 0.9
   if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.72
-  if (width >= 520) return 0.68
-  if (width >= 420) return 0.64
-  if (width >= 360) return 0.6
-  return 0.55
+  return 0.8
 }
 
 const {
@@ -76,6 +73,9 @@ const baseHomeZoomStyle = createZoomStyle({
 // une marge négative pour éviter un grand espace vide.
 const homeZoomStyle = computed(() => {
   const style = baseHomeZoomStyle.value
+  if (zoomLevel.value === 1) {
+    return { ...style, zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
   if (supportsNativeZoom.value) return style
 
   const z = Number(zoomLevel.value || 1)
@@ -108,49 +108,6 @@ const handleOrientationChange = () => {
   }, 200)
 }
 
-// Système de zoom JavaScript comme fallback pour mobile
-const legacyZoomLevel = ref(1)
-
-function calculateZoom() {
-  if (typeof window === 'undefined') return 1
-  const width = window.innerWidth
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.72
-  if (width >= 520) return 0.68
-  if (width >= 420) return 0.64
-  if (width >= 360) return 0.60
-  return 0.55
-}
-
-function applyMobileZoom() {
-  if (!homeContentRef.value) return
-  const zoom = calculateZoom()
-  legacyZoomLevel.value = zoom
-  
-  // Appliquer le zoom directement via style inline
-  // Ceci surcharge tout CSS et fonctionne sur tous les navigateurs
-  const el = homeContentRef.value
-  
-  // Vérifier si le navigateur supporte CSS zoom
-  const supportsZoom = 'zoom' in document.body.style
-  
-  if (supportsZoom) {
-    el.style.zoom = zoom
-    el.style.transform = ''
-    el.style.width = ''
-  } else {
-    // Fallback pour Firefox
-    el.style.zoom = ''
-    el.style.transform = `scale(${zoom})`
-    el.style.transformOrigin = 'top left'
-    el.style.width = `${(100 / zoom).toFixed(2)}%`
-  }
-}
-
 // Handler pour la sélection d'une matière
 const handleSubjectSelected = (subject) => {
   console.log('Matière sélectionnée:', subject)
@@ -170,7 +127,10 @@ const handleCtaMain = () => {
 const handleCtaSecondary = () => {
   const demoGifs = document.getElementById('demo-gifs')
   if (demoGifs) {
-    demoGifs.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    demoGifs.scrollIntoView({
+      behavior: 'smooth',
+      block: window.matchMedia('(max-width: 800px)').matches ? 'start' : 'center'
+    })
     return
   }
 
@@ -298,7 +258,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <MainLayout>
+  <MainLayout class="home-page">
     <div class="home-content-zoom" :style="homeZoomStyle">
       <div class="home-content-inner" ref="homeContentRef">
       <!-- Section Hero (accroche principale) -->
@@ -400,154 +360,25 @@ onUnmounted(() => {
   overflow-x: hidden;
 }
 
-/* Container principal avec zoom automatique via CSS */
-.home-content-outer {
-  box-sizing: border-box;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-/* 
- * Zoom CSS avec media queries progressifs (du plus petit au plus grand)
- * Approche mobile-first pour une meilleure compatibilité
- */
-
-/* Mobile très petit (< 360px) - zoom 55% */
-@media screen and (max-width: 359px) {
-  .home-content-outer { 
-    zoom: 0.55 !important;
+/* Keep mobile content at its natural size and prevent automatic word splitting. */
+@media (max-width: 800px) {
+  .home-page.main-layout {
+    padding-top: 60px;
   }
-}
 
-/* Mobile petit (360-419px) - zoom 60% */
-@media screen and (min-width: 360px) and (max-width: 419px) {
-  .home-content-outer { 
-    zoom: 0.60 !important;
+  .home-page :is(h1, h2, h3, p, div, span, a, button) {
+    -webkit-hyphens: none;
+    hyphens: none;
+    word-break: normal;
+  }
+
+  .home-content-inner :is(h1, h2, h3) {
+    text-wrap: balance;
+  }
+
+  .home-content-inner section[id],
+  .home-content-inner [id="demo-gifs"] {
+    scroll-margin-top: 80px;
   }
 }
-
-/* Mobile moyen (420-519px) - zoom 64% */
-@media screen and (min-width: 420px) and (max-width: 519px) {
-  .home-content-outer { 
-    zoom: 0.64 !important;
-  }
-}
-
-/* Mobile large (520-639px) - zoom 68% */
-@media screen and (min-width: 520px) and (max-width: 639px) {
-  .home-content-outer { 
-    zoom: 0.68 !important;
-  }
-}
-
-/* Tablette portrait (640-767px) - zoom 72% */
-@media screen and (min-width: 640px) and (max-width: 767px) {
-  .home-content-outer { 
-    zoom: 0.72 !important;
-  }
-}
-
-/* Tablette (768-899px) - zoom 80% */
-@media screen and (min-width: 768px) and (max-width: 899px) {
-  .home-content-outer { 
-    zoom: 0.8 !important;
-  }
-}
-
-/* Petit desktop (900-1023px) - zoom 85% */
-@media screen and (min-width: 900px) and (max-width: 1023px) {
-  .home-content-outer { 
-    zoom: 0.85 !important;
-  }
-}
-
-/* Desktop moyen (1024-1199px) - zoom 90% */
-@media screen and (min-width: 1024px) and (max-width: 1199px) {
-  .home-content-outer { 
-    zoom: 0.9 !important;
-  }
-}
-
-/* Desktop large (1200-1399px) - zoom 95% */
-@media screen and (min-width: 1200px) and (max-width: 1399px) {
-  .home-content-outer { 
-    zoom: 0.95 !important;
-  }
-}
-
-/* Desktop très large (>= 1400px) - pas de zoom */
-@media screen and (min-width: 1400px) {
-  .home-content-outer { 
-    zoom: 1 !important;
-  }
-}
-
-/* 
- * Fallback transform pour Firefox (qui ignore zoom)
- */
-@supports not (zoom: 1) {
-  @media screen and (max-width: 359px) {
-    .home-content-outer { 
-      transform: scale(0.55); 
-      transform-origin: top left; 
-      width: 181.82%; 
-    }
-  }
-  @media screen and (min-width: 360px) and (max-width: 419px) {
-    .home-content-outer { 
-      transform: scale(0.60); 
-      transform-origin: top left; 
-      width: 166.67%; 
-    }
-  }
-  @media screen and (min-width: 420px) and (max-width: 519px) {
-    .home-content-outer { 
-      transform: scale(0.64); 
-      transform-origin: top left; 
-      width: 156.25%; 
-    }
-  }
-  @media screen and (min-width: 520px) and (max-width: 639px) {
-    .home-content-outer { 
-      transform: scale(0.68); 
-      transform-origin: top left; 
-      width: 147.06%; 
-    }
-  }
-  @media screen and (min-width: 640px) and (max-width: 767px) {
-    .home-content-outer { 
-      transform: scale(0.72); 
-      transform-origin: top left; 
-      width: 138.89%; 
-    }
-  }
-  @media screen and (min-width: 768px) and (max-width: 899px) {
-    .home-content-outer { 
-      transform: scale(0.8); 
-      transform-origin: top left; 
-      width: 125%; 
-    }
-  }
-  @media screen and (min-width: 900px) and (max-width: 1023px) {
-    .home-content-outer { 
-      transform: scale(0.85); 
-      transform-origin: top left; 
-      width: 117.65%; 
-    }
-  }
-  @media screen and (min-width: 1024px) and (max-width: 1199px) {
-    .home-content-outer { 
-      transform: scale(0.9); 
-      transform-origin: top left; 
-      width: 111.11%; 
-    }
-  }
-  @media screen and (min-width: 1200px) and (max-width: 1399px) {
-    .home-content-outer { 
-      transform: scale(0.95); 
-      transform-origin: top left; 
-      width: 105.26%; 
-    }
-  }
-}
-</style> 
+</style>

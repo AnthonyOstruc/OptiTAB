@@ -118,28 +118,56 @@ defineProps({
   transform: translateX(4px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .base-card {
     /* On mobile, cards should span full available width */
     width: 100%;
+    min-width: 0;
     max-width: none;
     padding: 22px 16px;
     min-height: 250px;
   }
 
+  .base-card__icon {
+    flex-shrink: 0;
+  }
+
+  .base-card__title,
+  .base-card__desc {
+    max-width: 100%;
+    -webkit-hyphens: none;
+    hyphens: none;
+    word-break: normal;
+    text-align: center;
+  }
+
+  .base-card__title {
+    overflow-wrap: normal;
+    line-height: 1.35;
+  }
+
   .base-card__help-indicator {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
     gap: 4px;
     font-size: 0.78rem;
+    opacity: 1;
+    transform: none;
   }
 
   .help-icon,
   .help-arrow {
+    flex-shrink: 0;
     font-size: 0.95rem;
   }
 
   .help-text {
+    min-width: 0;
     font-size: 0.78rem;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.4;
+    text-align: center;
   }
 }
 </style> 

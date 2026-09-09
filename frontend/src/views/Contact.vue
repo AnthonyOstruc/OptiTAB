@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div class="cgv-page">
+    <div class="cgv-page public-document">
       <!-- Header Section -->
       <div class="cgv-header">
         <div class="container">
@@ -1258,6 +1258,61 @@ onUnmounted(() => {
     width: 40px;
     height: 40px;
     font-size: 1rem;
+  }
+}
+@media (max-width: 800px) {
+  .contact-form {
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+
+  .form-row {
+    grid-template-columns: minmax(0, 1fr);
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-group,
+  .social-media-row {
+    min-width: 0;
+  }
+
+  .form-label,
+  .social-media-label {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .form-textarea {
+    min-height: 140px;
+  }
+
+  .submit-button {
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px;
+    font-size: 1rem;
+    line-height: 1.5;
+    white-space: normal;
+  }
+
+  .highlight-text {
+    padding: 20px 16px;
+  }
+
+  .social-media-icons-inline {
+    flex-wrap: wrap;
   }
 }
 </style>

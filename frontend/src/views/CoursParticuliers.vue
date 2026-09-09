@@ -577,16 +577,12 @@ const handleContactSuccess = (message) => {
 const coursParticuliersContentRef = ref(null)
 
 function computeCoursParticuliersZoom(width) {
+  if (width <= 800) return 1
   if (width >= 1400) return 1
   if (width >= 1200) return 0.95
   if (width >= 1024) return 0.9
   if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.72
-  if (width >= 520) return 0.68
-  if (width >= 420) return 0.64
-  if (width >= 360) return 0.6
-  return 0.55
+  return 0.8
 }
 
 const {
@@ -611,6 +607,9 @@ const baseCoursParticuliersZoomStyle = createZoomStyle({
 // On laisse la hauteur "auto" et on compense l'espace vide avec une marge négative.
 const coursParticuliersZoomStyle = computed(() => {
   const style = baseCoursParticuliersZoomStyle.value
+  if (zoomLevel.value === 1) {
+    return { ...style, zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
   if (supportsNativeZoom.value) return style
 
   const z = Number(zoomLevel.value || 1)
@@ -2183,803 +2182,440 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 768px) {
+/* La page mobile garde une taille de texte naturelle, sans réduction par zoom. */
+@media (max-width: 800px) {
+  .cours-particuliers-page,
+  .cours-particuliers-page :deep(*) {
+    min-width: 0;
+    -webkit-hyphens: none;
+    hyphens: none;
+    word-break: normal;
+  }
+
   .cours-particuliers-page.public-layout {
-    padding-top: 70px;
+    padding-top: 0;
   }
 
   .hero-section {
-    padding: 40px 1rem 40px 1rem;
+    padding: 32px 20px 40px;
+  }
+
+  .hero-badge {
+    max-width: 100%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .badge-icon {
+    flex-shrink: 0;
   }
 
   .hero-title {
-    font-size: 1.75rem;
+    font-size: clamp(1.65rem, 5.7vw, 2.5rem);
+    line-height: 1.25;
+    overflow-wrap: normal;
   }
 
-  .hero-subtitle {
-    font-size: 0.95rem;
+  .hero-subtitle,
+  .section-subtitle,
+  .methodologie-intro,
+  .cta-final-subtitle {
+    font-size: 1rem;
+    line-height: 1.65;
   }
 
-  .hero-cta {
+  .hero-cta,
+  .cta-final-buttons {
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   .btn-primary,
-  .btn-secondary {
-    width: 100%;
-    max-width: 280px;
-    text-align: center;
-    margin: 0 auto;
-    padding: 14px 20px;
-    font-size: 0.95rem;
-    min-height: 48px;
+  .btn-secondary,
+  .btn-cta-primary,
+  .btn-cta-secondary {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    max-width: 360px;
+    min-height: 48px;
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    white-space: normal;
+    text-align: center;
+    margin: 0 auto;
   }
 
   .trust-section {
-    padding: 1.5rem 0.5rem;
+    padding: 24px 16px;
   }
 
   .trust-container {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
     max-width: 100%;
   }
 
   .trust-item {
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.75rem 0.5rem;
+    gap: 8px;
+    padding: 12px 6px;
   }
 
   .trust-icon {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .trust-number {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   .trust-label {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     text-align: center;
+    line-height: 1.45;
   }
 
   .section-container {
-    padding: 1.5rem 1rem;
+    padding: 32px 20px;
+  }
+
+  .section-header {
+    margin-bottom: 24px;
   }
 
   .section-title {
-    font-size: 1.35rem;
+    font-size: clamp(1.5rem, 4.6vw, 2rem);
+    line-height: 1.3;
+    overflow-wrap: normal;
   }
 
-  .section-subtitle {
-    font-size: 0.9rem;
+  .features-grid,
+  .methodologie-grid,
+  .process-grid,
+  .tarifs-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
-  
-  .section-header {
-    margin-bottom: 1rem;
+
+  .methodologie-card-featured {
+    grid-column: auto;
   }
 
   .feature-card,
   .methodologie-card,
-  .process-card {
-    padding: 1.25rem;
+  .process-card,
+  .tarif-card,
+  .professeur-card {
+    padding: 24px;
   }
 
   .feature-icon,
   .methodologie-icon,
   .process-icon {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
+    font-size: 2.25rem;
+    margin-bottom: 12px;
   }
 
   .feature-title,
   .methodologie-title,
   .process-title {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
   }
 
   .feature-desc,
   .methodologie-desc,
-  .process-desc {
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .methodologie-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .methodologie-card-featured {
-    grid-column: span 1;
+  .process-desc,
+  .professeur-description {
+    font-size: 0.95rem;
+    line-height: 1.65;
   }
 
   .methodologie-intro {
-    font-size: 0.95rem;
-    margin-bottom: 1.25rem;
-    line-height: 1.6;
-  }
-
-  .process-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .tarifs-tabs {
-    padding: 0.25rem;
-    gap: 0.2rem;
-  }
-
-  .tarif-tab {
-    padding: 0.6rem 1.25rem;
-    font-size: 0.875rem;
-  }
-
-  .tarifs-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .tarif-card {
-    padding: 1.25rem;
-    border-radius: 12px;
-  }
-
-  .card-header {
-    margin-bottom: 1rem;
-    padding-top: 0.25rem;
-  }
-
-  .plan-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.35rem;
-  }
-
-  .plan-subtitle {
-    font-size: 0.8rem;
-  }
-
-  .price-section {
-    padding: 1rem 0;
-    margin-bottom: 1rem;
-  }
-
-  .price-from {
-    font-size: 0.75rem;
-  }
-
-  .amount {
-    font-size: 2.25rem;
-  }
-
-  .period {
-    font-size: 0.9rem;
-  }
-
-  .current-level-info,
-  .pack-info {
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-  }
-
-  .price-levels {
-    font-size: 0.75rem;
-    gap: 0.4rem;
-  }
-
-  .pack-item {
-    padding: 0.6rem;
-  }
-
-  .pack-hours {
-    font-size: 0.85rem;
-  }
-
-  .pack-per-hour {
-    font-size: 0.7rem;
-  }
-
-  .pack-price {
-    font-size: 1rem;
-  }
-
-  .pack-note {
-    font-size: 0.7rem;
-    margin-top: 0.5rem;
-  }
-
-  .features {
-    margin-bottom: 1.25rem;
-  }
-
-  .features li {
-    font-size: 0.85rem;
-    padding: 0.5rem 0;
-    gap: 0.6rem;
-  }
-
-  .check-icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  .packs-list {
-    gap: 0.4rem;
-    margin-top: 0.75rem;
-  }
-
-  .pack-item {
-    padding: 0.55rem;
-  }
-
-  .cta-btn {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.9rem;
-    border-radius: 10px;
-  }
-
-  .security-note {
-    font-size: 0.75rem;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-  }
-
-  .subscription-tier {
-    font-size: 0.75rem;
-    padding: 0.4rem 0.6rem;
-  }
-
-  .tier-courses {
-    font-size: 0.8rem;
-  }
-
-  .tier-per-hour {
-    font-size: 0.7rem;
-  }
-
-  .tier-price {
-    font-size: 0.85rem;
-  }
-
-  .tarifs-note {
-    padding: 0.85rem;
-    margin: 1.5rem 0 0.75rem;
-  }
-
-  .tarifs-note p {
-    font-size: 0.85rem;
-  }
-
-  .tarifs-reassurance {
-    padding: 1rem;
-  }
-
-  .tarifs-reassurance p {
-    font-size: 0.8rem;
-  }
-
-  .tarifs-cta {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn-tarif-primary,
-  .btn-tarif-secondary {
-    width: 100%;
-    max-width: 300px;
-    font-size: 0.9rem;
-    padding: 0.75rem 1.5rem;
-  }
-
-  .professeur-card {
-    padding: 1.25rem;
+    margin-bottom: 24px;
   }
 
   .professeur-header-section {
-    flex-direction: row;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px 16px;
+    align-items: center;
     text-align: left;
-    gap: 1rem;
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
   }
 
   .professeur-image-wrapper {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
+    grid-row: span 2;
+    width: 88px;
+    height: 88px;
   }
 
   .professeur-header {
-    flex: 1;
     text-align: left;
   }
 
   .professeur-name {
-    font-size: 1.35rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
   }
 
   .professeur-role {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
   }
 
   .professeur-badge {
-    top: 0;
-    right: 0;
-    font-size: 0.65rem;
-    padding: 0.3rem 0.6rem;
+    position: static;
+    justify-self: start;
+    padding: 5px 10px;
+    font-size: 0.7rem;
   }
 
   .professeur-specialties {
     justify-content: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 8px;
+    margin-bottom: 20px;
   }
 
   .specialty-tag {
-    font-size: 0.75rem;
-    padding: 0.35rem 0.7rem;
+    max-width: 100%;
+    font-size: 0.85rem;
+    padding: 7px 10px;
   }
 
   .professeur-description {
-    font-size: 0.9rem;
     text-align: left;
-    margin-bottom: 1.25rem;
+    margin-bottom: 24px;
   }
 
   .description-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    margin-bottom: 12px;
   }
 
   .professeur-highlights {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
   }
 
   .highlight-item {
-    padding: 0.6rem;
-    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 12px;
+    gap: 10px;
   }
 
   .highlight-icon {
-    font-size: 1.2rem;
+    flex-shrink: 0;
+    font-size: 1.35rem;
   }
 
-  .highlight-text {
-    font-size: 0.75rem;
+  .highlight-text,
+  .verification-text {
+    font-size: 0.9rem;
+    line-height: 1.55;
   }
 
   .professeur-verification {
-    margin-top: 1.25rem;
-    padding-top: 1.25rem;
+    margin-top: 24px;
+    padding-top: 24px;
   }
 
   .verification-text {
-    font-size: 0.8rem;
     text-align: left;
-    margin-bottom: 0.75rem;
+    margin-bottom: 16px;
   }
 
   .professeur-social-links {
     justify-content: flex-start;
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   .social-link {
-    font-size: 0.8rem;
-    padding: 0.55rem 0.95rem;
+    max-width: 100%;
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+
+  .tarifs-section {
+    padding: 16px 0;
+  }
+
+  .tarifs-tabs {
+    width: 100%;
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .tarif-tab {
+    flex: 1 1 120px;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    white-space: normal;
+  }
+
+  .tarifs-grid {
+    gap: 28px;
+  }
+
+  .tarif-card {
+    border-radius: 16px;
+  }
+
+  .tarif-card-recommended {
+    padding-top: 32px;
+  }
+
+  .badge {
+    max-width: calc(100% - 32px);
+    white-space: normal;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .plan-title {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+
+  .plan-subtitle,
+  .period,
+  .pack-hours,
+  .features li {
+    font-size: 0.95rem;
+  }
+
+  .price-section {
+    padding: 20px 0;
+    margin-bottom: 20px;
+  }
+
+  .amount {
+    font-size: 2.5rem;
+  }
+
+  .price-from,
+  .current-level-info,
+  .pack-info,
+  .pack-per-hour,
+  .pack-note,
+  .security-note,
+  .tarifs-reassurance p,
+  .cta-final-note {
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+
+  .packs-list {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .pack-item {
+    gap: 12px;
+    padding: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pack-price {
+    font-size: 1.1rem;
+  }
+
+  .features li {
+    align-items: flex-start;
+    padding: 8px 0;
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  .check-icon {
+    margin-top: 3px;
+  }
+
+  .cta-btn {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    white-space: normal;
+  }
+
+  .security-note {
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+
+  .tarifs-reassurance {
+    margin-top: 24px;
+    padding: 20px;
   }
 
   .cta-final-container {
-    padding: 1rem 1rem;
-  }
-
-  .cta-final-subtitle {
-    font-size: 0.95rem;
-  }
-
-  .cta-final-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .btn-cta-primary,
-  .btn-cta-secondary {
-    width: 100%;
-    max-width: 280px;
-    text-align: center;
-    padding: 14px 20px;
-    font-size: 0.95rem;
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .cta-final-note {
-    font-size: 0.85rem;
+    padding: 24px 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-section {
-    padding: 35px 0.75rem 30px 0.75rem;
-  }
-
-  .hero-title {
-    font-size: 1.5rem;
-  }
-
-  .hero-subtitle {
-    font-size: 0.85rem;
-  }
-
-  .hero-badge {
-    font-size: 0.75rem;
-    padding: 0.4rem 0.8rem;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-  }
-
-  .trust-section {
-    padding: 1rem 0.5rem;
-  }
-
-  .trust-container {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.4rem;
-  }
-
-  .trust-item {
-    flex-direction: column;
-    gap: 0.4rem;
-    padding: 0.6rem 0.4rem;
-  }
-
-  .trust-icon {
-    font-size: 1.25rem;
-  }
-
-  .trust-number {
-    font-size: 1rem;
-  }
-
-  .trust-label {
-    font-size: 0.65rem;
-    text-align: center;
-    line-height: 1.2;
-  }
-
-  .section-container {
-    padding: 1.25rem 0.75rem;
-  }
-
-  .section-title {
-    font-size: 1.2rem;
-  }
-
-  .section-subtitle {
-    font-size: 0.8rem;
+  .hero-section,
+  .section-container,
+  .cta-final-container {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .feature-card,
   .methodologie-card,
-  .process-card {
-    padding: 1rem;
-  }
-
-  .feature-icon,
-  .methodologie-icon,
-  .process-icon {
-    font-size: 1.75rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .feature-title,
-  .methodologie-title,
-  .process-title {
-    font-size: 0.95rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .feature-desc,
-  .methodologie-desc,
-  .process-desc {
-    font-size: 0.8rem;
-    line-height: 1.5;
-  }
-
-  .methodologie-intro {
-    font-size: 0.9rem;
-    margin-bottom: 1.25rem;
-    line-height: 1.6;
-  }
-
-  .tarifs-tabs {
-    padding: 0.2rem;
-    gap: 0.15rem;
-  }
-
-  .tarif-tab {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-  }
-
-  .tarifs-grid {
-    gap: 0.85rem;
-  }
-
-  .tarif-card {
-    padding: 1rem;
-    border-radius: 10px;
-  }
-
-  .card-header {
-    margin-bottom: 0.85rem;
-    padding-top: 0.2rem;
-  }
-
-  .plan-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .plan-subtitle {
-    font-size: 0.75rem;
-  }
-
-  .price-section {
-    padding: 0.85rem 0;
-    margin-bottom: 0.85rem;
-  }
-
-  .price-from {
-    font-size: 0.7rem;
-  }
-
-  .amount {
-    font-size: 1.9rem;
-  }
-
-  .period {
-    font-size: 0.85rem;
-  }
-
-  .current-level-info,
-  .pack-info {
-    font-size: 0.75rem;
-    margin-top: 0.4rem;
-  }
-
-  .features {
-    margin-bottom: 1rem;
-  }
-
-  .features li {
-    font-size: 0.8rem;
-    padding: 0.4rem 0;
-    gap: 0.5rem;
-  }
-
-  .check-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .packs-list {
-    gap: 0.35rem;
-    margin-top: 0.65rem;
-  }
-
-  .pack-item {
-    padding: 0.45rem;
-  }
-
-  .cta-btn {
-    padding: 0.65rem 1rem;
-    font-size: 0.85rem;
-    border-radius: 8px;
-  }
-
-  .security-note {
-    font-size: 0.7rem;
-    margin-top: 0.65rem;
-    padding-top: 0.65rem;
-  }
-
-  .price-levels {
-    font-size: 0.7rem;
-    gap: 0.3rem;
-  }
-
-  .price-level-item {
-    font-size: 0.7rem;
-  }
-
-  .pack-item {
-    padding: 0.5rem;
-  }
-
-  .pack-hours {
-    font-size: 0.8rem;
-  }
-
-  .pack-per-hour {
-    font-size: 0.65rem;
-  }
-
-  .pack-price {
-    font-size: 0.9rem;
-  }
-
-  .pack-note {
-    font-size: 0.7rem;
-  }
-
-  .subscription-tier {
-    font-size: 0.7rem;
-    padding: 0.35rem 0.5rem;
-  }
-
-  .tier-courses {
-    font-size: 0.75rem;
-  }
-
-  .tier-per-hour {
-    font-size: 0.65rem;
-  }
-
-  .tier-price {
-    font-size: 0.8rem;
-  }
-
-  .tarifs-note {
-    padding: 0.75rem;
-    margin: 1.25rem 0 0.5rem;
-  }
-
-  .tarifs-note p {
-    font-size: 0.8rem;
-  }
-
-  .tarifs-reassurance {
-    padding: 0.85rem;
-    margin-top: 2rem;
-  }
-
-  .tarifs-reassurance p {
-    font-size: 0.75rem;
-    line-height: 1.6;
-  }
-
-  .btn-tarif-primary,
-  .btn-tarif-secondary {
-    font-size: 0.85rem;
-    padding: 0.65rem 1.25rem;
-  }
-
+  .process-card,
+  .tarif-card,
   .professeur-card {
-    padding: 1rem;
+    padding: 20px 16px;
+  }
+
+  .tarif-card-recommended {
+    padding-top: 32px;
+  }
+
+  .trust-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .trust-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .trust-content,
+  .trust-label {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .trust-label {
+    font-size: 0.9rem;
   }
 
   .professeur-header-section {
-    gap: 0.75rem;
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.25rem;
+    grid-template-columns: 70px minmax(0, 1fr);
+    column-gap: 12px;
   }
 
   .professeur-image-wrapper {
     width: 70px;
     height: 70px;
-  }
-
-  .professeur-name {
-    font-size: 1.2rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .professeur-role {
-    font-size: 0.8rem;
-  }
-
-  .professeur-badge {
-    font-size: 0.6rem;
-    padding: 0.25rem 0.5rem;
-  }
-
-  .professeur-specialties {
-    gap: 0.4rem;
-    margin-bottom: 0.9rem;
-  }
-
-  .specialty-tag {
-    font-size: 0.7rem;
-    padding: 0.3rem 0.6rem;
-  }
-
-  .professeur-description {
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-  }
-
-  .description-title {
-    font-size: 1rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .professeur-highlights {
-    gap: 0.6rem;
-    margin-bottom: 1rem;
-  }
-
-  .highlight-item {
-    padding: 0.5rem;
-    gap: 0.4rem;
-  }
-
-  .highlight-icon {
-    font-size: 1.1rem;
-  }
-
-  .highlight-text {
-    font-size: 0.7rem;
-  }
-
-  .professeur-verification {
-    margin-top: 1rem;
-    padding-top: 1rem;
-  }
-
-  .verification-text {
-    font-size: 0.75rem;
-    margin-bottom: 0.65rem;
-  }
-
-  .professeur-social-links {
-    gap: 0.65rem;
-  }
-
-  .social-link {
-    font-size: 0.75rem;
-    padding: 0.5rem 0.8rem;
-  }
-
-  .cta-final-container {
-    padding: 0.75rem 0.75rem;
-  }
-
-  .cta-final-subtitle {
-    font-size: 0.85rem;
-  }
-
-  .btn-cta-primary,
-  .btn-cta-secondary {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-  }
-
-  .cta-final-note {
-    font-size: 0.8rem;
   }
 }
 </style>

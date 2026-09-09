@@ -1413,8 +1413,18 @@ onUnmounted(() => {
 }
 
 @media (max-width: 960px) {
+  .landing-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .landing-shell > *,
+  .hero-copy,
+  .proof-media-card {
+    min-width: 0;
+  }
+
   .hero-block {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hero-side {
@@ -1443,7 +1453,7 @@ onUnmounted(() => {
 
   .proof-media,
   .proof-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1488,7 +1498,8 @@ onUnmounted(() => {
 
   .hero-stats--solo .hero-stat-text {
     font-size: 0.82rem;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.4;
   }
 
   .cta-primary {

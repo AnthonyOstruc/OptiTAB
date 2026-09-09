@@ -66,11 +66,15 @@ const {
   cleanupViewportListener
 } = useZoom()
 
-const zoomStyle = createZoomStyle({
+const desktopZoomStyle = createZoomStyle({
   cssVar: '--content-zoom',
   heightVar: '--content-height',
   mobileZoomAdjustment: (z) => Math.max(0.6, z - 0.08)
 })
+
+const zoomStyle = computed(() => viewportWidth.value <= 800
+  ? { zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto' }
+  : desktopZoomStyle.value)
 
 function measureContentHeightForFreeExercises() {
   measureContentHeight(contentRef)
@@ -1374,5 +1378,16 @@ function getExerciseAnchorId(exercise, index = 0) {
   .exercise-card-wrapper {
     padding: 18px;
   }
+}
+@media (max-width: 800px) {
+  .free-exercise-chapter-page { padding: 28px 16px 56px; }
+  .free-exercise-title { font-size: clamp(26px, 5.5vw, 32px); line-height: 1.3; text-wrap: balance; }
+  .content-wrapper, .exercise-card-wrapper { min-width: 0; }
+  .exercise-card-wrapper { padding: 12px; }
+  .free-resource-cta { flex-direction: column; align-items: stretch; gap: 14px; padding: 18px 16px; }
+  .free-resource-cta__actions { white-space: normal; }
+  .free-resource-cta__btn { min-height: 44px; line-height: 1.4; text-align: center; }
+  .pagination { flex-wrap: wrap; gap: 12px; }
+  .pagination-btn { min-width: 44px; min-height: 44px; }
 }
 </style>

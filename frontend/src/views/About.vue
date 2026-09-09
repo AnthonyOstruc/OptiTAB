@@ -211,16 +211,13 @@ const { openModal } = useModalManager()
 const aboutContentRef = ref(null)
 
 function computeAboutZoom(width) {
+  // Mobile content reflows at the real viewport width, as on the home page.
+  if (width <= 800) return 1
   if (width >= 1400) return 1
   if (width >= 1200) return 0.95
   if (width >= 1024) return 0.9
   if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.72
-  if (width >= 520) return 0.68
-  if (width >= 420) return 0.64
-  if (width >= 360) return 0.6
-  return 0.55
+  return 0.8
 }
 
 const {
@@ -245,6 +242,9 @@ const baseAboutZoomStyle = createZoomStyle({
 // then compensate the extra space with a negative margin.
 const aboutZoomStyle = computed(() => {
   const style = baseAboutZoomStyle.value
+  if (zoomLevel.value === 1) {
+    return { ...style, zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
   if (supportsNativeZoom.value) return style
 
   const z = Number(zoomLevel.value || 1)
@@ -1411,6 +1411,196 @@ const getSectionIcon = (emoji) => {
   
   .cta-reviews {
     padding-top: 1rem;
+  }
+}
+/* Keep mobile text at its actual size and let sections grow with the content. */
+@media (max-width: 800px) {
+  .about-zoom {
+    overflow: visible;
+  }
+
+  .about-page :is(h1, h2, h3, p, span, button) {
+    hyphens: none;
+    -webkit-hyphens: none;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.5rem, 5.5vw, 2.125rem);
+    line-height: 1.3;
+  }
+
+  .hero-subtitle,
+  .section-subtitle,
+  .content-paragraph,
+  .feature-text {
+    font-size: 1rem;
+    line-height: 1.65;
+    text-align: left;
+    padding-inline: 0;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-item {
+    min-width: 0;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .container,
+  .content-container {
+    padding-inline: 1rem;
+  }
+
+  .section-intro .section-title {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    margin-bottom: 1rem;
+  }
+
+  .benefits-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 100%;
+  }
+
+  .benefit-card {
+    min-width: 0;
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .benefit-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .benefit-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .about-section {
+    padding: 1rem;
+  }
+
+  .section-header {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
+
+  .icon-emoji,
+  .parents-section .icon-emoji {
+    width: 44px;
+    height: 44px;
+  }
+
+  .section-header .section-title {
+    min-width: 0;
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+
+  .feature-item {
+    gap: 0.625rem;
+    padding: 0.75rem;
+  }
+
+  .feature-text {
+    min-width: 0;
+  }
+
+  .highlight-text {
+    padding: 0.75rem;
+  }
+
+  .content-paragraph :deep(a) {
+    overflow-wrap: anywhere;
+  }
+
+  .social-media-label {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .cta-section {
+    padding: 2rem 1rem;
+  }
+
+  .cta-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .cta-title {
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+
+  .cta-text {
+    font-size: 1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-button {
+    width: 100%;
+    min-width: 0;
+    padding: 0.875rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    white-space: normal;
+  }
+
+  .guarantee-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 560px) {
+  .benefits-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-stats {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.875rem;
+  }
+
+  .stat-item {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+    margin: 0;
   }
 }
 </style> 

@@ -474,6 +474,9 @@ function computeAutoZoom(width) {
 const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
 
 const zoomStyle = computed(() => {
+  if (viewportWidth.value <= 800) {
+    return { transform: 'none', width: '100%', height: 'auto', minHeight: 'auto' }
+  }
   let z = zoomLevel.value || 1
   if (viewportWidth.value <= 768) {
     z = Math.max(0.6, z - 0.08)
@@ -1835,5 +1838,29 @@ onBeforeUnmount(() => {
   to {
     transform: rotate(360deg);
   }
+}
+@media (max-width: 800px) {
+  .cours-section { padding: 28px 16px 56px; }
+  .cours-container { min-width: 0; }
+  .cours-title { font-size: clamp(26px, 5.5vw, 32px); line-height: 1.3; text-wrap: balance; }
+  .free-resource-cta { flex-direction: column; align-items: stretch; gap: 14px; padding: 18px 16px; }
+  .free-resource-cta__actions { white-space: normal; }
+  .free-resource-cta__btn { min-height: 44px; line-height: 1.4; text-align: center; }
+  .toc-container { transform: none; margin: 20px 0; border-radius: 16px; }
+  .toc-header { min-height: 48px; padding: 10px 16px; }
+  .toc-body { padding: 12px 16px 16px; }
+  .toc-link { display: block; padding: 6px 0; line-height: 1.5; }
+  .toc-level-3 .toc-link { padding-left: 16px; font-size: 14px; }
+  .cours-content-outer { margin-top: 0; overflow-x: auto; }
+  .cours-content { font-size: 16px; line-height: 1.75; overflow-wrap: break-word; }
+  .cours-content :deep(img), .cours-content :deep(video) { max-width: 100%; height: auto; }
+  .cours-content :deep(table), .cours-content :deep(pre),
+  .cours-content :deep(.katex-display), .cours-content :deep(mjx-container[display="true"]) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .related-resources { padding: 20px 16px; }
+  .scroll-top-btn { left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: 44px; height: 44px; }
 }
 </style>

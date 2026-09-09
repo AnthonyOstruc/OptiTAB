@@ -11,6 +11,7 @@
 <script setup>
 import Header from './Header.vue'
 import Footer from './Footer.vue'
+import '@/styles/public-document-mobile.css'
 
 defineProps({
   headerVariant: {
@@ -34,6 +35,7 @@ defineProps({
 }
 .main-content {
   flex: 1;
+  min-width: 0;
   width: 100%;
   margin: 0 auto;
   padding-bottom: 0;
@@ -44,10 +46,34 @@ defineProps({
   -webkit-overflow-scrolling: touch;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 880px) {
   .main-layout {
-    /* Header mobile est plus petit */
-    padding-top: 56px;
+    padding-top: calc(60px + env(safe-area-inset-top, 0px));
+  }
+
+  .main-content :deep(:is(h1, h2, h3, p, li, a, button, label, span)) {
+    -webkit-hyphens: none;
+    hyphens: none;
+  }
+
+  .main-content :deep(:is(h1, h2, h3)) {
+    text-wrap: balance;
+    word-break: normal;
   }
 }
-</style> 
+@media (max-width: 768px) {
+  .main-content :deep(.calc .graph-actions) {
+    flex-wrap: wrap;
+  }
+
+  .main-content :deep(.calc .graph-actions > button) {
+    min-width: 44px;
+    min-height: 44px;
+    white-space: normal;
+  }
+
+  .main-content :deep(.calc .graph-actions .reset-zoom-btn) {
+    flex-basis: 100%;
+  }
+}
+</style>

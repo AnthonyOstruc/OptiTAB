@@ -1,7 +1,7 @@
 <template>
   <MainLayout>
     <div class="confidentialite-zoom" :style="confidentialiteZoomStyle">
-      <div ref="confidentialiteContentRef" class="cgv-page">
+      <div ref="confidentialiteContentRef" class="cgv-page public-document">
       <!-- Header Section -->
       <div class="cgv-header">
         <div class="container">
@@ -301,16 +301,12 @@ import { useZoom } from '@/composables/useZoom'
 const confidentialiteContentRef = ref(null)
 
 function computeConfidentialiteZoom(width) {
+  if (width <= 800) return 1
   if (width >= 1400) return 1
   if (width >= 1200) return 0.95
   if (width >= 1024) return 0.9
   if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.72
-  if (width >= 520) return 0.68
-  if (width >= 420) return 0.64
-  if (width >= 360) return 0.6
-  return 0.55
+  return 0.8
 }
 
 const {
@@ -335,6 +331,9 @@ const baseConfidentialiteZoomStyle = createZoomStyle({
 // then compensate extra space with a negative margin.
 const confidentialiteZoomStyle = computed(() => {
   const style = baseConfidentialiteZoomStyle.value
+  if (zoomLevel.value === 1) {
+    return { ...style, zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
   if (supportsNativeZoom.value) return style
 
   const z = Number(zoomLevel.value || 1)

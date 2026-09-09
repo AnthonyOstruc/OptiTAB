@@ -246,7 +246,7 @@ setPageSeo({
 /* Responsive */
 @media (max-width: 600px) {
   .tarifs-hero {
-    padding: 60px 16px 32px;
+    padding: 40px 20px 28px;
   }
   
   .tarifs-faq {
@@ -260,5 +260,12 @@ setPageSeo({
   .tarifs-cta {
     padding: 48px 16px;
   }
+
+  .hero-subtitle, .cta-desc { line-height: 1.6; }
+  .hero-subtitle { font-size: 1rem; }
+  .faq-title, .cta-title { line-height: 1.3; text-wrap: balance; }
+  .faq-title { margin-bottom: 28px; }
+  .faq-question { line-height: 1.45; }
+  .cta-btn { min-height: 48px; width: 100%; max-width: 320px; }
 }
 </style>

@@ -303,7 +303,7 @@ const openSubscriptionModal = () => {
 
 @media (max-width: 700px) {
   .free-course-page {
-    padding: 120px 16px 64px;
+    padding: 28px 16px 56px;
   }
 
   .resource-count-badge {
@@ -323,6 +323,25 @@ const openSubscriptionModal = () => {
   .free-resource-cta__btn {
     width: 100%;
     text-align: center;
+    min-height: 44px;
+    white-space: normal;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .page-intro {
+    margin: 8px 0 24px;
+  }
+
+  .page-title {
+    font-size: clamp(26px, 5.5vw, 32px);
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .free-resource-cta__copy {
+    min-width: 0;
+    flex-basis: auto;
   }
 }
 </style>

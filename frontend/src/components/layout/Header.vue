@@ -480,8 +480,15 @@ export default {
     justify-content: center;
   }
 
-  .header--landing .mobile-quick-link span {
+  .header--landing .mobile-quick-link--contact span {
     display: none;
+  }
+
+  .header--landing .mobile-quick-link--login {
+    min-height: 32px;
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: normal;
   }
 }
 
@@ -514,8 +521,8 @@ export default {
   }
 
   .header--home .header-mobile {
-    padding: 0 16px;
-    gap: 8px;
+    padding: 0 12px;
+    gap: 4px;
   }
 
   .header--home .header-mobile-top :deep(a) {
@@ -524,27 +531,36 @@ export default {
     min-height: 44px;
   }
 
-  .header--home :deep(.logo-full) {
-    display: block;
-  }
-
-  .header--home :deep(.logo-icon),
   .header--home .mobile-quick-link--left {
-    display: none;
+    display: inline-flex;
+    margin-left: 0;
+    padding: 6px 8px;
+    font-size: 11px;
   }
 
   .header--home .mobile-quick-link--login {
-    min-height: 44px;
-    padding: 0 12px;
-    border-radius: 10px;
-    gap: 6px;
-    font-size: 12px;
+    min-height: 32px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    gap: 4px;
+    font-size: 11px;
     font-weight: 600;
   }
 
   .header--home .mobile-quick-icon {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .header--home .header-mobile {
+    padding: 0 8px;
+  }
+
+  .header--home .mobile-quick-link {
+    padding-inline: 6px;
   }
 }
 

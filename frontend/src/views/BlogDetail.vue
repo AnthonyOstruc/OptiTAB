@@ -916,6 +916,17 @@ watch(() => route.params.slug, fetchPost)
 }
 
 @media (max-width: 768px) {
+  .breadcrumb {
+    flex-wrap: wrap;
+    line-height: 1.5;
+  }
+  .breadcrumb > span {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .breadcrumb__current {
+    white-space: normal;
+  }
   .blog-detail-page {
     padding: 24px 14px 60px;
   }

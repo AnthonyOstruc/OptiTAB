@@ -190,4 +190,11 @@ li {
     font-size: 1.3rem;
   }
 }
+@media (max-width: 800px) {
+  .conditions-page { padding: 32px 16px; }
+  .container { margin: 0 auto; padding: 24px 16px; }
+  h1 { font-size: clamp(1.75rem, 6vw, 2rem); line-height: 1.3; }
+  h2 { padding-left: 12px; font-size: 1.25rem; line-height: 1.4; }
+  p, li { font-size: 1rem; line-height: 1.7; }
+}
 </style> 

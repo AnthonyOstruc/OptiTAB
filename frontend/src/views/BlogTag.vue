@@ -165,6 +165,11 @@ watch(() => route.params.slug, fetchPosts)
 .blog-pagination__btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .blog-pagination__info { font-size: 14px; color: #64748b; font-weight: 600; }
 @media (max-width: 768px) {
+  .breadcrumb { flex-wrap: wrap; line-height: 1.5; }
+  .breadcrumb__current { min-width: 0; max-width: 100%; }
+  .blog-pagination { flex-wrap: wrap; gap: 10px; }
+  .blog-pagination__info { flex-basis: 100%; order: -1; text-align: center; }
+  .blog-pagination__btn { min-height: 44px; padding: 10px 14px; }
   .blog-page { padding: 24px 16px 60px; }
   .blog-title { font-size: 24px; }
   .blog-grid { grid-template-columns: 1fr; }

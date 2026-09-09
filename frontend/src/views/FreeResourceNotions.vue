@@ -73,11 +73,15 @@ const {
   cleanupViewportListener
 } = useZoom()
 
-const zoomStyle = createZoomStyle({
+const desktopZoomStyle = createZoomStyle({
   cssVar: '--content-zoom',
   heightVar: '--content-height',
   mobileZoomAdjustment: (z) => Math.max(0.6, z - 0.08)
 })
+
+const zoomStyle = computed(() => viewportWidth.value <= 800
+  ? { zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto' }
+  : desktopZoomStyle.value)
 
 function measureContentHeightForFreeResources() {
   measureContentHeight(contentRef)
@@ -2213,6 +2217,33 @@ const onLockedExercise = (chapter) => {
   .free-course-page.summary-mode :deep(.notion-title) {
     font-size: 0.9rem;
   }
+}
+
+@media (max-width: 800px) {
+  .free-course-page { padding: 28px 16px 56px; }
+  .page-intro { margin-bottom: 20px; }
+  .page-title { font-size: clamp(26px, 5.5vw, 32px); line-height: 1.25; margin-bottom: 12px; text-wrap: balance; }
+  .page-subtitle { font-size: 15px; line-height: 1.6; }
+  .header-row { flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+  .resource-count-badge { max-width: 100%; flex-wrap: wrap; white-space: normal; font-size: 12px; line-height: 1.5; padding: 6px 12px; }
+  .free-resource-cta { padding: 18px 16px; gap: 16px; margin-bottom: 24px; border-radius: 16px; flex-direction: column; align-items: stretch; }
+  .free-resource-cta__title { font-size: 16px; line-height: 1.45; }
+  .free-resource-cta__subtitle { font-size: 14px; line-height: 1.6; margin-top: 6px; }
+  .free-resource-cta__actions { white-space: normal; gap: 10px; }
+  .free-resource-cta__btn { min-height: 44px; font-size: 14px; padding: 10px 14px; line-height: 1.4; text-align: center; }
+  .search-input { min-height: 48px; font-size: 16px; }
+  .filter-toggle { min-height: 44px; }
+  .filter-dropdown { min-width: 0; width: min(320px, 100%); }
+  .filter-options { max-height: min(300px, 50dvh); }
+  .notion-grid { grid-template-columns: minmax(0, 1fr); justify-items: stretch; gap: 16px; }
+  .notion-grid :deep(.notion-card) { min-width: 0; width: 100%; max-width: none; }
+  .notion-grid :deep(.notion-content) { min-width: 0; }
+  .notion-grid :deep(.notion-title),
+  .free-course-page.summary-mode :deep(.notion-title) { font-size: 16px; line-height: 1.45; hyphens: none; word-break: normal; }
+  .popular-links-panel { padding: 18px 16px; }
+  .popular-links-panel__title { font-size: 18px; }
+  .popular-links-panel__anchor { font-size: 15px; line-height: 1.6; }
+  .pagination-btn { width: 44px; height: 44px; flex-shrink: 0; }
 }
 
 @keyframes spin {

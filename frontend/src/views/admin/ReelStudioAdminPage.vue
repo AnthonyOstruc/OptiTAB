@@ -36,6 +36,7 @@
 
       <ReelBatchPanel
         v-show="studioFormat === 'reel_plus'"
+        v-model:import-open="batchImportOpen"
         v-model:skip-ready="batch.skipReady"
         :batches="batch.batches"
         :projects="batch.currentProjects"
@@ -54,7 +55,7 @@
         @download="batch.download"
       />
 
-      <section v-if="studioFormat !== 'reel_plus' || selectedProject" class="project-panel" :inert="batch.queue.running || batch.importing || batch.downloading || undefined">
+      <section v-if="studioFormat !== 'reel_plus' || (selectedProject && !batchImportOpen)" class="project-panel" :inert="batch.queue.running || batch.importing || batch.downloading || undefined">
         <div class="section-toolbar">
           <div>
             <h2>{{ studioFormat === 'reel_plus' ? selectedProject?.title : studioFormatConfig.managementTitle }}</h2>
@@ -62,7 +63,7 @@
             <p v-else>{{ filteredProjects.length }} {{ filteredProjects.length > 1 ? studioFormatConfig.countPlural : studioFormatConfig.countSingular }} enregistre{{ filteredProjects.length > 1 ? 's' : '' }}</p>
           </div>
           <template v-if="studioFormat === 'reel_plus'">
-            <button class="btn-secondary" type="button" :disabled="batchBusy" @click="openEditProjectForm(selectedProject)">Renommer ce reel</button>
+            <button class="btn-secondary" type="button" :disabled="batchBusy" @click="openEditProjectForm(selectedProject)">Modifier la date</button>
             <button class="btn-secondary" type="button" :disabled="batchBusy" @click="handleDeleteProject(selectedProject)">Supprimer ce reel</button>
           </template>
           <button v-else class="btn-primary" type="button" @click="openCreateProjectForm">
@@ -76,13 +77,14 @@
           :initial-values="projectFormInitialValues"
           :submit-label="projectFormSubmitLabel"
           :form-title="projectFormTitle"
+          :date-only="studioFormat === 'reel_plus'"
           @submit="handleSubmitProject"
           @cancel="closeProjectForm"
         />
 
       </section>
 
-      <section v-show="studioFormat !== 'reel_plus' || selectedProject" id="batch-reel-editor" ref="editorSectionRef" class="content-grid"
+      <section v-show="studioFormat !== 'reel_plus' || (selectedProject && !batchImportOpen)" id="batch-reel-editor" ref="editorSectionRef" class="content-grid"
         :role="studioFormat === 'reel_plus' ? 'tabpanel' : undefined"
         :aria-labelledby="studioFormat === 'reel_plus' && selectedProjectId ? `batch-tab-${selectedProjectId}` : undefined"
         :inert="batch.queue.running || batch.importing || batch.downloading || batch.selecting || undefined">
@@ -697,6 +699,7 @@ import {
 import ReelPreview from '@/components/admin/reel-studio/ReelPreview.vue'
 import ReelBatchPanel from '@/components/admin/reel-studio/ReelBatchPanel.vue'
 import { useReelBatch } from '@/components/admin/reel-studio/useReelBatch'
+import { buildReelBatchFormatHelp } from '@/components/admin/reel-studio/reelBatch'
 import ReelProjectForm from '@/components/admin/reel-studio/ReelProjectForm.vue'
 import ReelProjectsList from '@/components/admin/reel-studio/ReelProjectsList.vue'
 import ReelSlideEditor from '@/components/admin/reel-studio/ReelSlideEditor.vue'
@@ -761,6 +764,7 @@ const editingProject = ref(null)
 const templateDraft = ref('')
 const editorSectionRef = ref(null)
 const reelPreviewRef = ref(null)
+const batchImportOpen = ref(false)
 const DEFAULT_GEMINI_MODEL_ID = 'gemini-2.5-flash'
 const selectedGeminiModelId = ref(DEFAULT_GEMINI_MODEL_ID)
 const geminiModelSearch = ref('')
@@ -1871,7 +1875,7 @@ const FORMAT_CONFIGS = Object.freeze({
 
 const studioFormatConfig = computed(() => FORMAT_CONFIGS[studioFormat.value] || FORMAT_CONFIGS.reel)
 const formatHelpTemplate = computed(() => studioFormat.value === 'reel_plus'
-  ? `REEL: 1 oct\n${studioFormatConfig.value.formatTemplate}\n\nREEL: 2 oct\n${studioFormatConfig.value.formatTemplate}`
+  ? buildReelBatchFormatHelp(REEL_FORMAT_TEMPLATE)
   : studioFormatConfig.value.formatTemplate)
 const selectedProjectFormat = computed(() => normalizeFormatType(selectedProject.value?.format_type || studioFormat.value))
 const isCarouselProject = computed(() => selectedProjectFormat.value === 'carousel')

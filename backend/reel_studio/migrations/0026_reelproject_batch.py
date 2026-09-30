@@ -11,10 +11,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='reelproject', name='batch_title',
-            field=models.CharField(blank=True, default='', max_length=255),
+            # Keep database defaults so older running instances can still create reels.
+            field=models.CharField(blank=True, default='', db_default='', max_length=255),
         ),
         migrations.AddField(
             model_name='reelproject', name='batch_order',
-            field=models.PositiveSmallIntegerField(default=0),
+            field=models.PositiveSmallIntegerField(default=0, db_default=0),
         ),
     ]

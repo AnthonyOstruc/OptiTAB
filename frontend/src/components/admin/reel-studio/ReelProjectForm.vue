@@ -4,16 +4,16 @@
 
     <div class="form-grid">
       <label>
-        Titre
+        {{ dateOnly ? 'Date du reel' : 'Titre' }}
         <input
           v-model="form.title"
           type="text"
           maxlength="255"
           required
           :aria-invalid="titleSubmitted && !canSubmitTitle"
-          placeholder="Ex: Defi integrale"
+          :placeholder="dateOnly ? 'Ex. 1 oct ou 1 oct 2026' : 'Ex: Defi integrale'"
         />
-        <span v-if="titleSubmitted && !canSubmitTitle" class="field-error">Titre obligatoire.</span>
+        <span v-if="(titleSubmitted || form.title) && !canSubmitTitle" class="field-error">{{ dateOnly ? 'Date valide obligatoire, par exemple 1 oct.' : 'Titre obligatoire.' }}</span>
       </label>
 
     </div>
@@ -29,12 +29,14 @@
 
 <script setup>
 import { computed, reactive, ref, watch } from 'vue'
+import { normalizeReelDate } from './reelBatch'
 
 const DEFAULT_FORM = {
   title: '',
 }
 
 const props = defineProps({
+  dateOnly: Boolean,
   loading: {
     type: Boolean,
     default: false,
@@ -58,7 +60,7 @@ const emit = defineEmits(['submit', 'cancel'])
 const form = reactive({ ...DEFAULT_FORM })
 const titleSubmitted = ref(false)
 const titleValue = computed(() => String(form.title || '').trim())
-const canSubmitTitle = computed(() => titleValue.value.length > 0)
+const canSubmitTitle = computed(() => props.dateOnly ? Boolean(normalizeReelDate(titleValue.value)) : titleValue.value.length > 0)
 
 watch(
   () => props.initialValues,
@@ -74,7 +76,7 @@ function handleSubmit() {
   if (!canSubmitTitle.value) return
 
   emit('submit', {
-    title: titleValue.value,
+    title: props.dateOnly ? normalizeReelDate(titleValue.value) : titleValue.value,
   })
 }
 </script>

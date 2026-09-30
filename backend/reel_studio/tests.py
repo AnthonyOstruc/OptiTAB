@@ -2,6 +2,7 @@ import base64
 import json
 import shutil
 import tempfile
+import uuid
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -124,6 +125,74 @@ class ReelStudioSpeechPersistenceTests(TestCase):
         self.assertEqual(project.speech_status, ReelProject.SPEECH_STATUS_READY)
         self.assertEqual(project.speech_text, 'Script voix solo.')
         self.assertEqual(response.data['project']['speech_status'], ReelProject.SPEECH_STATUS_READY)
+
+    def batch_payload(self, count=2):
+        return {
+            'batch_id': str(uuid.uuid4()),
+            'title': 'Octobre',
+            'projects': [
+                {'title': f'{index + 1} oct', 'template_text': 'SLIDE 1 | hook\nTITLE: Défi\nVOICE: Calculez trois au carré.\n---\nSLIDE 2 | result\nKATEX: 3^2=9\nVOICE: Neuf.'}
+                for index in range(count)
+            ],
+        }
+
+    def test_batch_creates_thirty_ordered_independent_reels(self):
+        original = ReelProject.objects.create(title='Reel existant')
+        payload = self.batch_payload(30)
+        response = self.client.post(reverse('reel-batch-create'), payload, format='json')
+        self.assertEqual(response.status_code, 201, response.data)
+        self.assertEqual(len(response.data), 30)
+        self.assertEqual([item['batch_order'] for item in response.data], list(range(1, 31)))
+        self.assertEqual({item['batch_id'] for item in response.data}, {payload['batch_id']})
+        self.assertTrue(all(item['format_type'] == 'reel' and item['slide_count'] == 2 for item in response.data))
+        first, second = [ReelProject.objects.get(pk=item['id']) for item in response.data[:2]]
+        first.slides.first().delete()
+        self.assertEqual(second.slides.count(), 2)
+        original.refresh_from_db()
+        self.assertIsNone(original.batch_id)
+        self.assertEqual(original.title, 'Reel existant')
+
+    def test_batch_rejects_empty_and_more_than_thirty_reels(self):
+        for count in (0, 31):
+            response = self.client.post(reverse('reel-batch-create'), self.batch_payload(count), format='json')
+            self.assertEqual(response.status_code, 400)
+        self.assertFalse(ReelProject.objects.exists())
+
+    def test_batch_invalid_script_rolls_back_the_entire_series(self):
+        payload = self.batch_payload()
+        payload['projects'][1]['template_text'] = 'SLIDE 1 | hook'
+        response = self.client.post(reverse('reel-batch-create'), payload, format='json')
+        self.assertEqual(response.status_code, 400, response.data)
+        self.assertFalse(ReelProject.objects.exists())
+        self.assertFalse(ReelSlide.objects.exists())
+
+    def test_batch_retry_does_not_duplicate_projects(self):
+        payload = self.batch_payload()
+        first = self.client.post(reverse('reel-batch-create'), payload, format='json')
+        second = self.client.post(reverse('reel-batch-create'), payload, format='json')
+        self.assertEqual(first.status_code, 201, first.data)
+        self.assertEqual(second.status_code, 200, second.data)
+        self.assertEqual([p['id'] for p in first.data], [p['id'] for p in second.data])
+        self.assertEqual(ReelProject.objects.count(), 2)
+
+    def test_batch_membership_is_read_only_and_persists_in_project_list(self):
+        response = self.client.post(reverse('reel-batch-create'), self.batch_payload(), format='json')
+        project = response.data[0]
+        patch_response = self.client.patch(reverse('reel-project-detail', args=[project['id']]), {
+            'title': 'Nouveau nom', 'batch_id': None, 'batch_order': 29,
+        }, format='json')
+        self.assertEqual(patch_response.status_code, 200)
+        self.assertEqual(patch_response.data['batch_id'], project['batch_id'])
+        self.assertEqual(patch_response.data['batch_order'], 1)
+        listed = self.client.get(reverse('reel-project-list-create')).data
+        self.assertEqual(len([p for p in listed if p['batch_id'] == project['batch_id']]), 2)
+
+    def test_batch_requires_staff_access(self):
+        self.user.is_staff = False
+        self.user.save(update_fields=['is_staff'])
+        response = self.client.post(reverse('reel-batch-create'), self.batch_payload(), format='json')
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(ReelProject.objects.exists())
 
     def test_create_project_rejects_blank_title(self):
         response = self.client.post(

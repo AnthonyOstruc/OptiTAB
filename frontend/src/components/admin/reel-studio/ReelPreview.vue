@@ -4418,22 +4418,27 @@ async function exportAllSlidesPng() {
   }
 }
 
-async function exportAllSlidesVideo(mode = 'fast') {
+async function exportAllSlidesVideo(mode = 'fast', { returnPayload = false } = {}) {
   if (isCarouselFormat.value) return
   const videoSlides = videoSlidesForRender.value
-  if (!videoSlides.length || isVideoExportBusy.value || exportingPng.value) return
+  if (!videoSlides.length || isVideoExportBusy.value || exportingPng.value) {
+    if (returnPayload) throw new Error('Aucune slide disponible ou un export est déjà en cours.')
+    return
+  }
   const exportPreset = VIDEO_EXPORT_PRESETS.value[mode] || VIDEO_EXPORT_PRESETS.value.fast
 
   const slidesMissingAudio = videoSlides.filter((slide) => (
     slideSpeechText(slide) && !normalizeText(slide?.speech_audio_url)
   ))
   if (slidesMissingAudio.length) {
+    if (returnPayload) throw new Error(`${slidesMissingAudio.length} slide(s) sans voix. Créez les voix avant les vidéos.`)
     window.alert(`${slidesMissingAudio.length} slide(s) ont un script voix sans MP3. Genere les MP3 slides avant l export MP4.`)
     return
   }
 
   const slidesWithStaleAudio = videoSlides.filter((slide) => isSlideSpeechAudioStale(slide))
   if (slidesWithStaleAudio.length) {
+    if (returnPayload) throw new Error(`${slidesWithStaleAudio.length} voix à mettre à jour avant de créer la vidéo.`)
     window.alert(`${slidesWithStaleAudio.length} slide(s) ont un MP3 pas a jour. Regenere les MP3 slides avant l export MP4.`)
     return
   }
@@ -4450,7 +4455,7 @@ async function exportAllSlidesVideo(mode = 'fast') {
     await waitForExportRender()
 
     const coverIndex = slidesForRender.value.findIndex((slide) => isVirtualCoverSlide(slide))
-    if (coverIndex !== -1) {
+    if (coverIndex !== -1 && !returnPayload) {
       const coverCanvas = await renderExportCanvas(coverIndex, exportPreset)
       if (coverCanvas) {
         await downloadCanvasPng(coverCanvas, COVER_FILENAME)
@@ -4462,7 +4467,10 @@ async function exportAllSlidesVideo(mode = 'fast') {
     for (const [index, slide] of videoSlides.entries()) {
       const renderIndex = slidesForRender.value.findIndex((renderSlide) => renderSlide.id === slide.id)
       const canvas = await renderExportCanvas(renderIndex, exportPreset)
-      if (!canvas) continue
+      if (!canvas) {
+        if (returnPayload) throw new Error(`La slide ${index + 1} n’a pas pu être préparée.`)
+        continue
+      }
 
       frames.push({
         slide_id: slide.id,
@@ -4474,11 +4482,12 @@ async function exportAllSlidesVideo(mode = 'fast') {
     }
 
     if (!frames.length) {
+      if (returnPayload) throw new Error('Aucune image vidéo n’a pu être préparée.')
       window.alert("Aucune frame video n'a pu etre preparee.")
       return
     }
 
-    emit('export-video', {
+    const payload = {
       frames,
       width: exportPreset.width,
       height: exportPreset.height,
@@ -4487,8 +4496,11 @@ async function exportAllSlidesVideo(mode = 'fast') {
       preset: exportPreset.ffmpegPreset,
       show_subtitles: subtitlesEnabled.value,
       subtitle_offset_percent: subtitleOffsetResolved.value,
-    })
+    }
+    if (returnPayload) return payload
+    emit('export-video', payload)
   } catch (error) {
+    if (returnPayload) throw error
     console.error('Erreur export video:', error)
     window.alert("Erreur lors de la preparation video. Reessaie apres avoir verifie les slides.")
   } finally {
@@ -4497,6 +4509,11 @@ async function exportAllSlidesVideo(mode = 'fast') {
     exportSlideRefs.value = []
   }
 }
+
+defineExpose({
+  prepareVideoExport: () => exportAllSlidesVideo('hq', { returnPayload: true }),
+  isExportBusy: computed(() => isVideoExportBusy.value || exportingPng.value),
+})
 
 function handleSelectSlide(slideId) {
   const index = findIndexById(slideId)

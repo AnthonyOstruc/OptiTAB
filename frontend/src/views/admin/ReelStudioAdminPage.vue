@@ -27,19 +27,45 @@
           class="studio-format-tab"
           :class="{ 'studio-format-tab--active': studioFormat === tab.value }"
           type="button"
+          :disabled="batch.queue.running || batch.importing || batch.downloading || (studioFormat === 'reel_plus' && batchBusy)"
           @click="switchFormat(tab.value)"
         >
           {{ tab.label }}
         </button>
       </div>
 
-      <section class="project-panel">
+      <ReelBatchPanel
+        v-show="studioFormat === 'reel_plus'"
+        v-model:skip-ready="batch.skipReady"
+        :batches="batch.batches"
+        :projects="batch.currentProjects"
+        :active-batch-id="batch.activeBatchId"
+        :selected-project-id="selectedProjectId"
+        :busy="batchBusy"
+        :importing="batch.importing"
+        :voice-ready="selectedProviderConfigured && selectedVoiceApiUsable && !!selectedVoiceId && !loadingVoiceOptions"
+        :voice-label="selectedVoice?.name || selectedVoiceId"
+        :queue="batch.queue"
+        @import="batch.importBatch"
+        @select-batch="batch.selectBatch"
+        @select-project="batch.selectReel"
+        @run="batch.run"
+        @stop="batch.stop"
+        @download="batch.download"
+      />
+
+      <section v-if="studioFormat !== 'reel_plus' || selectedProject" class="project-panel" :inert="batch.queue.running || batch.importing || batch.downloading || undefined">
         <div class="section-toolbar">
           <div>
-            <h2>{{ studioFormatConfig.managementTitle }}</h2>
-            <p>{{ filteredProjects.length }} {{ filteredProjects.length > 1 ? studioFormatConfig.countPlural : studioFormatConfig.countSingular }} enregistre{{ filteredProjects.length > 1 ? 's' : '' }}</p>
+            <h2>{{ studioFormat === 'reel_plus' ? selectedProject?.title : studioFormatConfig.managementTitle }}</h2>
+            <p v-if="studioFormat === 'reel_plus'">Modifiez ce reel avec les outils habituels. Le script est sauvegardé au changement d’onglet.</p>
+            <p v-else>{{ filteredProjects.length }} {{ filteredProjects.length > 1 ? studioFormatConfig.countPlural : studioFormatConfig.countSingular }} enregistre{{ filteredProjects.length > 1 ? 's' : '' }}</p>
           </div>
-          <button class="btn-primary" type="button" @click="openCreateProjectForm">
+          <template v-if="studioFormat === 'reel_plus'">
+            <button class="btn-secondary" type="button" :disabled="batchBusy" @click="openEditProjectForm(selectedProject)">Renommer ce reel</button>
+            <button class="btn-secondary" type="button" :disabled="batchBusy" @click="handleDeleteProject(selectedProject)">Supprimer ce reel</button>
+          </template>
+          <button v-else class="btn-primary" type="button" @click="openCreateProjectForm">
             {{ studioFormatConfig.createButtonLabel }}
           </button>
         </div>
@@ -56,7 +82,10 @@
 
       </section>
 
-      <section ref="editorSectionRef" class="content-grid">
+      <section v-show="studioFormat !== 'reel_plus' || selectedProject" id="batch-reel-editor" ref="editorSectionRef" class="content-grid"
+        :role="studioFormat === 'reel_plus' ? 'tabpanel' : undefined"
+        :aria-labelledby="studioFormat === 'reel_plus' && selectedProjectId ? `batch-tab-${selectedProjectId}` : undefined"
+        :inert="batch.queue.running || batch.importing || batch.downloading || batch.selecting || undefined">
         <section class="right-column">
           <p v-if="loadingProjectDetail" class="loading-state">Chargement du projet...</p>
 
@@ -84,6 +113,7 @@
             />
 
             <ReelPreview
+              ref="reelPreviewRef"
               :slides="selectedProject?.slides || []"
               :selected-slide-id="selectedSlideId"
               :generating-speech-slide-id="generatingSpeechSlideId"
@@ -97,12 +127,12 @@
               :project="selectedProject || {}"
               @select-slide="selectedSlideId = $event"
               @diagnostic="handleSlideDiagnostic"
-              @update-slide="handlePatchSlide"
-              @update-project="handlePatchProjectInline"
+              @update-slide="trackBatchEdit(handlePatchSlide, $event)"
+              @update-project="trackBatchEdit(handlePatchProjectInline, $event)"
               @generate-slide-speech="handleGenerateSlideSpeech"
               @export-video="handleExportVideo"
-              @update-pronunciation-overrides="handleUpdatePronunciationOverrides"
-              @update-pronunciation-overrides-by-voice="handleUpdatePronunciationOverridesByVoice"
+              @update-pronunciation-overrides="trackBatchEdit(handleUpdatePronunciationOverrides, $event)"
+              @update-pronunciation-overrides-by-voice="trackBatchEdit(handleUpdatePronunciationOverridesByVoice, $event)"
               @toggle-carousel-image="handleToggleCarouselImage"
               @generate-slide-image="handleGenerateSlideImage"
               @clear-slide-image="handleClearSlideImage"
@@ -600,7 +630,7 @@
         </section>
       </section>
 
-      <section class="project-panel project-panel--list">
+      <section v-if="studioFormat !== 'reel_plus'" class="project-panel project-panel--list">
         <ReelProjectsList
           :projects="filteredProjects"
           :selected-project-id="selectedProjectId"
@@ -638,7 +668,8 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import {
   createReelProject,
@@ -664,6 +695,8 @@ import {
   updateReelSlide,
 } from '@/api/reelStudio'
 import ReelPreview from '@/components/admin/reel-studio/ReelPreview.vue'
+import ReelBatchPanel from '@/components/admin/reel-studio/ReelBatchPanel.vue'
+import { useReelBatch } from '@/components/admin/reel-studio/useReelBatch'
 import ReelProjectForm from '@/components/admin/reel-studio/ReelProjectForm.vue'
 import ReelProjectsList from '@/components/admin/reel-studio/ReelProjectsList.vue'
 import ReelSlideEditor from '@/components/admin/reel-studio/ReelSlideEditor.vue'
@@ -727,6 +760,7 @@ const projectFormOpen = ref(false)
 const editingProject = ref(null)
 const templateDraft = ref('')
 const editorSectionRef = ref(null)
+const reelPreviewRef = ref(null)
 const DEFAULT_GEMINI_MODEL_ID = 'gemini-2.5-flash'
 const selectedGeminiModelId = ref(DEFAULT_GEMINI_MODEL_ID)
 const geminiModelSearch = ref('')
@@ -748,6 +782,7 @@ const geminiOptionsError = ref('')
 
 const FORMAT_TABS = Object.freeze([
   { value: 'reel', label: 'Reel' },
+  { value: 'reel_plus', label: 'Reel +' },
   { value: 'carousel', label: 'Carrousel' },
   { value: 'youtube', label: 'YouTube' },
 ])
@@ -758,6 +793,8 @@ function normalizeFormatType(value) {
 
 const filteredProjects = computed(() => {
   return projects.value.filter((p) => {
+    if (studioFormat.value === 'reel_plus') return Boolean(p.batch_id)
+    if (p.batch_id) return false
     const fmt = normalizeFormatType(p.format_type)
     if (studioFormat.value === 'reel') {
       return !fmt || fmt === 'reel'
@@ -768,8 +805,16 @@ const filteredProjects = computed(() => {
   })
 })
 
-function switchFormat(fmt) {
+async function switchFormat(fmt) {
   if (studioFormat.value === fmt) return
+  if ((studioFormat.value === 'reel_plus' || fmt === 'reel_plus') && batchBusy.value) return
+  try { await batch.saveDraft() }
+  catch (error) {
+    setFeedback('error', extractErrorMessage(error, error.message || 'Impossible de sauvegarder le reel.'))
+    return
+  }
+  detailRequestId += 1
+  loadingProjectDetail.value = false
   studioFormat.value = fmt
   selectedProject.value = null
   selectedProjectId.value = null
@@ -777,6 +822,7 @@ function switchFormat(fmt) {
   templateDraft.value = ''
   projectFormOpen.value = false
   editingProject.value = null
+  if (fmt === 'reel_plus' && batch.activeBatchId) await batch.selectBatch(batch.activeBatchId)
 }
 const ELEVENLABS_SETTINGS_STORAGE_KEY = 'reelStudio.elevenLabsSettings.v1'
 const GOOGLE_TTS_SETTINGS_STORAGE_KEY = 'reelStudio.googleTtsSettings.v1'
@@ -1824,7 +1870,9 @@ const FORMAT_CONFIGS = Object.freeze({
 })
 
 const studioFormatConfig = computed(() => FORMAT_CONFIGS[studioFormat.value] || FORMAT_CONFIGS.reel)
-const formatHelpTemplate = computed(() => studioFormatConfig.value.formatTemplate)
+const formatHelpTemplate = computed(() => studioFormat.value === 'reel_plus'
+  ? `REEL: 1 oct\n${studioFormatConfig.value.formatTemplate}\n\nREEL: 2 oct\n${studioFormatConfig.value.formatTemplate}`
+  : studioFormatConfig.value.formatTemplate)
 const selectedProjectFormat = computed(() => normalizeFormatType(selectedProject.value?.format_type || studioFormat.value))
 const isCarouselProject = computed(() => selectedProjectFormat.value === 'carousel')
 const canRegenerateCarouselImages = computed(() => (
@@ -2453,12 +2501,16 @@ function upsertProjectSummary(project) {
     theme: project.theme,
     level: project.level,
     format_type: project.format_type,
+    batch_id: project.batch_id,
+    batch_title: project.batch_title,
+    batch_order: project.batch_order,
     instagram_caption: project.instagram_caption,
     target_duration_seconds: project.target_duration_seconds,
     slide_count: Array.isArray(project.slides) ? project.slides.length : project.slide_count,
     status: project.status,
     speech_audio_url: project.speech_audio_url,
     speech_status: project.speech_status,
+    speech_voice_id: project.speech_voice_id,
     speech_generated_at: project.speech_generated_at,
     video_file_url: project.video_file_url,
     video_status: project.video_status,
@@ -2709,6 +2761,13 @@ function scrollEditorIntoView() {
 }
 
 async function openEditProjectForm(project) {
+  if (studioFormat.value === 'reel_plus') {
+    try { await batch.saveDraft() }
+    catch (error) { setFeedback('error', extractErrorMessage(error, error.message)); return }
+    editingProject.value = selectedProject.value
+    projectFormOpen.value = true
+    return
+  }
   if (!project?.id) return
   closeProjectForm()
 
@@ -3106,6 +3165,10 @@ async function loadProjects() {
 
 async function handleSubmitProject(payload) {
   if (!canManage.value) return
+  if (studioFormat.value === 'reel_plus') {
+    try { await batch.saveDraft() }
+    catch (error) { setFeedback('error', extractErrorMessage(error, error.message)); return }
+  }
 
   const safeTitle = String(payload?.title || '').trim()
   if (!safeTitle) {
@@ -3163,7 +3226,7 @@ async function handleDeleteProject(project) {
       closeProjectForm()
     }
 
-    if (!projects.value.length) {
+    if (!projects.value.length && studioFormat.value !== 'reel_plus') {
       openCreateProjectForm()
     }
 
@@ -3894,7 +3957,49 @@ async function handleDeleteSlide(slideId) {
   }
 }
 
+const pendingBatchEdits = ref(0)
+async function trackBatchEdit(handler, payload) {
+  if (!selectedProject.value?.batch_id) return handler(payload)
+  pendingBatchEdits.value += 1
+  try { await handler(payload) }
+  finally { pendingBatchEdits.value -= 1 }
+}
+const batchBusy = computed(() => loadingProjects.value || loadingProjectDetail.value || savingProject.value || savingTemplate.value
+  || generatingTemplate.value || generatingSpeech.value || !!generatingSpeechSlideId.value || savingSlide.value || exportingVideo.value
+  || reelPreviewRef.value?.isExportBusy || pendingBatchEdits.value > 0
+  || (studioFormat.value === 'reel_plus' && projectFormOpen.value)
+  || batch.queue.running || batch.importing || batch.downloading || batch.selecting)
+const batch = useReelBatch({
+  projects, selectedProject, templateDraft, previewRef: reelPreviewRef,
+  selectProject: async (id) => {
+    const project = await selectProject(id)
+    if (project) closeProjectForm()
+    return project
+  },
+  serializeProject: serializeProjectSlides, upsertProject: upsertProjectSummary, normalizeProject,
+  normalizeList: normalizeProjectsList, speechPayload: buildSpeechGenerationPayload,
+  downloadVideo: downloadExportedVideo, setFeedback, errorMessage: extractErrorMessage,
+  refreshVoices: loadVoiceOptions,
+  isBlocked: () => batchBusy.value,
+})
+
+function protectBatchWork(event) {
+  if (!batch.queue.running && !batch.importing && !batch.dirty) return
+  event.preventDefault()
+  event.returnValue = ''
+}
+onBeforeRouteLeave(async () => {
+  if (batch.queue.running || batch.importing) {
+    setFeedback('info', 'Arrêtez la série et attendez la fin du reel en cours avant de quitter cette page.')
+    return false
+  }
+  try { await batch.saveDraft() }
+  catch (error) { setFeedback('error', extractErrorMessage(error, error.message)); return false }
+})
+onBeforeUnmount(() => window.removeEventListener('beforeunload', protectBatchWork))
+
 onMounted(() => {
+  window.addEventListener('beforeunload', protectBatchWork)
   loadVoiceOptions()
   loadGeminiOptions()
   loadProjects()

@@ -14,6 +14,7 @@ urlpatterns = [
     path('test-voice/', views.ReelTTSTestVoiceView.as_view(), name='reel-tts-test-voice'),
     path('gemini/options/', views.ReelGeminiOptionsView.as_view(), name='reel-gemini-options'),
     path('projects/', views.ReelProjectListCreateView.as_view(), name='reel-project-list-create'),
+    path('batches/', views.ReelBatchCreateView.as_view(), name='reel-batch-create'),
     path('projects/<int:pk>/', views.ReelProjectDetailView.as_view(), name='reel-project-detail'),
     path(
         'projects/<int:pk>/generate-demo-slides/',

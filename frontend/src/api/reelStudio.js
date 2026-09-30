@@ -18,6 +18,10 @@ export function createReelProject(data) {
   return apiClient.post(`${BASE}/projects/`, data)
 }
 
+export function createReelBatch(data) {
+  return apiClient.post(`${BASE}/batches/`, data, { timeout: 120000 })
+}
+
 export function getReelProject(id) {
   return apiClient.get(`${BASE}/projects/${id}/`)
 }
@@ -54,16 +58,16 @@ export function generateReelSpeech(id, data = {}) {
   return apiClient.post(`${BASE}/projects/${id}/generate-speech/`, data, { timeout: 120000 })
 }
 
-export function generateReelSlideSpeeches(id, data = {}) {
-  return apiClient.post(`${BASE}/projects/${id}/generate-slide-speeches/`, data, { timeout: 240000 })
+export function generateReelSlideSpeeches(id, data = {}, config = {}) {
+  return apiClient.post(`${BASE}/projects/${id}/generate-slide-speeches/`, data, { timeout: 240000, ...config })
 }
 
 export function generateReelSlideSpeech(id, data = {}) {
   return apiClient.post(`${BASE}/slides/${id}/generate-speech/`, data, { timeout: 120000 })
 }
 
-export function exportReelVideo(id, data = {}) {
-  return apiClient.post(`${BASE}/projects/${id}/export-video/`, data, { timeout: 900000 })
+export function exportReelVideo(id, data = {}, config = {}) {
+  return apiClient.post(`${BASE}/projects/${id}/export-video/`, data, { timeout: 900000, ...config })
 }
 
 export function downloadReelVideo(id) {

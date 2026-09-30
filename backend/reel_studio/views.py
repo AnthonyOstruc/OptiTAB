@@ -17,6 +17,7 @@ from django.utils.text import slugify
 from rest_framework.negotiation import BaseContentNegotiation
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -26,6 +27,7 @@ from .katex import repair_common_katex_input
 from .models import GeminiUsageLog, ReelProject, ReelSlide
 from .permissions import IsStaffOrSuperuser
 from .serializers import (
+    ReelBatchCreateSerializer,
     ReelGeminiCarouselGenerateSerializer,
     ReelProjectDetailSerializer,
     ReelProjectSerializer,
@@ -1646,6 +1648,39 @@ class ReelProjectListCreateView(APIView):
         project = serializer.save()
         detail_serializer = _project_serializer(project, request, detail=True)
         return Response(detail_serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ReelBatchCreateView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    @transaction.atomic
+    def post(self, request):
+        serializer = ReelBatchCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        # A stable client UUID makes a retry after a lost response idempotent.
+        # Locking the administrator also serializes simultaneous retries.
+        type(request.user).objects.select_for_update().get(pk=request.user.pk)
+        existing = ReelProject.objects.filter(batch_id=data['batch_id']).order_by('batch_order')
+        if existing.exists():
+            return Response(ReelProjectSerializer(existing, many=True, context={'request': request}).data)
+
+        created = []
+        for index, item in enumerate(data['projects'], start=1):
+            project = ReelProject.objects.create(
+                title=item['title'], format_type='reel', slide_count=0,
+                batch_id=data['batch_id'], batch_title=data['title'], batch_order=index,
+            )
+            clean_text, caption = _extract_instagram_caption(item['template_text'])
+            slides = _build_template_slides(project, {**item, 'template_text': clean_text})
+            if not slides:
+                raise ValidationError({'detail': f"Reel {index} ({item['title']}) : aucune slide exploitable."})
+            created.append(_replace_project_slides(project, slides, caption))
+
+        return Response(
+            ReelProjectSerializer(created, many=True, context={'request': request}).data,
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class ReelGeminiOptionsView(APIView):

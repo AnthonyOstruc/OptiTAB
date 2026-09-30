@@ -250,6 +250,9 @@ class ReelProjectSerializer(serializers.ModelSerializer):
             'theme',
             'level',
             'format_type',
+            'batch_id',
+            'batch_title',
+            'batch_order',
             'instagram_caption',
             'target_duration_seconds',
             'slide_count',
@@ -279,6 +282,9 @@ class ReelProjectSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'id',
+            'batch_id',
+            'batch_title',
+            'batch_order',
             'speech_audio',
             'speech_audio_url',
             'speech_voice_id',
@@ -314,6 +320,17 @@ class ReelTemplateGenerateSerializer(serializers.Serializer):
     include_cta = serializers.BooleanField(default=None, required=False, allow_null=True)
     hook_text = serializers.CharField(max_length=255, allow_blank=True, required=False, default='')
     cta_text = serializers.CharField(max_length=255, allow_blank=True, required=False, default='')
+
+
+class ReelBatchItemSerializer(ReelTemplateGenerateSerializer):
+    title = serializers.CharField(max_length=255)
+    template_text = serializers.CharField(max_length=100000)
+
+
+class ReelBatchCreateSerializer(serializers.Serializer):
+    batch_id = serializers.UUIDField()
+    title = serializers.CharField(max_length=255)
+    projects = ReelBatchItemSerializer(many=True, allow_empty=False, max_length=30)
 
 
 class ReelGeminiCarouselGenerateSerializer(serializers.Serializer):

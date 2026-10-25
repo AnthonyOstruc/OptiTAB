@@ -19,7 +19,8 @@ livre/
 ├── SUIVI-LIVRES.md              ← état d'avancement de tous les livres
 ├── OptiTAB - Suivi des livres.xlsx
 ├── outils/ranger_pdf.py         ← range les PDF livrés et refait le catalogue
-└── archives/                    ← anciennes versions, sources zippées, rapports, brouillons
+└── archives/                    ← textes officiels des programmes, rapports de vérification,
+                                   sources zippées
 ```
 
 ## Les dossiers de sources

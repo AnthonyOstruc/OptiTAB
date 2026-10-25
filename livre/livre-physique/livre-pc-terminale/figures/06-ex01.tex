@@ -1,0 +1,24 @@
+% Extrait du diagramme (N,Z) : isotopes du bore, du carbone, de l'azote et de l'oxygène (exercice 1, chapitre 6)
+\begin{tikzpicture}[x=10.5mm,y=8.5mm,
+  st/.style={fill=otInk,draw=otInk,text=white},
+  bm/.style={fill=otNavyTint,draw=otNavy!70,text=otNavy},
+  bp/.style={fill=otOrange!15,draw=otOrange!80!black,text=otOrange!70!black},
+  noy/.style={line width=0.5pt,rounded corners=0.5mm,minimum width=9.6mm,minimum height=7.6mm,inner sep=0pt,
+    font=\otMedium\fontsize{7.5}{8.5}\selectfont,align=center}]
+\foreach \n/\z/\s/\e/\a in {3/5/bp/B/8,5/5/st/B/10,6/5/st/B/11,7/5/bm/B/12,8/5/bm/B/13,
+  4/6/bp/C/10,5/6/bp/C/11,6/6/st/C/12,7/6/st/C/13,8/6/bm/C/14,9/6/bm/C/15,10/6/bm/C/16,
+  5/7/bp/N/12,6/7/bp/N/13,7/7/st/N/14,8/7/st/N/15,9/7/bm/N/16,10/7/bm/N/17,
+  6/8/bp/O/14,7/8/bp/O/15,8/8/st/O/16,9/8/st/O/17,10/8/st/O/18,11/8/bm/O/19,12/8/bm/O/20}{%
+  \node[noy,\s] at (\n,\z) {\e\,\a};}
+\draw[pcFlecheN] (2.4,4.35) -- (12.8,4.35) node[right,pcLegende] {$N$};
+\draw[pcFlecheN] (2.4,4.35) -- (2.4,8.75) node[above,pcLegende] {$Z$};
+\foreach \n in {3,...,12}{\node[pcLegende,text=otMuted,anchor=north] at (\n,4.3) {\n};}
+\foreach \z in {5,...,8}{\node[pcLegende,text=otMuted,anchor=east] at (2.35,\z) {\z};}
+\node[noy,st,minimum width=5mm,minimum height=4mm] at (3.2,9.6) {};
+\node[pcLegende,anchor=west] at (3.55,9.6) {stable};
+\node[noy,bm,minimum width=5mm,minimum height=4mm] at (5.4,9.6) {};
+\node[pcLegende,anchor=west] at (5.75,9.6) {radioactif $\beta^-$};
+\node[noy,bp,minimum width=5mm,minimum height=4mm] at (8.1,9.6) {};
+\node[pcLegende,anchor=west] at (8.45,9.6) {radioactif $\beta^+$};
+\end{tikzpicture}
+\par\smallskip\legende{Chaque case porte le symbole de l'élément et le nombre de masse $A$ du noyau.}

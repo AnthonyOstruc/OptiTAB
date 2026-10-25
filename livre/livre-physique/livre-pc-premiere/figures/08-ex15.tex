@@ -1,0 +1,15 @@
+% Suivi de l'oxydation du propan-2-ol en propanone par spectroscopie infrarouge (exercice 15, chapitre 8) ; schématiques
+\begin{tikzpicture}
+\begin{axis}[otIR,width=72mm,name=a,title={Avant la réaction}]
+\addplot[otSpectre] {100 \bandeIR{3350}{160}{60} \bandeIR{2970}{25}{50} \bandeIR{2880}{20}{20} \bandeIR{1380}{15}{30}
+  \bandeIR{1130}{20}{45} \bandeIR{950}{15}{35}};
+\solution{\node[pcLegende,text=otGreenDark] at (axis cs:3350,30) {O--H lié};}
+\end{axis}
+\begin{axis}[otIR,width=72mm,name=b,at={(a.east)},anchor=west,xshift=12mm,title={Phase organique en fin d'expérience},ylabel={}]
+\addplot[otSpectre] {100 \bandeIR{3400}{150}{14} \bandeIR{2995}{25}{15} \bandeIR{1715}{18}{80} \bandeIR{1365}{15}{45}
+  \bandeIR{1220}{18}{55}};
+\solution{
+  \node[pcLegende,text=otOrange!75!black,anchor=north,align=center] at (axis cs:3400,84) {O--H résiduel :\\réactif restant};
+  \node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:1690,22) {C=O apparu};}
+\end{axis}
+\end{tikzpicture}

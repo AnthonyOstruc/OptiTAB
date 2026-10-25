@@ -1,0 +1,518 @@
+% !TEX root = ../main.tex
+%% Chapitre 13 — Matrices
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre,
+%% section « Matrices » : A) matrices et applications linéaires (matrice d'une AL,
+%% application canoniquement associée, systèmes linéaires) ; B) changements de
+%% bases, matrices équivalentes et rang (J_r, opérations élémentaires),
+%% matrices semblables et trace.
+%% Résultats vérifiés par verifications/chapitre_13.py.
+
+\begin{ouverture}[passage]{13}{Matrices}{Partie 2 · Deuxième semestre}
+  {Matrice d'une application linéaire\enspace·\enspace Rang\enspace·\enspace
+   Changements de bases\enspace·\enspace Équivalence\enspace·\enspace Similitude\enspace·\enspace Trace}
+  \objectif{Représenter vecteurs, familles et applications linéaires par des matrices.}
+  \objectif{Traduire noyau, image, rang et systèmes linéaires dans le langage matriciel.}
+  \objectif{Manier les matrices de passage et les formules de changement de base.}
+  \objectif{Caractériser le rang par l'équivalence à $J_r$ et le calculer par opérations élémentaires.}
+  \objectif{Reconnaître des matrices semblables ; utiliser la trace comme invariant.}
+  \objectif{Chercher une base dans laquelle un endomorphisme devient simple.}
+  \prerequis{Calcul matriciel et systèmes linéaires : produit, inverse, pivot (chapitre 9).}
+  \prerequis{Espaces vectoriels : bases, dimension, applications linéaires, rang (chapitre 12).}
+  \prerequis{Nombres complexes (chapitre 3) pour l'exemple de $\Cx$ vu comme plan réel.}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{La matrice d'une application linéaire}
+
+\begin{definition}[Matrices d'un vecteur, d'une famille, d'une application]
+Soit $e=(e_1,\dots,e_p)$ une base de $E$ et $f=(f_1,\dots,f_n)$ une base de
+$F$. La \textbf{matrice d'un vecteur} $x$ dans $e$ est la colonne de ses
+coordonnées ; celle d'une famille, la juxtaposition des colonnes. La
+\textbf{matrice de} $u\in\mathcal{L}(E,F)$ \textbf{dans les bases} $e,f$ est
+\[
+\operatorname{Mat}_{e,f}(u)=\bigl(\text{colonnes des }u(e_j)\text{ dans }f\bigr)
+\in\mathcal{M}_{n,p}(\K) :
+\]
+la $j$-ième colonne contient les coordonnées de $u(e_j)$. Pour un
+endomorphisme, on prend la même base au départ et à l'arrivée :
+$\operatorname{Mat}_{e}(u)$.
+\end{definition}
+
+\begin{theoreme}[Le dictionnaire complet]
+L'application $u\mapsto\operatorname{Mat}_{e,f}(u)$ est un
+\emph{isomorphisme} de $\mathcal{L}(E,F)$ sur $\mathcal{M}_{n,p}(\K)$, et :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item si $X$ est la colonne de $x$ et $Y$ celle de $u(x)$, alors
+    $Y=AX$ avec $A=\operatorname{Mat}_{e,f}(u)$ ;
+  \item la composée devient le produit :
+    $\operatorname{Mat}(v\circ u)=\operatorname{Mat}(v)\operatorname{Mat}(u)$
+    (bases intermédiaires cohérentes) — pour les endomorphismes,
+    $u\mapsto\operatorname{Mat}_e(u)$ est un isomorphisme d'\emph{anneaux}
+    de $\mathcal{L}(E)$ sur $\mathcal{M}_n(\K)$ ;
+  \item $u$ est un isomorphisme si et seulement si sa matrice est
+    inversible, et $\operatorname{Mat}(u^{-1})=\operatorname{Mat}(u)^{-1}$.
+\end{itemize}
+\end{theoreme}
+
+\begin{exemple}[$\Cx$ vu comme plan réel]
+Dans la base $(1,\mathrm{i})$ de $\Cx$ sur $\R$, la multiplication par
+$a+\mathrm{i}b$ a pour matrice
+$\begin{pmatrix}a&-b\\b&a\end{pmatrix}$ — on retrouve le sous-anneau du
+chapitre 9. La multiplication par $\mathrm{i}$ devient la rotation
+$J=\begin{pmatrix}0&-1\\1&0\end{pmatrix}$, avec $J^{2}=-I_2$ : l'identité
+$\mathrm{i}^{2}=-1$ devient une égalité de matrices, et pour
+$a+\mathrm{i}b=\cos\theta+\mathrm{i}\sin\theta$ on obtient la matrice de la
+rotation d'angle $\theta$.
+\end{exemple}
+
+\essSection{2}{La vision matricielle : noyau, image, rang, systèmes}
+
+\begin{theoreme}[Application linéaire canoniquement associée]
+À toute $A\in\mathcal{M}_{n,p}(\K)$ on associe $X\mapsto AX$ de $\K^{p}$
+dans $\K^{n}$ (en identifiant $\mathcal{M}_{n,1}$ et $\K^{n}$). On définit
+ainsi $\operatorname{Ker}A$, $\operatorname{Im}A$ et
+$\operatorname{rg}A$ : \emph{les colonnes engendrent l'image, les lignes
+donnent un système d'équations du noyau}. Pour $A$ carrée d'ordre $n$,
+sont équivalents :
+\[
+A\ \text{inversible}
+\iff\operatorname{Ker}A=\ens{0}
+\iff\text{les colonnes engendrent }\K^{n}
+\iff\operatorname{rg}A=n ,
+\]
+et toute matrice carrée inversible à gauche \emph{ou} à droite est
+inversible. On retrouve ainsi qu'une triangulaire est inversible si et
+seulement si sa diagonale ne s'annule pas.
+\end{theoreme}
+
+\begin{propriete}[Systèmes linéaires]
+Le système homogène $AX=0$ a pour ensemble de solutions le sous-espace
+$\operatorname{Ker}A$, de dimension $p-\operatorname{rg}A$ (théorème du
+rang). Le système $AX=B$ est compatible si et seulement si
+$B\in\operatorname{Im}A$, et ses solutions forment alors le sous-espace
+affine $X_0+\operatorname{Ker}A$. Si $A$ est carrée inversible, le système
+est dit \emph{de Cramer} : unique solution $X=A^{-1}B$.
+\end{propriete}
+
+\essSection{3}{Changements de bases}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{definition}[Matrice de passage]
+Si $e$ et $e'$ sont deux bases de $E$, la \textbf{matrice de passage}
+$P=P_{e\to e'}$ est la matrice de la famille $e'$ dans la base $e$
+(colonnes = nouveaux vecteurs lus dans l'ancienne base). Elle est
+inversible, et $P^{-1}=P_{e'\to e}$.
+\end{definition}
+\begin{theoreme}[Formules de changement de base]
+Avec $X=\operatorname{Mat}_e(x)$ et $X'=\operatorname{Mat}_{e'}(x)$ :
+\[
+X=PX' .
+\]
+Pour $u\in\mathcal{L}(E,F)$, $A=\operatorname{Mat}_{e,f}(u)$ et
+$B=\operatorname{Mat}_{e',f'}(u)$ : $B=Q^{-1}AP$ avec $P=P_{e\to e'}$,
+$Q=P_{f\to f'}$. Pour un endomorphisme :
+\[
+B=P^{-1}AP .
+\]
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.02,line cap=round]
+  \draw[otMuted,line width=0.8pt,-{Stealth[length=2mm]}] (0,0) -- (2.5,0);
+  \draw[otMuted,line width=0.8pt,-{Stealth[length=2mm]}] (0,0) -- (0,2.5);
+  \draw[otGreenDark,line width=0.8pt,-{Stealth[length=2mm]}] (0,0) -- (2.21,1.17);
+  \draw[otGreenDark,line width=0.8pt,-{Stealth[length=2mm]}] (0,0) -- (-1.17,2.21);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt]
+    (1.5,1.9) -- (1.5,0) (1.5,1.9) -- (0,1.9);
+  \draw[otGreenDark,opacity=0.8,line width=0.5pt,dash pattern=on 2pt off 1.5pt]
+    (1.5,1.9) -- (1.94,1.03) (1.5,1.9) -- (-0.44,0.83);
+  \draw[otInk,line width=1.1pt,-{Stealth[length=2.2mm]}] (0,0) -- (1.5,1.9);
+  \node[font=\scriptsize,text=otInk,anchor=south] at (1.5,1.95) {$x$};
+  \node[font=\scriptsize,text=otMuted] at (2.5,-0.25) {$e_1$};
+  \node[font=\scriptsize,text=otMuted] at (-0.25,2.45) {$e_2$};
+  \node[font=\scriptsize,text=otGreenDark] at (2.5,1.25) {$f_1$};
+  \node[font=\scriptsize,text=otGreenDark] at (-1.35,2.4) {$f_2$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Un même vecteur, deux jeux de coordonnées : la matrice de passage
+fait la traduction $X=PX'$.}
+\end{minipage}
+
+\begin{attention}
+Dans $X=PX'$, la matrice de passage $P$ (vers la \emph{nouvelle} base)
+transforme les \emph{nouvelles} coordonnées en \emph{anciennes} — le sens
+inverse de ce qu'on attend naïvement. Un moyen mnémotechnique : les
+colonnes de $P$ vivent dans l'ancienne base, donc $PX'$ aussi.
+\end{attention}
+
+\begin{savoirfaire}[Rendre un endomorphisme simple]
+Pour étudier $u$ de matrice $A$, chercher une base adaptée (vecteurs
+invariants, directions privilégiées…) et poser $P$ la matrice de passage :
+$B=P^{-1}AP$ y est souvent diagonale ou triangulaire. Exemple : le
+projecteur $p(x,y)=\bigl(\frac{x+y}{2},\frac{x+y}{2}\bigr)$ du chapitre 12
+a pour matrice $\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$ dans la base
+canonique, mais $\begin{pmatrix}1&0\\0&0\end{pmatrix}$ dans la base
+$\bigl((1,1),(1,-1)\bigr)$ adaptée à
+$\operatorname{Im}p\oplus\operatorname{Ker}p$. Les puissances $A^{n}$ se
+calculent alors en une ligne (exercice 9).
+\end{savoirfaire}
+
+\essSection{4}{Matrices équivalentes et rang}
+
+\begin{theoreme}[La forme normale $J_r$]
+Si $u\in\mathcal{L}(E,F)$ est de rang $r$, il existe des bases de $E$ et
+$F$ dans lesquelles sa matrice est
+\[
+J_r=\begin{pmatrix}I_r&0\\0&0\end{pmatrix} .
+\]
+Deux matrices $A,B\in\mathcal{M}_{n,p}(\K)$ sont dites
+\textbf{équivalentes} s'il existe $Q\in\operatorname{GL}_n$,
+$P\in\operatorname{GL}_p$ avec $B=QAP$ : cela revient à représenter la même
+application dans d'autres bases. \emph{Une matrice est de rang $r$ si et
+seulement si elle est équivalente à $J_r$} : le rang classifie entièrement
+les matrices à équivalence près. Conséquence remarquable :
+$\operatorname{rg}\bigl(A^{\mathsf T}\bigr)=\operatorname{rg}A$.
+\end{theoreme}
+
+\begin{propriete}[Rang et matrices extraites ; opérations élémentaires]
+Le rang d'une matrice extraite est au plus celui de $A$, et
+$\operatorname{rg}A$ est la taille maximale d'une matrice carrée extraite
+inversible. Les opérations élémentaires sur les colonnes conservent
+l'\emph{image}, celles sur les lignes conservent le \emph{noyau} : toutes
+conservent le rang. En pratique, on calcule donc le rang par le pivot de
+Gauss (chapitre 9), en comptant les pivots non nuls.
+\end{propriete}
+
+\essSection{5}{Matrices semblables et trace}
+
+\begin{definition}[Similitude]
+$A,B\in\mathcal{M}_n(\K)$ sont \textbf{semblables} s'il existe
+$P\in\operatorname{GL}_n(\K)$ telle que $B=P^{-1}AP$ : ce sont les matrices
+d'un \emph{même endomorphisme} dans deux bases. La similitude est plus
+fine que l'équivalence : semblables $\Rightarrow$ équivalentes (même rang),
+mais la réciproque est fausse.
+\end{definition}
+
+\begin{theoreme}[Trace]
+La \textbf{trace} $\operatorname{tr}A$ est la somme des coefficients
+diagonaux. Elle est linéaire et vérifie l'identité fondamentale
+\[
+\operatorname{tr}(AB)=\operatorname{tr}(BA),
+\qquad\text{d'où}\qquad
+\operatorname{tr}\bigl(P^{-1}AP\bigr)=\operatorname{tr}A :
+\]
+deux matrices semblables ont la même trace. On définit ainsi la trace
+$\operatorname{tr}u$ d'un endomorphisme (indépendante de la base), linéaire
+avec $\operatorname{tr}(uv)=\operatorname{tr}(vu)$. Pour un projecteur :
+$\operatorname{tr}p=\operatorname{rg}p$ — la trace \emph{compte} la
+dimension de l'image.
+\end{theoreme}
+
+\begin{savoirfaire}[Montrer que deux matrices ne sont pas semblables]
+Comparer les invariants de similitude : le rang, la trace (plus tard le
+déterminant, chapitre 14). Ainsi
+$N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ et la matrice nulle ont la même
+trace mais pas le même rang : non semblables. Attention, ces invariants ne
+suffisent pas : $I_2$ et $\begin{pmatrix}1&1\\0&1\end{pmatrix}$ ont même
+rang et même trace sans être semblables (exercice 14). Pour montrer que
+deux matrices \emph{sont} semblables, exhiber la matrice de passage ou la
+base adaptée.
+\end{savoirfaire}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Écrire des matrices}
+Donner la matrice, dans les bases canoniques, de :
+\begin{questions}
+  \item $u:\R^{2}\to\R^{3}$, $u(x,y)=(x+y,\ 2x-y,\ x)$ ;
+  \item la dérivation $D:P\mapsto P'$ sur $\R_2[X]$ ;
+  \item $T:P\mapsto XP'$ sur $\R_2[X]$. Que remarque-t-on ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Produits et composées}
+Soient $A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$,
+$B=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ et
+$C=\begin{pmatrix}1&0\\2&1\end{pmatrix}$.
+\begin{questions}
+  \item Calculer $AB$ et $BA$. Que constate-t-on ?
+  \item Vérifier sur cet exemple que $(AB)C=A(BC)$.
+  \item Si $A$ et $B$ sont les matrices de $u$ et $v$ dans la base
+    canonique, quelle est la matrice de $u\circ v$ ? de $v\circ u$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{$Y=AX$ : images et antécédents}
+Soit $A=\begin{pmatrix}1&1\\1&2\end{pmatrix}$, matrice de $u$ dans la base
+canonique de $\R^{2}$.
+\begin{questions}
+  \item Calculer l'image de $(1,2)$.
+  \item Déterminer tous les antécédents de $(3,5)$.
+  \item Pourquoi chaque vecteur a-t-il exactement un antécédent ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Noyau, image, rang d'une matrice}
+Soit $A=\begin{pmatrix}1&2&3\\2&4&6\\1&1&1\end{pmatrix}$.
+\begin{questions}
+  \item Déterminer $\operatorname{rg}A$.
+  \item Donner une base de $\operatorname{Ker}A$ et une base de
+    $\operatorname{Im}A$.
+  \item Vérifier le théorème du rang.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Inversible ou pas ?}
+\begin{questions}
+  \item Montrer que $A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$ est
+    inversible et calculer $A^{-1}$.
+  \item La matrice $B=\begin{pmatrix}1&2&3\\4&5&6\\7&8&9\end{pmatrix}$
+    est-elle inversible ?
+  \item À quelle condition une matrice triangulaire est-elle inversible ?
+    L'appliquer à $T=\begin{pmatrix}2&1&5\\0&3&-1\\0&0&4\end{pmatrix}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Matrice de passage : premiers pas}
+Dans $\R^{2}$, on pose $e'_1=(1,1)$ et $e'_2=(1,-1)$.
+\begin{questions}
+  \item Justifier que $e'=(e'_1,e'_2)$ est une base et écrire la matrice
+    de passage $P$ de la base canonique à $e'$.
+  \item Calculer $P^{-1}$.
+  \item En déduire les coordonnées de $(3,1)$ dans $e'$, et vérifier.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Un endomorphisme dans deux bases}
+Soit $p$ le projecteur de matrice
+$A=\dfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$ dans la base canonique
+(chapitre 12).
+\begin{questions}
+  \item Rappeler pourquoi $\bigl((1,1),(1,-1)\bigr)$ est adaptée à la
+    décomposition $\R^{2}=\operatorname{Im}p\oplus\operatorname{Ker}p$.
+  \item Calculer $P^{-1}AP$ et commenter.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{La trace : premiers calculs}
+Avec les matrices $A$ et $B$ de l'exercice 2 :
+\begin{questions}
+  \item Calculer $\operatorname{tr}A$, $\operatorname{tr}(AB)$ et
+    $\operatorname{tr}(BA)$.
+  \item La trace est-elle multiplicative
+    ($\operatorname{tr}(AB)=\operatorname{tr}A\operatorname{tr}B$) ?
+  \item Calculer la trace du projecteur de l'exercice 7 et comparer à son
+    rang.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Puissances par changement de base}
+Soit $A=\begin{pmatrix}1&2\\2&1\end{pmatrix}$.
+\begin{questions}
+  \item Vérifier que $(1,1)$ et $(1,-1)$ sont envoyés sur des multiples
+    d'eux-mêmes, et en déduire que $D=P^{-1}AP$ est diagonale pour
+    $P=\begin{pmatrix}1&1\\1&-1\end{pmatrix}$.
+  \item En déduire, pour tout $n\in\N$ :
+    \[
+    A^{n}=\frac12\begin{pmatrix}3^{n}+(-1)^{n}&3^{n}-(-1)^{n}\\
+    3^{n}-(-1)^{n}&3^{n}+(-1)^{n}\end{pmatrix}.
+    \]
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le rang par opérations élémentaires}
+\begin{questions}
+  \item Calculer le rang de
+    $\begin{pmatrix}1&2&3&4\\2&4&6&8\\1&1&1&1\end{pmatrix}$.
+  \item Pour $t\in\R$, déterminer le rang de
+    $M_t=\begin{pmatrix}1&1&t\\1&t&1\\t&1&1\end{pmatrix}$ suivant les
+    valeurs de $t$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Équivalence et forme normale $J_r$}
+Soit $A=\begin{pmatrix}1&2&3\\2&4&6\end{pmatrix}$.
+\begin{questions}
+  \item Déterminer $\operatorname{rg}A$, et expliciter
+    $Q\in\operatorname{GL}_2(\R)$ et $P\in\operatorname{GL}_3(\R)$ telles
+    que $QAP=J_1$.
+  \item Pourquoi deux matrices de $\mathcal{M}_{3}(\R)$ de même rang
+    sont-elles toujours équivalentes ? Sont-elles toujours semblables ?
+  \item En déduire $\operatorname{rg}\bigl(A^{\mathsf T}\bigr)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Systèmes de Cramer}
+\begin{questions}
+  \item Résoudre $\begin{cases}2x+y=5\\x+3y=5\end{cases}$ en calculant
+    l'inverse de la matrice du système.
+  \item Montrer que pour tout $(b_1,b_2,b_3)$, le système
+    $x+y+z=b_1$, $x+2y+4z=b_2$, $x+3y+9z=b_3$ possède une unique
+    solution. Quel lien avec l'interpolation (chapitre 12) ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{$\Cx$ vu comme plan réel, le retour}
+Pour $(a,b)\in\R^{2}$, soit $M(a,b)=\begin{pmatrix}a&-b\\b&a\end{pmatrix}$
+et $J=M(0,1)$.
+\begin{questions}
+  \item Interpréter $M(a,b)$ comme la matrice de $z\mapsto(a+\mathrm{i}b)z$
+    dans la base $(1,\mathrm{i})$, et retrouver $J^{2}=-I_2$.
+  \item Montrer que $\det M(a,b)=a^{2}+b^{2}=|a+\mathrm{i}b|^{2}$.
+  \item Pour $a+\mathrm{i}b=r(\cos\theta+\mathrm{i}\sin\theta)$,
+    reconnaître $M(a,b)$ comme une similitude directe : rotation d'angle
+    $\theta$ composée avec l'homothétie de rapport $r$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Semblables ou pas ?}
+\begin{questions}
+  \item Montrer que $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ et
+    $N'=\begin{pmatrix}0&0\\1&0\end{pmatrix}$ sont semblables.
+  \item Montrer que $I_2$ n'est semblable qu'à elle-même. La matrice
+    $\begin{pmatrix}1&1\\0&1\end{pmatrix}$ est-elle semblable à $I_2$ ?
+  \item $\begin{pmatrix}1&0\\0&0\end{pmatrix}$ et $I_2$ sont-elles
+    semblables ? Et $N$ et la matrice nulle ? Quels invariants utilise-t-on ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La dérivation et la base de Taylor}
+Soit $D:P\mapsto P'$ sur $\R_3[X]$.
+\begin{questions}
+  \item Écrire la matrice $A$ de $D$ dans la base canonique
+    $(1,X,X^{2},X^{3})$, et donner son rang et son noyau.
+  \item Écrire la matrice de $D$ dans la base de Taylor
+    $\bigl(1,X-1,(X-1)^{2},(X-1)^{3}\bigr)$. Qu'observe-t-on, et
+    pourquoi était-ce prévisible ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'identité $\operatorname{tr}(AB)=\operatorname{tr}(BA)$}
+\begin{questions}
+  \item Démontrer que $\operatorname{tr}(AB)=\operatorname{tr}(BA)$ pour
+    toutes $A\in\mathcal{M}_{n,p}(\K)$, $B\in\mathcal{M}_{p,n}(\K)$
+    (écrire les deux doubles sommes).
+  \item En déduire que deux matrices semblables ont la même trace, et que
+    la trace d'un endomorphisme est bien définie.
+  \item Montrer que la trace d'un projecteur vaut son rang.
+  \item Existe-t-il $P$ inversible telle que $P^{-1}AP=A+I_n$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Rang et matrices extraites}
+Soit $A=\begin{pmatrix}1&2&3&4\\2&4&6&8\\1&1&1&1\end{pmatrix}$ (exercice 10).
+\begin{questions}
+  \item Exhiber une matrice extraite $2\times2$ inversible. Que peut-on en
+    déduire sur $\operatorname{rg}A$ ?
+  \item Vérifier que les quatre matrices extraites $3\times3$ sont toutes
+    non inversibles, et conclure.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Matrices de rang 1}
+Soit $A\in\mathcal{M}_n(\K)$ de rang $1$.
+\begin{questions}
+  \item Montrer qu'il existe des colonnes non nulles $U,V\in\K^{n}$ telles
+    que $A=UV^{\mathsf T}$.
+  \item En déduire l'identité $A^{2}=\operatorname{tr}(A)\,A$, et la
+    vérifier sur $A=\begin{pmatrix}2&1&1\\4&2&2\\6&3&3\end{pmatrix}$.
+  \item À quelle condition une matrice de rang $1$ est-elle nilpotente ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Le commutant d'une matrice diagonale}
+Soit $D=\operatorname{diag}(1,2,3)$ et
+$\mathcal{C}=\ens{M\in\mathcal{M}_3(\R)\mid MD=DM}$.
+\begin{questions}
+  \item Montrer que $\mathcal{C}$ est un sous-espace vectoriel de
+    $\mathcal{M}_3(\R)$.
+  \item Montrer que $\mathcal{C}$ est exactement l'ensemble des matrices
+    diagonales, et donner sa dimension.
+  \item Que se passerait-il si deux coefficients de $D$ étaient égaux ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le centre de $\mathcal{M}_n(\K)$}
+Soit $A\in\mathcal{M}_n(\K)$ commutant avec \emph{toutes} les matrices.
+\begin{questions}
+  \item En faisant commuter $A$ avec les matrices élémentaires $E_{ij}$,
+    montrer que $A$ est scalaire : $A=\lambda I_n$.
+  \item En déduire le centre de l'anneau $\mathcal{M}_n(\K)$, puis les
+    endomorphismes qui commutent avec tous les autres.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une base où tout devient simple}
+Soit $A=\begin{pmatrix}1&1\\-1&3\end{pmatrix}$.
+\begin{questions}
+  \item Vérifier que $(A-2I_2)^{2}=0$ ; en déduire que $2$ est la seule
+    valeur possible pour $\lambda$ tel que $A-\lambda I_2$ soit non
+    inversible.
+  \item Trouver $v$ tel que $Av=2v$, puis $w$ tel que $(A-2I_2)w=v$, et
+    montrer que $P^{-1}AP=\begin{pmatrix}2&1\\0&2\end{pmatrix}$ pour
+    $P=\operatorname{Mat}(v,w)$.
+  \item En écrivant $A=2I_2+N$ avec $N^{2}=0$, calculer $A^{n}$ pour tout
+    $n\in\N$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{$\operatorname{tr}\bigl(AA^{\mathsf T}\bigr)$, un produit scalaire avant l'heure}
+Pour $A,B\in\mathcal{M}_n(\R)$, on pose
+$\langle A,B\rangle=\operatorname{tr}\bigl(AB^{\mathsf T}\bigr)$.
+\begin{questions}
+  \item Montrer que
+    $\langle A,A\rangle=\sum_{i,j}a_{ij}^{2}$, et en déduire que
+    $\langle A,A\rangle=0$ si et seulement si $A=0$.
+  \item Vérifier la symétrie $\langle A,B\rangle=\langle B,A\rangle$ et la
+    bilinéarité.
+  \item Montrer l'inégalité
+    $\langle A,B\rangle^{2}\leqslant\langle A,A\rangle\langle B,B\rangle$
+    en étudiant le trinôme $t\mapsto\langle A+tB,A+tB\rangle$ — on y
+    reviendra au chapitre 18.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le théorème $J_r$, démonstration guidée}
+Soit $u\in\mathcal{L}(E,F)$ de rang $r$, avec $\dim E=p$, $\dim F=n$.
+\begin{questions}
+  \item Justifier l'existence d'un supplémentaire $S$ de
+    $\operatorname{Ker}u$ dans $E$, avec $\dim S=r$, et montrer que $u$
+    induit un isomorphisme de $S$ sur $\operatorname{Im}u$.
+  \item Construire une base $(s_1,\dots,s_r,k_1,\dots,k_{p-r})$ de $E$ et
+    une base de $F$ commençant par $\bigl(u(s_1),\dots,u(s_r)\bigr)$, et
+    vérifier que la matrice de $u$ dans ces bases est $J_r$.
+  \item En déduire que toute matrice de rang $r$ est équivalente à $J_r$,
+    puis que $\operatorname{rg}\bigl(A^{\mathsf T}\bigr)=\operatorname{rg}A$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Fibonacci en matrice}
+Soit $F=\begin{pmatrix}1&1\\1&0\end{pmatrix}$ et $(F_n)$ la suite de
+Fibonacci ($F_0=0$, $F_1=1$).
+\begin{questions}
+  \item Montrer par récurrence que
+    $F^{n}=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$ pour
+    $n\geqslant1$.
+  \item En prenant le déterminant, retrouver l'identité de Cassini
+    $F_{n+1}F_{n-1}-F_n^{2}=(-1)^{n}$ (chapitre 5), et en déduire que deux
+    termes consécutifs sont premiers entre eux (chapitre 7).
+  \item Les directions $(\varphi,1)$ et $(\psi,1)$, où $\varphi,\psi$ sont
+    les racines de $x^{2}=x+1$, sont stables par $F$ : faire le lien avec
+    la base de suites géométriques du chapitre 12 et la formule de Binet.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-13}

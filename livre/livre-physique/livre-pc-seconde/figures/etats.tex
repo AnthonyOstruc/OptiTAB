@@ -1,0 +1,19 @@
+\begin{tikzpicture}[font=\fontsize{8.5}{10.5}\selectfont,
+ line width=.7pt,>=Stealth, every node/.style={align=center},
+ fleche/.style={->,line width=1pt,otGreenDark},
+ guide/.style={otMuted,dashed,line width=.5pt},
+ lab/.style={fill=white,inner sep=1.5pt,text=otInk},
+ rayon/.style={thick,postaction={decorate},decoration={markings,
+ mark=at position .35 with {\arrow{Stealth}},
+ mark=at position .75 with {\arrow{Stealth}}}}]
+\node[draw=otNavy,fill=otNavyTint,minimum width=2cm,minimum height=1cm] (s) at (0,0){Solide};
+\node[draw=otNavy,fill=otNavyTint,minimum width=2cm,minimum height=1cm] (l) at (4,0){Liquide};
+\node[draw=otNavy,fill=otNavyTint,minimum width=2cm,minimum height=1cm] (g) at (8,0){Gaz};
+\draw[->,otGreenDark] (s.north east) to[bend left=25] node[above]{Fusion}(l.north west);
+\draw[->,otNavy] (l.south west) to[bend left=25] node[below]{Solidification}(s.south east);
+\draw[->,otGreenDark] (l.north east) to[bend left=25] node[above]{Vaporisation}(g.north west);
+\draw[->,otNavy] (g.south west) to[bend left=25] node[below]{Liquéfaction}(l.south east);
+\draw[->,otGreenDark] (s.north) to[bend left=40] node[above]{Sublimation}(g.north);
+\draw[->,otNavy] (g.south) to[bend left=40] node[below]{Condensation solide}(s.south);
+\end{tikzpicture}\par\smallskip\legende{Les flèches vertes correspondent à des transformations endothermiques.}
+

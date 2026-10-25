@@ -1,0 +1,13 @@
+% Cercle chromatique : couleur absorbée et couleur perçue (L'essentiel, chapitre 2)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \a/\c/\n/\l in {90/red!80/rouge/{620 -- 750 nm},150/magenta!75/magenta/{},210/blue!75/bleu/{430 -- 490 nm},
+  270/cyan!70/cyan/{490 -- 500 nm},330/green!65!black/vert/{500 -- 560 nm},30/yellow!85!orange/jaune/{560 -- 590 nm}}{%
+  \fill[\c] (0,0) -- (\a-30:1.6) arc[start angle=\a-30,end angle=\a+30,radius=1.6] -- cycle;
+  \node[font=\otMedium\fontsize{7.5}{9}\selectfont,text=otInk] at (\a:2.05) {\n};
+  \node[font=\otLight\fontsize{6.5}{8}\selectfont,text=otMuted] at (\a:2.45) {\l};}
+\fill[white] (0,0) circle (0.55);
+\draw[otInk,line width=0.9pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}] (90:0.62) -- (270:0.62);
+\node[pcLegende,align=center] at (5.6,0.45) {Une solution qui absorbe\\le \textbf{rouge} paraît \textbf{cyan} ;\\une solution qui absorbe le\\\textbf{bleu} paraît \textbf{jaune}.};
+\node[pcLegende,align=center] at (5.6,-1.05) {Couleurs complémentaires :\\diamétralement opposées.};
+\end{tikzpicture}
+\par\smallskip\legende{La couleur perçue d'une solution est la couleur complémentaire de celle qu'elle absorbe le plus.}

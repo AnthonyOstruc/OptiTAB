@@ -1,0 +1,19 @@
+% Profil de température dans un mur de béton isolé par l'extérieur (L'essentiel, chapitre 20)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otMuted!35] (2.0,0) rectangle (4.0,2.6);
+\fill[otOrange!25] (4.0,0) rectangle (5.0,2.6);
+\draw[otInk!60,line width=0.5pt] (2.0,0) rectangle (5.0,2.6) (4.0,0) -- (4.0,2.6);
+\node[pcLegende,anchor=north,align=center] at (3.0,-0.08) {béton\\ \qty{20}{cm}};
+\node[pcLegende,anchor=north,align=center] at (4.5,-0.08) {laine\\ \qty{10}{cm}};
+% profil de température (échelle : 0,11 cm par degré)
+\draw[otRed!80!black,line width=1.1pt] (0.6,2.2) -- (2.0,2.2) -- (4.0,2.10) -- (5.0,0) -- (6.4,0);
+\node[pcLegende,anchor=south,text=otRed!80!black] at (1.0,2.22) {\qty{20}{\degreeCelsius}};
+\node[pcLegende,anchor=south west,text=otRed!80!black] at (4.0,2.12) {\qty{19,1}{\degreeCelsius}};
+\node[pcLegende,anchor=south,text=otRed!80!black] at (5.9,0.02) {\qty{0}{\degreeCelsius}};
+\node[pcLegende,anchor=north] at (1.0,1.95) {intérieur};
+\node[pcLegende,anchor=north] at (5.9,1.95) {extérieur};
+\draw[otOrange!90!black,line width=1.1pt,-{Stealth[length=2.2mm]},decorate,
+  decoration={snake,amplitude=0.7mm,segment length=3mm,post length=2.2mm}] (0.6,1.0) -- (1.85,1.0);
+\node[pcLegende,anchor=north,text=otOrange!80!black] at (1.2,0.85) {flux $\Phi$};
+\end{tikzpicture}
+\par\smallskip\legende{Le même flux traverse les deux couches ; l'essentiel de l'écart de température se situe dans l'isolant, de grande résistance thermique.}

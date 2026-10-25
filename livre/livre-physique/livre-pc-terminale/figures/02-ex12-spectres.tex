@@ -1,0 +1,15 @@
+% Spectres d'absorption des ions permanganate et hypochlorite (exercice 12, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otUV,width=94mm,height=46mm,xmin=250,xmax=700,ymax=1.1,ytick={0,0.5,1},xtick={250,300,...,700},
+  ylabel={$A$ (unité arbitraire)},
+  legend style={at={(1.05,0.98)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,
+    cells={anchor=west}}]
+\addplot[otOrange!80!black,line width=0.9pt,domain=250:700] {0 \bandeUV{292}{22}{1.0}};
+\addlegendentry{ion hypochlorite \ce{ClO-}}
+\addplot[magenta!70!otNavy,line width=0.9pt,domain=250:700] {0 \bandeUV{525}{30}{0.82} \bandeUV{545}{16}{0.25} \bandeUV{505}{14}{0.18}};
+\addlegendentry{ion permanganate \ce{MnO4-}}
+\draw[otMuted,dotted,line width=0.6pt] (axis cs:525,0) -- (axis cs:525,1.0);
+\node[pcLegende,anchor=north] at (axis cs:525,-0.07) {525};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Allure des spectres d'absorption des deux ions, dans l'ultraviolet et le visible.}

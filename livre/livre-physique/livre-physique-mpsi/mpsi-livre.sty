@@ -1,0 +1,76 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mpsi-livre}[2026/10/25 Charte OptiTAB physique MPSI]
+\RequirePackage[a4paper,inner=24mm,outer=22mm,top=26mm,bottom=25mm,headheight=14pt,headsep=8mm,footskip=13mm]{geometry}
+\RequirePackage[french]{babel}
+\frenchsetup{StandardItemizeEnv=true,StandardEnumerateEnv=true}
+\RequirePackage{amsmath,mathtools,unicode-math}
+\setmainfont{LibertinusSerif}[Extension=.otf,UprightFont=*-Regular,ItalicFont=*-Italic,BoldFont=*-Semibold,BoldItalicFont=*-SemiboldItalic]
+\setmathfont{LibertinusMath-Regular.otf}
+\setsansfont{Montserrat}[Extension=.otf,UprightFont=*-Regular,ItalicFont=*-Italic,BoldFont=*-SemiBold]
+\newfontfamily\otLight{Montserrat}[Extension=.otf,UprightFont=*-Light]
+\newfontfamily\otSemi{Montserrat}[Extension=.otf,UprightFont=*-SemiBold]
+\RequirePackage{microtype,xcolor,graphicx,tikz,pgfplots}
+\usetikzlibrary{arrows.meta,calc,angles,quotes,patterns,positioning,decorations.markings}
+\pgfplotsset{compat=1.18}
+\definecolor{otNavy}{HTML}{1B3C8E}
+\definecolor{otNavyDark}{HTML}{122A66}
+\definecolor{otGreen}{HTML}{5FAC60}
+\definecolor{otGreenDark}{HTML}{3B8544}
+\definecolor{otInk}{HTML}{1C2130}
+\definecolor{otMuted}{HTML}{6B7385}
+\definecolor{otRule}{HTML}{D5DAE3}
+\definecolor{otOrange}{HTML}{C77A16}
+\definecolor{otRed}{HTML}{C64B45}
+\colorlet{otNavyTint}{otNavy!6}
+\colorlet{otGreenTint}{otGreen!12}
+\AtBeginDocument{\color{otInk}\fontsize{10.8}{14.3}\selectfont}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem,tabularx,booktabs,array,multicol,needspace}
+\RequirePackage{fancyhdr}
+\RequirePackage[unicode,colorlinks,linkcolor=otNavy,urlcolor=otNavy,bookmarksopen=true]{hyperref}
+\hypersetup{pdftitle={OptiTAB Physique MPSI Chapitre 1 Formation des images},pdfauthor={OptiTAB},pdfsubject={Chapitre pilote Cours Exercices Defis DM DS Corriges Programme 2021}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.1mm}
+\raggedbottom
+\setlist[itemize]{leftmargin=5mm,itemsep=1.1mm,topsep=1mm}
+\setlist[enumerate]{leftmargin=6mm,itemsep=1.3mm,topsep=1.2mm}
+\newlist{questions}{enumerate}{1}
+\setlist[questions]{label=\textcolor{otNavy}{\bfseries\arabic*.},leftmargin=6mm,itemsep=1mm,topsep=1.2mm}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\sectiontag}{Chapitre 01}
+\fancypagestyle{mpsi}{\fancyhf{}\fancyhead[LE,RO]{{\sffamily\fontsize{7}{9}\selectfont\color{otMuted}PHYSIQUE MPSI\quad /\quad\sectiontag}}\fancyfoot[LE]{{\sffamily\fontsize{7}{9}\selectfont OptiTAB\quad /\quad Chapitre pilote}\hspace{5mm}\thepage}\fancyfoot[RO]{{\sffamily\fontsize{7}{9}\selectfont Formation des images}\hspace{5mm}\thepage}\renewcommand{\headrulewidth}{0.4pt}\renewcommand{\footrulewidth}{0pt}}
+\pagestyle{mpsi}
+\newcommand{\Page}[3]{\clearpage\renewcommand{\sectiontag}{#1}\phantomsection\label{#3}\pdfbookmark[1]{#2}{bm-#3}{\otSemi\fontsize{8}{11}\selectfont\color{otGreenDark}\MakeUppercase{#1}}\par\vspace{1mm}{\otLight\fontsize{25}{29}\selectfont\color{otInk}#2}\par\vspace{2mm}{\color{otNavy}\rule{17mm}{1pt}}{\color{otRule}\rule[0.3pt]{\dimexpr\linewidth-17mm}{0.4pt}}\par\vspace{2mm}}
+\newcommand{\Sub}[1]{\par\addvspace{2.5mm}\needspace{3\baselineskip}{\otSemi\fontsize{11.2}{14}\selectfont\color{otNavy}#1}\par\nobreak}
+\tcbset{base/.style={enhanced,sharp corners,boxrule=0pt,left=4mm,right=4mm,top=2.4mm,bottom=2.4mm,before skip=2.2mm,after skip=2.2mm,fontupper=\fontsize{10.5}{13.8}\selectfont}}
+\newtcolorbox{loi}[1]{base,colback=otNavyTint,borderline west={1mm}{0pt}{otNavy},title={#1},fonttitle=\sffamily\bfseries\small,coltitle=otNavy,attach title to upper={\par\smallskip}}
+\newtcolorbox{methode}[1]{base,colback=otGreenTint,borderline west={1mm}{0pt}{otGreen},title={#1},fonttitle=\sffamily\bfseries\small,coltitle=otGreenDark,attach title to upper={\par\smallskip}}
+\newtcolorbox{piege}[1]{base,colback=otOrange!7,borderline west={1mm}{0pt}{otOrange},title={#1},fonttitle=\sffamily\bfseries\small,coltitle=otOrange,attach title to upper={\par\smallskip}}
+\newtcolorbox{docu}[1]{base,colback=white,colframe=otRule,boxrule=0.5pt,title={#1},fonttitle=\sffamily\bfseries\small,coltitle=otMuted,attach title to upper={\par\smallskip}}
+\newcounter{schema}
+\newcommand{\fig}[2]{\par\begin{center}\input{figures/#1.tex}\par\vspace{1mm}\refstepcounter{schema}{\sffamily\fontsize{8}{10.5}\selectfont\color{otMuted}\textbf{Figure \theschema.} #2}\end{center}\par}
+\newcommand{\ex}[4]{\par\addvspace{2mm}\needspace{5\baselineskip}\phantomsection\label{ex-#1}{\otSemi\small\color{otNavy}#1\quad #2}\hfill{\sffamily\fontsize{7.2}{9}\selectfont\color{otMuted}#3\quad /\quad #4}\par\nobreak\vspace{-0.5mm}}
+\newcommand{\sol}[2]{\par\addvspace{2.2mm}\needspace{4\baselineskip}\phantomsection\label{sol-#1}{\otSemi\small\color{otGreenDark}#1\quad #2}\hfill{\sffamily\fontsize{7}{9}\selectfont\hyperref[ex-#1]{Énoncé p.\,\pageref*{ex-#1}}}\par\nobreak}
+\newcommand{\source}[1]{{\sffamily\fontsize{8}{10.5}\selectfont\color{otMuted}#1}\par}
+\newcommand{\result}[1]{\textcolor{otGreenDark}{\boxed{#1}}}
+\newcommand{\oa}{\overline{OA}}
+\newcommand{\oap}{\overline{OA'}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\uval}[2]{#1\,\mathrm{#2}}
+\newcommand{\checkline}[1]{\tikz[baseline=-1pt]\draw[otMuted,line width=.45pt](0,0)rectangle(2.2mm,2.2mm);\enspace #1\par}
+\newcommand{\caseSuivi}{\tikz[baseline=-1pt]\draw[otRule!80!otMuted,line width=.45pt](0,0)rectangle(2.4mm,2.4mm);}
+\fancypagestyle{mpsiFront}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\fancyfoot[LE,RO]{{\sffamily\fontsize{8}{10}\selectfont\color{otMuted}\thepage}}}
+\newcommand{\tocrow}[2]{\hyperref[#2]{#1}&\hyperref[#2]{\pageref*{#2}}\\[1.4mm]}
+\newcommand{\tocdots}{\leaders\hbox to 2.4mm{\hss\textcolor{otRule}{.}\hss}\hfill}
+\newcommand{\tocpart}[2]{\par\addvspace{2mm}\noindent{\otSemi\fontsize{7}{9}\selectfont\color{otGreenDark}PARTIE #1}\hspace{3mm}{\otSemi\fontsize{11}{13}\selectfont\color{otNavy}#2}\par\nobreak\vspace{.6mm}}
+% Le troisième argument conserve la concordance au programme dans les sources.
+\newcommand{\planitem}[3]{\par\noindent
+\ifnum\numexpr#1\relax=1
+\makebox[10mm][l]{\otSemi\fontsize{9}{10}\selectfont\color{otNavy}#1}%
+\hyperref[chapitre-01]{{\sffamily\fontsize{9.3}{12.5}\selectfont\color{otInk}#2}}\tocdots{\otSemi\fontsize{9}{10}\selectfont\color{otNavy}\pageref*{chapitre-01}}%
+\else
+\makebox[10mm][l]{\otSemi\fontsize{9}{10}\selectfont\color{otMuted}#1}%
+{\sffamily\fontsize{9.3}{12.5}\selectfont\color{otMuted}#2}\tocdots{\otLight\fontsize{9}{10}\selectfont\color{otMuted}-}%
+\fi\par\vspace{.25mm}}
+\newcommand{\tocresource}[2]{\par\noindent\hyperref[#2]{{\sffamily\fontsize{10}{14}\selectfont\color{otInk}#1}}\tocdots{\otSemi\fontsize{9}{10}\selectfont\color{otNavy}\pageref*{#2}}\par\vspace{2mm}}
+\tikzset{ray/.style={otNavy,line width=0.9pt,postaction={decorate},decoration={markings,mark=at position .55 with {\arrow{Stealth[length=1.8mm]}}}},raytwo/.style={ray,otGreenDark},raythree/.style={ray,otOrange},virtual/.style={dashed,otNavy,line width=.65pt},axis/.style={otMuted,line width=.45pt,-{Stealth[length=1.5mm]}},lab/.style={font=\fontsize{9}{11}\selectfont,fill=white,inner sep=1.2pt,text=otInk},lens/.style={otInk,line width=1.1pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}},normal/.style={otMuted,densely dashed,line width=.55pt}}

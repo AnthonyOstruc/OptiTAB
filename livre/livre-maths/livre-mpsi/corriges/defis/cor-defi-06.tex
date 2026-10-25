@@ -1,0 +1,105 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 6 — vérifié par verifications/defis_06_10.py.
+
+\begin{blocLivre}{cor-6-25a}
+\begin{corrige}{25}{Fonctions plates et fonctions plateaux}
+\demarche{Une récurrence sur la forme des dérivées, les croissances comparées
+pour les limites en $0^{+}$, et le théorème de la limite de la dérivée
+pour franchir le point $0$.}
+\partieExo{A}{Les dérivées sur $\intOO{0}{+\infty}$}
+\begin{questions}
+  \item $f$ est continue sur $\intOO{0}{+\infty}$ (composée) et sur
+    $\intOO{-\infty}{0}$ (nulle). En $0$ : quand $x\to0^{+}$,
+    $-\frac1x\to-\infty$ donc $\mathrm{e}^{-1/x}\to0=f(0)$ ; à gauche $f$
+    est nulle. Donc \res{f\text{ est continue sur }\R}.
+  \item Récurrence : $P_0=1$ convient. Si
+    $f^{(n)}(x)=P_n\bigl(\frac1x\bigr)\mathrm{e}^{-1/x}$ sur
+    $\intOO{0}{+\infty}$, alors
+    \[
+    f^{(n+1)}(x)=-\frac{1}{x^{2}}P_n'\Bigl(\frac1x\Bigr)\mathrm{e}^{-1/x}
+    +\frac{1}{x^{2}}P_n\Bigl(\frac1x\Bigr)\mathrm{e}^{-1/x}
+    =P_{n+1}\Bigl(\frac1x\Bigr)\mathrm{e}^{-1/x}
+    \]
+    avec $P_{n+1}=X^{2}(P_n-P_n')$. D'où $\res{P_1=X^{2}}$ et
+    $\res{P_2=X^{2}(X^{2}-2X)=X^{4}-2X^{3}}$.
+  \item Si $\deg P_n=2n$ avec coefficient dominant $1$, alors
+    $P_n-P_n'$ a les mêmes degré et coefficient dominant
+    ($\deg P_n'<2n$), et $X^{2}(P_n-P_n')$ est de \res{\text{degré }2n+2}
+    et de coefficient dominant $1$.
+\end{questions}
+\partieExo{B}{Une fonction plate en $0$}
+\begin{questions}[resume]
+  \item Avec $u=\frac1x\to+\infty$ :
+    $P\bigl(\frac1x\bigr)\mathrm{e}^{-1/x}=\sum_k a_k\,u^{k}\mathrm{e}^{-u}\to\res{0}$
+    par croissances comparées.
+  \item Hypothèse $(H_n)$ : $f$ est $\mathcal{C}^{n}$ sur $\R$, avec
+    $f^{(n)}=0$ sur $\intOF{-\infty}{0}$ et
+    $f^{(n)}(x)=P_n\bigl(\frac1x\bigr)\mathrm{e}^{-1/x}$ pour $x>0$.
+    $(H_0)$ est la question 1. Si $(H_n)$ est vraie, $f^{(n)}$ est continue
+    sur $\R$, dérivable sur $\R^{*}$, et sa dérivée tend vers $0$ en
+    $0^{+}$ (question 4) comme en $0^{-}$. Le théorème de la limite de la
+    dérivée donne : $f^{(n)}$ est dérivable en $0$, $f^{(n+1)}(0)=0$, et
+    $f^{(n+1)}$ est continue en $0$. D'où $(H_{n+1})$.
+  \item $f$ est donc $\mathcal{C}^{\infty}$ avec $f^{(k)}(0)=0$ pour tout
+    $k$, et Taylor-Young donne $f(x)=o\bigl(x^{n}\bigr)$ pour tout $n$ :
+    $f$ est \res{\text{plate en }0}. Pourtant $f(x)>0$ pour tout $x>0$.
+    Pour un polynôme, c'est impossible : ses coefficients sont les
+    $\frac{P^{(k)}(0)}{k!}$ (formule de Taylor), donc toutes dérivées
+    nulles en $0$ imposent $P=0$. Une fonction $\mathcal{C}^{\infty}$
+    n'est pas déterminée par ses dérivées en un point.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Raccords lisses : fonctions plateaux}
+\begin{questions}[start=7]
+  \item Produit de fonctions $\mathcal{C}^{\infty}$ : $g$ l'est. On a
+    $g(x)>0\iff x>0$ et $1-x>0$ : strictement positive sur $\intOO{0}{1}$,
+    nulle ailleurs. Sur $\intOO{0}{1}$,
+    $g(x)=\exp\Bigl(-\dfrac{1}{x(1-x)}\Bigr)$ et $x(1-x)\leqslant\frac14$ :
+    maximum $\res{g\bigl(\tfrac12\bigr)=\mathrm{e}^{-4}}$.
+  \item Le dénominateur ne s'annule pas : si $x>0$, $f(x)>0$ ; si
+    $x\leqslant0$, $1-x\geqslant1$ et $f(1-x)>0$. Donc $h$ est
+    $\mathcal{C}^{\infty}$ (quotient). Pour $x\leqslant0$, $f(x)=0$ et
+    $h(x)=0$ ; pour $x\geqslant1$, $f(1-x)=0$ et $h(x)=1$. Sur
+    $\intOO{0}{1}$,
+    \[
+    h(x)=\frac{1}{1+\mathrm{e}^{u(x)}},\qquad u(x)=\frac1x-\frac{1}{1-x},
+    \]
+    et $u$ est strictement décroissante : $h$ est
+    \res{\text{strictement croissante}} sur $\intFF{0}{1}$. Enfin
+    $h(x)+h(1-x)=\dfrac{f(x)+f(1-x)}{f(x)+f(1-x)}=\res{1}$ : la courbe est
+    symétrique par rapport au point $\bigl(\frac12,\frac12\bigr)$.
+  \item $\varphi(x)=h(x+2)\,h(2-x)$ convient : elle est
+    $\mathcal{C}^{\infty}$ ; pour $x\in\intFF{-1}{1}$, $x+2\geqslant1$ et
+    $2-x\geqslant1$ donc $\varphi(x)=1$ ; pour $x\leqslant-2$ (resp.
+    $x\geqslant2$), le premier (resp. second) facteur est nul ; et
+    $0\leqslant\varphi\leqslant1$ comme produit de deux valeurs de
+    $\intFF{0}{1}$. Ces fonctions plateaux servent partout en analyse pour
+    « localiser » une fonction sans perdre sa régularité.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[x=2.6cm,y=2.3cm,line cap=round]
+  \draw[otRule,line width=0.3pt] (-0.45,1) -- (1.5,1);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.5,0) -- (1.6,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.1) -- (0,1.2);
+  \draw[otGreenDark,line width=1.3pt] (-0.45,0) -- (0.04,0)
+    -- plot[domain=0.04:0.96,samples=120]
+    ({\x},{exp(-1/\x)/(exp(-1/\x)+exp(-1/(1-\x)))}) -- (0.96,1) -- (1.5,1);
+  \draw[otNavy,line width=1pt] (-0.45,0) -- (0.04,0)
+    -- plot[domain=0.04:0.96,samples=120] ({\x},{exp(4-1/(\x*(1-\x)))}) -- (0.96,0) -- (1.5,0);
+  \draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (1,0) -- (1,1);
+  \fill[otGreenDark] (0.5,0.5) circle (1.3pt);
+  \node[font=\tiny,text=otMuted,below] at (1,0) {$1$};
+  \node[font=\tiny,text=otMuted,anchor=east] at (0,1) {$1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (1.15,1.07) {$h$};
+  \node[font=\scriptsize,text=otNavy,anchor=west] at (0.62,0.85) {$\mathrm{e}^{4}g$};
+\end{tikzpicture}\\[0.5mm]
+\legende{La « bosse » $g$ (renormalisée) et la « marche » $h$, toutes deux
+de classe $\mathcal{C}^{\infty}$ ; $h$ est symétrique par rapport au point
+$\bigl(\frac12,\frac12\bigr)$.}
+\end{center}
+\end{corrigeSuite}
+\end{blocLivre}

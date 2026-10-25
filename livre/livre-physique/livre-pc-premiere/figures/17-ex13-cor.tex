@@ -1,0 +1,12 @@
+% Un tsunami à l'approche de la côte : la célérité et la longueur d'onde diminuent, l'amplitude augmente (corrigé de l'exercice 13, chapitre 17)
+% Longueur d'onde locale 3,2 - 0,25 x : phase = -8 pi ln(3,2 - 0,25 x)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otNavy!12] (0,-1.6) -- (0,0) -- (11,0) -- (11,-0.25) -- (8.5,-0.35) -- cycle;
+\fill[otMuted!35] (0,-1.6) -- (8.5,-0.35) -- (11,-0.25) -- (11,-1.6) -- cycle;
+\draw[otInk!60,line width=0.6pt] (0,-1.6) -- (8.5,-0.35) -- (11,-0.25);
+\draw[otNavy,line width=1.1pt] plot[domain=0:10.4,samples=400] (\x,{(0.07+0.3*(\x/10.4)^3)*sin(deg(-8*pi*ln(3.2-0.25*\x)))});
+\node[pcLegende,anchor=south,align=center] at (1.8,0.35) {large : profondeur \qty{4000}{m}\\$v\approx\qty{198}{m.s^{-1}}$, $\lambda\approx\qty{178}{km}$};
+\node[pcLegende,anchor=south,align=center] at (9.3,0.55) {côte : profondeur \qty{10}{m}\\$v\approx\qty{9,9}{m.s^{-1}}$, $\lambda\approx\qty{8,9}{km}$};
+\node[pcLegende,anchor=north,text=otMuted] at (6.5,-1.0) {fond marin (échelles non respectées)};
+\end{tikzpicture}
+\par\smallskip\legende{La période ne change pas : quand la célérité diminue, la longueur d'onde raccourcit et l'énergie se concentre, la vague grandit.}

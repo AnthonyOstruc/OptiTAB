@@ -1,0 +1,19 @@
+% Construction de l'image d'un objet : f' = 2,0 cm, OA = -6,0 cm, AB = 1,5 cm, à l'échelle 1 (exercice 2, chapitre 18)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  rayon/.style={otOrange!85!black,line width=0.8pt,postaction={decorate},
+    decoration={markings,mark=at position 0.3 with {\arrow{Stealth[length=1.6mm]}}}}]
+\draw[otRule,line width=0.3pt,step=0.5] (-7,-2) grid (5,2);
+\draw[otInk!60,line width=0.6pt] (-7,0) -- (5,0);
+\draw[otNavy,line width=1.2pt,{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]}] (0,-1.9) -- (0,1.9);
+\foreach \x/\n in {-2/F,2/F'}{\draw[otInk,line width=0.6pt] (\x,-0.08) -- (\x,0.08); \node[pcLegende,anchor=north,fill=white,inner sep=0.8pt] at (\x,-0.1) {$\n$};}
+\node[pcLegende,anchor=north east,fill=white,inner sep=0.8pt] at (-0.03,-0.03) {O};
+\draw[otNavy,line width=1.2pt,-{Stealth[length=2.2mm]}] (-6,0) -- (-6,1.5) node[pcLegende,anchor=south,text=otNavy,fill=white,inner sep=0.8pt] {B};
+\node[pcLegende,anchor=north,fill=white,inner sep=0.8pt] at (-6,-0.05) {A};
+\solution{
+  \draw[rayon] (-6,1.5) -- (0,1.5) -- (4.6,-1.95);
+  \draw[rayon] (-6,1.5) -- (4.6,-1.15);
+  \draw[rayon] (-6,1.5) -- (0,-0.75) -- (4.6,-0.75);
+  \draw[otGreenDark,line width=1.2pt,-{Stealth[length=2.2mm]}] (3,0) -- (3,-0.75) node[pcLegende,anchor=north east,text=otGreenDark,fill=white,inner sep=0.8pt] {B'};
+  \node[pcLegende,anchor=south,text=otGreenDark,fill=white,inner sep=0.8pt] at (3,0.05) {A'};}
+\end{tikzpicture}
+\par\smallskip\legende{Quadrillage de \qty{0,5}{cm} ; le document est à l'échelle 1.\solution{ $\overline{\mathrm{OA'}}=\qty{3,0}{cm}$ et $\overline{\mathrm{A'B'}}=\qty{-0,75}{cm}$ : image réelle, renversée, deux fois plus petite.}}

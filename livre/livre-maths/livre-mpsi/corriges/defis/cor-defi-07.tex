@@ -1,0 +1,75 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 7 — vérifié par verifications/defis_06_10.py.
+
+\begin{blocLivre}{cor-7-25a}
+\begin{corrige}{25}{Le chiffrement RSA}
+\demarche{Fermat modulo $p$ et modulo $q$, puis recollement (deux nombres
+premiers distincts qui divisent un entier, leur produit le divise aussi) :
+tout RSA tient dans ce raisonnement.}
+\partieExo{A}{Les outils}
+\begin{questions}
+  \item Les entiers de $\intFF{1}{p}$ sont tous premiers avec $p$ sauf $p$
+    lui-même : $\varphi(p)=p-1$. Dans $\intFF{1}{pq}$, un entier n'est
+    pas premier avec $pq$ si et seulement s'il est multiple de $p$ ($q$
+    entiers) ou de $q$ ($p$ entiers), les multiples communs se réduisant à
+    $pq$ : il y en a $p+q-1$, et
+    $\varphi(pq)=pq-p-q+1=\res{(p-1)(q-1)}$.
+  \item $a$ premier avec $n$ n'est divisible ni par $p$ ni par $q$. Fermat
+    donne $a^{p-1}\equiv1\pmod p$, donc
+    $a^{(p-1)(q-1)}=\bigl(a^{p-1}\bigr)^{q-1}\equiv1\pmod p$, et de même
+    modulo $q$. Les nombres premiers distincts $p$ et $q$ divisent
+    $a^{(p-1)(q-1)}-1$, donc leur produit aussi (Gauss) :
+    $\res{a^{(p-1)(q-1)}\equiv1\pmod n}$.
+\end{questions}
+\partieExo{B}{Le protocole, sur un exemple}
+\begin{questions}[resume]
+  \item $n=61\times53=\res{3233}$ et $\varphi(n)=60\times52=\res{3120}$.
+    Euclide : $3120=183\times17+9$, $17=1\times9+8$, $9=1\times8+1$ : le
+    pgcd vaut $1$. En remontant :
+    $1=9-8=2\times9-17=2\times3120-367\times17$, donc
+    $17\times(-367)\equiv1\pmod{3120}$ et
+    $d=3120-367=\res{2753}$ (contrôle : $17\times2753=46\,801=15\times3120+1$).
+  \item Modulo $3233$ : $65^{2}\equiv992$, $65^{4}\equiv992^{2}\equiv1232$,
+    $65^{8}\equiv1232^{2}\equiv1547$, $65^{16}\equiv1547^{2}\equiv789$. Comme
+    $17=16+1$ : $c\equiv789\times65=51\,285\equiv\res{2790}$. Cinq
+    multiplications au lieu de seize.
+  \item Modulo $61$, par Fermat, on peut réduire l'exposant modulo $60$ :
+    $d\equiv53$ et $c\equiv45$, et l'on trouve $45^{53}\equiv4\pmod{61}$.
+    Modulo $53$ : $d\equiv49\pmod{52}$, $c\equiv34$, et
+    $34^{49}\equiv12\pmod{53}$. Le seul entier $x\in\intFF{0}{3232}$ tel
+    que $x\equiv4\ [61]$ et $x\equiv12\ [53]$ est $x=65$ (deux solutions
+    différeraient d'un multiple de $61$ et de $53$, donc de $3233$) : Bob
+    retrouve $\res{m=65}$. C'est le « théorème chinois », qui accélère
+    réellement le déchiffrement.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Pourquoi ça marche, pourquoi c'est sûr}
+\begin{questions}[start=6]
+  \item On a $ed=1+k(p-1)(q-1)$ avec $k\in\N$. Modulo $p$ : si
+    $p\nmid m$, $m^{ed}=m\,\bigl(m^{p-1}\bigr)^{k(q-1)}\equiv m$ par Fermat ;
+    si $p\mid m$, les deux membres sont nuls modulo $p$. Ainsi
+    $p\mid m^{ed}-m$ dans tous les cas, de même $q$, donc $n$ :
+    $\res{m^{ed}\equiv m\pmod n}$ pour tout $m$ — le déchiffrement
+    fonctionne toujours.
+  \item $n-\varphi(n)+1=pq-(pq-p-q+1)+1=p+q$ et $pq=n$ : $p$ et $q$ sont
+    les racines de $X^{2}-(n-\varphi(n)+1)X+n$. Ici
+    $X^{2}-114X+3233$, de discriminant $64$ : racines
+    $\frac{114\pm8}{2}$, soit $\res{61\text{ et }53}$. Connaître
+    $\varphi(n)$ revient à factoriser $n$ : la sécurité de RSA repose sur
+    la difficulté de la factorisation des grands entiers, pour laquelle
+    on ne connaît aucun algorithme rapide.
+  \item Écrivons $k$ en base $2$ avec $L+1$ chiffres
+    ($L=\lfloor\log_2k\rfloor$). On calcule $a^{2},a^{4},\dots,a^{2^{L}}$
+    par $L$ élévations au carré, puis on multiplie entre elles les
+    puissances correspondant aux chiffres $1$ de $k$ : au plus $L$
+    produits. Total : au plus $2L\leqslant\res{2\log_2k}$ multiplications
+    (cinq pour $k=17=\overline{10001}^{\,2}$). Pour un exposant de $600$
+    chiffres décimaux, environ $4000$ multiplications suffisent, au lieu
+    d'un nombre astronomique.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

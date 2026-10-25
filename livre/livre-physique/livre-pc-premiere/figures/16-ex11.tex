@@ -1,0 +1,19 @@
+% Énergies d'un pendule réel amorti, période 2,0 s, de 40 à 30 degrés en 20 s (exercice 11, chapitre 16)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=110mm,height=54mm,xmin=0,xmax=20,ymin=0,ymax=0.55,
+  xtick={0,2,...,20},ytick={0,0.1,...,0.5},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$t$ (s)},ylabel={énergie (J)}]
+\addplot[otNavy,line width=0.8pt,domain=0:20,samples=500] {0.459*exp(-x/35.9)*cos(deg(pi*x))^2};
+\addplot[otOrange!85!black,line width=0.8pt,domain=0:20,samples=500] {0.459*exp(-x/35.9)*sin(deg(pi*x))^2};
+\addplot[otGreenDark,line width=1.3pt,domain=0:20,samples=40] {0.459*exp(-x/35.9)};
+\node[pcLegendeG,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:10,0.43) {3};
+\node[pcLegendeG,text=otNavy,fill=white,inner sep=1pt] at (axis cs:0.35,0.36) {1};
+\node[pcLegendeG,text=otOrange!85!black,fill=white,inner sep=1pt] at (axis cs:1.0,0.25) {2};
+\solution{
+  \node[pcLegende,anchor=south west,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:12,0.33) {$E_\mathrm{m}$ : de \qty{0,459}{J} à \qty{0,263}{J}};
+  \node[pcLegende,anchor=west,text=otNavy,fill=white,inner sep=1pt] at (axis cs:2.1,0.47) {1 : $E_\mathrm{p}$, maximale aux positions extrêmes};
+  \node[pcLegende,anchor=west,text=otOrange!85!black,fill=white,inner sep=1pt] at (axis cs:2.1,0.515) {2 : $E_\mathrm{c}$, maximale au passage en bas};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Bille de \qty{200}{g} suspendue à un fil de \qty{1,0}{m}, lâchée à \ang{40} de la verticale ; l'origine des altitudes est la position basse.}

@@ -1,0 +1,85 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 20 — Le point de Fermat
+%% Résultats vérifiés par verifications/defis_16_20.py ;
+%% lignes de niveau générées par verifications/fig_fermat_niveaux.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le point de Fermat}{2 h}
+Soient $A$, $B$, $C$ trois points non alignés du plan $\R^{2}$, muni de la
+norme euclidienne. On cherche le point $M$ qui minimise la somme des
+distances $f(M)=MA+MB+MC$ — question posée par Pierre de Fermat à
+Evangelista Torricelli vers 1640, et problème concret : où relier trois
+villes par un réseau de longueur minimale ?
+
+\partieExo{A}{Gradient et points critiques}
+\begin{questions}
+  \item Pour $P\in\R^{2}$ fixé, on pose $d_P(M)=\norme{M-P}$. Montrer que
+    $d_P$ est de classe $\mathcal{C}^{1}$ sur $\R^{2}\setminus\ens{P}$, de
+    gradient le vecteur \emph{unitaire}
+    $\nabla d_P(M)=\dfrac{M-P}{\norme{M-P}}$.
+  \item En déduire que $f$ est de classe $\mathcal{C}^{1}$ sur
+    $U=\R^{2}\setminus\ens{A,B,C}$, et que ses points critiques dans $U$
+    sont les $M$ tels que $u_A+u_B+u_C=0$, où $u_P$ désigne le vecteur
+    unitaire dirigé de $P$ vers $M$.
+  \item Montrer que trois vecteurs unitaires de somme nulle font deux à deux
+    des angles de $\frac{2\pi}{3}$. Conclure : en un point critique $M$, les
+    angles $\widehat{AMB}$, $\widehat{BMC}$, $\widehat{CMA}$ valent tous
+    $\frac{2\pi}{3}$.
+\end{questions}
+
+\partieExo{B}{Existence et position du minimum}
+\begin{questions}[resume]
+  \item Montrer que $f(M)\geqslant3\norme{M}-\bigl(\norme A+\norme B+\norme C\bigr)$.
+    On admet qu'une fonction continue sur un disque fermé y atteint son
+    minimum ; en déduire que $f$ admet un minimum global sur $\R^{2}$.
+  \item On suppose que tous les angles du triangle sont strictement
+    inférieurs à $\frac{2\pi}{3}$. Pour $u$ unitaire, calculer la dérivée à
+    droite en $0$ de $t\mapsto f(A+tu)$, puis choisir $u$ pour qu'elle soit
+    strictement négative : le minimum n'est pas atteint en $A$, ni (de
+    même) en $B$ ou $C$. En déduire qu'il est atteint en un point critique
+    $F$ de $U$ : le \emph{point de Fermat}, d'où l'on voit les trois côtés
+    sous des angles de $\frac{2\pi}{3}$.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=1.25,line cap=round,line join=round]
+  \begin{scope}
+    \clip (-2.2,-1.9) rectangle (2.2,3.0);
+    \input{chapitres/defis/fig-fermat-niveaux}
+  \end{scope}
+  \coordinate (A) at (-1,0); \coordinate (B) at (1,0); \coordinate (C) at (0,2);
+  \coordinate (F) at (0,0.5774); \coordinate (Cp) at (0,-1.7321);
+  \fill[otNavy!8] (A) -- (B) -- (Cp) -- cycle;
+  \draw[otNavy!60,line width=0.6pt] (A) -- (Cp) -- (B);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (F) -- (Cp);
+  \draw[otInk,line width=1.1pt] (A) -- (B) -- (C) -- cycle;
+  \draw[otGreenDark,line width=1.2pt] (F) -- (A) (F) -- (B) (F) -- (C);
+  \foreach \p/\n/\a in {A/A/north east,B/B/north west,C/C/south}{%
+    \fill[otInk] (\p) circle (1.6pt); \node[font=\small,anchor=\a] at (\p) {$\n$};}
+  \filldraw[fill=otGreen,draw=otGreenDark] (F) circle (2pt);
+  \node[font=\small,text=otGreenDark,anchor=west] at ([xshift=3pt,yshift=4pt]F) {$F$};
+  \fill[otNavy] (Cp) circle (1.6pt);
+  \node[font=\small,text=otNavy,anchor=north] at (Cp) {$C'$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Lignes de niveau de $f$ (en gris bleuté) autour de son minimum $F$ ;
+les segments $FA$, $FB$, $FC$ font entre eux des angles de $120^{\circ}$, et
+$F$ est sur le segment $[CC']$, où $C'$ est le sommet du triangle
+équilatéral extérieur construit sur $[AB]$.}
+\end{center}
+
+\partieExo{C}{Un exemple, et le retour de Napoléon}
+On prend $A=(-1,0)$, $B=(1,0)$ et $C=(0,2)$.
+\begin{questions}[resume]
+  \item Vérifier que les angles du triangle sont inférieurs à
+    $\frac{2\pi}{3}$. Par symétrie, chercher $F$ sur l'axe des ordonnées et
+    montrer que $F=\bigl(0,\frac{1}{\sqrt3}\bigr)$. Calculer $f(F)$.
+  \item Soit $C'$ le sommet du triangle équilatéral construit à l'extérieur
+    sur $[AB]$. Montrer que $F\in[CC']$ et que $f(F)=CC'$ : la longueur
+    minimale est la longueur commune $AA'=BB'=CC'$ du défi du chapitre 3.
+  \item Interpréter la figure à l'aide du chapitre 20 : position du gradient
+    par rapport aux lignes de niveau, et forme de celles-ci près de $F$ et
+    loin du triangle.
+\end{questions}
+\end{defi}

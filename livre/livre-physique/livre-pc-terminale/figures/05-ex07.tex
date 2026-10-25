@@ -1,0 +1,36 @@
+% Deux mécanismes de substitution (exercice 7, chapitre 5) ; les flèches courbes n'apparaissent qu'au corrigé
+{\setchemfig{atom sep=2.1em}\def\titreMeca#1{{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}#1}\par\vspace{3.5mm}}%
+\titreMeca{Mécanisme A : bromométhane, un seul acte élémentaire}
+\schemestart
+\chemfig{H-@{sa1}\charge{90=\|,0=\|,270=\|,135:3.6pt=\cmoins}{O}}
+\+
+\chemfig{@{sa2}H_3C-[@{sa3}]@{sa4}\charge{90=\|,0=\|,270=\|}{Br}}
+\arrow
+\chemfig{H-\charge{90=\|,270=\|}{O}-CH_3}
+\+
+\chemfig{\charge{0=\|,90=\|,180=\|,270=\|,45:4.2pt=\cmoins}{Br}}
+\schemestop
+\solution{\chemmove{%
+  \draw[pcCourbe] ([xshift=1.8pt,yshift=0.6pt]sa1.east) .. controls +(55:8mm) and +(120:6mm) .. ([xshift=-3pt]sa2.north east);
+  \draw[pcCourbe] ([yshift=-1pt]sa3) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]sa4.south);}}
+\par\vspace{5mm}
+\titreMeca{Mécanisme B : 2-bromo-2-méthylpropane, deux actes élémentaires}
+\schemestart
+\chemfig{C(-[2]CH_3)(-[4]H_3C)(-[6]CH_3)-[@{sb1}]@{sb2}\charge{90=\|,0=\|,270=\|}{Br}}
+\arrow
+\chemfig{\charge{315:4.4pt=\cplus}{C}(-[2]CH_3)(-[4]H_3C)(-[6]CH_3)}
+\+
+\chemfig{\charge{0=\|,90=\|,180=\|,270=\|,45:4.2pt=\cmoins}{Br}}
+\schemestop
+\solution{\chemmove{%
+  \draw[pcCourbe] ([yshift=-1pt]sb1) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]sb2.south);}}
+\par\vspace{3mm}
+\schemestart
+\chemfig{@{sc1}\charge{315:4.4pt=\cplus}{C}(-[2]CH_3)(-[4]H_3C)(-[6]CH_3)}
+\+
+\chemfig{@{sc2}\charge{90=\|,180=\|,270=\|,45:3.6pt=\cmoins}{O}-H}
+\arrow
+\chemfig{C(-[2]CH_3)(-[4]H_3C)(-[6]CH_3)-\charge{90=\|,270=\|}{O}-H}
+\schemestop
+\solution{\chemmove{%
+  \draw[pcCourbe] ([xshift=-1.8pt,yshift=0.6pt]sc2.west) .. controls +(130:7mm) and +(50:6mm) .. ([xshift=-0.5pt]sc1.north east);}}}

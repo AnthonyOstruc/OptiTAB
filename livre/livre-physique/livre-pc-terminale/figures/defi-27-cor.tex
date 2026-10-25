@@ -1,0 +1,18 @@
+% Durée de chute mesurée en fonction de la racine de la hauteur, avec un retard systématique (corrigé du défi D27)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=56mm,xmin=0,xmax=1.12,ymin=0,ymax=0.52,
+  xtick={0,0.2,...,1.0},ytick={0,0.1,...,0.5},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$\sqrt{h}$ ($\sqrt{\mathrm{m}}$)},ylabel={$t_\mathrm{mes}$ (s)}]
+\addplot[otNavy,line width=1pt,domain=0:1.08,samples=2] {0.4515*x+0.010};
+\addplot[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:1.08,samples=2] {0.4515*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] coordinates {(0.4472,0.2119) (0.6325,0.2956) (0.7746,0.3597) (0.8944,0.4139) (1.0,0.4615)};
+\fill[otRed!80!black] (axis cs:0,0.010) circle (1.6pt);
+\draw[otRed!80!black,line width=0.5pt] (axis cs:0.012,0.010) -- (axis cs:0.11,0.030);
+\node[pcLegende,anchor=west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:0.11,0.030) {ordonnée à l'origine : $\delta=\qty{0,010}{s}$};
+\node[pcLegende,anchor=west,text=otNavy,fill=white,inner sep=1pt] at (axis cs:0.04,0.46) {pente : $\sqrt{2/g}=\qty{0,4515}{s.m^{-1/2}}$};
+\node[pcLegende,anchor=north west,text=otMuted,fill=white,inner sep=1pt] at (axis cs:0.56,0.17) {sans retard : droite passant par l'origine};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Le retard s'ajoute à toutes les durées : les points s'alignent sur une droite décalée de $\delta$. La pente ne dépend pas du retard et donne $g=2/a^2=\qty{9,81}{m.s^{-2}}$.}

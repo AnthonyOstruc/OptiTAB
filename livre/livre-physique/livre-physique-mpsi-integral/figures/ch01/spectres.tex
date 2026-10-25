@@ -1,0 +1,12 @@
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\draw[axis] (0,0)--(12.2,0);\node[lab,anchor=west]at(12.4,0){$\lambda_0$ (nm)};
+\foreach \x/\v in {0/400,4/500,8/600,12/700}{\draw (\x,-.07)--(\x,.07);\node[lab,below]at(\x,-.1){\v};}
+\node[lab,anchor=west]at(0,2.9){Spectre continu (source thermique)};
+\draw[otOrange,line width=1.3pt] plot[smooth] coordinates{(0,.65)(1,.85)(3,1.3)(6,1.8)(9,2)(12,1.9)};
+\node[lab,anchor=west]at(0,5.5){Spectre de raies (source atomique)};
+\draw[otMuted] (0,3.5)--(12,3.5);
+\foreach \x in {.35,1.35,5.45,10.25}{\draw[otNavy,line width=1.3pt] (\x,3.5)--(\x,4.9);}
+\node[lab,anchor=west]at(7.4,4.4){Raies schématiques};
+
+\end{tikzpicture}

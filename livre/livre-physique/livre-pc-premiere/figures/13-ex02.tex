@@ -1,0 +1,26 @@
+% Chronophotographie d'une balle lâchée sans vitesse initiale, échelle 1/5 (exercice 2, chapitre 13)
+% Positions réelles : 0 ; 1,2 ; 4,9 ; 11,0 ; 19,6 ; 30,7 ; 44,1 cm toutes les 0,050 s ; vitesses : 1 cm pour 1 m/s
+\begin{tikzpicture}[x=1cm,y=1cm,
+  vit/.style={otNavy,line width=1pt,-{Stealth[length=2mm]}},
+  dv/.style={otGreenDark,line width=1.2pt,-{Stealth[length=2mm]}}]
+% Règle graduée en cm (réels)
+\fill[otOrange!12] (-1.45,0.15) rectangle (-0.95,-9.1);
+\draw[otInk!60,line width=0.4pt] (-1.45,0.15) rectangle (-0.95,-9.1);
+\foreach \c in {0,10,20,30,40}{\draw[otInk!70,line width=0.5pt] (-0.95,{-\c/5}) -- (-1.2,{-\c/5});
+  \node[pcLegende,anchor=east,font=\otLight\fontsize{6.5}{8}\selectfont] at (-1.47,{-\c/5}) {\c};}
+\foreach \c in {5,15,25,35,45}{\draw[otInk!60,line width=0.4pt] (-0.95,{-\c/5}) -- (-1.1,{-\c/5});}
+\node[pcLegende,anchor=south] at (-1.2,0.2) {cm};
+\foreach \y/\n/\d in {0/0/1.5pt,1.2/1/-2pt,4.9/2/0pt,11.0/3/0pt,19.6/4/0pt,30.7/5/0pt,44.1/6/0pt}{%
+  \shade[ball color=otOrange!60] (0,{-\y/5}) circle (0.1);
+  \node[pcLegende,anchor=east,yshift=\d] at (-0.15,{-\y/5}) {$M_{\n}$};}
+\solution{
+  \draw[vit] (0.45,-2.2) -- ++(0,-1.72) node[pcLegende,anchor=west,text=otNavy,pos=0.5] {$\vec{v}_3$};
+  \draw[vit] (1.15,-3.92) -- ++(0,-2.22) node[pcLegende,anchor=west,text=otNavy,pos=0.5] {$\vec{v}_4$};
+  \begin{scope}[shift={(2.6,-2.2)}]
+    \draw[vit] (0,0) -- (0,-1.72) node[pcLegende,anchor=east,text=otNavy,pos=0.5] {$\vec{v}_3$};
+    \draw[vit] (0.5,0) -- (0.5,-2.22) node[pcLegende,anchor=west,text=otNavy,pos=0.4] {$\vec{v}_4$};
+    \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (0,-1.72) -- (0.8,-1.72);
+    \draw[dv] (0.8,-1.72) -- (0.8,-2.22) node[pcLegende,anchor=west,text=otGreenDark,pos=0.5] {$\Delta\vec{v}_3$ (\qty{0,50}{m.s^{-1}})};
+  \end{scope}}
+\end{tikzpicture}
+\par\smallskip\legende{Positions de la balle toutes les \qty{50}{ms}, lâchée en $M_0$ (échelle 1/5).\solution{ Vitesses : \qty{1}{cm} pour \qty{1}{m.s^{-1}}.}}

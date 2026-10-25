@@ -1,0 +1,15 @@
+% Échelle des tensions à vide de quatre demi-piles, le cuivre étant pris pour origine (corrigé de l'exercice 15, chapitre 8)
+\begin{tikzpicture}[y=3cm]
+\draw[otMuted,line width=0.6pt,-{Stealth[length=2mm]}] (0,-1.32) -- (0,0.68);
+\foreach \v/\m/\t in {-1.10/zinc/{$-1{,}10$~V},-0.78/fer/{$-0{,}78$~V},0/cuivre/{0},0.43/argent/{$+0{,}43$~V}}{%
+  \draw[otNavy,line width=0.9pt] (-0.12,\v) -- (0.12,\v);
+  \node[pcLegendeG,anchor=west] at (0.22,\v) {\m};
+  \node[pcLegende,anchor=east,text=otMuted] at (-0.2,\v) {\t};}
+\draw[otGreenDark,line width=0.8pt,{Stealth[length=1.8mm]}-{Stealth[length=1.8mm]}] (2.0,-1.10) -- (2.0,0.43)
+  node[pos=0.5,right,pcLegende,text=otGreenDark] {zinc -- argent : 1,53~V};
+\draw[otGreenDark,line width=0.8pt,{Stealth[length=1.8mm]}-{Stealth[length=1.8mm]}] (1.35,-1.10) -- (1.35,-0.78)
+  node[pos=0.5,left,pcLegende,text=otGreenDark] {0,32~V};
+\draw[otOrange,line width=0.9pt,-{Stealth[length=2mm]}] (-1.9,0.4) -- (-1.9,-1.05)
+  node[pos=0.5,left,pcLegende,align=right,text=otInk] {pouvoir\\réducteur\\croissant};
+\end{tikzpicture}
+\par\smallskip\legende{Plus un métal est bas sur l'échelle, plus il est réducteur ; la tension à vide d'une pile est l'écart entre ses deux électrodes.}

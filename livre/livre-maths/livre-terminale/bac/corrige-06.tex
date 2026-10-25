@@ -1,0 +1,65 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 6 — résultats vérifiés par programme (bac_s6.py)
+
+\corrigeSujet{6}
+
+\begin{corrigeBac}{5}{Vrai ou faux}
+\begin{questions}
+  \item \textbf{Vraie.} En posant $X=\sqrt x$ : $\dfrac{\ln x}{\sqrt x}=\dfrac{2\ln X}{X}$, et $\dfrac{\ln X}{X}\to0$ quand $X\to+\infty$
+    (croissances comparées). \pts{1 pt}
+  \item \textbf{Fausse.} $f''(x)=6x$ est strictement négatif sur $\intOO{-\infty}0$ : $f$ est concave sur cet intervalle. \pts{1 pt}
+  \item \textbf{Fausse.} $G'(x)=\dfrac{2}{2x+1}\neq g(x)$ ; une primitive de $g$ est $x\mapsto\frac12\ln(2x+1)$. \pts{1 pt}
+  \item \textbf{Vraie.} $h'(x)=6e^{2x}$ et $2h(x)+2=6e^{2x}-2+2=6e^{2x}$ : on a bien $h'=2h+2$. \pts{1 pt}
+  \item \textbf{Vraie.} La fonction $k:x\mapsto x^{3}+x+1$ est dérivable et $k'(x)=3x^{2}+1>0$ : $k$ est continue et strictement
+    croissante sur $\R$. Comme $k(-1)=-1<0$ et $k(0)=1>0$, le corollaire du théorème des valeurs intermédiaires donne une unique solution,
+    située dans $\intOO{-1}0$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Loi binomiale et concentration}
+\begin{questions}
+  \item On répète $200$ fois, de manière identique et indépendante, une épreuve de Bernoulli dont le succès « le masque est
+    défectueux » a pour probabilité $0{,}04$ : $X$ suit la loi $\res{\mathcal{B}(200\pv0{,}04)}$. \pts{0,5 pt}
+  \item $E(X)=200\times0{,}04=\res{8}$ ; $V(X)=200\times0{,}04\times0{,}96=\res{7{,}68}$ ; $\sigma(X)=\sqrt{7{,}68}\approx\res{2{,}77}$. \pts{0,75 pt}
+  \item $P(X\leq5)\approx\res{0{,}186}$ et $P(X\geq12)=1-P(X\leq11)\approx\res{0{,}107}$. \pts{1 pt}
+  \item $3\leq X\leq13\iff|X-8|<6$. D'après l'inégalité de Bienaymé-Tchebychev,
+    $P\big(|X-8|\geq6\big)\leq\dfrac{7{,}68}{36}\approx0{,}213$, donc $P(3\leq X\leq13)\geq1-0{,}214>\res{0{,}78}$. La valeur exacte,
+    $P(3\leq X\leq13)\approx0{,}956$, est nettement plus élevée : l'inégalité donne une minoration prudente. \pts{1 pt}
+  \item $P(X\geq15)=1-P(X\leq14)\approx\res{0{,}015}$ : un tel carton se produit environ une fois sur $65$. C'est assez rare pour
+    soupçonner un dérèglement de la production et déclencher des contrôles supplémentaires. \pts{0,75 pt}
+  \item $V(F)=\dfrac{0{,}04\times0{,}96}{n}$ et $P\big(|F-0{,}04|\geq0{,}01\big)\leq\dfrac{0{,}038\,4}{n\times0{,}000\,1}$. Cette majoration
+    est inférieure à $0{,}05$ dès que $n\geq\dfrac{0{,}038\,4}{0{,}05\times0{,}000\,1}=\res{7\,680}$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Géométrie : section d'un cube}
+\begin{questions}
+  \item $\res{P\left(0\pv\tfrac12\pv1\right)}$, $\res{Q\left(1\pv\tfrac12\pv0\right)}$ et $\res{G(1\pv1\pv1)}$. \pts{0,5 pt}
+  \item $\vect{AP}\left(0\pv\frac12\pv1\right)$ et $\vect{AQ}\left(1\pv\frac12\pv0\right)$ ne sont pas colinéaires ; $\vec n\cdot\vect{AP}=0-1+1=0$ et
+    $\vec n\cdot\vect{AQ}=1-1+0=0$ : $\vec n$ est normal à $(APQ)$. Ce plan passe par $A$, d'où l'équation $\res{x-2y+z=0}$. Enfin
+    $1-2+1=0$ : $\res{G\in(APQ)}$. \pts{1,25 pt}
+  \item $\vect{QG}\left(0\pv\frac12\pv1\right)=\vect{AP}$ : $APGQ$ est un parallélogramme. De plus
+    $AP=AQ=\sqrt{\frac14+1}=\frac{\sqrt5}{2}$ : deux côtés consécutifs sont égaux, c'est un $\res{\text{losange}}$. \pts{1 pt}
+  \item $\vect{PQ}\,(1\pv0\pv-1)$ et $\vect{AG}\,(1\pv1\pv1)$ : $\vect{PQ}\cdot\vect{AG}=1+0-1=0$, les droites sont orthogonales (ce sont les
+    diagonales du losange). $AG=\sqrt3$ et $PQ=\sqrt2$, d'où l'aire $\dfrac{AG\times PQ}{2}=\res{\tfrac{\sqrt6}{2}}\approx1{,}22$. \pts{1 pt}
+  \item $\cos\widehat{PAQ}=\dfrac{\vect{AP}\cdot\vect{AQ}}{AP\times AQ}=\dfrac{1/4}{5/4}=\res{\tfrac15}$, d'où
+    $\widehat{PAQ}\approx\res{78{,}5^\circ}$. \pts{0,75 pt}
+  \item Non : l'angle $\widehat{PAQ}$ n'est pas droit (ou encore : les diagonales $AG$ et $PQ$ n'ont pas la même longueur). \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Équation différentielle et aire}
+\begin{questions}
+  \item $g'(x)=-e^{-x}$ et $-2g(x)+e^{-x}=-2e^{-x}+e^{-x}=-e^{-x}$ : $g$ est solution de $(E)$. \pts{0,5 pt}
+  \item Les solutions de $y'=-2y$ sont les fonctions $x\mapsto Ce^{-2x}$, $C\in\R$. Les solutions de $(E)$ sont les fonctions
+    $\res{x\mapsto Ce^{-2x}+e^{-x}}$, $C\in\R$. \pts{1 pt}
+  \item $f(0)=C+1=0$ donne $C=-1$ : $\res{f(x)=e^{-x}-e^{-2x}}$. \pts{0,5 pt}
+  \item $f'(x)=-e^{-x}+2e^{-2x}=e^{-2x}\left(2-e^{x}\right)$, du signe de $2-e^{x}$ : positif pour $x\leq\ln2$, négatif ensuite. $f$ est
+    croissante sur $\intFF0{\ln2}$ et décroissante sur $\intFO{\ln2}{+\infty}$, de maximum $f(\ln2)=\frac12-\frac14=\res{\tfrac14}$. Enfin
+    $\res{\lim\limits_{x\to+\infty}f(x)=0}$. \pts{1,5 pt}
+  \item $A(t)=\left[-e^{-x}+\frac12e^{-2x}\right]_0^{t}=-e^{-t}+\frac12e^{-2t}+\frac12=\frac12\left(1-2e^{-t}+e^{-2t}\right)=\frac12\left(1-e^{-t}\right)^{2}$.
+    Comme $e^{-t}\to0$, $\res{\lim\limits_{t\to+\infty}A(t)=\tfrac12}$. \pts{1 pt}
+  \item $A(t)=\frac14\iff\left(1-e^{-t}\right)^{2}=\frac12\iff1-e^{-t}=\frac{1}{\sqrt2}$ (ce nombre est positif) $\iff
+    e^{-t}=1-\frac{\sqrt2}{2}\iff t=-\ln\left(1-\tfrac{\sqrt2}{2}\right)=\res{\ln\big(2+\sqrt2\big)}\approx\res{1{,}23}$. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}

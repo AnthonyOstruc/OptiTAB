@@ -1,0 +1,28 @@
+% Addition du bromure d'hydrogène sur le propène (exercice 8, chapitre 5) ; flèches courbes au corrigé
+{\setchemfig{atom sep=2.1em}\def\titreActe#1{\makebox[13mm][l]{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}#1}}%
+\titreActe{Acte 1}%
+\schemestart
+\chemfig{H_3C-CH=[@{pr1}]CH_2}
+\+
+\chemfig{@{pr2}H-[@{pr3}]@{pr4}\charge{90=\|,0=\|,270=\|}{Br}}
+\arrow
+\chemfig{H_3C-\charge{270:2.6pt=\cplus}{C}H-CH_3}
+\+
+\chemfig{\charge{0=\|,90=\|,180=\|,270=\|,45:4.2pt=\cmoins}{Br}}
+\schemestop
+\hspace{13mm}%
+\solution{\chemmove{%
+  \draw[pcCourbe] ([yshift=2pt]pr1) .. controls +(75:7mm) and +(115:6mm) .. (pr2.north);
+  \draw[pcCourbe] ([yshift=-1pt]pr3) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]pr4.south);}}
+\par\vspace{7mm}
+\titreActe{Acte 2}%
+\schemestart
+\chemfig{H_3C-@{pr5}\charge{270:2.6pt=\cplus}{C}H-CH_3}
+\+
+\chemfig{@{pr6}\charge{0=\|,90=\|,180=\|,270=\|,45:4.2pt=\cmoins}{Br}}
+\arrow
+\chemfig{H_3C-CHBr-CH_3}
+\schemestop
+\hspace{13mm}%
+\solution{\chemmove{%
+  \draw[pcCourbe] ([xshift=-1.8pt,yshift=0.6pt]pr6.west) .. controls +(140:8mm) and +(70:6mm) .. ([yshift=0.5pt]pr5.north);}}}

@@ -1,0 +1,717 @@
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)},x=1mm,y=1mm]
+\fill[otNavy](0,0)rectangle(210,297);\fill[otNavyDark](0,0)rectangle(210,88);
+\draw[white,opacity=.055,step=7mm](0,0)grid(210,297);
+\node[anchor=north west,inner sep=0pt]at(23,278){\includegraphics[width=57mm]{images/logo-blanc.png}};
+\node[anchor=west,text=otGreen,font=\otSemi\fontsize{12}{15}\selectfont]at(24,235){MPSI\quad /\quad PHYSIQUE};
+\node[anchor=west,text=white,font=\sffamily\bfseries\fontsize{52}{56}\selectfont]at(22,211){Physique};
+\node[anchor=north west,text=white,text width=158mm,font=\otLight\fontsize{31}{38}\selectfont]at(24,191){Oscillations libres amorties};
+\fill[otGreen](24,149)rectangle(54,150.4);
+\node[anchor=north west,text=white,text width=153mm,font=\sffamily\fontsize{11}{16}\selectfont]at(24,139){Cours développé et schémas vectoriels\par 24 exercices et corrigés expliqués\par 3 défis, TP, activité numérique, DM et DS\par Parcours sur des supports authentiques};
+\draw[white,opacity=.6,-{Stealth}] (24,46)--(185,46);
+\draw[white,opacity=.6,-{Stealth}] (28,17)--(28,81);
+\draw[otGreen,line width=1.8pt] plot[domain=0:6,samples=180] ({30+24*\x},{46+27*cos(deg(3*\x))*exp(-.18*\x)});
+\node[anchor=west,text=white,font=\otSemi\fontsize{9}{12}\selectfont]at(24,8){CHAPITRE 05\quad /\quad COLLECTION OPTITAB\quad /\quad OCTOBRE 2026};
+\end{scope}\end{tikzpicture}\null
+
+\Page{Collection OptiTAB}{Physique MPSI}{titre}
+\thispagestyle{mpsiFront}
+\vspace{8mm}\begin{center}\includegraphics[width=63mm]{images/logo-couleur.png}\par\vspace{15mm}
+{\otSemi\color{otGreenDark}CLASSE PRÉPARATOIRE SCIENTIFIQUE}\par\vspace{5mm}
+{\otLight\fontsize{23}{29}\selectfont Cours et exercices corrigés}\par\vspace{12mm}
+{\fontsize{18}{24}\selectfont Oscillations libres amorties}\par\vspace{8mm}
+Chapitre 05\par 24 exercices progressifs ; 3 défis avancés\par TP, numérique, DM et DS avec barèmes\par\vspace{12mm}
+Collection OptiTAB\par\href{https://www.optitab.net}{optitab.net}\end{center}
+\vfill\source{Édition de travail du 25 octobre 2026. Énoncés OptiTAB originaux, figures vectorielles et corrigés indépendants. Les supports extérieurs sont identifiés à la fin du chapitre.}
+
+
+\Page{Pour ouvrir le chapitre}{Avant-propos et mode d’emploi}{avant}
+\thispagestyle{mpsiFront}
+Ce chapitre prolonge le manuel de physique MPSI dans la charte de la collection. Il traite les régimes libres et les réponses à un échelon des oscillateurs amortis, électriques et mécaniques, ainsi que leur identification expérimentale. Le programme de référence est l’\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{arrêté du 5 janvier 2021}, annexe 2, rubrique 1.4 / régimes transitoires du deuxième ordre.
+\Sub{Comprendre, chercher, vérifier}
+Lire un résultat ne suffit pas à se l’approprier. Redessiner le système, orienter les grandeurs, retrouver les équations puis expliquer leurs limites : ces gestes relient le cours aux problèmes. Une réponse numérique doit comporter une unité, un nombre raisonnable de chiffres et une interprétation.
+\begin{loi}{Un parcours en quatre étapes}
+1. Faire le diagnostic p.\,\pageref{diagnostic} et reprendre les prérequis fragiles.\par
+2. Travailler le cours p.\,\pageref{cours-1} et refaire les exemples.\par
+3. Chercher les exercices p.\,\pageref{td1}, puis les défis et évaluations.\par
+4. Corriger, expliquer l’erreur puis refaire une question sans solution.
+\end{loi}
+\Sub{Utiliser les corrigés}
+Les solutions commencent p.\,\pageref{corr-diag}. Avant de les lire, utiliser les indications p.\,\pageref{indices}. Le barème du DM et du DS sert à distinguer mise en équation, calcul et interprétation ; ce n’est pas un barème officiel de concours.
+\Sub{Travailler sur de vrais sujets}
+Les pages p.\,\pageref{sources-1} et suivantes donnent les liens, les questions ciblées et des repères de correction de supports réellement publiés. Conserver leurs données et figures d’origine. Les énoncés OptiTAB sont des créations pédagogiques, clairement distinguées de ces documents.
+\begin{methode}{Une fiche de progrès}
+Après chaque exercice, noter S (réussi seul), A (réussi avec aide) ou R (à reprendre). Choisir une question à refaire deux jours plus tard. Une solution comprise doit pouvoir être reconstruite, pas seulement reconnue.
+\end{methode}
+\source{© OptiTAB, 2026. Les séries de données créées pour le TP et le numérique sont signalées comme simulations. Les références des auteurs extérieurs restent attachées aux documents d’origine.}
+
+
+\Page{Collection OptiTAB}{Sommaire}{sommaire}
+\thispagestyle{mpsiFront}
+\begingroup\setlength{\parskip}{0pt}\fontsize{10}{13.5}\selectfont
+\source{MPSI · Physique · Plan de l’ouvrage}
+\input{plan}
+\endgroup
+\vspace{2mm}\hrule\vspace{2mm}
+\tocresource{Parcours et ressources du chapitre 05}{ressources}
+\source{La pagination concerne ce fascicule. Les autres chapitres sont des volumes séparés ou en préparation ; aucune page fictive n’est attribuée.}
+
+
+\Page{Collection OptiTAB}{Parcours et ressources}{ressources}
+\thispagestyle{mpsiFront}
+\tocresource{Diagnostic}{diagnostic}
+\tocresource{Cours et méthodes}{cours-1}
+\tocresource{Travaux pratiques}{tp}
+\tocresource{Activité numérique}{numerique}
+\tocresource{24 exercices progressifs}{td1}
+\tocresource{Trois défis avancés}{defi1}
+\tocresource{Devoir maison}{dm}
+\tocresource{Devoir surveillé de 2 heures}{ds1}
+\tocresource{Indications progressives}{indices}
+\tocresource{Corrigés du diagnostic}{corr-diag}
+\tocresource{Corrigés des exercices}{corr-td1}
+\tocresource{Corrigés des défis}{corr-defi1}
+\tocresource{Corrigé et barème du DM}{corr-dm}
+\tocresource{Corrigé et barème du DS}{corr-ds1}
+\tocresource{Supports authentiques et références}{sources-1}
+\begin{docu}{Mon objectif de travail}\checkline{Je refais une démonstration.}\checkline{Je réussis une application sans aide.}\checkline{Je justifie le choix d’un modèle.}\checkline{Je corrige une évaluation et repère la capacité à reprendre.}\end{docu}
+
+\Page{Chapitre 05 / Programme officiel}{Oscillations libres amorties}{chapitre-05}
+Dans une expérience réelle, les oscillations s’atténuent ou disparaissent. L’équation du deuxième ordre permet de relier cette évolution aux pertes, de prévoir les dépassements et de mesurer un amortissement à partir d’un enregistrement.
+\begin{loi}{Notions et capacités travaillées}
+Mettre l’équation sous forme canonique et identifier $\omega_0$ et Q ; prévoir la nature de la réponse. Résoudre un régime libre ou un échelon à l’aide des racines caractéristiques. Estimer les durées selon Q, faire le bilan énergétique et comparer les oscillateurs mécanique et électrique. Acquérir et analyser un transitoire.
+\end{loi}
+
+\Sub{Prérequis}
+Chapitre 04 : oscillateur harmonique et conditions initiales. Chapitre 02 : conventions et énergies. Équation caractéristique du second degré ; dérivation des exponentielles et fonctions trigonométriques.
+
+\begin{methode}{La méthode du chapitre}
+Établir l’équation et fixer le nouvel équilibre ; poser l’écart à cet équilibre ; identifier la forme canonique ; choisir le régime avec Q ; utiliser les deux conditions initiales et vérifier l’énergie.
+\end{methode}
+
+\source{Concordance : annexe 2 de l’arrêté du 5 janvier 2021, rubrique 1.4 / régimes transitoires du deuxième ordre. Pages internes 15 et 16 (pages PDF 52 et 53), partie transitoire de la rubrique 1.4. Les impédances et la résonance sinusoïdale sont réservées au chapitre 06.}
+
+\Page{Diagnostic / 15 min}{Avant d’ouvrir le cours}{diagnostic}
+\begin{questions}
+\item Résoudre $r^2+6r+25=0$ et interpréter partie réelle et partie imaginaire.
+\item Dériver $x=e^{-\alpha t}(A\cos\omega t+B\sin\omega t)$ à t = 0.
+\item Pour une masse soumise à $F_f=-bv$, donner la puissance de frottement.
+\item Donner l’équation d’un RLC série libre en tension uC avec $i=C\dot u_C$.
+\item Pourquoi faut-il deux conditions initiales ? Quelles grandeurs sont continues dans le RLC ?
+\item Dans $\ddot x+4\dot x+100x=0$, donner la pulsation propre et le coefficient 2α.
+\item Une énergie décroissante implique-t-elle nécessairement une position monotone ?
+\item Distinguer une période propre et une pseudo-période.
+\end{questions}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les unités sont maîtrisées.}\checkline{Je peux orienter un schéma et annoncer les hypothèses.}\checkline{Je sais expliquer une condition initiale.}Corrigé p.\,\pageref{corr-diag}.
+\end{docu}
+
+
+\Page{Cours / 1}{Les pertes dans deux réalisations}{cours-1}
+\fig{rlc}{R représente ici toute la résistance série, y compris celle de la bobine et du générateur annulé.}\begin{loi}{Deux équations analogues}
+RLC série libre : $L\ddot q+R\dot q+q/C=0$, avec $i=\dot q$.\par Masse-ressort avec frottement visqueux : $m\ddot x+b\dot x+kx=0$, avec $F_f=-b\dot x$.
+\end{loi}
+\Sub{Hypothèses}
+Le modèle électrique suppose des composants linéaires et l’ARQS. Le modèle mécanique suppose un frottement proportionnel à la vitesse dans le domaine étudié. Le frottement solide à force de module constant ne conduit pas à cette équation.
+\Sub{Une analogie qui inclut la dissipation}
+Les correspondances sont $x\leftrightarrow q$, $m\leftrightarrow L$, $k\leftrightarrow1/C$ et $b\leftrightarrow R$. Les deux systèmes perdent leur énergie par une puissance quadratique en vitesse ou en courant.
+\begin{methode}{Quelle résistance dans le calcul ?}
+Dans un RLC série, additionner toutes les résistances qui restent dans la boucle après commutation. La résistance affichée sur une boîte n’est pas toujours la résistance totale.
+\end{methode}
+
+
+\Page{Cours / 2}{Forme canonique et facteur de qualité}{cours-2}
+\begin{loi}{Identifier les bons coefficients}
+$\ddot x+(\omega_0/Q)\dot x+\omega_0^2x=0$, avec $\alpha=\omega_0/(2Q)$.\par Mécanique : $\omega_0=\sqrt{k/m}$, $Q=\sqrt{mk}/b$.\par RLC série : $\omega_0=1/\sqrt{LC}$, $Q=\sqrt{L/C}/R$.\par Q est sans dimension ; α se mesure en s$^{-1}$.
+\end{loi}
+\Sub{Une lecture physique}
+À paramètres de stockage fixés, augmenter b ou R diminue Q et renforce les pertes. Dans la limite Q très grand, l’évolution se rapproche du modèle harmonique sur quelques oscillations.
+\fig{regimes}{Même pulsation propre et mêmes conditions x(0) = x0, v(0) = 0 : seul Q change.}\begin{piege}{La pulsation propre n’est pas la pseudo-pulsation}
+$\omega_0$ vient du coefficient de x dans l’équation. La pulsation observée lorsque le système oscille dépend aussi de l’amortissement.
+\end{piege}
+
+
+\Page{Cours / 3}{Trois régimes, un polynôme}{cours-3}
+\begin{loi}{Racines caractéristiques}
+$r^2+2\alpha r+\omega_0^2=0$.\par Q > 1/2 : $r=-\alpha\pm i\omega_d$, avec $\omega_d=\omega_0\sqrt{1-1/(4Q^2)}$ : régime pseudo-périodique.\par Q = 1/2 : racine double $r=-\omega_0$ : régime critique.\par 0 < Q < 1/2 : deux racines réelles négatives $r_\pm=-\alpha\pm\sqrt{\alpha^2-\omega_0^2}$ : régime apériodique.
+\end{loi}
+\Sub{Comment choisir sans calcul inutile}
+Mettre d’abord l’équation sous forme canonique ; calculer Q ; choisir alors la forme de solution. Les deux conditions initiales déterminent les coefficients. Des constantes peuvent annuler un mode particulier : les seules racines ne fixent pas toute l’allure.
+\fig{regimes}{Un régime apériodique est une combinaison de deux exponentielles ; un régime critique comporte aussi un facteur t.}\begin{piege}{Absence d’oscillation et rapidité}
+Un amortissement très fort ne garantit pas un retour rapide. Dans le régime fortement apériodique, une constante lente devient dominante.
+\end{piege}
+
+
+\Page{Cours / 4}{La solution pseudo-périodique}{cours-4}
+\begin{loi}{Deux conditions initiales explicites}
+$x=e^{-\alpha t}[A\cos(\omega_dt)+B\sin(\omega_dt)]$.\par $A=x_0$, $B=(v_0+\alpha x_0)/\omega_d$. Ainsi $\dot x(0)=-\alpha A+\omega_dB=v_0$.
+\end{loi}
+\fig{amorti}{Pour une libération sans vitesse, le coefficient du sinus n’est pas nul. Les enveloppes utilisent le module des deux coefficients.}\Sub{Libération sans vitesse}
+Avec v0 = 0, $x=x_0e^{-\alpha t}[\cos\omega_dt+(\alpha/\omega_d)\sin\omega_dt]$. Écrire seulement $x_0e^{-\alpha t}\cos\omega_dt$ imposerait une vitesse initiale $-\alpha x_0$, différente de zéro.
+\Sub{Enveloppe et pseudo-période}
+Le module trigonométrique maximal est $C_0=\sqrt{A^2+B^2}$. On a donc $|x|\leq C_0e^{-\alpha t}$. La pseudo-période vaut $T_d=2\pi/\omega_d$, supérieure à $T_0$.
+
+
+\Page{Cours / 5}{Le régime critique}{cours-5}
+\begin{loi}{Une racine double demande deux solutions}
+Pour Q = 1/2 : $x=(A+Bt)e^{-\omega_0t}$, avec $A=x_0$ et $B=v_0+\omega_0x_0$. Pour v0 = 0 : $x=x_0(1+\omega_0t)e^{-\omega_0t}$.
+\end{loi}
+\Sub{Pourquoi le facteur t apparaît}
+Deux exponentielles de même racine ne sont pas indépendantes. La seconde solution est $te^{-\omega_0t}$. On peut vérifier directement que les deux satisfont l’équation puis fixer les constantes.
+\fig{regimes}{La courbe verte correspond au régime critique avec vitesse initiale nulle.}\Sub{Une propriété à contextualiser}
+Pour un départ sans vitesse depuis un écart donné, le régime critique constitue la limite entre retour sans oscillation et retour oscillant. Il n’est pas nécessaire de transformer cette propriété en affirmation absolue pour toute condition initiale ou tout critère de temps.
+\begin{methode}{Un seuil précis}
+Pour $x_0>0$, v0 = 0 et un seuil de 1 \%, résoudre $(1+z)e^{-z}=0{,}01$ avec $z=\omega_0t$. On trouve z ≈ 6,638. La règle $4{,}605/\omega_0$ d’une exponentielle simple ne s’applique pas ici.
+\end{methode}
+
+
+\Page{Cours / 6}{Le régime apériodique}{cours-6}
+\begin{loi}{Deux exponentielles réelles}
+$x=Ae^{r_+t}+Be^{r_-t}$. Avec $r_+\ne r_-$ : $A=(v_0-r_-x_0)/(r_+-r_-)$ et $B=(r_+x_0-v_0)/(r_+-r_-)$. Les deux racines sont négatives pour Q > 0.
+\end{loi}
+\Sub{Un exemple résolu}
+$\ddot x+25\dot x+100x=0$ donne $\omega_0=10$ rad/s, Q = 0,40 et les racines -5 et -20 s$^{-1}$. Pour x0 = 3 cm et v0 = 0 : $x=0{,}04e^{-5t}-0{,}01e^{-20t}$ m. La pente initiale est bien nulle.
+\Sub{Le mode lent}
+La racine la plus proche de zéro domine à long terme si son coefficient n’est pas nul. Ici la constante lente est 0,20 s, la rapide 0,05 s. Le retour ne s’estime pas avec une seule constante sans préciser le domaine temporel.
+\begin{piege}{Coefficients de signes opposés}
+La somme peut rester positive alors que l’un des coefficients est négatif. Le signe d’un coefficient n’est pas le signe permanent de la position. Vérifier les valeurs et la dérivée initiales.
+\end{piege}
+
+
+\Page{Cours / 7}{Réponse à un échelon constant}{cours-7}
+Avec une force F0 appliquée à t = 0, $m\ddot x+b\dot x+kx=F_0$. La solution particulière vaut $x_e=F_0/k$. Pour un RLC série sous E constant, $LC\ddot u+RC\dot u+u=E$ et la particulière vaut E.
+\begin{loi}{Translater puis résoudre le régime libre}
+Poser X = x - xe ou U = u - E. La variable translatée satisfait l’équation homogène. Pour le RLC déchargé, i(0) = 0 et Q > 1/2 : $u=E\{1-e^{-\alpha t}[\cos\omega_dt+(\alpha/\omega_d)\sin\omega_dt]\}$.
+\end{loi}
+\fig{echelon}{La réponse sous-amortie peut dépasser la valeur finale ; au régime critique, ce départ converge sans dépassement.}\Sub{Conditions initiales}
+La commutation déplace le centre de l’évolution mais ne réinitialise pas les réserves. Déterminer uC(0+) et iL(0+) avec l’état avant la commutation, puis écrire la dérivée initiale u̇C = i/C.
+
+
+\Page{Cours / 8}{Dépassement et temps du premier pic}{cours-8}
+\begin{loi}{Cas de l’échelon avec état initial nul}
+Pour Q > 1/2 : le premier maximum est à $t_p=\pi/\omega_d$. Le dépassement relatif est $M_p=(s_{\max}-s_\infty)/s_\infty=e^{-\alpha\pi/\omega_d}$. Ces relations supposent les conditions initiales nulles et le modèle canonique de réponse considéré.
+\end{loi}
+\Sub{Démonstration}
+La dérivée de la réponse indicielle réduite vaut $(\omega_0^2/\omega_d)e^{-\alpha t}\sin\omega_dt$. Son premier zéro après le départ est $\pi/\omega_d$. À cette date, le cosinus vaut -1, ce qui donne l’expression du dépassement.
+\fig{echelon}{La réponse bleue atteint un maximum supérieur à l’asymptote 1, puis revient en oscillant.}\Sub{Exemple}
+Pour $\omega_0=1000$ rad/s et Q = 2, $\alpha=250$ s$^{-1}$ et $\omega_d=968{,}25$ rad/s ; $t_p=3{,}245$ ms et $M_p=0{,}4443$. Un échelon de 5 V atteint donc environ 7,22 V au premier pic.
+
+
+\Page{Cours / 9}{Énergie stockée et énergie perdue}{cours-9}
+\begin{loi}{Des bilans exacts}
+Mécanique libre : $\mathcal E=mv^2/2+kx^2/2$ et $\dot{\mathcal E}=-bv^2$.\par RLC libre : $\mathcal E=Li^2/2+Cu^2/2$ et $\dot{\mathcal E}=-Ri^2$.\par RLC sous source : $Ei=Ri^2+\dot{\mathcal E}$.
+\end{loi}
+\Sub{L’énergie décroît sans être une exponentielle pure}
+Dans le régime libre amorti, les deux réserves continuent à s’échanger. La puissance perdue s’annule aux instants où la vitesse ou le courant s’annule. En général, l’énergie instantanée n’est donc pas exactement $\mathcal E_0e^{-2\alpha t}$.
+\Sub{Même phase et faible amortissement}
+Deux états séparés de Td sont multipliés par $e^{-\alpha T_d}$ : leurs énergies sont donc dans le rapport exact $e^{-2\alpha T_d}$. Pour un faible amortissement, l’énergie moyennée sur les oscillations est bien décrite par une enveloppe exponentielle.
+\begin{piege}{Le demi-facteur énergétique}
+Le temps d’enveloppe d’amplitude vaut $1/\alpha$ ; celui de l’énergie moyennée vaut $1/(2\alpha)$. Utiliser la même constante dans les deux lois doublerait le temps de décroissance énergétique.
+\end{piege}
+
+
+\Page{Cours / 10}{Mesurer Q par le décrément}{cours-10}
+\begin{loi}{Deux maxima de même signe}
+$\delta=\ln(|x_n|/|x_{n+1}|)=\alpha T_d=2\pi/\sqrt{4Q^2-1}$. Donc $Q=\sqrt{1/4+(\pi/\delta)^2}$. Avec N périodes : $\delta=N^{-1}\ln(|x_n|/|x_{n+N}|)$.
+\end{loi}
+\Sub{Retrouver les deux paramètres}
+Mesurer Td donne $\omega_d=2\pi/T_d$. Puis $\alpha=\delta/T_d$ et $\omega_0=\sqrt{\omega_d^2+\alpha^2}$. On en déduit b = 2mα ou R = 2Lα. Les amplitudes doivent être mesurées relativement à l’équilibre, après soustraction de l’offset.
+\fig{spirale}{La spirale de phase traduit la diminution d’énergie ; les états de même phase se contractent d’un même facteur.}\begin{piege}{Des pics opposés sont séparés par une demi-période}
+Le logarithme de deux valeurs absolues de pics consécutifs de signes opposés ne correspond pas à une période entière. Préciser les dates utilisées et le nombre de cycles.
+\end{piege}
+
+
+\Page{Cours / 11}{Combien de temps dure le transitoire ?}{cours-11}
+\begin{loi}{Le régime impose l’échelle de temps}
+Sous-amorti : enveloppe d’amplitude de constante $\tau_A=2Q/\omega_0$.\par Critique : facteur $(A+Bt)e^{-\omega_0t}$ ; échelle $1/\omega_0$, mais les seuils dépendent aussi du facteur polynomial.\par Apériodique : constante lente $\tau_s=1/(\alpha-\sqrt{\alpha^2-\omega_0^2})$ si le mode correspondant est présent.
+\end{loi}
+\Sub{Très fort amortissement}
+Si Q est très petit, la racine lente vaut environ $-Q\omega_0$ et $\tau_s\simeq1/(Q\omega_0)$. Pour le RLC série, cela donne $\tau_s\simeq RC$ ; la constante rapide vaut environ L/R. Augmenter énormément R ralentit donc la queue du transitoire.
+\Sub{Un critère de seuil}
+Avec $|x|\leq C_0e^{-\alpha t}$, garantir $|x|\leq\varepsilon|x_0|$ demande $t\geq\alpha^{-1}\ln[C_0/(\varepsilon|x_0|)]$. Cette borne est suffisante ; le premier franchissement d’un seuil ne garantit pas qu’il n’y aura plus de dépassement ensuite.
+\begin{methode}{En pratique}
+Annoncer un seuil de stabilisation, vérifier la durée de la fenêtre d’acquisition et distinguer le premier passage dans la bande de la date d’entrée définitive dans cette bande.
+\end{methode}
+
+
+\Page{Cours / 12}{Confronter le modèle à un relevé}{cours-12}
+Un bon ajustement doit retrouver les conditions initiales, l’équilibre, la pseudo-période et la décroissance. Des résidus structurés peuvent révéler un modèle incomplet.
+\Sub{Une procédure d’identification}
+\begin{questions}
+\item Soustraire l’équilibre et repérer les pics de même signe.
+\item Mesurer plusieurs pseudo-périodes ; calculer α et $\omega_0$ avec le décrément.
+\item Reconstruire la solution complète avec $B=(v_0+\alpha x_0)/\omega_d$.
+\item Comparer le modèle aux données sur tout l’enregistrement ; examiner les résidus.
+\end{questions}
+
+\Sub{Deux écarts instructifs}
+Un frottement solide produit souvent une décroissance d’amplitude plus proche d’une loi affine qu’exponentielle. Dans un circuit, la résistance du GBF ou de la bobine peut modifier Q sans changer les composants de stockage. Ces explications doivent être testées, pas simplement affirmées.
+\fig{regimes}{Comparer plusieurs formes de transitoire demande de conserver la même normalisation et de préciser les conditions initiales.}\begin{methode}{Similitude mécanique et électrique}
+Comparer les temps réduits ω0t et les amplitudes normalisées pour des valeurs de Q proches. Des paramètres physiques très différents peuvent alors donner les mêmes courbes, dans le domaine de validité des modèles.
+\end{methode}
+
+
+\Page{Pratique / TP}{Mesurer un amortissement RLC}{tp}
+\fig{rlc}{Pour une excitation en échelon, remplacer le fil de gauche par le GBF et conserver sa résistance de sortie dans R.}\begin{questions}
+\item Choisir L et C puis estimer $\omega_0$ et la résistance critique $R_c=2\sqrt{L/C}$. Mesurer ou estimer la résistance de la bobine.
+\item Observer plusieurs réponses en faisant varier la résistance totale ; repérer les trois régimes.
+\item En sous-amorti, relever Td et plusieurs maxima de même signe autour de l’asymptote. Calculer α, Q et R totale.
+\item Comparer au modèle avec la résistance du GBF incluse. Vérifier la cohérence des conditions initiales.
+\item Comparer deux amplitudes d’échelon et examiner si les réponses normalisées se superposent.
+\end{questions}
+\begin{docu}{Jeu simulé / Pics de même signe}
+Écarts à l’équilibre (V) : $4{,}000$, $2{,}127$, $1{,}131$, $0{,}602$.\par Dates (ms) : $0$, $6{,}315$, $12{,}630$, $18{,}945$.\par Ces valeurs arrondies correspondent à $\omega_0=1000$ rad/s et Q = 5, pas à des mesures réalisées.
+\end{docu}
+
+
+\Page{Pratique / Numérique}{Intégrer et contrôler l’énergie}{numerique}
+On intègre $\dot x=v$, $\dot v=-2\alpha v-\omega_0^2x$ avec un schéma de Runge-Kutta d’ordre 4. Le travail dissipé donne un contrôle indépendant de la simple allure de x(t).
+\begin{verbatim}
+import numpy as np
+w, Q, h = 10.0, 2.0, 0.001
+a = w/(2*Q)
+t = np.arange(0, 4+h/2, h)
+y = np.zeros((len(t), 2)); y[0] = [0.05, 0.0]
+def F(z):
+    x, v = z
+    return np.array([v, -2*a*v-w*w*x])
+for n in range(len(t)-1):
+    z = y[n]
+    k1 = F(z); k2 = F(z+h*k1/2)
+    k3 = F(z+h*k2/2); k4 = F(z+h*k3)
+    y[n+1] = z+h*(k1+2*k2+2*k3+k4)/6
+x, v = y.T
+energy = 0.5*(v*v + w*w*x*x)  # par unité de masse
+loss_rate = 2*a*v*v
+loss = np.r_[0.0, np.cumsum(
+    0.5*h*(loss_rate[1:]+loss_rate[:-1]))]
+\end{verbatim}
+\begin{questions}
+\item Tracer x, puis $\mathcal E(t)+W_{\rm perdu}(t)$ ; vérifier sa constance à l’erreur numérique près.
+\item Diviser le pas par deux. Comparer à la solution analytique et examiner la variation de l’erreur.
+\item Recommencer pour Q = 0,5 et Q = 0,25 ; adapter la durée pour observer le mode lent.
+\end{questions}
+
+
+\Page{Bilan de cours}{Les réflexes à conserver}{synthese}
+\begin{loi}{L’essentiel}
+$\ddot X+2\alpha\dot X+\omega_0^2X=0$, $\alpha=\omega_0/(2Q)$.\par Q > 1/2 : exponentielle amortie multipliée par sinus et cosinus ; $\omega_d=\sqrt{\omega_0^2-\alpha^2}$.\par Q = 1/2 : $(A+Bt)e^{-\omega_0t}$.\par Q < 1/2 : somme de deux exponentielles réelles.\par Libre : $\dot{\mathcal E}=-bv^2$ ou $-Ri^2$ ; décroissance exacte de l’énergie.\par $\delta=\alpha T_d$ ; $\omega_0^2=\omega_d^2+\alpha^2$.
+\end{loi}
+\Sub{À démontrer}
+\begin{questions}
+\item L’équation canonique à partir du montage ou des forces.
+\item Les coefficients de la solution pseudo-périodique avec v0 non nulle.
+\item Le bilan d’énergie et le décrément entre maxima de même signe.
+\item La réponse à un échelon par translation de la variable.
+\end{questions}
+
+\begin{docu}{Avant de rendre}
+\checkline{R est la résistance totale pertinente.}\checkline{Le régime correspond à Q.}\checkline{Les deux conditions initiales sont satisfaites.}\checkline{La durée annoncée correspond à un seuil explicite.}
+\end{docu}
+
+
+\Page{Exercices / Applications}{Identifier les paramètres}{td1}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E01}{Lire une équation}{Niveau 1}{8 min}
+\begin{questions}
+\item $\ddot x+4\dot x+100x=0$. Donner $\omega_0$, α, Q et la nature du régime.
+\end{questions}
+
+\ex{E02}{Une masse freinée}{Niveau 1}{12 min}
+\begin{questions}
+\item m = 0,20 kg, k = 20 N/m et b = 1 kg/s. Calculer $\omega_0$, α, Q et Td.
+\end{questions}
+
+\ex{E03}{Un RLC réel}{Niveau 1}{12 min}
+\begin{questions}
+\item L = 100 mH, C = 1 $\mu\mathrm{ F}$. Les résistances sont Rext = 40 Ω, rb = 10 Ω, rg = 50 Ω. Calculer Q et la résistance extérieure critique.
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Classer les régimes}{td2}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E04}{Trois discriminants}{Niveau 1}{12 min}
+\begin{questions}
+\item Classer les équations $\ddot x+2\dot x+25x=0$, $\ddot x+10\dot x+25x=0$, $\ddot x+13\dot x+25x=0$. Donner les racines de la dernière.
+\end{questions}
+
+\ex{E05}{Atteindre le critique}{Niveau 2}{12 min}
+\begin{questions}
+\item Pour m = 0,50 kg et k = 8 N/m, déterminer le coefficient b critique. Une valeur b = 6 kg/s produit quel régime ?
+\end{questions}
+
+\ex{E06}{Comparer deux périodes}{Niveau 2}{12 min}
+\begin{questions}
+\item Un oscillateur a Q = 1 et $T_0=1$ s. Donner Td et l’écart relatif à T0.
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Fixer les constantes}{td3}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E07}{Libérer sans vitesse}{Niveau 2}{15 min}
+\begin{questions}
+\item $\omega_0=10$ rad/s, α = 2 s$^{-1}$, x0 = 5 cm, v0 = 0. Donner x(t) et vérifier v(0).
+\end{questions}
+
+\ex{E08}{Un lancement non nul}{Niveau 2}{15 min}
+\begin{questions}
+\item Même équation que E07, mais x0 = 0 et v0 = 0,20 m/s. Déterminer x(t) et sa pente initiale.
+\end{questions}
+
+\ex{E09}{L’erreur du cosinus seul}{Niveau 2}{12 min}
+\begin{questions}
+\item On propose $x=0{,}03e^{-3t}\cos4t$ pour un départ x0 = 3 cm sans vitesse. Donner la vitesse initiale réelle et corriger le coefficient du sinus.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Revenir sans oscillation}{td4}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E10}{Une racine double}{Niveau 2}{15 min}
+\begin{questions}
+\item $\ddot x+20\dot x+100x=0$, x0 = 2 cm et v0 = 0. Résoudre et donner x à t = 0,10 s.
+\end{questions}
+
+\ex{E11}{Deux exponentielles}{Niveau 2}{18 min}
+\begin{questions}
+\item $\ddot x+25\dot x+100x=0$, x0 = 3 cm et v0 = 0. Déterminer les racines, la solution et la constante lente.
+\end{questions}
+
+\ex{E12}{Annuler le mode lent}{Niveau 3}{18 min}
+\begin{questions}
+\item Pour l’équation de E11 avec x0 = 3 cm, choisir v0 pour que le terme lent disparaisse. Quelle est alors la solution ?
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Répondre à un échelon}{td5}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E13}{Un dépassement}{Niveau 2}{15 min}
+\begin{questions}
+\item Un RLC de $\omega_0=1000$ rad/s et Q = 2 reçoit un échelon de 5 V depuis l’état nul. Calculer le temps du premier pic et la tension maximale.
+\end{questions}
+
+\ex{E14}{Un échelon critique}{Niveau 2}{15 min}
+\begin{questions}
+\item Un système critique de pulsation propre 20 rad/s passe d’un état nul vers une valeur finale S. Donner s(t) et sa pente initiale.
+\end{questions}
+
+\ex{E15}{Une capacité déjà chargée}{Niveau 2}{18 min}
+\begin{questions}
+\item Un RLC reçoit une source constante E, mais uC(0) = U0 et i(0) = I0. En sous-amorti, donner les deux coefficients pour U = uC - E.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Énergie et décrément}{td6}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E16}{L’énergie aux extrêmes}{Niveau 2}{12 min}
+\begin{questions}
+\item m = 0,20 kg, k = 20 N/m. Deux maxima positifs successifs valent 5 cm et 3 cm. Calculer la perte d’énergie entre ces instants et le décrément.
+\end{questions}
+
+\ex{E17}{Déterminer Q}{Niveau 2}{15 min}
+\begin{questions}
+\item Deux maxima positifs sont dans le rapport 2 et séparés de Td = 0,50 s. Déterminer α, $\omega_d$, $\omega_0$ et Q.
+\end{questions}
+
+\ex{E18}{Des pics opposés}{Niveau 2}{15 min}
+\begin{questions}
+\item Un maximum de +4 cm est suivi 0,20 s plus tard d’un minimum de -3 cm. Retrouver α et Td dans le modèle sous-amorti. Que donnerait une lecture erronée comme une période entière ?
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Identifier et comparer}{td7}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E19}{Identifier une résistance}{Niveau 2}{18 min}
+\begin{questions}
+\item Un RLC série a L = 50 mH, Td = 2,00 ms ; l’amplitude est divisée par e en 10,0 ms. Calculer α, R totale, $\omega_0$ et C.
+\end{questions}
+
+\ex{E20}{Un temps d’enveloppe}{Niveau 2}{15 min}
+\begin{questions}
+\item $\omega_0=100$ rad/s et Q = 10. Donner la constante d’enveloppe d’amplitude et le temps pour qu’elle soit divisée par 100. Donner la constante de l’énergie moyennée.
+\end{questions}
+
+\ex{E21}{Un parallèle différent}{Niveau 3}{20 min}
+\begin{questions}
+\item Un RLC parallèle libre possède la même tension u sur les trois branches. Établir l’équation et Q. Comment Q dépend-il de R, contrairement au RLC série ?
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Explorer les limites}{td8}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E22}{Très grand amortissement}{Niveau 3}{20 min}
+\begin{questions}
+\item Pour un RLC série fortement apériodique, établir les deux constantes approchées RC et L/R. Application : R = 10 kΩ, L = 1 H, C = 1 $\mu\mathrm{ F}$.
+\end{questions}
+
+\ex{E23}{Même Q, mêmes courbes}{Niveau 3}{20 min}
+\begin{questions}
+\item Deux systèmes ont même Q mais des pulsations propres différentes. En posant θ = ω0t, montrer que leurs réponses réduites peuvent se superposer. Quelles conditions initiales faut-il comparer ?
+\end{questions}
+
+\ex{E24}{Un bilan qui détecte une erreur}{Niveau 3}{20 min}
+\begin{questions}
+\item Un calcul numérique d’un oscillateur libre donne une énergie croissante sur plusieurs cycles malgré b > 0. Est-ce compatible avec le modèle ? Proposer deux contrôles et un moyen de séparer erreur numérique et erreur de modèle.
+\end{questions}
+
+
+
+\Page{Défi avancé / D1}{Un cahier des charges sur le dépassement}{defi1}
+\label{ex-D1}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi1}.}
+Un système canonique du deuxième ordre, initialement au repos à zéro, reçoit un échelon positif. Il doit osciller mais dépasser sa limite d’au plus 10 \%.\begin{questions}
+\item Traduire la contrainte sur $M_p$ en inégalité sur α/ωd, puis en borne sur Q.
+\item La pulsation propre vaut 1000 rad/s. Choisir Q = 0,60 et calculer premier pic et dépassement.
+\item Pour un RLC avec L = 100 mH et C = 10 $\mu\mathrm{ F}$, calculer R totale qui réalise ce Q.
+\item Expliquer pourquoi la contrainte ne s’applique pas telle quelle à une capacité initialement chargée.
+\end{questions}
+
+
+\Page{Défi avancé / D2}{Mesurer un amortissement avec quatre pics}{defi2}
+\label{ex-D2}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi2}.}
+Des maxima positifs, mesurés par rapport à un équilibre nul, sont $x_0=4{,}00$ cm, $x_1=2{,}68$ cm, $x_2=1{,}80$ cm et $x_3=1{,}20$ cm aux dates 0 ; 0,50 ; 1,00 ; 1,50 s.\begin{questions}
+\item Estimer δ à partir des pics extrêmes et retrouver α, $\omega_0$ et Q.
+\item La masse vaut 0,20 kg : déterminer k et b.
+\item Chaque amplitude extrême a une incertitude-type indépendante de 0,02 cm ; estimer u(δ), en négligeant ici l’incertitude des dates.
+\item Quel contrôle les deux pics intermédiaires permettent-ils ? Que change un offset non soustrait ?
+\end{questions}
+
+
+\Page{Défi avancé / D3}{Un oscillateur très amorti peut être lent}{defi3}
+\label{ex-D3}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi3}.}
+Pour un RLC série, on conserve L et C et on augmente R très au-delà du seuil critique.\begin{questions}
+\item Écrire les racines exactes sous la forme $-R/(2L)\pm\sqrt{(R/(2L))^2-1/(LC)}$.
+\item Retrouver les racines approchées à faible Q en rationalisant la racine lente.
+\item Pour L = 1 H, C = 1 $\mu\mathrm{ F}$, comparer R = 2 kΩ et R = 10 kΩ sur un départ u0 > 0, i0 = 0.
+\item Interpréter la séparation des deux durées et expliquer ce que signifie éliminer approximativement l’inductance après le transitoire rapide.
+\end{questions}
+
+
+\Page{Évaluation / DM}{Identifier une bobine réelle}{dm}
+\source{Devoir maison OptiTAB original ; 1 h 30 à 2 h ; calculatrice autorisée. Barème pédagogique sur 20.}
+Un RLC série libre utilise C = 2,00 $\mu\mathrm{ F}$. Sa tension de capacité possède une pseudo-période Td = 2,00 ms et deux maxima positifs successifs dans le rapport 1,50.\begin{questions}
+\item Calculer δ, α, $\omega_d$ et $\omega_0$. \textbf{4 points}
+\item En déduire L, R totale et Q. \textbf{4 points}
+\item La résistance externe vaut 10 Ω et celle du générateur annulé 50 Ω. Estimer la résistance de bobine ; discuter le résultat. \textbf{3 points}
+\item Pour uC(0) = 4 V et i(0) = 0, donner uC(t) et i(t) avec des orientations explicites. \textbf{4 points}
+\item Donner l’énergie initiale et la fraction perdue entre deux maxima de même signe. \textbf{3 points}
+\item Proposer un test expérimental du modèle avec plusieurs maxima. \textbf{2 points}
+\end{questions}
+
+
+\Page{Évaluation / DS / 1 sur 2}{Du régime libre au dépassement}{ds1}
+\source{Devoir surveillé OptiTAB original ; durée 2 h ; calculatrice autorisée ; note sur 20. Les deux pages forment un seul sujet.}
+\Sub{A / Résoudre un régime libre / 8 points}
+$\ddot x+6\dot x+25x=0$, x(0) = 2 cm, v(0) = 0.
+\begin{questions}
+\item Identifier $\omega_0$, α, Q et le régime. \textbf{2 points}
+\item Résoudre en fixant les deux constantes. \textbf{3 points}
+\item Donner Td et le décrément entre maxima positifs. \textbf{2 points}
+\item Donner une borne exponentielle de |x(t)|. \textbf{1 point}
+\end{questions}
+\Sub{B / Circuit et énergie / 6 points}
+Un RLC série possède L = 100 mH, C = 1 $\mu\mathrm{ F}$ et R totale = 200 Ω.
+\begin{questions}
+\item Établir l’équation de uC et calculer $\omega_0$, Q et α. \textbf{3 points}
+\item Établir le bilan énergétique libre. Pour u0 = 5 V et i0 = 0, donner l’énergie initiale et la dissipation totale. \textbf{3 points}
+\end{questions}
+
+
+\Page{Évaluation / DS / 2 sur 2}{Approfondir et conclure}{ds2}
+\Sub{C / Réponse indicielle / 6 points}
+Le circuit de B reçoit ensuite un échelon de 5 V depuis un état initial entièrement déchargé et sans courant.
+\begin{questions}
+\item Écrire uC(t), avec les valeurs littérales de α et ωd définies précédemment. \textbf{3 points}
+\item Calculer le temps du premier pic et le dépassement relatif. \textbf{2 points}
+\item Donner la résistance totale qui rend le système critique. \textbf{1 point}
+\end{questions}
+\begin{docu}{Gestion du temps}
+Lecture : 10 min ; parties A et B : 70 min ; partie C : 30 min ; vérification : 10 min. Une expression littérale, une unité et une interprétation accompagnent les résultats.
+\end{docu}
+
+
+\Page{Aides progressives}{Des indices pour repartir}{indices}
+\Sub{Défi D1}
+1. Prendre le logarithme de la formule du dépassement. 2. Utiliser α/ωd = 1/√(4Q²-1). 3. La borne de Q se combine avec Q > 1/2.
+\Sub{Défi D2}
+1. Diviser le logarithme total par trois périodes. 2. α = δ/Td. 3. Propager les dérivées du logarithme ; un offset ne se comporte pas comme un facteur d’échelle.
+\Sub{Défi D3}
+1. Le critique est R = 2√(L/C). 2. Pour la racine lente, multiplier par le conjugué évite la différence de deux grands nombres. 3. Le courant s’ajuste rapidement, puis la capacité évolue lentement.
+\Sub{Exercices}
+E09 : dériver le produit exponentielle-cosinus à l’origine. E12 : la condition initiale peut annuler un mode. E17 : utiliser δ/Td pour α puis retrouver ω0. E21 : dériver la loi des nœuds. E22 : rationaliser la racine lente.
+\Sub{Évaluations}
+Le DM contient volontairement une incohérence à repérer dans la liste des résistances : les mesures doivent être confrontées au schéma. Dans le DS, la partie C reprend les paramètres de B, avec une nouvelle excitation et un nouvel état initial.
+
+
+\Page{Corrigés / Diagnostic}{Réactiver les bons réflexes}{corr-diag}
+\Sub{D1 et D2}
+Les racines sont $-3\pm4i$ ; la partie réelle négative donne la décroissance et la partie imaginaire la pseudo-pulsation. x(0) = A et $\dot x(0)=-\alpha A+\omega B$.
+\Sub{D3 et D4}
+$P_f=-bv^2\leq0$. Le RLC libre vérifie $LC\ddot u_C+RC\dot u_C+u_C=0$.
+\Sub{D5 à D8}
+L’ordre deux requiert deux constantes indépendantes. Dans un RLC à excitation non impulsionnelle, uC et iL sont continus, donc uC et sa dérivée le sont. $\omega_0=10$ rad/s et $2\alpha=4$ s$^{-1}$. Une position peut osciller tandis que l’énergie diminue. La pseudo-période est celle des oscillations amorties, différente de $T_0=2\pi/\omega_0$.
+
+
+\Page{Corrigés / Exercices}{Identifier les paramètres}{corr-td1}
+\sol{E01}{Lire une équation}
+$\omega_0=10$ rad/s ; α = 2 s$^{-1}$ ; Q = 10/4 = 2,5 > 1/2. Le régime est pseudo-périodique, $\omega_d=\sqrt{96}=9{,}798$ rad/s.
+\sol{E02}{Une masse freinée}
+$\omega_0=10$ rad/s ; α = b/(2m) = 2,5 s$^{-1}$ ; Q = 2 ; $\omega_d=\sqrt{93{,}75}=9{,}6825$ rad/s ; Td = 0,6490 s.
+\sol{E03}{Un RLC réel}
+Rtot = 100 Ω ; $\omega_0=3162{,}3$ rad/s ; $Q=\sqrt{L/C}/R=3{,}162$. Rtot critique = 632,46 Ω, donc Rext critique = 572,46 Ω. Oublier rb et rg surestimerait Q.
+
+
+\Page{Corrigés / Exercices}{Classer les régimes}{corr-td2}
+\sol{E04}{Trois discriminants}
+$\omega_0=5$ rad/s dans les trois cas. Les Q sont 2,5 ; 0,5 ; 5/13. Les régimes sont pseudo-périodique, critique puis apériodique. Les dernières racines sont $(-13\pm\sqrt{69})/2$, soit -2,3467 et -10,6533 s$^{-1}$.
+\sol{E05}{Atteindre le critique}
+$b_c=2\sqrt{mk}=4$ kg/s. Avec b = 6 kg/s, Q = 2/6 = 1/3 < 1/2 : régime apériodique. La pulsation propre reste 4 rad/s.
+\sol{E06}{Comparer deux périodes}
+$T_d=T_0/\sqrt{1-1/(4Q^2)}=2/\sqrt3=1{,}1547$ s. L’écart relatif est 15,47 \%. Identifier directement Td à T0 ne serait pas justifié.
+
+
+\Page{Corrigés / Exercices}{Fixer les constantes}{corr-td3}
+\sol{E07}{Libérer sans vitesse}
+$\omega_d=\sqrt{96}$ ; $x=e^{-2t}[0{,}05\cos(\sqrt{96}t)+(0{,}10/\sqrt{96})\sin(\sqrt{96}t)]$ m. La dérivée initiale vaut $-0{,}10+\sqrt{96}(0{,}10/\sqrt{96})=0$.
+\sol{E08}{Un lancement non nul}
+$x=(0{,}20/\sqrt{96})e^{-2t}\sin(\sqrt{96}t)$ m. x(0) = 0 et v(0) = 0,20 m/s. L’enveloppe a un coefficient 0,02041 m qui n’est pas la position initiale.
+\sol{E09}{L’erreur du cosinus seul}
+La vitesse initiale proposée est -0,09 m/s. La bonne expression est $x=e^{-3t}(0{,}03\cos4t+0{,}0225\sin4t)$ m ; elle correspond à $\omega_0=5$ rad/s et Q = 5/6.
+
+
+\Page{Corrigés / Exercices}{Revenir sans oscillation}{corr-td4}
+\sol{E10}{Une racine double}
+Racine double -10 s$^{-1}$ ; $x=0{,}020(1+10t)e^{-10t}$ m. À 0,10 s, $x=0{,}040/e=1{,}4715$ cm. Le régime est critique.
+\sol{E11}{Deux exponentielles}
+Les racines sont -5 et -20 s$^{-1}$. A + B = 0,03 et -5A -20B = 0 donnent A = 0,04 m, B = -0,01 m. La constante lente est 1/5 = 0,20 s.
+\sol{E12}{Annuler le mode lent}
+Annuler le coefficient de $e^{-5t}$ impose $v_0=r_-x_0=-20\times0{,}03=-0{,}60$ m/s. Alors $x=0{,}03e^{-20t}$ m. La seule racine la plus lente ne suffit donc pas à connaître la durée si son mode n’est pas excité.
+
+
+\Page{Corrigés / Exercices}{Répondre à un échelon}{corr-td5}
+\sol{E13}{Un dépassement}
+$\alpha=250$ s$^{-1}$ ; $\omega_d=968{,}246$ rad/s. $t_p=\pi/\omega_d=3{,}2446$ ms. $M_p=e^{-\alpha\pi/\omega_d}=0{,}4443$ ; $u_{\max}=5(1+M_p)=7{,}222$ V.
+\sol{E14}{Un échelon critique}
+$s=S[1-(1+20t)e^{-20t}]$. La pente vaut $400St e^{-20t}$ et s’annule à l’origine. La seconde dérivée initiale vaut $400S$.
+\sol{E15}{Une capacité déjà chargée}
+$U=e^{-\alpha t}(A\cos\omega_dt+B\sin\omega_dt)$, $A=U_0-E$ et $B=[I_0/C+\alpha(U_0-E)]/\omega_d$. Les deux réserves transmettent leur état à la commutation.
+
+
+\Page{Corrigés / Exercices}{Énergie et décrément}{corr-td6}
+\sol{E16}{L’énergie aux extrêmes}
+Aux maxima v = 0 : $\Delta\mathcal E_{\rm perdue}=k(0{,}05^2-0{,}03^2)/2=0{,}016$ J. $\delta=\ln(5/3)=0{,}5108$. La perte est positive tandis que la variation d’énergie du système est négative.
+\sol{E17}{Déterminer Q}
+$\delta=\ln2$ ; α = δ/Td = 1,3863 s$^{-1}$ ; $\omega_d=4\pi=12{,}566$ rad/s ; $\omega_0=\sqrt{(4\pi)^2+\alpha^2}=12{,}643$ rad/s ; $Q=\sqrt{1/4+(\pi/\ln2)^2}=4{,}560$ environ.
+\sol{E18}{Des pics opposés}
+Les deux extrêmes sont séparés par Td/2 : Td = 0,40 s. α = ln(4/3)/0,20 = 1,4384 s$^{-1}$. L’erreur de période donnerait $\omega_d$ deux fois trop grand ; le décrément par période serait également mal identifié.
+
+
+\Page{Corrigés / Exercices}{Identifier et comparer}{corr-td7}
+\sol{E19}{Identifier une résistance}
+α = 100 s$^{-1}$ ; R = 2Lα = 10 Ω ; $\omega_d=1000\pi$ rad/s ; $\omega_0^2=(1000\pi)^2+10^4$ ; $C=1/(L\omega_0^2)=2{,}024\ \mu\mathrm{ F}$ environ.
+\sol{E20}{Un temps d’enveloppe}
+$\tau_A=2Q/\omega_0=0{,}20$ s ; t = τA ln100 = 0,9210 s. La constante de l’énergie moyennée est 0,10 s. Ces durées portent sur les enveloppes, pas sur le premier zéro du signal.
+\sol{E21}{Un parallèle différent}
+Loi des nœuds : $C\dot u+u/R+i_L=0$ ; dériver et utiliser $\dot i_L=u/L$ donne $\ddot u+\dot u/(RC)+u/(LC)=0$. $Q=R\sqrt{C/L}$. Augmenter R réduit les pertes parallèles et augmente Q, alors qu’en série Q est inversement proportionnel à R.
+
+
+\Page{Corrigés / Exercices}{Explorer les limites}{corr-td8}
+\sol{E22}{Très grand amortissement}
+Pour Q très petit, les racines valent environ $-1/(RC)$ et $-R/L$. Ici Q = 0,10 ; les constantes approchées valent 10 ms et 0,10 ms. Les valeurs exactes sont environ 9,899 ms et 0,1010 ms. Le mode lent peut dominer malgré l’amortissement fort.
+\sol{E23}{Même Q, mêmes courbes}
+L’équation devient $\dd^2X/\dd\theta^2+(1/Q)\dd X/\dd\theta+X=0$. Avec une même échelle d’amplitude, comparer X(0) et $(\dot X(0)/\omega_0)$ normalisés. Même Q seul ne garantit pas les mêmes courbes si les conditions réduites diffèrent.
+\sol{E24}{Un bilan qui détecte une erreur}
+Le modèle impose $\dot{\mathcal E}=-bv^2\leq0$ : une croissance nette n’est pas compatible. Vérifier les signes des forces, puis comparer $\mathcal E(t)+\int_0^t bv^2\dd t$ à sa valeur initiale. Réduire le pas et comparer à la solution exacte ; une dérive qui persiste avec convergence numérique suggère un modèle ou des données incohérents.
+
+
+\Page{Corrigé du défi D1}{Un cahier des charges sur le dépassement}{corr-defi1}
+$M_p=e^{-\pi/\sqrt{4Q^2-1}}\leq0{,}10$ impose $\pi/\sqrt{4Q^2-1}\geq\ln10$. Donc
+\[\frac12<Q\leq\frac12\sqrt{1+(\pi/\ln10)^2}=0{,}846\ \text{environ}.\]
+Pour Q = 0,60, α = 833,33 s$^{-1}$ et $\omega_d=552{,}77$ rad/s. $t_p=5{,}683$ ms et $M_p=0{,}00877$, soit 0,877 \%. Les composants donnés ont $\omega_0=1000$ rad/s et $\sqrt{L/C}=100\ \Omega$ : R totale = 100/0,60 = 166,67 Ω.
+Le dépassement est ici celui de la réponse indicielle avec u(0) = i(0) = 0. Un état initial différent modifie les deux constantes du régime libre et peut produire un autre maximum. Il faut alors repartir de la solution complète.
+
+
+\Page{Corrigé du défi D2}{Mesurer un amortissement avec quatre pics}{corr-defi2}
+$\delta=\ln(4/1{,}2)/3=0{,}40132$ ; α = 0,80265 s$^{-1}$ ; $\omega_d=4\pi$ rad/s ; $\omega_0=\sqrt{(4\pi)^2+\alpha^2}=12{,}592$ rad/s et Q = 7,844 environ.
+La raideur vaut $k=m\omega_0^2=31{,}711$ N/m et b = 2mα = 0,3211 kg/s.
+\[u(\delta)=\frac13\sqrt{\left(\frac{0{,}02}{4{,}00}\right)^2+\left(\frac{0{,}02}{1{,}20}\right)^2}=0{,}00580.\]
+Les pics intermédiaires doivent se placer sur une droite de $\ln|x|$ en fonction du temps, à l’échelle des incertitudes. Ils testent l’hypothèse exponentielle. Un facteur d’étalonnage commun se simplifie dans le rapport, mais un offset déplace surtout les faibles amplitudes et biaise la pente. Les très petits pics ne sont donc pas toujours les meilleurs pour identifier l’amortissement.
+
+
+\Page{Corrigé du défi D3}{Un oscillateur très amorti peut être lent}{corr-defi3}
+Poser $a=R/(2L)$, $\omega_0^2=1/(LC)$. La racine lente est
+\[r_s=-a+\sqrt{a^2-\omega_0^2}=-\frac{\omega_0^2}{a+\sqrt{a^2-\omega_0^2}}.\]
+Pour a très grand, $r_s\simeq-\omega_0^2/(2a)=-1/(RC)$ et $r_f\simeq-2a=-R/L$. Les constantes sont RC et L/R.
+À R = 2 kΩ, le régime est critique : $u/u_0=(1+1000t)e^{-1000t}$. Le seuil 1 \% est atteint vers 6,638 ms. À R = 10 kΩ, les constantes exactes valent 9,899 ms et 0,1010 ms ; la queue lente domine et le retour à 1 \% demande environ 45,7 ms pour les conditions données.
+Le fort amortissement supprime les oscillations mais allonge ici le retour. Après la couche temporelle rapide, on peut négliger $L\ddot u$ devant $R\dot u$ et retrouver une équation RC, à condition de ne pas lui demander de reproduire simultanément les deux conditions initiales du système d’ordre deux.
+
+
+\Page{Corrigé / DM / Sur 20}{Identifier une bobine réelle}{corr-dm}
+\Sub{1 et 2 / 8 points}
+δ = ln1,5 = 0,40547 ; α = 202,733 s$^{-1}$ ; $\omega_d=1000\pi=3141{,}593$ rad/s et $\omega_0=3148{,}13$ rad/s (4). $L=1/(C\omega_0^2)=50{,}45$ mH ; Rtot = 2Lα = 20,46 Ω ; Q = ω0/(2α) = 7,764 (4).
+\Sub{3 / 3 points}
+Les valeurs annoncées donneraient rb = 20,46 - 10 - 50 = -39,54 Ω, impossible pour la résistance passive de cette bobine. Les données sont incompatibles avec ce schéma : la résistance de sortie du GBF n’est peut-être pas dans la boucle libre, ou l’une des valeurs est erronée. Ne pas transformer ce résultat en résistance physique négative.
+\Sub{4 / 4 points}
+Avec i = C du/dt : $u=4e^{-\alpha t}[\cos\omega_dt+(\alpha/\omega_d)\sin\omega_dt]$ et $i=-4C(\omega_0^2/\omega_d)e^{-\alpha t}\sin\omega_dt$. On vérifie u(0) = 4 V et i(0) = 0.
+\Sub{5 et 6 / 5 points}
+$\mathcal E_0=Cu_0^2/2=16\ \mu\mathrm{ J}$. Entre maxima de même signe, le rapport d’énergie est $e^{-2\delta}=1/1{,}5^2=4/9$ ; la fraction perdue vaut 5/9 (3). Ajuster les logarithmes de plusieurs amplitudes en fonction du temps, vérifier l’équilibre et examiner les résidus (2).
+
+
+\Page{Corrigé / DS / 1 sur 2}{Calculer et interpréter}{corr-ds1}
+\Sub{A / 8 points}
+$\omega_0=5$ rad/s ; α = 3 s$^{-1}$ ; Q = 5/6 ; régime pseudo-périodique avec ωd = 4 rad/s (2). $x=e^{-3t}(0{,}020\cos4t+0{,}015\sin4t)$ m ; la pente initiale vaut -0,060 + 0,060 = 0 (3). Td = π/2 = 1,5708 s et δ = 3π/2 = 4,7124 (2). $|x|\leq0{,}025e^{-3t}$ m (1).
+\Sub{B / 6 points}
+$LC\ddot u+RC\dot u+u=0$ ; $\omega_0=3162{,}3$ rad/s ; Q = 1,5811 ; α = 1000 s$^{-1}$ (3). En multipliant la maille par i : $\dot{\mathcal E}=-Ri^2$, avec $\mathcal E=Li^2/2+Cu^2/2$. Initialement $\mathcal E_0=12{,}5\ \mu\mathrm{ J}$ ; elle est entièrement dissipée à terme (3).
+
+
+\Page{Corrigé / DS / 2 sur 2}{Calculer et interpréter}{corr-ds2}
+\Sub{C / 6 points}
+$\omega_d=\sqrt{10^7-10^6}=3000$ rad/s. $u=5\{1-e^{-1000t}[\cos3000t+(1/3)\sin3000t]\}$ V (3). $t_p=\pi/3000=1{,}0472$ ms ; $M_p=e^{-\pi/3}=0{,}3509$, soit 35,09 \% (2). Rcrit = $2\sqrt{L/C}=632{,}46$ Ω (1).
+\begin{methode}{Bilan de correction}
+Une solution amortie doit satisfaire les deux conditions initiales. Une résistance critique se compare à la résistance totale. Le dépassement doit être rapporté à la valeur finale, pas au maximum.
+\end{methode}
+
+
+\Page{Support authentique / 1}{DS réel / Oscillations amorties}{sources-1}
+\source{Source consultée le 25 octobre 2026. Archive de révision SUP, site MP* Condorcet ; DS5 du 7 janvier 2023 ; problème I, partie II, questions 1, 2, 4 et 5, page PDF 2.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://cahier-de-prepa.fr/mp*-condorcet/download?id=98&v=66f32}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 40 minutes. Mesurer les amplitudes par rapport à l’équilibre, voisin de 10 cm, sur la figure originale. Les valeurs ci-dessous sont des lectures approximatives à affiner avec le graphe.
+\Sub{Repères de correction indépendants}
+On lit Td ≈ 0,72 s et des premiers pics à environ 15 puis 13,5 cm : les écarts sont 5 et 3,5 cm, d’où δ ≈ ln(5/3,5) = 0,357. Avec m = 0,10 kg et k = 7,78 N/m, $\omega_0\simeq8{,}82$ rad/s, Q ≈ 8,8 et h ≈ 0,10 kg/s. La perte entre ces pics vaut environ $k(0{,}05^2-0{,}035^2)/2\simeq5$ mJ. Pour v0 = 0, conserver le terme sinus de coefficient αX0/ωd dans la solution. La précision est celle d’une lecture graphique, pas d’un ajustement instrumenté.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Support authentique / 2}{TD réel / Énergie et qualité}{sources-2}
+\source{Source consultée le 25 octobre 2026. MPSI, schleck.ovh ; TD5 Oscillateurs, année indiquée 2026-2027 ; exercice 4, questions 1 à 7, pages 1/2 et 2/2.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/td/td5_oscillateurs.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 35 minutes. Le support donne R = 100 Ω, L = 1,00 H, C = 1,00 $\mu\mathrm{ F}$. Traiter d’abord la solution exacte puis la simplification de faible amortissement demandée par l’énoncé.
+\Sub{Repères de correction indépendants}
+$\omega_0=1000$ rad/s et Q = 10 ; α = 50 s$^{-1}$, τA = 0,020 s et $\omega_d=998{,}75$ rad/s. Pour uC(0) = E et i(0) = 0 : A = E et B = αE/ωd dans la forme exacte. Dans l’approximation faible perte, $\mathcal E\simeq CE^2e^{-2t/\tau_A}/2$. La perte relative sur une période vaut alors environ $1-e^{-2\pi/Q}\simeq2\pi/Q$ seulement si $2\pi/Q\ll1$ ; à Q = 10 la dernière linéarisation reste grossière. Entre états exacts de même phase, utiliser $1-e^{-2\alpha T_d}$.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Références et suivi}{Préparer la suite}{references}
+\Sub{Référence réglementaire}
+\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{Bulletin officiel spécial n° 1 du 11 février 2021, arrêté du 5 janvier 2021.}\par
+\href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexe officielle regroupée}, rubrique 1.4 / régimes transitoires du deuxième ordre. Pages internes 15 et 16 (pages PDF 52 et 53), partie transitoire de la rubrique 1.4. Les impédances et la résonance sinusoïdale sont réservées au chapitre 06.
+\Sub{Nature des contenus}
+Le cours, les 24 exercices, les trois défis et les évaluations OptiTAB sont rédigés pour cette collection. Les graphiques sont calculés avec les équations annoncées. Les supports authentiques sont identifiés sur les pages précédentes ; leurs énoncés et figures restent dans le document d’origine.
+\Sub{Compétences à confirmer}
+\checkline{Je peux retrouver l’équation sans mémoriser une suite de signes.}
+\checkline{Je vérifie les conditions initiales et les limites.}
+\checkline{Je peux confronter un calcul, un graphe et un bilan énergétique.}
+\checkline{Je sais corriger mon DS et refaire une question sans aide.}
+\begin{methode}{Prochaine étape}
+Le chapitre 06 étudiera le régime sinusoïdal forcé, les impédances complexes et la résonance. La pulsation propre et le facteur de qualité resteront les paramètres centraux.
+\end{methode}
+

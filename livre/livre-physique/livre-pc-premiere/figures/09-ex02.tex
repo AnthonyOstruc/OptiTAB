@@ -1,0 +1,29 @@
+% Montage à reflux à légender (exercice 2, chapitre 9)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\filldraw[pcAppareil,rounded corners=1.6mm] (-1.15,-0.1) rectangle (1.15,0.85);
+\filldraw[fill=white,draw=otInk!70,line width=0.5pt] (0.72,0.18) circle (0.13);
+\fill[pcEau] (-0.72,0.9) arc[start angle=180,end angle=360,radius=0.72] -- cycle;
+\draw[pcVerre] (-0.26,2.0) -- (-0.26,1.52) (-0.72,0.9) arc[start angle=180,end angle=360,radius=0.72] (0.26,2.0) -- (0.26,1.52);
+\draw[pcVerre] (-0.72,0.9) .. controls (-0.5,1.35) .. (-0.26,1.52) (0.72,0.9) .. controls (0.5,1.35) .. (0.26,1.52);
+\filldraw[fill=white,draw=otNavy,line width=0.7pt] (-0.34,2.0) rectangle (0.34,4.6);
+\draw[pcVerre] (-0.16,2.0) -- (-0.16,4.6) (0.16,2.0) -- (0.16,4.6);
+\fill[pcEau] (-0.34,2.0) rectangle (-0.16,4.6) (0.16,2.0) rectangle (0.34,4.6);
+\draw[pcFil] (0.34,2.35) -- (0.95,2.35);
+\draw[pcFil] (-0.34,4.25) -- (-0.95,4.25);
+\pcNote[west]{(0.34,3.6)}{(1.7,3.8)}{B}
+\pcNote[west]{(0.69,1.05)}{(1.7,1.35)}{A}
+\pcNote[west]{(1.15,0.4)}{(1.7,0.5)}{E}
+\pcNote[west]{(0.95,2.35)}{(1.7,2.2)}{C}
+\pcNote[east]{(-0.95,4.25)}{(-1.7,4.4)}{D}
+\solution{
+  \node[pcLegende,anchor=west,text=otGreenDark] at (2.0,3.8) {réfrigérant à eau};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (2.0,1.35) {ballon : réactifs et catalyseur};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (2.0,0.5) {chauffe-ballon};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (2.0,2.2) {entrée d'eau froide (en bas)};
+  \node[pcLegende,anchor=east,text=otGreenDark] at (-2.0,4.4) {sortie d'eau (en haut)};
+  \draw[pcFlecheN] (1.5,2.35) -- (1.0,2.35);
+  \draw[pcFlecheN] (-1.0,4.25) -- (-1.5,4.25);
+  \foreach \yy in {2.7,3.3,3.9}{\draw[otRed!70,line width=0.6pt,-{Stealth[length=1.5mm]}] (0,\yy-0.25) -- (0,\yy+0.05);}
+  \node[pcLegende,anchor=south,text=otRed!75!black] at (0,4.75) {vapeurs condensées};}
+\end{tikzpicture}
+\par\smallskip\legende{Le montage utilisé pour la synthèse, dont les légendes A à E sont à retrouver.}

@@ -1,0 +1,28 @@
+% Deux modèles moléculaires éclatés à identifier (exercice 11, chapitre 8)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  aC/.style={circle,fill=otInk!85,minimum size=5.6mm,inner sep=0pt},
+  aO/.style={circle,fill=otRed!85,minimum size=5.4mm,inner sep=0pt},
+  aH/.style={circle,fill=white,draw=otInk!55,line width=0.5pt,minimum size=4mm,inner sep=0pt},
+  tige/.style={otMuted!80,line width=2.2pt}]
+% Modèle A
+\begin{scope}
+  \draw[tige] (-0.6,0.45) -- (0,0) -- (-0.55,-0.5) (0,0) -- (0.1,-0.78) (0,0) -- (1,0.5) -- (2,0) (1,0.5) -- (1,1.45) -- (1.6,1.85)
+    (1,0.5) -- (1.12,-0.25) (2,0) -- (2.6,0.45) (2,0) -- (2.55,-0.5) (2,0) -- (1.9,-0.78);
+  \foreach \p in {(-0.6,0.45),(-0.55,-0.5),(0.1,-0.78),(1.6,1.85),(1.12,-0.25),(2.6,0.45),(2.55,-0.5),(1.9,-0.78)}{\node[aH] at \p {};}
+  \node[aC] at (0,0) {}; \node[aC] at (1,0.5) {}; \node[aC] at (2,0) {}; \node[aO] at (1,1.45) {};
+  \node[pcLegendeG,anchor=north] at (1,-1.15) {modèle A};
+\end{scope}
+% Modèle B
+\begin{scope}[shift={(5.2,0)}]
+  \draw[tige] (-0.6,0.45) -- (0,0) -- (-0.55,-0.5) (0,0) -- (0.1,-0.78) (0,0) -- (1,0.5) -- (2,0)
+    (1,0.5) -- (0.75,1.25) (1,0.5) -- (1.3,1.22) (2,0) -- (2.6,0.45);
+  \draw[otMuted!80,line width=1.2pt] (2.02,-0.08) -- (2.58,-0.62) (1.92,-0.16) -- (2.48,-0.7);
+  \foreach \p in {(-0.6,0.45),(-0.55,-0.5),(0.1,-0.78),(0.75,1.25),(1.3,1.22),(2.6,0.45)}{\node[aH] at \p {};}
+  \node[aC] at (0,0) {}; \node[aC] at (1,0.5) {}; \node[aC] at (2,0) {}; \node[aO] at (2.55,-0.66) {};
+  \node[pcLegendeG,anchor=north] at (1,-1.15) {modèle B};
+\end{scope}
+\node[aC,minimum size=3.6mm] at (2.4,-2.0) {}; \node[pcLegende,anchor=west] at (2.6,-2.0) {carbone};
+\node[aH,minimum size=3.2mm] at (4.2,-2.0) {}; \node[pcLegende,anchor=west] at (4.4,-2.0) {hydrogène};
+\node[aO,minimum size=3.6mm] at (6.2,-2.0) {}; \node[pcLegende,anchor=west] at (6.4,-2.0) {oxygène};
+\end{tikzpicture}
+\par\smallskip\legende{Une tige double représente une liaison double.}

@@ -1,0 +1,766 @@
+%% =====================================================================
+%%  Chapitre 2 — Python as a calculator
+%%  Tout le code est vérifié par outils/verifier_code.py (Shell IDLE simulé).
+%% =====================================================================
+\chapitre{2}{Python as a calculator}{Numbers, operators and expressions}{illusCalcul}
+
+\histoire{Computers were invented to calculate: three centuries ago, a \enquote{computer} was a person
+whose job was doing sums by hand. Python inherits this talent. It handles numbers from the tiniest to
+the astronomically large, faster than any pocket calculator, and never makes a mistake\,---\,as long as
+you tell it exactly what to do. In this chapter, you learn Python's operators, its two kinds of
+numbers and the rules that decide in which order a calculation is carried out.}
+
+\begin{objectifs}
+\item add, subtract, multiply and divide with Python;
+\item tell whole numbers (\py{int}) from decimal numbers (\py{float});
+\item use floor division \py{//}, the remainder \py{\%} and powers \py{**};
+\item predict the order in which a calculation is done;
+\item round, take absolute values, find the smallest and the largest;
+\item understand why some decimal results look strange;
+\item avoid the classic calculation mistakes.
+\end{objectifs}
+
+\auprogramme
+  {expression, operator, whole and decimal numbers, order of operations}
+  {\py{+ - * /}, \py{// \% **}, \py{round()}, \py{abs()}, \py{min()}, \py{max()}, \py{type()}}
+  {the Shell as a pocket calculator}
+  {spaces around operators; parentheses for clarity; \py{1\_000\_000}}
+  {a holiday budget calculator}
+
+\seances[4]{livre/otNavy/Numbers/The four operations and the two kinds of numbers (2.1--2.2),
+  blocs/otViolet/More operators/Floor division and remainder and powers (2.3),
+  cible/otTeal/Priorities/Order of operations and useful functions (2.4--2.5),
+  crayon/otGreenDark/Practise/Under the hood and mini-project and exercises (2.6--2.11)}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{The four operations}
+
+Open the IDLE Shell. Python understands the four operations of arithmetic, written with these signs:
+\py{+} for addition, \py{-} for subtraction, \py{*} for multiplication and \py{/} for division.
+
+\begin{console}
+>>> 7 + 5
+12
+>>> 7 - 5
+2
+>>> 7 * 5
+35
+>>> 7 / 5
+1.4
+\end{console}
+
+A calculation such as \py{7 + 5} is called an \textbf{expression}: a combination of values and
+\textbf{operators} that Python \textbf{evaluates} to produce a single value, its result. The values
+on either side of an operator are its \textbf{operands}.
+
+\begin{definition}{expression}
+A piece of code that Python evaluates to produce a value: \py{7 + 5}, \py{3 * 4 - 1}, or simply
+\py{42}. An \textbf{operator} is a sign that combines values, such as \py{+} or \py{*}.
+\end{definition}
+
+\soustitre{Division always gives a decimal number}
+Look closely at these two divisions:
+
+\begin{console}
+>>> 10 / 2
+5.0
+>>> 9 / 3
+3.0
+\end{console}
+
+Even when the division is exact, the operator \py{/} gives a result with a decimal point:
+\py{5.0}, not \py{5}. You will see in section~2.2 that \py{5} and \py{5.0} are two different kinds
+of numbers for Python.
+
+\soustitre{Negative and very large numbers}
+A minus sign in front of a number makes it negative. And Python's whole numbers have no size limit:
+you can multiply huge numbers without losing a single digit.
+
+\begin{console}
+>>> -5 + 3
+-2
+>>> 123456789 * 987654321
+121932631112635269
+\end{console}
+
+\begin{atoi}[Time calculations]
+In the Shell, work out the number of minutes in a week ($7$ days of $24$ hours of $60$ minutes), then
+the number of seconds in a year of 365 days.
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Two kinds of numbers}
+
+Python distinguishes two kinds of numbers. \textbf{Integers} are whole numbers, positive or negative,
+with no decimal point: \py{12}, \py{-3}, \py{2026}. \textbf{Floating-point numbers}, or
+\textbf{floats}, have a decimal point: \py{3.5}, \py{-0.25}, \py{5.0}. Each kind of value is a
+\textbf{type}, and the function \py{type()} tells you the type of any value:
+
+\begin{console}
+>>> type(42)
+<class 'int'>
+>>> type(3.5)
+<class 'float'>
+>>> type(10 / 2)
+<class 'float'>
+\end{console}
+
+\py{int} is short for \emph{integer}, \py{float} for \emph{floating-point number}. Ignore the word
+\py{class} for now: it simply means \enquote{type}.
+
+\begin{definition}{type}
+The kind of a value, which decides what you can do with it. \py{int} is the type of whole numbers,
+\py{float} the type of decimal numbers. The function \py{type()} gives the type of a value.
+\end{definition}
+
+\soustitre{Mixing integers and floats}
+When a calculation mixes an \py{int} and a \py{float}, the result is a \py{float}, even if it has no
+decimal part:
+
+\begin{console}
+>>> 2 + 0.5
+2.5
+>>> 3 * 2.0
+6.0
+>>> 4 * 25
+100
+\end{console}
+
+\begin{regle}[int or float?]
+\begin{itemize}
+\item \py{+}, \py{-} and \py{*} between two integers give an integer;
+\item as soon as one operand is a float, the result is a float;
+\item the division \py{/} always gives a float.
+\end{itemize}
+\end{regle}
+
+\soustitre{From one type to the other}
+The functions \py{int()} and \py{float()} convert a number to the other type. Be careful:
+\py{int()} does not round, it simply \emph{cuts off} the decimal part.
+
+\begin{console}
+>>> float(7)
+7.0
+>>> int(3.9)
+3
+>>> int(-3.9)
+-3
+\end{console}
+
+\begin{attention}[A decimal point, never a comma]
+In many countries, people write \enquote{3,5} for three and a half. In Python, the decimal separator
+is always a \textbf{dot}. With a comma, Python does not report an error: it understands two separate
+numbers, and you get a strange result that you will meet again in chapter~19.
+\begin{console}
+>>> 3,5
+(3, 5)
+>>> 3,5 * 2
+(3, 10)
+\end{console}
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Floor division, remainder and powers}
+
+Imagine you share 17 sweets between 5 children. Each child gets 3 sweets, and 2 sweets are left over.
+Python has an operator for each of these two numbers: \py{//} gives the \textbf{quotient} of the
+\textbf{floor division} (3), and \py{\%} gives the \textbf{remainder} (2).
+
+\begin{center}
+\begin{tikzpicture}[x=1mm,y=1mm]
+  \foreach \k in {0,...,4}{%
+    \fill[otNavyTint,rounded corners=1.6mm] (\k*24,0) rectangle ++(20,13);
+    \foreach \j in {0,1,2}{\fill[otNavy] (\k*24+4.5+\j*5.5,6.5) circle (1.9);}
+    \node[font=\otMedium\fontsize{7.4}{9}\selectfont,text=otMuted] at (\k*24+10,-3.2) {child \the\numexpr\k+1\relax};}
+  \foreach \j in {0,1}{\fill[otOrange] (126+\j*5.5,6.5) circle (1.9);}
+  \draw[otOrange,line width=0.6pt,rounded corners=1.6mm,dashed] (122,0) rectangle ++(14,13);
+  \node[font=\otMedium\fontsize{7.4}{9}\selectfont,text=otOrangeDark] at (129,-3.2) {left over};
+  \node[anchor=west,font=\ttfamily\fontsize{9.5}{11}\selectfont,text=otNavy] at (141,9) {17 // 5 = 3};
+  \node[anchor=west,font=\ttfamily\fontsize{9.5}{11}\selectfont,text=otOrangeDark] at (141,3) {17 \% 5 = 2};
+\end{tikzpicture}
+\end{center}
+
+\begin{console}
+>>> 17 // 5
+3
+>>> 17 % 5
+2
+>>> 5 * 3 + 2
+17
+\end{console}
+
+The last line checks the result: 5 children times 3 sweets, plus the 2 left over, gives back the 17
+sweets. This check always works: the divisor times the quotient, plus the remainder, gives back
+the number you started from.
+
+\soustitre{What are they good for?}
+These two operators are surprisingly useful. To convert 135 minutes into hours and minutes, divide
+by 60: the quotient gives the hours, the remainder the minutes.
+
+\begin{console}
+>>> 135 // 60
+2
+>>> 135 % 60
+15
+>>> print(135 // 60, "h", 135 % 60, "min")
+2 h 15 min
+\end{console}
+
+The remainder of a division by 2 tells you whether a number is even (remainder 0) or odd
+(remainder~1). And \py{//} and \py{\%} by 10 separate the last digit of a number from the others:
+
+\begin{console}
+>>> 37 % 2
+1
+>>> 1234 % 10
+4
+>>> 1234 // 10
+123
+\end{console}
+
+\begin{attention}[Floor division rounds down]
+\py{//} rounds the result \emph{down}, towards smaller numbers. For positive numbers, it simply drops
+the decimal part. For negative numbers, it goes one step further: \py{-7 // 2} gives \py{-4}, not
+\py{-3}, because $-4$ is smaller than $-3.5$. You will rarely need it with negative numbers.
+\end{attention}
+
+\soustitre{Powers}
+The operator \py{**} raises a number to a power: \py{2 ** 3} means $2^3 = 2 \times 2 \times 2$. A
+power of \py{0.5} gives the square root.
+
+\begin{console}
+>>> 2 ** 3
+8
+>>> 10 ** 6
+1000000
+>>> 2 ** 0.5
+1.4142135623730951
+>>> 2 ** 100
+1267650600228229401496703205376
+\end{console}
+
+\begin{definition}{remainder}
+What is left over after a floor division. In Python, \py{a \% b} is the remainder of the division of
+\py{a} by \py{b}, and \py{a // b} its quotient. The sign \py{\%} is also called \enquote{modulo}.
+\end{definition}
+
+\begin{atoi}[Minutes and seconds]
+A video lasts 1000 seconds. Use \py{//} and \py{\%} to display its length in minutes and seconds,
+in the form \py{16 min 40 s}.
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Order of operations}
+
+What is \py{2 + 3 * 4}? If you calculate from left to right, you find 20. Python finds 14:
+
+\begin{console}
+>>> 2 + 3 * 4
+14
+>>> (2 + 3) * 4
+20
+\end{console}
+
+Like in mathematics, multiplication has \textbf{priority} over addition: Python first works out
+\py{3 * 4}, then adds \py{2}. To impose another order, use parentheses: what is between parentheses
+is always calculated first.
+
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,left=4mm,right=4mm]
+\otEtiquette{otNavy}{Priority of the operators, from highest to lowest}\par\vspace{1.6mm}
+\renewcommand{\arraystretch}{1.32}%
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}p{8mm}p{28mm}Y@{}}
+\textbf{1} & \py{( )} & parentheses: always first\\
+\textbf{2} & \py{**} & powers\\
+\textbf{3} & \py{-x} & the minus sign of a negative number\\
+\textbf{4} & \py{*\ \ /\ \ //\ \ \%} & multiplication, divisions, remainder\\
+\textbf{5} & \py{+\ \ -} & addition, subtraction\\
+\end{tabularx}\par\vspace{1.4mm}
+{\fontsize{9.8}{12.4}\selectfont Operators with the same priority are evaluated \textbf{from left to
+right}, except powers, which go from right to left.}
+\end{tcolorbox}
+
+Here is how Python evaluates a longer expression, step by step. At each step, it performs the
+operation with the highest priority (highlighted):
+
+\begin{calcul}
+\pas[]{\py{2 + 3 * \hlc{4 ** 2}}}{the power comes first}
+\pas{\py{2 + \hlc{3 * 16}}}{then the multiplication}
+\pas{\py{\hlc{2 + 48}}}{then the addition}
+\pas{\py{50}}{the result}
+\end{calcul}
+
+\begin{console}
+>>> 2 + 3 * 4 ** 2
+50
+>>> 20 / 4 * 2
+10.0
+>>> 2 ** 3 ** 2
+512
+\end{console}
+
+\py{20 / 4 * 2} is evaluated from left to right: \py{20 / 4} gives \py{5.0}, then \py{5.0 * 2}
+gives \py{10.0}. But \py{2 ** 3 ** 2} is evaluated from right to left: \py{3 ** 2} gives \py{9},
+then \py{2 ** 9} gives \py{512}.
+
+\begin{attention}[The minus sign and powers]
+\py{-2 ** 2} gives \py{-4}, not \py{4}: the power has priority over the minus sign, so Python
+calculates $-(2^2)$. Write \py{(-2) ** 2} to square $-2$.
+\end{attention}
+
+\begin{atoi}[The average]
+Ana's marks are 12, 15 and 18. Calculate their average in the Shell. Then try the same calculation
+without parentheses: what do you get, and why?
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Useful functions for numbers}
+
+Python provides several ready-made functions for numbers. You call them like \py{print()}: their
+name, then their arguments between parentheses, separated by commas.
+
+\begin{console}
+>>> round(3.14159, 2)
+3.14
+>>> round(2.7)
+3
+>>> abs(-7)
+7
+>>> min(4, 9, 2)
+2
+>>> max(4, 9, 2)
+9
+\end{console}
+
+\begin{itemize}
+\item \py{round(x, n)} rounds \py{x} to \py{n} digits after the decimal point; without \py{n}, it
+  rounds to the nearest integer and gives an \py{int};
+\item \py{abs(x)} gives the \textbf{absolute value} of \py{x}: the number without its sign;
+\item \py{min()} and \py{max()} give the smallest and the largest of their arguments, however many
+  there are.
+\end{itemize}
+
+You can use the result of a function inside an expression, or even inside another function call.
+Python then evaluates from the inside out:
+
+\begin{console}
+>>> round(10 / 3, 2)
+3.33
+>>> max(3, 8) - min(3, 8)
+5
+>>> print("Rounded:", round(2 ** 0.5, 3))
+Rounded: 1.414
+\end{console}
+
+\begin{attention}[Rounding exactly halfway]
+When a number is exactly halfway between two integers, \py{round()} chooses the \textbf{even}
+neighbour: \py{round(1.5)} and \py{round(2.5)} both give \py{2}. This is called \enquote{banker's
+rounding}: on average, it does not push results up or down. It rarely matters, but it surprises
+everybody the first time.
+\begin{console}
+>>> round(1.5)
+2
+>>> round(2.5)
+2
+\end{console}
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique{hood}{Why \texorpdfstring{\py{0.1 + 0.2}}{0.1 + 0.2} is not exactly 0.3}
+
+Type this in the Shell, and get ready for a surprise:
+
+\begin{console}
+>>> 0.1 + 0.2
+0.30000000000000004
+>>> 3 * 2.4
+7.199999999999999
+\end{console}
+
+Python is not broken. The problem comes from the way computers store decimal numbers. Inside the
+machine, everything is written in \textbf{binary}, with only the digits 0 and 1. In binary, most
+decimal numbers have no exact representation, just as $\frac{1}{3}$ has no exact representation in
+decimal: \py{0.333333}\ldots{} goes on for ever.
+
+\begin{center}
+\begin{tikzpicture}[x=1mm,y=1mm]
+  \fill[otVioletTint,rounded corners=2mm] (0,0) rectangle (79,22);
+  \node[anchor=north west,font=\otSemi\fontsize{8.4}{10}\selectfont,text=otViolet] at (4,19) {In decimal (base 10)};
+  \node[anchor=west,font=\ttfamily\fontsize{9.4}{11}\selectfont] at (4,9) {1 / 3 = 0.3333333333\ldots};
+  \fill[otVioletTint,rounded corners=2mm] (89,0) rectangle (170,22);
+  \node[anchor=north west,font=\otSemi\fontsize{8.4}{10}\selectfont,text=otViolet] at (93,19) {In binary (base 2)};
+  \node[anchor=west,font=\ttfamily\fontsize{9.4}{11}\selectfont] at (93,9) {0.1 = 0.000110011001100\ldots};
+\end{tikzpicture}
+\end{center}
+
+A float keeps about 16 significant digits. Beyond that, the number is cut off, so \py{0.1} is stored
+as a value extremely close to 0.1, but not exactly equal. Most of the time, Python hides this tiny
+difference when it displays the number; sometimes, after a calculation, the difference shows in the
+last digit.
+
+\begin{regle}[Living with floats]
+\begin{itemize}
+\item Integers are \textbf{always exact}, however large they are.
+\item Floats are \textbf{very close approximations}: perfect for measurements, prices, physics.
+\item To display a float neatly, round it: \py{round(3 * 2.4, 2)} gives \py{7.2}.
+\end{itemize}
+\end{regle}
+
+\begin{culture}[A worldwide standard]
+Almost all computers in the world store floats in the same way, defined by a standard called
+\emph{IEEE~754}. You would get exactly the same \py{0.30000000000000004} in JavaScript, Java or C:
+it is the price of fast calculations on very large and very small numbers.
+\end{culture}
+
+%% ---------------------------------------------------------------------
+\rubrique{debug}{Calculation mistakes}
+
+Some calculation mistakes stop your program with an error message. Others are more treacherous: the
+program runs, but the result is wrong.
+
+\cas{1}{Dividing by zero}
+Dividing by zero is impossible, in Python as in mathematics. Python stops with a
+\py{ZeroDivisionError}, for \py{/} but also for \py{//} and \py{\%}:
+\begin{console}
+>>> 10 / 0
+Traceback (most recent call last):
+  File "<pyshell#0>", line 1, in <module>
+    10 / 0
+ZeroDivisionError: division by zero
+\end{console}
+
+\cas{2}{The wrong multiplication sign}
+The sign of multiplication is the star \py{*}. Neither the letter \py{x} nor the sign \py{×} work:
+\begin{console}
+>>> 5 x 3
+SyntaxError: invalid syntax
+>>> 5 × 3
+SyntaxError: invalid character '×' (U+00D7)
+\end{console}
+
+\cas{3}{The hat for powers}
+In many programs, such as spreadsheets, \py{2\textasciicircum{}3} means \enquote{2 to the power of 3}. Not in
+Python! The hat \py{\textasciicircum{}} is an operator on the binary digits of numbers, which you will never need
+in this book. No error message, but a wrong result:
+\begin{console}
+>>> 2 ^ 3
+1
+>>> 2 ** 3
+8
+\end{console}
+
+\cas{4}{Forgotten parentheses}
+The most frequent mistake of all, because Python cannot detect it: the calculation is valid, it just
+does not mean what you wanted.
+\begin{console}
+>>> 12 + 15 + 18 / 3
+33.0
+>>> (12 + 15 + 18) / 3
+15.0
+\end{console}
+
+\begin{pratique}[Check your results]
+For every calculation, estimate the order of magnitude before running it. An average of three marks
+out of 20 that gives 33 should immediately make you suspicious. A program that runs without an error
+message is not necessarily a correct program.
+\end{pratique}
+
+%% ---------------------------------------------------------------------
+\rubrique{pro}{Readable calculations}
+
+\soustitre{Spaces around operators}
+\py{7+5*2} and \py{7 + 5 * 2} give the same result, but the second is much easier to read. The style
+guide PEP~8 recommends one space on each side of the operators \py{+}, \py{-}, \py{*}, \py{/},
+\py{//}, \py{\%}, and no space just inside parentheses: \py{(2 + 3)}, not \py{( 2 + 3 )}.
+
+\soustitre{Parentheses for clarity}
+Even when they are not required, parentheses can make your intention clearer. Python ignores them
+when they change nothing, but the reader appreciates them:
+
+\begin{code}{file=clarity.py}
+print("Total:", (3 * 4.5) + (2 * 1.75))
+print("Total:", 3 * 4.5 + 2 * 1.75)
+\end{code}
+\begin{sortie}
+Total: 17.0
+Total: 17.0
+\end{sortie}
+
+\soustitre{Underscores in large numbers}
+In a number, Python allows underscores \py{\_} between digits, to group them by three like the
+spaces of everyday writing. They change nothing to the value:
+
+\begin{console}
+>>> 1_000_000 * 3
+3000000
+\end{console}
+
+\begin{pratique}[Say what the numbers mean]
+A bare number in a program, such as \py{0.2} or \py{86400}, is called a \textbf{magic number}:
+nobody knows where it comes from. Add a short comment with its meaning and its unit:
+\py{86400 \# seconds in a day}. In chapter~3, variables will give these numbers a name.
+\end{pratique}
+
+%% ---------------------------------------------------------------------
+\rubrique{build}{Mini-project: a holiday budget}
+
+Ana and her friend Leo are planning a week in Lisbon. Here are the costs they found:
+
+\begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,left=5mm]
+\begin{itemize}
+\item return flight: 89.50 euros per person;
+\item hotel: 74 euros per night for the room, 6 nights;
+\item food: 25 euros per person per day, for 7 days;
+\item museum pass: 21.50 euros per person.
+\end{itemize}
+\end{tcolorbox}
+
+They want a program that displays each item of the budget, the total, the cost per person, and how
+much they must save each month during the 6 months before leaving.
+
+\soustitre{Step 1: one line per item}
+Each item is a \py{print()} with a label and a calculation. For the flights, there are 2 people at
+89.50 euros each: \py{2 * 89.5}.
+
+\soustitre{Step 2: the total and the shares}
+The total adds up the four calculations. Then it is divided by 2 for the cost per person, and by 6
+for the monthly savings, rounded to the cent with \py{round()}.
+
+\begin{code}{file=holiday_budget.py}
+# holiday_budget.py - a week in Lisbon for 2 people
+print("=== HOLIDAY IN LISBON ===")
+print("Flights:", 2 * 89.5)
+print("Hotel:", 6 * 74)
+print("Food:", 2 * 7 * 25)
+print("Museums:", 2 * 21.5)
+print("Total:", 2 * 89.5 + 6 * 74 + 2 * 7 * 25 + 2 * 21.5)
+print("Per person:", (2 * 89.5 + 6 * 74 + 2 * 7 * 25 + 2 * 21.5) / 2)
+print("To save each month:",
+      round((2 * 89.5 + 6 * 74 + 2 * 7 * 25 + 2 * 21.5) / 6, 2))
+\end{code}
+\begin{sortie}
+=== HOLIDAY IN LISBON ===
+Flights: 179.0
+Hotel: 444
+Food: 350
+Museums: 43.0
+Total: 1016.0
+Per person: 508.0
+To save each month: 169.33
+\end{sortie}
+
+The last instruction is too long for one line, so it continues on the next one. Python allows this
+as long as a parenthesis is still open: it knows that the instruction is not finished.
+
+\soustitre{Step 3: what if Leo's sister comes too?}
+With 3 people, the flights, the food and the museums change, and so does every total. Count how many
+numbers you would have to change in the program: the \py{2} appears seven times! Forget a single one,
+and the budget is wrong. This is exactly the problem that \textbf{variables} solve, in the next
+chapter.
+
+\begin{atoi}[Your own trip]
+Adapt the program to a trip of your choice: destination, number of people, prices and number of
+nights. Check every result with an estimate.
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{practice}{Exercises}
+
+\exercice[type=predict,niveau=1]{What is the result?}{Without using Python, write the result of each
+expression, paying attention to the type: write \py{6.0} if the result is a float. Then check in the
+Shell.}
+\begin{questions}[4]
+\item \py{7 + 3 * 2}
+\item \py{(7 + 3) * 2}
+\item \py{9 / 3}
+\item \py{9 // 2}
+\item \py{9 \% 2}
+\item \py{2 ** 4}
+\item \py{10 - 2 - 3}
+\item \py{2 * 3.0}
+\end{questions}
+
+\exercice[type=predict,niveau=1]{int or float?}{For each expression, say whether Python gives an
+\py{int} or a \py{float}, then check with \py{type()}.}
+\begin{questions}[4]
+\item \py{5}
+\item \py{5.0}
+\item \py{3 + 4}
+\item \py{3 + 4.0}
+\item \py{10 / 5}
+\item \py{10 // 5}
+\item \py{2 ** 3}
+\item \py{round(2.6)}
+\end{questions}
+
+\exercice[type=shell,niveau=1]{Shopping in the Shell}{Use the Shell to answer each question. Write
+the expression you typed and the result.}
+\begin{questions}
+\item Five notebooks at 3 euros and two pens at 1.20 euros: how much in total?
+\item A 2-litre bottle is shared equally between 6 glasses. How much in each glass, rounded to the
+  hundredth of a litre?
+\item A jacket at 80 euros has a 30\,\% discount. What is its new price?
+\item What is the difference between the most expensive and the cheapest of these prices: 12.5,
+  8.75, 19.9, 4.6? Use \py{max()} and \py{min()}.
+\end{questions}
+
+\exercice[type=write,niveau=1]{Hours and minutes}{A film lasts 200 minutes. Write a program that
+displays its length in hours and minutes, exactly as below. Python must do the calculations.}
+\cible{film}
+\begin{sortie}
+The film lasts 3 h 20 min.
+\end{sortie}
+
+\exercice[type=complete,niveau=2]{The missing operators}{Replace each blank with one operator
+(\py{+}, \py{-}, \py{*}, \py{/}, \py{//}, \py{\%} or \py{**}) so that the program displays the output
+below.}
+\begin{code}{file=operators.py, trous}
+print(7 ___ 2)
+print(7 ___ 2)
+print(7 ___ 2)
+print(7 ___ 2)
+print(7 ___ 2)
+\end{code}
+\cible{operateurs}
+\begin{sortie}
+3.5
+3
+1
+49
+14
+\end{sortie}
+
+\exercice[type=fix,niveau=2]{Wrong but no error}{This program runs without any error message, but
+its three results are wrong. Find the three mistakes and correct them so that the program displays
+the expected output.}
+\begin{code}{file=wrong_results.py, bug}
+print("Square of 5:", 5 ^ 2)
+print("Half of 7.5:", 7,5 / 2)
+print("Average of 12 and 14:", 12 + 14 / 2)
+\end{code}
+\begin{sortie}
+Square of 5: 7
+Half of 7.5: 7 2.5
+Average of 12 and 14: 19.0
+\end{sortie}
+\cible{faux}
+\begin{sortie}
+Square of 5: 25
+Half of 7.5: 3.75
+Average of 12 and 14: 13.0
+\end{sortie}
+
+\exercice[type=write,niveau=2]{Degrees}{To convert a temperature from degrees Celsius to degrees
+Fahrenheit, multiply by 9, divide by 5, then add 32. To go back, subtract 32, multiply by 5 and
+divide by 9. Write a program that displays the two conversions below.}
+\cible{degres}
+\begin{sortie}
+25 degrees Celsius = 77.0 degrees Fahrenheit
+98.6 degrees Fahrenheit = 37.0 degrees Celsius
+\end{sortie}
+
+\exercice[type=read,niveau=2]{Step by step}{For each expression, write the steps of the calculation
+in the order Python carries them out, then the result.}
+\begin{questions}[2]
+\item \py{2 + 3 * 4 - 1}
+\item \py{(2 + 3) * (4 - 1)}
+\item \py{2 ** 2 * 3}
+\item \py{20 / 2 / 5}
+\item \py{10 - 4 // 3}
+\item \py{-3 ** 2 + 10}
+\end{questions}
+
+\exercice[type=write,niveau=2]{Splitting the bill}{Seven friends have dinner. The bill is 94.50 euros
+and they add a 10\,\% tip. Write a program that displays the total with the tip and the amount each
+friend pays, rounded to the cent.}
+\cible{addition}
+\begin{sortie}
+Total with tip: 103.95 euros
+Each friend pays: 14.85 euros
+\end{sortie}
+
+\exercice[type=explain,niveau=2]{Digit by digit}{Predict the result of each expression, then explain
+in one sentence what the operators \py{//} and \py{\%} do with the digits of 1234.}
+\begin{questions}[4]
+\item \py{1234 \% 10}
+\item \py{1234 // 10}
+\item \py{1234 // 10 \% 10}
+\item \py{1234 // 1000}
+\end{questions}
+
+\exercice[type=challenge,niveau=3]{100,000 seconds}{How long are 100,000 seconds in days, hours,
+minutes and seconds? Write a program that displays the answer as below. Python must do every
+calculation from the number 100000, using \py{//} and \py{\%}.}
+\cible{secondes}
+\begin{sortie}
+100000 seconds = 1 d 3 h 46 min 40 s
+\end{sortie}
+
+\exercice[type=challenge,niveau=3]{The legend of the chessboard}{According to an old legend, the
+inventor of chess asked to be paid in rice: one grain on the first square of the chessboard, two on
+the second, four on the third, and so on, doubling each time up to the 64th square. In total, this
+makes $2^{64} - 1$ grains. Write a program that displays the number of grains on the last square,
+the total number of grains, and the mass of this rice in tonnes, rounded to the tonne, if a grain
+weighs 0.025~g (one tonne is 1,000,000~g).}
+\cible{riz}
+\begin{sortie}
+Grains on the last square: 9223372036854775808
+Total number of grains: 18446744073709551615
+Total mass in tonnes: 461168601843
+\end{sortie}
+
+%% ---------------------------------------------------------------------
+\rubrique{review}{Chapter review}
+
+\begin{essentiel}
+\otEssTitre{Operators}
+\begin{tabularx}{\linewidth}{@{}p{28mm}Y@{}}
+\py{+  -  *  /} & the four operations; \py{/} always gives a float\\
+\py{//} and \py{\%} & quotient and remainder of the floor division: \py{17 // 5} is 3,
+  \py{17 \% 5} is 2\\
+\py{**} & power: \py{2 ** 3} is 8; \py{x ** 0.5} is the square root\\
+\end{tabularx}
+
+\otEssTitre{Two kinds of numbers}
+\py{int}: whole numbers, exact and unlimited. \py{float}: decimal numbers (with a \textbf{dot}),
+very close approximations. An operation that involves a float gives a float. \py{type()} gives the
+type of a value; \py{int()} cuts off the decimal part.
+
+\otEssTitre{Order of operations}
+Parentheses, then \py{**}, then \py{*}~\py{/}~\py{//}~\py{\%}, then \py{+}~\py{-}; from left to
+right for equal priorities. When in doubt, add parentheses.
+
+\otEssTitre{Useful functions}
+\begin{code}{mini}
+round(3.14159, 2)   # 3.14
+abs(-7)             # 7
+min(4, 9, 2)        # 2
+max(4, 9, 2)        # 9
+\end{code}
+
+\otEssTitre{Mistakes to avoid}
+Dividing by zero (\py{ZeroDivisionError}); \py{x} or \py{\textasciicircum{}} instead of \py{*} or \py{**}; a comma
+instead of a decimal point; forgotten parentheses. Estimate every result before trusting it.
+\end{essentiel}
+
+\begin{quiz}
+\qcm{What does \py{7 / 2} give?}{\py{3}}{\py{3.5}}{\py{3.0}}
+\qcm{What does \py{7 // 2} give?}{\py{3}}{\py{3.5}}{\py{1}}
+\qcm{What does \py{7 \% 2} give?}{\py{3}}{\py{0.5}}{\py{1}}
+\qcm{What is the type of \py{4 * 2.5}?}{\py{int}}{\py{float}}{it depends on the result}
+\qcm{What does \py{2 + 3 * 2} give?}{\py{10}}{\py{8}}{\py{12}}
+\qcm{How do you write $5^2$ in Python?}{\py{5 ** 2}}{\py{5 \textasciicircum{} 2}}{\py{5 x 2}}
+\qcm{What does \py{round(4.567, 1)} give?}{\py{4.5}}{\py{4.6}}{\py{5}}
+\qcm{What does \py{int(9.99)} give?}{\py{10}}{\py{9}}{\py{9.0}}
+\qcm{Which number is the remainder of 23 divided by 4?}{\py{23 // 4}}{\py{23 \% 4}}{\py{23 / 4}}
+\qcm{What does \py{10 / 0} produce?}{\py{0}}{\py{inf}}{a \py{ZeroDivisionError}}
+\end{quiz}
+
+\begin{jesais}
+\item calculate with \py{+}, \py{-}, \py{*}, \py{/} and \py{**};
+\item use \py{//} and \py{\%} to find a quotient and a remainder;
+\item tell an \py{int} from a \py{float} and predict the type of a result;
+\item predict the order of a calculation, and use parentheses to change it;
+\item use \py{round()}, \py{abs()}, \py{min()} and \py{max()};
+\item explain why \py{0.1 + 0.2} does not display \py{0.3};
+\item recognise a \py{ZeroDivisionError} and the classic calculation mistakes.
+\end{jesais}

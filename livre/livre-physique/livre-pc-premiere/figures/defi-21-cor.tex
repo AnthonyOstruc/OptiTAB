@@ -1,0 +1,13 @@
+% Incertitude-type de type A en fonction du nombre de mesures simulées (corrigé du défi D21)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,xmode=log,width=100mm,height=52mm,xmin=3,xmax=1000,ymin=0,ymax=0.055,
+  xtick={5,20,100,500},xticklabels={5,20,100,500},ytick={0,0.01,...,0.05},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2},
+  xlabel={nombre de mesures $n$},ylabel={$u$ (mL)}]
+\addplot[otNavy,line width=1.1pt,domain=3:1000,samples=100] {0.08/sqrt(x)};
+\addplot[only marks,mark=*,mark size=2pt,otRed!85!black] coordinates {(5,0.0425) (20,0.0204) (100,0.0086) (500,0.0036)};
+\node[pcLegende,anchor=south west,text=otNavy] at (axis cs:7,0.032) {$u=\dfrac{\qty{0,08}{mL}}{\sqrt{n}}$};
+\node[pcLegende,anchor=south west,text=otRed!85!black] at (axis cs:120,0.012) {valeurs simulées};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Multiplier le nombre de mesures par 100 divise l'incertitude-type par 10 seulement.}

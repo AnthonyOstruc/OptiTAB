@@ -1,0 +1,23 @@
+% Sonde d'échographie Doppler inclinée au-dessus d'une artère (sujet type bac 2, exercice 2)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otOrange!10] (-0.5,-2.6) rectangle (9.5,0);
+\draw[otOrange!60!black,line width=0.6pt] (-0.5,0) -- (9.5,0);
+\node[pcLegende,anchor=south west] at (6.4,0.05) {peau};
+\fill[otRed!18] (-0.5,-2.15) rectangle (9.5,-1.45);
+\draw[otRed!70!black,line width=0.6pt] (-0.5,-1.45) -- (9.5,-1.45) (-0.5,-2.15) -- (9.5,-2.15);
+\foreach \x in {0.6,2.1,3.7,5.6,7.3,8.8}{\fill[otRed!70!black] (\x,-1.8) ellipse (0.16 and 0.08);}
+\draw[otRed!80!black,line width=0.9pt,-{Stealth[length=2mm]}] (6.2,-1.8) -- (7.4,-1.8) node[pcLegende,anchor=west,text=otRed!80!black] {$\vec{v}$};
+\node[pcLegende,anchor=north west,text=otRed!70!black] at (-0.4,-2.2) {artère : globules rouges en mouvement};
+\begin{scope}[shift={(1.95,1.15)},rotate=31]
+  \filldraw[fill=otNavy!70,draw=otNavy] (-0.35,-0.9) rectangle (0.35,0.6);
+\end{scope}
+\node[pcLegende,anchor=east,text=otNavy] at (1.25,1.45) {sonde};
+\draw[otNavy!70,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (2.15,0.30) -- (3.40,-1.8);
+\draw[otNavy!70,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (2.65,0.45) -- (3.95,-1.8);
+\draw[otNavy,line width=0.7pt,-{Stealth[length=1.8mm]}] (2.55,-0.25) -- (3.05,-1.08) node[pcLegende,anchor=west,text=otNavy,pos=0.4] {ultrasons};
+\draw[otMuted,line width=0.4pt] (3.68,-1.8) -- (2.2,-1.8);
+\draw[otMuted,line width=0.5pt] (3.68,-1.8) ++(121:0.6) arc[start angle=121,end angle=180,radius=0.6];
+\node[pcLegende,anchor=east] at ($(3.68,-1.8)+(150:0.62)$) {$\theta$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (8.9,0) -- (8.9,-1.8) node[pos=0.5,pcLegende,anchor=west] {$d$};
+\end{tikzpicture}
+\par\smallskip\legende{Le faisceau d'ultrasons fait l'angle $\theta$ avec la direction de l'écoulement ; l'artère est à la profondeur $d$ sous la peau.}

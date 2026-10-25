@@ -1,0 +1,433 @@
+%% =====================================================================
+%%  Unit 11 — Can I have a coffee, please?  (Au café et au restaurant)
+%%  Pistes : 11.01–11.04 dialogues · 11.05–11.06 vocabulaire · 11.07–11.08 grammaire
+%%           11.09 prononciation · 11.10–11.13 exercices (textes en annexe)
+%% =====================================================================
+
+\newcommand{\otIllusUnXI}{\otIllusDuo{latte/104/86/15/0.10,menu/190/92/20/0.09,fries/122/14/13/0.08,
+  to go/150/8/11/0.08,check/196/22/12/0.07,tip/100/50/12/0.07}{sam}{What can I get you?}{lea}{A latte, please!}}
+
+% Menu du restaurant (exercice 1)
+\newcommand{\otMenu}{%
+  \begin{tikzpicture}
+    \fill[otOrangeTint,rounded corners=2mm] (0,0) rectangle (92mm,64mm);
+    \draw[otOrangeDark,line width=0.6pt,rounded corners=1.6mm] (2mm,2mm) rectangle (90mm,62mm);
+    \node[font=\otBold\fontsize{12}{14}\selectfont,text=otOrangeDark] at (46mm,55mm) {\enb{Brooklyn Bistro}};
+    \node[font=\otMedium\fontsize{7}{8}\selectfont,text=otMuted] at (46mm,49.5mm) {\otCaps[12]{Menu}};
+    \foreach \plat/\prix [count=\i] in {Soup of the day/\$6,Chicken salad/\$14,Burger and fries/\$16,
+        Fish of the day/\$19,Ice cream/\$5,Coffee or tea/\$3,Water/free}{%
+      \pgfmathsetmacro{\yy}{45-\i*5.6}
+      \node[anchor=west,font=\fontsize{10}{12}\selectfont] at (8mm,\yy mm) {\enb{\plat}};
+      \draw[otOrangeDark!40,line width=0.4pt,dash pattern=on 0.8pt off 1.6pt] (44mm,\yy mm-1mm) -- (74mm,\yy mm-1mm);
+      \node[anchor=east,font=\otSemi\fontsize{10}{12}\selectfont] at (84mm,\yy mm) {\enb{\prix}};}
+  \end{tikzpicture}}
+
+\unite[Can I have a\\coffee, please?]{11}{Can I have a coffee, please?}{Au café et au restaurant}{otIllusUnXI}
+
+\situation{Épisode 11}{Jeudi matin, Léa passe en coup de vent au café où travaille Sam. Le vendredi
+soir, Jack invite Emma et Léa dans un petit restaurant de Brooklyn pour fêter la fin d'un gros
+projet. Au moment de l'addition, Léa découvre une coutume américaine…}
+
+\begin{objectifs}
+\item commander au café et au restaurant ;
+\item demander poliment : \en{Can I have…?}, \en{Could I have…?}, \en{I'd like…} ;
+\item proposer quelque chose et répondre : \en{Would you like…? — Yes, please.} ;
+\item demander l'addition et comprendre le système du pourboire ;
+\item prononcer \en{can} sous sa forme faible \phon{kən}.
+\end{objectifs}
+
+\auprogramme
+  {Commander, demander poliment, payer}
+  {\en{Can I…?}, \en{Could I…?}\par\vspace{0.6mm}\en{I'd like}, \en{Would you like…?}}
+  {Le menu, les plats, les boissons : 30 expressions}
+  {Les formes faibles de \en{can} et \en{could}}
+  {Le pourboire (\en{tipping})}
+
+\semaine{casque/otNavy/Dialogues/Écouter et lire les deux scènes,
+  bulle/otGreenDark/Vocabulaire/Apprendre les 30 expressions,
+  blocs/otViolet/Grammaire/Demander poliment,
+  sons/otOrangeDark/Sons et culture/can faible et le pourboire,
+  crayon/otNavy/Exercices/12 exercices corrigés,
+  coche/otGreenDark/Bilan/L'essentiel et le test express}
+
+\clearpage
+%% ---------------------------------------------------------------------
+\rubrique{ecouter}{Commander}
+
+\begin{dialogue}{1}{For here or to go?}{Jeudi, 8 h 45. Léa entre dans le café où Sam est barista.
+  Elle est pressée.}{11.01}{11.02}
+\dit{sam}{Hi, Léa! \hl{What can I get you}?\note{1}}{Salut, Léa ! Qu'est-ce que je te sers ?}
+\dit{lea}{\hl{Can I have} a large latte, please?}{Je peux avoir un grand latte, s'il te plaît ?}
+\dit{sam}{Sure. \hl{For here or to go}?\note{2}}{Bien sûr. Sur place ou à emporter ?}
+\dit{lea}{To go, please. I'm late!}{À emporter, s'il te plaît. Je suis en retard !}
+\dit{sam}{\hl{Would you like} a muffin with that?\note{3}}{Tu veux un muffin avec ça ?}
+\dit{lea}{No, thanks. \hl{I'd like} a croissant, please.}{Non, merci. Je voudrais un croissant, s'il te plaît.}
+\dit{sam}{Sorry, we don't have any croissants today.}{Désolé, on n'a pas de croissants aujourd'hui.}
+\dit{lea}{OK, a muffin then! How much is that?}{Bon, alors un muffin ! Ça fait combien ?}
+\dit{sam}{Seven fifty.}{Sept dollars cinquante.}
+\dit{lea}{\hl{Here you are}.}{Tiens.}
+\dit{sam}{Thanks! Have a great day!}{Merci ! Bonne journée !}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{1} \en{\textbf{What can I get you?}} « Qu'est-ce que je vous sers ? », la question rituelle
+  du serveur. Pour commander : \en{Can I have…?} (« Est-ce que je peux avoir… ? »).
+\pointnote{2} \en{\textbf{For here or to go?}} « Sur place ou à emporter ? ». Au Royaume-Uni, on dit
+  plutôt \en{Eat in or take away?}
+\pointnote{3} \en{\textbf{Would you like…?}} « Voulez-vous… ? », « désirez-vous… ? » : la façon polie
+  de proposer. \en{I'd like} (= \en{I would like}) veut dire « je voudrais » : c'est la façon polie de
+  demander.
+\end{comprendre}
+
+\begin{dialogue}{2}{Can we have the check, please?}{Vendredi, 20 heures, dans un restaurant de
+  Brooklyn. Le serveur arrive à la table de Jack, Emma et Léa.}{11.03}{11.04}
+\dit{serveur}{Good evening! \hl{Are you ready to order}?}{Bonsoir ! Vous avez choisi ?}
+\dit{emma}{Yes. \hl{I'd like} the chicken salad, please.}{Oui. Je voudrais la salade au poulet, s'il vous plaît.}
+\dit{jack}{And \hl{I'll have} the burger, with fries.\note{4}}{Et moi, je prendrai le burger, avec des frites.}
+\dit{serveur}{And for you, ma'am?}{Et pour vous, madame ?}
+\dit{lea}{\hl{Could I have} the fish, please?\note{5}}{Pourrais-je avoir le poisson, s'il vous plaît ?}
+\dit{serveur}{Of course. \hl{Would you like} something to drink?}{Bien sûr. Vous désirez quelque chose à boire ?}
+\dit{jack}{Three glasses of water, please.}{Trois verres d'eau, s'il vous plaît.}
+\didascalie{Une heure plus tard.}
+\dit{emma}{Excuse me! \hl{Can we have the check}, please?}{Excusez-moi ! L'addition, s'il vous plaît ?}
+\dit{serveur}{Sure. Here you are.}{Bien sûr. La voici.}
+\dit{lea}{Is \hl{the tip} included?\note{6}}{Le pourboire est compris ?}
+\dit{jack}{No, it isn't. In the US, we add fifteen or twenty percent.}{Non. Aux États-Unis, on ajoute quinze ou vingt pour cent.}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{4} \en{\textbf{I'll have the burger.}} « Je prendrai le burger » : au restaurant, on commande
+  souvent avec \en{I'll have…} (= \en{I will have}). \en{fries} = « des frites ».
+\pointnote{5} \en{\textbf{Could I have…?}} « Pourrais-je avoir… ? » : \en{could} est encore plus poli
+  que \en{can}. \en{ma'am} (\en{madam}) : « madame », pour s'adresser poliment à une cliente.
+\pointnote{6} \en{\textbf{the check}, \textbf{the tip}} « l'addition », « le pourboire ». Au Royaume-Uni,
+  l'addition se dit \en{the bill}. Voir la rubrique Culture.
+\end{comprendre}
+
+%% ---------------------------------------------------------------------
+\rubrique{mots}{Les mots de l'unité}
+
+Voici les 30 expressions de l'unité. Au café comme au restaurant, \en{please} et \en{thank you}
+sont indispensables : en anglais, une demande sans \en{please} paraît vite impolie.
+
+\begin{vocabulaire}{Au menu}{11.05}
+\categorie{À boire}
+\mot{a coffee}{ə ˈkɑːfi}{un café}
+\mot{a latte}{ə ˈlɑːteɪ}{un café au lait}
+\mot{a tea}{ə ˈtiː}{un thé}
+\mot{a glass of water}{ə ˌɡlæs əv ˈwɑːtɚ}{un verre d'eau}
+\mot{orange juice}{ˈɔːrɪndʒ ˌdʒuːs}{du jus d'orange}
+\categorie{À manger}
+\mot{the menu}{ðə ˈmenjuː}{la carte, le menu}
+\mot{a muffin}{ə ˈmʌfɪn}{un muffin}
+\mot{soup}{suːp}{de la soupe}
+\mot{a salad}{ə ˈsæləd}{une salade}
+\mot{a burger}{ə ˈbɝːɡɚ}{un hamburger}
+\mot{fries}{fraɪz}{des frites}
+\mot{a steak}{ə ˈsteɪk}{un steak}
+\mot{dessert}{dɪˈzɝːt}{le dessert}
+\mot{ice cream}{ˈaɪs ˌkriːm}{de la glace}
+\categorie{Payer}
+\mot{the check}{ðə ˈtʃek}{l'addition \registre{américain}}
+\mot{a tip}{ə ˈtɪp}{un pourboire}
+\end{vocabulaire}
+
+\begin{vocabulaire}{Commander poliment}{11.06}
+\categorie{Le serveur}
+\mot{What can I get you?}{ˌwʌt kən aɪ ˈɡet juː}{Qu'est-ce que je vous sers ?}
+\mot{Are you ready to order?}{ɑːr juː ˌredi tu ˈɔːrdɚ}{Vous avez choisi ?}
+\mot{For here or to go?}{fɚ ˈhɪr ɔːr tə ˈɡoʊ}{Sur place ou à emporter ?}
+\mot{Would you like something to drink?}{wʊd juː ˌlaɪk ˌsʌmθɪŋ tə ˈdrɪŋk}{Vous désirez quelque chose à boire ?}
+\mot{Here you are.}{ˌhɪr juː ˈɑːr}{Voici. Tenez.}
+\categorie{Le client}
+\mot{Can I have a coffee, please?}{kən aɪ ˌhæv ə ˈkɑːfi pliːz}{Je peux avoir un café, s'il vous plaît ?}
+\mot{Could I have the fish?}{kʊd aɪ ˌhæv ðə ˈfɪʃ}{Pourrais-je avoir le poisson ?}
+\mot{I'd like a salad.}{aɪd ˌlaɪk ə ˈsæləd}{Je voudrais une salade.}
+\mot{I'll have the burger.}{aɪl ˌhæv ðə ˈbɝːɡɚ}{Je prendrai le burger.}
+\mot{Yes, please. · No, thank you.}{ˌjes ˈpliːz · ˌnoʊ ˈθæŋk juː}{Oui, volontiers. · Non, merci.}
+\mot{To go, please.}{tə ˈɡoʊ pliːz}{À emporter, s'il vous plaît.}
+\mot{Can we have the check, please?}{kən wiː ˌhæv ðə ˈtʃek pliːz}{L'addition, s'il vous plaît.}
+\mot{Is the tip included?}{ɪz ðə ˌtɪp ɪnˈkluːdɪd}{Le pourboire est compris ?}
+\mot{It's delicious!}{ɪts dɪˈlɪʃəs}{C'est délicieux !}
+\end{vocabulaire}
+
+%% ---------------------------------------------------------------------
+\rubrique{grammaire}{Demander et proposer poliment}
+
+\otIntertitre[otViolet]{1 · Demander : du plus simple au plus poli}
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\enOn\bfseries}l<{\enOff}@{\hspace{8mm}}l@{\hspace{8mm}}l@{}}
+\otTH{Formule} & \otTH{Sens} & \otTH{Registre}\\\midrule
+Can I have a coffee, please?     & Je peux avoir un café ?       & courant\\
+I'd like a coffee, please.       & Je voudrais un café.          & poli\\
+I'll have a coffee, please.      & Je prendrai un café.          & au restaurant\\
+Could I have a coffee, please?   & Pourrais-je avoir un café ?   & très poli\\\bottomrule
+\end{tabular}\end{center}
+
+\blocaudio{11.07}{Écoutez et répétez}{Les quatre formules du tableau, avec \en{please}, puis deux
+demandes au pluriel avec \en{Can we…?}}
+
+\otIntertitre[otViolet]{2 · Proposer : \en{Would you like…?}}
+\begin{paire}
+\begin{regle}[Proposer]
+\exen{Would you like a muffin?}{Voulez-vous un muffin ?}
+\exen{Would you like some tea?}{Voulez-vous du thé ?}
+\exen{Would you like something to drink?}{Quelque chose à boire ?}
+\end{regle}
+\begin{regle}[Répondre]
+\exen{Yes, please.}{Oui, volontiers.}
+\exen{No, thank you. / No, thanks.}{Non, merci.}
+\exen{Yes, I'd love some!}{Oui, avec plaisir !}
+\end{regle}
+\end{paire}
+
+\blocaudio{11.08}{Écoutez et répétez}{Une proposition avec \en{Would you like…?}, puis la réponse.}
+
+\begin{regle}[\en{I like} ou \en{I'd like} ?]
+\en{I like coffee} = « j'aime le café » (en général, toujours). \en{I'd like a coffee} = « je
+voudrais un café » (maintenant, c'est une demande). Ne les confondez pas : au café, \en{I like a
+coffee} n'a pas de sens !
+\end{regle}
+
+\begin{attention}[Les pièges des francophones]
+\fauxjuste{I want a coffee.}{I'd like a coffee, please.}
+\fauxjuste{Give me the bill.}{Can we have the check, please?}
+\fauxjuste{Would you like a tea? — Yes.}{Would you like a tea? — Yes, please.}
+\fauxjuste{Can I have a water?}{Can I have a glass of water?}
+\par\vspace{1mm}{\fontsize{10}{12.6}\selectfont \en{I want…} est grammaticalement juste, mais il
+sonne sec, voire impoli, dans la bouche d'un client. Préférez \en{I'd like…} ou \en{Can I have…?}\par}
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique[Les formes faibles de can]{sons}{Les formes faibles de \en{can} et \en{could}}
+
+Dans une demande, \en{can}, \en{could} et \en{would} ne sont pas accentués : leur voyelle s'affaiblit
+en \phon{ə}. \en{Can I have…?} se dit \phon{kənaɪ ˈhæv}, presque « k'naï have ». En revanche, en fin
+de phrase (\en{Yes, you can.}), \en{can} retrouve sa forme pleine \phon{kæn}.
+
+\begin{phrases}{11.09}{Écoutez et répétez à vitesse normale, en n'accentuant que les mots importants.}
+\phrase{Can I have a coffee?}{\phon{kən} · \textbf{coffee}}
+\phrase{Can we have the check, please?}{\phon{kən} · \textbf{check}}
+\phrase{Could I have the fish?}{\phon{kəd} · \textbf{fish}}
+\phrase{Would you like some tea?}{\phon{wədʒə} · \textbf{like}, \textbf{tea}}
+\phrase{I'd like a salad.}{\phon{aɪd} · \textbf{like}, \textbf{salad}}
+\phrase{I'll have the burger.}{\phon{aɪl} · \textbf{have}, \textbf{burger}}
+\phrase{Yes, you can.}{en fin de phrase, forme pleine : \phon{kæn}}
+\end{phrases}
+
+%% ---------------------------------------------------------------------
+\rubrique{culture}{Le pourboire}
+
+\begin{culture}[\en{Tipping} : une règle, pas un bonus]
+Aux États-Unis, le service n'est \textbf{pas compris} : les serveurs vivent en grande partie de leurs
+pourboires. Au restaurant, on laisse entre \textbf{15 et 20 \%} du montant (hors taxe), parfois plus si
+le service est excellent. Ne pas laisser de pourboire est perçu comme une remarque très négative.
+\end{culture}
+
+\begin{paire}
+\begin{culture}[Ailleurs]
+Au comptoir d'un café, une boîte à pourboires (\en{tip jar}) ou l'écran de paiement propose souvent
+d'ajouter 15, 18 ou 20 \% : c'est facultatif. Dans un bar, on laisse environ un dollar par boisson.
+\end{culture}
+\begin{culture}[Au Royaume-Uni]
+L'addition s'appelle \en{the bill}, et le service est souvent déjà inclus (\en{service charge}) :
+vérifiez avant d'ajouter 10 \%. Dans un pub, on commande et on paie au bar, sans pourboire.
+\end{culture}
+\end{paire}
+
+\begin{culture}[À table, à l'américaine]
+L'eau du robinet est servie gratuitement, avec des glaçons. Les portions sont grandes : on peut
+demander à emporter ses restes (\en{Can I have a box, please?}). Et dans beaucoup de restaurants, le
+café filtre est resservi sans supplément (\en{free refills}).
+\end{culture}
+
+%% ---------------------------------------------------------------------
+\rubrique{pratique}{Exercices}
+
+\exercice[lire,niveau=1]{Le menu}{Lisez le menu, puis répondez.}
+\begin{center}\otMenu\end{center}
+\begin{questions}
+\item How much is the chicken salad? \hfill \trou[52mm]{It's fourteen dollars.}
+\item How much is the burger and fries? \hfill \trou[52mm]{It's sixteen dollars.}
+\item How much is the fish of the day? \hfill \trou[52mm]{It's nineteen dollars.}
+\item How much are two coffees? \hfill \trou[52mm]{They're six dollars.}
+\item Is the water free? \hfill \trou[52mm]{Yes, it is.}
+\end{questions}
+
+\exercice[ecrire,niveau=1]{\en{I like} ou \en{I'd like} ?}{Complétez.}
+\begin{questions}
+\item \trou[22mm]{I'd like} a glass of water, please.
+\item \trou[22mm]{I like} jazz. It's my favorite music!
+\item \trou[22mm]{I'd like} the chicken salad, please.
+\item \trou[22mm]{I like} coffee, but I don't like tea.
+\item \trou[22mm]{I'd like} a large latte to go, please.
+\item \trou[22mm]{I like} French food very much.
+\end{questions}
+
+\exercice[lire,niveau=1]{Questions et réponses}{Associez chaque phrase (1 à 5) à la réponse qui
+convient (a à e).}
+\begin{anglais}
+\noindent\begin{tabularx}{\linewidth}{@{}>{\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}}l@{\hspace{2.4mm}}X@{\hspace{8mm}}>{\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}}l@{\hspace{2.4mm}}X@{}}
+1. & Would you like some tea?        & a. & To go, please.\\[1.4mm]
+2. & For here or to go?              & b. & Yes, the burger, please.\\[1.4mm]
+3. & Are you ready to order?         & c. & No, it isn't.\\[1.4mm]
+4. & Is the tip included?            & d. & Seven fifty.\\[1.4mm]
+5. & How much is that?               & e. & Yes, please.\\
+\end{tabularx}
+\end{anglais}\par\vspace{3mm}
+\noindent{\fontsize{10}{12}\selectfont\otSemi Réponses :}\hspace{4mm}%
+1~→~\trou[9mm]{e}\hspace{6mm}2~→~\trou[9mm]{a}\hspace{6mm}3~→~\trou[9mm]{b}\hspace{6mm}%
+4~→~\trou[9mm]{c}\hspace{6mm}5~→~\trou[9mm]{d}
+
+\exercice[ecrire,niveau=2]{Au café}{Complétez avec \en{can}, \en{I'd}, \en{would}, \en{have},
+\en{here} ou \en{go}.}
+\begin{anglais}
+\noindent\begin{tabular}{@{}l@{\hspace{6mm}}l@{}}
+\otNomDit{sam} & Hi! What \trou{can} I get you?\\[1.8mm]
+\otNomDit{jack} & Can I \trou{have} a coffee, please?\\[1.8mm]
+\otNomDit{sam} & Sure. For \trou{here} or to \trou{go}?\\[1.8mm]
+\otNomDit{jack} & To go. And \trou{I'd} like a muffin, please.\\[1.8mm]
+\otNomDit{sam} & \trou{Would} you like a bag?\\[1.8mm]
+\otNomDit{jack} & No, thanks.\\
+\end{tabular}
+\end{anglais}
+
+\exercice[ecrire,niveau=2]{Soyez poli !}{Ces demandes sont trop directes. Récrivez-les poliment, avec
+\en{Can I have…?}, \en{Could I have…?} ou \en{I'd like…}}
+\begin{questions}
+\item Give me a coffee. \hfill \trou[76mm]{Can I have a coffee, please?}
+\item I want the fish. \hfill \trou[76mm]{I'd like the fish, please.}
+\item Give us the check. \hfill \trou[76mm]{Can we have the check, please?}
+\item I want a glass of water. \hfill \trou[76mm]{Could I have a glass of water, please?}
+\end{questions}
+
+\exercice[lire,niveau=1]{Au restaurant}{Remettez le dialogue dans l'ordre : écrivez les lettres.}
+\begin{anglais}
+\begin{questions}[1][english]
+\item[a.] I'd like the soup of the day, please.
+\item[b.] Good evening! Are you ready to order?
+\item[c.] Just a glass of water, please.
+\item[d.] Very good. Would you like something to drink?
+\item[e.] Yes, I am.
+\end{questions}
+\end{anglais}
+\par\vspace{2mm}\noindent{\otSemi\fontsize{10}{12}\selectfont Ordre :}\hspace{4mm}%
+\trou[9mm]{b}\hspace{3mm}\trou[9mm]{e}\hspace{3mm}\trou[9mm]{a}\hspace{3mm}\trou[9mm]{d}\hspace{3mm}\trou[9mm]{c}
+
+\exercice[ecouter,ecrire,niveau=2,piste=11.10]{Les formes faibles}{Écoutez chaque demande, dite deux
+fois à vitesse normale, et écrivez les mots qui manquent.}
+\begin{questions}
+\item \trou[30mm]{Can I have} a tea, please?
+\item \trou[30mm]{Could I have} the check?
+\item \trou[30mm]{Would you like} some water?
+\item \trou[30mm]{I'd like} a salad, please.
+\item \trou[30mm]{Can we have} two coffees?
+\item \trou[30mm]{I'll have} the steak.
+\end{questions}
+
+\exercice[ecouter,ecrire,niveau=2,piste=11.11]{Les commandes}{Trois clients commandent au café de
+Sam. Écoutez et complétez le tableau.}
+\begin{center}\otTableau
+\begin{tabular}{@{}l@{\hspace{10mm}}l@{\hspace{10mm}}l@{\hspace{10mm}}l@{}}
+\otTH{Client} & \otTH{Boisson} & \otTH{Taille} & \otTH{Sur place ou à emporter}\\\midrule
+{\otSemi 1 · Emma} & \enb{\trou[24mm]{tea}}    & \enb{\trou[18mm]{small}}  & \enb{\trou[22mm]{for here}}\\[1mm]
+{\otSemi 2 · Jack} & \enb{\trou[24mm]{coffee}} & \enb{\trou[18mm]{large}}  & \enb{\trou[22mm]{to go}}\\[1mm]
+{\otSemi 3 · Maya} & \enb{\trou[24mm]{latte}}  & \enb{\trou[18mm]{medium}} & \enb{\trou[22mm]{to go}}\\\bottomrule
+\end{tabular}\end{center}
+
+\exercice[ecouter,ecrire,niveau=2,piste=11.12]{Dictée à trous}{Au restaurant, le serveur prend la
+commande d'Emma. Écoutez et complétez.}
+\begin{anglais}
+\noindent\begin{tabular}{@{}l@{\hspace{6mm}}l@{}}
+\otNomDit{serveur} & Are you \trou{ready} to order?\\[1.8mm]
+\otNomDit{emma}    & Yes. \trou{I'd} like the soup, please.\\[1.8mm]
+\otNomDit{serveur} & \trou{Would} you like something to drink?\\[1.8mm]
+\otNomDit{emma}    & Yes, \trou{please}. Can I have a \trou{glass} of orange juice?\\[1.8mm]
+\otNomDit{serveur} & Of course. And for \trou{dessert}?\\[1.8mm]
+\otNomDit{emma}    & No, \trou{thank} you.\\
+\end{tabular}
+\end{anglais}
+
+\exercice[ecrire,niveau=2]{Traduisez}{Traduisez en anglais.}
+\begin{questions}[1][french]
+\item Je voudrais un thé, s'il vous plaît.\lignes{1}
+\item Sur place ou à emporter ? — À emporter.\lignes{1}
+\item Voulez-vous quelque chose à boire ? — Oui, volontiers.\lignes{1}
+\item Pourrais-je avoir l'addition, s'il vous plaît ?\lignes{1}
+\item Je prendrai le burger avec des frites.\lignes{1}
+\item Le pourboire n'est pas compris.\lignes{1}
+\item J'aime le café, mais je voudrais un thé aujourd'hui.\lignes{1}
+\item C'est délicieux !\lignes{1}
+\end{questions}
+
+\exercice[ecrire,niveau=3]{Au \en{Brooklyn Bistro}}{Avec le menu de l'exercice 1, écrivez la scène
+du restaurant (six à huit répliques) : le serveur, vous et un ami. Commandez, puis demandez
+l'addition.}
+\lignes{7}
+
+\exercice[ecouter,parler,niveau=3,piste=11.13]{À vous de parler !}{Vous êtes au café de Sam. Répondez
+\textbf{à voix haute} pendant chaque pause.}
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}}l@{\hspace{3mm}}>{\enOn}p{70mm}<{\enOff}@{\hspace{6mm}}p{78mm}@{}}
+ & \otTH{Sam dit\ldots} & \otTH{Vous\ldots}\\\midrule
+1. & Hi there! What can I get you? & commandez une boisson, poliment.\\
+2. & Small, medium or large? & choisissez une taille.\\
+3. & For here or to go? & répondez.\\
+4. & Would you like a muffin with that? & acceptez ou refusez poliment.\\
+5. & That's six dollars, please. & donnez l'argent (« Voici. ») et remerciez.\\\bottomrule
+\end{tabular}\end{center}
+
+%% ---------------------------------------------------------------------
+\rubrique{bilan}{Faites le point}
+
+\begin{essentiel}
+\begin{minipage}[t]{0.56\linewidth}
+\otEssTitre{Les phrases clés}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}>{\enOn\otSemi\fontsize{9.4}{11}\selectfont}l<{\enOff}@{\hspace{3mm}}>{\fontsize{9.2}{11}\selectfont\color{white!78!otNavy}}l@{}}
+Can I have a latte, please?  & Je peux avoir un latte ?\\
+I'd like the fish.           & Je voudrais le poisson.\\
+For here or to go?           & Sur place ou à emporter ?\\
+Would you like some tea?     & Voulez-vous du thé ?\\
+Yes, please. / No, thanks.   & Oui, volontiers. / Non, merci.\\
+Can we have the check?       & L'addition, s'il vous plaît.\\
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.39\linewidth}
+\otEssTitre{Demander}
+{\enb{\fontsize{9.2}{11.6}\selectfont Can I…? · I'd like… · I'll have… · Could I…?}\par}
+\otEssTitre{Proposer}
+{\enb{\fontsize{9.2}{11.6}\selectfont Would you like…?}\par
+{\fontsize{9}{11.4}\selectfont\color{white!78!otNavy}\en{I like} (j'aime) ≠ \en{I'd like} (je voudrais)}\par}
+\otEssTitre{Prononciation}
+{\fontsize{9.2}{11.6}\selectfont \en{Can I…?} \phon{kən} · \en{Yes, you can.} \phon{kæn}\par}
+\end{minipage}
+\end{essentiel}
+
+\begin{jesais}
+\item commander une boisson au café, sur place ou à emporter ;
+\item commander un repas au restaurant et demander l'addition ;
+\item demander poliment avec \en{Can I…?}, \en{Could I…?}, \en{I'd like…} ;
+\item proposer avec \en{Would you like…?} et répondre \en{Yes, please} / \en{No, thank you} ;
+\item faire la différence entre \en{I like} et \en{I'd like} ;
+\item calculer un pourboire à l'américaine.
+\end{jesais}
+
+\clearpage
+\begin{testexpress}
+\qcm[c]{« Je voudrais un café » se dit :}{\en{I like a coffee.}}{\en{I want a coffee.}}{\en{I'd like a coffee.}}
+\qcm[a]{« Sur place ou à emporter ? » se dit :}{\en{For here or to go?}}{\en{Here or there?}}{\en{To eat or to take?}}
+\qcm[b]{\en{Would you like some tea?} — Réponse polie :}{\en{Yes.}}{\en{Yes, please.}}{\en{Yes, I would like.}}
+\qcm[a]{« L'addition, s'il vous plaît » (US) se dit :}{\en{Can we have the check, please?}}{\en{Give us the addition.}}{\en{The note, please.}}
+\qcm[c]{La forme la plus polie est :}{\en{I want the fish.}}{\en{Give me the fish.}}{\en{Could I have the fish, please?}}
+\qcm[b]{\en{a tip}, c'est :}{l'addition}{le pourboire}{le menu}
+\qcm[a]{Aux États-Unis, le pourboire au restaurant est d'environ :}{15 à 20 \%}{2 à 5 \%}{rien, il est compris}
+\qcm[c]{Dans \en{Can I have a coffee?}, \en{can} se prononce :}{\phon{kæn}, accentué}{\phon{kɑːn}}{\phon{kən}, très faible}
+\qcm[b]{« Je prendrai le burger » (au restaurant) se dit :}{\en{I take the burger.}}{\en{I'll have the burger.}}{\en{I have the burger.}}
+\qcm[a]{\en{fries}, ce sont :}{des frites}{des œufs frits}{des fruits}
+\end{testexpress}
+
+\noindent{\fontsize{9.6}{12}\selectfont\color{otMuted}Niveau visé (CECRL, niveau A1) : « peut
+commander un repas ou une boisson et demander poliment ce dont il a besoin ». Les corrigés de
+l'unité sont page~\pageref{cor-u11-1} ; les textes des pistes d'exercices,
+page~\pageref{trans-11.10}.\par}

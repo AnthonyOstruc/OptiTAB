@@ -1,0 +1,11 @@
+% Une perturbation le long d'une corde à deux dates : célérité et retard (L'essentiel, chapitre 17)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \y/\c/\t/\lab in {1.5/1.8/{$t_1$}/M_1,0/5.0/{$t_2$}/M_2}{%
+  \draw[otInk!70,line width=0.8pt] plot[domain=0:8,samples=140] (\x,{\y+0.5*exp(-((\x-\c)^2)/0.15)});
+  \node[pcLegende,anchor=east] at (-0.1,\y) {\t};
+  \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (\c,{\y-0.2}) -- (\c,{\y+0.65});}
+\fill[otOrange] (5.0,1.5) circle (0.06); \node[pcLegende,anchor=north] at (5.0,1.45) {M};
+\draw[otGreenDark,line width=0.7pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (1.8,-0.45) -- (5.0,-0.45) node[pos=0.5,pcLegende,anchor=north,text=otGreenDark] {distance parcourue $d$ pendant $t_2-t_1$};
+\node[pcLegende,anchor=west,align=left] at (8.2,1.0) {le point M ne bouge\\qu'à partir de $t_2$ :\\retard $\tau=\dfrac{d}{v}$};
+\end{tikzpicture}
+\par\smallskip\legende{La perturbation parcourt la distance $d$ pendant la durée $t_2-t_1$ : sa célérité vaut $v=\dfrac{d}{t_2-t_1}$.}

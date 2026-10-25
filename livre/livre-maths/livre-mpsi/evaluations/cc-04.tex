@@ -1,0 +1,74 @@
+% !TEX root = ../main.tex
+%% Sujet type X-ENS — Inégalités de Hardy et de Carleman.
+%% Résultats vérifiés par verifications/eval_cc.py.
+
+\sujetEval{C4}{Sujet type X-ENS · Mathématiques}{Sujet type X-ENS}
+  {Durée : \textbf{4 heures}\\Calculatrice interdite\\Inégalités de moyennes}{4}
+  {Partie A/L'inégalité de Hardy/Q1 à Q4,Partie B/La constante 4 est optimale/Q5 et Q6,%
+   Partie C/L'inégalité de Carleman/Q7 à Q10,Partie D/La constante $\mathrm{e}$ est optimale/Q11 et Q12}
+\enParties
+\consigne{Sujet inédit, conçu dans l'esprit des épreuves de l'X et des ENS :
+peu de calculs, mais des raisonnements à construire. On pourra utiliser
+l'inégalité arithmético-géométrique (devoir maison \numero1) et l'inégalité
+$\bigl(1+\frac1k\bigr)^{k}<\mathrm{e}$, valable pour $k\geqslant1$.}
+
+Dans tout le problème, $(a_n)_{n\geqslant1}$ est une suite de réels
+positifs, et l'on pose, pour $n\geqslant1$,
+\[A_n=\frac{a_1+a_2+\dots+a_n}{n}\qquad\text{et}\qquad G_n=\bigl(a_1a_2\cdots a_n\bigr)^{1/n},\]
+ainsi que $A_0=0$. On compare les séries $\sum A_n^{2}$ et $\sum a_n^{2}$,
+puis $\sum G_n$ et $\sum a_n$.
+
+\begin{exoEval}[L'inégalité de Hardy]{6 points}{}
+\begin{questions}
+  \item Montrer que $a_n=nA_n-(n-1)A_{n-1}$ pour tout $n\geqslant1$.
+  \item En déduire que
+    $A_n^{2}-2a_nA_n\leqslant(n-1)A_{n-1}^{2}-nA_n^{2}$ pour $n\geqslant1$.
+  \item Soit $N\geqslant1$. Montrer que
+    $\sum_{n=1}^{N}A_n^{2}\leqslant2\sum_{n=1}^{N}a_nA_n$, puis que
+    \[\sum_{n=1}^{N}A_n^{2}\leqslant4\sum_{n=1}^{N}a_n^{2}.\]
+  \item En déduire que si $\sum a_n^{2}$ converge, alors $\sum A_n^{2}$
+    converge et $\sum_{n=1}^{+\infty}A_n^{2}\leqslant4\sum_{n=1}^{+\infty}a_n^{2}$
+    (\emph{inégalité de Hardy}).
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[La constante 4 est optimale]{4 points}{}
+On fixe $N\geqslant1$ et l'on choisit $a_n=\frac{1}{\sqrt n}$ pour
+$n\leqslant N$, $a_n=0$ pour $n>N$.
+\begin{questions}[start=5]
+  \item Montrer que pour $n\geqslant1$ :
+    $2\sqrt{n+1}-2\leqslant\sum_{k=1}^{n}\dfrac{1}{\sqrt k}\leqslant2\sqrt n-1$.
+  \item En déduire qu'il existe une constante $K$, indépendante de $N$,
+    telle que $\sum_{n=1}^{N}A_n^{2}\geqslant4H_N-K$, où
+    $H_N=\sum_{n=1}^{N}\frac1n$. Montrer que $4$ ne peut être remplacé, dans
+    l'inégalité de Hardy, par une constante strictement plus petite.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[L'inégalité de Carleman]{6 points}{}
+Pour $k\geqslant1$, on pose $c_k=\dfrac{(k+1)^{k}}{k^{k-1}}$.
+\begin{questions}[start=7]
+  \item Montrer que $c_1c_2\cdots c_n=(n+1)^{n}$ pour tout $n\geqslant1$.
+  \item En appliquant l'inégalité arithmético-géométrique aux réels
+    $a_1c_1,\dots,a_nc_n$, montrer que
+    $G_n\leqslant\dfrac{1}{n(n+1)}\sum_{k=1}^{n}a_kc_k$.
+  \item Montrer que $\sum_{n=k}^{N}\dfrac{1}{n(n+1)}\leqslant\dfrac1k$, puis que
+    \[\sum_{n=1}^{N}G_n\leqslant\sum_{k=1}^{N}a_k\Bigl(1+\frac1k\Bigr)^{k}.\]
+  \item En déduire que si $\sum a_n$ converge, alors $\sum G_n$ converge et
+    $\sum_{n=1}^{+\infty}G_n\leqslant\mathrm{e}\sum_{n=1}^{+\infty}a_n$
+    (\emph{inégalité de Carleman}).
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[La constante $\mathrm{e}$ est optimale]{4 points}{}
+\begin{questions}[start=11]
+  \item Montrer que pour $n\geqslant1$ :
+    $n\ln n-n+1\leqslant\ln n!\leqslant(n+1)\ln(n+1)-n$. En déduire que
+    $(n!)^{1/n}\sim\dfrac{n}{\mathrm{e}}$.
+  \item On fixe $N\geqslant1$ et l'on choisit $a_n=\frac1n$ pour
+    $n\leqslant N$, $a_n=0$ pour $n>N$. Soit $\varepsilon\in\intOO01$.
+    Montrer qu'il existe $n_0$, indépendant de $N$, tel que
+    $\sum_{n=1}^{N}G_n\geqslant(1-\varepsilon)\,\mathrm{e}\,(H_N-H_{n_0})$
+    pour $N\geqslant n_0$. Conclure.
+\end{questions}
+\end{exoEval}

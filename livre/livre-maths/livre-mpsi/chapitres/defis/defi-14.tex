@@ -1,0 +1,80 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 14 — Le déterminant de Cauchy et les matrices de Hilbert
+%% Résultats vérifiés par verifications/defis_11_15.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le déterminant de Cauchy et les matrices de Hilbert}{2 h}
+Soient $a_1,\dots,a_n$ et $b_1,\dots,b_n$ des réels tels que
+$a_i+b_j\neq0$ pour tous $i,j$. On note $C_n$ le déterminant de la matrice
+$\Bigl(\dfrac{1}{a_i+b_j}\Bigr)_{1\leqslant i,j\leqslant n}$, appelé
+\emph{déterminant de Cauchy}.
+
+\partieExo{A}{Petites tailles}
+\begin{questions}
+  \item Calculer $C_1$, puis $C_2$, et vérifier que
+    \[
+    C_2=\frac{(a_2-a_1)(b_2-b_1)}{(a_1+b_1)(a_1+b_2)(a_2+b_1)(a_2+b_2)} .
+    \]
+\end{questions}
+
+\partieExo{B}{La formule de Cauchy}
+\begin{questions}[resume]
+  \item Pour $j<n$, on retranche la dernière colonne à la colonne $j$.
+    Montrer que le nouveau coefficient $(i,j)$ vaut
+    $\dfrac{b_n-b_j}{(a_i+b_j)(a_i+b_n)}$.
+  \item Factoriser $b_n-b_j$ dans chaque colonne $j<n$ et
+    $\frac{1}{a_i+b_n}$ dans chaque ligne $i$ : la dernière colonne ne
+    contient plus que des $1$. Retrancher alors la dernière ligne à chacune
+    des autres, factoriser de nouveau, et développer suivant la dernière
+    colonne pour obtenir
+    \[
+    C_n=\frac{\prod_{k=1}^{n-1}(a_n-a_k)(b_n-b_k)}
+    {\prod_{k=1}^{n}(a_k+b_n)\ \prod_{k=1}^{n-1}(a_n+b_k)}\;C_{n-1} .
+    \]
+  \item En déduire la \emph{formule de Cauchy} :
+    \[
+    C_n=\frac{\prod_{1\leqslant i<j\leqslant n}(a_j-a_i)(b_j-b_i)}
+    {\prod_{1\leqslant i,j\leqslant n}(a_i+b_j)} .
+    \]
+    Quand $C_n$ est-il non nul ?
+\end{questions}
+
+\partieExo{C}{Les matrices de Hilbert}
+On note $H_n=\Bigl(\dfrac{1}{i+j-1}\Bigr)_{1\leqslant i,j\leqslant n}$ et
+$c_m=\prod_{k=1}^{m-1}k!$ (avec $c_1=1$).
+\begin{questions}[resume]
+  \item Montrer que $H_n$ est une matrice de Cauchy, puis que
+    \[
+    \det H_n=\frac{c_n^{4}}{c_{2n}} .
+    \]
+    Calculer $\det H_2$, $\det H_3$, $\det H_4$ ; en déduire que $H_n$ est
+    toujours inversible.
+  \item Montrer que le coefficient $(i,j)$ de $H_n$ est
+    $\int_0^1x^{i-1}x^{j-1}\,\mathrm{d}x$ : $H_n$ est la matrice de Gram de
+    $(1,X,\dots,X^{n-1})$ (chapitre 18).
+  \item Calculer $H_3^{-1}$ par la comatrice et constater que ses
+    coefficients sont entiers (c'est vrai pour tout $n$, on l'admet).
+    Pourquoi la petitesse de $\det H_n$ rend-elle la résolution numérique
+    de $H_nX=B$ très instable ?
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \foreach \i in {1,...,6}{\foreach \j in {1,...,6}{%
+    \pgfmathsetmacro{\v}{1/(\i+\j-1)}
+    \pgfmathsetmacro{\pc}{100*\v}
+    \fill[otNavy!\pc!white] (\j-1,-\i+1) rectangle (\j,-\i);
+    \ifdim\v pt>0.45pt
+      \node[font=\small,text=white] at (\j-0.5,-\i+0.5) {$\frac{1}{\the\numexpr\i+\j-1\relax}$};
+    \else
+      \node[font=\small,text=otInk] at (\j-0.5,-\i+0.5) {$\frac{1}{\the\numexpr\i+\j-1\relax}$};
+    \fi}}
+  \draw[otNavy,line width=0.6pt] (0,0) rectangle (6,-6);
+\end{tikzpicture}\\[0.5mm]
+\legende{La matrice de Hilbert $H_6$ : des coefficients constants le long
+des anti-diagonales, qui décroissent lentement — et pourtant
+$\det H_6\approx5\cdot10^{-18}$.}
+\end{center}
+\end{defi}

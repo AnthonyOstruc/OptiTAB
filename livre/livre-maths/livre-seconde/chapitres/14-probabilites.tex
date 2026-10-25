@@ -1,0 +1,127 @@
+\begin{ouverture}[probabilites]{14}{Probabilités et arbres}{Partie 4 · Statistiques et probabilités}
+{Modèles · Événements · Conditions · Simulation}
+\objectif{Expliciter le modèle probabiliste choisi.}
+\objectif{Calculer sur un tableau ou un chemin d’arbre.}
+\objectif{Distinguer un conditionnement et son inversion.}
+\prerequis{Fréquences, fractions et vocabulaire des ensembles.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Un modèle pour le hasard}
+\begin{definition}L’univers $\Omega$ est l’ensemble des issues. Un événement est un sous-ensemble de $\Omega$. Une loi de probabilité sur un univers fini attribue à chaque issue un nombre positif ou nul, de somme totale 1. La probabilité d’un événement est la somme de celles de ses issues.\end{definition}
+\begin{propriete}Pour tout événement $A$, $0\le P(A)\le1$ et $P(\overline A)=1-P(A)$. En équiprobabilité, $P(A)=\operatorname{Card}(A)/\operatorname{Card}(\Omega)$. Pour deux événements : $P(A\cup B)=P(A)+P(B)-P(A\cap B)$.\end{propriete}
+\begin{attention}L’équiprobabilité est une hypothèse du modèle, par exemple un dé équilibré. Le fait qu’un objet ait six faces ne démontre pas à lui seul que ses six résultats ont la même probabilité.\end{attention}
+\begin{savoirfaire}[Deux épreuves]Décrire les issues par des couples ordonnés. Pour deux dés équilibrés indépendants, les 36 couples sont équiprobables ; les sommes de 2 à 12 ne le sont pas.\end{savoirfaire}
+\clearpage
+\essSection{2}{Conditionner et lire un arbre}
+\begin{definition}Pour $P(A)>0$, la probabilité de $B$ sachant $A$ est
+\[P_A(B)=\frac{P(A\cap B)}{P(A)}.\]
+Lors d’un tirage au sort avec équiprobabilité dans une population $\Omega$, $P_A(B)=\dfrac{\operatorname{Card}(A\cap B)}{\operatorname{Card}(A)}$ : c’est la fréquence conditionnelle de $B$ parmi $A$.
+\end{definition}
+\begin{propriete}Les probabilités sur les branches issues d’un même nœud somment à 1. Sur un chemin $A$ puis $B$, la multiplication donne $P(A\cap B)=P(A)P_A(B)$. Ne pas confondre $P_A(B)$ et $P_B(A)$.\end{propriete}
+\begin{savoirfaire}[Inverser à partir d’effectifs]Construire une population de référence, compléter ses cases, puis diviser par l’effectif du groupe conditionnant. Un arbre ou un tableau explicite rend visibles les faux positifs et faux négatifs d’un contrôle.\end{savoirfaire}
+\begin{propriete}[Observation de la loi des grands nombres]Lors de nombreuses répétitions indépendantes d’une même expérience, sauf exception, la fréquence observée est proche de la probabilité du modèle. Elle peut fluctuer et ne se rapproche pas forcément à chaque nouvelle répétition.\end{propriete}
+\begin{attention}Le calcul général à partir des probabilités conditionnelles d’une partition n’est pas un attendu du programme de Seconde 2026. Les prolongements de ce type sont signalés dans les défis ; le cours utilise les chemins, les tableaux et les informations données.\end{attention}
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-14-1}
+\begin{exercice}[1]{Un dé équilibré}
+On lance un dé équilibré à six faces. Décrire l’univers, puis calculer la probabilité d’obtenir un nombre pair et celle d’obtenir un nombre supérieur ou égal à 5.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-2}
+\begin{exercice}[1]{L’événement contraire}
+La probabilité qu’une pièce soit conforme est $0{,}96$. Quelle est la probabilité qu’elle ne soit pas conforme ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-3}
+\begin{exercice}[1]{Une loi non uniforme}
+Une roue donne les nombres 1, 2, 3, 4 avec probabilités $0{,}1$, $0{,}2$, $0{,}3$, $0{,}4$. Vérifier la loi et calculer $P(X\ge3)$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-4}
+\begin{exercice}[1]{Une union}
+Pour un dé équilibré, $A$ est « pair » et $B$ est « au moins 4 ». Décrire $A\cap B$ et calculer $P(A\cup B)$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-5}
+\begin{exercice}[1]{Conditionner dans un tableau}
+On choisit uniformément un individu du tableau. Calculer $P_A(C)$ et $P(A\cap C)$.\begin{center}\renewcommand{\arraystretch}{1.35}\begin{tabular}{c|ccc}\toprule
+ & $C$ & $\overline C$ & Total\\\midrule
+$A$ & 36 & 24 & 60\\
+$B$ & 24 & 36 & 60\\
+Total & 60 & 60 & 120\\
+\bottomrule\end{tabular}\end{center}
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-14-6}
+\begin{exercice}[2]{Deux conditionnements différents}
+Une population compte 200 personnes, dont 80 dans $A$, 50 dans $B$ et 30 dans les deux. Calculer $P_A(B)$ et $P_B(A)$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-7}
+\begin{exercice}[2]{Lire un chemin d’arbre}
+Un arbre indique $P(A)=0{,}4$, $P_A(B)=0{,}7$ et $P_{\overline A}(B)=0{,}2$. Calculer $P(A\cap B)$ et $P(A\cap\overline B)$.
+\label{fig-ex-14-7}
+\figureGeo{proba-arbre-01}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-8}
+\begin{exercice}[2]{Compléter des branches}
+On connaît $P(A)=0{,}3$, $P_A(B)=0{,}8$ et $P_{\overline A}(B)=0{,}4$. Donner les trois branches contraires et la probabilité du chemin non $A$ puis non $B$.
+\label{fig-ex-14-8}
+\figureGeo{proba-arbre-02}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-9}
+\begin{exercice}[2]{Deux tirages avec remise}
+Une urne contient 3 boules rouges et 2 bleues. On tire deux fois, avec remise et mélange entre les tirages. Calculer la probabilité d’obtenir deux rouges puis celle d’obtenir rouge puis bleu.
+\label{fig-ex-14-9}
+\figureGeo{proba-remise}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-10}
+\begin{exercice}[2]{Deux tirages sans remise}
+La même urne contient 3 rouges et 2 bleues. On tire deux fois sans remise. Calculer la probabilité de deux rouges et celle de rouge puis bleu.
+\label{fig-ex-14-10}
+\figureGeo{proba-sans-remise}
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-14-11}
+\begin{exercice}[3]{Un contrôle et ses erreurs}
+Un contrôle de fabrication produit le tableau ci-dessous. On choisit une pièce au hasard. Calculer la sensibilité (signal positif parmi les défectueuses), la spécificité (signal négatif parmi les conformes), puis la probabilité qu’une pièce à signal positif soit défectueuse.\begin{center}\renewcommand{\arraystretch}{1.35}\begin{tabular}{c|ccc}\toprule
+ & Signal $+$ & Signal $-$ & Total\\\midrule
+Défectueux & 18 & 2 & 20\\
+Conformes & 49 & 931 & 980\\
+Total & 67 & 933 & 1000\\
+\bottomrule\end{tabular}\end{center}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-12}
+\begin{exercice}[3]{Deux dés et une somme}
+On lance deux dés équilibrés indépendants. Calculer la probabilité d’une somme égale à 8 en listant les couples possibles.
+\label{fig-ex-14-12}
+\figureGeo{proba-des}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-13}
+\begin{exercice}[3]{Un conditionnement reconstitué}
+On sait $P(A)=0{,}6$, $P(A\cap B)=0{,}24$ et $P(B)=0{,}3$. Calculer $P_A(B)$ et $P_B(A)$. Les données sont-elles cohérentes ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-14}
+\begin{exercice}[3]{Fréquence et probabilité}
+Une pièce équilibrée donne 62 piles en 100 lancers. Cela prouve-t-il qu’elle est truquée ? La fréquence doit-elle se rapprocher de $1/2$ à chacun des lancers suivants ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-15}
+\begin{exercice}[3]{Choisir le bon arbre}
+Une usine produit 40\,\% de ses pièces sur $A$. La probabilité d’un défaut sachant $A$ vaut 2\,\%. On sait aussi que 3\,\% de toutes les pièces sont défectueuses. Calculer la probabilité « $A$ et défaut », puis la part de $A$ parmi les pièces défectueuses.
+\label{fig-ex-14-15}
+\figureGeo{proba-usine}
+\end{exercice}
+\end{blocLivre}
+
+\clearpage

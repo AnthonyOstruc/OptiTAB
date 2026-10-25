@@ -1,0 +1,342 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[rc]{26}{Circuit RC et capteurs capacitifs}{Partie 4 · Ondes et signaux}
+{Débit de charges\enspace·\enspace Condensateur\enspace·\enspace Charge et décharge\enspace·\enspace Temps caractéristique\enspace·\enspace Capteurs capacitifs}
+\objectif{Relier l'intensité d'un courant électrique au débit de charges.}
+\objectif{Identifier des situations où des charges de signes opposés s'accumulent sur des surfaces en regard ; citer des
+ordres de grandeur de capacités.}
+\objectif{Établir et résoudre l'équation différentielle vérifiée par la tension aux bornes d'un condensateur lors de sa
+charge et de sa décharge.}
+\objectif{Déterminer le temps caractéristique d'un dipôle RC et expliquer le principe de capteurs capacitifs.}
+\objectif{Modéliser la charge d'un condensateur par la méthode d'Euler en Python.}
+\prerequis{Intensité, tension, loi d'Ohm, loi des mailles (classes de seconde et de première).}
+\prerequis{Lien entre intensité et débit de charges en régime continu (classe de première).}
+\prerequis{Équation différentielle $y'=a\,y+b$ et exponentielle (mathématiques, chapitre~20).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Intensité et débit de charges}
+\begin{definition}[Intensité d'un courant variable]
+L'intensité d'un courant est le débit de charges électriques à travers une section du conducteur. En régime variable,
+si la charge $\mathrm{d}q$ traverse la section pendant la durée $\mathrm{d}t$ :
+\[i(t)=\frac{\mathrm{d}q}{\mathrm{d}t},\]
+avec $i$ en ampères et $q$ en coulombs. En régime continu, on retrouve $I=\dfrac{Q}{\Delta t}$.
+\end{definition}
+\essSection{2}{Le condensateur}
+\begin{definition}[Comportement capacitif et condensateur]
+Un \textbf{condensateur} est formé de deux surfaces conductrices en regard, les \textbf{armatures}, séparées par un isolant.
+Branché sur un générateur, il accumule des charges opposées, $+q$ et $-q$, sur ses armatures : c'est un comportement
+\textbf{capacitif}. La charge $q$ de l'armature positive est proportionnelle à la tension $u_C$ entre les armatures :
+\[q=C\,u_C,\]
+où $C$ est la \textbf{capacité} du condensateur, en farads (F). On rencontre des capacités de quelques picofarads (capteurs,
+circuits rapides) à quelques millifarads, et jusqu'à plusieurs milliers de farads pour les supercondensateurs.
+\end{definition}
+\schema{26-condensateur}
+\begin{propriete}[Influence de la géométrie]
+La capacité augmente avec la surface $S$ des armatures en regard, diminue quand leur distance $e$ augmente et dépend de
+l'isolant. Pour un condensateur plan, $C=\dfrac{\varepsilon\,S}{e}$ (expression fournie), où $\varepsilon$ caractérise l'isolant :
+$\varepsilon_0=\qty{8,85e-12}{F.m^{-1}}$ pour le vide ou l'air. Deux plaques de \qty{1}{m^2} distantes de \qty{1}{mm} dans l'air
+n'ont que \qty{8,85}{nF} de capacité.
+\end{propriete}
+\begin{propriete}[Relation entre intensité et tension]
+Le courant qui arrive sur l'armature positive augmente sa charge : en convention récepteur,
+\[i=\frac{\mathrm{d}q}{\mathrm{d}t}=C\,\frac{\mathrm{d}u_C}{\mathrm{d}t}.\]
+La tension aux bornes d'un condensateur ne peut pas varier brutalement : elle est continue.
+\end{propriete}
+\essSection{3}{Charge et décharge dans un circuit RC}
+\schema{26-circuit}
+\begin{savoirfaire}[Établir et résoudre l'équation de la charge]
+Le condensateur, initialement déchargé, est relié à l'instant $t=0$ à un générateur idéal de tension $E$ par une
+résistance $R$ (position 1). La loi des mailles donne $E=u_R+u_C=R\,i+u_C$, avec $i=C\,\dfrac{\mathrm{d}u_C}{\mathrm{d}t}$ :
+\[RC\,\frac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=E\qquad\text{soit}\qquad\frac{\mathrm{d}u_C}{\mathrm{d}t}=-\frac{1}{\tau}\,(u_C-E),\quad\tau=RC.\]
+Les solutions s'écrivent $u_C=E+K\,\mathrm{e}^{-t/\tau}$ ; la condition initiale $u_C(0)=0$ impose $K=-E$ :
+\[u_C(t)=E\left(1-\mathrm{e}^{-t/\tau}\right).\]
+\end{savoirfaire}
+\begin{propriete}[Décharge]
+En position 2, le condensateur chargé sous la tension $E$ se décharge dans la résistance : $RC\,\dfrac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=0$,
+d'où $u_C(t)=E\,\mathrm{e}^{-t/\tau}$. L'intensité, $i=C\,\dfrac{\mathrm{d}u_C}{\mathrm{d}t}=-\dfrac{E}{R}\,\mathrm{e}^{-t/\tau}$, est négative : le courant
+circule en sens inverse de celui de la charge.
+\end{propriete}
+\begin{propriete}[Temps caractéristique]
+Le \textbf{temps caractéristique} $\tau=RC$ (en secondes si $R$ est en ohms et $C$ en farads) fixe la durée du régime
+transitoire. À $t=\tau$, la charge a atteint 63~\% de sa valeur finale ; au bout de $5\tau$, plus de 99~\% : le régime
+permanent est pratiquement atteint. Graphiquement, la tangente à l'origine coupe l'asymptote à $t=\tau$.
+\end{propriete}
+\schema{26-charge}
+\begin{exemple}
+Avec $R=\qty{10}{k\ohm}$ et $C=\qty{100}{\micro F}$, $\tau=\num{10e3}\times\num{100e-6}=\qty{1,0}{s}$ : la charge est pratiquement terminée
+au bout de \qty{5}{s}.
+\end{exemple}
+\essSection{4}{Les capteurs capacitifs}
+\begin{propriete}[Principe d'un capteur capacitif]
+Dans un capteur capacitif, la grandeur à mesurer modifie la capacité d'un condensateur : la distance entre armatures
+(capteurs de pression, microphones, accéléromètres), la surface en regard (capteurs de position) ou l'isolant (capteurs
+d'humidité, de niveau d'une cuve). Un circuit électronique mesure la capacité, par exemple à travers la durée de charge
+d'un circuit RC. Dans un écran tactile, le doigt, conducteur, forme avec une électrode un condensateur supplémentaire ;
+dans un smartphone, l'accéléromètre est un micro-condensateur dont une armature mobile se déplace sous l'effet de
+l'accélération.
+\end{propriete}
+\begin{codecote}[0.64]
+\begin{pythoncol}
+from math import log
+E, R, C = 5.0, 10e3, 100e-6      # V, ohm, F
+tau, dt = R * C, 0.001           # s
+u, t = 0.0, 0.0
+while u < 0.95 * E:              # 95 % de E
+    u = u + (E - u) / tau * dt
+    t = t + dt
+print(round(t, 3), round(-tau * log(0.05), 3))
+\end{pythoncol}
+\begin{consolecol}
+2.995 2.996
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Le programme applique la méthode d'Euler à l'équation de la charge, $\dfrac{\mathrm{d}u_C}{\mathrm{d}t}=\dfrac{E-u_C}{\tau}$, jusqu'à ce que
+la tension atteigne 95~\% de $E$. Il affiche la durée obtenue et la valeur exacte $-\tau\ln0{,}05\approx3\tau$ : les deux
+concordent à la milliseconde près.
+\end{codecote}
+\begin{attention}
+Dans $\tau=RC$, les unités doivent être cohérentes : un kiloohm vaut $10^3$~\unit{\ohm}, un microfarad $10^{-6}$~F. La tension aux
+bornes du condensateur est continue, mais l'intensité peut varier brutalement, par exemple à la fermeture de
+l'interrupteur, où elle passe de 0 à $E/R$.
+\end{attention}
+\begin{experience}[Déterminer le temps caractéristique d'un dipôle RC]
+Un microcontrôleur commande la charge d'un condensateur à travers une résistance et mesure la tension à ses bornes à
+intervalles réguliers ; une carte d'acquisition ou un oscilloscope alimenté par un signal créneau convient aussi. On
+détermine $\tau$ par la tangente à l'origine ou par la date à laquelle $u_C=0{,}63\,E$, et on le compare à $RC$. Deux
+feuilles d'aluminium séparées par du papier forment un condensateur dont on observe l'augmentation de capacité quand
+on presse les feuilles l'une contre l'autre.
+\end{experience}
+\begin{rediger}
+Orienter le circuit, flécher les tensions en convention récepteur, puis écrire la loi des mailles. Remplacer $u_R$ par $R\,i$
+et $i$ par $C\,\dfrac{\mathrm{d}u_C}{\mathrm{d}t}$ ; mettre l'équation sous la forme $\dfrac{\mathrm{d}u_C}{\mathrm{d}t}+\dfrac{u_C}{\tau}=\dfrac{E}{\tau}$ avant de
+la résoudre, et utiliser la condition initiale.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-26-1}
+\begin{exercice}[1]{Un débit de charges}
+\begin{donnees}
+Charge élémentaire : $e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Un courant d'intensité constante \qty{2,0}{A} circule pendant \qty{30}{s}. Quelle charge traverse une section du fil ?
+\item Combien d'électrons cela représente-t-il ?
+\item La charge d'une armature varie selon $q(t)=0{,}5\,t^2$, avec $q$ en millicoulombs et $t$ en secondes. Exprimer
+l'intensité du courant en fonction du temps et la calculer à $t=\qty{4}{s}$.
+\item Pourquoi la définition $I=Q/\Delta t$ ne convient-elle pas dans ce dernier cas ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-2}
+\begin{exercice}[1]{Des comportements capacitifs}
+\begin{questions}
+\item Qu'appelle-t-on comportement capacitif ?
+\item Avant un orage, la base des nuages se charge négativement et le sol positivement. Pourquoi peut-on parler de
+condensateur ? Quel est l'isolant ?
+\item La membrane d'un neurone sépare des ions positifs à l'extérieur et négatifs à l'intérieur. Identifier les
+« armatures » et l'isolant.
+\item Le doigt posé sur un écran tactile forme un condensateur avec une électrode de l'écran. Quel est l'isolant ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-3}
+\begin{exercice}[1]{Charge et tension}
+Un condensateur de \qty{470}{\micro F} est chargé sous \qty{12}{V}.
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la charge de son armature positive.
+\item Combien d'électrons ont quitté cette armature ?
+\item Même question pour un condensateur de \qty{4,7}{nF} chargé sous la même tension. Comparer.
+\item Que devient la charge si la tension double ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-4}
+\begin{exercice}[1]{Lire une courbe de charge}
+On ferme à l'instant $t=0$ l'interrupteur d'un circuit RC série alimenté par un générateur de tension $E$ ; la résistance
+vaut $R=\qty{1,0}{k\ohm}$.
+\schema{26-ex04}
+\begin{questions}
+\item Lire la valeur de $E$.
+\item Déterminer le temps caractéristique par deux méthodes.
+\item En déduire la capacité du condensateur.
+\item Au bout de combien de temps peut-on considérer le condensateur comme chargé ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-5}
+\begin{exercice}[1]{Le flash d'un appareil photo}
+Le condensateur d'un flash, de capacité \qty{150}{\micro F}, est chargé sous \qty{300}{V}, puis se décharge en \qty{1}{ms} environ dans la
+lampe.
+\begin{donnees}
+Énergie stockée par un condensateur : $\frac12\,C\,u_C^2$.
+\end{donnees}
+\begin{questions}
+\item Calculer la charge stockée.
+\item Calculer l'intensité moyenne du courant pendant la décharge.
+\item Calculer l'énergie libérée dans la lampe.
+\item Pourquoi utilise-t-on un condensateur plutôt que d'alimenter directement la lampe par la pile ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-26-6}
+\begin{exercice}[2]{Établir l'équation de la décharge}
+Un condensateur de capacité $C$, chargé sous la tension $E$, est relié à $t=0$ à une résistance $R$.
+\begin{questions}
+\item Faire un schéma, orienter le circuit et écrire la loi des mailles.
+\item En déduire l'équation différentielle vérifiée par $u_C$.
+\item Vérifier que $u_C(t)=E\,\mathrm{e}^{-t/\tau}$ en est solution et satisfait la condition initiale.
+\item Quelle fraction de $E$ reste-t-il à $t=2\tau$ ? À quelle date la tension vaut-elle $E/2$ ? Application : $E=\qty{9,0}{V}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-7}
+\begin{exercice}[2]{La minuterie d'un escalier}
+Une minuterie maintient la lumière allumée tant que la tension aux bornes d'un condensateur de \qty{1000}{\micro F}, chargé sous
+\qty{12}{V} à l'appui sur le bouton, reste supérieure à \qty{2,0}{V}. Le condensateur se décharge dans une résistance $R$.
+\begin{questions}
+\item Exprimer la date à laquelle la lumière s'éteint en fonction de $\tau$.
+\item Quelle valeur de $\tau$ donne une durée d'éclairage de \qty{60}{s} ?
+\item En déduire la valeur de $R$.
+\item Comment allonger la durée d'éclairage sans changer de condensateur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-8}
+\begin{exercice}[2]{Modéliser la charge en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Justifier la ligne \code{u = u + (E - u) / tau * dt}.
+\item Que se passe-t-il si l'on choisit \code{dt = 0.5} ? Pourquoi faut-il un pas petit devant $\tau$ ?
+\item Modifier le programme pour qu'il calcule la durée nécessaire pour atteindre 99~\% de $E$. Comparer à la valeur
+exacte.
+\item Écrire les lignes qui enregistrent et tracent $u_C$ en fonction du temps.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-9}
+\begin{exercice}[2]{La géométrie d'un condensateur}
+Deux plaques métalliques carrées de \qty{20}{cm} de côté sont placées face à face, à \qty{2,0}{mm} l'une de l'autre, dans l'air.
+\begin{donnees}
+$C=\dfrac{\varepsilon\,S}{e}$ ; dans l'air, $\varepsilon=\varepsilon_0=\qty{8,85e-12}{F.m^{-1}}$ ; avec un plastique, $\varepsilon=3\,\varepsilon_0$.
+\end{donnees}
+\begin{questions}
+\item Calculer la capacité de ce condensateur.
+\item On glisse entre les plaques une feuille de plastique de même épaisseur. Calculer la nouvelle capacité.
+\item Que devient la capacité dans l'air si l'on rapproche les plaques à \qty{1,0}{mm} ?
+\item Quelle surface faudrait-il pour obtenir \qty{1}{\micro F} dans l'air avec un écart de \qty{2,0}{mm} ? Comment fabrique-t-on
+alors des condensateurs de forte capacité ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-10}
+\begin{exercice}[2]{Le défibrillateur}
+Un défibrillateur charge un condensateur de \qty{150}{\micro F} sous \qty{2000}{V}, puis le décharge à travers le thorax du patient,
+assimilé à une résistance de \qty{50}{\ohm}.
+\begin{donnees}
+Énergie stockée par un condensateur : $\frac12\,C\,u_C^2$.
+\end{donnees}
+\begin{questions}
+\item Calculer la charge et l'énergie stockées.
+\item Calculer le temps caractéristique de la décharge et l'intensité du courant au début de la décharge.
+\item Calculer la tension aux bornes du condensateur au bout de \qty{10}{ms}.
+\item Pourquoi la décharge est-elle réalisée en quelques millisecondes seulement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-11}
+\begin{exercice}[2]{Le signal créneau}
+Un générateur délivre une tension créneau qui passe périodiquement de 0 à \qty{5}{V}, puis de \qty{5}{V} à 0 ; il alimente un
+circuit RC avec $R=\qty{1,0}{k\ohm}$ et $C=\qty{100}{nF}$. On observe $u_C$ à l'oscilloscope.
+\begin{questions}
+\item Calculer le temps caractéristique du circuit.
+\item Pendant chaque demi-période, le condensateur se charge ou se décharge. Quelle durée minimale faut-il pour que la
+charge soit pratiquement complète ?
+\item En déduire la fréquence maximale du créneau qui permet d'observer des charges complètes.
+\item Quelle tension le condensateur atteint-il, en partant de 0, à la fin de la première demi-période si la fréquence vaut
+\qty{5}{kHz} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-26-12}
+\begin{exercice}[3]{L'écran tactile}
+\begin{docu}{1}{Détecter un doigt}
+Sous la vitre d'un écran tactile, chaque électrode forme avec son environnement un condensateur d'environ \qty{10}{pF}.
+Quand un doigt touche la vitre au-dessus d'elle, sa capacité augmente d'environ \qty{1}{pF}.
+\end{docu}
+\begin{docu}{2}{La mesure}
+Le circuit charge périodiquement l'électrode à travers une résistance de \qty{1,0}{M\ohm} et mesure la durée nécessaire pour
+que sa tension atteigne la moitié de la tension d'alimentation.
+\end{docu}
+\begin{questions}
+\item Calculer le temps caractéristique de charge sans doigt, puis avec le doigt.
+\item Montrer que la durée nécessaire pour atteindre la moitié de la tension finale vaut $\tau\ln2$.
+\item \initiative Calculer la différence de durée que le circuit doit détecter. Commenter.
+\item Pourquoi un écran capacitif ne réagit-il pas au contact d'un stylo en plastique ou d'un doigt ganté ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-13}
+\begin{exercice}[3]{L'accéléromètre du smartphone}
+\begin{docu}{1}{Un micro-condensateur}
+Dans l'accéléromètre d'un smartphone, une masse mobile de \qty{2,0e-9}{kg}, suspendue à un ressort de raideur
+$k=\qty{1,0}{N.m^{-1}}$, porte une armature d'un condensateur plan. L'autre armature est fixe, à $e=\qty{2,0}{\micro m}$ ; la
+surface en regard vaut \qty{1,0e-7}{m^2}.
+\end{docu}
+\begin{docu}{2}{Le principe}
+Sous l'effet d'une accélération $a$, la masse se déplace de $x=\dfrac{m\,a}{k}$, ce qui modifie l'écart entre les armatures. Pour
+$x\ll e$, la variation relative de capacité vaut $\dfrac{\Delta C}{C}\approx\dfrac{x}{e}$.
+\end{docu}
+\begin{donnees}
+$C=\dfrac{\varepsilon_0\,S}{e}$ avec $\varepsilon_0=\qty{8,85e-12}{F.m^{-1}}$ ; $g=\qty{9,81}{m.s^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la capacité au repos.
+\item Calculer le déplacement de la masse pour une accélération égale à $g$.
+\item \initiative Calculer la variation de capacité correspondante. Commenter son ordre de grandeur.
+\item Comment le smartphone sait-il s'il est tenu verticalement ou horizontalement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-14}
+\begin{exercice}[3]{Le capteur de niveau d'une cuve}
+\begin{docu}{1}{Une sonde capacitive}
+Une sonde verticale, plongée dans une cuve de \qty{2,5}{m} de hauteur, forme un condensateur dont l'isolant est en partie de
+l'air et en partie le liquide. Sa capacité varie linéairement avec la hauteur $h$ de liquide.
+\end{docu}
+\begin{docu}{2}{L'étalonnage}
+La sonde est chargée à travers une résistance fixe. Le temps caractéristique vaut \qty{50}{\micro s} quand la cuve est vide et
+\qty{120}{\micro s} quand elle est pleine. Une mesure donne \qty{78}{\micro s}.
+\end{docu}
+\begin{questions}
+\item Pourquoi le temps caractéristique varie-t-il comme la capacité ?
+\item Justifier qu'il varie linéairement avec la hauteur de liquide.
+\item \initiative Déterminer la hauteur de liquide dans la cuve.
+\item Quel temps caractéristique mesurera-t-on lorsque la cuve sera remplie aux trois quarts ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-26-15}
+\begin{exercice}[3]{Le stimulateur cardiaque}
+\begin{docu}{1}{Un rythme imposé}
+Dans un modèle simple de stimulateur cardiaque, un condensateur de \qty{1,0}{\micro F}, chargé sous \qty{2,8}{V}, se décharge à travers
+une résistance $R$. Lorsque sa tension descend à $E/\mathrm{e}$, soit environ \qty{1,03}{V}, le circuit envoie une impulsion au cœur et
+recharge aussitôt le condensateur.
+\end{docu}
+\begin{docu}{2}{Le réglage}
+Le médecin règle le stimulateur sur 70 battements par minute.
+\end{docu}
+\begin{questions}
+\item Montrer que la durée entre deux impulsions est égale au temps caractéristique $\tau$.
+\item Calculer la durée entre deux battements.
+\item \initiative En déduire la valeur de la résistance.
+\item Quelle valeur de $R$ faut-il pour un rythme de 90 battements par minute pendant un effort ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

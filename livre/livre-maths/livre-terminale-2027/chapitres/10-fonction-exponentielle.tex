@@ -1,0 +1,326 @@
+% !TEX root = ../main.tex
+%% Chapitre 10 — Fonction exponentielle
+%% Sources : frontend/cours/resume/terminal/resume_fonction_exponentielle_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_fonction_exponentielle.txt (13 exercices)
+%% Exercices 14, 15 et 16 : problèmes inédits rédigés pour le livre.
+
+\begin{ouverture}[exp]{10}{Fonction exponentielle}{Partie 1 · Analyse}
+  {Propriétés algébriques\enspace·\enspace Limites\enspace·\enspace Dérivées\enspace·\enspace
+   Convexité\enspace·\enspace Étude de fonction}
+  \objectif{Utiliser les propriétés algébriques de l'exponentielle pour simplifier une expression.}
+  \objectif{Résoudre des équations et des inéquations, éventuellement à l'aide du logarithme.}
+  \objectif{Dériver une fonction de la forme $e^{u}$ et étudier sa convexité.}
+  \objectif{Utiliser les croissances comparées pour lever une indétermination.}
+  \objectif{Mener l'étude complète d'une fonction et l'exploiter : équations, tangentes, nombre de solutions.}
+  \prerequis{Fonction exponentielle : définition et premières propriétés (Première).}
+  \prerequis{Dérivation, convexité et limites (chapitres 2 et 3).}
+  \prerequis{Logarithme népérien : $e^{\ln a}=a$ pour tout $a>0$ (chapitre 5).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Définition et propriétés algébriques}
+
+\begin{definition}[Fonction exponentielle]
+Il existe une unique fonction $f$ dérivable sur $\R$ telle que $f'=f$ et $f(0)=1$ : c'est la fonction \textbf{exponentielle},
+notée $\exp$. On note $e=\exp(1)\approx2{,}718$ et, pour tout réel $x$, $\exp(x)=e^{x}$.
+\end{definition}
+
+{\renewcommand{\arraystretch}{1.8}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\otSemi\fontsize{7.5}{10}\selectfont\leavevmode\color{otNavy}}p{30mm}YY@{}}
+\toprule
+ & {\otSemi\fontsize{8.5}{11}\selectfont Pour tous réels $a$ et $b$, tout entier $n$} & {\otSemi\fontsize{8.5}{11}\selectfont Exemple} \\
+\midrule
+\otCaps[8]{Produit} & $e^{a+b}=e^{a}\times e^{b}$ & $e^{x+2}=e^{2}\,e^{x}$ \\
+\otCaps[8]{Quotient, inverse} & $e^{a-b}=\dfrac{e^{a}}{e^{b}}$\qquad $e^{-a}=\dfrac{1}{e^{a}}$ & $\dfrac{e^{3x}}{e^{x}}=e^{2x}$ \\
+\otCaps[8]{Puissance} & $\left(e^{a}\right)^{n}=e^{na}$ & $\left(e^{x}\right)^{3}=e^{3x}$ \\
+\otCaps[8]{Signe} & $e^{a}>0$\qquad $e^{0}=1$ & $e^{-x}>0$ pour tout $x$ \\
+\bottomrule
+\end{tabularx}}
+
+\begin{savoirfaire}[Équations et inéquations]
+Pour tous réels $a$ et $b$ : $e^{a}=e^{b}\iff a=b$ et $e^{a}<e^{b}\iff a<b$. Pour $k>0$ : $e^{x}=k\iff x=\ln k$.\\
+Lorsque $e^{2x}$ et $e^{x}$ apparaissent, on pose $X=e^{x}>0$, puisque $e^{2x}=X^{2}$ : on se ramène au second degré.
+\end{savoirfaire}
+
+\essSection{2}{Étude de la fonction exponentielle}
+
+\noindent
+\begin{minipage}[c]{0.54\linewidth}
+\begin{theoreme}[Variations et convexité]
+\raggedright
+La fonction $\exp$ est dérivable sur $\R$, avec $\exp'=\exp>0$ : elle est \textbf{strictement croissante}. De plus
+$\exp''=\exp>0$ : elle est \textbf{convexe}, donc sa courbe est au-dessus de sa tangente en $0$, d'équation $y=x+1$ :
+\[ e^{x}\geq1+x\ \text{ pour tout réel } x. \]
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=56mm, xmin=-3.4, xmax=2.2, ymin=-1.4, ymax=4.6,
+  xtick={-3,-2,-1,1,2}, ytick={1,2,3,4}]
+  \addplot[otGreen,dashed,line width=0.8pt,domain=-2.4:2.1] {x+1};
+  \addplot[otNavy,line width=1.3pt,domain=-3.4:1.5,samples=100] {exp(x)};
+  \addplot[only marks,mark=*,mark size=1.5pt,otNavy] coordinates {(0,1) (1,2.718)};
+  \node[anchor=south east,otEtiquette,font=\scriptsize] at (axis cs:0.95,2.8) {$(1\pv e)$};
+  \node[anchor=north west,font=\scriptsize,text=otGreenDark] at (axis cs:1.2,2.0) {$y=x+1$};
+  \node[anchor=east,font=\scriptsize,text=otNavy] at (axis cs:1.3,4.2) {$y=e^{x}$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{L'axe des abscisses est asymptote en $-\infty$.}
+\end{minipage}
+
+\par\vspace{3mm}
+\noindent
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tableau}
+  \otTab[1.65]{$x$/0.8,$\exp'(x)$/0.8,$\exp$/1.6}{$-\infty$,$0$,$+\infty$}
+  \tkzTabLine{,+,t,+,}
+  \tkzTabVar{-/$0$,R/,+/$+\infty$}
+  \tkzTabIma{1}{3}{2}{$1$}
+\end{tableau}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Limites de référence]
+\raggedright
+$\displaystyle\lim_{x\to-\infty}e^{x}=0$\qquad $\displaystyle\lim_{x\to+\infty}e^{x}=+\infty$\qquad
+$\displaystyle\lim_{x\to0}\frac{e^{x}-1}{x}=1$
+\end{theoreme}
+\begin{theoreme}[Composée]
+\raggedright
+Si $u$ est dérivable sur $I$, alors $e^{u}$ est dérivable sur $I$ et $\big(e^{u}\big)'=u'e^{u}$.
+\end{theoreme}
+\end{minipage}
+
+\essSection{3}{Croissances comparées}
+
+\begin{theoreme}[Croissances comparées]
+Pour tout entier naturel $n$ :
+\[ \lim_{x\to+\infty}\frac{e^{x}}{x^{n}}=+\infty \qquad\qquad \lim_{x\to+\infty}x^{n}e^{-x}=0 \qquad\qquad \lim_{x\to-\infty}x^{n}e^{x}=0 \]
+En $\pm\infty$, l'exponentielle « l'emporte » sur toute puissance de $x$.
+\end{theoreme}
+
+\begin{demonstration}[pour $n=1$]
+La fonction $\varphi(x)=e^{x}-\frac{x^{2}}{2}$ a pour dérivée $\varphi'(x)=e^{x}-x$, positive car $e^{x}\geq1+x>x$. Ainsi $\varphi$
+est croissante sur $\intFO{0}{+\infty}$ et $\varphi(0)=1>0$ : pour $x>0$, $e^{x}>\frac{x^{2}}{2}$, donc $\frac{e^{x}}{x}>\frac x2$, qui
+tend vers $+\infty$. On conclut par comparaison.
+\end{demonstration}
+
+\begin{savoirfaire}[Lever une indétermination]
+On factorise par le terme qui « l'emporte », puis on utilise les croissances comparées. Par exemple, en $+\infty$ :
+$e^{x}-x^{2}=e^{x}\left(1-\dfrac{x^{2}}{e^{x}}\right)$, et $\dfrac{x^{2}}{e^{x}}\to0$, donc $e^{x}-x^{2}\to+\infty$.
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $e^{a}\times e^{b}=e^{a+b}$, et non $e^{ab}$ ; il n'y a aucune formule pour $e^{a}+e^{b}$.
+  \item $\left(e^{x}\right)^{2}=e^{2x}$, et non $e^{x^{2}}$.
+  \item $e^{0}=1$ et $e^{x}>0$ : une équation $e^{x}=k$ avec $k\leq0$ n'a pas de solution.
+  \item Avec $X=e^{x}$, ne garder que les solutions $X>0$.
+  \item $\big(e^{u}\big)'=u'e^{u}$ : ne pas oublier le facteur $u'$.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Propriétés algébriques et calculs de base}
+Simplifier les expressions suivantes à l'aide des propriétés algébriques de la fonction exponentielle. Dans tout l'exercice, $x$ désigne un nombre réel.
+\begin{tasks}(2)
+  \task Simplifier $e^{2x+3}\times e^{-x}$.
+  \task Simplifier $\dfrac{e^{3x}}{e^{2x+1}}$.
+  \task Écrire $(e^{x})^{2}\times e^{-3x}$ sous la forme $e^{ax+b}$.
+  \task Montrer que $e^{x}\times e^{-x}=1$.
+  \task Simplifier $\dfrac{e^{x+2}\times e^{3x-1}}{e^{2x}}$.
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Limites et variations de base}
+\begin{tasks}(2)
+  \task Calculer $\displaystyle\lim_{x\to+\infty}e^{x}$.
+  \task Calculer $\displaystyle\lim_{x\to-\infty}e^{x}$.
+  \task Calculer $\displaystyle\lim_{x\to0}\frac{e^{x}-1}{x}$.
+  \task Étudier le signe de $e^{x}$ sur $\R$.
+  \task Comparer $e^{2}$ et $e^{3}$ en justifiant.
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Dérivées de base}
+Calculer la dérivée de chacune des fonctions suivantes, définies et dérivables sur $\R$.
+\begin{tasks}(3)
+  \task $f(x)=e^{x}$
+  \task $g(x)=e^{3x}$
+  \task $h(x)=e^{-2x+1}$
+  \task $k(x)=5e^{2x}$
+  \task $m(x)=e^{x^{2}}$
+\end{tasks}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Équations et inéquations}
+Résoudre dans $\R$ les équations et inéquations suivantes.
+\begin{tasks}(3)
+  \task $e^{2x+1}=e^{x-3}$
+  \task $e^{x}=5$
+  \task $e^{2x}-4e^{x}+3=0$
+  \task $e^{x-1}<e^{2x+3}$
+  \task $e^{x}\geq 7$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Équations et inéquations avancées}
+Résoudre dans $\R$ les équations et inéquations suivantes.
+\begin{tasks}(3)
+  \task $e^{2x}-5e^{x}+6=0$
+  \task $e^{x^{2}}=e^{3x-2}$
+  \task $e^{2x}-3e^{x}+2\leq0$
+  \task $e^{x+1}>2e^{x-1}$
+  \task $e^{x^{2}-4x+3}\geq1$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Exponentielle et logarithme}
+Résoudre les équations et inéquations suivantes, après avoir déterminé l'ensemble sur lequel elles ont un sens.
+\begin{tasks}(2)
+  \task $\ln\left(e^{2x}-1\right)=2$
+  \task $e^{\ln(x+1)}=3$
+  \task $\ln\left(x^{2}-1\right)=\ln(x+1)$
+  \task $e^{2\ln x}-3e^{\ln x}+2=0$
+  \task $\ln\left(e^{x}-1\right)\geq1$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Limites et croissances comparées}
+On considère les fonctions $f$ et $g$ définies par
+\[
+  f(x)=e^{x}-x \ \text{ sur } \R
+  \qquad\text{et}\qquad
+  g(x)=\frac{e^{x}}{x} \ \text{ sur } \intOO{0}{+\infty}.
+\]
+\begin{questions}
+  \item Calculer les dérivées $f'(x)$ et $g'(x)$.
+  \item Étudier les variations de $f$ et de $g$.
+  \item Calculer les limites de $f$ en $+\infty$ et en $-\infty$.
+  \item Calculer les limites de $g$ en $0^{+}$ et en $+\infty$.
+  \item Dresser les tableaux de variations complets de $f$ et de $g$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Dérivée et applications}
+On considère la fonction $g$ définie sur $\R$ par $g(x)=xe^{x}$.
+\begin{questions}
+  \item Calculer la dérivée $g'(x)$.
+  \item Étudier le signe de $g'(x)$.
+  \item Déterminer les variations de $g$.
+  \item Calculer les limites de $g$ en $+\infty$ et en $-\infty$.
+  \item Déterminer une équation de la tangente à la courbe de $g$ au point d'abscisse $0$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Modélisation}
+Une population de bactéries suit la loi $N(t)=N_0\,e^{kt}$, où $N_0$ est l'effectif initial, $k$ le taux de croissance et $t$
+le temps en heures. On prend $N_0=1\,000$ et $k=0{,}02$.
+\begin{questions}
+  \item Exprimer $N(t)$, puis calculer l'effectif au bout de $50$ heures.
+  \item Déterminer le temps nécessaire pour que la population double.
+  \item Calculer $N'(t)$ et vérifier que $N'(t)=0{,}02\,N(t)$. Interpréter.
+  \item Résoudre l'équation $N(t)=10\,000$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Étude complète et applications}
+On considère la fonction $f$ définie sur $\R$ par
+\[
+  f(x)=e^{2x}-3e^{x}+2 .
+\]
+On note $\Cf$ sa courbe représentative dans un repère orthonormé.
+\begin{questions}
+  \item Calculer la dérivée $f'(x)$.
+  \item Étudier le signe de $f'(x)$ et en déduire les variations de $f$.
+  \item Déterminer les extremums locaux de $f$ et calculer leurs valeurs.
+  \item Résoudre l'équation $f(x)=0$.
+  \item Résoudre l'inéquation $f(x)\geq0$.
+  \item Calculer les limites de $f$ en $+\infty$ et en $-\infty$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Étude d'une fonction composée}
+On considère la fonction $h$ définie sur $\R$ par $h(x)=e^{x^{2}-2x}$.
+\begin{questions}
+  \item Calculer $h'(x)$, puis étudier son signe et les variations de $h$.
+  \item Déterminer le minimum de $h$ sur $\R$.
+  \item Calculer les limites de $h$ en $-\infty$ et en $+\infty$, puis dresser le tableau de variations complet de $h$.
+  \item Montrer que, pour tout réel $x$, $h(2-x)=h(x)$. Interpréter graphiquement.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Optimisation}
+On considère la fonction $k$ définie sur $\intFO{0}{+\infty}$ par $k(x)=x^{2}e^{-x}$.
+\begin{questions}
+  \item Montrer que $k'(x)=x(2-x)e^{-x}$, puis étudier les variations de $k$.
+  \item Déterminer le maximum de $k$ sur $\intFO{0}{+\infty}$.
+  \item Calculer la limite de $k$ en $+\infty$, puis dresser le tableau de variations complet de $k$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Étude de convexité}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=e^{-x^{2}}$.
+\begin{questions}
+  \item Calculer $f'(x)$ et $f''(x)$.
+  \item Étudier le signe de $f''(x)$ et en déduire la convexité de $f$.
+  \item Déterminer les points d'inflexion de la courbe de $f$.
+  \item Calculer les limites de $f$ en $-\infty$ et en $+\infty$, puis tracer l'allure de sa courbe, appelée « courbe en cloche ».
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La fonction sigmoïde}
+En intelligence artificielle, la fonction sigmoïde transforme un score réel en un nombre compris entre $0$ et $1$, interprété
+comme une probabilité. Elle est définie sur $\R$ par $f(x)=\dfrac{1}{1+e^{-x}}$, de courbe $\Cf$.
+\begin{questions}
+  \item Calculer les limites de $f$ en $-\infty$ et en $+\infty$. Interpréter graphiquement.
+  \item Montrer que $f'(x)=\dfrac{e^{-x}}{\left(1+e^{-x}\right)^{2}}$, puis que $f'(x)=f(x)\big(1-f(x)\big)$. En déduire les variations de $f$.
+  \item Montrer que, pour tout réel $x$, $f(-x)+f(x)=1$. En déduire que le point $\Omega\left(0\pv\frac12\right)$ est centre de symétrie de $\Cf$.
+  \item Déterminer une équation de la tangente $T$ à $\Cf$ en $\Omega$.
+  \item On admet que $f''=f'\,(1-2f)$. Étudier la convexité de $f$ et la position de $\Cf$ par rapport à $T$.
+  \item Pour quelles valeurs de $x$ a-t-on $f(x)\geq0{,}9$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Encadrer le nombre $e$}
+\partieExo{A}{Une inégalité fondamentale}
+\begin{questions}
+  \item Montrer que, pour tout réel $x$, $e^{x}\geq1+x$.
+  \item Soit $n\geq1$. En choisissant $x=\frac1n$, montrer que $\left(1+\frac1n\right)^{n}\leq e$.
+  \item En choisissant $x=-\frac{1}{n+1}$, montrer que $e\leq\left(1+\frac1n\right)^{n+1}$.
+\end{questions}
+\partieExo{B}{Deux suites qui encadrent $e$}
+Pour $n\geq1$, on pose $u_n=\left(1+\frac1n\right)^{n}$ et $v_n=\left(1+\frac1n\right)^{n+1}$, de sorte que $u_n\leq e\leq v_n$.
+\begin{questions}[resume]
+  \item Calculer $u_1$, $u_2$ et $v_1$. Montrer que $v_n-u_n=\dfrac{u_n}{n}$, puis que $0\leq v_n-u_n\leq\dfrac en$.
+  \item En déduire que $\lim u_n=\lim v_n=e$.
+  \item Déterminer un entier $n$ pour lequel l'encadrement $u_n\leq e\leq v_n$ a une amplitude inférieure à $10^{-2}$. Pour cet
+    entier, on obtient $u_n\approx2{,}713\,3$ et $v_n\approx2{,}723\,3$. Commenter.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Combien de solutions pour $e^{x}=kx$ ?}
+On considère la fonction $g$ définie sur $\R^{*}$ par $g(x)=\dfrac{e^{x}}{x}$, et un réel $k$.
+\begin{questions}
+  \item Calculer les limites de $g$ en $-\infty$, en $0$ (à gauche et à droite) et en $+\infty$.
+  \item Montrer que $g'(x)=\dfrac{(x-1)e^{x}}{x^{2}}$, puis dresser le tableau de variations de $g$.
+  \item Justifier que $0$ n'est pas solution de l'équation $(E_k)$ : $e^{x}=kx$, puis que $(E_k)$ équivaut à $g(x)=k$ sur $\R^{*}$.
+  \item Selon les valeurs de $k$, déterminer le nombre de solutions de $(E_k)$.
+  \item Interprétation : montrer que la droite d'équation $y=ex$ est tangente à la courbe de $\exp$. Expliquer alors graphiquement le résultat de la question 4.
+  \item Pour $k=3$, donner un encadrement d'amplitude $10^{-2}$ de chacune des solutions.
+\end{questions}
+\end{exercice}

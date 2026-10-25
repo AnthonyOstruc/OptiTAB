@@ -1,0 +1,17 @@
+% Somme de deux signaux sinusoïdaux synchrones : en phase et en opposition de phase (L'essentiel, chapitre 22)
+\begin{tikzpicture}
+\begin{axis}[at={(0,0)},otMesures,width=74mm,height=44mm,xmin=0,xmax=2.1,ymin=-2.3,ymax=2.3,axis lines=middle,
+  xtick={1,2},ytick={-2,-1,1,2},xlabel={$t/T$},ylabel={},title={\small en phase : $\varphi=0$},
+  every axis x label/.style={at={(axis description cs:1,0.5)},anchor=north east,font=\small}]
+\addplot[otNavy,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:2,samples=120] {sin(deg(2*pi*x))};
+\addplot[otRed!80!black,line width=1.1pt,domain=0:2,samples=120] {2*sin(deg(2*pi*x))};
+\end{axis}
+\begin{axis}[at={(80mm,0)},otMesures,width=74mm,height=44mm,xmin=0,xmax=2.1,ymin=-2.3,ymax=2.3,axis lines=middle,
+  xtick={1,2},ytick={-2,-1,1,2},xlabel={$t/T$},ylabel={},title={\small en opposition : $\varphi=\pi$},
+  every axis x label/.style={at={(axis description cs:1,0.5)},anchor=north east,font=\small}]
+\addplot[otNavy,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:2,samples=120] {sin(deg(2*pi*x))};
+\addplot[otOrange!90!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:2,samples=120] {-sin(deg(2*pi*x))};
+\addplot[otRed!80!black,line width=1.1pt,domain=0:2,samples=2] {0};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{En pointillés, les deux signaux de même amplitude ; en trait plein, leur somme : amplitude doublée en phase, nulle en opposition de phase.}

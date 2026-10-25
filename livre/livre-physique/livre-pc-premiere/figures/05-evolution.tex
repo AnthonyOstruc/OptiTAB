@@ -1,0 +1,24 @@
+% Évolution des quantités de matière au cours du titrage des ions fer(II) par les ions permanganate (L'essentiel, chapitre 5)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=58mm,xmin=0,xmax=18,ymin=0,ymax=1.4,
+  xtick={0,3,...,18},ytick={0,0.2,...,1.2},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$V$ versé (mL)},ylabel={$n$ (mmol)},
+  legend style={at={(1.03,0.98)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\fill[green!7] (axis cs:0,0) rectangle (axis cs:12,1.4);
+\fill[red!40!blue!12] (axis cs:12,0) rectangle (axis cs:18,1.4);
+\addplot[otNavy,line width=1.1pt,domain=0:18,samples=37] {max(1.2-0.1*x,0)};
+\addlegendentry{\ce{Fe^{2+}}}
+\addplot[red!60!blue,line width=1.1pt,domain=0:18,samples=37] {max(0.02*(x-12),0)};
+\addlegendentry{\ce{MnO4-}}
+\addplot[otGreenDark,line width=1.1pt,domain=0:18,samples=37] {min(0.1*x,1.2)};
+\addlegendentry{\ce{Fe^{3+}}}
+\addplot[otOrange!85!black,line width=1.1pt,dashed,domain=0:18,samples=37] {min(0.02*x,0.24)};
+\addlegendentry{\ce{Mn^{2+}}}
+\draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:12,0) -- (axis cs:12,1.4);
+\node[pcLegende,anchor=south] at (axis cs:12,1.4) {équivalence : $V_\mathrm{E}=\qty{12,0}{mL}$};
+\node[pcLegende,anchor=north,text=otGreenDark] at (axis cs:6,1.36) {mélange presque incolore};
+\node[pcLegende,anchor=north,text=red!50!blue] at (axis cs:15,1.36) {teinte violette};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{$V_1=\qty{10,0}{mL}$ de solution d'ions fer(II), ions permanganate à \qty{2,00e-2}{mol.L^{-1}} : avant l'équivalence, les ions permanganate versés sont limitants et disparaissent ; après, ils s'accumulent.}

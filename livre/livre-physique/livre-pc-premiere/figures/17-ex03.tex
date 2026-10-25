@@ -1,0 +1,15 @@
+% Perturbation le long d'une corde aux dates t1 = 0 et t2 = 0,20 s (exercice 3, chapitre 17) ; 1 unité = 1 m
+\begin{tikzpicture}[x=1.3cm,y=1cm]
+\foreach \y/\c/\t in {1.6/1.4/{$t_1=0$},0/3.0/{$t_2=\qty{0,20}{s}$}}{%
+  \draw[otRule,line width=0.3pt] (0,{\y-0.3}) -- (6,{\y-0.3});
+  \foreach \x in {0,1,...,6}{\draw[otRule,line width=0.3pt] (\x,{\y-0.35}) -- (\x,{\y-0.25});}
+  \draw[otInk!70,line width=0.8pt] plot[domain=0:6,samples=140] (\x,{\y+0.5*exp(-((\x-\c)^2)/0.04)});
+  \node[pcLegende,anchor=east] at (-0.1,\y) {\t};}
+\foreach \x in {0,1,...,6}{\node[pcLegende,anchor=north,font=\otLight\fontsize{6.5}{8}\selectfont] at (\x,-0.35) {\x};}
+\node[pcLegende,anchor=north west] at (6.05,-0.35) {m};
+\fill[otOrange] (4.0,0) circle (0.05); \node[pcLegende,anchor=north] at (4.0,-0.02) {M};
+\solution{
+  \draw[otGreenDark,line width=0.7pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (1.4,0.8) -- (3.0,0.8) node[pos=0.5,pcLegende,anchor=south,text=otGreenDark] {$d=\qty{1,6}{m}$};
+  \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (1.4,1.55) -- (1.4,0.7) (3.0,0.55) -- (3.0,0.9);}
+\end{tikzpicture}
+\par\smallskip\legende{Aspect de la corde à deux dates ; on repère le sommet de la perturbation.}

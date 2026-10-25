@@ -1,0 +1,309 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[lunette]{24}{Lunette astronomique}{Partie 4 · Ondes et signaux}
+{Lentille convergente\enspace·\enspace Lunette afocale\enspace·\enspace Faisceau émergent\enspace·\enspace Grossissement}
+\objectif{Représenter le schéma d'une lunette afocale modélisée par deux lentilles minces convergentes ; identifier
+l'objectif et l'oculaire.}
+\objectif{Représenter le faisceau émergent issu d'un point objet situé à l'infini et traversant une lunette afocale.}
+\objectif{Établir l'expression du grossissement d'une lunette afocale.}
+\objectif{Exploiter les données caractéristiques d'une lunette commerciale.}
+\objectif{Calculer en Python le diamètre apparent d'un astre observé avec différents oculaires.}
+\prerequis{Lentille mince convergente : foyers, distance focale, vergence, construction d'images (classe de première).}
+\prerequis{Relation de conjugaison et grandissement (classe de première).}
+\prerequis{Tangente d'un angle, approximation des petits angles (mathématiques).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Image d'un objet à l'infini}
+\begin{propriete}[Lentille convergente et objet à l'infini]
+Les rayons issus d'un point très éloigné, comme une étoile, arrivent sur une lentille parallèles entre eux. Après une
+lentille convergente de distance focale $f'$, ils convergent en un point du \textbf{plan focal image}, situé sur le rayon
+qui passe sans déviation par le centre optique $O$. Si le faisceau est incliné d'un angle $\theta$ sur l'axe optique, ce
+point est à la distance $f'\tan\theta$ de l'axe. Réciproquement, les rayons issus d'un point du plan focal objet ressortent
+parallèles entre eux.
+\end{propriete}
+\schema{24-lentille}
+\essSection{2}{La lunette afocale}
+\begin{definition}[Lunette astronomique]
+Une lunette astronomique est modélisée par deux lentilles minces convergentes de même axe optique :
+\begin{itemize}
+\item l'\textbf{objectif} $L_1$, du côté de l'objet, de grande distance focale $f'_1$ ;
+\item l'\textbf{oculaire} $L_2$, du côté de l'œil, de petite distance focale $f'_2$.
+\end{itemize}
+La lunette est \textbf{afocale} lorsque le foyer image de l'objectif est confondu avec le foyer objet de l'oculaire :
+$F'_1=F_2$. Elle donne alors d'un objet à l'infini une image à l'infini, que l'œil observe sans accommoder, donc sans
+fatigue. Les deux lentilles sont distantes de $f'_1+f'_2$.
+\end{definition}
+\begin{propriete}[Marche des rayons]
+L'objectif donne d'un astre une \textbf{image intermédiaire} $A_1B_1$, réelle et renversée, dans son plan focal image.
+Cette image, située dans le plan focal objet de l'oculaire, joue pour lui le rôle d'objet : l'oculaire en donne une
+image à l'infini. Le faisceau émergent est formé de rayons parallèles au rayon qui joint $B_1$ au centre optique $O_2$ de
+l'oculaire.
+\end{propriete}
+\schema{24-lunette}
+\essSection{3}{Le grossissement}
+\begin{definition}[Grossissement]
+Le \textbf{grossissement} d'un instrument est le rapport $G=\dfrac{\theta'}{\theta}$, où $\theta$ est l'angle sous lequel on voit
+l'objet à l'œil nu et $\theta'$ l'angle sous lequel on voit son image à travers l'instrument.
+\end{definition}
+\begin{savoirfaire}[Établir l'expression du grossissement]
+Dans le triangle $O_1F'_1B_1$ : $\tan\theta=\dfrac{A_1B_1}{f'_1}$ ; dans le triangle $O_2F_2B_1$ : $\tan\theta'=\dfrac{A_1B_1}{f'_2}$. Pour de
+petits angles, $\tan\theta\approx\theta$ et $\tan\theta'\approx\theta'$, d'où
+\[G=\frac{\theta'}{\theta}=\frac{f'_1}{f'_2}.\]
+Le grossissement est d'autant plus grand que l'objectif a une grande distance focale et l'oculaire une petite.
+\end{savoirfaire}
+\begin{exemple}
+Une lunette commerciale « 70/700 » a un objectif de \qty{70}{mm} de diamètre et de \qty{700}{mm} de distance focale. Avec un
+oculaire de \qty{25}{mm}, $G=28$ ; avec un oculaire de \qty{10}{mm}, $G=70$. La Lune, vue à l'œil nu sous
+$\theta=0{,}52^\circ=\qty{9,1e-3}{rad}$, donne une image intermédiaire de $f'_1\tan\theta=\qty{6,4}{mm}$. Le grossissement maximal
+utile d'une lunette est de l'ordre de deux fois le diamètre de son objectif exprimé en millimètres, ici 140.
+\end{exemple}
+\begin{codecote}[0.65]
+\begin{pythoncol}
+from math import atan, tan, degrees, radians
+f1 = 700                      # mm, objectif
+theta = radians(0.52)         # diamètre apparent
+for f2 in [25, 10, 6]:        # mm, oculaires
+    G = f1 / f2
+    theta2 = atan(G * tan(theta))
+    print(f2, round(G), round(degrees(theta2), 1))
+\end{pythoncol}
+\begin{consolecol}
+25 28 14.3
+10 70 32.4
+6 117 46.6
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Pour chaque oculaire, le programme calcule le grossissement et l'angle, en degrés, sous lequel la Lune apparaît dans la
+lunette, à partir de $\tan\theta'=\dfrac{f'_1}{f'_2}\tan\theta$. Avec l'oculaire de \qty{6}{mm}, la relation $\theta'=G\,\theta$ donnerait
+$60{,}7^\circ$ : l'approximation des petits angles n'est plus valable.
+\end{codecote}
+\begin{attention}
+Le grossissement compare des angles ; il ne faut pas le confondre avec le grandissement, rapport de deux tailles. La
+lunette donne une image renversée, ce qui est sans importance en astronomie. Elle ne grossit pas les étoiles, trop
+lointaines pour apparaître autrement que comme des points, mais elle collecte d'autant plus de lumière que son objectif
+est grand.
+\end{attention}
+\begin{experience}[Réaliser une maquette de lunette]
+Sur un banc d'optique, on place un objectif de vergence \num{+2}~$\delta$ et un oculaire de vergence \num{+8}~$\delta$, distants de
+\qty{62,5}{cm}. Un objet placé au foyer d'une lentille auxiliaire joue le rôle d'objet à l'infini. On visualise l'image
+intermédiaire sur un écran placé dans le plan focal image de l'objectif, puis on retire l'écran pour observer à travers
+l'oculaire. En mesurant la taille de l'image intermédiaire et les angles, on vérifie que $G=\dfrac{f'_1}{f'_2}=4$.
+\end{experience}
+\begin{rediger}
+Pour construire le faisceau émergent, tracer d'abord le rayon incident qui passe par $O_1$ : il donne $B_1$ dans le plan
+focal $F'_1=F_2$. Tous les rayons du faisceau convergent en $B_1$. Tracer ensuite le rayon $B_1O_2$ : les rayons émergents lui
+sont parallèles.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-24-1}
+\begin{exercice}[1]{Le vocabulaire de la lunette}
+Une lunette astronomique comporte deux lentilles convergentes de distances focales \qty{900}{mm} et \qty{20}{mm}.
+\begin{questions}
+\item Laquelle constitue l'objectif ? l'oculaire ? Justifier.
+\item Que signifie « lunette afocale » ? Quel est l'intérêt de ce réglage pour l'observateur ?
+\item Quelle est alors la distance entre les deux lentilles ?
+\item Calculer le grossissement de la lunette.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-2}
+\begin{exercice}[1]{L'image de la Lune}
+La Lune est vue depuis la Terre sous un angle de $0{,}52^\circ$. On en forme l'image avec une lentille convergente.
+\begin{questions}
+\item Où se forme l'image de la Lune ? Est-elle réelle ou virtuelle, droite ou renversée ?
+\item Calculer le diamètre de cette image pour une lentille de distance focale \qty{1,0}{m}.
+\item Même question pour le téléobjectif d'un appareil photo, de distance focale \qty{300}{mm}, puis pour une lunette de
+\qty{2000}{mm} de distance focale.
+\item Pourquoi les astronomes amateurs recherchent-ils des instruments de grande distance focale ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-3}
+\begin{exercice}[1]{Changer d'oculaire}
+Une lunette a un objectif de \qty{1000}{mm} de distance focale. Elle est livrée avec trois oculaires de \qty{40}{mm},
+\qty{20}{mm} et \qty{9}{mm}.
+\begin{questions}
+\item Rappeler l'expression du grossissement d'une lunette afocale.
+\item Calculer le grossissement obtenu avec chaque oculaire.
+\item Quel oculaire choisir pour observer la Lune entière ? les détails d'un cratère ?
+\item Faut-il déplacer l'oculaire quand on en change ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-4}
+\begin{exercice}[1]{Construire le faisceau émergent}
+Le schéma représente une lunette afocale et un faisceau de rayons parallèles issu d'un point situé à l'infini.
+\schema{24-ex04}
+\begin{questions}
+\item Placer l'image intermédiaire $B_1$ du point à l'infini. Justifier la construction.
+\item Tracer la suite des trois rayons jusqu'à l'oculaire.
+\item Construire le faisceau émergent.
+\item Mesurer sur le schéma les angles $\theta$ et $\theta'$, puis vérifier que leur rapport est égal à $f'_1/f'_2$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-5}
+\begin{exercice}[1]{Vergences et distances focales}
+Une petite lunette comporte un objectif de vergence \num{+1,25}~$\delta$ et un oculaire de vergence \num{+40}~$\delta$.
+\begin{questions}
+\item Rappeler la relation entre vergence et distance focale. Calculer les distances focales des deux lentilles.
+\item Calculer le grossissement de la lunette.
+\item Calculer la longueur de la lunette réglée en position afocale.
+\item Exprimer le grossissement à l'aide des vergences.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-24-6}
+\begin{exercice}[2]{La Lune dans la lunette}
+On observe la Lune, de diamètre apparent $0{,}52^\circ$, avec une lunette 70/700 munie d'un oculaire de \qty{10}{mm}.
+\begin{questions}
+\item Calculer le grossissement.
+\item Calculer, avec l'approximation des petits angles, l'angle sous lequel la Lune apparaît dans la lunette. Calculer
+l'angle exact à l'aide des tangentes. Commenter.
+\item Calculer le diamètre de l'image intermédiaire de la Lune.
+\item Le champ de l'oculaire, c'est-à-dire l'angle maximal sous lequel l'œil voit à travers lui, vaut $50^\circ$. Voit-on la
+Lune entière ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-7}
+\begin{exercice}[2]{Voir les cratères lunaires}
+L'œil distingue deux points vus sous un angle d'au moins \qty{3e-4}{rad}. On observe la Lune, à \qty{3,84e5}{km}, avec la
+lunette 70/700 et un oculaire donnant $G=70$.
+\begin{questions}
+\item Quelle est la taille du plus petit cratère visible à l'œil nu ?
+\item Quel angle minimal l'œil doit-il voir à travers la lunette ? Quelle est la taille du plus petit cratère visible ?
+\item La diffraction par l'objectif limite la résolution à $\theta_\mathrm{min}=1{,}22\,\dfrac{\lambda}{D}$, avec $\lambda=\qty{550}{nm}$ et
+$D$ le diamètre de l'objectif. Calculer la taille correspondante sur la Lune.
+\item Expliquer pourquoi il est inutile d'augmenter indéfiniment le grossissement.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-8}
+\begin{exercice}[2]{Programmer le grossissement}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Pourquoi le programme convertit-il l'angle en radians ? Que calcule la ligne
+\code{theta2 = atan(G * tan(theta))} ?
+\item Justifier cette ligne à l'aide de l'image intermédiaire.
+\item Modifier le programme pour qu'il affiche aussi la valeur approchée $G\,\theta$, en degrés. Jusqu'à quel grossissement
+l'écart reste-t-il inférieur à 5~\% ?
+\item On observe Jupiter, de diamètre apparent $45''$ (secondes d'arc). Quelle ligne faut-il modifier ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-9}
+\begin{exercice}[2]{Retrouver les distances focales}
+Une lunette afocale mesure \qty{1,05}{m} entre l'objectif et l'oculaire et grossit 20 fois.
+\begin{questions}
+\item Écrire les deux relations vérifiées par $f'_1$ et $f'_2$.
+\item En déduire les distances focales de l'objectif et de l'oculaire.
+\item Calculer leurs vergences.
+\item On remplace l'oculaire par un autre de \qty{2,5}{cm}. Quel est le nouveau grossissement ? Que faut-il régler ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-10}
+\begin{exercice}[2]{Regarder par le mauvais bout}
+On regarde à travers la lunette de l'exercice~1 ($f'_1=\qty{900}{mm}$, $f'_2=\qty{20}{mm}$) en plaçant l'œil du côté de l'objectif.
+\begin{questions}
+\item Quelle lentille joue maintenant le rôle d'objectif ? d'oculaire ?
+\item Le réglage reste-t-il afocal ?
+\item Calculer le nouveau grossissement. Comment voit-on les objets ?
+\item Citer un dispositif courant qui utilise ce principe.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-11}
+\begin{exercice}[2]{Les jumelles 10 × 50}
+Des jumelles portent l'indication « 10 × 50 » et « champ : $6{,}5^\circ$ ». Chaque côté fonctionne comme une lunette
+afocale dont l'image est redressée par des prismes.
+\begin{questions}
+\item Que signifient les nombres 10 et 50 ?
+\item Le champ réel est l'angle du cône d'espace observé. Quelle largeur de paysage voit-on à \qty{1000}{m} ?
+\item Le champ apparent est l'angle sous lequel l'œil voit cette image. Le calculer avec l'approximation des petits angles.
+\item Le faisceau qui sort de chaque oculaire a un diamètre égal au diamètre de l'objectif divisé par le grossissement.
+Le calculer et le comparer au diamètre de la pupille, 2 à \qty{7}{mm} selon l'éclairage.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-24-12}
+\begin{exercice}[3]{La grande lunette de Meudon}
+\begin{docu}{1}{Une lunette géante}
+Inaugurée en 1891, la grande lunette de l'observatoire de Meudon possède un objectif de \qty{83}{cm} de diamètre et de
+\qty{16,16}{m} de distance focale. L'astronome Eugène Antoniadi l'utilisa pour dessiner la surface de Mars.
+\end{docu}
+\begin{docu}{2}{Observer Mars}
+Lors de ses oppositions les plus favorables, Mars apparaît sous un angle de $25''$ (secondes d'arc). La Lune est vue à
+l'œil nu sous un angle de $0{,}52^\circ$.
+\end{docu}
+\begin{questions}
+\item Calculer le grossissement obtenu avec un oculaire de \qty{25}{mm}.
+\item Exprimer le diamètre apparent de Mars en radians, puis calculer l'angle sous lequel Mars apparaît à travers la
+lunette, en degrés.
+\item \initiative Quelle distance focale d'oculaire faudrait-il pour voir Mars aussi grande que la Lune à l'œil nu ?
+\item Pourquoi les lunettes géantes ont-elles été abandonnées au profit des télescopes à miroir ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-13}
+\begin{exercice}[3]{Les satellites de Jupiter}
+\begin{docu}{1}{La découverte de Galilée}
+En janvier 1610, Galilée découvre avec sa lunette quatre satellites autour de Jupiter. Io, le plus proche, tourne à
+\qty{4,22e5}{km} de la planète.
+\end{docu}
+\begin{docu}{2}{Les conditions d'observation}
+À l'opposition, Jupiter est à \qty{6,3e8}{km} de la Terre et apparaît sous un diamètre de $45''$. L'éclat de Jupiter empêche
+de voir Io à l'œil nu : il faut que l'écart apparent entre Io et le bord du disque de Jupiter dépasse environ $5'$
+(minutes d'arc).
+\end{docu}
+\begin{questions}
+\item Calculer l'écart angulaire maximal entre Io et le centre de Jupiter, en radians puis en minutes d'arc.
+\item En déduire l'écart maximal entre Io et le bord du disque de Jupiter.
+\item \initiative Quel grossissement minimal permet d'observer Io ? Des jumelles suffisent-elles ?
+\item Galilée a vu les satellites changer de position d'une nuit à l'autre. Qu'en a-t-il déduit ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-14}
+\begin{exercice}[3]{Choisir ses oculaires}
+\begin{docu}{1}{Une lunette commerciale}
+Lunette 80/900 : objectif de \qty{80}{mm} de diamètre et de \qty{900}{mm} de distance focale. Livrée avec trois oculaires de
+\qty{25}{mm}, \qty{12}{mm} et \qty{6}{mm}, et une lentille de Barlow « ×2 » qui double la distance focale de l'objectif.
+\end{docu}
+\begin{docu}{2}{Le conseil des astronomes}
+« Le grossissement maximal utile vaut environ deux fois le diamètre de l'objectif en millimètres ; au-delà, l'image
+s'agrandit mais devient floue et sombre. »
+\end{docu}
+\begin{questions}
+\item Calculer les grossissements obtenus avec chaque oculaire, sans puis avec la lentille de Barlow.
+\item Calculer le grossissement maximal utile de cette lunette.
+\item \initiative Le fabricant annonce un grossissement de 300 sur l'emballage. Cette publicité est-elle honnête ?
+\item Quelle combinaison conseiller pour observer les anneaux de Saturne, petits mais lumineux ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-24-15}
+\begin{exercice}[3]{La maquette de lunette}
+\begin{docu}{1}{Le montage}
+Sur un banc d'optique, on dispose d'un objectif de vergence \num{+2,0}~$\delta$ et d'un oculaire de vergence \num{+8,0}~$\delta$. Un
+objet lumineux placé au foyer d'une lentille auxiliaire se comporte comme un objet à l'infini, vu sous un angle de
+\qty{0,050}{rad}.
+\end{docu}
+\begin{docu}{2}{Les mesures}
+Un écran placé à \qty{50}{cm} derrière l'objectif recueille une image nette de \qty{2,5}{cm}.
+\end{docu}
+\begin{questions}
+\item Calculer les distances focales des deux lentilles et la distance qui doit les séparer.
+\item Justifier la position de l'écran et la taille de l'image intermédiaire.
+\item \initiative Retirer l'écran et calculer l'angle sous lequel l'œil voit l'image à travers l'oculaire. En déduire le
+grossissement et le comparer à $f'_1/f'_2$.
+\item Comment vérifier expérimentalement que le faisceau émergent est bien parallèle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

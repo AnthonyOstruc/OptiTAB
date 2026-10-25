@@ -1,0 +1,905 @@
+%% =====================================================================
+%%  Chapitre 1 — Hello, Python!
+%%  Tout le code est vérifié par outils/verifier_code.py (Shell IDLE simulé).
+%% =====================================================================
+\chapitre{1}{Hello, Python!}{Install Python and run your first programs}{illusHello}
+
+\histoire{Every app on your phone, every website and every video game is a \textbf{program}: a
+list of instructions that a computer follows, one after the other, exactly as written. Learning to
+program means learning to write those instructions yourself. In this chapter, you install Python,
+have your first conversation with it, then write, save and run your first real program. Along the
+way, you meet Python's error messages\,---\,and discover that they are on your side.}
+
+\begin{objectifs}
+\item explain what a program, a programming language and an interpreter are;
+\item install Python and open IDLE, the editor that comes with it;
+\item type instructions in the Python shell and read its answers;
+\item display text and numbers with \py{print()};
+\item write, save and run a program file;
+\item read an error message and fix the mistake it points to;
+\item explain your code with comments.
+\end{objectifs}
+
+\auprogramme
+  {what a program is; the interpreter; the shell and program files; errors}
+  {\py{print()}, text between quotes, numbers, comments with \py{\#}}
+  {IDLE: the Python shell and the code editor; keyboard shortcuts}
+  {read error messages from the bottom up; save and run often}
+  {a business card that Python prints for you}
+
+\seances[4]{livre/otNavy/Get ready/What programming is and how to install Python (1.1--1.2),
+  terminal/otViolet/Talk to Python/The shell and the \py{print()} function (1.3--1.4),
+  fichier/otTeal/Your first file/Programs and error messages (1.5--1.8),
+  crayon/otGreenDark/Practise/Mini-project and exercises and review (1.9--1.11)}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{What is a program?}
+
+A computer is an extraordinary machine: it performs billions of operations per second, never gets
+tired and never forgets anything. But it has one weakness: it does \emph{nothing} on its own. Every
+single thing it does, it does because a program told it to.\otPara
+
+A program is a bit like a cooking recipe. A recipe is a list of steps\,---\,break two eggs, add
+100~g of flour, stir for one minute\,---\,that you follow in order, from the first to the last. A
+program is a list of \textbf{instructions} that the computer carries out in order, from the first to
+the last. There is one big difference: a cook has common sense, a computer has none. If a recipe
+says \enquote{add some salt}, a cook guesses how much. A computer cannot guess: every instruction must
+be perfectly precise.
+
+\begin{definition}{program}
+A list of instructions that a computer carries out, one after the other, to perform a task. Each
+instruction is a simple, precise order: display a message, add two numbers, save a file\ldots
+\end{definition}
+
+\soustitre{Talking to a computer}
+Deep inside, a computer only understands long sequences of 0s and 1s, which are almost impossible
+for humans to read. Human languages, on the other hand, are full of ambiguities that a computer
+cannot handle. A \textbf{programming language} sits in between: precise enough for the computer,
+readable enough for you. There are hundreds of them\,---\,JavaScript, Java, C, Swift\ldots\,---\,and
+Python is one of the most popular in the world.\otPara
+
+Here is what a short Python program looks like. You don't need to understand it yet: just notice
+how close it is to plain English.
+
+\begin{code}{file=first_look.py}
+print("Hello!")
+print("Python can count:", 1 + 2 + 3)
+print("Goodbye!")
+\end{code}
+\begin{sortie}
+Hello!
+Python can count: 6
+Goodbye!
+\end{sortie}
+
+Each line is one instruction. The word \py{print} means \enquote{display on the screen}. The
+computer carried out the three instructions in order, from top to bottom, and even did the
+addition for us. That's a program!
+
+\begin{definition}{programming language}
+A language with strict rules, designed to write instructions that a computer can carry out. The
+rules that say how instructions must be written are called the \textbf{syntax} of the language.
+\end{definition}
+
+\soustitre{The interpreter, Python's translator}
+When you run a Python program, a piece of software called the Python \textbf{interpreter} reads your
+instructions one by one, checks that they follow the rules of the language, and carries them out.
+When people say \enquote{install Python}, they mean installing this interpreter on their computer.
+
+\begin{center}
+\begin{tikzpicture}[x=1mm,y=1mm]
+  \foreach \x/\ico/\coul/\titre/\txt in {0/clavier/otNavy/You/write instructions in Python,
+      58/engrenage/otViolet/The interpreter/reads them and carries them out,
+      116/ecran/otGreenDark/The computer/shows the result}{%
+    \fill[\coul!8,rounded corners=2mm] (\x,0) rectangle ++(50,26);
+    \fill[\coul,rounded corners=1.6mm] (\x+4,15) rectangle ++(8,8);
+    \otDessinIcone{\ico}{white}{\coul}{5.2mm}{(\x+8,19)}
+    \node[anchor=west,font=\otSemi\fontsize{9.6}{11}\selectfont,text=\coul] at (\x+14,19) {\titre};
+    \node[anchor=north west,text width=42mm,font=\fontsize{9.4}{11.6}\selectfont,text=otInk] at (\x+3.5,12) {\txt};}
+  \foreach \x in {50.5,108.5}{\draw[-{Stealth[length=2.6mm]},otMuted,line width=1pt] (\x,13) -- ++(7,0);}
+\end{tikzpicture}
+\end{center}
+
+\begin{definition}{interpreter}
+The program that reads Python code and carries it out, instruction by instruction. Installing
+\enquote{Python} on a computer means installing the Python interpreter.
+\end{definition}
+
+\begin{culture}[Where does the name come from?]
+Python was created by the Dutch programmer Guido van Rossum, who released the first version in
+1991. The name has nothing to do with snakes: it comes from \emph{Monty Python's Flying Circus}, a
+British comedy series he enjoyed. Today Python is free, open source and used almost everywhere:
+websites, scientific research, data analysis, artificial intelligence, video games, and the
+automation of countless everyday tasks.
+\end{culture}
+
+\soustitre{Why start with Python?}
+\begin{itemize}
+\item \textbf{It reads almost like English.} You can focus on ideas instead of punctuation.
+\item \textbf{It is versatile.} The same language lets you automate a spreadsheet, build a website
+  or train an artificial intelligence.
+\item \textbf{It is free} and works the same way on Windows, macOS and Linux.
+\item \textbf{It has a huge community.} Whatever your question, someone has probably answered it
+  already, and thousands of free libraries extend what Python can do.
+\end{itemize}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Installing Python}
+
+Python is free. Installing it takes about ten minutes, and you only do it once. Follow the steps for
+your system.
+
+\begin{encadre}{ecran}{Windows}[]
+\begin{etapes}
+\item Open your web browser and go to \textbf{python.org}. Click \menu{Downloads}: the site detects
+  that you use Windows and offers the latest version of Python~3.
+\item Download it, then open the downloaded file.
+\item Follow the instructions and keep the default options. If the installer shows a box labelled
+  \menu{Add python.exe to PATH}, tick it: it will be useful later.
+\item When the installation is over, open the \menu{Start} menu and type \menu{IDLE}. Click the
+  application \menu{IDLE (Python 3.x)}.
+\end{etapes}
+\end{encadre}
+
+\begin{encadre}{ecran}{macOS}[]
+\begin{etapes}
+\item Go to \textbf{python.org}, click \menu{Downloads} and download the latest version of Python~3
+  for macOS.
+\item Open the downloaded \textbf{.pkg} file and follow the instructions.
+\item Open your \menu{Applications} folder, then the \menu{Python 3.x} folder, and double-click
+  \menu{IDLE}.
+\end{etapes}
+\end{encadre}
+
+\begin{encadre}{ecran}{Linux}[]
+Python~3 is almost always installed already, but IDLE sometimes isn't. On Ubuntu or Debian, open a
+terminal and type \py{sudo apt install idle3}, then start IDLE from your applications menu, or by
+typing \py{idle3} in the terminal. On other distributions, look for the \enquote{idle} package in
+your package manager.
+\end{encadre}
+
+\begin{astuce}[Which version?]
+Any version of Python~3 from 3.10 onwards works with this book. Every program in it was run with
+Python~3.13; if your version is more recent, a few messages may be worded slightly differently.
+Never install Python~2: it has been obsolete since 2020.
+\end{astuce}
+
+\soustitre{Meet IDLE}
+IDLE is the small programming environment installed with Python. Its name stands for
+\emph{Integrated Development and Learning Environment}\,---\,and it is also a wink at Eric Idle, one
+of the Monty Python team. When you open it, you see a window like this one:
+
+\begin{idleshell}{IDLE Shell 3.13.5}
+Python 3.13.5 (...) on win32
+Enter "help" below or click "Help" above for more information.
+>>>
+\end{idleshell}
+
+The first line shows the version of Python (3.13.5 here; yours may be more recent) and your system
+(\py{win32} for Windows, \py{darwin} for macOS, \py{linux} for Linux). The three chevrons
+\py{>>>} are the \textbf{prompt}: Python is waiting for your instructions.
+
+\begin{definition}{IDLE}
+The editor installed with Python. It has two kinds of windows: the \textbf{Shell}, to talk to Python
+one instruction at a time, and the \textbf{editor}, to write and save complete programs.
+\end{definition}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Your first conversation: the shell}
+
+Click in the IDLE Shell window, after the prompt \py{>>>}. Type \py{2 + 3}, then press
+\touche{Enter}. Python answers at once:
+
+\begin{console}
+>>> 2 + 3
+5
+\end{console}
+
+You have just run your first instruction! Python read \py{2 + 3}, worked out the result and
+displayed it on the next line. Then it showed a new prompt, ready for the next instruction. Try a
+few more calculations; the star \py{*} means \enquote{multiplied by}:
+
+\begin{console}
+>>> 10 - 4
+6
+>>> 7 * 8
+56
+>>> 1 + 2 + 3 + 4 + 5
+15
+\end{console}
+
+\begin{regle}[How to read this book]
+In this book, a dark box labelled \textbf{Python shell} shows a conversation with Python. The lines
+that start with \py{>>>} are what \emph{you} type; the other lines are Python's answers. Type only
+what comes after \py{>>>}: the chevrons are already on your screen.
+\end{regle}
+
+\soustitre{Your first words}
+Now let's display some text. Type the following instruction exactly as it is written, with the
+parentheses and the quotation marks:
+
+\begin{console}
+>>> print("Hello, world!")
+Hello, world!
+\end{console}
+
+Python displayed the text that was between the quotation marks. \enquote{Hello, world!} is a
+tradition: it is the first program of millions of programmers around the world.
+
+\begin{culture}[Hello, world!]
+The tradition of starting with a program that displays \enquote{Hello, world!} was made famous in
+1978 by the book \emph{The C Programming Language}, by Brian Kernighan and Dennis Ritchie. Almost
+every programming course since has followed it\,---\,this one included.
+\end{culture}
+
+The shell is perfect for trying things out: you type, Python answers immediately. It has one
+limit: it forgets everything when you close it. To keep a program, you will write it in a file
+(section~1.5).
+
+\begin{atoi}[Calculate in the shell]
+In the shell, work out \py{15 + 27}, \py{100 - 58} and \py{6 * 7}. Then make Python display
+\py{Hello, Python!} with \py{print()}. What do you notice about the three results?
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Displaying with \texorpdfstring{\py{print()}}{print()}}
+
+\py{print} is a \textbf{function}: a ready-made tool that Python offers you. To use it, you write
+its name followed by parentheses, and you put inside the parentheses what you want to display.
+Using a function is called \textbf{calling} it.
+
+\begin{definition}{function}
+A named tool that performs a task. You call a function by writing its name followed by
+parentheses: \py{print("Hi")}. The values inside the parentheses are its \textbf{arguments}.
+\end{definition}
+
+\soustitre{Text goes between quotes}
+In Python, a piece of text is called a \textbf{string}. You write it between quotation marks,
+either double quotes \py{"} or single quotes \py{'}. Both work the same way, as long as you use the
+same kind at both ends:
+
+\begin{console}
+>>> print("I am learning Python.")
+I am learning Python.
+>>> print('Me too!')
+Me too!
+\end{console}
+
+Notice that the quotes are not displayed: they only tell Python where the text begins and where it
+ends. Inside a string, you can write anything: letters, spaces, digits, punctuation.
+
+\soustitre{Numbers go without quotes}
+Numbers are written without quotes, just as in mathematics. Decimal numbers use a \textbf{dot},
+never a comma:
+
+\begin{console}
+>>> print(42)
+42
+>>> print(3.5)
+3.5
+>>> print(7 * 6)
+42
+\end{console}
+
+Now compare these two instructions carefully:
+
+\begin{console}
+>>> print(2 + 3)
+5
+>>> print("2 + 3")
+2 + 3
+\end{console}
+
+Without quotes, \py{2 + 3} is a calculation: Python works it out and displays \py{5}. With quotes,
+\py{"2 + 3"} is just text: Python displays it exactly as it is, character by character.
+
+\begin{regle}[Quotes or no quotes?]
+Between quotes, Python takes your text \emph{literally} and does not try to understand it. Without
+quotes, Python reads and \emph{evaluates} what you wrote: a calculation is computed, a name is looked
+up.
+\end{regle}
+
+\soustitre{Several values at once}
+You can give \py{print()} several values, separated by commas. Python displays them on the same
+line, with a space between two values:
+
+\begin{console}
+>>> print("Total:", 2 + 3)
+Total: 5
+>>> print("I am", 16, "years old")
+I am 16 years old
+\end{console}
+
+Python added the spaces itself: there is no need to put one at the end of \py{"I am"}. Finally,
+\py{print()} with nothing between the parentheses displays an empty line, which is useful to space
+out what your program displays.
+
+\begin{atoi}[Predict, then check]
+Before typing them, predict what each instruction displays. Then check in the shell.\par\vspace{1mm}
+\py{print("10 + 5")}\qquad\py{print(10 + 5)}\qquad\py{print("10", "+", 5)}\qquad\py{print(10, 5)}
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Your first program file}
+
+The shell forgets everything as soon as you close it. A real program is saved in a \textbf{file},
+so that you can run it again whenever you want, improve it and share it. A Python program file is
+called a \textbf{script}; its name ends with \textbf{.py}.
+
+\begin{etapes}
+\item In IDLE, choose \menu{File\menusep New File} (or press \touche{Ctrl}\,+\,\touche{N}; on a Mac,
+  \touche{Cmd}\,+\,\touche{N}). An empty editor window opens.
+\item Type your program in this window. Nothing happens while you type: the editor just records your
+  instructions.
+\item Save it with \menu{File\menusep Save} (\touche{Ctrl}\,+\,\touche{S}). Create a folder called
+  \textbf{python} in your \textbf{Documents} folder, and save the file as \textbf{hello.py}.
+\item Run it with \menu{Run\menusep Run Module}, or simply press \touche{F5}. The result appears in
+  the Shell window.
+\end{etapes}
+
+Here is your first program, as it looks in the IDLE editor. Notice that IDLE colours the code to
+make it easier to read: functions in purple, text in green.
+
+\begin{idleediteur}{hello.py - C:\textbackslash Users\textbackslash ana\textbackslash Documents\textbackslash python\textbackslash hello.py (3.13.5)}
+print("Hello, world!")
+print("My name is Ana.")
+print("I am learning Python.")
+\end{idleediteur}
+
+Press \touche{F5}. In the Shell window, IDLE first writes a line \py{= RESTART:} followed by the name
+of your file (the Shell starts afresh to run it), then the three lines of your program appear:
+
+\rattacher
+\titresortie{IDLE Shell}
+\begin{sortie}
+Hello, world!
+My name is Ana.
+I am learning Python.
+\end{sortie}
+
+\begin{regle}[How to read this book (continued)]
+From now on, programs are shown in a light box like the one below, with the name of the file at the
+top and line numbers in the margin (do not type the numbers!). What the program displays when you
+run it is shown just below, in a dark box labelled \textbf{Output}.
+\end{regle}
+
+\begin{code}{file=morning.py}
+print("Good morning!")
+print("Today is a great day to learn Python.")
+print()
+print("Lesson 1: the print() function")
+\end{code}
+\begin{sortie}
+Good morning!
+Today is a great day to learn Python.
+
+Lesson 1: the print() function
+\end{sortie}
+
+\soustitre{From top to bottom}
+Python runs the instructions of a script in order, starting with line~1 and ending with the last
+line. This is called \textbf{sequential execution}. If you swap two lines, you change the order of
+what is displayed: the computer never reorders anything by itself.
+
+\begin{astuce}[Save, run, repeat]
+Get into the habit of pressing \touche{F5} after every small change: it saves your file and runs
+it. Programmers rarely write a whole program in one go; they add a few lines, run, check, and start
+again. The sooner you see a mistake, the easier it is to fix.
+\end{astuce}
+
+\begin{atoi}[About me]
+Create a new file \textbf{about\_me.py} that displays three lines: your first name, the city where
+you live and your favourite food. Save it and run it with \touche{F5}.
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{hood}{What happens when you press F5?}
+
+Pressing \touche{F5} sets off a short chain of events. Understanding it will help you make sense of
+the errors you meet.
+
+\begin{center}
+\begin{tikzpicture}[x=1mm,y=1mm]
+  \foreach \k/\ico/\titre/\txt in {0/fichier/Save/IDLE saves your file,
+      1/boucle/Restart/a fresh Python starts,
+      2/oeil/Check/the whole file is read and its syntax checked,
+      3/engrenage/Translate/into simpler instructions (bytecode),
+      4/lecture/Run/line by line from top to bottom}{%
+    \pgfmathsetmacro{\x}{\k*34.4}
+    \fill[otViolet!9,rounded corners=2mm] (\x,0) rectangle ++(31,30);
+    \fill[otViolet,rounded corners=1.6mm] (\x+11.5,19) rectangle ++(8,8);
+    \otDessinIcone{\ico}{white}{otViolet}{5.2mm}{(\x+15.5,23)}
+    \node[font=\otSemi\fontsize{9}{10}\selectfont,text=otViolet] at (\x+15.5,14.5) {\titre};
+    \node[anchor=north,text width=28mm,align=center,font=\fontsize{8.4}{10}\selectfont,text=otInk] at (\x+15.5,11) {\txt};
+    \ifnum\k<4\draw[-{Stealth[length=2mm]},otMuted,line width=0.9pt] (\x+31.6,15) -- ++(2.4,0);\fi}
+\end{tikzpicture}
+\end{center}
+
+The important point is step~3: \textbf{Python reads and checks your whole file before running the
+first line.} If it finds an instruction that breaks the rules of the language\,---\,a
+\textbf{syntax error}\,---\,it refuses to run anything at all. Look at this program, whose last line
+has lost its closing parenthesis:
+
+\begin{code}{file=check.py, bug}
+print("Line 1")
+print("Line 2")
+print("Line 3"
+\end{code}
+\begin{erreur}
+SyntaxError: '(' was never closed
+\end{erreur}
+
+Not even \enquote{Line 1} is displayed! IDLE shows this message in a small window titled
+\textbf{SyntaxError}, and highlights in red the place where it got lost in your code. Now compare
+with this program, which is written correctly but uses a function that does not exist, \py{prin}:
+
+\begin{code}{file=check.py, bug}
+print("Line 1")
+print("Line 2")
+prin("Line 3")
+print("Line 4")
+\end{code}
+\begin{erreur}
+Line 1
+Line 2
+Traceback (most recent call last):
+  File "check.py", line 3, in <module>
+    prin("Line 3")
+NameError: name 'prin' is not defined. Did you mean: 'print'?
+\end{erreur}
+
+This time, the syntax is correct, so the program starts. Lines~1 and~2 run normally. Python only
+discovers the problem when it reaches line~3: it stops there, and line~4 never runs.
+
+\begin{regle}[Two kinds of errors]
+A \textbf{syntax error} is detected before the program starts: nothing runs. An error that happens
+\textbf{while the program runs} (Python calls it an \textbf{exception}) stops the program at the
+line where it occurs; everything before that line has already run.
+\end{regle}
+
+\begin{culture}[Bytecode]
+Step~4 is invisible: Python translates your code into \emph{bytecode}, a list of very simple
+instructions that its interpreter can run quickly. You will never need to read bytecode, but it
+explains why Python is called an \enquote{interpreted} language.
+\end{culture}
+
+%% ---------------------------------------------------------------------
+\rubrique{debug}{Reading error messages}
+
+Every programmer, beginner or expert, makes mistakes all day long. Professionals are not people who
+never make mistakes: they are people who know how to \emph{read} the messages Python gives them.
+These messages are not reproaches; they are clues.
+
+\soustitre{The anatomy of an error message}
+Here is the message from the previous section again. Each part tells you something:
+
+\sortielibre
+\begin{erreur}
+Traceback (most recent call last):  <<1>>
+  File "check.py", line 3, in <module>  <<2>>
+    prin("Line 3")  <<3>>
+NameError: name 'prin' is not defined. Did you mean: 'print'?  <<4>>
+\end{erreur}
+
+\begin{renvois}
+\renvoi{1} \textbf{Traceback} announces an error message: Python is going to retrace the steps that
+  led to the error.
+\renvoi{2} \textbf{Where}: the file (\py{check.py}) and the line number (\py{line 3}). \py{<module>}
+  means \enquote{the main program}. In IDLE, the full path of the file is shown, for example
+  \py{C:\textbackslash Users\textbackslash ana\textbackslash Documents\textbackslash python\textbackslash check.py};
+  in this book we shorten it to the name of the file.
+\renvoi{3} \textbf{The faulty line}, copied from your program.
+\renvoi{4} \textbf{What went wrong}: the type of error (\py{NameError}), followed by an explanation
+  in plain English, and sometimes a suggestion. This is the most important line.
+\end{renvois}
+
+\begin{regle}[Read from the bottom up]
+Always start with the \textbf{last line}: it tells you \emph{what} is wrong. Then go up to find
+\emph{where}: the line number takes you straight to the problem.
+\end{regle}
+
+\soustitre{The six most common beginner mistakes}
+Try each of these wrong instructions in the shell: you will recognise these messages when they
+appear in your own programs. In the shell, a syntax error is reported with a single line.
+
+\cas{1}{A capital letter}
+Python is \textbf{case-sensitive}: for it, \py{Print} and \py{print} are two different names, and
+only \py{print} exists. The \py{<pyshell\#0>} part means \enquote{the instruction you typed in the
+shell}.
+\begin{console}
+>>> Print("Hello")
+Traceback (most recent call last):
+  File "<pyshell#0>", line 1, in <module>
+    Print("Hello")
+NameError: name 'Print' is not defined. Did you mean: 'print'?
+\end{console}
+
+\cas{2}{Forgotten quotes}
+Without quotes, \py{Hello} is not text: Python looks for something named \py{Hello}, finds nothing
+and gives up. Fix: \py{print("Hello")}.
+\begin{console}
+>>> print(Hello)
+Traceback (most recent call last):
+  File "<pyshell#0>", line 1, in <module>
+    print(Hello)
+NameError: name 'Hello' is not defined
+\end{console}
+
+\cas{3}{A missing closing quote}
+The text never ends: in Python, a string must open and close on the same line. \enquote{String
+literal} is the official name of a piece of text written in your code.
+\begin{console}
+>>> print("Hello)
+SyntaxError: unterminated string literal (detected at line 1)
+\end{console}
+
+\cas{4}{Unbalanced parentheses}
+Every opening parenthesis needs exactly one closing parenthesis. (In the IDLE Shell, if you forget
+the closing parenthesis and press \touche{Enter}, IDLE simply waits for the rest of the instruction:
+type \py{)} and press \touche{Enter} again.)
+\begin{console}
+>>> print("Hello"
+SyntaxError: '(' was never closed
+>>> print("Hello"))
+SyntaxError: unmatched ')'
+\end{console}
+
+\cas{5}{No parentheses}
+Very old versions of Python allowed this; Python~3 does not, and even suggests the fix.
+\begin{console}
+>>> print "Hello"
+SyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?
+\end{console}
+
+\cas{6}{A space at the beginning of the line}
+In Python, spaces at the start of a line (the \textbf{indentation}) have a meaning that you will
+discover in chapter~8. For now, start every line at the very left.
+\begin{console}
+>>>  print("Hello")
+SyntaxError: unexpected indent
+\end{console}
+
+\begin{pratique}[A method that always works]
+\begin{etapes}
+\item Read the \textbf{last line} of the message: what type of error, what explanation?
+\item Go to the \textbf{line number} given in the message.
+\item Look closely at that line\,---\,and at the end of the line before, for a forgotten quote or
+  parenthesis.
+\item Change \textbf{one thing}, then run the program again.
+\end{etapes}
+\end{pratique}
+
+%% ---------------------------------------------------------------------
+\rubrique{pro}{Comments and clean code}
+
+Programs are read by computers, but also by people: your teammates, and yourself in three months'
+time. Professional programmers write their code so that a human can read it easily.
+
+\soustitre{Comments}
+Everything that follows a hash sign \py{\#} on a line is a \textbf{comment}: Python ignores it
+completely. Comments are notes for human readers.
+
+\begin{code}{file=comments.py}
+# comments.py - my first commented program
+# Author: Ana, September 2026
+
+print("Comments are ignored by Python.")  # this one too
+# print("This line will not run.")
+print("Only two lines are displayed.")
+\end{code}
+\begin{sortie}
+Comments are ignored by Python.
+Only two lines are displayed.
+\end{sortie}
+
+Line~5 shows a classic trick: putting a \py{\#} in front of an instruction \enquote{switches it
+off} without deleting it. This is called \textbf{commenting out} a line. In IDLE, you can comment
+out the selected lines with \menu{Format\menusep Comment Out Region} (\touche{Alt}\,+\,\touche{3}).
+
+\begin{definition}{comment}
+A note in the code, written after a \py{\#} sign. Python ignores it: it is there to help humans
+understand the program.
+\end{definition}
+
+\begin{pratique}[Comment the why, not the what]
+A good comment explains what the code cannot say by itself: the purpose of the program, a choice
+you made, a trap to avoid. The comment \py{\# display Hello} above \py{print("Hello")} adds nothing.
+Start each program with a comment that says what it does.
+\end{pratique}
+
+\soustitre{Clean code from day one}
+Python's official style guide, called \textbf{PEP~8}, describes how to lay out code so that every
+Python programmer can read it easily. Here are its first rules:
+
+\begin{itemize}
+\item one instruction per line;
+\item no space before the opening parenthesis: \py{print("Hi")}, not \py{print ("Hi")};
+\item a space after each comma, not before: \py{print("Total:", 5)};
+\item file names in lower case, without spaces or accents, words joined by an underscore
+  \py{\_}: \py{about\_me.py}, \py{business\_card.py}.
+\end{itemize}
+
+\begin{attention}[Do not use Python's own names]
+Never call your file \py{print.py}, \py{random.py} or \py{turtle.py}: these names belong to Python
+and its tools, and a file with the same name in your folder would get in the way. Choose names that
+describe \emph{your} program.
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique{build}{Mini-project: your business card}
+
+Time to put everything together. You are going to write a program that displays a business card
+with a frame drawn with characters, like this:
+
+\cible{carte}
+\begin{sortie}
++--------------------------------+
+|                                |
+|   ADA LOVELACE                 |
+|   Programmer in training       |
+|                                |
+|   ada@example.com              |
+|   Learning Python since today  |
+|                                |
++--------------------------------+
+\end{sortie}
+
+\soustitre{Step 1: plan the lines}
+Before typing, count: the card has nine lines, so the program needs nine \py{print()}
+instructions. The top and bottom borders are made of \py{+} and \py{-} signs; the other lines start
+and end with a vertical bar \py{|}.
+
+\soustitre{Step 2: write the borders and the text}
+Every line of the card must have \textbf{exactly the same length}, here 34 characters, otherwise the
+right-hand border will be jagged. The Shell uses a \textbf{monospaced} font, in which every
+character, even a space, takes the same width: if two lines have the same number of characters,
+they are exactly as long as each other. Fill the end of each line with spaces up to the bar.
+
+\begin{code}{file=business_card.py, cible=carte}
+# business_card.py - displays my business card
+print("+--------------------------------+")
+print("|                                |")
+print("|   ADA LOVELACE                 |")
+print("|   Programmer in training       |")
+print("|                                |")
+print("|   ada@example.com              |")
+print("|   Learning Python since today  |")
+print("|                                |")
+print("+--------------------------------+")
+\end{code}
+
+\soustitre{Step 3: run and adjust}
+Press \touche{F5}. If a bar on the right sticks out, count the characters of that line: one space
+too many or too few is enough. IDLE helps you: at the bottom right of the editor window, it shows
+the line (\textbf{Ln}) and the column (\textbf{Col}) where your cursor is.
+
+\begin{culture}[Ada Lovelace]
+Ada Lovelace (1815--1852) was an English mathematician. In 1843 she published notes on the
+\emph{Analytical Engine}, a mechanical computer designed by Charles Babbage, including a method to
+make it calculate a sequence of numbers. It is often described as the first computer program ever
+published.
+\end{culture}
+
+\begin{atoi}[Make it yours]
+Change the card so that it shows your own name and details. Then make the card two characters wider
+(add a \py{-} to the borders and a space to every other line). Run it to check that the frame is
+still perfectly straight.
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{practice}{Exercises}
+
+\exercice[type=predict,niveau=1]{Text or calculation?}{For each instruction, write exactly what
+Python displays. Then check your answers in the shell.}
+\begin{questions}[2]
+\item \py{print("Python")}
+\item \py{print("4 * 5")}
+\item \py{print(4 * 5)}
+\item \py{print("4", "*", 5)}
+\item \py{print(10 - 3, "days")}
+\item \py{print("Total:", 10 + 15)}
+\end{questions}
+
+\exercice[type=predict,niveau=1]{In order, please}{Write exactly what this program displays,
+line by line, including any empty line.}
+\begin{code}{file=order.py}
+print("3")
+print("2")
+print("1")
+print()
+print("Lift-off!", 3 + 2 + 1, "seconds later")
+\end{code}
+\ecranvide{5}
+
+\exercice[type=shell,niveau=1]{A pocket calculator}{Use the shell to answer these questions. Write
+the instruction you typed and Python's answer.}
+\begin{questions}
+\item A cinema sold 125 tickets in the morning and 389 in the afternoon. How many in total?
+\item You had 1000 euros and spent 258. How much is left?
+\item A box contains 12 rows of 12 eggs. How many eggs are there?
+\item Type \py{2 + 3 * 4}. Is the result \py{20}? What can you deduce about the order in which
+  Python calculates?
+\end{questions}
+
+\exercice[type=fix,niveau=1]{Spot the mistake}{Each instruction contains one mistake. For each one,
+predict the type of error (\py{NameError} or \py{SyntaxError}), then write the correct
+instruction.}
+\begin{questions}[2]
+\item \py{Print("Good morning")}
+\item \py{print("Good morning)}
+\item \py{print(Good morning)}
+\item \py{print "Good morning"}
+\item \py{pritn("Good morning")}
+\item \py{print("Good morning"))}
+\end{questions}
+
+\exercice[type=write,niveau=1]{Hello from me}{Write a program \py{hello\_me.py} that displays the
+three lines below, with your own details instead of Tom's.}
+\cible{hello-me}
+\begin{sortie}
+My name is Tom.
+I live in Manchester.
+My favourite food is pizza.
+\end{sortie}
+
+\exercice[type=complete,niveau=2]{Fill in the blanks}{Complete the program so that it displays
+exactly the output shown below. Each blank hides one word, one number or one piece of text.}
+\begin{code}{file=blanks.py, trous}
+print(________________)
+print("Lunch is at", ____)
+_____("See you later!")
+print(_____, "+", 2, "=", 7)
+\end{code}
+\cible{blanks}
+\begin{sortie}
+Good morning!
+Lunch is at 12
+See you later!
+5 + 2 = 7
+\end{sortie}
+
+\exercice[type=read,niveau=2]{Read the message}{Ana ran the program below and got this message.}
+\begin{code}{file=menu.py, bug}
+print("Today's menu")
+print("Starter: soup")
+print("Main course: fish")
+prnit("Dessert: apple pie")
+print("Enjoy your meal!")
+\end{code}
+\begin{erreur}
+Today's menu
+Starter: soup
+Main course: fish
+Traceback (most recent call last):
+  File "menu.py", line 4, in <module>
+    prnit("Dessert: apple pie")
+NameError: name 'prnit' is not defined. Did you mean: 'print'?
+\end{erreur}
+\begin{questions}
+\item What type of error is it? On which line is the mistake?
+\item Why were the first three lines displayed, but not the last one?
+\item Correct the program. What does it display now?
+\end{questions}
+
+\exercice[type=fix,niveau=2]{Debug the poem}{This program should display the short poem shown
+below, but it contains three mistakes. Find them by running the program several times: each run
+reveals one mistake. Write the corrected program.}
+\begin{code}{file=poem.py, bug}
+print("Roses are red,")
+print("Violets are blue,)
+Print("Python is fun,")
+print("And so are you!"
+\end{code}
+\cible{poem}
+\begin{sortie}
+Roses are red,
+Violets are blue,
+Python is fun,
+And so are you!
+\end{sortie}
+
+\exercice[type=write,niveau=2]{A tree in the shell}{Write a program \py{tree.py} that draws this
+tree, with one \py{print()} per line. Then add a few decorations of your own.}
+\cible{tree}
+\begin{sortie}
+     *
+    ***
+   *o***
+  ***o***
+ *o*****o*
+    | |
+  =======
+\end{sortie}
+
+\exercice[type=predict,niveau=2]{Ghost lines}{Some lines of this program are comments. Write what
+the program displays, then explain why.}
+\begin{code}{file=ghosts.py}
+# ghosts.py - what will appear?
+print("one")
+# print("two")
+print("three")  # print("four")
+#print("five")
+print("six # seven")
+\end{code}
+\ecranvide{3}
+
+\exercice[type=write,niveau=2]{The 7 times table}{Write a program that displays the first five lines
+of the 7 times table, as below. Python must do the multiplications: write \py{7 * 3}, not \py{21}.}
+\cible{table7}
+\begin{sortie}
+7 x 1 = 7
+7 x 2 = 14
+7 x 3 = 21
+7 x 4 = 28
+7 x 5 = 35
+\end{sortie}
+
+\exercice[type=challenge,niveau=3]{The café receipt}{At the Corner Café, a coffee costs 3 euros, a
+muffin 4 euros and an orange juice 5 euros. Lucy orders 2 coffees, 1 muffin and 3 orange juices.
+Write a program that displays her receipt exactly as below. Python must calculate every amount and
+the total itself: the only numbers you may type are the quantities and the prices.}
+\cible{receipt}
+\begin{sortie}
+====== CORNER CAFE ======
+2 x Coffee       = 6
+1 x Muffin       = 4
+3 x Orange juice = 15
+-------------------------
+TOTAL = 25 euros
+Thank you, see you soon!
+\end{sortie}
+
+%% ---------------------------------------------------------------------
+\rubrique{review}{Chapter review}
+
+\begin{essentiel}
+\otEssTitre{Programs and Python}
+A \textbf{program} is a list of instructions that the computer carries out in order, from top to
+bottom. The \textbf{interpreter} reads Python code and runs it. \textbf{IDLE} has two kinds of
+windows: the \textbf{Shell} (\py{>>>}), for trying one instruction at a time, and the
+\textbf{editor}, for writing programs saved in \textbf{.py} files and run with \touche{F5}.
+
+\otEssTitre{Displaying with print()}
+\begin{code}{mini}
+print("Hello, world!")        # text: between quotes
+print(42, 3.5)                # numbers: no quotes, decimal dot
+print("Total:", 2 + 3)        # several values: Total: 5
+print()                       # an empty line
+\end{code}
+
+\otEssTitre{Comments}
+Everything after \py{\#} is ignored by Python. A comment explains \emph{why}; start every program
+with one that says what it does.
+
+\otEssTitre{Errors}
+A \textbf{syntax error} (\py{SyntaxError}) stops everything before the first line runs. An
+\textbf{exception} such as \py{NameError} stops the program at the faulty line. Read the message
+\textbf{from the bottom up}: the last line says what, the line number says where.
+\end{essentiel}
+
+\begin{quiz}
+\qcm{What is a program?}{a computer}{a list of instructions}{a kind of file}
+\qcm{What does the interpreter do?}{it translates English into Python}{it reads Python code and
+  runs it}{it draws the windows of IDLE}
+\qcm{In the Shell, what does \py{>>>} mean?}{Python is waiting for you}{an error occurred}{the
+  program is finished}
+\qcm{What does \py{print("3 + 4")} display?}{\py{7}}{\py{3 + 4}}{\py{"3 + 4"}}
+\qcm{What does \py{print("Age:", 12)} display?}{\py{Age:12}}{\py{Age: 12}}{\py{"Age:", 12}}
+\qcm{Which instruction is correct?}{\py{Print("Hi")}}{\py{print("Hi")}}{\py{print "Hi"}}
+\qcm{Which extension does a Python program file have?}{\py{.txt}}{\py{.python}}{\py{.py}}
+\qcm{What does Python do with \py{\# Hello}?}{it ignores it}{it displays \py{Hello}}{it reports an
+  error}
+\qcm{A program has a syntax error on line~5. What runs?}{lines 1 to 4}{nothing at all}{every
+  line except line~5}
+\qcm{Where do you look first in an error message?}{the first line}{the last line}{the line
+  number}
+\end{quiz}
+
+\begin{jesais}
+\item explain what a program, a programming language and an interpreter are;
+\item open IDLE and run instructions in the Shell;
+\item display text and numbers, alone or together, with \py{print()};
+\item write a program in the editor, save it in a \textbf{.py} file and run it with \touche{F5};
+\item read an error message from the bottom up and find the faulty line;
+\item explain my code with comments, and switch a line off by commenting it out.
+\end{jesais}

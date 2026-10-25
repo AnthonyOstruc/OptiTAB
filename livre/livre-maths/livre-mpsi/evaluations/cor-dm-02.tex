@@ -1,0 +1,101 @@
+% !TEX root = ../main.tex
+%% Corrigé du devoir maison n° 2 — vérifié par verifications/eval_dm.py.
+
+\corrigeSujetEval{DM2}{Devoir maison \numero2}
+\enParties
+
+\begin{corrigeEval}[Compter les carrés]{}{}
+\begin{questions}
+  \item $x^{2}\equiv y^{2}\iff p\mid(x-y)(x+y)\iff p\mid x-y$ ou
+    $p\mid x+y$, par le lemme d'Euclide ($p$ premier). Or
+    $|x-y|\leqslant p-2$, donc $p\mid x-y\iff x=y$ ; et
+    $2\leqslant x+y\leqslant2p-2$, donc $p\mid x+y\iff x+y=p$ :
+    \[\res{x^{2}\equiv y^{2}\pmod p\iff x=y\ \text{ou}\ x+y=p}.\]
+  \item Tout $x\in\ens{1,\dots,p-1}$ s'écrit $x=k$ ou $x=p-k$ avec
+    $1\leqslant k\leqslant\frac{p-1}{2}$, et $(p-k)^{2}\equiv k^{2}$ : les
+    résidus sont les restes de $1^{2},\dots,\bigl(\frac{p-1}2\bigr)^{2}$,
+    non nuls car $p\nmid k^{2}$. Ces restes sont deux à deux distincts :
+    pour $k\neq l$ dans $\ens{1,\dots,\frac{p-1}2}$, on a $k+l<p$, et la
+    question 1 exclut $k^{2}\equiv l^{2}$. Donc
+    $\res{\operatorname{card}R_p=\dfrac{p-1}{2}}$.
+  \item Les carrés de $1,\dots,6$ sont $1,4,9,16,25,36$, de restes
+    $1,4,9,3,12,10$ : $\res{R_{13}=\ens{1,3,4,9,10,12}}$.
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[line cap=round]
+  \def\R{1.9}
+  \draw[otRule,line width=0.8pt] (0,0) circle (\R);
+  \foreach \k in {1,...,6}{
+    \pgfmathsetmacro{\ang}{90-360*\k/13}
+    \draw[otGreenDark!55,line width=0.7pt] (\ang:\R) -- ({180-\ang}:\R);}
+  \foreach \k/\c in {1/1,2/4,3/9,4/3,5/12,6/10}{
+    \pgfmathsetmacro{\yy}{\R*cos(360*\k/13)}
+    \node[font=\scriptsize\bfseries,text=otGreenDark,fill=white,inner sep=1pt] at (0,\yy) {$\c$};}
+  \foreach \k in {0,...,12}{
+    \pgfmathsetmacro{\ang}{90-360*\k/13}
+    \ifnum\k=0 \fill[otMuted] (\ang:\R) circle (2.4pt);
+    \else
+      \ifcase\k\or\def\cc{otGreenDark}\or\def\cc{otNavy}\or\def\cc{otGreenDark}\or\def\cc{otGreenDark}\or
+        \def\cc{otNavy}\or\def\cc{otNavy}\or\def\cc{otNavy}\or\def\cc{otNavy}\or\def\cc{otGreenDark}\or
+        \def\cc{otGreenDark}\or\def\cc{otNavy}\or\def\cc{otGreenDark}\fi
+      \fill[\cc] (\ang:\R) circle (2.4pt);
+    \fi
+    \node[font=\scriptsize] at (\ang:{\R+0.32}) {$\k$};}
+\end{tikzpicture}\\*[0.5mm]
+\legende{Les restes modulo $13$ sur un cadran. Chaque corde relie $x$ et
+$13-x$, qui ont le même carré (écrit au milieu de la corde) ; les six résidus
+quadratiques sont en vert.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Les théorèmes de Wilson et d'Euler]{}{}
+\begin{questions}[start=4]
+  \item \begin{enumerate}[label=\alph*)]
+      \item $x\wedge p=1$ : par Bézout, $ux+vp=1$, et le reste $x^{*}$ de $u$
+        modulo $p$ convient (il est non nul). Si $xy\equiv xz$, alors
+        $p\mid x(y-z)$, donc $p\mid y-z$ (lemme de Gauss) : $y=z$ dans
+        $\ens{1,\dots,p-1}$. D'où \res{\text{l'existence et l'unicité de }x^{*}}.
+      \item $x^{*}=x\iff x^{2}\equiv1=1^{2}\iff x=1$ ou $x=p-1$, par la
+        question 1.
+      \item L'application $x\mapsto x^{*}$ est involutive ($(x^{*})^{*}=x$) :
+        les éléments de $\ens{2,\dots,p-2}$ se regroupent en paires
+        $\ens{x,x^{*}}$ avec $x\neq x^{*}$, de produit $\equiv1$. Donc
+        \[(p-1)!\equiv1\cdot(p-1)\cdot\prod_{\text{paires}}xx^{*}\equiv p-1\equiv\res{-1\pmod p}.\]
+    \end{enumerate}
+  \item Comme en a), $x'$ est le reste de $ax^{*}$, unique ; si l'on avait
+    $x'=x$, alors $x^{2}\equiv a$ et $a$ serait un résidu. De plus
+    $(x')'=x$ : $\ens{1,\dots,p-1}$ se partage en $\frac{p-1}{2}$ paires
+    $\ens{x,x'}$, chacune de produit $\equiv a$. Avec Wilson :
+    \[-1\equiv(p-1)!\equiv\prod_{\text{paires}}xx'\equiv\res{a^{(p-1)/2}}.\]
+  \item Si $a\equiv x_0^{2}$ avec $p\nmid x_0$, alors
+    $a^{(p-1)/2}\equiv x_0^{\,p-1}\equiv1$ par le petit théorème de Fermat.
+    Ainsi $a^{(p-1)/2}\equiv1$ pour un résidu, et $\equiv-1\not\equiv1$
+    ($p>2$) pour un non-résidu : c'est le \res{\text{critère d'Euler}}.
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Applications]{}{}
+\begin{questions}[start=7]
+  \item $\frac{13-1}{2}=6$ : $2^{6}=64=4\times13+12\equiv-1$, donc
+    \res{2\text{ n'est pas un résidu}} ; $3^{6}=729=56\times13+1\equiv1$, donc
+    \res{3\text{ est un résidu}} (en effet $4^{2}=16\equiv3$). C'est conforme
+    à $R_{13}$.
+  \item Par le critère d'Euler, $-1$ est un résidu si et seulement si
+    $(-1)^{(p-1)/2}\equiv1$, c'est-à-dire (puisque $1\not\equiv-1$)
+    $\frac{p-1}{2}$ pair : \res{p\equiv1\pmod4}.
+  \item $p-k\equiv-k$, donc
+    \[(p-1)!=\prod_{k=1}^{(p-1)/2}k\,(p-k)\equiv\prod_{k=1}^{(p-1)/2}\bigl(-k^{2}\bigr)
+      =(-1)^{(p-1)/2}\,x^{2}=x^{2},\]
+    car $\frac{p-1}{2}$ est pair. Avec Wilson : $\res{x^{2}\equiv-1\pmod p}$.
+    Pour $p=13$ : $6!=720=55\times13+5\equiv5$, et $5^{2}=25\equiv-1$.
+  \item Supposons qu'il n'y en ait qu'un nombre fini $p_1,\dots,p_r$, et
+    posons $N=(2p_1\cdots p_r)^{2}+1\geqslant2$. Soit $q$ un diviseur premier
+    de $N$ ; $N$ est impair, donc $q$ aussi. Comme
+    $(2p_1\cdots p_r)^{2}\equiv-1\pmod q$, $-1$ est un résidu modulo $q$, et
+    $q\equiv1\pmod4$ (question 8) : $q$ est l'un des $p_i$. Mais alors $q$
+    divise $(2p_1\cdots p_r)^{2}$ et $N$, donc $1$ : absurde. Il y a
+    \res{\text{une infinité de premiers }p\equiv1\ (4)}. Par exemple, avec
+    $5$ et $13$ : $(2\cdot5\cdot13)^{2}+1=16\,901$, nombre premier congru à
+    $1$ modulo $4$.
+\end{questions}
+\end{corrigeEval}

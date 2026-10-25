@@ -1,0 +1,22 @@
+% Droite d'étalonnage des ions nitrate et lecture des deux puits (corrigé de l'exercice 13, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=58mm,xmin=0,xmax=62,ymin=0,ymax=0.56,
+  xtick={0,10,...,60},ytick={0,0.1,...,0.5},minor y tick num=1,
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$t(\ce{NO3-})$ ($\unit{mg.L^{-1}}$)},ylabel={$A$}]
+\fill[otOrange!10] (axis cs:50,0) rectangle (axis cs:62,0.56);
+\node[pcLegende,text=otOrange!75!black,anchor=north,align=center] at (axis cs:56,0.25) {hors de\\la gamme};
+\addplot[otNavy,line width=1pt,domain=0:50,samples=2] {0.0085*x};
+\addplot[otNavy,line width=0.8pt,dash pattern=on 3pt off 2pt,domain=50:60,samples=2] {0.0085*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otNavy] coordinates {(0,0) (10,0.085) (20,0.170) (30,0.255) (40,0.340) (50,0.425)};
+\draw[otRed!80!black,line width=0.8pt] (axis cs:50,0) -- (axis cs:50,0.5);
+\node[pcLegende,text=otRed!80!black,anchor=south,rotate=90] at (axis cs:49.2,0.04) {limite : \qty{50}{mg.L^{-1}}};
+\draw[otGreenDark,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.392) -- (axis cs:46.1,0.392) -- (axis cs:46.1,0);
+\fill[otGreenDark] (axis cs:46.1,0.392) circle (1.8pt);
+\node[pcLegende,text=otGreenDark,anchor=south west] at (axis cs:2,0.395) {puits A : $A=0{,}392$, $t=\qty{46,1}{mg.L^{-1}}$};
+\draw[otOrange!85!black,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.48) -- (axis cs:56.5,0.48) -- (axis cs:56.5,0);
+\fill[otOrange!85!black] (axis cs:56.5,0.48) circle (1.8pt);
+\node[pcLegende,text=otOrange!75!black,anchor=south west] at (axis cs:2,0.483) {puits B : $A=0{,}48$, $t\approx\qty{56}{mg.L^{-1}}$ (extrapolé)};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Le puits A se lit dans la gamme ; le puits B nécessite d'extrapoler la droite au-delà du dernier étalon.}

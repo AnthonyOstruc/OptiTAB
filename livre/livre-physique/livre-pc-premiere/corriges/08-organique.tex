@@ -1,0 +1,196 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{8}{Molécules organiques et spectroscopie infrarouge}
+\corrigesSouples
+
+\begin{blocLivre}{cor-8-1}
+\begin{corrige}{1}{Formules brutes et semi-développées}
+\demarche{La formule brute compte tous les atomes ; la formule semi-développée montre l'enchaînement sans les liaisons C--H et O--H.}
+\begin{questions}
+\item \res{\ce{CH3-CH2-OH}} et \res{\ce{C2H6O}}.
+\item Propanone : \res{\ce{C3H6O}} ; acide méthanoïque : \res{\ce{CH2O2}}.
+\item \chemfig{H-C(-[2]H)(-[6]H)-C(-[2]H)(-[6]H)-C(-[2]H)(-[6]H)-C(-[2]H)(-[6]H)-H} : formule brute \res{\ce{C4H10}}.
+\item Avec $n=4$, $2n+2=10$ : le butane est bien un \res{\text{alcane}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-2}
+\begin{corrige}{2}{Reconnaître les familles}
+\demarche{Repérer $\ce{-OH}$, C=O en bout de chaîne ($\ce{-CHO}$), C=O dans la chaîne, ou $\ce{-COOH}$.}
+\begin{questions}
+\item Groupe carbonyle en bout de chaîne, $\ce{-CHO}$ : \res{\text{aldéhydes}} (propanal et méthanal).
+\item Groupe carbonyle dans la chaîne : \res{\text{cétone}} (butanone).
+\item Groupe hydroxyle $\ce{-OH}$ : \res{\text{alcools}} (propan-2-ol et butan-1-ol).
+\item Groupe carboxyle $\ce{-COOH}$ : \res{\text{acide carboxylique}} (acide propanoïque).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-3}
+\begin{corrige}{3}{Nommer des molécules}
+\demarche{Chaîne principale contenant le carbone du groupe caractéristique, numérotée pour donner au groupe le plus petit numéro.}
+\begin{questions}
+\item \res{\text{Propan-1-ol}} : 3 carbones, $\ce{-OH}$ sur le carbone 1. \res{\text{2-méthylpropan-1-ol}} : chaîne principale de 3 carbones
+contenant le carbone qui porte $\ce{-OH}$ (numéro 1), groupe méthyle sur le carbone 2.
+\item \res{\text{Pentan-3-one}} : 5 carbones, groupe carbonyle sur le carbone 3, quel que soit le sens de numérotation.
+\item \res{\text{2-méthylpropanal}} : 3 carbones dont celui du groupe $\ce{-CHO}$, numéro 1 ; méthyle sur le carbone 2.
+\item \res{\text{Acide butanoïque}} : 4 carbones, en comptant celui du groupe carboxyle.
+\end{questions}
+\retiens{La chaîne principale est la plus longue chaîne qui contient le carbone du groupe caractéristique, même si une
+chaîne plus longue existe ailleurs ; on la numérote pour donner au groupe le plus petit numéro.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-4}
+\begin{corrige}{4}{Du nom à la formule}
+\demarche{Le préfixe donne le nombre d'atomes de la chaîne principale, la terminaison la famille, le numéro la position du groupe.}
+\begin{questions}
+\item \res{\ce{CH3-CO-CH2-CH2-CH2-CH3}} ; $\ce{C6H12O}$ ; cétone.
+\item \res{\ce{CH3-CH2-COOH}} ; $\ce{C3H6O2}$ ; acide carboxylique.
+\item \res{\ce{HCHO}} ($\ce{CH2O}$) et \res{\ce{CH3-CH2-CH2-CHO}} ($\ce{C4H8O}$) ; aldéhydes.
+\item \res{\ce{CH3-CH(CH3)-CH2-CH2-OH}} ; $\ce{C5H12O}$ ; alcool.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-5}
+\begin{corrige}{5}{Lire un spectre infrarouge}
+\demarche{On attribue chaque bande au-dessus de \qty{1500}{cm^{-1}} grâce à la table ; l'absence d'une bande compte aussi.}
+\begin{questions}
+\item Une bande forte et large vers \qty{3330}{cm^{-1}} : \res{\text{O--H lié}} ; deux bandes vers 2960 et \qty{2880}{cm^{-1}} : \res{\text{C--H}}.
+\item X est un \res{\text{alcool}}. La bande C=O, entre 1650 et \qty{1750}{cm^{-1}}, est \res{\text{absente}}.
+\item Le \res{\text{propan-1-ol}} ($\ce{C3H8O}$) ; le propanal et la propanone ont pour formule $\ce{C3H6O}$.
+\item \res{\ce{CH3-CH2-CH2-OH}}. Le propan-2-ol, $\ce{CH3-CH(OH)-CH3}$, a la même formule brute et les mêmes bandes au-dessus de
+\qty{1500}{cm^{-1}} : seule l'empreinte digitale, comparée à des spectres de référence, permettrait de les distinguer.
+\end{questions}
+\schema[corrige]{08-ex05}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-6}
+\begin{corrige}{6}{Attribuer des bandes en Python}
+\demarche{Un nombre d'onde peut appartenir à plusieurs domaines ; la table du programme doit être complète.}
+\begin{questions}
+\item \code{3000 ['O-H acide', 'C-H']}, \code{2720 ['O-H acide']} et \code{1730 ['C=O']}.
+\item Une bande à \qty{2720}{cm^{-1}} peut être une bande C--H d'aldéhyde, absente de la table : on ajoute
+\code{'C-H aldehyde': (2650, 2850)}.
+\item \code{2720 ['O-H acide', 'C-H aldehyde']}.
+\item L'\res{\text{allure}} des bandes (fine, large, très large) et leur intensité. On pourrait associer à chaque liaison une largeur
+typique et comparer à la largeur mesurée.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-7}
+\begin{corrige}{7}{Deux isomères}
+\demarche{Des isomères ont la même formule brute mais des formules semi-développées différentes.}
+\begin{questions}
+\item Propanal \ce{CH3-CH2-CHO} et propanone \ce{CH3-CO-CH3} : formule brute commune \res{\ce{C3H6O}}.
+\item Groupe carbonyle en bout de chaîne : \res{\text{aldéhyde}} ; groupe carbonyle dans la chaîne : \res{\text{cétone}}.
+\item Dans une cétone à trois carbones, le carbonyle ne peut être que sur le carbone central : le numéro est inutile. Le groupe
+aldéhyde est toujours en bout de chaîne, donc toujours numéro 1.
+\item Les deux bandes \res{\text{C--H d'aldéhyde}}, vers 2720 et \qty{2820}{cm^{-1}}, n'apparaissent que pour le propanal.
+\end{questions}
+\schema[corrige]{08-ex07-cor}
+\piege{Confondre aldéhyde et cétone : tous deux ont un groupe C=O ; l'aldéhyde l'a en bout de chaîne, lié à un atome
+d'hydrogène ($\ce{-CHO}$), la cétone au milieu de la chaîne.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-8}
+\begin{corrige}{8}{Quatre alcools}
+\demarche{Chercher la chaîne la plus longue contenant le carbone qui porte $\ce{-OH}$, puis numéroter depuis l'extrémité la plus proche du groupe.}
+\begin{questions}
+\item Chacun compte 4 C, 10 H et 1 O : \res{\ce{C4H10O}}.
+\item A : \res{\text{butan-1-ol}} ; B : \res{\text{butan-2-ol}}.
+\item C : \res{\text{2-méthylpropan-1-ol}} ; D : \res{\text{2-méthylpropan-2-ol}}.
+\item \res{\text{Non}} : ce sont quatre alcools, avec les mêmes liaisons O--H et C--H ; seules leurs empreintes digitales diffèrent.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-9}
+\begin{corrige}{9}{Du vin au vinaigre}
+\demarche{Comparer les bandes O--H et rechercher la bande C=O.}
+\begin{questions}
+\item \ce{CH3-CH2-OH} (hydroxyle) et \ce{CH3-COOH} (carboxyle).
+\item Bande O--H : large, vers \qty{3340}{cm^{-1}}, pour l'alcool ; \res{\text{très large}}, de 2500 à \qty{3200}{cm^{-1}}, pour l'acide. Une
+\res{\text{bande C=O}} intense vers \qty{1715}{cm^{-1}} n'existe que pour l'acide.
+\item La bande C=O \res{\text{apparaît puis s'intensifie}}, et la bande O--H s'élargit vers les petits nombres d'onde.
+\item Les molécules d'acide carboxylique s'associent fortement deux à deux par des \res{\text{ponts hydrogène}} : la liaison O--H est
+très perturbée, ce qui élargit considérablement la bande.
+\end{questions}
+\schema[corrige]{08-ex09-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-10}
+\begin{corrige}{10}{Des molécules odorantes}
+\demarche{Écrire la chaîne principale d'après le préfixe, placer le groupe d'après la terminaison et le numéro.}
+\begin{questions}
+\item Hexanal : \ce{CH3-CH2-CH2-CH2-CH2-CHO}\newline acide butanoïque : \ce{CH3-CH2-CH2-COOH}\newline
+heptan-2-one : \ce{CH3-CO-CH2-CH2-CH2-CH2-CH3}\newline 3-méthylbutan-1-ol : \ce{CH3-CH(CH3)-CH2-CH2-OH}
+\item Aldéhyde, acide carboxylique, cétone, alcool.
+\item $\ce{C6H12O}$ ; $\ce{C4H8O2}$ ; $\ce{C7H14O}$ ; $\ce{C5H12O}$.
+\item L'\res{\text{heptan-2-one}} : son groupe C=O n'est lié ni à un hydrogène ni à un groupe $\ce{-OH}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-11}
+\begin{corrige}{11}{Des modèles moléculaires}
+\demarche{Compter les boules de chaque couleur, puis suivre les tiges pour reconstituer l'enchaînement.}
+\begin{questions}
+\item A : \res{\ce{C3H8O}} ; B : \res{\ce{C3H6O}}.
+\item A : \ce{CH3-CH(OH)-CH3}, \res{\text{propan-2-ol}} ; B : \ce{CH3-CH2-CHO}, \res{\text{propanal}}.
+\item Autour du carbone central de A, quatre liaisons simples : \res{\text{tétraédrique}}. Autour du carbone du groupe carbonyle de B,
+trois directions : \res{\text{triangle plan}}.
+\item La large bande \res{\text{O--H lié}}, entre 3200 et \qty{3400}{cm^{-1}}, présente pour A seulement.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-12}
+\begin{corrige}{12}{Oxyder le propan-1-ol}
+\demarche{L'aldéhyde se reconnaît à ses bandes C--H vers 2720 et \qty{2820}{cm^{-1}} ; l'acide à sa bande O--H très large.}
+\begin{questions}
+\item \res{\ce{CH3-CH2-CH2-OH}} : chaîne de 3 carbones (prop-), groupe hydroxyle (-ol) sur le carbone 1.
+\item \res{\ce{CH3-CH2-CHO}}, propanal, et \res{\ce{CH3-CH2-COOH}}, acide propanoïque.
+\item A : bande C=O vers \qty{1730}{cm^{-1}} et deux bandes C--H d'aldéhyde vers 2720 et \qty{2820}{cm^{-1}}, sans bande O--H : \res{\text{propanal}}.
+B : bande très large de 2500 à \qty{3200}{cm^{-1}} et bande C=O vers \qty{1712}{cm^{-1}} : \res{\text{acide propanoïque}}.
+\item Il ne doit pas y avoir de bande \res{\text{O--H d'alcool}}, large, entre 3200 et \qty{3400}{cm^{-1}} : c'est le cas pour A ; pour B, la bande
+s'arrête vers \qty{3200}{cm^{-1}}, sans absorption supplémentaire vers \qty{3350}{cm^{-1}}.
+\end{questions}
+\schema[corrige]{08-ex12}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-13}
+\begin{corrige}{13}{Le gel hydroalcoolique}
+\demarche{Masse $=$ volume $\times$ masse volumique, puis $n=\dfrac{m}{M}$.}
+\begin{questions}
+\item \ce{CH3-CH2-OH} : 2 carbones, alcool, \res{\text{éthanol}}. \ce{CH3-CH(OH)-CH3} : 3 carbones, $\ce{-OH}$ sur le carbone 2, \res{\text{propan-2-ol}}.
+\item Le \res{\text{propan-1-ol}}, \ce{CH3-CH2-CH2-OH}.
+\item Éthanol : $80\times0{,}789=\qty{63,1}{g}$ et $n=\dfrac{63{,}1}{46{,}0}=\res{\qty{1,37}{mol}}$. Propan-2-ol : $75\times0{,}786=\qty{59,0}{g}$ et
+$n=\dfrac{59{,}0}{60{,}0}\approx\res{\qty{0,983}{mol}}$.
+\item \res{\text{Non}} : l'eau et les deux alcools donnent une bande O--H large au même endroit, et les deux alcools ont les mêmes
+liaisons. Il faudrait comparer l'empreinte digitale à des spectres de référence, ou utiliser une autre technique d'analyse.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-14}
+\begin{corrige}{14}{Identifier un composé inconnu}
+\demarche{Énumérer les candidats, puis éliminer à l'aide de la présence et de l'absence de bandes.}
+\begin{questions}
+\item Butanal : \ce{CH3-CH2-CH2-CHO}\newline 2-méthylpropanal : \ce{CH3-CH(CH3)-CHO}\newline butanone : \ce{CH3-CO-CH2-CH3}
+\item C--H vers 2980 et \qty{2940}{cm^{-1}} ; C=O, forte et fine, vers \qty{1718}{cm^{-1}}.
+\item Aucune bande entre 2650 et \qty{2850}{cm^{-1}} : ce n'est pas un aldéhyde. C'est la \res{\text{butanone}}, seule cétone de formule $\ce{C4H8O}$.
+\item \chemfig{CH_3-C(=[2]\charge{0=\|,180=\|}{O})-CH_2-CH_3} : trois directions autour du carbone du groupe carbonyle,
+géométrie \res{\text{plane}} (triangle).
+\end{questions}
+\schema[corrige]{08-ex14}
+\retiens{L'absence d'une bande est un argument aussi fort que sa présence : ici, l'absence des bandes C--H d'aldéhyde
+écarte le butanal et le 2-méthylpropanal.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-8-15}
+\begin{corrige}{15}{Suivre une oxydation par infrarouge}
+\demarche{Une bande qui apparaît signale un produit ; une bande qui subsiste signale un réactif restant.}
+\begin{questions}
+\item \ce{CH3-CH(OH)-CH3}, alcool ; \ce{CH3-CO-CH3}, cétone.
+\item La bande \res{\text{C=O}}, vers \qty{1715}{cm^{-1}}, apparaît ; la bande \res{\text{O--H}}, vers \qty{3350}{cm^{-1}}, diminue fortement.
+\item \res{\text{Non}} : une faible bande O--H subsiste vers \qty{3400}{cm^{-1}}. Il reste un peu de propan-2-ol (ou des traces d'eau) dans la
+phase organique.
+\item Une \res{\text{distillation}} : la propanone, la plus volatile, distille la première, vers \qty{56}{\degreeCelsius}.
+\end{questions}
+\schema[corrige]{08-ex15}
+\end{corrige}
+\end{blocLivre}

@@ -1,0 +1,471 @@
+% !TEX root = ../main.tex
+%% Chapitre 18 — Espaces préhilbertiens réels
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre :
+%% a) produit scalaire (canonique, matriciel tr(AᵀB), intégral) ; b) norme,
+%% Cauchy-Schwarz et triangulaire avec cas d'égalité, polarisation ;
+%% c) orthogonalité, familles orthonormées, Pythagore, Gram-Schmidt ;
+%% d) bases orthonormées ; e) projection orthogonale sur un sous-espace de
+%% dimension finie, distance, vecteur normal d'un hyperplan.
+%% Résultats vérifiés par verifications/chapitre_18.py.
+
+\begin{ouverture}[orthogonalite]{18}{Espaces préhilbertiens réels}{Partie 2 · Deuxième semestre}
+  {Produit scalaire\enspace·\enspace Cauchy-Schwarz\enspace·\enspace Orthogonalité\enspace·\enspace
+   Gram-Schmidt\enspace·\enspace Projection et distance}
+  \objectif{Reconnaître un produit scalaire : sur $\R^{n}$, sur les matrices, sur les fonctions.}
+  \objectif{Manier la norme : Cauchy-Schwarz et l'inégalité triangulaire, avec leurs cas d'égalité.}
+  \objectif{Exploiter l'orthogonalité : Pythagore, familles orthonormées, orthogonal d'une partie.}
+  \objectif{Orthonormaliser une famille par l'algorithme de Gram-Schmidt.}
+  \objectif{Travailler en base orthonormée : coordonnées, produit scalaire, norme.}
+  \objectif{Projeter orthogonalement et calculer des distances — la meilleure approximation.}
+  \prerequis{Espaces vectoriels, bases, dimension, supplémentaires (chapitre 12).}
+  \prerequis{Trace et transposée (chapitre 13) ; intégrale sur un segment (chapitre 15).}
+  \prerequis{Géométrie du plan et de l'espace vues au lycée — qu'on généralise ici.}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Le produit scalaire}
+
+\begin{definition}[Produit scalaire ; espaces préhilbertiens]
+Un \textbf{produit scalaire} sur un $\R$-espace vectoriel $E$ est une
+application $(x,y)\mapsto\langle x,y\rangle$ \emph{bilinéaire},
+\emph{symétrique}, \emph{définie positive} :
+$\langle x,x\rangle\geqslant0$, avec égalité seulement pour $x=0$. On note
+aussi $(x\mid y)$ ou $x\cdot y$. Muni d'un produit scalaire, $E$ est dit
+\textbf{préhilbertien} ; \textbf{euclidien} s'il est de dimension finie.
+\end{definition}
+
+\begin{exemple}[Les trois produits scalaires du programme]
+Sur $\R^{n}$ : $\langle X,Y\rangle=\sum x_iy_i=X^{\mathsf T}Y$ (canonique).
+Sur $\mathcal{M}_{n,p}(\R)$ :
+$\langle A,B\rangle=\operatorname{tr}\bigl(A^{\mathsf T}B\bigr)
+=\sum_{i,j}a_{ij}b_{ij}$ — déjà rencontré au chapitre 13. Sur
+$\mathcal{C}\bigl(\intFF{a}{b},\R\bigr)$ ou sur $\R[X]$ :
+$\langle f,g\rangle=\displaystyle\int_{a}^{b}fg$ — le caractère défini
+positif est exactement l'exercice « intégrale nulle » du chapitre 15.
+Trois mondes, une seule géométrie.
+\end{exemple}
+
+\essSection{2}{Norme, Cauchy-Schwarz, triangulaire}
+
+\begin{definition}[Norme associée]
+$\norme{x}=\sqrt{\langle x,x\rangle}$ ; la \emph{distance} associée est
+$d(x,y)=\norme{x-y}$. Identité remarquable :
+\[
+\norme{x+y}^{2}=\norme{x}^{2}+\norme{y}^{2}+2\langle x,y\rangle ,
+\]
+d'où la \emph{polarisation}
+$\langle x,y\rangle=\frac14\bigl(\norme{x+y}^{2}-\norme{x-y}^{2}\bigr)$ :
+le produit scalaire se lit sur la norme — et l'identité du
+\emph{parallélogramme}
+$\norme{x+y}^{2}+\norme{x-y}^{2}=2\norme{x}^{2}+2\norme{y}^{2}$.
+\end{definition}
+
+\begin{theoreme}[Cauchy-Schwarz ; inégalité triangulaire]
+Pour tous $x,y\in E$ :
+\[
+|\langle x,y\rangle|\leqslant\norme{x}\,\norme{y}
+\qquad\text{et}\qquad
+\norme{x+y}\leqslant\norme{x}+\norme{y} ,
+\]
+avec égalité dans la première si et seulement si $(x,y)$ est \emph{liée},
+dans la seconde si et seulement si $x$ et $y$ sont colinéaires \emph{de
+même sens}. La preuve de Cauchy-Schwarz est le trinôme
+$t\mapsto\norme{x+ty}^{2}\geqslant0$, déjà mené pour les matrices
+(chapitre 13) et les intégrales (chapitre 15) : c'était chaque fois le
+même théorème.
+\end{theoreme}
+
+\begin{exemple}
+Dans $\R^{n}$ avec $y=(1,\dots,1)$ :
+$\bigl(\sum a_i\bigr)^{2}\leqslant n\sum a_i^{2}$ ; en intégral :
+$\bigl(\int_0^1f\bigr)^{2}\leqslant\int_0^1f^{2}$ — la moyenne au carré ne
+dépasse pas la moyenne des carrés.
+\end{exemple}
+
+\essSection{3}{Orthogonalité}
+
+\begin{definition}[Vecteurs et familles orthogonaux]
+$x\perp y$ si $\langle x,y\rangle=0$. L'\textbf{orthogonal} d'une partie
+$A$ est $A^{\perp}=\ens{x\mid\forall a\in A,\ \langle x,a\rangle=0}$ :
+c'est toujours un sous-espace vectoriel. Une famille est
+\emph{orthogonale} si ses vecteurs sont deux à deux orthogonaux,
+\emph{orthonormée} si de plus ils sont unitaires :
+$\langle e_i,e_j\rangle=\delta_{ij}$.
+\end{definition}
+
+\begin{theoreme}[Liberté et Pythagore]
+Toute famille orthogonale de vecteurs \emph{non nuls} est libre. Et si
+$x_1,\dots,x_p$ sont deux à deux orthogonaux :
+\[
+\norme{x_1+\dots+x_p}^{2}=\norme{x_1}^{2}+\dots+\norme{x_p}^{2}
+\qquad\text{(Pythagore).}
+\]
+Pour deux vecteurs, la réciproque est vraie :
+$\norme{x+y}^{2}=\norme{x}^{2}+\norme{y}^{2}\iff x\perp y$.
+\end{theoreme}
+
+\essSection{4}{L'algorithme de Gram-Schmidt}
+
+\begin{theoreme}[Orthonormalisation]
+Soit $(v_1,\dots,v_p)$ une famille libre. Il existe une famille
+orthonormée $(e_1,\dots,e_p)$ telle que
+$\operatorname{Vect}(e_1,\dots,e_k)=\operatorname{Vect}(v_1,\dots,v_k)$
+pour tout $k$, construite de proche en proche :
+\[
+w_k=v_k-\sum_{i<k}\langle v_k,e_i\rangle\,e_i ,
+\qquad
+e_k=\frac{w_k}{\norme{w_k}} :
+\]
+on retranche de $v_k$ ses « ombres » sur les directions déjà construites,
+puis on norme.
+\end{theoreme}
+
+\begin{savoirfaire}[Mener un Gram-Schmidt sans erreur]
+Travailler avec les $w_k$ (non normés) le plus longtemps possible, ne
+normaliser qu'à la fin ; vérifier chaque orthogonalité au fur et à mesure
+— un produit scalaire nul se teste en une ligne. Sur les polynômes avec
+$\langle P,Q\rangle=\int_0^1PQ$, l'algorithme appliqué à $(1,X,X^{2})$
+produit $1$, $X-\frac12$, $X^{2}-X+\frac16$ : des \emph{polynômes
+orthogonaux} (exercices 11, 20, 24) — on y reconnaît le polynôme de
+l'exercice 22 du chapitre 15.
+\end{savoirfaire}
+
+\essSection{5}{Bases orthonormées}
+
+\begin{theoreme}[Existence et usage]
+Tout espace euclidien possède des bases orthonormées, et toute famille
+orthonormée se complète en une BON (base orthonormée incomplète —
+appliquer Gram-Schmidt à une complétion quelconque). Dans une BON
+$(e_1,\dots,e_n)$, tout se calcule par coordonnées :
+\[
+x=\sum_{i=1}^{n}\langle x,e_i\rangle\,e_i ,
+\qquad
+\langle x,y\rangle=\sum_{i=1}^{n}\langle x,e_i\rangle\langle y,e_i\rangle ,
+\qquad
+\norme{x}^{2}=\sum_{i=1}^{n}\langle x,e_i\rangle^{2} :
+\]
+en BON, tout espace euclidien ressemble à $\R^{n}$ canonique.
+\end{theoreme}
+
+\essSection{6}{Projection orthogonale et distance}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{theoreme}[Supplémentaire orthogonal ; projection]
+Soit $F$ un sous-espace \emph{de dimension finie} d'un préhilbertien $E$.
+Alors $E=F\oplus F^{\perp}$, et la \textbf{projection orthogonale}
+$p_F$ sur $F$ s'exprime dans toute BON $(e_1,\dots,e_p)$ de $F$ :
+\[
+p_F(x)=\sum_{i=1}^{p}\langle x,e_i\rangle\,e_i .
+\]
+En dimension finie, $\dim F^{\perp}=\dim E-\dim F$ ; un hyperplan est
+l'orthogonal d'une droite $\operatorname{Vect}(u)$ : $u$ en est un
+\emph{vecteur normal}.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.94,line cap=round]
+  \fill[otNavy,opacity=0.06] (-1.8,-0.5) -- (1.3,-0.9) -- (2.0,0.5) -- (-1.1,0.9) -- cycle;
+  \draw[otNavy,line width=0.7pt] (-1.8,-0.5) -- (1.3,-0.9) -- (2.0,0.5) -- (-1.1,0.9) -- cycle;
+  \fill[otInk] (0.5,2.1) circle (1.6pt);
+  \fill[otNavy] (0.3,-0.15) circle (1.6pt);
+  \draw[otGreenDark,line width=1pt,dash pattern=on 2.5pt off 1.8pt] (0.5,2.1) -- (0.3,-0.15);
+  \draw[otMuted,line width=0.7pt] (0.5,2.1) -- (1.6,-0.35);
+  \fill[otMuted] (1.6,-0.35) circle (1.3pt);
+  \node[font=\scriptsize,text=otInk,anchor=west] at (0.58,2.15) {$x$};
+  \node[font=\scriptsize,text=otNavy,anchor=north] at (0.3,-0.28) {$p_F(x)$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (0.52,1.0) {$d(x,F)$};
+  \node[font=\scriptsize,text=otMuted,anchor=north west] at (1.62,-0.38) {$y$};
+  \node[font=\scriptsize,text=otNavy] at (-1.42,-0.68) {$F$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Le projeté $p_F(x)$ est le point de $F$ le plus proche de $x$ :
+tout autre $y\in F$ est plus loin (Pythagore).}
+\end{minipage}
+
+\begin{theoreme}[Distance à un sous-espace]
+$d(x,F)=\norme{x-p_F(x)}$ est la plus petite distance de $x$ à un point de
+$F$, atteinte \emph{uniquement} en $p_F(x)$ : pour $y\in F$,
+$\norme{x-y}^{2}=\norme{x-p_F(x)}^{2}+\norme{p_F(x)-y}^{2}$ (Pythagore).
+Et $\norme{x}^{2}=\norme{p_F(x)}^{2}+d(x,F)^{2}$. Cas de l'hyperplan
+$H=\operatorname{Vect}(u)^{\perp}$ :
+\[
+p_H(x)=x-\frac{\langle x,u\rangle}{\norme{u}^{2}}\,u ,
+\qquad
+d(x,H)=\frac{|\langle x,u\rangle|}{\norme{u}} .
+\]
+Projeter, c'est \emph{approcher au mieux} : moindre carrés, polynôme le
+plus proche, valeur moyenne — tout le chapitre d'exercices.
+\end{theoreme}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Produit scalaire ou pas ?}
+Les applications suivantes sont-elles des produits scalaires ?
+\begin{questions}
+  \item Sur $\R^{2}$ :
+    $\varphi\bigl((x,y),(x',y')\bigr)=xx'-yy'$, puis
+    $\psi\bigl((x,y),(x',y')\bigr)=2xx'+3yy'$.
+  \item Sur $\mathcal{C}\bigl(\intFF{0}{1},\R\bigr)$ :
+    $\langle f,g\rangle=\displaystyle\int_{0}^{1}fg$, puis
+    $\langle f,g\rangle=f(0)\,g(0)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Calculs dans $\R^{3}$}
+Soient $u=(1,2,2)$ et $v=(2,-1,2)$.
+\begin{questions}
+  \item Calculer $\norme{u}$, $\norme{v}$, $\langle u,v\rangle$ et le
+    cosinus de l'angle entre $u$ et $v$.
+  \item Calculer la distance $\norme{u-v}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Cauchy-Schwarz en pratique}
+\begin{questions}
+  \item Montrer que pour tous réels $a_1,\dots,a_n$ :
+    $\Bigl(\displaystyle\sum_{i=1}^{n}a_i\Bigr)^{2}
+    \leqslant n\displaystyle\sum_{i=1}^{n}a_i^{2}$.
+    Quand y a-t-il égalité ?
+  \item Vérifier l'inégalité sur $(1,2,3,4)$, et le cas d'égalité sur
+    $(2,2,2)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Polarisation et parallélogramme}
+Soient $u=(2,1,-1)$ et $v=(1,3,2)$.
+\begin{questions}
+  \item Vérifier l'identité
+    $\norme{u+v}^{2}=\norme{u}^{2}+\norme{v}^{2}+2\langle u,v\rangle$.
+  \item Retrouver $\langle u,v\rangle$ par polarisation, et vérifier
+    l'identité du parallélogramme.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Orthogonalité et Pythagore}
+\begin{questions}
+  \item Vérifier que $u=(1,2)$ et $v=(-2,1)$ sont orthogonaux, et
+    contrôler Pythagore.
+  \item Montrer qu'une famille orthogonale de vecteurs non nuls est
+    libre.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Gram-Schmidt dans $\R^{3}$}
+Orthonormaliser la famille $\bigl((1,1,0),(1,0,1),(0,1,1)\bigr)$
+(chapitre 12). On donnera les vecteurs intermédiaires $w_k$ avant
+normalisation.
+\end{exercice}
+
+\begin{exercice}[1]{Coordonnées en base orthonormée}
+Soit la BON de $\R^{2}$ :
+$e_1=\bigl(\tfrac35,\tfrac45\bigr)$, $e_2=\bigl(-\tfrac45,\tfrac35\bigr)$.
+\begin{questions}
+  \item Calculer les coordonnées de $x=(1,2)$ dans cette base.
+  \item Vérifier que la somme des carrés des coordonnées vaut
+    $\norme{x}^{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Projection sur une droite}
+Soit $D=\operatorname{Vect}(u)$ avec $u=(1,2,2)$, et $x=(3,0,0)$.
+\begin{questions}
+  \item Calculer le projeté orthogonal de $x$ sur $D$.
+  \item En déduire $d(x,D)$, et vérifier
+    $\norme{x}^{2}=\norme{p(x)}^{2}+d(x,D)^{2}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Le produit scalaire des matrices}
+Sur $\mathcal{M}_2(\R)$, on pose
+$\langle A,B\rangle=\operatorname{tr}\bigl(A^{\mathsf T}B\bigr)$.
+\begin{questions}
+  \item Vérifier que c'est le produit scalaire « coefficient par
+    coefficient », et calculer $\langle A,B\rangle$ pour
+    $A=\begin{pmatrix}1&2\\3&-1\end{pmatrix}$,
+    $B=\begin{pmatrix}0&1\\1&2\end{pmatrix}$.
+  \item Montrer que les matrices élémentaires $E_{ij}$ forment une BON.
+  \item Quel était le trinôme du chapitre 13, exercice 22, dans ce
+    langage ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le produit scalaire intégral}
+Sur $\mathcal{C}\bigl(\intFF{0}{1},\R\bigr)$, on pose
+$\langle f,g\rangle=\displaystyle\int_{0}^{1}fg$.
+\begin{questions}
+  \item Pourquoi est-ce bien un produit scalaire ? (Chapitre 15.)
+  \item Calculer $\norme{x}$, $\langle 1,x\rangle$, et le cosinus de
+    l'angle entre les fonctions $1$ et $x$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Gram-Schmidt sur les polynômes}
+Sur $\R_2[X]$ muni de
+$\langle P,Q\rangle=\displaystyle\int_{0}^{1}PQ$, orthogonaliser la
+famille $(1,X,X^{2})$ (sans normaliser).
+\begin{questions}
+  \item Montrer qu'on obtient $P_0=1$, $P_1=X-\dfrac12$ et
+    $P_2=X^{2}-X+\dfrac16$.
+  \item Calculer $\norme{P_1}^{2}$ et $\norme{P_2}^{2}$, et reconnaître
+    dans $6P_2$ le polynôme de l'exercice 22 du chapitre 15.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'orthogonal d'un sous-espace}
+Dans $\R^{3}$ canonique, soit $F=\operatorname{Vect}\bigl((1,1,1)\bigr)$.
+\begin{questions}
+  \item Déterminer $F^{\perp}$, sa dimension et une base.
+  \item Vérifier $\R^{3}=F\oplus F^{\perp}$ et
+    $\bigl(F^{\perp}\bigr)^{\perp}=F$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Projection sur un plan}
+Soit $H=\ens{(x,y,z)\mid x+y+z=0}$ et $a=(1,2,3)$.
+\begin{questions}
+  \item Donner un vecteur normal de $H$ et calculer $p_H(a)$.
+  \item Calculer $d(a,H)$. Comparer avec la décomposition
+    $(1,2,3)=(-1,0,1)+(2,2,2)$ du chapitre 12 : que voit-on de plus ici ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Distance à un hyperplan}
+\begin{questions}
+  \item Établir la formule
+    $d(x,H)=\dfrac{|\langle x,u\rangle|}{\norme{u}}$ pour
+    $H=\operatorname{Vect}(u)^{\perp}$.
+  \item Calculer la distance de $(3,1,1)$ au plan $x+2y-2z=0$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le projeté en base orthonormée}
+Soit $F=\operatorname{Vect}\bigl((1,1,0),(1,0,1)\bigr)$ dans $\R^{3}$ et
+$x=(3,0,0)$.
+\begin{questions}
+  \item Construire une BON de $F$ (exercice 6) et calculer $p_F(x)$.
+  \item En déduire $d(x,F)$, et vérifier l'orthogonalité de $x-p_F(x)$
+    avec $F$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La constante la plus proche}
+Soit $f$ continue sur $\intFF{0}{1}$. On cherche la constante $c$
+minimisant $\displaystyle\int_{0}^{1}\bigl(f(t)-c\bigr)^{2}\mathrm{d}t$.
+\begin{questions}
+  \item Interpréter le problème comme une projection orthogonale, et
+    montrer que la solution est la \emph{valeur moyenne} de $f$
+    (chapitre 15).
+  \item Expliciter le minimum pour $f(t)=t^{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Moindres carrés polynomiaux}
+Déterminer $a,b$ minimisant
+$\displaystyle\int_{0}^{1}\bigl(t^{2}-a-bt\bigr)^{2}\mathrm{d}t$, et la
+valeur du minimum. \emph{Projeter $X^{2}$ sur $\R_1[X]$ : les conditions
+d'orthogonalité donnent deux équations linéaires.}
+\end{exercice}
+
+\begin{exercice}[2]{Pythagore généralisé et inégalité de Bessel}
+\begin{questions}
+  \item Montrer que pour une famille orthogonale :
+    $\norme{x_1+\dots+x_p}^{2}=\sum\norme{x_i}^{2}$.
+  \item Soit $(e_1,\dots,e_p)$ orthonormée (pas forcément une base).
+    Montrer l'inégalité de Bessel :
+    $\displaystyle\sum_{i=1}^{p}\langle x,e_i\rangle^{2}
+    \leqslant\norme{x}^{2}$, avec égalité si et seulement si
+    $x\in\operatorname{Vect}(e_1,\dots,e_p)$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{La meilleure approximation cubique}
+Sur $\intFF{0}{1}$, déterminer le polynôme $P\in\R_2[X]$ minimisant
+$\displaystyle\int_{0}^{1}\bigl(t^{3}-P(t)\bigr)^{2}\mathrm{d}t$, et
+montrer que le minimum vaut $\dfrac{1}{2800}$.
+\emph{Trois conditions d'orthogonalité, ou la famille orthogonale de
+l'exercice 11.}
+\end{exercice}
+
+\begin{exercice}[3]{Les polynômes de Legendre}
+Sur $\intFF{-1}{1}$, on pose
+$\langle P,Q\rangle=\displaystyle\int_{-1}^{1}PQ$.
+\begin{questions}
+  \item Vérifier que $1$, $X$, $X^{2}-\dfrac13$, $X^{3}-\dfrac35X$ sont
+    deux à deux orthogonaux.
+  \item Vérifier sur $n=2$ et $n=3$ la formule de Rodrigues : la dérivée
+    $n$-ième de $(X^{2}-1)^{n}$ est proportionnelle au $n$-ième polynôme
+    de la famille.
+  \item Pourquoi retrouve-t-on, à normalisation près, le Gram-Schmidt de
+    $(1,X,X^{2},X^{3})$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le déterminant de Gram}
+Pour $u,v\in E$, on pose
+$G(u,v)=\begin{vmatrix}\langle u,u\rangle&\langle u,v\rangle\\
+\langle v,u\rangle&\langle v,v\rangle\end{vmatrix}$.
+\begin{questions}
+  \item Montrer que $G(u,v)\geqslant0$, avec nullité si et seulement si
+    $(u,v)$ est liée. Quel théorème retrouve-t-on ?
+  \item Dans $\R^{2}$, calculer $G(u,v)$ pour $u=(3,1)$, $v=(1,2)$ et
+    comparer à l'aire du parallélogramme (chapitre 14) : montrer qu'en
+    général $G(u,v)$ est le carré de l'aire.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Familles obtusangles}
+On dit qu'une famille est \emph{obtusangle} si
+$\langle x_i,x_j\rangle<0$ pour tous $i\neq j$.
+\begin{questions}
+  \item Construire trois vecteurs obtusangles dans le plan.
+  \item Montrer que si $(x_1,\dots,x_p)$ est obtusangle, alors
+    $(x_1,\dots,x_{p-1})$ est libre. \emph{Dans une relation
+    $\sum\lambda_ix_i=0$, séparer les coefficients positifs et négatifs
+    et prendre un produit scalaire astucieux.}
+  \item En déduire qu'un espace euclidien de dimension $n$ contient au
+    plus $n+1$ vecteurs obtusangles.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{L'inégalité de Hadamard}
+Soit $A\in\mathcal{M}_n(\R)$ de colonnes $C_1,\dots,C_n$.
+\begin{questions}
+  \item Montrer que
+    $|\det A|\leqslant\norme{C_1}\cdots\norme{C_n}$.
+    \emph{Orthonormaliser les colonnes par Gram-Schmidt et suivre le
+    déterminant.}
+  \item Quand y a-t-il égalité ? Vérifier sur une matrice diagonale et
+    sur $\begin{pmatrix}1&2&0\\0&1&1\\1&0&1\end{pmatrix}$.
+  \item Interpréter géométriquement avec les volumes (chapitre 14).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Les racines des polynômes orthogonaux}
+Soit $(P_0,P_1,P_2,\dots)$ la famille orthogonale de l'exercice 11
+($\deg P_n=n$), pour $\langle P,Q\rangle=\int_0^1PQ$.
+\begin{questions}
+  \item Montrer que $P_n$ ($n\geqslant1$) est orthogonal à tout polynôme
+    de degré $<n$.
+  \item En utilisant l'exercice 22 du chapitre 15, montrer que $P_n$
+    possède au moins $n$ changements de signe dans $\intOO{0}{1}$ — donc
+    exactement $n$ racines réelles \emph{distinctes}, toutes dans
+    $\intOO{0}{1}$.
+  \item Vérifier pour $P_2$ et pour
+    $P_3=X^{3}-\tfrac32X^{2}+\tfrac35X-\tfrac{1}{20}$ (exercice 19).
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-18}

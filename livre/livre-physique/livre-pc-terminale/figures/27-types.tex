@@ -1,0 +1,27 @@
+% Évaluations de type A (dispersion des mesures et de leur moyenne) et de type B (demi-étendue) (L'essentiel, chapitre 27)
+\begin{tikzpicture}[x=1mm,y=1mm]
+% Type A
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,0) -- (64,0);
+\fill[otNavy!15] plot[domain=4:56,samples=80] (\x,{9*exp(-((\x-30)/9)^2/2)}) -- (56,0) -- (4,0) -- cycle;
+\draw[otNavy,line width=0.8pt] plot[domain=4:56,samples=80] (\x,{9*exp(-((\x-30)/9)^2/2)});
+\draw[otRed!80!black,line width=1pt] plot[domain=21:39,samples=80] (\x,{27*exp(-((\x-30)/3)^2/2)});
+\draw[otNavy,line width=0.5pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (21,5.5) -- (39,5.5);
+\node[pcLegende,anchor=west,text=otNavy] at (40,7.5) {mesures : $\bar m\pm s$};
+\node[pcLegende,anchor=west,text=otRed!80!black] at (33.5,22) {moyenne : $\bar m\pm\dfrac{s}{\sqrt N}$};
+\node[pcLegende,anchor=north] at (30,-0.6) {$\bar m$};
+\node[font=\small\bfseries,text=otNavy,anchor=west] at (0,30) {Type A};
+% Type B
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (78,0) -- (142,0);
+\fill[otGreenDark!15] (88,0) rectangle (132,11);
+\draw[otGreenDark,line width=0.8pt] (88,0) -- (88,11) -- (132,11) -- (132,0);
+\draw[otGreenDark,line width=0.5pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (110,15) -- (132,15);
+\node[pcLegende,anchor=south,text=otGreenDark] at (121,15.2) {demi-étendue $a$};
+\draw[otRed!80!black,line width=1pt,{Bar[width=2.5mm]}-{Bar[width=2.5mm]}] (97.3,5.5) -- (122.7,5.5);
+\node[pcLegende,anchor=south,text=otRed!80!black] at (110,6.2) {$m\pm\dfrac{a}{\sqrt3}$};
+\draw[otMuted,line width=0.4pt] (110,0) -- (110,4.8);
+\node[pcLegende,anchor=north] at (88,-0.6) {$m-a$};
+\node[pcLegende,anchor=north] at (110,-0.6) {$m$};
+\node[pcLegende,anchor=north] at (132,-0.6) {$m+a$};
+\node[font=\small\bfseries,text=otGreenDark,anchor=west] at (78,30) {Type B};
+\end{tikzpicture}
+\par\smallskip\legende{Type A : la moyenne de $N$ mesures fluctue $\sqrt N$ fois moins que les mesures elles-mêmes. Type B : toutes les valeurs entre $m-a$ et $m+a$ sont jugées possibles ; l'incertitude-type vaut $a/\sqrt3$.}

@@ -1,0 +1,28 @@
+% Pendule électrostatique et règle chargée négativement : trois étapes (exercice 10, chapitre 11)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  plus/.style={font=\otSemi\fontsize{6.5}{7}\selectfont,text=otRed!80!black,inner sep=0pt},
+  moins/.style={font=\otSemi\fontsize{6.5}{7}\selectfont,text=otNavy,inner sep=0pt}]
+\foreach \bx/\ang/\titre in {0/-14/{1. approche},3.8/-24/{2. contact},7.6/16/{3. après le contact}}{
+  \begin{scope}[shift={(\bx,0)}]
+    \draw[otInk!70,line width=0.8pt] (-0.7,2.6) -- (0.3,2.6);
+    \draw[otInk!60,line width=0.5pt] (0,2.6) -- ++({-90-\ang}:1.6);
+    \shade[ball color=otMuted!25] ($(0,2.6)+({-90-\ang}:1.88)$) circle (0.27);
+    \filldraw[fill=otOrange!25,draw=otOrange!80!black,line width=0.5pt,rounded corners=0.6mm] (0.95,0.1) rectangle (1.2,2.0);
+    \foreach \y in {0.5,0.9,1.3,1.7}{\node[moins] at (1.075,\y) {$-$};}
+    \node[pcLegendeG,anchor=north] at (0.4,-0.15) {\titre};
+  \end{scope}}
+\solution{
+  \begin{scope}[shift={($(0,2.6)+(-76:1.88)$)}]
+    \node[plus] at (0.12,0.02) {$+$}; \node[plus] at (0.09,-0.13) {$+$}; \node[moins] at (-0.13,0.03) {$-$}; \node[moins] at (-0.1,-0.12) {$-$};
+  \end{scope}
+  \begin{scope}[shift={($(3.8,2.6)+(-66:1.88)$)}]
+    \node[moins] at (0.0,0.08) {$-$};
+  \end{scope}
+  \begin{scope}[shift={($(7.6,2.6)+(-106:1.88)$)}]
+    \node[moins] at (0.08,0.06) {$-$}; \node[moins] at (-0.08,-0.08) {$-$};
+  \end{scope}
+  \node[pcLegende,anchor=north,align=center,text=otGreenDark] at (0.4,-0.55) {charges séparées :\\attraction};
+  \node[pcLegende,anchor=north,align=center,text=otGreenDark] at (4.2,-0.55) {des électrons passent\\sur la boule};
+  \node[pcLegende,anchor=north,align=center,text=otGreenDark] at (8.0,-0.55) {boule négative :\\répulsion};}
+\end{tikzpicture}
+\par\smallskip\legende{Une boule légère, conductrice et neutre, pend à un fil isolant ; on approche une règle chargée négativement.}

@@ -1,0 +1,178 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 4 — Continuité
+%% Tous les résultats ont été vérifiés par calcul formel (sympy).
+
+\corrigesChapitre{4}{Continuité}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Vérifier la continuité}
+\begin{questions}
+  \item $f$ n'est pas définie en $2$ : elle n'y est pas continue. Mais $f(x)=x+2$ pour $x\neq2$, donc
+    $\lim_{2}f=4$ : $\res{f\text{ est prolongeable par continuité}}$ en posant $f(2)=4$.
+  \item $\lim_{1^{-}}x^{2}=1$ et $g(1)=2-1=1=\lim_{1^{+}}(2x-1)$ : $\res{g\text{ est continue en }1}$.
+  \item $h$ n'est pas définie en $0$, mais $\lim_{0}h=1$ : $\res{\text{prolongeable par }h(0)=1}$.
+  \item Pour $x\neq1$, $k(x)=x+1\to2=k(1)$ : $\res{k\text{ est continue en }1}$.
+  \item Composée de fonctions continues : $\res{m\text{ est continue en }3}$, et $m(3)=0$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Prolongement par continuité}
+\begin{questions}
+  \item $\dfrac{(x-2)\left(x^{2}+2x+4\right)}{x-2}$\\ $=x^{2}+2x+4\to\res{12}$
+  \item $2\times\dfrac{\sin(2x)}{2x}\to\res{2}$ (avec $X=2x\to0$)
+  \item $2\times\dfrac{e^{2x}-1}{2x}\to\res{2}$
+  \item Taux d'accroissement de $\exp$ en $0$ : $\res{1}$
+  \item $\dfrac{\sqrt{x+1}-1}{x}=\dfrac{1}{\sqrt{x+1}+1}\to\res{\dfrac12}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Différents types de discontinuités}
+\begin{questions}
+  \item $\lim_{1^{-}}a=-\infty$ et $\lim_{1^{+}}a=+\infty$ : $\res{\text{non prolongeable}}$ (asymptote verticale $x=1$).
+  \item Limites $1$ à gauche et $-1$ à droite : $\res{\text{saut de }2}$, ni continue ni prolongeable.
+  \item $\lim_{0}h=+\infty$ : $\res{\text{non prolongeable}}$.
+  \item $x_n\to0$ et $y_n\to0$, mais $k(x_n)=\sin\left(2n\pi+\frac\pi2\right)=1$ et $k(y_n)=-1$ : $k$ n'a pas de limite en $0$,
+    $\res{\text{non prolongeable}}$ (la courbe oscille).
+  \item Limite $1$ à gauche et $m(1)=2$ : $\res{\text{saut de }1}$, $m$ n'est pas continue en $1$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Théorème des valeurs intermédiaires}
+\methode{fonction continue et changement de signe}
+\begin{questions}
+  \item $f(x)=x^{3}-3x+1$ est continue ; $f(0)=1>0$, $f(1)=-1<0$ et $f(2)=3>0$ : au moins une solution dans
+    $\intFF{0}{1}$ et une dans $\intFF{1}{2}$ (environ $0{,}35$ et $1{,}53$).
+  \item Pour $x\in\intFF{0}{1}$ : $e^{x}-2x\geq1+x-2x=1-x\geq0$, et l'égalité imposerait $x=1$ et $e=2$.
+    Donc $e^{x}-2x>0$ : $\res{\text{pas de solution}}$.
+  \item $h(x)=e^{-x}-x$ est continue, $h(0)=1>0$ et $h(1)=\frac1e-1<0$ : $\res{\text{au moins une solution}}$ (environ $0{,}567$).
+  \item $\varphi(x)=\cos x-x$ est continue, $\varphi(0)=1>0$ et $\varphi\left(\frac\pi2\right)=-\frac\pi2<0$ : au moins une solution
+    (environ $0{,}739$).
+  \item $x^{4}-2x^{2}+1=\left(x^{2}-1\right)^{2}\geq0$ ne change jamais de signe : le théorème ne s'applique pas.
+    On résout directement : $\res{S=\ens{-1\pv1}}$.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{5}{Continuité, paramètres et nombre de solutions}
+\begin{questions}
+  \item Pour $x\neq2$, $f(x)=x+2\to4$ : $\res{a=4}$.
+  \item $f(x)=x^{5}-5x+1$ : $f'(x)=5\left(x^{2}-1\right)\left(x^{2}+1\right)$ s'annule en $\pm1$, avec $f(-1)=5$ et $f(1)=-3$.
+    Sur chacun des intervalles $\intOF{-\infty}{-1}$, $\intFF{-1}{1}$ et $\intFO{1}{+\infty}$, $f$ est continue, strictement
+    monotone, et passe de $-\infty$ à $5$, de $5$ à $-3$, puis de $-3$ à $+\infty$ : l'équation a $\res{\text{exactement trois solutions}}$
+    (environ $-1{,}54$ ; $0{,}20$ et $1{,}44$).
+  \item \begin{questions}
+      \item Les deux expressions sont continues ; en $1$, il faut $\lim_{1^{-}}g=a+b$ égal à $g(1)=1$ : $\res{a+b=1}$.
+      \item La pente à gauche vaut $a$, celle à droite $2\times1=2$ : $\res{a=2\text{ et }b=-1}$.
+    \end{questions}
+  \item $h(x)=e^{x}-x-2$ : $h'(x)=e^{x}-1$ est négatif sur $\intOO{-\infty}{0}$, positif sur $\intOO{0}{+\infty}$, et
+    $h(0)=-1$. En $-\infty$, $h(x)\to+\infty$ ; en $+\infty$, $h(x)=e^{x}\left(1-\frac{x}{e^{x}}-\frac{2}{e^{x}}\right)\to+\infty$.
+    Sur chacun des deux intervalles, $h$ est strictement monotone et change de signe : $\res{\text{exactement deux solutions}}$
+    (environ $-1{,}84$ et $1{,}15$).
+  \item $\lim_{0}\frac{\sin x}{x}=1$ : $\res{k=1}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{6}{Une fonction auxiliaire}
+\partieExo{A}{Étude d'une fonction auxiliaire}
+\begin{questions}
+  \item $\lim_{-\infty}g=-\infty$ et $\lim_{+\infty}g=+\infty$ (terme dominant $x^{3}$).\\
+    $g'(x)=3x^{2}+1>0$ : $g$ est $\res{\text{strictement croissante}}$ sur $\R$.
+  \item $g$ est continue, strictement croissante, de limites $-\infty$ et $+\infty$ : l'équation $g(x)=0$ a une unique solution
+    $\alpha$. Comme $g(0)=-1<0<g(1)=1$, $\res{\alpha\in\intFF{0}{1}}$.
+  \item La fonction renvoie $(0{,}6796875\pv0{,}6875)$, intervalle d'amplitude inférieure à $10^{-2}$ qui contient $\alpha$.
+    La calculatrice donne $g(0{,}68)\approx-0{,}006<0$ et $g(0{,}69)\approx0{,}019>0$ : $\res{0{,}68<\alpha<0{,}69}$.
+  \item $g$ est strictement croissante et $g(\alpha)=0$ : $\res{g(x)<0}$ sur $\intOO{-\infty}{\alpha}$ et $\res{g(x)>0}$ sur $\intOO{\alpha}{+\infty}$.
+\end{questions}
+\partieExo{B}{Étude d'une fonction}
+\begin{questions}[resume]
+  \item $f'(x)=x^{3}+x-1=g(x)$ : $f$ est décroissante sur $\intOF{-\infty}{\alpha}$, croissante sur $\intFO{\alpha}{+\infty}$,
+    et admet un minimum en $\alpha$.
+  \item $f(\alpha)=\dfrac{\alpha\times\alpha^{3}}{4}+\dfrac{\alpha^{2}}{2}-\alpha=\dfrac{\alpha(1-\alpha)}{4}+\dfrac{\alpha^{2}}{2}-\alpha
+    =\dfrac{\alpha-\alpha^{2}+2\alpha^{2}-4\alpha}{4}=\res{\dfrac{\alpha(\alpha-3)}{4}}$.
+  \item La fonction $t\mapsto\frac{t(t-3)}{4}$ a pour dérivée $\frac{2t-3}{4}<0$ sur $\intFF{0{,}68}{0{,}69}$ : elle y est décroissante.
+    Donc $\frac{0{,}69\times(-2{,}31)}{4}<f(\alpha)<\frac{0{,}68\times(-2{,}32)}{4}$, soit $\res{-0{,}3985<f(\alpha)<-0{,}3944}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{7}{Suite récurrente et point fixe}
+\noindent
+\begin{minipage}[t]{0.56\linewidth}\vspace{0pt}\raggedright
+\begin{questions}
+  \item $f'(x)=\frac{2x}{5}\geq0$ sur $\intFO{0}{+\infty}$ : $\res{f\text{ est croissante}}$.
+  \item Voir la figure : la suite semble décroissante et converger vers $1$.
+  \item \etape{Initialisation} $u_1=\frac85$ et $1\leq\frac85\leq2\leq2$.\\
+    \etape{Hérédité} Si $1\leq u_{k+1}\leq u_k\leq2$, comme $f$ est croissante sur $\intFF{1}{2}$ :
+    $f(1)\leq f(u_{k+1})\leq f(u_k)\leq f(2)$, soit $1\leq u_{k+2}\leq u_{k+1}\leq\frac85\leq2$.
+  \item Décroissante et minorée par $1$, la suite converge vers $\ell$ ; en passant à la limite, $\res{\ell\in\intFF{1}{2}}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.4\linewidth}\vspace{0pt}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=58mm, xmin=0, xmax=2.3, ymin=0, ymax=2.3,
+  xtick={1,2}, ytick={1,2}, minor tick num=4, grid=both, minor grid style={otRule!45,line width=0.2pt}]
+  \addplot[otRule!80!otMuted,line width=0.6pt,domain=0:2.25] {x};
+  \addplot[otNavy,line width=1.1pt,domain=0:2.25,samples=60] {(x^2+4)/5};
+  \addplot[otGreen,line width=0.8pt] coordinates {(2,0) (2,1.6) (1.6,1.6) (1.6,1.312) (1.312,1.312)
+    (1.312,1.1443) (1.1443,1.1443)};
+  \fill[otNavy] (axis cs:1,1) circle (1.5pt);
+  \node[anchor=north,font=\scriptsize] at (axis cs:2,-0.08) {$u_0$};
+  \node[anchor=north,font=\scriptsize] at (axis cs:1.6,-0.08) {$u_1$};
+  \node[anchor=south east,font=\scriptsize,text=otNavy] at (axis cs:0.6,0.95) {$\Cf$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les termes décroissent vers le point fixe $1$.}
+\end{minipage}
+\begin{questions}[start=5]
+  \item $f$ est continue (polynôme) : d'après le théorème du point fixe, $\ell=f(\ell)$, soit $\ell^{2}-5\ell+4=(\ell-1)(\ell-4)=0$.
+    Comme $\ell\leq2$, $\res{\ell=1}$.
+  \item $u_8\approx1{,}0017$ et $u_9\approx1{,}0007$ : $\res{n=9}$.
+  \item Si $u_0=4$, comme $f(4)=4$, la suite est constante égale à $4$, l'autre point fixe. Si $u_0=5$ :
+    $u_{n+1}-u_n=\frac{(u_n-1)(u_n-4)}{5}$, et l'on montre par récurrence que $u_n\geq5$ ; la suite est alors croissante.
+    Si elle convergeait, sa limite serait un point fixe supérieur ou égal à $5$, ce qui est impossible : croissante et non
+    majorée, elle $\res{\text{tend vers }+\infty}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{8}{Trois démonstrations d'existence}
+\noindent
+\begin{minipage}[t]{0.56\linewidth}\vspace{0pt}\raggedright
+\partieExo{A}{Un point fixe}
+\begin{questions}
+  \item $g(0)=f(0)\geq0$ et $g(1)=f(1)-1\leq0$, car $0\leq f\leq1$.
+  \item $g$ est continue sur $\intFF{0}{1}$ et $0$ est compris entre $g(1)$ et $g(0)$ : il existe $c$ tel que $g(c)=0$, soit
+    $\res{f(c)=c}$. La courbe de $f$ coupe la droite d'équation $y=x$.
+\end{questions}
+\partieExo{B}{Le randonneur}
+\begin{questions}[resume]
+  \item $h=d_1-d_2$ est continue sur $\intFF{8}{16}$, avec $h(8)=-L<0$ et $h(16)=L>0$ : il existe $t_0$ tel que $h(t_0)=0$, soit
+    $\res{d_1(t_0)=d_2(t_0)}$. À l'heure $t_0$, le randonneur est au même endroit les deux jours.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.4\linewidth}\vspace{0pt}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=62mm, height=44mm, xmin=8, xmax=16.6, ymin=0, ymax=11,
+  xtick={8,12,16}, ytick={10}, yticklabels={$L$}, xlabel={$t$}, xlabel style={at={(1,0)},anchor=west}]
+  \addplot[otNavy,line width=1.1pt,domain=8:16,samples=60] {10*(3*((x-8)/8)^2-2*((x-8)/8)^3)};
+  \addplot[otGreen,line width=1.1pt,domain=8:16,samples=60] {10*(1-((x-8)/8)^0.75)};
+  \node[anchor=west,font=\scriptsize,text=otNavy] at (axis cs:15.2,9.3) {$d_1$};
+  \node[anchor=west,font=\scriptsize,text=otGreenDark] at (axis cs:8.5,10.2) {$d_2$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les deux courbes se croisent forcément.}
+\end{minipage}
+\partieExo{C}{La coureuse}
+\begin{questions}[start=4]
+  \item $h(0)+h(25)=\big(d(25)-d(0)-5\big)+\big(d(50)-d(25)-5\big)=d(50)-d(0)-10=\res{0}$.
+  \item $h$ est continue sur $\intFF{0}{25}$, et $h(0)$ et $h(25)$ sont opposés : $0$ est compris entre eux. D'après le théorème
+    des valeurs intermédiaires, il existe $t_0\in\intFF{0}{25}$ tel que $h(t_0)=0$, c'est-à-dire $d(t_0+25)-d(t_0)=5$ : entre les
+    instants $t_0$ et $t_0+25$, la coureuse parcourt $\res{\text{exactement }5\text{ km}}$.
+\end{questions}
+\end{corrige}

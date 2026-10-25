@@ -1,0 +1,10 @@
+% Cristal violet : vitesse volumique de disparition en fonction de la concentration (corrigé de l'exercice 11, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=96mm,height=52mm,xmin=0,xmax=21,ymin=0,ymax=0.55,
+  xtick={0,4,...,20},ytick={0,0.1,...,0.5},yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$[\mathrm{CV^+}]$ ($\upmu$mol$\cdot$L$^{-1}$)},ylabel={$v$ ($\upmu$mol$\cdot$L$^{-1}\cdot$min$^{-1}$)}]
+\addplot[otGreenDark,line width=0.7pt,domain=0:20.5] {0.0250*x};
+\addplot[only marks,mark=*,mark size=1.8pt,otNavy] coordinates {(18.08,0.46)(16.32,0.422)(14.70,0.357)(13.46,0.315)(12.18,0.308)(11.00,0.28)(9.94,0.254)(8.97,0.226)(8.13,0.201)};
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:1,0.5) {$v=k\,[\mathrm{CV^+}]$\\avec $k\approx\qty{0,025}{min^{-1}}$};
+\end{axis}
+\end{tikzpicture}

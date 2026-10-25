@@ -1,0 +1,499 @@
+% !TEX root = ../main.tex
+%% Chapitre 6 — Fonctions trigonométriques
+%% Sources : frontend/cours/resume/terminal/resume_fonctions_trigonometriques_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_fonctions_trigonometriques.txt
+%% L'exercice « Intégration et applications » de la source est déplacé au chapitre 9 (Calcul intégral).
+%% Exercices 2, 11, 12 et 13 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[trigo]{6}{Fonctions trigonométriques}{Partie 1 · Analyse}
+  {Cercle trigonométrique\enspace·\enspace Sinus et cosinus\enspace·\enspace Dérivées\enspace·\enspace
+   Équations\enspace·\enspace Inéquations}
+  \objectif{Lire sur le cercle trigonométrique les valeurs remarquables et utiliser les angles associés.}
+  \objectif{Résoudre une équation ou une inéquation trigonométrique sur un intervalle donné.}
+  \objectif{Dériver une fonction construite avec $\sin$ et $\cos$, et étudier ses variations.}
+  \objectif{Utiliser la parité et la périodicité pour réduire l'intervalle d'étude.}
+  \objectif{Connaître et utiliser la limite de $\dfrac{\sin x}{x}$ en $0$.}
+  \prerequis{Cercle trigonométrique, radian, cosinus et sinus d'un réel (Première).}
+  \prerequis{Dérivation et fonctions composées (chapitre 3).}
+  \prerequis{Limites, continuité et théorème des valeurs intermédiaires (chapitres 2 et 4).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Le cercle trigonométrique}
+
+\begin{definition}[Cosinus et sinus d'un réel]
+Le plan est muni d'un repère orthonormé $(O\pv I,J)$. Le \textbf{cercle trigonométrique} est le cercle de centre $O$ et de
+rayon $1$, parcouru dans le sens direct. À tout réel $x$ correspond un point $M(x)$ du cercle : $x$ est une mesure en
+radians de l'angle orienté $\big(\overrightarrow{OI},\overrightarrow{OM}\big)$. Le \textbf{cosinus} et le \textbf{sinus} de $x$
+sont les coordonnées de ce point : $M(x)\,(\cos x\pv\sin x)$.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}
+  \coordinate (O) at (0,0);
+  \coordinate (M) at (50:2);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (-2.5,0) -- (2.6,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,-2.5) -- (0,2.6);
+  \draw[otNavy,line width=1.1pt] (O) circle (2);
+  \draw[otGreen,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (M) -- (M |- O);
+  \draw[otGreen,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (M) -- (O |- M);
+  \draw[otNavy,line width=0.7pt] (O) -- (M);
+  \draw[otGreenDark,line width=0.7pt,-{Stealth[length=1.5mm]}] (0.55,0) arc (0:50:0.55);
+  \node[font=\scriptsize,text=otGreenDark] at (24:0.82) {$x$};
+  \fill[otNavy] (M) circle (1.7pt);
+  \node[anchor=south west,font=\small,inner sep=1.5pt] at (M) {$M(x)$};
+  \fill[otGreenDark] (M |- O) circle (1.3pt);
+  \fill[otGreenDark] (O |- M) circle (1.3pt);
+  \node[anchor=north,font=\scriptsize,text=otGreenDark] at ([yshift=-1pt]M |- O) {$\cos x$};
+  \node[anchor=east,font=\scriptsize,text=otGreenDark] at ([xshift=-1pt]O |- M) {$\sin x$};
+  \node[anchor=north east,font=\scriptsize,inner sep=1.5pt] at (O) {$O$};
+  \node[anchor=north west,font=\scriptsize,inner sep=1.5pt] at (2,0) {$I$};
+  \node[anchor=south east,font=\scriptsize,inner sep=1.5pt] at (0,2) {$J$};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.57\linewidth}
+\centering
+{\renewcommand{\arraystretch}{2}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}>{\leavevmode\color{otNavy}}l*{6}{>{\centering\arraybackslash}p{8.4mm}}@{}}
+\toprule
+$x$ & $0$ & $\dfrac{\pi}{6}$ & $\dfrac{\pi}{4}$ & $\dfrac{\pi}{3}$ & $\dfrac{\pi}{2}$ & $\pi$ \\
+\midrule
+$\cos x$ & $1$ & $\dfrac{\sqrt3}{2}$ & $\dfrac{\sqrt2}{2}$ & $\dfrac12$ & $0$ & $-1$ \\
+$\sin x$ & $0$ & $\dfrac12$ & $\dfrac{\sqrt2}{2}$ & $\dfrac{\sqrt3}{2}$ & $1$ & $0$ \\
+\bottomrule
+\end{tabular}}
+\par\vspace{2mm}
+\legende{Valeurs remarquables, à connaître par cœur.}
+\end{minipage}
+
+\begin{propriete}[Pour tout réel $x$ et tout entier $k$]
+\centering
+$-1\leq\cos x\leq1$ \qquad $-1\leq\sin x\leq1$ \qquad $\cos^{2}x+\sin^{2}x=1$\\[1.2mm]
+$\cos(x+2k\pi)=\cos x$ \qquad $\sin(x+2k\pi)=\sin x$
+\end{propriete}
+
+\par\vspace{2mm}
+\noindent
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}
+  \coordinate (O) at (0,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (-2.4,0) -- (2.5,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,-2.4) -- (0,2.5);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 3pt off 2pt] (-1.5,-1.5) -- (1.9,1.9);
+  \draw[otNavy,line width=1.1pt] (O) circle (1.8);
+  \draw[otGreen,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (25:1.8) -- (-25:1.8);
+  \draw[otGreen,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (25:1.8) -- (155:1.8);
+  \draw[otGreen,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (25:1.8) -- (205:1.8);
+  \draw[otGreen,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (25:1.8) -- (65:1.8);
+  \fill[otNavy] (25:1.8) circle (1.7pt);
+  \foreach \a in {-25,155,205,65} \fill[otGreenDark] (\a:1.8) circle (1.4pt);
+  \node[anchor=west,font=\scriptsize] at (25:1.86) {$x$};
+  \node[anchor=north west,font=\scriptsize] at (-25:1.84) {$-x$};
+  \node[anchor=south east,font=\scriptsize] at (155:1.84) {$\pi-x$};
+  \node[anchor=north east,font=\scriptsize] at (205:1.84) {$\pi+x$};
+  \node[anchor=south west,font=\scriptsize] at (65:1.84) {$\frac{\pi}{2}-x$};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.57\linewidth}
+\raggedright
+Les points associés à $x$ se déduisent de $M(x)$ par symétrie : par rapport à l'axe des abscisses pour $-x$, à l'axe
+des ordonnées pour $\pi-x$, à l'origine pour $\pi+x$ et à la droite $y=x$ pour $\frac{\pi}{2}-x$.
+\par\vspace{3mm}\centering
+{\renewcommand{\arraystretch}{1.75}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}>{\leavevmode\color{otNavy}}l>{\centering\arraybackslash}p{24mm}>{\centering\arraybackslash}p{24mm}@{}}
+\toprule
+ & $\cos$ & $\sin$ \\
+\midrule
+$-x$ & $\cos x$ & $-\sin x$ \\
+$\pi-x$ & $-\cos x$ & $\sin x$ \\
+$\pi+x$ & $-\cos x$ & $-\sin x$ \\
+$\dfrac{\pi}{2}-x$ & $\sin x$ & $\cos x$ \\
+\bottomrule
+\end{tabular}}
+\end{minipage}
+
+\essSection{2}{Les fonctions sinus et cosinus}
+
+\begin{propriete}[Parité et périodicité]
+Les fonctions $\cos$ et $\sin$ sont définies sur $\R$ et \textbf{périodiques de période $2\pi$} : leurs courbes sont invariantes
+par la translation de vecteur $2\pi\,\vec\imath$. La fonction $\cos$ est \textbf{paire} (courbe symétrique par rapport à l'axe des
+ordonnées) et la fonction $\sin$ est \textbf{impaire} (courbe symétrique par rapport à l'origine).
+\end{propriete}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=\linewidth, xmin=-7, xmax=7.3, ymin=-1.55, ymax=1.75,
+  xtick={-6.2832,-4.7124,-3.1416,-1.5708,1.5708,3.1416,4.7124,6.2832},
+  xticklabels={$-2\pi$,$-\frac{3\pi}{2}$,$-\pi$,$-\frac{\pi}{2}$,$\frac{\pi}{2}$,$\pi$,$\frac{3\pi}{2}$,$2\pi$},
+  ytick={-1,1}]
+  \addplot[otGreen,line width=1.2pt,domain=-7:7,samples=240] {cos(deg(x))};
+  \addplot[otNavy,line width=1.2pt,domain=-7:7,samples=240] {sin(deg(x))};
+  \node[anchor=south,otEtiquette,font=\scriptsize,text=otNavy] at (axis cs:2.2,1.05) {$y=\sin x$};
+  \node[anchor=south,otEtiquette,font=\scriptsize,text=otGreenDark] at (axis cs:-0.75,1.05) {$y=\cos x$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{La courbe de $\cos$ se déduit de celle de $\sin$ par la translation de vecteur $-\frac{\pi}{2}\,\vec\imath$, car $\cos x=\sin\left(x+\frac{\pi}{2}\right)$.}
+\end{center}
+
+\begin{theoreme}[Dérivées]
+Les fonctions $\sin$ et $\cos$ sont dérivables sur $\R$ (admis) et $\sin'=\cos$, $\cos'=-\sin$. Plus généralement, si $u$
+est dérivable sur un intervalle $I$ :
+\[ \big(\sin u\big)'=u'\cos u \qquad\qquad \big(\cos u\big)'=-u'\sin u \qquad\qquad
+   \text{par exemple}\enspace \big(\cos(ax+b)\big)'=-a\sin(ax+b). \]
+\end{theoreme}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tableau}
+  \otTab[1.5]{$x$/0.8,$-\sin x$/0.8,$\cos$/1.6}{$0$,$\frac{\pi}{2}$,$\pi$}
+  \tkzTabLine{z,-,t,-,z}
+  \tkzTabVar{+/$1$,R/,-/$-1$}
+  \tkzTabIma{1}{3}{2}{$0$}
+\end{tableau}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tableau}
+  \otTab[1.5]{$x$/0.8,$\cos x$/0.8,$\sin$/1.6}{$0$,$\frac{\pi}{2}$,$\pi$}
+  \tkzTabLine{,+,z,-,}
+  \tkzTabVar{-/$0$,+/$1$,-/$0$}
+\end{tableau}
+\end{minipage}
+\par\vspace{1mm}
+\begin{center}\legende{Variations sur $\intFF{0}{\pi}$ ; on complète par parité puis par périodicité.}\end{center}
+
+\begin{theoreme}[Une limite de référence]
+\centering $\displaystyle\lim_{x\to0}\frac{\sin x}{x}=1$
+\end{theoreme}
+
+\begin{demonstration}
+Pour $x\neq0$, $\dfrac{\sin x}{x}=\dfrac{\sin x-\sin0}{x-0}$ est le taux d'accroissement de $\sin$ entre $0$ et $x$. Comme $\sin$
+est dérivable en $0$, il tend vers $\sin'(0)=\cos0=1$ lorsque $x$ tend vers $0$.
+\end{demonstration}
+
+\begin{savoirfaire}[Étudier une fonction trigonométrique]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.4mm,topsep=0.5mm,label={\color{otNavy}\arabic*.}]
+  \item Réduire l'intervalle d'étude : une fonction $T$-périodique s'étudie sur un intervalle de longueur $T$ ; si elle est
+    de plus paire ou impaire, sur la moitié de cet intervalle.
+  \item Dériver, puis \textbf{factoriser} $f'(x)$, souvent à l'aide de $\cos x$ ou de $\sin x$.
+  \item Étudier le signe de chaque facteur en lisant le cercle trigonométrique.
+  \item Compléter le tableau et la courbe par symétrie, puis par translation.
+\end{enumerate}
+\end{savoirfaire}
+
+\essSection{3}{Équations et inéquations}
+
+\begin{savoirfaire}[Résoudre une équation trigonométrique]
+Pour tous réels $x$ et $a$, avec $k$ décrivant $\mathbb{Z}$ :
+\[ \cos x=\cos a\iff x=a+2k\pi\ \text{ ou }\ x=-a+2k\pi \qquad
+   \sin x=\sin a\iff x=a+2k\pi\ \text{ ou }\ x=\pi-a+2k\pi \]
+On écrit d'abord la constante comme le cosinus ou le sinus d'un angle remarquable, puis on ne garde que les solutions
+de l'intervalle demandé.
+\end{savoirfaire}
+
+\noindent
+\begin{minipage}[t]{0.32\linewidth}
+\centering
+\begin{tikzpicture}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-1.55,0) -- (1.65,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.55) -- (0,1.65);
+  \draw[otNavy,line width=1pt] (0,0) circle (1.25);
+  \draw[otGreen,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (50:1.25) -- (-50:1.25);
+  \fill[otNavy] (50:1.25) circle (1.5pt);
+  \fill[otNavy] (-50:1.25) circle (1.5pt);
+  \fill[otGreenDark] (0.8035,0) circle (1.2pt);
+  \node[anchor=south west,font=\scriptsize,inner sep=1.5pt] at (50:1.25) {$a$};
+  \node[anchor=north west,font=\scriptsize,inner sep=1.5pt] at (-50:1.25) {$-a$};
+  \node[anchor=north east,font=\scriptsize,text=otGreenDark,inner sep=1.5pt] at (0.8035,0) {$\cos a$};
+\end{tikzpicture}\\[1mm]
+\legende{$\cos x=\cos a$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}
+\centering
+\begin{tikzpicture}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-1.55,0) -- (1.65,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.55) -- (0,1.65);
+  \draw[otNavy,line width=1pt] (0,0) circle (1.25);
+  \draw[otGreen,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (35:1.25) -- (145:1.25);
+  \fill[otNavy] (35:1.25) circle (1.5pt);
+  \fill[otNavy] (145:1.25) circle (1.5pt);
+  \fill[otGreenDark] (0,0.717) circle (1.2pt);
+  \node[anchor=south west,font=\scriptsize,inner sep=1.5pt] at (35:1.25) {$a$};
+  \node[anchor=south east,font=\scriptsize,inner sep=1.5pt] at (145:1.25) {$\pi-a$};
+  \node[anchor=south west,font=\scriptsize,text=otGreenDark,inner sep=1.5pt] at (0,0.75) {$\sin a$};
+\end{tikzpicture}\\[1mm]
+\legende{$\sin x=\sin a$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}
+\centering
+\begin{tikzpicture}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-1.55,0) -- (1.65,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.55) -- (0,1.65);
+  \draw[otNavy,line width=1pt] (0,0) circle (1.25);
+  \draw[otGreen,line width=2.4pt] (-60:1.25) arc (-60:60:1.25);
+  \draw[otGreen,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (0.625,-1.4) -- (0.625,1.4);
+  \fill[otGreenDark] (60:1.25) circle (1.5pt);
+  \fill[otGreenDark] (-60:1.25) circle (1.5pt);
+  \node[anchor=south west,font=\scriptsize,inner sep=1.5pt] at (60:1.25) {$\frac{\pi}{3}$};
+  \node[anchor=north west,font=\scriptsize,inner sep=1.5pt] at (-60:1.25) {$-\frac{\pi}{3}$};
+  \node[anchor=north east,font=\scriptsize,text=otGreenDark,inner sep=1.5pt] at (0.625,0) {$\frac12$};
+\end{tikzpicture}\\[1mm]
+\legende{$\cos x\geq\frac12$ sur $\intOF{-\pi}{\pi}$ : $x\in\intFF{-\frac{\pi}{3}}{\frac{\pi}{3}}$}
+\end{minipage}
+
+\begin{savoirfaire}[Résoudre une inéquation trigonométrique]
+On résout d'abord l'équation associée sur l'intervalle demandé, puis on lit sur le cercle l'arc formé des points dont
+l'abscisse (pour $\cos$) ou l'ordonnée (pour $\sin$) convient. Pour une inéquation en $\cos(2x)$ avec $x\in\intFF{0}{\pi}$,
+on pose $X=2x$, qui décrit $\intFF{0}{2\pi}$.
+\end{savoirfaire}
+
+\essSection{4}{Pour aller plus loin}
+
+\begin{propriete}[Formules d'addition et de duplication]
+Pour tous réels $a$ et $b$ :\enspace
+$\cos(a+b)=\cos a\cos b-\sin a\sin b$\qquad $\sin(a+b)=\sin a\cos b+\cos a\sin b$\\[1mm]
+$\cos(2a)=\cos^{2}a-\sin^{2}a=2\cos^{2}a-1=1-2\sin^{2}a$\qquad $\sin(2a)=2\sin a\cos a$\\[1mm]
+{\small\color{otMuted}Ces formules ne figurent pas au programme de spécialité : lorsqu'elles sont utiles, l'énoncé les rappelle.}
+\end{propriete}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\raggedright
+\begin{definition}[La fonction tangente]
+\raggedright
+Pour $x\neq\frac{\pi}{2}+k\pi$ ($k\in\mathbb{Z}$), on pose $\tan x=\dfrac{\sin x}{\cos x}$. La fonction $\tan$ est impaire,
+périodique de période $\pi$, et
+\[ \tan'(x)=\frac{1}{\cos^{2}x}=1+\tan^{2}x. \]
+Elle est strictement croissante sur $\intOO{-\frac{\pi}{2}}{\frac{\pi}{2}}$, avec $\tan\frac{\pi}{4}=1$.
+\end{definition}
+{\small\color{otMuted}La fonction tangente n'est pas au programme de spécialité ; elle apparaît dans quelques exercices.}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=64mm, xmin=-4.2, xmax=4.4, ymin=-3.2, ymax=3.4,
+  xtick={-3.1416,-1.5708,1.5708,3.1416}, xticklabels={$-\pi$,$-\frac{\pi}{2}$,$\frac{\pi}{2}$,$\pi$},
+  ytick={-2,-1,1,2}]
+  \draw[otGreen,dashed,line width=0.6pt] (axis cs:1.5708,-3.2) -- (axis cs:1.5708,3.3);
+  \draw[otGreen,dashed,line width=0.6pt] (axis cs:-1.5708,-3.2) -- (axis cs:-1.5708,3.3);
+  \addplot[otNavy,line width=1.2pt,domain=-1.26:1.26,samples=100] {tan(deg(x))};
+  \addplot[otNavy,line width=1.2pt,domain=1.885:4.2,samples=100] {tan(deg(x))};
+  \addplot[otNavy,line width=1.2pt,domain=-4.2:-1.885,samples=100] {tan(deg(x))};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les droites $x=\frac{\pi}{2}+k\pi$ sont asymptotes.}
+\end{minipage}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $\cos^{2}x+\sin^{2}x=1$, mais en général $\cos x+\sin x\neq1$.
+  \item $(\cos x)'=-\sin x$ : attention au signe. Et $\big(\sin(ax+b)\big)'=a\cos(ax+b)$ : ne pas oublier le facteur $a$.
+  \item Une équation trigonométrique a en général une infinité de solutions : écrire « $+2k\pi$, $k\in\mathbb{Z}$ », puis ne
+    garder que les solutions de l'intervalle demandé.
+  \item Si $x$ décrit $\intFF{0}{\pi}$, alors $2x$ décrit $\intFF{0}{2\pi}$ : on change d'intervalle en même temps que de variable.
+  \item La calculatrice doit être réglée en \textbf{radians}.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Valeurs remarquables}
+Calculer la valeur exacte de chacune des expressions suivantes.
+\begin{tasks}(3)
+  \task $\sin\dfrac{\pi}{6}+\cos\dfrac{\pi}{3}$
+  \task $\tan\dfrac{\pi}{4}-\sin\dfrac{\pi}{2}$
+  \task $\sin^{2}\dfrac{\pi}{4}+\cos^{2}\dfrac{\pi}{4}$
+  \task $\dfrac{\sin\frac{\pi}{6}}{\cos\frac{\pi}{6}}$
+  \task $\sin\dfrac{\pi}{3}\times\cos\dfrac{\pi}{6}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Angles associés}
+\begin{questions}
+  \item Calculer les valeurs exactes suivantes, en se ramenant à un angle de $\intFF{0}{\frac{\pi}{2}}$.
+\begin{tasks}(3)
+  \task $\cos\dfrac{5\pi}{6}$
+  \task $\sin\dfrac{7\pi}{6}$
+  \task $\cos\left(-\dfrac{2\pi}{3}\right)$
+  \task $\sin\dfrac{3\pi}{4}$
+  \task $\cos\dfrac{11\pi}{6}$
+  \task $\sin\dfrac{17\pi}{4}$
+\end{tasks}
+  \item Simplifier, pour tout réel $x$, les expressions suivantes.
+    \begin{gather*}
+      A(x)=\cos(\pi-x)+\cos(-x) \qquad B(x)=\sin(\pi-x)-\sin(-x) \\
+      C(x)=\sin\left(\tfrac{\pi}{2}-x\right)+\cos(\pi+x)+\cos(x+2\pi)
+    \end{gather*}
+  \item Sachant que $\cos x=\dfrac35$ et que $x\in\intFF{-\frac{\pi}{2}}{0}$, calculer $\sin x$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Dérivées}
+Calculer la dérivée de chacune des fonctions suivantes.
+\begin{tasks}(3)
+  \task $f(x)=\sin(3x)$
+  \task $g(x)=x^{2}\cos x$
+  \task $h(x)=\tan\left(x^{2}+1\right)$
+  \task $k(x)=\sin x\cos x$
+  \task $m(x)=\dfrac{\sin x}{x}$, sur $\intOO{0}{+\infty}$
+\end{tasks}
+Pour $k$, on exprimera le résultat à l'aide de $\cos(2x)$, sachant que $\cos(2x)=\cos^{2}x-\sin^{2}x$.
+\end{exercice}
+
+\begin{exercice}[2]{Équations}
+Résoudre les équations suivantes sur l'intervalle $\intFO{0}{2\pi}$.
+\begin{tasks}(3)
+  \task $\sin x=\dfrac12$
+  \task $\cos x=-\dfrac{\sqrt2}{2}$
+  \task $\tan x=1$
+  \task $2\sin^{2}x-3\sin x+1=0$
+  \task $\sin(2x)=\cos x$
+\end{tasks}
+Pour la dernière, on utilisera $\sin(2x)=2\sin x\cos x$.
+\end{exercice}
+
+\begin{exercice}[2]{Inéquations}
+\begin{questions}
+  \item Résoudre $\sin x\geq\dfrac{\sqrt3}{2}$ sur $\intFF{0}{2\pi}$.
+  \item Résoudre $\cos(2x)<\dfrac12$ sur $\intFF{0}{\pi}$.
+  \item Résoudre $\tan x\leq1$ sur $\intFO{0}{2\pi}$, privé de $\frac{\pi}{2}$ et de $\frac{3\pi}{2}$.
+  \item À l'aide de la formule $\sin(a+b)=\sin a\cos b+\cos a\sin b$, montrer que, pour tout réel $x$,
+    $\sin x+\cos x=\sqrt2\sin\left(x+\frac{\pi}{4}\right)$. En déduire le maximum de la fonction $x\mapsto\sin x+\cos x$
+    sur $\intFF{0}{2\pi}$, puis résoudre l'inéquation $\sin x+\cos x\geq1$ sur $\intFF{0}{2\pi}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Formules et identités}
+On rappelle que, pour tous réels $a$, $b$ et $x$ :
+\[ \cos(a-b)=\cos a\cos b+\sin a\sin b \qquad \sin(a\pm b)=\sin a\cos b\pm\cos a\sin b \]
+\[ \cos(2x)=2\cos^{2}x-1=1-2\sin^{2}x \qquad \sin(2x)=2\sin x\cos x \]
+\begin{questions}
+  \item Simplifier $\sin(a+b)+\sin(a-b)$.
+  \item Calculer $\cos\dfrac{\pi}{12}$, en remarquant que $\dfrac{\pi}{12}=\dfrac{\pi}{3}-\dfrac{\pi}{4}$.
+  \item Démontrer que, pour tout réel $x$, $\sin^{2}x=\dfrac{1-\cos(2x)}{2}$.
+  \item Simplifier $\dfrac{\sin(2x)}{1+\cos(2x)}$ pour tout réel $x$ tel que $\cos x\neq0$.
+  \item Calculer $\sin\dfrac{5\pi}{12}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Limites}
+\begin{questions}
+  \item Rappeler la valeur de $\displaystyle\lim_{x\to0}\frac{\sin x}{x}$.
+  \item En multipliant numérateur et dénominateur par $1+\cos x$, calculer $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^{2}}$.
+  \item Calculer $\displaystyle\lim_{x\to\frac{\pi}{2}}\frac{\tan x}{x-\frac{\pi}{2}}$, en distinguant la limite à gauche et la limite à droite.
+  \item La fonction $f:x\mapsto\dfrac{\sin x}{x}$, définie sur $\R^{*}$, peut-elle être prolongée par continuité en $0$ ?
+  \item Calculer $\displaystyle\lim_{x\to+\infty}\frac{\sin x}{x}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Études de fonctions}
+Étudier les variations de chacune des fonctions suivantes sur l'intervalle indiqué : dérivée, signe de la dérivée,
+tableau de variations et extremums.
+\begin{questions}
+  \item $f(x)=\sin x+\cos x$ sur $\intFF{0}{2\pi}$.
+  \item $g(x)=\sin^{2}x-\cos^{2}x$ sur $\intFF{0}{2\pi}$. On pourra utiliser $\cos(2x)=\cos^{2}x-\sin^{2}x$.
+  \item $h(x)=\dfrac{\sin x}{1+\cos x}$ sur $\intFO{0}{2\pi}$ privé de $\pi$. Préciser les limites en $\pi$.
+  \item $k(x)=\sin x\cos x$ sur $\intFF{0}{2\pi}$. On pourra utiliser $\sin(2x)=2\sin x\cos x$.
+  \item $m(x)=\tan x-x$ sur $\intFO{0}{\frac{\pi}{2}}$. En déduire que $\tan x\geq x$ pour tout $x\in\intFO{0}{\frac{\pi}{2}}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Synthèse}
+\begin{questions}
+  \item Résoudre l'équation $\sin(3x)=\sin x$ sur $\intFF{0}{2\pi}$.
+  \item Étudier les variations de $f(x)=\dfrac{\sin x}{1+\sin x}$ sur $\intFF{0}{2\pi}$ privé de $\frac{3\pi}{2}$, et ses limites en $\frac{3\pi}{2}$.
+  \item Résoudre l'inéquation $\cos(2x)\geq\dfrac12$ sur $\intFF{0}{2\pi}$.
+  \item Calculer la dérivée seconde de la fonction $g$ définie sur $\R$ par $g(x)=\sin\left(x^{2}\right)$.
+  \item Résoudre l'équation $\tan(2x)=\sqrt3$ sur $\intFF{0}{\pi}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Suites et trigonométrie}
+\begin{questions}
+  \item On pose $u_n=\cos\left(\dfrac{\pi}{2^{n}}\right)$ pour $n\in\mathbb{N}$. Calculer $u_0$, $u_1$, $u_2$, puis $\displaystyle\lim_{n\to+\infty}u_n$.
+  \item On pose $v_n=\sin\left(\dfrac{n\pi}{4}\right)$. Montrer que la suite $(v_n)$ est périodique et déterminer sa période.
+  \item On pose $w_n=\dfrac1n\displaystyle\sum_{k=1}^{n}\sin\left(\frac{k\pi}{n}\right)$ pour $n\geq1$. Calculer $w_2$ et $w_4$.
+  \item La suite $(u_n)$ est définie par $u_0=2$, $u_1=2\cos\frac{\pi}{3}$ et, pour tout $n\geq1$,
+    $u_{n+1}=2\cos\left(\frac{\pi}{3}\right)u_n-u_{n-1}$. Calculer $u_1$ et $u_2$, puis démontrer par récurrence que
+    $u_n=2\cos\left(\dfrac{n\pi}{3}\right)$ pour tout $n\in\mathbb{N}$. On pourra utiliser
+    $2\cos a\cos b=\cos(a+b)+\cos(a-b)$.
+  \item On pose $t_n=\displaystyle\sum_{k=0}^{n}\cos\left(\frac{k\pi}{3}\right)$. Calculer $t_1$, $t_2$ et $t_6$, puis montrer
+    que la suite $(t_n)$ est périodique.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Étude complète d'une fonction trigonométrique}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=2\sin x+\sin(2x)$, de courbe $\Cf$.
+\partieExo{A}{Réduction de l'intervalle d'étude}
+\begin{questions}
+  \item Montrer que $f$ est périodique de période $2\pi$ et qu'elle est impaire. Quelles transformations du plan laissent
+    $\Cf$ invariante ?
+  \item Expliquer pourquoi il suffit d'étudier $f$ sur $\intFF{0}{\pi}$.
+\end{questions}
+\partieExo{B}{Variations}
+\begin{questions}[resume]
+  \item On admet que $\cos(2x)=2\cos^{2}x-1$ pour tout réel $x$. Montrer que, pour tout réel $x$,
+    $f'(x)=2(2\cos x-1)(\cos x+1)$.
+  \item Étudier le signe de $f'(x)$ sur $\intFF{0}{\pi}$, puis dresser le tableau de variations de $f$ sur $\intFF{0}{\pi}$.
+    Donner la valeur exacte du maximum.
+\end{questions}
+\partieExo{C}{Une équation et une tangente}
+\begin{questions}[resume]
+  \item Vérifier que $\frac{\pi}{2}$ est solution de l'équation $f(x)=2$, puis montrer que cette équation admet exactement deux
+    solutions sur $\intFF{0}{\pi}$. Donner un encadrement d'amplitude $10^{-2}$ de celle qui est différente de $\frac{\pi}{2}$, notée $\alpha$.
+  \item Déterminer une équation de la tangente $T$ à $\Cf$ à l'origine. Montrer que, pour tout réel $x$,
+    $f'(x)-4=2\left(\cos x-1\right)\left(2\cos x+3\right)$, puis en déduire la position de $\Cf$ par rapport à $T$ sur $\intFO{0}{+\infty}$.
+  \item Tracer $\Cf$ sur $\intFF{-\pi}{\pi}$, ainsi que la droite $T$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Oscillations amorties}
+On écarte un ressort de sa position d'équilibre, puis on le lâche. La position de son extrémité, en centimètres, à
+l'instant $t\geq0$ exprimé en secondes, est donnée par $x(t)=e^{-t/2}\cos(2t)$.
+\partieExo{A}{Enveloppes et limite}
+\begin{questions}
+  \item Montrer que, pour tout $t\geq0$, $-e^{-t/2}\leq x(t)\leq e^{-t/2}$. En déduire la limite de $x(t)$ lorsque $t$ tend vers $+\infty$, et interpréter.
+  \item Déterminer les instants auxquels le ressort passe par sa position d'équilibre, c'est-à-dire les solutions de $x(t)=0$.
+  \item Résoudre l'équation $x(t)=e^{-t/2}$ sur $\intFO{0}{+\infty}$.
+\end{questions}
+\partieExo{B}{Vitesse et amortissement}
+\begin{questions}[resume]
+  \item Montrer que, pour tout $t\geq0$, $x'(t)=-e^{-t/2}\left(\frac12\cos(2t)+2\sin(2t)\right)$. Montrer qu'aux instants trouvés
+    à la question 3, la courbe de $x$ et celle de $t\mapsto e^{-t/2}$ ont la même tangente.
+  \item Montrer que, pour tout $t\geq0$, $x(t+\pi)=e^{-\pi/2}\,x(t)$. Interpréter ce résultat.
+  \item On considère que les oscillations deviennent imperceptibles dès que $e^{-t/2}<0{,}01$. À partir de quel instant est-ce le cas ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Encadrements de sinus et cosinus}
+\partieExo{A}{Trois inégalités}
+Dans cette partie, $x$ désigne un réel positif.
+\begin{questions}
+  \item Étudier les variations de la fonction $g:x\mapsto x-\sin x$ sur $\intFO{0}{+\infty}$, puis en déduire que $\sin x\leq x$.
+  \item On pose $h(x)=\cos x-1+\dfrac{x^{2}}{2}$. Calculer $h'(x)$ et en déduire, à l'aide de la question 1, que
+    $1-\dfrac{x^{2}}{2}\leq\cos x$.
+  \item De la même manière, démontrer que $x-\dfrac{x^{3}}{6}\leq\sin x$.
+\end{questions}
+\partieExo{B}{Applications}
+\begin{questions}[resume]
+  \item En déduire un encadrement de $\sin(0{,}1)$ d'amplitude inférieure à $2\times10^{-4}$, ainsi qu'une minoration de $\cos(0{,}2)$.
+  \item Montrer que, pour tout $x>0$, $1-\dfrac{x^{2}}{6}\leq\dfrac{\sin x}{x}\leq1$. Retrouver ainsi la limite de $\dfrac{\sin x}{x}$
+    lorsque $x$ tend vers $0$.
+\end{questions}
+\end{exercice}

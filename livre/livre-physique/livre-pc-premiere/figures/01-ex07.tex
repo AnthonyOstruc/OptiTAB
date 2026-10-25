@@ -1,0 +1,22 @@
+% Verrerie disponible pour une dilution (exercice 7, chapitre 1)
+\begin{tikzpicture}[x=1cm,y=1cm,scale=0.78,every node/.style={transform shape=false}]
+\pic at (0,0) {becher={largeur=1.6,hauteur=1.9,niveau=0}};
+% Éprouvette graduée de 10 mL
+\begin{scope}[shift={(2.8,0)}]
+  \filldraw[fill=white,draw=otNavy,line width=0.7pt] (-0.42,0) rectangle (0.42,0.12);
+  \draw[pcVerre] (-0.17,0.12) -- (-0.17,3.0) -- (-0.24,3.08) (0.17,0.12) -- (0.17,3.0);
+  \foreach \k in {0,...,10}{\draw[otNavy!55,line width=0.35pt] (-0.17,{0.35+0.24*\k}) -- ({-0.17+ifthenelse(mod(\k,5)==0,0.17,0.09)},{0.35+0.24*\k});}
+\end{scope}
+\pic at (5.6,0) {pipette={hauteur=3.4,niveau=0}};
+\pic at (8.4,0) {pipette={hauteur=4.3,niveau=0}};
+\pic at (11.3,0) {fiole={hauteur=3.4,niveau=0}};
+\pic at (14.2,0) {fiole={hauteur=2.7,niveau=0}};
+\foreach \x/\l/\t in {0/A/{bécher\\100 mL},2.8/B/{éprouvette\\graduée 10 mL},5.6/C/{pipette jaugée\\5,00 mL},8.4/D/{pipette jaugée\\10,00 mL},11.3/E/{fiole jaugée\\100,0 mL},14.2/F/{fiole jaugée\\50,0 mL}}{
+  \node[font=\otBold\fontsize{8}{9}\selectfont,text=white,fill=otNavy,rounded corners=1pt,minimum size=4.2mm,inner sep=0pt] at (\x,-0.45) {\l};
+  \node[pcLegende,anchor=north,align=center] at (\x,-0.8) {\t};}
+\solution{\foreach \xa/\xb/\h in {-1.15/1.15/2.3,4.85/6.35/3.65,10.3/12.3/3.65}{
+    \draw[otGreenDark,line width=1pt,rounded corners=2mm,dash pattern=on 3pt off 1.5pt] (\xa,-1.75) rectangle (\xb,\h);}
+  \foreach \x in {0,5.6,11.3}{\fill[otGreenDark] (\x+0.7,3.95) circle (0.2);
+    \draw[white,line width=1pt,line cap=round,line join=round] (\x+0.6,3.95) -- (\x+0.67,3.86) -- (\x+0.81,4.05);}}
+\end{tikzpicture}
+\par\smallskip\legende{Verrerie disponible au laboratoire (schéma sans échelle).}

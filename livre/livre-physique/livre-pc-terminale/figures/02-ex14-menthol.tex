@@ -1,0 +1,21 @@
+% Menthol, menthone et spectres infrarouges avant et après oxydation (exercice 14, chapitre 2)
+\begin{tikzpicture}
+\node[anchor=center] (m1) at (0,0) {\setchemfig{atom sep=1.7em}\chemfig{*6((-OH)-(-(-[::60])-[::-60])---(-)--)}};
+\node[pcLegende,anchor=north] at (m1.south) {menthol};
+\node[anchor=center] (m2) at (4.2,0) {\setchemfig{atom sep=1.7em}\chemfig{*6((=O)-(-(-[::60])-[::-60])---(-)--)}};
+\node[pcLegende,anchor=north] at (m2.south) {menthone};
+\draw[pcFleche] (1.5,0) -- (2.7,0) node[midway,above,pcLegende]{oxydation};
+\begin{axis}[otIR,at={(66mm,-12.5mm)},anchor=south west,width=60mm,height=36mm,title={Spectre 1},xlabel={}]
+\addplot[otSpectre] {100 \bandeIR{2955}{30}{70} \bandeIR{2870}{25}{50} \bandeIR{1712}{18}{85} \bandeIR{1455}{15}{30}
+  \bandeIR{1370}{15}{25} \bandeIR{1110}{20}{20}};
+\end{axis}
+\begin{axis}[otIR,at={(66mm,-53mm)},anchor=south west,width=60mm,height=36mm,title={Spectre 2}]
+\addplot[otSpectre] {100 \bandeIR{3330}{150}{45} \bandeIR{2950}{30}{70} \bandeIR{2870}{25}{55} \bandeIR{1455}{15}{30}
+  \bandeIR{1045}{20}{50} \bandeIR{1025}{15}{40}};
+\end{axis}
+\begin{axis}[otIR,at={(-14mm,-53mm)},anchor=south west,width=60mm,height=36mm,title={Spectre 3 : produit brut obtenu}]
+\addplot[otSpectre] {100 \bandeIR{3420}{150}{14} \bandeIR{2955}{30}{70} \bandeIR{2870}{25}{52} \bandeIR{1712}{18}{82}
+  \bandeIR{1455}{15}{30} \bandeIR{1370}{15}{25} \bandeIR{1110}{20}{20}};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Formules topologiques et spectres schématiques.}

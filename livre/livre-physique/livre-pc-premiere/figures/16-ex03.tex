@@ -1,0 +1,21 @@
+% Énergies d'une balle lancée vers le haut (m = 0,10 kg ; v0 = 8,0 m/s ; z0 = 1,0 m) (exercice 3, chapitre 16)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=100mm,height=56mm,xmin=0,xmax=1.8,ymin=0,ymax=5,
+  xtick={0,0.2,...,1.8},ytick={0,1,...,5},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$t$ (s)},ylabel={énergie (J)}]
+\addplot[otNavy,line width=1.2pt,domain=0:1.748,samples=80] {0.981*(1+8*x-4.905*x^2)};
+\addplot[otOrange!85!black,line width=1.2pt,domain=0:1.748,samples=80] {0.05*(8-9.81*x)^2};
+\addplot[otGreenDark,line width=1.2pt,domain=0:1.748] {4.181};
+\node[pcLegendeG,text=otNavy,fill=white,inner sep=1pt] at (axis cs:0.55,3.55) {1};
+\node[pcLegendeG,text=otOrange!85!black,fill=white,inner sep=1pt] at (axis cs:0.28,1.45) {2};
+\node[pcLegendeG,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:1.35,4.45) {3};
+\solution{
+  \node[pcLegende,anchor=west,text=otNavy] at (axis cs:0.6,3.55) {$E_\mathrm{p}$};
+  \node[pcLegende,anchor=west,text=otOrange!85!black] at (axis cs:0.32,1.45) {$E_\mathrm{c}$};
+  \node[pcLegende,anchor=south,text=otGreenDark] at (axis cs:1.35,4.55) {$E_\mathrm{m}=\qty{4,18}{J}$};
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0.815,0) -- (axis cs:0.815,4.181);
+  \node[pcLegende,anchor=north west,text=otMuted,align=left] at (axis cs:0.83,0.95) {sommet :\\$E_\mathrm{c}=0$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Trois courbes d'énergie obtenues par traitement d'une vidéo ; l'origine des altitudes est prise au sol.}

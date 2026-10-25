@@ -1,0 +1,83 @@
+\begin{ouverture}[courbe]{10}{Statistiques et boîtes à moustaches}{Partie 3 · Données et probabilités}
+{Effectifs cumulés · Médiane · Quartiles · Boîtes à moustaches · Tableur}
+\objectif{Calculer et interpréter moyenne, médiane, quartiles et étendue.}
+\objectif{Utiliser les effectifs cumulés croissants.}
+\objectif{Construire et comparer des boîtes à moustaches.}
+\prerequis{Moyenne, médiane, étendue et fréquences.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Effectifs cumulés, médiane et quartiles}
+\begin{definition}L’effectif cumulé croissant d’une valeur est le nombre d’observations inférieures ou égales à cette valeur. Le dernier effectif cumulé est l’effectif total $N$. La moyenne est la somme des valeurs, chacune comptée avec son effectif, divisée par $N$.\end{definition}
+\begin{definition}Une médiane partage la série ordonnée en deux groupes de même effectif. Si $N$ est impair, c’est la valeur de rang $(N+1)/2$ ; si $N$ est pair, ce livre retient la moyenne des valeurs de rangs $N/2$ et $N/2+1$.\end{definition}
+\begin{definition}Le premier quartile $Q_1$ est la plus petite valeur de la série telle qu’au moins 25\,\% des valeurs lui soient inférieures ou égales. Le troisième quartile $Q_3$ est la plus petite valeur telle qu’au moins 75\,\% des valeurs lui soient inférieures ou égales.\end{definition}
+\begin{exemple}Pour $N=20$, $Q_1$ est la 5\textsuperscript{e} valeur, car $20\times0{,}25=5$, et $Q_3$ la 15\textsuperscript{e}, car $20\times0{,}75=15$. Pour $N=11$, $11\times0{,}25=2{,}75$ : $Q_1$ est la 3\textsuperscript{e} valeur. On arrondit le rang à l’entier supérieur.\end{exemple}
+\begin{savoirfaire}[Lire les rangs]Ranger les valeurs ou calculer les effectifs cumulés croissants ; repérer la première valeur dont l’effectif cumulé atteint le rang cherché.\end{savoirfaire}
+\clearpage
+\essSection{2}{Boîtes à moustaches et comparaisons}
+\begin{definition}Une boîte à moustaches représente, sur un axe gradué, le minimum, $Q_1$, la médiane, $Q_3$ et le maximum. La boîte va de $Q_1$ à $Q_3$ et contient environ la moitié centrale des valeurs ; les moustaches rejoignent les extrêmes.\end{definition}
+\begin{savoirfaire}[Comparer deux séries]Comparer les médianes pour la position, puis l’étendue et la longueur $Q_3-Q_1$ de la boîte pour la dispersion. Une phrase précise s’appuie sur un pourcentage : « au moins 75\,\% des valeurs sont inférieures ou égales à $Q_3$ ».\end{savoirfaire}
+\begin{savoirfaire}[Tableur]Les fonctions MOYENNE, MEDIANE, MIN et MAX calculent ces indicateurs sur une plage de cellules, par exemple \code{=MAX(A2:A21)-MIN(A2:A21)} pour l’étendue. La fonction QUARTILE d’un tableur suit souvent une autre définition et peut donner un résultat différent.\end{savoirfaire}
+\begin{attention}Une moyenne identique n’impose ni une médiane identique ni une même dispersion. Une valeur extrême peut déplacer fortement la moyenne sans changer la médiane. Lire l’origine des axes avant de comparer des hauteurs.\end{attention}
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-10-1}\begin{exercice}[1]{Trois indicateurs}
+Pour la série $7\,;9\,;10\,;14\,;15$, calculer la moyenne, la médiane et l’étendue.
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-2}\begin{exercice}[1]{Une fréquence}
+Dans un groupe de 30 élèves, 12 viennent à vélo. Donner la fréquence et le pourcentage correspondants.
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-3}\begin{exercice}[1]{Des effectifs cumulés}
+Calculer les effectifs cumulés croissants de la série de notes, puis l’effectif total.\begin{center}\renewcommand{\arraystretch}{1.35}\begin{tabular}{c|ccccc}\toprule
+Note & $6$ & $8$ & $10$ & $12$ & $16$\\\midrule
+Effectif & $2$ & $3$ & $6$ & $5$ & $4$\\
+\bottomrule\end{tabular}\end{center}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-4}\begin{exercice}[1]{Ordonner avant la médiane}
+Déterminer la médiane de $13\,;4\,;9\,;7\,;11$, puis celle de $1\,;3\,;6\,;8\,;10\,;20$.
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-5}\begin{exercice}[1]{Lire une boîte à moustaches}
+La boîte à moustaches résume les durées, en minutes, d’un trajet. Lire le minimum, les quartiles, la médiane et le maximum. Calculer l’étendue et compléter : « au moins … \% des durées sont inférieures ou égales à 14 min ».
+\label{fig-ex-10-5}\figureGeo{boite-lecture}
+\end{exercice}\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-10-6}\begin{exercice}[2]{Moyenne et quartiles d’un tableau}
+Pour la série de notes de l’exercice 3, calculer la moyenne, la médiane et les deux quartiles.\begin{center}\renewcommand{\arraystretch}{1.35}\begin{tabular}{c|ccccc}\toprule
+Note & $6$ & $8$ & $10$ & $12$ & $16$\\\midrule
+Effectif & $2$ & $3$ & $6$ & $5$ & $4$\\
+\bottomrule\end{tabular}\end{center}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-7}\begin{exercice}[2]{Quartiles d’une série brute}
+Déterminer la médiane et les quartiles de la série ordonnée $3\,;5\,;6\,;8\,;9\,;10\,;12\,;13\,;15\,;18\,;20$.
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-8}\begin{exercice}[2]{Construire une boîte}
+Construire la boîte à moustaches de la série de l’exercice précédent sur l’axe gradué fourni.
+\label{fig-ex-10-8}\figureGeo{boite-construire}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-9}\begin{exercice}[2]{Quartiles et diagramme en barres}
+Le diagramme en barres donne le nombre de livres lus pendant les vacances par les élèves d’une classe. Déterminer l’effectif total, la médiane et les quartiles.
+\label{fig-ex-10-9}\figureGeo{stat-barres}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-10}\begin{exercice}[2]{Des formules de tableur}
+Les durées 12, 15, 9, 20, 15, 11, 18 et 14, en minutes, sont saisies dans les cellules A2 à A9. Écrire des formules donnant la moyenne, la médiane et l’étendue, puis donner les résultats.
+\end{exercice}\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-10-11}\begin{exercice}[3]{Réunir deux groupes}
+Un groupe de 12 élèves a une moyenne de 13 ; un autre de 18 élèves a une moyenne de 11. Quelle est la moyenne des 30 élèves ?
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-12}\begin{exercice}[3]{Comparer deux collèges}
+Les boîtes à moustaches résument les durées de trajet, en minutes, des élèves de deux collèges A et B. Comparer les médianes et les dispersions. Dans quel collège au moins un quart des élèves mettent-ils 22 minutes ou plus ?
+\label{fig-ex-10-12}\figureGeo{boites-comparer}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-13}\begin{exercice}[3]{Ajouter une observation}
+Une série de 9 valeurs a une moyenne de 14. On ajoute 24. Calculer la nouvelle moyenne. Peut-on en déduire la nouvelle médiane ?
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-14}\begin{exercice}[3]{Même moyenne, mêmes résultats ?}
+Comparer les séries A : $9\,;10\,;10\,;11$ et B : $2\,;10\,;10\,;18$. Calculer moyenne, médiane et étendue, puis commenter.
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-10-15}\begin{exercice}[3]{Un graphique trompeur}
+Deux barres représentent 80 et 84 inscriptions. Un axe vertical commence à 78. Comparer la hausse réelle et les hauteurs visibles à partir de 78.
+\label{fig-ex-10-15}\figureGeo{stat-axe-tronque}
+\end{exercice}\end{blocLivre}
+
+\clearpage

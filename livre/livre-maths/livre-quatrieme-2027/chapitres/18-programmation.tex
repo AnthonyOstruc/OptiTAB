@@ -1,0 +1,90 @@
+\begin{ouverture}[algorithmique]{18}{Algorithmique : conditions et variable}{Partie 5 · Programmer et réinvestir}
+{Variable · Conditions · Boucles · Écrire et modifier}
+\objectif{Manipuler une variable, notamment pour accumuler dans une boucle.}
+\objectif{Représenter des conditions simples et écrire des instructions conditionnelles.}
+\objectif{Écrire un programme simple et modifier un programme donné.}
+\prerequis{Séquences d’instructions, entrées, sorties et boucles « répéter n fois » (Cinquième).}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\phantomsection\label{cours-18-1}
+\essSection{1}{Variable, séquences et boucles}
+\begin{definition}Un algorithme est une suite précise d’instructions qui réalise une tâche ; un programme le traduit dans un langage. Une variable associe un nom à un espace de mémoire dont la valeur peut être lue et modifiée : « mettre x à 3 » remplace son contenu par 3 ; « ajouter 2 à x » l’augmente de 2.\end{definition}
+\begin{savoirfaire}[Lire un script]Repérer l’événement de départ, puis suivre les blocs dans l’ordre en notant la valeur de la variable après chaque instruction. Dans une boucle « répéter n fois », toutes les instructions intérieures sont reprises à chaque tour ; dans le livre, les indentations et les lignes « fin » délimitent les blocs.\end{savoirfaire}
+\label{fig-cours-18-1-script-01}\figureGeo{script-01}
+
+\begin{attention}Une instruction utilise la valeur de la variable au moment où elle est exécutée : permuter deux blocs peut changer le résultat. On initialise la variable avant une boucle qui l’accumule, et non à l’intérieur.\end{attention}
+\clearpage
+\phantomsection\label{cours-18-2}
+\essSection{2}{Conditions et instructions conditionnelles}
+\begin{definition}Une condition est une expression vraie ou fausse, construite ici avec les opérateurs $<$, $>$ ou $=$ : « x > 9 », « réponse = 6 ». Le bloc « si … alors … sinon … » exécute la première branche si la condition est vraie, la seconde sinon. Sans « sinon », rien n’est fait quand la condition est fausse.\end{definition}
+\begin{exemple}Pour compter les 6 obtenus en 1 000 lancers simulés d’un dé : mettre compteur à 0 ; répéter 1 000 fois : si nombre aléatoire entre 1 et 6 = 6, alors ajouter 1 à compteur. À la fin, la fréquence observée de 6 est compteur : 1 000.\end{exemple}
+\begin{savoirfaire}[Écrire et mettre au point]Décomposer la tâche, choisir l’entrée et la sortie, puis tester des valeurs habituelles et des cas limites, comme une valeur égale au seuil d’une condition. Pour un tracé, préciser le point de départ, l’orientation et l’état du stylo.\end{savoirfaire}
+\begin{attention}Les conditions composées avec « et » ou « ou », les boucles « répéter jusqu’à », l’usage de plusieurs variables et les blocs personnalisés seront travaillés en Troisième.\end{attention}
+
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-18-1}\begin{exercice}[1]{Suivre les valeurs}
+Exécuter le script. Quelle valeur affiche-t-il ?
+\label{fig-ex-18-1}\figureGeo{script-01}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-2}\begin{exercice}[1]{Une entrée utilisateur}
+Le script demande un nombre x. Donner le résultat pour 5, puis exprimer le résultat pour une entrée quelconque.
+\label{fig-ex-18-2}\figureGeo{script-02}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-3}\begin{exercice}[1]{Une boucle d’ajouts}
+Exécuter la boucle du script et donner l’affichage.
+\label{fig-ex-18-3}\figureGeo{script-03}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-4}\begin{exercice}[1]{Une condition au seuil}
+Le script classe un nombre entier saisi avec la condition « x > 9 ». Donner les messages affichés pour x = 9, puis pour x = 10.
+\label{fig-ex-18-4}\figureGeo{script-04}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-5}\begin{exercice}[1]{Un produit répété}
+Le script part de x = 3 et double x quatre fois. Donner les valeurs successives de x et l’affichage final.
+\label{fig-ex-18-5}\figureGeo{script-05}
+\end{exercice}\end{blocLivre}
+
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-18-6}\begin{exercice}[2]{Compter des 6}
+Le script simule 10 lancers d’un dé. Les nombres aléatoires tirés sont 3, 6, 1, 6, 2, 5, 6, 4, 1 et 3. Que dit le lutin ? Que représente la variable compteur ? Comment modifier le script pour estimer la fréquence de 6 sur 1 000 lancers ?
+\label{fig-ex-18-6}\figureGeo{script-06}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-7}\begin{exercice}[2]{Tracer un carré}
+Le lutin part de (0 ; 0), orienté vers la droite, stylo baissé. Décrire la figure tracée par le script et la position finale du lutin.
+\label{fig-ex-18-7}\figureGeo{script-07}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-8}\begin{exercice}[2]{Tracer un rectangle}
+Avec le même départ et le stylo baissé, décrire le dessin du script. Donner son périmètre.
+\label{fig-ex-18-8}\figureGeo{script-08}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-9}\begin{exercice}[2]{Deux tests de parité}
+Le bloc « reste de x divisé par 2 » vaut 0 lorsque x est pair. Que dit le script pour 18, puis pour 19 ?
+\label{fig-ex-18-9}\figureGeo{script-09}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-10}\begin{exercice}[2]{Une touche du clavier}
+Ce script est déclenché par la touche espace et ajoute 1 à la variable score. Score vaut 0 au début de la partie et n’est pas réinitialisé par ce script. Quelle valeur obtient-on après cinq appuis ?
+\label{fig-ex-18-10}\figureGeo{script-10}
+\end{exercice}\end{blocLivre}
+
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-18-11}\begin{exercice}[3]{Un triangle équilatéral}
+Le lutin avance de 40 pixels et tourne de $120^\circ$, trois fois de suite. Il part orienté vers la droite, stylo baissé. Justifier la figure obtenue et expliquer pourquoi tourner de $60^\circ$ ne convient pas.
+\label{fig-ex-18-11}\figureGeo{script-11}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-12}\begin{exercice}[3]{Une interaction simple}
+Le script teste si le lutin touche le lutin Guide. Quel message affiche-t-il selon que le contact est présent ou absent ? Pourquoi faut-il relancer le script pour tester un nouveau contact ?
+\label{fig-ex-18-12}\figureGeo{script-12}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-13}\begin{exercice}[3]{Une dimension saisie}
+Le script demande une longueur c, puis trace une figure. Donner la longueur totale tracée pour c = 25, puis en fonction de c.
+\label{fig-ex-18-13}\figureGeo{script-13}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-14}\begin{exercice}[3]{Réparer une boucle}
+Un script met s à 0 à l’intérieur de la boucle, puis ajoute 3 à s, quatre fois. Il dit s après la boucle. Expliquer le résultat affiché et corriger le script pour obtenir 12.
+\label{fig-ex-18-14}\figureGeo{script-14}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-18-15}\begin{exercice}[3]{Concevoir et vérifier}
+Écrire un script qui demande un nombre x, puis dit « positif » si $3x+5$ est strictement positif et « nul ou négatif » sinon. Tester les entrées 2, $-2$ et $-\frac53$.
+\label{fig-ex-18-15}\figureGeo{script-15}
+\end{exercice}\end{blocLivre}
+
+\clearpage

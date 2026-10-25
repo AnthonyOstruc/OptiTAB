@@ -1,0 +1,26 @@
+% Tube en U contenant de l'eau et de l'huile (exercice 10, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Eau (bleu) : fond du U, branche gauche jusqu'à 2,08 ; branche droite jusqu'à l'interface 1,0
+\fill[otNavy!18] (0,1.0) -- (0,0.5) arc (180:360:1.0) -- (2.0,1.0) -- (1.6,1.0) -- (1.6,0.5) arc (360:180:0.6) -- (0.4,1.0) -- cycle;
+\fill[otNavy!18] (0,1.0) rectangle (0.4,2.08);
+\fill[otNavy!18] (1.6,0.5) rectangle (2.0,1.0);
+% Huile (jaune) dans la branche droite : 12,0 cm au-dessus de l'interface
+\fill[yellow!45!orange!35] (1.6,1.0) rectangle (2.0,2.2);
+\draw[pcSurface] (0,2.08) -- (0.4,2.08) (1.6,2.2) -- (2.0,2.2);
+\draw[otOrange!80!black,line width=0.4pt] (1.6,1.0) -- (2.0,1.0);
+\draw[pcVerre] (0,2.8) -- (0,0.5) arc (180:360:1.0) -- (2.0,2.8);
+\draw[pcVerre] (0.4,2.8) -- (0.4,0.5) arc (180:360:0.6) -- (1.6,2.8);
+\node[pcLegende,anchor=west] at (2.15,1.6) {huile};
+\node[pcLegende,anchor=east] at (-0.15,0.6) {eau};
+% Cotes
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (-1.3,1.0) -- (2.0,1.0);
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (-1.3,2.08) -- (0,2.08) (2.0,2.2) -- (3.2,2.2) (2.0,1.0) -- (3.2,1.0);
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (-1.15,1.0) -- (-1.15,2.08) node[midway,pcLegende,anchor=east] {$h_\mathrm{e}=\qty{10,8}{cm}$};
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (3.05,1.0) -- (3.05,2.2) node[midway,pcLegende,anchor=west] {$h_\mathrm{h}=\qty{12,0}{cm}$};
+\node[pcLegende,anchor=west] at (3.3,1.0) {interface eau-huile};
+\solution{
+  \fill[otInk] (1.8,1.0) circle (0.05); \node[pcLegendeG,anchor=north,text=otGreenDark] at (1.8,0.97) {A};
+  \fill[otInk] (0.2,1.0) circle (0.05); \node[pcLegendeG,anchor=north,text=otGreenDark] at (0.2,0.97) {B};
+  \node[pcLegende,anchor=south,text=otGreenDark] at (1.0,1.04) {$P_\mathrm{A}=P_\mathrm{B}$};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{On verse de l'huile dans la branche droite d'un tube en U contenant de l'eau : les deux liquides ne se mélangent pas.}\solution{A et B, au même niveau dans l'eau continue, sont à la même pression.}}

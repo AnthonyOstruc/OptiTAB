@@ -1,0 +1,21 @@
+% Lancer du poids : trajectoire et énergies au lâcher, au sommet et à l'arrivée (corrigé de l'exercice 13, chapitre 16)
+% Échelle : 1 cm pour 2 m ; v0 = 13 m/s à 40 degrés depuis 2,1 m
+\begin{tikzpicture}[x=0.5cm,y=0.5cm]
+\fill[otMuted!18] (-0.5,-0.4) rectangle (20,0);
+\draw[otInk!60,line width=0.6pt] (-0.5,0) -- (20,0);
+\draw[otNavy,line width=1pt] plot[domain=0:19.1,samples=60] (\x,{2.1+0.8391*\x-0.04938*\x*\x});
+\fill[otInk] (0,2.1) circle (0.12); \fill[otInk] (8.50,5.66) circle (0.12); \fill[otInk] (19.1,0) circle (0.12);
+\foreach \x/\y/\ep/\eco/\t in {0/2.1/150/613/{lâcher},8.5/5.66/403/360/{sommet},19.1/0/0/763/{arrivée}}{%
+  \begin{scope}[shift={({\x-1.0},{\y+1.0})}]
+    \fill[otNavy!55] (0,0) rectangle (0.6,{\ep/150});
+    \fill[otOrange!70] (0.8,0) rectangle (1.4,{\eco/150});
+    \fill[otGreenDark!70] (1.6,0) rectangle (2.2,{763/150});
+  \end{scope}}
+\node[pcLegende,anchor=north] at (0,1.9) {lâcher, $z=\qty{2,1}{m}$};
+\node[pcLegende,anchor=north] at (8.5,5.3) {sommet, $z=\qty{5,66}{m}$};
+\node[pcLegende,anchor=north] at (17.6,-0.45) {arrivée, $v=\qty{14,5}{m.s^{-1}}$};
+\foreach \y/\c/\t in {8.2/otNavy!55/{$E_\mathrm{p}$},7.4/otOrange!70/{$E_\mathrm{c}$},6.6/otGreenDark!70/{$E_\mathrm{m}=\qty{763}{J}$}}{%
+  \fill[\c] (21,{\y-0.25}) rectangle (21.5,{\y+0.25});
+  \node[pcLegende,anchor=west] at (21.6,\y) {\t};}
+\end{tikzpicture}
+\par\smallskip\legende{L'énergie mécanique se conserve ; au sommet, il reste de l'énergie cinétique car la vitesse horizontale ne s'annule pas.}

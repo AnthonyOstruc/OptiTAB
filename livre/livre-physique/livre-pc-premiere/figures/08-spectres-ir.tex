@@ -1,0 +1,26 @@
+% Spectres infrarouges de quatre molécules, une par famille (L'essentiel, chapitre 8) ; spectres schématiques
+\begin{tikzpicture}
+\begin{axis}[otIR,name=a,title={Éthanol (alcool)},xlabel={}]
+\addplot[otSpectre] {100 \bandeIR{3340}{160}{55} \bandeIR{2975}{30}{45} \bandeIR{2890}{25}{25} \bandeIR{1450}{25}{20}
+  \bandeIR{1380}{15}{15} \bandeIR{1090}{25}{40} \bandeIR{1050}{20}{65} \bandeIR{880}{15}{25}};
+\node[pcLegende,text=otGreenDark] at (axis cs:3340,26) {O--H lié};
+\end{axis}
+\begin{axis}[otIR,name=b,at={(a.east)},anchor=west,xshift=12mm,title={Propanal (aldéhyde)},xlabel={},ylabel={}]
+\addplot[otSpectre] {100 \bandeIR{2980}{25}{40} \bandeIR{2900}{25}{20} \bandeIR{2820}{12}{28} \bandeIR{2720}{12}{32}
+  \bandeIR{1730}{16}{85} \bandeIR{1460}{15}{25} \bandeIR{1390}{15}{20} \bandeIR{1110}{20}{30} \bandeIR{850}{15}{20}};
+\node[pcLegende,text=otGreenDark,anchor=north] at (axis cs:2770,62) {C--H ald.};
+\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:1700,17) {C=O};
+\end{axis}
+\begin{axis}[otIR,name=c,at={(a.south)},anchor=north,yshift=-11mm,title={Propanone (cétone)}]
+\addplot[otSpectre] {100 \bandeIR{2995}{20}{15} \bandeIR{2925}{20}{12} \bandeIR{1715}{18}{85} \bandeIR{1420}{15}{25}
+  \bandeIR{1365}{15}{50} \bandeIR{1220}{18}{60} \bandeIR{530}{15}{30}};
+\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:1690,17) {C=O};
+\end{axis}
+\begin{axis}[otIR,name=d,at={(c.east)},anchor=west,xshift=12mm,title={Acide éthanoïque (acide carboxylique)},ylabel={}]
+\addplot[otSpectre] {100 \bandeIR{3000}{330}{45} \bandeIR{1715}{22}{80} \bandeIR{1410}{20}{25} \bandeIR{1290}{25}{50}
+  \bandeIR{940}{30}{30}};
+\node[pcLegende,text=otGreenDark] at (axis cs:3000,36) {O--H acide};
+\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:1690,22) {C=O};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Spectres schématiques : au-dessus de \qty{1500}{cm^{-1}}, les bandes révèlent les liaisons caractéristiques de chaque famille.}

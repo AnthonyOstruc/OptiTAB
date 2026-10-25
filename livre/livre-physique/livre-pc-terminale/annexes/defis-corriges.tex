@@ -1,0 +1,1070 @@
+\editionPage[\pdfbookmark[0]{Corrigés des défis}{bm-corriges-defis}]{defi-cor-1-1}{D01 · Corrigé}{Mélanger n'est pas moyenner}{\hyperref[defi-ex-1]{Énoncé p.~\pageref*{defi-ex-1}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-1-1}
+\editionEtape{1. Additionner des quantités, pas des pH}
+Les quantités d'ions oxonium valent $\num{1.0e-2}\times\num{0.1000}=\qty{1,0e-3}{mol}$ et
+$\num{1.0e-4}\times\num{0.1000}=\qty{1,0e-5}{mol}$. Dans les 200,0 mL du mélange,
+\[\hho=\frac{\qty{1,01e-3}{mol}}{\qty{0,2000}{L}}=\qty{5,05e-3}{mol.L^{-1}}\qquad\text{donc}\qquad\res{\pH\approx2{,}30}.\]
+Le mélange est bien plus proche de la solution la plus acide que la moyenne 3,0 ne le laisserait penser :
+la solution de pH 2,0 apporte cent fois plus d'ions oxonium que l'autre.
+\editionEtape{2. Une moyenne de concentrations, pas de pH}
+Avec $a=10^{-p_1}$ et $b=10^{-p_2}$, le mélange à volumes égaux a pour concentration réduite $h=\frac{a+b}{2}$.
+L'inégalité admise donne $h\geq\sqrt{ab}=10^{-(p_1+p_2)/2}$. La fonction $x\mapsto-\log x$ étant
+strictement décroissante,
+\[p=-\log h\leq-\log\sqrt{ab}=\frac{p_1+p_2}{2}.\]
+L'égalité a lieu si et seulement si $a=b$, c'est-à-dire $p_1=p_2$. Le pH d'un mélange est toujours
+inférieur ou égal à la moyenne des pH.
+\editionEtape{3. Ajouter un acide pour diluer}
+Soit $V$ le volume ajouté, en litres. On veut
+\[\frac{\num{1.0e-3}+\num{1.0e-4}\,V}{0{,}1000+V}=\num{1.0e-3}\iff\num{9.0e-4}=\num{9.0e-4}\,V
+\iff\res{V=\qty{1,0}{L}}.\]
+Avec de l'eau pure, $\frac{\num{1.0e-3}}{0{,}1000+V'}=\num{1.0e-3}$ donne $V'=\qty{0,90}{L}$.
+Il faut davantage de solution de pH 4,0 que d'eau : elle dilue, mais elle apporte aussi ses propres ions oxonium.
+\editionEtape{4. Tenir compte des ions de l'eau}
+La relation simple donnerait $\pH=8$ : une solution d'acide serait basique, ce qui est absurde.
+À cette dilution, les ions oxonium apportés par l'acide ne sont plus prépondérants devant ceux de l'eau.
+On pose $x=c/\cst$ ; on a $[\ce{Cl-}]=c$ et $[\ce{HO-}]=\dfrac{K_\mathrm{e}\,{\cst}^2}{\hho}$, soit, en valeurs
+réduites, $\dfrac{K_\mathrm{e}}{h}$. L'électroneutralité donne $h=x+\dfrac{K_\mathrm{e}}{h}$, soit
+$h^2-xh-K_\mathrm{e}=0$. La racine positive est
+\[h=\frac{x+\sqrt{x^2+4K_\mathrm{e}}}{2}=\num{1.05e-7}\qquad\text{donc}\qquad\res{\pH\approx6{,}98}.\]
+\end{blocEdition}
+
+\editionPage{defi-cor-1-2}{D01 · Corrigé (suite)}{Mélanger n'est pas moyenner}{\hyperref[defi-ex-1]{Énoncé p.~\pageref*{defi-ex-1}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-1-2}
+\editionEtape{5. Domaine de validité de la relation simple}
+L'écart vaut $\delta=-\log x-(-\log h)=\log\dfrac{h}{x}=\log\dfrac{1+\sqrt{1+4K_\mathrm{e}/x^2}}{2}$ ;
+il décroît quand $x$ augmente. Alors
+\[\delta<0{,}01\iff\sqrt{1+\frac{4K_\mathrm{e}}{x^2}}<2\times10^{0{,}01}-1\iff
+x>\sqrt{\frac{4K_\mathrm{e}}{(2\times10^{0{,}01}-1)^2-1}}\approx\num{6.5e-7}.\]
+\begin{codecote}[0.6]
+\begin{pythoncol}
+from math import sqrt, log10
+KE = 1.0e-14
+def ph_exact(c):
+    h = (c + sqrt(c**2 + 4*KE)) / 2
+    return -log10(h)
+print(round(ph_exact(1e-8), 3))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+6.978
+\end{consolecol}
+\end{codecote}
+\label{figedition-defi-cor-1-2-1}\schema[corrige]{defi-01-courbe}
+\editionRetenir{Le pH est une grandeur logarithmique : on ne moyenne pas des pH, on écrit la conservation
+des quantités de matière. Un modèle a aussi un domaine de validité : la relation simple convient tant que
+l'acide apporte beaucoup plus d'ions oxonium que l'eau, c'est-à-dire pour $c$ supérieure à environ \qty{6,5e-7}{mol.L^{-1}}.}
+\end{blocEdition}
+
+\editionPage{defi-cor-2-1}{D02 · Corrigé}{La méthode des ajouts dosés}{\hyperref[defi-ex-2]{Énoncé p.~\pageref*{defi-ex-2}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-2-1}
+\editionEtape{1. L'effet de matrice}
+Dans l'échantillon, d'autres espèces peuvent interagir avec X ou modifier son environnement : le coefficient $k$
+n'est alors plus celui mesuré dans l'eau pure. La droite d'étalonnage « idéale » ne s'applique pas à l'échantillon ;
+les ajouts dosés, réalisés dans l'échantillon lui-même, mesurent le $k$ de la matrice réelle.
+\editionEtape{2. Concentration dans chaque fiole}
+La quantité de X vaut $n=c_0V_0+c_\mathrm{s}V_\mathrm{s}$, répartie dans le volume $V_\mathrm{T}$ :
+\[c=\frac{c_0V_0+c_\mathrm{s}V_\mathrm{s}}{V_\mathrm{T}}\qquad\text{donc}\qquad
+A=k\,c=\frac{k}{V_\mathrm{T}}\left(c_0V_0+c_\mathrm{s}V_\mathrm{s}\right).\]
+\editionEtape{3. Une droite et son intersection avec l'axe}
+$A=a\,V_\mathrm{s}+b$ avec $a=\dfrac{k\,c_\mathrm{s}}{V_\mathrm{T}}$ et $b=\dfrac{k\,c_0V_0}{V_\mathrm{T}}$ : la
+fonction est affine. Elle s'annule pour
+\[V_\mathrm{s}^{*}=-\frac{b}{a}=-\frac{c_0V_0}{c_\mathrm{s}}\qquad\text{d'où}\qquad c_0=\frac{b}{a}\times\frac{c_\mathrm{s}}{V_0}.\]
+Le coefficient $k$ s'élimine : il n'est pas nécessaire de le connaître.
+\editionEtape{4. Exploiter les mesures}
+\begin{codecote}[0.62]
+\begin{pythoncol}
+import numpy as np
+Vs = np.array([0, 2.0, 4.0, 6.0, 8.0])
+A = np.array([0.209, 0.311, 0.417, 0.520, 0.623])
+a, b = np.polyfit(Vs, A, 1)
+c0 = b / a * 1.00e-4 / 10.0
+print(round(a, 5), round(b, 4), f"{c0:.2e}")
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.05185 0.2086 4.02e-05
+\end{consolecol}
+\end{codecote}
+$\frac{b}{a}=\qty{4,02}{mL}$ et $\res{c_0=\qty{4,0e-5}{mol.L^{-1}}}$. Enfin, $k=\dfrac{a\,V_\mathrm{T}}{c_\mathrm{s}}
+=\dfrac{\qty{0,05185}{mL^{-1}}\times\qty{50,0}{mL}}{\qty{1,00e-4}{mol.L^{-1}}}\approx\res{\qty{2,6e4}{L.mol^{-1}}}$.
+\end{blocEdition}
+
+\editionPage{defi-cor-2-2}{D02 · Corrigé (suite)}{La méthode des ajouts dosés}{\hyperref[defi-ex-2]{Énoncé p.~\pageref*{defi-ex-2}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-2-2}
+\label{figedition-defi-cor-2-2-1}\schema[corrige]{defi-02-ajouts}
+\editionEtape{5. Une absorbance parasite}
+L'absorbance parasite s'ajoute à toutes les mesures : la pente $a$ ne change pas, mais l'ordonnée à l'origine
+mesurée vaut $b'=b+A_\mathrm{p}$. La concentration calculée à la question 4 (avec $b'=0{,}2086$) est donc trop
+grande ; la vraie concentration correspond à $b=0{,}2086-0{,}020=0{,}1886$ :
+\[c_0=\frac{0{,}1886}{0{,}05185}\times\frac{\num{1.00e-4}}{10{,}0}=\res{\qty{3,6e-5}{mol.L^{-1}}}.\]
+En ignorant l'absorbance parasite, on surestime $c_0$ d'environ \res{11~\%}. On l'évite en mesurant un « blanc »
+contenant la matrice sans l'espèce X, ou l'absorbance de fond à une longueur d'onde où X n'absorbe pas, puis en
+soustrayant cette valeur de toutes les mesures.
+\editionRetenir{Une méthode d'analyse repose sur un modèle : il faut savoir ce qu'il suppose (ici, la même
+valeur de $k$ dans toutes les fioles et l'absence d'absorbance parasite) et contrôler ces hypothèses.}
+\end{blocEdition}
+
+\editionPage{defi-cor-3-1}{D03 · Corrigé}{Identifier un acide inconnu}{\hyperref[defi-ex-3]{Énoncé p.~\pageref*{defi-ex-3}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-3-1}
+\editionEtape{1. Une famille confirmée}
+La bande très large entre 2\,500 et 3\,200 cm$^{-1}$ correspond à la liaison O--H d'un acide carboxylique, et la bande
+forte vers 1\,700 cm$^{-1}$ à la liaison C=O : le solide est bien un acide carboxylique.
+\editionEtape{2. L'hypothèse d'un monoacide}
+$n(\ce{HO-})=0{,}100\times\num{25.4e-3}=\qty{2,54e-3}{mol}$. S'il n'y avait qu'un groupe carboxyle,
+$n(\text{acide})=\qty{2,54e-3}{mol}$ et $M=\frac{0{,}150}{\num{2.54e-3}}=\qty{59,1}{g.mol^{-1}}$. L'analyse élémentaire donne alors :
+\[x=\frac{0{,}407\times59{,}1}{12{,}0}=2{,}0\ ;\qquad y=\frac{0{,}051\times59{,}1}{1{,}0}=3{,}0\ ;\qquad z=\frac{0{,}542\times59{,}1}{16{,}0}=2{,}0.\]
+La formule \ce{C2H3O2} comporte un nombre impair d'atomes d'hydrogène : chaque atome de carbone forme quatre liaisons,
+chaque oxygène deux et chaque hydrogène une ; la somme $4x+2z+y$ vaut le double du nombre de liaisons, donc elle est
+paire, et $y$ doit être pair. \res{\text{L'hypothèse d'un monoacide est à rejeter.}}
+\editionEtape{3. Le nombre de groupes carboxyle}
+Avec $p$ groupes, $n(\text{acide})=\frac{\num{2.54e-3}}{p}$ et $M=p\times\qty{59,1}{g.mol^{-1}}$ : la formule est
+$(\ce{C2H3O2})_p$, soit $\ce{C}_{2p}\ce{H}_{3p}\ce{O}_{2p}$. Elle compte $\frac{4p+2-3p}{2}=\frac{p+2}{2}$ doubles liaisons,
+qui doivent être au moins $p$ (une par groupe C=O) : $p+2\geq2p$, donc $p\leq2$. Comme $p=1$ est exclu, $\res{p=2}$ :
+\[\res{\ce{C4H6O4},\quad M=\qty{118,1}{g.mol^{-1}}}.\]
+On vérifie : $\frac{4\times12{,}01}{118{,}1}=40{,}7~\%$ de carbone et $n(\text{acide})=\frac{0{,}150}{118{,}1}=\qty{1,27e-3}{mol}$,
+exactement la moitié de $n(\ce{HO-})$.
+\end{blocEdition}
+
+\editionPage{defi-cor-3-2}{D03 · Corrigé (suite)}{Identifier un acide inconnu}{\hyperref[defi-ex-3]{Énoncé p.~\pageref*{defi-ex-3}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-3-2}
+\editionEtape{4. Choisir entre deux isomères}
+Deux diacides du tableau ont pour formule brute \ce{C4H6O4} : l'acide méthylpropanedioïque et l'acide
+butanedioïque. La température de fusion mesurée, 184 °C, désigne l'\res{\text{acide butanedioïque}}
+\ce{HOOC-CH2-CH2-COOH}, aussi appelé acide succinique. L'analyse élémentaire ne donne que la formule brute :
+elle ne distingue pas des isomères, d'où la nécessité d'une mesure physique supplémentaire.
+\editionEtape{5. Un seul saut pour deux acidités}
+\label{figedition-defi-cor-3-2-1}\schema[corrige]{defi-03-courbe}
+Les deux groupes carboxyle cèdent leur ion \ce{H+} dans des conditions voisines : la seconde acidité commence à
+réagir avant que la première soit entièrement titrée. Les deux réactions se recouvrent et le pH ne varie
+brutalement qu'une fois, lorsque les deux acidités ont réagi :
+\[\ce{H2A + 2 HO- -> A^2- + 2 H2O},\qquad n(\ce{HO-})_\mathrm{E}=2\,n(\text{acide}).\]
+C'est pourquoi le titrage, interprété seul, conduisait à une masse molaire deux fois trop faible.
+\editionRetenir{Un titrage compte les ions \ce{H+} cédés, pas les molécules : il faut connaître le nombre d'acidités
+titrées. Croiser plusieurs méthodes (titrage, analyse élémentaire, spectroscopie, température de fusion) et vérifier la
+cohérence chimique d'une formule évite les conclusions hâtives.}
+\end{blocEdition}
+
+\editionPage{defi-cor-4-1}{D04 · Corrigé}{Ordre 1 ou ordre 2 ?}{\hyperref[defi-ex-4]{Énoncé p.~\pageref*{defi-ex-4}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-4-1}
+\editionEtape{1. Le test des demi-réactions successives}
+La concentration vaut $c_0/2=\qty{5,00}{mmol.L^{-1}}$ vers $t=\qty{900}{s}$ (on mesure 5,03 mmol$\cdot$L$^{-1}$) :
+$t_{1/2}\approx\qty{9e2}{s}$. Pour une loi d'ordre 1, la concentration serait à nouveau divisée par deux au bout de
+900 s supplémentaires : on mesurerait $c_0/4=\qty{2,50}{mmol.L^{-1}}$ à $t=\qty{1800}{s}$. On mesure
+\qty{3,36}{mmol.L^{-1}}, nettement plus : \res{\text{la loi de vitesse n'est pas d'ordre 1}}.
+\editionEtape{2. La linéarisation de l'ordre 1 échoue}
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{7}{c}@{}}\toprule
+$t$ (s) & 0 & 120 & 300 & 600 & 900 & 1\,200 & 1\,800\\
+$\ln(c/c^\circ)$ & $-4{,}605$ & $-4{,}730$ & $-4{,}890$ & $-5{,}113$ & $-5{,}292$ & $-5{,}447$ & $-5{,}696$\\\bottomrule
+\end{tabular}\end{center}
+Les coefficients directeurs successifs valent, en $10^{-4}$ s$^{-1}$ : $-10{,}4$ ; $-8{,}9$ ; $-7{,}4$ ; $-6{,}0$ ; $-5{,}1$ ;
+$-4{,}1$. Ils ne sont pas égaux : les points ne sont pas alignés, $\ln(c/c^\circ)$ n'est pas une fonction affine du
+temps. La concentration décroît moins vite qu'une exponentielle, ce qui confirme la question 1.
+\editionEtape{3. Le modèle d'ordre 2}
+\begin{codecote}[0.62]
+\begin{pythoncol}
+import numpy as np
+t = np.array([0, 120, 300, 600, 900, 1200, 1800])
+c = np.array([10.00, 8.83, 7.52, 6.02,
+              5.03, 4.31, 3.36]) * 1e-3
+k, b = np.polyfit(t, 1 / c, 1)
+print(round(k, 4), round(b, 1))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.1098 100.1
+\end{consolecol}
+\end{codecote}
+Les valeurs de $1/c$ (100,0 ; 113,3 ; 133,0 ; 166,1 ; 198,8 ; 232,0 ; 297,6 L$\cdot$mol$^{-1}$) sont alignées
+(graphique page suivante) : le modèle convient, avec $\res{k\approx\qty{0,11}{L.mol^{-1}.s^{-1}}}$. L'ordonnée à
+l'origine, \qty{100}{L.mol^{-1}}, est bien égale à $1/c_0$.
+\end{blocEdition}
+
+\editionPage{defi-cor-4-2}{D04 · Corrigé (suite)}{Ordre 1 ou ordre 2 ?}{\hyperref[defi-ex-4]{Énoncé p.~\pageref*{defi-ex-4}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-4-2}
+\label{figedition-defi-cor-4-2-1}\schema[corrige]{defi-04-cor}
+\editionEtape{4. Un temps de demi-réaction qui dépend de $c_0$}
+À la date $t_{1/2}$, $c=c_0/2$ : $\dfrac{2}{c_0}=\dfrac{1}{c_0}+k\,t_{1/2}$, d'où
+\[t_{1/2}=\frac{1}{k\,c_0}=\frac{1}{0{,}11\times\num{1.00e-2}}\approx\res{\qty{9,1e2}{s}},\]
+en accord avec l'estimation de la question 1. Pour $c_0=\qty{5,0e-3}{mol.L^{-1}}$, $t_{1/2}\approx\res{\qty{1,8e3}{s}}$ :
+contrairement à l'ordre 1, le temps de demi-réaction double quand la concentration initiale est divisée par deux.
+\editionEtape{5. Des demi-réactions de plus en plus longues}
+Pour passer de $c_0/2$ à $c_0/4$, on applique le résultat précédent avec $c_0/2$ comme concentration initiale :
+la durée vaut $\dfrac{1}{k\,c_0/2}=2\,t_{1/2}\approx\qty{1,8e3}{s}$. La concentration vaut donc $c_0/4$ à la date
+\[t=t_{1/2}+2\,t_{1/2}=3\,t_{1/2}\approx\res{\qty{2,7e3}{s}}\qquad\text{(vérification : }\tfrac{1}{c}=100+0{,}11\times2\,727\approx\qty{400}{L.mol^{-1}}\text{)}.\]
+Avec une loi d'ordre 1 de même temps de demi-réaction, $c_0/4$ serait atteinte dès $2\,t_{1/2}\approx\qty{1,8e3}{s}$.
+L'ordre 2 ralentit davantage en fin de réaction : la vitesse $k\,c^2$ diminue plus vite que $c$ lorsque les réactifs
+se raréfient.
+\editionRetenir{Pour identifier une loi de vitesse, on teste une linéarisation : $\ln c$ en fonction de $t$ pour
+l'ordre 1, $1/c$ pour l'ordre 2 (relation fournie). Les temps de demi-réaction successifs sont une signature
+simple : constants pour l'ordre 1, ils doublent à chaque étape pour l'ordre 2.}
+\end{blocEdition}
+
+\editionPage{defi-cor-5-1}{D05 · Corrigé}{Une horloge à iode}{\hyperref[defi-ex-5]{Énoncé p.~\pageref*{defi-ex-5}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-5-1}
+\editionEtape{1. Le diiode produit avant l'apparition de la couleur}
+Jusqu'à $t_\mathrm{c}$, tout le diiode formé par (1) est consommé par (2), qui met en jeu deux ions thiosulfate par
+molécule de diiode. À la date $t_\mathrm{c}$, les ions thiosulfate sont épuisés, donc
+\[[\ce{I2}]_\text{produit}=\frac{[\ce{S2O3^2-}]_0}{2}=\res{\qty{2,5e-4}{mol.L^{-1}}}.\]
+\editionEtape{2. Une vitesse pratiquement constante}
+La réaction (1) consomme deux ions iodure par molécule de diiode formée, et la réaction (2) les restitue aussitôt :
+$[\ce{I-}]$ \res{\text{reste égale à }[\ce{I-}]_0} jusqu'à $t_\mathrm{c}$. L'eau oxygénée, elle, n'est pas
+régénérée : sa concentration diminue de \qty{2,5e-4}{mol.L^{-1}}, soit au plus $\frac{\num{2.5e-4}}{0{,}010}=2{,}5~\%$
+(expérience 4). Les concentrations des réactifs de (1) étant pratiquement constantes, sa vitesse l'est aussi :
+\[v=\frac{[\ce{I2}]_\text{produit}}{t_\mathrm{c}}=\frac{\qty{2,5e-4}{mol.L^{-1}}}{t_\mathrm{c}}.\]
+\editionEtape{3. Tester la loi de vitesse}
+Si $v=k\,[\ce{H2O2}]_0\,[\ce{I-}]_0$, alors $k=\dfrac{\num{2.5e-4}}{t_\mathrm{c}\,[\ce{H2O2}]_0\,[\ce{I-}]_0}$ :
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{5}{c}@{}}\toprule
+Expérience & 1 & 2 & 3 & 4 & 5\\\midrule
+$k$ (L$\cdot$mol$^{-1}\cdot$s$^{-1}$) & 0,0120 & 0,0120 & 0,0116 & 0,0121 & 0,0119\\\bottomrule
+\end{tabular}\end{center}
+Les valeurs sont égales aux incertitudes près : doubler l'une ou l'autre des concentrations divise $t_\mathrm{c}$ par
+deux. La loi est vérifiée, avec $\res{k\approx\qty{0,012}{L.mol^{-1}.s^{-1}}}$.
+\label{figedition-defi-cor-5-1-1}\schema[corrige]{defi-05-cor}
+\end{blocEdition}
+
+\editionPage{defi-cor-5-2}{D05 · Corrigé (suite)}{Une horloge à iode}{\hyperref[defi-ex-5]{Énoncé p.~\pageref*{defi-ex-5}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-5-2}
+\editionEtape{4. Un mécanisme cohérent}
+En additionnant les actes a, b, c et d, les entités \ce{IO-}, \ce{HIO} et \ce{HO-} apparaissent une fois de chaque
+côté ; il reste deux ions iodure, deux ions oxonium et quatre molécules d'eau :
+\[\res{\ce{H2O2 + 2 I- + 2 H3O+ -> I2 + 4 H2O}}.\] Les intermédiaires réactionnels sont
+\res{\ce{IO-}, \ce{HIO}\text{ et }\ce{HO-}}, formés puis consommés. La vitesse est celle de l'acte lent a, qui fait se
+rencontrer une molécule de peroxyde d'hydrogène et un ion iodure : $v=k_\mathrm{a}\,[\ce{H2O2}]\,[\ce{I-}]$. C'est
+\res{\text{la loi observée}} ; les ions oxonium, qui n'interviennent qu'après l'acte lent, n'y figurent pas.
+\editionEtape{5. Prévoir, puis comprendre le rôle du thiosulfate}
+\[t_\mathrm{c}=\frac{\num{2.5e-4}}{k\,[\ce{H2O2}]_0\,[\ce{I-}]_0}=\frac{\num{2.5e-4}}{0{,}012\times0{,}030\times0{,}030}\approx\res{\qty{23}{s}}.\]
+Sans ions thiosulfate, le diiode s'accumulerait dès le début : la solution bleuirait progressivement, sans
+changement brutal, et il n'y aurait plus d'horloge. Les ions thiosulfate fixent la quantité de diiode à produire
+avant le virage et maintiennent constante la concentration en ions iodure.
+\editionRetenir{Une horloge chimique mesure la durée nécessaire pour produire une quantité fixée de produit : si la
+vitesse est constante, $1/t_\mathrm{c}$ lui est proportionnelle. Comparer des expériences qui ne diffèrent que par une
+concentration permet de tester une loi de vitesse, puis de discuter un mécanisme.}
+\end{blocEdition}
+
+\editionPage{defi-cor-6-1}{D06 · Corrigé}{Le générateur de technétium}{\hyperref[defi-ex-6]{Énoncé p.~\pageref*{defi-ex-6}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-6-1}
+\editionEtape{1. La désintégration du molybdène 99}
+\[\res{\ce{^{99}_{42}Mo -> ^{99\text{m}}_{43}Tc + ^{0}_{-1}e}}\qquad\text{(nucléons : }99=99+0\text{ ; charge : }42=43+(-1)\text{)}.\]
+\editionEtape{2. Un noyau qui se forme et se désintègre}
+Pendant $\mathrm{d}t$, $\lambda_1N_1\,\mathrm{d}t$ noyaux de molybdène se désintègrent et donnent autant de noyaux de
+technétium ; dans le même temps, $\lambda_2N_2\,\mathrm{d}t$ noyaux de technétium se désintègrent. Ainsi
+$\mathrm{d}N_2=\lambda_1N_1\,\mathrm{d}t-\lambda_2N_2\,\mathrm{d}t$, soit $\res{\dfrac{\mathrm{d}N_2}{\mathrm{d}t}=\lambda_1N_1-\lambda_2N_2}$.
+\editionEtape{3. Vérifier la solution}
+On pose $K=\frac{\lambda_1N_{1,0}}{\lambda_2-\lambda_1}$. Alors
+$\frac{\mathrm{d}N_2}{\mathrm{d}t}=K\left(-\lambda_1\mathrm{e}^{-\lambda_1t}+\lambda_2\mathrm{e}^{-\lambda_2t}\right)$ et
+\[\lambda_1N_1-\lambda_2N_2=\lambda_1N_{1,0}\,\mathrm{e}^{-\lambda_1t}-\lambda_2K\left(\mathrm{e}^{-\lambda_1t}-\mathrm{e}^{-\lambda_2t}\right)
+=K\left[(\lambda_2-\lambda_1)\,\mathrm{e}^{-\lambda_1t}-\lambda_2\mathrm{e}^{-\lambda_1t}+\lambda_2\mathrm{e}^{-\lambda_2t}\right],\]
+qui est bien égal à $\frac{\mathrm{d}N_2}{\mathrm{d}t}$. Enfin, $N_2(0)=K(1-1)=0$ : \res{\text{la condition initiale est respectée}}.
+\editionEtape{4. Le meilleur moment pour éluer}
+$A_2=\lambda_2N_2$ est maximale quand $\frac{\mathrm{d}N_2}{\mathrm{d}t}=0$, c'est-à-dire quand $\lambda_1N_1=\lambda_2N_2$ :
+à cette date, \res{A_1=A_2}. D'après l'expression précédente, $\lambda_2\mathrm{e}^{-\lambda_2t}=\lambda_1\mathrm{e}^{-\lambda_1t}$,
+soit $\mathrm{e}^{(\lambda_2-\lambda_1)t}=\frac{\lambda_2}{\lambda_1}$, d'où l'expression de $t_\mathrm{m}$. Avec
+$\lambda_1=\frac{\ln2}{66{,}0}=\qty{0,01050}{h^{-1}}$ et $\lambda_2=\frac{\ln2}{6{,}01}=\qty{0,1153}{h^{-1}}$ :
+\[t_\mathrm{m}=\frac{\ln(0{,}1153/0{,}01050)}{0{,}1153-0{,}01050}\approx\res{\qty{23}{h}}.\]
+Au bout d'environ un jour, la quantité de technétium récupérable est maximale : une élution quotidienne, le matin,
+fournit le technétium de la journée.
+\end{blocEdition}
+
+\editionPage{defi-cor-6-2}{D06 · Corrigé (suite)}{Le générateur de technétium}{\hyperref[defi-ex-6]{Énoncé p.~\pageref*{defi-ex-6}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-6-2}
+\label{figedition-defi-cor-6-2-1}\schema[corrige]{defi-06-cor}
+\editionEtape{5. L'équilibre transitoire}
+\[\frac{A_2}{A_1}=\frac{\lambda_2N_2}{\lambda_1N_1}=\frac{\lambda_2}{\lambda_2-\lambda_1}\times\frac{\mathrm{e}^{-\lambda_1t}-\mathrm{e}^{-\lambda_2t}}{\mathrm{e}^{-\lambda_1t}}
+=\frac{\lambda_2}{\lambda_2-\lambda_1}\left(1-\mathrm{e}^{-(\lambda_2-\lambda_1)t}\right).\]
+Quand $t$ est grand devant $t_\mathrm{m}$, l'exponentielle tend vers 0 et
+\[\frac{A_2}{A_1}\longrightarrow\frac{\lambda_2}{\lambda_2-\lambda_1}=\frac{0{,}1153}{0{,}1048}\approx\res{1{,}10}.\]
+Le technétium, dont la demi-vie est onze fois plus courte que celle du molybdène, finit par décroître au rythme de
+son père : les deux activités diminuent ensemble avec la demi-vie du molybdène, dans un rapport constant. Le
+générateur reste ainsi utilisable environ une semaine, son activité étant divisée par deux tous les 66~h.
+\editionRetenir{Lorsqu'un noyau radioactif est lui-même produit par un autre noyau radioactif, son évolution est
+régie par une équation différentielle qui couple les deux populations. Si le père vit beaucoup plus longtemps que
+le fils, les deux activités finissent par décroître ensemble : c'est le principe des générateurs utilisés en médecine.}
+\end{blocEdition}
+
+\editionPage{defi-cor-7-1}{D07 · Corrigé}{Le critère d'évolution vu par les vitesses}{\hyperref[defi-ex-7]{Énoncé p.~\pageref*{defi-ex-7}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-7-1}
+\editionEtape{1. Deux actes qui se compensent}
+L'espèce C est formée par l'acte direct, à la vitesse $v_1$, et consommée par l'acte inverse, à la vitesse $v_{-1}$ :
+\[\res{\frac{\mathrm{d}[\mathrm{C}]}{\mathrm{d}t}=v_1-v_{-1}=k_1[\mathrm{A}][\mathrm{B}]-k_{-1}[\mathrm{C}][\mathrm{D}]}.\]
+\editionEtape{2. La constante d'équilibre}
+À l'équilibre dynamique, les deux vitesses sont égales : $k_1[\mathrm{A}]_\text{éq}[\mathrm{B}]_\text{éq}=k_{-1}[\mathrm{C}]_\text{éq}[\mathrm{D}]_\text{éq}$,
+d'où
+\[K=Q_{\mathrm{r},\text{éq}}=\frac{[\mathrm{C}]_\text{éq}[\mathrm{D}]_\text{éq}}{[\mathrm{A}]_\text{éq}[\mathrm{B}]_\text{éq}}=\frac{k_1}{k_{-1}}=\frac{0{,}020}{0{,}0050}=\res{4{,}0}.\]
+\editionEtape{3. Le signe de la vitesse}
+En factorisant $v_1$ :
+\[\frac{\mathrm{d}[\mathrm{C}]}{\mathrm{d}t}=k_1[\mathrm{A}][\mathrm{B}]\left(1-\frac{k_{-1}}{k_1}\times\frac{[\mathrm{C}][\mathrm{D}]}{[\mathrm{A}][\mathrm{B}]}\right)
+=k_1[\mathrm{A}][\mathrm{B}]\left(1-\frac{Q_\mathrm{r}}{K}\right).\]
+Le facteur $k_1[\mathrm{A}][\mathrm{B}]$ est positif, donc :
+\begin{itemize}[leftmargin=1.4em,itemsep=0.1em]
+\item si $Q_\mathrm{r}<K$, la concentration de C augmente : le système évolue dans le sens direct ;
+\item si $Q_\mathrm{r}>K$, elle diminue : le système évolue dans le sens inverse ;
+\item si $Q_\mathrm{r}=K$, elle ne varie plus : le système est à l'équilibre.
+\end{itemize}
+C'est \res{\text{le critère d'évolution spontanée}}, qui découle ici du modèle cinétique.
+\editionEtape{4. Une évolution dans le sens inverse}
+$Q_{\mathrm{r},\mathrm{i}}=\dfrac{1{,}50\times1{,}50}{0{,}50\times0{,}50}=9{,}0>K$ : \res{\text{le système évolue dans le sens inverse}}.
+Si $y$ est la quantité de C consommée, en mol, l'équilibre vérifie
+\[\frac{(1{,}50-y)^2}{(0{,}50+y)^2}=4{,}0,\quad\text{soit}\quad\frac{1{,}50-y}{0{,}50+y}=2{,}0\quad\text{et}\quad
+y=\frac16\approx\qty{0,17}{mol},\]
+ce qui donne la composition du système à l'équilibre :
+\[n(\mathrm{A})=n(\mathrm{B})=\res{\qty{0,667}{mol}},\qquad n(\mathrm{C})=n(\mathrm{D})=\res{\qty{1,333}{mol}}.\]
+Le programme affiche 0,666~mol, 1,334~mol et $Q_\mathrm{r}=4{,}01$ : au bout de 150~min, l'équilibre est presque atteint.
+\end{blocEdition}
+
+\editionPage{defi-cor-7-2}{D07 · Corrigé (suite)}{Le critère d'évolution vu par les vitesses}{\hyperref[defi-ex-7]{Énoncé p.~\pageref*{defi-ex-7}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-7-2}
+\label{figedition-defi-cor-7-2-1}\schema[corrige]{defi-07-cor}
+\editionEtape{5. Le rôle d'un catalyseur}
+Si $k_1$ et $k_{-1}$ sont multipliés par le même facteur, leur quotient ne change pas : \res{K\text{ est inchangée}}, ainsi que
+la composition du système à l'équilibre. Les deux vitesses sont plus grandes : l'équilibre est atteint
+\res{\text{plus rapidement}}. Un catalyseur accélère l'évolution vers l'état d'équilibre sans le déplacer.
+\editionRetenir{Le modèle de l'équilibre dynamique relie la cinétique à l'équilibre : la constante d'équilibre est le
+quotient des constantes de vitesse des deux actes opposés, et le signe de la vitesse globale dépend de la position
+de $Q_\mathrm{r}$ par rapport à $K$. Un catalyseur modifie la durée de l'évolution, jamais l'état final.}
+\end{blocEdition}
+
+\editionPage{defi-cor-8-1}{D08 · Corrigé}{Quand une pile est-elle usée ?}{\hyperref[defi-ex-8]{Énoncé p.~\pageref*{defi-ex-8}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-8-1}
+\editionEtape{1. La tension initiale}
+\[\res{\ce{Cu^2+(aq) + Zn(s) -> Cu(s) + Zn^2+(aq)}},\qquad Q_\mathrm{r}=\frac{[\ce{Zn^2+}]}{[\ce{Cu^2+}]}.\]
+Initialement, $Q_\mathrm{r}=\frac{0{,}10}{0{,}10}=1$, donc $\log Q_\mathrm{r}=0$ et $\res{U=\qty{1,10}{V}}$.
+\editionEtape{2. Tension nulle et constante d'équilibre}
+La tension à vide s'annule lorsque $0{,}0296\log Q_\mathrm{r}=1{,}10$, soit $\log Q_\mathrm{r}=\frac{1{,}10}{0{,}0296}\approx37{,}2$. La
+pile ne peut plus débiter lorsque le système a atteint l'équilibre, c'est-à-dire lorsque $Q_\mathrm{r}=K$ : on en déduit
+\[K\approx10^{37{,}2}\approx\res{\num{1.5e37}}.\]
+C'est le même ordre de grandeur que \num{1.9e37} : l'écart provient de l'arrondi de la tension initiale, une valeur de
+1,103~V redonnant exactement \num{1.9e37}.
+\editionEtape{3. Composition et capacité}
+Lorsque la charge $q$ a circulé, $n(\mathrm{e}^-)=q/F$ et l'avancement vaut $x=\frac{q}{2F}$, car deux électrons sont
+échangés par ion \ce{Cu^2+} réduit :
+\[[\ce{Cu^2+}]=c-\frac{q}{2FV},\qquad[\ce{Zn^2+}]=c+\frac{q}{2FV}.\]
+Les ions \ce{Cu^2+} sont épuisés lorsque $q=Q_{\max}=2FcV=2\times\num{96500}\times0{,}10\times0{,}100=\res{\qty{1930}{C}}$,
+soit \qty{0,54}{A.h}.
+\editionEtape{4. Une tension qui varie peu}
+À mi-décharge, $Q_\mathrm{r}=\frac{0{,}15}{0{,}05}=3$ et $U=\qty{1,086}{V}$. Lorsque 99,99~\% de la capacité a été utilisée,
+la tension vaut encore \qty{0,973}{V}. Elle ne perd que quelques centièmes de volt jusqu'aux derniers instants :
+\res{\text{la tension à vide ne permet pas de repérer une pile presque usée}}.
+\end{blocEdition}
+
+\editionPage{defi-cor-8-2}{D08 · Corrigé (suite)}{Quand une pile est-elle usée ?}{\hyperref[defi-ex-8]{Énoncé p.~\pageref*{defi-ex-8}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-8-2}
+\label{figedition-defi-cor-8-2-1}\schema[corrige]{defi-08-cor}
+\editionEtape{5. Ce qui fixe la durée de vie}
+Si $U=0$, alors $Q_\mathrm{r}=K$ et
+\[[\ce{Cu^2+}]=\frac{[\ce{Zn^2+}]}{K}\approx\frac{0{,}20}{\num{1.5e37}}\approx\res{\qty{1e-38}{mol.L^{-1}}}.\]
+Dans 100~mL, cela représente $N=\num{1e-38}\times0{,}100\times\num{6.02e23}\approx\num{8e-16}$ ion, c'est-à-dire beaucoup moins
+qu'un ion : l'équilibre ne serait atteint qu'après la réduction du tout dernier ion \ce{Cu^2+}. En pratique, la pile
+cesse de débiter lorsque les ions \ce{Cu^2+} sont épuisés : \res{\text{le réactif limitant fixe sa capacité et sa durée
+de vie}}. La baisse de tension observée en fin de vie d'une pile réelle vient de sa résistance interne et de la
+lenteur avec laquelle les derniers ions atteignent l'électrode.
+\editionRetenir{Pour une pile dont la constante d'équilibre est très grande, l'équilibre n'est jamais atteint en
+pratique : la pile s'arrête quand son réactif limitant est épuisé. C'est pourquoi sa capacité se calcule à partir de sa
+constitution initiale, avec $Q=n\,x_{\max}\,F$.}
+\end{blocEdition}
+
+\editionPage{defi-cor-9-1}{D09 · Corrigé}{Le pH d'un acide très dilué}{\hyperref[defi-ex-9]{Énoncé p.~\pageref*{defi-ex-9}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-9-1}
+\editionEtape{1. Un acide ne rend jamais une solution basique}
+L'eau pure contient déjà des ions \ce{H3O+} et \ce{HO-} en quantités égales ($\pH=7{,}0$ à 25~°C). Ajouter un acide ne
+peut qu'\textbf{augmenter} la concentration en ions oxonium : le pH ne peut que diminuer. La valeur « $\pH=8$ » vient
+d'une relation utilisée hors de son domaine de validité : elle néglige les ions \ce{H3O+} apportés par l'eau, qui sont
+ici plus nombreux que ceux apportés par l'acide.
+\editionEtape{2. L'électroneutralité de la solution}
+La solution est électriquement neutre : $[\ce{H3O+}]=[\ce{Cl-}]+[\ce{HO-}]$. Avec $[\ce{Cl-}]=c$ et, d'après le produit
+ionique, $[\ce{HO-}]=K_\mathrm{e}/h$ :
+\[h=c+\frac{K_\mathrm{e}}{h}\qquad\text{soit}\qquad\res{h^2-c\,h-K_\mathrm{e}=0}.\]
+\editionEtape{3. La racine positive}
+Le discriminant vaut $c^2+4K_\mathrm{e}>0$ ; la seule racine positive est
+\[h=\frac{c+\sqrt{c^2+4K_\mathrm{e}}}{2},\]
+ce qui est exactement la ligne \code{h = (c + sqrt(c**2 + 4*Ke)) / 2} du programme. Pour $c=\qty{1,0e-8}{mol.L^{-1}}$ :
+\[h=\frac{\num{1.0e-8}+\sqrt{\num{1.0e-16}+\num{4.0e-14}}}{2}=\qty{1,05e-7}{mol.L^{-1}},\qquad\pH=\res{6{,}98}.\]
+La solution est très légèrement acide, comme attendu.
+\editionEtape{4. Deux régimes}
+Pour $c=\qty{1,0e-2}{mol.L^{-1}}$ et $c=\qty{1,0e-6}{mol.L^{-1}}$, le programme retrouve $\pH=-\log(c/\cst)$ (2,0 et
+6,0) : tant que $c\gtrsim\qty{1e-6}{mol.L^{-1}}$, les ions apportés par l'acide dominent et \res{\text{la relation
+usuelle est fiable}}. En dessous, l'autoprotolyse domine : le pH se rapproche de 7,0 (6,98 à $\num{1e-8}$, 7,0 à
+$\num{1e-10}$) ; \res{\text{le pH tend vers 7,0}} quand $c$ tend vers 0, la solution tend vers l'eau pure.
+\end{blocEdition}
+
+\editionPage{defi-cor-9-2}{D09 · Corrigé (suite)}{Le pH d'un acide très dilué}{\hyperref[defi-ex-9]{Énoncé p.~\pageref*{defi-ex-9}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-9-2}
+\label{figedition-defi-cor-9-2-1}\schema[corrige]{defi-09-cor}
+\editionEtape{5. Le cas d'une base forte très diluée}
+Pour une base forte de concentration apportée $c$, l'électroneutralité s'écrit $[\ce{HO-}]=c+K_\mathrm{e}/[\ce{HO-}]$ :
+c'est la même équation, vérifiée cette fois par $\omega=[\ce{HO-}]$. On en déduit
+\[\omega=\frac{c+\sqrt{c^2+4K_\mathrm{e}}}{2}\qquad\text{puis}\qquad\pH=\mathrm{p}K_\mathrm{e}-\mathrm{pOH}=14{,}0+\log\frac{\omega}{\cst}.\]
+Le pH suit $14{,}0+\log(c/\cst)$ tant que $c\gtrsim\qty{1e-6}{mol.L^{-1}}$, puis \res{\text{tend vers 7,0 par valeurs
+supérieures}} : la courbe est la symétrique de celle de l'acide par rapport à la droite horizontale $\pH=7{,}0$.
+\editionRetenir{Une relation comme $\pH=-\log(c/\cst)$ n'est valable que dans son domaine : elle suppose que l'acide
+apporté impose la concentration en ions oxonium. Dès que l'apport devient comparable à celui de l'autoprotolyse de
+l'eau, c'est l'équation complète, issue de l'électroneutralité et du produit ionique, qui s'applique : le pH de toute
+solution très diluée tend vers celui de l'eau pure.}
+\end{blocEdition}
+
+\editionPage{defi-cor-10-1}{D10 · Corrigé}{Pourquoi au moins 1,23 volt ?}{\hyperref[defi-ex-10]{Énoncé p.~\pageref*{defi-ex-10}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-10-1}
+\editionEtape{1. Un bras de fer avec la pile}
+Dès que du dihydrogène et du dioxygène couvrent les électrodes, la cellule est aussi une pile de tension à vide
+$U_0=\qty{1,23}{V}$, qui tend à faire circuler le courant dans le sens de la transformation spontanée
+\ce{2 H2 + O2 -> 2 H2O}. Pour imposer le sens inverse, le générateur doit l'emporter sur cette pile :
+\res{\text{il faut }U>U_0}. En dessous, le courant d'électrolyse ne peut pas s'établir durablement.
+\editionEtape{2. L'énergie électrique minimale par mole}
+Produire une mole de \ce{H2} à la cathode (\ce{2 H2O + 2 e- -> H2 + 2 HO-}) exige le passage de deux moles
+d'électrons, soit la charge $Q=2F$. L'énergie électrique reçue vaut $W=Q\,U$ ; elle est minimale pour $U=U_0$ :
+\[W_0=2F\,U_0=2\times\num{96500}\times1{,}23=\qty{2,37e5}{J}\approx\res{\qty{237}{kJ}}.\]
+\editionEtape{3. Par kilogramme}
+Un kilogramme de dihydrogène représente $\dfrac{1000}{2{,}0}=500$ mol, d'où
+\[W=500\times\num{2.374e5}=\qty{1,19e8}{J}=\frac{\num{1.19e8}}{\num{3.6e6}}\approx\res{\qty{33,0}{kW.h}}.\]
+Aucun électrolyseur, aussi perfectionné soit-il, ne descendra sous cette valeur.
+\editionEtape{4. Le prix de la tension}
+La deuxième colonne donne l'énergie électrique réellement consommée par mole, $2F\,U$ : elle croît avec la tension
+(251~kJ à 1,3~V, 463~kJ à 2,4~V). Le quotient $U_0/U$ est le \res{\text{rendement énergétique}} de la cellule : la part
+de l'énergie électrique réellement stockée sous forme chimique. Il \res{\text{décroît}} quand $U$ augmente : à 2,0~V,
+tension des cellules industrielles, il ne vaut plus que 0,61.
+\end{blocEdition}
+
+\editionPage{defi-cor-10-2}{D10 · Corrigé (suite)}{Pourquoi au moins 1,23 volt ?}{\hyperref[defi-ex-10]{Énoncé p.~\pageref*{defi-ex-10}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-10-2}
+\label{figedition-defi-cor-10-2-1}\schema[corrige]{defi-10-cor}
+\editionEtape{5. Une électrolyse qui aspirerait de la chaleur}
+La combustion d'une mole de dihydrogène restitue 242~kJ, alors que l'électrolyse idéale n'en reçoit que 237 du
+générateur : il manque 5~kJ. Une cellule fonctionnant exactement à 1,23~V devrait donc \res{\text{absorber de la
+chaleur}} du milieu extérieur pour boucler son bilan d'énergie : elle se refroidirait. La cellule n'échange aucune
+chaleur lorsque l'énergie électrique couvre exactement les 242~kJ, c'est-à-dire pour la tension « thermoneutre »
+\[U=\frac{\num{2.42e5}}{2F}=\res{\qty{1,25}{V}}.\]
+Au-delà, l'excédent est dissipé : à 2,0~V, chaque mole produite dégage $386-242=\qty{144}{kJ}$ de chaleur, qu'il faut
+évacuer des stacks industriels.
+\editionRetenir{Une électrolyse n'est possible que si le générateur impose une tension supérieure à la tension à vide
+de la pile correspondante : l'énergie électrique minimale pour former les produits vaut $Q\,U_0$. Toute tension
+supplémentaire est dissipée en chaleur, et le rendement d'une cellule réelle se lit simplement dans le rapport
+$U_0/U$.}
+\end{blocEdition}
+
+\editionPage{defi-cor-11-1}{D11 · Corrigé}{Combien d'isomères ?}{\hyperref[defi-ex-11]{Énoncé p.~\pageref*{defi-ex-11}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-11-1}
+\editionEtape{1. Autant de liaisons que de carbones, moins une}
+Des isomères de constitution ont la même formule brute mais des enchaînements d'atomes différents. Dans un squelette
+non cyclique, chaque nouvel atome de carbone se raccorde à la structure existante par exactement une liaison C--C :
+en partant d'un premier carbone (0 liaison), les $n-1$ suivants apportent chacun une liaison, d'où
+\res{n-1\text{ liaisons C--C}}, quelle que soit la forme du squelette.
+\editionEtape{2. Les trois squelettes de C5H12}
+On classe selon la longueur de la plus longue chaîne.
+\begin{itemize}[leftmargin=1.4em,itemsep=0.1em]
+\item Chaîne de 5 : le \res{\text{pentane}}.
+\item Chaîne de 4 : un méthyle à placer. En position 1, il allongerait la chaîne (on retrouve le pentane) ; les
+positions 2 et 3 sont équivalentes par symétrie : un seul isomère, le \res{\text{2-méthylbutane}}.
+\item Chaîne de 3 : deux méthyles, nécessairement sur le carbone central : le \res{\text{2,2-diméthylpropane}}.
+\end{itemize}
+Une chaîne de 3 ne peut pas porter d'éthyle (cela recréerait une chaîne de 4) : il n'existe donc que
+\res{\text{trois squelettes}}.
+\editionEtape{3. Les cinq squelettes de C6H14}
+Même démarche : chaîne de 6, l'\res{\text{hexane}} ; chaîne de 5 avec un méthyle en 2 ou en 3 (positions non
+équivalentes) : \res{\text{2-méthylpentane}} et \res{\text{3-méthylpentane}} ; chaîne de 4 avec deux méthyles : sur le
+même carbone (\res{\text{2,2-diméthylbutane}}) ou sur deux carbones centraux (\res{\text{2,3-diméthylbutane}}).
+Au total, \res{\text{cinq squelettes}}, dessinés page suivante.
+\end{blocEdition}
+
+\editionPage{defi-cor-11-2}{D11 · Corrigé (suite)}{Combien d'isomères ?}{\hyperref[defi-ex-11]{Énoncé p.~\pageref*{defi-ex-11}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-11-2}
+\label{figedition-defi-cor-11-2-1}\schema[corrige]{defi-11-cor}
+\editionEtape{4. Démasquer les doublons par le nom}
+Placer un groupe éthyle en position 2 d'une chaîne de quatre carbones semble donner un nouveau squelette ; mais en
+cherchant la chaîne la plus longue de ce dessin, on trouve cinq carbones : c'est le \res{\text{3-méthylpentane}},
+déjà compté. La nomenclature impose de nommer chaque squelette à partir de sa chaîne la plus longue : deux dessins qui
+reçoivent \res{\text{le même nom}} représentent la même molécule, quelle que soit leur apparence.
+\editionEtape{5. L'explosion combinatoire}
+De 3 isomères pour \ce{C5H12}, on passe à 75 pour \ce{C10H22} et à plus de \num{366000} pour \ce{C20H42} : il devient
+impossible de les dessiner tous, et deux représentations d'une même molécule peuvent sembler très différentes. D'où
+les deux outils du chimiste : la \res{\text{formule topologique}}, assez compacte pour représenter de grandes
+molécules sans ambiguïté, et la \res{\text{nomenclature systématique}}, qui associe à chaque structure un nom unique
+— et un seul.
+\editionRetenir{Dénombrer des isomères exige une méthode : classer par longueur de chaîne principale décroissante,
+placer les ramifications sans jamais allonger la chaîne, et nommer chaque candidat pour éliminer les doublons. Le
+nombre d'isomères croît si vite avec la taille des molécules que ce travail systématique est au cœur de la chimie
+organique.}
+\end{blocEdition}
+
+\editionPage{defi-cor-12-1}{D12 · Corrigé}{Jusqu'où pousser un rendement ?}{\hyperref[defi-ex-12]{Énoncé p.~\pageref*{defi-ex-12}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-12-1}
+\editionEtape{1. Le palier des deux tiers}
+La transformation est non totale : elle s'arrête lorsque $Q_\mathrm{r}=K$, pas lorsque les réactifs sont épuisés. En
+mélange équimolaire (chapitre~7), $\frac{x^2}{(1-x)^2}=4$ donne $\frac{x}{1-x}=2$, soit $\res{x=\dfrac23}$ : prolonger
+le chauffage n'y change rien, l'état d'équilibre est atteint.
+\editionEtape{2. L'équation du taux final}
+Avec 1~mol d'acide et $r$~mol d'alcool, l'état final contient $1-x$, $r-x$, $x$ et $x$ (en mol). Les volumes se
+simplifient dans $Q_\mathrm{r}$ (chapitre~7) :
+\[\frac{x^2}{(1-x)(r-x)}=4\ \Longleftrightarrow\ x^2=4\left(r-(1+r)x+x^2\right)\ \Longleftrightarrow\
+\res{3x^2-4(1+r)\,x+4r=0}.\]
+\editionEtape{3. La racine utile}
+Le discriminant vaut $\Delta=16(1+r)^2-48r=16\left(r^2-r+1\right)>0$. La racine
+$x=\frac{4(1+r)+\sqrt{\Delta}}{6}$ dépasse 1 : elle est à rejeter. Reste
+\[x=\frac{4(1+r)-4\sqrt{r^2-r+1}}{6}=\res{\frac{2}{3}\left(1+r-\sqrt{r^2-r+1}\right)}.\]
+Pour $r=1$ : $x=\frac23(2-1)=\res{2/3}$ ; pour $r=2$ : $x=\frac23\left(3-\sqrt3\right)=\res{0{,}845}$, les 85~\% de
+l'exercice~10 du chapitre~7.
+\editionEtape{4. L'excès nécessaire pour 95 \%}
+Le programme essaie $r=1{,}0$ ; $1{,}5$ ; $2{,}0$\,\dots{} et s'arrête au premier excès qui atteint 95~\% : il affiche
+$\res{r=5{,}5}$, pour un taux de 0,950. Il faut donc engager cinq fois et demie plus d'alcool que d'acide — dont
+l'essentiel devra être séparé puis recyclé — pour gagner dix points par rapport à $r=2$ : chaque pour cent
+supplémentaire coûte de plus en plus cher.
+\end{blocEdition}
+
+\editionPage{defi-cor-12-2}{D12 · Corrigé (suite)}{Jusqu'où pousser un rendement ?}{\hyperref[defi-ex-12]{Énoncé p.~\pageref*{defi-ex-12}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-12-2}
+\label{figedition-defi-cor-12-2-1}\schema[corrige]{defi-12-cor}
+\editionEtape{5. Excès, soutirage ou catalyseur}
+La courbe montre un rendement qui tend vers 1 sans jamais l'atteindre : l'excès est une stratégie à rendements
+décroissants. \res{\text{Éliminer l'eau}} au fur et à mesure (distillation, Dean-Stark, tamis moléculaire) est plus
+efficace : $Q_\mathrm{r}$ est maintenu en dessous de $K$ et le système évolue dans le sens direct jusqu'à épuisement du
+réactif limitant, sans excès à recycler. Un \res{\text{catalyseur}}, lui, accélère l'aller et le retour de la même
+façon : il fait atteindre le palier plus vite, mais $K$ — donc le palier — est inchangé.
+\editionRetenir{Le rendement d'une transformation équilibrée se pilote avec les outils du chapitre~7 : l'excès d'un
+réactif déplace l'état final selon une loi que l'on peut calculer, le retrait d'un produit rend la transformation
+quasi totale, et le catalyseur n'agit que sur la durée. Une stratégie de synthèse combine ces leviers en pesant leur
+coût.}
+\end{blocEdition}
+
+\editionPage{defi-cor-13-1}{D13 · Corrigé}{Le caillou coincé dans un pneu}{\hyperref[defi-ex-13]{Énoncé p.~\pageref*{defi-ex-13}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-13-1}
+\editionEtape{1. Le centre de la roue}
+$y_\mathrm{C}=R$ est constant et $x_\mathrm{C}=R\omega t=V\,t$ : le centre de la roue a un mouvement
+\res{\text{rectiligne uniforme}} à la vitesse $V$, comme le vélo.
+\editionEtape{2. La vitesse du caillou}
+En dérivant :
+\[v_x=R\omega\left(1-\cos\omega t\right),\qquad v_y=R\omega\sin\omega t.\]
+Au contact du sol ($\omega t=0$, $2\pi$\,\dots), $\cos\omega t=1$ et $\sin\omega t=0$ : $\res{v=0}$. Au sommet de la roue
+($\omega t=\pi$), $v_x=2R\omega$ et $v_y=0$ : $\res{v=2V=\qty{16}{m.s^{-1}}}$. Le point de contact est momentanément
+immobile — c'est la définition du roulement sans glissement — et le sommet de la roue va deux fois plus vite que le vélo.
+\editionEtape{3. L'accélération}
+En dérivant une seconde fois :
+\[a_x=R\omega^2\sin\omega t,\qquad a_y=R\omega^2\cos\omega t,\]
+ce sont exactement les expressions de \code{ax} et \code{ay} dans le programme.
+\editionEtape{4. Une norme constante}
+\[a=\sqrt{a_x^2+a_y^2}=R\omega^2\sqrt{\sin^2\omega t+\cos^2\omega t}=R\omega^2=\frac{V^2}{R}=\frac{8{,}0^2}{0{,}35}\approx\res{\qty{183}{m.s^{-2}}},\]
+soit près de $19\,g$ : c'est pour cela que les cailloux finissent par être éjectés des pneus.
+\end{blocEdition}
+
+\editionPage{defi-cor-13-2}{D13 · Corrigé (suite)}{Le caillou coincé dans un pneu}{\hyperref[defi-ex-13]{Énoncé p.~\pageref*{defi-ex-13}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-13-2}
+\label{figedition-defi-cor-13-2-1}\schema[corrige]{defi-13-cor}
+\editionEtape{5. Toujours vers le centre}
+Le vecteur $\vect{MC}$ a pour coordonnées $x_\mathrm{C}-x=R\sin\omega t$ et $y_\mathrm{C}-y=R\cos\omega t$. On a donc $\vec{a}=\omega^2\,\vect{MC}$ : l'accélération est \res{\text{toujours
+dirigée vers le centre de la roue}}. Pourtant, dans le référentiel terrestre,
+le mouvement n'est pas circulaire : la trajectoire est une cycloïde, et la vitesse varie de 0 à $2V$. Dans le
+référentiel du vélo, en translation rectiligne uniforme par rapport au sol, le centre C est immobile et le caillou
+décrit un cercle de rayon $R$ à la vitesse $R\omega=V$ : \res{\text{mouvement circulaire uniforme}}, d'accélération
+centripète $V^2/R$. L'accélération est la même dans les deux référentiels, car ils sont en translation rectiligne
+uniforme l'un par rapport à l'autre.
+\editionRetenir{La trajectoire et la vitesse dépendent du référentiel ; l'accélération, elle, est la même dans deux
+référentiels en translation rectiligne uniforme l'un par rapport à l'autre. Décrire un mouvement exige donc de préciser
+le référentiel, puis de dériver soigneusement les coordonnées.}
+\end{blocEdition}
+
+\editionPage{defi-cor-14-1}{D14 · Corrigé}{De quelle hauteur lancer le wagon ?}{\hyperref[defi-ex-14]{Énoncé p.~\pageref*{defi-ex-14}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-14-1}
+\editionEtape{1. La vitesse au sommet}
+L'énergie mécanique se conserve entre le départ (vitesse nulle, hauteur $h$) et le sommet (hauteur $2R$) :
+\[m\,g\,h=\frac12\,m\,v_\mathrm{S}^2+m\,g\,(2R)\qquad\text{d'où}\qquad\res{v_\mathrm{S}^2=2\,g\,(h-2R)}.\]
+\editionEtape{2. La deuxième loi au sommet}
+Dans le référentiel terrestre, galiléen, au sommet, $\vec{P}$ et $\vec{N}$ sont dirigés vers le centre du cercle, selon
+$\un$. La projection de la deuxième loi sur $\un$ donne
+\[m\,g+N=m\,\frac{v_\mathrm{S}^2}{R}\qquad\text{soit}\qquad\res{\frac{N}{m\,g}=\frac{v_\mathrm{S}^2}{g\,R}-1},\]
+qui est exactement la ligne \code{n\_haut = v2\_haut / (g * R) - 1}.
+\editionEtape{3. La hauteur minimale}
+Le rail ne peut que pousser : le wagon reste en contact tant que $N\geq0$, c'est-à-dire $v_\mathrm{S}^2\geq g\,R$. Avec
+la question 1 : $2\,g\,(h-2R)\geq g\,R$, soit
+\[\res{h\geq\frac52\,R=\qty{15}{m}}.\]
+Pour $h=\qty{12}{m}$, le programme affiche $N/(m\,g)=-1$ : une valeur négative est impossible. Le wagon n'atteindrait
+même pas le sommet en contact avec le rail : il décrocherait avant et retomberait.
+\editionEtape{4. Au point bas}
+Au point bas, $v^2=2\,g\,h$ ; $\vec{N}$ est dirigé vers le haut (vers le centre) et $\vec{P}$ vers le bas. Selon $\un$ :
+\[N-m\,g=m\,\frac{2\,g\,h}{R}\qquad\text{soit}\qquad\res{\frac{N}{m\,g}=1+\frac{2\,h}{R}}.\]
+Pour $h=\frac52\,R$, on trouve $\res{N=6\,m\,g}$ : les passagers sont plaqués sur leur siège avec une force égale à six
+fois leur poids.
+\end{blocEdition}
+
+\editionPage{defi-cor-14-2}{D14 · Corrigé (suite)}{De quelle hauteur lancer le wagon ?}{\hyperref[defi-ex-14]{Énoncé p.~\pageref*{defi-ex-14}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-14-2}
+\label{figedition-defi-cor-14-2-1}\schema[corrige]{defi-14-cor}
+\editionEtape{5. Pourquoi les loopings ne sont pas circulaires}
+Avec un looping circulaire, le wagon doit partir d'au moins $\frac52R$ pour franchir le sommet, et subit alors $6\,g$
+au point bas, au-delà de la limite de confort d'environ $5\,g$ ; une marge de sécurité ($h=\qty{18}{m}$) porterait même
+cette valeur à $7\,g$. Les constructeurs dessinent donc des boucles en forme de goutte : un grand rayon de courbure en
+bas, là où la vitesse est la plus grande, réduit $v^2/R$ ; un petit rayon au sommet permet de franchir celui-ci à
+vitesse modérée, tout en gardant $N\geq0$.
+\editionRetenir{La deuxième loi de Newton, écrite dans le repère de Frenet, relie la force exercée par le support à la
+vitesse et au rayon de courbure. Associée à la conservation de l'énergie, elle donne des conditions de sécurité
+concrètes : vitesse minimale au sommet, force maximale au point bas.}
+\end{blocEdition}
+
+\editionPage{defi-cor-15-1}{D15 · Corrigé}{Lancer à 45° ?}{\hyperref[defi-ex-15]{Énoncé p.~\pageref*{defi-ex-15}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-15-1}
+\editionEtape{1. Depuis le sol}
+Avec $h=0$ : $z=t\left(v_0\sin\alpha-\frac12\,g\,t\right)$ s'annule à $t=\dfrac{2\,v_0\sin\alpha}{g}$, d'où
+\[D=v_0\cos\alpha\times\frac{2\,v_0\sin\alpha}{g}=\res{\frac{v_0^2\sin(2\alpha)}{g}}.\]
+$\sin(2\alpha)$ vaut au plus 1, pour $2\alpha=90^\circ$ : la portée est maximale à $\res{\alpha=45^\circ}$ et vaut
+$\dfrac{13{,}5^2}{9{,}81}=\res{\qty{18,6}{m}}$.
+\editionEtape{2. Depuis la hauteur h}
+Le poids touche le sol quand $z=-\frac12\,g\,t^2+v_z\,t+h=0$. Le discriminant vaut $v_z^2+2\,g\,h>0$ et la racine positive
+est
+\[t=\frac{v_z+\sqrt{v_z^2+2\,g\,h}}{g},\]
+exactement la ligne du programme ; la longueur du jet vaut alors $v_x\,t$.
+\editionEtape{3. Un optimum plus rasant}
+Le programme affiche $\res{42^\circ}$ et \qty{20,57}{m}. Le jet est plus long que depuis le sol (\qty{18,6}{m}), car le poids
+tombe de \qty{2,10}{m} supplémentaires en avançant. Cette chute finale avance d'autant plus que la vitesse horizontale
+$v_0\cos\alpha$ est grande : elle favorise les angles plus faibles que $45^\circ$, ce qui déplace l'optimum vers le bas.
+\end{blocEdition}
+
+\editionPage{defi-cor-15-2}{D15 · Corrigé (suite)}{Lancer à 45° ?}{\hyperref[defi-ex-15]{Énoncé p.~\pageref*{defi-ex-15}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-15-2}
+\label{figedition-defi-cor-15-2-1}\schema[corrige]{defi-15-cor}
+\editionEtape{4. Pourquoi 37° en compétition ?}
+À vitesse égale, on obtient \qty{20,57}{m} à $42^\circ$ et \qty{20,07}{m} à $35^\circ$ : l'écart n'est que de \qty{0,5}{m}, car le
+maximum est très plat (voir la courbe). Or un athlète pousse plus fort lorsqu'il lance plus horizontalement : ses
+muscles travaillent dans une position plus favorable. Gagner seulement 2~\% de vitesse augmente le jet d'environ
+4~\%, puisque la longueur varie à peu près comme $v_0^2$ : cela compense largement les quelques décimètres perdus en
+abaissant l'angle. L'angle optimal réel, autour de $37^\circ$, résulte de ce compromis entre la physique du projectile et
+la physiologie du lanceur.
+\editionRetenir{Une règle comme « 45° pour aller le plus loin » n'est valable que dans son modèle : départ au niveau du
+sol, vitesse indépendante de l'angle, frottements négligés. Changer une seule hypothèse — ici la hauteur de lâcher,
+puis la vitesse qui dépend de l'angle — suffit à modifier la conclusion.}
+\end{blocEdition}
+
+\editionPage{defi-cor-16-1}{D16 · Corrigé}{Peser le trou noir de la Galaxie}{\hyperref[defi-ex-16]{Énoncé p.~\pageref*{defi-ex-16}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-16-1}
+\editionEtape{1. Une balance cosmique}
+Pour l'étoile et pour la Terre, la troisième loi donne $\dfrac{T^2}{a^3}=\dfrac{4\pi^2}{GM}$ et $\dfrac{T_\oplus^2}{a_\oplus^3}=\dfrac{4\pi^2}{GM_\odot}$.
+En divisant la seconde par la première :
+\[\frac{M}{M_\odot}=\frac{a^3/a_\oplus^3}{T^2/T_\oplus^2}=\res{\frac{a^3}{T^2}}\quad(a\text{ en ua},\ T\text{ en années}),\]
+puisque $a_\oplus=\qty{1}{ua}$ et $T_\oplus=\qty{1}{an}$ : c'est la ligne \code{M = a**3 / T**2}.
+\editionEtape{2. Un seul objet central}
+Les trois étoiles donnent \num{4.25}, \num{4.33} et \num{4.29} millions de masses solaires : à quelques pour cent près,
+\res{\text{la même masse}}, environ $\res{\num{4.3e6}\,M_\odot}$. Les trois orbites sont gouvernées par un même objet, très massif
+et invisible.
+\editionEtape{3. Masse et rayon}
+$M=\num{4.25e6}\times\num{1.99e30}=\res{\qty{8,5e36}{kg}}$, et
+\[R_\mathrm{S}=\frac{2GM}{c^2}=\frac{2\times\num{6.67e-11}\times\num{8.47e36}}{(\num{3.00e8})^2}=\qty{1,25e10}{m}=\res{\qty{0,084}{ua}}.\]
+Le trou noir tiendrait largement dans l'orbite de Mercure.
+\editionEtape{4. Une approche très rapprochée}
+Au plus près, S2 passe à $a(1-e)=1031\times0{,}114=\res{\qty{118}{ua}}$ de l'objet central, soit environ \res{1400} fois
+$R_\mathrm{S}$. Une masse de quatre millions de soleils contenue dans une région aussi petite ne peut être ni une étoile ni
+un amas d'étoiles : seul un trou noir est compatible avec ces observations.
+\end{blocEdition}
+
+\editionPage{defi-cor-16-2}{D16 · Corrigé (suite)}{Peser le trou noir de la Galaxie}{\hyperref[defi-ex-16]{Énoncé p.~\pageref*{defi-ex-16}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-16-2}
+\label{figedition-defi-cor-16-2-1}\schema[corrige]{defi-16-cor}
+\editionEtape{5. Des vitesses extrêmes}
+Aux deux extrémités du grand axe, la vitesse est perpendiculaire au rayon : la loi des aires donne
+$r_\text{min}\,v_\text{max}=r_\text{max}\,v_\text{min}$, d'où
+\[\frac{v_\text{max}}{v_\text{min}}=\frac{a(1+e)}{a(1-e)}=\frac{1{,}886}{0{,}114}=\res{16{,}5}\qquad\text{et}\qquad
+v_\text{min}=\frac{7650}{16{,}5}\approx\res{\qty{460}{km.s^{-1}}}.\]
+Au plus près, S2 se déplace à 2,5~\% de la vitesse de la lumière : c'est l'une des étoiles les plus rapides connues.
+\editionRetenir{La troisième loi de Kepler, établie pour les planètes, s'applique à toutes les orbites : mesurer la
+période et la taille d'une orbite suffit à peser l'astre central, qu'il s'agisse du Soleil, de Jupiter ou d'un trou
+noir. L'accord entre plusieurs orbites prouve qu'un même objet les gouverne.}
+\end{blocEdition}
+
+\editionPage{defi-cor-17-1}{D17 · Corrigé}{La clepsydre}{\hyperref[defi-ex-17]{Énoncé p.~\pageref*{defi-ex-17}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-17-1}
+\editionEtape{1. Conservation du volume}
+Pendant $\mathrm{d}t$, le vase perd le volume $\pi\,r(h)^2\,|\mathrm{d}h|$, qui est sorti par l'orifice à la vitesse $v$ :
+$\pi\,r^2\,|\mathrm{d}h|=s\,\sqrt{2\,g\,h}\;\mathrm{d}t$. Le niveau baisse, $\mathrm{d}h<0$, d'où
+\[u=-\frac{\mathrm{d}h}{\mathrm{d}t}=\res{\frac{s\,\sqrt{2\,g\,h}}{\pi\,r(h)^2}}.\]
+\editionEtape{2. Le cylindre}
+Avec $r=R$, posons $k=\dfrac{s}{\pi R^2}\sqrt{\dfrac{g}{2}}$. Si $\sqrt{h}=\sqrt{H}-k\,t$, alors
+$\dfrac{1}{2\sqrt{h}}\,\dfrac{\mathrm{d}h}{\mathrm{d}t}=-k$, soit $\dfrac{\mathrm{d}h}{\mathrm{d}t}=-2k\sqrt{h}=-\dfrac{s\,\sqrt{2\,g\,h}}{\pi R^2}$ :
+c'est bien la relation de la question~1, et $h(0)=H$. Le cylindre est vide quand $\sqrt{H}=k\,t$, soit
+\[T_\mathrm{cyl}=\frac{\sqrt{H}}{k}=\res{\frac{\pi R^2}{s}\sqrt{\frac{2H}{g}}}.\]
+La vitesse de descente, proportionnelle à $\sqrt{h}$, diminue au cours de la vidange : des graduations régulières
+marqueraient des durées \res{\text{de plus en plus longues}}.
+\editionEtape{3. Le profil idéal}
+Si $u$ est constante, $\pi\,r^2\,u=s\,\sqrt{2\,g}\,\sqrt{h}$ : $r^2$ est proportionnel à $\sqrt{h}$, donc $r^4$ à $h$. Comme $r=R$
+pour $h=H$ : $\res{h=H\,(r/R)^4}$, ou $r=R\,(h/H)^{1/4}$. Le vase s'évase vite près du fond, puis lentement : $r=\qty{8,41}{cm}$
+à mi-hauteur et encore \qty{5,08}{cm} à \qty{2}{cm} du fond. Pour une vidange en 12~heures,
+\[u=\frac{\qty{30}{cm}}{\qty{12}{h}}=\res{\qty{2,5}{cm.h^{-1}}}=\qty{6,94e-6}{m.s^{-1}}\quad\text{et, au sommet,}\quad
+s=\frac{\pi R^2\,u}{\sqrt{2\,g\,H}}=\res{\qty{9,0e-8}{m^2}}.\]
+L'orifice n'a qu'un diamètre $d=2\sqrt{s/\pi}=\res{\qty{0,34}{mm}}$ : un trou d'aiguille.
+\editionEtape{4. Lecture du programme}
+Dans la clepsydre, le niveau passe de 30 à 22,5 ; 15 ; 7,5 puis \qty{0}{cm} : il baisse de \res{\qty{7,5}{cm}} toutes les trois
+heures, soit \qty{2,5}{cm.h^{-1}}, et le vase est vide au bout de 12~heures. Dans le cylindre, les baisses successives
+valent 7,0 ; 6,1 ; 5,2 puis \qty{4,2}{cm} : elles \res{\text{diminuent}}, et il reste encore $\qty{7,5}{cm}=H/4$ au bout de
+12~heures, conformément à la question~2.
+\end{blocEdition}
+
+\editionPage{defi-cor-17-2}{D17 · Corrigé (suite)}{La clepsydre}{\hyperref[defi-ex-17]{Énoncé p.~\pageref*{defi-ex-17}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-17-2}
+\label{figedition-defi-cor-17-2-1}\schema[corrige]{defi-17-cor}
+\editionEtape{5. Deux fois plus lent}
+En remplaçant $s$ par $\dfrac{\pi R^2\,u}{\sqrt{2\,g\,H}}$ dans $T_\mathrm{cyl}$ :
+\[T_\mathrm{cyl}=\frac{\sqrt{2\,g\,H}}{u}\sqrt{\frac{2H}{g}}=\res{\frac{2H}{u}}=\qty{24}{h},\]
+le double des 12~heures de la clepsydre. Les deux vases ont le même rayon au sommet : le niveau y descend d'abord à la
+même vitesse, puis celui du cylindre ralentit. Un tronc de cône évasé vers le haut, facile à tailler dans la pierre,
+réduit la section vers le fond et compense en partie ce ralentissement : c'est une approximation du profil idéal.
+\editionRetenir{Deux lois simples, la conservation du débit et la formule de Torricelli, suffisent à prévoir la vidange
+d'un récipient de forme quelconque. Inverser le problème, en choisissant la forme pour imposer le mouvement voulu, est
+une démarche d'ingénieur.}
+\end{blocEdition}
+
+\editionPage{defi-cor-18-1}{D18 · Corrigé}{Faire le vide}{\hyperref[defi-ex-18]{Énoncé p.~\pageref*{defi-ex-18}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-18-1}
+\editionEtape{1. Le premier coup de pompe}
+Pendant l'aspiration, l'air du récipient garde la même quantité de matière et la même température, mais occupe le volume
+$V+v$ : la loi de Mariotte donne $p_1\,(V+v)=p_0\,V$, d'où
+\[p_1=p_0\,\frac{V}{V+v}=1013\times\frac{1{,}0}{1{,}050}=\res{\qty{965}{hPa}}.\]
+Le refoulement de l'air du cylindre ne modifie pas l'air resté dans le récipient, isolé par la soupape.
+\editionEtape{2. Une suite géométrique}
+Le même raisonnement s'applique à chaque coup : $p_{k+1}=q\,p_k$ avec $q=\dfrac{V}{V+v}=\dfrac{1}{1{,}05}$. La suite est
+géométrique de raison $q$ et de premier terme $p_0$ :
+\[\res{p_k=p_0\left(\frac{V}{V+v}\right)^{k}}.\]
+Chaque coup retire la même \textbf{fraction} de l'air restant, environ 4,8~\% : la pression diminue de moins en moins.
+\editionEtape{3. Combien de coups ?}
+On cherche le plus petit entier $k$ tel que $p_0\,q^k<\qty{1}{hPa}$, soit $k\ln q<\ln\dfrac{1}{1013}$. Comme $\ln q<0$, le sens de
+l'inégalité change :
+\[k>\frac{\ln1013}{\ln1{,}05}=141{,}8\qquad\text{d'où}\qquad \res{k=142\ \text{coups}},\]
+comme l'affiche le programme, avec $p_{142}=\qty{0,992}{hPa}$. Atteindre \qty{20}{hPa} ne demande que 81 coups : les derniers
+hectopascals sont les plus longs à gagner.
+\editionEtape{4. Gonfler n'est pas l'inverse de vider}
+Chaque coup fait entrer dans le pneu la même quantité d'air, celle de \qty{0,10}{L} sous \qty{1,0}{bar} : la pression augmente
+de $\dfrac{0{,}10}{1{,}5}\times\qty{1,0}{bar}$ à chaque coup, $p_k=\res{p_0\left(1+k\,\dfrac{v}{V}\right)}$. La suite est
+\textbf{arithmétique} : 30 coups suffisent pour atteindre \qty{3,0}{bar}. Pour le vide, chaque coup retire une
+\textbf{fraction} de l'air restant : la suite est géométrique.
+\end{blocEdition}
+
+\editionPage{defi-cor-18-2}{D18 · Corrigé (suite)}{Faire le vide}{\hyperref[defi-ex-18]{Énoncé p.~\pageref*{defi-ex-18}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-18-2}
+\label{figedition-defi-cor-18-2-1}\schema[corrige]{defi-18-cor}
+\editionEtape{5. Le volume mort impose une limite}
+À l'aspiration, l'air du récipient ($p_k$, $V$) et celui du volume mort ($p_0$, $v_\mathrm{m}$) occupent ensemble $V+v+v_\mathrm{m}$.
+La quantité totale se conserve : $p_{k+1}\,(V+v+v_\mathrm{m})=p_k\,V+p_0\,v_\mathrm{m}$, c'est la ligne du programme. Une pression
+qui ne change plus vérifie $p\,(v+v_\mathrm{m})=p_0\,v_\mathrm{m}$, d'où
+\[p_\mathrm{lim}=p_0\,\frac{v_\mathrm{m}}{v+v_\mathrm{m}}=1013\times\frac{0{,}50}{50{,}5}=\res{\qty{10,0}{hPa}}.\]
+La pression s'en approche sans jamais descendre en dessous : la condition \code{p > 1} reste vraie et la boucle s'arrête à
+\code{k = 1000}. Le programme affiche \res{\text{1000 10.03}}. Les pompes à vide réelles utilisent plusieurs étages pour
+contourner cette limite.
+\editionRetenir{À température constante, une suite de détentes identiques divise la pression par un même facteur :
+la pression décroît exponentiellement avec le nombre de coups. Un détail technique, le volume mort, suffit à fixer une
+limite que la modélisation permet de prévoir.}
+\end{blocEdition}
+
+\editionPage{defi-cor-19-1}{D19 · Corrigé}{L'expérience de Joule}{\hyperref[defi-ex-19]{Énoncé p.~\pageref*{defi-ex-19}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-19-1}
+\editionEtape{1. Un travail qui échauffe}
+Le système reçoit un \res{\text{travail}} : les palettes, entraînées par les masses, exercent sur l'eau des forces dont
+les points d'application se déplacent. Aucun corps plus chaud ne le touche et l'on néglige les échanges avec l'air :
+$Q\approx0$. Le premier principe donne $\Delta U=W>0$ : l'énergie interne augmente, ici sous forme d'agitation des
+molécules d'eau, et la température s'élève.
+\editionEtape{2. Le travail reçu}
+Pour une descente des deux masses ($m=\qty{26,0}{kg}$), l'énergie mécanique perdue vaut
+\[m\,g\,h-\tfrac12\,m\,v^2=26{,}0\times9{,}81\times1{,}60-\tfrac12\times26{,}0\times0{,}060^2=\qty{408,1}{J}-\qty{0,047}{J}.\]
+Le terme cinétique ne représente qu'un dix-millième de l'énergie potentielle : il est \res{\text{négligeable}}. Pour
+20 descentes : $W=\res{\qty{8,16e3}{J}}$.
+\editionEtape{3. L'élévation prévue}
+$\Delta U=W$ avec $\Delta U=(m_\mathrm{eau}\,c_\mathrm{eau}+C)\,\Delta T$ :
+\[\Delta T=\frac{W}{m_\mathrm{eau}\,c_\mathrm{eau}+C}=\frac{\num{8.16e3}}{6{,}00\times4180+400}=\res{\qty{0,320}{K}}.\]
+Une élévation d'un tiers de degré seulement : il faut un thermomètre très précis.
+\editionEtape{4. L'équivalent mécanique de la calorie}
+La masse d'eau de même capacité thermique que le récipient vaut $\dfrac{C}{c_\mathrm{eau}}=\dfrac{400}{4180}=\qty{0,0957}{kg}$, soit
+\res{\qty{95,7}{g}}. Le système reçoit donc, en calories, $(6000+95{,}7)\times0{,}313=\qty{1908}{cal}$, en échange d'un travail de
+\qty{8,16e3}{J} :
+\[\frac{\num{8.16e3}\ \text{J}}{\num{1908}\ \text{cal}}=\res{\qty{4,28}{J}\ \text{par calorie}},\]
+soit \qty{2,3}{\percent} de plus que la valeur actuelle.
+\end{blocEdition}
+
+\editionPage{defi-cor-19-2}{D19 · Corrigé (suite)}{L'expérience de Joule}{\hyperref[defi-ex-19]{Énoncé p.~\pageref*{defi-ex-19}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-19-2}
+\label{figedition-defi-cor-19-2-1}\schema[corrige]{defi-19-cor}
+\editionEtape{5. Les pertes, la répétition et le premier principe}
+L'élévation mesurée correspond à une énergie interne de $25\,480\times0{,}313=\qty{7,98e3}{J}$ : environ \qty{0,19}{kJ}, soit
+2~\%, n'a pas servi à échauffer l'eau. Une partie du travail est perdue dans les \res{\text{frottements}} des poulies et des
+axes, et l'eau cède de l'énergie à l'air pendant la longue durée de l'expérience. L'élévation mesurée est donc trop
+faible, ce qui \res{\text{surestime}} le nombre de joules par calorie ; Joule corrigeait ces pertes et obtenait
+\qty{4,16}{J}.
+
+Une seule descente n'élève la température que de \qty{0,016}{K}, en deçà de la précision des thermomètres : répéter vingt
+fois la chute \res{\text{multiplie l'effet}} mesuré par vingt.
+
+L'expérience montre qu'un travail et un transfert thermique produisent le même effet sur un système et qu'ils
+s'échangent dans un rapport fixe : ce sont deux modes de transfert d'une même grandeur, l'énergie. C'est le fondement
+du premier principe, $\Delta U=W+Q$, et la raison pour laquelle on mesure aujourd'hui les transferts thermiques en
+joules.
+\editionRetenir{Le premier principe n'est pas une définition : il repose sur des mesures, comme celles de Joule, qui
+établissent l'équivalence entre travail et transfert thermique. Une mesure précise d'un très petit effet demande
+d'amplifier ce dernier et d'évaluer les pertes.}
+\end{blocEdition}
+
+\editionPage{defi-cor-20-1}{D20 · Corrigé}{Café : le lait avant ou après ?}{\hyperref[defi-ex-20]{Énoncé p.~\pageref*{defi-ex-20}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-20-1}
+\editionEtape{1. La température du mélange}
+Pendant le mélange, le système \{café, lait\} n'échange ni travail ni transfert thermique avec l'extérieur :
+$\Delta U=0$. Avec la même capacité thermique massique $c$ :
+\[m_\mathrm{c}\,c\,(T-T_\mathrm{c})+m_\mathrm{l}\,c\,(T-T_\mathrm{l})=0\qquad\text{d'où}\qquad \res{T=\frac{m_\mathrm{c}T_\mathrm{c}+m_\mathrm{l}T_\mathrm{l}}{m_\mathrm{c}+m_\mathrm{l}}},\]
+moyenne des températures pondérée par les masses : c'est la fonction \code{melanger}.
+\editionEtape{2. Option A : le lait d'abord}
+La fonction \code{refroidir} est la solution de l'équation de Newton, $T(t)=T_\mathrm{e}+(T_0-T_\mathrm{e})\,\mathrm{e}^{-t/\tau}$. Le
+mélange part de $\dfrac{200\times90+50\times5}{250}=\qty{73}{\degreeCelsius}$ ; au bout de \qty{600}{s}, avec
+$\mathrm{e}^{-600/1500}=0{,}670$ :
+\[T_\mathrm{A}=20+(73-20)\times0{,}670=\res{\qty{55,53}{\degreeCelsius}}.\]
+\editionEtape{3. Option B : le lait à la fin}
+Le café seul atteint $20+70\times0{,}670=\qty{66,92}{\degreeCelsius}$, puis le lait l'amène à
+\[T_\mathrm{B}=\frac{200\times66{,}92+50\times5}{250}=\res{\qty{54,54}{\degreeCelsius}}.\]
+Verser le lait \res{\text{à la fin}} donne un café plus frais d'environ \qty{1}{\degreeCelsius}. D'après la loi de Newton, le flux
+perdu est proportionnel à l'écart avec la pièce : pendant l'attente, le café seul, plus chaud que le mélange, perd son
+énergie plus vite. Inversement, pour garder un café chaud, mieux vaut ajouter le lait tout de suite.
+\end{blocEdition}
+
+\editionPage{defi-cor-20-2}{D20 · Corrigé (suite)}{Café : le lait avant ou après ?}{\hyperref[defi-ex-20]{Énoncé p.~\pageref*{defi-ex-20}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-20-2}
+\label{figedition-defi-cor-20-2-1}\schema[corrige]{defi-20-cor}
+\editionEtape{4. Une formule générale}
+Notons $M=m_\mathrm{c}+m_\mathrm{l}$ et $k=\mathrm{e}^{-t/\tau}$. En développant
+$T_\mathrm{A}=T_\mathrm{e}+\left(\dfrac{m_\mathrm{c}T_\mathrm{c}+m_\mathrm{l}T_\mathrm{l}}{M}-T_\mathrm{e}\right)k$ et
+$T_\mathrm{B}=\dfrac{m_\mathrm{c}\left(T_\mathrm{e}+(T_\mathrm{c}-T_\mathrm{e})\,k\right)+m_\mathrm{l}T_\mathrm{l}}{M}$, les termes en $T_\mathrm{c}$ se compensent :
+\[T_\mathrm{A}-T_\mathrm{B}=\res{\frac{m_\mathrm{l}}{M}\,(T_\mathrm{e}-T_\mathrm{l})\,(1-k)}=0{,}20\times15\times0{,}330=\qty{0,99}{K}.\]
+L'écart est positif dès que le lait est plus froid que la pièce. Si le lait est à la température de la pièce, les deux
+options \res{\text{se valent}}. L'écart maximal, pour une attente très longue, vaut $0{,}20\times15=\res{\qty{3,0}{K}}$.
+\editionEtape{5. Discuter l'hypothèse}
+Le temps caractéristique $\tau=\dfrac{C}{h\,S}$ est proportionnel à la capacité thermique. Avec le lait, le contenu de la tasse
+refroidit plus lentement : le mélange A garde davantage sa chaleur, et le café seul de l'option B refroidit plus vite.
+Les deux effets \res{\text{renforcent}} la conclusion, en partie compensés par l'augmentation de la surface mouillée.
+\editionRetenir{Avec la loi de Newton, les pertes sont proportionnelles à l'écart de température : l'ordre des opérations
+compte. Une modélisation simple permet de trancher une question de la vie courante et d'en prévoir les limites.}
+\end{blocEdition}
+
+\editionPage{defi-cor-21-1}{D21 · Corrigé}{Pourquoi entend-on les basses du voisin ?}{\hyperref[defi-ex-21]{Énoncé p.~\pageref*{defi-ex-21}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-21-1}
+\editionEtape{1. Six décibels par octave}
+En doublant la fréquence : $20\log(m_\mathrm{s}\times2f)-47=20\log(m_\mathrm{s}\,f)-47+20\log2$, soit
+\[R(2f)=R(f)+\res{\qty{6,0}{dB}}.\]
+La sortie le confirme : 42,2 ; 48,2 ; 54,2 ; 60,2 ; 66,3 ; 72,3~dB, soit environ \qty{6}{dB} d'écart entre deux lignes.
+\editionEtape{2. Une conversation de l'autre côté}
+Le niveau transmis vaut $L-R$. Derrière le béton : $60-54{,}2=\res{\qty{5,8}{dB}}$, inaudible. Derrière la cloison, dont
+l'indice vaut $R=20\log(20\times500)-47=\qty{33}{dB}$ : $60-33=\res{\qty{27}{dB}}$, comme un murmure, bien audible dans une
+pièce calme. La masse de la paroi fait toute la différence.
+\editionEtape{3. Les basses passent, les aigus non}
+À \qty{63}{Hz}, le béton n'atténue que $R=20\log(230\times63)-47=\qty{36,2}{dB}$ : il reste $90-36{,}2=\res{\qty{53,8}{dB}}$. À
+\qty{4000}{Hz}, $R=\qty{72,3}{dB}$ et il ne reste que \res{\qty{7,7}{dB}}. De l'autre côté du mur, on n'entend plus que les
+\res{\text{basses}} : les parois atténuent d'autant moins un son qu'il est grave.
+\editionEtape{4. Alourdir le mur ?}
+Gagner \qty{20}{dB} demande $20\log k=20$, soit une masse multipliée par \res{10} : un mur de béton d'un mètre
+d'épaisseur. Ce n'est pas réaliste ; on utilise plutôt des doubles parois séparées par un isolant fibreux, qui
+dépassent largement la loi de masse.
+\end{blocEdition}
+
+\editionPage{defi-cor-21-2}{D21 · Corrigé (suite)}{Pourquoi entend-on les basses du voisin ?}{\hyperref[defi-ex-21]{Énoncé p.~\pageref*{defi-ex-21}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-21-2}
+\label{figedition-defi-cor-21-2-1}\schema[corrige]{defi-21-cor}
+\editionEtape{5. Le maillon faible}
+Mur : $\tau_\mathrm{m}=10^{-5{,}42}=\num{3.8e-6}$ ; porte : $R=20\log(15\times500)-47=\qty{30,5}{dB}$ et $\tau_\mathrm{p}=\num{8.9e-4}$. En
+moyenne, sur \qty{10}{m^2} :
+\[\tau=\frac{8\times\num{3.8e-6}+2\times\num{8.9e-4}}{10}=\num{1.81e-4}\qquad\text{d'où}\qquad R=-10\log\tau=\res{\qty{37,4}{dB}}.\]
+La porte, qui n'occupe qu'un cinquième de la surface, transmet 98~\% de l'énergie : l'isolation de l'ensemble chute
+de 54 à \qty{37}{dB}. En acoustique, une paroi isole comme son point le plus faible : porte, fenêtre ou simple fente.
+\editionRetenir{Les décibels traduisent des rapports d'intensité : une paroi qui atténue de \qty{54}{dB} ne laisse passer
+que quatre millionièmes de l'intensité, mais la moindre faiblesse ruine ce résultat. La loi de masse explique
+pourquoi les basses traversent les murs.}
+\end{blocEdition}
+
+\editionPage{defi-cor-22-1}{D22 · Corrigé}{Des franges dans la tache de diffraction}{\hyperref[defi-ex-22]{Énoncé p.~\pageref*{defi-ex-22}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-22-1}
+\editionEtape{1. La tache de diffraction d'une fente}
+\[L=\frac{2\lambda D}{a}=\frac{2\times\num{633e-9}\times2{,}0}{\num{0.10e-3}}=\res{\qty{25,3}{mm}}.\]
+\editionEtape{2. L'interfrange}
+$i=\dfrac{\lambda D}{b}=\res{\qty{2,53}{mm}}$, et $\dfrac{L}{i}=\dfrac{2\lambda D/a}{\lambda D/b}=\res{\dfrac{2b}{a}}=\dfrac{2\times0{,}50}{0{,}10}=10$ : la tache
+centrale s'étend sur dix interfranges.
+\editionEtape{3. Une frange manquante}
+Le terme de diffraction s'annule pour $\sin u=0$ avec $u\neq0$ : le premier zéro correspond à $u=\pi$, soit
+$x=\dfrac{\lambda D}{a}=\qty{12,66}{mm}$, le bord de la tache centrale. La frange brillante d'ordre $k$ est en $x_k=k\,i$ ; pour
+$k=5$, $x_5=5\times\qty{2,532}{mm}=\qty{12,66}{mm}$ : elle tombe exactement sur le zéro de diffraction et \res{\text{disparaît}}.
+Il reste les franges d'ordres $-4$ à 4, soit \res{\text{9 franges brillantes}} dans la tache centrale.
+\editionEtape{4. Lecture du programme}
+Le programme affiche, pour chaque frange $k$, sa position en millimètres et son intensité relative : 1 ; 0,875 ; 0,573 ;
+0,255 ; 0,055 et 0. Au centre de chaque frange brillante, le terme d'interférences vaut 1 : l'intensité est celle de la
+\res{\text{diffraction}}, qui décroît du centre vers le bord de la tache. L'intensité nulle de la frange 5 confirme la
+question~3.
+\end{blocEdition}
+
+\editionPage{defi-cor-22-2}{D22 · Corrigé (suite)}{Des franges dans la tache de diffraction}{\hyperref[defi-ex-22]{Énoncé p.~\pageref*{defi-ex-22}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-22-2}
+\label{figedition-defi-cor-22-2-1}\schema[corrige]{defi-22-cor}
+\editionEtape{5. Des fentes plus fines}
+Avec $a=\qty{0,05}{mm}$, $\dfrac{L}{i}=\dfrac{2b}{a}=20$ : la tache centrale s'élargit à \qty{50,6}{mm} et la frange d'ordre 10 tombe sur
+le premier zéro. On compte les franges d'ordres $-9$ à 9, soit \res{\text{19 franges brillantes}}. L'interfrange, lui, ne change
+pas. Mais chaque fente, deux fois plus étroite, laisse passer deux fois moins de lumière, répartie sur une tache deux
+fois plus large : la figure est \res{\text{beaucoup plus sombre}}, ce qui gêne l'observation et la mesure.
+\editionRetenir{Diffraction et interférences coexistent toujours : la figure observée derrière des fentes d'Young est
+une figure d'interférences modulée par la figure de diffraction de chaque fente. Comparer les deux échelles, $\lambda D/a$ et
+$\lambda D/b$, suffit à prévoir son aspect.}
+\end{blocEdition}
+
+\editionPage{defi-cor-23-1}{D23 · Corrigé}{Le passage d'une voiture}{\hyperref[defi-ex-23]{Énoncé p.~\pageref*{defi-ex-23}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-23-1}
+\editionEtape{1. Loin de l'auditeur}
+$\cos\theta=\dfrac{-x}{\sqrt{x^2+b^2}}$ tend vers 1 quand $x\to-\infty$ (la voiture arrive droit sur l'auditeur, vue de loin) et vers
+$-1$ quand $x\to+\infty$. On retrouve les relations à une dimension :
+\[f_\mathrm{app}=900\times\frac{340}{315}=\res{\qty{971,4}{Hz}}\qquad\text{et}\qquad f_\text{éloi}=900\times\frac{340}{365}=\res{\qty{838,4}{Hz}}.\]
+Le programme s'en approche : 971,0~Hz pour $t=\qty{-4}{s}$ et 838,6~Hz pour $t=\qty{4}{s}$.
+\editionEtape{2. Au plus près}
+En $x=0$, la vitesse de la voiture est perpendiculaire à la direction de l'auditeur : $\cos\theta=0$ et
+$f_\mathrm{R}=\res{f_\mathrm{E}=\qty{900}{Hz}}$. Ce son parcourt $b=\qty{10}{m}$ : il est reçu à $t=\dfrac{10}{340}=\res{\qty{0,03}{s}}$.
+\editionEtape{3. Le temps de propagation}
+Le son émis à la date $t$ parcourt la distance $d$ avant d'atteindre l'auditeur : il est reçu à la date $t+\dfrac{d}{v}$,
+d'autant plus tard que la voiture est loin. Le passage entendu est donc légèrement \res{\text{retardé}} par rapport au passage
+réel.
+\editionEtape{4. Une dissymétrie}
+$f_\mathrm{app}-f_\mathrm{E}=\qty{71,4}{Hz}$ mais $f_\mathrm{E}-f_\text{éloi}=\qty{61,6}{Hz}$ : la hausse dépasse la baisse. La moyenne des deux
+valeurs, \qty{904,9}{Hz}, \res{\text{n'est pas}} $f_\mathrm{E}$. Il faut éliminer $f_\mathrm{E}$ entre les deux relations, comme dans le
+programme de l'essentiel : $v_\mathrm{E}=v\,\dfrac{f_\mathrm{app}-f_\text{éloi}}{f_\mathrm{app}+f_\text{éloi}}=\res{\qty{25,0}{m.s^{-1}}}$, puis
+$f_\mathrm{E}=f_\mathrm{app}\,\dfrac{v-v_\mathrm{E}}{v}=\qty{900}{Hz}$.
+\end{blocEdition}
+
+\editionPage{defi-cor-23-2}{D23 · Corrigé (suite)}{Le passage d'une voiture}{\hyperref[defi-ex-23]{Énoncé p.~\pageref*{defi-ex-23}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-23-2}
+\label{figedition-defi-cor-23-2-1}\schema[corrige]{defi-23-cor}
+\editionEtape{5. Une transition plus ou moins brusque}
+L'angle $\theta$ change notablement lorsque la voiture passe de $x\approx-b$ à $x\approx+b$ : $\cos\theta$ va alors de 0,71 à $-0,71$.
+Cette traversée dure environ $\dfrac{2b}{v_\mathrm{E}}=\res{\qty{0,8}{s}}$ pour $b=\qty{10}{m}$, mais \res{\qty{4}{s}} pour $b=\qty{50}{m}$ : loin de la
+route, la fréquence glisse progressivement ; tout près, elle chute presque d'un coup, ce qui donne le « vroum »
+caractéristique d'une voiture qui passe à côté de nous.
+\editionRetenir{Les relations à une dimension décrivent les phases d'approche et d'éloignement lointaines. Pour en
+déduire une vitesse, il faut utiliser les deux fréquences extrêmes et éliminer la fréquence émise : le décalage
+Doppler n'est pas symétrique.}
+\end{blocEdition}
+
+\editionPage{defi-cor-24-1}{D24 · Corrigé}{Où placer l'œil ? Le cercle oculaire}{\hyperref[defi-ex-24]{Énoncé p.~\pageref*{defi-ex-24}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-24-1}
+\editionEtape{1. Position du cercle oculaire}
+Pour l'oculaire, l'objectif est un objet réel situé en $\overline{OA}=-(f'_1+f'_2)$. La relation de conjugaison donne
+\[\frac{1}{\overline{OA'}}=\frac{1}{f'_2}-\frac{1}{f'_1+f'_2}=\frac{f'_1}{f'_2\,(f'_1+f'_2)}\qquad\text{d'où}\qquad \res{\overline{OA'}=x=\frac{f'_2\,(f'_1+f'_2)}{f'_1}}>0 :\]
+l'image est réelle, derrière l'oculaire, un peu au-delà de son foyer image. Pour $f'_2=\qty{10}{mm}$ :
+$x=\dfrac{10\times710}{700}=\res{\qty{10,1}{mm}}$.
+\editionEtape{2. Diamètre du cercle oculaire}
+$\gamma=\dfrac{\overline{OA'}}{\overline{OA}}=\dfrac{f'_2\,(f'_1+f'_2)/f'_1}{-(f'_1+f'_2)}=-\dfrac{f'_2}{f'_1}$ : l'image de l'objectif est renversée et réduite dans le
+rapport $f'_2/f'_1$, d'où $\res{d'=D\,\dfrac{f'_2}{f'_1}=\dfrac{D}{G}}$.
+\editionEtape{3. Lecture du programme}
+Les colonnes donnent la distance focale de l'oculaire, le grossissement, la distance $x$ et le diamètre $d'$. Plus la focale
+de l'oculaire est courte, plus le grossissement est grand et plus le cercle oculaire est \res{\text{petit et proche}} de
+l'oculaire : \qty{4,0}{mm} à \qty{42}{mm} de distance avec l'oculaire de \qty{40}{mm}, mais \qty{0,4}{mm} à \qty{4}{mm} seulement avec celui
+de \qty{4}{mm}. L'œil doit alors presque toucher le verre pour placer sa pupille dans le cercle oculaire.
+\end{blocEdition}
+
+\editionPage{defi-cor-24-2}{D24 · Corrigé (suite)}{Où placer l'œil ? Le cercle oculaire}{\hyperref[defi-ex-24]{Énoncé p.~\pageref*{defi-ex-24}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-24-2}
+\label{figedition-defi-cor-24-2-1}\schema[corrige]{defi-24-cor}
+\editionEtape{4. Ne pas perdre de lumière}
+Toute la lumière entre dans l'œil si $d'\leqslant\qty{7}{mm}$, soit $\dfrac{D}{G}\leqslant7$ : $\res{G\geqslant10}$. L'oculaire de plus grande focale
+utilisable a donc $f'_2=\dfrac{700}{10}=\res{\qty{70}{mm}}$ ; au-delà, une partie du faisceau tombe à côté de la pupille.
+\editionEtape{5. Éclat et grossissement maximal}
+Avec l'oculaire de \qty{10}{mm}, $d'=\qty{1,0}{mm}$ contre \qty{4,0}{mm} avec celui de \qty{40}{mm} : l'image est $\left(\dfrac{1{,}0}{4{,}0}\right)^2$,
+soit \res{\text{16 fois moins lumineuse}}, car la même lumière est étalée sur une image 4 fois plus grande. Pour $G=2D$,
+$d'=\dfrac{D}{2D}=\res{\qty{0,5}{mm}}$ : en deçà, l'image devient trop sombre et la diffraction par la petite pupille de sortie la rend
+floue. La règle du grossissement maximal utile revient à garder un cercle oculaire d'au moins un demi-millimètre.
+\editionRetenir{Le cercle oculaire relie le grossissement à la lumière reçue par l'œil : $d'=D/G$. Un grand objectif permet
+à la fois un fort grossissement et une image lumineuse ; c'est pourquoi le diamètre est la caractéristique principale
+d'un instrument d'astronomie.}
+\end{blocEdition}
+
+\editionPage{defi-cor-25-1}{D25 · Corrigé}{Mesurer la constante de Planck avec des LED}{\hyperref[defi-ex-25]{Énoncé p.~\pageref*{defi-ex-25}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-25-1}
+\editionEtape{1. Une droite passant par l'origine}
+L'énergie reçue par un électron se retrouve dans le photon émis : $e\,U_\mathrm{s}=\dfrac{h\,c}{\lambda}$, soit
+\[U_\mathrm{s}=\res{\frac{h\,c}{e}\times\frac{1}{\lambda}}.\]
+La tension de seuil est proportionnelle à $1/\lambda$ : le graphique de $U_\mathrm{s}$ en fonction de $1/\lambda$ est une droite passant
+par l'origine, de coefficient directeur $\dfrac{h\,c}{e}$.
+\editionEtape{2. Le programme}
+La liste \code{x} contient les valeurs de $1/\lambda$ en \unit{m^{-1}} : le facteur \code{1e9} convertit les nanomètres. Les
+variables \code{num} et \code{den} réalisent une \res{\text{régression linéaire}} par la méthode des moindres carrés : \code{a} est le
+coefficient directeur de la droite qui passe au plus près des cinq points, en \unit{V.m}. Le programme l'affiche
+multiplié par $10^6$, c'est-à-dire en \unit{V.\micro m} : $a=\qty{1,203}{V.\micro m}=\qty{1,203e-6}{V.m}$.
+\editionEtape{3. La constante de Planck}
+$h=\dfrac{a\,e}{c}=\dfrac{\num{1.203e-6}\times\num{1.602e-19}}{\num{2.998e8}}=\res{\qty{6,43e-34}{J.s}}$, soit un écart relatif de
+$\dfrac{6{,}43-6{,}626}{6{,}626}\approx\res{\qty{-3,0}{\percent}}$ : un résultat remarquable pour une expérience aussi simple.
+\end{blocEdition}
+
+\editionPage{defi-cor-25-2}{D25 · Corrigé (suite)}{Mesurer la constante de Planck avec des LED}{\hyperref[defi-ex-25]{Énoncé p.~\pageref*{defi-ex-25}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-25-2}
+\label{figedition-defi-cor-25-2-1}\schema[corrige]{defi-25-cor}
+\editionEtape{4. Un écart systématique}
+Avec $\dfrac{h\,c}{e}=\qty{1239,8}{V.nm}$, on attend 1,32 ; 1,97 ; 2,10 ; 2,36 et \qty{2,64}{V}. Toutes les mesures sont inférieures
+d'environ 3~\% : l'écart est \res{\text{systématique}}. La « tension de seuil » est difficile à définir, le courant augmentant
+progressivement ; une LED émet sur une bande de longueurs d'onde, pas une seule ; enfin, l'agitation thermique fournit aux
+électrons une énergie de l'ordre de $kT\approx\qty{0,026}{eV}$ qui facilite le passage du courant. Une erreur systématique
+affecte toutes les mesures dans le même sens : la régression ne l'élimine pas.
+\editionEtape{5. L'intérêt de l'infrarouge}
+La LED infrarouge élargit l'intervalle des valeurs de $1/\lambda$ (de 1,06 à \qty{2,13}{\micro m^{-1}}) : le coefficient directeur est
+\res{\text{mieux déterminé}}. Sa lumière, invisible à l'œil, est détectée par le capteur d'un smartphone, qui la montre sur
+l'écran sous forme d'une tache violacée.
+\editionRetenir{Une constante fondamentale peut se mesurer avec un matériel modeste : il suffit d'un modèle (ici, un
+électron donne un photon), d'une relation linéaire et de plusieurs mesures exploitées par régression. L'analyse critique
+des écarts distingue erreurs aléatoires et erreurs systématiques.}
+\end{blocEdition}
+
+\editionPage{defi-cor-26-1}{D26 · Corrigé}{Où passe la moitié de l'énergie ?}{\hyperref[defi-ex-26]{Énoncé p.~\pageref*{defi-ex-26}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-26-1}
+\editionEtape{1. L'énergie fournie par le générateur}
+En fin de charge, $u_C=E$ et $q=C\,E=\num{1.0e-3}\times10=\res{\qty{0,010}{C}}$. Toute cette charge a traversé le générateur sous la
+tension constante $E$ : il a fourni le travail électrique $W_\mathrm{g}=E\,q=\res{C\,E^2}=\qty{0,10}{J}$.
+\editionEtape{2. Un rendement de 50~\%}
+Le condensateur stocke $\frac12\,C\,E^2=\res{\qty{0,050}{J}}$ : la \res{\text{moitié}} de l'énergie fournie a été perdue, et le rendement
+de la charge vaut \res{\qty{50}{\percent}}, quelle que soit la valeur des composants.
+\editionEtape{3. L'énergie dissipée par effet Joule}
+Avec $i=\dfrac{E}{R}\,\mathrm{e}^{-t/\tau}$, la puissance dissipée vaut $R\,i^2=\dfrac{E^2}{R}\,\mathrm{e}^{-2t/\tau}$. Une primitive de $\mathrm{e}^{-2t/\tau}$ est
+$-\dfrac{\tau}{2}\,\mathrm{e}^{-2t/\tau}$, d'où
+\[W_\mathrm{J}=\frac{E^2}{R}\left[-\frac{\tau}{2}\,\mathrm{e}^{-2t/\tau}\right]_0^{+\infty}=\frac{E^2}{R}\times\frac{RC}{2}=\res{\frac12\,C\,E^2}.\]
+La résistance s'élimine : l'énergie perdue ne dépend pas de $R$. On vérifie le bilan : $W_\mathrm{g}=\frac12CE^2+\frac12CE^2$.
+\editionEtape{4. Lecture du programme}
+Pour \qty{10}{\ohm}, \qty{100}{\ohm} et \qty{1000}{\ohm}, la somme vaut \qty{0,05}{J}, égale à l'énergie stockée. À $t=10\tau$, la puissance
+dissipée n'est plus que $\mathrm{e}^{-20}\approx\num{2e-9}$ fois sa valeur initiale : la suite de la somme est \res{\text{négligeable}}.
+\end{blocEdition}
+
+\editionPage{defi-cor-26-2}{D26 · Corrigé (suite)}{Où passe la moitié de l'énergie ?}{\hyperref[defi-ex-26]{Énoncé p.~\pageref*{defi-ex-26}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-26-2}
+\label{figedition-defi-cor-26-2-1}\schema[corrige]{defi-26-cor}
+\editionEtape{5. Charger progressivement}
+Dans chaque étape, la tension aux bornes de la résistance part de $E/2$ et décroît exponentiellement : le calcul de la
+question~3 s'applique avec $E/2$ au lieu de $E$. Chaque étape dissipe $\frac12\,C\left(\frac{E}{2}\right)^2=\qty{0,0125}{J}$, soit
+\qty{0,025}{J} au total, contre \qty{0,050}{J} en une seule fois. Le rendement devient $\dfrac{0{,}050}{0{,}050+0{,}025}=\res{\qty{66,7}{\percent}}$.
+Avec $N$ étapes, chacune dissipe $\frac12\,C\left(\frac{E}{N}\right)^2$ : les pertes totales valent $\dfrac{C\,E^2}{2N}$ et tendent vers zéro quand
+$N$ augmente, par exemple 90,9~\% de rendement avec 10 étapes. Les chargeurs de supercondensateurs augmentent ainsi la
+tension progressivement.
+\editionRetenir{Brancher brutalement un condensateur sur un générateur de tension gaspille toujours la moitié de l'énergie,
+quelle que soit la résistance : une faible résistance dissipe plus fort, mais moins longtemps. Les pertes viennent de
+la différence de tension entre le générateur et le condensateur ; la réduire réduit les pertes.}
+\end{blocEdition}
+
+\editionPage{defi-cor-27-1}{D27 · Corrigé}{Mesurer plus pour mesurer mieux ?}{\hyperref[defi-ex-27]{Énoncé p.~\pageref*{defi-ex-27}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-27-1}
+\editionEtape{1. Pourquoi diviser par la racine de N}
+La moyenne s'écrit $\bar m=\dfrac{1}{N}\,S$, avec $S=m_1+m_2+\dots+m_N$. Les mesures étant indépendantes, la règle des sommes
+donne $u(S)^2=s^2+s^2+\dots+s^2=N\,s^2$, soit $u(S)=\sqrt N\,s$. Avec la constante $k=\dfrac1N$ :
+\[u(\bar m)=\frac{\sqrt N\,s}{N}=\res{\frac{s}{\sqrt N}}.\]
+\editionEtape{2. Lecture du programme}
+Le programme simule \num{2000} séries de 40 mesures tirées autour de \qty{0,452}{s} avec l'écart-type $s$, et range la moyenne
+de chaque série dans la liste \code{moyennes}. L'écart-type de ces \num{2000} moyennes, \qty{0,00205}{s}, est bien égal à
+$\dfrac{s}{\sqrt{40}}=\qty{0,00206}{s}$ : les moyennes fluctuent \res{\sqrt{40}\approx6{,}3} fois moins que les mesures elles-mêmes.
+\editionEtape{3. Un retard finit toujours par se voir}
+Sans retard, $t=\sqrt{\dfrac{2\times1{,}000}{9{,}81}}=\res{\qty{0,4515}{s}}$. Chaque mesure vaut $t+\delta$ plus une fluctuation aléatoire : la
+moyenne tend vers $t+\delta$, avec l'incertitude-type $s/\sqrt N$. L'écart normalisé avec la durée réelle vaut donc
+\[z=\frac{\delta}{s/\sqrt N}=\frac{0{,}010\,\sqrt N}{0{,}013}.\]
+Le retard est détecté dès que $z>2$, soit $\sqrt N>2{,}6$ : $N>6{,}76$, donc \res{\text{dès 7 mesures}}. Avec 40 mesures,
+$z=\res{4{,}9}$ : la moyenne est nettement incompatible avec la durée réelle.
+\editionEtape{4. Plus précis, mais pas plus juste}
+Avec $\bar t=0{,}4515+0{,}010=\qty{0,4615}{s}$, $g=\dfrac{2\times1{,}000}{0{,}4615^2}=\res{\qty{9,39}{m.s^{-2}}}$, avec
+$\dfrac{u(g)}{g}=\sqrt{0{,}0020^2+\left(\dfrac{2\times0{,}0020}{0{,}4615}\right)^2}=0{,}89~\%$, soit $u(g)=\res{\qty{0,084}{m.s^{-2}}}$, et $z=\dfrac{0{,}42}{0{,}084}=\res{5{,}0}$.
+Multiplier les mesures a rendu le résultat plus \textbf{précis}, mais pas plus \textbf{juste} : l'erreur systématique
+reste entière. En revanche, la faible incertitude la rend \res{\text{visible}}.
+\end{blocEdition}
+
+\editionPage{defi-cor-27-2}{D27 · Corrigé (suite)}{Mesurer plus pour mesurer mieux ?}{\hyperref[defi-ex-27]{Énoncé p.~\pageref*{defi-ex-27}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-27-2}
+\editionEtape{5. Séparer le retard et la pesanteur}
+$t=\sqrt{\dfrac{2h}{g}}=\sqrt{\dfrac2g}\,\sqrt h$, d'où $t_\mathrm{mes}=\sqrt{\dfrac2g}\,\sqrt h+\delta$ : une \res{\text{fonction affine}} de $\sqrt h$. Avec
+$\sqrt{0{,}20}=0{,}447$, le coefficient directeur vaut $a=\dfrac{0{,}4615-0{,}2119}{1-0{,}447}=\qty{0,4515}{s.m^{-1/2}}$ (la régression linéaire
+sur les cinq points donne la même valeur). L'ordonnée à l'origine vaut $0{,}4615-0{,}4515=\res{\qty{0,010}{s}}=\delta$, et
+$g=\dfrac{2}{a^2}=\res{\qty{9,81}{m.s^{-2}}}$.
+\label{figedition-defi-cor-27-2-1}\schema[corrige]{defi-27-cor}
+\editionRetenir{La moyenne de $N$ mesures réduit les erreurs aléatoires comme $1/\sqrt N$, mais ne réduit pas une erreur
+systématique : plus l'incertitude diminue, plus un biais devient visible. Faire varier un paramètre, ici la hauteur,
+et exploiter une droite permet de séparer le biais de la grandeur cherchée.}
+\end{blocEdition}

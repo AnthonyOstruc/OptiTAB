@@ -1,0 +1,17 @@
+% Trois projecteurs rouge, vert et bleu éclairent un mur blanc dans le noir : zones numérotées (exercice 1, chapitre 19)
+\definecolor{pcR}{RGB}{255,0,0}\definecolor{pcV}{RGB}{0,255,0}\definecolor{pcB}{RGB}{0,0,255}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[black] (-2.0,-1.75) rectangle (2.0,2.05);
+\enonce{
+  \draw[white,line width=0.6pt] (90:0.65) circle (1.0) (210:0.65) circle (1.0) (330:0.65) circle (1.0);
+  \node[pcLegendeG,text=white] at (90:1.15) {rouge}; \node[pcLegendeG,text=white] at (210:1.2) {vert}; \node[pcLegendeG,text=white] at (330:1.2) {bleu};}
+\solution{
+  \begin{scope}[blend group=screen]
+    \fill[pcR] (90:0.65) circle (1.0);
+    \fill[pcV] (210:0.65) circle (1.0);
+    \fill[pcB] (330:0.65) circle (1.0);
+  \end{scope}}
+\foreach \a/\n in {150/1,30/2,270/3}{\node[pcLegendeG,text=white,fill=black,fill opacity=0.5,text opacity=1,inner sep=1pt] at (\a:0.62) {\n};}
+\node[pcLegendeG,text=white,fill=black,fill opacity=0.5,text opacity=1,inner sep=1pt] at (0,0) {4};
+\end{tikzpicture}
+\enonce{\par\smallskip\legende{Chaque projecteur éclaire un disque ; les disques se recouvrent en partie.}}

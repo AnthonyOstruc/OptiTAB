@@ -1,0 +1,364 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[gravitation]{16}{Mouvement dans un champ de gravitation}{Partie 2 · Mouvement et interactions}
+{Satellites et planètes\enspace·\enspace Mouvement circulaire uniforme\enspace·\enspace Lois de Kepler\enspace·\enspace Satellite géostationnaire}
+\objectif{Déterminer les vecteurs vitesse et accélération d'un satellite en orbite circulaire.}
+\objectif{Établir et exploiter la troisième loi de Kepler dans le cas d'une orbite circulaire.}
+\objectif{Énoncer et exploiter les trois lois de Kepler.}
+\objectif{Caractériser l'orbite d'un satellite géostationnaire.}
+\objectif{Tester les deuxième et troisième lois de Kepler en Python à partir de données astronomiques.}
+\prerequis{Repère de Frenet, mouvement circulaire uniforme (chapitre~13).}
+\prerequis{Deuxième loi de Newton, référentiels galiléens (chapitre~14).}
+\prerequis{Loi de la gravitation universelle, champ de gravitation (classe de première).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Force et champ de gravitation}
+\begin{loi}[Gravitation universelle]
+Deux corps à répartition sphérique de masse, de masses $m$ et $M$, dont les centres sont distants de $r$, exercent l'un
+sur l'autre des forces attractives de même valeur
+\[F=G\,\frac{m\,M}{r^2},\qquad G=\qty{6,67e-11}{N.m^2.kg^{-2}}.\]
+Le champ de gravitation créé par l'astre de masse $M$ à la distance $r$ de son centre est dirigé vers ce centre et vaut
+$\mathcal{G}=G\,\dfrac{M}{r^2}$ : un corps de masse $m$ y subit la force $\vec{F}=m\,\vec{\mathcal{G}}$.
+\end{loi}
+\begin{exemple}
+À la surface de la Terre ($M_\mathrm{T}=\qty{5,97e24}{kg}$, $R_\mathrm{T}=\qty{6371}{km}$),
+$\mathcal{G}=\dfrac{\num{6.67e-11}\times\num{5.97e24}}{(\num{6.371e6})^2}=\qty{9,81}{N.kg^{-1}}$ : on retrouve l'intensité de la
+pesanteur. À 420~km d'altitude, il vaut encore \qty{8,6}{N.kg^{-1}}.
+\end{exemple}
+\essSection{2}{Mouvement circulaire d'un satellite}
+\begin{propriete}[Un mouvement circulaire est uniforme]
+Un satellite de masse $m$, soumis à la seule attraction d'un astre de masse $M$, décrit une orbite circulaire de rayon
+$r$. Dans le référentiel lié au centre de l'astre (géocentrique pour la Terre, héliocentrique pour le Soleil), supposé
+galiléen, la deuxième loi de Newton s'écrit, dans le repère de Frenet :
+\[m\,\vec{a}=G\,\frac{m\,M}{r^2}\,\un\qquad\text{soit}\qquad a_\mathrm{t}=\ddt{v}=0\quad\text{et}\quad\frac{v^2}{r}=\frac{G\,M}{r^2}.\]
+La vitesse est constante : le mouvement est \textbf{circulaire uniforme}, et
+\[v=\sqrt{\frac{G\,M}{r}},\qquad T=\frac{2\pi r}{v}=2\pi\sqrt{\frac{r^3}{G\,M}}.\]
+Ces grandeurs ne dépendent pas de la masse du satellite.
+\end{propriete}
+\schema{16-orbite}
+\begin{exemple}
+Pour la Station spatiale internationale, $r=6371+420=\qty{6791}{km}$ :
+$v=\sqrt{\dfrac{\num{3.98e14}}{\num{6.791e6}}}=\qty{7,66e3}{m.s^{-1}}$ et $T=\dfrac{2\pi r}{v}=\qty{5,57e3}{s}$, soit 92,9~minutes.
+\end{exemple}
+\essSection{3}{Les lois de Kepler}
+\begin{loi}[Lois de Kepler]
+Dans le référentiel héliocentrique :
+\begin{itemize}[leftmargin=1.4em,itemsep=0.1em]
+\item \textbf{première loi} : l'orbite d'une planète est une ellipse dont le Soleil occupe l'un des foyers ;
+\item \textbf{deuxième loi} (loi des aires) : le segment qui relie le Soleil à la planète balaie des aires égales pendant
+des durées égales ; la planète va donc plus vite près du Soleil ;
+\item \textbf{troisième loi} : le rapport $\dfrac{T^2}{a^3}$ est le même pour toutes les planètes, $a$ étant le demi-grand axe de
+l'orbite.
+\end{itemize}
+Ces lois s'appliquent à tout corps en orbite autour d'un astre : satellites de la Terre, lunes de Jupiter\,\dots
+\end{loi}
+\schema{16-kepler}
+\begin{savoirfaire}[Établir la troisième loi pour une orbite circulaire]
+Élever au carré l'expression de la période : $T^2=4\pi^2\,\dfrac{r^3}{G\,M}$, d'où
+\[\frac{T^2}{r^3}=\frac{4\pi^2}{G\,M}.\]
+Le rapport ne dépend que de la masse de l'astre attracteur : mesurer la période et le rayon de l'orbite d'un satellite
+permet de \textbf{peser} l'astre autour duquel il tourne.
+\end{savoirfaire}
+\begin{codecote}[0.6]
+\begin{pythoncol}
+planetes = {"Mercure": (0.387, 0.241),
+            "Vénus":   (0.723, 0.615),
+            "Terre":   (1.000, 1.000),
+            "Mars":    (1.524, 1.881),
+            "Jupiter": (5.203, 11.86),
+            "Saturne": (9.537, 29.45)}
+for nom, (a, T) in planetes.items():
+    print(nom, round(T**2 / a**3, 3))
+\end{pythoncol}
+\begin{consolecol}
+Mercure 1.002
+Vénus 1.001
+Terre 1.0
+Mars 1.0
+Jupiter 0.999
+Saturne 1.0
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Le dictionnaire associe à chaque planète le demi-grand axe $a$ de son orbite, en unités astronomiques, et sa période $T$,
+en années. Le rapport $T^2/a^3$ vaut 1 pour toutes les planètes, aux arrondis près : la troisième loi est vérifiée. En
+unités SI, il permet de calculer la masse du Soleil : \qty{1,99e30}{kg}.
+\end{codecote}
+\essSection{4}{Le satellite géostationnaire}
+\begin{propriete}[Orbite géostationnaire]
+Un satellite \textbf{géostationnaire} reste à la verticale d'un même point de l'équateur : il tourne dans le plan
+équatorial, dans le même sens que la Terre, avec une période égale à la durée de rotation de la Terre dans le
+référentiel géocentrique, $T=\qty{86164}{s}$ (23~h 56~min). La troisième loi impose alors
+\[r=\left(\frac{G\,M_\mathrm{T}\,T^2}{4\pi^2}\right)^{1/3}=\qty{4,215e7}{m},\]
+soit une altitude d'environ \num{35800}~km. Les antennes paraboliques qui le visent restent fixes.
+\end{propriete}
+\begin{attention}
+Un satellite en orbite n'est pas « en apesanteur » parce que l'attraction terrestre y serait nulle : à l'altitude de la
+station spatiale, elle vaut encore 88~\% de sa valeur au sol. Le satellite et les objets qu'il contient tombent ensemble,
+en permanence, autour de la Terre.
+\end{attention}
+\begin{experience}[Peser Jupiter avec une de ses lunes]
+Avec une lunette, ou un logiciel de planétarium, on repère chaque nuit à la même heure la position d'Europe, une lune
+de Jupiter, de part et d'autre de la planète. Son orbite étant vue par la tranche, l'élongation $x$ varie de façon
+sinusoïdale. La modélisation donne une amplitude de \num{9,39} rayons de Jupiter ($R_\mathrm{J}=\qty{71492}{km}$),
+soit $r=\qty{6,71e8}{m}$, et une période $T=\qty{3,551}{j}$. La troisième loi de Kepler conduit alors à
+$M_\mathrm{J}=\dfrac{4\pi^2 r^3}{G\,T^2}=\qty{1,90e27}{kg}$.
+\end{experience}
+\schema{16-europe}
+\begin{rediger}
+Préciser le référentiel (géocentrique pour un satellite de la Terre) et le système. Écrire la deuxième loi dans le repère
+de Frenet, puis projeter : « selon $\ut$ : $\ddt{v}=0$, le mouvement est uniforme ; selon $\un$ : $\frac{v^2}{r}=\frac{GM}{r^2}$ ». Ne
+pas confondre l'altitude $h$ et le rayon de l'orbite $r=R+h$.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-16-1}
+\begin{exercice}[1]{La Terre et la Lune}
+La Lune, de masse $M_\mathrm{L}=\qty{7,35e22}{kg}$ et de rayon \qty{1737}{km}, est en orbite autour de la Terre à la distance
+$d=\qty{3,84e8}{m}$ (de centre à centre).
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$ ; $M_\mathrm{T}=\qty{5,97e24}{kg}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la valeur de la force exercée par la Terre sur la Lune. Que vaut la force exercée par la Lune sur la Terre ?
+\item En déduire la valeur de l'accélération de la Lune dans le référentiel géocentrique.
+\item Calculer l'intensité du champ de gravitation à la surface de la Lune. La comparer à celle de la pesanteur terrestre.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-2}
+\begin{exercice}[1]{Un satellite en orbite basse}
+Les satellites d'une constellation de télécommunication orbitent à 550~km d'altitude, sur des orbites supposées
+circulaires.
+\begin{donnees}
+$G\,M_\mathrm{T}=\qty{3,98e14}{m^3.s^{-2}}$ ; $R_\mathrm{T}=\qty{6371}{km}$.
+\end{donnees}
+\begin{questions}
+\item Dans quel référentiel étudie-t-on leur mouvement ? Quelle force s'exerce sur un satellite ?
+\item Montrer que le mouvement est circulaire uniforme et établir l'expression de la vitesse.
+\item Calculer la vitesse et la période d'un satellite.
+\item Un satellite deux fois plus massif aurait-il la même période ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-3}
+\begin{exercice}[1]{L'orbite d'une comète}
+Le schéma représente l'orbite elliptique d'une comète autour du Soleil, avec quatre positions occupées à intervalles de
+temps égaux.
+\schema{16-ex03}
+\begin{questions}
+\item Énoncer la première loi de Kepler. Où se trouve le Soleil ?
+\item En quel point la vitesse de la comète est-elle maximale ? minimale ? Justifier avec la deuxième loi.
+\item Comparer les aires des surfaces hachurées. Que peut-on en conclure sur les durées de parcours ?
+\item Que deviennent les lois de Kepler pour une orbite circulaire ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-4}
+\begin{exercice}[1]{Le satellite géostationnaire}
+\begin{donnees}
+$G\,M_\mathrm{T}=\qty{3,98e14}{m^3.s^{-2}}$ ; $R_\mathrm{T}=\qty{6371}{km}$ ; durée de rotation de la Terre dans le référentiel
+géocentrique : \qty{86164}{s}.
+\end{donnees}
+\begin{questions}
+\item Citer les trois conditions que doit remplir un satellite pour être géostationnaire.
+\item Pourquoi utilise-t-on \qty{86164}{s} et non \qty{86400}{s} ?
+\item À l'aide de la troisième loi de Kepler, calculer le rayon de l'orbite, puis l'altitude.
+\item Calculer la vitesse d'un satellite géostationnaire. Pourquoi les antennes de télévision qui le visent sont-elles
+fixes ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-5}
+\begin{exercice}[1]{Peser Jupiter}
+Io, l'un des satellites de Jupiter découverts par Galilée en 1610, décrit autour de la planète une orbite quasi circulaire
+de rayon \qty{4,22e8}{m}, en 1,769~jour.
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Dans quel référentiel étudier le mouvement d'Io ?
+\item Écrire la troisième loi de Kepler pour une orbite circulaire.
+\item En déduire la masse de Jupiter. Combien de fois est-elle plus grande que celle de la Terre
+($M_\mathrm{T}=\qty{5,97e24}{kg}$) ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-16-6}
+\begin{exercice}[2]{La comète de Halley}
+La comète de Halley passe à \qty{0,586}{ua} du Soleil au périhélie, et s'en éloigne jusqu'à \qty{35,1}{ua} à l'aphélie. Au
+périhélie, sa vitesse vaut \qty{54,5}{km.s^{-1}}.
+\begin{questions}
+\item En utilisant la deuxième loi de Kepler sur une très courte durée au périhélie et à l'aphélie, où la vitesse est
+perpendiculaire au rayon, montrer que $r_\mathrm{P}\,v_\mathrm{P}=r_\mathrm{A}\,v_\mathrm{A}$.
+\item En déduire la vitesse de la comète à l'aphélie.
+\item Calculer le demi-grand axe de l'orbite.
+\item À l'aide de la troisième loi, la Terre servant de référence ($a=\qty{1}{ua}$, $T=\qty{1}{an}$), calculer la période de la
+comète. Elle est passée au périhélie en 1986 : quand reviendra-t-elle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-7}
+\begin{exercice}[2]{Tester la troisième loi en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle structure de données le programme utilise-t-il ? Que contiennent les deux nombres
+associés à chaque planète ?
+\item Pourquoi le rapport affiché vaut-il 1 pour la Terre ? Interpréter les autres valeurs.
+\item Écrire les lignes qui tracent $T^2$ en fonction de $a^3$. Quelle courbe obtient-on ?
+\item Convertir le rapport en unités SI ($\qty{1}{ua}=\qty{1,496e11}{m}$ ; $\qty{1}{an}=\qty{3,156e7}{s}$) et en déduire la masse du
+Soleil.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-8}
+\begin{exercice}[2]{Peser la Terre grâce à la Lune}
+La Lune fait le tour de la Terre en 27,32~jours, dans le référentiel géocentrique, sur une orbite que l'on supposera
+circulaire de rayon \qty{3,844e5}{km}.
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Établir l'expression de la vitesse de la Lune en fonction de $G$, $M_\mathrm{T}$ et $r$.
+\item En déduire l'expression de la période, puis la troisième loi de Kepler.
+\item Calculer la masse de la Terre.
+\item Comparer à la valeur $\qty{5,97e24}{kg}$ et proposer une raison à l'écart.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-9}
+\begin{exercice}[2]{Les satellites GPS}
+Les satellites du système GPS évoluent sur des orbites circulaires à \num{20200}~km d'altitude.
+\begin{donnees}
+$G\,M_\mathrm{T}=\qty{3,98e14}{m^3.s^{-2}}$ ; $R_\mathrm{T}=\qty{6371}{km}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la période de révolution d'un satellite GPS. La comparer à la durée de rotation de la Terre.
+\item Calculer sa vitesse.
+\item Un satellite GPS est-il géostationnaire ? Combien de fois repasse-t-il au-dessus du même point du globe en 24~h ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-10}
+\begin{exercice}[2]{Observer la Terre}
+Les satellites d'observation de la Terre de la série Sentinel-2 évoluent à 786~km d'altitude, sur une orbite circulaire
+passant presque au-dessus des pôles.
+\begin{donnees}
+$G\,M_\mathrm{T}=\qty{3,98e14}{m^3.s^{-2}}$ ; $R_\mathrm{T}=\qty{6371}{km}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la période de révolution et le nombre de tours effectués par jour.
+\item Pourquoi une orbite polaire permet-elle d'observer toute la surface de la Terre au fil des jours ?
+\item Un tel satellite pourrait-il être géostationnaire ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-11}
+\begin{exercice}[2]{Lancer depuis Kourou}
+Pour être mis en orbite circulaire très basse, un satellite doit atteindre la vitesse $v_1=\sqrt{G\,M_\mathrm{T}/R_\mathrm{T}}$. La
+rotation de la Terre donne au lanceur, avant même son décollage, une vitesse vers l'est qui dépend de la latitude
+$\lambda$ du site : $v_\mathrm{rot}=\frac{2\pi R_\mathrm{T}}{T}\cos\lambda$.
+\begin{donnees}
+$G\,M_\mathrm{T}=\qty{3,98e14}{m^3.s^{-2}}$ ; $R_\mathrm{T}=\qty{6371}{km}$ ; $T=\qty{86164}{s}$ ; Kourou (Guyane) : $\lambda=5{,}2^\circ$ ;
+Baïkonour (Kazakhstan) : $\lambda=46^\circ$.
+\end{donnees}
+\begin{questions}
+\item Calculer $v_1$.
+\item Calculer la vitesse apportée par la rotation de la Terre à Kourou et à Baïkonour.
+\item Exprimer chacune en pourcentage de $v_1$. Pourquoi le site de Kourou est-il avantageux ?
+\item Pourquoi lance-t-on les satellites vers l'est ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-16-12}
+\begin{exercice}[3]{Le télescope spatial Hubble}
+\begin{docu}{1}{Un observatoire en orbite}
+Lancé en 1990, le télescope spatial Hubble orbite autour de la Terre à environ 540~km d'altitude, sur une orbite
+quasi circulaire. Au-dessus de l'atmosphère, il échappe à la turbulence qui brouille les images des télescopes au sol.
+\end{docu}
+\begin{docu}{2}{Une orbite qui se dégrade}
+L'atmosphère très ténue qui subsiste à cette altitude freine légèrement le télescope : son orbite s'abaisse lentement,
+et des missions de navettes l'ont plusieurs fois remonté.
+\end{docu}
+\begin{donnees}
+$G\,M_\mathrm{T}=\qty{3,98e14}{m^3.s^{-2}}$ ; $R_\mathrm{T}=\qty{6371}{km}$.
+\end{donnees}
+\begin{questions}
+\item Justifier que le mouvement de Hubble est circulaire uniforme, puis calculer sa vitesse et sa période.
+\item Représenter, sur un schéma, les vecteurs vitesse et accélération de Hubble.
+\item \initiative Si l'orbite s'abaisse à 500~km, comment évoluent la vitesse et la période ? Calculer leurs nouvelles valeurs.
+\item Commenter ce résultat paradoxal : le frottement de l'air finit par augmenter la vitesse du télescope.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-13}
+\begin{exercice}[3]{Les deux lunes de Mars}
+\begin{docu}{1}{Phobos et Deimos}
+Mars possède deux petites lunes. Phobos orbite à \qty{9376}{km} du centre de Mars, en 7,66~h ; Deimos, à \qty{23463}{km}, en
+30,3~h. Leurs orbites sont quasi circulaires et situées dans le plan de l'équateur martien.
+\end{docu}
+\begin{docu}{2}{Une lune qui se lève à l'ouest}
+Mars tourne sur elle-même en 24,6~h. Vu depuis la surface de Mars, Phobos se lève à l'ouest et se couche à l'est, deux
+fois par jour.
+\end{docu}
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Établir la troisième loi de Kepler pour une orbite circulaire.
+\item Calculer la masse de Mars à partir des données de Phobos, puis de Deimos. Commenter.
+\item \initiative Calculer le rayon de l'orbite « aréostationnaire », sur laquelle un satellite resterait à la verticale
+d'un point de l'équateur martien.
+\item Expliquer pourquoi Phobos semble se lever à l'ouest, à la différence de la Lune vue depuis la Terre.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-14}
+\begin{exercice}[3]{Les sept planètes de TRAPPIST-1}
+\begin{docu}{1}{Un système planétaire voisin}
+En 2017, l'annonce de sept planètes de la taille de la Terre autour de l'étoile TRAPPIST-1, à 40 années-lumière, a fait
+sensation. Leurs périodes ont été mesurées par la méthode des transits, leurs distances déduites des observations.
+\par\smallskip
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lccc@{}}\toprule
+Planète & b & e & h\\\midrule
+demi-grand axe $a$ (ua) & \num{0.01154} & \num{0.02925} & \num{0.06189}\\
+période $T$ (jours) & \num{1.511} & \num{6.100} & \num{18.77}\\\bottomrule
+\end{tabular}}
+\end{docu}
+\begin{donnees}
+Pour le système solaire, la troisième loi s'écrit $\dfrac{T^2}{a^3}=1$, avec $T$ en années et $a$ en ua. On admet que, pour une étoile
+de masse $M$, $\dfrac{T^2}{a^3}=\dfrac{M_\odot}{M}$ avec les mêmes unités, $M_\odot$ étant la masse du Soleil. 1~an $=$ 365,25~jours.
+\end{donnees}
+\begin{questions}
+\item Énoncer la troisième loi de Kepler. Pourquoi le rapport $T^2/a^3$ dépend-il de l'étoile ?
+\item Calculer le rapport $T^2/a^3$, en an$^2$/ua$^3$, pour les trois planètes. Commenter.
+\item \initiative En déduire la masse de l'étoile TRAPPIST-1 en masses solaires.
+\item La planète e reçoit de son étoile une puissance par unité de surface proche de celle que la Terre reçoit du Soleil.
+Comment est-ce possible alors qu'elle est 34 fois plus proche de son étoile ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-15}
+\begin{exercice}[3]{L'orbite de transfert}
+\begin{docu}{1}{Rejoindre l'orbite géostationnaire}
+Un satellite placé sur une orbite circulaire basse, de rayon $r_1=\qty{6671}{km}$, doit rejoindre l'orbite géostationnaire
+de rayon $r_2=\qty{42150}{km}$. On l'accélère brièvement : il décrit alors une demi-ellipse, dont le périgée est sur l'orbite
+basse et l'apogée sur l'orbite géostationnaire, où une seconde poussée l'y maintient.
+\end{docu}
+\schema{16-ex15}
+\begin{donnees}
+$G\,M_\mathrm{T}=\qty{3,98e14}{m^3.s^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer les vitesses du satellite sur l'orbite basse et sur l'orbite géostationnaire.
+\item Quelle est la valeur du demi-grand axe de l'ellipse de transfert ?
+\item \initiative En admettant que la troisième loi de Kepler s'applique à l'ellipse avec son demi-grand axe, calculer la
+durée du transfert.
+\item Pourquoi la vitesse du satellite diminue-t-elle pendant le transfert ? Justifier avec la deuxième loi de Kepler.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,452 @@
+% !TEX root = ../main.tex
+%% Chapitre 16 — Dénombrement
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre,
+%% section « Dénombrement » : a) cardinal d'un ensemble fini (parties, applications
+%% entre ensembles de même cardinal, opérations sur les cardinaux, applications
+%% d'un ensemble fini dans un autre, parties d'un ensemble fini) ; b) listes et
+%% combinaisons (p-listes, arrangements, permutations, combinaisons,
+%% démonstrations combinatoires de Pascal et du binôme).
+%% La formule du crible générale est hors programme (cas de 2 et 3 ensembles en
+%% exercice) ; les bijections ne sont pas un attendu (utilisées en approfondissement).
+%% Résultats vérifiés par verifications/chapitre_16.py.
+
+\begin{ouverture}[denombrement]{16}{Dénombrement}{Partie 2 · Deuxième semestre}
+  {Cardinaux\enspace·\enspace Principe multiplicatif\enspace·\enspace Listes\enspace·\enspace
+   Arrangements\enspace·\enspace Combinaisons\enspace·\enspace Binôme}
+  \objectif{Manier les cardinaux : unions, complémentaires, produits cartésiens.}
+  \objectif{Compter les applications, les injections et les parties d'un ensemble fini.}
+  \objectif{Distinguer listes, arrangements, permutations et combinaisons — et choisir le bon modèle.}
+  \objectif{Démontrer combinatoirement la formule de Pascal et celle du binôme.}
+  \objectif{Pratiquer le double comptage et le passage au complémentaire.}
+  \objectif{Préparer les probabilités finies du chapitre 17.}
+  \prerequis{Ensembles, applications, injections/surjections/bijections (chapitre 1).}
+  \prerequis{Coefficients binomiaux et formule du binôme, côté calcul (chapitre 2).}
+  \prerequis{Récurrences (chapitres 1 et 5) ; le groupe symétrique (chapitre 14).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Cardinal d'un ensemble fini}
+
+\begin{definition}[Cardinal]
+Un ensemble $E$ est \textbf{fini} s'il est vide ou en bijection avec un
+$\ens{1,\dots,n}$ ; l'entier $n$, unique, est son \textbf{cardinal}, noté
+$|E|$ ou $\operatorname{Card}(E)$ (tout fondement théorique est hors
+programme : on compte, et les propriétés intuitives sont admises). Toute
+partie $A$ d'un ensemble fini $E$ est finie, avec $|A|\leqslant|E|$, et
+\emph{l'égalité des cardinaux force l'égalité des ensembles} :
+$|A|=|E|\implies A=E$.
+\end{definition}
+
+\begin{theoreme}[Applications entre ensembles de même cardinal]
+Si $|E|=|F|$ est fini, une application $f:E\to F$ est bijective si et
+seulement si elle est injective, si et seulement si elle est surjective —
+le pendant ensembliste du théorème du rang (chapitre 12). Conséquence
+immédiate, le \emph{principe des tiroirs} : si l'on range $n+1$ objets
+dans $n$ tiroirs, l'un des tiroirs reçoit au moins deux objets
+(exercice 9).
+\end{theoreme}
+
+\essSection{2}{Les opérations sur les cardinaux}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{propriete}[Sommes, différences, produits]
+Pour $A,B$ parties d'un ensemble fini $E$ :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item union \emph{disjointe} : $|A\cup B|=|A|+|B|$ ; plus généralement
+    une partition se somme ;
+  \item union quelconque :
+    $|A\cup B|=|A|+|B|-|A\cap B|$ (on a compté $A\cap B$ deux fois) ;
+  \item complémentaire : $|\overline A|=|E|-|A|$, et différence :
+    $|A\setminus B|=|A|-|A\cap B|$ ;
+  \item produit cartésien : $|A\times B|=|A|\times|B|$ — c'est le
+    \emph{principe multiplicatif} : une suite de choix indépendants se
+    compte en multipliant les nombres d'options.
+\end{itemize}
+\end{propriete}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.88,line cap=round]
+  \fill[otInk] (0,1.5) circle (1.6pt);
+  \foreach \y/\lab in {2.6/e, 1.5/p, 0.4/c}{%
+    \fill[otNavy] (1.35,\y) circle (1.6pt);
+    \draw[otNavy,line width=0.7pt] (0,1.5) -- (1.35,\y);
+    \foreach \d in {0.3,-0.3}{%
+      \fill[otGreenDark] (2.7,{\y+\d}) circle (1.4pt);
+      \draw[otGreenDark,line width=0.6pt] (1.35,\y) -- (2.7,{\y+\d});}}
+  \node[font=\scriptsize,text=otNavy] at (1.35,3.0) {$3$ plats};
+  \node[font=\scriptsize,text=otGreenDark] at (2.78,3.3) {$2$ desserts};
+  \node[font=\scriptsize,text=otInk,anchor=east] at (-0.12,1.5) {départ};
+  \node[font=\scriptsize,text=otMuted] at (1.5,-0.45) {$3\times2=6$ menus};
+\end{tikzpicture}\\[0.5mm]
+\legende{L'arbre des choix : chaque étage multiplie. C'est le principe
+multiplicatif, cœur de tout le chapitre.}
+\end{minipage}
+
+\essSection{3}{Applications et parties d'un ensemble fini}
+
+\begin{theoreme}[Deux comptes fondamentaux]
+Soient $E$ et $F$ finis, $|E|=p$ et $|F|=n$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item Le nombre d'applications de $E$ dans $F$ est
+    $n^{p}$ : pour chacun des $p$ éléments, $n$ images possibles.
+  \item Le nombre de parties de $E$ est
+    $|\parties{E}|=2^{p}$ : une partie, c'est une application de $E$ dans
+    $\ens{0,1}$ (sa fonction indicatrice, chapitre 1) — garder ou jeter
+    chaque élément.
+\end{itemize}
+\end{theoreme}
+
+\essSection{4}{Listes, arrangements, permutations}
+
+\begin{definition}[Avec ou sans répétition, avec ordre]
+Une \textbf{$p$-liste} ($p$-uplet) d'éléments de $F$ est un élément de
+$F^{p}$ : il y en a $n^{p}$. Une $p$-liste d'éléments \emph{deux à deux
+distincts} (un \emph{arrangement}) correspond à une application
+\emph{injective} de $\ens{1,\dots,p}$ dans $F$ : il y en a
+\[
+n\,(n-1)\cdots(n-p+1)=\frac{n!}{(n-p)!}
+\qquad(0\ \text{si }p>n) :
+\]
+$n$ choix, puis $n-1$, etc. Pour $p=n$, on retrouve les $n!$
+\textbf{permutations} de $F$ — le cardinal de $S_n$ (chapitre 14).
+\end{definition}
+
+\begin{exemple}[Anagrammes]
+Les anagrammes de MPSI : $4!=24$. Celles d'OPTITAB : $7$ lettres dont deux
+T indiscernables, soit $\dfrac{7!}{2!}=2520$ — on divise par les
+permutations internes des lettres répétées.
+\end{exemple}
+
+\essSection{5}{Combinaisons et binôme}
+
+\begin{definition}[Combinaisons]
+Une \textbf{combinaison} de $p$ éléments de $E$ ($|E|=n$) est une
+\emph{partie} à $p$ éléments : ni ordre, ni répétition. Leur nombre est
+$\dbinom np$, et comme chaque partie à $p$ éléments s'ordonne de $p!$
+façons pour donner les arrangements :
+\[
+\binom np=\frac{n\,(n-1)\cdots(n-p+1)}{p!}=\frac{n!}{p!\,(n-p)!},
+\qquad
+\binom np=\binom{n}{n-p}.
+\]
+\end{definition}
+
+\begin{demonstration}[Pascal et le binôme, preuves combinatoires]
+\emph{Formule de Pascal.} Fixons un élément $a\in E$ avec $|E|=n$. Les
+parties à $p$ éléments se partagent en celles qui contiennent $a$
+(choisir les $p-1$ autres : $\binom{n-1}{p-1}$) et celles qui ne le
+contiennent pas ($\binom{n-1}{p}$) :
+$\binom np=\binom{n-1}{p-1}+\binom{n-1}{p}$.
+
+\emph{Formule du binôme.} En développant $(a+b)^{n}=(a+b)\cdots(a+b)$,
+chaque terme s'obtient en choisissant $a$ dans certains facteurs et $b$
+dans les autres : le terme $a^{k}b^{\,n-k}$ apparaît autant de fois qu'il
+y a de choix de $k$ facteurs parmi $n$, soit $\binom nk$ :
+$(a+b)^{n}=\sum_{k=0}^{n}\binom nk a^{k}b^{\,n-k}$.
+\end{demonstration}
+
+\begin{exemple}
+$\displaystyle\sum_{k=0}^{n}\binom nk=2^{n}$ (compter toutes les parties
+par cardinal — ou $a=b=1$) et
+$\displaystyle\sum_{k=0}^{n}(-1)^{k}\binom nk=0$ pour $n\geqslant1$
+($a=-1$, $b=1$) : autant de parties de cardinal pair que de cardinal
+impair (exercice 8).
+\end{exemple}
+
+\essSection{6}{La méthode : quel modèle ?}
+
+\begin{savoirfaire}[Choisir le bon modèle de comptage]
+Deux questions décident de tout : \emph{l'ordre compte-t-il ?} et
+\emph{les répétitions sont-elles permises ?}
+\begin{center}
+\begin{tabularx}{0.92\linewidth}{@{}>{\otSemi\fontsize{8}{10}\selectfont\leavevmode\color{otNavy}}p{34mm}*{2}{>{\centering\arraybackslash}X}@{}}
+ & \textbf{avec répétition} & \textbf{sans répétition}\\[0.6mm]
+avec ordre & $n^{p}$ \ (listes) & $\dfrac{n!}{(n-p)!}$ \ (arrangements)\\[2.2mm]
+sans ordre & \emph{(exercices 16, 17)} & $\dbinom np$ \ (combinaisons)\\
+\end{tabularx}
+\end{center}
+Ensuite : passer au \emph{complémentaire} quand « au moins » apparaît ;
+\emph{partitionner} selon un paramètre naturel ; et compter une même
+quantité de deux façons — le \emph{double comptage} — pour démontrer une
+identité (exercices 13, 14, 22).
+\end{savoirfaire}
+
+\begin{attention}
+Ne jamais multiplier des choix qui se recouvrent : « choisir 4 personnes
+dont au moins une femme » ne se compte pas en « une femme, puis 3
+quelconques » (chaque comité à plusieurs femmes serait compté plusieurs
+fois). Le bon réflexe : complémentaire, ou partition par le nombre exact
+de femmes (exercice 10).
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Premiers décomptes}
+\begin{questions}
+  \item Un menu se compose d'une entrée parmi $3$, d'un plat parmi $4$ et
+    d'un dessert parmi $2$ : combien de menus ?
+  \item Combien de codes PIN à $4$ chiffres ?
+  \item Combien de plaques d'immatriculation de la forme
+    deux lettres, trois chiffres, deux lettres ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Unions et complémentaires}
+Dans une classe de $30$ élèves, $18$ suivent l'option maths, $15$ l'option
+physique, et $8$ les deux.
+\begin{questions}
+  \item Combien suivent au moins une option ? Aucune ?
+  \item Énoncer et justifier la formule $|A\cup B|=|A|+|B|-|A\cap B|$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Listes, avec ou sans répétition}
+\begin{questions}
+  \item Combien de mots de $3$ lettres (alphabet de $26$) ? De mots de
+    $3$ lettres deux à deux distinctes ?
+  \item Combien d'applications de $\ens{1,2,3}$ dans $\ens{1,\dots,5}$ ?
+    Combien d'injectives ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Permutations et anagrammes}
+\begin{questions}
+  \item Combien d'anagrammes du mot MPSI ? De façons de ranger $5$ livres
+    sur une étagère ?
+  \item Combien d'anagrammes du mot OPTITAB ? \emph{Attention aux deux T.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Combinaisons : premiers calculs}
+\begin{questions}
+  \item Calculer $\dbinom52$, $\dbinom{10}3$ et $\dbinom{12}4$.
+  \item Combien de mains de $5$ cartes dans un jeu de $32$ ?
+  \item Pourquoi l'ordre ne compte-t-il pas ici, et comment la formule en
+    tient-elle compte ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Le triangle de Pascal}
+\begin{questions}
+  \item Construire le triangle de Pascal jusqu'à la ligne $n=6$.
+  \item Y lire $\dbinom63$, la symétrie, et vérifier que la somme de la
+    ligne $n$ vaut $2^{n}$.
+  \item Redémontrer la formule de Pascal par un argument de comptage.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Le binôme en action}
+\begin{questions}
+  \item Développer $(a+b)^{5}$, et donner le coefficient de $x^{3}$ dans
+    $(1+x)^{7}$.
+  \item Que donnent $a=b=1$, puis $a=-1$, $b=1$, dans la formule du
+    binôme ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Compter des parties}
+Soit $E$ de cardinal $n\geqslant1$.
+\begin{questions}
+  \item Retrouver $|\parties{E}|=2^{n}$ par le codage en indicatrices.
+  \item Combien de parties contiennent un élément fixé $a$ ?
+  \item Montrer qu'il y a autant de parties de cardinal pair que de
+    cardinal impair.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Le principe des tiroirs}
+\begin{questions}
+  \item Montrer que parmi $13$ personnes, deux au moins sont nées le même
+    mois.
+  \item Montrer que parmi $n+1$ entiers choisis dans $\ens{1,\dots,2n}$,
+    deux au moins sont consécutifs — donc premiers entre eux
+    (chapitre 7).
+  \item Montrer que parmi $5$ points d'un carré de côté $1$, deux au
+    moins sont à distance au plus $\dfrac{\sqrt2}{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Comités et délégations}
+Un groupe compte $7$ femmes et $5$ hommes.
+\begin{questions}
+  \item Combien de comités de $4$ personnes avec exactement $2$ femmes ?
+  \item Combien avec au moins une femme ?
+  \item Compter de deux façons les comités de $4$ personnes munis d'un
+    président, et en déduire une identité.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Mains de cartes}
+Dans un jeu de $32$ cartes ($4$ as) :
+\begin{questions}
+  \item Combien de mains de $5$ cartes avec exactement $2$ as ?
+  \item Combien avec au moins un as ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Chemins sur une grille}
+On va de $(0,0)$ à $(p,q)$ par pas « droite » ou « haut ».
+\begin{questions}
+  \item Montrer que le nombre de chemins est $\dbinom{p+q}{p}$.
+  \item Combien de chemins de $(0,0)$ à $(4,3)$ ? Combien passent par
+    $(1,2)$ ?
+  \item Retrouver la formule de Pascal en regardant le dernier pas.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le comité et son président}
+\begin{questions}
+  \item Démontrer combinatoirement l'identité
+    $k\dbinom nk=n\dbinom{n-1}{k-1}$.
+  \item En déduire $\displaystyle\sum_{k=0}^{n}k\binom nk=n\,2^{n-1}$,
+    puis $\displaystyle\sum_{k=0}^{n}k(k-1)\binom nk=n(n-1)\,2^{n-2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La formule de Vandermonde}
+\begin{questions}
+  \item Démontrer combinatoirement
+    $\displaystyle\sum_{k=0}^{n}\binom pk\binom{q}{n-k}=\binom{p+q}{n}$
+    — choisir $n$ personnes dans un groupe de $p$ femmes et $q$ hommes.
+  \item En déduire
+    $\displaystyle\sum_{k=0}^{n}\binom nk^{2}=\binom{2n}{n}$ : le
+    coefficient binomial central des chapitres 11 et 15.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Surjections sur deux ou trois éléments}
+\begin{questions}
+  \item Combien de surjections de $\ens{1,\dots,n}$ sur $\ens{1,2}$
+    ($n\geqslant2$) ?
+  \item Montrer que le nombre de surjections de $\ens{1,\dots,n}$ sur
+    $\ens{1,2,3}$ vaut $3^{n}-3\cdot2^{n}+3$ ($n\geqslant3$).
+    \emph{Retirer les applications qui évitent une valeur, en comptant
+    bien les recouvrements.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Étoiles et barres}
+\begin{questions}
+  \item Montrer que le nombre de solutions entières positives ou nulles
+    de $x_1+x_2+\dots+x_p=n$ est $\dbinom{n+p-1}{p-1}$. \emph{Coder une
+    solution par une suite de $n$ étoiles et $p-1$ barres.}
+  \item Combien de solutions pour $x+y+z=10$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Applications monotones}
+Soient $p\leqslant n$.
+\begin{questions}
+  \item Montrer que le nombre d'applications \emph{strictement
+    croissantes} de $\ens{1,\dots,p}$ dans $\ens{1,\dots,n}$ est
+    $\dbinom np$.
+  \item Montrer que le nombre d'applications \emph{croissantes} (au sens
+    large) est $\dbinom{n+p-1}{p}$. \emph{Se ramener à l'exercice 16.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le binôme rencontre l'analyse}
+\begin{questions}
+  \item En intégrant $(1+x)^{n}$ sur $\intFF{0}{1}$ (chapitre 15),
+    montrer que
+    $\displaystyle\sum_{k=0}^{n}\frac{1}{k+1}\binom nk
+    =\frac{2^{n+1}-1}{n+1}$.
+  \item En dérivant $(1+x)^{n}$, retrouver
+    $\displaystyle\sum_{k=0}^{n}k\binom nk=n\,2^{n-1}$ (exercice 13).
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Les dérangements}
+Un \emph{dérangement} est une permutation sans point fixe ; on note $D_n$
+leur nombre dans $S_n$ ($D_0=1$, $D_1=0$).
+\begin{questions}
+  \item En classant les dérangements selon l'image de $n$ et le sort de
+    son antécédent, établir
+    $D_n=(n-1)\bigl(D_{n-1}+D_{n-2}\bigr)$ pour $n\geqslant2$.
+  \item En déduire par récurrence $D_n=n\,D_{n-1}+(-1)^{n}$, puis
+    \[
+    D_n=n!\,\sum_{k=0}^{n}\frac{(-1)^{k}}{k!} .
+    \]
+  \item Montrer que $\dfrac{D_n}{n!}\to\dfrac{1}{\mathrm{e}}$
+    (chapitres 5 et 15) : environ $37\,\%$ des permutations sont des
+    dérangements.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le crible pour trois ensembles}
+\begin{questions}
+  \item À partir de la formule pour deux ensembles, démontrer
+    \[
+    |A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|A\cap C|-|B\cap C|
+    +|A\cap B\cap C| .
+    \]
+  \item Combien d'entiers de $1$ à $100$ ne sont divisibles ni par $2$,
+    ni par $3$, ni par $5$ ? (Chapitre 7.)
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Chemins sous la diagonale : les nombres de Catalan}
+On note $C_n$ le nombre de chemins de $(0,0)$ à $(n,n)$ (pas droite/haut)
+qui ne montent jamais strictement au-dessus de la diagonale.
+\begin{questions}
+  \item Calculer $C_1,C_2,C_3$ à la main.
+  \item Par l'argument de réflexion (mettre en bijection les chemins
+    \emph{fautifs} avec les chemins de $(0,0)$ à $(n-1,n+1)$), montrer
+    que $C_n=\dbinom{2n}{n}-\dbinom{2n}{n-1}=\dfrac{1}{n+1}\dbinom{2n}{n}$.
+  \item Vérifier : $1,2,5,14,42,\dots$
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Identités par double comptage}
+\begin{questions}
+  \item Démontrer combinatoirement
+    $\dbinom{2n}{2}=2\dbinom n2+n^{2}$ — couper une population de $2n$
+    personnes en deux moitiés.
+  \item Démontrer la « crosse de hockey »
+    $\displaystyle\sum_{k=2}^{n}\binom k2=\binom{n+1}{3}$ — classer les
+    parties à $3$ éléments de $\ens{1,\dots,n+1}$ selon leur maximum.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Permutations et points fixes}
+\begin{questions}
+  \item Montrer que le nombre de permutations de $S_n$ ayant
+    \emph{exactement} $k$ points fixes est $\dbinom nk D_{n-k}$
+    (exercice 19).
+  \item En déduire
+    $\displaystyle\sum_{k=0}^{n}\binom nk D_{n-k}=n!$ — puis, en comptant
+    les couples (permutation, point fixe) de deux façons, que le nombre
+    \emph{moyen} de points fixes d'une permutation vaut $1$
+    (un avant-goût du chapitre 17).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Fibonacci compte aussi}
+Soit $a_n$ le nombre de parties de $\ens{1,\dots,n}$ sans deux éléments
+consécutifs ($\varnothing$ comprise).
+\begin{questions}
+  \item Calculer $a_1,a_2,a_3$, puis montrer que
+    $a_n=a_{n-1}+a_{n-2}$ — selon que $n$ appartient ou non à la partie.
+    En déduire $a_n=F_{n+2}$ (chapitres 5, 12 et 13).
+  \item Montrer que le nombre de telles parties à $k$ éléments est
+    $\dbinom{n-k+1}{k}$, et en déduire l'identité
+    $\displaystyle\sum_{k\geqslant0}\binom{n-k+1}{k}=F_{n+2}$ : Fibonacci
+    dans le triangle de Pascal, le long des diagonales.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-16}

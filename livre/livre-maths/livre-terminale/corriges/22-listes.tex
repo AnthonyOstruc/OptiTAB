@@ -1,0 +1,434 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 22 — Listes
+%% Tous les programmes ont été exécutés (Python 3) : les affichages reproduits sont exacts.
+
+\corrigesChapitre{22}{Listes}
+\corrigesSouples
+
+\begin{corrige}{1}{Créer une liste et accéder à ses éléments}
+\begin{questions}
+  \item La liste a $5$ éléments, d'indices $0$ à $4$ : la note du milieu a l'indice $2$, c'est-à-dire \code{len(notes) // 2}.
+\begin{codecote}[0.58]
+\begin{pythoncol}
+notes = [12, 15, 18, 10, 14]
+print(notes[0], notes[-1], notes[2])
+\end{pythoncol}
+\cote
+\begin{consolecol}
+12 14 18
+\end{consolecol}
+\end{codecote}
+  \item \code{fruits[2]} vaut \resc{"orange"}, \code{fruits[-2]} aussi (avant-dernier élément), \code{fruits[1:3]} vaut
+    \resc{["banane", "orange"]} (indices $1$ et $2$) et \code{len(fruits)} vaut \resc{4}.
+  \item Les indices vont de $0$ à $3$ : l'indice $4$ n'existe pas et Python signale l'erreur \resc{IndexError}.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Modifier une liste}
+\begin{questions}
+  \item On affiche la liste après chaque modification.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+nombres = []
+nombres.append(5)
+nombres.append(10)
+nombres.append(15)
+print(nombres)
+nombres.insert(1, 8)
+print(nombres)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+[5, 10, 15]
+[5, 8, 10, 15]
+\end{consolecol}
+
+\medskip
+\code{insert(1, 8)} place $8$ à l'indice $1$ et décale les éléments suivants.
+\end{codecote}
+  \item \code{remove} ne supprime que la \emph{première} occurrence ; \code{"vert"} est alors à l'indice $1$.
+\begin{python}
+couleurs = ["rouge", "bleu", "vert", "bleu"]
+couleurs.remove("bleu")
+print(couleurs)
+couleurs[1] = "jaune"
+print(couleurs)
+\end{python}
+\begin{console}
+['rouge', 'vert', 'bleu']
+['rouge', 'jaune', 'bleu']
+\end{console}
+  \item \code{pop()} retire le dernier élément de la liste et le renvoie. Ainsi \code{x} vaut \resc{'bleu'}, et la liste
+    \code{couleurs} devient \resc{['rouge', 'jaune']}.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Rechercher dans une liste}
+\begin{questions}
+  \item \code{len(notes)} vaut \resc{5}, \code{notes.index(12)} vaut \resc{1} (première occurrence), \code{notes.count(12)} vaut
+    \resc{2} et \code{13 in notes} vaut \resc{False}.
+  \item \code{"Alice" in eleves} vaut \resc{True}, \code{eleves.index("Alice")} vaut \resc{0} et \code{eleves.count("Alice")} vaut
+    \resc{2}.
+  \item $13$ n'est pas dans la liste : \code{index} ne peut pas renvoyer de position et provoque une erreur \code{ValueError}. On teste
+    d'abord la présence :
+\begin{python}
+if 13 in notes:
+    print("Position :", notes.index(13))
+else:
+    print("absent")
+\end{python}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Trier une liste}
+\begin{questions}
+  \item \code{sort} et \code{reverse} modifient la liste elle-même.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+notes = [15, 8, 20, 12]
+notes.sort()
+print(notes)
+notes.reverse()
+print(notes)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+[8, 12, 15, 20]
+[20, 15, 12, 8]
+\end{consolecol}
+\end{codecote}
+  \item Les chaînes de caractères sont triées par ordre alphabétique.
+\begin{codecote}[0.58]
+\begin{pythoncol}
+prenoms = ["Charlie", "Alice", "Bob"]
+prenoms.sort()
+print(prenoms[0], prenoms[-1])
+\end{pythoncol}
+\cote
+\begin{consolecol}
+Alice Charlie
+\end{consolecol}
+\end{codecote}
+  \item Le programme affiche \code{[15, 8, 20, 12]} puis \code{[8, 12, 15, 20]}. \code{sorted(L)} renvoie une $\res{\text{nouvelle}}$
+    liste triée et laisse \code{L} intacte, alors que \code{L.sort()} trie \code{L} elle-même.
+  \item \code{L.sort()} trie la liste mais renvoie \code{None} : après \code{L = L.sort()}, la variable \code{L} vaut \resc{None} et la
+    liste est perdue. On écrit simplement \code{L.sort()}.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Parcourir une liste}
+\begin{questions}
+  \item Un accumulateur reçoit chaque note.
+\begin{codecote}[0.56]
+\begin{pythoncol}
+notes = [14, 12, 16, 10, 18]
+somme = 0
+for note in notes:
+    somme = somme + note
+print(somme, somme / len(notes))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+70 14.0
+\end{consolecol}
+
+\medskip
+Somme $\res{70}$, moyenne $\res{14}$.
+\end{codecote}
+  \item On garde en mémoire le plus grand élément rencontré, en partant du premier.
+\begin{codecote}[0.56]
+\begin{pythoncol}
+nombres = [5, 8, 12, 3, 15]
+maximum = nombres[0]
+for x in nombres:
+    if x > maximum:
+        maximum = x
+print(maximum)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+15
+\end{consolecol}
+
+\medskip
+Valeurs successives de \code{maximum} : $5$, $8$, $12$, $12$, $15$.
+\end{codecote}
+  \item Pour connaître la position, on parcourt la liste par ses indices et on mémorise l'indice du minimum.
+\begin{codecote}[0.56]
+\begin{pythoncol}
+pos = 0
+for i in range(len(nombres)):
+    if nombres[i] < nombres[pos]:
+        pos = i
+print(nombres[pos], pos)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+3 3
+\end{consolecol}
+
+\medskip
+Le minimum $\res{3}$ est à l'indice $\res{3}$ (quatrième élément).
+\end{codecote}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Listes en compréhension}
+\begin{questions}
+  \item Une expression, une boucle et, si besoin, un filtre :
+\begin{python}
+carres = [k**2 for k in range(1, 11)]
+multiples = [k for k in range(1, 100) if k % 7 == 0]
+termes = [3 * n + 2 for n in range(10)]
+diviseurs = [d for d in range(1, 37) if 36 % d == 0]
+\end{python}
+\begin{console}
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+[7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98]
+[2, 5, 8, 11, 14, 17, 20, 23, 26, 29]
+[1, 2, 3, 4, 6, 9, 12, 18, 36]
+\end{console}
+    Il y a $14$ multiples de $7$ inférieurs à $100$ et $9$ diviseurs de $36$.
+  \item \code{xs} contient les nombres de $0$ à $2$ avec un pas de $0{,}25$, et \code{ys} les images par $f(x)=x^{2}-2x$.
+\begin{console}
+[0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+[0.0, -0.4375, -0.75, -0.9375, -1.0, -0.9375, -0.75, -0.4375, 0.0]
+\end{console}
+\begin{codecote}[0.56]
+Les points sont sur une $\res{\text{parabole}}$, symétrique par rapport à la droite $x=1$ : $f(x)=(x-1)^{2}-1$ a pour minimum
+$\res{-1}$, atteint en $x=1$.
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=56mm, xmin=-0.3, xmax=2.4, ymin=-1.3, ymax=0.5, xtick={1,2}, ytick={-1}]
+  \addplot[otNavy!40,line width=0.7pt,domain=-0.15:2.15,samples=50] {x^2-2*x};
+  \addplot[only marks,mark=*,mark size=1.4pt,otNavy] coordinates {(0,0) (0.25,-0.4375) (0.5,-0.75) (0.75,-0.9375) (1,-1)
+    (1.25,-0.9375) (1.5,-0.75) (1.75,-0.4375) (2,0)};
+\end{axis}
+\end{tikzpicture}
+\end{codecote}
+  \item \code{sum([k**2 for k in range(1, 11)])} vaut \resc{385}, et $\frac{10\times11\times21}{6}=385$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{Statistiques d'une série de notes}
+\begin{questions}
+  \item \code{m = sum(notes) / len(notes)} vaut $\frac{100}{8}=\res{12{,}5}$.
+  \item On construit la liste des carrés des écarts à la moyenne.
+\begin{codecote}[0.62]
+\begin{pythoncol}
+from math import sqrt
+n = len(notes)
+V = sum([(x - m)**2 for x in notes]) / n
+print(V, sqrt(V))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+9.25 3.0413812651491097
+\end{consolecol}
+
+\medskip
+$V=\res{9{,}25}$ et $\sigma\approx\res{3{,}04}$.
+\end{codecote}
+  \item On trie une copie de la liste. Si l'effectif $n$ est impair, la médiane est la valeur centrale, d'indice \code{n // 2} ; s'il
+    est pair, c'est la moyenne des deux valeurs centrales, d'indices \code{n // 2 - 1} et \code{n // 2}.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+def mediane(L):
+    t = sorted(L)
+    n = len(t)
+    if n % 2 == 1:
+        return t[n // 2]
+    else:
+        return (t[n // 2 - 1] + t[n // 2]) / 2
+\end{pythoncol}
+\cote
+Série triée : $8$, $9$, $10$, $12$, $14$, $15$, $15$, $17$.\\[1mm]
+$n=8$ : la médiane est $\frac{12+14}{2}=\res{13}$ ; la fonction renvoie \code{13.0}.
+\end{codecote}
+  \item L'étendue vaut \code{max(notes) - min(notes)}, soit $17-8=\res{9}$. Les notes supérieures ou égales à $10$ sont
+    \code{[x for x in notes if x >= 10]} : il y en a $6$ sur $8$, soit une proportion de $\res{0{,}75}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Le tri par sélection}
+\begin{questions}
+  \item On ajoute \code{print(L)} à la fin de chaque tour de la boucle extérieure.
+\begin{codecote}[0.36]
+\begin{consolecol}
+[1, 2, 8, 5, 9]
+[1, 2, 8, 5, 9]
+[1, 2, 5, 8, 9]
+[1, 2, 5, 8, 9]
+\end{consolecol}
+\cote
+Tour $i=0$ : le minimum $1$ est échangé avec $5$. Tour $i=1$ : $2$ est déjà à sa place. Tour $i=2$ : $5$ est échangé avec $8$.
+Tour $i=3$ : $8$ est déjà à sa place. La liste triée est $\res{[1, 2, 5, 8, 9]}$.
+\end{codecote}
+  \item Au tour $i$, on place en position $i$ le plus petit des éléments restants : il est supérieur ou égal à tous ceux déjà placés
+    et inférieur ou égal à tous les suivants. Par récurrence, \code{L[0]}, …, \code{L[i]} sont rangés et ne bougeront plus. Après le
+    tour $n-2$, le dernier élément est forcément le plus grand.
+  \item Au tour $i$, la variable \code{j} prend les valeurs de $i+1$ à $n-1$ : il y a $n-1-i$ comparaisons, donc au total
+    $(n-1)+(n-2)+\dots+1=\frac{n(n-1)}{2}$. Pour $n=5$ : $\res{10}$ comparaisons ; pour $n=1\,000$ : $\res{499\,500}$.
+  \item $\frac{2n(2n-1)}{2}\approx4\times\frac{n(n-1)}{2}$ : le nombre de comparaisons est environ $\res{\text{multiplié par }4}$
+    (pour $n=2\,000$, on trouve $1\,999\,000$). Le coût est quadratique : les tris rapides utilisés en pratique font beaucoup mieux.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{9}{Le crible d'Ératosthène}
+\begin{questions}
+  \item Au départ, \code{est} contient $n+1$ fois \code{True} : \code{est[k]} indique si $k$ est encore « non barré ». À la fin,
+    \code{est[k] == True} signifie que $k$ est $\res{\text{premier}}$.
+  \item $i$ lui-même n'est pas barré : on barre ses multiples à partir de $2i$. Au tour $i=3$, on barre $6$, $9$, $12$, $15$, …
+    (les multiples pairs l'étaient déjà).
+  \item On obtient la grille ci-dessous.
+\begin{codecote}[0.54]
+\centering
+\scalebox{0.86}{\begin{tikzpicture}[x=7.2mm,y=-7.2mm]
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (0,0) {1};
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (1,0) {2};
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (2,0) {3};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,0) {4};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,0.28) -- (3.2800000000000002,-0.28);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (4,0) {5};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,0) {6};
+\draw[otMuted!80,line width=0.5pt] (4.72,0.28) -- (5.28,-0.28);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (6,0) {7};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,0) {8};
+\draw[otMuted!80,line width=0.5pt] (6.72,0.28) -- (7.28,-0.28);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,0) {9};
+\draw[otMuted!80,line width=0.5pt] (7.72,0.28) -- (8.28,-0.28);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,0) {10};
+\draw[otMuted!80,line width=0.5pt] (8.72,0.28) -- (9.28,-0.28);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (0,1) {11};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,1) {12};
+\draw[otMuted!80,line width=0.5pt] (0.72,1.28) -- (1.28,0.72);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (2,1) {13};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,1) {14};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,1.28) -- (3.2800000000000002,0.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,1) {15};
+\draw[otMuted!80,line width=0.5pt] (3.7199999999999998,1.28) -- (4.28,0.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,1) {16};
+\draw[otMuted!80,line width=0.5pt] (4.72,1.28) -- (5.28,0.72);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (6,1) {17};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,1) {18};
+\draw[otMuted!80,line width=0.5pt] (6.72,1.28) -- (7.28,0.72);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (8,1) {19};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,1) {20};
+\draw[otMuted!80,line width=0.5pt] (8.72,1.28) -- (9.28,0.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (0,2) {21};
+\draw[otMuted!80,line width=0.5pt] (-0.28,2.2800000000000002) -- (0.28,1.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,2) {22};
+\draw[otMuted!80,line width=0.5pt] (0.72,2.2800000000000002) -- (1.28,1.72);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (2,2) {23};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,2) {24};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,2.2800000000000002) -- (3.2800000000000002,1.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,2) {25};
+\draw[otMuted!80,line width=0.5pt] (3.7199999999999998,2.2800000000000002) -- (4.28,1.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,2) {26};
+\draw[otMuted!80,line width=0.5pt] (4.72,2.2800000000000002) -- (5.28,1.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (6,2) {27};
+\draw[otMuted!80,line width=0.5pt] (5.72,2.2800000000000002) -- (6.28,1.72);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,2) {28};
+\draw[otMuted!80,line width=0.5pt] (6.72,2.2800000000000002) -- (7.28,1.72);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (8,2) {29};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,2) {30};
+\draw[otMuted!80,line width=0.5pt] (8.72,2.2800000000000002) -- (9.28,1.72);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (0,3) {31};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,3) {32};
+\draw[otMuted!80,line width=0.5pt] (0.72,3.2800000000000002) -- (1.28,2.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (2,3) {33};
+\draw[otMuted!80,line width=0.5pt] (1.72,3.2800000000000002) -- (2.2800000000000002,2.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,3) {34};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,3.2800000000000002) -- (3.2800000000000002,2.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,3) {35};
+\draw[otMuted!80,line width=0.5pt] (3.7199999999999998,3.2800000000000002) -- (4.28,2.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,3) {36};
+\draw[otMuted!80,line width=0.5pt] (4.72,3.2800000000000002) -- (5.28,2.7199999999999998);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (6,3) {37};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,3) {38};
+\draw[otMuted!80,line width=0.5pt] (6.72,3.2800000000000002) -- (7.28,2.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,3) {39};
+\draw[otMuted!80,line width=0.5pt] (7.72,3.2800000000000002) -- (8.28,2.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,3) {40};
+\draw[otMuted!80,line width=0.5pt] (8.72,3.2800000000000002) -- (9.28,2.7199999999999998);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (0,4) {41};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,4) {42};
+\draw[otMuted!80,line width=0.5pt] (0.72,4.28) -- (1.28,3.7199999999999998);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (2,4) {43};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,4) {44};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,4.28) -- (3.2800000000000002,3.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,4) {45};
+\draw[otMuted!80,line width=0.5pt] (3.7199999999999998,4.28) -- (4.28,3.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,4) {46};
+\draw[otMuted!80,line width=0.5pt] (4.72,4.28) -- (5.28,3.7199999999999998);
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (6,4) {47};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,4) {48};
+\draw[otMuted!80,line width=0.5pt] (6.72,4.28) -- (7.28,3.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,4) {49};
+\draw[otMuted!80,line width=0.5pt] (7.72,4.28) -- (8.28,3.7199999999999998);
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,4) {50};
+\draw[otMuted!80,line width=0.5pt] (8.72,4.28) -- (9.28,3.7199999999999998);
+\end{tikzpicture}}
+\cote
+\code{crible(50)} renvoie la liste des $15$ nombres premiers inférieurs à $50$ : $2$, $3$, $5$, $7$, $11$, $13$, $17$, $19$, $23$,
+$29$, $31$, $37$, $41$, $43$, $47$.\\[1mm]
+On trouve $\res{25}$ nombres premiers jusqu'à $100$ et $\res{168}$ jusqu'à $1\,000$.
+\end{codecote}
+  \item Si $j\leq n$ n'est pas premier, il a un diviseur premier $p$ tel que $p^{2}\leq j\leq n$ (voir l'exercice 10 du
+    chapitre 21) : il est barré lors d'un tour $i$ vérifiant $i^{2}\leq n$. De plus, un multiple $i\times q$ avec $q<i$ a déjà été barré
+    comme multiple d'un diviseur premier de $q$ : on peut commencer à \code{i * i}. Cette version donne les mêmes résultats, avec
+    beaucoup moins d'opérations.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{10}{Simuler la somme de deux dés}
+\begin{questions}
+  \item La somme $s$ sert d'indice : il faut des indices de $0$ à $12$, donc $13$ éléments. \code{effectifs[0]} et
+    \code{effectifs[1]} restent à $\res{0}$, car la somme vaut au moins $2$.
+  \item Les $36$ couples $(d_1\pv d_2)$ sont équiprobables. Pour $s\leq7$, les couples de somme $s$ sont $(1\pv s-1)$, …,
+    $(s-1\pv1)$ : il y en a $s-1=6-|s-7|$. Pour $s\geq7$, ce sont $(s-6\pv6)$, …, $(6\pv s-6)$ : il y en a $13-s=6-|s-7|$. D'où
+    $P(S=s)=\frac{6-|s-7|}{36}$.
+  \item Fréquences (effectif divisé par $10\,000$) et probabilités, arrondies au millième :
+\begin{codecote}[0.5]
+{\renewcommand{\arraystretch}{1.15}\arrayrulecolor{otRule}\small%
+\begin{tabularx}{\linewidth}{@{}cYY@{}}
+\toprule
+\otTete{$s$} & \otTete{fréquence} & \otTete{probabilité} \\
+\midrule
+$2$ & $0{,}027$ & $0{,}028$ \\
+$3$ & $0{,}059$ & $0{,}056$ \\
+$4$ & $0{,}084$ & $0{,}083$ \\
+$5$ & $0{,}121$ & $0{,}111$ \\
+$6$ & $0{,}135$ & $0{,}139$ \\
+$7$ & $0{,}164$ & $0{,}167$ \\
+$8$ & $0{,}135$ & $0{,}139$ \\
+$9$ & $0{,}109$ & $0{,}111$ \\
+$10$ & $0{,}080$ & $0{,}083$ \\
+$11$ & $0{,}053$ & $0{,}056$ \\
+$12$ & $0{,}031$ & $0{,}028$ \\
+\bottomrule
+\end{tabularx}}
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=70mm, height=52mm, ybar, bar width=1.7mm, xmin=1.3, xmax=12.7, ymin=0, ymax=0.19,
+  xtick={2,...,12}, ytick={0.05,0.1,0.15}, yticklabels={$0{,}05$,$0{,}10$,$0{,}15$}, scaled y ticks=false,
+  legend style={font=\scriptsize,draw=none,fill=none,at={(0.02,0.98)},anchor=north west}, legend cell align=left]
+  \addplot[fill=otNavySoft,draw=otNavy,line width=0.4pt] coordinates {(2,0.0274) (3,0.0591) (4,0.0841) (5,0.1214)
+    (6,0.1354) (7,0.1642) (8,0.1354) (9,0.109) (10,0.0801) (11,0.0533) (12,0.0306)};
+  \addplot[fill=otGreenTint,draw=otGreenDark,line width=0.4pt] coordinates {(2,0.0278) (3,0.0556) (4,0.0833) (5,0.1111)
+    (6,0.1389) (7,0.1667) (8,0.1389) (9,0.1111) (10,0.0833) (11,0.0556) (12,0.0278)};
+  \legend{fréquence,probabilité}
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les fréquences observées sont proches des probabilités : l'écart maximal est d'environ $0{,}01$ (pour $s=5$).}
+\end{codecote}
+    La somme la plus fréquente est $\res{7}$, qui est aussi la plus probable : $P(S=7)=\frac{6}{36}=\frac16$.
+  \item $F$ a pour espérance $p=\frac16$ et pour variance $\frac{p(1-p)}{n}=\frac{5/36}{10\,000}$. D'après l'inégalité de
+    Bienaymé-Tchebychev :
+    \[P\left(\left|F-\tfrac16\right|\geq0{,}01\right)\leq\frac{5/36}{10\,000\times0{,}01^{2}}=\frac{5}{36}\approx\res{0{,}139}.\]
+    La fréquence observée $0{,}164\,2$ s'écarte de $\frac16\approx0{,}166\,7$ d'environ $0{,}002\,5$ seulement : le résultat n'a rien de
+    surprenant.
+\end{questions}
+\end{corrige}

@@ -1,0 +1,53 @@
+% Géométrie de quatre molécules en représentation de Cram (L'essentiel, chapitre 6)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  aC/.style={circle,fill=otInk!85,text=white,minimum size=6.5mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont},
+  aN/.style={circle,fill=otNavy,text=white,minimum size=6.5mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont},
+  aO/.style={circle,fill=otRed!85,text=white,minimum size=6.5mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont},
+  aH/.style={circle,fill=white,draw=otInk!55,line width=0.5pt,minimum size=4.8mm,inner sep=0pt,font=\otSemi\fontsize{7}{8}\selectfont},
+  lien/.style={otInk!80,line width=1.1pt},
+  lobe/.style={fill=otGreen!25,draw=otGreen!70!black,line width=0.5pt},
+  angle/.style={otOrange!85!black,line width=0.6pt},
+  nomG/.style={pcLegendeG,anchor=north},nomL/.style={pcLegende,anchor=north,align=center}]
+\newcommand{\coin}[2]{\fill[otInk!80] #1 -- ($#2!0.11cm!90:#1$) -- ($#2!0.11cm!-90:#1$) -- cycle;}
+\newcommand{\hachure}[2]{\foreach \t in {0.18,0.3,...,0.95}{%
+  \draw[otInk!80,line width=0.6pt] ($#1!\t!#2!{\t*0.11cm}!90:#2$) -- ($#1!\t!#2!{\t*0.11cm}!-90:#2$);}}
+% Méthane
+\begin{scope}[shift={(0,0)}]
+  \draw[lien] (0,0) -- (0,1.15) (0,0) -- (-1.05,-0.5);
+  \coin{(0,0)}{(0.72,-0.78)} \hachure{(0,0)}{(1.08,-0.12)}
+  \draw[angle] (0,0.55) arc[start angle=90,end angle=205.5,radius=0.55];
+  \node[pcLegende,text=otOrange!75!black] at (-0.68,0.62) {\qty{109,5}{\degree}};
+  \node[aC] at (0,0) {C}; \node[aH] at (0,1.15) {H}; \node[aH] at (-1.05,-0.5) {H};
+  \node[aH] at (0.72,-0.78) {H}; \node[aH] at (1.08,-0.12) {H};
+  \node[nomG] at (0,-1.25) {méthane $\ce{CH4}$}; \node[nomL] at (0,-1.62) {tétraédrique};
+\end{scope}
+% Ammoniac
+\begin{scope}[shift={(3.6,0)}]
+  \draw[lobe] (0,0.18) .. controls (-0.42,0.75) and (-0.25,1.15) .. (0,1.15) .. controls (0.25,1.15) and (0.42,0.75) .. (0,0.18);
+  \draw[otGreen!60!black,line width=0.9pt] (-0.13,0.82) -- (0.13,0.82);
+  \draw[lien] (0,0) -- (-1.05,-0.5);
+  \coin{(0,0)}{(0.72,-0.78)} \hachure{(0,0)}{(1.08,-0.12)}
+  \draw[angle] ($(0,0)!0.55!(-1.05,-0.5)$) arc[start angle=205.5,end angle=312.7,radius=0.55];
+  \node[pcLegende,text=otOrange!75!black] at (-0.05,-0.82) {\qty{107}{\degree}};
+  \node[aN] at (0,0) {N}; \node[aH] at (-1.05,-0.5) {H}; \node[aH] at (0.72,-0.78) {H}; \node[aH] at (1.08,-0.12) {H};
+  \node[nomG] at (0,-1.25) {ammoniac $\ce{NH3}$}; \node[nomL] at (0,-1.62) {pyramidale};
+\end{scope}
+% Eau
+\begin{scope}[shift={(7.0,0)}]
+  \foreach \s in {-1,1}{\draw[lobe] (0,0.15) .. controls ({\s*0.05},0.75) and ({\s*0.35},1.05) .. ({\s*0.55},0.95)
+    .. controls ({\s*0.72},0.8) and ({\s*0.45},0.35) .. (0,0.15);}
+  \draw[lien] (0,0) -- (-0.83,-0.64) (0,0) -- (0.83,-0.64);
+  \draw[angle] ($(0,0)!0.5!(-0.83,-0.64)$) arc[start angle=217.75,end angle=322.25,radius=0.5];
+  \node[pcLegende,text=otOrange!75!black,anchor=north] at (0,-0.55) {\qty{104,5}{\degree}};
+  \node[aO] at (0,0) {O}; \node[aH] at (-0.83,-0.64) {H}; \node[aH] at (0.83,-0.64) {H};
+  \node[nomG] at (0,-1.25) {eau $\ce{H2O}$}; \node[nomL] at (0,-1.62) {coudée};
+\end{scope}
+% Dioxyde de carbone
+\begin{scope}[shift={(10.4,0)}]
+  \draw[lien] (-1.05,0.07) -- (1.05,0.07) (-1.05,-0.07) -- (1.05,-0.07);
+  \node[aC] at (0,0) {C}; \node[aO] at (-1.05,0) {O}; \node[aO] at (1.05,0) {O};
+  \node[pcLegende,text=otOrange!75!black] at (0,0.55) {\qty{180}{\degree}};
+  \node[nomG] at (0,-1.25) {dioxyde de carbone $\ce{CO2}$}; \node[nomL] at (0,-1.62) {linéaire};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Trait plein : liaison dans le plan de la feuille ; triangle plein : vers l'avant ; triangle hachuré : vers l'arrière. En vert, les doublets non liants.}

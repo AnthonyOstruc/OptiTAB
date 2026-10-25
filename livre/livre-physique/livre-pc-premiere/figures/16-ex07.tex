@@ -1,0 +1,17 @@
+% Profil d'une montagne russe : A (40 m), B (5 m), C (25 m) (exercice 7, chapitre 16) ; 1 unité verticale = 10 m
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otMuted!18] (-0.4,-0.3) rectangle (10.2,0);
+\draw[otInk!60,line width=0.6pt] (-0.4,0) -- (10.2,0);
+\draw[otNavy,line width=1.4pt] (0,4.0) -- (0.8,4.0) .. controls (2.0,4.0) and (2.6,0.5) .. (3.6,0.5) .. controls (4.6,0.5) and (5.2,2.5) .. (6.2,2.5) .. controls (7.2,2.5) and (7.8,0.5) .. (9.0,0.5) -- (10.0,0.5);
+\draw[otMuted!80,line width=0.6pt] (0.2,0) -- (0.2,4.0) (0.7,0) -- (0.7,4.0);
+\fill[otInk] (0.8,4.0) circle (0.07); \node[pcLegendeG,anchor=south] at (0.8,4.05) {A};
+\fill[otInk] (3.6,0.5) circle (0.07); \node[pcLegendeG,anchor=north] at (3.6,0.45) {B};
+\fill[otInk] (6.2,2.5) circle (0.07); \node[pcLegendeG,anchor=south] at (6.2,2.55) {C};
+\draw[otInk,line width=0.6pt,-{Stealth[length=2mm]}] (-0.9,-0.1) -- (-0.9,4.6) node[pcLegende,anchor=south] {$z$ (m)};
+\foreach \z/\t in {0/0,1/10,2/20,3/30,4/40}{\draw[otInk,line width=0.5pt] (-0.98,\z) -- (-0.82,\z); \node[pcLegende,anchor=east] at (-1.0,\z) {\t};}
+\node[pcLegende,anchor=west] at (1.0,4.3) {$v_\mathrm{A}=\qty{2,0}{m.s^{-1}}$};
+\solution{
+  \node[pcLegende,anchor=west,text=otGreenDark] at (3.85,0.25) {$v_\mathrm{B}=\qty{26,3}{m.s^{-1}}$};
+  \node[pcLegende,anchor=south,text=otGreenDark] at (6.2,2.95) {$v_\mathrm{C}=\qty{17,3}{m.s^{-1}}$};}
+\end{tikzpicture}
+\par\smallskip\legende{Le wagon et ses passagers (\qty{500}{kg}) partent de A ; les altitudes sont mesurées depuis le sol.\solution{ Vitesses calculées sans frottement.}}

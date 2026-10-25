@@ -1,0 +1,50 @@
+%% =====================================================================
+%%  Écouter les audios
+%% =====================================================================
+\liminaire{audios}{Écouter les audios}{Plus de 250 pistes, gratuites, sur votre téléphone ou votre ordinateur}
+
+On n'apprend pas une langue avec les yeux : chaque dialogue, chaque liste de mots et chaque
+exercice d'écoute de ce livre est enregistré. Il n'y a rien à installer.\par\vspace{5mm}
+
+\noindent\begin{tikzpicture}
+  \foreach \n/\ico/\titre/\txt in {1/micro/Ouvrez l'appareil photo/de votre téléphone (ou une application de lecture de QR codes).,
+      2/cible/Visez le QR code/imprimé à côté de l'activité\, comme si vous preniez une photo.,
+      3/casque/Touchez le lien qui apparaît/: la piste se lance. Mettez en pause\, revenez en arrière\, réécoutez.}{%
+    \pgfmathsetmacro{\x}{(\n-1)*58}
+    \fill[otNavyTint,rounded corners=2mm] (\x mm,0) rectangle ++(54mm,40mm);
+    \fill[otNavy] (\x mm+9mm,31mm) circle (5mm);
+    \node[text=white,font=\otBold\fontsize{11}{12}\selectfont] at (\x mm+9mm,31mm) {\n};
+    \otDessinIcone{\ico}{otNavy!35}{otNavyTint}{9mm}{(\x mm+45mm,31mm)}
+    \node[anchor=north west,text width=46mm,inner sep=0pt,align=left] at (\x mm+4mm,23mm)
+      {{\otSemi\fontsize{10}{12}\selectfont \titre}\par\vspace{1mm}{\fontsize{9.6}{12}\selectfont\txt}};}
+\end{tikzpicture}\par\vspace{6mm}
+
+\begin{paire}
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt]
+\otTitreBoite{casque}{otNavy}{Le numéro de piste}{}
+\begin{center}\otPastillePiste{1.05}\end{center}
+{\fontsize{10}{12.6}\selectfont Piste \textbf{1.05} : unité \textbf{1}, piste \textbf{5}, suivie de sa durée.
+Les dialogues ont deux pistes : une \textbf{version lente} pour bien distinguer chaque mot, et une
+\textbf{version normale}, au rythme d'une vraie conversation.\par}
+\end{tcolorbox}
+\begin{tcolorbox}[otBase,colback=otNavyTint,colframe=otNavyTint,halign=center]
+\otFixeURL{index.html}%
+{\otSemi\fontsize{7}{8.5}\selectfont\color{otNavy}\otCaps[11]{Tous les audios du livre}}\par\vspace{2mm}
+{\color{otInk}\otQR{25mm}{}}\par\vspace{2mm}
+{\otMedium\fontsize{9.4}{11.4}\selectfont\otAudioAffiche}\par\vspace{1mm}
+{\fontsize{9.2}{11.4}\selectfont\color{otMuted}Sur ordinateur : toutes les pistes, unité par unité, en lecture ou en téléchargement (MP3).\par}
+\end{tcolorbox}
+\end{paire}
+
+\otIntertitre{Les voix que vous allez entendre}
+Les pistes sont enregistrées en \textbf{anglais américain standard}, l'accent le plus entendu dans
+le monde (films, séries, Internet). Emma, la collègue londonienne de Léa, parle avec un
+\textbf{accent britannique} : vous apprendrez ainsi à comprendre les deux. Les enregistrements sont
+réalisés avec des voix de synthèse neuronales de haute qualité, toutes contrôlées une à une.
+
+\otIntertitre{Trois façons d'écouter}
+\begin{tcbraster}[raster columns=3,raster equal height=rows,raster column skip=3.5mm,raster before skip=1mm]
+\otCartePrg{casque}{otNavy}{Écoute globale}{Écoutez sans lire et cherchez à comprendre la situation : qui parle, où, pourquoi ?}
+\otCartePrg{livre}{otGreenDark}{Écoute active}{Réécoutez en suivant le texte, phrase par phrase. Mettez en pause dès qu'un mot vous échappe.}
+\otCartePrg{micro}{otOrangeDark}{Écoute « en écho »}{Répétez juste après la voix, en imitant son rythme et sa mélodie : c'est la technique du \en{shadowing}.}
+\end{tcbraster}

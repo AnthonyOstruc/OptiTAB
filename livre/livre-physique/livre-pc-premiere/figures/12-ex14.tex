@@ -1,0 +1,34 @@
+% Château d'eau alimentant une maison et un immeuble (exercice 14, chapitre 12) ; 1 unité verticale = 10 m
+\begin{tikzpicture}[x=1cm,y=0.62cm]
+\fill[otMuted!18] (-0.5,-0.45) rectangle (8.6,0);
+\draw[otInk!60,line width=0.6pt] (-0.5,0) -- (8.6,0);
+% Axe vertical gradué
+\draw[otInk,line width=0.6pt,-{Stealth[length=2mm]}] (-1.1,-0.1) -- (-1.1,6.2) node[pcLegende,anchor=south] {$z$ (m)};
+\foreach \z/\t in {0/0,1/10,2/20,3/30,4/40,5/50}{\draw[otInk,line width=0.5pt] (-1.18,\z) -- (-1.02,\z); \node[pcLegende,anchor=east] at (-1.2,\z) {\t};}
+% Château d'eau : cuve de 44 m à 54 m, eau jusqu'à 52 m
+\fill[otMuted!35] (0.55,0) rectangle (1.05,4.4);
+\draw[otInk!70,line width=0.5pt] (0.55,0) rectangle (1.05,4.4);
+\fill[otNavy!14] (0,4.4) rectangle (1.6,5.2);
+\draw[pcSurface] (0,5.2) -- (1.6,5.2);
+\draw[pcVerre] (0,5.5) -- (0,4.4) -- (1.6,4.4) -- (1.6,5.5);
+\node[pcLegende,anchor=west] at (1.7,5.2) {surface de l'eau : \qty{52}{m}};
+\node[pcLegende,anchor=west] at (1.7,4.4) {fond de la cuve : \qty{44}{m}};
+% Maison
+\draw[otInk!70,line width=0.6pt,fill=white] (3.3,0) rectangle (4.7,0.75);
+\draw[otInk!70,line width=0.6pt,fill=otRed!25] (3.15,0.75) -- (4.0,1.2) -- (4.85,0.75) -- cycle;
+% Immeuble : le dernier étage (de 23 m à 28 m) reste libre pour le robinet B
+\draw[otInk!70,line width=0.6pt,fill=white] (6.4,0) rectangle (7.9,2.8);
+\foreach \y in {0.35,0.8,...,1.85}{\foreach \xx in {6.75,7.15,7.55}{\fill[otNavy!25] (\xx,\y) rectangle ({\xx+0.2},{\y+0.25});}}
+% Canalisations
+\draw[otNavy!60,line width=1.4pt] (0.8,4.4) -- (0.8,-0.25) -- (6.55,-0.25) -- (6.55,2.5) -- (7.35,2.5);
+\draw[otNavy!60,line width=1.4pt] (3.9,-0.25) -- (3.9,0.2) -- (4.25,0.2);
+\fill[otInk] (4.25,0.2) circle (0.055); \node[pcLegendeG,anchor=west] at (4.3,0.25) {A};
+\fill[otInk] (7.35,2.5) circle (0.055); \node[pcLegendeG,anchor=west] at (7.4,2.52) {B};
+\node[pcLegende,anchor=north,align=center] at (4.0,-0.5) {robinet A : \qty{2,0}{m}};
+\node[pcLegende,anchor=north,align=center] at (7.15,-0.5) {robinet B : \qty{25}{m}};
+\solution{
+  \draw[otGreenDark,line width=0.6pt,dash pattern=on 3pt off 1.5pt] (4.3,5.2) -- (8.4,5.2);
+  \draw[otGreenDark,line width=0.6pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (5.0,0.2) -- (5.0,5.2) node[pos=0.55,pcLegende,anchor=west,text=otGreenDark] {\qty{50}{m}};
+  \draw[otGreenDark,line width=0.6pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (8.2,2.5) -- (8.2,5.2) node[midway,pcLegende,anchor=west,text=otGreenDark] {\qty{27}{m}};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Le château d'eau est relié aux robinets par des canalisations pleines d'eau au repos (robinets fermés).}\solution{La surpression à un robinet dépend de la hauteur d'eau au-dessus de lui.}}

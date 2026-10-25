@@ -1,0 +1,348 @@
+% !TEX root = ../main.tex
+%% Chapitre 16 — Probabilités conditionnelles
+%% Sources : frontend/cours/resume/terminal/resume_probabilites_conditionnelles_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercices_probabilite_conditionnel.txt
+%% Exercice 10, question 4 : remplacée (elle reprenait la question 3 de l'exercice 8).
+%% Exercices 12, 13 et 14 : problèmes inédits rédigés pour le livre.
+
+\begin{ouverture}[conditionnelles]{16}{Probabilités conditionnelles}{Partie 3 · Probabilités}
+  {Conditionnement\enspace·\enspace Arbres pondérés\enspace·\enspace Probabilités totales\enspace·\enspace
+   Indépendance\enspace·\enspace Épreuves successives}
+  \objectif{Calculer une probabilité conditionnelle et utiliser la relation $P(A\cap B)=P(A)\times P_A(B)$.}
+  \objectif{Construire et exploiter un arbre pondéré ou un tableau à double entrée.}
+  \objectif{Appliquer la formule des probabilités totales et « inverser » un conditionnement.}
+  \objectif{Reconnaître et utiliser l'indépendance de deux événements.}
+  \objectif{Modéliser une succession d'épreuves, y compris par une suite de probabilités.}
+  \prerequis{Probabilités : événements, réunion, intersection, contraire ; indépendance de deux événements (Seconde et Première).}
+  \prerequis{Dénombrement (chapitre 15) ; suites arithmético-géométriques (chapitre 1).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Probabilité conditionnelle}
+
+\begin{definition}[Probabilité de $B$ sachant $A$]
+Soit $A$ un événement de probabilité non nulle. La probabilité de $B$ \textbf{sachant} $A$ est
+\[ P_A(B)=\frac{P(A\cap B)}{P(A)}. \]
+C'est la probabilité que $B$ se réalise lorsque l'on sait que $A$ est réalisé. On la note aussi $P(B\,|\,A)$.
+\end{definition}
+
+\begin{propriete}[Règles de calcul]
+$P_A$ est une probabilité : $0\leq P_A(B)\leq1$ et $P_A\big(\overline B\big)=1-P_A(B)$. De plus,
+\[ P(A\cap B)=P(A)\times P_A(B)=P(B)\times P_B(A)\qquad\text{si }P(A)\neq0\text{ et }P(B)\neq0. \]
+\end{propriete}
+
+\essSection{2}{Arbres pondérés et probabilités totales}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[otArbre, level distance=27mm, level 1/.style={sibling distance=26mm},
+  level 2/.style={sibling distance=13mm}]
+  \node {}
+    child {node {$A$}
+      child {node (AB) {$B$} edge from parent node[otPoids,above,sloped] {$P_A(B)$}}
+      child {node (AnB) {$\overline B$} edge from parent node[otPoids,below,sloped] {$P_A(\overline B)$}}
+      edge from parent node[otPoids,above,sloped] {$P(A)$}}
+    child {node {$\overline A$}
+      child {node (nAB) {$B$} edge from parent node[otPoids,above,sloped] {$P_{\overline A}(B)$}}
+      child {node (nAnB) {$\overline B$} edge from parent node[otPoids,below,sloped] {$P_{\overline A}(\overline B)$}}
+      edge from parent node[otPoids,below,sloped] {$P(\overline A)$}};
+  \node[otFeuille] at ([xshift=1.5mm]AB.east) {$P(A\cap B)$};
+  \node[otFeuille] at ([xshift=1.5mm]AnB.east) {$P(A\cap\overline B)$};
+  \node[otFeuille] at ([xshift=1.5mm]nAB.east) {$P(\overline A\cap B)$};
+  \node[otFeuille] at ([xshift=1.5mm]nAnB.east) {$P(\overline A\cap\overline B)$};
+\end{tikzpicture}\\[1mm]
+\legende{Sur les branches du second niveau : des probabilités conditionnelles.}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\begin{theoreme}[Règles des arbres]
+\raggedright
+\begin{enumerate}[leftmargin=1.3em,itemsep=0.5mm,topsep=0.5mm,label={\color{otNavy}\arabic*.}]
+  \item La somme des probabilités des branches issues d'un même nœud vaut $1$.
+  \item La probabilité d'un chemin est le \textbf{produit} des probabilités de ses branches.
+  \item La probabilité d'un événement est la \textbf{somme} des probabilités des chemins qui y mènent.
+\end{enumerate}
+\end{theoreme}
+\end{minipage}
+
+\begin{theoreme}[Formule des probabilités totales]
+Si $A_1$, $A_2$, \dots, $A_n$ forment une \textbf{partition} de l'univers (événements deux à deux incompatibles, de réunion $\Omega$,
+de probabilités non nulles), alors pour tout événement $B$ :
+\[ P(B)=P(A_1\cap B)+\dots+P(A_n\cap B)=P(A_1)\,P_{A_1}(B)+\dots+P(A_n)\,P_{A_n}(B). \]
+En particulier : $P(B)=P(A)\,P_A(B)+P\big(\overline A\big)\,P_{\overline A}(B)$.
+\end{theoreme}
+
+\begin{savoirfaire}[« Inverser » un conditionnement]
+L'arbre donne $P_A(B)$ ; pour obtenir $P_B(A)$, on revient à la définition : $P_B(A)=\dfrac{P(A\cap B)}{P(B)}$, où $P(A\cap B)$
+est lu sur un chemin et $P(B)$ calculé par la formule des probabilités totales. \emph{Exemple :} avec $P(A)=0{,}4$, $P_A(B)=0{,}3$
+et $P_{\overline A}(B)=0{,}5$, on obtient $P(B)=0{,}12+0{,}3=0{,}42$ et $P_B(A)=\dfrac{0{,}12}{0{,}42}=\dfrac27$.
+\end{savoirfaire}
+
+\essSection{3}{Indépendance}
+
+\begin{definition}[Événements indépendants]
+Deux événements $A$ et $B$ sont \textbf{indépendants} si $P(A\cap B)=P(A)\times P(B)$. Lorsque $P(A)\neq0$, cela équivaut à
+$P_A(B)=P(B)$ : savoir que $A$ est réalisé ne change pas la probabilité de $B$.
+\end{definition}
+
+\begin{propriete}[Indépendance et contraire]
+Si $A$ et $B$ sont indépendants, alors $A$ et $\overline B$ le sont aussi (ainsi que $\overline A$ et $B$, $\overline A$ et $\overline B$).
+\end{propriete}
+
+\begin{demonstration}
+$A$ est la réunion des événements incompatibles $A\cap B$ et $A\cap\overline B$, donc
+$P\big(A\cap\overline B\big)=P(A)-P(A\cap B)=P(A)-P(A)P(B)=P(A)\big(1-P(B)\big)=P(A)\,P\big(\overline B\big)$.
+\end{demonstration}
+
+\begin{savoirfaire}[Succession d'épreuves indépendantes]
+Lorsque des épreuves sont indépendantes (lancers successifs, tirages \textbf{avec remise}), la probabilité d'une issue
+$(x_1\pv\dots\pv x_n)$ est le produit des probabilités de chaque résultat. Pour « au moins un succès » en $n$ épreuves de
+probabilité de succès $p$, on passe au contraire : $1-(1-p)^{n}$.
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $P_A(B)$ et $P_B(A)$ sont en général différents : un test « fiable à 99 \% » peut donner $P_T(M)$ très faible.
+  \item Incompatibles ($A\cap B=\varnothing$) et indépendants sont deux notions différentes : deux événements incompatibles de
+    probabilités non nulles ne sont \emph{jamais} indépendants.
+  \item Sur un arbre, ne pas multiplier les probabilités de branches qui ne sont pas sur un même chemin.
+  \item Tirages sans remise : les probabilités du second tirage dépendent du premier ; les épreuves ne sont pas indépendantes.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Arbres pondérés}
+Dans chaque cas, construire un arbre pondéré, puis calculer la probabilité demandée.
+\begin{questions}
+  \item Une urne contient $3$ boules rouges et $2$ boules bleues. On tire successivement deux boules, sans remise. Probabilité
+    d'obtenir deux boules rouges ?
+  \item On lance deux fois une pièce équilibrée. Probabilité d'obtenir exactement un pile ?
+  \item Une urne contient $4$ boules blanches et $6$ noires. On tire deux boules successivement, avec remise. Probabilité
+    d'obtenir deux boules de couleurs différentes ?
+  \item Un sac contient $5$ jetons : $2$ verts, $2$ jaunes et $1$ rouge. On tire un jeton, on le remet, puis on en tire un second.
+    Probabilité d'obtenir deux jetons de la même couleur ?
+  \item Une urne contient $4$ boules rouges et $6$ bleues. On tire successivement $3$ boules sans remise. Probabilité d'obtenir au
+    moins une boule rouge ? \emph{On choisira la méthode la plus simple.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Calculs de base}
+\begin{questions}
+  \item On donne $P(A)=0{,}6$, $P(B)=0{,}4$ et $P(A\cap B)=0{,}2$. Calculer $P_B(A)$ et $P_A(B)$.
+  \item On lance deux dés équilibrés. Sachant que la somme est supérieure à $9$, quelle est la probabilité que le premier dé
+    montre $6$ ?
+  \item Une urne contient $4$ boules rouges et $6$ bleues. On tire deux boules successivement, sans remise. Quelle est la
+    probabilité que la deuxième soit rouge sachant que la première est rouge ?
+  \item On donne $P_B(A)=0{,}7$ et $P(B)=0{,}3$. Calculer $P(A\cap B)$.
+  \item On tire une carte d'un jeu de $52$ cartes. Sachant que c'est une figure (valet, dame ou roi), quelle est la probabilité
+    que ce soit un cœur ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Indépendance}
+\begin{questions}
+  \item On donne $P(A)=0{,}4$, $P(B)=0{,}5$ et $P(A\cap B)=0{,}2$. Les événements $A$ et $B$ sont-ils indépendants ?
+  \item On lance deux dés équilibrés. Les événements « le premier dé montre $3$ » et « le second dé montre $5$ » sont-ils indépendants ?
+  \item $A$ et $B$ sont indépendants, avec $P(A)=0{,}3$ et $P(B)=0{,}6$. Calculer $P(A\cup B)$.
+  \item On tire une carte, on note sa couleur, on la remet, puis on tire une seconde carte. Les deux tirages sont-ils indépendants ?
+  \item $A$ et $B$ sont indépendants, avec $P(A)=0{,}5$ et $P(B)=0{,}4$. Calculer $P\big(A\cap\overline B\big)$.
+  \item On lance un dé équilibré ; on note $A$ : « obtenir un nombre pair » et $B$ : « obtenir $3$ ». Les événements $A$ et $B$
+    sont-ils indépendants ? incompatibles ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Arbres pondérés et applications}
+\begin{questions}
+  \item Une urne contient $5$ boules rouges et $3$ vertes. On tire deux boules successivement sans remise. Probabilité d'obtenir
+    une boule rouge puis une boule verte ?
+  \item On lance deux fois un dé équilibré. Quelle est la probabilité d'avoir obtenu $6$ au premier lancer, sachant que la somme
+    des deux résultats est $10$ ?
+  \item Une classe de $30$ élèves compte $18$ filles, dont $10$ font du sport, et $12$ garçons, dont $8$ font du sport. On choisit
+    un élève au hasard. À l'aide d'un arbre pondéré, calculer la probabilité qu'il fasse du sport.
+  \item Un test de dépistage a une sensibilité de 98\,\% et une spécificité de 95\,\%, et 5\,\% de la population est atteinte.
+    Quelle est la probabilité qu'un test soit positif ?
+  \item On tire successivement deux cartes d'un jeu de $52$, sans remise. Probabilité que la seconde soit un as sachant que la
+    première en est un ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Indépendance et applications}
+\begin{questions}
+  \item On lance deux dés équilibrés. Les événements « le premier dé montre un nombre pair » et « le second dé montre un nombre
+    impair » sont-ils indépendants ?
+  \item Une urne contient $6$ boules rouges et $4$ bleues. On tire successivement deux boules avec remise. Probabilité d'obtenir
+    deux boules rouges ?
+  \item On lance trois fois une pièce équilibrée. Probabilité d'obtenir exactement deux piles ?
+  \item $A$ et $B$ sont indépendants, avec $P(A)=0{,}4$ et $P(B)=0{,}6$. Calculer $P(A\cup B)$.
+  \item Un système électronique comporte deux composants qui fonctionnent indépendamment, avec les probabilités $0{,}9$ et $0{,}8$.
+    Le système fonctionne si les deux composants fonctionnent. Quelle est la probabilité qu'il fonctionne ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Formule des probabilités totales}
+\begin{questions}
+  \item Une usine possède trois machines : $M_1$ fabrique 40\,\% de la production avec 2\,\% de pièces défectueuses, $M_2$ 35\,\%
+    avec 3\,\% de défauts, et $M_3$ 25\,\% avec 5\,\% de défauts. Probabilité qu'une pièce prise au hasard soit défectueuse ?
+  \item Dans une classe, 60\,\% des élèves sont des filles ; 70\,\% des filles et 50\,\% des garçons aiment les maths. Probabilité
+    qu'un élève pris au hasard aime les maths ?
+  \item Un test a une sensibilité de 95\,\% (il est positif pour 95\,\% des malades) et une spécificité de 90\,\% (il est négatif
+    pour 90\,\% des personnes saines). La maladie touche 2\,\% de la population. Probabilité qu'un test soit positif ?
+  \item Une boîte A contient $3$ boules rouges et $2$ bleues, une boîte B contient $1$ rouge et $4$ bleues. On choisit une boîte
+    au hasard, puis on y tire une boule. Probabilité qu'elle soit rouge ?
+  \item Un élève révise avec la probabilité $0{,}7$. S'il révise, il réussit avec la probabilité $0{,}9$ ; sinon, avec la
+    probabilité $0{,}3$. Probabilité qu'il réussisse ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Inverser un conditionnement}
+On reprend les situations de l'exercice 6.
+\begin{questions}
+  \item Une pièce est défectueuse. Quelle est la probabilité qu'elle provienne de la machine $M_3$ ?
+  \item Le test d'une personne est positif. Quelle est la probabilité qu'elle soit réellement malade ? Commenter.
+  \item On a tiré une boule rouge. Quelle est la probabilité qu'elle provienne de la boîte A ?
+  \item L'élève a réussi. Quelle est la probabilité qu'il ait révisé ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Tirages successifs sans remise}
+Une urne contient $5$ boules rouges et $3$ boules bleues. On effectue $3$ tirages successifs sans remise.
+\begin{questions}
+  \item Quelle est la probabilité d'obtenir $3$ boules rouges ?
+  \item Quelle est la probabilité d'obtenir exactement $2$ boules rouges ?
+  \item Quelle est la probabilité d'obtenir au moins une boule bleue ?
+  \item Sachant que la première boule tirée est rouge, quelle est la probabilité que les deux suivantes soient bleues ?
+  \item Quelle est la probabilité que la troisième boule tirée soit rouge ? Comparer à la probabilité que la première le soit.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Deux tirages avec remise}
+Un sac contient $4$ jetons numérotés $1$, $2$, $3$, $4$. On tire un jeton, on note son numéro, on le remet, puis on en tire un second.
+\begin{questions}
+  \item Combien y a-t-il de résultats possibles ? Quelle est la probabilité d'obtenir deux numéros identiques ?
+  \item Quelle est la probabilité que la somme des deux numéros soit égale à $5$ ?
+  \item Quelle est la probabilité que le produit des deux numéros soit pair ?
+  \item Sachant que la somme est paire, quelle est la probabilité que les deux numéros soient pairs ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Applications complexes}
+\begin{questions}
+  \item Une usine produit des pièces sur trois chaînes : A (50\,\% des pièces, 1\,\% de défauts), B (30\,\%, 2\,\% de défauts) et
+    C (20\,\%, 4\,\% de défauts). Calculer la probabilité qu'une pièce soit défectueuse, puis la probabilité qu'une pièce
+    défectueuse provienne de la chaîne C.
+  \item On tire successivement trois cartes d'un jeu de $52$, sans remise. Probabilité d'obtenir exactement deux as ?
+  \item Un test a une sensibilité de 96\,\% et une spécificité de 94\,\% ; la maladie touche 3\,\% de la population. Calculer la
+    probabilité qu'un test soit positif, puis celle d'être malade sachant que le test est positif.
+  \item Une urne contient $5$ boules rouges et $3$ bleues. On tire successivement $3$ boules \emph{avec} remise. Probabilité
+    d'obtenir au moins une boule bleue ? Comparer avec le résultat sans remise (exercice 8).
+  \item On lance quatre fois un dé équilibré. Probabilité d'obtenir au moins un $6$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Devoir de synthèse}
+\begin{questions}
+  \item On donne $P(A)=0{,}5$, $P(B)=0{,}4$ et $P(A\cap B)=0{,}15$. Calculer $P_B(A)$ et $P_A(B)$.
+  \item On tire une carte d'un jeu de $52$. Sachant que c'est un cœur, quelle est la probabilité que ce soit un as ?
+  \item Une urne contient $4$ boules rouges et $6$ bleues. On tire deux boules successivement sans remise. Probabilité d'obtenir
+    deux boules de couleurs différentes ?
+  \item On lance trois fois une pièce équilibrée. Probabilité d'obtenir exactement deux faces ?
+  \item On lance deux dés. Les événements « le premier dé montre un nombre pair » et « le second dé montre un nombre supérieur
+    à $3$ » sont-ils indépendants ?
+  \item $A$ et $B$ sont indépendants, avec $P(A)=0{,}6$ et $P(B)=0{,}5$. Calculer $P(A\cup B)$.
+  \item Une usine a deux machines : $M_1$ (60\,\% de la production, 1\,\% de défauts) et $M_2$ (40\,\%, 3\,\% de défauts). Calculer
+    la probabilité qu'un produit soit défectueux, puis celle qu'un produit défectueux provienne de $M_2$.
+  \item Dans une classe, 55\,\% des élèves sont des filles ; 75\,\% des filles et 60\,\% des garçons aiment les sciences.
+    Probabilité qu'un élève aime les sciences ?
+  \item Un test a une sensibilité de 97\,\% et une spécificité de 92\,\% ; 4\,\% de la population est malade. Probabilité d'être
+    malade sachant que le test est positif ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le paradoxe des tests de dépistage}
+Une maladie touche une proportion $p$ de la population. Un test de dépistage a une sensibilité de 99\,\%, soit $P_M(T)=0{,}99$,
+et une spécificité de 98\,\%, soit $P_{\overline M}\big(\overline T\big)=0{,}98$, où $M$ est l'événement « la personne est malade » et
+$T$ l'événement « le test est positif ».
+\partieExo{A}{Une maladie rare : $p=0{,}01$}
+\begin{questions}
+  \item Compléter un tableau d'effectifs pour une population de $10\,000$ personnes (malades ou non, test positif ou négatif).
+  \item En déduire $P(T)$, puis la probabilité qu'une personne dont le test est positif soit malade. Commenter.
+  \item On fait passer un second test à toute personne testée positive. On admet que, chez les malades comme chez les personnes
+    saines, les résultats des deux tests sont indépendants. Quelle est la probabilité qu'une personne dont les deux tests sont
+    positifs soit malade ?
+\end{questions}
+\partieExo{B}{Influence de la proportion de malades}
+\begin{questions}[resume]
+  \item Montrer que $P(T)=0{,}97\,p+0{,}02$, puis que $P_T(M)=f(p)$, où $f$ est la fonction définie sur $\intOF{0}{1}$ par
+    $f(p)=\dfrac{99\,p}{97\,p+2}$.
+  \item Étudier les variations de $f$ sur $\intOF{0}{1}$.
+  \item À partir de quelle proportion de malades la probabilité $P_T(M)$ est-elle au moins égale à $0{,}9$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une suite de probabilités}
+Chaque matin, Léa se rend au lycée à vélo ou en bus. Si elle a pris le vélo un jour, elle le reprend le lendemain avec la
+probabilité $0{,}7$ ; si elle a pris le bus, elle prend le vélo le lendemain avec la probabilité $0{,}4$. Le premier jour, elle
+prend le vélo. Pour $n\geq1$, on note $V_n$ l'événement « Léa prend le vélo le jour $n$ » et $p_n=P(V_n)$ ; ainsi $p_1=1$.
+\begin{questions}
+  \item Calculer $p_2$ et $p_3$.
+  \item Représenter par un arbre pondéré la situation entre le jour $n$ et le jour $n+1$, puis montrer que $p_{n+1}=0{,}3\,p_n+0{,}4$.
+  \item On pose $u_n=p_n-\dfrac47$. Montrer que la suite $(u_n)$ est géométrique, puis exprimer $p_n$ en fonction de $n$.
+  \item Déterminer la limite de $(p_n)$ et l'interpréter.
+  \item Que renvoie la fonction Python ci-dessous ? Interpréter.
+\begin{python}
+def jour():
+    p = 1
+    n = 1
+    while p - 4/7 >= 0.001:
+        p = 0.3 * p + 0.4
+        n = n + 1
+    return n
+\end{python}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Fiabilité d'un système}
+Un appareil comporte des composants identiques, qui fonctionnent indépendamment les uns des autres : chacun fonctionne pendant
+un an avec la probabilité $0{,}9$. Des composants montés en \textbf{série} assurent le fonctionnement si \emph{tous} fonctionnent ;
+montés en \textbf{parallèle}, si \emph{au moins un} fonctionne.
+\begin{questions}
+  \item Quelle est la probabilité que deux composants montés en série fonctionnent ? Avec $n$ composants en série, à partir de
+    quelle valeur de $n$ cette probabilité devient-elle inférieure à $0{,}5$ ?
+  \item Même question pour deux composants montés en parallèle. Combien faut-il monter de composants en parallèle pour que la
+    probabilité de fonctionnement soit au moins égale à $0{,}999\,9$ ?
+  \item On dispose de quatre composants. Le montage (a) est formé de deux branches en parallèle, chacune comportant deux composants
+    en série ; le montage (b) est formé de deux blocs en série, chacun comportant deux composants en parallèle. Quel est le
+    montage le plus fiable ?
+  \item Pour deux composants montés en parallèle, sachant que l'appareil fonctionne, quelle est la probabilité que les deux
+    composants fonctionnent ?
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[x=1mm,y=1mm,
+  comp/.style={draw=otNavy,fill=otNavyTint,minimum width=7mm,minimum height=4.5mm,inner sep=0pt,font=\scriptsize}]
+  \node[font=\scriptsize,text=otMuted] at (-6,9) {(a)};
+  \draw[otMuted,line width=0.6pt] (-4,0) -- (0,0) (0,5) -- (0,-5) (0,5) -- (4,5) (0,-5) -- (4,-5)
+    (11,5) -- (15,5) (11,-5) -- (15,-5) (22,5) -- (26,5) (22,-5) -- (26,-5) (26,5) -- (26,-5) (26,0) -- (30,0);
+  \node[comp] at (7.5,5) {C}; \node[comp] at (18.5,5) {C}; \node[comp] at (7.5,-5) {C}; \node[comp] at (18.5,-5) {C};
+  \begin{scope}[xshift=48mm]
+  \node[font=\scriptsize,text=otMuted] at (-6,9) {(b)};
+  \draw[otMuted,line width=0.6pt] (-4,0) -- (0,0) (0,5) -- (0,-5) (0,5) -- (4,5) (0,-5) -- (4,-5) (11,5) -- (15,5) (11,-5) -- (15,-5)
+    (15,5) -- (15,-5) (15,0) -- (19,0) (19,5) -- (19,-5) (19,5) -- (23,5) (19,-5) -- (23,-5) (30,5) -- (34,5) (30,-5) -- (34,-5)
+    (34,5) -- (34,-5) (34,0) -- (38,0);
+  \node[comp] at (7.5,5) {C}; \node[comp] at (7.5,-5) {C}; \node[comp] at (26.5,5) {C}; \node[comp] at (26.5,-5) {C};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+\end{exercice}

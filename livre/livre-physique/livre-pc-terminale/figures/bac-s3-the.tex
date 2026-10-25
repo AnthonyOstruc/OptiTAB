@@ -1,0 +1,15 @@
+% Refroidissement d'une tasse de thé dans une pièce à 20 °C (sujet type bac 3, exercice 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=118mm,height=54mm,xmin=0,xmax=62,ymin=0,ymax=90,
+  xtick={0,10,...,60},ytick={0,20,...,80},
+  xlabel={$t$ (min)},ylabel={$T$ (\unit{\degreeCelsius})}]
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:60,samples=2] {20};
+\addplot[otNavy,line width=1pt,domain=0:60,samples=120] {20+60*exp(-x/24.663)};
+\addplot[only marks,mark=*,mark size=1.5pt,otInk] coordinates {(0,80) (5,69.0) (10,60.0) (15,52.7) (20,46.7) (30,37.8) (40,31.9) (50,27.9) (60,25.3)};
+\node[pcLegende,anchor=south east,text=otMuted] at (axis cs:60,21) {température de la pièce};
+\solution{\draw[otRed!80!black,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:27.1,0) -- (axis cs:27.1,40) -- (axis cs:0,40);
+  \fill[otRed!80!black] (axis cs:27.1,40) circle (1.6pt);
+  \node[pcLegende,anchor=south west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:28,41) {\qty{40}{\degreeCelsius} après \qty{27}{min}};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Température du thé mesurée toutes les cinq minutes, puis toutes les dix minutes, et modèle de Newton.}

@@ -1,0 +1,9 @@
+% Chaîne de puissance d'un panneau photovoltaïque (corrigé de l'exercice 11, chapitre 14)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  bloc/.style={draw=otNavy,fill=otNavy!8,line width=0.7pt,rounded corners=1.5mm,minimum width=2.2cm,minimum height=0.9cm,align=center,font=\otMedium\fontsize{8}{10}\selectfont,text=otInk}]
+\node[bloc] (p) at (0,0) {panneau\\photovoltaïque};
+\draw[otOrange,line width=8pt,-{Triangle[length=3mm,width=10mm]}] (-3.6,0) -- (p.west) node[pos=0.45,pcLegende,anchor=south,text=otOrange!80!black,yshift=2.5mm] {lumineuse : \qty{1700}{W}};
+\draw[otGreen,line width=2pt,-{Triangle[length=2.2mm,width=4.5mm]}] (p.east) -- ++(3.0,0) node[pcLegende,anchor=west,text=otGreenDark,align=left] {électrique\\(utile) : \qty{340}{W}};
+\draw[otRed!70,line width=6pt,-{Triangle[length=2.8mm,width=8mm]}] (p.south) -- ++(0,-1.1) node[pcLegende,anchor=north,text=otRed!80!black] {thermique : \qty{1360}{W}};
+\end{tikzpicture}
+\par\smallskip\legende{Rendement : $\eta=\dfrac{340}{1700}=\num{0,20}$ : les quatre cinquièmes de la puissance lumineuse reçue chauffent le panneau.}

@@ -1,0 +1,21 @@
+% Principe du tube de Pitot (exercice 12, chapitre 17)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% écoulement de l'air
+\foreach \yy in {-0.7,0.7}{\draw[pcTraj,-{Stealth[length=1.6mm]}] (-2.6,\yy) -- (3.9,\yy);}
+\draw[pcTraj] (-2.6,0) -- (-0.15,0);
+\draw[pcVitesse] (-2.4,1.15) -- (-1.4,1.15) node[pcLegende,anchor=west,text=otNavy] {air : vitesse $\vec{v}$ par rapport à l'avion};
+% sonde
+\fill[otMuted!40] (0,0.18) -- (4.0,0.18) -- (4.0,-0.18) -- (0,-0.18) arc[start angle=270,end angle=90,radius=0.18] -- cycle;
+\draw[otInk!60,line width=0.5pt] (0,0.18) -- (1.55,0.18) (1.75,0.18) -- (4.0,0.18) (0,-0.18) -- (4.0,-0.18);
+\draw[otInk!60,line width=0.5pt] (0,-0.18) arc[start angle=270,end angle=90,radius=0.18];
+\fill[white] (-0.19,-0.045) rectangle (0.05,0.045);
+\fill[otInk] (-0.18,0) circle (0.045);
+\node[pcLegende,anchor=south east] at (-0.25,0.06) {B : point d'arrêt ($v_\mathrm{B}=0$)};
+\fill[otInk] (1.65,0.18) circle (0.045);
+\node[pcLegende,anchor=south] at (1.65,0.22) {A : orifices latéraux};
+% liaisons au capteur
+\draw[otInk!60,line width=0.5pt] (4.0,0.05) -- (4.6,0.05) -- (4.6,-1.1);
+\draw[otInk!60,line width=0.5pt] (4.0,-0.1) -- (4.4,-0.1) -- (4.4,-1.1);
+\node[draw=otInk!60,line width=0.5pt,fill=white,pcLegende,align=center,minimum width=2.6cm] at (4.5,-1.45) {capteur : $\Delta p=p_\mathrm{B}-p_\mathrm{A}$};
+\end{tikzpicture}
+\par\smallskip\legende{L'orifice frontal mesure la pression au point d'arrêt, les orifices latéraux la pression de l'air qui s'écoule le long de la sonde.}

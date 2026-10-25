@@ -1,0 +1,16 @@
+% Élongation d'Europe mesurée chaque nuit et modèle sinusoïdal (activité expérimentale, chapitre 16)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=48mm,xmin=0,xmax=7.4,ymin=-12,ymax=12,
+  xtick={0,1,...,7},ytick={-10,-5,0,5,10},
+  xlabel={$t$ (jours)},ylabel={élongation $x$ (en rayons de Jupiter)}]
+\addplot[otMuted,line width=0.4pt,domain=0:7.4,samples=2] {0};
+\addplot[otOrange,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:7.4,samples=2] {9.39};
+\addplot[otNavy,line width=0.9pt,domain=0:7.2,samples=200] {9.39*sin(deg(2*pi*(x+0.4)/3.551))};
+\addplot[only marks,mark=*,mark size=1.6pt,otRed!80!black] coordinates {
+  (0,6.2) (1,5.6) (2,-8.3) (3,-2.5) (4,9.3) (5,-1.0) (6,-9.0) (7,4.8)};
+\node[pcLegende,text=otOrange!80!black,anchor=south] at (axis cs:2.26,9.6) {amplitude : \num{9,39}};
+\draw[otOrange,line width=0.6pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (axis cs:2.263,-10.6) -- (axis cs:5.814,-10.6);
+\node[pcLegende,text=otOrange!80!black,anchor=south] at (axis cs:4.04,-10.5) {$T=\qty{3,55}{j}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque nuit, on repère la position d'Europe par rapport au centre de Jupiter. L'amplitude du modèle donne le rayon de l'orbite, sa période celle de la lune.}

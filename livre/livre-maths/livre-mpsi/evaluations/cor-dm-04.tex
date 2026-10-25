@@ -1,0 +1,106 @@
+% !TEX root = ../main.tex
+%% Corrigé du devoir maison n° 4 — vérifié par verifications/eval_dm.py.
+
+\corrigeSujetEval{DM4}{Devoir maison \numero4}
+\enParties
+
+\begin{corrigeEval}[L'inégalité de Bienaymé-Tchebychev]{}{}
+\begin{questions}
+  \item $E(X_i)=\frac12-\frac12=0$ et $V(X_i)=E(X_i^{2})=1$. Par linéarité,
+    $\res{E(S_n)=0}$ ; par indépendance, les variances s'ajoutent :
+    $\res{V(S_n)=n}$.
+  \item L'inégalité de Bienaymé-Tchebychev donne
+    $P\bigl(|S_n-E(S_n)|\geqslant a\bigr)\leqslant\dfrac{V(S_n)}{a^{2}}$,
+    soit $\res{P\bigl(|S_n|\geqslant a\bigr)\leqslant\dfrac{n}{a^{2}}}$.
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[L'inégalité de Hoeffding]{}{}
+\begin{questions}[start=3]
+  \item La fonction $x\mapsto\mathrm{e}^{tx}$ est strictement croissante
+    ($t>0$), donc $\ens{S_n\geqslant a}=\ens{\mathrm{e}^{tS_n}\geqslant\mathrm{e}^{ta}}$.
+    La variable $\mathrm{e}^{tS_n}$ est positive ; l'inégalité de Markov
+    donne
+    \[P(S_n\geqslant a)=P\bigl(\mathrm{e}^{tS_n}\geqslant\mathrm{e}^{ta}\bigr)
+      \leqslant\frac{E\bigl(\mathrm{e}^{tS_n}\bigr)}{\mathrm{e}^{ta}}.\]
+  \item $\mathrm{e}^{tS_n}=\prod_i\mathrm{e}^{tX_i}$, et les
+    $\mathrm{e}^{tX_i}$ sont indépendantes (fonctions de variables
+    indépendantes) : l'espérance du produit est le produit des espérances,
+    \[E\bigl(\mathrm{e}^{tS_n}\bigr)=\prod_{i=1}^{n}\frac{\mathrm{e}^{t}+\mathrm{e}^{-t}}{2}
+      =\res{(\operatorname{ch}t)^{n}}.\]
+  \item $g'(t)=t-\frac{\operatorname{sh}t}{\operatorname{ch}t}=t-\operatorname{th}t$.
+    La fonction $h:t\mapsto t-\operatorname{th}t$ vérifie
+    $h'(t)=1-(1-\operatorname{th}^{2}t)=\operatorname{th}^{2}t\geqslant0$ et
+    $h(0)=0$ : $h\geqslant0$ sur $\R_{+}$. Ainsi $g$ croît sur $\R_{+}$, et
+    $g(0)=0$, donc $g\geqslant0$ : $\ln(\operatorname{ch}t)\leqslant\frac{t^{2}}2$,
+    soit $\res{\operatorname{ch}t\leqslant\mathrm{e}^{t^{2}/2}}$ pour $t\geqslant0$,
+    et pour tout $t$ par parité.
+  \item En combinant les questions 3 à 5 :
+    $P(S_n\geqslant a)\leqslant\mathrm{e}^{-ta}\bigl(\mathrm{e}^{t^{2}/2}\bigr)^{n}=\exp\bigl(-ta+\frac{nt^{2}}2\bigr)$.
+    Le trinôme $-ta+\frac{n}{2}t^{2}$ est minimal en $t=\frac an>0$, où il vaut
+    $-\frac{a^{2}}{2n}$ :
+    \[\res{P(S_n\geqslant a)\leqslant\exp\Bigl(-\frac{a^{2}}{2n}\Bigr)}.\]
+    Les $-X_i$ sont indépendantes et de même loi que les $X_i$, donc $-S_n$
+    a la même loi que $S_n$ et $P(S_n\leqslant-a)=P(S_n\geqslant a)$. Par
+    réunion :
+    $\res{P\bigl(|S_n|\geqslant a\bigr)\leqslant2\exp\bigl(-\tfrac{a^{2}}{2n}\bigr)}$.
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Application à un sondage]{}{}
+\begin{questions}[start=7]
+  \item Le nombre de « pile » vaut $\sum_i\frac{1+X_i}{2}=\frac{n+S_n}{2}$,
+    donc $\res{F_n=\dfrac{n+S_n}{2n}}$ et $F_n-\frac12=\frac{S_n}{2n}$. Ainsi
+    $\bigl|F_n-\frac12\bigr|\geqslant\varepsilon\iff|S_n|\geqslant2n\varepsilon$,
+    et les questions 2 et 6 avec $a=2n\varepsilon$ donnent
+    \[P\Bigl(\Bigl|F_n-\frac12\Bigr|\geqslant\varepsilon\Bigr)\leqslant
+      \begin{cases}\dfrac{n}{4n^{2}\varepsilon^{2}}=\res{\dfrac{1}{4n\varepsilon^{2}}}\\[3mm]
+      2\exp\Bigl(-\dfrac{4n^{2}\varepsilon^{2}}{2n}\Bigr)=\res{2\,\mathrm{e}^{-2n\varepsilon^{2}}}\end{cases}\]
+  \item Avec $\varepsilon^{2}=0{,}0025$ :
+    \begin{itemize}
+      \item Tchebychev : $\frac{1}{0{,}01\,n}\leqslant0{,}05\iff n\geqslant2000$ ;
+        \res{n=2000}.
+      \item Hoeffding : $2\,\mathrm{e}^{-0{,}005\,n}\leqslant0{,}05\iff
+        \mathrm{e}^{0{,}005\,n}\geqslant40\iff n\geqslant200\ln40\approx737{,}8$ ;
+        \res{n=738}.
+    \end{itemize}
+    La seconde majoration permet un sondage près de trois fois plus petit.
+  \item $n\cdot2\,\mathrm{e}^{-2n\varepsilon^{2}}\to0$ par croissances
+    comparées, donc
+    $\res{2\,\mathrm{e}^{-2n\varepsilon^{2}}=o\Bigl(\dfrac{1}{4n\varepsilon^{2}}\Bigr)}$ :
+    la majoration de Hoeffding décroît exponentiellement, celle de
+    Tchebychev seulement en $\frac1n$. Les deux restent prudentes : le calcul exact (loi
+    binomiale) donne $P\bigl(|F_n-\frac12|\geqslant0{,}05\bigr)\approx0{,}051$
+    pour $n=400$ et $\approx0{,}007$ pour $n=738$ (figure).
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=0.0058cm,y=1.35cm,line cap=round,line join=round]
+  \foreach \yy/\lab in {0/1,-1/10^{-1},-2/10^{-2},-3/10^{-3}}{
+    \draw[otRule,line width=0.3pt] (0,\yy) -- (2250,\yy);
+    \node[font=\scriptsize,anchor=east] at (-25,\yy) {$\lab$};}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-3.25) -- (2380,-3.25);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-3.25) -- (0,0.4);
+  \foreach \xx in {500,1000,1500,2000}
+    \node[font=\scriptsize,anchor=north] at (\xx,-3.27) {$\xx$};
+  \node[font=\scriptsize,anchor=west] at (2380,-3.25) {$n$};
+  % seuil 5 %
+  \draw[otRed,line width=0.7pt,dash pattern=on 3pt off 2pt] (0,-1.30103) -- (2250,-1.30103);
+  \node[font=\scriptsize,text=otRed,anchor=south west] at (5,-1.29) {$5\,\%$};
+  \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (738,-3.25) -- (738,-1.30103);
+  \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (2000,-3.25) -- (2000,-1.30103);
+  \node[font=\scriptsize,anchor=north,fill=white,inner sep=1pt] at (738,-3.27) {$738$};
+  % majorations
+  \draw[otNavy,line width=1.1pt] plot[domain=100:2250,samples=120] (\x,{2-log10(\x)});
+  \draw[otGreenDark,line width=1.1pt] plot[domain=139:1520,samples=120] (\x,{0.30103-0.0021715*\x});
+  % probabilités exactes
+  \foreach \nn/\pp in {100/-0.434,200/-0.747,300/-1.027,400/-1.292,500/-1.548,600/-1.797,738/-2.144,1000/-2.762}
+    \fill[otOrange] (\nn,\pp) circle (2pt);
+  \node[font=\scriptsize,text=otNavy,anchor=south west] at (1150,-1.02) {Tchebychev $\frac{1}{4n\varepsilon^{2}}$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (1010,-1.75) {Hoeffding $2\mathrm{e}^{-2n\varepsilon^{2}}$};
+  \node[font=\scriptsize,text=otOrange!85!black,anchor=north east] at (560,-1.62) {valeur exacte};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Pour $\varepsilon=0{,}05$, en échelle logarithmique : les deux
+majorations franchissent le seuil de $5\,\%$ en $n=738$ et $n=2000$ ; la
+probabilité exacte (points orange) est bien plus petite.}
+\end{minipage}\end{center}
+\end{corrigeEval}

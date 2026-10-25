@@ -1,0 +1,13 @@
+% Mutarotation du glucose : proportion de forme bêta au cours du temps, depuis deux états initiaux (exercice 15, chapitre 7)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=52mm,xmin=0,xmax=250,ymin=0,ymax=1.1,
+  xtick={0,50,...,250},ytick={0,0.2,...,1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$t$ (min)},ylabel={proportion de forme $\beta$}]
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/07-mutarotation.dat};
+\addplot[otGreenDark,line width=1pt] table[x index=0,y index=2] {figures/donnees/07-mutarotation.dat};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:20,0.22) {départ : forme $\alpha$ pure};
+\node[pcLegende,anchor=west,text=otGreenDark] at (axis cs:20,0.95) {départ : forme $\beta$ pure};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Résultat du programme pour deux états initiaux différents.}

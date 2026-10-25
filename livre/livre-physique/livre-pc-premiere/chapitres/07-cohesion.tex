@@ -1,0 +1,347 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[micelle]{7}{Cohésion, dissolution et extraction}{Partie 1 · Constitution et transformations de la matière}
+{Interactions\enspace·\enspace Pont hydrogène\enspace·\enspace Dissolution\enspace·\enspace Solubilité\enspace·\enspace Extraction\enspace·\enspace Savons}
+\objectif{Expliquer la cohésion des solides ioniques et moléculaires par les interactions entre entités.}
+\objectif{Modéliser la dissolution d'un solide ionique par une équation et calculer la concentration des ions.}
+\objectif{Prévoir la solubilité d'une espèce et la miscibilité de deux liquides à partir des interactions.}
+\objectif{Choisir un solvant et interpréter un protocole d'extraction liquide-liquide.}
+\objectif{Expliquer le caractère amphiphile et les propriétés lavantes d'un savon.}
+\prerequis{Schémas de Lewis, électronégativité et polarité (chapitre~6).}
+\prerequis{Concentration d'un soluté, $c=\dfrac{n}{V}$ (chapitre~1).}
+\end{ouverture}
+\essentiel
+\essSection{1}{La cohésion des solides}
+\begin{definition}[Solides ioniques et moléculaires]
+Un \textbf{solide ionique} est un empilement régulier d'ions de charges opposées ; il est électriquement neutre. Sa
+cohésion est assurée par les \textbf{interactions électrostatiques} : attraction entre ions de signes opposés, plus forte
+que la répulsion entre ions de même signe. Un \textbf{solide moléculaire} est un empilement de molécules, liées par des
+interactions plus faibles : interactions entre molécules polaires ou apolaires, dites de Van der Waals, et ponts hydrogène.
+\end{definition}
+\schema{07-nacl}
+\begin{definition}[Pont hydrogène]
+Un \textbf{pont hydrogène} s'établit entre un atome d'hydrogène lié à un atome très électronégatif (O, N ou F), porteur d'une
+charge partielle $\delta^{+}$, et un doublet non liant d'un atome O, N ou F d'une entité voisine. C'est l'interaction entre
+molécules la plus intense : elle explique, par exemple, la cohésion de la glace.
+\end{definition}
+\schema{07-pont-h}
+\begin{propriete}[Températures de fusion]
+Plus les interactions entre entités sont intenses, plus il faut d'énergie pour séparer les entités, et plus la température
+de fusion est élevée : chlorure de sodium \qty{801}{\degreeCelsius} (ions), saccharose \qty{186}{\degreeCelsius} et glace \qty{0}{\degreeCelsius} (ponts hydrogène),
+diiode \qty{114}{\degreeCelsius} et méthane \qty{-182}{\degreeCelsius} (Van der Waals).
+\end{propriete}
+\essSection{2}{La dissolution d'un solide ionique dans l'eau}
+\begin{propriete}[Trois étapes]
+La molécule d'eau est polaire. Dans l'eau, le cristal ionique est \textbf{dissocié} : ses ions se séparent. Ils sont ensuite
+\textbf{solvatés} (on dit hydratés) : entourés de molécules d'eau qui tournent leur pôle $\delta^{-}$ vers les cations et leur pôle $\delta^{+}$
+vers les anions. Enfin, les ions hydratés se \textbf{dispersent} dans toute la solution.
+\end{propriete}
+\schema{07-dissolution}
+\begin{savoirfaire}[Écrire une équation de dissolution et en déduire les concentrations]
+\begin{questions}
+\item Écrire le solide avec la notation (s) et les ions avec (aq), en ajustant les nombres stœchiométriques pour conserver
+les éléments et les charges : $\ce{CaCl2(s) -> Ca^{2+}(aq) + 2Cl^{-}(aq)}$.
+\item Calculer la concentration $c$ en soluté apporté : on dissout \qty{2,22}{g} de chlorure de calcium ($M=\qty{111,1}{g.mol^{-1}}$) dans
+\qty{200,0}{mL}, d'où $n=\qty{2,00e-2}{mol}$ et $c=\qty{0,100}{mol.L^{-1}}$.
+\item Lire les proportions sur l'équation : $[\ce{Ca^{2+}}]=c=\qty{0,100}{mol.L^{-1}}$ et $[\ce{Cl-}]=2c=\qty{0,200}{mol.L^{-1}}$.
+\end{questions}
+\end{savoirfaire}
+\begin{python}
+solides = {'NaCl': {'Na+': 1, 'Cl-': 1},
+           'CaCl2': {'Ca2+': 1, 'Cl-': 2},
+           'Al2(SO4)3': {'Al3+': 2, 'SO42-': 3}}
+c = 0.100      # mol/L
+
+for nom, ions in solides.items():
+    print(nom, {ion: round(nb * c, 3) for ion, nb in ions.items()})
+\end{python}
+\begin{console}
+NaCl {'Na+': 0.1, 'Cl-': 0.1}
+CaCl2 {'Ca2+': 0.1, 'Cl-': 0.2}
+Al2(SO4)3 {'Al3+': 0.2, 'SO42-': 0.3}
+\end{console}
+\noindent\capacite{Capacité numérique} Chaque solide est associé au nombre d'ions de chaque sorte libérés par une formule. Pour une
+concentration $c$ en soluté apporté, chaque ion a pour concentration son nombre stœchiométrique multiplié par $c$.
+\essSection{3}{Solubilité et miscibilité}
+\begin{definition}[Solubilité]
+La \textbf{solubilité} d'une espèce dans un solvant est la masse maximale de cette espèce que l'on peut dissoudre dans un
+litre de solvant, à une température donnée ; on l'exprime en \unit{g.L^{-1}}. Deux liquides sont \textbf{miscibles} s'ils forment
+un mélange homogène, et non miscibles s'ils forment deux phases.
+\end{definition}
+\begin{propriete}[Prévoir une solubilité]
+Une espèce est d'autant plus soluble dans un solvant que les interactions entre ses entités et celles du solvant sont
+intenses : les espèces ioniques et polaires se dissolvent bien dans les solvants polaires, comme l'eau, surtout si des
+ponts hydrogène peuvent s'établir ; les espèces apolaires se dissolvent bien dans les solvants apolaires, comme le
+cyclohexane. Le même raisonnement s'applique à la miscibilité de deux liquides.
+\end{propriete}
+\essSection{4}{L'extraction liquide-liquide}
+\begin{savoirfaire}[Choisir un solvant d'extraction]
+Pour extraire une espèce dissoute dans l'eau, le solvant doit :
+\begin{questions}
+\item être \textbf{non miscible} avec l'eau, pour former deux phases ;
+\item \textbf{mieux dissoudre} l'espèce à extraire que l'eau ;
+\item présenter le moins de dangers possible pour l'utilisateur et l'environnement.
+\end{questions}
+La phase la moins dense est au-dessus ; la densité de chaque liquide permet de prévoir la position des phases.
+\end{savoirfaire}
+\schema{07-ampoule}
+\essSection{5}{Les savons, des espèces amphiphiles}
+\begin{definition}[Hydrophile, lipophile, amphiphile]
+Une espèce \textbf{hydrophile} a de l'affinité pour l'eau, une espèce \textbf{lipophile} pour les corps gras. Un savon est
+formé d'ions carboxylate $\ce{R-COO-}$, où R est une longue chaîne carbonée, et d'ions sodium ou potassium. L'ion carboxylate est
+\textbf{amphiphile} : sa tête $\ce{-COO-}$ est hydrophile, sa chaîne est lipophile, ou hydrophobe. Dans l'eau, ces ions forment des
+\textbf{micelles} qui emprisonnent les salissures grasses.
+\end{definition}
+\schema{07-micelle}
+\begin{attention}
+Une espèce soluble dans l'eau n'est pas forcément ionique : le saccharose ou l'éthanol s'y dissolvent grâce aux ponts
+hydrogène. Dans une équation de dissolution, l'eau n'apparaît pas comme réactif : elle est le solvant. Et la concentration
+d'un ion n'est égale à celle du soluté que si son nombre stœchiométrique vaut 1.
+\end{attention}
+\begin{experience}[Extraire le diiode d'une eau iodée]
+Dans une ampoule à décanter, on verse \qty{20}{mL} d'une solution aqueuse jaune-brun de diiode, puis \qty{10}{mL} de cyclohexane.
+On bouche, on agite en dégazant régulièrement, puis on laisse décanter. La phase supérieure, le cyclohexane, devient
+violette ; la phase aqueuse se décolore presque entièrement : le diiode est passé dans le cyclohexane.
+\end{experience}
+\begin{rediger}
+Pour justifier une solubilité, comparer les interactions possibles : ioniques, entre molécules polaires ou apolaires,
+ponts hydrogène. Pour un choix de solvant, citer les trois critères (non miscible, meilleure solubilité, moindre danger) et
+s'appuyer sur les valeurs numériques fournies.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-7-1}
+\begin{exercice}[1]{La cohésion du sel}
+Le schéma représente une portion d'un cristal de chlorure de sodium.
+\schema{07-nacl}
+\begin{questions}
+\item Combien d'ions de charge opposée entourent un ion sodium au cœur du cristal ?
+\item Quelles interactions s'exercent entre deux ions de signes opposés ? de même signe ?
+\item Justifier la formule $\ce{NaCl}$ de ce solide ionique.
+\item Le chlorure de sodium fond à \qty{801}{\degreeCelsius}, la glace à \qty{0}{\degreeCelsius}. Interpréter cet écart.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-2}
+\begin{exercice}[1]{Écrire des équations de dissolution}
+On dissout séparément chacun des solides suivants dans l'eau, avec une concentration en soluté apporté
+$c=\qty{0,050}{mol.L^{-1}}$ : chlorure de potassium $\ce{KCl}$, sulfate de sodium $\ce{Na2SO4}$, sulfate d'aluminium $\ce{Al2(SO4)3}$, phosphate de
+potassium $\ce{K3PO4}$ et nitrate de magnésium $\ce{Mg(NO3)2}$.
+\begin{questions}
+\item Écrire l'équation de dissolution de chaque solide.
+\item Calculer la concentration de chaque ion dans les cinq solutions.
+\item Dans quelle solution la concentration des cations est-elle la plus grande ?
+\item Vérifier, pour la solution de sulfate d'aluminium, que la solution est électriquement neutre.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-3}
+\begin{exercice}[1]{Qui forme des ponts hydrogène ?}
+On considère les molécules $\ce{H2O}$, $\ce{NH3}$, $\ce{CH4}$, $\ce{HF}$, $\ce{CH3OH}$ (méthanol) et $\ce{CH3-O-CH3}$ (méthoxyméthane).
+\begin{questions}
+\item Rappeler les conditions d'existence d'un pont hydrogène.
+\item Quelles molécules peuvent former des ponts hydrogène entre elles ?
+\item Le méthoxyméthane peut-il former des ponts hydrogène avec l'eau ? Justifier.
+\item Représenter un pont hydrogène entre une molécule de méthanol et une molécule d'eau.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-4}
+\begin{exercice}[1]{Prévoir une solubilité}
+Pour chaque espèce, prévoir si elle est plus soluble dans l'eau ou dans le cyclohexane, solvant apolaire.
+\begin{questions}
+\item Le diiode $\ce{I2}$.
+\item Le chlorure de sodium.
+\item Le glucose, dont la molécule porte cinq groupes $\ce{-OH}$.
+\item La vaseline, mélange d'alcanes à longues chaînes.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-5}
+\begin{exercice}[1]{Une ou deux phases ?}
+\begin{donnees}
+Densités : eau 1,00 ; éthanol 0,79 ; cyclohexane 0,78 ; dichlorométhane 1,33. Le dichlorométhane et le cyclohexane sont
+pratiquement non miscibles avec l'eau.
+\end{donnees}
+\begin{questions}
+\item Pourquoi l'eau et l'éthanol sont-ils miscibles ?
+\item Schématiser un tube à essais contenant de l'eau et du cyclohexane, en indiquant la position des phases.
+\item Même question pour de l'eau et du dichlorométhane.
+\item Comment reconnaître, dans un tube à deux phases, la phase aqueuse sans connaître les densités ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-7-6}
+\begin{exercice}[2]{Concentrations des ions en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Prévoir l'affichage si l'on remplace \code{c = 0.100} par \code{c = 0.050}.
+\item Écrire les lignes à ajouter au dictionnaire \code{solides} pour le sulfate de potassium $\ce{K2SO4}$ et le phosphate de sodium $\ce{Na3PO4}$,
+puis prévoir les lignes affichées pour $c=\qty{0,100}{mol.L^{-1}}$.
+\item On ajoute à chaque ion sa charge. Proposer un calcul qui vérifie l'électroneutralité de chaque solution.
+\item Pourquoi ce programme ne convient-il pas pour le glucose ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-7}
+\begin{exercice}[2]{Une solution de sulfate de cuivre}
+Le sulfate de cuivre se vend sous forme de cristaux bleus de formule $\ce{CuSO4}$, $5\,\ce{H2O}$ : chaque unité contient cinq molécules d'eau.
+\begin{donnees}
+$M(\ce{CuSO4})=\qty{159,6}{g.mol^{-1}}$ ; $M(\ce{H2O})=\qty{18,0}{g.mol^{-1}}$ ; $M(\ce{Cu})=\qty{63,5}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la masse molaire des cristaux et écrire l'équation de dissolution du sulfate de cuivre.
+\item On dissout \qty{2,50}{g} de cristaux dans une fiole jaugée de \qty{100,0}{mL}. Calculer les concentrations des ions.
+\item Quelle masse de cristaux faut-il pour préparer \qty{250,0}{mL} de solution à \qty{0,0500}{mol.L^{-1}} ?
+\item Calculer la concentration en masse des ions cuivre(II) dans la première solution.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-8}
+\begin{exercice}[2]{Les sels de déneigement}
+Pour déneiger les routes, on répand du chlorure de sodium ou, par grand froid, du chlorure de calcium. L'effet d'un sel
+sur la fonte de la glace dépend surtout de la quantité d'ions qu'il libère.
+\begin{donnees}
+$M(\ce{NaCl})=\qty{58,5}{g.mol^{-1}}$ ; $M(\ce{CaCl2})=\qty{111,1}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire les équations de dissolution des deux sels.
+\item Calculer la quantité d'ions libérés par \qty{1}{kg} de chlorure de sodium.
+\item Même question pour \qty{1}{kg} de chlorure de calcium.
+\item À masse égale, quel sel libère le plus d'ions ? Pourquoi utilise-t-on pourtant le chlorure de calcium par grand
+froid ? On pourra rechercher une autre propriété de ce sel.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-9}
+\begin{exercice}[2]{Choisir un solvant pour la caféine}
+On veut extraire la caféine d'une infusion de thé, solution aqueuse.
+\par\smallskip\noindent\hfill\begin{tabular}{lccc}
+\toprule
+Solvant & eau & éthanol & dichlorométhane \\
+\midrule
+Solubilité de la caféine (\unit{g.L^{-1}}, \qty{20}{\degreeCelsius}) & 22 & 15 & 100 \\
+Miscibilité avec l'eau & -- & totale & nulle \\
+Densité & 1,00 & 0,79 & 1,33 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\begin{questions}
+\item Pourquoi l'éthanol ne convient-il pas ?
+\item Justifier le choix du dichlorométhane.
+\item Dans l'ampoule à décanter, quelle phase contient la caféine ? Est-elle au-dessus ou au-dessous ?
+\item Le dichlorométhane est nocif. Quelles précautions faut-il prendre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-10}
+\begin{exercice}[2]{La vinaigrette}
+Une vinaigrette se prépare avec de l'huile, du vinaigre (solution aqueuse) et un peu de moutarde. Sans moutarde, l'huile et
+le vinaigre se séparent rapidement ; avec moutarde, le mélange reste longtemps homogène : c'est une émulsion.
+\begin{questions}
+\item Pourquoi l'huile et le vinaigre ne sont-ils pas miscibles ?
+\item Quelle phase se trouve au-dessus quand le mélange se sépare ? Justifier.
+\item La moutarde contient des molécules amphiphiles. Expliquer leur rôle.
+\item Citer d'autres usages courants des espèces tensioactives.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-11}
+\begin{exercice}[2]{Le savon et l'eau calcaire}
+Le savon de Marseille contient notamment du stéarate de sodium, $\ce{C17H35COO-}$ et $\ce{Na+}$.
+\begin{questions}
+\item Identifier la partie hydrophile et la partie lipophile de l'ion stéarate.
+\item Expliquer comment ces ions éliminent une tache de graisse.
+\item Dans une eau calcaire, riche en ions calcium, le savon mousse mal et forme un dépôt : $\ce{2C17H35COO^{-}(aq) + Ca^{2+}(aq) -> (C17H35COO)2Ca(s)}$.
+Vérifier que cette équation est ajustée.
+\item Pourquoi le savon perd-il alors une partie de son efficacité ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-7-12}
+\begin{exercice}[3]{Extraire le diiode d'une eau iodée}
+\begin{docu}{1}{Données sur les solvants}
+\par\smallskip\noindent\hfill\begin{tabular}{lccc}
+\toprule
+ & eau & éthanol & cyclohexane \\
+\midrule
+Solubilité du diiode (\unit{g.L^{-1}}) & 0,3 & 200 & 20 \\
+Miscibilité avec l'eau & -- & totale & nulle \\
+Densité & 1,00 & 0,79 & 0,78 \\
+Couleur du diiode dissous & jaune-brun & brun & violet \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{docu}
+\begin{docu}{2}{Le protocole}
+On verse \qty{20}{mL} d'eau iodée et \qty{10}{mL} de solvant dans une ampoule à décanter, on agite en dégazant, puis on laisse
+reposer.
+\end{docu}
+\begin{questions}
+\item Pourquoi le diiode est-il peu soluble dans l'eau et très soluble dans le cyclohexane ?
+\item Justifier le choix du cyclohexane plutôt que de l'éthanol.
+\item Schématiser l'ampoule après décantation, en indiquant la position, le contenu et la couleur de chaque phase.
+\item \initiative L'eau iodée contient \qty{0,25}{g.L^{-1}} de diiode. En admettant que tout le diiode passe dans le cyclohexane, calculer sa
+concentration dans la phase organique. Est-elle compatible avec la solubilité ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-13}
+\begin{exercice}[3]{Ponts hydrogène et ébullition}
+\begin{docu}{1}{Des températures d'ébullition}
+\par\smallskip\noindent\hfill\begin{tabular}{lccccccc}
+\toprule
+Espèce & $\ce{CH4}$ & $\ce{NH3}$ & $\ce{H2O}$ & $\ce{HF}$ & $\ce{H2S}$ & éthanol & méthoxyméthane \\
+\midrule
+$\theta_\text{éb}$ (\unit{\degreeCelsius}) & $-161$ & $-33$ & 100 & 20 & $-60$ & 78 & $-24$ \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{docu}
+\begin{docu}{2}{Deux électronégativités}
+$\chi(\ce{O})=3{,}44$ ; $\chi(\ce{S})=2{,}58$ ; $\chi(\ce{H})=2{,}20$. L'éthanol $\ce{CH3-CH2-OH}$ et le méthoxyméthane $\ce{CH3-O-CH3}$ ont la même
+formule brute (chapitre~6).
+\end{docu}
+\begin{questions}
+\item Quelles espèces du tableau forment des ponts hydrogène entre leurs molécules ?
+\item Interpréter l'écart entre les températures d'ébullition de l'eau et du sulfure d'hydrogène $\ce{H2S}$.
+\item Interpréter l'écart entre l'éthanol et le méthoxyméthane.
+\item \initiative Pourquoi le méthane bout-il à une température aussi basse ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-14}
+\begin{exercice}[3]{Laver le linge en eau calcaire}
+\begin{docu}{1}{La dureté de l'eau}
+La dureté d'une eau s'exprime en degrés français (°f) : \num{1}~°f correspond à \qty{1,0e-4}{mol.L^{-1}} d'ions calcium. Une eau du
+Bassin parisien affiche couramment \num{30}~°f, une eau de Bretagne moins de \num{5}~°f.
+\end{docu}
+\begin{docu}{2}{Le savon}
+Le savon utilisé est du stéarate de sodium, de masse molaire \qty{306,0}{g.mol^{-1}}. Les ions calcium précipitent les ions stéarate :
+$\ce{2C17H35COO^{-}(aq) + Ca^{2+}(aq) -> (C17H35COO)2Ca(s)}$.
+\end{docu}
+\begin{questions}
+\item Calculer la quantité d'ions calcium contenus dans \qty{5,0}{L} d'eau à \num{30}~°f.
+\item En déduire la quantité d'ions stéarate précipités, puis la masse de savon « perdue ».
+\item Même calcul pour une eau à \num{5}~°f.
+\item \initiative Pourquoi les lessives contiennent-elles des espèces qui captent les ions calcium ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-15}
+\begin{exercice}[3]{Une ou deux extractions ?}
+\begin{docu}{1}{Un modèle}
+On extrait \qty{1,0}{g} de caféine dissous dans \qty{100}{mL} d'eau à l'aide de dichlorométhane. À l'équilibre, la concentration de la
+caféine dans le dichlorométhane est 5 fois celle dans l'eau : $c_\text{org}=5\,c_\text{aq}$.
+\end{docu}
+\begin{docu}{2}{Deux protocoles}
+Protocole A : une seule extraction avec \qty{40}{mL} de dichlorométhane. Protocole B : deux extractions successives avec
+\qty{20}{mL} de dichlorométhane chacune.
+\end{docu}
+\begin{questions}
+\item Exprimer la masse totale de caféine en fonction de $c_\text{aq}$, du volume d'eau $V_\text{aq}$ et du volume de solvant $V_\text{org}$.
+\item Montrer que la fraction de caféine extraite en une fois vaut $\dfrac{5\,V_\text{org}}{V_\text{aq}+5\,V_\text{org}}$.
+\item Calculer la masse extraite avec le protocole A.
+\item \initiative Quel protocole est le plus efficace, pour le même volume de solvant ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

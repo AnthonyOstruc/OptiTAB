@@ -1,0 +1,334 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[mouvement]{13}{Forces et variation de la vitesse}{Partie 2 · Mouvement et interactions}
+{Vecteur vitesse\enspace·\enspace Variation de vitesse\enspace·\enspace Somme des forces\enspace·\enspace Rôle de la masse\enspace·\enspace Chronophotographie}
+\objectif{Construire des vecteurs vitesse et variation de vitesse à partir d'une chronophotographie ou d'une vidéo.}
+\objectif{Utiliser la relation approchée $\sum\vec{F}\approx m\,\dfrac{\Delta\vec{v}}{\Delta t}$ pour estimer une variation de vitesse, les forces étant connues.}
+\objectif{Utiliser la même relation pour estimer les forces, le mouvement étant connu.}
+\objectif{Expliquer le rôle de la masse ; étudier la relation à l'aide d'un programme.}
+\prerequis{Référentiel, vecteur position, vecteur vitesse, principe d'inertie (classe de seconde).}
+\prerequis{Forces usuelles : poids, réaction d'un support, tension d'un fil, frottements ; somme de vecteurs.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Vecteur vitesse et variation de vitesse}
+\begin{definition}[Vecteur vitesse]
+Dans un référentiel donné, on repère les positions $M_0$, $M_1$, $M_2$… d'un point à intervalles de temps réguliers $\Delta t$. Le vecteur
+vitesse en $M_i$ est approximativement
+\[\vec{v}_i\approx\frac{\overrightarrow{M_iM_{i+1}}}{\Delta t}\qquad\text{de valeur}\qquad v_i\approx\frac{M_iM_{i+1}}{\Delta t}\ \text{(en \unit{m.s^{-1}})}.\]
+Il est d'autant plus proche du vecteur vitesse réel que $\Delta t$ est petit : il est alors pratiquement tangent à la trajectoire.
+\end{definition}
+\begin{definition}[Vecteur variation de vitesse]
+Entre deux instants voisins, le vecteur variation de vitesse est $\Delta\vec{v}_i=\vec{v}_{i+1}-\vec{v}_i$. On le construit en traçant $\vec{v}_i$ et
+$\vec{v}_{i+1}$ à partir d'un même point : $\Delta\vec{v}_i$ va de l'extrémité de $\vec{v}_i$ à celle de $\vec{v}_{i+1}$.
+\end{definition}
+\schema{13-vitesse}
+\essSection{2}{Variation de vitesse et somme des forces}
+\begin{loi}[Relation approchée]
+Pour un système de masse $m$ modélisé par un point, entre deux instants voisins séparés de $\Delta t$ :
+\[\sum\vec{F}\approx m\,\frac{\Delta\vec{v}}{\Delta t}.\]
+Le vecteur $\Delta\vec{v}$ a la direction et le sens de la somme des forces. Exemple : une voiture de \qty{1000}{kg} soumise à une somme des
+forces de \qty{2000}{N} dirigée vers l'avant gagne \qty{2,0}{m.s^{-1}} en \qty{1,0}{s}.
+\end{loi}
+\par\penalty0
+\schema{13-relation}
+\begin{propriete}[Rôle de la masse et principe d'inertie]
+Pour une même somme des forces, la variation de vitesse est d'autant plus faible que la masse est grande : $\Delta v\approx\dfrac{\sum F\times\Delta t}{m}$.
+Si les forces se compensent ($\sum\vec{F}=\vec{0}$), alors $\Delta\vec{v}=\vec{0}$ : le mouvement est rectiligne et uniforme, ou le système reste
+immobile (principe d'inertie). Réciproquement, si le vecteur vitesse change, même seulement de direction, les forces ne se
+compensent pas.
+\end{propriete}
+\begin{propriete}[Chute libre]
+Un objet soumis à son seul poids (frottements négligés) vérifie $m\,\dfrac{\Delta\vec{v}}{\Delta t}=m\,\vec{g}$, soit $\Delta\vec{v}=\vec{g}\,\Delta t$ : sa vitesse varie de
+\qty{0,98}{m.s^{-1}}, verticalement vers le bas, toutes les \qty{0,10}{s}, quelle que soit sa masse.
+\end{propriete}
+\begin{python}
+dt = 0.10                             # s
+y = [0.80, 0.75, 0.60, 0.36, 0.02]    # m : balle lachee, axe vers le haut
+v = [(y[i + 1] - y[i]) / dt for i in range(4)]
+for i in range(3):
+    print('Delta v =', round(v[i + 1] - v[i], 2), 'm/s')
+\end{python}
+\begin{console}
+Delta v = -1.0 m/s
+Delta v = -0.9 m/s
+Delta v = -1.0 m/s
+\end{console}
+\noindent\capacite{Capacité numérique} À partir des positions relevées sur une vidéo, le programme calcule les vitesses puis leurs variations :
+environ $-\qty{1}{m.s^{-1}}$ toutes les \qty{0,10}{s}, soit $\dfrac{\Delta v}{\Delta t}\approx\qty{10}{m.s^{-2}}\approx g$ : la balle n'est soumise qu'à son poids.
+\begin{attention}
+$\Delta\vec{v}$ est une différence de vecteurs, pas de valeurs : dans un virage pris à vitesse constante, la valeur de la vitesse ne change
+pas mais sa direction change, donc $\Delta\vec{v}\neq\vec{0}$ et une force s'exerce. La relation n'est qu'approchée : elle est d'autant plus
+précise que $\Delta t$ est petit.
+\end{attention}
+\begin{savoirfaire}[Estimer une force à partir d'une chronophotographie]
+\begin{enumerate}
+\item Calculer $v_i$ et $v_{i+1}$ à partir des distances mesurées, converties en mètres grâce à l'échelle du document.
+\item Tracer $\vec{v}_i$ et $\vec{v}_{i+1}$ depuis un même point, avec une échelle choisie (par exemple \qty{1}{cm} pour \qty{1}{m.s^{-1}}).
+\item Tracer $\Delta\vec{v}_i$, qui joint leurs extrémités, et mesurer sa longueur pour obtenir $\Delta v_i$.
+\item Calculer $\sum F\approx m\,\dfrac{\Delta v_i}{\Delta t}$ : la somme des forces a la direction et le sens de $\Delta\vec{v}_i$.
+\end{enumerate}
+Exemple : pour une balle de \qty{60}{g}, $\Delta v=\qty{0,99}{m.s^{-1}}$ vers le bas en \qty{0,10}{s}, d'où $\sum F\approx\qty{0,59}{N}$ vers le bas : c'est son poids.
+\end{savoirfaire}
+\begin{experience}[Exploiter une vidéo]
+On filme un mouvement (chute, lancer, chariot tiré), puis un logiciel de pointage relève les positions image par image. On
+construit les vecteurs vitesse et variation de vitesse, puis on compare $m\,\dfrac{\Delta\vec{v}}{\Delta t}$ à la somme des forces connues.
+\end{experience}
+\begin{rediger}
+Préciser le système et le référentiel, faire l'inventaire des forces et un schéma, indiquer l'échelle des vecteurs, puis
+écrire la relation $\sum\vec{F}\approx m\,\dfrac{\Delta\vec{v}}{\Delta t}$ avant de calculer.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-13-1}
+\begin{exercice}[1]{Le palet sur coussin d'air}
+Un palet glisse sans frottement sur une table horizontale à coussin d'air. On a enregistré la position de son centre.
+\schema{13-ex01}
+\begin{questions}
+\item Quelle est la nature du mouvement du palet ? Justifier.
+\item Calculer la valeur de la vitesse du palet au point $M_3$.
+\item Représenter $\vec{v}_3$ et $\vec{v}_4$ avec l'échelle \qty{1}{cm} pour \qty{0,10}{m.s^{-1}}. Que vaut $\Delta\vec{v}_3$ ?
+\item En déduire ce que l'on peut dire des forces qui s'exercent sur le palet. Les nommer.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-2}
+\begin{exercice}[1]{Une balle qui tombe}
+Une balle de \qty{58}{g} est lâchée sans vitesse initiale ; on relève sa position toutes les \qty{50}{ms}.
+\par\smallskip\noindent\hfill\begin{tabular}{lccccccc}
+\toprule
+Point & $M_0$ & $M_1$ & $M_2$ & $M_3$ & $M_4$ & $M_5$ & $M_6$ \\
+Distance parcourue (cm) & 0 & 1,2 & 4,9 & 11,0 & 19,6 & 30,7 & 44,1 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer les valeurs des vitesses $v_3$ et $v_4$.
+\item Représenter $\vec{v}_3$, $\vec{v}_4$ et $\Delta\vec{v}_3$ avec l'échelle \qty{1}{cm} pour \qty{1}{m.s^{-1}}.
+\item Calculer $m\,\dfrac{\Delta v_3}{\Delta t}$ et le comparer au poids de la balle.
+\item Conclure : quelles forces s'exercent sur la balle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-3}
+\begin{exercice}[1]{Le rôle de la masse}
+Deux chariots, de masses \qty{2,0}{kg} et \qty{10}{kg}, initialement immobiles sur un sol horizontal, sont poussés pendant \qty{0,50}{s} avec
+la même somme des forces, horizontale, de valeur \qty{20}{N}.
+\begin{questions}
+\item Écrire la relation approchée entre la somme des forces et la variation du vecteur vitesse.
+\item Calculer la variation de vitesse de chaque chariot.
+\item Quel chariot est le plus difficile à mettre en mouvement ? Pourquoi ?
+\item Quelle somme des forces faudrait-il appliquer au chariot de \qty{10}{kg} pour qu'il atteigne la même vitesse que l'autre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-4}
+\begin{exercice}[1]{Un freinage}
+Une voiture de \qty{1200}{kg} roulant en ligne droite à \qty{50}{km/h} s'arrête en \qty{2,5}{s}.
+\begin{questions}
+\item Calculer la variation de la valeur de la vitesse, en \unit{m.s^{-1}}.
+\item Estimer la valeur de la somme des forces qui s'exercent sur la voiture pendant le freinage, supposée constante.
+Préciser sa direction et son sens.
+\item De combien la vitesse diminue-t-elle en \qty{0,10}{s} ?
+\item Quelle force faudrait-il pour arrêter de la même façon un camion de \qty{12}{t} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-5}
+\begin{exercice}[1]{Lire des vecteurs vitesse}
+\schema{13-ex05}
+\begin{questions}
+\item Pour chaque situation, construire le vecteur $\Delta\vec{v}=\vec{v}_{i+1}-\vec{v}_i$.
+\item En déduire la direction et le sens de la somme des forces.
+\item Dans la situation b), quelle force s'exerce sur la balle ?
+\item Dans quelle(s) situation(s) les forces se compensent-elles ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-13-6}
+\begin{exercice}[2]{Une balle lancée, en Python}
+Les positions d'une balle lancée ont été relevées sur une vidéo, toutes les \qty{0,10}{s}, dans un repère dont l'axe $(Oy)$ est vertical et
+orienté vers le haut.
+\begin{python}
+dt = 0.10
+x = [0, 0.30, 0.60, 0.90, 1.20, 1.50, 1.80]       # m
+y = [0, 0.35, 0.60, 0.76, 0.82, 0.77, 0.63]       # m
+vx = [(x[i + 1] - x[i]) / dt for i in range(6)]
+vy = [(y[i + 1] - y[i]) / dt for i in range(6)]
+for i in range(5):
+    print('vx =', round(vx[i], 1), '| Delta vy =', round(vy[i + 1] - vy[i], 1))
+\end{python}
+\begin{console}
+vx = 3.0 | Delta vy = -1.0
+vx = 3.0 | Delta vy = -0.9
+vx = 3.0 | Delta vy = -1.0
+vx = 3.0 | Delta vy = -1.1
+vx = 3.0 | Delta vy = -0.9
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Que calculent les listes \code{vx} et \code{vy} ?
+\item Que peut-on dire de la composante horizontale de la vitesse ? Et de la variation de sa composante verticale ?
+\item En déduire la direction, le sens et la valeur moyenne de $\dfrac{\Delta\vec{v}}{\Delta t}$.
+\item La balle a une masse de \qty{60}{g}. Calculer la somme des forces et l'identifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-7}
+\begin{exercice}[2]{La balle au bout d'un fil}
+Une balle de \qty{200}{g} glisse sans frottement sur une table horizontale, retenue par un fil fixé en O : elle tourne à vitesse constante
+sur un cercle de rayon $R=\qty{0,50}{m}$. On a relevé ses positions toutes les \qty{0,10}{s}.
+\schema{13-ex07}
+\begin{questions}
+\item Mesurer $M_2M_3$ sur le document et en déduire la valeur de la vitesse.
+\item Représenter $\vec{v}_2$ et $\vec{v}_3$ avec l'échelle \qty{1}{cm} pour \qty{1}{m.s^{-1}}.
+\item Construire $\Delta\vec{v}_2$ et mesurer sa valeur. Quelle est sa direction ?
+\item En déduire la direction, le sens et la valeur de la force exercée par le fil sur la balle.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-8}
+\begin{exercice}[2]{Le tir au hockey}
+Lors d'un tir, la crosse reste en contact avec le palet de \qty{170}{g}, initialement immobile, pendant \qty{10}{ms} ; le palet part à \qty{30}{m.s^{-1}}.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la variation de vitesse du palet pendant le contact.
+\item Estimer la force moyenne exercée par la crosse sur le palet.
+\item Comparer cette force au poids du palet. Peut-on négliger le poids pendant la frappe ?
+\item Avec la même force, que deviendrait la vitesse du palet si le contact durait deux fois plus longtemps ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-9}
+\begin{exercice}[2]{Le saut en parachute}
+\schema{13-ex09}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Au tout début du saut, seul le poids agit. Vérifier que la pente de la courbe est alors égale à $g$.
+\item Entre \qty{25}{s} et \qty{40}{s}, que dire de la somme des forces ? En déduire la valeur des frottements de l'air.
+\item À l'ouverture, la vitesse passe de \qty{55}{m.s^{-1}} à \qty{6}{m.s^{-1}} en \qty{3,0}{s}. Estimer la somme des forces, puis la force exercée par l'air.
+\item Pourquoi le parachutiste atteint-il ensuite une nouvelle vitesse constante ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-10}
+\begin{exercice}[2]{Le chariot tiré}
+Un chariot de \qty{500}{g}, tiré par un fil sur un rail horizontal, part du repos. On relève sa position toutes les \qty{0,10}{s}.
+\par\smallskip\noindent\hfill\begin{tabular}{lccccccc}
+\toprule
+$t$ (s) & 0 & 0,10 & 0,20 & 0,30 & 0,40 & 0,50 & 0,60 \\
+$x$ (m) & 0 & 0,006 & 0,024 & 0,054 & 0,096 & 0,150 & 0,216 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\begin{questions}
+\item Calculer la vitesse moyenne du chariot sur chaque intervalle de \qty{0,10}{s}.
+\item Calculer les variations de vitesse successives. Que remarque-t-on ?
+\item En déduire la valeur de la somme des forces qui s'exercent sur le chariot.
+\item Avec le même fil tirant de la même façon, comment varierait la vitesse d'un chariot deux fois plus lourd ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-11}
+\begin{exercice}[2]{Construire une variation de vitesse}
+\schema{13-ex11}
+\begin{questions}
+\item Calculer les coordonnées des vecteurs vitesse $\vec{v}_2$ et $\vec{v}_3$, puis leurs valeurs.
+\item Représenter $\vec{v}_2$ en $M_2$ et $\vec{v}_3$ en $M_3$ avec l'échelle \qty{1}{cm} pour \qty{2}{m.s^{-1}}.
+\item Construire $\Delta\vec{v}_2$ en $M_3$ et déterminer sa valeur.
+\item En déduire la somme des forces qui s'exercent sur la balle et la comparer à son poids ($g=\qty{9,81}{N.kg^{-1}}$).
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-13-12}
+\begin{exercice}[3]{Le service au tennis}
+\begin{docu}{1}{La frappe}
+Au service, le joueur lance la balle de \qty{58}{g} au-dessus de sa tête et la frappe quand elle est au sommet de sa trajectoire,
+pratiquement immobile. La raquette reste en contact avec la balle pendant environ \qty{5,0}{ms}.
+\end{docu}
+\begin{docu}{2}{Des records}
+Un bon joueur de club sert à \qty{180}{km/h}, soit \qty{50}{m.s^{-1}} ; les meilleurs professionnels dépassent \qty{220}{km/h}.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Estimer la force moyenne exercée par la raquette sur la balle lors d'un service à \qty{180}{km/h}.
+\item Comparer cette force au poids de la balle. Conclure.
+\item Après la frappe, on néglige l'action de l'air. Quelle est la variation du vecteur vitesse de la balle en \qty{0,10}{s} ?
+\item \initiative Estimer la force exercée par la raquette d'un professionnel servant à \qty{220}{km/h}, avec la même durée de contact.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-13}
+\begin{exercice}[3]{Le décollage d'un lanceur}
+\begin{docu}{1}{Au décollage}
+Un lanceur lourd de \qty{780}{t} décolle verticalement. Ses moteurs exercent une poussée verticale de \qty{1,40e7}{N}, qu'on suppose
+constante pendant les premières minutes du vol. On néglige l'action de l'air au départ.
+\end{docu}
+\begin{docu}{2}{Deux minutes plus tard}
+Les moteurs ont brûlé une grande partie des ergols : la masse du lanceur n'est plus que de \qty{380}{t}.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Faire l'inventaire des forces au décollage et les représenter à l'échelle \qty{1}{cm} pour \qty{4,0e6}{N}.
+\item Calculer la somme des forces et en déduire la variation de vitesse pendant la première seconde.
+\item \initiative Estimer la variation de vitesse en une seconde deux minutes plus tard, en négligeant toujours l'air.
+\item Expliquer pourquoi la vitesse d'un lanceur augmente de plus en plus vite.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-14}
+\begin{exercice}[3]{Ceinture et airbag}
+\begin{docu}{1}{Un choc frontal}
+Lors d'un choc contre un obstacle fixe à \qty{60}{km/h}, la voiture s'écrase et s'arrête en un dixième de seconde environ. Retenu par
+sa ceinture et l'airbag, un passager de \qty{75}{kg} s'arrête en \qty{0,12}{s}. Sans protection, il heurterait le tableau de bord et s'arrêterait en
+\qty{0,010}{s} environ.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la variation de vitesse du passager, en \unit{m.s^{-1}}.
+\item Estimer la force exercée sur le passager par la ceinture et l'airbag, puis la comparer à son poids.
+\item Estimer la force exercée par le tableau de bord sur un passager non attaché.
+\item \initiative Expliquer, à l'aide de la relation approchée, le rôle de la ceinture et de l'airbag.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-15}
+\begin{exercice}[3]{Simuler un tir}
+\begin{docu}{1}{Le principe}
+Pour simuler un mouvement, on part de la position et de la vitesse initiales, puis on avance pas à pas : à chaque pas $\Delta t$, la
+position change de $\vec{v}\,\Delta t$ et la vitesse de $\Delta\vec{v}=\dfrac{\sum\vec{F}}{m}\,\Delta t$.
+\end{docu}
+\begin{docu}{2}{Le programme}
+\begin{python}
+from math import cos, sin, radians
+g, dt = 9.81, 0.01
+vx, vy = 20 * cos(radians(45)), 20 * sin(radians(45))   # m/s
+x, y = 0, 0
+while y >= 0:
+    x, y = x + vx * dt, y + vy * dt
+    vy = vy - g * dt
+print(round(x, 1), 'm')
+\end{python}
+\begin{console}
+41.0 m
+\end{console}
+\end{docu}
+\begin{questions}
+\item \capacite{Capacité numérique}Quelles sont la vitesse et la direction initiales du projectile ? Que représente la valeur affichée ?
+\item Quelle hypothèse sur les forces traduit la ligne \code{vy = vy - g * dt} ? Pourquoi \code{vx} n'est-il jamais modifié ?
+\item Pourquoi la masse du projectile n'apparaît-elle pas dans le programme ?
+\item \initiative Sur la Lune ($g=\qty{1,62}{N.kg^{-1}}$), le programme affiche \code{247.1 m}. Comparer et interpréter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

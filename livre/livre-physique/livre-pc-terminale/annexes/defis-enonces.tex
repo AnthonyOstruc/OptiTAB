@@ -1,0 +1,1012 @@
+\clearpage
+\gdef\otChapNum{0}\pagestyle{otFront}
+\phantomsection\label{defis-debut}\pdfbookmark[0]{Défis d'approfondissement}{bm-defis}
+\otPageTitre{Défis d'approfondissement}{Chercher plus loin avec les outils de Terminale}
+\fontsize{11}{16}\selectfont
+Les \otNbExosChapitres\ exercices des chapitres installent les connaissances et les méthodes.
+Les \otNbDefis\ défis suivants, un par chapitre, portent le total à \textbf{\otNbExosTotal\ exercices corrigés}.
+Ils prolongent chaque thème par une question qui demande de prendre du recul, de construire un modèle
+ou de relier plusieurs notions.\par\vspace{4mm}
+\textbf{Avancé} désigne une modélisation ou une synthèse soutenue.
+\textbf{Très exigeant} ajoute une discussion, une démonstration ou plusieurs changements de point de vue.
+Ces indications sont des repères pédagogiques, pas un classement officiel.\par\vspace{4mm}
+Les défis sont facultatifs pour un premier passage. Ils restent dans le cadre du programme ; un outil qui
+le dépasserait est fourni dans l'énoncé. Les durées proposées sont indicatives.\par\vspace{5mm}
+\editionEtape{Chercher avant de lire la solution}
+Faire un schéma, écrire les données et les lois utiles, tester un cas simple, puis noter ce qui manque
+pour conclure. En cas de blocage, lire seulement le premier indice, puis reprendre la recherche.
+Les indications sont séparées des énoncés et des corrigés.
+\begin{center}\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}lll@{}}\toprule
+Défis & Thèmes & Préparation conseillée\\\midrule
+D01 à D12 & Constitution et transformations de la matière & Chapitres 1 à 12\\
+D13 à D17 & Mouvement et interactions & Chapitres 13 à 17\\
+D18 à D20 & L'énergie : conversions et transferts & Chapitres 18 à 20\\
+D21 à D26 & Ondes et signaux & Chapitres 21 à 26\\
+D27 & Mesures et incertitudes & Chapitre 27\\\bottomrule
+\end{tabular}\end{center}
+\editionRetenir{Une solution incomplète mais justifiée est un progrès.
+Après la correction, refaire la question clé sans regarder, puis expliquer pourquoi la méthode fonctionne.}
+
+\editionPage{defi-ex-1}{D01 · Mélanger n'est pas moyenner}{Recherche et rédaction}{Très exigeant · 45 à 60 min · Chapitre 1\hfill\hyperref[defi-cor-1-1]{Corrigé p.~\pageref*{defi-cor-1-1}}}
+\begin{blocEdition}{defi-ex-1}
+Toutes les solutions considérées sont des solutions d'acide chlorhydrique : le chlorure d'hydrogène
+y a totalement réagi avec l'eau. On note $h=\hho/\cst$. Sauf à la question 4, on néglige les ions
+apportés par l'eau elle-même.
+\label{figedition-defi-ex-1-1}\schema{defi-01-melange}
+\begin{questions}
+\item On mélange 100,0 mL d'une solution de pH 2,0 et 100,0 mL d'une solution de pH 4,0.
+Calculer le pH du mélange. Est-il égal à la moyenne des deux pH ?
+\item On mélange des volumes égaux de deux solutions de pH $p_1$ et $p_2$. Montrer que le pH $p$ du
+mélange vérifie $p\leq\frac{p_1+p_2}{2}$, avec égalité si et seulement si $p_1=p_2$.
+On pourra utiliser l'inégalité $\frac{a+b}{2}\geq\sqrt{ab}$, valable pour $a>0$ et $b>0$.
+\item À 100,0 mL de la solution de pH 2,0, quel volume de la solution de pH 4,0 faut-il ajouter pour
+obtenir un pH de 3,0 ? Comparer au volume d'eau pure qui produirait le même effet, et expliquer la différence.
+\item On dilue une solution d'acide chlorhydrique jusqu'à $c=\qty{1,0e-8}{mol.L^{-1}}$.
+Pourquoi la relation $\pH=-\log(c/\cst)$ conduit-elle à un résultat absurde ?
+On admet qu'en solution aqueuse $\hho\times[\ce{HO-}]=K_\mathrm{e}\times{\cst}^2$, avec
+$K_\mathrm{e}=\num{1.0e-14}$ à 25 °C, et que la solution est électriquement neutre :
+$\hho=[\ce{Cl-}]+[\ce{HO-}]$. Établir l'équation $h^2-\frac{c}{\cst}\,h-K_\mathrm{e}=0$ et en déduire le pH.
+\item Montrer que l'écart entre le pH exact et $-\log(c/\cst)$ est inférieur à 0,01 dès que
+$c>\qty{6,5e-7}{mol.L^{-1}}$. Écrire une fonction Python \code{ph\_exact(c)} qui renvoie le pH exact.
+\end{questions}
+Les questions 1 à 3 n'utilisent que la définition du pH ; les questions 4 et 5 s'appuient sur les relations admises.
+\end{blocEdition}
+
+\editionPage{defi-ex-2}{D02 · La méthode des ajouts dosés}{Recherche et rédaction}{Très exigeant · 45 à 60 min · Chapitre 2\hfill\hyperref[defi-cor-2-1]{Corrigé p.~\pageref*{defi-cor-2-1}}}
+\begin{blocEdition}{defi-ex-2}
+Dans un échantillon complexe, comme un jus de fruit ou une eau de rivière, d'autres espèces peuvent modifier
+l'absorbance de l'espèce dosée : une droite d'étalonnage préparée dans l'eau pure ne convient plus.
+La méthode des ajouts dosés contourne cette difficulté.\par\smallskip
+Dans cinq fioles jaugées de 50,0 mL, on introduit $V_0=\qty{10,0}{mL}$ de l'échantillon, de concentration inconnue
+$c_0$ en espèce colorée X, puis un volume $V_\mathrm{s}$ d'une solution étalon de X de concentration
+$c_\mathrm{s}=\qty{1,00e-4}{mol.L^{-1}}$ ; on complète avec de l'eau distillée. On mesure l'absorbance $A$
+de chaque solution, dans la même cuve et à la même longueur d'onde.
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{5}{c}@{}}\toprule
+$V_\mathrm{s}$ (mL) & 0 & 2,0 & 4,0 & 6,0 & 8,0\\
+$A$ & 0,209 & 0,311 & 0,417 & 0,520 & 0,623\\\bottomrule
+\end{tabular}\end{center}
+\begin{questions}
+\item Pourquoi une droite d'étalonnage réalisée dans l'eau pure peut-elle conduire à un résultat faux ?
+\item On admet que le coefficient $k$ de la loi $A=k\,c$ est le même dans les cinq fioles. Montrer que
+$A=\dfrac{k}{V_\mathrm{T}}\left(c_0V_0+c_\mathrm{s}V_\mathrm{s}\right)$, avec $V_\mathrm{T}=\qty{50,0}{mL}$.
+\item En déduire que $A$ est une fonction affine de $V_\mathrm{s}$. Exprimer l'abscisse du point d'intersection de
+la droite avec l'axe des volumes en fonction de $c_0$, $V_0$ et $c_\mathrm{s}$.
+\item Modéliser les mesures par une fonction affine, à la calculatrice ou en Python, puis déterminer $c_0$ et $k$.
+\item La matrice ajoute en réalité une absorbance parasite constante $A_\mathrm{p}=0{,}020$, présente dans les cinq
+fioles et non retirée. Quelle valeur de $c_0$ aurait-on dû trouver ? Quelle est l'erreur relative commise ?
+Proposer un moyen de l'éviter.
+\end{questions}
+Les volumes de l'échantillon et de la fiole sont les mêmes pour les cinq mesures : seule la quantité ajoutée varie.
+\end{blocEdition}
+
+\editionPage{defi-ex-3}{D03 · Identifier un acide inconnu}{Recherche et rédaction}{Très exigeant · 50 à 70 min · Chapitres 1 à 3\hfill\hyperref[defi-cor-3-1]{Corrigé p.~\pageref*{defi-cor-3-1}}}
+\begin{blocEdition}{defi-ex-3}
+Un flacon contient un solide blanc, soluble dans l'eau, dont l'étiquette a disparu : on sait seulement qu'il s'agit
+d'un acide carboxylique. On réalise quatre analyses.
+\begin{questions}[label=\otLabel{\Alph*.},leftmargin=1.9em]
+\item Titrage : 0,150 g de solide, dissous dans 50,0 mL d'eau, sont titrés par la soude à \qty{0,100}{mol.L^{-1}}.
+La courbe pH-métrique ne présente qu'un seul saut de pH, pour $V_\mathrm{E}=\qty{25,4}{mL}$.
+\item Analyse élémentaire, en pourcentages massiques : C : 40,7 \% ; H : 5,1 \% ; O : 54,2 \%.
+\item Spectre infrarouge : bande très large entre 2\,500 et 3\,200 cm$^{-1}$ et bande forte vers 1\,700 cm$^{-1}$.
+\item Température de fusion mesurée au banc Kofler : 184 °C.
+\end{questions}
+\begin{center}\small\renewcommand{\arraystretch}{1.02}
+\begin{tabular}{@{}lll@{}}\toprule
+Acide & Formule semi-développée & Température de fusion\\\midrule
+éthanoïque & \ce{CH3-COOH} & 17 °C\\
+benzoïque & \ce{C6H5-COOH} & 122 °C\\
+méthylpropanedioïque & \ce{CH3-CH(COOH)2} & 135 °C\\
+butanedioïque & \ce{HOOC-CH2-CH2-COOH} & 185 °C\\\bottomrule
+\end{tabular}\end{center}
+\begin{questions}
+\item Que révèle le spectre infrarouge ?
+\item Calculer la quantité d'ions hydroxyde versée à l'équivalence. Quelle serait la masse molaire de l'acide s'il ne
+possédait qu'un groupe carboxyle ? Montrer que l'analyse élémentaire conduit alors à une formule \ce{C_xH_yO_z}
+impossible : dans une telle molécule, le nombre d'atomes d'hydrogène est toujours pair.
+\item L'acide possède $p$ groupes carboxyle. Exprimer sa masse molaire en fonction de $p$. On admet qu'une molécule
+\ce{C_xH_yO_z} sans cycle compte $\frac{2x+2-y}{2}$ doubles liaisons ; en déduire que $p=2$ et donner la formule brute.
+\item Identifier l'acide. Pourquoi l'analyse élémentaire seule ne permettait-elle pas de conclure ?
+\item Pourquoi n'observe-t-on qu'un seul saut de pH, alors que la molécule possède deux groupes carboxyle ?
+On admet que les deux acidités de la molécule sont voisines.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-4}{D04 · Ordre 1 ou ordre 2 ?}{Recherche et rédaction}{Avancé · 40 à 50 min · Chapitre 4\hfill\hyperref[defi-cor-4-1]{Corrigé p.~\pageref*{defi-cor-4-1}}}
+\begin{blocEdition}{defi-ex-4}
+Toutes les transformations ne suivent pas une loi de vitesse d'ordre 1. On étudie à 25 °C la saponification de
+l'éthanoate d'éthyle par la soude :
+\[\ce{CH3COOC2H5 + HO- -> CH3COO- + C2H5OH}.\]
+Les deux réactifs sont introduits à la même concentration $c_0=\qty{1,00e-2}{mol.L^{-1}}$ : leurs concentrations
+restent égales à chaque instant ; on les note $c$. Un suivi conductimétrique donne :
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{7}{c}@{}}\toprule
+$t$ (s) & 0 & 120 & 300 & 600 & 900 & 1\,200 & 1\,800\\
+$c$ (mmol$\cdot$L$^{-1}$) & 10,00 & 8,83 & 7,52 & 6,02 & 5,03 & 4,31 & 3,36\\\bottomrule
+\end{tabular}\end{center}
+\begin{questions}
+\item Estimer le temps de demi-réaction à l'aide du tableau. Si la loi de vitesse était d'ordre 1, quelle
+concentration devrait-on mesurer à $t=\qty{1800}{s}$ ? Conclure.
+\item Calculer $\ln(c/c^\circ)$, avec $c^\circ=\qty{1}{mol.L^{-1}}$, à chaque date, puis les coefficients directeurs
+des segments qui joignent deux points successifs du graphique $\ln(c/c^\circ)=f(t)$. Pourquoi ce calcul
+confirme-t-il la conclusion précédente ?
+\item On admet que, pour cette réaction, la vitesse volumique de disparition vaut $v=k\,c^2$ (loi de vitesse
+d'ordre 2) et qu'alors $\dfrac{1}{c}=\dfrac{1}{c_0}+k\,t$. Tester ce modèle, à la calculatrice ou en Python, et
+déterminer la constante de vitesse $k$.
+\item Exprimer le temps de demi-réaction en fonction de $k$ et de $c_0$, le calculer et le comparer au résultat de la
+question 1. Que deviendrait-il pour $c_0=\qty{5,0e-3}{mol.L^{-1}}$ ?
+\item Montrer que la durée nécessaire pour diviser à nouveau la concentration par deux, de $c_0/2$ à $c_0/4$, est
+double de la précédente. À quelle date la concentration vaut-elle $c_0/4$ ? Comparer avec une loi d'ordre 1 de même
+temps de demi-réaction.
+\end{questions}
+Les lois de vitesse d'ordre 2 ne sont pas au programme : la relation utile est fournie dans l'énoncé.
+\end{blocEdition}
+
+\editionPage{defi-ex-5}{D05 · Une horloge à iode}{Recherche et rédaction}{Très exigeant · 50 à 60 min · Chapitres 4 et 5\hfill\hyperref[defi-cor-5-1]{Corrigé p.~\pageref*{defi-cor-5-1}}}
+\begin{blocEdition}{defi-ex-5}
+Dans une « horloge à iode », un mélange incolore devient brusquement bleu nuit au bout d'une durée $t_\mathrm{c}$
+très reproductible. Il contient de l'eau oxygénée, des ions iodure, un excès d'acide, de l'empois d'amidon et un peu
+d'ions thiosulfate \ce{S2O3^2-}. Deux réactions se produisent :
+\[\text{(1), lente : }\ce{H2O2 + 2 I- + 2 H3O+ -> I2 + 4 H2O}\qquad\text{(2), très rapide : }\ce{I2 + 2 S2O3^2- -> 2 I- + S4O6^2-}\]
+Tant qu'il reste des ions thiosulfate, le diiode formé par (1) est aussitôt consommé par (2) ; la couleur bleue du
+diiode en présence d'amidon apparaît dès que les ions thiosulfate sont épuisés. Dans tous les mélanges,
+$[\ce{S2O3^2-}]_0=\qty{5,0e-4}{mol.L^{-1}}$ et les ions oxonium sont en large excès.
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{5}{c}@{}}\toprule
+Expérience & 1 & 2 & 3 & 4 & 5\\\midrule
+$[\ce{H2O2}]_0$ (mol$\cdot$L$^{-1}$) & 0,020 & 0,020 & 0,040 & 0,010 & 0,020\\
+$[\ce{I-}]_0$ (mol$\cdot$L$^{-1}$) & 0,020 & 0,040 & 0,020 & 0,020 & 0,010\\
+$t_\mathrm{c}$ (s) & 52 & 26 & 27 & 103 & 105\\\bottomrule
+\end{tabular}\end{center}
+\begin{questions}
+\item Quelle concentration de diiode la réaction (1) a-t-elle produite à la date $t_\mathrm{c}$ ?
+\item Montrer que la concentration en ions iodure reste constante jusqu'à $t_\mathrm{c}$ et que celle de l'eau
+oxygénée diminue au plus de quelques pourcents. En déduire que la vitesse volumique de formation du diiode par (1)
+reste pratiquement constante jusqu'à $t_\mathrm{c}$ et l'exprimer en fonction de $t_\mathrm{c}$.
+\item On admet que la vitesse de la réaction (1) vérifie $v=k\,[\ce{H2O2}]\,[\ce{I-}]$. Montrer que les cinq
+expériences sont compatibles avec cette loi et déterminer $k$.
+\item On propose le mécanisme suivant :
+\[\begin{array}{ll}\text{a (lent) : }\ce{H2O2 + I- -> IO- + H2O}\qquad&\text{b (rapide) : }\ce{IO- + H3O+ -> HIO + H2O}\\[1mm]
+\text{c (rapide) : }\ce{HIO + I- -> I2 + HO-}\qquad&\text{d (rapide) : }\ce{HO- + H3O+ -> 2 H2O}\end{array}\]
+Vérifier qu'il rend compte de l'équation (1) et identifier les intermédiaires réactionnels. On admet que la vitesse
+de la transformation est celle de l'acte le plus lent et qu'elle est proportionnelle au produit des concentrations
+des entités qui s'y rencontrent : ce mécanisme est-il cohérent avec la loi de la question 3 ?
+\item Prévoir $t_\mathrm{c}$ pour $[\ce{H2O2}]_0=[\ce{I-}]_0=\qty{0,030}{mol.L^{-1}}$. Que se passerait-il sans ions
+thiosulfate ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-6}{D06 · Le générateur de technétium}{Recherche et rédaction}{Très exigeant · 50 à 60~min · Chapitre 6\hfill\hyperref[defi-cor-6-1]{Corrigé p.~\pageref*{defi-cor-6-1}}}
+\begin{blocEdition}{defi-ex-6}
+Les services de médecine nucléaire produisent eux-mêmes leur technétium 99m grâce à un générateur : du molybdène 99,
+fixé sur une colonne, se désintègre en technétium 99m, que l'on extrait par lavage de la colonne (élution).
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lccc@{}}\toprule
+Noyau & Demi-vie & Constante radioactive & Nombre de noyaux\\\midrule
+molybdène 99 (\ce{^{99}_{42}Mo}) & 66,0~h & $\lambda_1$ & $N_1(t)$\\
+technétium 99m (\ce{^{99\text{m}}_{43}Tc}) & 6,01~h & $\lambda_2$ & $N_2(t)$\\\bottomrule
+\end{tabular}\end{center}
+On admet que chaque désintégration d'un noyau de molybdène 99 donne un noyau de technétium 99m, et qu'à la date
+$t=0$ la colonne vient d'être éluée : $N_2(0)=0$ et $N_1(0)=N_{1,0}$.
+\begin{questions}
+\item Le molybdène 99 est émetteur $\beta^-$. Écrire l'équation de sa désintégration.
+\item Justifier que $\dfrac{\mathrm{d}N_2}{\mathrm{d}t}=\lambda_1N_1-\lambda_2N_2$.
+\item Vérifier que la fonction $N_2(t)=\dfrac{\lambda_1N_{1,0}}{\lambda_2-\lambda_1}\left(\mathrm{e}^{-\lambda_1t}-\mathrm{e}^{-\lambda_2t}\right)$
+est solution de cette équation et qu'elle respecte la condition initiale.
+\item Montrer que l'activité $A_2$ du technétium est maximale à la date
+$t_\mathrm{m}=\dfrac{\ln(\lambda_2/\lambda_1)}{\lambda_2-\lambda_1}$ et qu'à cette date les activités $A_1$ et $A_2$ sont égales.
+Calculer $t_\mathrm{m}$. Pourquoi élue-t-on le générateur environ une fois par jour ?
+\item Exprimer le rapport $A_2/A_1$ en fonction du temps. Vers quelle valeur tend-il lorsque $t$ devient grand
+devant $t_\mathrm{m}$ ? Interpréter : on parle d'équilibre transitoire.
+\end{questions}
+En pratique, une partie des désintégrations du molybdène 99 conduit directement au technétium 99 : la simplification
+admise ne change pas les conclusions.
+\end{blocEdition}
+
+\editionPage{defi-ex-7}{D07 · Le critère d'évolution vu par les vitesses}{Recherche et rédaction}{Très exigeant · 50 à 60~min · Chapitres 4, 5 et 7\hfill\hyperref[defi-cor-7-1]{Corrigé p.~\pageref*{defi-cor-7-1}}}
+\begin{blocEdition}{defi-ex-7}
+Une transformation \ce{A + B <=> C + D}, en solution, est modélisée par deux actes élémentaires opposés :
+\[\ce{A + B -> C + D}\ \text{de vitesse}\ v_1=k_1[\mathrm{A}][\mathrm{B}]\qquad\text{et}\qquad\ce{C + D -> A + B}\ \text{de vitesse}\ v_{-1}=k_{-1}[\mathrm{C}][\mathrm{D}].\]
+On donne $k_1=\qty{0,020}{L.mol^{-1}.min^{-1}}$ et $k_{-1}=\qty{0,0050}{L.mol^{-1}.min^{-1}}$. Le volume du mélange vaut
+$V=\qty{1,00}{L}$ et reste constant. Le programme ci-dessous simule l'évolution d'un mélange contenant initialement
+0,50~mol de A, 0,50~mol de B, 1,50~mol de C et 1,50~mol de D.
+\begin{codecote}[0.72]
+\begin{pythoncol}
+k1, k2, dt = 0.020, 0.005, 0.1
+a, b, c, d = 0.50, 0.50, 1.50, 1.50
+for i in range(1500):        # 150 min
+    v = k1 * a * b - k2 * c * d
+    a, b = a - v * dt, b - v * dt
+    c, d = c + v * dt, d + v * dt
+print(round(a, 3), round(c, 3), round(c*d/(a*b), 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.666 1.334 4.01
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item Exprimer la vitesse d'apparition $\dfrac{\mathrm{d}[\mathrm{C}]}{\mathrm{d}t}$ en fonction de $v_1$ et de $v_{-1}$.
+\item En utilisant le modèle de l'équilibre dynamique, montrer que la constante d'équilibre vaut $K=\dfrac{k_1}{k_{-1}}$.
+Calculer $K$.
+\item Montrer que $\dfrac{\mathrm{d}[\mathrm{C}]}{\mathrm{d}t}=k_1[\mathrm{A}][\mathrm{B}]\left(1-\dfrac{Q_\mathrm{r}}{K}\right)$. Retrouver ainsi
+le critère d'évolution spontanée.
+\item Pour le mélange simulé, calculer $Q_{\mathrm{r},\mathrm{i}}$ et prévoir le sens d'évolution. Déterminer par le calcul la
+composition du système à l'équilibre, puis la comparer au résultat affiché par le programme.
+\item Un catalyseur multiplie $k_1$ et $k_{-1}$ par un même facteur. Quel est son effet sur la constante d'équilibre ?
+sur la durée nécessaire pour atteindre l'équilibre ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-8}{D08 · Quand une pile est-elle usée ?}{Recherche et rédaction}{Très exigeant · 50 à 60~min · Chapitres 7 et 8\hfill\hyperref[defi-cor-8-1]{Corrigé p.~\pageref*{defi-cor-8-1}}}
+\begin{blocEdition}{defi-ex-8}
+Une pile Daniell est formée de deux demi-piles de volume $V=\qty{100}{mL}$, de concentrations initiales
+$[\ce{Cu^2+}]_0=[\ce{Zn^2+}]_0=c=\qty{0,10}{mol.L^{-1}}$ ; la lame de zinc est en excès. On admet, ce résultat étant hors
+programme, que sa tension à vide vaut à 25~°C
+\[U=1{,}10-0{,}0296\,\log Q_\mathrm{r}\qquad(U\text{ en volts}),\]
+où $Q_\mathrm{r}$ est le quotient de réaction de la réaction de fonctionnement. On donne $F=\qty{96500}{C.mol^{-1}}$ et
+$N_\mathrm{A}=\qty{6,02e23}{mol^{-1}}$. Le programme ci-dessous calcule la tension à vide lorsqu'une fraction $f$ de la
+capacité $Q_{\max}$ de la pile a été utilisée.
+\begin{codecote}[0.72]
+\begin{pythoncol}
+from math import log10
+F, V, c = 96500, 0.100, 0.10    # C/mol, L, mol/L
+Qmax = 2 * F * c * V            # capacité (C)
+for f in (0.5, 0.9, 0.99, 0.9999):
+    q = f * Qmax                # charge débitée (C)
+    cu = c - q / (2 * F * V)
+    zn = c + q / (2 * F * V)
+    print(f, round(1.10 - 0.0296 * log10(zn / cu), 3))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.5 1.086
+0.9 1.062
+0.99 1.032
+0.9999 0.973
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item Écrire l'équation de fonctionnement de la pile et l'expression de son quotient de réaction. Calculer la tension à
+vide initiale.
+\item Montrer que la tension à vide s'annule lorsque $Q_\mathrm{r}=K$. En déduire une valeur de la constante d'équilibre
+et la comparer à la valeur $K=\num{1.9e37}$ utilisée au chapitre~8.
+\item Exprimer $[\ce{Cu^2+}]$ et $[\ce{Zn^2+}]$ en fonction de la charge $q$ débitée depuis la mise en service.
+Calculer la capacité $Q_{\max}$ de la pile.
+\item Interpréter les valeurs affichées par le programme. La mesure de la tension à vide permet-elle de savoir qu'une
+pile est presque usée ?
+\item Quelle serait la concentration des ions \ce{Cu^2+} lorsque la tension à vide s'annule ? À combien d'ions cela
+correspond-il dans 100~mL ? Conclure : qu'est-ce qui fixe, en pratique, la durée de vie d'une pile Daniell ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-9}{D09 · Le pH d'un acide très dilué}{Recherche et rédaction}{Très exigeant · 40 à 50~min · Chapitres 1, 7 et 9\hfill\hyperref[defi-cor-9-1]{Corrigé p.~\pageref*{defi-cor-9-1}}}
+\begin{blocEdition}{defi-ex-9}
+On dilue de l'acide chlorhydrique jusqu'à une concentration apportée $c=\qty{1,0e-8}{mol.L^{-1}}$. La relation
+$\pH=-\log(c/\cst)$ donnerait $\pH=8$ : la solution serait basique, ce qui est absurde pour un acide. Pour comprendre,
+il faut tenir compte des ions apportés par l'eau elle-même. On donne $K_\mathrm{e}=\num{1.0e-14}$ à 25~°C ; le programme
+ci-dessous calcule le pH exact d'une solution d'acide fort de concentration $c$.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import log10, sqrt
+Ke = 1.0e-14
+for c in (1.0e-2, 1.0e-6, 1.0e-8, 1.0e-10):
+    h = (c + sqrt(c**2 + 4*Ke)) / 2
+    print(c, round(-log10(h), 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.01 2.0
+1e-06 6.0
+1e-08 6.98
+1e-10 7.0
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item Expliquer sans calcul pourquoi l'ajout d'un acide, même infime, ne peut pas rendre une solution basique.
+\item La solution contient les ions \ce{H3O+}, \ce{HO-} et \ce{Cl-}, avec $[\ce{Cl-}]=c$. En écrivant qu'elle est
+électriquement neutre, montrer que $h=[\ce{H3O+}]_\text{éq}$ vérifie $h^2-c\,h-K_\mathrm{e}=0$ (concentrations en
+\unit{mol.L^{-1}}).
+\item Résoudre cette équation et retrouver la ligne du programme qui calcule $h$. Vérifier la valeur du pH pour
+$c=\qty{1,0e-8}{mol.L^{-1}}$.
+\item Interpréter les quatre lignes affichées : pour quelles concentrations la relation usuelle $\pH=-\log(c/\cst)$
+est-elle fiable ? Que devient le pH lorsque $c$ tend vers 0 ?
+\item Sans refaire tous les calculs, décrire ce que donnerait l'étude analogue pour une base forte très diluée.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-10}{D10 · Pourquoi au moins 1,23 volt ?}{Recherche et rédaction}{Très exigeant · 40 à 50~min · Chapitres 8 et 10\hfill\hyperref[defi-cor-10-1]{Corrigé p.~\pageref*{defi-cor-10-1}}}
+\begin{blocEdition}{defi-ex-10}
+Aussi longtemps que la tension d'une cellule d'électrolyse de l'eau reste inférieure à 1,23~V, il ne se passe rien ;
+au-delà, le dihydrogène et le dioxygène apparaissent. Ce seuil n'est pas un hasard : 1,23~V est la tension à vide de la
+pile à combustible dihydrogène-dioxygène, dont l'électrolyse de l'eau est la transformation inverse. On donne
+$F=\qty{96500}{C.mol^{-1}}$ et l'énergie restituée par la combustion d'une mole de dihydrogène : $\qty{242}{kJ}$.
+\begin{codecote}[0.6]
+\begin{pythoncol}
+F, U0 = 96500, 1.23
+for U in (1.3, 1.6, 2.0, 2.4):
+    w = 2 * F * U / 1000   # kJ par mole
+    print(U, round(w), round(U0 / U, 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+1.3 251 0.95
+1.6 309 0.77
+2.0 386 0.61
+2.4 463 0.51
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item Dans la cellule, les deux électrodes couvertes de gaz constituent une pile dihydrogène-dioxygène de tension à
+vide $U_0=\qty{1,23}{V}$. Expliquer pourquoi aucune électrolyse durable n'est possible si le générateur impose une
+tension inférieure à $U_0$.
+\item Montrer que l'énergie électrique minimale nécessaire pour produire une mole de dihydrogène vaut
+$W_0=2F\,U_0\approx\qty{237}{kJ}$.
+\item En déduire l'énergie électrique minimale par kilogramme de dihydrogène, en kilowattheures
+($\qty{1}{kW.h}=\qty{3,6e6}{J}$).
+\item Interpréter les trois colonnes affichées par le programme. Que représente le quotient $U_0/U$ et comment
+évolue-t-il ?
+\item Comparer $W_0$ à l'énergie restituée par la combustion d'une mole de dihydrogène. Qu'est-ce que ce résultat,
+surprenant, impose à une cellule qui fonctionnerait exactement à 1,23~V ? À quelle tension la cellule n'échange-t-elle
+aucune chaleur avec l'extérieur ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-11}{D11 · Combien d'isomères ?}{Recherche et rédaction}{Avancé · 40 à 50~min · Chapitre 11\hfill\hyperref[defi-cor-11-1]{Corrigé p.~\pageref*{defi-cor-11-1}}}
+\begin{blocEdition}{defi-ex-11}
+Les alcanes ont pour formule brute $\ce{C_{$n$}H_{$2n+2$}}$. Pour $n\leq3$, un seul enchaînement est possible ; pour
+$n=4$, il en existe deux (butane et 2-méthylpropane). Le but du défi est de dénombrer, sans en oublier ni en compter
+deux fois, tous les squelettes possibles pour $n=5$ puis $n=6$ — puis de prendre la mesure de ce que devient ce
+dénombrement pour les grandes molécules : on compte 75 isomères de constitution pour \ce{C10H22} et plus de
+\num{366000} pour \ce{C20H42}.
+\begin{questions}
+\item Rappeler ce que sont des isomères de constitution. Justifier qu'un alcane à $n$ atomes de carbone, quelle que
+soit la forme de son squelette non cyclique, possède exactement $n-1$ liaisons C--C.
+\item Dessiner tous les squelettes possibles pour \ce{C5H12}, en expliquant la méthode suivie et pourquoi aucun autre
+n'existe. Nommer chaque isomère.
+\item Faire de même pour \ce{C6H14}.
+\item Au cours de la recherche, on obtient parfois deux dessins d'apparence différente qui représentent le même
+squelette. Donner un exemple rencontré pour \ce{C6H14} et expliquer comment la nomenclature permet de démasquer ces
+doublons.
+\item À l'aide des valeurs données pour \ce{C10H22} et \ce{C20H42}, expliquer pourquoi la chimie organique ne peut se
+passer ni des formules topologiques, ni d'une nomenclature systématique.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-12}{D12 · Jusqu'où pousser un rendement ?}{Recherche et rédaction}{Très exigeant · 50 à 60~min · Chapitres 7 et 12\hfill\hyperref[defi-cor-12-1]{Corrigé p.~\pageref*{defi-cor-12-1}}}
+\begin{blocEdition}{defi-ex-12}
+L'estérification \ce{CH3COOH + C2H5OH <=> CH3COOC2H5 + H2O} a pour constante d'équilibre $K=4{,}0$ et, en mélange
+équimolaire, plafonne à 67~\% d'avancement. Pour gagner les points manquants, le chimiste introduit l'alcool en
+excès : on note $r=n_{\text{alcool}}/n_{\text{acide}}$ le rapport initial, et $x$ le taux d'avancement final de
+l'acide. Le programme ci-dessous cherche l'excès nécessaire pour atteindre 95~\%.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import sqrt
+def taux(r):
+    d = sqrt(r*r - r + 1)
+    return (2/3) * (1 + r - d)
+r = 1.0
+while taux(r) < 0.95:
+    r = r + 0.5
+print(r, round(taux(r), 3))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+5.5 0.95
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item À l'aide du chapitre~7, rappeler pourquoi, en mélange équimolaire et quelle que soit la durée de chauffage, le
+taux d'avancement final vaut $2/3$.
+\item Pour 1~mol d'acide et $r$~mol d'alcool, dresser le tableau d'avancement et montrer que le taux d'avancement
+final $x$ vérifie $3x^2-4(1+r)\,x+4r=0$.
+\item En déduire que $x=\dfrac{2}{3}\left(1+r-\sqrt{r^2-r+1}\right)$, puis vérifier les valeurs attendues pour $r=1$
+et $r=2$ (exercice~10 du chapitre~7).
+\item Interpréter le fonctionnement et la sortie du programme. Quel excès faut-il pour atteindre 95~\% ? Commenter
+son coût.
+\item Comparer cette stratégie à l'élimination de l'eau au fur et à mesure. Pourquoi un catalyseur, lui, ne
+modifie-t-il jamais la valeur du palier ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-13}{D13 · Le caillou coincé dans un pneu}{Recherche et rédaction}{Très exigeant · 45 à 60~min · Chapitre 13\hfill\hyperref[defi-cor-13-1]{Corrigé p.~\pageref*{defi-cor-13-1}}}
+\begin{blocEdition}{defi-ex-13}
+Un vélo roule en ligne droite à la vitesse constante $V=\qty{8,0}{m.s^{-1}}$ ; ses roues, de rayon $R=\qty{0,35}{m}$, roulent
+sans glisser. Un petit caillou est coincé dans la bande de roulement d'un pneu. Dans le référentiel terrestre, avec
+$(Ox)$ horizontal dans le sens du mouvement et $(Oy)$ vertical vers le haut, ses coordonnées sont, en posant
+$\omega=V/R$ :
+\[x(t)=R\left(\omega t-\sin\omega t\right)\qquad\text{et}\qquad y(t)=R\left(1-\cos\omega t\right).\]
+Sa trajectoire est une \textbf{cycloïde}. Le programme ci-dessous calcule la norme de l'accélération du caillou à trois
+dates.
+\begin{codecote}[0.62]
+\begin{pythoncol}
+from math import sin, cos, sqrt
+R, V = 0.35, 8.0
+w = V / R
+for t in (0.00, 0.05, 0.10):
+    ax = R * w**2 * sin(w * t)
+    ay = R * w**2 * cos(w * t)
+    print(t, round(sqrt(ax**2 + ay**2)))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.0 183
+0.05 183
+0.1 183
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item Le centre C de la roue a pour coordonnées $x_\mathrm{C}=R\,\omega t$ et $y_\mathrm{C}=R$. Décrire son mouvement.
+\item Établir les coordonnées du vecteur vitesse du caillou. Calculer sa vitesse lorsqu'il touche le sol, puis
+lorsqu'il est au sommet de la roue. Commenter.
+\item Établir les coordonnées de son vecteur accélération et justifier les lignes correspondantes du programme.
+\item Montrer que la norme de l'accélération est constante, et retrouver la valeur affichée.
+\item \textit{Défi.} Montrer que le vecteur accélération est toujours dirigé vers le centre C de la roue. Le caillou
+a-t-il un mouvement circulaire uniforme dans le référentiel terrestre ? dans un référentiel lié au vélo ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-14}{D14 · De quelle hauteur lancer le wagon ?}{Recherche et rédaction}{Très exigeant · 45 à 60~min · Chapitres 13 et 14\hfill\hyperref[defi-cor-14-1]{Corrigé p.~\pageref*{defi-cor-14-1}}}
+\begin{blocEdition}{defi-ex-14}
+Un wagon de masse $m$, assimilé à un point, est lâché sans vitesse du haut d'une rampe, à la hauteur $h$ au-dessus du
+point bas d'un looping \textbf{circulaire} de rayon $R=\qty{6,0}{m}$. On néglige tous les frottements : l'énergie
+mécanique du wagon se conserve (classe de première). Sur le looping, le rail exerce sur le wagon une force $\vec{N}$
+perpendiculaire au rail, dirigée vers le centre du cercle ; le rail ne peut que pousser le wagon, si bien que
+$N\geq0$. Le programme ci-dessous compare $N$ au poids, au sommet et au point bas, pour trois hauteurs de départ.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+g, R = 9.81, 6.0
+for h in (12.0, 15.0, 18.0):
+    v2_haut = 2 * g * (h - 2 * R)
+    n_haut = v2_haut / (g * R) - 1   # N/(mg)
+    n_bas = 1 + 2 * h / R            # N/(mg)
+    print(h, round(n_haut, 2), round(n_bas, 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+12.0 -1.0 5.0
+15.0 0.0 6.0
+18.0 1.0 7.0
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item En utilisant la conservation de l'énergie mécanique, exprimer le carré de la vitesse du wagon au sommet du
+looping en fonction de $g$, $h$ et $R$.
+\item Appliquer la deuxième loi de Newton au wagon au sommet du looping, dans le repère de Frenet. En déduire
+l'expression de $N/(m\,g)$ au sommet et retrouver la ligne correspondante du programme.
+\item Quelle condition $N$ doit-il vérifier pour que le wagon reste sur le rail ? En déduire la hauteur minimale de
+départ, puis interpréter la première ligne affichée.
+\item Établir de même l'expression de $N/(m\,g)$ au point bas. Que vaut-elle pour la hauteur minimale ?
+\item À l'aide de l'exercice~14 du chapitre~13, expliquer pourquoi les loopings réels ne sont pas circulaires.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-15}{D15 · Lancer à 45° ?}{Recherche et rédaction}{Avancé · 40 à 50~min · Chapitre 15\hfill\hyperref[defi-cor-15-1]{Corrigé p.~\pageref*{defi-cor-15-1}}}
+\begin{blocEdition}{defi-ex-15}
+« Pour lancer le plus loin possible, il faut lancer à 45° » : la règle est souvent citée. Elle est exacte pour un
+projectile lancé depuis le sol, sans frottement. Un lanceur de poids lâche pourtant l'engin à environ \qty{2,10}{m} de
+hauteur. On reprend les données de l'exercice~6 : $v_0=\qty{13,5}{m.s^{-1}}$ et $g=\qty{9,81}{m.s^{-2}}$. Le programme
+ci-dessous calcule la longueur du jet pour tous les angles entiers de $30^\circ$ à $50^\circ$ et retient le meilleur.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import sin, cos, sqrt, radians
+v0, g, h = 13.5, 9.81, 2.10
+meilleur, angle = 0, 0
+for a in range(30, 51):
+    vx = v0 * cos(radians(a))
+    vz = v0 * sin(radians(a))
+    t = (vz + sqrt(vz**2 + 2*g*h)) / g
+    if vx * t > meilleur:
+        meilleur, angle = vx * t, a
+print(angle, round(meilleur, 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+42 20.57
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item Pour un lancer depuis le sol ($h=0$), montrer que la portée vaut $D=\dfrac{v_0^2\sin(2\alpha)}{g}$. En déduire l'angle qui
+la rend maximale et la valeur correspondante.
+\item Pour un lancer depuis la hauteur $h$, justifier l'expression de la durée du vol utilisée par le programme.
+\item Interpréter la sortie du programme. Pourquoi l'angle optimal est-il inférieur à $45^\circ$ lorsque $h>0$ ?
+\item Comparer les longueurs obtenues à $42^\circ$ et à $35^\circ$. Les meilleurs lanceurs lâchent le poids vers $37^\circ$ :
+sachant qu'ils communiquent une vitesse plus grande quand l'angle est plus faible, commenter.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-16}{D16 · Peser le trou noir de la Galaxie}{Recherche et rédaction}{Très exigeant · 50 à 60~min · Chapitre 16\hfill\hyperref[defi-cor-16-1]{Corrigé p.~\pageref*{defi-cor-16-1}}}
+\begin{blocEdition}{defi-ex-16}
+Au centre de la Voie lactée, des étoiles tournent à grande vitesse autour d'un objet invisible, Sagittarius~A*. Leur
+suivi pendant trente ans a valu le prix Nobel de physique 2020 à Reinhard Genzel et Andrea Ghez. Les orbites de trois de
+ces étoiles sont des ellipses de même foyer ; leurs demi-grands axes $a$ et leurs périodes $T$ valent, en arrondissant :
+S2 : \qty{1031}{ua} et 16,05~ans ; S38 : \qty{1169}{ua} et 19,2~ans ; S55 : \qty{889}{ua} et 12,8~ans.
+\begin{codecote}[0.62]
+\begin{pythoncol}
+etoiles = {"S2": (1031, 16.05),
+           "S38": (1169, 19.2),
+           "S55": (889, 12.8)}
+for nom, (a, T) in etoiles.items():
+    M = a**3 / T**2          # en masses solaires
+    print(nom, round(M / 1e6, 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+S2 4.25
+S38 4.33
+S55 4.29
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+Données : $G=\qty{6,67e-11}{N.m^2.kg^{-2}}$ ; masse du Soleil $M_\odot=\qty{1,99e30}{kg}$ ; $\qty{1}{ua}=\qty{1,496e11}{m}$ ;
+$c=\qty{3,00e8}{m.s^{-1}}$ ; excentricité de l'orbite de S2 : $e=0{,}886$ (distances au foyer extrêmes : $a(1-e)$ et
+$a(1+e)$).
+\begin{questions}
+\item Pour la Terre autour du Soleil, $T=\qty{1}{an}$ et $a=\qty{1}{ua}$. En écrivant la troisième loi de Kepler pour la Terre et
+pour une étoile tournant autour d'un astre de masse $M$, montrer que $\dfrac{M}{M_\odot}=\dfrac{a^3}{T^2}$, $a$ étant en ua et $T$ en
+années. Justifier la ligne de calcul du programme.
+\item Interpréter les valeurs affichées. Que peut-on conclure sur l'objet central ?
+\item Calculer sa masse en kilogrammes. On admet que le rayon d'un trou noir de masse $M$ vaut $R_\mathrm{S}=\dfrac{2GM}{c^2}$ :
+le calculer, en ua.
+\item Calculer la distance minimale entre S2 et l'objet central. Combien de fois est-elle plus grande que $R_\mathrm{S}$ ?
+Pourquoi cette observation renforce-t-elle l'hypothèse d'un trou noir ?
+\item En appliquant la loi des aires aux deux extrémités du grand axe, calculer le rapport des vitesses de S2 au plus près
+et au plus loin. Au plus près, S2 file à \qty{7650}{km.s^{-1}} : quelle est sa vitesse au plus loin ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-17}{D17 · La clepsydre}{Recherche et rédaction}{Avancé · 45 à 60~min · Chapitre 17\hfill\hyperref[defi-cor-17-1]{Corrigé p.~\pageref*{defi-cor-17-1}}}
+\begin{blocEdition}{defi-ex-17}
+Dans l'Égypte ancienne, on mesurait le temps, la nuit, avec des clepsydres : des vases percés d'un petit orifice près du
+fond, dont le niveau d'eau baisse pendant la vidange. La plus ancienne connue, trouvée à Karnak, date d'environ 1400
+av.~J.-C. Pour que des graduations régulièrement espacées marquent des durées égales, le niveau doit baisser à vitesse
+constante. On étudie un vase de révolution de hauteur $H=\qty{30}{cm}$, de rayon $R=\qty{10}{cm}$ au sommet, qui doit se
+vider en 12~heures. On note $h$ la hauteur d'eau, $r$ le rayon du vase à cette hauteur et $s$ la section de l'orifice ;
+l'eau sort à la vitesse $v=\sqrt{2\,g\,h}$ (formule de Torricelli), avec $g=\qty{9,81}{m.s^{-2}}$. Le programme simule la
+vidange d'un vase de profil $r=R\,(h/H)^p$, avec le même orifice, pour un cylindre ($p=0$) et pour la clepsydre
+($p=1/4$) : il affiche les hauteurs d'eau, en centimètres, toutes les trois heures.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import pi, sqrt
+g, H, R = 9.81, 0.30, 0.10
+s = 9.0e-8                    # orifice (m²)
+def niveau(p, duree):
+    h, t, dt = H, 0, 1
+    while t < duree and h > 0:
+        r = R * (h / H)**p
+        v = sqrt(2 * g * h)
+        h = h - s*v / (pi*r**2) * dt
+        t = t + dt
+    return round(100 * max(h, 0.0), 1)
+for n in range(0, 13, 3):
+    T = 3600 * n
+    print(n, niveau(0, T), niveau(0.25, T))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0 30.0 30.0
+3 23.0 22.5
+6 16.9 15.0
+9 11.7 7.5
+12 7.5 0.0
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item Pendant la durée $\mathrm{d}t$, le niveau baisse de $|\mathrm{d}h|$. En écrivant que le volume perdu par le vase est sorti par
+l'orifice, montrer que le niveau descend à la vitesse $u=-\dfrac{\mathrm{d}h}{\mathrm{d}t}=\dfrac{s\,\sqrt{2\,g\,h}}{\pi\,r(h)^2}$.
+\item Pour un cylindre de rayon $R$, vérifier que $\sqrt{h}=\sqrt{H}-\dfrac{s}{\pi R^2}\sqrt{\dfrac{g}{2}}\;t$ convient. En déduire la durée
+de vidange. Pourquoi des graduations régulières seraient-elles fausses ?
+\item Quel profil donne une vitesse de descente $u$ constante ? Montrer que $h=H\,(r/R)^4$. Calculer $u$, puis $s$ et le
+diamètre de l'orifice pour une vidange en 12~heures.
+\item Interpréter la sortie du programme.
+\item Montrer que le cylindre se vide en exactement deux fois plus de temps que la clepsydre. Les clepsydres égyptiennes
+avaient la forme d'un tronc de cône évasé vers le haut : commenter.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-18}{D18 · Faire le vide}{Recherche et rédaction}{Avancé · 40 à 50~min · Chapitre 18\hfill\hyperref[defi-cor-18-1]{Corrigé p.~\pageref*{defi-cor-18-1}}}
+\begin{blocEdition}{defi-ex-18}
+Pour faire le vide dans un récipient de volume $V=\qty{1,0}{L}$, initialement rempli d'air sous $p_0=\qty{1013}{hPa}$, on
+utilise une pompe à piston dont le cylindre a un volume $v=\qty{50}{mL}$. À chaque coup de pompe, le piston recule : l'air
+du récipient se détend dans le récipient et le cylindre réunis. Une soupape se ferme, puis le piston refoule dans
+l'atmosphère l'air contenu dans le cylindre. La température reste constante et l'air se comporte comme un gaz parfait.
+Le programme simule les coups de pompe successifs jusqu'à ce que la pression descende sous \qty{1}{hPa} ; \code{vm} est le
+volume mort, partie du cylindre que le piston ne peut pas vider.
+\begin{codecote}[0.62]
+\begin{pythoncol}
+p0, V, v, vm = 1013, 1.0, 0.050, 0.0  # hPa, L
+p, k = p0, 0
+while p > 1 and k < 1000:
+    p = (p*V + p0*vm) / (V + v + vm)
+    k = k + 1
+print(k, round(p, 3))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+142 0.992
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item Sans volume mort, montrer qu'après le premier coup de pompe la pression vaut $p_1=p_0\,\dfrac{V}{V+v}$. La calculer.
+\item Montrer que la suite des pressions $(p_k)$ est géométrique et exprimer $p_k$ en fonction de $k$.
+\item Retrouver par le calcul le nombre de coups affiché par le programme.
+\item Pour gonfler un pneu de vélo de \qty{1,5}{L}, initialement sous \qty{1,0}{bar}, chaque coup d'une pompe de \qty{0,10}{L}
+y fait entrer l'air atmosphérique contenu dans la pompe. Comment évolue la pression du pneu au fil des coups ?
+Comparer avec la mise sous vide.
+\item Une pompe réelle a un volume mort $v_\mathrm{m}=\qty{0,50}{mL}$ : après chaque refoulement, il y reste de l'air sous
+$p_0$. Justifier la ligne de calcul du programme, puis montrer que la pression ne peut pas descendre sous
+$p_\mathrm{lim}=p_0\,\dfrac{v_\mathrm{m}}{v+v_\mathrm{m}}$. Calculer $p_\mathrm{lim}$ et prévoir la sortie du programme avec
+\code{vm = 0.0005}.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-19}{D19 · L'expérience de Joule}{Recherche et rédaction}{Avancé · 40 à 50~min · Chapitre 19\hfill\hyperref[defi-cor-19-1]{Corrigé p.~\pageref*{defi-cor-19-1}}}
+\begin{blocEdition}{defi-ex-19}
+En 1850, James Prescott Joule publie une expérience restée célèbre : la chute de masses fait tourner des palettes qui
+brassent l'eau d'un récipient en cuivre, dont la température s'élève légèrement. Il montre ainsi qu'un travail produit
+le même effet qu'un transfert thermique. On en étudie une version simplifiée, aux données arrondies : deux masses de
+\qty{13,0}{kg} chacune descendent de \qty{1,60}{m}, puis sont remontées sans entraîner les palettes ; l'opération est
+répétée 20 fois. Les masses arrivent en bas à la vitesse de \qty{0,060}{m.s^{-1}}. Le récipient contient \qty{6,00}{kg}
+d'eau ; le récipient et les palettes ont une capacité thermique de \qty{400}{J.K^{-1}}.
+\schema{19-joule}
+Données : $g=\qty{9,81}{N.kg^{-1}}$ ; $c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$.
+\begin{questions}
+\item On choisit le système \{eau, récipient, palettes\}. Quel transfert d'énergie reçoit-il pendant une descente ?
+Pourquoi sa température augmente-t-elle, alors qu'aucun corps chaud ne le touche ?
+\item On admet que le travail reçu par le système est égal à l'énergie mécanique perdue par les masses. Le calculer
+pour les 20 descentes et montrer que le terme dû à la vitesse finale des masses est négligeable.
+\item En négligeant les échanges avec l'air, prévoir l'élévation de température du système.
+\item Joule mesure une élévation de \qty{0,313}{K}. À son époque, les transferts thermiques se mesuraient en calories :
+\qty{1}{cal} élève de \qty{1}{\degreeCelsius} la température de \qty{1}{g} d'eau. Montrer que le récipient et les palettes
+équivalent à \qty{95,7}{g} d'eau, puis calculer combien de joules correspondent, d'après ces mesures, à une calorie.
+Comparer à la valeur actuelle, \qty{4,18}{J}.
+\item Proposer des causes à l'écart. Pourquoi Joule répétait-il vingt fois la descente ? En quoi cette expérience
+fonde-t-elle le premier principe ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-20}{D20 · Café : le lait avant ou après ?}{Recherche et rédaction}{Avancé · 40 à 50~min · Chapitre 20\hfill\hyperref[defi-cor-20-1]{Corrigé p.~\pageref*{defi-cor-20-1}}}
+\begin{blocEdition}{defi-ex-20}
+Vous vous servez \qty{200}{g} de café à \qty{90}{\degreeCelsius}, dans une pièce à \qty{20}{\degreeCelsius}, et vous comptez le boire
+dans dix minutes avec \qty{50}{g} de lait sortant du réfrigérateur, à \qty{5}{\degreeCelsius}. Pour obtenir le café le plus frais,
+faut-il verser le lait tout de suite (option A) ou juste avant de boire (option B) ? On admet que la boisson refroidit
+selon la loi de Newton, avec un temps caractéristique $\tau=\qty{25}{min}$, le même avec ou sans lait ; le lait et le café
+ont la même capacité thermique massique ; le mélange est instantané et n'échange pas d'énergie avec l'extérieur.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import exp
+Te, Tc, Tl, tau = 20, 90, 5, 1500   # °C, s
+mc, ml, t = 200, 50, 600            # g, s
+def refroidir(T0, t):
+    return Te + (T0 - Te) * exp(-t / tau)
+def melanger(Tc, Tl):
+    return (mc * Tc + ml * Tl) / (mc + ml)
+TA = refroidir(melanger(Tc, Tl), t)
+TB = melanger(refroidir(Tc, t), Tl)
+print(round(TA, 2), round(TB, 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+55.53 54.54
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item Par un bilan d'énergie, montrer que deux liquides de masses $m_\mathrm{c}$ et $m_\mathrm{l}$, de températures $T_\mathrm{c}$ et
+$T_\mathrm{l}$, atteignent la température $\dfrac{m_\mathrm{c}T_\mathrm{c}+m_\mathrm{l}T_\mathrm{l}}{m_\mathrm{c}+m_\mathrm{l}}$. Quelle fonction du programme
+utilise ce résultat ?
+\item Justifier la fonction \code{refroidir}, puis calculer à la main la température $T_\mathrm{A}$ du café de l'option A.
+\item Calculer la température $T_\mathrm{B}$ de l'option B. Quelle option donne le café le plus frais ? Proposer une
+explication physique.
+\item Montrer que $T_\mathrm{A}-T_\mathrm{B}=\dfrac{m_\mathrm{l}}{m_\mathrm{c}+m_\mathrm{l}}\,(T_\mathrm{e}-T_\mathrm{l})\left(1-\mathrm{e}^{-t/\tau}\right)$.
+Que se passe-t-il si le lait est à la température de la pièce ? Quel écart maximal peut-on obtenir ?
+\item Le lait augmente la capacité thermique du contenu de la tasse. Comment cela modifie-t-il le temps caractéristique ?
+La conclusion en est-elle affaiblie ou renforcée ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-21}{D21 · Pourquoi entend-on les basses du voisin ?}{Recherche et rédaction}{Avancé · 40 à 50~min · Chapitre 21\hfill\hyperref[defi-cor-21-1]{Corrigé p.~\pageref*{defi-cor-21-1}}}
+\begin{blocEdition}{defi-ex-21}
+Lorsqu'un son frappe une paroi, une partie de son énergie est réfléchie, une partie absorbée, une partie transmise.
+L'\textbf{indice d'affaiblissement} $R$ d'une paroi est l'atténuation, en décibels, entre le niveau sonore du côté de la
+source et le niveau transmis de l'autre côté. Pour une paroi simple, la « loi de masse » en donne une estimation :
+$R=20\log(m_\mathrm{s}\,f)-47$, où $m_\mathrm{s}$ est la masse surfacique de la paroi (en \unit{kg.m^{-2}}) et $f$ la fréquence
+du son (en Hz). Le programme calcule $R$ pour un mur de béton de \qty{10}{cm}, de masse surfacique \qty{230}{kg.m^{-2}}.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import log10
+ms = 230                     # kg/m², béton de 10 cm
+for f in [125, 250, 500, 1000, 2000, 4000]:   # Hz
+    R = 20 * log10(ms * f) - 47   # loi de masse
+    print(f, round(R, 1))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+125 42.2
+250 48.2
+500 54.2
+1000 60.2
+2000 66.3
+4000 72.3
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+Données : cloison faite de deux plaques de plâtre, $m_\mathrm{s}=\qty{20}{kg.m^{-2}}$ ; porte en bois, $m_\mathrm{s}=\qty{15}{kg.m^{-2}}$.
+\begin{questions}
+\item Montrer que $R$ augmente de \qty{6}{dB} chaque fois que la fréquence double. Le vérifier sur la sortie du programme.
+\item Une conversation produit \qty{60}{dB} à \qty{500}{Hz} contre une paroi. Quel niveau entend-on de l'autre côté du mur de
+béton ? de la cloison en plaques de plâtre ? Conclure.
+\item Le voisin écoute de la musique : \qty{90}{dB} à \qty{63}{Hz} pour les basses, \qty{80}{dB} à \qty{4000}{Hz} pour les aigus.
+Calculer les niveaux transmis par le mur de béton et expliquer le titre du défi.
+\item Par combien faudrait-il multiplier la masse du mur pour gagner \qty{20}{dB} à toutes les fréquences ? Est-ce réaliste ?
+\item Le mur de \qty{10}{m^2} comporte une porte en bois de \qty{2}{m^2}. Une atténuation $R$ laisse passer la fraction
+$\tau=10^{-R/10}$ de l'intensité, et les fractions transmises par chaque partie s'ajoutent en proportion des surfaces.
+Calculer l'indice d'affaiblissement de l'ensemble à \qty{500}{Hz} et commenter.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-22}{D22 · Des franges dans la tache de diffraction}{Recherche et rédaction}{Avancé · 45 à 60~min · Chapitre 22\hfill\hyperref[defi-cor-22-1]{Corrigé p.~\pageref*{defi-cor-22-1}}}
+\begin{blocEdition}{defi-ex-22}
+Dans une expérience de fentes d'Young réelle, chaque fente a une largeur $a$ non négligeable et diffracte la lumière :
+les franges d'interférences n'apparaissent que là où parvient la lumière diffractée. On admet qu'au point d'abscisse $x$
+de l'écran, l'intensité lumineuse relative est le produit d'un terme de diffraction $\left(\dfrac{\sin u}{u}\right)^2$, avec
+$u=\dfrac{\pi\,a\,x}{\lambda D}$, et d'un terme d'interférences $\cos^2\left(\dfrac{\pi\,b\,x}{\lambda D}\right)$. On utilise un laser de
+longueur d'onde $\lambda=\qty{633}{nm}$, des fentes de largeur $a=\qty{0,10}{mm}$ distantes de $b=\qty{0,50}{mm}$ et un écran à
+$D=\qty{2,0}{m}$. Le programme calcule l'intensité relative au centre des franges brillantes successives.
+\begin{codecote}[0.7]
+\begin{pythoncol}
+from math import sin, cos, pi
+lam, D, a, b = 633e-9, 2.0, 0.10e-3, 0.50e-3
+def intensite(x):
+    u = pi * a * x / (lam * D)
+    env = 1 if u == 0 else (sin(u) / u)**2
+    return env * cos(pi * b * x / (lam * D))**2
+i = lam * D / b                  # interfrange
+for k in range(6):
+    x = k * i
+    I = round(intensite(x), 3)
+    print(k, round(1000 * x, 2), I)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0 0.0 1.0
+1 2.53 0.875
+2 5.06 0.573
+3 7.6 0.255
+4 10.13 0.055
+5 12.66 0.0
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item Avec une seule fente, calculer la largeur $L$ de la tache centrale de diffraction.
+\item Calculer l'interfrange $i$ et montrer que $\dfrac{L}{i}=\dfrac{2b}{a}$.
+\item Où se trouve le premier zéro de la figure de diffraction ? Montrer que la frange brillante d'ordre 5 tombe sur ce
+zéro. Combien de franges brillantes la tache centrale contient-elle ?
+\item Interpréter la sortie du programme. Pourquoi l'intensité des franges décroît-elle en s'éloignant du centre ?
+\item Avec des fentes deux fois plus fines, la distance $b$ restant la même, combien de franges brillantes compterait-on
+dans la tache centrale ? Quel inconvénient cela présente-t-il ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-23}{D23 · Le passage d'une voiture}{Recherche et rédaction}{Avancé · 45 à 60~min · Chapitre 23\hfill\hyperref[defi-cor-23-1]{Corrigé p.~\pageref*{defi-cor-23-1}}}
+\begin{blocEdition}{defi-ex-23}
+Un auditeur se tient à la distance $b=\qty{10}{m}$ d'une route rectiligne. Une voiture passe à $v_\mathrm{E}=\qty{25}{m.s^{-1}}$ en
+klaxonnant à $f_\mathrm{E}=\qty{900}{Hz}$ ; le son se propage à $v=\qty{340}{m.s^{-1}}$. Lorsque la voiture n'est pas dans l'axe de
+l'auditeur, seule compte la composante de sa vitesse dans la direction de l'auditeur : $f_\mathrm{R}=f_\mathrm{E}\,\dfrac{v}{v-v_\mathrm{E}\cos\theta}$,
+où $\theta$ est l'angle entre la vitesse de la voiture et la direction voiture-auditeur au moment de l'émission. On
+repère la voiture par son abscisse $x=v_\mathrm{E}\,t$ le long de la route, l'origine étant le point le plus proche de
+l'auditeur. Le programme affiche, pour plusieurs dates d'émission $t$, la date de réception et la fréquence reçue.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import sqrt
+v, fE, vE, b = 340.0, 900.0, 25.0, 10.0
+for t in [-4, -2, -1, 0, 1, 2, 4]:
+    x = vE * t               # abscisse (m)
+    d = sqrt(x**2 + b**2)    # distance (m)
+    cos_theta = -x / d
+    fR = fE * v / (v - vE * cos_theta)
+    print(t, round(t + d/v, 2), round(fR, 1))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+-4 -3.7 971.0
+-2 -1.85 969.9
+-1 -0.92 965.9
+0 0.03 900.0
+1 1.08 842.5
+2 2.15 839.5
+4 4.3 838.6
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item Que devient $\cos\theta$ très longtemps avant et très longtemps après le passage ? Montrer que $f_\mathrm{R}$ tend alors
+vers les valeurs données par les relations à une dimension, et les calculer.
+\item Quelle fréquence l'auditeur reçoit-il pour le son émis au moment où la voiture passe au plus près de lui ? À quelle
+date le reçoit-il ?
+\item Pourquoi les dates de réception diffèrent-elles des dates d'émission ?
+\item Le décalage n'est pas symétrique : comparer $f_\mathrm{app}-f_\mathrm{E}$ et $f_\mathrm{E}-f_\text{éloi}$. La moyenne des deux valeurs
+extrêmes donne-t-elle $f_\mathrm{E}$ ? Comment retrouver $v_\mathrm{E}$ et $f_\mathrm{E}$ à partir des fréquences extrêmes ?
+\item La fréquence varie surtout pendant que la voiture parcourt les quelques dizaines de mètres les plus proches de
+l'auditeur. Estimer la durée de cette transition et comparer les situations $b=\qty{10}{m}$ et $b=\qty{50}{m}$.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-24}{D24 · Où placer l'œil ? Le cercle oculaire}{Recherche et rédaction}{Avancé · 45 à 60~min · Chapitre 24\hfill\hyperref[defi-cor-24-1]{Corrigé p.~\pageref*{defi-cor-24-1}}}
+\begin{blocEdition}{defi-ex-24}
+Toute la lumière collectée par l'objectif d'une lunette ressort en passant par un petit disque situé derrière
+l'oculaire : le \textbf{cercle oculaire}, image de l'objectif donnée par l'oculaire. C'est là que l'observateur doit placer
+la pupille de son œil. On étudie une lunette 70/700 (objectif de diamètre $D=\qty{70}{mm}$ et de distance focale
+$f'_1=\qty{700}{mm}$) utilisée avec plusieurs oculaires de distance focale $f'_2$. On rappelle la relation de conjugaison d'une
+lentille mince, $\dfrac{1}{\overline{OA'}}-\dfrac{1}{\overline{OA}}=\dfrac{1}{f'}$, et l'expression du grandissement, $\gamma=\dfrac{\overline{OA'}}{\overline{OA}}$. Le
+programme calcule, pour chaque oculaire, le grossissement, la distance $x$ entre l'oculaire et le cercle oculaire, et le
+diamètre de ce cercle, en millimètres.
+\begin{codecote}[0.7]
+\begin{pythoncol}
+D, f1 = 70, 700                  # mm
+for f2 in [40, 25, 10, 4]:       # mm, oculaires
+    G = f1 / f2
+    x = f2 * (f1 + f2) / f1      # cercle oculaire
+    print(f2, round(G, 1), round(x, 1), round(D/G, 1))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+40 17.5 42.3 4.0
+25 28.0 25.9 2.5
+10 70.0 10.1 1.0
+4 175.0 4.0 0.4
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item L'objectif se trouve à la distance $f'_1+f'_2$ en avant de l'oculaire. Montrer que son image par l'oculaire est réelle
+et située à la distance $x=\dfrac{f'_2\,(f'_1+f'_2)}{f'_1}$ derrière l'oculaire. Calculer $x$ pour l'oculaire de \qty{10}{mm}.
+\item Montrer que le diamètre du cercle oculaire vaut $d'=\dfrac{D\,f'_2}{f'_1}=\dfrac{D}{G}$.
+\item Interpréter la sortie du programme. Pourquoi les oculaires de courte focale obligent-ils à approcher l'œil très
+près du verre ?
+\item La nuit, la pupille de l'œil s'ouvre jusqu'à \qty{7}{mm} environ. Quel grossissement minimal faut-il pour que toute la
+lumière collectée par l'objectif entre dans l'œil ? Quel est l'oculaire de plus grande focale utilisable ?
+\item Pour un astre étendu comme une planète, l'éclat de l'image est proportionnel à $d'^2$. Comparer l'éclat obtenu avec
+les oculaires de \qty{10}{mm} et de \qty{40}{mm}, puis relier la règle du grossissement maximal utile ($G\approx2D$, $D$ en mm) au
+diamètre du cercle oculaire.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-25}{D25 · Mesurer la constante de Planck avec des LED}{Recherche et rédaction}{Avancé · 45 à 60~min · Chapitre 25\hfill\hyperref[defi-cor-25-1]{Corrigé p.~\pageref*{defi-cor-25-1}}}
+\begin{blocEdition}{defi-ex-25}
+Une diode électroluminescente (LED) n'émet de la lumière que si la tension à ses bornes dépasse une tension de seuil
+$U_\mathrm{s}$. À ce seuil, chaque électron qui traverse la diode reçoit l'énergie $e\,U_\mathrm{s}$, qu'il cède en émettant un photon
+d'énergie voisine de $h\,c/\lambda$. Un élève mesure la tension de seuil de cinq LED.
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+LED & infrarouge & rouge & jaune & verte & bleue \\
+$\lambda$ (nm) & 940 & 630 & 590 & 525 & 470 \\
+$U_\mathrm{s}$ (V) & 1,28 & 1,91 & 2,04 & 2,29 & 2,56 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Le programme effectue la régression linéaire de $U_\mathrm{s}$ en fonction de $1/\lambda$ ($e=\qty{1,602e-19}{C}$ ;
+$c=\qty{2,998e8}{m.s^{-1}}$).
+\begin{python}
+lam = [940, 630, 590, 525, 470]          # nm
+Us = [1.28, 1.91, 2.04, 2.29, 2.56]      # V
+x = [1e9 / l for l in lam]               # 1/lambda (m^-1)
+n = len(x)
+mx, my = sum(x) / n, sum(Us) / n
+num = sum((xi - mx) * (yi - my) for xi, yi in zip(x, Us))
+den = sum((xi - mx)**2 for xi in x)
+a = num / den                            # coefficient directeur (V.m)
+h = a * 1.602e-19 / 2.998e8
+print(round(a * 1e6, 3), round(h * 1e34, 2))
+\end{python}
+\begin{console}
+1.203 6.43
+\end{console}
+\begin{questions}
+\item Montrer que, si $e\,U_\mathrm{s}=\dfrac{h\,c}{\lambda}$, la tension de seuil est proportionnelle à $1/\lambda$, avec un coefficient
+directeur égal à $\dfrac{h\,c}{e}$.
+\item Que contient la liste \code{x} ? Que calcule la variable \code{a} ? Dans quelle unité le programme affiche-t-il sa
+valeur ?
+\item En déduire la valeur de $h$ obtenue par l'élève et l'écart relatif avec la valeur de référence,
+$h=\qty{6,626e-34}{J.s}$.
+\item Pour chaque LED, comparer $U_\mathrm{s}$ à $\dfrac{h\,c}{e\lambda}$. L'écart est-il aléatoire ou systématique ? Proposer des causes.
+\item L'élève a ajouté une LED infrarouge, dont la lumière est invisible. Quel est l'intérêt de cette mesure ? Comment
+repérer que cette LED s'allume ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-26}{D26 · Où passe la moitié de l'énergie ?}{Recherche et rédaction}{Très exigeant · 50 à 60~min · Chapitre 26\hfill\hyperref[defi-cor-26-1]{Corrigé p.~\pageref*{defi-cor-26-1}}}
+\begin{blocEdition}{defi-ex-26}
+Un condensateur de capacité $C=\qty{1,0}{mF}$, initialement déchargé, est chargé à travers une résistance $R$ par un
+générateur idéal de tension $E=\qty{10}{V}$. Un condensateur chargé sous la tension $u$ stocke l'énergie $\frac12\,C\,u^2$. Le
+programme calcule, par une somme de petits termes $R\,i^2\,\mathrm{d}t$, l'énergie $W_\mathrm{J}$ dissipée par effet Joule dans la
+résistance pendant la charge, pour trois valeurs de $R$, et la compare à l'énergie finalement stockée.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import exp
+E, C = 10.0, 1.0e-3               # V, F
+for R in [10, 100, 1000]:         # ohms
+    tau = R * C
+    dt = tau / 1000
+    W, t = 0.0, 0.0
+    while t < 10 * tau:
+        i = E / R * exp(-t / tau)
+        W = W + R * i**2 * dt
+        t = t + dt
+    print(R, round(W, 3), 0.5 * C * E**2)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+10 0.05 0.05
+100 0.05 0.05
+1000 0.05 0.05
+\end{consolecol}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item Calculer la charge finale du condensateur. Le générateur fait circuler cette charge sous la tension constante $E$ :
+montrer qu'il fournit l'énergie $W_\mathrm{g}=C\,E^2$.
+\item Calculer l'énergie stockée en fin de charge. Quelle part de l'énergie fournie a été perdue ? Quel est le rendement de
+la charge ?
+\item Sachant que $i(t)=\dfrac{E}{R}\,\mathrm{e}^{-t/\tau}$, montrer par le calcul d'une intégrale que $W_\mathrm{J}=\displaystyle\int_0^{+\infty}R\,i^2\,\mathrm{d}t=\frac12\,C\,E^2$.
+\item Interpréter la sortie du programme. Pourquoi peut-on arrêter la somme à $t=10\tau$ ?
+\item On charge maintenant le condensateur en deux étapes : d'abord sous $E/2$ jusqu'à charge complète, puis sous $E$.
+Calculer l'énergie dissipée et le rendement. Que se passerait-il avec $N$ étapes ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-27}{D27 · Mesurer plus pour mesurer mieux ?}{Recherche et rédaction}{Très exigeant · 50 à 60~min · Chapitre 27\hfill\hyperref[defi-cor-27-1]{Corrigé p.~\pageref*{defi-cor-27-1}}}
+\begin{blocEdition}{defi-ex-27}
+Des élèves mesurent la durée de chute $t$ d'une bille lâchée sans vitesse initiale d'une hauteur $h$, pour en déduire
+$g=\dfrac{2h}{t^2}$. Leurs mesures sont dispersées avec un écart-type $s=\qty{0,013}{s}$. Pour des grandeurs indépendantes,
+$u(x+y)^2=u(x)^2+u(y)^2$ et, pour une constante $k$, $u(k\,x)=|k|\,u(x)$. Le programme simule \num{2000} séries de $N=40$ mesures.
+\begin{codecote}[0.62]
+\begin{pythoncol}
+import random
+from statistics import mean, stdev
+s, N = 0.013, 40
+moyennes = []
+for k in range(2000):
+    serie = [random.gauss(0.452, s)
+             for j in range(N)]
+    moyennes.append(mean(serie))
+print(round(stdev(moyennes), 5),
+      round(s / N**0.5, 5))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.00205 0.00206
+\end{consolecol}
+\par\medskip
+\fontsize{9.5}{12.5}\selectfont
+Durées moyennes mesurées (40 lâchers par hauteur) :\par\smallskip
+\begin{tabular}{@{}lc@{}}
+\toprule
+$h$ (m) & $t_\mathrm{mes}$ (s) \\
+\midrule
+0,20 & 0,2119 \\
+0,40 & 0,2956 \\
+0,60 & 0,3597 \\
+0,80 & 0,4139 \\
+1,00 & 0,4615 \\
+\bottomrule
+\end{tabular}
+\end{codecote}
+\par\smallskip
+\begin{questions}
+\item Montrer que la moyenne de $N$ mesures indépendantes, d'écart-type $s$, a pour incertitude-type $\dfrac{s}{\sqrt N}$.
+\item Que calcule le programme ? Interpréter les deux valeurs affichées.
+\item Le dispositif de lâcher ajoute en réalité un retard $\delta=\qty{0,010}{s}$ à chaque durée. Pour $h=\qty{1,000}{m}$ et
+$g=\qty{9,81}{m.s^{-2}}$, calculer la durée de chute réelle. Exprimer l'écart normalisé entre la moyenne de $N$ mesures et
+cette durée. À partir de combien de mesures le retard est-il détecté ?
+\item Calculer la valeur de $g$ déduite de la moyenne de 40 mesures, son incertitude-type, avec $u(h)=\qty{0,0020}{m}$ et
+$\dfrac{u(g)}{g}=\sqrt{\left(\dfrac{u(h)}{h}\right)^2+\left(2\,\dfrac{u(t)}{t}\right)^2}$, puis l'écart normalisé avec \qty{9,81}{m.s^{-2}}. Mesurer plus a-t-il permis de
+mesurer mieux ?
+\item Montrer que $t_\mathrm{mes}=\sqrt{\dfrac{2}{g}}\,\sqrt h+\delta$. Exploiter le tableau pour déterminer $\delta$ et $g$.
+\end{questions}
+\end{blocEdition}

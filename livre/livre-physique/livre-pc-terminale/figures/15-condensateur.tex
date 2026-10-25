@@ -1,0 +1,21 @@
+% Champ électrique uniforme d'un condensateur plan et déviation d'un électron (L'essentiel, chapitre 15)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otRed!55] (0,2.2) rectangle (6,2.38);
+\fill[otNavy!60] (0,-0.18) rectangle (6,0);
+\node[font=\otSemi\fontsize{10}{11}\selectfont,text=otRed!80!black] at (-0.35,2.29) {$+$};
+\node[font=\otSemi\fontsize{10}{11}\selectfont,text=otNavy] at (-0.35,-0.09) {$-$};
+\foreach \xx in {0.6,1.4,...,5.6}{\draw[otMuted!80,line width=0.5pt,-{Stealth[length=1.7mm]}] (\xx,2.12) -- (\xx,0.12);}
+\node[pcLegende,anchor=west,fill=white,inner sep=1pt] at (5.65,1.1) {$\vec{E}$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (6.4,0) -- (6.4,2.2) node[pos=0.5,pcLegende,anchor=west] {$d$};
+\draw[otInk!70,line width=0.5pt] (6.15,2.29) -- (6.9,2.29) -- (6.9,2.7);
+\draw[otInk!70,line width=0.5pt] (6.15,-0.09) -- (7.3,-0.09) -- (7.3,2.7);
+\node[pcLegende,anchor=south] at (7.1,2.7) {tension $U$};
+% électron
+\draw[otNavy,line width=0.9pt,domain=0:6,samples=50] plot (\x,{1.1+0.025*\x*\x});
+\draw[otNavy,line width=0.9pt] (0,1.1) -- (-2.2,1.1);
+\fill[otNavy] (-2.2,1.1) circle (0.07);
+\node[pcLegende,anchor=south,text=otNavy] at (-2.2,1.17) {électron};
+\draw[pcVitesse] (-2.2,1.1) -- (-1.4,1.1) node[pcLegende,anchor=north,text=otNavy] {$\vec{v}_0$};
+\draw[pcForce] (2.0,1.2) -- (2.0,1.8) node[pcLegende,anchor=south west,text=otGreenDark,fill=white,inner sep=1pt] {$\vec{F}=-e\vec{E}$};
+\end{tikzpicture}
+\par\smallskip\legende{Le champ, uniforme entre les plaques, va de la plaque positive à la plaque négative ; l'électron, de charge négative, est dévié vers la plaque positive.}

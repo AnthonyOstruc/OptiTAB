@@ -1,0 +1,16 @@
+% Concentration d'un réactif et tangentes aux dates 0 et t1/2 (exercice 3, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=50mm,xmin=0,xmax=92,ymin=0,ymax=65,
+  xtick={0,10,...,90},ytick={0,10,...,60},xlabel={$t$ (min)},ylabel={$[\mathrm{R}]$ (mmol$\cdot$L$^{-1}$)}]
+\addplot[otNavy,line width=1pt,domain=0:90,samples=120] {60*exp(-x/30)};
+\addplot[otRed!80!black,line width=0.7pt,domain=0:30] {60-2*x};
+\addplot[otRed!80!black,line width=0.7pt,domain=4:50.79] {30-(x-20.79)};
+\addplot[only marks,mark=*,mark size=1.8pt,otRed!80!black] coordinates {(0,60)(20.79,30)};
+\node[pcLegende,anchor=south west,text=otRed!80!black] at (axis cs:27,8) {T$_0$};
+\node[pcLegende,anchor=south west,text=otRed!80!black] at (axis cs:46,6.5) {T$_{1/2}$};
+\solution{\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,30) -- (axis cs:20.79,30) -- (axis cs:20.79,0);
+\addplot[only marks,mark=o,mark size=2.2pt,otGreenDark,line width=0.7pt] coordinates {(30,0)(50.79,0)};
+\node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:22.5,31.5) {$t_{1/2}\approx21$ min};
+\node[pcLegende,anchor=south west,text=otGreenDark,fill=white] at (axis cs:54,14) {T$_0$ coupe l'axe à 30 min\\T$_{1/2}$ coupe l'axe vers 51 min};}
+\end{axis}
+\end{tikzpicture}

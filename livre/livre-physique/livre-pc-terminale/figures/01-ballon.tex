@@ -1,0 +1,22 @@
+% Un ballon qui se gonfle (exercice 13, chapitre 1)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  etat/.style={font=\otLight\fontsize{7.5}{9.2}\selectfont,text=otInk,align=center,text width=30mm,anchor=north},
+  baudruche/.style={fill=otOrange!35,draw=otOrange!80!black,line width=0.6pt}]
+% Avant : ballon pendant contenant la poudre
+\pic at (0,0) {bouteille={niveau=0.9}};
+\draw[baudruche] (-0.2,3.0) -- (-0.2,3.25) .. controls (-0.25,3.5) and (-0.5,3.55) .. (-0.75,3.45)
+  .. controls (-1.35,3.2) and (-1.4,2.55) .. (-0.95,2.45) .. controls (-0.6,2.4) and (0.15,3.1) .. (0.2,3.25) -- (0.2,3.0) -- cycle;
+\foreach \px/\py in {-1.05/2.62,-0.95/2.7,-1.12/2.75,-0.85/2.62,-1.0/2.83}{\fill[otInk!55] (\px,\py) circle (0.03);}
+\draw[pcRepere] (-1.15,2.55) -- (-1.6,2.1) node[pcLegende,anchor=north east]{hydrogénocarbonate\\de sodium};
+\draw[pcRepere] (0.55,0.5) -- (1.2,0.75) node[pcLegende,anchor=west]{vinaigre};
+\node[etat] at (0,-0.3) {avant};
+% Après : ballon gonflé, effervescence
+\pic at (5,0) {bouteille={niveau=0.9}};
+\pic at (5.05,0.25) {bulles};
+\draw[baudruche] (4.8,3.0) -- (4.8,3.3) .. controls (4.2,3.5) and (3.9,4.2) .. (4.15,4.8)
+  .. controls (4.45,5.55) and (5.55,5.55) .. (5.85,4.8) .. controls (6.1,4.2) and (5.8,3.5) .. (5.2,3.3) -- (5.2,3.0) -- cycle;
+\draw[pcRepere] (5.85,4.6) -- (6.4,4.9) node[pcLegende,anchor=west]{ballon gonflé};
+\draw[pcRepere] (5.3,0.6) -- (6.2,0.9) node[pcLegende,anchor=west]{effervescence};
+\node[etat] at (5,-0.3) {après avoir redressé le ballon};
+\end{tikzpicture}
+\par\smallskip\legende{Schéma sans échelle.}

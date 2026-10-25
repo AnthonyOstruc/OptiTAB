@@ -1,0 +1,626 @@
+\BeginChapter{03}{Circuits du premier ordre}
+\Page{Chapitre 03 / Programme officiel}{Circuits linéaires du premier ordre}{ch03-chapitre-03}
+Un interrupteur change le circuit en un instant, mais toutes les grandeurs ne sautent pas pour autant. Le condensateur conserve sa tension et la bobine son courant. Ces propriétés permettent de prévoir l’évolution avant même de résoudre l’équation.
+\begin{loi}{Notions et capacités travaillées}
+Établir une équation du premier ordre dans un circuit à une ou deux mailles ; fixer la condition initiale ; distinguer transitoire et permanent.\par Résoudre un régime libre ou une excitation en échelon ; estimer sa durée ; conduire un bilan d’énergie.\par Acquérir un transitoire et mettre en œuvre Euler pour une excitation quelconque.
+\end{loi}
+
+\Sub{Prérequis}
+Lois des nœuds et des mailles ; modèle de Thévenin ; $i_C=C\dot u_C$ ; $u_L=L\dot i_L$ ; dérivée de l’exponentielle. Le chapitre 02 fournit les orientations et les lois locales.
+
+\begin{methode}{La méthode du chapitre}
+Dessiner les états avant et après commutation ; déterminer la grandeur continue ; trouver le régime final ; établir l’équation ; résoudre ; vérifier condition initiale, dérivée et limite.
+\end{methode}
+
+\source{Concordance : annexe 2 de l’arrêté du 5 janvier 2021, rubrique 1.3. Pages internes 14 et 15 (pages PDF 51 et 52). Les circuits du deuxième ordre sont étudiés aux chapitres 04 et 05.}
+
+\Page{Diagnostic / 15 min}{Avant d’ouvrir le cours}{ch03-diagnostic}
+\begin{questions}
+\item Calculer $RC$ pour $R=10$ k$\Omega$, $C=100$ nF ; $L/R$ pour $L=20$ mH, $R=100\ \Omega$.
+\item Dériver $u(t)=3+2e^{-t/\tau}$.
+\item Quelle grandeur est continue dans un condensateur ? Dans une bobine ? Préciser l’hypothèse physique.
+\item Que valent $u_C$ et $i$ en régime final pour un RC série alimenté par une source idéale $E$ ?
+\item Résoudre $\dot y+y/\tau=0$ avec $y(0)=y_0$.
+\item Combien vaut $e^{-1}$ approximativement ? $e^{-5}$ ?
+\item Donner l’énergie d’un condensateur de $1\ \mu\mathrm{ F}$ sous $10$ V.
+\item Un temps caractéristique est-il la durée exacte au bout de laquelle le transitoire est terminé ?
+\end{questions}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les unités sont maîtrisées.}\checkline{Je peux orienter un schéma et annoncer les hypothèses.}\checkline{Je sais expliquer une condition initiale.}Corrigé p.\,\pageref{ch03-corr-diag}.
+\end{docu}
+
+
+\Page{Cours / 1}{Une commutation, trois instants}{ch03-cours-1}
+On distingue $0^-$ (juste avant), $0^+$ (juste après) et $+\infty$ (régime final). Le schéma de $0^-$ fixe l’état initial ; celui de $0^+$ fixe l’équation de l’évolution qui suit.
+\fig{ch03/rc}{Après la commutation, le condensateur est relié à e(t) par R ; uC est la grandeur d’état.}\begin{loi}{Une réserve d’énergie ne change pas brutalement}
+$u_C(0^+)=u_C(0^-)$ si le courant n’est pas impulsionnel ; $i_L(0^+)=i_L(0^-)$ si la tension n’est pas impulsionnelle. Ces continuités ne concernent pas nécessairement $i_C$ ou $u_L$.
+\end{loi}
+\Sub{Exemple RC}
+Un condensateur initialement déchargé reçoit un échelon $e(t)=E$ pour $t>0$. À $0^+$, $u_C=0$ donc la résistance reçoit $E$ et $i=E/R$. À long terme, $i=0$ et $u_C=E$. La valeur finale ne doit pas être utilisée comme valeur initiale.
+\begin{methode}{Avant de calculer}
+Écrire un petit tableau : état avant, grandeur continue, état juste après, état final. Cette anticipation fournit quatre contrôles de la solution.
+\end{methode}
+
+
+\Page{Cours / 2}{La réponse universelle du premier ordre}{ch03-cours-2}
+\begin{loi}{Forme canonique et solution}
+Pour $\tau>0$, $\tau\dot s+s=s_\infty$ et $s(0^+)=s_0$ donnent \[\result{s(t)=s_\infty+(s_0-s_\infty)e^{-t/\tau}}\] La constante $s_\infty$ est ici la réponse permanente à une excitation constante.
+\end{loi}
+\Sub{Démonstration}
+La solution particulière constante vaut $s_\infty$. La différence $z=s-s_\infty$ vérifie $\dot z=-z/\tau$, donc $z=Ae^{-t/\tau}$. La condition initiale impose $A=s_0-s_\infty$. La dérivée initiale est $(s_\infty-s_0)/\tau$.
+\fig{ch03/charge}{Charge et décharge ont le même temps caractéristique ; elles ne possèdent pas la même limite.}\begin{piege}{Le forçage doit être constant sur l’intervalle}
+La formule avec $s_\infty$ constant ne s’applique pas directement à une entrée variable quelconque. Pour un créneau, résoudre par morceaux ; pour une autre entrée, intégrer l’équation ou la simuler.
+\end{piege}
+
+
+\Page{Cours / 3}{Le circuit RC soumis à un échelon}{ch03-cours-3}
+\fig{ch03/rc}{La loi des mailles et la convention récepteur donnent E = Ri + uC et i = C duC/dt.}\begin{loi}{Équation et réponse}
+$RC\dot u_C+u_C=E$ ; $\tau=RC$. Avec $u_C(0)=U_0$ : $u_C=E+(U_0-E)e^{-t/\tau}$, $i=(E-U_0)e^{-t/\tau}/R$ et $u_R=(E-U_0)e^{-t/\tau}$.
+\end{loi}
+\Sub{Application commentée}
+$E=5$ V, $U_0=2$ V, $R=10$ k$\Omega$, $C=100$ nF : $\tau=1$ ms et $u_C=5-3e^{-t/(1\,\mathrm{ms})}$. Le courant part de $0{,}30$ mA et tend vers zéro. À $t=\tau$, $u_C=3{,}896$ V.
+\Sub{Signes et charge initiale}
+Si $U_0>E$, le courant initial est négatif dans le sens choisi. Le condensateur rend une partie de son énergie au reste du circuit, tout en tendant vers la tension imposée. L’expression reste valable sans changer arbitrairement les flèches.
+\begin{methode}{Contrôle dimensionnel}
+$RC$ a la dimension d’un temps puisque $\Omega\times\mathrm F=\mathrm s$. L’argument d’une exponentielle ne porte jamais d’unité.
+\end{methode}
+
+
+\Page{Cours / 4}{Décharge libre et durée du transitoire}{ch03-cours-4}
+Une capacité chargée à $U_0$ est isolée de sa source puis reliée à une résistance $R$. Avec le courant orienté comme dans le schéma RC, il est négatif pendant la décharge si $U_0>0$.
+\begin{loi}{Évolution libre}
+$RC\dot u_C+u_C=0$, donc $u_C=U_0e^{-t/RC}$ et $i=-U_0e^{-t/RC}/R$. L’énergie stockée décroît comme $e^{-2t/RC}$.
+\end{loi}
+\fig{ch03/charge}{La courbe verte représente la tension de décharge normalisée.}\Sub{Fixer une tolérance}
+Pour que $|u_C|/|U_0|\leq\varepsilon$, $t\geq\tau\ln(1/\varepsilon)$. On obtient $3\tau$ pour environ $5\,\%$, $4{,}605\tau$ pour $1\,\%$ et $6{,}908\tau$ pour $0{,}1\,\%$.
+\begin{piege}{Préciser ce que l’on compare}
+Un seuil sur l’énergie n’est pas un seuil sur la tension : pour $\mathcal E/\mathcal E_0\leq\varepsilon$, il suffit de $t\geq(\tau/2)\ln(1/\varepsilon)$.
+\end{piege}
+
+
+\Page{Cours / 5}{Le circuit RL et la bobine réelle}{ch03-cours-5}
+\fig{ch03/rl}{Ajouter la résistance interne r de la bobine à la résistance extérieure R.}\begin{loi}{Établissement du courant}
+$L\dot i+(R+r)i=E$. Poser $R_t=R+r$, $\tau=L/R_t$, $I_\infty=E/R_t$. Alors $i=I_\infty+(I_0-I_\infty)e^{-t/\tau}$. Pour $I_0=0$, $u_L=Ee^{-t/\tau}$.
+\end{loi}
+\Sub{La tension de la bobine réelle}
+Elle vaut $u_b=L\dot i+ri$. Sa valeur finale est $rI_\infty$, et non zéro. Seule la tension de l’inductance idéale s’annule en continu établi.
+\fig{ch03/courants}{RC et RL : un courant décroît pendant la charge d’une capacité, l’autre croît dans l’inductance.}\Sub{Exemple}
+$E=6$ V, $R=90\ \Omega$, $r=10\ \Omega$, $L=100$ mH : $\tau=1$ ms, $I_\infty=60$ mA. À $\tau$, $i=37{,}9$ mA ; la bobine réelle tend vers $0{,}60$ V.
+
+
+\Page{Cours / 6}{Régime libre d’une bobine}{ch03-cours-6}
+Un courant $I_0$ circule dans une bobine. Après commutation, on lui offre une boucle de décharge résistive de résistance totale $R_t$. La source d’alimentation ne fait plus partie de cette boucle.
+\begin{loi}{Restitution d’énergie}
+$L\dot i+R_ti=0$, donc $i=I_0e^{-t/\tau}$, $\tau=L/R_t$. L’énergie magnétique vaut $\mathcal E_L=(LI_0^2/2)e^{-2t/\tau}$ et $\dot{\mathcal E}_L=-R_ti^2$.
+\end{loi}
+\Sub{Pourquoi l’ouverture sans trajet est problématique}
+Le modèle $u=L\dot i$ associe une variation très rapide du courant à une forte tension. Lorsqu’un interrupteur ouvre une boucle inductive, les capacités parasites et les phénomènes d’arc peuvent devenir déterminants. On ne modélise pas cet état par $i(0^+)=0$ sans explication.
+\begin{methode}{Dimensionner une décharge}
+Pour $L=50$ mH et $I_0=0{,}20$ A, la réserve est $1$ mJ. Avec $R_t=100\ \Omega$, $\tau=0{,}50$ ms ; le courant passe sous $1\,\%$ en $2{,}30$ ms. Augmenter $R_t$ accélère la décharge mais augmente $|u_L(0^+)|=R_tI_0$.
+\end{methode}
+\Sub{La continuité n’interdit pas un changement de pente}
+Le courant garde sa valeur initiale, mais sa dérivée change avec le schéma. La tension de la bobine peut donc subir un saut fini lors de la commutation.
+
+
+\Page{Cours / 7}{Un circuit à deux mailles}{ch03-cours-7}
+Une source idéale $E$ alimente un nœud $A$ par $R_1$. Entre $A$ et la masse sont branchés $R_2$ et un condensateur $C$. Sa tension est $u=V_A$.
+\fig{ch03/rc-parallele}{Le courant de la branche capacitive vaut C du/dt ; la loi des n?uds relie les trois branches.}\begin{loi}{Équation issue de la loi des nœuds}
+$(E-u)/R_1=u/R_2+C\dot u$. Donc $\tau\dot u+u=U_\infty$, avec $U_\infty=ER_2/(R_1+R_2)$ et $\tau=(R_1\parallel R_2)C$.
+\end{loi}
+\Sub{Un second raisonnement}
+Vu par le condensateur, le réseau résistif se remplace par son modèle de Thévenin : tension à vide $U_\infty$ et résistance $R_1\parallel R_2$ lorsque la source idéale est annulée. On retrouve un RC série, mais avec les paramètres équivalents.
+\Sub{Exemple}
+$E=9$ V, $R_1=3$ k$\Omega$, $R_2=6$ k$\Omega$, $C=1\ \mu\mathrm{ F}$ et $u(0)=0$ donnent $u=6(1-e^{-t/(2\,\mathrm{ms})})$ V. Le courant de source ne tend pas vers zéro : $R_2$ continue à consommer.
+\begin{piege}{La résistance vue par la réserve}
+La constante de temps ne vaut pas toujours $R_1C$. Il faut tenir compte de toutes les résistances qui permettent au condensateur d’échanger de la charge après la commutation.
+\end{piege}
+
+
+\Page{Cours / 8}{Énergie d’une charge RC}{ch03-cours-8}
+Pour un condensateur initialement déchargé, $u_C=E(1-e^{-t/\tau})$ et $i=(E/R)e^{-t/\tau}$. Multiplier l’équation de maille par le courant donne un bilan instantané.
+\begin{loi}{Bilan de puissance puis d’énergie}
+$Ei=Ri^2+\dd(Cu_C^2/2)/\dd t$. De $0$ à $t$ : $W_G=CE^2(1-e^{-t/\tau})$ ; $W_J=(CE^2/2)(1-e^{-2t/\tau})$ ; $\mathcal E_C=(CE^2/2)(1-e^{-t/\tau})^2$. On vérifie $W_G=W_J+\mathcal E_C$.
+\end{loi}
+\fig{ch03/energie}{Le stockage et l’intégrale de dissipation tendent vers la même valeur lors d’une charge initialement nulle.}\Sub{À la fin de la charge}
+La source a fourni $CE^2$ ; la moitié est stockée et la moitié dissipée. Cette répartition ne dépend pas de $R>0$, qui fixe la durée. La limite $R\to0$ est singulière pour le courant et ne décrit pas un circuit réel sans éléments parasites.
+
+
+\Page{Cours / 9}{Énergie avec un état initial quelconque}{ch03-cours-9}
+\begin{loi}{Un bilan plus général}
+Pour $u_C(0)=U_0$ et une source constante $E$, $W_G=CE(E-U_0)$, $W_J=\tfrac12C(E-U_0)^2$ et $\Delta\mathcal E_C=\tfrac12C(E^2-U_0^2)$. Leur relation est $W_G=W_J+\Delta\mathcal E_C$.
+\end{loi}
+\Sub{Démonstration courte}
+La charge nette reçue est $C(E-U_0)$ : la source fournit $E$ fois cette charge. L’intégration de $Ri^2$ utilise $i=(E-U_0)e^{-t/\tau}/R$ et $\int_0^\infty e^{-2t/\tau}\dd t=\tau/2$. L’identité énergétique résulte de $(E-U_0)^2+(E^2-U_0^2)=2E(E-U_0)$.
+\Sub{Une source peut recevoir de l’énergie}
+Pour $U_0=8$ V et $E=5$ V, avec $C=10\ \mu\mathrm{ F}$ : $W_G=-150\ \mu\mathrm{ J}$, $W_J=45\ \mu\mathrm{ J}$, $\Delta\mathcal E_C=-195\ \mu\mathrm{ J}$. La source idéale reçoit une partie de l’énergie rendue par la capacité.
+\begin{piege}{Le RL alimenté en continu est différent}
+Après l’établissement du courant, la source RL continue à fournir une puissance Joule constante. L’énergie totale fournie de $0$ à $+\infty$ diverge ; on ne lui applique pas sans adaptation le bilan fini de la charge RC.
+\end{piege}
+
+
+\Page{Cours / 10}{Lire et mesurer un temps caractéristique}{ch03-cours-10}
+\begin{loi}{Trois méthodes complémentaires}
+1. Tangente à l’origine : elle rencontre l’asymptote finale à $t=\tau$.\par 2. Niveau : à $\tau$, le système a réalisé $1-e^{-1}\simeq63{,}2\,\%$ de sa variation totale.\par 3. Linéarisation : $\ln|s-s_\infty|=\ln|s_0-s_\infty|-t/\tau$. La pente vaut $-1/\tau$.
+\end{loi}
+\fig{ch03/charge}{Le niveau à utiliser est une fraction de la variation totale, pas nécessairement de la valeur finale.}\Sub{Des incertitudes à la conclusion}
+Avec $\tau=RC$ et des grandeurs indépendantes, $u(\tau)/\tau=\sqrt{[u(R)/R]^2+[u(C)/C]^2}$. Pour une estimation par ajustement, tenir compte de l’incertitude sur le niveau final : les derniers points peuvent devenir très sensibles au bruit après logarithme.
+\begin{methode}{Acquérir proprement}
+Utiliser un échantillonnage nettement plus rapide que la constante de temps et une fenêtre couvrant plusieurs constantes. Vérifier que le demi-créneau est assez long et que la résistance de sortie du GBF est incluse dans le modèle.
+\end{methode}
+
+
+\Page{Cours / 11}{Créneaux et réponses par morceaux}{ch03-cours-11}
+Une excitation qui change de valeur impose une nouvelle solution particulière à chaque intervalle. La grandeur d’état est transmise continûment d’un intervalle au suivant.
+\begin{loi}{Une propagation d’état}
+Sur une durée $\Delta$ où le niveau final est $S$, $s_{\rm fin}=S+(s_{\rm début}-S)e^{-\Delta/\tau}$. Cette relation suffit à construire plusieurs commutations sans résoudre à nouveau l’équation.
+\end{loi}
+\Sub{Créneau symétrique 0 / E}
+Poser $a=e^{-T/(2\tau)}$. En régime périodique, les valeurs minimale $u_-$ et maximale $u_+$ vérifient $u_+=E+(u_--E)a$ puis $u_-=a u_+$. Ainsi $u_+=E/(1+a)$ et $u_-=Ea/(1+a)$.
+\Sub{Interprétation}
+Si $T\gg\tau$, la capacité a le temps de se charger et se décharger presque complètement. Si $T\ll\tau$, l’ondulation est petite et la tension reste proche de $E/2$. Le régime périodique ne signifie pas que la tension est constante.
+\begin{piege}{L’origine des temps est locale}
+Après une commutation à $t=t_1$, écrire l’exponentielle $e^{-(t-t_1)/\tau}$ et utiliser la valeur $s(t_1)$ comme condition initiale. Remettre implicitement $s$ à zéro change le problème.
+\end{piege}
+
+
+\Page{Pratique / TP}{Acquérir un transitoire RC}{ch03-tp}
+\fig{ch03/rc}{Inclure la résistance de sortie du GBF dans la résistance série totale.}\begin{questions}
+\item Choisir $R\simeq10$ k$\Omega$ et $C\simeq100$ nF. Estimer $\tau$ puis régler un créneau dont le demi-palier dépasse $5\tau$.
+\item Brancher les masses au même nœud. Observer simultanément l’entrée et la tension de capacité.
+\item Mesurer $u_0,u_\infty$ et $\tau$ par le niveau à $63{,}2\,\%$ ; comparer à une tangente.
+\item Ajuster l’expression exponentielle complète ; examiner les résidus et les intervalles exclus autour de la commutation.
+\item Faire varier R puis C et vérifier les dépendances. Discuter tolérances, résistance du GBF et charge de l’oscilloscope.
+\end{questions}
+\begin{docu}{Jeu simulé / Décharge de 5 V}
+$t$ (ms) : $0$, $0{,}5$, $1{,}0$, $1{,}5$, $2{,}0$, $3{,}0$.\par $u$ (V) : $5{,}00$, $3{,}03$, $1{,}84$, $1{,}12$, $0{,}68$, $0{,}25$.\par Ces données sont arrondies d’un modèle de constante $1$ ms ; elles ne sont pas une expérience réalisée.
+\end{docu}
+\begin{methode}{Résultat attendu}
+Donner une constante avec son incertitude, comparer au modèle et expliquer l’échelle des écarts. Une bonne exponentielle visuelle ne suffit pas à identifier les erreurs systématiques.
+\end{methode}
+
+
+\Page{Pratique / Numérique}{Euler pour une entrée quelconque}{ch03-numerique}
+Pour $\tau\dot u+u=e(t)$, Euler explicite donne $u_{n+1}=u_n+h(e_n-u_n)/\tau$. L’excitation ci-dessous est triangulaire ; elle n’est pas constante sur tout le calcul.
+\begin{verbatim}
+import numpy as np
+tau, h = 1e-3, 1e-5
+t = np.arange(0.0, 0.020 + h/2, h)
+phase = (t % 0.004) / 0.004
+e = 5.0 * (1.0 - np.abs(2.0*phase - 1.0))
+u = np.zeros_like(t)
+for n in range(len(t)-1):
+    u[n+1] = u[n] + h*(e[n] - u[n])/tau
+\end{verbatim}
+\begin{questions}
+\item Tracer l’entrée et la sortie avec leurs unités. Expliquer le retard de la réponse et l’arrondissement des sommets.
+\item Remplacer l’entrée par un échelon constant de 5 V et comparer à $5(1-e^{-t/\tau})$.
+\item Diviser $h$ par deux et comparer l’erreur. Pour la partie homogène, démontrer la condition $|1-h/\tau|<1$ de stabilité.
+\item Essayer $h=1{,}5\tau$, puis $h>2\tau$ sur le régime libre : distinguer oscillation numérique et instabilité.
+\end{questions}
+\begin{piege}{Stabilité et précision sont différentes}
+La condition $0<h<2\tau$ évite l’amplification du régime homogène discret. Une bonne précision et une décroissance sans oscillation artificielle demandent en pratique $h\ll\tau$. La durée la plus courte du forçage compte aussi.
+\end{piege}
+
+
+\Page{Bilan de cours}{Les réflexes à conserver}{ch03-synthese}
+\begin{loi}{Une équation, plusieurs réalisations}
+$\tau\dot s+s=S$ : $s=S+(s_0-S)e^{-t/\tau}$.\par RC série : $\tau=RC$ ; RL série : $\tau=L/R_t$.\par Un condensateur conserve $u_C$ ; une bobine conserve $i_L$ pour une commutation non impulsionnelle.\par Durée à $\varepsilon$ de l’écart initial : $t_\varepsilon=\tau\ln(1/\varepsilon)$.\par Euler : $s_{n+1}=s_n+h(S_n-s_n)/\tau$.
+\end{loi}
+\Sub{À démontrer sans solution}
+\begin{questions}
+\item La charge RC et le régime libre RL à partir des lois de circuit.
+\item La réponse universelle avec une condition initiale quelconque.
+\item Le bilan fini de la charge RC ; le bilan d’une décharge RL.
+\item La constante de temps du condensateur placé dans un diviseur chargé.
+\end{questions}
+
+\begin{docu}{Avant de rendre}
+\checkline{Le schéma est celui de l’intervalle étudié.}\checkline{La continuité porte sur la bonne grandeur.}\checkline{La solution vérifie l’équation et la limite finale.}\checkline{Le bilan d’énergie distingue stockage et dissipation.}
+\end{docu}
+
+
+\Page{Exercices / Applications}{Identifier et résoudre}{ch03-td1}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E01}{Identifier une constante}{Niveau 1}{8 min}
+\begin{questions}
+\item $2\times10^{-3}\dot u+u=6$, avec $u(0)=1$ V. Donner la constante de temps, la limite, la pente initiale et la solution.
+\end{questions}
+
+\ex{E02}{Vérifier une solution}{Niveau 1}{10 min}
+\begin{questions}
+\item Une copie propose $u=E(1+e^{-t/\tau})$ pour la charge d’une capacité déchargée. Quels contrôles échouent ? Donner l’expression correcte.
+\end{questions}
+
+\ex{E03}{Une capacité déjà chargée}{Niveau 1}{12 min}
+\begin{questions}
+\item $R=5$ k$\Omega$, $C=2\ \mu\mathrm{ F}$, $E=10$ V et $u_C(0)=4$ V. Donner $u_C(t)$ et $i(t)$ puis leurs valeurs à $t=\tau$.
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Charger une capacité}{ch03-td2}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E04}{Atteindre un seuil}{Niveau 1}{10 min}
+\begin{questions}
+\item Un RC initialement déchargé reçoit $E=12$ V, avec $\tau=4$ ms. Quand atteint-il 9 V ?
+\end{questions}
+
+\ex{E05}{Une source plus faible}{Niveau 2}{12 min}
+\begin{questions}
+\item Une capacité initialement à 8 V est reliée à une source de 3 V par $R=10$ k$\Omega$, avec $C=1\ \mu\mathrm{ F}$. Déterminer tension et courant. Le courant change-t-il de signe ?
+\end{questions}
+
+\ex{E06}{La résistance du GBF}{Niveau 2}{12 min}
+\begin{questions}
+\item Une source de Thévenin $E=5$ V, $r=50\ \Omega$ charge $C=100$ nF à travers $R=950\ \Omega$. Calculer $\tau$, la tension finale et le courant initial.
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Décharger et chronométrer}{ch03-td3}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E07}{Temps de demi-décharge}{Niveau 1}{10 min}
+\begin{questions}
+\item Un condensateur se décharge avec $\tau=3$ ms. Calculer le temps de demi-tension et le temps de demi-énergie.
+\end{questions}
+
+\ex{E08}{Mesurer C par deux points}{Niveau 2}{15 min}
+\begin{questions}
+\item Une décharge à travers 20 k$\Omega$ passe de 4 V à 1 V en 12 ms. Déterminer $\tau$ puis $C$.
+\end{questions}
+
+\ex{E09}{Changer de résistance}{Niveau 2}{12 min}
+\begin{questions}
+\item Une capacité $2\ \mu\mathrm{ F}$ à 6 V se décharge sur 1 k$\Omega$ pendant 2 ms puis sur 4 k$\Omega$. Donner les deux expressions et la tension 8 ms après la seconde commutation.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Établir un courant}{ch03-td4}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E10}{Une bobine au démarrage}{Niveau 1}{12 min}
+\begin{questions}
+\item $L=200$ mH, $R=80\ \Omega$, $r=20\ \Omega$, $E=10$ V, $i(0)=0$. Donner $\tau$, $i(t)$, $u_L(0^+)$ et la tension finale de la bobine réelle.
+\end{questions}
+
+\ex{E11}{Un courant initial opposé}{Niveau 2}{12 min}
+\begin{questions}
+\item Une inductance idéale dans un circuit RL vérifie $\tau=5$ ms et $I_\infty=100$ mA, mais $i(0)=-50$ mA. Donner $i(t)$ et la date de passage par zéro.
+\end{questions}
+
+\ex{E12}{Décharge magnétique}{Niveau 2}{12 min}
+\begin{questions}
+\item $L=50$ mH et $I_0=0{,}20$ A. La boucle de décharge a $R_t=100\ \Omega$. Donner $i(t)$, $u_L(0^+)$ et l’énergie dissipée totale.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Changer le schéma}{ch03-td5}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E13}{Un diviseur avec C}{Niveau 2}{18 min}
+\begin{questions}
+\item Une source 12 V alimente $R_1=2$ k$\Omega$ puis le parallèle de $R_2=4$ k$\Omega$ et $C=3\ \mu\mathrm{ F}$. La capacité est déchargée. Établir l’équation et résoudre.
+\end{questions}
+
+\ex{E14}{Une fuite de capacité}{Niveau 2}{15 min}
+\begin{questions}
+\item Une capacité $C=10\ \mu\mathrm{ F}$ initialement à 5 V possède une résistance de fuite $R_f=1$ M$\Omega$. On branche un voltmètre $R_V=1$ M$\Omega$. Donner la constante de décharge et l’erreur d’une estimation de $R_f$ qui négligerait le voltmètre.
+\end{questions}
+
+\ex{E15}{Deux capacités en parallèle}{Niveau 2}{18 min}
+\begin{questions}
+\item Deux capacités identiques C sont chacune à $U_1$ et $U_2$. On les relie en parallèle, avec mêmes polarités, par une petite résistance. Donner la tension finale, l’énergie dissipée et sa valeur pour $C=1\ \mu\mathrm{ F}$, $U_1=10$ V, $U_2=0$.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Faire le bilan}{ch03-td6}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E16}{Énergie de charge}{Niveau 1}{12 min}
+\begin{questions}
+\item Un condensateur de 10 $\mu\mathrm{ F}$ est chargé de 0 à 6 V par une résistance. Donner l’énergie fournie par la source, l’énergie stockée et la dissipation.
+\end{questions}
+
+\ex{E17}{Une charge non nulle}{Niveau 2}{15 min}
+\begin{questions}
+\item $C=2\ \mu\mathrm{ F}$ passe de $U_0=8$ V à $E=5$ V. Calculer $W_G,W_J,\Delta\mathcal E_C$ et commenter.
+\end{questions}
+
+\ex{E18}{Énergie d’un RL}{Niveau 2}{18 min}
+\begin{questions}
+\item Un RL idéal de résistance totale R est alimenté par E avec $i(0)=0$. Exprimer l’énergie fournie entre 0 et t. Pourquoi son intégrale sur un temps infini diverge-t-elle ?
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Mesurer et simuler}{ch03-td7}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E19}{La pente d’un logarithme}{Niveau 2}{15 min}
+\begin{questions}
+\item Lors d’une décharge, la droite $\ln(u/1\,\mathrm V)=1{,}50-250t$, avec t en secondes, est ajustée. Donner $U_0,\tau$ et C si R = 8 k$\Omega$.
+\end{questions}
+
+\ex{E20}{Une incertitude sur RC}{Niveau 2}{12 min}
+\begin{questions}
+\item $R=10{,}0$ k$\Omega$, $u(R)=0{,}1$ k$\Omega$, $C=100$ nF, $u(C)=3$ nF ; mesures indépendantes. Donner $\tau$ et $u(\tau)$.
+\end{questions}
+
+\ex{E21}{Euler en trois pas}{Niveau 2}{15 min}
+\begin{questions}
+\item Pour une charge de 0 à E, appliquer Euler avec $h=\tau/2$. Donner $u_1,u_2,u_3$ en fractions de E et comparer $u_2$ à la solution exacte.
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Explorer les limites}{ch03-td8}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E22}{Un créneau périodique}{Niveau 3}{25 min}
+\begin{questions}
+\item Un RC reçoit un créneau 0/E de demi-période $\Delta=\tau$. En régime périodique, trouver $u_-$, $u_+$ et l’ondulation pour E = 6 V.
+\end{questions}
+
+\ex{E23}{Un seuil de fermeture}{Niveau 3}{20 min}
+\begin{questions}
+\item Une capacité déchargée se charge vers E jusqu’au seuil $\alpha E$, puis se décharge jusqu’à $\beta E$ avec la même constante $\tau$, $0<\beta<\alpha<1$. Donner les deux durées et la période pour $\alpha=2/3$, $\beta=1/3$.
+\end{questions}
+
+\ex{E24}{Un front de rampe}{Niveau 3}{25 min}
+\begin{questions}
+\item Un RC déchargé reçoit $e(t)=at$ pour $t\geq0$. Résoudre $\tau\dot u+u=at$ et vérifier la condition initiale. Interpréter à long terme.
+\end{questions}
+
+
+
+\Page{Défi avancé / D1}{Une capacité entre deux branches}{ch03-defi1}
+\label{ch03-ex-D1}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch03-indices} ; corrigé p.\,\pageref{ch03-corr-defi1}.}
+Une capacité C est en parallèle avec $R_2$, le tout alimenté par E à travers $R_1$. Avant $t=0$, elle est déchargée. À $t=t_1$, on annule la source idéale en la remplaçant par un fil, sans changer les résistances.\begin{questions}
+\item Établir la phase de charge et les courants de chaque branche.
+\item Donner la phase libre après $t_1$ ; expliquer pourquoi la constante de temps reste identique.
+\item Calculer la charge totale rendue dans la phase libre et sa répartition entre les résistances.
+\item Application : $E=9$ V, $R_1=3$ k$\Omega$, $R_2=6$ k$\Omega$, $C=1\ \mu\mathrm{ F}$, $t_1=2$ ms.
+\end{questions}
+
+
+\Page{Défi avancé / D2}{Protéger une bobine sans trop ralentir}{ch03-defi2}
+\label{ch03-ex-D2}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch03-indices} ; corrigé p.\,\pageref{ch03-corr-defi2}.}
+Une inductance L porte $I_0$ puis se décharge sur une résistance totale $R_d$. On impose une tension initiale de module au plus $U_{\max}$ et un courant au plus égal à $\varepsilon I_0$ après un temps $t_s$.\begin{questions}
+\item Traduire les deux contraintes en bornes sur $R_d$.
+\item Donner une condition de faisabilité.
+\item Calculer l’intervalle pour $L=50$ mH, $I_0=0{,}20$ A, $U_{\max}=30$ V, $\varepsilon=0{,}01$, $t_s=2$ ms.
+\item Choisir une valeur, calculer sa constante et vérifier l’énergie à dissiper.
+\end{questions}
+
+
+\Page{Défi avancé / D3}{Retrouver une entrée et tester Euler}{ch03-defi3}
+\label{ch03-ex-D3}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch03-indices} ; corrigé p.\,\pageref{ch03-corr-defi3}.}
+\begin{questions}
+\item On désire $u(t)=U(1-e^{-t/a})^2$ sur un RC de constante $\tau$. Retrouver l’entrée $e=\tau\dot u+u$.
+\item Dans le cas $a=\tau$, simplifier e et comparer ses limites à celles de u.
+\item Proposer un test numérique d’Euler sur cette entrée avec une solution exacte connue.
+\item Pour le régime homogène, discuter les cas $h/\tau<1$, $1<h/\tau<2$ et $h/\tau>2$.
+\end{questions}
+
+
+\Page{Évaluation / DM}{Une temporisation avec fuite}{ch03-dm}
+\source{Devoir maison OptiTAB original ; 1 h 30 à 2 h ; calculatrice autorisée. Barème pédagogique sur 20.}
+Une source idéale $E=12$ V alimente une résistance $R=100$ k$\Omega$, suivie du parallèle d’une capacité $C=10\ \mu\mathrm{ F}$ et d’une fuite $R_f=300$ k$\Omega$. La capacité est déchargée.\begin{questions}
+\item Faire le schéma orienté et écrire l’équation de nœud. \textbf{4 points}
+\item Déterminer la tension finale et la constante de temps. \textbf{4 points}
+\item Résoudre et calculer la date où u atteint 6 V. \textbf{4 points}
+\item Un voltmètre de 1 M$\Omega$ est branché sur C. Donner les nouveaux paramètres et la nouvelle date du seuil. \textbf{4 points}
+\item Proposer un protocole de mesure de C puis citer deux sources d’erreur à considérer. \textbf{4 points}
+\end{questions}
+
+
+\Page{Évaluation / DS / 1 sur 2}{Des capacités aux inductances}{ch03-ds1}
+\source{Devoir surveillé OptiTAB original ; durée 2 h ; calculatrice autorisée ; note sur 20. Les deux pages forment un seul sujet.}
+\Sub{A / Charge RC / 8 points}
+$E=10$ V, $R=4$ k$\Omega$, $C=500$ nF ; la capacité est initialement à $U_0=2$ V.
+\begin{questions}
+\item Établir l’équation, annoncer la condition initiale et la constante de temps. \textbf{3 points}
+\item Donner tension et courant en fonction du temps. \textbf{2 points}
+\item Calculer le temps où u = 8 V. \textbf{1 point}
+\item Calculer l’énergie fournie, dissipée et stockée en variation sur l’évolution complète. \textbf{2 points}
+\end{questions}
+\Sub{B / Établissement RL / 6 points}
+Une bobine $L=100$ mH, $r=10\ \Omega$ est en série avec $R=90\ \Omega$, sous $E=6$ V. Le courant initial est nul.
+\begin{questions}
+\item Établir l’équation et résoudre. \textbf{3 points}
+\item Donner le courant final, la tension finale de la bobine réelle et son énergie stockée. \textbf{3 points}
+\end{questions}
+
+
+\Page{Évaluation / DS / 2 sur 2}{Approfondir et conclure}{ch03-ds2}
+\Sub{C / Décharge et calcul numérique / 6 points}
+Après établissement du courant précédent, on isole la source et on décharge la bobine dans une boucle de résistance totale $R_d=200\ \Omega$.
+\begin{questions}
+\item Donner la nouvelle constante, l’expression du courant et la tension initiale de l’inductance idéale. \textbf{2 points}
+\item Quand le courant atteint-il $1\,\%$ de sa valeur initiale ? \textbf{1 point}
+\item Écrire le schéma d’Euler de ce régime libre et donner la condition de stabilité. \textbf{2 points}
+\item Expliquer pourquoi un courant numérique qui alterne de signe peut révéler un pas trop grand. \textbf{1 point}
+\end{questions}
+\begin{docu}{Gestion du temps}
+Lecture : 10 min ; parties A et B : 70 min ; partie C : 30 min ; vérification : 10 min. Une expression littérale, une unité et une interprétation accompagnent les résultats.
+\end{docu}
+
+
+\Page{Aides progressives}{Des indices pour repartir}{ch03-indices}
+\Sub{Défi D1}
+1. La loi des nœuds donne une équation à une inconnue u. 2. Lors de la décharge, les deux résistances relient la même paire de nœuds. 3. Intégrer u/Rj sur le temps.
+\Sub{Défi D2}
+1. La tension initiale vaut -Rd I0. 2. Utiliser l’exponentielle de courant et prendre le logarithme. 3. Ne pas mélanger le seuil sur le courant et le seuil sur l’énergie.
+\Sub{Défi D3}
+1. Dériver le carré avant de développer. 2. Utiliser z = exp(-t/τ). 3. La différence de deux solutions numériques suit un facteur 1-h/τ à chaque pas.
+\Sub{Exercices}
+E05 : conserver les flèches malgré le courant négatif. E09 : transmettre la tension à la commutation. E13 : utiliser la loi des nœuds. E15 : conserver la charge totale puis comparer les énergies. E24 : chercher une solution particulière affine.
+\Sub{Évaluations}
+Dans le DM, la limite finale et la constante changent toutes les deux lorsque le voltmètre est branché. Dans le DS, séparer la charge et la décharge de la bobine, avec deux schémas et deux constantes.
+
+
+\Page{Corrigés / Diagnostic}{Réactiver les bons réflexes}{ch03-corr-diag}
+\Sub{D1 et D2}
+$RC=1$ ms ; $L/R=0{,}20$ ms. $\dot u=-(2/\tau)e^{-t/\tau}$. L’exposant $t/\tau$ est sans dimension.
+\Sub{D3 à D5}
+Pour des excitations non impulsionnelles : continuité de $u_C$ si le courant reste fini, de $i_L$ si la tension reste finie. En régime permanent continu du RC série, $i=0$ et $u_C=E$. La solution libre est $y=y_0e^{-t/\tau}$.
+\Sub{D6 à D8}
+$e^{-1}\simeq0{,}368$ et $e^{-5}\simeq0{,}00674$. L’énergie vaut $50\ \mu\mathrm{ J}$. L’exponentielle n’atteint sa limite qu’asymptotiquement ; la durée pratique dépend du seuil de précision choisi.
+
+
+\Page{Corrigés / Exercices}{Identifier et résoudre}{ch03-corr-td1}
+\sol{E01}{Identifier une constante}
+$\tau=2$ ms ; $u_\infty=6$ V ; $\dot u(0)=2500$ V/s ; $u=6-5e^{-t/(2\,\mathrm{ms})}$. Les unités du coefficient de $\dot u$ sont des secondes.
+\sol{E02}{Vérifier une solution}
+La limite finale vaut bien E, mais $u(0)=2E$ au lieu de 0, et $\tau\dot u+u=E$ est néanmoins satisfaite. L’équation seule ne suffit pas : $u=E(1-e^{-t/\tau})$ satisfait aussi la condition initiale.
+\sol{E03}{Une capacité déjà chargée}
+$\tau=10$ ms ; $u_C=10-6e^{-t/\tau}$ V ; $i=1{,}2e^{-t/\tau}$ mA. À $\tau$, $u_C=7{,}793$ V et $i=0{,}441$ mA.
+
+
+\Page{Corrigés / Exercices}{Charger une capacité}{ch03-corr-td2}
+\sol{E04}{Atteindre un seuil}
+$9=12(1-e^{-t/\tau})$ donne $e^{-t/\tau}=1/4$ puis $t=\tau\ln4=5{,}545$ ms. Le logarithme porte sur un rapport sans dimension.
+\sol{E05}{Une source plus faible}
+$\tau=10$ ms ; $u=3+5e^{-t/\tau}$ V ; $i=-0{,}5e^{-t/\tau}$ mA. Il reste négatif et tend vers zéro. La capacité fournit de la charge au circuit.
+\sol{E06}{La résistance du GBF}
+La capacité voit $R+r=1000\ \Omega$, donc $\tau=100\ \mu\mathrm{ s}$. La tension finale est 5 V et le courant initial 5 mA si la capacité est déchargée. Oublier r sous-estimerait ici $\tau$ de 5 \%.
+
+
+\Page{Corrigés / Exercices}{Décharger et chronométrer}{ch03-corr-td3}
+\sol{E07}{Temps de demi-décharge}
+$t_{u/2}=\tau\ln2=2{,}079$ ms. L’énergie décroît deux fois plus vite dans l’exponentielle : $t_{\mathcal E/2}=\tau\ln2/2=1{,}040$ ms.
+\sol{E08}{Mesurer C par deux points}
+$u_2/u_1=e^{-\Delta t/\tau}$ : $\tau=12/\ln4=8{,}656$ ms ; $C=\tau/R=0{,}4328\ \mu\mathrm{ F}$. La tension initiale absolue n’est pas nécessaire si la limite vaut zéro.
+\sol{E09}{Changer de résistance}
+Avant $t_1=2$ ms : $u=6e^{-t/(2\,\mathrm{ms})}$. À $t_1$, $u_1=6/e$. Après : $u=(6/e)e^{-(t-t_1)/(8\,\mathrm{ms})}$. Huit ms plus tard, $u=6/e^2=0{,}812$ V.
+
+
+\Page{Corrigés / Exercices}{Établir un courant}{ch03-corr-td4}
+\sol{E10}{Une bobine au démarrage}
+$\tau=2$ ms ; $i=0{,}10(1-e^{-t/\tau})$ A. $u_L(0^+)=10$ V. La tension finale de la bobine réelle est $ri_\infty=2$ V.
+\sol{E11}{Un courant initial opposé}
+$i=100-150e^{-t/\tau}$ mA. Le zéro vérifie $e^{-t/\tau}=2/3$, donc $t=\tau\ln(3/2)=2{,}027$ ms. La continuité n’impose pas que le courant garde toujours son signe initial.
+\sol{E12}{Décharge magnétique}
+$\tau=0{,}50$ ms ; $i=0{,}20e^{-t/\tau}$ A ; $u_L=-R_ti$ donc $u_L(0^+)=-20$ V. Toute l’énergie initiale $LI_0^2/2=1$ mJ devient chaleur.
+
+
+\Page{Corrigés / Exercices}{Changer le schéma}{ch03-corr-td5}
+\sol{E13}{Un diviseur avec C}
+$(12-u)/R_1=u/R_2+C\dot u$. $U_\infty=8$ V ; $R_1\parallel R_2=4/3$ k$\Omega$ ; $\tau=4$ ms. $u=8(1-e^{-t/\tau})$ V. Le courant de source tend vers 2 mA.
+\sol{E14}{Une fuite de capacité}
+La résistance vue est $R_f\parallel R_V=0{,}50$ M$\Omega$ ; $\tau=5$ s. En attribuant cette décharge à la seule fuite, on estime $R_f=\tau/C=0{,}50$ M$\Omega$, soit une sous-estimation de 50 \%.
+\sol{E15}{Deux capacités en parallèle}
+La charge totale se conserve : $U_f=(U_1+U_2)/2$. La perte est $C(U_1-U_2)^2/4=25\ \mu\mathrm{ J}$. Le montage sans aucune résistance ni inductance ne décrit pas la redistribution physique.
+
+
+\Page{Corrigés / Exercices}{Faire le bilan}{ch03-corr-td6}
+\sol{E16}{Énergie de charge}
+$W_G=CE^2=360\ \mu\mathrm{ J}$ ; $\mathcal E_C=180\ \mu\mathrm{ J}$ ; $W_J=180\ \mu\mathrm{ J}$. R détermine la durée mais pas ces valeurs pour le modèle annoncé.
+\sol{E17}{Une charge non nulle}
+$W_G=CE(E-U_0)=-30\ \mu\mathrm{ J}$ ; $W_J=C(E-U_0)^2/2=9\ \mu\mathrm{ J}$ ; $\Delta\mathcal E_C=-39\ \mu\mathrm{ J}$. La source reçoit 30 $\mu\mathrm{ J}$ tandis que 9 $\mu\mathrm{ J}$ sont dissipés.
+\sol{E18}{Énergie d’un RL}
+$W_G=(E^2/R)[t-\tau(1-e^{-t/\tau})]$. À long terme, la puissance tend vers $E^2/R>0$ ; la source continue à alimenter la résistance. L’énergie magnétique tend seulement vers $LI_\infty^2/2$.
+
+
+\Page{Corrigés / Exercices}{Mesurer et simuler}{ch03-corr-td7}
+\sol{E19}{La pente d’un logarithme}
+$U_0=e^{1{,}50}$ V = 4,482 V ; $\tau=1/250=4$ ms ; $C=0{,}50\ \mu\mathrm{ F}$. Le logarithme doit porter sur une tension divisée par une référence de même unité.
+\sol{E20}{Une incertitude sur RC}
+$\tau=1{,}00$ ms ; l’incertitude relative vaut $\sqrt{0{,}01^2+0{,}03^2}=0{,}03162$. Donc $u(\tau)=0{,}0316$ ms, à présenter par exemple comme $0{,}03$ ms.
+\sol{E21}{Euler en trois pas}
+$u_{n+1}=u_n+(E-u_n)/2$ : $u_1=E/2$, $u_2=3E/4$, $u_3=7E/8$. À $t=\tau$, l’exact vaut $(1-e^{-1})E=0{,}6321E$ ; Euler donne $0{,}75E$, soit un écart $0{,}1179E$.
+
+
+\Page{Corrigés / Exercices}{Explorer les limites}{ch03-corr-td8}
+\sol{E22}{Un créneau périodique}
+Avec $a=e^{-1}$ : $u_+=E/(1+a)=4{,}386$ V ; $u_-=Ea/(1+a)=1{,}614$ V ; ondulation $2{,}773$ V. Les deux relations de continuité sur un cycle fixent ces valeurs.
+\sol{E23}{Un seuil de fermeture}
+En régime établi : $t_c=\tau\ln[(1-\beta)/(1-\alpha)]$ et $t_d=\tau\ln(\alpha/\beta)$. Avec les seuils donnés, les deux durées valent $\tau\ln2$ et $T=2\tau\ln2$. La première charge depuis zéro est différente.
+\sol{E24}{Un front de rampe}
+Une particulière est $a(t-\tau)$. La solution est $u=a[t-\tau+\tau e^{-t/\tau}]$. À t = 0, u et sa pente sont nuls. À long terme $u\simeq a(t-\tau)$ : l’écart à l’entrée tend vers $a\tau$, sans régime permanent constant.
+
+
+\Page{Corrigé du défi D1}{Une capacité entre deux branches}{ch03-corr-defi1}
+$U_\infty=6$ V et $\tau=(R_1\parallel R_2)C=2$ ms. Pendant la charge, $u=U_\infty(1-e^{-t/\tau})$, $i_1=(E-u)/R_1$, $i_2=u/R_2$ et $i_C=C\dot u$.
+À $t_1$, $U_1=6(1-e^{-1})=3{,}793$ V. Pour $t>t_1$, $u=U_1e^{-(t-t_1)/\tau}$. La résistance vue par C demeure $R_1\parallel R_2$ car la source annulée est un fil.
+La charge totale quittant l’armature positive vaut $CU_1=3{,}793\ \mu\mathrm{ C}$. Dans la branche $R_j$, sa valeur est $\int u/R_j\dd t=U_1\tau/R_j$. Les fractions valent $R_2/(R_1+R_2)=2/3$ dans $R_1$ et $1/3$ dans $R_2$ : $2{,}528$ et $1{,}264\ \mu\mathrm{ C}$.
+\begin{methode}{Vérifier le résultat}
+Les charges de branche se somment à $CU_1$. Les dissipations correspondantes se somment à $CU_1^2/2$ ; la plus faible résistance dissipe la plus grande part pendant cette décharge parallèle.
+\end{methode}
+
+
+\Page{Corrigé du défi D2}{Protéger une bobine sans trop ralentir}{ch03-corr-defi2}
+La limite de tension impose $R_d\leq U_{\max}/I_0$. La contrainte de courant impose $I_0e^{-R_dt_s/L}\leq\varepsilon I_0$, donc
+\[\frac{L\ln(1/\varepsilon)}{t_s}\leq R_d\leq\frac{U_{\max}}{I_0}.\]
+Le montage est réalisable si la borne basse ne dépasse pas la borne haute. Les valeurs numériques donnent $115{,}13\ \Omega\leq R_d\leq150\ \Omega$. Choisir $R_d=125\ \Omega$ : $\tau=0{,}40$ ms, $|u_L(0)|=25$ V et $i(2\,\mathrm{ms})/I_0=e^{-5}=0{,}00674$.
+Toute l’énergie $LI_0^2/2=1$ mJ doit être dissipée. La puissance initiale est $R_dI_0^2=5$ W, puis elle décroît comme $e^{-2t/\tau}$ : la tenue impulsionnelle de la résistance compte autant que sa puissance moyenne.
+
+
+\Page{Corrigé du défi D3}{Retrouver une entrée et tester Euler}{ch03-corr-defi3}
+$\dot u=(2U/a)e^{-t/a}(1-e^{-t/a})$, donc
+\[e=U(1-e^{-t/a})^2+\frac{2U\tau}{a}e^{-t/a}(1-e^{-t/a}).\]
+Si $a=\tau$, l’entrée se réduit à $e=U(1-e^{-2t/\tau})$. Elle part de zéro et tend vers U ; la sortie part avec une pente nulle. Alimenter Euler avec les valeurs exactes de cette entrée et comparer sa sortie à la formule proposée, puis diviser h par deux.
+La partie homogène obéit à $z_{n+1}=(1-h/\tau)z_n$. Pour $0<h/\tau<1$, elle décroît sans alternance ; pour $1<h/\tau<2$, elle alterne en décroissant ; au-delà de 2, son module croît. À $h=2\tau$, le module reste constant : ce n’est pas une décroissance correcte. Ce test analyse l’algorithme et non un phénomène d’oscillation du RC.
+
+
+\Page{Corrigé / DM / Sur 20}{Une temporisation avec fuite}{ch03-corr-dm}
+\Sub{1 / 4 points}
+Avec u orientée vers le nœud haut de C, $(E-u)/R=u/R_f+C\dot u$. Le schéma orienté vaut 2 points ; le bilan et les relations des dipôles 2.
+\Sub{2 et 3 / 8 points}
+$U_\infty=ER_f/(R+R_f)=9$ V ; $\tau=(R\parallel R_f)C=0{,}75$ s (4). $u=9(1-e^{-t/0{,}75})$ et $u=6$ V à $t=0{,}75\ln3=0{,}824$ s (4). Le seuil est accessible car il est inférieur à 9 V.
+\Sub{4 / 4 points}
+$R_f\parallel R_V=230{,}769$ k$\Omega$ ; $U'_\infty=8{,}372$ V ; $\tau'=0{,}6977$ s. $t'=-\tau'\ln(1-6/U'_\infty)=0{,}880$ s. Le chargement du voltmètre retarde ici le seuil malgré une constante de temps plus petite.
+\Sub{5 / 4 points}
+Mesurer la courbe, ajuster séparément la limite et la constante, puis calculer $C=\tau/R_{\rm vu}$ (2). Discuter fuite, entrée du voltmètre, tolérances et résolution temporelle (deux limites expliquées : 2).
+
+
+\Page{Corrigé / DS / 1 sur 2}{Calculer et interpréter}{ch03-corr-ds1}
+\Sub{A / 8 points}
+$RC\dot u+u=E$, $u(0)=2$ V et $\tau=2$ ms (3). $u=10-8e^{-t/\tau}$ V ; $i=2e^{-t/\tau}$ mA (2). Pour 8 V, $t=\tau\ln4=2{,}773$ ms (1). $W_G=40\ \mu\mathrm{ J}$ ; $W_J=16\ \mu\mathrm{ J}$ ; $\Delta\mathcal E_C=24\ \mu\mathrm{ J}$ (2).
+\Sub{B / 6 points}
+$L\dot i+100i=6$ ; $\tau=1$ ms ; $i=0{,}060(1-e^{-t/\tau})$ A (3). $I_\infty=60$ mA ; $u_b(\infty)=0{,}60$ V ; $\mathcal E_L=180\ \mu\mathrm{ J}$ (3).
+
+
+\Page{Corrigé / DS / 2 sur 2}{Calculer et interpréter}{ch03-corr-ds2}
+\Sub{C / 6 points}
+$\tau_d=L/R_d=0{,}50$ ms ; $i=0{,}060e^{-t/\tau_d}$ A ; $u_L(0)=-12$ V (2). Le seuil est atteint à $\tau_d\ln100=2{,}303$ ms (1). Euler : $i_{n+1}=(1-h/\tau_d)i_n$ ; stabilité asymptotique pour $0<h<2\tau_d$ (2). Si $h>\tau_d$, le facteur change de signe, contrairement à la décharge exacte : il s’agit d’un artefact du calcul (1).
+\begin{methode}{Vérifier la correction}
+Pour A, l’énergie de source est égale à la somme des deux autres. Pour B, ne pas annuler la résistance interne de la bobine. Pour C, utiliser la résistance de la nouvelle boucle, pas celle de la charge initiale.
+\end{methode}
+
+
+\Page{Support authentique / 1}{DM réel / Charge très rapide}{ch03-sources-1}
+\source{Source consultée le 25 octobre 2026. MPSI, schleck.ovh ; DM3 à rendre le 5 novembre 2025 ; exercice 2, questions 1 à 5, page 2/3.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/dm3_elec.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 20 minutes. Travailler seulement la première phase de charge sur le schéma original. La phase suivante comporte deux capacités et relève du deuxième ordre.
+\Sub{Repères de correction indépendants}
+Lors de la charge en position A, $rC_1\dot u_1+u_1=E$ et $u_1(0)=0$. Donc $u_1=E(1-e^{-t/(rC_1)})$. Avec $r=10\ \Omega$ et $C_1=30$ nF, $\tau=0{,}30\ \mu\mathrm{ s}$. Atteindre $99{,}9\,\%$ demande $t_1=\tau\ln1000=2{,}072\ \mu\mathrm{ s}$. À 1 ms, $u_1$ est pratiquement égal à 15 V dans ce modèle.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Support authentique / 2}{DS réel / Une bobine au démarrage}{ch03-sources-2}
+\source{Source consultée le 25 octobre 2026. MPSI, schleck.ovh ; DS3 du 13 novembre 2025 ; exercice 2, partie I, questions 1 à 6, page 2/4.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/ds3_elec_chimie.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 25 minutes. Établir le courant dans la bobine réelle et différencier la tension inductive de la tension totale. On peut ensuite lire les questions 7 et 8 sur l’ouverture du circuit.
+\Sub{Repères de correction indépendants}
+$L\dot i+(R+r)i=E$, $\tau=L/(R+r)$ ; si le courant initial est nul, $i=E(1-e^{-t/\tau})/(R+r)$. Au régime final, $I_0=E/(R+r)$, $U_0=rI_0$, $\mathcal E_L=LI_0^2/2$ et $P_{J,b}=rI_0^2$. L’ouverture sans trajet de décharge tend à produire une forte tension : elle ne justifie pas un saut instantané du courant dans le modèle de bobine idéale.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Références et suivi}{Préparer la suite}{ch03-references}
+\Sub{Référence réglementaire}
+\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{Bulletin officiel spécial n° 1 du 11 février 2021, arrêté du 5 janvier 2021.}\par
+\href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexe officielle regroupée}, rubrique 1.3. Pages internes 14 et 15 (pages PDF 51 et 52). Les circuits du deuxième ordre sont étudiés aux chapitres 04 et 05.
+\Sub{Nature des contenus}
+Le cours, les 24 exercices, les trois défis et les évaluations OptiTAB sont rédigés pour cette collection. Les graphiques sont calculés avec les équations annoncées. Les supports authentiques sont identifiés sur les pages précédentes ; leurs énoncés et figures restent dans le document d’origine.
+\Sub{Compétences à confirmer}
+\checkline{Je peux retrouver l’équation sans mémoriser une suite de signes.}
+\checkline{Je vérifie les conditions initiales et les limites.}
+\checkline{Je peux confronter un calcul, un graphe et un bilan énergétique.}
+\checkline{Je sais corriger mon DS et refaire une question sans aide.}
+\begin{methode}{Prochaine étape}
+Le chapitre 04 introduit le stockage dans deux réserves et l’échange périodique d’énergie : c’est l’oscillateur harmonique, mécanique ou électrique.
+\end{methode}
+

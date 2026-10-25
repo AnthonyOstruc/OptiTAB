@@ -1,0 +1,14 @@
+% Test de la loi de Mariotte : pression en fonction de l'inverse du volume (corrigé de l'exercice 11, chapitre 12)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=100mm,height=48mm,xmin=0,xmax=7,ymin=0,ymax=4500,
+  xtick={0,1,...,7},ytick={0,1000,...,4000},
+  xlabel={$\dfrac{1}{V}$ ($10^{-2}$ \unit{mL^{-1}})},ylabel={$P$ (hPa)}]
+\addplot[otNavy,line width=1.1pt,domain=0:7] {608*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otOrange!85!black] coordinates {(1.667,1012) (2,1218) (2.5,1515) (3.333,2031) (4.167,2526) (5,3046)};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:6.667,0) -- (axis cs:6.667,4053) -- (axis cs:0,4053);
+\fill[otGreenDark] (axis cs:6.667,4053) circle (1.6pt);
+\node[pcLegende,anchor=south east,text=otGreenDark] at (axis cs:6.6,4080) {$V=\qty{15}{mL}$ : $P\approx\qty{4,05e3}{hPa}$};
+\node[pcLegende,anchor=north west,text=otNavy] at (axis cs:3.4,1700) {$P=\dfrac{\num{6,08e4}}{V}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Points alignés sur une droite passant par l'origine : $P$ est proportionnelle à $1/V$.}

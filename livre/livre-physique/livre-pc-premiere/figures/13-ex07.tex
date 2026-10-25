@@ -1,0 +1,28 @@
+% Mouvement circulaire uniforme d'une balle attachée à un fil : R = 0,50 m, positions toutes les 0,10 s (exercice 7, chapitre 13)
+% Échelle des longueurs : 1 cm pour 10 cm ; vitesses : 1 cm pour 1 m/s (v = 2,0 m/s, Delta v = 0,79 m/s)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  vit/.style={otNavy,line width=1pt,-{Stealth[length=2mm]}},
+  dv/.style={otGreenDark,line width=1.2pt,-{Stealth[length=2mm]}}]
+\draw[otMuted!70,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (215:5) arc (215:45:5);
+\fill[otInk] (0,0) circle (0.06); \node[pcLegende,anchor=north] at (0,-0.1) {O};
+\foreach \i in {0,...,6}{%
+  \pgfmathsetmacro\a{200-22.92*\i}
+  \fill[otInk] (\a:5) circle (0.07);
+  \node[pcLegende] at (\a:5.45) {$M_{\i}$};}
+\draw[otInk!60,line width=0.5pt] (0,0) -- (200:5);
+\node[pcLegende,anchor=south,sloped] at (200:2.5) {fil, $R=\qty{0,50}{m}$};
+\solution{
+  \pgfmathsetmacro\aa{200-22.92*2}\pgfmathsetmacro\ab{200-22.92*3}
+  \pgfmathsetmacro\da{\aa-90-11.46}\pgfmathsetmacro\db{\ab-90-11.46}
+  \draw[vit] (\aa:5) -- ++(\da:1.99) node[pos=0.55,pcLegende,anchor=south east,text=otNavy] {$\vec{v}_2$};
+  \draw[vit] (\ab:5) -- ++(\db:1.99) node[pos=0.6,pcLegende,anchor=south east,text=otNavy] {$\vec{v}_3$};
+  \begin{scope}[shift={(-1.2,1.0)}]
+    \fill[otInk] (0,0) circle (0.04);
+    \draw[vit] (0,0) -- (\da:1.99) node[pcLegende,anchor=south east,text=otNavy] {$\vec{v}_2$};
+    \draw[vit] (0,0) -- (\db:1.99) node[pos=0.6,pcLegende,anchor=north west,text=otNavy] {$\vec{v}_3$};
+    \draw[dv] (\da:1.99) -- (\db:1.99);
+    \node[pcLegende,anchor=south west,text=otGreenDark] at ($(\da:1.99)!0.5!(\db:1.99)$) {$\Delta\vec{v}_2$};
+    \draw[otGreenDark,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] ($(\da:1.99)!0.5!(\db:1.99)$) -- ++(\ab+180:1.2) node[pcLegende,anchor=north,text=otGreenDark] {vers O};
+  \end{scope}}
+\end{tikzpicture}
+\par\smallskip\legende{Vue de dessus : la balle tourne à vitesse constante (échelle 1/10).\solution{ Vitesses : \qty{1}{cm} pour \qty{1}{m.s^{-1}} ; construites depuis un même point, elles donnent $\Delta\vec{v}_2$, dirigé vers le centre O.}}

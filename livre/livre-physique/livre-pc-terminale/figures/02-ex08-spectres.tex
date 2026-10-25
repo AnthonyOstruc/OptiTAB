@@ -1,0 +1,18 @@
+% Spectres d'absorption de deux colorants et du sirop dilué (exercice 8, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otUV,width=98mm,height=52mm,ymax=0.62,ytick={0,0.2,0.4,0.6},xtick={400,450,...,750},
+  legend style={at={(1.05,0.98)},anchor=north west,draw=otRule,fill=white,legend columns=1,
+    font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\addplot[otOrange,line width=0.9pt,domain=400:750] {0 \bandeUV{427}{38}{0.495}};
+\addlegendentry{tartrazine E102 seule}
+\addplot[otNavy,line width=0.9pt,domain=400:750] {0 \bandeUV{638}{32}{0.53} \bandeUV{415}{30}{0.0176}};
+\addlegendentry{bleu patenté V E131 seul}
+\addplot[otGreenDark,line width=1.1pt,dashed,domain=400:750] {0 \bandeUV{427}{38}{0.495} \bandeUV{638}{32}{0.53} \bandeUV{415}{30}{0.0176}};
+\addlegendentry{sirop dilué}
+\draw[otMuted,dotted,line width=0.6pt] (axis cs:427,0) -- (axis cs:427,0.6);
+\draw[otMuted,dotted,line width=0.6pt] (axis cs:638,0) -- (axis cs:638,0.6);
+\node[pcLegende,anchor=north] at (axis cs:427,-0.06) {427};
+\node[pcLegende,anchor=north] at (axis cs:638,-0.06) {638};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Absorbances mesurées dans une cuve de 1,00 cm, pour les concentrations présentes dans le sirop dilué.}

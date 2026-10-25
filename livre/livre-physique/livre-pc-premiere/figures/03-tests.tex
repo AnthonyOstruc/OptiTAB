@@ -1,0 +1,10 @@
+% Tests d'identification de quelques ions métalliques par la soude (L'essentiel, chapitre 3)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \x/\c/\p/\ion/\t in {0/cyan!25/cyan!70!blue/{Cu^{2+}}/{précipité bleu},2.6/otMuted!10/green!45!black/{Fe^{2+}}/{précipité vert},
+  5.2/yellow!20/orange!60!brown/{Fe^{3+}}/{précipité rouille},7.8/otMuted!8/white/{Zn^{2+}}/{précipité blanc}}{
+  \pic at (\x,0) {tube={hauteur=2.3,niveau=1.5,liquide=\c}};
+  \foreach \px/\py in {-0.09/0.32,0.07/0.30,0/0.42,-0.1/0.52,0.1/0.48,0.02/0.6}{\fill[\p,draw=otInk!35,line width=0.2pt] (\x+\px,\py) circle (0.055);}
+  \node[pcLegendeG,anchor=north] at (\x,-0.1) {ion $\ce{\ion}$};
+  \node[pcLegende,anchor=north] at (\x,-0.45) {\t};}
+\end{tikzpicture}
+\par\smallskip\legende{Quelques gouttes de soude, solution d'hydroxyde de sodium, forment un précipité dont la couleur identifie l'ion métallique présent.}

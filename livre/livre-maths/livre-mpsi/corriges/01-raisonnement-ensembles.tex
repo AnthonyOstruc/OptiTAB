@@ -1,0 +1,523 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 1 — Raisonnement et vocabulaire ensembliste
+%% Mise en page pleine largeur, un corrigé par bloc insécable (style livre de Première).
+%% Identités et exemples vérifiés par verifications/chapitre_01.py.
+
+\corrigesChapitre{1}{Raisonnement et vocabulaire ensembliste}
+\corrigesSouples
+
+\begin{blocLivre}{cor-1-1}
+\begin{corrige}{1}{Vrai ou faux ?}
+\demarche{Un contre-exemple suffit pour « faux » ; une justification générale est nécessaire pour « vrai ».}
+\begin{questions}
+  \item \textbf{Vrai} : le carré d'un réel est toujours positif ou nul.
+  \item \textbf{Faux} : pour tout réel $x$, $x^{2}\geq0>-1$.
+  \item \textbf{Vrai} : pour $x$ donné, $y=x+1$ convient — le $y$ choisi dépend de $x$.
+  \item \textbf{Faux} : un tel $y$ vérifierait en particulier $y>y$, ce qui est absurde.
+  \item \textbf{Vrai} : $n^{2}+n=n(n+1)$ est le produit de deux entiers consécutifs, dont l'un est pair.
+  \item \textbf{Faux} : $x=-2$ vérifie $x^{2}=4$ mais pas $x=2$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-2}
+\begin{corrige}{2}{Écrire avec des quantificateurs}
+\demarche{Traduire mot à mot, en respectant l'ordre des quantificateurs : « majorée » cache un $\exists$ puis un $\forall$.}
+\begin{questions}
+  \item $\exists M\in\R,\ \forall x\in\R,\ f(x)\leq M$.
+  \item $\forall M\in\R,\ \exists x\in\R,\ f(x)>M$ (la négation échange $\exists$ et $\forall$).
+  \item $\forall n\in\N,\ u_{n+1}\geq u_n$.
+  \item $\exists x\in\R,\ f(x)=0$.
+  \item $\forall x\in\R,\ f(-x)=f(x)$.
+  \item $\forall y\in\R,\ \exists x\in\R,\ f(x)=y$ — autrement dit, $f$ est surjective de $\R$ sur $\R$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-3}
+\begin{corrige}{3}{Nier des énoncés quantifiés}
+\demarche{La négation échange $\forall$ et $\exists$ et nie la conclusion, sans toucher aux ensembles de départ.}
+\begin{questions}
+  \item $\exists x\in\R,\ f(x)\leq0$.
+  \item $\forall x\in\intFF{0}{1},\ f(x)\neq0$.
+  \item $\exists y\in\R,\ \forall x\in\R,\ f(x)\neq y$.
+  \item $\exists\varepsilon>0,\ \forall N\in\N,\ \exists n\geq N,\ |u_n-\ell|>\varepsilon$.
+  \item La négation de $P\Rightarrow Q$ est « $P$ et non $Q$ » :
+    $\exists x\in\R,\ \bigl(x\in A\ \text{et}\ x\notin B\bigr)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-4}
+\begin{corrige}{4}{Implication, réciproque, contraposée}
+\demarche{La contraposée a toujours la même valeur de vérité que l'implication ; la réciproque, non.}
+\begin{questions}
+  \item Réciproque : « si $n$ est pair, alors $n$ est multiple de $4$ » — fausse ($n=6$ est pair sans être
+    multiple de $4$). Contraposée : « si $n$ est impair, alors $n$ n'est pas multiple de $4$ » — vraie, car
+    équivalente à $(\mathrm{I}_1)$, qui est vraie : $n=4k\Rightarrow n=2(2k)$.
+  \item $(\mathrm{I}_2)$ est vraie : si $x\geq1$, alors $x^{2}\geq x\geq1$ (on multiplie $x\geq1$ par $x>0$).
+    Sa réciproque $x^{2}\geq1\Rightarrow x\geq1$ est fausse ($x=-2$) ; sa contraposée
+    $x^{2}<1\Rightarrow x<1$ est vraie, car équivalente à $(\mathrm{I}_2)$.
+  \item Être multiple de $4$ est une condition \res{\text{suffisante}} pour être pair ; être pair est une
+    condition \res{\text{nécessaire}} pour être multiple de $4$ — mais aucune des deux n'est nécessaire
+    et suffisante.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-5}
+\begin{corrige}{5}{Opérations sur les parties}
+\demarche{Travailler élément par élément, puis contrôler sur un dessin.}
+\begin{questions}
+  \item $A\cup B=\ens{1,2,3,4,5,6,7}$ ; $A\cap B=\ens{4,5}$ ; $A\setminus B=\ens{1,2,3}$ ;
+    $B\setminus A=\ens{6,7}$ ; $\overline{A}=\ens{6,7,8,9,10}$ ; $\overline{B}=\ens{1,2,3,8,9,10}$.
+    On a bien $\overline{A\cup B}=\ens{8,9,10}=\overline{A}\cap\overline{B}$.
+  \item $I\cap J=\intOO{1}{3}$ ;\quad $I\cup J=\intFF{-1}{5}$ ;\quad $I\setminus J=\intFF{-1}{1}$ ;\quad
+    $\R\setminus I=\intOO{-\infty}{-1}\cup\intFO{3}{+\infty}$.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[line cap=round,xscale=1.5]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (-1.8,0) -- (5.8,0);
+  \foreach \x in {-1,0,1,2,3,4,5}{%
+    \draw[otMuted,line width=0.4pt] (\x,-0.06) -- (\x,0.06);
+    \node[below,font=\scriptsize,text=otMuted,inner sep=2.5pt] at (\x,-0.06) {$\x$};}
+  \draw[otNavy,line width=1.5pt] (-1,0.38) -- (3,0.38);
+  \fill[otNavy] (-1,0.38) circle (0.9mm);
+  \draw[otNavy,fill=white,line width=0.8pt] (3,0.38) circle (0.9mm);
+  \node[left,font=\scriptsize,text=otNavy] at (-1.15,0.38) {$I$};
+  \draw[otGreenDark,line width=1.5pt] (1,0.82) -- (5,0.82);
+  \draw[otGreenDark,fill=white,line width=0.8pt] (1,0.82) circle (0.9mm);
+  \fill[otGreenDark] (5,0.82) circle (0.9mm);
+  \node[left,font=\scriptsize,text=otGreenDark] at (0.85,0.82) {$J$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Les deux intervalles sur un axe : $I\cap J$ se lit sur le recouvrement, $I\cup J$ d'un bord à l'autre.}
+\end{center}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-6}
+\begin{corrige}{6}{Produit cartésien et ensemble des parties}
+\demarche{Bien distinguer éléments et parties : $x\in E$, $\ens{x}\subset E$ et $\ens{x}\in\parties{E}$.}
+\begin{questions}
+  \item $E\times F$ est formé des couples $(a,1)$, $(a,2)$, $(a,3)$, $(b,1)$, $(b,2)$ et $(b,3)$ :
+    il compte $\res{2\times3=6}$ éléments.
+  \item $\parties{E}$ regroupe $\varnothing$, $\ens{1}$, $\ens{2}$, $\ens{3}$, $\ens{1,2}$,
+    $\ens{1,3}$, $\ens{2,3}$ et $\ens{1,2,3}$, soit $8$ parties.
+  \item $\varnothing\in\parties{E}$ : vraie ($\varnothing$ est une partie de $E$).
+    $\varnothing\subset\parties{E}$ : vraie (l'ensemble vide est inclus dans tout ensemble).
+    $\ens{1}\in\parties{E}$ : vraie. $1\in\parties{E}$ : fausse ($1$ est un élément de $E$, pas une
+    partie de $E$). $\ens{\ens{1}}\subset\parties{E}$ : vraie, car son unique élément $\ens{1}$
+    appartient à $\parties{E}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-7}
+\begin{corrige}{7}{Images directes et réciproques : calculs}
+\demarche{Pour une image directe, faire varier $x$ dans $A$ ; pour une image réciproque, résoudre $f(x)\in B$.}
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{questions}
+  \item Sur $\intFF{1}{2}$, $x\mapsto x^{2}$ est croissante : $f\bigl(\intFF{1}{2}\bigr)=\res{\intFF{1}{4}}$.
+    Sur $\intFF{-2}{1}$, le minimum de $x^{2}$ est $0$ (atteint en $0$) et le maximum est $4$ (en $-2$) :
+    $f\bigl(\intFF{-2}{1}\bigr)=\res{\intFF{0}{4}}$. Enfin $f(\R)=\res{\intFO{0}{+\infty}}$.
+  \item $x^{2}=4\iff x=\pm2$ : $f^{-1}(\ens{4})=\res{\ens{-2,2}}$. Ensuite,
+    $1\leq x^{2}\leq4\iff1\leq|x|\leq2$, donc
+    $f^{-1}\bigl(\intFF{1}{4}\bigr)=\res{\intFF{-2}{-1}\cup\intFF{1}{2}}$.
+    Un carré n'est jamais négatif : $f^{-1}\bigl(\intFF{-2}{-1}\bigr)=\res{\varnothing}$.
+  \item $g$ est croissante : $g\bigl(\intFF{0}{1}\bigr)=\res{\intFF{1}{3}}$, et
+    $0\leq2x+1\leq1\iff-\frac12\leq x\leq0$, donc
+    $g^{-1}\bigl(\intFF{0}{1}\bigr)=\res{\intFF{-1/2}{0}}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=58mm, xmin=-2.7, xmax=2.7, ymin=0, ymax=4.7,
+  xtick={-2,-1,1,2}, ytick={1,4}, grid=none]
+  \fill[otGreen,opacity=0.12] (axis cs:-2.7,1) rectangle (axis cs:2.7,4);
+  \draw[otGreenDark,line width=0.5pt,dashed] (axis cs:-2.7,1) -- (axis cs:2.7,1);
+  \draw[otGreenDark,line width=0.5pt,dashed] (axis cs:-2.7,4) -- (axis cs:2.7,4);
+  \addplot[otNavy,line width=1.1pt,domain=-2.15:2.15,samples=90] {x^2};
+  \draw[otGreenDark,line width=2.2pt] (axis cs:1,0) -- (axis cs:2,0);
+  \draw[otGreenDark,line width=2.2pt] (axis cs:-2,0) -- (axis cs:-1,0);
+  \node[anchor=south east,font=\scriptsize,text=otNavy] at (axis cs:-2.1,4.1) {$\Cf$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$f^{-1}\bigl(\intFF{1}{4}\bigr)$ : les abscisses dont l'image tombe dans la bande $\intFF{1}{4}$.}
+\end{minipage}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-8}
+\begin{corrige}{8}{Injective ? surjective ?}
+\demarche{Résoudre $f(x)=y$ : selon le nombre de solutions, on conclut sur l'injectivité et la surjectivité.}
+\begin{questions}
+  \item $f_1$ : pour $y\in\R$, $2x+1=y\iff x=\frac{y-1}{2}$, solution unique : $f_1$ est \res{\text{bijective}}.
+  \item $f_2$ : non injective ($f_2(-1)=f_2(1)=1$) et non surjective ($-1$ n'a pas d'antécédent, un carré étant positif).
+  \item $f_3$ : surjective (pour $y\geq0$, $y=f_3(\sqrt{y})$), mais non injective ($f_3(-1)=f_3(1)$).
+  \item $f_4$ : injective (si $x,x'\geq0$ et $x^{2}=x'^{2}$, alors $x=x'$), mais non surjective ($-1$ n'a pas d'antécédent).
+  \item $f_5$ : injective ($n+1=m+1\Rightarrow n=m$), non surjective : $0$ n'a pas d'antécédent dans $\N$.
+  \item $f_6$ : \res{\text{bijective}}, de réciproque $n\mapsto n-1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-9}
+\begin{corrige}{9}{Raisonner par contraposée}
+\demarche{Démontrer non$(Q)\Rightarrow$ non$(P)$, qui est équivalente à l'implication demandée.}
+\begin{questions}
+  \item Contraposée : $n$ impair $\Rightarrow n^{2}$ impair. Si $n=2k+1$, alors
+    $n^{2}=4k^{2}+4k+1=2(2k^{2}+2k)+1$ est impair. Par contraposition, si $n^{2}$ est pair, $n$ est pair.
+  \item Contraposée : si $x\neq y$, les deux produits diffèrent. Or
+    \[(x+1)(y-1)-(x-1)(y+1)=2(y-x),\]
+    qui est non nul dès que $x\neq y$. D'où le résultat par contraposition.
+  \item Contraposée : si $n$ est impair, $8$ divise $n^{2}-1$. Si $n=2k+1$ :
+    $n^{2}-1=4k^{2}+4k=4k(k+1)$ ; $k(k+1)$, produit de deux entiers consécutifs, est pair,
+    donc $n^{2}-1$ est multiple de $8$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-10}
+\begin{corrige}{10}{Raisonner par l'absurde}
+\demarche{Supposer le contraire de la conclusion et en tirer une contradiction.}
+\begin{questions}
+  \item Supposons $\sqrt{3}=\frac{p}{q}$ avec $p$, $q$ premiers entre eux. Alors $p^{2}=3q^{2}$, donc $3$
+    divise $p^{2}$, donc $3$ divise $p$ (indication). Écrivons $p=3k$ : $9k^{2}=3q^{2}$, soit
+    $q^{2}=3k^{2}$, donc $3$ divise $q$. Ainsi $3$ divise $p$ et $q$ : contradiction avec « premiers entre
+    eux ». Donc $\sqrt{3}\notin\Q$.
+  \item Soient $r\in\Q$ et $x\notin\Q$. Si $r+x$ était rationnel, alors $x=(r+x)-r$ serait la différence
+    de deux rationnels, donc rationnel : contradiction. Donc $r+x\notin\Q$.
+  \item Supposons qu'il existe un plus petit réel strictement positif $a$. Alors $\frac{a}{2}$ est
+    strictement positif et $\frac{a}{2}<a$ : contradiction avec la minimalité de $a$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-11}
+\begin{corrige}{11}{Raisonner par disjonction de cas}
+\demarche{Découper en cas qui recouvrent toutes les possibilités, puis conclure dans chacun d'eux.}
+\begin{questions}
+  \item Si $n=2k$ : $\frac{n(n+1)}{2}=k(n+1)\in\N$. Si $n=2k+1$ : $n+1=2(k+1)$ et
+    $\frac{n(n+1)}{2}=n(k+1)\in\N$. Dans tous les cas, c'est un entier.
+  \item \methode{disjonction selon le reste de $n$ modulo $3$}\\
+    Si $n=3k$ : $3$ divise $n$, donc $n(n^{2}+2)$. Si $n=3k\pm1$ : $n^{2}=9k^{2}\pm6k+1$, donc
+    $n^{2}+2=3(3k^{2}\pm2k+1)$ est multiple de $3$. Dans tous les cas, $3$ divise $n(n^{2}+2)$.
+  \item Trois cas, selon la position de $x$ par rapport à $-2$ et $1$.
+    Si $x<-2$ : l'équation devient $(1-x)+(-x-2)=5$, soit $-2x-1=5$, d'où $x=-3$, qui vérifie bien
+    $x<-2$. Si $-2\leq x\leq1$ : $(1-x)+(x+2)=3\neq5$, aucune solution. Si $x>1$ : $(x-1)+(x+2)=5$
+    donne $2x+1=5$, d'où $x=2>1$. Conclusion : $\res{\mathcal{S}=\ens{-3\,;\,2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-12}
+\begin{corrige}{12}{Raisonner par analyse-synthèse}
+\demarche{L'analyse fournit les seuls candidats possibles ; la synthèse vérifie qu'ils conviennent.}
+\begin{questions}
+  \item \etape{Analyse} Supposons $f=p+i$ avec $p$ paire et $i$ impaire. Pour tout $x$ :
+    $f(x)=p(x)+i(x)$ et $f(-x)=p(x)-i(x)$. En sommant puis en soustrayant, nécessairement
+    \[p(x)=\frac{f(x)+f(-x)}{2}\qquad\text{et}\qquad i(x)=\frac{f(x)-f(-x)}{2},\]
+    ce qui prouve l'unicité du couple $(p,i)$.
+    \etape{Synthèse} Les fonctions $p$ et $i$ ainsi définies vérifient $p(-x)=p(x)$, $i(-x)=-i(x)$ et
+    $p+i=f$ : elles conviennent. D'où l'existence et l'unicité.
+  \item \etape{Analyse} Soit $f$ une solution. Avec $x=y=0$ : $f(0)^{2}-f(0)=0$, donc
+    $f(0)\in\ens{0,1}$. Si $f(0)=0$, le choix $y=0$ donne $f(x)f(0)-f(0)=x$, soit $0=x$ pour tout
+    $x$ : absurde. Donc $f(0)=1$, et le choix $y=0$ donne $f(x)-1=x$, c'est-à-dire $f(x)=x+1$.
+    \etape{Synthèse} Pour $f:x\mapsto x+1$ : $(x+1)(y+1)-(xy+1)=x+y$ pour tous $x$, $y$.
+    Conclusion : l'unique solution est $\res{f:x\mapsto x+1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-13}
+\begin{corrige}{13}{Récurrences simples}
+\demarche{Toujours trois temps : initialisation, hérédité à $k$ fixé, conclusion.}
+\begin{questions}
+  \item \etape{Initialisation} Pour $n=1$ : $1^{2}=1$ et $\frac{1\cdot2\cdot3}{6}=1$.
+    \etape{Hérédité} Si la formule est vraie au rang $k\geq1$, alors
+    \[\sum_{j=1}^{k+1}j^{2}=\frac{k(k+1)(2k+1)}{6}+(k+1)^{2}=\frac{(k+1)\bigl(2k^{2}+7k+6\bigr)}{6}
+      =\frac{(k+1)(k+2)(2k+3)}{6},\]
+    car $2k^{2}+7k+6=(k+2)(2k+3)$ : c'est la formule au rang $k+1$.
+  \item \etape{Initialisation} $2^{0}=1>0$.\quad
+    \etape{Hérédité} Si $2^{k}>k$, alors $2^{k+1}=2\cdot2^{k}>2k$, et $2k\geq k+1$ dès que $k\geq1$ ;
+    pour $k=0$, on vérifie directement $2^{1}=2>1$. Dans tous les cas, $2^{k+1}>k+1$.
+  \item \etape{Initialisation} $4!=24\geq16=2^{4}$.\quad
+    \etape{Hérédité} Si $k!\geq2^{k}$ avec $k\geq4$, alors
+    $(k+1)!=(k+1)\,k!\geq(k+1)\,2^{k}\geq2\cdot2^{k}=2^{k+1}$, car $k+1\geq5\geq2$.
+  \item Posons $u_n=3^{2n+1}+2^{n+2}$.\quad
+    \etape{Initialisation} $u_0=3+4=7$.\quad
+    \etape{Hérédité} Si $7$ divise $u_k$, alors
+    \[u_{k+1}=9\cdot3^{2k+1}+2\cdot2^{k+2}=7\cdot3^{2k+1}+2\,u_k,\]
+    somme de deux multiples de $7$, donc multiple de $7$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-14}
+\begin{corrige}{14}{Récurrence double, récurrence forte}
+\demarche{Adapter l'hypothèse de récurrence : deux rangs pour une récurrence double, tous les rangs précédents pour une récurrence forte.}
+\begin{questions}
+  \item \etape{Initialisation} $u_0=2=2^{0}+3^{0}$ et $u_1=5=2^{1}+3^{1}$.
+    \etape{Hérédité} Si $u_k=2^{k}+3^{k}$ et $u_{k+1}=2^{k+1}+3^{k+1}$, alors
+    \[u_{k+2}=5\bigl(2^{k+1}+3^{k+1}\bigr)-6\bigl(2^{k}+3^{k}\bigr)
+      =2^{k}(10-6)+3^{k}(15-6)=2^{k+2}+3^{k+2}.\]
+  \item \etape{Initialisation} $2$ est premier : il est son propre diviseur premier.
+    \etape{Hérédité forte} Soit $k\geq2$ ; supposons que tout entier $m$ avec $2\leq m\leq k$ admet un
+    diviseur premier. Si $k+1$ est premier, il se divise lui-même. Sinon, $k+1=ab$ avec
+    $2\leq a\leq k$ : par hypothèse, $a$ admet un diviseur premier $p$, et $p$ divise $a$, qui divise $k+1$.
+  \item $v_2=v_1=1$, $v_3=v_1+v_2=2$, $v_4=v_1+v_2+v_3=4$. Montrons $v_n=2^{\,n-2}$ pour $n\geq2$.
+    \etape{Initialisation} $v_2=1=2^{0}$.
+    \etape{Hérédité} Soit $n\geq2$ tel que $v_n=2^{\,n-2}$. Comme $n\geq2$ :
+    \[v_{n+1}=\underbrace{v_1+\dots+v_{n-1}}_{=\,v_n}+v_n=2v_n=2^{\,n-1},\]
+    ce qui est la formule au rang $n+1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-15}
+\begin{corrige}{15}{Calculs ensemblistes}
+\demarche{Raisonner par équivalences sur l'appartenance d'un élément $x$.}
+\begin{questions}
+  \item $x\in A\setminus(A\setminus B)$ signifie : $x\in A$ et non($x\in A$ et $x\notin B$),
+    c'est-à-dire $x\in A$ et ($x\notin A$ ou $x\in B$), c'est-à-dire $x\in A$ et $x\in B$.
+    Donc $A\setminus(A\setminus B)=A\cap B$.
+  \item $x\in A\cup(B\cap C)$ $\iff$ $x\in A$ ou ($x\in B$ et $x\in C$) $\iff$
+    ($x\in A$ ou $x\in B$) et ($x\in A$ ou $x\in C$) $\iff$ $x\in(A\cup B)\cap(A\cup C)$.
+  \item $x\in A\setminus(B\cup C)$ $\iff$ $x\in A$ et $x\notin B$ et $x\notin C$ $\iff$
+    ($x\in A\setminus B$) et ($x\in A\setminus C$).
+  \item ($\Leftarrow$) est immédiat. ($\Rightarrow$) Supposons $A\cup B=A\cap B$. Si $x\in A$, alors
+    $x\in A\cup B=A\cap B\subset B$ : donc $A\subset B$. Par symétrie, $B\subset A$, d'où $A=B$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-16}
+\begin{corrige}{16}{La différence symétrique}
+\demarche{$A\,\triangle\,B$ regroupe les éléments qui appartiennent à exactement l'un des deux ensembles.}
+\noindent
+\begin{minipage}[c]{0.66\linewidth}
+\begin{questions}
+  \item $x\in(A\cup B)\setminus(A\cap B)$ signifie : $x$ appartient à $A$ ou à $B$, mais pas aux
+    deux — c'est-à-dire : $x\in A$ et $x\notin B$, ou $x\in B$ et $x\notin A$ ; c'est exactement
+    $x\in(A\setminus B)\cup(B\setminus A)=A\,\triangle\,B$.
+  \item $A\,\triangle\,\varnothing=\res{A}$ ;\quad $A\,\triangle\,A=\res{\varnothing}$ ;\quad
+    $A\,\triangle\,E=E\setminus A=\res{\overline{A}}$.
+  \item $A\,\triangle\,B=\varnothing$ $\iff$ $A\setminus B=\varnothing$ et $B\setminus A=\varnothing$
+    $\iff$ $A\subset B$ et $B\subset A$ $\iff$ $A=B$.
+  \item Les éléments communs $3$ et $4$ disparaissent :
+    $\ens{1,2,3,4}\,\triangle\,\ens{3,4,5,6}=\res{\ens{1,2,5,6}}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.3\linewidth}
+\centering
+\otVenn{\fill[otNavySoft] (-0.42,0) circle (0.75);\fill[otNavySoft] (0.42,0) circle (0.75);%
+\begin{scope}\clip (-0.42,0) circle (0.75);\fill[white] (0.42,0) circle (0.75);\end{scope}}{$A\,\triangle\,B$}
+\end{minipage}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-17}
+\begin{corrige}{17}{La fonction indicatrice}
+\demarche{Deux parties sont égales dès que leurs indicatrices coïncident : on calcule sur des fonctions à valeurs dans $\ens{0,1}$.}
+\begin{questions}
+  \item Si $A=B$, les indicatrices coïncident. Réciproquement, si $\ind{A}=\ind{B}$, alors pour tout
+    $x$ : $x\in A$ équivaut à $\ind{A}(x)=1$, donc à $\ind{B}(x)=1$, donc à $x\in B$.
+    De même, $A\subset B$ signifie que $\ind{A}(x)=1$ entraîne $\ind{B}(x)=1$, c'est-à-dire
+    $\ind{A}\leq\ind{B}$ (les valeurs étant $0$ ou $1$).
+  \item $\ind{A\cap B}(x)=1$ équivaut à « $x\in A$ et $x\in B$ », c'est-à-dire à
+    $\ind{A}(x)\,\ind{B}(x)=1$ : les deux fonctions, à valeurs dans $\ens{0,1}$, sont égales.
+    De même, $\ind{\overline{A}}(x)=1$ équivaut à $x\notin A$, c'est-à-dire à $1-\ind{A}(x)=1$.
+  \item \methode{disjonction de cas}\enspace Si $x\notin A\cup B$, les deux membres valent $0$ ;
+    si $x$ est dans un seul des deux ensembles, ils valent $1$ ; si $x\in A\cap B$, ils valent
+    $1+1-1=1$. D'où $\ind{A\cup B}=\ind{A}+\ind{B}-\ind{A}\,\ind{B}$.
+  \item En combinant les questions précédentes :
+    \[\ind{\overline{A\cup B}}=1-\ind{A\cup B}=1-\ind{A}-\ind{B}+\ind{A}\,\ind{B}
+      =(1-\ind{A})(1-\ind{B})=\ind{\overline{A}}\,\ind{\overline{B}}=\ind{\overline{A}\cap\overline{B}},\]
+    et l'égalité des indicatrices donne $\overline{A\cup B}=\overline{A}\cap\overline{B}$ d'après la
+    question 1.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-18}
+\begin{corrige}{18}{Images directes et réciproques : propriétés}
+\demarche{L'image réciproque se comporte bien pour toutes les opérations ; l'image directe, seulement pour la réunion.}
+\begin{questions}
+  \item Soit $y\in f(A)$ : $y=f(x)$ avec $x\in A\subset A'$, donc $y\in f(A')$.
+  \item ($\subset$) Si $y=f(x)$ avec $x\in A\cup A'$, alors $x\in A$ ou $x\in A'$, donc $y\in f(A)$ ou
+    $y\in f(A')$. ($\supset$) $A\subset A\cup A'$ et $A'\subset A\cup A'$ donnent, par la question 1,
+    $f(A)\cup f(A')\subset f(A\cup A')$.
+  \item $A\cap A'\subset A$ et $A\cap A'\subset A'$ donnent $f(A\cap A')\subset f(A)\cap f(A')$.
+    \emph{Inclusion stricte} : pour $f:x\mapsto x^{2}$, $A=\ens{-1}$ et $A'=\ens{1}$ :
+    $f(A\cap A')=f(\varnothing)=\varnothing$, alors que $f(A)\cap f(A')=\ens{1}$.
+  \item $x\in f^{-1}(B\cup B')$ signifie $f(x)\in B\cup B'$, c'est-à-dire « $f(x)\in B$ ou
+    $f(x)\in B'$ », c'est-à-dire $x\in f^{-1}(B)\cup f^{-1}(B')$. Le même calcul, avec « et » à la
+    place de « ou », donne $f^{-1}(B\cap B')=f^{-1}(B)\cap f^{-1}(B')$.
+  \item Si $x\in A$, alors $f(x)\in f(A)$, donc $x\in f^{-1}\bigl(f(A)\bigr)$. Si
+    $y\in f\bigl(f^{-1}(B)\bigr)$, alors $y=f(x)$ avec $f(x)\in B$, donc $y\in B$.
+    \emph{Inclusions strictes}, avec $f:x\mapsto x^{2}$ de $\R$ dans $\R$ : pour $A=\ens{1}$,
+    $f^{-1}\bigl(f(A)\bigr)=\ens{-1,1}\supsetneq A$ ; pour $B=\intFF{-4}{4}$,
+    $f\bigl(f^{-1}(B)\bigr)=f\bigl(\intFF{-2}{2}\bigr)=\intFF{0}{4}\subsetneq B$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-19}
+\begin{corrige}{19}{Composition, injectivité et surjectivité}
+\demarche{Revenir aux définitions, dans le bon ordre : c'est $f$ qui agit en premier.}
+\begin{questions}
+  \item \etape{Injections} Si $(g\circ f)(x)=(g\circ f)(x')$, alors
+    $g\bigl(f(x)\bigr)=g\bigl(f(x')\bigr)$, donc $f(x)=f(x')$ ($g$ injective), donc $x=x'$
+    ($f$ injective).\quad
+    \etape{Surjections} Soit $z\in G$ : il existe $y\in F$ avec $g(y)=z$, puis $x\in E$ avec
+    $f(x)=y$ ; alors $(g\circ f)(x)=z$.
+  \item Si $f(x)=f(x')$, alors $g\bigl(f(x)\bigr)=g\bigl(f(x')\bigr)$, donc $x=x'$ par injectivité de
+    $g\circ f$ : $f$ est injective.
+  \item Soit $z\in G$ : il existe $x\in E$ tel que $g\bigl(f(x)\bigr)=z$ ; alors $y=f(x)$ est un
+    antécédent de $z$ par $g$ : $g$ est surjective.
+  \item Prenons $E=G=\ens{1}$, $F=\ens{1,2}$, $f:1\mapsto1$ et $g:1\mapsto1$, $2\mapsto1$. Alors
+    $g\circ f=\mathrm{Id}_{E}$ est bijective, mais $f$ n'est pas surjective ($2$ n'est pas atteint) et
+    $g$ n'est pas injective ($g(1)=g(2)$).
+  \item $g\circ f=\mathrm{Id}_E$ est injective, donc $f$ est injective (question 2) ; $\mathrm{Id}_E$
+    est surjective, donc $g$ est surjective (question 3).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-20}
+\begin{corrige}{20}{Bijections explicites}
+\demarche{Résoudre $f(x)=y$ d'inconnue $x$ : l'existence et l'unicité de la solution donnent la bijectivité et la réciproque.}
+\begin{questions}
+  \item $f(0)=0$, $f(1)=-1$, $f(2)=1$, $f(3)=-2$, $f(4)=2$ : $f$ énumère $\Z$ en zigzag, en alternant
+    entiers positifs et strictement négatifs. Soit $m\in\Z$ ; cherchons ses antécédents. Un entier pair
+    $n=2j$ ($j\geq0$) vérifie $f(n)=m\iff j=m$ : possible uniquement si $m\geq0$, avec $n=2m$. Un
+    entier impair $n=2j+1$ ($j\geq0$) vérifie $f(n)=-(j+1)=m$ : possible uniquement si $m\leq-1$, avec
+    $n=-2m-1$. Tout $m\in\Z$ admet donc un unique antécédent : \res{f \text{ est bijective}}, et
+    $f^{-1}(m)=2m$ si $m\geq0$, $f^{-1}(m)=-2m-1$ si $m\leq-1$.
+\begin{center}
+\begin{tikzpicture}[line cap=round,xscale=1.45]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (-3.6,0) -- (3.6,0);
+  \foreach \x in {-3,-2,-1,0,1,2,3}{%
+    \fill[otNavy] (\x,0) circle (0.65mm);
+    \node[below,font=\scriptsize,text=otMuted,inner sep=3pt] at (\x,0) {$\x$};}
+  \foreach \x/\n in {0/0,-1/1,1/2,-2/3,2/4,-3/5,3/6}{%
+    \node[circle,fill=otGreen,inner sep=0pt,minimum size=4mm,text=white,
+      font=\otSemi\fontsize{6.5}{7}\selectfont] at (\x,0.5) {\n};}
+\end{tikzpicture}\\[0.5mm]
+\legende{Au-dessus de chaque entier relatif, son rang $n$ : $f$ parcourt $\Z$ en zigzag sans rien oublier ni répéter.}
+\end{center}
+  \item Remarquons d'abord que $g(x)=2$ donnerait $2x+1=2x-2$ : impossible, donc $g$ est bien à
+    valeurs dans $\R\setminus\ens{2}$. Pour $y\in\R\setminus\ens{2}$ :
+    \[\frac{2x+1}{x-1}=y\iff2x+1=y(x-1)\iff x(2-y)=-y-1\iff x=\frac{y+1}{y-2}.\]
+    Cette solution est unique, et $\frac{y+1}{y-2}=1$ équivaudrait à $y+1=y-2$ : impossible, donc elle
+    appartient bien à $\R\setminus\ens{1}$. Ainsi $g$ est bijective et
+    $\res{g^{-1}(y)=\dfrac{y+1}{y-2}}$.
+  \item Comme $|h(x)|=\frac{|x|}{1+|x|}<1$, $h$ est bien à valeurs dans $\intOO{-1}{1}$ ; de plus
+    $h(x)$ a le signe de $x$. Soit $y\in\intOO{-1}{1}$. Si $y\geq0$, un antécédent doit vérifier
+    $x\geq0$ et $\frac{x}{1+x}=y$, soit $x=\frac{y}{1-y}$, qui est bien positif ; on vérifie que
+    $h\bigl(\frac{y}{1-y}\bigr)=y$. Si $y<0$, on trouve de même l'unique antécédent
+    $x=\frac{y}{1+y}<0$. Tout $y$ admet donc un unique antécédent : $h$ est bijective, et
+    $\res{h^{-1}(y)=\dfrac{y}{1-|y|}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-21}
+\begin{corrige}{21}{Équations ensemblistes}
+\demarche{Analyse-synthèse : encadrer l'inconnue $X$, puis vérifier les candidats trouvés.}
+\begin{questions}
+  \item \etape{Analyse} Si $A\cap X=\varnothing$, aucun élément de $X$ n'est dans $A$ :
+    $X\subset\overline{A}$. Si $A\cup X=E$, tout élément hors de $A$ est dans $X$ :
+    $\overline{A}\subset X$. Donc $X=\overline{A}$.\quad
+    \etape{Synthèse} $\overline{A}$ vérifie bien $A\cap\overline{A}=\varnothing$ et
+    $A\cup\overline{A}=E$. L'unique solution est $\res{X=\overline{A}}$.
+  \item \etape{Analyse} Si $A\cup X=B$, alors $X\subset B$, et tout élément de $B\setminus A$, qui est
+    dans $B$ mais pas dans $A$, doit être dans $X$ : $B\setminus A\subset X\subset B$.\quad
+    \etape{Synthèse} Si $B\setminus A\subset X\subset B$, alors $A\cup X\subset A\cup B=B$ (car
+    $A\subset B$) et $B=A\cup(B\setminus A)\subset A\cup X$. D'où $A\cup X=B$. Les solutions sont
+    exactement les parties $X$ comprises entre $B\setminus A$ et $B$. Si $A\not\subset B$ :
+    $A\subset A\cup X$ pour toute partie $X$, donc $A\cup X=B$ est impossible — aucune solution.
+  \item Soit $x\in X$. Si $x\in A$ : $x\in A\cap X=A\cap Y\subset Y$. Si $x\notin A$ :
+    $x\in A\cup X=A\cup Y$ et $x\notin A$, donc $x\in Y$. Ainsi $X\subset Y$, et $Y\subset X$ par
+    symétrie des hypothèses : $X=Y$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-22}
+\begin{corrige}{22}{Relations d'équivalence}
+\demarche{Vérifier les trois propriétés, puis décrire la classe d'un élément générique.}
+\begin{questions}
+  \item \begin{questions}
+    \item \etape{Réflexivité} $x-x=0\in\Z$.\quad
+      \etape{Symétrie} Si $x-y\in\Z$, alors $y-x=-(x-y)\in\Z$.\quad
+      \etape{Transitivité} Si $x-y\in\Z$ et $y-z\in\Z$, alors $x-z=(x-y)+(y-z)\in\Z$ :
+      c'est une relation d'équivalence.
+    \item $\mathrm{cl}(0)=\ens{y\in\R \mid y\in\Z}=\Z$, et $\mathrm{cl}\bigl(\tfrac12\bigr)=\tfrac12+\Z$ :
+      l'ensemble des $k+\tfrac12$ avec $k\in\Z$.
+    \item \etape{Existence} $x-\lfloor x\rfloor\in\intFO{0}{1}$ et
+      $x-(x-\lfloor x\rfloor)=\lfloor x\rfloor\in\Z$ : la classe de $x$ contient $x-\lfloor x\rfloor$.\quad
+      \etape{Unicité} Si $a$ et $b$ sont dans $\intFO{0}{1}$ et dans la même classe, alors $a-b\in\Z$
+      et $|a-b|<1$, donc $a-b=0$.
+    \end{questions}
+  \item Réflexivité, symétrie et transitivité découlent des propriétés de l'égalité ($x^{2}=y^{2}$ est
+    une égalité entre réels). Pour $x\in\R$ : $x^{2}=y^{2}\iff y=\pm x$, donc
+    $\mathrm{cl}(x)=\ens{-x,x}$ (réduite à $\ens{0}$ si $x=0$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-23}
+\begin{corrige}{23}{La divisibilité, un ordre partiel}
+\demarche{Vérifier réflexivité, antisymétrie et transitivité à partir de la définition de la divisibilité.}
+\begin{questions}
+  \item \etape{Réflexivité} $a=1\cdot a$.\quad
+    \etape{Antisymétrie} Si $b=ka$ et $a=lb$ avec $k,l\in\N^{*}$, alors $a=kl\,a$, donc $kl=1$, donc
+    $k=l=1$ et $a=b$.\quad
+    \etape{Transitivité} Si $b=ka$ et $c=lb$, alors $c=(kl)\,a$.
+  \item Non : $2$ ne divise pas $3$ et $3$ ne divise pas $2$ — l'ordre est partiel.
+  \item $1$ divise tout entier : c'est le plus petit élément. Il n'y a pas de plus grand élément : un
+    tel entier $M$ serait divisible par tout entier, or $M+1>M$ ne divise pas $M$ (un diviseur de $M$
+    est au plus $M$).
+  \item L'inclusion est réflexive ($A\subset A$), antisymétrique (la double inclusion donne l'égalité)
+    et transitive. Elle n'est pas totale : $\ens{a}$ et $\ens{b}$ ne sont pas comparables si $a\neq b$.
+    Le plus petit élément de $\parties{E}$ est $\varnothing$, le plus grand est $E$.
+  \item Les majorants de $\ens{4,6}$ sont les entiers divisibles par $4$ et par $6$. Montrons que ce
+    sont les multiples de $12$ : si $m=6q$ est divisible par $4$, alors $6q=4k$ donne $3q=2k$ pair ;
+    comme $3$ est impair, $q$ est pair, $q=2r$, et $m=12r$. Réciproquement, tout multiple de $12$ est
+    divisible par $4$ et par $6$. L'ensemble des majorants est donc $12\,\N^{*}$, et $12$, qui divise
+    tous les autres majorants, est le \res{\text{plus petit majorant : } 12}.
+    \emph{(C'est le PPCM de $4$ et $6$, étudié au chapitre 7.)}
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-24}
+\begin{corrige}{24}{Le théorème de Cantor}
+\demarche{L'ensemble $D$ est construit pour ne pouvoir être l'image d'aucun élément : c'est l'argument « diagonal » de Cantor.}
+\begin{questions}
+  \item Les trois images $f(1)=\ens{1,2}$, $f(2)=\varnothing$ et $f(3)=\ens{1,3}$ sont deux à deux
+    distinctes : $f$ est injective. Elle n'est pas surjective : $\parties{E}$ compte $8$ éléments et
+    $f$ n'en atteint que $3$ (par exemple, $\ens{2}$ n'a pas d'antécédent).
+  \item $1\in f(1)$ donc $1\notin D$ ; $2\notin f(2)=\varnothing$ donc $2\in D$ ; $3\in f(3)$ donc
+    $3\notin D$. Ainsi $\res{D=\ens{2}}$, qui n'est pas l'une des trois images $\ens{1,2}$,
+    $\varnothing$, $\ens{1,3}$ : $D$ n'a pas d'antécédent.
+  \item Une application de $E$ dans $\parties{E}$ est déterminée par les images des trois éléments,
+    chacune choisie parmi $8$ parties : il y en a $\res{8^{3}=512}$. Une application définie sur un
+    ensemble à $3$ éléments atteint au plus $3$ valeurs : pour qu'une surjection soit possible,
+    l'ensemble d'arrivée devrait avoir au plus $3$ éléments.
+  \item Supposons $a\in D$ : par définition de $D$, $a\notin f(a)=D$ — contradiction. Supposons
+    $a\notin D$ : alors $a\notin f(a)$, donc, par définition de $D$, $a\in D$ — contradiction. Les
+    deux cas étant impossibles, l'élément $a$ ne peut pas exister.
+  \item L'hypothèse « $f$ surjective » est donc intenable : \emph{pour tout ensemble $E$, aucune
+    application de $E$ dans $\parties{E}$ n'est surjective} — c'est le théorème de Cantor.
+  \item En particulier, pour $E=\N$ : il n'existe pas de surjection de $\N$ sur $\parties{\N}$. On ne
+    peut donc pas « numéroter » les parties de $\N$ par des entiers : l'infini de $\parties{\N}$ est
+    strictement plus grand que celui de $\N$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-01}

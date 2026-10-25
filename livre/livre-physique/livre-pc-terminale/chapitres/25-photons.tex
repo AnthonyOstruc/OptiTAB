@@ -1,0 +1,360 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[photons]{25}{Photons et effet photoélectrique}{Partie 4 · Ondes et signaux}
+{Photon\enspace·\enspace Effet photoélectrique\enspace·\enspace Travail d'extraction\enspace·\enspace Cellule photovoltaïque}
+\objectif{Décrire l'effet photoélectrique, ses caractéristiques et son importance historique.}
+\objectif{Interpréter qualitativement l'effet photoélectrique à l'aide du modèle particulaire de la lumière.}
+\objectif{Établir, par un bilan d'énergie, la relation entre l'énergie cinétique des électrons et la fréquence.}
+\objectif{Expliquer le fonctionnement d'une cellule photoélectrique et citer des applications de l'interaction
+photon-matière.}
+\objectif{Déterminer le rendement d'une cellule photovoltaïque, à l'aide d'un programme Python.}
+\prerequis{Photon, énergie $E=h\nu$, niveaux d'énergie et spectres (classe de première).}
+\prerequis{Électronvolt, énergie cinétique (classe de première, chapitre~15).}
+\prerequis{Puissance électrique $P=UI$, rendement d'un convertisseur (classe de première).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Le photon}
+\begin{definition}[Le modèle particulaire de la lumière]
+La lumière peut être décrite comme un flux de particules, les \textbf{photons}. Un photon a une masse nulle, se déplace à la
+vitesse de la lumière $c$ dans le vide et transporte l'énergie
+\[E=h\nu=\frac{h\,c}{\lambda},\]
+où $\nu$ est la fréquence de l'onde associée, $\lambda$ sa longueur d'onde et $h=\qty{6,63e-34}{J.s}$ la constante de Planck.
+On exprime souvent ces énergies en électronvolts : $\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{definition}
+\begin{exemple}
+Un photon de lumière verte ($\lambda=\qty{500}{nm}$) transporte $E=\dfrac{\num{6.63e-34}\times\num{3.00e8}}{\num{500e-9}}=\qty{3,98e-19}{J}$, soit
+\qty{2,49}{eV}. Un pointeur laser de \qty{1}{mW} émettant à \qty{633}{nm} envoie donc $\num{3.2e15}$ photons par seconde.
+\end{exemple}
+\begin{propriete}[Absorption et émission de photons]
+Les énergies d'un atome, d'une molécule ou d'un solide sont quantifiées. Un photon est absorbé si son énergie permet une
+transition vers un niveau d'énergie supérieur ; inversement, la désexcitation s'accompagne de l'émission d'un photon
+d'énergie égale à l'écart entre les niveaux. L'interaction photon-matière est à la base des spectroscopies UV-visible et
+infrarouge, des diodes électroluminescentes, des lasers, des capteurs d'images et des cellules photovoltaïques.
+\end{propriete}
+\essSection{2}{L'effet photoélectrique}
+\begin{definition}[Effet photoélectrique]
+L'\textbf{effet photoélectrique} est l'émission d'électrons par un métal éclairé par une lumière de fréquence
+suffisamment élevée. Observé par Heinrich Hertz en 1887, il a été expliqué en 1905 par Albert Einstein grâce au modèle
+particulaire de la lumière, ce qui lui valut le prix Nobel de physique en 1921 ; Robert Millikan en a vérifié les
+prévisions en 1916.
+\end{definition}
+\begin{propriete}[Caractéristiques]
+\begin{itemize}
+\item Il existe une \textbf{fréquence seuil} $\nu_0$, propre à chaque métal : en dessous, aucun électron n'est émis, quelle
+que soit l'intensité de la lumière.
+\item Au-dessus du seuil, l'émission est immédiate, même pour une lumière très faible.
+\item L'énergie cinétique maximale des électrons dépend de la fréquence de la lumière, pas de son intensité ; le
+nombre d'électrons émis par seconde est proportionnel à l'intensité.
+\end{itemize}
+Le modèle ondulatoire, où l'énergie de la lumière s'accumule progressivement, ne peut expliquer ni le seuil ni
+l'émission immédiate.
+\end{propriete}
+\schema{25-effet}
+\begin{savoirfaire}[Établir la relation d'Einstein par un bilan d'énergie]
+Un photon absorbé cède toute son énergie à un seul électron. Il faut fournir au moins le \textbf{travail d'extraction}
+$W_\mathrm{ext}$ pour arracher un électron au métal ; le reste de l'énergie devient énergie cinétique. Pour les électrons
+les moins liés :
+\[h\nu=W_\mathrm{ext}+E_\mathrm{c,max}\qquad\text{soit}\qquad E_\mathrm{c,max}=h\nu-W_\mathrm{ext}.\]
+L'émission n'a lieu que si $h\nu\geqslant W_\mathrm{ext}$, d'où la fréquence seuil $\nu_0=\dfrac{W_\mathrm{ext}}{h}$ et la longueur d'onde seuil
+$\lambda_0=\dfrac{h\,c}{W_\mathrm{ext}}$.
+\end{savoirfaire}
+\schema{25-ec}
+\begin{exemple}
+Pour le zinc, $W_\mathrm{ext}=\qty{4,3}{eV}$ : $\lambda_0=\dfrac{h\,c}{W_\mathrm{ext}}=\qty{289}{nm}$. Seul le rayonnement ultraviolet arrache des
+électrons au zinc ; une lumière visible, même intense, n'a aucun effet. Pour le sodium ($W_\mathrm{ext}=\qty{2,28}{eV}$),
+$\nu_0=\qty{5,5e14}{Hz}$, soit $\lambda_0=\qty{545}{nm}$ : la lumière bleue ou verte suffit.
+\end{exemple}
+\essSection{3}{Cellules photoélectriques et photovoltaïques}
+\begin{propriete}[Convertir la lumière en courant]
+Dans une \textbf{cellule photoélectrique}, une cathode métallique éclairée émet des électrons recueillis par une anode :
+l'intensité du courant, proportionnelle au nombre de photons reçus, mesure l'éclairement. Dans une \textbf{cellule
+photovoltaïque}, un photon d'énergie supérieure à un seuil, le \textbf{gap} du semi-conducteur (\qty{1,12}{eV} pour le
+silicium, soit $\lambda<\qty{1,11}{\micro m}$), libère un électron que la structure de la cellule met en mouvement : la cellule
+fournit une puissance électrique. Son \textbf{rendement} est le rapport
+\[\eta=\frac{P_\text{électrique}}{P_\text{lumineuse reçue}},\qquad P_\text{lumineuse reçue}=E\times S,\]
+où $E$ est l'éclairement énergétique (en \unit{W.m^{-2}}) et $S$ la surface de la cellule. Il atteint 15 à 23~\% pour les
+panneaux du commerce.
+\end{propriete}
+\schema{25-cellule}
+\begin{python}
+U = [0, 1.0, 2.0, 3.0, 4.0, 4.5, 5.0, 5.5, 6.0]           # V
+I = [0.85, 0.85, 0.84, 0.83, 0.80, 0.76, 0.66, 0.42, 0]   # A
+P = [u * i for u, i in zip(U, I)]                          # W
+k = P.index(max(P))                                        # puissance maximale
+print(U[k], round(P[k], 2), round(100 * P[k] / (1000 * 0.025), 1))
+\end{python}
+\begin{console}
+4.5 3.42 13.7
+\end{console}
+\noindent\capacite{Capacité numérique}Les listes contiennent les mesures de la tension et de l'intensité délivrées par un petit
+panneau de \qty{0,025}{m^2} sous un éclairement de \qty{1000}{W.m^{-2}}. Le programme calcule la puissance $P=UI$ pour chaque
+mesure, repère son maximum, \qty{3,42}{W} sous \qty{4,5}{V}, et en déduit le rendement : 13,7~\%.
+\begin{attention}
+L'intensité d'une lumière fixe le nombre de photons par seconde, sa fréquence l'énergie de chaque photon. Augmenter
+l'intensité d'une lumière de fréquence inférieure au seuil n'arrache aucun électron. Penser à convertir les énergies :
+$\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{attention}
+\begin{experience}[Déterminer le rendement d'une cellule photovoltaïque]
+On éclaire une cellule photovoltaïque avec une lampe et l'on mesure l'éclairement reçu avec un capteur. La cellule
+alimente une résistance variable : pour chaque réglage, on relève la tension à ses bornes et l'intensité du courant. On
+trace $I$ et $P=UI$ en fonction de $U$, on repère la puissance maximale et l'on calcule le rendement.
+\end{experience}
+\begin{rediger}
+Écrire le bilan d'énergie en mots avant de l'écrire en équation : « énergie du photon = travail d'extraction + énergie
+cinétique de l'électron ». Préciser l'unité de chaque énergie et ne mélanger joules et électronvolts qu'après conversion.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-25-1}
+\begin{exercice}[1]{L'énergie d'un photon}
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{donnees}
+\begin{questions}
+\item Calculer, en électronvolts, l'énergie d'un photon de lumière violette (\qty{400}{nm}), puis rouge (\qty{700}{nm}).
+\item Même question pour un photon ultraviolet de \qty{254}{nm} (lampe germicide) et un photon infrarouge de \qty{1000}{nm}.
+\item Rompre une liaison carbone-carbone demande \qty{3,6}{eV}. Quels photons peuvent la rompre ? Calculer la longueur
+d'onde maximale correspondante.
+\item Pourquoi les ultraviolets sont-ils dangereux pour la peau, alors que l'infrarouge ne fait que la chauffer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-2}
+\begin{exercice}[1]{Les seuils photoélectriques}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Métal & césium & sodium & zinc & cuivre \\
+$W_\mathrm{ext}$ (eV) & 2,1 & 2,28 & 4,3 & 4,7 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{donnees}
+\begin{questions}
+\item Définir le travail d'extraction d'un métal.
+\item Calculer la longueur d'onde seuil de chaque métal.
+\item Quels métaux émettent des électrons lorsqu'ils sont éclairés en lumière visible (400 à \qty{800}{nm}) ?
+\item Pourquoi utilise-t-on du césium dans les cellules photoélectriques sensibles à la lumière visible ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-3}
+\begin{exercice}[1]{Des électrons arrachés au sodium}
+Une plaque de sodium ($W_\mathrm{ext}=\qty{2,28}{eV}$) est éclairée par une lumière de longueur d'onde \qty{400}{nm}.
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $\qty{1}{eV}=\qty{1,60e-19}{J}$ ; masse de l'électron : \qty{9,11e-31}{kg}.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie d'un photon incident, en électronvolts.
+\item Écrire le bilan d'énergie et calculer l'énergie cinétique maximale des électrons émis, en eV puis en joules.
+\item En déduire leur vitesse maximale.
+\item Que se passe-t-il avec une lumière de \qty{600}{nm} ? Et si l'on double l'intensité de cette lumière ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-4}
+\begin{exercice}[1]{Onde ou particule ?}
+\begin{questions}
+\item Dans le modèle ondulatoire, l'énergie apportée par la lumière est proportionnelle à son intensité et s'accumule au
+cours du temps. Que prévoit ce modèle si l'on éclaire longtemps un métal avec une lumière faible de basse fréquence ?
+\item Qu'observe-t-on en réalité ?
+\item Comment le modèle particulaire explique-t-il l'existence d'une fréquence seuil ?
+\item La lumière est-elle une onde ou un flux de particules ? Citer un phénomène qui illustre chaque aspect.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-5}
+\begin{exercice}[1]{Combien de photons ?}
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie d'un photon émis par un pointeur laser vert de longueur d'onde \qty{532}{nm}.
+\item Le pointeur a une puissance de \qty{1,0}{mW}. Combien de photons émet-il par seconde ?
+\item En plein soleil, un mètre carré reçoit environ \qty{1000}{W}. En prenant une longueur d'onde moyenne de
+\qty{550}{nm}, estimer le nombre de photons reçus par seconde.
+\item Pourquoi ne perçoit-on pas le caractère « granulaire » de la lumière dans la vie courante ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-25-6}
+\begin{exercice}[2]{À la manière de Millikan}
+On éclaire une cathode de sodium avec des lumières de fréquences différentes. Pour chaque fréquence, on mesure la tension
+d'arrêt $U_\mathrm{a}$, la plus petite tension qui empêche les électrons les plus rapides d'atteindre l'anode : $E_\mathrm{c,max}=e\,U_\mathrm{a}$.
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+$\nu$ ($10^{14}$ Hz) & 6,9 & 7,4 & 8,2 & 9,6 \\
+$U_\mathrm{a}$ (V) & 0,57 & 0,78 & 1,12 & 1,69 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Montrer que la relation d'Einstein s'écrit $U_\mathrm{a}=\dfrac{h}{e}\,\nu-\dfrac{W_\mathrm{ext}}{e}$.
+\item À l'aide des mesures extrêmes, déterminer le coefficient directeur et l'ordonnée à l'origine de la droite.
+\item En déduire la constante de Planck et le travail d'extraction du sodium, en eV.
+\item Calculer la fréquence seuil. Pourquoi l'expérience de Millikan a-t-elle convaincu les physiciens ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-7}
+\begin{exercice}[2]{L'électroscope de Hallwachs}
+Une plaque de zinc, posée sur un électroscope, est chargée négativement : les feuilles de l'électroscope s'écartent.
+\begin{questions}
+\item On éclaire la plaque avec une lampe à ultraviolets : les feuilles retombent. Interpréter.
+\item Avec une lampe à lumière visible très puissante, rien ne se passe. Expliquer, sachant que $W_\mathrm{ext}=\qty{4,3}{eV}$
+pour le zinc.
+\item La plaque est maintenant chargée positivement. Les ultraviolets la déchargent-ils ? Justifier.
+\item On interpose une plaque de verre, qui absorbe les ultraviolets, entre la lampe et le zinc. Que se passe-t-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-8}
+\begin{exercice}[2]{Le rendement d'un panneau en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Que contient la liste \code{P} ? Que représente l'indice \code{k} ?
+\item Justifier l'expression du rendement calculée dans la dernière ligne.
+\item Le panneau, exposé sous un éclairement de \qty{800}{W.m^{-2}}, délivre les mêmes tensions et des intensités réduites
+de 20~\%. Quelles lignes faut-il modifier ? Le rendement change-t-il ?
+\item Pourquoi un panneau relié directement à un appareil quelconque ne fonctionne-t-il pas forcément à sa puissance
+maximale ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-9}
+\begin{exercice}[2]{La diode électroluminescente}
+Une LED rouge émet une lumière de longueur d'onde \qty{630}{nm}. Elle consomme une puissance électrique de \qty{1,0}{W} et émet
+une puissance lumineuse de \qty{0,35}{W}.
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{donnees}
+\begin{questions}
+\item La LED fonctionne-t-elle par absorption ou par émission de photons ? Calculer l'énergie des photons émis, en eV.
+\item Une LED ne s'allume qu'à partir d'une tension de seuil voisine de l'énergie de ses photons divisée par $e$. Estimer
+cette tension pour la LED rouge.
+\item Calculer le nombre de photons émis par seconde.
+\item Calculer le rendement de la LED. Que devient le reste de l'énergie ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-10}
+\begin{exercice}[2]{Les limites d'une cellule au silicium}
+Dans une cellule au silicium, un photon n'est absorbé que si son énergie dépasse le gap, \qty{1,12}{eV} ; l'énergie en
+excès est perdue sous forme d'énergie interne.
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la longueur d'onde maximale des photons absorbés.
+\item Un photon de \qty{1500}{nm} est-il absorbé ? Justifier.
+\item Pour un photon de \qty{400}{nm}, calculer l'énergie en excès et la fraction de son énergie perdue.
+\item Expliquer pourquoi le rendement d'une cellule au silicium ne peut pas approcher 100~\%.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-11}
+\begin{exercice}[2]{Le capteur d'un appareil photo}
+Chaque pixel du capteur d'un appareil photo est un carré de \qty{4}{\micro m} de côté. Un photon reçu libère un électron avec
+une probabilité de 60~\% ; le pixel sature au-delà de \num{30000} électrons. Pendant une pose de \qty{0,010}{s}, le pixel reçoit
+une lumière verte de \qty{550}{nm} sous un éclairement de \qty{0,10}{W.m^{-2}}.
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie lumineuse reçue par le pixel pendant la pose.
+\item En déduire le nombre de photons reçus, puis le nombre d'électrons libérés.
+\item Le pixel est-il saturé ? Au bout de quelle durée de pose le serait-il ?
+\item Quel phénomène, étudié dans ce chapitre, est à la base du fonctionnement de ce capteur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-25-12}
+\begin{exercice}[3]{Des panneaux solaires sur le toit}
+\begin{docu}{1}{Le panneau}
+Un panneau photovoltaïque de \qty{1,7}{m^2} a une puissance « crête » de \qty{400}{W} : c'est la puissance qu'il fournit sous un
+éclairement de \qty{1000}{W.m^{-2}}, à \qty{25}{\degreeCelsius}.
+\end{docu}
+\begin{docu}{2}{L'installation}
+Une maison est équipée de 10 panneaux orientés au sud. Dans sa région, un mètre carré reçoit chaque année
+\qty{1300}{kWh} d'énergie solaire. Les pertes (température, câbles, onduleur) réduisent la production de 20~\%. Un foyer
+consomme en moyenne \qty{4500}{kWh} d'électricité par an.
+\end{docu}
+\begin{questions}
+\item Calculer le rendement d'un panneau.
+\item Calculer la puissance crête de l'installation.
+\item \initiative Estimer l'énergie électrique produite en un an. Couvre-t-elle la consommation du foyer ?
+\item Pourquoi la production réelle varie-t-elle beaucoup au cours de la journée et de l'année ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-13}
+\begin{exercice}[3]{Détecter un photon unique}
+\begin{docu}{1}{Le photomultiplicateur}
+Un photomultiplicateur est un tube à vide dont la photocathode, de travail d'extraction \qty{2,0}{eV}, émet un électron
+lorsqu'elle absorbe un photon. Cet électron est accéléré vers une série d'électrodes qui multiplient le nombre
+d'électrons : au total, chaque photoélectron produit une impulsion de $10^6$ électrons.
+\end{docu}
+\begin{docu}{2}{Ses performances}
+Un photon de longueur d'onde utile produit un photoélectron avec une probabilité de 25~\%.
+\end{docu}
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la longueur d'onde seuil de la photocathode.
+\item Un photon de \qty{420}{nm} atteint la photocathode. Calculer l'énergie cinétique maximale de l'électron émis.
+\item \initiative Calculer la charge électrique d'une impulsion. Sur \num{1000} photons reçus, combien d'impulsions compte-t-on en
+moyenne ?
+\item Pourquoi cet instrument a-t-il besoin de l'effet photoélectrique, et pas seulement de l'effet thermique de la
+lumière ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-14}
+\begin{exercice}[3]{La cellule photoélectrique au césium}
+\begin{docu}{1}{La cellule}
+Une cellule photoélectrique comporte une cathode de césium ($W_\mathrm{ext}=\qty{2,1}{eV}$) et une anode qui recueille les
+électrons émis. Elle reçoit une lumière bleue de \qty{450}{nm}, de puissance \qty{1,0}{\micro W}.
+\end{docu}
+\begin{docu}{2}{Le rendement quantique}
+Seuls 20~\% des photons reçus libèrent un électron qui atteint l'anode.
+\end{docu}
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Calculer le nombre de photons reçus par seconde.
+\item \initiative Calculer l'intensité du courant produit par la cellule.
+\item Calculer l'énergie cinétique maximale des électrons émis, en eV.
+\item Comment évoluent l'intensité du courant et l'énergie cinétique maximale si l'on double la puissance lumineuse ? si
+l'on remplace la lumière bleue par une lumière rouge de \qty{700}{nm} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-25-15}
+\begin{exercice}[3]{La couleur du laser hélium-néon}
+\begin{docu}{1}{Un laser historique}
+Dans un laser hélium-néon, des décharges électriques portent les atomes de néon dans un niveau excité de \qty{20,66}{eV}.
+L'émission laser correspond à leur désexcitation vers le niveau de \qty{18,70}{eV}.
+\end{docu}
+\schema{25-ex15}
+\begin{donnees}
+$h=\qty{6,63e-34}{J.s}$ ; $c=\qty{3,00e8}{m.s^{-1}}$ ; $\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{donnees}
+\begin{questions}
+\item S'agit-il d'une absorption ou d'une émission de photon ? Calculer l'énergie du photon émis.
+\item \initiative Calculer la longueur d'onde de la lumière laser. Quelle est sa couleur ?
+\item La valeur tabulée est \qty{632,8}{nm}. Avec $hc=\qty{1239,84}{eV.nm}$, recalculer la longueur d'onde et commenter.
+\item Pourquoi la lumière d'un laser est-elle presque monochromatique, contrairement à celle d'une lampe à
+incandescence ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

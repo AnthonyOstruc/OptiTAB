@@ -1,0 +1,27 @@
+% Montage de chauffage à reflux (L'essentiel, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Chauffe-ballon
+\filldraw[pcAppareil,rounded corners=1.6mm] (-1.15,-0.1) rectangle (1.15,0.85);
+\filldraw[fill=white,draw=otInk!70,line width=0.5pt] (0.72,0.18) circle (0.13);
+% Ballon
+\fill[pcEau] (-0.72,0.9) arc[start angle=180,end angle=360,radius=0.72] -- cycle;
+\draw[pcVerre] (-0.26,2.0) -- (-0.26,1.52) (-0.72,0.9) arc[start angle=180,end angle=360,radius=0.72] (0.26,2.0) -- (0.26,1.52);
+\draw[pcVerre] (-0.72,0.9) .. controls (-0.5,1.35) .. (-0.26,1.52) (0.72,0.9) .. controls (0.5,1.35) .. (0.26,1.52);
+\pic at (0,0.32) {barreau};
+% Réfrigérant
+\filldraw[fill=white,draw=otNavy,line width=0.7pt] (-0.34,2.0) rectangle (0.34,4.6);
+\draw[pcVerre] (-0.16,2.0) -- (-0.16,4.6) (0.16,2.0) -- (0.16,4.6);
+\fill[pcEau] (-0.34,2.0) rectangle (-0.16,4.6) (0.16,2.0) rectangle (0.34,4.6);
+\draw[pcFil] (0.34,2.35) -- (0.95,2.35);
+\draw[pcFil] (-0.34,4.25) -- (-0.95,4.25);
+\draw[pcFlecheN] (1.5,2.35) -- (1.0,2.35);
+\draw[pcFlecheN] (-1.0,4.25) -- (-1.5,4.25);
+\node[pcLegende,anchor=west] at (1.55,2.35) {entrée d'eau froide};
+\node[pcLegende,anchor=east] at (-1.55,4.25) {sortie d'eau};
+\pcNote[west]{(0.34,3.6)}{(1.7,3.8)}{réfrigérant à eau, vertical}
+\pcNote[west]{(0.69,1.05)}{(1.7,1.35)}{ballon : réactifs et catalyseur}
+\pcNote[west]{(1.15,0.4)}{(1.7,0.5)}{chauffe-ballon}
+\pcNote[east]{(-0.25,0.33)}{(-1.6,0.6)}{barreau aimanté}
+\solution{}
+\end{tikzpicture}
+\par\smallskip\legende{Les vapeurs se condensent dans le réfrigérant et retombent dans le ballon : on chauffe sans perdre de matière.}

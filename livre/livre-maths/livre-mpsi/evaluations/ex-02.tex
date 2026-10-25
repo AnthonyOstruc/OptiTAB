@@ -1,0 +1,79 @@
+% !TEX root = ../main.tex
+%% Examen de fin d'année — ensemble du programme
+%% Résultats vérifiés par verifications/eval_ex.py.
+
+\sujetEval{EX2}{MPSI · Concours blanc}{Examen de fin d'année}
+  {Durée : \textbf{4 heures}\\Calculatrice interdite\\Tout le programme}{4}
+  {Exercice 1/Permutations aléatoires/4 pts,Exercice 2/Matrices de rang 1/5 pts,%
+   Exercice 3/Le folium de Descartes/4 pts,Problème/La suite $u_{n+1}=\sin u_n$/7 pts}
+\consigne{Les trois exercices et le problème sont indépendants. Dans le
+problème, la question 3 peut être admise pour traiter la suite.}
+
+\begin{exoEval}{4 points}{Points fixes d'une permutation aléatoire}
+Soit $n\geqslant2$. On choisit une permutation $\sigma$ de
+$\ens{1,\dots,n}$ selon la loi uniforme sur $S_n$, et l'on note $X$ son
+nombre de points fixes. Pour $1\leqslant i\leqslant n$, $X_i$ vaut $1$ si
+$\sigma(i)=i$ et $0$ sinon.
+\begin{questions}
+  \item Calculer $P(X_i=1)$, puis $E(X)$.
+  \item Pour $i\neq j$, calculer $P(X_i=1,\,X_j=1)$. En déduire $E(X^{2})$,
+    puis $V(X)$.
+  \item Calculer $P(X=n)$ et $P(X=n-1)$. À l'aide de l'inégalité de
+    Bienaymé-Tchebychev, montrer que $P(X\geqslant3)\leqslant\frac14$.
+  \item Déterminer la loi de $X$ pour $n=4$ et vérifier les résultats
+    précédents.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}{5 points}{Matrices de rang 1}
+Soient $n\geqslant2$, $U,V\in\mathcal{M}_{n,1}(\R)$ deux colonnes non nulles
+et $M=U\,V^{\mathsf{T}}\in\mathcal{M}_n(\R)$.
+\begin{questions}
+  \item Montrer que $M$ est de rang $1$, que
+    $\operatorname{tr}M=V^{\mathsf{T}}U$, et que
+    $M^{2}=(\operatorname{tr}M)\,M$.
+  \item En déduire que si $\operatorname{tr}M\neq0$,
+    $\frac{1}{\operatorname{tr}M}M$ est la matrice d'un projecteur, et que si
+    $\operatorname{tr}M=0$, $M$ est nilpotente.
+  \item Montrer que $I_n+M$ est inversible si et seulement si
+    $\operatorname{tr}M\neq-1$, et qu'alors
+    $(I_n+M)^{-1}=I_n-\dfrac{1}{1+\operatorname{tr}M}\,M$.
+  \item En utilisant une matrice semblable à $M$, montrer que
+    $\det(I_n+M)=1+\operatorname{tr}M$.
+  \item Application : $U=\begin{pmatrix}1\\2\\3\end{pmatrix}$ et
+    $V=\begin{pmatrix}1\\1\\1\end{pmatrix}$. Calculer $(I_3+M)^{-1}$ et
+    $\det(I_3+M)$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}{4 points}{Le folium de Descartes}
+Soit $f:(x,y)\mapsto x^{3}+y^{3}-3xy$, définie sur $\R^{2}$.
+\begin{questions}
+  \item Déterminer les points critiques de $f$.
+  \item Montrer que $f$ n'admet pas d'extremum local en $(0,0)$.
+  \item Montrer que
+    $f(1+h,1+k)=-1+3\bigl(h^{2}-hk+k^{2}\bigr)+h^{3}+k^{3}$, puis que
+    $h^{2}-hk+k^{2}\geqslant\frac12(h^{2}+k^{2})$. En déduire que $f$ admet en
+    $(1,1)$ un minimum local. Est-il global ?
+  \item Vérifier que la courbe $f(x,y)=0$ (le \emph{folium de Descartes})
+    est paramétrée par $x=\dfrac{3t}{1+t^{3}}$, $y=\dfrac{3t^{2}}{1+t^{3}}$,
+    $t\neq-1$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Problème]{7 points}{La suite $u_{n+1}=\sin u_n$}
+Soit $u_0\in\bigl]0,\frac\pi2\bigr]$ et $(u_n)$ définie par
+$u_{n+1}=\sin u_n$.
+\begin{questions}
+  \item Montrer que pour tout $n$, $u_n\in\bigl]0,\frac\pi2\bigr]$, que
+    $(u_n)$ est décroissante, et qu'elle converge vers $0$.
+  \item Montrer que $\dfrac{1}{\sin^{2}x}-\dfrac{1}{x^{2}}\xrightarrow[x\to0]{}\dfrac13$,
+    et en déduire la limite de $v_n=\dfrac{1}{u_{n+1}^{2}}-\dfrac{1}{u_n^{2}}$.
+  \item (\emph{Lemme de Cesàro}) Soit $(a_n)$ une suite réelle de limite
+    $\ell$. Montrer que $\dfrac{a_0+a_1+\dots+a_{n-1}}{n}\xrightarrow[n\to+\infty]{}\ell$.
+  \item En déduire que $\dfrac{1}{n\,u_n^{2}}\to\dfrac13$, puis que
+    $u_n\sim\sqrt{\dfrac3n}$.
+  \item Déterminer la nature des séries $\sum u_n$, $\sum u_n^{2}$ et
+    $\sum u_n^{3}$.
+\end{questions}
+\end{exoEval}

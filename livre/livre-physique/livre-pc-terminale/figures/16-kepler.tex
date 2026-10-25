@@ -1,0 +1,18 @@
+% Première et deuxième lois de Kepler : orbite elliptique et aires balayées égales (L'essentiel, chapitre 16)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% ellipse a = 3, b = 2 ; foyers en (±2,236 ; 0)
+\fill[otGreenTint] (2.236,0) -- plot[domain=-25:25,samples=30] ({3*cos(\x)},{2*sin(\x)}) -- cycle;
+\fill[otOrange!20] (2.236,0) -- plot[domain=176:184,samples=30] ({3*cos(\x)},{2*sin(\x)}) -- cycle;
+\draw[otNavy,line width=0.9pt] (0,0) ellipse (3 and 2);
+\fill[otOrange] (2.236,0) circle (0.16);
+\node[pcLegende,anchor=north] at (2.236,-0.2) {Soleil (foyer)};
+\fill[otMuted] (-2.236,0) circle (0.04);
+\node[pcLegende,anchor=north,text=otMuted] at (-2.236,-0.08) {second foyer};
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (-3,0) -- (3,0);
+\node[pcLegende,anchor=west] at (3.05,0) {P};
+\node[pcLegende,anchor=east] at (-3.05,0) {A};
+\node[pcLegende,text=otGreenDark,align=center,anchor=west] at (3.25,0.95) {près du Soleil :\\arc long, vitesse grande};
+\node[pcLegende,text=otOrange!80!black,align=center,anchor=east] at (-3.2,0.95) {loin du Soleil :\\arc court, vitesse faible};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (-3,-2.3) -- (0,-2.3) node[pos=0.5,pcLegende,anchor=north] {demi-grand axe $a$};
+\end{tikzpicture}
+\par\smallskip\legende{Les deux surfaces colorées, balayées pendant la même durée, ont la même aire : la planète va plus vite au périhélie P qu'à l'aphélie A (ellipse très exagérée).}

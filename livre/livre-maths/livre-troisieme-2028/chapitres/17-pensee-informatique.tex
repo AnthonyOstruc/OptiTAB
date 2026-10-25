@@ -1,0 +1,88 @@
+\begin{ouverture}[algorithmique]{17}{Pensée informatique et algorithmique}{Partie 5 · Pensée informatique et raisonnement}
+{Variables · Conditions composées · Boucles conditionnelles · Blocs personnalisés}
+\objectif{Lire, exécuter à la main et compléter un script par blocs.}
+\objectif{Utiliser plusieurs variables, des conditions composées et des boucles conditionnelles.}
+\objectif{Structurer un programme avec des blocs personnalisés et simuler une expérience.}
+\prerequis{Calcul numérique, divisibilité et probabilités.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Variables, conditions et boucles}
+\begin{definition}Une variable associe un nom à une valeur, que le programme peut lire et modifier. « Mettre x à 3 » remplace son contenu ; « ajouter 3 à x » augmente sa valeur actuelle. Un programme peut utiliser plusieurs variables, par exemple un compteur et une somme.\end{definition}
+\begin{definition}Une condition est un test vrai ou faux, comme $x\ge10$. Une condition composée combine deux conditions : « A et B » est vraie lorsque les deux le sont ; « A ou B » est vraie lorsque l’une au moins l’est.\end{definition}
+\begin{definition}La boucle « répéter $n$ fois » exécute son contenu un nombre fixé de fois. La boucle conditionnelle « répéter jusqu’à » recommence tant que sa condition est fausse et s’arrête dès qu’elle devient vraie ; elle ne termine que si le contenu fait évoluer les variables vers cette condition.\end{definition}
+\begin{savoirfaire}[Exécuter à la main]Préparer un tableau avec une colonne par variable et une ligne par étape ou par tour. Exécuter dans l’ordre, en utilisant les valeurs déjà modifiées. Tester les valeurs frontières d’une condition.\end{savoirfaire}
+\begin{attention}Un test n’est pas une affectation : « x = 6 » dans une condition compare, il ne modifie pas x. Les lignes indentées appartiennent au bloc qui les contient ; une ligne « fin » le ferme.\end{attention}
+\clearpage
+\essSection{2}{Structurer et simuler}
+\begin{definition}Un bloc personnalisé regroupe des instructions sous un nom ; ses paramètres lui fournissent des valeurs. Le bloc polygone(n, c) peut répéter $n$ fois « avancer de c ; tourner de $360/n$ degrés ». On l’appelle ensuite comme une seule instruction.\end{definition}
+\begin{savoirfaire}[Décomposer un problème]Isoler une tâche répétée dans un bloc personnalisé, la tester seule, puis écrire le programme principal qui l’appelle. Un programme bien structuré est plus court, plus lisible et plus facile à corriger.\end{savoirfaire}
+\begin{savoirfaire}[Simuler]Choisir un entier aléatoire de 1 à 6 modélise un dé équilibré. Pour deux dés indépendants, tirer deux nombres séparément. Initialiser le compteur à zéro avant la boucle, l’augmenter quand l’évènement est réalisé, puis diviser par le nombre d’essais.\end{savoirfaire}
+\begin{exemple}Pour obtenir le quotient et le reste de 23 par 5, on retire 5 tant que c’est possible : $23\to18\to13\to8\to3$. Quatre soustractions ont été faites : quotient 4, reste 3. Une boucle conditionnelle automatise ce procédé.\end{exemple}
+\begin{attention}Les blocs du livre représentent les instructions d’un langage de type Scratch, sans prétendre reproduire son interface. Les multiplications sont explicites.\end{attention}
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-17-1}\begin{exercice}[1]{Suivre trois opérations}
+Exécuter le script et donner la valeur affichée.
+\label{fig-ex-17-1}\figureGeo{script-01}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-2}\begin{exercice}[1]{Un nombre demandé}
+Le script lit un nombre x. Donner le résultat pour 2 et pour $-4$, puis l’expression obtenue à partir de x.
+\label{fig-ex-17-2}\figureGeo{script-02}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-3}\begin{exercice}[1]{Une boucle bornée}
+Quelle valeur affiche le script ? Combien de fois le bloc ajouter est-il exécuté ?
+\label{fig-ex-17-3}\figureGeo{script-03}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-4}\begin{exercice}[1]{Un test et deux branches}
+Exécuter le script pour les entrées 9, 10 et 14.
+\label{fig-ex-17-4}\figureGeo{script-04}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-5}\begin{exercice}[1]{Doubler plusieurs fois}
+Quelle est la valeur finale de x ? Un élève propose $2+3\times2$. Expliquer son erreur.
+\label{fig-ex-17-5}\figureGeo{script-05}
+\end{exercice}\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-17-6}\begin{exercice}[2]{Deux variables}
+Suivre les variables s et n à chaque tour, puis donner le résultat. Que calcule ce script ?
+\label{fig-ex-17-6}\figureGeo{script-06}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-7}\begin{exercice}[2]{Répéter jusqu’à}
+Donner les valeurs successives de x et le nombre de tours.
+\label{fig-ex-17-7}\figureGeo{script-07}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-8}\begin{exercice}[2]{Une condition composée}
+Le script teste si un nombre appartient à une plage. Donner l’affichage pour 9, 10, 20 et 21. Que se passerait-il si l’on remplaçait « et » par « ou » ?
+\label{fig-ex-17-8}\figureGeo{script-08}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-9}\begin{exercice}[2]{Énumérer des diviseurs}
+Quelles valeurs sont affichées ? Pourquoi commence-t-on d à 1 et non à 0 ?
+\label{fig-ex-17-9}\figureGeo{script-09}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-10}\begin{exercice}[2]{Le reste par soustractions}
+Le script demande deux entiers positifs a et b. Exécuter le script pour $a=23$ et $b=5$, puis pour $a=3$ et $b=5$. Que calculent les variables q et r ?
+\label{fig-ex-17-10}\figureGeo{script-10}
+\end{exercice}\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-17-11}\begin{exercice}[3]{Une boucle qui dépasse}
+Combien de tours effectue le script ? Remplacer « multiplier par 2 » par « ajouter 0 » permettrait-il encore de terminer ?
+\label{fig-ex-17-11}\figureGeo{script-11}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-12}\begin{exercice}[3]{Un bloc personnalisé}
+Le bloc carré(c) trace un carré et revient au même point avec la même orientation. Expliquer ce que dessine le programme principal. Quelle longueur est tracée au total ?
+\label{fig-ex-17-12}\figureGeo{script-carres}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-13}\begin{exercice}[3]{Simuler un dé}
+Compléter le script pour compter les six sur 600 lancers d’un dé. Où placer l’initialisation et le calcul de fréquence ? Quelle valeur la fréquence affichée devrait-elle approcher ?
+\label{fig-ex-17-13}\figureGeo{script-simulation}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-14}\begin{exercice}[3]{Deux dés et un « ou »}
+Le script simule 1000 lancers de deux dés. Quel évènement compte-t-il ? Calculer sa probabilité. Parmi les affichages 0,17 ; 0,31 et 0,50, lequel est plausible ?
+\label{fig-ex-17-14}\figureGeo{script-deux-des}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-15}\begin{exercice}[3]{Des polygones réguliers}
+Le bloc polygone(n, c) trace un polygone régulier à $n$ côtés de longueur c. Le programme principal l’appelle avec n allant de 3 à 6. Nommer les figures tracées, donner l’angle de rotation pour l’hexagone et la longueur totale tracée.
+\label{fig-ex-17-15}\figureGeo{script-polygones}
+\end{exercice}\end{blocLivre}
+
+\clearpage

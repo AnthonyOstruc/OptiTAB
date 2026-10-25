@@ -1,0 +1,317 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[son]{17}{Ondes mécaniques}{Partie 4 · Ondes et signaux}
+{Onde progressive\enspace·\enspace Célérité et retard\enspace·\enspace Onde périodique\enspace·\enspace Période et longueur d'onde\enspace·\enspace Double périodicité}
+\objectif{Décrire la propagation d'une perturbation mécanique dans un milieu ; distinguer onde transversale et longitudinale.}
+\objectif{Exploiter la relation entre durée de propagation, distance parcourue et célérité, notamment pour localiser une source.}
+\objectif{Distinguer périodicité spatiale et périodicité temporelle ; exploiter la relation $\lambda=v\,T$.}
+\objectif{Déterminer les caractéristiques d'une onde à partir de représentations spatiales ou temporelles ; simuler une onde périodique.}
+\prerequis{Signal sonore, propagation, vitesse de propagation, période et fréquence (classe de seconde).}
+\prerequis{Fonction sinus et sa représentation graphique ; relation $d=v\,\Delta t$.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Onde mécanique progressive}
+\begin{definition}[Onde mécanique progressive]
+Une onde mécanique progressive est la propagation d'une \textbf{perturbation} dans un milieu matériel (corde, ressort, eau, air,
+sol), \textbf{sans transport de matière} mais avec \textbf{transport d'énergie}. Elle est \textbf{transversale} si les points du milieu bougent
+perpendiculairement à la direction de propagation (corde, houle), \textbf{longitudinale} s'ils bougent parallèlement (son, ressort
+comprimé, ondes sismiques P).
+\end{definition}
+\schema{17-onde}
+\essSection{2}{Célérité et retard}
+\begin{loi}[Célérité d'une onde]
+La perturbation parcourt la distance $d$ pendant la durée $\Delta t$ : sa \textbf{célérité} vaut $v=\dfrac{d}{\Delta t}$ (en \unit{m.s^{-1}}). Un point M situé à la distance
+$d$ de la source reproduit le mouvement de celle-ci avec un \textbf{retard} $\tau=\dfrac{d}{v}$. La célérité dépend du milieu : environ
+\qty{340}{m.s^{-1}} pour le son dans l'air, \qty{1500}{m.s^{-1}} dans l'eau, \qty{5900}{m.s^{-1}} dans l'acier. Le son met \qty{0,50}{s} à parcourir \qty{170}{m} dans l'air.
+\end{loi}
+\par\penalty0
+\schema{17-celerite}
+\begin{propriete}[Localiser une source]
+Connaissant la célérité, la mesure d'un retard donne une distance : écho d'un sonar ou d'un capteur à ultrasons ($d=\dfrac{v\,\Delta t}{2}$
+pour un aller-retour), orage (durée entre l'éclair et le tonnerre), séisme (retard des ondes S, plus lentes, sur les ondes P).
+\end{propriete}
+\begin{python}
+d = [0.20, 0.40, 0.60, 0.80]                 # m : distances emetteur-recepteur
+tau = [0.59e-3, 1.17e-3, 1.76e-3, 2.36e-3]   # s : retards mesures
+v = [d[i] / tau[i] for i in range(4)]
+print([round(x) for x in v])
+print('moyenne :', round(sum(v) / 4), 'm/s')
+\end{python}
+\begin{console}
+[339, 342, 341, 339]
+moyenne : 340 m/s
+\end{console}
+\noindent\capacite{Capacité numérique} Un microcontrôleur mesure le retard d'une salve d'ultrasons pour plusieurs distances ; le programme calcule la
+célérité de chaque mesure puis leur moyenne.
+\essSection{3}{Ondes périodiques}
+\begin{definition}[Période et longueur d'onde]
+Une onde est \textbf{périodique} si la source reproduit son mouvement à intervalles réguliers. Elle présente une \textbf{double
+périodicité} : temporelle, de période $T$ (en s), avec la fréquence $f=\dfrac{1}{T}$ (en Hz) ; spatiale, de période la \textbf{longueur d'onde} $\lambda$
+(en m), distance entre deux points voisins qui vibrent de la même façon. Une onde est \textbf{sinusoïdale} si le mouvement de la
+source est une fonction sinus du temps.
+\end{definition}
+\begin{loi}[Relation entre longueur d'onde, période et célérité]
+Pendant une période, l'onde progresse d'une longueur d'onde :
+\[\lambda=v\,T=\frac{v}{f}.\]
+La fréquence est imposée par la source, la célérité par le milieu. Un la de \qty{440}{Hz} a une longueur d'onde de \qty{0,773}{m} dans l'air.
+\end{loi}
+\par\penalty0
+\schema{17-periodique}
+\begin{attention}
+Ne pas confondre la vitesse des points du milieu (qui oscillent sur place) et la célérité de l'onde. Quand une onde change de milieu,
+sa fréquence reste la même mais sa célérité, donc sa longueur d'onde, change.
+\end{attention}
+\begin{experience}[Mesurer une longueur d'onde]
+Un émetteur d'ultrasons de \qty{40}{kHz} et deux récepteurs sont reliés à un oscilloscope. En éloignant l'un des récepteurs, on compte le
+nombre de fois où les deux signaux redeviennent en phase sur une distance mesurée : on en déduit $\lambda$, puis $v=\lambda\,f$.
+\end{experience}
+\begin{rediger}
+Préciser s'il s'agit d'une représentation spatiale (en fonction de $x$) ou temporelle (en fonction de $t$), mesurer plusieurs périodes
+pour gagner en précision, convertir les unités (ms, kHz, cm) avant d'utiliser $\lambda=v\,T$.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-17-1}
+\begin{exercice}[1]{La ola dans un stade}
+Dans un stade, les spectateurs se lèvent puis se rassoient les uns après les autres : une « vague » fait le tour des tribunes.
+\begin{questions}
+\item Pourquoi peut-on parler d'onde ? Quel est le milieu de propagation ?
+\item Un spectateur change-t-il de place ? Que transporte cette onde ?
+\item Cette onde est-elle transversale ou longitudinale ? Justifier.
+\item Citer un exemple d'onde mécanique longitudinale et un exemple d'onde transversale.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-2}
+\begin{exercice}[1]{Le coup de tonnerre}
+Pendant un orage, on entend le tonnerre \qty{6,0}{s} après avoir vu l'éclair.
+\begin{donnees}
+Célérité du son dans l'air : \qty{340}{m.s^{-1}} ; de la lumière : \qty{3,0e8}{m.s^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Calculer la distance de l'orage.
+\item Calculer la durée de trajet de la lumière. Pourquoi peut-on la négliger ?
+\item Justifier la règle : « compter les secondes et diviser par 3 donne la distance en kilomètres ».
+\item Le son peut-il se propager dans le vide ? Et la lumière ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-3}
+\begin{exercice}[1]{Une perturbation le long d'une corde}
+\schema{17-ex03}
+\begin{questions}
+\item Quelle distance la perturbation a-t-elle parcourue entre les deux dates ? En déduire sa célérité.
+\item À quelle date le sommet de la perturbation passera-t-il au point M, situé en $x=\qty{4,0}{m}$ ?
+\item La perturbation s'étend sur \qty{0,80}{m}. Combien de temps dure le mouvement d'un point de la corde ?
+\item L'onde est-elle transversale ou longitudinale ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-4}
+\begin{exercice}[1]{Lire un oscillogramme}
+\schema{17-ex04}
+\begin{donnees}
+Célérité du son dans l'air : \qty{340}{m.s^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Le signal est-il périodique ? Sinusoïdal ?
+\item Mesurer la période, en mesurant plusieurs périodes pour plus de précision. En déduire la fréquence.
+\item Calculer la longueur d'onde de ce son dans l'air.
+\item Le son est-il audible ? (L'oreille humaine perçoit les sons de \qty{20}{Hz} à \qty{20}{kHz}.)
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-5}
+\begin{exercice}[1]{Un même son dans trois milieux}
+Un diapason émet un la de \qty{440}{Hz}. Le son se propage dans l'air, dans l'eau et dans une barre d'acier.
+\begin{donnees}
+Célérités : air \qty{340}{m.s^{-1}} ; eau \qty{1500}{m.s^{-1}} ; acier \qty{5900}{m.s^{-1}}.
+\end{donnees}
+\begin{questions}
+\item La fréquence du son dépend-elle du milieu ? Justifier.
+\item Calculer la longueur d'onde dans chacun des trois milieux.
+\item Dans quel milieu le son va-t-il le plus vite ? Proposer une explication.
+\item Pourquoi entend-on parfois le train arriver en collant l'oreille contre le rail, avant de l'entendre dans l'air ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-17-6}
+\begin{exercice}[2]{Simuler une onde périodique, en Python}
+\begin{python}
+from math import sin, pi
+A, T, lam = 0.02, 0.50, 1.0          # m, s, m
+t = 0.10                             # date choisie (s)
+for i in range(9):
+    x = 0.25 * i
+    y = A * sin(2 * pi * (t / T - x / lam))
+    print(x, 'm :', round(y * 100, 1), 'cm')
+\end{python}
+\begin{console}
+0.0 m : 1.9 cm
+0.25 m : -0.6 cm
+0.5 m : -1.9 cm
+0.75 m : 0.6 cm
+1.0 m : 1.9 cm
+1.25 m : -0.6 cm
+1.5 m : -1.9 cm
+1.75 m : 0.6 cm
+2.0 m : 1.9 cm
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Que représentent \code{A}, \code{T} et \code{lam} ? Le programme donne-t-il une représentation spatiale ou temporelle ?
+\item Quelle périodicité les valeurs affichées font-elles apparaître ? Justifier.
+\item Calculer la célérité et la fréquence de l'onde.
+\item Comment modifier le programme pour obtenir le mouvement du point $x=0$ au cours du temps ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-7}
+\begin{exercice}[2]{Un séisme}
+\schema{17-ex07}
+\begin{donnees}
+Célérités : ondes P \qty{6,0}{km.s^{-1}} ; ondes S \qty{3,5}{km.s^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Repérer sur le sismogramme l'arrivée des ondes P et celle des ondes S. Lesquelles sont les plus rapides ?
+\item Mesurer le retard des ondes S sur les ondes P.
+\item Montrer que la distance $d$ de l'épicentre vérifie $\dfrac{d}{3{,}5}-\dfrac{d}{6{,}0}=12$ (en km et en s), puis calculer $d$.
+\item Pourquoi faut-il au moins trois stations pour localiser l'épicentre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-8}
+\begin{exercice}[2]{L'écholocation de la chauve-souris}
+Une chauve-souris émet des ultrasons de \qty{40}{kHz} ; l'écho renvoyé par un insecte lui revient \qty{12}{ms} après l'émission.
+\begin{donnees}
+Célérité des ultrasons dans l'air : \qty{340}{m.s^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Ces ondes sont-elles audibles par l'être humain ?
+\item Calculer la distance entre la chauve-souris et l'insecte.
+\item Calculer la longueur d'onde des ultrasons émis.
+\item Un objet plus petit que la longueur d'onde est mal détecté. Pourquoi la chauve-souris utilise-t-elle des ultrasons plutôt que des sons graves ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-9}
+\begin{exercice}[2]{Mesurer la célérité des ultrasons}
+Un émetteur d'ultrasons de fréquence \qty{40,0}{kHz} et deux récepteurs sont placés en ligne. Les deux signaux reçus, observés à
+l'oscilloscope, sont en phase. On éloigne le second récepteur : les signaux redeviennent en phase dix fois de suite sur une
+distance de \qty{8,5}{cm}.
+\begin{questions}
+\item Que signifie « les deux signaux sont en phase » ?
+\item En déduire la longueur d'onde des ultrasons.
+\item Calculer la célérité des ultrasons dans l'air.
+\item Pourquoi est-il préférable de compter dix longueurs d'onde plutôt qu'une seule ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-10}
+\begin{exercice}[2]{La houle}
+Au large, une houle a une période de \qty{8,0}{s} et ses crêtes sont distantes de \qty{100}{m}.
+\begin{questions}
+\item Quelle grandeur correspond à la distance entre deux crêtes voisines ?
+\item Calculer la célérité de la houle, en \unit{m.s^{-1}} puis en \unit{km/h}.
+\item Un bouchon flotte à la surface. Décrire son mouvement. Est-il entraîné vers la côte ?
+\item Combien de temps la houle met-elle pour parcourir \qty{50}{km} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-11}
+\begin{exercice}[2]{Une double périodicité}
+\schema{17-ex11}
+\begin{questions}
+\item Quelle représentation est spatiale ? Laquelle est temporelle ?
+\item Déterminer la longueur d'onde et la période de l'onde.
+\item En déduire sa célérité et sa fréquence.
+\item Que vaut l'amplitude de l'onde ? Dépend-elle de la représentation choisie ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-17-12}
+\begin{exercice}[3]{L'échographie}
+\begin{docu}{1}{Le principe}
+Une sonde posée sur la peau émet de brèves salves d'ultrasons de \qty{3,5}{MHz}. Chaque fois qu'elles rencontrent la limite entre deux
+tissus, une partie est réfléchie vers la sonde ; la durée de l'aller-retour donne la profondeur de la limite. On étale un gel entre
+la sonde et la peau, car l'air réfléchit presque totalement les ultrasons.
+\end{docu}
+\begin{docu}{2}{Une mesure}
+L'écho renvoyé par la paroi d'un organe revient \qty{65}{\micro s} après l'émission.
+\end{docu}
+\begin{donnees}
+Célérité des ultrasons dans les tissus mous : \qty{1540}{m.s^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Calculer la longueur d'onde des ultrasons dans les tissus.
+\item Calculer la profondeur de la paroi de l'organe.
+\item \initiative Les détails plus petits que la longueur d'onde sont mal observés. Quel est l'intérêt d'augmenter la fréquence ?
+\item À quoi sert le gel ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-13}
+\begin{exercice}[3]{Le tsunami}
+\begin{docu}{1}{Une onde géante}
+Un séisme sous-marin soulève brutalement le fond de l'océan : une onde, le tsunami, se propage dans tout l'océan. Sa période,
+d'environ \qty{15}{min}, ne change pas au cours de la propagation.
+\end{docu}
+\begin{docu}{2}{Sa célérité}
+Pour ces ondes très longues, la célérité ne dépend que de la profondeur $h$ de l'océan : $v=\sqrt{g\,h}$, avec $g=\qty{9,81}{N.kg^{-1}}$.
+\end{docu}
+\begin{questions}
+\item Calculer la célérité du tsunami au large, où la profondeur est de \qty{4000}{m}, en \unit{m.s^{-1}} puis en \unit{km/h}.
+\item Combien de temps met-il pour parcourir \qty{1000}{km} ?
+\item Calculer sa longueur d'onde au large, puis près de la côte, où la profondeur n'est plus que de \qty{10}{m}.
+\item \initiative Expliquer pourquoi la vague, presque invisible au large, devient gigantesque en arrivant sur la côte.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-14}
+\begin{exercice}[3]{La profondeur d'un puits}
+\begin{docu}{1}{L'expérience}
+On lâche une pierre dans un puits et l'on entend le « plouf » \qty{2,5}{s} plus tard. La durée mesurée est la somme de la durée de chute
+de la pierre, $t_1=\sqrt{\dfrac{2\,h}{g}}$, et de la durée de remontée du son, $t_2=\dfrac{h}{v}$.
+\end{docu}
+\begin{docu}{2}{Une résolution par dichotomie}
+\begin{python}
+g, v, t = 9.81, 340, 2.5
+h_min, h_max = 0, 100
+while h_max - h_min > 0.01:
+    h = (h_min + h_max) / 2
+    if (2 * h / g) ** 0.5 + h / v > t:
+        h_max = h
+    else:
+        h_min = h
+print(round(h, 1), 'm')
+\end{python}
+\begin{console}
+28.6 m
+\end{console}
+\end{docu}
+\begin{questions}
+\item En négligeant la durée de remontée du son, calculer la profondeur du puits.
+\item \capacite{Capacité numérique}Expliquer le principe du programme : que contient l'intervalle $[h_\mathrm{min} ; h_\mathrm{max}]$ à chaque étape ?
+\item Comparer le résultat du programme à celui de la question 1. Quelle erreur relative commet-on en négligeant le son ?
+\item \initiative Calculer la durée de remontée du son et vérifier le résultat.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-15}
+\begin{exercice}[3]{Le capteur à ultrasons d'un robot}
+\begin{docu}{1}{Le capteur}
+Un capteur à ultrasons, piloté par un microcontrôleur, émet une salve et mesure la durée de l'aller-retour de l'écho. Le programme
+du robot calcule la distance avec une célérité fixée à \qty{340}{m.s^{-1}}.
+\end{docu}
+\begin{docu}{2}{Influence de la température}
+La célérité du son dans l'air dépend de la température : $v\approx331+0{,}6\,\theta$ (en \unit{m.s^{-1}}, avec $\theta$ en \unit{\degreeCelsius}).
+\end{docu}
+\begin{questions}
+\item Calculer la célérité du son à \qty{20}{\degreeCelsius} et à \qty{0}{\degreeCelsius}.
+\item Par une matinée glaciale (\qty{0}{\degreeCelsius}), l'écho revient au bout de \qty{5,83}{ms}. Calculer la distance réelle de l'obstacle et la distance affichée.
+\item Calculer l'erreur relative commise. Est-elle gênante pour un robot ?
+\item \initiative Quelle durée d'écho correspond à un obstacle situé à \qty{2,0}{m}, à \qty{20}{\degreeCelsius} ? Proposer une amélioration du capteur.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,320 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[transferts]{16}{Énergie potentielle et énergie mécanique}{Partie 3 · L'énergie : conversions et transferts}
+{Énergie potentielle de pesanteur\enspace·\enspace Énergie mécanique\enspace·\enspace Conservation\enspace·\enspace Frottements et dissipation}
+\objectif{Établir et utiliser l'expression de l'énergie potentielle de pesanteur au voisinage de la Terre.}
+\objectif{Identifier des situations de conservation et de non-conservation de l'énergie mécanique.}
+\objectif{Exploiter la conservation de l'énergie mécanique : chute libre, pendule sans frottement.}
+\objectif{Utiliser la variation de l'énergie mécanique pour déterminer le travail des forces non conservatives ; faire un bilan avec un programme.}
+\prerequis{Énergie cinétique, travail d'une force, théorème de l'énergie cinétique (chapitre 15).}
+\prerequis{Travail du poids $W_{\mathrm{AB}}(\vec{P})=m\,g\,(z_\mathrm{A}-z_\mathrm{B})$ ; forces conservatives et non conservatives.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Énergie potentielle de pesanteur}
+\begin{definition}[Énergie potentielle de pesanteur]
+Le travail du poids ne dépend que des altitudes : $W_{\mathrm{AB}}(\vec{P})=m\,g\,z_\mathrm{A}-m\,g\,z_\mathrm{B}$. On définit l'énergie potentielle de pesanteur, au
+voisinage de la Terre, avec un axe $z$ vertical orienté vers le haut :
+\[E_\mathrm{p}=m\,g\,z\qquad\text{(en J), et alors}\qquad W_{\mathrm{AB}}(\vec{P})=-\Delta E_\mathrm{p}=E_\mathrm{p}(\mathrm{A})-E_\mathrm{p}(\mathrm{B}).\]
+Elle dépend du choix de l'origine des altitudes ($E_\mathrm{p}=0$ en $z=0$), mais ses variations n'en dépendent pas. Un livre de \qty{1,0}{kg}
+posé \qty{2,0}{m} au-dessus du sol a, par rapport au sol, une énergie potentielle de \qty{19,6}{J}.
+\end{definition}
+\essSection{2}{Énergie mécanique}
+\begin{definition}[Énergie mécanique]
+L'énergie mécanique d'un système est la somme de ses énergies cinétique et potentielle : $E_\mathrm{m}=E_\mathrm{c}+E_\mathrm{p}=\dfrac{1}{2}\,m\,v^2+m\,g\,z$.
+\end{definition}
+\begin{loi}[Conservation et non-conservation]
+D'après le théorème de l'énergie cinétique, la variation de l'énergie mécanique est égale au travail des forces non
+conservatives :
+\[\Delta E_\mathrm{m}=E_\mathrm{m}(\mathrm{B})-E_\mathrm{m}(\mathrm{A})=W_{\mathrm{AB}}(\vec{F}_\text{non conservatives}).\]
+Si seul le poids travaille (chute libre, pendule ou glissade sans frottement), l'énergie mécanique se \textbf{conserve}. Des
+frottements la font \textbf{diminuer} (énergie dissipée, le plus souvent thermique) ; un moteur peut la faire augmenter.
+\end{loi}
+\schema{16-conservation}
+\begin{propriete}[Exploiter la conservation]
+Sans frottement, entre deux positions : $\dfrac{1}{2}\,m\,v_\mathrm{A}^2+m\,g\,z_\mathrm{A}=\dfrac{1}{2}\,m\,v_\mathrm{B}^2+m\,g\,z_\mathrm{B}$. La masse se simplifie : un objet lâché de \qty{10}{m}
+arrive au sol à $\sqrt{2\,g\,h}=\qty{14,0}{m.s^{-1}}$. Pour un pendule, l'énergie passe sans cesse de la forme potentielle à la forme cinétique.
+\end{propriete}
+\par\penalty0
+\schema{16-pendule}
+\begin{python}
+m, g = 0.60, 9.81                   # kg, N/kg : ballon lache de 2,00 m
+z = [2.00, 1.80, 1.22, 0.23]        # m, toutes les 0,20 s
+v = [0.00, 1.96, 3.92, 5.89]        # m/s
+for i in range(4):                  # energies en J
+    Ec, Ep = 0.5 * m * v[i]**2, m * g * z[i]
+    print('Ec =', round(Ec, 2), '| Ep =', round(Ep, 2), '| Em =', round(Ec + Ep, 2))
+\end{python}
+\begin{console}
+Ec = 0.0 | Ep = 11.77 | Em = 11.77
+Ec = 1.15 | Ep = 10.59 | Em = 11.75
+Ec = 4.61 | Ep = 7.18 | Em = 11.79
+Ec = 10.41 | Ep = 1.35 | Em = 11.76
+\end{console}
+\noindent\capacite{Capacité numérique} Le bilan énergétique, calculé à partir des mesures, montre que l'énergie mécanique du ballon reste constante
+aux erreurs de mesure près : l'action de l'air est négligeable sur cette chute.
+\schema{16-frottements}
+\begin{attention}
+Toujours préciser l'origine choisie pour les altitudes, et la garder pendant tout l'exercice. L'énergie mécanique ne se conserve
+que si les forces non conservatives (frottements, poussée d'un moteur, action d'un opérateur) ne travaillent pas.
+\end{attention}
+\begin{experience}[Bilan énergétique d'une chute ou d'un pendule]
+Avec une vidéo et un logiciel de pointage, ou les capteurs d'un smartphone, on obtient positions et vitesses ; un tableur ou un
+programme calcule $E_\mathrm{c}$, $E_\mathrm{p}$ et $E_\mathrm{m}$. On compare une balle lourde et une balle légère, ou un pendule au fil des oscillations.
+\end{experience}
+\begin{rediger}
+Définir le système, le référentiel et l'origine des altitudes ; écrire l'énergie mécanique aux deux positions ; justifier la
+conservation (seul le poids travaille) ou écrire $\Delta E_\mathrm{m}=W(\vec{f})$ avant de calculer.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-16-1}
+\begin{exercice}[1]{Calculer des énergies potentielles}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie potentielle d'un livre de \qty{0,80}{kg} posé sur une étagère à \qty{2,0}{m} du sol, l'origine étant prise au sol.
+\item Que vaut l'énergie potentielle du livre posé au sol si l'on prend l'origine des altitudes au niveau de l'étagère ?
+\item Calculer l'énergie potentielle d'une alpiniste de \qty{70}{kg} au sommet du mont Blanc (\qty{4808}{m}), l'origine étant au niveau de la mer.
+\item Calculer sa variation d'énergie potentielle depuis Chamonix (\qty{1035}{m}). Dépend-elle de l'origine choisie ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-2}
+\begin{exercice}[1]{Une chute sans frottement}
+On lâche une balle de \qty{0,20}{kg} sans vitesse d'une hauteur de \qty{10}{m}. On néglige l'action de l'air ; l'origine des altitudes est au sol.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie mécanique de la balle au moment où on la lâche.
+\item Pourquoi l'énergie mécanique se conserve-t-elle pendant la chute ?
+\item Calculer les énergies potentielle et cinétique de la balle à \qty{4,0}{m} du sol, puis sa vitesse.
+\item Calculer la vitesse de la balle à l'arrivée au sol.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-3}
+\begin{exercice}[1]{Lire des courbes d'énergie}
+Une balle de \qty{0,10}{kg} est lancée verticalement vers le haut à \qty{8,0}{m.s^{-1}}, depuis \qty{1,0}{m} au-dessus du sol.
+\schema{16-ex03}
+\begin{questions}
+\item Associer chaque courbe à l'énergie qu'elle représente. Justifier.
+\item Lire les valeurs initiales des énergies et vérifier par le calcul ($g=\qty{9,81}{N.kg^{-1}}$).
+\item À quelle date la balle atteint-elle son point le plus haut ? Calculer son altitude.
+\item L'action de l'air est-elle négligeable ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-4}
+\begin{exercice}[1]{Le pendule simple}
+\schema{16-ex04}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Montrer que la bille descend d'une hauteur $h=L\,(1-\cos\ang{30})$ entre A et B, et la calculer.
+\item Quelles forces s'exercent sur la bille ? Pourquoi la tension du fil ne travaille-t-elle pas ?
+\item Calculer la vitesse de la bille au passage en B.
+\item Calculer cette vitesse si on lâche la bille à \ang{60} de la verticale.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-5}
+\begin{exercice}[1]{Conservation ou non ?}
+Pour chaque situation, dire si l'énergie mécanique du système se conserve, augmente ou diminue, et justifier.
+\begin{questions}
+\item Une pomme tombe d'un arbre ; on néglige l'action de l'air.
+\item Un parachutiste descend à vitesse constante.
+\item Une skieuse remonte la piste, tirée à vitesse constante par un téléski.
+\item Une bille oscille au bout d'un fil ; l'amplitude diminue peu à peu.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-16-6}
+\begin{exercice}[2]{La balle de ping-pong, en Python}
+On lâche une balle de ping-pong de \qty{2,7}{g} de \qty{2,0}{m} ; une vidéo donne son altitude et sa vitesse toutes les \qty{0,10}{s}.
+\begin{python}
+m, g = 0.0027, 9.81
+z = [2.000, 1.951, 1.805, 1.566, 1.239, 0.830, 0.347]   # m
+v = [0, 0.98, 1.93, 2.84, 3.69, 4.47, 5.17]             # m/s
+for i in range(7):
+    Em = 0.5 * m * v[i]**2 + m * g * z[i]
+    print(round(0.1 * i, 1), 's :', round(Em * 1000, 1), 'mJ')
+\end{python}
+\begin{console}
+0.0 s : 53.0 mJ
+0.1 s : 53.0 mJ
+0.2 s : 52.8 mJ
+0.3 s : 52.4 mJ
+0.4 s : 51.2 mJ
+0.5 s : 49.0 mJ
+0.6 s : 45.3 mJ
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle grandeur le programme calcule-t-il ? Quelle est l'origine des altitudes ?
+\item Comment évolue l'énergie mécanique ? Interpréter.
+\item Calculer le travail des frottements de l'air entre 0 et \qty{0,6}{s}.
+\item Sans frottement, la vitesse à \qty{0,6}{s} vaudrait $g\,t$. Comparer à la vitesse mesurée.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-7}
+\begin{exercice}[2]{Les montagnes russes}
+\schema{16-ex07}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie mécanique du wagon en A, l'origine des altitudes étant au sol.
+\item En négligeant les frottements, calculer la vitesse du wagon en B, puis en C.
+\item La vitesse mesurée en B vaut \qty{24}{m.s^{-1}}. Calculer l'énergie dissipée entre A et B.
+\item Quelle fraction de l'énergie mécanique initiale cela représente-t-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-8}
+\begin{exercice}[2]{Les rebonds d'une balle}
+Une balle de tennis de \qty{58}{g}, lâchée de \qty{1,20}{m}, remonte à \qty{0,80}{m} après le premier rebond.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Comparer les énergies mécaniques au point de départ et au sommet du premier rebond.
+\item Calculer l'énergie perdue lors du rebond. Sous quelle forme est-elle dissipée ?
+\item Quelle fraction de son énergie mécanique la balle conserve-t-elle à chaque rebond ?
+\item En supposant cette fraction constante, à quelle hauteur la balle remonte-t-elle après cinq rebonds ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-9}
+\begin{exercice}[2]{Une balle lancée vers le haut}
+Une balle de \qty{150}{g} est lancée verticalement vers le haut à \qty{12}{m.s^{-1}}.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item En négligeant l'action de l'air, calculer la hauteur maximale atteinte au-dessus du point de lancer.
+\item La balle ne monte en réalité qu'à \qty{6,5}{m}. Calculer le travail des frottements de l'air pendant la montée.
+\item Sans frottement, quelle serait la vitesse de la balle en repassant par le point de lancer ?
+\item Avec frottement, sera-t-elle plus grande ou plus petite ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-10}
+\begin{exercice}[2]{Le téléski}
+Un téléski tire à vitesse constante une skieuse de \qty{75}{kg} sur une piste dont le dénivelé est de \qty{300}{m} ; la montée dure \qty{6,0}{min}.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Comment évoluent l'énergie cinétique, l'énergie potentielle et l'énergie mécanique de la skieuse ?
+\item Calculer la variation de son énergie mécanique pendant la montée.
+\item En négligeant les frottements, quel travail le téléski fournit-il ? Calculer la puissance correspondante.
+\item En réalité, le travail du téléski est plus grand. Pourquoi ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-11}
+\begin{exercice}[2]{Le pendule réel}
+\schema{16-ex11}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Identifier les courbes 1, 2 et 3. Pourquoi les courbes 1 et 2 oscillent-elles deux fois par période du pendule ?
+\item Vérifier par le calcul la valeur initiale de l'énergie mécanique.
+\item Après \qty{20}{s}, l'amplitude n'est plus que de \ang{30}. Calculer l'énergie mécanique, puis l'énergie dissipée.
+\item Calculer la puissance moyenne dissipée par les frottements.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-16-12}
+\begin{exercice}[3]{La centrale hydroélectrique}
+\begin{docu}{1}{Une chute d'eau}
+Dans une centrale de montagne, l'eau d'un lac de retenue descend dans une conduite forcée de \qty{300}{m} de dénivelé jusqu'aux turbines,
+avec un débit de \qty{50}{m^3} par seconde. L'ensemble turbine-alternateur a un rendement de \qty{90}{\percent}.
+\end{docu}
+\begin{docu}{2}{Consommation}
+Un foyer français consomme en moyenne \qty{4700}{kWh} d'électricité par an.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$ ; masse volumique de l'eau : \qty{1000}{kg.m^{-3}}.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie potentielle perdue par \qty{1}{m^3} d'eau en descendant de \qty{300}{m}.
+\item En déduire la puissance cédée par l'eau aux turbines, puis la puissance électrique produite.
+\item Calculer l'énergie électrique produite en un jour, en \unit{MWh}.
+\item \initiative Combien de foyers cette centrale pourrait-elle alimenter, en fonctionnant ainsi toute l'année ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-13}
+\begin{exercice}[3]{Le lancer du poids}
+\begin{docu}{1}{Le lancer}
+Un athlète lâche le poids de \qty{7,26}{kg} à \qty{2,1}{m} du sol, avec une vitesse de \qty{13}{m.s^{-1}} inclinée de \ang{40} au-dessus de l'horizontale. On
+néglige l'action de l'air : la composante horizontale de la vitesse reste alors constante.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$ ; origine des altitudes au sol.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie mécanique du poids au moment du lâcher.
+\item Calculer la vitesse du poids à l'arrivée au sol.
+\item Au sommet de la trajectoire, la vitesse est horizontale et vaut $13\times\cos\ang{40}$. Calculer l'énergie cinétique au sommet.
+\item \initiative En déduire l'altitude du sommet de la trajectoire.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-14}
+\begin{exercice}[3]{La descente à vélo}
+\begin{docu}{1}{Une longue descente}
+Une cycliste (\qty{80}{kg} avec son vélo) descend sans pédaler une route rectiligne de pente \qty{10}{\percent} : la route descend de \qty{10}{m} pour \qty{100}{m}
+parcourus à l'horizontale, ce qui correspond à un angle dont le sinus vaut \num{0,0995}. Sa vitesse se stabilise à \qty{15}{m.s^{-1}}.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item À vitesse constante, comment évoluent les énergies cinétique, potentielle et mécanique ?
+\item De combien la cycliste descend-elle en une seconde ?
+\item \initiative En déduire la puissance dissipée par les frottements (air et roulement).
+\item Sans frottement, quelle serait sa vitesse après \qty{2}{km} de descente, si elle partait à \qty{15}{m.s^{-1}} ? Commenter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-16-15}
+\begin{exercice}[3]{Le bilan d'énergie des rebonds, en Python}
+\begin{docu}{1}{Des mesures}
+Une balle lâchée de \qty{1,50}{m} remonte successivement à \qty{1,10}{m}, \qty{0,81}{m}, \qty{0,59}{m} puis \qty{0,43}{m}.
+\end{docu}
+\begin{docu}{2}{Le programme}
+\begin{python}
+h = [1.50, 1.10, 0.81, 0.59, 0.43]          # m : hauteurs atteintes
+for i in range(4):
+    print('rebond', i + 1, ':', round(h[i + 1] / h[i], 2))
+k = 0.73
+hauteur, n = h[-1], 4
+while hauteur > 0.05:
+    hauteur = hauteur * k
+    n = n + 1
+print(n, 'rebonds')
+\end{python}
+\begin{console}
+rebond 1 : 0.73
+rebond 2 : 0.74
+rebond 3 : 0.73
+rebond 4 : 0.73
+11 rebonds
+\end{console}
+\end{docu}
+\begin{questions}
+\item \capacite{Capacité numérique}Pourquoi le rapport de deux hauteurs successives est-il aussi le rapport des énergies mécaniques ?
+\item Quelle fraction de son énergie mécanique la balle perd-elle à chaque rebond ?
+\item Que calcule la boucle \code{while} ? Interpréter le résultat affiché.
+\item \initiative La balle a une masse de \qty{58}{g}. Calculer l'énergie dissipée lors du premier rebond ($g=\qty{9,81}{N.kg^{-1}}$).
+\end{questions}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,260 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[seconddegre]{1}{Polynômes du second degré}{Partie 1 · Algèbre}
+{Formes d'un trinôme\enspace·\enspace Équations\enspace·\enspace Signe\enspace·\enspace Modélisation}
+\objectif{Choisir entre forme développée, factorisée et canonique.}
+\objectif{Résoudre une équation et une inéquation du second degré.}
+\objectif{Lire une parabole et déterminer son sommet.}
+\objectif{Modéliser un problème d'aire, de coût ou de trajectoire.}
+\prerequis{Identités remarquables et équations produit nul.}
+\prerequis{Intervalles et repérage dans le plan.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Trois écritures, trois usages}
+\begin{definition}[Trinôme]
+Une fonction du second degré s'écrit $f(x)=ax^2+bx+c$, avec $a\neq0$.
+Sa courbe est une parabole. La forme développée donne immédiatement $f(0)=c$.
+\end{definition}
+\begin{propriete}[Formes utiles]
+La forme canonique $a(x-\alpha)^2+\beta$ donne le sommet $S(\alpha\pv\beta)$
+et l'axe de symétrie $x=\alpha$. La forme factorisée $a(x-r_1)(x-r_2)$, lorsqu'elle
+existe, donne les racines $r_1$ et $r_2$.
+Alors $r_1+r_2=-b/a$ et $r_1r_2=c/a$, comme on le vérifie en développant.
+Les fonctions du second degré qui s'annulent en deux réels distincts $r_1$ et $r_2$
+sont les fonctions $x\mapsto a(x-r_1)(x-r_2)$, avec $a\neq0$.
+\end{propriete}
+\begin{exemple}
+$x^2-4x+3=(x-2)^2-1=(x-1)(x-3)$.
+Les racines sont 1 et 3 ; le minimum vaut $-1$, atteint en 2.
+Pour une forme développée $ax^2+bx+c$, le sommet a pour abscisse $\alpha=-b/(2a)$
+et pour ordonnée $f(\alpha)$. On peut aussi compléter un carré dans les cas simples.
+La courbe de $x\mapsto f(x-m)$ se déduit de celle de $f$ par une translation de $m$
+unités parallèlement à l'axe des abscisses : la parabole de $(x-2)^2-1$ est celle de $x^2$
+décalée de 2 vers la droite et de 1 vers le bas.
+\end{exemple}
+\begin{center}
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=104mm,height=63mm,xmin=-0.5,xmax=4.5,ymin=-2,ymax=5,xtick={0,1,2,3,4},ytick={-1,1,3,5}]
+\addplot[otNavy,thick,domain=-0.4:4.4,samples=90]{(x-2)^2-1};
+\addplot[otGreen,dashed] coordinates {(2,-2)(2,5)};
+\addplot[only marks,otNavy] coordinates {(1,0)(3,0)(2,-1)};
+\node[below right,font=\small] at (axis cs:2,-1){$S(2;-1)$};
+\end{axis}\end{tikzpicture}\par
+\legende{La parabole de $f(x)=x^2-4x+3$ et son axe de symétrie.}
+\end{center}
+\begin{attention}
+Une fonction peut ne pas avoir de racine réelle. La forme factorisée sur $\R$
+n'existe alors pas. La forme canonique existe toujours.
+\end{attention}
+\clearpage
+\essSection{2}{Résoudre une équation}
+\begin{theoreme}[Discriminant]
+Pour $ax^2+bx+c=0$, on pose $\Delta=b^2-4ac$.
+Si $\Delta>0$, les deux solutions sont $\dfrac{-b-\sqrt\Delta}{2a}$ et
+$\dfrac{-b+\sqrt\Delta}{2a}$. Si $\Delta=0$, la seule solution est
+$-\dfrac b{2a}$. Si $\Delta<0$, il n'y a aucune solution réelle.
+\end{theoreme}
+\begin{savoirfaire}[Choisir le calcul le plus court]
+Avant le discriminant, chercher une factorisation évidente :
+$x^2-9=(x-3)(x+3)$, ou $2x^2-6x=2x(x-3)$.
+Si une racine $r_1$ est évidente, l'autre se déduit de $r_1r_2=c/a$.
+Pour compléter un carré, utiliser $x^2+2ux=(x+u)^2-u^2$.
+\end{savoirfaire}
+\essSection{3}{Étudier un signe et résoudre une inéquation}
+\begin{propriete}
+Lorsque deux racines $r_1<r_2$ existent, $f$ est du signe de $a$ à l'extérieur
+de $[r_1;r_2]$, du signe opposé entre les racines, et s'annule aux racines.
+Si $\Delta<0$, $f$ garde le signe de $a$. Si $\Delta=0$, $f$ garde le signe
+de $a$ sauf à sa racine où elle vaut 0.
+\end{propriete}
+\begin{center}\begin{tableau}
+\otTabL[2.6]{2.7}{$x$/0.8,$(x-1)(x-3)$/0.9}{$-\infty$,$1$,$3$,$+\infty$}
+\tkzTabLine{,+,z,-,z,+,}
+\end{tableau}\end{center}
+\begin{savoirfaire}[Passer du signe à l'ensemble des solutions]
+$x^2-4x+3\leq0\iff x\in[1;3]$.
+Pour une inégalité stricte, les racines sont exclues :
+$x^2-4x+3<0\iff x\in]1;3[$.
+\end{savoirfaire}
+\begin{attention}
+Dans un quotient, interdire les valeurs qui annulent le dénominateur,
+même si une simplification paraît possible. Pour un problème concret,
+intersecter les solutions avec le domaine du modèle.
+\end{attention}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-1-1}
+\begin{exercice}[1]{Reconnaître un trinôme}
+\begin{questions}
+\item Parmi $3x^2-2x+5$, $4x-1$, $(x-2)^2$, $x^3+x$, repérer les polynômes du second degré.
+\item Pour chacun d'eux, donner les coefficients $a$, $b$ et $c$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-2}
+\begin{exercice}[1]{Développer ou factoriser}
+\begin{questions}
+\item Développer $(x-3)(x+2)$ et $2(x-1)^2-8$.
+\item Factoriser $x^2-25$ et $3x^2-12x$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-3}
+\begin{exercice}[1]{Lire la forme canonique}
+Soit $f(x)=2(x-3)^2-8$.
+\begin{questions}
+\item Donner le sommet, l'axe de symétrie et le minimum de $f$.
+\item Calculer $f(0)$ et résoudre $f(x)=0$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-4}
+\begin{exercice}[1]{Calculer un discriminant}
+Résoudre dans $\R$ :
+\begin{tasks}(3)
+\task $x^2-5x+6=0$.
+\task $x^2+4x+4=0$.
+\task $2x^2+x+2=0$.
+\end{tasks}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-5}
+\begin{exercice}[1]{Signe d'une forme factorisée}
+Soit $P(x)=-2(x+1)(x-4)$.
+\begin{questions}
+\item Dresser le tableau de signes de $P$.
+\item Résoudre $P(x)\geq0$, puis $P(x)<0$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-1-6}
+\begin{exercice}[2]{Choisir la bonne forme}
+On pose $f(x)=x^2-6x+5$.
+\begin{questions}
+\item Montrer que $f(x)=(x-3)^2-4$ et que $f(x)=(x-1)(x-5)$.
+\item Résoudre $f(x)=5$, puis $f(x)\leq0$.
+\item Résoudre $f(x)\leq-3$ en choisissant une forme adaptée.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-7}
+\begin{exercice}[2]{Deux paraboles}
+On considère $f(x)=x^2-4x+3$ et $g(x)=-x^2+2x+3$.
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=101mm,height=48mm,xmin=-1,xmax=4,ymin=-2,ymax=6,xtick={-1,0,1,2,3,4},ytick={-2,2,4,6}]
+\addplot[otNavy,thick,domain=-0.6:4,samples=75]{x^2-4*x+3};
+\addplot[otGreen,thick,domain=-1:3.4,samples=75]{-x^2+2*x+3};
+\node[otEtiquette,text=otNavy] at(axis cs:3.7,2.7){$\mathcal C_f$};
+\node[otEtiquette,text=otGreenDark] at(axis cs:2,4.7){$\mathcal C_g$};
+\end{axis}\end{tikzpicture}\end{center}
+\begin{questions}
+\item Conjecturer les abscisses des points d'intersection.
+\item Les calculer exactement, puis déterminer quand $f(x)\leq g(x)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-8}
+\begin{exercice}[2]{Un quotient et une valeur interdite}
+Résoudre $\dfrac{x^2-5x+6}{x-1}\geq0$.
+Préciser le domaine, factoriser le numérateur, dresser un tableau de signes
+et écrire l'ensemble des solutions avec les bons crochets.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-9}
+\begin{exercice}[2]{Retrouver une fonction}
+Une parabole coupe l'axe des abscisses en $-2$ et $4$, et passe par $A(0;-8)$.
+\begin{questions}
+\item Justifier que sa fonction s'écrit $f(x)=a(x+2)(x-4)$, puis calculer $a$.
+\item Développer $f$ et déterminer son sommet.
+\item Résoudre $f(x)=-5$.
+\end{questions}
+\label{figlivre-r01-09-parabole-ex}
+\figureLivre{r01-09-parabole}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-10}
+\begin{exercice}[2]{Somme et produit des racines}
+\begin{questions}
+\item Deux réels ont pour somme 7 et pour produit 10. Construire une équation
+dont ils sont les racines et retrouver ces nombres.
+\item Même question avec une somme de 4 et un produit de 5. Que peut-on conclure ?
+\item Factoriser mentalement $x^2+x-12$ en cherchant les deux racines.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-11}
+\begin{exercice}[2]{Discuter selon un paramètre}
+Pour $m\in\R$, on considère $x^2-4x+m=0$.
+\begin{questions}
+\item Écrire $x^2-4x+m$ sous forme canonique.
+\item Selon $m$, déterminer le nombre de solutions réelles.
+\item Donner les solutions pour $m=3$, $m=4$ et $m=5$.
+\item Pour quelles valeurs de $m$ l'expression est-elle positive ou nulle pour tout $x$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-1-12}
+\begin{exercice}[3]{Un jardin contre un mur}
+On dispose de 40 m de clôture pour fermer trois côtés d'un rectangle,
+le quatrième étant un mur. On note $x$ la largeur perpendiculaire au mur.
+\begin{center}\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otNavyTint](0,0)rectangle(6,1.7);
+\draw[otNavy,thick](0,1.7)--(0,0)--node[below]{$40-2x$}(6,0)--node[right]{$x$}(6,1.7);
+\draw[otMuted,line width=2pt](-0.4,1.7)--(6.4,1.7);
+\node[above,font=\small]at(3,1.7){mur};
+\end{tikzpicture}\par\legende{Schéma de la situation, non à l'échelle.}\end{center}
+\begin{questions}
+\item Justifier $0<x<20$ et montrer que l'aire vaut $A(x)=-2x^2+40x$.
+\item Écrire $A$ sous forme canonique ; en déduire l'aire maximale et les dimensions du jardin.
+\item Pour quelles largeurs l'aire est-elle d'au moins $150$ m$^2$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-13}
+\begin{exercice}[3]{Une vente rentable}
+Pour $q\in[0;100]$, on modélise le prix de vente unitaire par $p(q)=50-0{,}2q$
+et le coût total par $C(q)=10q+500$, en euros.
+\begin{questions}
+\item Exprimer la recette $R(q)$ et le bénéfice $B(q)$.
+\item Vérifier $B(q)=-0{,}2(q-100)^2+1500$ ; déterminer le bénéfice maximal sur le domaine.
+\item Résoudre $B(q)\geq0$ et en déduire les quantités entières rentables. Donner une approximation à $10^{-2}$ des seuils utiles.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-14}
+\begin{exercice}[3]{Un ballon au-dessus d'un filet}
+La hauteur d'un ballon, en mètres, est $h(t)=-5t^2+10t+1$,
+où $t\geq0$ désigne le temps en secondes après le lancer.
+Le modèle est utilisé jusqu'au premier contact avec le sol.
+\begin{questions}
+\item Déterminer la hauteur initiale et la hauteur maximale.
+\item Résoudre $h(t)=0$ ; à quel instant le ballon touche-t-il le sol ?
+\item Déterminer les instants où $h(t)\geq4$.
+\item Le ballon atteint le plan vertical d'un filet de 4 m à $t=1{,}5$ s.
+Le franchit-il ? Justifier par un calcul et interpréter le résultat.
+\end{questions}
+\label{figlivre-r01-14-ballon-ex}
+\figureLivre{r01-14-ballon}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-15}
+\begin{exercice}[3]{Une famille de paraboles}
+Pour un réel $m$, on pose $P_m(x)=x^2-2mx+m+2$.
+\partieExo{A}{Étude des racines}
+\begin{questions}
+\item Calculer le discriminant et le factoriser.
+\item Déterminer les valeurs de $m$ pour lesquelles $P_m$ possède deux racines distinctes,
+une racine double, ou aucune racine réelle.
+\end{questions}
+\partieExo{B}{Un point commun et un cas particulier}
+\begin{questions}[resume]
+\item Montrer que toutes les paraboles de la famille passent par un même point d'abscisse $\frac12$.
+\item Pour $m=3$, résoudre $P_3(x)\leq0$ et déterminer le sommet.
+\item Pour quelles valeurs de $m$ a-t-on $P_m(x)>0$ pour tout réel $x$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,15 @@
+% Arbre de Diane : fil de cuivre dans une solution de nitrate d'argent (exercice 3 et défi D03, chapitre 3)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\pic at (0,0) {becher={largeur=2.2,hauteur=2.6,niveau=2.0,liquide=cyan!15}};
+\draw[orange!70!red!80!black,line width=1.6pt,line cap=round] (0,2.9) -- (0,0.25);
+\draw[orange!70!red!80!black,line width=1.6pt,line cap=round,decorate,decoration={coil,amplitude=0.18cm,segment length=0.22cm}] (0,1.6) -- (0,0.35);
+\foreach \x/\y/\a in {-0.32/1.5/30,0.3/1.3/150,-0.28/0.9/20,0.33/0.7/160,-0.3/0.45/40,0.28/1.75/140,-0.22/1.95/60}{
+  \draw[otMuted!70!black,line width=0.9pt] (\x,\y) -- ++(\a:0.28) (\x,\y) -- ++(\a+40:0.22) (\x,\y) -- ++(\a-40:0.2);}
+\node[pcLegende,anchor=west] at (1.35,2.6) {fil de cuivre};
+\draw[pcRepere] (0.05,2.45) -- (1.3,2.6);
+\node[pcLegende,anchor=west] at (1.35,1.55) {cristaux d'argent};
+\draw[pcRepere] (0.4,1.35) -- (1.3,1.55);
+\node[pcLegende,anchor=west] at (1.35,0.6) {solution qui bleuit};
+\draw[pcRepere] (0.75,0.6) -- (1.3,0.6);
+\end{tikzpicture}
+\par\smallskip\legende{Un fil de cuivre plongé dans une solution de nitrate d'argent se couvre d'aiguilles d'argent : c'est l'« arbre de Diane ».}

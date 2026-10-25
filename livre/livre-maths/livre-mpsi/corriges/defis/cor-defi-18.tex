@@ -1,0 +1,68 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 18 — vérifié par verifications/defis_16_20.py.
+
+\begin{blocLivre}{cor-18-25a}
+\begin{corrige}{25}{Séries de Fourier et inégalité de Bessel}
+\demarche{Linéariser pour l'orthonormalité ; projeter sur une base
+orthonormée ; Bessel et Pythagore traduisent la géométrie en une inégalité
+sur $\sum 1/k^{2}$.}
+\partieExo{A}{Une famille orthonormée}
+\begin{questions}
+  \item Bilinéaire, symétrique, positif ; défini car $\int_{-\pi}^{\pi}f^{2}=0$
+    impose $f=0$ pour $f$ continue (chapitre 15) : \res{\text{produit
+    scalaire}}.
+  \item $\cos kx\cos lx=\frac12\bigl(\cos(k-l)x+\cos(k+l)x\bigr)$ et
+    $\int_{-\pi}^{\pi}\cos mx\,\mathrm{d}x=0$ pour $m\neq0$ ($2\pi$ pour
+    $m=0$) : $\langle c_k,c_l\rangle=\delta_{kl}$ ($k,l\geqslant1$). De même
+    $\sin kx\sin lx=\frac12\bigl(\cos(k-l)x-\cos(k+l)x\bigr)$ donne
+    $\langle s_k,s_l\rangle=\delta_{kl}$ ; $\cos kx\sin lx$ est impaire,
+    d'intégrale nulle ; enfin $\langle c_0,c_0\rangle=\frac1\pi\cdot\frac12\cdot2\pi=1$
+    et $\langle c_0,c_k\rangle=\langle c_0,s_k\rangle=0$. La famille est
+    \res{\text{orthonormée}}.
+  \item En base orthonormée, $p_{T_n}(f)=\sum_e\langle f,e\rangle e$. Le
+    terme constant vaut $\langle f,c_0\rangle c_0=\frac12\cdot\frac1\pi\int f=\frac{a_0}{2}$,
+    et les autres $\langle f,c_k\rangle c_k=a_k\cos kx$,
+    $\langle f,s_k\rangle s_k=b_k\sin kx$ : c'est $\res{S_n(f)}$.
+\end{questions}
+\partieExo{B}{Le cas de $f(x)=x$}
+\begin{questions}[resume]
+  \item $x\cos kx$ est impaire : $a_k=0$. Par parité puis intégration par
+    parties,
+    $b_k=\frac2\pi\int_0^{\pi}x\sin kx\,\mathrm{d}x
+    =\frac2\pi\Bigl(\Bigl[-\frac{x\cos kx}{k}\Bigr]_0^{\pi}+\int_0^{\pi}\frac{\cos kx}{k}\,\mathrm{d}x\Bigr)
+    =\frac2\pi\cdot\frac{-\pi(-1)^{k}}{k}=\res{\frac{2(-1)^{k+1}}{k}}$.
+  \item $\norme f^{2}=\frac1\pi\int_{-\pi}^{\pi}x^{2}\,\mathrm{d}x=\frac{2\pi^{2}}{3}$.
+    Bessel : $\sum_{k=1}^{n}b_k^{2}=\sum_{k=1}^{n}\frac4{k^{2}}\leqslant\frac{2\pi^{2}}3$,
+    soit $\res{\sum_{k=1}^{n}\frac1{k^{2}}\leqslant\frac{\pi^{2}}6}$. Les
+    sommes partielles, croissantes, sont majorées : la série converge et
+    $\zeta(2)\leqslant\frac{\pi^{2}}6$.
+  \item Pythagore : $\norme f^{2}=\norme{S_n(f)}^{2}+d(f,T_n)^{2}$, d'où
+    $d(f,T_n)^{2}=\frac{2\pi^{2}}3-4\sum_{k\leqslant n}\frac1{k^{2}}$. Si
+    $d(f,T_n)\to0$, alors $4\zeta(2)=\frac{2\pi^{2}}3$ :
+    $\res{\zeta(2)=\frac{\pi^{2}}{6}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Convergence ponctuelle et phénomène de Gibbs}
+\begin{questions}[start=7]
+  \item $\sin\frac{k\pi}2$ est nul pour $k$ pair et vaut $(-1)^{j}$ pour
+    $k=2j+1$ ; comme $(-1)^{k+1}=1$ pour $k$ impair :
+    $S_n(f)\bigl(\frac\pi2\bigr)=2\sum_j\frac{(-1)^{j}}{2j+1}$. Si cette
+    quantité tend vers $\frac\pi2$ :
+    $\res{1-\tfrac13+\tfrac15-\tfrac17+\cdots=\tfrac\pi4}$ — la série de
+    Leibniz, retrouvée par Fourier.
+  \item $\sin k\pi=0$ : $S_n(f)(\pi)=0$ pour tout $n$, moyenne des « valeurs
+    au bord » $\pi$ et $-\pi$ du prolongement $2\pi$-périodique de $f$, qui
+    saute de $2\pi$. Près de $\pi$, $S_n(f)$ dépasse $f$ d'environ
+    $0{,}56$, soit $9\,\%$ du saut : c'est le \emph{phénomène de Gibbs}. Il
+    n'y a pas de contradiction : $d(f,T_n)$ mesure un écart \emph{moyen}
+    (quadratique) ; la zone où $S_n(f)$ s'écarte de $f$ a une largeur de
+    l'ordre de $\frac1n$, donc un poids qui tend vers $0$, même si l'écart
+    maximal, lui, ne tend pas vers $0$. Convergence en moyenne
+    quadratique ne signifie pas convergence uniforme.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

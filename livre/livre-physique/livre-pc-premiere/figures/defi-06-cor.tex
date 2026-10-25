@@ -1,0 +1,19 @@
+% Somme des vecteurs de polarisation des deux liaisons O-H de la molécule d'eau (corrigé du défi D06)
+\begin{tikzpicture}[x=1.6cm,y=1.6cm,
+  atome/.style={circle,minimum size=7.5mm,inner sep=0pt,font=\otSemi\fontsize{9}{10}\selectfont},
+  vec/.style={line width=1.3pt,-{Stealth[length=3mm]}}]
+\coordinate (O) at (0,0); \coordinate (H1) at (-1.186,-0.918); \coordinate (H2) at (1.186,-0.918);
+\draw[otInk!70,line width=1.1pt] (H1) -- (O) -- (H2);
+\draw[otOrange!85!black,line width=0.7pt] ($(O)!0.42!(H1)$) arc[start angle=217.75,end angle=322.25,radius=0.63];
+\node[pcLegende,text=otOrange!75!black,anchor=north,fill=white,inner sep=1pt] at (0,-0.98) {\qty{104,5}{\degree}};
+\draw[vec,otNavy] ([shift={(-0.2,0.26)}]H1) -- ([shift={(-0.2,0.26)}]O) node[midway,above left,pcLegende,text=otNavy] {$\vec p_1$};
+\draw[vec,otNavy] ([shift={(0.2,0.26)}]H2) -- ([shift={(0.2,0.26)}]O) node[midway,above right,pcLegende,text=otNavy] {$\vec p_2$};
+\draw[vec,otNavy!40,dash pattern=on 3pt off 2pt] (O) -- ++(1.186,0.918);
+\draw[vec,otNavy!40,dash pattern=on 3pt off 2pt] (1.186,0.918) -- ++(-1.186,0.918);
+\draw[vec,otGreenDark,line width=1.6pt] (O) -- (0,1.836);
+\node[pcLegende,text=otGreenDark,anchor=east,align=right] at (-0.12,1.45) {$\vec p=\vec p_1+\vec p_2$\\[1mm]$p=2\,p_1\cos\left(\dfrac{\qty{104,5}{\degree}}{2}\right)\approx\qty{1,85}{D}$};
+\draw[otMuted,line width=0.5pt,dash pattern=on 1.5pt off 1.5pt] (0,0) -- (0,-0.92);
+\node[atome,fill=otRed!85,text=white] at (O) {O}; \node[atome,fill=white,draw=otInk!55,minimum size=6mm] at (H1) {H};
+\node[atome,fill=white,draw=otInk!55,minimum size=6mm] at (H2) {H};
+\end{tikzpicture}
+\par\smallskip\legende{Les deux vecteurs de même norme $p_1=\qty{1,51}{D}$ s'additionnent selon la règle du parallélogramme : leur somme est portée par la bissectrice de l'angle.}

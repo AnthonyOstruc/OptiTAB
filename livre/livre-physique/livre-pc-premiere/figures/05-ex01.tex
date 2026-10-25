@@ -1,0 +1,19 @@
+% Montage de titrage à légender (exercice 1, chapitre 5)
+\begin{tikzpicture}[x=1cm,y=1cm,scale=0.8,every node/.style={transform shape=false}]
+\pic at (0,0) {potence={hauteur=8.2}};
+\pic at (0,0.16) {agitateur={largeur=2.4}};
+\filldraw[fill=white,draw=otInk!45,line width=0.4pt] (-1.1,0.66) rectangle (1.1,0.71);
+\pic at (0,0.71) {erlen={niveau=0.75,liquide=yellow!25!orange!20}};
+\pic at (-0.2,0.77) {barreau};
+\pic at (0,2.95) {burette={hauteur=5.0,niveau=4.3,liquide=pcEau}};
+\pic at (0,7.6) {pince};
+\foreach \n/\a/\b in {1/{(0.14,6.6)}/{(1.3,6.9)},2/{(0.45,3.67)}/{(1.3,4.3)},3/{(0.55,1.2)}/{(1.5,2.3)},
+  4/{(-0.2,0.85)}/{(-1.6,2.0)},5/{(-1.0,0.4)}/{(-1.7,0.9)}}{
+  \draw[pcRepere] \a -- \b; \node at \b {\otRond{\n}};}
+\solution{
+  \node[pcLegende,anchor=west,text=otGreenDark] at (1.55,6.9) {burette graduée (réactif titrant)};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (1.55,4.3) {robinet};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (1.75,2.3) {erlenmeyer (solution titrée)};
+  \node[pcLegende,anchor=east,text=otGreenDark] at (-1.85,2.0) {barreau aimanté};
+  \node[pcLegende,anchor=east,text=otGreenDark] at (-1.95,0.9) {agitateur magnétique};}
+\end{tikzpicture}

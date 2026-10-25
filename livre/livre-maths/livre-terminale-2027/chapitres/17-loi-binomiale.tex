@@ -1,0 +1,308 @@
+% !TEX root = ../main.tex
+%% Chapitre 17 — Loi binomiale
+%% Sources : frontend/cours/resume/terminal/resume_loi_binomiale_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_loi_binomiale.txt
+%% Exercice 3, question 5 : remplacée (elle reprenait la question 2).
+%% Exercices 12, 13 et 14 : problèmes inédits rédigés pour le livre.
+
+\begin{ouverture}[binomiale]{17}{Loi binomiale}{Partie 3 · Probabilités}
+  {Épreuve de Bernoulli\enspace·\enspace Schéma de Bernoulli\enspace·\enspace Coefficients binomiaux\enspace·\enspace
+   Espérance\enspace·\enspace Fluctuation}
+  \objectif{Reconnaître une situation modélisée par une loi binomiale et la justifier.}
+  \objectif{Calculer $P(X=k)$, $P(X\leq k)$, $P(X\geq k)$ et $P(a\leq X\leq b)$.}
+  \objectif{Calculer et interpréter l'espérance, la variance et l'écart-type d'une loi binomiale.}
+  \objectif{Déterminer un seuil ou un intervalle à l'aide de la calculatrice ou d'un programme Python.}
+  \objectif{Utiliser un intervalle de fluctuation pour prendre une décision.}
+  \prerequis{Variables aléatoires, espérance et variance ; répétition de $n\leq4$ épreuves de Bernoulli (Première).}
+  \prerequis{Coefficients binomiaux (chapitre 15) ; indépendance (chapitre 16).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Épreuve et loi de Bernoulli}
+
+\begin{definition}[Épreuve de Bernoulli]
+Une \textbf{épreuve de Bernoulli} est une expérience aléatoire à deux issues : le \emph{succès} $S$, de probabilité $p$, et
+l'\emph{échec} $\overline S$, de probabilité $1-p$. La variable $X$ qui vaut $1$ en cas de succès et $0$ sinon suit la
+\textbf{loi de Bernoulli} de paramètre $p$ :\qquad $E(X)=p$\qquad et\qquad $V(X)=p(1-p)$.
+\end{definition}
+
+\essSection{2}{Loi binomiale}
+
+\begin{definition}[Schéma de Bernoulli et loi binomiale]
+Un \textbf{schéma de Bernoulli} de paramètres $n$ et $p$ est la répétition de $n$ épreuves de Bernoulli \textbf{identiques et
+indépendantes} de paramètre $p$. La variable $X$ égale au nombre de succès suit la \textbf{loi binomiale} $\mathcal{B}(n\pv p)$.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Probabilités]
+\raggedright
+Si $X$ suit la loi $\mathcal{B}(n\pv p)$, pour tout entier $k$ compris entre $0$ et $n$ :
+\[ P(X=k)=\binom nk\,p^{k}\,(1-p)^{n-k}. \]
+\end{theoreme}
+\begin{demonstration}
+\raggedright
+Un chemin de l'arbre qui comporte $k$ succès et $n-k$ échecs a pour probabilité $p^{k}(1-p)^{n-k}$, par indépendance. Un tel
+chemin est déterminé par le choix des $k$ épreuves réussies parmi les $n$ : il y en a $\binom nk$.
+\end{demonstration}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[otArbre, level distance=15mm, level 1/.style={sibling distance=20mm},
+  level 2/.style={sibling distance=10mm}, level 3/.style={sibling distance=5mm},
+  every node/.style={font=\scriptsize}]
+  \node {}
+    child {node {$S$}
+      child {node {$S$} child {node (a) {$S$}} child {node (b) {$\overline S$}}}
+      child {node {$\overline S$} child {node (c) {$S$}} child {node (d) {$\overline S$}}}}
+    child {node {$\overline S$}
+      child {node {$S$} child {node (e) {$S$}} child {node (f) {$\overline S$}}}
+      child {node {$\overline S$} child {node (g) {$S$}} child {node (h) {$\overline S$}}}};
+  \foreach \nd/\kk in {a/3,b/2,c/2,d/1,e/2,f/1,g/1,h/0}{%
+    \node[otFeuille] at ([xshift=1mm]\nd.east) {$k=\kk$};}
+\end{tikzpicture}\\[0.5mm]
+\legende{$n=3$ : $\binom32=3$ chemins comportent $2$ succès.}
+\end{minipage}
+
+\essSection{3}{Espérance, variance et allure de la loi}
+
+\noindent
+\begin{minipage}[c]{0.46\linewidth}
+\begin{theoreme}[Espérance et variance]
+\raggedright
+Si $X$ suit la loi $\mathcal{B}(n\pv p)$ :\\[1.5mm]
+{\centering $E(X)=np$\qquad $V(X)=np(1-p)$\\[1mm] $\sigma(X)=\sqrt{np(1-p)}$\par}\vspace{1.5mm}
+\emph{Démonstration au chapitre 18 : $X$ est la somme de $n$ variables de Bernoulli indépendantes.}
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=76mm, height=44mm, ybar, bar width=1.7mm, xmin=-0.8, xmax=15.8, ymin=0, ymax=0.22,
+  xtick={0,2,...,14}, ytick={0.1,0.2}, yticklabels={$0{,}1$,$0{,}2$}, xlabel={$k$},
+  xlabel style={at={(1,0)},anchor=west}, grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[fill=otNavySoft,draw=otNavy,line width=0.4pt] coordinates {(0,0.0008) (1,0.0068) (2,0.0278) (3,0.0716) (4,0.1304)
+    (5,0.1789) (6,0.1916) (7,0.1643) (8,0.1144) (9,0.0654) (10,0.0308) (11,0.0120) (12,0.0039) (13,0.0010) (14,0.0002) (15,0)};
+  \draw[otGreen,dashed,line width=0.7pt] (axis cs:6,0) -- (axis cs:6,0.215);
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Loi $\mathcal{B}(20\pv0{,}3)$ : les valeurs se concentrent autour de $E(X)=6$.}
+\end{minipage}
+
+\essSection{4}{Calculer avec la loi binomiale}
+
+\begin{savoirfaire}[Justifier une loi binomiale]
+On écrit : « On répète $n$ fois, de façon identique et indépendante, une épreuve à deux issues ; le succès « … » a pour
+probabilité $p$. La variable $X$ compte le nombre de succès, donc $X$ suit la loi $\mathcal{B}(n\pv p)$. » Un tirage sans remise
+dans une \textbf{grande} population est assimilé à un tirage avec remise.
+\end{savoirfaire}
+
+\begin{savoirfaire}[Probabilités cumulées]
+La calculatrice donne $P(X=k)$ et $P(X\leq k)$. On en déduit $P(X\geq k)=1-P(X\leq k-1)$ et
+$P(a\leq X\leq b)=P(X\leq b)-P(X\leq a-1)$. Pour un seuil du type « au moins un succès », on résout $1-(1-p)^{n}\geq c$ à l'aide du
+logarithme. En Python, les fonctions ci-dessous calculent $P(X=k)$ et $P(X\leq k)$ :
+\end{savoirfaire}
+\begin{python}
+from math import comb
+
+def P(n, p, k):     # probabilité P(X = k)
+    return comb(n, k) * p**k * (1-p)**(n-k)
+
+def F(n, p, k):     # probabilité cumulée P(X <= k)
+    return sum(P(n, p, i) for i in range(k+1))
+\end{python}
+
+\begin{savoirfaire}[Intervalle de fluctuation]
+Pour $X$ de loi $\mathcal{B}(n\pv p)$, on cherche le plus petit entier $a$ tel que $P(X\leq a)>0{,}025$ et le plus petit entier $b$
+tel que $P(X\leq b)\geq0{,}975$ : alors $P(a\leq X\leq b)\geq0{,}95$. Si la valeur observée n'est pas dans $\intFF ab$, on rejette
+l'hypothèse « $p$ est la bonne probabilité », avec un risque d'erreur inférieur à 5\,\%.
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item « Au moins $k$ » : $X\geq k$ ; « au plus $k$ » : $X\leq k$ ; « plus de $k$ » : $X>k$, soit $X\geq k+1$.
+  \item $P(X\geq k)=1-P(X\leq k-1)$, et non $1-P(X\leq k)$.
+  \item Sans indépendance des épreuves (tirages sans remise dans une petite urne), la loi n'est pas binomiale.
+  \item L'espérance $np$ n'est pas forcément un entier : c'est une moyenne sur un grand nombre de répétitions.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Un jeu de cartes}
+Un jeu de société contient $20$ cartes : $12$ bleues et $8$ rouges. On tire successivement $5$ cartes avec remise et l'on note $X$
+le nombre de cartes bleues obtenues.
+\begin{questions}
+  \item Justifier que $X$ suit une loi binomiale dont on précisera les paramètres.
+  \item Calculer $P(X=3)$, puis $P(X\leq2)$ et $P(X\geq4)$.
+  \item Calculer l'espérance, la variance et l'écart-type de $X$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Tests de logiciels}
+Un développeur teste un algorithme sur $14$ jeux de données. Chaque jeu de données passe tous les tests avec la probabilité
+$0{,}6$, indépendamment des autres. On note $X$ le nombre de jeux de données réussis.
+\begin{questions}
+  \item Donner la loi de $X$.
+  \item Calculer $P(X=9)$ et $P(X\geq7)$.
+  \item Calculer $E(X)$ et $\sigma(X)$.
+  \item Chaque jeu de données réussi rapporte une prime de $100$\,€. Quel est le montant moyen de la prime ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Un sondage}
+Dans une ville de $5\,000$ habitants, 35\,\% des électeurs ont l'intention de voter pour un candidat. On interroge $25$ habitants
+au hasard ; on assimile ce choix à un tirage avec remise. On note $X$ le nombre de réponses favorables.
+\begin{questions}
+  \item Justifier que $X$ suit une loi binomiale et donner ses paramètres.
+  \item Calculer $P(X\geq10)$ et $P(X=8)$.
+  \item Quel est le nombre moyen de réponses favorables ?
+  \item Déterminer le plus petit entier $k$ tel que $P(X\leq k)\geq0{,}95$. Interpréter.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Efficacité d'un traitement}
+Un médicament contre la migraine est efficace dans 75\,\% des cas. Un médecin traite $12$ patients, dont les réactions sont
+indépendantes. On note $X$ le nombre de patients guéris.
+\begin{questions}
+  \item Donner la loi de $X$, puis calculer $P(X=10)$ et $P(X\geq8)$.
+  \item Quel est le nombre moyen de patients guéris ?
+  \item Chaque traitement coûte $150$\,€. Quel est, en moyenne, le coût du traitement par patient guéri ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Génétique des pois}
+On croise des pois hybrides. Chaque descendant a, indépendamment des autres, une chance sur deux d'avoir une gousse lisse. On
+observe $16$ descendants et l'on note $X$ le nombre de gousses lisses.
+\begin{questions}
+  \item Donner la loi de $X$, puis calculer $P(X=9)$ et $P(X>10)$.
+  \item Calculer $E(X)$, $V(X)$ et $\sigma(X)$, et interpréter $E(X)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Satisfaction de la clientèle}
+Une entreprise de vente en ligne a un taux de satisfaction de 82\,\%. Un commercial contacte $20$ clients au hasard ; on note $X$
+le nombre de clients satisfaits.
+\begin{questions}
+  \item Donner la loi de $X$, puis calculer $P(X=16)$ et $P(X\geq18)$.
+  \item Calculer l'écart-type de $X$.
+  \item Chaque client satisfait rapporte $200$\,€ de chiffre d'affaires. Quel est le chiffre d'affaires moyen ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Contrôle de qualité}
+On contrôle $15$ produits ; chacun est défectueux avec la probabilité $0{,}1$, indépendamment des autres. On note $X$ le nombre
+de produits défectueux.
+\begin{questions}
+  \item Calculer $P(X=2)$, $P(X\leq1)$ et $P(X\geq3)$.
+  \item Calculer l'espérance et l'écart-type de $X$.
+  \item Le remplacement d'un produit défectueux coûte $50$\,€. Quel est le coût moyen de remplacement ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Tests de résistance}
+Un composant électronique présente un défaut avec la probabilité $0{,}08$. On teste un lot de $30$ composants, indépendants les uns
+des autres, et l'on note $X$ le nombre de composants défectueux.
+\begin{questions}
+  \item Donner la loi de $X$, puis calculer $P(X\leq2)$ et $P(3\leq X\leq5)$.
+  \item Calculer l'écart-type de $X$.
+  \item Le remplacement d'un composant défectueux coûte $25$\,€. Quel est le coût moyen pour le lot ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Contrôle d'alcoolémie}
+Lors d'un contrôle routier, 15\,\% des conducteurs dépassent le taux d'alcoolémie autorisé. On contrôle $40$ conducteurs choisis
+au hasard ; on note $X$ le nombre de conducteurs en infraction.
+\begin{questions}
+  \item Donner la loi de $X$, puis calculer $P(X=6)$ et $P(X\leq4)$.
+  \item Calculer la variance et l'écart-type de $X$.
+  \item Chaque infraction coûte une amende de $135$\,€. Quel est le montant moyen des amendes ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Recyclage des déchets}
+Dans une ville, 25\,\% des ménages trient correctement leurs déchets. On contrôle $35$ ménages choisis au hasard ; on note $X$ le
+nombre de ménages qui trient correctement. Chacun d'eux fait économiser $200$\,€ à la collectivité.
+\begin{questions}
+  \item Donner la loi de $X$, puis calculer $P(X=10)$ et $P(6\leq X\leq12)$.
+  \item Calculer la variance et l'écart-type de $X$.
+  \item Une campagne de sensibilisation coûte $5\,000$\,€ et ferait passer le taux de tri de 25\,\% à 30\,\%. Calculer l'économie
+    moyenne supplémentaire réalisée sur ces $35$ ménages. La campagne est-elle rentable à cette échelle ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une campagne téléphonique}
+Lors d'une campagne de démarchage, 15\,\% des personnes contactées acceptent un rendez-vous. Un employé passe $30$ appels par jour,
+et l'on note $X$ le nombre de rendez-vous obtenus.
+\begin{questions}
+  \item Justifier que $X$ suit une loi binomiale dont on précisera les paramètres.
+  \item Calculer la probabilité que l'employé obtienne exactement $5$ rendez-vous, puis au moins un rendez-vous.
+  \item Calculer l'espérance et l'écart-type de $X$.
+  \item Un autre employé contacte $n$ personnes. Déterminer le plus petit entier $n$ tel que la probabilité d'obtenir au moins
+    un rendez-vous soit supérieure à $0{,}95$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Répondre au hasard à un QCM}
+Un QCM comporte $20$ questions indépendantes ; chacune propose $4$ réponses, dont une seule est juste. Un élève répond au hasard à
+toutes les questions ; on note $X$ le nombre de bonnes réponses.
+\begin{questions}
+  \item Donner la loi de $X$ et son espérance.
+  \item Calculer $P(X=5)$ et $P(X\geq10)$. Que représente cette dernière probabilité ?
+  \item Le barème attribue $1$ point par bonne réponse et retire $\frac13$ de point par mauvaise réponse. Exprimer la note $N$ en
+    fonction de $X$, puis calculer $E(N)$. Pourquoi ce barème ?
+  \item Calculer la probabilité que l'élève obtienne une note au moins égale à $5$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La surréservation des vols}
+Un avion compte $200$ places. Chaque passager ayant acheté un billet se présente à l'embarquement avec la probabilité $0{,}95$,
+indépendamment des autres. La compagnie vend $N$ billets, avec $N\geq200$ ; on note $X$ le nombre de passagers qui se présentent.
+\begin{questions}
+  \item On suppose $N=200$. Donner la loi de $X$ et son espérance, puis calculer $P(X=200)$. Interpréter.
+  \item La compagnie vend $N=205$ billets. Quelle est la probabilité qu'au moins un passager ne puisse pas embarquer ?
+  \item La compagnie accepte ce risque s'il ne dépasse pas 5\,\%. Que fait le programme ci-dessous ? Il affiche $205$ : interpréter.
+\begin{python}
+from math import comb
+
+def risque(N):
+    s = 0
+    for k in range(201, N + 1):
+        s = s + comb(N, k) * 0.95**k * 0.05**(N - k)
+    return s
+
+N = 200
+while risque(N + 1) <= 0.05:
+    N = N + 1
+print(N)
+\end{python}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une pièce est-elle équilibrée ?}
+Pour savoir si une pièce est équilibrée, on la lance $100$ fois et l'on note $X$ le nombre de piles. Si la pièce est équilibrée,
+$X$ suit la loi $\mathcal{B}(100\pv0{,}5)$. On donne : $P(X\leq39)\approx0{,}017\,6$, $P(X\leq40)\approx0{,}028\,4$,
+$P(X\leq59)\approx0{,}971\,6$ et $P(X\leq60)\approx0{,}982\,4$.
+\begin{questions}
+  \item Calculer $E(X)$ et $\sigma(X)$.
+  \item Déterminer le plus petit entier $a$ tel que $P(X\leq a)>0{,}025$ et le plus petit entier $b$ tel que $P(X\leq b)\geq0{,}975$.
+    Calculer $P(a\leq X\leq b)$.
+  \item On décide : « si $X\in\intFF ab$, la pièce est considérée comme équilibrée ; sinon, comme truquée ». Quelle est la
+    probabilité de déclarer truquée une pièce équilibrée ?
+  \item On obtient $65$ piles. Que conclure ? Et avec $58$ piles ?
+  \item Avec $400$ lancers, la même méthode donne l'intervalle $\intFF{180}{220}$. Comparer les intervalles de fréquences
+    obtenus pour $100$ et pour $400$ lancers. Commenter.
+\end{questions}
+\end{exercice}

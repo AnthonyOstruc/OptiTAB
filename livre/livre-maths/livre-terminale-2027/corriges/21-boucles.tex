@@ -1,0 +1,394 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 21 — Boucles
+%% Tous les programmes ont été exécutés (Python 3) : les affichages reproduits sont exacts.
+
+\corrigesChapitre{21}{Boucles}
+\corrigesSouples
+
+\begin{corrige}{1}{Boucle \code{for} et \code{range}}
+\begin{questions}
+  \item On parcourt les entiers de $2$ à $20$ avec un pas de $2$ ; la borne $21$ est exclue.
+\begin{codecote}[0.44]
+\begin{pythoncol}
+for i in range(2, 21, 2):
+    print(i, end=" ")
+\end{pythoncol}
+\cote
+\begin{consolecol}
+2 4 6 8 10 12 14 16 18 20
+\end{consolecol}
+\end{codecote}
+  \item On ajoute chaque entier à un accumulateur initialisé à $0$.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+somme = 0
+for i in range(1, 16):
+    somme = somme + i
+print("La somme est :", somme)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+La somme est : 120
+\end{consolecol}
+
+\medskip
+On retrouve $\frac{15\times16}{2}=\res{120}$.
+\end{codecote}
+  \item \code{range(3, 12, 4)} produit $\res{3,\ 7,\ 11}$ ; \code{range(5, 0, -1)} produit $\res{5,\ 4,\ 3,\ 2,\ 1}$ (la borne $0$ est exclue).
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Accumulateurs}
+\begin{questions}
+  \item L'accumulateur reçoit successivement les carrés de $1$ à $5$.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+s = 0
+for i in range(1, 6):
+    s = s + i**2
+print("Somme des carrés :", s)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+Somme des carrés : 55
+\end{consolecol}
+
+\medskip
+$1+4+9+16+25=\res{55}$.
+\end{codecote}
+  \item La variable \code{i} prend les valeurs de $1$ à $10$.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+for i in range(1, 11):
+    print("7 ×", i, "=", 7 * i)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+7 × 1 = 7
+7 × 2 = 14
+...
+7 × 10 = 70
+\end{consolecol}
+\end{codecote}
+  \item Les facteurs sont les entiers impairs de $1$ à $9$ : \code{range(1, 10, 2)}.
+\begin{codecote}[0.44]
+\begin{pythoncol}
+p = 1
+for k in range(1, 10, 2):
+    p = p * k
+print(p)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+945
+\end{consolecol}
+
+\medskip
+L'accumulateur d'un produit s'initialise à $\res{1}$ : avec $0$, le produit resterait nul.
+\end{codecote}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Boucle \code{while}}
+\begin{questions}
+  \item Le compteur est augmenté à chaque tour ; la boucle s'arrête quand il dépasse $5$.
+\begin{codecote}[0.44]
+\begin{pythoncol}
+compteur = 1
+while compteur <= 5:
+    print(compteur, end=" ")
+    compteur = compteur + 1
+\end{pythoncol}
+\cote
+\begin{consolecol}
+1 2 3 4 5
+\end{consolecol}
+\end{codecote}
+  \item On multiplie l'accumulateur par $1$, $2$, $3$ puis $4$.
+\begin{codecote}[0.44]
+\begin{pythoncol}
+n = 4
+f = 1
+i = 1
+while i <= n:
+    f = f * i
+    i = i + 1
+print(n, "! =", f)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+4 ! = 24
+\end{consolecol}
+\end{codecote}
+  \item Le programme affiche \resc{14 105}. À chaque tour, on ajoute l'entier suivant à \code{s} : la boucle s'arrête dès que
+    $1+2+\dots+n\geq100$. Ainsi $\res{n=14}$ est le plus petit entier tel que $1+2+\dots+n\geq100$ : en effet $1+2+\dots+13=91$ et
+    $1+2+\dots+14=105$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Les instructions \code{break} et \code{continue}}
+\begin{questions}
+  \item Les deux programmes affichent :
+\begin{codecote}[0.58]
+\begin{consolecol}
+Premier nombre > 10 : 11
+\end{consolecol}
+\cote
+\begin{consolecol}
+1 2 4 5 7 8 10
+\end{consolecol}
+\end{codecote}
+    Dans le premier, \code{break} interrompt la boucle dès que \code{i} vaut $11$. Dans le second, \code{continue} fait passer au tour
+    suivant sans afficher les multiples de $3$ : $3$, $6$ et $9$.
+  \item La condition de la boucle \code{while} joue le rôle du test d'arrêt.
+\begin{codecote}[0.52]
+\begin{pythoncol}
+i = 1
+while i <= 10:
+    i = i + 1
+print("Premier nombre > 10 :", i)
+\end{pythoncol}
+\cote
+La boucle s'arrête quand \code{i <= 10} devient faux, c'est-à-dire pour \code{i = 11} : l'affichage est le même.
+\end{codecote}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Boucles imbriquées}
+\begin{questions}
+  \item Pour chaque valeur de \code{i}, la boucle intérieure affiche une ligne complète.
+\begin{codecote}[0.48]
+\begin{pythoncol}
+for i in range(1, 4):
+    for j in range(1, 6):
+        print(i * j, end=" ")
+    print()
+\end{pythoncol}
+\cote
+\begin{consolecol}
+1 2 3 4 5
+2 4 6 8 10
+3 6 9 12 15
+\end{consolecol}
+\end{codecote}
+  \item La variable \code{ligne} prend les valeurs $3$, $2$ puis $1$, et chaque ligne affiche les entiers de $1$ à \code{ligne}.
+\begin{console}
+1 2 3
+1 2
+1
+\end{console}
+  \item L'instruction est exécutée $3\times5=\res{15}$ fois ; dans le cas général, $\res{n\times p}$ fois.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Suivre un programme : tableau d'état}
+\begin{questions}
+  \item On lit les valeurs à la fin de chaque tour.
+\begin{codecote}[0.62]
+{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccccc@{}}
+\toprule
+\otTete{Tour} & \otTete{départ} & \code{k=0} & \code{k=1} & \code{k=2} & \code{k=3} & \code{k=4} \\
+\midrule
+\code{a} & $1$ & $1$ & $2$ & $3$ & $5$ & $8$ \\
+\code{b} & $1$ & $2$ & $3$ & $5$ & $8$ & $13$ \\
+\bottomrule
+\end{tabular*}}
+\cote
+Le programme affiche \resc{8 13}. Chaque nouveau terme est la somme des deux précédents : c'est la $\res{\text{suite de Fibonacci}}$
+$1$, $1$, $2$, $3$, $5$, $8$, $13$…
+\end{codecote}
+  \item À chaque tour, \code{a} reçoit \code{b} et \code{b} reçoit le reste de la division de \code{a} par \code{b}.
+\begin{codecote}[0.48]
+{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}YYY@{}}
+\toprule
+\otTete{Tour} & \code{a} & \code{b} \\
+\midrule
+départ & $84$ & $36$ \\
+1 & $36$ & $12$ \\
+2 & $12$ & $0$ \\
+\bottomrule
+\end{tabularx}}
+\cote
+{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}YYY@{}}
+\toprule
+\otTete{Tour} & \code{a} & \code{b} \\
+\midrule
+départ & $1\,071$ & $462$ \\
+1 & $462$ & $147$ \\
+2 & $147$ & $21$ \\
+3 & $21$ & $0$ \\
+\bottomrule
+\end{tabularx}}
+\end{codecote}
+    Les appels renvoient $\res{12}$ et $\res{21}$ : la fonction renvoie le \textbf{PGCD} des deux nombres. Par exemple
+    $84=2^{2}\times3\times7$ et $36=2^{2}\times3^{2}$ ont pour PGCD $2^{2}\times3=12$.
+  \item À chaque tour, la nouvelle valeur de \code{b} est un reste de division par \code{b} : elle est strictement inférieure à
+    l'ancienne. Une suite d'entiers naturels strictement décroissante ne peut pas être infinie : \code{b} finit par valoir $0$ et la
+    boucle s'arrête.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{Algorithmes de seuil et suites}
+\partieExo{A}{Une suite arithmético-géométrique}
+\begin{questions}
+  \item $u_1=0{,}8\times2+3=\res{4{,}6}$ et $u_2=0{,}8\times4{,}6+3=\res{6{,}68}$.
+  \item Comme $0<0{,}8<1$, on a $0{,}8^{n+1}<0{,}8^{n}$, donc $-13\times0{,}8^{n+1}>-13\times0{,}8^{n}$ et $u_{n+1}>u_n$ : la suite est
+    $\res{\text{croissante}}$. De plus $\lim\limits_{n\to+\infty}0{,}8^{n}=0$, donc $\lim\limits_{n\to+\infty}u_n=\res{15}$.
+  \item On calcule les termes tant que le seuil n'est pas dépassé.
+\begin{codecote}[0.42]
+\begin{pythoncol}
+u = 2
+n = 0
+while u <= 14.9:
+    u = 0.8 * u + 3
+    n = n + 1
+print(n)
+\end{pythoncol}
+
+\smallskip
+\begin{consolecol}
+22
+\end{consolecol}
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=78mm, height=44mm, xmin=0, xmax=26, ymin=0, ymax=17,
+  xtick={0,5,...,25}, ytick={2,15}, xlabel={$n$}, xlabel style={at={(1,0)},anchor=west}]
+  \draw[otGreenDark,dashed,line width=0.6pt] (axis cs:0,15) -- (axis cs:26,15);
+  \addplot[only marks,mark=*,mark size=1.1pt,otNavy,samples at={0,...,25}] {15-13*0.8^x};
+  \addplot[only marks,mark=*,mark size=1.6pt,otOrange] coordinates {(22,14.904)};
+  \node[font=\scriptsize,text=otOrange,anchor=north] at (axis cs:22,13.6) {$u_{22}$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les termes croissent vers $15$ ; $u_{21}\approx14{,}880$ et $u_{22}\approx14{,}904$.}
+\end{codecote}
+  \item $u_n>14{,}9\iff13\times0{,}8^{n}<0{,}1\iff0{,}8^{n}<\frac1{130}\iff n\ln0{,}8<-\ln130$. Comme $\ln0{,}8<0$, cela équivaut à
+    $n>\frac{\ln130}{-\ln0{,}8}\approx21{,}81$ : on retrouve $\res{n=22}$.
+\end{questions}
+\partieExo{B}{Une somme célèbre}
+\begin{questions}[resume]
+  \item On ajoute les termes $\frac1{k^{2}}$ tant que la somme ne dépasse pas $1{,}64$.
+\begin{codecote}[0.42]
+\begin{pythoncol}
+s = 0
+k = 0
+while s <= 1.64:
+    k = k + 1
+    s = s + 1 / k**2
+print(k)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+203
+\end{consolecol}
+
+\medskip
+Le seuil est dépassé pour $\res{k=203}$, avec une somme d'environ $1{,}640\,02$.
+\end{codecote}
+  \item La somme est croissante et tend vers $\frac{\pi^{2}}{6}\approx1{,}644\,9$ : tous ses termes sont inférieurs à cette limite, donc
+    à $1{,}65$. La condition \code{s <= 1.65} reste toujours vraie : le programme ne s'arrêterait $\res{\text{jamais}}$ (boucle infinie).
+    Avant d'écrire un algorithme de seuil, on s'assure que le seuil sera atteint.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{La méthode de dichotomie}
+\begin{questions}
+  \item $f$ est dérivable sur $\intFF{0}{1}$ et $f'(x)=3x^{2}+1>0$ : $f$ est continue et strictement croissante. Comme $f(0)=-1<0$ et
+    $f(1)=1>0$, le corollaire du théorème des valeurs intermédiaires assure l'existence d'une $\res{\text{unique}}$ solution $\alpha$.
+  \item On part de $a=0$ et $b=1$, avec $f(a)=-1$.
+\par\nopagebreak\smallskip
+{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYYcY@{}}
+\toprule
+\otTete{Étape} & \code{m} & \code{f(m)} & \otTete{Signe de \code{f(a) * f(m)}} & \otTete{Nouvel intervalle} \\
+\midrule
+1 & $0{,}5$ & $-0{,}375$ & $+$ & $\intFF{0{,}5}{1}$ \\
+2 & $0{,}75$ & $0{,}171\,875$ & $-$ & $\intFF{0{,}5}{0{,}75}$ \\
+3 & $0{,}625$ & $-0{,}130\,859\,375$ & $+$ & $\intFF{0{,}625}{0{,}75}$ \\
+\bottomrule
+\end{tabularx}}\par\smallskip
+    Si le produit est positif, $f(a)$ et $f(m)$ ont le même signe : la solution est dans la moitié droite, et \code{a} prend la valeur
+    \code{m}.
+  \item Au départ, $f(a)<0<f(b)$. Si $f(a)\times f(m)\leq0$, $f$ change de signe (ou s'annule) sur $\intFF{a}{m}$ : d'après le théorème
+    des valeurs intermédiaires, $\alpha\in\intFF{a}{m}$. Sinon $f(m)<0$ et $\alpha\in\intFF{m}{b}$. La longueur est divisée par $2$ à
+    chaque étape : après $n$ étapes, elle vaut $\res{\frac{1}{2^{n}}}$.
+  \item La boucle s'arrête dès que $\frac1{2^{n}}\leq e$. Pour $e=0{,}001$ : $2^{9}=512<1\,000\leq1\,024=2^{10}$, soit $\res{10}$ étapes.
+    Pour $e=10^{-6}$ : $2^{19}=524\,288<10^{6}\leq2^{20}=1\,048\,576$, soit $\res{20}$ étapes. Chaque étape apporte un chiffre binaire :
+    environ $3{,}3$ étapes par chiffre décimal.
+  \item $\res{0{,}681\,6\leq\alpha\leq0{,}682\,7}$ : $\alpha\approx0{,}682$ à $10^{-3}$ près (en fait $\alpha\approx0{,}682\,328$).
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{9}{Estimer $\pi$ par la méthode de Monte-Carlo}
+\begin{questions}
+  \item \code{k} compte les points tels que $x^{2}+y^{2}\leq1$, c'est-à-dire $OM\leq1$ : les points du quart de disque. La fréquence
+    $\frac kn$ est proche de la probabilité $p=\frac{\pi}{4}$ lorsque $n$ est grand (loi des grands nombres), donc $\frac{4k}{n}$ est
+    une estimation de $\pi$.
+  \item Les nombres produits par \code{random()} changent à chaque exécution : le résultat est une \emph{variable aléatoire}. Les $n$
+    tirages sont indépendants et ont chacun la probabilité $\frac{\pi}{4}$ de « réussir » : $\res{K\sim\mathcal{B}\left(n\pv\tfrac{\pi}{4}\right)}$.
+  \item $|4F-\pi|<0{,}01\iff|F-p|<0{,}002\,5$. On a $E(F)=p$ et $V(F)=\frac{p(1-p)}{n}\leq\frac1{4n}$. L'inégalité de
+    Bienaymé-Tchebychev donne
+    \[P\big(|F-p|\geq0{,}002\,5\big)\leq\frac{V(F)}{0{,}002\,5^{2}}\leq\frac{1}{4n\times0{,}002\,5^{2}}=\frac{40\,000}{n}.\]
+    Cette majoration est inférieure à $0{,}05$ dès que $n\geq\res{800\,000}$. La méthode converge lentement : gagner une décimale
+    oblige à multiplier $n$ par $100$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{10}{Nombres premiers et conjecture de Goldbach}
+\begin{questions}
+  \item Les appels renvoient \resc{False}, \resc{True}, \resc{False} ($9=3\times3$), \resc{False} ($91=7\times13$) et \resc{True}.
+    Pour $97$, on teste $d=2$, $3$, …, $9$, car $10^{2}=100>97$ : $\res{8}$ divisions.
+  \item Si $n\geq2$ n'est pas premier, il s'écrit $n=d\times d'$ avec $2\leq d\leq d'$. Alors $d^{2}\leq d\times d'=n$. Il suffit donc de
+    chercher un diviseur parmi les entiers $d$ tels que $d^{2}\leq n$ : environ $\sqrt n$ tests au lieu de $n$.
+  \item On compte les entiers pour lesquels la fonction renvoie \code{True}.
+\begin{codecote}[0.48]
+\begin{pythoncol}
+compte = 0
+for n in range(1, 101):
+    if est_premier(n):
+        compte = compte + 1
+print(compte)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+25
+\end{consolecol}
+
+\medskip
+Il y a $\res{25}$ nombres premiers inférieurs ou égaux à $100$ (et $168$ jusqu'à $1\,000$).
+\end{codecote}
+  \item Pour chaque nombre pair $n$, on cherche un premier $p\leq\frac n2$ tel que $n-p$ soit aussi premier.
+\begin{python}
+for n in range(4, 101, 2):
+    trouve = False
+    for p in range(2, n // 2 + 1):
+        if est_premier(p) and est_premier(n - p):
+            trouve = True
+            break
+    if not trouve:
+        print("Contre-exemple :", n)
+print("Vérification terminée")
+
+for p in range(2, 51):
+    if est_premier(p) and est_premier(100 - p):
+        print(p, "+", 100 - p)
+\end{python}
+\begin{codecote}[0.4]
+\begin{consolecol}
+Vérification terminée
+3 + 97
+11 + 89
+17 + 83
+29 + 71
+41 + 59
+47 + 53
+\end{consolecol}
+\cote
+Aucun contre-exemple n'est affiché : la conjecture est vérifiée jusqu'à $100$. Le nombre $100$ admet $\res{6}$ décompositions.
+Une vérification, même très étendue, ne constitue pas une démonstration.
+\end{codecote}
+\end{questions}
+\end{corrige}

@@ -1,0 +1,16 @@
+% Spectre d'émission de l'hydrogène et spectre d'absorption correspondant : les raies occupent les mêmes positions (L'essentiel, chapitre 20)
+\begin{tikzpicture}[x=0.3mm,y=1cm]
+% émission
+\fill[black] (400,1.05) rectangle (750,1.65);
+\foreach \l/\c in {410.2/violet!80,434.0/blue!70!violet,486.1/cyan!70!blue,656.3/red}{\draw[\c,line width=1.3pt] (\l,1.05) -- (\l,1.65);}
+\node[pcLegendeG,anchor=south west] at (400,1.65) {Spectre d'émission de l'hydrogène (gaz chaud)};
+% absorption
+\shade[shading=otArcEnCiel] (400,0) rectangle (750,0.6);
+\foreach \l in {410.2,434.0,486.1,656.3}{\draw[black,line width=1.3pt] (\l,0) -- (\l,0.6);}
+\node[pcLegendeG,anchor=south west] at (400,0.6) {Spectre d'absorption : lumière blanche ayant traversé de l'hydrogène};
+\foreach \l in {410.2,434.0,486.1,656.3}{\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (\l,0.6) -- (\l,1.05);}
+% axe
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (400,-0.1) -- (770,-0.1) node[pcLegende,anchor=north west] {$\lambda$ (nm)};
+\foreach \l in {400,450,...,750}{\draw[otInk!70,line width=0.4pt] (\l,-0.1) -- (\l,-0.17) node[pcLegende,anchor=north] {\l};}
+\end{tikzpicture}
+\par\smallskip\legende{Les raies noires du spectre d'absorption sont exactement aux longueurs d'onde des raies brillantes du spectre d'émission (656, 486, 434 et \qty{410}{nm}) : elles signent la présence de l'élément.}

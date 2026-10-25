@@ -1,0 +1,12 @@
+% Dix pesées d'une masse étalon de 50,000 g : décalage systématique bien supérieur à l'incertitude-type (corrigé de l'exercice 14, chapitre 21)
+% abscisse : m - 50 g (en g), pour rester dans les dimensions permises par TeX
+\begin{tikzpicture}[x=2500mm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (-0.005,0) -- (0.05,0) node[pcLegende,anchor=north west] {$m$ (g)};
+\foreach \v/\t in {0.00/{50,00},0.01/{50,01},0.02/{50,02},0.03/{50,03},0.04/{50,04}}{%
+  \draw[otInk!70,line width=0.4pt] (\v,0) -- (\v,-0.08) node[pcLegende,anchor=north] {\t};}
+\foreach \v/\k in {0.02/1,0.02/2,0.03/1,0.03/2,0.03/3,0.03/4,0.03/5,0.03/6,0.04/1,0.04/2}{\fill[otNavy,opacity=0.8] (\v,{0.14+0.17*\k}) circle (1.6pt);}
+\draw[otGreenDark,line width=0.9pt,dash pattern=on 3pt off 2pt] (0,0) -- (0,1.5) node[pcLegende,anchor=south,text=otGreenDark] {étalon : \qty{50,000}{g}};
+\draw[otRed!85!black,line width=0.8pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (0,1.45) -- (0.03,1.45)
+  node[midway,pcLegende,anchor=south,text=otRed!85!black,fill=white,inner sep=1pt] {écart \qty{0,030}{g} $\approx 15\,u$};
+\end{tikzpicture}
+\par\smallskip\legende{Toutes les pesées sont décalées du même côté : c'est une erreur systématique.}

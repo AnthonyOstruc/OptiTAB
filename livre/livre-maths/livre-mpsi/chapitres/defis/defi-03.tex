@@ -1,0 +1,92 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 3 — Le théorème de Napoléon
+%% Résultats vérifiés par verifications/defis_01_05.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le théorème de Napoléon}{1 h 30}
+Le plan est identifié à $\Cx$ et l'on note $j=\mathrm{e}^{2\mathrm{i}\pi/3}$.
+Un triangle $(a,b,c)$ est dit \emph{direct} lorsque l'on parcourt
+$a\to b\to c$ dans le sens trigonométrique.
+
+\partieExo{A}{Une caractérisation des triangles équilatéraux}
+\begin{questions}
+  \item Montrer que $j^{3}=1$, $1+j+j^{2}=0$ et $\overline{j}=j^{2}$.
+  \item Soient $a,b,c$ trois complexes distincts. Montrer que $(a,b,c)$
+    est un triangle équilatéral direct si et seulement si
+    $c-a=\mathrm{e}^{\mathrm{i}\pi/3}(b-a)$, puis si et seulement si
+    \[
+    a+jb+j^{2}c=0 .
+    \]
+\end{questions}
+
+\partieExo{B}{Le théorème}
+Soit $ABC$ un triangle direct, d'affixes $a,b,c$. On construit à
+l'extérieur les triangles équilatéraux $BA'C$, $CB'A$ et $AC'B$, et l'on
+note $P$, $Q$, $R$ leurs centres (centres de gravité).
+\begin{questions}[resume]
+  \item Justifier que $(b,a',c)$ est équilatéral direct, et en déduire
+    $a'=-j^{2}b-jc$. Exprimer de même $b'$ et $c'$.
+  \item Exprimer $p$, $q$, $r$ en fonction de $a,b,c$, puis montrer que
+    $p+jq+j^{2}r=0$. Conclure : \emph{le triangle $PQR$ est
+    équilatéral} (théorème de Napoléon).
+  \item Montrer que les triangles $ABC$ et $PQR$ ont le même centre de
+    gravité.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=0.92,line cap=round,line join=round]
+  \coordinate (A) at (0,0);
+  \coordinate (B) at (4,0);
+  \coordinate (C) at (1.2,2.7);
+  \coordinate (A1) at ($(B)!1!-60:(C)$);
+  \coordinate (B1) at ($(C)!1!-60:(A)$);
+  \coordinate (C1) at ($(A)!1!-60:(B)$);
+  \coordinate (P) at ($0.33333*(B)+0.33333*(C)+0.33334*(A1)$);
+  \coordinate (Q) at ($0.33333*(C)+0.33333*(A)+0.33334*(B1)$);
+  \coordinate (R) at ($0.33333*(A)+0.33333*(B)+0.33334*(C1)$);
+  \fill[otNavy!8] (B) -- (A1) -- (C) -- cycle;
+  \fill[otNavy!8] (C) -- (B1) -- (A) -- cycle;
+  \fill[otNavy!8] (A) -- (C1) -- (B) -- cycle;
+  \draw[otNavy!55,line width=0.6pt] (B) -- (A1) -- (C) (C) -- (B1) -- (A) (A) -- (C1) -- (B);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.6pt] (A) -- (A1) (B) -- (B1) (C) -- (C1);
+  \draw[otInk,line width=1.1pt] (A) -- (B) -- (C) -- cycle;
+  \fill[otGreen,opacity=0.2] (P) -- (Q) -- (R) -- cycle;
+  \draw[otGreenDark,line width=1.2pt] (P) -- (Q) -- (R) -- cycle;
+  \foreach \p in {A,B,C}{\fill[otInk] (\p) circle (1.5pt);}
+  \foreach \p in {P,Q,R}{\fill[otGreenDark] (\p) circle (1.6pt);}
+  \node[font=\small,text=otInk,anchor=north east] at (A) {$A$};
+  \node[font=\small,text=otInk,anchor=north west] at (B) {$B$};
+  \node[font=\small,text=otInk,anchor=south] at ([yshift=1pt]C) {$C$};
+  \node[font=\small,text=otNavy,anchor=west] at (A1) {$A'$};
+  \node[font=\small,text=otNavy,anchor=east] at (B1) {$B'$};
+  \node[font=\small,text=otNavy,anchor=north] at (C1) {$C'$};
+  \node[font=\small,text=otGreenDark,anchor=west] at ([xshift=1pt]P) {$P$};
+  \node[font=\small,text=otGreenDark,anchor=east] at ([xshift=-1pt]Q) {$Q$};
+  \node[font=\small,text=otGreenDark,anchor=north] at ([yshift=-1pt]R) {$R$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Quel que soit le triangle $ABC$, les centres $P,Q,R$ des triangles
+équilatéraux extérieurs forment un triangle équilatéral (en vert).}
+\end{center}
+
+\partieExo{C}{Longueurs et point de Fermat}
+On note $\alpha=BC$, $\beta=CA$, $\gamma=AB$ et $\mathcal{S}$ l'aire de
+$ABC$.
+\begin{questions}[resume]
+  \item Montrer que $b'-b=j\,(a'-a)$ et $c'-c=j\,(b'-b)$. En déduire que
+    $AA'=BB'=CC'$ et que les droites $(AA')$, $(BB')$, $(CC')$ font deux à
+    deux des angles de $\dfrac{\pi}{3}$ (elles sont en fait concourantes,
+    au \emph{point de Fermat} du triangle — voir le défi du chapitre 20).
+  \item En appliquant la formule d'Al-Kashi dans le triangle $PCQ$,
+    montrer que
+    \[
+    PQ^{2}=\frac{\alpha^{2}+\beta^{2}+\gamma^{2}}{6}
+    +\frac{2}{\sqrt3}\,\mathcal{S} .
+    \]
+    \emph{On rappelle que le centre d'un triangle équilatéral de côté
+    $\ell$ est à la distance $\ell/\sqrt3$ de chaque sommet.}
+  \item Que vaut $PQ$ lorsque $ABC$ est lui-même équilatéral de côté
+    $\ell$ ? Interpréter.
+\end{questions}
+\end{defi}

@@ -1,0 +1,96 @@
+%% =====================================================================
+%%  1re de couverture — collection « L'essentiel »
+%% =====================================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  % Fond
+  \fill[otNavy] (0,0) rectangle (210mm,297mm);
+  \shade[bottom color=otNavyDark,top color=otNavy] (0,0) rectangle (210mm,150mm);
+  \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+
+  % Logo et niveau
+  \node[anchor=north west,inner sep=0pt] at (22mm,279mm) {\includegraphics[width=58mm]{logo-blanc}};
+  \node[anchor=base west,inner sep=0pt,text=otGreen,font=\otSemi\fontsize{11}{13}\selectfont]
+    at (24mm,232mm) {\otCaps[22]{\otNiveau}};
+
+  % Titre
+  \node[anchor=base west,inner sep=0pt,text=white,font=\otBold\fontsize{58}{62}\selectfont]
+    at (21mm,203mm) {L'essentiel};
+  \node[anchor=base west,inner sep=0pt,text=white,font=\otLight\fontsize{31}{35}\selectfont]
+    at (23mm,184mm) {\otMatiere};
+  \fill[otGreen] (24mm,172mm) rectangle (54mm,173.4mm);
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.85,font=\otRegular\fontsize{11}{14}\selectfont]
+    at (24mm,160mm) {Fiches de révision\enspace·\enspace Cours\enspace·\enspace Formules\enspace·\enspace Schémas\enspace·\enspace Méthodes};
+
+  % Pastille
+  \fill[otGreen] (172mm,236mm) circle (17mm);
+  \node[text=white,align=center,inner sep=0pt] at (172mm,236mm)
+    {{\otBold\fontsize{30}{30}\selectfont 23}\\[1.6mm]
+     {\otSemi\fontsize{8}{9}\selectfont\otCaps[12]{fiches}}};
+
+  % Points forts
+  \node[anchor=north west,inner sep=0pt,text width=86mm,text=white,
+    font=\otRegular\fontsize{10.5}{14}\selectfont] at (24mm,132mm)
+    {\otCheck\hspace{3mm}Tout le programme, sans rien oublier\par\vspace{3.4mm}
+     \otCheck\hspace{3mm}Une fiche de 3 à 4 pages par chapitre\par\vspace{3.4mm}
+     \otCheck\hspace{3mm}Formules, schémas et méthodes du bac\par\vspace{3.4mm}
+     \otCheck\hspace{3mm}Une check-list pour chaque chapitre};
+
+  % Illustration : trois fiches empilées
+  \begin{scope}[shift={(150mm,86mm)}]
+    \foreach \ang/\op in {-11/0.35,-5/0.6}{
+      \begin{scope}[rotate=\ang]
+        \fill[white,opacity=\op,rounded corners=2mm] (-34mm,-46mm) rectangle (34mm,46mm);
+      \end{scope}}
+    \begin{scope}[rotate=3]
+      \fill[black,opacity=0.18,rounded corners=2mm] (-33mm,-47.5mm) rectangle (35.5mm,44.5mm);
+      \fill[white,rounded corners=2mm] (-34mm,-46mm) rectangle (34mm,46mm);
+      \begin{scope}
+        \clip[rounded corners=2mm] (-34mm,-46mm) rectangle (34mm,46mm);
+        \fill[otNavy] (-34mm,30mm) rectangle (34mm,46mm);
+        \draw[white,opacity=0.08,line width=0.2pt,step=2.5mm] (-34mm,30mm) grid (34mm,46mm);
+        \fill[otGreen] (-34mm,30mm) rectangle (34mm,30.6mm);
+      \end{scope}
+      \fill[otGreen,rounded corners=0.6pt] (-29mm,40mm) rectangle (-17mm,43mm);
+      \node[text=white,font=\otSemi\fontsize{3.6}{4}\selectfont] at (-23mm,41.5mm) {\otCaps[8]{Fiche 01}};
+      \node[anchor=west,text=white,font=\otSemi\fontsize{8.5}{9}\selectfont,inner sep=0pt] at (-29mm,34.6mm) {Suites numériques};
+      % section
+      \fill[otNavy,rounded corners=0.4pt] (-29mm,23.5mm) rectangle (-26.6mm,25.9mm);
+      \fill[otInk!75] (-25mm,24.2mm) rectangle (-6mm,25.2mm);
+      \fill[otRule] (-4mm,24.6mm) rectangle (29mm,24.85mm);
+      % encadré théorème
+      \fill[otNavyTint!70!otNavy!14,rounded corners=0.8mm] (-29mm,9mm) rectangle (0mm,21mm);
+      \fill[otNavy] (-29mm,9mm) rectangle (-28.4mm,21mm);
+      \foreach \yy/\ll in {18.5/22,16/25,13.5/20,11/24}{\fill[otMuted!55] (-26.5mm,\yy mm) rectangle ++(\ll mm,0.8mm);}
+      % petit graphique
+      \draw[otMuted!70,line width=0.3pt,-{Stealth[length=0.8mm]}] (3mm,9mm) -- (29mm,9mm);
+      \draw[otMuted!70,line width=0.3pt,-{Stealth[length=0.8mm]}] (3mm,9mm) -- (3mm,21mm);
+      \fill[otGreen,opacity=0.18] (3mm,14mm) rectangle (28mm,17mm);
+      \foreach \k in {0,...,9}{\pgfmathsetmacro{\yy}{15.5+5*0.72^\k*cos(180*\k)}
+        \fill[otNavy] ({(4+2.5*\k)*1mm},{\yy*1mm}) circle (0.45mm);}
+      % encadré méthode
+      \fill[otGreenTint,rounded corners=0.8mm] (-29mm,-8mm) rectangle (29mm,5mm);
+      \fill[otGreenDark] (-29mm,-8mm) rectangle (-28.4mm,5mm);
+      \foreach \yy/\ll in {2.5/40,0/50,-2.5/44,-5/30}{\fill[otGreenDark!45] (-26.5mm,\yy mm) rectangle ++(\ll mm,0.8mm);}
+      % formule
+      \draw[otGreen,line width=0.5pt,rounded corners=0.8mm] (-16mm,-19mm) rectangle (16mm,-12mm);
+      \fill[otInk!70] (-11mm,-15.9mm) rectangle (11mm,-15.1mm);
+      % check-list
+      \fill[otNavy,rounded corners=0.8mm] (-29mm,-41mm) rectangle (29mm,-24mm);
+      \foreach \yy in {-28.5,-32.5,-36.5}{
+        \draw[white,line width=0.3pt] (-26mm,{(\yy-0.9)*1mm}) rectangle ++(1.8mm,1.8mm);
+        \fill[white,opacity=0.75] (-22.5mm,{(\yy-0.4)*1mm}) rectangle ++(20mm,0.8mm);
+        \draw[white,line width=0.3pt] (2mm,{(\yy-0.9)*1mm}) rectangle ++(1.8mm,1.8mm);
+        \fill[white,opacity=0.75] (5.5mm,{(\yy-0.4)*1mm}) rectangle ++(18mm,0.8mm);}
+    \end{scope}
+  \end{scope}
+
+  % Pied
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,font=\otMedium\fontsize{10}{12}\selectfont]
+    at (24mm,16mm) {\otSite};
+  \node[anchor=base east,inner sep=0pt,text=white,opacity=0.6,font=\otLight\fontsize{8.5}{10}\selectfont]
+    at (190mm,16mm) {Conforme au programme officiel de Terminale};
+\end{scope}
+\end{tikzpicture}
+\clearpage

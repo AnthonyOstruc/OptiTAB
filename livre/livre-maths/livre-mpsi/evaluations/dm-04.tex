@@ -1,0 +1,61 @@
+% !TEX root = ../main.tex
+%% Devoir maison n° 4 — Inégalités de concentration (chapitres 6, 11, 17)
+%% Résultats vérifiés par verifications/eval_dm.py.
+
+\sujetEval{DM4}{MPSI · Devoir maison}{Devoir maison \numero4}
+  {À rendre en une semaine\\Inégalités de concentration\\Chapitres 6, 11 et 17}{3}
+  {Partie A/L'inégalité de Bienaymé-Tchebychev/Q1 et Q2,Partie B/L'inégalité de Hoeffding/Q3 à Q6,%
+   Partie C/Application à un sondage/Q7 à Q9}
+\enParties
+\consigne{On rappelle que $\operatorname{ch}t=\frac{\mathrm{e}^{t}+\mathrm{e}^{-t}}{2}$
+et $\operatorname{th}t=\frac{\operatorname{sh}t}{\operatorname{ch}t}$. Les
+valeurs numériques demandées en partie C se calculent à la main, avec
+$\ln40\approx3{,}689$.}
+
+Soit $n\geqslant1$ et $X_1,\dots,X_n$ des variables aléatoires
+indépendantes, définies sur un même espace probabilisé fini, de même loi
+\[P(X_i=1)=P(X_i=-1)=\frac12.\]
+On pose $S_n=X_1+\dots+X_n$ : c'est la position, après $n$ pas, d'un
+marcheur qui avance ou recule d'un pas au hasard. On cherche à majorer la
+probabilité que $S_n$ s'écarte beaucoup de $0$.
+
+\begin{exoEval}[L'inégalité de Bienaymé-Tchebychev]{}{}
+\begin{questions}
+  \item Calculer $E(S_n)$ et $V(S_n)$.
+  \item En déduire que pour tout $a>0$ :
+    $P\bigl(|S_n|\geqslant a\bigr)\leqslant\dfrac{n}{a^{2}}$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[L'inégalité de Hoeffding]{}{}
+Soit $a>0$.
+\begin{questions}[start=3]
+  \item Soit $t>0$. À l'aide de l'inégalité de Markov appliquée à
+    $\mathrm{e}^{tS_n}$, montrer que
+    $P(S_n\geqslant a)\leqslant\mathrm{e}^{-ta}\,E\bigl(\mathrm{e}^{tS_n}\bigr)$.
+  \item Montrer que $E\bigl(\mathrm{e}^{tS_n}\bigr)=(\operatorname{ch}t)^{n}$.
+  \item Étudier sur $\R_{+}$ la fonction
+    $g:t\mapsto\frac{t^{2}}{2}-\ln(\operatorname{ch}t)$, et en déduire que
+    $\operatorname{ch}t\leqslant\mathrm{e}^{t^{2}/2}$ pour tout réel $t$.
+  \item En déduire que $P(S_n\geqslant a)\leqslant\exp\bigl(-ta+\frac{nt^{2}}{2}\bigr)$
+    pour tout $t>0$, puis, en choisissant $t$ au mieux,
+    \[P(S_n\geqslant a)\leqslant\exp\Bigl(-\frac{a^{2}}{2n}\Bigr)\qquad\text{et}\qquad
+      P\bigl(|S_n|\geqslant a\bigr)\leqslant2\exp\Bigl(-\frac{a^{2}}{2n}\Bigr).\]
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Application à un sondage]{}{}
+On lance $n$ fois une pièce équilibrée, $X_i$ valant $1$ si le $i$-ième
+lancer donne « pile » et $-1$ sinon. On note $F_n$ la fréquence de « pile »
+et l'on fixe $\varepsilon>0$.
+\begin{questions}[start=7]
+  \item Montrer que $F_n=\dfrac{n+S_n}{2n}$, puis que
+    \[P\Bigl(\Bigl|F_n-\frac12\Bigr|\geqslant\varepsilon\Bigr)\leqslant\frac{1}{4n\varepsilon^{2}}
+      \qquad\text{et}\qquad
+      P\Bigl(\Bigl|F_n-\frac12\Bigr|\geqslant\varepsilon\Bigr)\leqslant2\,\mathrm{e}^{-2n\varepsilon^{2}}.\]
+  \item On prend $\varepsilon=0{,}05$. Pour chacune des deux majorations,
+    déterminer le plus petit $n$ qui garantit
+    $P\bigl(|F_n-\frac12|\geqslant0{,}05\bigr)\leqslant0{,}05$.
+  \item Comparer les deux majorations lorsque $n\to+\infty$. Commenter.
+\end{questions}
+\end{exoEval}

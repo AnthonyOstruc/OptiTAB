@@ -1,0 +1,12 @@
+% Hydrolyse du chlorure de tertiobutyle : conductivité en fonction du temps (exercice 15, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=54mm,xmin=0,xmax=1260,ymin=0,ymax=1.8,
+  xtick={0,200,...,1200},ytick={0,0.4,...,1.6},yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$t$ (s)},ylabel={$\sigma$ (mS$\cdot$cm$^{-1}$)}]
+\draw[otMuted,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:0,1.62) -- (axis cs:1250,1.62);
+\node[pcLegende,anchor=south east,text=otMuted] at (axis cs:1250,1.63) {$\sigma_\infty=1{,}62$ mS$\cdot$cm$^{-1}$};
+\addplot[otNavy,line width=0.8pt,smooth,mark=*,mark size=1.5pt] table[x index=0,y index=1] {figures/donnees/04-tertiobutyle.dat};
+\solution{\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.81) -- (axis cs:298,0.81) -- (axis cs:298,0);
+\node[pcLegende,anchor=north west,text=otGreenDark,fill=white] at (axis cs:310,0.36) {$t_{1/2}\approx\qty{3,0e2}{s}$};}
+\end{axis}
+\end{tikzpicture}

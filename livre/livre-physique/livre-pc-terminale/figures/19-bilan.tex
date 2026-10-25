@@ -1,0 +1,19 @@
+% Bilan d'énergie d'un système : travail et transfert thermique, convention de signe (L'essentiel, chapitre 19)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[pcEau,rounded corners=3mm] (0,0) rectangle (4.2,2.2);
+\draw[otNavy,line width=0.9pt,rounded corners=3mm] (0,0) rectangle (4.2,2.2);
+\node[pcLegendeG,align=center] at (2.1,1.1) {système\\[1mm] énergie interne $U$\\ $\Delta U=W+Q$};
+% travail reçu
+\draw[otNavy,line width=1.2pt,-{Stealth[length=2.4mm]}] (-3.0,1.1) -- (-0.15,1.1);
+\node[pcLegende,anchor=south,align=center,text=otNavy] at (-1.7,1.2) {travail $W$\\ (mécanique, électrique)};
+% transfert thermique reçu
+\draw[otOrange!90!black,line width=1.2pt,-{Stealth[length=2.4mm]},decorate,
+  decoration={snake,amplitude=0.8mm,segment length=3.5mm,post length=2.5mm}] (5.6,1.6) -- (4.35,1.6);
+\node[pcLegende,anchor=west,text=otOrange!80!black] at (5.7,1.6) {transfert thermique $Q$};
+% transfert cédé
+\draw[otOrange!90!black,line width=1.2pt,-{Stealth[length=2.4mm]},decorate,dash pattern=on 2pt off 1pt,
+  decoration={snake,amplitude=0.8mm,segment length=3.5mm,post length=2.5mm}] (4.35,0.55) -- (5.6,0.55);
+\node[pcLegende,anchor=west,text=otOrange!80!black] at (5.7,0.55) {énergie cédée : $Q<0$};
+\node[pcLegende,anchor=north,align=center] at (2.1,-0.15) {convention : $W>0$ et $Q>0$ si le système reçoit l'énergie};
+\end{tikzpicture}
+\par\smallskip\legende{L'énergie interne d'un système au repos varie par travail et par transfert thermique ; chaque échange est compté positivement lorsque le système reçoit l'énergie.}

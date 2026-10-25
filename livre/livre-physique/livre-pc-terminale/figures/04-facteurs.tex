@@ -1,0 +1,25 @@
+% Influence de la température et d'un catalyseur ; principe d'une trempe (L'essentiel, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=88mm,height=56mm,xmin=0,xmax=62,ymin=0,ymax=1.15,
+  xtick={0,10,...,60},ytick={0,0.5,1},xlabel={$t$ (min)},ylabel={$x/x_\mathrm{f}$},
+  legend style={at={(0.98,0.04)},anchor=south east,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\addplot[otNavy,line width=1pt,domain=0:60,samples=100] {1-exp(-ln(2)*x/20)};
+\addlegendentry{20 °C}
+\addplot[otOrange,line width=1pt,domain=0:60,samples=100] {1-exp(-ln(2)*x/6)};
+\addlegendentry{40 °C}
+\addplot[otGreenDark,line width=1pt,domain=0:60,samples=100] {1-exp(-ln(2)*x/2)};
+\addlegendentry{20 °C avec catalyseur}
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1pt] (axis cs:0,1) -- (axis cs:60,1);
+\end{axis}
+\begin{scope}[shift={(10.9,0.25)},x=1cm,y=1cm]
+\pic at (0,0) {becher={largeur=2.0,hauteur=2.1,niveau=1.35,liquide=pcEau}};
+\foreach \gx/\gy in {-0.55/0.45,-0.12/0.8,0.36/0.42,0.55/0.98,-0.45/1.08,0.1/0.22,0.12/1.12}{%
+  \filldraw[fill=white,draw=otNavy!45,line width=0.4pt,rounded corners=0.4mm] (\gx-0.14,\gy-0.12) rectangle (\gx+0.14,\gy+0.12);}
+\pic at (-0.2,1.6) {pipette={hauteur=3.3,niveau=0.25}};
+\pcNote[west]{(0.62,1.0)}{(1.25,1.0)}{glace}
+\pcNote[west]{(-0.05,3.6)}{(0.5,3.6)}{prélèvement}
+\node[pcLegendeG,align=center,anchor=north] at (0,-0.15) {trempe : arrêter\\la transformation};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Une élévation de température ou un catalyseur accélèrent la transformation sans modifier l'état
+final. La trempe (dilution dans l'eau glacée) la ralentit au point de figer la composition d'un prélèvement.}

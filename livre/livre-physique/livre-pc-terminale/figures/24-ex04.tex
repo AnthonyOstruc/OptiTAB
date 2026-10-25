@@ -1,0 +1,21 @@
+% Construire le faisceau émergent d'une lunette afocale (exercice 4, chapitre 24)
+% objectif : f'1 = 5 ; oculaire : f'2 = 2 ; faisceau incident de pente +0,12 ; B1 en (5 ; 0,6)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otMuted,line width=0.4pt] (-2.2,0) -- (10.4,0);
+\draw[otNavy,line width=1pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}] (0,-1.5) -- (0,1.5) node[pcLegende,anchor=south,text=otNavy] {$L_1$};
+\draw[otNavy,line width=1pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}] (7,-1.5) -- (7,1.5) node[pcLegende,anchor=south,text=otNavy] {$L_2$};
+\fill[otInk] (5,0) circle (0.04) node[pcLegende,anchor=north] {$F'_1=F_2$};
+\fill[otInk] (9,0) circle (0.04) node[pcLegende,anchor=north] {$F'_2$};
+\fill[otInk] (0,0) circle (0.04) node[pcLegende,anchor=north east] {$O_1$};
+\fill[otInk] (7,0) circle (0.04) node[pcLegende,anchor=north west] {$O_2$};
+\foreach \y in {-1.0,0,0.6}{
+  \draw[otRed!80!black,line width=0.7pt,-{Stealth[length=1.5mm]}] (-2.0,{\y-0.24}) -- (-1.0,{\y-0.12});
+  \draw[otRed!80!black,line width=0.7pt] (-1.0,{\y-0.12}) -- (0,\y);}
+\solution{%
+  \foreach \y in {-1.0,0,0.6}{\draw[otRed!80!black,line width=0.7pt] (0,\y) -- (5,0.6);}
+  \fill[otRed!80!black] (5,0.6) circle (0.05) node[pcLegende,anchor=south,text=otRed!80!black] {$B_1$};
+  \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1pt] (5,0.6) -- (7,0);
+  \foreach \yd in {1.24,0.84,0.6}{\draw[otRed!80!black,line width=0.7pt] (5,0.6) -- (7,\yd);
+    \draw[otRed!80!black,line width=0.7pt,-{Stealth[length=1.5mm]}] (7,\yd) -- (10.2,{\yd-0.96});}}
+\end{tikzpicture}
+\par\smallskip\legende{Lunette afocale et faisceau incident issu d'un point à l'infini (schéma à l'échelle).}

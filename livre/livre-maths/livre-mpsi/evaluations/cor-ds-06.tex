@@ -1,0 +1,165 @@
+% !TEX root = ../main.tex
+%% Corrigé du devoir surveillé n° 6 — vérifié par verifications/eval_ds.py.
+
+\corrigeSujetEval{DS6}{Devoir surveillé \numero6}
+
+\begin{corrigeEval}{6 points}{L'urne de Pólya}
+\begin{questions}
+  \item $X_1=2$ si la première boule est rouge, $X_1=1$ sinon :
+    $\res{P(X_1=1)=P(X_1=2)=\frac12}$. Pour $X_2$ (arbre ci-dessous) :
+    $P(X_2=3)=\frac12\cdot\frac23=\frac13$, $P(X_2=1)=\frac13$ de même, et
+    $P(X_2=2)=\frac12\cdot\frac13+\frac12\cdot\frac13=\frac13$ :
+    \res{\text{loi uniforme sur }\ens{1,2,3}}. \pts{1,5 pt}
+  \item Après $n$ tirages, l'urne contient $n+2$ boules dont $X_n$ rouges.
+    La formule des probabilités totales avec le système complet
+    $(X_n=j)_{1\leqslant j\leqslant n+1}$ donne, pour
+    $1\leqslant k\leqslant n+2$ :
+    \[P(X_{n+1}=k)=P(X_n=k-1)\,\frac{k-1}{n+2}+P(X_n=k)\,\frac{n+2-k}{n+2}.\]
+    Si $X_n$ est uniforme, les deux probabilités valent $\frac{1}{n+1}$ (un
+    terme hors de $\ens{1,\dots,n+1}$ a un coefficient nul), d'où
+    $P(X_{n+1}=k)=\frac{1}{n+1}\cdot\frac{n+1}{n+2}=\res{\frac{1}{n+2}}$ :
+    l'hérédité est établie. \pts{2 pts}
+  \item Loi uniforme sur $\ens{1,\dots,n+1}$ :
+    $\res{E(X_n)=\frac{n+2}{2}}$ et
+    $\res{V(X_n)=\frac{(n+1)^{2}-1}{12}=\frac{n(n+2)}{12}}$. Puis
+    $P(R_{n+1})=\sum_{j}P(X_n=j)\frac{j}{n+2}=\frac{E(X_n)}{n+2}=\res{\frac12}$.
+    \pts{1,5 pt}
+  \item $P(R_1\cap R_2)=\frac12\cdot\frac23=\frac13$ et $P(R_2)=\frac12$ :
+    $\res{P_{R_2}(R_1)=\frac23}$. C'est plus que $P(R_1)=\frac12$ : $R_1$ et
+    $R_2$ ne sont pas indépendants ; chaque rouge tiré renforce les
+    rouges. \pts{1 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,
+    nd/.style={circle,inner sep=1.4pt,font=\scriptsize\bfseries,text=white},
+    pr/.style={font=\scriptsize,fill=white,inner sep=1pt}]
+  \node[circle,fill=otMuted,inner sep=2pt] (o) at (0,0) {};
+  \node[nd,fill=otRed] (r) at (2.6,0.8) {R};
+  \node[nd,fill=otNavy] (b) at (2.6,-0.8) {B};
+  \node[nd,fill=otRed] (rr) at (5.4,1.25) {R};
+  \node[nd,fill=otNavy] (rb) at (5.4,0.35) {B};
+  \node[nd,fill=otRed] (br) at (5.4,-0.35) {R};
+  \node[nd,fill=otNavy] (bb) at (5.4,-1.25) {B};
+  \foreach \u/\v/\p in {o/r/{\frac12},o/b/{\frac12},r/rr/{\frac23},r/rb/{\frac13},
+                        b/br/{\frac13},b/bb/{\frac23}}
+    \draw[otMuted,line width=0.6pt] (\u) -- node[pr]{$\p$} (\v);
+  \foreach \v/\t in {rr/{X_2=3},rb/{X_2=2},br/{X_2=2},bb/{X_2=1}}
+    \node[font=\scriptsize,anchor=west] at ([xshift=2mm]\v.east) {$\t$};
+  \node[font=\scriptsize,text=otMuted,anchor=south] at (2.6,1.25) {1\textsuperscript{er} tirage};
+  \node[font=\scriptsize,text=otMuted,anchor=south] at (5.4,1.6) {2\textsuperscript{e} tirage};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Les deux premiers tirages : les trois valeurs de $X_2$ ont la même
+probabilité $\frac13$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Produit scalaire}
+\begin{questions}
+  \item L'application est symétrique, linéaire en chaque variable, et
+    $\langle P,P\rangle=P(0)^{2}+P(1)^{2}+P(2)^{2}\geqslant0$. Si
+    $\langle P,P\rangle=0$, $P$ (de degré au plus $2$) a trois racines
+    $0,1,2$ : $P=0$. C'est un \res{\text{produit scalaire}}. \pts{1,5 pt}
+  \item $L_i(k)=\delta_{ik}$, donc
+    $\langle L_i,L_j\rangle=\sum_k\delta_{ik}\delta_{jk}=\delta_{ij}$ :
+    famille orthonormée, donc libre, de $3=\dim E$ vecteurs ; c'est une
+    base orthonormée, et
+    $\res{P=P(0)L_0+P(1)L_1+P(2)L_2}$ car
+    $\langle P,L_k\rangle=P(k)$. \pts{1,5 pt}
+  \item On cherche $p=aX+b$ avec $X^{2}-p$ orthogonal à $1$ et à $X$ :
+    $\langle X^{2}-p,1\rangle=5-3a-3b=0$ et
+    $\langle X^{2}-p,X\rangle=9-5a-3b=0$, d'où
+    $\res{p=2X-\frac13}$. Les valeurs de $X^{2}-p$ en $0,1,2$ sont
+    $\frac13,-\frac23,\frac13$ : $d(X^{2},F)^{2}=\frac19+\frac49+\frac19$,
+    soit $\res{d(X^{2},F)=\sqrt{\tfrac23}=\tfrac{\sqrt6}{3}}$. \pts{1,5 pt}
+  \item $\lVert X^{2}-(aX+b)\rVert^{2}=\sum_{k=0}^{2}\bigl(k^{2}-(ak+b)\bigr)^{2}$
+    est la somme des carrés des écarts verticaux : $y=2x-\frac13$ est la
+    \res{\text{droite des moindres carrés}} des trois points. \pts{0,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=2.2cm,y=0.72cm,line cap=round]
+  \foreach \yy in {1,2,3,4}{
+    \draw[otRule,line width=0.3pt] (-0.35,\yy) -- (2.6,\yy);
+    \node[font=\scriptsize,text=otMuted,anchor=east] at (-0.03,\yy) {$\yy$};}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-0.35,0) -- (2.75,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-0.9) -- (0,4.9);
+  \draw[otMuted,line width=0.7pt,dash pattern=on 1.4pt off 1.6pt]
+    plot[domain=-0.3:2.12,samples=60] ({\x},{\x*\x});
+  \draw[otGreenDark,line width=1.1pt] (-0.25,{-0.5-1/3}) -- (2.55,{5.1-1/3});
+  \foreach \k in {0,1,2}{
+    \draw[otOrange,line width=1.2pt] (\k,{\k*\k}) -- (\k,{2*\k-1/3});
+    \fill[otNavy] (\k,{\k*\k}) circle (2.3pt);}
+  \foreach \k in {1,2} \node[font=\scriptsize,anchor=north] at (\k,-0.05) {$\k$};
+  \node[font=\scriptsize,anchor=north east] at (-0.02,-0.05) {$0$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (2.55,4.72) {$y=2x-\frac13$};
+  \node[font=\scriptsize,text=otMuted,anchor=south] at (2.12,4.5) {$y=x^{2}$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Projeté orthogonal et moindres carrés : les écarts verticaux
+(en orange) valent $\frac13,-\frac23,\frac13$ ; leur somme des carrés,
+$\frac23$, est minimale.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Séries numériques}
+\begin{questions}
+  \item $\ln\bigl(1+\frac1n\bigr)=\frac1n-\frac{1}{2n^{2}}+o\bigl(\frac{1}{n^{2}}\bigr)$ :
+    le terme général, positif, est équivalent à $\frac{1}{2n^{2}}$ ;
+    par comparaison à une série de Riemann, la série
+    \res{\text{converge}}. Sa somme partielle vaut
+    $H_N-\ln(N+1)$ : elle tend vers la constante d'Euler
+    $\gamma\approx0{,}577$. \pts{1 pt}
+  \item On réduit au même dénominateur :
+    \[u_n-u_{n+1}=\frac{2(an^{2}+bn+c)-\bigl(a(n+1)^{2}+b(n+1)+c\bigr)}{2^{n+1}}
+      =\frac{an^{2}+(b-2a)n+(c-a-b)}{2^{n+1}},\]
+    à identifier avec $\dfrac{2n^{2}}{2^{n+1}}$ : $\res{a=2,\ b=4,\ c=6}$.
+    Par télescopage,
+    $\sum_{n=1}^{N}\frac{n^{2}}{2^{n}}=u_1-u_{N+1}$, et $u_{N+1}\to0$ par
+    croissances comparées : $\res{\sum_{n=1}^{+\infty}\frac{n^{2}}{2^{n}}=u_1=6}$.
+    \pts{1,5 pt}
+  \item Pour $p\geqslant1$, les termes d'indices $2p$ et $2p+1$ se
+    compensent exactement :
+    \[\ln\Bigl(1+\frac{1}{2p}\Bigr)+\ln\Bigl(1-\frac{1}{2p+1}\Bigr)
+      =\ln\frac{2p+1}{2p}+\ln\frac{2p}{2p+1}=0.\]
+    Donc $\res{S_{2N+1}=0}$ et $\res{S_{2N}=\ln\dfrac{2N+1}{2N}}\to0$. Les
+    deux suites extraites tendent vers $0$ : la série converge, de somme
+    $\res{0}$. \pts{1,5 pt}
+  \item Pour $n\geqslant1$, $\dfrac{n+1}{n!}=\dfrac{1}{(n-1)!}+\dfrac{1}{n!}$ :
+    c'est la somme de deux séries convergentes de somme $\mathrm{e}$ (le
+    terme $n=0$, égal à $1$, complète la seconde) :
+    $\res{\sum_{n=0}^{+\infty}\frac{n+1}{n!}=2\mathrm{e}}$. \pts{1 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}{4 points}{Deux variables}
+\begin{questions}
+  \item $f$ est polynomiale, donc $\mathcal{C}^{1}$ ;
+    $\partial_1f=2x+y-3$ et $\partial_2f=x+2y-3$. Le système
+    $2x+y=3$, $x+2y=3$ a pour unique solution $\res{(1,1)}$. \pts{1,5 pt}
+  \item Le développement de $u^{2}+uv+v^{2}-3$ redonne $f(x,y)$, et
+    $\bigl(u+\frac v2\bigr)^{2}+\frac34v^{2}=u^{2}+uv+v^{2}$. Cette quantité
+    est positive, nulle seulement si $u=v=0$ : $f\geqslant-3$ avec égalité
+    seulement en $(1,1)$, \res{\text{minimum global strict } f(1,1)=-3} ; pas
+    de maximum car $f(x,0)\to+\infty$. \pts{1,5 pt}
+  \item $f(0,0)=0$ et $\nabla f(0,0)=(-3,-3)$ : plan tangent
+    $\res{z=-3x-3y}$. La plus forte décroissance suit
+    $-\nabla f(0,0)$, soit la direction de
+    $\res{\tfrac{1}{\sqrt2}(1,1)}$, vers le minimum. \pts{1 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[scale=0.78,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-1.6,0) -- (3.7,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-1.6) -- (0,3.7);
+  \foreach \k/\c in {1/45,2/60,3/80,5/100}
+    \draw[otNavy!\c,line width=0.8pt,rotate around={45:(1,1)}]
+      (1,1) ellipse ({sqrt(2*\k/3)} and {sqrt(2*\k)});
+  \fill[otGreenDark] (1,1) circle (2.2pt);
+  \node[font=\scriptsize,text=otGreenDark,anchor=south west,fill=white,inner sep=1pt]
+    at (1.08,1.08) {$(1,1)$};
+  \draw[otRed,line width=1pt,-{Stealth[length=2mm]}] (0,0) -- (-0.75,-0.75);
+  \node[font=\scriptsize,text=otRed,anchor=north east] at (-0.7,-0.7) {$\nabla f(0,0)$};
+  \fill[otInk] (0,0) circle (1.6pt);
+\end{tikzpicture}\\*[0.5mm]
+\legende{Lignes de niveau $f=-2,-1,0,2$ : des ellipses centrées au minimum
+$(1,1)$. Celle de niveau $0$ passe par l'origine ; le gradient y est
+orthogonal et pointe vers les valeurs croissantes.}
+\end{minipage}\end{center}
+\end{corrigeEval}

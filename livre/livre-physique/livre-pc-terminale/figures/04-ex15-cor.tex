@@ -1,0 +1,10 @@
+% Linéarisation : ln([RCl]/c0) en fonction du temps (corrigé de l'exercice 15, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=52mm,xmin=0,xmax=1260,ymin=-3,ymax=0.3,
+  xtick={0,200,...,1200},ytick={-3,-2,-1,0},
+  xlabel={$t$ (s)},ylabel={$\ln\left(1-\sigma/\sigma_\infty\right)$}]
+\addplot[otGreenDark,line width=0.7pt,domain=0:1230] {0.00582-0.00232764*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otNavy] table[x index=0,y expr=ln(1-\thisrowno{1}/1.62)] {figures/donnees/04-tertiobutyle.dat};
+\node[pcLegende,anchor=south west,text=otGreenDark,fill=white] at (axis cs:560,-0.9) {modèle affine :\\coefficient directeur $\approx\qty{-2,33e-3}{s^{-1}}$};
+\end{axis}
+\end{tikzpicture}

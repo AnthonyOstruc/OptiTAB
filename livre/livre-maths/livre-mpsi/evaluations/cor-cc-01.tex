@@ -1,0 +1,167 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type CCINP — vérifié par verifications/eval_cc.py.
+
+\corrigeSujetEval{C1}{Sujet type CCINP}
+
+\begin{corrigeEval}{5 points}{La matrice $J$}
+\begin{questions}
+  \item Chaque coefficient de $J^{2}$ vaut $\sum_{k=1}^{n}1\cdot1=n$ :
+    $\res{J^{2}=nJ}$. Les colonnes de $J$ sont toutes égales à
+    $\mathbf{1}={}^{t}(1,\dots,1)\neq0$ : $\operatorname{rg}J=1$,
+    $\operatorname{Im}J=\operatorname{Vect}(\mathbf{1})$, et
+    $\operatorname{Ker}J=\ens{x\mid x_1+\dots+x_n=0}$ est de dimension
+    $\res{n-1}$ (théorème du rang). \pts{1 pt}
+  \item $\mathbf{1}\notin\operatorname{Ker}J$ (la somme de ses coordonnées
+    vaut $n\neq0$), donc $\operatorname{Ker}J\cap\operatorname{Im}J=\ens0$,
+    et les dimensions s'ajoutent à $n$ : \res{\R^{n}=\operatorname{Ker}J\oplus\operatorname{Im}J}.
+    Dans une base $(\mathbf{1},e_2,\dots,e_n)$ adaptée, avec $J\mathbf{1}=n\mathbf{1}$ et
+    $Je_i=0$ : \res{J\text{ est semblable à }\operatorname{diag}(n,0,\dots,0)}.
+    \pts{1 pt}
+  \item Comme $I_n$ et $J$ commutent et $J^{2}=nJ$ :
+    \[(aI_n+bJ)(cI_n+dJ)=ac\,I_n+(ad+bc)\,J+bd\,nJ=\res{M(ac,\ ad+bc+nbd)}.\]
+    L'ensemble des $M(a,b)$, qui est un plan vectoriel contenant $I_n$, est
+    donc stable par produit, et ce produit est commutatif. \pts{0,5 pt}
+  \item On cherche $M(c,d)$ avec $ac=1$ et $ad+bc+nbd=0$. Si $a\neq0$ et
+    $a+nb\neq0$ : $c=\frac1a$ et $d(a+nb)=-\frac ba$, d'où
+    \[\res{M(a,b)^{-1}=\frac1aI_n-\frac{b}{a(a+nb)}\,J}.\]
+    Réciproquement, si $a=0$, $M(0,b)=bJ$ n'est pas inversible ; si
+    $a+nb=0$, $M(a,b)\mathbf{1}=(a+nb)\mathbf{1}=0$ avec $\mathbf{1}\neq0$. \pts{1 pt}
+  \item Par récurrence, $J^{k}=n^{k-1}J$ pour $k\geqslant1$ ; la formule du
+    binôme ($I_n$ et $J$ commutent) donne
+    \[M(a,b)^{p}=a^{p}I_n+\sum_{k=1}^{p}\binom pk a^{p-k}b^{k}n^{k-1}J
+      =\res{a^{p}I_n+\frac{(a+nb)^{p}-a^{p}}{n}\,J}.\]
+    Par la question 2, $M(a,b)$ est semblable à
+    $\operatorname{diag}(a+nb,a,\dots,a)$ :
+    $\res{\det M(a,b)=a^{n-1}(a+nb)}$. \pts{1 pt}
+  \item $a=2$, $b=1$, $n=3$ :
+    $\res{(2I_3+J)^{-1}=\dfrac12I_3-\dfrac{1}{10}J}
+    =\dfrac{1}{10}\begin{pmatrix}4&-1&-1\\-1&4&-1\\-1&-1&4\end{pmatrix}$.
+    \pts{0,5 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Records}
+\begin{questions}
+  \item On dénombre les permutations réalisant $R_k$ : on choisit
+    l'ensemble des $k$ premières valeurs ($\binom nk$ choix), on place la
+    plus grande en position $k$ et les $k-1$ autres dans un ordre
+    quelconque ($(k-1)!$), puis les $n-k$ dernières ($(n-k)!$) :
+    \[P(R_k)=\frac{1}{n!}\binom nk(k-1)!\,(n-k)!=\res{\frac1k}.\]
+    \pts{1 pt}
+  \item Même méthode : parmi les $k-1$ valeurs placées avant la position
+    $k$, on choisit les $j$ premières ($\binom{k-1}{j}$), dont la plus
+    grande va en position $j$ ($(j-1)!$), les autres se rangeant librement
+    ($(k-1-j)!$) :
+    \[P(R_j\cap R_k)=\frac{1}{n!}\binom nk\binom{k-1}{j}(j-1)!\,(k-1-j)!\,(n-k)!=\res{\frac{1}{jk}}.\]
+    Ainsi $P(R_j\cap R_k)=P(R_j)P(R_k)$ : les événements $R_k$ sont
+    \res{\text{deux à deux indépendants}}. \pts{1,5 pt}
+  \item $N_n=\sum_k\mathbf{1}_{R_k}$ : $\res{E(N_n)=H_n}$. Les indicatrices
+    étant deux à deux indépendantes, leurs covariances sont nulles et les
+    variances s'ajoutent :
+    $\res{V(N_n)=\sum_{k=1}^{n}\frac1k\Bigl(1-\frac1k\Bigr)=H_n-\sum_{k=1}^{n}\frac{1}{k^{2}}}$.
+    \pts{1 pt}
+  \item Par décroissance de $t\mapsto\frac1t$,
+    $\ln(n+1)\leqslant H_n\leqslant1+\ln n$, d'où $\res{H_n\sim\ln n}$. Par
+    Bienaymé-Tchebychev, avec $V(N_n)\leqslant H_n$ :
+    \[P\Bigl(\Bigl|\frac{N_n}{H_n}-1\Bigr|\geqslant\varepsilon\Bigr)
+      =P\bigl(|N_n-H_n|\geqslant\varepsilon H_n\bigr)\leqslant\frac{V(N_n)}{\varepsilon^{2}H_n^{2}}
+      \leqslant\frac{1}{\varepsilon^{2}H_n}\longrightarrow0.\]
+    \pts{1 pt}
+  \item Parmi les $6$ permutations, $N_3=3$ pour $(1,2,3)$ seule ;
+    $N_3=1$ lorsque $\sigma(1)=3$ (deux permutations) ; $N_3=2$ pour les
+    trois autres :
+    $\res{P(N_3=1)=\frac13,\ P(N_3=2)=\frac12,\ P(N_3=3)=\frac16}$ (et l'on
+    retrouve $E(N_3)=\frac{11}{6}=H_3$). \pts{0,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=0.95cm,y=0.36cm,line cap=round]
+  \foreach \k/\v/\r in {1/3/1,2/1/0,3/6/1,4/2/0,5/5/0,6/9/1,7/4/0,8/8/0,9/10/1,10/7/0}{
+    \ifnum\r=1 \def\cc{otGreenDark}\else\def\cc{otNavy!35}\fi
+    \fill[\cc,rounded corners=0.6pt] ({\k-0.32},0) rectangle ({\k+0.32},\v);
+    \node[font=\scriptsize,anchor=north] at (\k,-0.1) {$\k$};
+    \node[font=\scriptsize,anchor=south,text=otMuted] at (\k,\v) {$\v$};}
+  \draw[otMuted,line width=0.5pt] (0.4,0) -- (10.6,0);
+  \draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt]
+    (1,3) -- (3,3) -- (3,6) -- (6,6) -- (6,9) -- (9,9) -- (9,10) -- (10.5,10);
+\end{tikzpicture}\\*[0.5mm]
+\legende{Une permutation de $\ens{1,\dots,10}$ : les records (en vert) sont
+aux positions $1,3,6,9$, soit $N_{10}=4$, pour une espérance
+$H_{10}\approx2{,}93$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Polynômes de Bernoulli}
+\begin{questions}
+  \item Par récurrence : si $B_{n-1}$ est construit, les primitives de
+    $nB_{n-1}$ sont les $Q+c$, $c\in\R$ ($Q$ l'une d'elles), et la condition
+    $\int_0^{1}(Q+c)=0$ fixe $c=-\int_0^{1}Q$ de façon unique. D'où
+    \res{\text{l'existence et l'unicité de la suite}}. \pts{1 pt}
+  \item $B_1=X+c$ avec $\int_0^{1}(t+c)\,\mathrm{d}t=\frac12+c=0$, etc. :
+    \[\res{B_1=X-\frac12},\qquad\res{B_2=X^{2}-X+\frac16},\qquad
+      \res{B_3=X^{3}-\frac32X^{2}+\frac12X}.\]
+    Si $B_{n-1}$ est unitaire de degré $n-1$, $nB_{n-1}$ a pour terme
+    dominant $nX^{n-1}$, dont les primitives ont pour terme dominant
+    $X^{n}$ : \res{B_n\text{ est unitaire de degré }n}. \pts{1 pt}
+  \item Pour $n\geqslant2$ :
+    $B_n(1)-B_n(0)=\int_0^{1}B_n'=n\int_0^{1}B_{n-1}=0$. Posons
+    $D_n=B_n(X+1)-B_n(X)$ ; $D_1=1$. Si $D_{n-1}=(n-1)X^{n-2}$, alors
+    $D_n'=nD_{n-1}=n(n-1)X^{n-2}$, donc $D_n=nX^{n-1}+D_n(0)$ avec
+    $D_n(0)=B_n(1)-B_n(0)=0$ :
+    $\res{B_n(X+1)-B_n(X)=nX^{n-1}}$. \pts{1 pt}
+  \item Avec $n=p+1$, en sommant de $k=0$ à $N-1$ (télescopage) :
+    \[\sum_{k=0}^{N-1}k^{p}=\frac{1}{p+1}\sum_{k=0}^{N-1}\bigl(B_{p+1}(k+1)-B_{p+1}(k)\bigr)
+      =\res{\frac{B_{p+1}(N)-B_{p+1}(0)}{p+1}}.\]
+    Pour $p=2$ :
+    $\frac13\bigl(N^{3}-\frac32N^{2}+\frac12N\bigr)=\res{\dfrac{N(N-1)(2N-1)}{6}}$.
+    \pts{1 pt}
+  \item $C_n=(-1)^{n}B_n(1-X)$ vérifie $C_0=1$,
+    $C_n'=(-1)^{n+1}nB_{n-1}(1-X)=nC_{n-1}$, et
+    $\int_0^{1}C_n=(-1)^{n}\int_0^{1}B_n=0$ : par unicité, $C_n=B_n$, soit
+    $\res{B_n(1-X)=(-1)^{n}B_n(X)}$. Pour $n=2p+1$, en $X=\frac12$ :
+    $B_n(\frac12)=-B_n(\frac12)$, donc $0$ ; en $X=0$ :
+    $B_n(1)=-B_n(0)$ et $B_n(1)=B_n(0)$ (question 3), donc
+    $\res{B_{2p+1}(0)=0}$. \pts{1 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=6.4cm,y=5cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-0.03,0) -- (1.1,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-0.52) -- (0,0.56);
+  \draw[otRule,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (0.5,-0.52) -- (0.5,0.52);
+  \draw[otNavy!40,line width=1pt] plot[domain=0:1,samples=10] (\x,{\x-0.5});
+  \draw[otGreenDark,line width=1.1pt] plot[domain=0:1,samples=60] (\x,{\x*\x-\x+1/6});
+  \draw[otOrange,line width=1.1pt] plot[domain=0:1,samples=60] (\x,{\x*\x*\x-1.5*\x*\x+0.5*\x});
+  \draw[otNavy,line width=1.1pt] plot[domain=0:1,samples=80] (\x,{\x^4-2*\x^3+\x*\x-1/30});
+  \node[font=\scriptsize,anchor=north] at (1,-0.01) {$1$};
+  \node[font=\scriptsize,anchor=north] at (0.5,-0.52) {$\frac12$};
+  \node[font=\scriptsize,anchor=east] at (0,0.5) {$\frac12$};
+  \node[font=\scriptsize,anchor=east] at (0,-0.5) {$-\frac12$};
+  \node[font=\scriptsize,text=otNavy!60,anchor=west] at (1.01,0.5) {$B_1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (1.01,0.1667) {$B_2$};
+  \node[font=\scriptsize,text=otOrange!85!black,anchor=south] at (0.21,0.05) {$B_3$};
+  \node[font=\scriptsize,text=otNavy,anchor=west] at (1.01,-0.0333) {$B_4$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{$B_1,\dots,B_4$ sur $\intFF01$ : symétriques (indice pair) ou
+antisymétriques (indice impair) par rapport à $\frac12$, d'intégrale nulle.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{L'équation de Cauchy}
+\begin{questions}
+  \item $f(0)=f(0+0)=2f(0)$ donne $\res{f(0)=0}$ ; puis
+    $f(x)+f(-x)=f(0)=0$ : $f$ est \res{\text{impaire}}. Par récurrence,
+    $f\bigl((n+1)x\bigr)=f(nx)+f(x)=(n+1)f(x)$ pour $n\in\N$, et l'imparité
+    étend la formule à $n\in\Z$ : $\res{f(nx)=nf(x)}$. \pts{1 pt}
+  \item Soit $r=\frac pq$ ($p\in\Z$, $q\in\N^{*}$). D'après la question 1,
+    $q\,f(r)=f(qr)=f(p)=p\,f(1)$, donc $\res{f(r)=ar}$. \pts{1 pt}
+  \item Soit $x\in\R$. Par densité de $\mathbb{Q}$ dans $\R$, il existe une
+    suite de rationnels $r_k\to x$ ; par continuité,
+    $f(x)=\lim f(r_k)=\lim ar_k=\res{ax}$. \pts{1 pt}
+  \item Soit $x\in\R$ et $r<x<s$ rationnels : $ar=f(r)\leqslant f(x)\leqslant f(s)=as$.
+    En faisant tendre $r$ et $s$ vers $x$ (densité), $\res{f(x)=ax}$.
+    \pts{1 pt}
+  \item $h=g-g(0)$ est continue, vérifie la même relation et $h(0)=0$. Avec
+    $y=0$ : $h\bigl(\frac x2\bigr)=\frac{h(x)}2$, d'où
+    $h(x+y)=2h\bigl(\frac{x+y}{2}\bigr)=h(x)+h(y)$. Par la question 3,
+    $h(x)=\alpha x$ : $\res{g(x)=\alpha x+g(0)}$ est affine. \pts{1 pt}
+\end{questions}
+\end{corrigeEval}

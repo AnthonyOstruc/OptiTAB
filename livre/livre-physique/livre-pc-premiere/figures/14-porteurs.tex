@@ -1,0 +1,16 @@
+% Courant électrique dans un fil métallique : déplacement des électrons et sens conventionnel (L'essentiel, chapitre 14)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  elec/.style={circle,fill=otNavy!80,inner sep=0pt,minimum size=2.6mm,text=white,font=\otSemi\fontsize{6}{6}\selectfont}]
+\shade[top color=otOrange!25,bottom color=otOrange!55,middle color=otOrange!12] (0,0) rectangle (8,1.2);
+\draw[otOrange!70!black,line width=0.5pt] (0,0) -- (8,0) (0,1.2) -- (8,1.2);
+\draw[otOrange!70!black,line width=0.5pt] (0,0.6) ellipse (0.18 and 0.6);
+\draw[otGreenDark,line width=0.7pt,dash pattern=on 2pt off 1.2pt,fill=otGreen!15,fill opacity=0.6] (4.5,0.6) ellipse (0.18 and 0.6);
+\node[pcLegende,anchor=north,text=otGreenDark,align=center] at (4.5,-0.08) {section du fil};
+\foreach \x/\y in {0.7/0.35,1.4/0.85,2.1/0.45,2.9/0.8,3.6/0.3,5.3/0.55,6.0/0.9,6.7/0.35,7.4/0.75}{%
+  \node[elec] at (\x,\y) {$-$};
+  \draw[otNavy,line width=0.6pt,-{Stealth[length=1.3mm]}] ({\x-0.17},\y) -- ({\x-0.55},\y);}
+\node[pcLegende,anchor=south,text=otNavy] at (2.2,1.25) {électrons libres : déplacement d'ensemble lent};
+\draw[otRed!80!black,line width=1.3pt,-{Stealth[length=2.6mm]}] (5.6,1.75) -- (7.6,1.75) node[pcLegende,anchor=west,text=otRed!80!black] {$I$};
+\node[pcLegende,anchor=south,text=otRed!80!black] at (6.6,1.82) {sens conventionnel du courant};
+\end{tikzpicture}
+\par\smallskip\legende{Les électrons se déplacent en sens inverse du sens conventionnel du courant. L'intensité mesure la charge qui traverse une section par seconde.}

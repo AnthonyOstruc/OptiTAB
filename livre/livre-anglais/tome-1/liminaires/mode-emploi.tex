@@ -1,0 +1,81 @@
+%% =====================================================================
+%%  Mode d'emploi : la structure d'une unité et les repères du livre
+%% =====================================================================
+\liminaire{mode}{Mode d'emploi}{Une unité en sept étapes, toujours dans le même ordre}
+
+Les vingt unités du livre sont construites sur le même modèle. Après une page d'ouverture qui
+présente la situation, les objectifs et votre programme de la semaine, chaque unité enchaîne
+sept rubriques, repérables à leur couleur et à leur pictogramme.\par\vspace{5mm}
+
+\newcommand{\otEtape}[5]{% clé de rubrique, titre, texte, durée, exemple
+  \noindent\begin{tikzpicture}[baseline=(t.north)]
+    \fill[\otRubCoul{#1},rounded corners=2.4mm] (0,-11mm) rectangle (11mm,0);
+    \otDessinIcone{\otRubIco{#1}}{white}{\otRubCoul{#1}}{6.6mm}{(5.5mm,-5.5mm)}
+    \node[anchor=north west,inner sep=0pt] (t) at (0,0) {};
+  \end{tikzpicture}\hspace{4mm}%
+  \begin{minipage}[t]{\dimexpr\linewidth-15mm\relax}
+    {\otSemi\fontsize{7.2}{9}\selectfont\color{\otRubCoul{#1}}\otCaps[12]{\otRubEN{#1}}}\hspace{2mm}%
+    {\otSemi\fontsize{12}{14}\selectfont #2}\hfill{\otRegular\fontsize{8.4}{10}\selectfont\color{otMuted}#4}\par\vspace{1mm}
+    {\fontsize{10.2}{13}\selectfont #3\par}
+    \if\relax\detokenize{#5}\relax\else\vspace{1mm}{\fontsize{9.4}{12}\selectfont\color{otMuted}#5\par}\fi
+  \end{minipage}\par\vspace{5mm}}
+
+\otEtape{ecouter}{Dialogues}{Deux scènes de la vie de Léa, en anglais avec leur traduction. Chaque
+  dialogue existe en \textbf{version lente} et en \textbf{version normale}. Les expressions à retenir
+  sont surlignées ; les numéros orange renvoient aux explications « Bien comprendre ».}{30 min}{}
+\otEtape{mots}{Vocabulaire}{Les mots et expressions de l'unité, classés par situation, avec leur
+  prononciation et leur traduction. Une piste audio pour les écouter et les répéter.}{30 min}{}
+\otEtape{grammaire}{Grammaire}{Une ou deux règles, expliquées en français avec des tableaux clairs, des
+  exemples et les pièges typiques des francophones.}{30 min}{}
+\otEtape{sons}{Prononciation}{Un son difficile pour les francophones, avec la technique pour le
+  produire et des paires de mots pour entraîner votre oreille.}{15 min}{}
+\otEtape{culture}{Culture}{Les usages du monde anglophone : ce qui se dit, ce qui se fait… et les
+  erreurs à éviter.}{15 min}{}
+\otEtape{pratique}{Exercices}{Une douzaine d'exercices progressifs pour lire, écrire, écouter et parler.
+  Tous sont corrigés et expliqués en fin de livre.}{30 min}{}
+\otEtape{bilan}{Bilan}{L'essentiel de l'unité sur une page, une auto-évaluation et un test express
+  de dix questions pour vérifier vos acquis.}{30 min}{}
+
+\clearpage
+\otIntertitre{Les repères du livre}
+\begin{paire}
+\begin{regle}[Grammaire]
+Les règles à connaître, présentées simplement, avec des exemples.
+\end{regle}
+\begin{attention}[Pièges]
+Les erreurs typiques des francophones :\par\vspace{1mm}
+\fauxjuste{I call me Léa.}{My name is Léa.}
+\end{attention}
+\end{paire}
+\begin{paire}
+\begin{astuce}[Méthode]
+Des conseils concrets pour apprendre plus vite et retenir plus longtemps.
+\end{astuce}
+\begin{culture}[Usages]
+Les codes sociaux et les différences entre le Royaume-Uni et les États-Unis.
+\end{culture}
+\end{paire}
+
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt]
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}m{30mm}@{\hspace{5mm}}Y@{}}
+\otPastillePiste{1.05} & \textbf{Une piste audio.} Le premier nombre est celui de l'unité, le second celui de la
+  piste ; puis la durée. Scannez le QR code voisin pour l'écouter.\\[3mm]
+\otCompetence{1}{casque}\otCompetence{1}{micro}\otCompetence{1}{livre}\otCompetence{1}{crayon} &
+  \textbf{Les compétences travaillées} par un exercice : écouter, parler, lire, écrire.\\[3mm]
+\otDifficulte{1}\hspace{3mm}\otDifficulte{3} & \textbf{La difficulté} d'un exercice : de un point (facile) à trois points
+  (plus exigeant).\\[3mm]
+{\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}corrigé p.~123} & \textbf{Le renvoi au corrigé}, en fin de livre. Les
+  corrigés renvoient de même à la page de l'exercice.\\[3mm]
+\hl{\enb{Nice to meet you}}\,\note{2} & \textbf{Dans les dialogues}, les expressions à retenir sont surlignées ;
+  les numéros renvoient aux explications « Bien comprendre ».\\[3mm]
+\ipa{həˈloʊ} & \textbf{La prononciation} en alphabet phonétique, entre barres obliques. Le guide des
+  sons, page~\pageref{lim-sons}, vous apprend à la lire.\\
+\end{tabularx}
+\end{tcolorbox}
+
+\otIntertitre{En fin de livre}
+\begin{tcbraster}[raster columns=3,raster equal height=rows,raster column skip=3.5mm,raster before skip=1mm]
+\otCartePrg{coche}{otGreenDark}{Corrigés}{Toutes les réponses, avec des explications pas à pas, des « À retenir » et les erreurs fréquentes.}
+\otCartePrg{casque}{otNavy}{Transcriptions}{Le texte de toutes les pistes d'exercices, pour vérifier ce que vous avez entendu.}
+\otCartePrg{livre}{otOrangeDark}{Lexique}{Tous les mots du tome, de l'anglais vers le français, avec leur prononciation.}
+\end{tcbraster}

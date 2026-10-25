@@ -1,0 +1,338 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[gravitation]{11}{Interactions fondamentales et champs}{Partie 2 · Mouvement et interactions}
+{Charge électrique\enspace·\enspace Loi de Coulomb\enspace·\enspace Gravitation\enspace·\enspace Champ électrostatique\enspace·\enspace Champ de gravitation}
+\objectif{Interpréter des expériences d'électrisation et d'influence électrostatique.}
+\objectif{Utiliser la loi de Coulomb et la loi de la gravitation universelle, y compris sous forme vectorielle.}
+\objectif{Citer les analogies entre l'interaction électrostatique et l'interaction gravitationnelle.}
+\objectif{Utiliser les expressions vectorielles des champs électrostatique et de gravitation.}
+\objectif{Caractériser localement une ligne de champ ; exploiter une carte de champ.}
+\prerequis{Charge électrique élémentaire, structure de l'atome (classe de seconde).}
+\prerequis{Vecteurs, forces, poids $P=m\,g$ (classe de seconde) ; puissances de dix.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Charges électriques et interaction électrostatique}
+\begin{definition}[Charge électrique]
+La charge électrique d'un corps, en coulombs (C), est un multiple entier de la charge élémentaire $e=\qty{1,60e-19}{C}$ :
+$q=\pm n\,e$. Un corps s'électrise par \textbf{frottement} ou par \textbf{contact}, en gagnant des électrons (il devient négatif) ou en
+en perdant (il devient positif). Deux corps chargés de même signe se repoussent ; de signes opposés, ils s'attirent.
+\end{definition}
+\begin{propriete}[Influence électrostatique]
+Un corps chargé approché d'un corps neutre déplace les charges de celui-ci : la face proche porte une charge de signe
+opposé, la face éloignée une charge de même signe. L'attraction l'emporte, car les charges opposées sont plus proches :
+un corps chargé attire les corps neutres légers.
+\end{propriete}
+\schema{11-influence}
+\essSection{2}{La loi de Coulomb}
+\begin{loi}[Loi de Coulomb]
+Deux charges ponctuelles $q_\mathrm{A}$ et $q_\mathrm{B}$, séparées de la distance $d$, exercent l'une sur l'autre des forces de même valeur :
+\[F=k\,\frac{|q_\mathrm{A}\,q_\mathrm{B}|}{d^2}\qquad\text{et}\qquad\vec{F}_{\mathrm{A}/\mathrm{B}}=k\,\frac{q_\mathrm{A}\,q_\mathrm{B}}{d^2}\,\vec{u}_{\mathrm{AB}},\qquad k=\qty{9,0e9}{N.m^2.C^{-2}},\]
+où $\vec{u}_{\mathrm{AB}}$ est le vecteur unitaire dirigé de A vers B. Par exemple, deux charges de \qty{10}{nC} distantes de \qty{10}{cm} se
+repoussent avec une force de \qty{9,0e-5}{N}.
+\end{loi}
+\schema{11-coulomb}
+\essSection{3}{L'interaction gravitationnelle}
+\begin{loi}[Loi de la gravitation universelle]
+Deux corps à symétrie sphérique de masses $m_\mathrm{A}$ et $m_\mathrm{B}$, de centres distants de $d$, s'attirent :
+\[F=G\,\frac{m_\mathrm{A}\,m_\mathrm{B}}{d^2}\qquad\text{et}\qquad\vec{F}_{\mathrm{A}/\mathrm{B}}=-G\,\frac{m_\mathrm{A}\,m_\mathrm{B}}{d^2}\,\vec{u}_{\mathrm{AB}},\qquad G=\qty{6,67e-11}{N.m^2.kg^{-2}}.\]
+La Terre et la Lune s'attirent ainsi avec une force de \qty{1,98e20}{N}.
+\end{loi}
+\begin{propriete}[Analogies et différences]
+\par\smallskip\noindent\hfill\begin{tabular}{lll}
+\toprule
+ & Interaction électrostatique & Interaction gravitationnelle \\
+\midrule
+Grandeur en jeu & charge $q$ (C) & masse $m$ (kg) \\
+Dépendance avec la distance & en $\dfrac{1}{d^2}$ & en $\dfrac{1}{d^2}$ \\
+Sens & attractive ou répulsive & toujours attractive \\
+Domaine dominant & atomes, molécules, matière & astres, chute des corps \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{propriete}
+\essSection{4}{La notion de champ}
+\begin{definition}[Champs électrostatique et de gravitation]
+Un objet chargé crée en tout point de l'espace un \textbf{champ électrostatique} $\vec{E}$ (en \unit{V.m^{-1}} ou \unit{N.C^{-1}}) ; une charge $q$ placée
+en ce point subit la force $\vec{F}=q\,\vec{E}$. De même, une masse crée un \textbf{champ de gravitation} $\vec{g}$ (en \unit{N.kg^{-1}}) ; une
+masse $m$ y subit la force $\vec{F}=m\,\vec{g}$. Pour une charge ponctuelle $q$ et un astre de masse $M$, à la distance $d$ :
+\[\vec{E}=k\,\frac{q}{d^2}\,\vec{u}\qquad\qquad\vec{g}=-G\,\frac{M}{d^2}\,\vec{u},\qquad\text{$\vec{u}$ étant dirigé de la source vers le point.}\]
+À la surface de la Terre, $g=G\,\dfrac{M_\mathrm{T}}{R_\mathrm{T}^2}=\qty{9,81}{N.kg^{-1}}$.
+\end{definition}
+\begin{propriete}[Lignes de champ, champ uniforme]
+Une \textbf{ligne de champ} est tangente en chacun de ses points au vecteur champ et orientée dans son sens. Les lignes sont
+d'autant plus serrées que le champ est intense. Entre deux plaques parallèles soumises à la tension $U$ et distantes de $d$,
+le champ est \textbf{uniforme} : il garde la même direction, le même sens et la même valeur $E=\dfrac{U}{d}$, de la plaque positive vers la
+plaque négative.
+\end{propriete}
+\schema{11-champs}
+\schema{11-champ-g}
+\begin{python}
+G, M, R = 6.67e-11, 5.97e24, 6.37e6        # SI : Terre
+for h in [0, 400e3, 2000e3, 35786e3]:      # altitudes en m
+    g = G * M / (R + h)**2
+    print(round(h / 1000), 'km :', round(g, 2), 'N/kg')
+\end{python}
+\begin{console}
+0 km : 9.81 N/kg
+400 km : 8.69 N/kg
+2000 km : 5.68 N/kg
+35786 km : 0.22 N/kg
+\end{console}
+\noindent\capacite{Capacité numérique} Le programme calcule la valeur du champ de gravitation terrestre à différentes altitudes : la
+distance au centre de la Terre vaut $R+h$. À l'altitude de la Station spatiale internationale, le champ vaut encore
+\qty{89}{\percent} de sa valeur au sol.
+\begin{propriete}[Quelques ordres de grandeur]
+\par\smallskip\noindent\hfill\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Champ de gravitation & \unit{N.kg^{-1}} & Champ électrostatique & \unit{V.m^{-1}} \\
+\midrule
+Surface de la Terre & \num{9,81} & Air au sol, par beau temps & $\approx10^2$ \\
+Station spatiale (\qty{400}{km}) & \num{8,69} & Sol, sous un nuage d'orage & $\approx10^4$ \\
+Surface de la Lune & \num{1,62} & Étincelle dans l'air & $\approx\num{3e6}$ \\
+Orbite géostationnaire & \num{0,22} & Électron de l'atome d'hydrogène & $\approx\num{5e11}$ \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{propriete}
+\begin{attention}
+Ne pas confondre une force et un champ : le champ existe en un point même en l'absence de charge ou de masse pour le
+« ressentir ». Dans les lois de Coulomb et de Newton, $d$ est la distance entre les \emph{centres}, pas l'altitude ; et les
+charges et distances s'expriment en unités du Système international (C et m).
+\end{attention}
+\begin{experience}[Visualiser des lignes de champ]
+Dans une cuve contenant de l'huile de ricin, on saupoudre des grains de semoule et l'on plonge deux électrodes reliées à
+un générateur de haute tension. Les grains s'alignent le long des lignes de champ : rayonnantes autour d'une électrode
+ponctuelle, parallèles entre deux plaques.
+\end{experience}
+\begin{rediger}
+Pour une force : préciser sa direction, son sens et sa valeur, et faire un schéma. Pour un calcul, écrire la loi
+littérale, convertir les données en unités SI (nC en C, cm en m, km en m), puis calculer en notation scientifique.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-11-1}
+\begin{exercice}[1]{Électriser une règle}
+On frotte une règle en plastique avec un chiffon de laine : la règle acquiert une charge $q=\qty{-3,2}{nC}$.
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item La règle a-t-elle gagné ou perdu des électrons ? Combien ?
+\item Quelle est la charge du chiffon après le frottement ? Justifier.
+\item La règle attire de petits morceaux de papier neutres. Expliquer.
+\item Pourquoi une règle métallique tenue à la main ne s'électrise-t-elle pas de la même manière ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-2}
+\begin{exercice}[1]{Appliquer la loi de Coulomb}
+\schema{11-ex02}
+\begin{donnees}
+$k=\qty{9,0e9}{N.m^2.C^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Les charges s'attirent-elles ou se repoussent-elles ?
+\item Calculer la valeur de la force exercée par A sur B.
+\item Représenter les deux forces avec l'échelle \qty{1}{cm} pour \qty{1,0e-5}{N}.
+\item Que devient la valeur de la force si la distance double ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-3}
+\begin{exercice}[1]{La Terre et la Lune}
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$ ; $M_\mathrm{T}=\qty{5,97e24}{kg}$ ; $M_\mathrm{L}=\qty{7,35e22}{kg}$ ; $M_\mathrm{S}=\qty{1,99e30}{kg}$ ; distance Terre-Lune \qty{3,84e8}{m} ;
+distance Terre-Soleil \qty{1,50e11}{m}.
+\end{donnees}
+\begin{questions}
+\item Calculer la valeur de la force exercée par la Terre sur la Lune.
+\item Quelle est la valeur de la force exercée par la Lune sur la Terre ? Représenter les deux forces sur un schéma.
+\item Calculer la force exercée par le Soleil sur la Terre.
+\item Combien de fois l'attraction du Soleil sur la Terre dépasse-t-elle celle de la Lune ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-4}
+\begin{exercice}[1]{Le champ de pesanteur terrestre}
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$ ; $M_\mathrm{T}=\qty{5,97e24}{kg}$ ; $R_\mathrm{T}=\qty{6,37e6}{m}$. La Station spatiale internationale orbite à \qty{400}{km} d'altitude.
+\end{donnees}
+\begin{questions}
+\item Calculer la valeur du champ de gravitation à la surface de la Terre.
+\item Calculer le poids d'un astronaute de \qty{70}{kg} au sol.
+\item Calculer le champ de gravitation à l'altitude de la station, puis la force exercée par la Terre sur l'astronaute.
+\item L'astronaute « flotte » dans la station. Est-ce parce que la Terre ne l'attire plus ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-5}
+\begin{exercice}[1]{Lire une carte de champ}
+\schema{11-ex05}
+\begin{questions}
+\item Indiquer le signe de la charge placée en A et de celle placée en B. Justifier.
+\item Représenter, sans souci d'échelle, la direction et le sens du champ aux points M, N et P.
+\item Représenter la force subie par une charge négative placée en chacun de ces points.
+\item En quel point, de M ou de N, le champ est-il le plus intense ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-11-6}
+\begin{exercice}[2]{Le champ de gravitation en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Pourquoi le programme utilise-t-il \code{R + h} et non \code{h} ?
+\item Prévoir la valeur affichée pour une altitude de \qty{10000}{km}.
+\item À quelle altitude le champ est-il divisé par 4 par rapport au sol ? Justifier sans calcul numérique.
+\item Modifier le programme pour calculer le champ à la surface de la Lune ($M=\qty{7,35e22}{kg}$, $R=\qty{1,74e6}{m}$).
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-7}
+\begin{exercice}[2]{L'atome d'hydrogène}
+Dans le modèle de Bohr, l'électron de l'atome d'hydrogène tourne autour du proton à la distance $r=\qty{5,3e-11}{m}$.
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$ ; $m_\mathrm{e}=\qty{9,11e-31}{kg}$ ; $m_\mathrm{p}=\qty{1,67e-27}{kg}$ ; $k=\qty{9,0e9}{SI}$ ; $G=\qty{6,67e-11}{SI}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la force électrostatique exercée par le proton sur l'électron. Est-elle attractive ou répulsive ?
+\item Calculer la force de gravitation entre ces deux particules.
+\item Calculer le rapport de ces deux forces. Quelle interaction assure la cohésion de l'atome ?
+\item Pourquoi, à l'échelle des astres, est-ce au contraire la gravitation qui domine ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-8}
+\begin{exercice}[2]{Deux lois si semblables}
+\begin{questions}
+\item Écrire la loi de Coulomb et la loi de la gravitation universelle sous forme vectorielle.
+\item Citer deux analogies entre ces lois.
+\item Citer deux différences.
+\item Expliquer pourquoi le signe « $-$ » apparaît dans l'expression vectorielle de la force de gravitation et pas dans
+celle de la loi de Coulomb.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-9}
+\begin{exercice}[2]{Un électron dans un condensateur}
+\schema{11-ex09}
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$ ; $m_\mathrm{e}=\qty{9,11e-31}{kg}$ ; $g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la valeur du champ électrostatique entre les plaques. Représenter quelques lignes de champ.
+\item Calculer la valeur de la force électrostatique subie par l'électron et la représenter.
+\item Calculer le poids de l'électron. Que peut-on conclure ?
+\item Que se passerait-il pour un proton placé au même endroit ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-10}
+\begin{exercice}[2]{Le pendule électrostatique}
+\schema{11-ex10}
+\begin{questions}
+\item Étape 1 : la boule est neutre. Expliquer pourquoi elle est attirée par la règle. Représenter la répartition des charges.
+\item Étape 2 : que se passe-t-il au moment du contact ?
+\item Étape 3 : expliquer pourquoi la boule est maintenant repoussée.
+\item Que se passerait-il avec une règle chargée positivement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-11}
+\begin{exercice}[2]{Entre la Terre et la Lune}
+Un vaisseau va de la Terre à la Lune. Il existe sur le trajet un point P où les champs de gravitation de la Terre et de la
+Lune se compensent.
+\begin{donnees}
+$M_\mathrm{T}=\qty{5,97e24}{kg}$ ; $M_\mathrm{L}=\qty{7,35e22}{kg}$ ; $d_\mathrm{TL}=\qty{3,84e8}{m}$.
+\end{donnees}
+\begin{questions}
+\item Que dire des deux champs en P ? Faire un schéma.
+\item On note $x$ la distance entre le centre de la Terre et P. Montrer que $\dfrac{M_\mathrm{T}}{x^2}=\dfrac{M_\mathrm{L}}{(d_\mathrm{TL}-x)^2}$.
+\item En déduire que $\dfrac{x}{d_\mathrm{TL}-x}=\sqrt{\dfrac{M_\mathrm{T}}{M_\mathrm{L}}}$, puis calculer $x$.
+\item Pourquoi ce point est-il beaucoup plus proche de la Lune que de la Terre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-11-12}
+\begin{exercice}[3]{La photocopieuse}
+\begin{docu}{1}{Le principe}
+Dans une photocopieuse laser, un tambour est chargé électriquement aux endroits correspondant au texte. Des grains de
+poudre, le toner, chargés de signe opposé, sont attirés par ces zones, puis transférés et fixés sur le papier.
+\end{docu}
+\begin{docu}{2}{Un grain de toner}
+Un grain sphérique de diamètre \qty{10}{\micro m}, de masse volumique \qty{1,2e3}{kg.m^{-3}}, porte la charge $q=\qty{2,0e-14}{C}$. Près du tambour, le
+champ électrostatique vaut environ \qty{1,0e6}{V.m^{-1}}.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$ ; $e=\qty{1,60e-19}{C}$ ; volume d'une sphère : $V=\dfrac{4}{3}\,\pi\,r^3$.
+\end{donnees}
+\begin{questions}
+\item Combien de charges élémentaires porte un grain ?
+\item Calculer la masse puis le poids d'un grain.
+\item Calculer la force électrostatique subie par un grain près du tambour.
+\item \initiative Comparer ces deux forces et conclure sur le fonctionnement de la photocopieuse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-13}
+\begin{exercice}[3]{Un satellite géostationnaire}
+\begin{docu}{1}{Une orbite particulière}
+Un satellite géostationnaire tourne autour de la Terre en 23~h~56~min, dans le plan de l'équateur, à \qty{35786}{km} d'altitude :
+il paraît immobile vu du sol, ce qui permet de pointer les antennes une fois pour toutes.
+\end{docu}
+\begin{docu}{2}{Le satellite}
+Masse : \qty{3000}{kg}.
+\end{docu}
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$ ; $M_\mathrm{T}=\qty{5,97e24}{kg}$ ; $R_\mathrm{T}=\qty{6,37e6}{m}$ ; $g_0=\qty{9,81}{N.kg^{-1}}$ au sol.
+\end{donnees}
+\begin{questions}
+\item Calculer la distance entre le satellite et le centre de la Terre.
+\item Calculer le champ de gravitation terrestre à cette distance.
+\item Calculer la force exercée par la Terre sur le satellite et la comparer à son poids au sol.
+\item \initiative Exprimer le champ à l'altitude $h$ en fonction de $g_0$, $R_\mathrm{T}$ et $h$, et vérifier le résultat de la question 2.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-14}
+\begin{exercice}[3]{L'expérience de Millikan}
+\begin{docu}{1}{Mesurer la charge élémentaire}
+En 1909, Robert Millikan pulvérise de fines gouttelettes d'huile entre deux plaques horizontales. Certaines se chargent
+par frottement. En réglant la tension entre les plaques, il immobilise une gouttelette : la force électrostatique compense
+alors son poids. Il montre ainsi que toutes les charges sont des multiples d'une même charge.
+\end{docu}
+\begin{docu}{2}{Le dispositif}
+\schema{11-ex14}
+La gouttelette étudiée, chargée négativement, a pour masse \qty{2,94e-15}{kg}.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$ ; $e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Faire l'inventaire des forces qui s'exercent sur la gouttelette immobile et les représenter.
+\item Quelle plaque doit être chargée positivement ? Justifier.
+\item Calculer le champ entre les plaques, puis la charge de la gouttelette.
+\item \initiative Vérifier que cette charge est un multiple de la charge élémentaire.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-15}
+\begin{exercice}[3]{Peser la Terre}
+\begin{docu}{1}{Une idée de Cavendish}
+En 1798, Henry Cavendish mesure la constante $G$ à l'aide d'une balance de torsion. On dit souvent qu'il a ainsi « pesé la
+Terre » : connaissant $G$, le rayon terrestre et la valeur du champ de pesanteur, on peut en effet en déduire la masse de la
+Terre.
+\end{docu}
+\begin{docu}{2}{Des roches}
+Les roches de la croûte terrestre ont une masse volumique d'environ \qty{2,7e3}{kg.m^{-3}}.
+\end{docu}
+\begin{donnees}
+$G=\qty{6,67e-11}{N.m^2.kg^{-2}}$ ; $R_\mathrm{T}=\qty{6,37e6}{m}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; volume d'une sphère : $\dfrac{4}{3}\,\pi\,R^3$.
+\end{donnees}
+\begin{questions}
+\item Exprimer la masse de la Terre en fonction de $g$, $R_\mathrm{T}$ et $G$.
+\item Calculer la masse de la Terre.
+\item \initiative Calculer la masse volumique moyenne de la Terre et la comparer à celle des roches de surface.
+\item Que peut-on en déduire sur l'intérieur de la Terre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

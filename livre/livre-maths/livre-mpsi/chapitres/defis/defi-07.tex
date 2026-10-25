@@ -1,0 +1,71 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 7 — Le chiffrement RSA
+%% Résultats vérifiés par verifications/defis_06_10.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le chiffrement RSA}{2 h}
+Inventé en 1977 par Rivest, Shamir et Adleman, le système RSA protège
+aujourd'hui l'essentiel des échanges sur Internet. Il repose uniquement
+sur l'arithmétique du chapitre : congruences, théorème de Bézout et petit
+théorème de Fermat. On note $\varphi(n)$ le nombre d'entiers de
+$\intFF{1}{n}$ premiers avec $n$ (indicatrice d'Euler).
+
+\partieExo{A}{Les outils}
+\begin{questions}
+  \item Soit $p$ premier. Montrer que $\varphi(p)=p-1$. Soient $p\neq q$
+    premiers : en comptant les multiples de $p$ et de $q$ dans
+    $\intFF{1}{pq}$, montrer que $\varphi(pq)=(p-1)(q-1)$.
+  \item Soient $p\neq q$ premiers, $n=pq$, et $a$ premier avec $n$.
+    Montrer que $a^{(p-1)(q-1)}\equiv1\pmod n$. \emph{Appliquer le petit
+    théorème de Fermat modulo $p$ et modulo $q$.}
+\end{questions}
+
+\partieExo{B}{Le protocole, sur un exemple}
+Bob choisit $p=61$ et $q=53$, calcule $n=pq$ et $\varphi(n)$, puis choisit
+l'exposant public $e=17$. Il publie la \emph{clé publique} $(n,e)$ et garde
+secrète la \emph{clé privée} $d$, inverse de $e$ modulo $\varphi(n)$.
+\begin{questions}[resume]
+  \item Calculer $n$ et $\varphi(n)$, vérifier que $e$ et $\varphi(n)$ sont
+    premiers entre eux, puis déterminer $d\in\intFF{1}{\varphi(n)}$ par
+    l'algorithme d'Euclide étendu.
+  \item Alice veut envoyer le message $m=65$. Elle calcule
+    $c\equiv m^{e}\pmod n$. Effectuer ce calcul par \emph{exponentiation
+    rapide} : calculer successivement $m^{2},m^{4},m^{8},m^{16}$ modulo $n$.
+  \item Bob reçoit $c$ et calcule $c^{d}\bmod n$. Justifier qu'il peut
+    réduire ce calcul à deux calculs modulo $61$ et modulo $53$, avec des
+    exposants réduits, et vérifier qu'il retrouve $m$.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[line cap=round,
+  boite/.style={draw=otNavy,line width=0.7pt,fill=otNavyTint,rounded corners=1.6mm,
+    align=center,font=\scriptsize,text=otInk,inner sep=2.2mm,minimum height=11mm}]
+  \node[boite,text width=30mm] (b1) at (0,0) {\textbf{Bob}\\ choisit $p,q$ secrets\\ publie $(n,e)$};
+  \node[boite,text width=30mm] (a1) at (5,0) {\textbf{Alice}\\ calcule\\ $c\equiv m^{e}\pmod n$};
+  \node[boite,text width=30mm,draw=otGreenDark,fill=otGreenTint] (b2) at (10,0)
+    {\textbf{Bob}\\ calcule\\ $c^{d}\equiv m\pmod n$};
+  \draw[otNavy,line width=0.9pt,-{Stealth[length=2.2mm]}] (b1) -- node[above,font=\tiny,text=otMuted]{clé publique} (a1);
+  \draw[otGreenDark,line width=0.9pt,-{Stealth[length=2.2mm]}] (a1) -- node[above,font=\tiny,text=otMuted]{envoi de $c$} (b2);
+  \node[font=\tiny,text=otMuted,align=center] at (5,-1.25) {un espion voit $(n,e)$ et $c$,\\ mais ne connaît pas $d$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Le protocole RSA : tout le monde peut chiffrer avec la clé
+publique, seul Bob peut déchiffrer avec la clé privée $d$.}
+\end{center}
+
+\partieExo{C}{Pourquoi ça marche, pourquoi c'est sûr}
+\begin{questions}[resume]
+  \item Montrer que pour \emph{tout} entier $m$ (même non premier avec
+    $n$), $m^{ed}\equiv m\pmod n$. \emph{Traiter séparément, modulo $p$, le
+    cas $p\mid m$.}
+  \item Montrer que connaître $n$ et $\varphi(n)$ permet de retrouver $p$
+    et $q$ comme racines d'un trinôme. Faire le calcul pour $n=3233$,
+    $\varphi(n)=3120$. Commenter : la sécurité de RSA repose sur la
+    difficulté de factoriser $n$ (en pratique, $p$ et $q$ ont plusieurs
+    centaines de chiffres).
+  \item Montrer que le calcul de $a^{k}\bmod n$ par exponentiation rapide
+    demande au plus $2\log_2k$ multiplications modulo $n$ — c'est ce qui
+    rend le chiffrement praticable, même avec des exposants gigantesques.
+\end{questions}
+\end{defi}

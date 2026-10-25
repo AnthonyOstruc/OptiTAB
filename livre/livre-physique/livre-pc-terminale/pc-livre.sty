@@ -1,0 +1,799 @@
+%% =====================================================================
+%%  pc-livre.sty — Compléments physique-chimie du livre OptiTAB
+%%  Unités, chimie (équations, schémas de Lewis), verrerie et montages,
+%%  documents d'exercices, figures d'énoncé et de corrigé, défis.
+%% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{pc-livre}[2026/10/21 v1.0 Complements physique-chimie OptiTAB]
+
+%% ---------------------------------------------------------------------
+%%  Unités et nombres (conventions françaises)
+%% ---------------------------------------------------------------------
+\RequirePackage{siunitx}
+% Le \nobreak après chaque opérateur empêche de couper une grandeur en fin de ligne (« 2,0 × | 10⁻³ », « mol · | L⁻¹ »).
+\sisetup{locale=FR,per-mode=power,inter-unit-product=\ensuremath{{}\cdot\nobreak{}},
+  exponent-product=\times\nobreak,group-minimum-digits=5,uncertainty-mode=separate}
+\newcommand{\molL}{\unit{mol.L^{-1}}}
+\newcommand{\gL}{\unit{g.L^{-1}}}
+\newcommand{\gmol}{\unit{g.mol^{-1}}}
+\newcommand{\cst}{c^{\circ}}
+\newcommand{\pH}{\mathrm{pH}}
+\newcommand{\pKa}{\mathrm{p}K_{\mathrm{A}}}
+\newcommand{\conc}[1]{[\mathrm{#1}]}
+% Concentration en ion oxonium, écriture usuelle
+\newcommand{\hho}{[\ce{H3O+}]}
+
+%% ---------------------------------------------------------------------
+%%  Chimie : équations (mhchem) et formules (chemfig)
+%% ---------------------------------------------------------------------
+\RequirePackage[version=4]{mhchem}
+% Signe moins des charges et des liaisons : un vrai tiret dans toutes les polices
+\mhchemoptions{textminus={\hspace{0.3ex}\textendash\hspace{0.3ex}}}
+\RequirePackage{chemfig}
+\setchemfig{atom sep=2.05em,bond offset=1.4pt,double bond sep=2.6pt,
+  bond style={line width=0.6pt,otInk},atom style={text=otInk}}
+\setcharge{extra sep=1.1pt,"length=1.45ex,|style={otInk,line width=0.75pt}}
+% Charge formelle entourée, à la française
+\newcommand{\cplus}{\scalebox{0.82}{$\oplus$}}
+\newcommand{\cmoins}{\scalebox{0.82}{$\ominus$}}
+% Mise en valeur d'un groupe caractéristique dans un schéma (cadre vert)
+\tikzset{pcGroupe/.style={draw=otGreenDark,line width=0.7pt,rounded corners=1.6mm,
+  dash pattern=on 2.4pt off 1.4pt}}
+% Flèche courbe d'un mouvement de doublet (du doublet vers l'atome) et charges partielles
+\tikzset{pcCourbe/.style={draw=otRed!85!black,line width=0.7pt,-{Stealth[length=1.9mm,width=1.5mm]},
+  shorten <=0.6pt,shorten >=1pt},
+  pcDelta/.style={font=\otMedium\fontsize{7}{8}\selectfont,inner sep=0.5pt}}
+\setchemfig{arrow style={otInk,line width=0.6pt},arrow head={-{Stealth[length=2mm]}},
+  scheme debug=false}
+% Charges partielles : \dplus, \dmoins (dans un \chemmove ou un nœud TikZ)
+\newcommand{\dplus}{\textcolor{otRed!80!black}{$\delta^{+}$}}
+\newcommand{\dmoins}{\textcolor{otNavy}{$\delta^{-}$}}
+
+%% ---------------------------------------------------------------------
+%%  Rubriques à la suite : on ne change de page que si la place manque
+%%  (le test de \needspace ajoute une pénalité qui provoquait des pages à moitié vides)
+%% ---------------------------------------------------------------------
+\newcommand{\otBesoinPlaceStrict}[1]{%
+  \par\begingroup\setlength{\dimen@}{#1}\dimen@ii\pagegoal\advance\dimen@ii-\pagetotal
+    \ifdim\dimen@>\dimen@ii\ifdim\dimen@ii>\z@\vfil\fi\break\fi
+  \endgroup}
+\patchcmd{\rubrique}{\otBesoinPlace{10\baselineskip}}{\otBesoinPlaceStrict{12\baselineskip}}{}
+  {\PackageError{pc-livre}{Impossible d'adapter la commande rubrique}{}}
+
+%% ---------------------------------------------------------------------
+%%  Encadrés complémentaires de la synthèse de cours
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{loi}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=white,colframe=otNavy,boxrule=0.6pt,
+    arc=1.8mm,rounded corners,top=3.4mm]
+  \otEtiq{otNavy}{Loi}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{experience}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=white,colframe=otGreen!70,boxrule=0.5pt,
+    arc=1.8mm,rounded corners]
+  \otEtiq{otGreenDark}{Activité expérimentale}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{rediger}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=otNavyTint,borderline west={1.3mm}{0pt}{otNavy!55}]
+  \otEtiq{otNavy}{Bien rédiger}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Éléments des énoncés : données, documents, prise d'initiative
+%% ---------------------------------------------------------------------
+% Données numériques d'un exercice
+\NewDocumentEnvironment{donnees}{}{%
+  \begin{tcolorbox}[enhanced,colback=white,colframe=otRule,boxrule=0.4pt,arc=1.6mm,
+    left=3mm,right=3mm,top=1.6mm,bottom=1.6mm,otAvantColle=1.8mm,after skip=1.6mm,
+    fontupper=\fontsize{9.5}{12.5}\selectfont]
+  {\otSemi\fontsize{6.8}{9}\selectfont\color{otMuted}\otCaps[10]{Données}}\enspace}
+  {\end{tcolorbox}}
+% Document d'un problème : \begin{docu}{1}{titre} ... \source{...} \end{docu}
+\NewDocumentEnvironment{docu}{m m}{%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,boxrule=0pt,arc=1.6mm,
+    left=3.5mm,right=3.5mm,top=2mm,bottom=2mm,otAvantColle=1.8mm,after skip=1.8mm,
+    fontupper=\fontsize{9.8}{13}\selectfont]
+  {\otSemi\fontsize{7}{9}\selectfont\color{otNavy}\otCaps[12]{Document #1}}%
+  \enspace{\otMedium\fontsize{9}{11}\selectfont\color{otInk}#2}\par\vspace{1mm}}
+  {\end{tcolorbox}}
+\newcommand{\source}[1]{\par\vspace{0.6mm}{\otLight\fontsize{7.2}{9}\selectfont\color{otMuted}#1}}
+% Question avec prise d'initiative (épreuve écrite)
+\newcommand{\initiative}{\leavevmode\tikz[baseline=(t.base)]\node[fill=otOrange!16,
+  rounded corners=1.2pt,inner xsep=1.4mm,inner ysep=0.7mm,text=otOrange!70!black,
+  font=\otSemi\fontsize{6.2}{7}\selectfont](t){\otCaps[8]{Prise d'initiative}};\enspace}
+% Repère de capacité numérique ou expérimentale dans un énoncé
+\newcommand{\capacite}[1]{\leavevmode\tikz[baseline=(t.base)]\node[fill=otGreenTint,
+  rounded corners=1.2pt,inner xsep=1.4mm,inner ysep=0.7mm,text=otGreenDark,
+  font=\otSemi\fontsize{6.2}{7}\selectfont](t){\otCaps[8]{#1}};\enspace}
+
+%% ---------------------------------------------------------------------
+%%  Figures : une source pour l'énoncé et le corrigé
+%%  \schema{nom} (énoncé) ou \schema[corrige]{nom} ; dans le fichier
+%%  figures/nom.tex, \solution{...} n'apparaît qu'au corrigé.
+%% ---------------------------------------------------------------------
+\newif\ifpcCorrige
+\newcommand{\solution}[1]{\ifpcCorrige #1\fi}
+\newcommand{\enonce}[1]{\ifpcCorrige\else #1\fi}
+\NewDocumentCommand{\schema}{O{enonce} m}{%
+  \par\nopagebreak\vspace{2mm}%
+  \begingroup
+  \ifstrequal{#1}{corrige}{\pcCorrigetrue}{\pcCorrigefalse}%
+  \noindent\begin{minipage}{\linewidth}%
+  \centering\input{figures/#2.tex}\par
+  \end{minipage}\par
+  \endgroup\vspace{1mm}}
+\newcommand{\demarche}[1]{%
+  \par{\otLight\fontsize{9}{12}\selectfont\color{otMuted}#1}\par\vspace{1.4mm}}
+
+% Bloc insécable contrôlé (énoncé ou corrigé avec ses figures)
+\newsavebox{\otBlocLivreBox}
+\newenvironment{blocLivre}[1]{%
+  \def\otBlocLivreId{#1}%
+  \par\addvspace{4mm}\noindent
+  \begin{lrbox}{\otBlocLivreBox}\begin{minipage}{\linewidth}%
+}{%
+  \end{minipage}\end{lrbox}%
+  \ifdim\dimexpr\ht\otBlocLivreBox+\dp\otBlocLivreBox\relax>\textheight
+    \PackageError{pc-livre}{Bloc trop haut : \otBlocLivreId}{Repartir son contenu.}%
+  \fi
+  \typeout{OTBLOC|\otBlocLivreId|\the\dimexpr\ht\otBlocLivreBox+\dp\otBlocLivreBox\relax}%
+  \noindent\usebox{\otBlocLivreBox}\par}
+
+%% ---------------------------------------------------------------------
+%%  Pages des défis et compléments (une page par élément)
+%% ---------------------------------------------------------------------
+\newsavebox{\editionTitreBoite}
+\NewDocumentCommand{\editionPage}{O{} m m m m}{%
+  \clearpage\gdef\otChapNum{0}\pagestyle{otFront}\thispagestyle{otFront}#1%
+  \phantomsection\label{#2}\pdfbookmark[1]{#3}{bm-#2}%
+  \otPageTitre{\sbox{\editionTitreBoite}{\otLight\fontsize{27}{31}\selectfont #3}%
+    \ifdim\wd\editionTitreBoite>\linewidth\resizebox{\linewidth}{!}{\usebox{\editionTitreBoite}}%
+    \else\usebox{\editionTitreBoite}\fi}{#4}%
+  {\otMedium\fontsize{9}{12}\selectfont\color{otMuted}#5}\par\vspace{4mm}%
+  \fontsize{11}{15}\selectfont}
+\newsavebox{\editionBoite}
+\newenvironment{blocEdition}[1]{%
+  \def\editionBlocId{#1}%
+  \noindent\begin{lrbox}{\editionBoite}\begin{minipage}{\linewidth}%
+}{%
+  \end{minipage}\end{lrbox}%
+  \ifdim\dimexpr\ht\editionBoite+\dp\editionBoite\relax>560pt
+    \PackageError{pc-livre}{Page trop chargee : \editionBlocId}{Scinder le contenu.}%
+  \fi
+  \typeout{OTEDITION|\editionBlocId|\the\dimexpr\ht\editionBoite+\dp\editionBoite\relax}%
+  \noindent\usebox{\editionBoite}\par}
+\newcommand{\editionEtape}[1]{\par\addvspace{4mm}\otIntertitre{#1}\nopagebreak}
+\newcommand{\editionRetenir}[1]{%
+  \par\vspace{4mm}\begin{tcolorbox}[colback=otGreenTint,colframe=otGreenTint,
+    boxrule=0pt,arc=1.5mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+  {\otSemi\fontsize{8}{10}\selectfont\color{otGreenDark}À RETENIR}\par\smallskip
+  #1\end{tcolorbox}}
+% Renvoi sûr vers une page (grisé tant que la cible n'existe pas)
+\newcommand{\otLigneRessource}[2]{%
+  \ifcsname r@#1\endcsname
+    \hyperref[#1]{\textcolor{otNavy}{#2}}\otPoints{\otMedium p.~\pageref*{#1}}%
+  \else
+    {\color{otMuted!80}#2}\otPoints{\otLight\color{otMuted!60}à paraître}%
+  \fi\par\vspace{3.2mm}}
+
+%% ---------------------------------------------------------------------
+%%  Verrerie et montages (schémas vectoriels)
+%%  Chaque objet est un « pic » TikZ dont l'origine est au milieu du fond.
+%%  \pic at (x,y) {becher={niveau=1.2,liquide=otGreen!25}};
+%% ---------------------------------------------------------------------
+\tikzset{
+  pcVerre/.style={draw=otNavy,line width=0.7pt,line join=round,line cap=round},
+  pcLiquide/.style={draw=none},
+  pcSurface/.style={draw=otNavy!45,line width=0.4pt},
+  pcAppareil/.style={draw=otInk!75,line width=0.6pt,fill=otRule!35,line join=round},
+  pcFil/.style={draw=otInk!70,line width=0.8pt,line cap=round},
+  pcRepere/.style={draw=otMuted,line width=0.4pt},
+  pcLegende/.style={font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk,inner sep=1.4pt,align=left},
+  pcLegendeG/.style={font=\otMedium\fontsize{7.5}{9}\selectfont,text=otInk,inner sep=1.4pt,align=center},
+  pcFleche/.style={draw=otGreenDark,line width=0.9pt,-{Stealth[length=2.2mm]}},
+  pcFlecheN/.style={draw=otNavy,line width=0.8pt,-{Stealth[length=2mm]}}}
+% Teintes des solutions : incolore, indicateurs colorés
+\colorlet{pcEau}{otNavy!9}
+\colorlet{pcJaune}{yellow!55!orange!45!white}
+\colorlet{pcVert}{otGreen!50}
+\colorlet{pcBleu}{cyan!45!otNavy!55}
+\pgfkeys{/pc/.is family,/pc,
+  largeur/.store in=\pcL,hauteur/.store in=\pcH,niveau/.store in=\pcN,
+  liquide/.store in=\pcC,texte/.store in=\pcT,jauge/.store in=\pcJ}
+\newcommand{\pcDefauts}[1]{\pgfkeys{/pc,largeur=1.6,hauteur=2,niveau=1.1,
+  liquide=pcEau,texte={},jauge=1,#1}}
+% Légende reliée par un filet : \pcNote[ancre]{(point)}{(texte)}{légende}
+\NewDocumentCommand{\pcNote}{O{west} m m m}{%
+  \draw[pcRepere] #2 -- #3 node[pcLegende,anchor=#1]{#4};}
+\tikzset{
+  % Bécher : largeur, hauteur, niveau, liquide
+  pics/becher/.style={code={%
+    \pcDefauts{#1}%
+    \pgfmathsetmacro\pcl{\pcL/2}%
+    \ifdim\pcN pt>0pt
+      \fill[\pcC] ({-\pcl+0.05},\pcN) -- ({-\pcl+0.05},0.15) arc[start angle=180,end angle=270,radius=0.1]
+        -- ({\pcl-0.15},0.05) arc[start angle=270,end angle=360,radius=0.1] -- ({\pcl-0.05},\pcN) -- cycle;
+      \draw[pcSurface] ({-\pcl+0.05},\pcN) -- ({\pcl-0.05},\pcN);
+    \fi
+    \foreach \g in {0.42,0.6,0.78}{\draw[otNavy!40,line width=0.4pt] ({\pcl-0.3},{\g*\pcH}) -- ({\pcl-0.09},{\g*\pcH});}
+    \draw[pcVerre] ({-\pcl-0.15},{\pcH+0.07}) -- ({-\pcl},{\pcH-0.1}) -- ({-\pcl},0.14)
+      arc[start angle=180,end angle=270,radius=0.14] -- ({\pcl-0.14},0)
+      arc[start angle=270,end angle=360,radius=0.14] -- ({\pcl},\pcH) -- ++(0.07,0.05);
+    \coordinate (-haut) at (0,\pcH); \coordinate (-liquide) at (0,{\pcN/2});
+    \coordinate (-droite) at ({\pcl},{0.7*\pcH}); \coordinate (-gauche) at ({-\pcl},{0.7*\pcH});}},
+  pics/becher/.default={},
+  % Fiole jaugée : hauteur (col compris), niveau (1 = au trait de jauge)
+  pics/fiole/.style={code={%
+    \pcDefauts{hauteur=3.1,niveau=1,#1}%
+    \def\pcFioleContour{(-0.15,\pcH) -- (-0.15,1.62) .. controls (-0.15,1.36) and (-0.84,1.22) .. (-0.84,0.66)
+      .. controls (-0.84,0.3) and (-0.7,0) .. (-0.48,0) -- (0.48,0) .. controls (0.7,0) and (0.84,0.3) .. (0.84,0.66)
+      .. controls (0.84,1.22) and (0.15,1.36) .. (0.15,1.62) -- (0.15,\pcH)}%
+    \pgfmathsetmacro\pcJauge{\pcH-0.75}%
+    \pgfmathsetmacro\pcNiv{\pcN*\pcJauge}%
+    \begin{scope}
+      \clip \pcFioleContour -- cycle;
+      \fill[\pcC] (-1,0) rectangle (1,\pcNiv);
+    \end{scope}
+    \draw[pcSurface] (-0.15,\pcNiv) -- (0.15,\pcNiv);
+    \draw[pcVerre] \pcFioleContour;
+    \draw[otNavy,line width=0.55pt] (-0.24,\pcJauge) -- (0.24,\pcJauge);
+    \draw[pcVerre] (-0.21,\pcH) -- (0.21,\pcH);
+    \coordinate (-jauge) at (0.24,\pcJauge); \coordinate (-haut) at (0,\pcH);
+    \coordinate (-bulbe) at (0.84,0.66);}},
+  pics/fiole/.default={},
+  % Pipette jaugée : hauteur (longueur), niveau (1 = au trait de jauge, 0 = vide)
+  pics/pipette/.style={code={%
+    \pcDefauts{hauteur=4.3,niveau=1,#1}%
+    \def\pcPipContour{(-0.015,0) -- (-0.055,0.42) -- (-0.055,1.35) .. controls (-0.055,1.5) and (-0.2,1.52) .. (-0.2,1.72)
+      -- (-0.2,2.42) .. controls (-0.2,2.62) and (-0.055,2.64) .. (-0.055,2.8) -- (-0.055,\pcH)
+      -- (0.055,\pcH) -- (0.055,2.8) .. controls (0.055,2.64) and (0.2,2.62) .. (0.2,2.42) -- (0.2,1.72)
+      .. controls (0.2,1.52) and (0.055,1.5) .. (0.055,1.35) -- (0.055,0.42) -- (0.015,0)}%
+    \pgfmathsetmacro\pcJauge{\pcH-0.55}%
+    \ifdim\pcN pt>0pt
+      \pgfmathsetmacro\pcNiv{\pcN*\pcJauge}%
+      \begin{scope}\clip \pcPipContour -- cycle; \fill[\pcC] (-1,0) rectangle (1,\pcNiv);\end{scope}
+    \fi
+    \draw[pcVerre,line width=0.6pt] \pcPipContour;
+    \draw[otNavy,line width=0.55pt] (-0.12,\pcJauge) -- (0.12,\pcJauge);
+    \coordinate (-jauge) at (0.12,\pcJauge); \coordinate (-haut) at (0,\pcH);
+    \coordinate (-bulbe) at (0.2,2.05); \coordinate (-pointe) at (0,0);}},
+  pics/pipette/.default={},
+  % Tube à essais : hauteur, niveau, liquide
+  pics/tube/.style={code={%
+    \pcDefauts{hauteur=2.3,niveau=1.1,#1}%
+    \ifdim\pcN pt>0pt
+      \fill[\pcC] (-0.2,\pcN) -- (-0.2,0.25) arc[start angle=180,end angle=360,radius=0.2] -- (0.2,\pcN) -- cycle;
+      \draw[pcSurface] (-0.2,\pcN) -- (0.2,\pcN);
+    \fi
+    \draw[pcVerre] (-0.3,{\pcH+0.03}) -- (-0.24,\pcH) -- (-0.24,0.25) arc[start angle=180,end angle=360,radius=0.24]
+      -- (0.24,\pcH) -- (0.3,{\pcH+0.03});
+    \coordinate (-haut) at (0,\pcH); \coordinate (-liquide) at (0.2,{\pcN/2});}},
+  pics/tube/.default={},
+  % Erlenmeyer : niveau, liquide
+  pics/erlen/.style={code={%
+    \pcDefauts{hauteur=2.4,niveau=0.7,#1}%
+    \def\pcErlContour{(-0.24,\pcH) -- (-0.24,1.55) -- (-0.92,0.16) .. controls (-0.98,0.03) and (-0.9,0) .. (-0.78,0)
+      -- (0.78,0) .. controls (0.9,0) and (0.98,0.03) .. (0.92,0.16) -- (0.24,1.55) -- (0.24,\pcH)}%
+    \begin{scope}\clip \pcErlContour -- cycle; \fill[\pcC] (-1,0) rectangle (1,\pcN);\end{scope}
+    \draw[pcVerre] \pcErlContour; \draw[pcVerre] (-0.3,\pcH) -- (0.3,\pcH);
+    \coordinate (-haut) at (0,\pcH);}},
+  pics/erlen/.default={},
+  % Burette graduée : hauteur, niveau (hauteur de liquide en cm depuis le robinet)
+  pics/burette/.style={code={%
+    \pcDefauts{hauteur=5.4,niveau=4.6,#1}%
+    \fill[\pcC] (-0.1,0.95) rectangle (0.1,\pcN);
+    \draw[pcSurface] (-0.1,\pcN) -- (0.1,\pcN);
+    \draw[pcVerre,line width=0.6pt] (-0.012,0) -- (-0.04,0.35) -- (-0.04,0.6);
+    \draw[pcVerre,line width=0.6pt] (0.012,0) -- (0.04,0.35) -- (0.04,0.6);
+    \filldraw[pcAppareil] (-0.11,0.58) rectangle (0.11,0.86);
+    \filldraw[pcAppareil] (0.11,0.67) rectangle (0.42,0.77);
+    \draw[pcVerre] (-0.04,0.86) -- (-0.04,0.95) -- (-0.12,0.95) -- (-0.12,\pcH);
+    \draw[pcVerre] (0.04,0.86) -- (0.04,0.95) -- (0.12,0.95) -- (0.12,\pcH);
+    \foreach \k in {0,...,20}{%
+      \pgfmathsetmacro\yy{\pcH-0.25-\k*0.2}%
+      \pgfmathsetmacro\ll{ifthenelse(mod(\k,5)==0,0.16,0.08)}%
+      \draw[otNavy!55,line width=0.35pt] (-0.12,\yy) -- ({-0.12+\ll},\yy);}
+    \coordinate (-haut) at (0,\pcH); \coordinate (-robinet) at (0.42,0.72); \coordinate (-pointe) at (0,0);
+    \coordinate (-tube) at (0.12,{\pcH-1.2});}},
+  pics/burette/.default={},
+  % Agitateur magnétique : largeur ; le récipient se pose en (0,0.5)
+  pics/agitateur/.style={code={%
+    \pcDefauts{largeur=2.6,#1}%
+    \pgfmathsetmacro\pcl{\pcL/2}%
+    \filldraw[pcAppareil,rounded corners=1.2mm] ({-\pcl},0) rectangle ({\pcl},0.5);
+    \draw[otInk!60,line width=0.5pt] ({-\pcl+0.1},0.42) -- ({\pcl-0.1},0.42);
+    \filldraw[fill=white,draw=otInk!70,line width=0.5pt] ({\pcl-0.38},0.2) circle (0.12);
+    \draw[otInk!70,line width=0.5pt] ({\pcl-0.38},0.2) -- ({\pcl-0.38},0.3);
+    \coordinate (-dessus) at (0,0.5); \coordinate (-face) at ({-\pcl},0.25);}},
+  pics/agitateur/.default={},
+  pics/barreau/.style={code={%
+    \filldraw[fill=otInk!65,draw=otInk!80,line width=0.3pt,rounded corners=0.5mm] (-0.24,0) rectangle (0.24,0.1);}},
+  % Sonde de pH (électrode combinée) : origine au bas de la sonde
+  pics/sonde/.style={code={%
+    \pcDefauts{hauteur=2.6,#1}%
+    \filldraw[fill=white,draw=otInk!75,line width=0.6pt] (-0.09,0.22) -- (-0.09,\pcH) -- (0.09,\pcH) -- (0.09,0.22) -- cycle;
+    \filldraw[fill=otNavyTint,draw=otInk!75,line width=0.6pt] (0,0.15) circle (0.15);
+    \filldraw[pcAppareil] (-0.13,{\pcH-0.45}) rectangle (0.13,\pcH);
+    \coordinate (-haut) at (0,\pcH); \coordinate (-corps) at (0.09,{\pcH-1});}},
+  pics/sonde/.default={},
+  % Appareil de mesure à afficheur : largeur, hauteur, texte affiché
+  pics/afficheur/.style={code={%
+    \pcDefauts{largeur=2.1,hauteur=1.35,texte={7,00},#1}%
+    \pgfmathsetmacro\pcl{\pcL/2}%
+    \filldraw[pcAppareil,rounded corners=1.5mm] ({-\pcl},0) rectangle ({\pcl},\pcH);
+    \filldraw[fill=otNavyDark,draw=otInk,line width=0.5pt,rounded corners=0.6mm]
+      ({-\pcl+0.18},{\pcH-0.62}) rectangle ({\pcl-0.18},{\pcH-0.14});
+    \node[text=white,font=\otMono\fontsize{9}{10}\selectfont] at (0,{\pcH-0.38}) {\pcT};
+    \foreach \xx in {-0.45,0,0.45}{\filldraw[fill=white,draw=otInk!70,line width=0.4pt] (\xx,0.3) circle (0.09);}
+    \coordinate (-prise) at ({-\pcl},0.35); \coordinate (-haut) at (0,\pcH);}},
+  pics/afficheur/.default={},
+  % Bouteille fermée par un ballon
+  pics/bouteille/.style={code={%
+    \pcDefauts{niveau=0.9,#1}%
+    \def\pcBoutContour{(-0.2,3.05) -- (-0.2,2.7) .. controls (-0.2,2.35) and (-0.75,2.25) .. (-0.75,1.8) -- (-0.75,0.12)
+      arc[start angle=180,end angle=270,radius=0.12] -- (0.63,0) arc[start angle=270,end angle=360,radius=0.12]
+      -- (0.75,1.8) .. controls (0.75,2.25) and (0.2,2.35) .. (0.2,2.7) -- (0.2,3.05)}%
+    \begin{scope}\clip \pcBoutContour -- cycle; \fill[\pcC] (-1,0) rectangle (1,\pcN);\end{scope}
+    \draw[pcSurface] (-0.75,\pcN) -- (0.75,\pcN);
+    \draw[pcVerre] \pcBoutContour;
+    \coordinate (-col) at (0,3.05); \coordinate (-liquide) at (0.75,{\pcN/2});}},
+  pics/bouteille/.default={},
+  % Pissette d'eau distillée (origine au milieu du fond)
+  pics/pissette/.style={code={%
+    \filldraw[fill=white,draw=otInk!75,line width=0.6pt,rounded corners=1.2mm] (-0.42,0) rectangle (0.42,1.35);
+    \fill[pcEau] (-0.36,0.06) rectangle (0.36,0.9);
+    \filldraw[pcAppareil] (-0.2,1.35) rectangle (0.2,1.55);
+    \draw[otInk!75,line width=0.9pt,line cap=round] (0,1.55) -- (0,1.85) to[out=90,in=150] (0.55,1.9) -- (0.85,1.62);
+    \coordinate (-bec) at (0.85,1.62);}},
+  % Paille et bulles (origine au bas de la paille)
+  pics/paille/.style={code={%
+    \pcDefauts{hauteur=2.6,#1}%
+    \filldraw[fill=white,draw=otOrange!80!black,line width=0.55pt] (-0.06,0) rectangle (0.06,\pcH);
+    \foreach \bx/\by/\br in {0.1/0.12/0.06,-0.08/0.32/0.05,0.12/0.5/0.045,-0.02/0.72/0.055}{%
+      \draw[otNavy!60,line width=0.4pt,fill=white] (\bx,\by) circle (\br);}
+    \coordinate (-haut) at (0,\pcH);}},
+  % Bulles de gaz dans un liquide (nuage autour de l'origine)
+  pics/bulles/.style={code={%
+    \foreach \bx/\by/\br in {0/0/0.06,0.22/0.18/0.05,-0.2/0.26/0.045,0.08/0.42/0.055,-0.1/0.6/0.04,0.25/0.55/0.04}{%
+      \draw[otNavy!60,line width=0.4pt,fill=white] (\bx,\by) circle (\br);}}},
+  % Potence : socle et tige ; la tige est en x = -1 (hauteur réglable)
+  pics/potence/.style={code={%
+    \pcDefauts{hauteur=6.2,#1}%
+    \filldraw[pcAppareil,rounded corners=0.6mm] (-1.55,0) rectangle (0.75,0.16);
+    \fill[otInk!50] (-1.04,0.16) rectangle (-0.96,\pcH);
+    \fill[otInk!60] (-1.06,\pcH) rectangle (-0.94,{\pcH+0.06});
+    \coordinate (-tige) at (-1,\pcH);}},
+  % Pince fixée sur la tige (en x = -1) et serrant un tube vertical en x = 0
+  pics/pince/.style={code={%
+    \filldraw[pcAppareil] (-1.12,-0.12) rectangle (-0.88,0.12);
+    \draw[otInk!70,line width=1.4pt] (-0.88,0) -- (-0.2,0);
+    \filldraw[pcAppareil] (-0.22,-0.09) rectangle (-0.13,0.09);
+    \filldraw[pcAppareil] (0.13,-0.09) rectangle (0.22,0.09);}},
+  % Cellule de conductimétrie : deux plaques parallèles sous une cloche ouverte
+  pics/cellule/.style={code={%
+    \pcDefauts{hauteur=2.6,#1}%
+    \filldraw[fill=white,draw=otInk!75,line width=0.6pt] (-0.1,0.66) rectangle (0.1,\pcH);
+    \filldraw[pcAppareil] (-0.13,{\pcH-0.45}) rectangle (0.13,\pcH);
+    \filldraw[fill=white,draw=otInk!75,line width=0.6pt] (-0.27,0) -- (-0.27,0.68) -- (0.27,0.68) -- (0.27,0);
+    \fill[otInk!75] (-0.17,0.07) rectangle (-0.12,0.55);
+    \fill[otInk!75] (0.12,0.07) rectangle (0.17,0.55);
+    \coordinate (-haut) at (0,\pcH); \coordinate (-plaques) at (0.17,0.3);}},
+  % Cuve de spectrophotométrie, de face (épaisseur l = largeur intérieure)
+  pics/cuve/.style={code={%
+    \pcDefauts{hauteur=1.5,niveau=1.1,#1}%
+    \fill[\pcC] (-0.42,0.06) rectangle (0.42,\pcN);
+    \draw[pcSurface] (-0.42,\pcN) -- (0.42,\pcN);
+    \draw[pcVerre] (-0.48,\pcH) -- (-0.48,0) -- (0.48,0) -- (0.48,\pcH);
+    \draw[otNavy!45,line width=0.4pt] (-0.42,0.06) -- (-0.42,\pcH) (0.42,0.06) -- (0.42,\pcH);
+    \coordinate (-gauche) at (-0.48,{\pcN/2}); \coordinate (-droite) at (0.48,{\pcN/2});}}}
+
+%% ---------------------------------------------------------------------
+%%  Piles : deux demi-piles reliées par un pont salin (unités : cm)
+%%  \pcPile{métal gauche}{solution gauche}{métal droite}{solution droite}
+%%  Béchers centrés en x = 0 et x = 6,2 ; le circuit extérieur est tracé par la figure
+%%  à partir des coordonnées (pileG) et (pileD), sommets des électrodes.
+%% ---------------------------------------------------------------------
+\definecolor{pcCuivre}{RGB}{184,115,51}
+\colorlet{pcZinc}{otInk!38}
+\colorlet{pcArgent}{otInk!14}
+\colorlet{pcPont}{otOrange!24}
+\tikzset{
+  pcElectron/.style={draw=otNavy,line width=0.9pt,-{Stealth[length=2.2mm]}},
+  pcCourant/.style={draw=otRed!80!black,line width=0.9pt,-{Stealth[length=2.2mm]}},
+  pcIon/.style={draw=otGreenDark,line width=0.8pt,-{Stealth[length=1.8mm]}}}
+\newcommand{\pcPile}[4]{%
+  \pic at (0,0) {becher={largeur=2.4,hauteur=2.3,niveau=1.75,liquide=#2}};
+  \pic at (6.2,0) {becher={largeur=2.4,hauteur=2.3,niveau=1.75,liquide=#4}};
+  \draw[otNavy,line width=4.4mm,rounded corners=3.2mm] (0.62,0.72) -- (0.62,2.95) -- (5.58,2.95) -- (5.58,0.72);
+  \draw[pcPont,line width=3.5mm,rounded corners=3.2mm] (0.62,0.75) -- (0.62,2.95) -- (5.58,2.95) -- (5.58,0.75);
+  \filldraw[fill=#1,draw=otInk!80,line width=0.5pt] (-0.55,0.38) rectangle (-0.25,3.3);
+  \filldraw[fill=#3,draw=otInk!80,line width=0.5pt] (6.45,0.38) rectangle (6.75,3.3);
+  \coordinate (pileG) at (-0.4,3.3); \coordinate (pileD) at (6.6,3.3); \coordinate (pont) at (3.1,2.95);}
+% Appareil de mesure ou moteur (cercle et lettre) et conducteur ohmique, centrés sur un point d'un fil
+\newcommand{\pcAppareilRond}[2]{%
+  \filldraw[fill=white,draw=otInk!80,line width=0.7pt] #1 circle (0.33);
+  \node[font=\otMedium\fontsize{9}{10}\selectfont,text=otInk] at #1 {#2};}
+\newcommand{\pcResistance}[1]{%
+  \filldraw[fill=white,draw=otInk!80,line width=0.7pt] ($#1+(-0.42,-0.14)$) rectangle ($#1+(0.42,0.14)$);}
+
+%% ---------------------------------------------------------------------
+%%  Mécanique : dérivées, vecteurs unitaires de Frenet, styles de vecteurs
+%% ---------------------------------------------------------------------
+\newcommand{\ddt}[1]{\frac{\mathrm{d}#1}{\mathrm{d}t}}
+\newcommand{\ut}{\vect{u}_{\mathrm{t}}}
+\newcommand{\un}{\vect{u}_{\mathrm{n}}}
+\tikzset{
+  pcVitesse/.style={draw=otNavy,line width=0.9pt,-{Stealth[length=2.2mm]}},
+  pcAcc/.style={draw=otRed!80!black,line width=0.9pt,-{Stealth[length=2.2mm]}},
+  pcForce/.style={draw=otGreenDark,line width=1pt,-{Stealth[length=2.4mm]}},
+  pcPoint/.style={fill=otInk,draw=none},
+  pcTraj/.style={draw=otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt}}
+
+%% ---------------------------------------------------------------------
+%%  Spectres infrarouges et UV-visible (pgfplots)
+%%  \addplot[otSpectre] {100 \bandeIR{3340}{160}{55} \bandeIR{1050}{20}{65}};
+%% ---------------------------------------------------------------------
+% L'argument de l'exponentielle est borné (e^-60 est négligeable) pour éviter les dépassements de pgfplots
+\newcommand{\bandeIR}[3]{-(#3)*exp(-min(((x-(#1))/(#2))^2,60))}
+\newcommand{\bandeUV}[3]{+(#3)*exp(-min(((x-(#1))/(#2))^2,60))}
+\pgfplotsset{
+  otIR/.style={width=78mm,height=40mm,xmin=500,xmax=4000,x dir=reverse,ymin=0,ymax=108,
+    axis lines=box,axis line style={otMuted,line width=0.4pt},
+    xtick={4000,3000,2000,1500,1000},ytick={0,50,100},
+    tick style={otMuted,line width=0.4pt},major tick length=2pt,
+    ticklabel style={font=\otLight\fontsize{6.5}{7}\selectfont,text=otMuted},
+    /pgf/number format/use comma,/pgf/number format/1000 sep={\,},
+    xlabel={nombre d'onde $\sigma$ (cm$^{-1}$)},ylabel={$T$ (\%)},
+    label style={font=\otLight\fontsize{7}{8}\selectfont,text=otInk},
+    every axis y label/.style={at={(axis description cs:-0.09,0.5)},rotate=90,anchor=south},
+    every axis x label/.style={at={(axis description cs:0.5,-0.16)},anchor=north},
+    title style={font=\otMedium\fontsize{7.5}{9}\selectfont,text=otInk,yshift=-1mm},
+    domain=500:4000,samples=700,clip=true},
+  otSpectre/.style={otNavy,line width=0.7pt},
+  otUV/.style={width=80mm,height=44mm,xmin=400,xmax=750,ymin=0,
+    axis lines=left,axis line style={otMuted,line width=0.5pt,-{Stealth[length=2mm]}},
+    tick style={otMuted,line width=0.4pt},major tick length=2pt,
+    ticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+    /pgf/number format/use comma,/pgf/number format/1000 sep={\,},
+    xlabel={$\lambda$ (nm)},ylabel={$A$},
+    label style={font=\small,text=otInk},
+    every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm},
+    every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm},
+    samples=300,clip=false}}
+
+%% ---------------------------------------------------------------------
+%%  Décors d'ouverture des chapitres (bandeau 210 mm x 118 mm)
+%% ---------------------------------------------------------------------
+%% Décor « acide-base » : un ion hydrogène passe d'un acide à une base,
+%% au-dessus de l'échelle de pH.
+\newcommand{\otDecoacidebase}{%
+  \otDecoGrille
+  \foreach \k in {0,...,14}{%
+    \pgfmathsetmacro\oo{0.12+0.035*\k}%
+    \fill[white,opacity=\oo,rounded corners=0.8mm] ({(112+6.4*\k)*1mm},48mm) rectangle ({(117.4+6.4*\k)*1mm},53mm);}
+  \fill[otGreen,rounded corners=0.8mm] ({(112+6.4*7)*1mm},48mm) rectangle ({(117.4+6.4*7)*1mm},53mm);
+  \draw[white,opacity=0.55,line width=1.2pt] (142mm,78mm) circle (11mm);
+  \draw[white,opacity=0.55,line width=1.2pt] (190mm,78mm) circle (11mm);
+  \node[text=white,opacity=0.85,font=\otMedium\fontsize{11}{12}\selectfont] at (142mm,78mm) {AH};
+  \node[text=white,opacity=0.85,font=\otMedium\fontsize{11}{12}\selectfont] at (190mm,78mm) {B};
+  \draw[otGreen,line width=1.8pt,-{Stealth[length=3.4mm]}] (150mm,89mm) to[out=60,in=120] (182mm,89mm);
+  \fill[otGreen] (166mm,97.1mm) circle (3.3mm);
+  \node[text=white,font=\otSemi\fontsize{7.5}{8}\selectfont] at (166mm,97.1mm) {H$^{+}$};}
+
+%% Décor « spectre » : une bande d'absorption au-dessus du spectre visible
+\pgfdeclarehorizontalshading{otArcEnCiel}{100bp}{color(0bp)=(violet!70);color(18bp)=(blue!65);
+  color(36bp)=(cyan!60);color(50bp)=(green!55);color(66bp)=(yellow!70);color(82bp)=(orange!80);color(100bp)=(red!75)}
+\newcommand{\otDecospectre}{%
+  \otDecoGrille
+  \shade[shading=otArcEnCiel,opacity=0.55] (116mm,44mm) rectangle (204mm,49mm);
+  \draw[white,opacity=0.4,line width=0.5pt] (112mm,52mm) -- (208mm,52mm);
+  \draw[white,opacity=0.7,line width=1.6pt,line cap=round]
+    plot[domain=114:206,samples=140] ({\x*1mm},{(52+40*exp(-((\x-178)/11)^2)+11*exp(-((\x-128)/7)^2))*1mm});
+  \draw[otGreen,line width=0.9pt,dash pattern=on 2pt off 1.5pt] (178mm,52mm) -- (178mm,92mm);
+  \fill[otGreen] (178mm,92mm) circle (1.7mm);}
+
+%% Décor « titrage » : deux droites de conductimétrie qui se coupent à l'équivalence
+\newcommand{\otDecotitrage}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (112mm,30mm) -- (208mm,30mm);
+  \draw[white,opacity=0.7,line width=1.4pt,line cap=round] (118mm,96mm) -- (166mm,44mm);
+  \draw[white,opacity=0.7,line width=1.4pt,line cap=round] (166mm,44mm) -- (206mm,92mm);
+  \foreach \xx in {122,130,138,146,154}{\fill[white] (\xx mm,{(96-(\xx-118)*52/48)*1mm}) circle (1.1mm);}
+  \foreach \xx in {174,182,190,198}{\fill[white] (\xx mm,{(44+(\xx-166)*48/40)*1mm}) circle (1.1mm);}
+  \draw[otGreen,line width=0.9pt,dash pattern=on 2pt off 1.5pt] (166mm,44mm) -- (166mm,30mm);
+  \fill[otGreen] (166mm,44mm) circle (1.8mm);
+  \fill[otGreen] (190mm,108mm) .. controls (186mm,102mm) and (186mm,98mm) .. (190mm,97mm)
+    .. controls (194mm,98mm) and (194mm,102mm) .. (190mm,108mm);}
+
+%% Décor « cinétique » : un réactif disparaît, un produit apparaît ; croisement au temps de demi-réaction
+\newcommand{\otDecocinetique}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (136mm,44mm) -- (208mm,44mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (140mm,40mm) -- (140mm,106mm);
+  \draw[white,opacity=0.7,line width=1.6pt,line cap=round]
+    plot[domain=0:65,samples=120] ({(140+\x)*1mm},{(44+56*exp(-\x/16))*1mm});
+  \draw[otGreen,line width=1.6pt,line cap=round]
+    plot[domain=0:65,samples=120] ({(140+\x)*1mm},{(44+56*(1-exp(-\x/16)))*1mm});
+  \draw[white,opacity=0.6,line width=0.8pt,dash pattern=on 2pt off 1.5pt] (151.09mm,72mm) -- (151.09mm,44mm);
+  \fill[otGreen] (151.09mm,72mm) circle (1.8mm);}
+
+%% Décor « mécanisme » : deux entités qui se heurtent et une flèche courbe
+\newcommand{\otDecomecanisme}{%
+  \otDecoGrille
+  \draw[white,opacity=0.6,line width=1.2pt] (146mm,70mm) circle (12mm);
+  \draw[white,opacity=0.6,line width=1.2pt] (186mm,64mm) circle (10mm);
+  \fill[white] (155.5mm,77mm) circle (1.1mm); \fill[white] (157.5mm,74mm) circle (1.1mm);
+  \draw[otGreen,line width=1.8pt,-{Stealth[length=3.4mm]}] (158mm,79mm) .. controls (164mm,94mm) and (176mm,92mm) .. (181mm,75mm);
+  \draw[white,opacity=0.5,line width=1pt,-{Stealth[length=2.6mm]}] (120mm,66mm) -- (131mm,68mm);
+  \draw[white,opacity=0.5,line width=1pt,-{Stealth[length=2.6mm]}] (208mm,60mm) -- (198mm,62mm);
+  \foreach \xx/\yy in {184/47,190/43,196/49,178/42}{\fill[otGreen,opacity=0.8] (\xx mm,\yy mm) circle (0.9mm);}}
+
+%% Décor « radioactivité » : décroissance par demi-vies successives et noyau qui émet une particule alpha
+\newcommand{\otDecoradioactivite}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (136mm,44mm) -- (208mm,44mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (140mm,40mm) -- (140mm,104mm);
+  \draw[white,opacity=0.75,line width=1.6pt,line cap=round]
+    plot[domain=0:66,samples=120] ({(140+\x)*1mm},{(44+56*2^(-\x/16))*1mm});
+  \foreach \k in {1,2,3}{%
+    \pgfmathsetmacro\yy{44+56*2^(-\k)}%
+    \draw[white,opacity=0.5,line width=0.7pt,dash pattern=on 2pt off 1.5pt] ({(140+16*\k)*1mm},\yy mm) -- ({(140+16*\k)*1mm},44mm);
+    \fill[otGreen] ({(140+16*\k)*1mm},\yy mm) circle (1.5mm);}
+  \foreach \xx/\yy in {186/92,190/95,193/91,189/89,192/97,195/94,187/96,191/92}{\fill[white,opacity=0.8] (\xx mm,\yy mm) circle (1.6mm);}
+  \draw[otGreen,line width=1pt,-{Stealth[length=2.4mm]}] (197.5mm,97mm) -- (202.5mm,100mm);
+  \fill[otGreen] (204.4mm,101.2mm) circle (1.2mm); \fill[otGreen] (206.6mm,102.4mm) circle (1.2mm);}
+
+%% Décor « équilibre » : deux concentrations qui tendent vers des paliers, double flèche de l'équilibre
+\newcommand{\otDecoequilibre}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (136mm,44mm) -- (208mm,44mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (140mm,40mm) -- (140mm,90mm);
+  \draw[white,opacity=0.75,line width=1.6pt,line cap=round]
+    plot[domain=0:66,samples=100] ({(140+\x)*1mm},{(58+28*exp(-\x/14))*1mm});
+  \draw[otGreen,line width=1.6pt,line cap=round]
+    plot[domain=0:66,samples=100] ({(140+\x)*1mm},{(44+28*(1-exp(-\x/14)))*1mm});
+  \draw[white,opacity=0.5,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (176mm,58mm) -- (207mm,58mm) (176mm,72mm) -- (207mm,72mm);
+  \draw[white,line width=1.6pt,-{Straight Barb[left,length=3mm,width=2mm]}] (166mm,101mm) -- (198mm,101mm);
+  \draw[otGreen,line width=1.6pt,-{Straight Barb[left,length=3mm,width=2mm]}] (198mm,95mm) -- (166mm,95mm);}
+
+%% Décor « piles » : deux demi-piles, un pont salin et des électrons qui parcourent le circuit
+\newcommand{\otDecopiles}{%
+  \otDecoGrille
+  \foreach \xx/\op in {140/0.16,178/0.38}{%
+    \fill[white,opacity=\op] (\xx mm,48mm) -- (\xx mm,62mm) -- ({(\xx+20)*1mm},62mm) -- ({(\xx+20)*1mm},48mm) -- cycle;
+    \draw[white,opacity=0.7,line width=1.1pt,line join=round] (\xx mm,68mm) -- (\xx mm,46mm) -- ({(\xx+20)*1mm},46mm)
+      -- ({(\xx+20)*1mm},68mm);}
+  \draw[white,opacity=0.45,line width=3mm,rounded corners=3mm] (156mm,55mm) -- (156mm,76mm) -- (182mm,76mm) -- (182mm,55mm);
+  \fill[white,opacity=0.8] (146.5mm,51mm) rectangle (149.5mm,84mm);
+  \fill[otGreen] (188.5mm,51mm) rectangle (191.5mm,84mm);
+  \draw[white,opacity=0.7,line width=1.2pt,line join=round] (148mm,84mm) -- (148mm,98mm) -- (190mm,98mm) -- (190mm,84mm);
+  \filldraw[fill=otNavy,draw=white,line width=1.2pt] (169mm,98mm) circle (4.2mm);
+  \draw[white,line width=1pt] (166mm,95mm) -- (172mm,101mm) (166mm,101mm) -- (172mm,95mm);
+  \foreach \xx in {154,160,178,184}{\fill[otGreen] (\xx mm,98mm) circle (1.2mm);}
+  \draw[otGreen,line width=1.2pt,-{Stealth[length=2.6mm]}] (176mm,104mm) -- (188mm,104mm);}
+
+%% Décor « force des acides » : deux courbes de distribution qui se croisent au pKa
+\newcommand{\otDecoforceacide}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (136mm,46mm) -- (208mm,46mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (140mm,42mm) -- (140mm,102mm);
+  \draw[white,opacity=0.75,line width=1.6pt,line cap=round]
+    plot[domain=0:64,samples=90] ({(141+\x)*1mm},{(46+50/(1+exp((\x-32)/6)))*1mm});
+  \draw[otGreen,line width=1.6pt,line cap=round]
+    plot[domain=0:64,samples=90] ({(141+\x)*1mm},{(46+50/(1+exp(-(\x-32)/6)))*1mm});
+  \draw[white,opacity=0.5,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (173mm,46mm) -- (173mm,71mm);
+  \fill[otGreen] (173mm,71mm) circle (1.8mm);}
+
+%% Décor « électrolyse » : une cuve, deux électrodes, des bulles et un générateur
+\newcommand{\otDecoelectrolyse}{%
+  \otDecoGrille
+  \fill[white,opacity=0.16] (146mm,48mm) -- (146mm,76mm) -- (198mm,76mm) -- (198mm,48mm) -- cycle;
+  \draw[white,opacity=0.7,line width=1.1pt,line join=round] (144mm,84mm) -- (144mm,46mm) -- (200mm,46mm) -- (200mm,84mm);
+  \fill[white,opacity=0.85] (156mm,52mm) rectangle (159.5mm,92mm);
+  \fill[otGreen] (184.5mm,52mm) rectangle (188mm,92mm);
+  \foreach \x/\y in {154.2/58,160.8/64,154.6/70,161.2/74,182.8/60,189.6/66,183.2/72,190.0/76}{%
+    \draw[white,opacity=0.75,line width=0.7pt] (\x mm,\y mm) circle (1.1mm);}
+  \draw[white,opacity=0.7,line width=1.2pt,line join=round] (157.8mm,92mm) -- (157.8mm,101mm) -- (186.2mm,101mm) -- (186.2mm,92mm);
+  \draw[white,line width=1.6pt] (169mm,97.5mm) -- (169mm,104.5mm);
+  \draw[white,line width=1.6pt] (173mm,99.5mm) -- (173mm,102.5mm);
+  \draw[otGreen,line width=1.2pt,-{Stealth[length=2.6mm]}] (176mm,105.5mm) -- (184mm,105.5mm);}
+
+%% Décor « molécules » : une chaîne topologique et un cycle, avec un groupe encadré
+\newcommand{\otDecomolecules}{%
+  \otDecoGrille
+  \draw[white,opacity=0.8,line width=1.5pt,line join=round]
+    (140mm,62mm) -- (148mm,70mm) -- (156mm,62mm) -- (164mm,70mm) -- (172mm,62mm);
+  \draw[otGreen,line width=1.5pt] (164mm,70mm) -- (164mm,79mm);
+  \draw[otGreen,line width=1.5pt] (166.4mm,70mm) -- (166.4mm,77.6mm);
+  \draw[white,opacity=0.8,line width=1.5pt,line join=round]
+    (186mm,57mm) -- (194mm,61.6mm) -- (194mm,70.8mm) -- (186mm,75.4mm) -- (178mm,70.8mm) -- (178mm,61.6mm) -- cycle;
+  \draw[white,opacity=0.6,line width=1.1pt] (191.6mm,62.5mm) -- (191.6mm,69.9mm)
+    (186mm,72.6mm) -- (179.8mm,69.0mm) (186mm,59.8mm) -- (179.8mm,63.4mm);
+  \draw[otGreen,line width=1pt,rounded corners=1.6mm,dash pattern=on 2.4pt off 1.6pt]
+    (159mm,58mm) rectangle (171.5mm,82mm);
+  \foreach \x/\y in {144/88,152/92,160/88}{\fill[white,opacity=0.65] (\x mm,\y mm) circle (1.2mm);}}
+
+%% Décor « synthèse » : les étapes d'une synthèse, du ballon au produit purifié
+\newcommand{\otDecosynthese}{%
+  \otDecoGrille
+  \draw[white,opacity=0.75,line width=1.2pt] (146mm,66mm) circle (7mm);
+  \fill[white,opacity=0.3] (139.5mm,63.2mm) .. controls (141mm,59.5mm) and (151mm,59.5mm) .. (152.5mm,63.2mm)
+    .. controls (151.5mm,66.5mm) and (140.5mm,66.5mm) .. (139.5mm,63.2mm);
+  \draw[white,opacity=0.75,line width=1.2pt] (144mm,72.5mm) -- (144mm,78mm) (148mm,72.5mm) -- (148mm,78mm);
+  \draw[white,opacity=0.7,line width=1.3pt,-{Stealth[length=2.8mm]}] (157mm,66mm) -- (168mm,66mm);
+  \filldraw[draw=white,fill=white,opacity=0.35,rounded corners=1mm] (171mm,60mm) rectangle (183mm,72mm);
+  \draw[white,opacity=0.75,line width=1.2pt,rounded corners=1mm] (171mm,60mm) rectangle (183mm,72mm);
+  \draw[otGreen,line width=1.3pt,-{Stealth[length=2.8mm]}] (186mm,66mm) -- (197mm,66mm);
+  \fill[otGreen] (201.5mm,66mm) circle (2.6mm);
+  \draw[otGreen,line width=1.2pt] (150mm,88mm) arc[start angle=200,end angle=-90,radius=6mm];
+  \draw[otGreen,line width=1.2pt,-{Stealth[length=2.2mm]}] (150.3mm,87mm) -- (149.4mm,88.6mm);}
+
+%% Décor « mouvement » : une chronophotographie parabolique et ses vecteurs vitesse
+\newcommand{\otDecomouvement}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (136mm,46mm) -- (208mm,46mm);
+  \foreach \k in {0,...,8}{%
+    \pgfmathsetmacro\xx{140+8*\k}\pgfmathsetmacro\yy{48+13.6*\k-1.7*\k*\k}%
+    \fill[white,opacity=0.85] (\xx mm,\yy mm) circle (1.3mm);}
+  \draw[otGreen,line width=1.4pt,-{Stealth[length=2.8mm]}] (156mm,{(48+27.2-6.8)*1mm}) -- ++(12mm,6.8mm);
+  \draw[otGreen,line width=1.4pt,-{Stealth[length=2.8mm]}] (188mm,{(48+81.6-61.2)*1mm}) -- ++(12mm,-9.6mm);
+  \draw[white,opacity=0.7,line width=1.2pt,-{Stealth[length=2.6mm]}] (172mm,{(48+54.4-27.2)*1mm}) -- ++(0,-11mm);}
+
+%% Décor « Newton » : un solide et les forces qui s'exercent sur lui
+\newcommand{\otDeconewton}{%
+  \otDecoGrille
+  \draw[white,opacity=0.45,line width=0.8pt] (138mm,52mm) -- (206mm,82mm);
+  \begin{scope}[shift={(170mm,66mm)},rotate=23.8]
+    \fill[white,opacity=0.3] (-8mm,0) rectangle (8mm,11mm);
+    \draw[white,opacity=0.8,line width=1pt] (-8mm,0) rectangle (8mm,11mm);
+    \fill[otGreen] (0,5.5mm) circle (1.2mm);
+    \draw[otGreen,line width=1.4pt,-{Stealth[length=2.8mm]}] (0,5.5mm) -- (0,24mm);
+    \draw[white,line width=1.2pt,-{Stealth[length=2.6mm]}] (0,5.5mm) -- (-19mm,5.5mm);
+  \end{scope}
+  \draw[white,opacity=0.85,line width=1.4pt,-{Stealth[length=2.8mm]}] (167.8mm,71mm) -- (167.8mm,48mm);}
+
+%% Décor « champ uniforme » : deux plaques chargées, les lignes de champ et une trajectoire parabolique
+\newcommand{\otDecochampuniforme}{%
+  \otDecoGrille
+  \fill[white,opacity=0.75] (146mm,98mm) rectangle (204mm,100.5mm);
+  \fill[otGreen] (146mm,52mm) rectangle (204mm,54.5mm);
+  \foreach \xx in {152,162,...,202}{\draw[white,opacity=0.35,line width=0.6pt,-{Stealth[length=2mm]}] (\xx mm,97mm) -- (\xx mm,56mm);}
+  \draw[white,line width=1.6pt,line cap=round] plot[domain=0:56,samples=60] ({(140+\x)*1mm},{(80-0.0095*\x*\x)*1mm});
+  \fill[otGreen] (140mm,80mm) circle (1.8mm);}
+
+%% Décor « gravitation » : une planète, une orbite elliptique et un satellite
+\newcommand{\otDecogravitation}{%
+  \otDecoGrille
+  \draw[white,opacity=0.55,line width=1.1pt] (172mm,74mm) ellipse (32mm and 22mm);
+  \fill[white,opacity=0.85] (160mm,74mm) circle (7mm);
+  \fill[otGreen] (198.4mm,88.5mm) circle (2.2mm);
+  \draw[otGreen,line width=1.3pt,-{Stealth[length=2.6mm]}] (198.4mm,88.5mm) -- ++(-11mm,8mm);
+  \draw[white,line width=1.1pt,-{Stealth[length=2.4mm]}] (198.4mm,88.5mm) -- ++(-10.5mm,-4mm);
+  \foreach \xx/\yy in {142/104,150/49,206/56,188/108,139/60}{\fill[white,opacity=0.6] (\xx mm,\yy mm) circle (0.6mm);}}
+
+%% Décor « fluides » : un tube de Venturi et des lignes de courant qui se resserrent
+\newcommand{\otDecofluides}{%
+  \otDecoGrille
+  \draw[white,opacity=0.8,line width=1.2pt] (138mm,92mm) -- (158mm,92mm) .. controls (166mm,92mm) and (166mm,82mm) .. (174mm,82mm)
+    -- (180mm,82mm) .. controls (188mm,82mm) and (188mm,92mm) .. (196mm,92mm) -- (208mm,92mm);
+  \draw[white,opacity=0.8,line width=1.2pt] (138mm,56mm) -- (158mm,56mm) .. controls (166mm,56mm) and (166mm,66mm) .. (174mm,66mm)
+    -- (180mm,66mm) .. controls (188mm,66mm) and (188mm,56mm) .. (196mm,56mm) -- (208mm,56mm);
+  \foreach \e in {-1,0,1}{%
+    \draw[otGreen,line width=1pt,-{Stealth[length=2.2mm]}] (140mm,{(74+11*\e)*1mm}) -- (158mm,{(74+11*\e)*1mm})
+      .. controls (166mm,{(74+11*\e)*1mm}) and (166mm,{(74+5*\e)*1mm}) .. (177mm,{(74+5*\e)*1mm});}
+  \fill[white,opacity=0.7] (177mm,82mm) rectangle (178.6mm,100mm);
+  \fill[white,opacity=0.7] (148mm,92mm) rectangle (149.6mm,106mm);}
+
+%% Décor « gaz parfait » : une enceinte fermée par un piston, des molécules agitées
+\newcommand{\otDecogazparfait}{%
+  \otDecoGrille
+  \draw[white,opacity=0.8,line width=1.2pt] (146mm,92mm) -- (146mm,50mm) -- (204mm,50mm) -- (204mm,92mm);
+  \fill[white,opacity=0.75] (147mm,86mm) rectangle (203mm,90mm);
+  \fill[white,opacity=0.75] (173.5mm,90mm) rectangle (176.5mm,108mm);
+  \foreach \x/\y/\dx/\dy in {154/58/6/4,166/75/-5/5,181/62/7/-2,194/78/-4/-5,160/68/3/-6,
+      188/56/-6/3,176/80/5/2,198/63/2/6,152/79/5/-3,171/57/-4/-4}{%
+    \fill[white,opacity=0.9] (\x mm,\y mm) circle (1.4mm);
+    \draw[otGreen,line width=0.9pt,-{Stealth[length=1.8mm]}] (\x mm,\y mm) -- ++(\dx mm,\dy mm);}}
+
+%% Décor « premier principe » : un système qui reçoit du travail et un transfert thermique
+\newcommand{\otDecothermo}{%
+  \otDecoGrille
+  \fill[white,opacity=0.22,rounded corners=4mm] (156mm,56mm) rectangle (196mm,92mm);
+  \draw[white,opacity=0.85,line width=1.2pt,rounded corners=4mm] (156mm,56mm) rectangle (196mm,92mm);
+  \foreach \x/\y in {164/64,172/80,184/68,190/84,168/71,180/60,186/77,163/84}{%
+    \fill[white,opacity=0.8] (\x mm,\y mm) circle (1.1mm);}
+  \draw[white,line width=1.6pt,-{Stealth[length=3mm]}] (138mm,74mm) -- (154mm,74mm);
+  \draw[otGreen,line width=1.6pt,-{Stealth[length=3mm]},decorate,
+    decoration={snake,amplitude=1.2mm,segment length=5mm,post length=3mm}] (176mm,110mm) -- (176mm,94mm);
+  \draw[otGreen,line width=1.6pt,-{Stealth[length=3mm]},decorate,
+    decoration={snake,amplitude=1.2mm,segment length=5mm,post length=3mm}] (198mm,64mm) -- (210mm,52mm);}
+
+%% Décor « transferts thermiques » : une paroi traversée par un flux, profil de température
+\newcommand{\otDecotransferts}{%
+  \otDecoGrille
+  \fill[white,opacity=0.25] (168mm,48mm) rectangle (180mm,108mm);
+  \draw[white,opacity=0.8,line width=1pt] (168mm,48mm) -- (168mm,108mm) (180mm,48mm) -- (180mm,108mm);
+  \draw[white,line width=1.5pt,line cap=round] (138mm,96mm) -- (168mm,96mm) -- (180mm,62mm) -- (208mm,62mm);
+  \foreach \y in {58,72,86}{%
+    \draw[otGreen,line width=1.4pt,-{Stealth[length=2.6mm]},decorate,
+      decoration={snake,amplitude=1mm,segment length=4.5mm,post length=3mm}] (142mm,\y mm) -- (166mm,\y mm);
+    \draw[otGreen,line width=1.4pt,-{Stealth[length=2.6mm]},decorate,
+      decoration={snake,amplitude=1mm,segment length=4.5mm,post length=3mm}] (182mm,\y mm) -- (206mm,\y mm);}}
+
+%% Décor « son » : un haut-parleur et des fronts d'onde de plus en plus faibles
+\newcommand{\otDecoson}{%
+  \otDecoGrille
+  \fill[white,opacity=0.8] (142mm,68mm) rectangle (150mm,80mm);
+  \fill[white,opacity=0.8] (150mm,68mm) -- (160mm,58mm) -- (160mm,90mm) -- (150mm,80mm) -- cycle;
+  \foreach \k/\op in {1/0.9,2/0.7,3/0.5,4/0.32,5/0.18}{%
+    \draw[white,opacity=\op,line width=1.3pt] ([shift={(-38:{(8+8*\k)*1mm})}]160mm,74mm) arc[start angle=-38,end angle=38,radius={(8+8*\k)*1mm}];}
+  \draw[otGreen,line width=1.4pt,-{Stealth[length=2.6mm]}] (168mm,50mm) -- (206mm,50mm);}
+
+%% Décor « interférences » : deux sources et leurs ondes circulaires qui se superposent
+\newcommand{\otDecointerferences}{%
+  \otDecoGrille
+  \begin{scope}
+    \clip (136mm,44mm) rectangle (210mm,112mm);
+    \foreach \r in {6,12,...,60}{%
+      \draw[white,opacity=0.4,line width=0.7pt] (166mm,62mm) circle (\r mm);
+      \draw[otGreen,opacity=0.75,line width=0.7pt] (182mm,62mm) circle (\r mm);}
+  \end{scope}
+  \fill[white] (166mm,62mm) circle (1.6mm);
+  \fill[white] (182mm,62mm) circle (1.6mm);}
+
+%% Décor « Doppler » : une source en mouvement, fronts d'onde resserrés vers l'avant
+\newcommand{\otDecodoppler}{%
+  \otDecoGrille
+  \begin{scope}
+    \clip (136mm,44mm) rectangle (210mm,112mm);
+    \foreach \k in {1,...,6}{%
+      \pgfmathsetmacro\opac{1-0.12*\k}%
+      \draw[white,opacity=\opac,line width=1pt] ({(196-5*\k)*1mm},76mm) circle ({7*\k*1mm});}
+  \end{scope}
+  \fill[otGreen] (196mm,76mm) circle (2.2mm);
+  \draw[otGreen,line width=1.4pt,-{Stealth[length=2.8mm]}] (199mm,76mm) -- (209mm,76mm);}
+
+%% Décor « lunette » : objectif, oculaire et faisceau de rayons parallèles
+\newcommand{\otDecolunette}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (136mm,74mm) -- (210mm,74mm);
+  \draw[white,opacity=0.85,line width=1.3pt] (150mm,74mm) ellipse (2.2mm and 24mm);
+  \draw[white,opacity=0.85,line width=1.3pt] (196mm,74mm) ellipse (1.6mm and 10mm);
+  \foreach \y in {-18,-9,0,9,18}{%
+    \draw[otGreen,line width=0.9pt] (138mm,{(74+\y)*1mm}) -- (150mm,{(74+\y)*1mm}) -- (186mm,74mm);
+    \draw[otGreen,line width=0.9pt] (186mm,74mm) -- (196mm,{(74-\y*10/36)*1mm}) -- (208mm,{(74-\y*10/36)*1mm});}}
+
+%% Décor « photons » : des photons frappent une plaque et en arrachent des électrons
+\newcommand{\otDecophotons}{%
+  \otDecoGrille
+  \fill[white,opacity=0.3] (178mm,46mm) rectangle (186mm,104mm);
+  \draw[white,opacity=0.8,line width=1pt] (178mm,46mm) rectangle (186mm,104mm);
+  \foreach \y in {60,75,90}{%
+    \draw[otGreen,line width=1.4pt,-{Stealth[length=2.6mm]},decorate,
+      decoration={snake,amplitude=1.2mm,segment length=5mm,post length=3mm}] (140mm,{(\y+10)*1mm}) -- (176mm,\y mm);}
+  \foreach \y/\dy in {62/-8,77/4,92/10}{%
+    \fill[white] (190mm,\y mm) circle (1.5mm);
+    \draw[white,line width=1.1pt,-{Stealth[length=2.2mm]}] (192mm,\y mm) -- ++(14mm,\dy mm);}}
+
+%% Décor « circuit RC » : un condensateur et sa courbe de charge exponentielle
+\newcommand{\otDecorc}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (140mm,50mm) -- (208mm,50mm) (140mm,50mm) -- (140mm,104mm);
+  \draw[white,opacity=0.4,line width=0.6pt,dash pattern=on 2pt off 2pt] (140mm,98mm) -- (208mm,98mm);
+  \draw[otGreen,line width=1.6pt,line cap=round] plot[domain=0:66,samples=80] ({(140+\x)*1mm},{(50+48*(1-exp(-\x/14)))*1mm});
+  \draw[white,opacity=0.85,line width=1.4pt] (192mm,58mm) -- (192mm,76mm) (198mm,58mm) -- (198mm,76mm);
+  \draw[white,opacity=0.85,line width=1.1pt] (182mm,67mm) -- (192mm,67mm) (198mm,67mm) -- (208mm,67mm);}
+
+%% Décor « mesure » : un histogramme, sa courbe en cloche et une barre d'incertitude
+\newcommand{\otDecomesure}{%
+  \otDecoGrille
+  \draw[white,opacity=0.4,line width=0.5pt] (112mm,47mm) -- (208mm,47mm);
+  \foreach \k/\hh in {0/5,1/11,2/22,3/33,4/38,5/32,6/21,7/10,8/4}{%
+    \fill[white,opacity=0.28] ({(121+9*\k)*1mm},47mm) rectangle ({(129+9*\k)*1mm},{(47+\hh)*1mm});}
+  \draw[otGreen,line width=1.6pt,line cap=round]
+    plot[domain=116:202,samples=120] ({\x*1mm},{(47+38*exp(-((\x-161)/17)^2))*1mm});
+  \draw[otGreen,line width=1.2pt] (144mm,96mm) -- (178mm,96mm);
+  \draw[otGreen,line width=1.2pt] (144mm,92mm) -- (144mm,100mm) (178mm,92mm) -- (178mm,100mm);
+  \fill[white] (161mm,96mm) circle (1.7mm);}
+
+\endinput

@@ -1,0 +1,296 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[infrarouge]{8}{Molécules organiques et spectroscopie infrarouge}{Partie 1 · Constitution et transformations de la matière}
+{Formule semi-développée\enspace·\enspace Squelette carboné\enspace·\enspace Groupe caractéristique\enspace·\enspace Nomenclature\enspace·\enspace Infrarouge}
+\objectif{Passer d'une formule brute à une formule semi-développée, et inversement.}
+\objectif{Identifier les groupes caractéristiques des alcools, aldéhydes, cétones et acides carboxyliques.}
+\objectif{Justifier le nom d'une molécule simple à partir de sa formule semi-développée, et inversement.}
+\objectif{Exploiter un spectre infrarouge à l'aide d'une table de nombres d'onde.}
+\objectif{Visualiser la géométrie de molécules organiques avec des modèles ou un logiciel.}
+\prerequis{Schémas de Lewis et géométrie des molécules (chapitre~6).}
+\prerequis{Règles du duet et de l'octet ; liaisons simples et doubles (chapitre~6).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Écrire la formule d'une molécule organique}
+\begin{definition}[Formules brute et semi-développée]
+Une molécule organique contient des atomes de carbone et d'hydrogène, souvent d'oxygène. Sa \textbf{formule brute} indique le
+nombre d'atomes de chaque élément : $\ce{C2H6O}$ pour l'éthanol. Sa \textbf{formule semi-développée} montre l'enchaînement des
+atomes, sans représenter les liaisons avec les atomes d'hydrogène : $\ce{CH3-CH2-OH}$.
+\end{definition}
+\begin{definition}[Squelette carboné saturé]
+L'enchaînement des atomes de carbone forme le \textbf{squelette carboné}. Il est \textbf{saturé} si tous ses atomes de carbone ne
+sont liés que par des liaisons simples. Il peut être \textbf{linéaire}, \textbf{ramifié} ou \textbf{cyclique}. Les alcanes, de formule
+$\mathrm{C}_n\mathrm{H}_{2n+2}$, n'ont que des liaisons C--C et C--H : méthane, éthane, propane, butane, pentane, hexane pour $n=1$ à 6.
+\end{definition}
+\essSection{2}{Groupes caractéristiques et familles}
+\begin{propriete}[Quatre familles]
+Un \textbf{groupe caractéristique} est un groupe d'atomes qui confère des propriétés communes aux molécules qui le portent :
+celles-ci forment une \textbf{famille}. Dans un aldéhyde, l'atome de carbone du groupe carbonyle est lié à un atome
+d'hydrogène, au bout de la chaîne ; dans une cétone, il est lié à deux atomes de carbone.
+\end{propriete}
+\schema{08-familles}
+\essSection{3}{Nommer une molécule}
+\begin{savoirfaire}[Du nom à la formule, et inversement]
+\begin{questions}
+\item Repérer la \textbf{chaîne principale} : la plus longue chaîne carbonée qui contient le carbone du groupe caractéristique.
+Son nombre d'atomes donne le préfixe : méth- (1), éth- (2), prop- (3), but- (4), pent- (5), hex- (6).
+\item Numéroter la chaîne pour donner au groupe caractéristique le plus petit numéro possible.
+\item Ajouter la terminaison de la famille : \textbf{-ol} pour un alcool (propan-2-ol), \textbf{-al} pour un aldéhyde (propanal),
+\textbf{-one} pour une cétone (butanone), et « acide \dots\textbf{oïque} » pour un acide carboxylique (acide éthanoïque).
+\item Nommer les ramifications en préfixe, avec le numéro de l'atome qui les porte. Ainsi, la molécule
+\[\ce{CH3-CH(CH3)-CH2-OH}\]
+est le 2-méthylpropan-1-ol.
+\end{questions}
+\end{savoirfaire}
+\essSection{4}{La spectroscopie infrarouge}
+\begin{definition}[Spectre infrarouge]
+Une molécule absorbe certains rayonnements infrarouges, qui font vibrer ses liaisons. Un \textbf{spectre infrarouge} représente
+la transmittance $T$, en \%, en fonction du \textbf{nombre d'onde} $\sigma=\dfrac{1}{\lambda}$, en \unit{cm^{-1}}, porté de droite à gauche. Chaque
+liaison absorbe dans un domaine caractéristique : une bande vers le bas révèle sa présence.
+\end{definition}
+\begin{propriete}[Table des bandes caractéristiques]
+\par\smallskip\noindent\hfill\begin{tabular}{lll}
+\toprule
+Liaison & Nombre d'onde (\unit{cm^{-1}}) & Allure de la bande \\
+\midrule
+O--H d'un alcool, libre (en phase gazeuse) & 3580 à 3670 & fine \\
+O--H d'un alcool, lié (liquide) & 3200 à 3400 & forte et large \\
+O--H d'un acide carboxylique & 2500 à 3200 & forte et très large \\
+C--H & 2800 à 3000 & moyenne à forte \\
+C--H d'un aldéhyde & 2650 à 2850 & deux bandes moyennes \\
+C=O & 1650 à 1750 & forte et fine \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+En dessous de \qty{1500}{cm^{-1}}, de nombreuses bandes forment l'« empreinte digitale » de la molécule, difficile à interpréter.
+\end{propriete}
+\schema{08-spectres-ir}
+\begin{python}
+table = {'O-H alcool': (3200, 3400), 'O-H acide': (2500, 3200),
+         'C-H': (2800, 3000), 'C=O': (1650, 1750)}
+pics = [3340, 2970, 1715]          # en cm-1
+
+for pic in pics:
+    liaisons = [nom for nom, (mini, maxi) in table.items() if mini <= pic <= maxi]
+    print(pic, liaisons)
+\end{python}
+\begin{console}
+3340 ['O-H alcool']
+2970 ['O-H acide', 'C-H']
+1715 ['C=O']
+\end{console}
+\noindent\capacite{Capacité numérique} Pour chaque nombre d'onde relevé sur un spectre, le programme liste les liaisons dont le domaine le
+contient. À \qty{2970}{cm^{-1}}, deux liaisons sont possibles : seule l'allure de la bande, fine ou très large, permet de trancher.
+\begin{attention}
+Une bande C=O ne suffit pas à distinguer un aldéhyde d'une cétone : il faut chercher les deux bandes C--H de l'aldéhyde,
+vers \qty{2720}{cm^{-1}} et \qty{2820}{cm^{-1}}. Dans un nom, le numéro du groupe caractéristique est omis lorsqu'il n'y a pas d'ambiguïté :
+on écrit propanone et butanone, mais pentan-2-one.
+\end{attention}
+\begin{experience}[Visualiser des molécules organiques]
+Avec un logiciel de visualisation moléculaire, on affiche les modèles éclatés de l'éthanol, du propanal, de la propanone
+et de l'acide éthanoïque. On constate que les atomes de carbone liés par des liaisons simples sont entourés de quatre
+liaisons orientées vers les sommets d'un tétraèdre, tandis que l'atome de carbone d'un groupe C=O est au centre d'un
+triangle plan.
+\end{experience}
+\begin{rediger}
+Pour exploiter un spectre, relever les bandes au-dessus de \qty{1500}{cm^{-1}}, avec leur nombre d'onde et leur allure, les attribuer à
+l'aide de la table, puis conclure sur la famille. Signaler aussi l'absence d'une bande attendue : c'est souvent un argument
+décisif.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-8-1}
+\begin{exercice}[1]{Formules brutes et semi-développées}
+\begin{questions}
+\item Écrire la formule semi-développée et la formule brute de l'éthanol, dont la formule développée comporte une chaîne
+de deux atomes de carbone et un groupe $\ce{-OH}$ en bout de chaîne.
+\item Écrire la formule brute de la propanone $\ce{CH3-CO-CH3}$ et de l'acide méthanoïque $\ce{HCOOH}$.
+\item Écrire la formule développée du butane $\ce{CH3-CH2-CH2-CH3}$, puis sa formule brute.
+\item Vérifier que la formule brute du butane est de la forme $\mathrm{C}_n\mathrm{H}_{2n+2}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-2}
+\begin{exercice}[1]{Reconnaître les familles}
+Identifier le groupe caractéristique et la famille de chaque molécule.
+\begin{questions}
+\item $\ce{CH3-CH2-CHO}$ et $\ce{HCHO}$.
+\item $\ce{CH3-CO-CH2-CH3}$.
+\item $\ce{CH3-CH(OH)-CH3}$ et $\ce{CH3-CH2-CH2-CH2-OH}$.
+\item $\ce{CH3-CH2-COOH}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-3}
+\begin{exercice}[1]{Nommer des molécules}
+Nommer chaque molécule en justifiant.
+\begin{questions}
+\item $\ce{CH3-CH2-CH2-OH}$ et $\ce{CH3-CH(CH3)-CH2-OH}$.
+\item $\ce{CH3-CH2-CO-CH2-CH3}$.
+\item $\ce{CH3-CH(CH3)-CHO}$.
+\item $\ce{CH3-CH2-CH2-COOH}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-4}
+\begin{exercice}[1]{Du nom à la formule}
+Écrire la formule semi-développée et la formule brute de chaque molécule, puis indiquer sa famille.
+\begin{questions}
+\item Hexan-2-one.
+\item Acide propanoïque.
+\item Méthanal et butanal.
+\item 3-méthylbutan-1-ol.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-5}
+\begin{exercice}[1]{Lire un spectre infrarouge}
+Un composé X a pour formule brute $\ce{C3H8O}$. Voici son spectre infrarouge.
+\schema{08-ex05}
+\begin{questions}
+\item Relever les bandes situées au-dessus de \qty{1500}{cm^{-1}} et les attribuer à l'aide de la table de l'essentiel.
+\item À quelle famille X appartient-il ? Quelle bande attendue est absente ?
+\item Parmi le propan-1-ol, le propanal et la propanone, lesquels ont pour formule brute $\ce{C3H8O}$ ?
+\item Proposer une formule semi-développée pour X. Le spectre permet-il de distinguer le propan-1-ol du propan-2-ol ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-8-6}
+\begin{exercice}[2]{Attribuer des bandes en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Prévoir l'affichage pour \code{pics = [3000, 2720, 1730]}.
+\item Quel défaut du programme la ligne affichée pour \qty{2720}{cm^{-1}} révèle-t-elle ? Compléter le dictionnaire \code{table}.
+\item Prévoir alors la ligne affichée pour \qty{2720}{cm^{-1}}.
+\item Quelle information du spectre le programme n'utilise-t-il pas ? Comment pourrait-on l'ajouter ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-7}
+\begin{exercice}[2]{Deux isomères}
+Le propanal et la propanone ont la même formule brute : ce sont des isomères.
+\begin{questions}
+\item Écrire leurs formules semi-développées et leur formule brute commune.
+\item Entourer et nommer leur groupe caractéristique ; indiquer leur famille.
+\item Pourquoi n'écrit-on pas « propan-2-one » ni « propan-1-al » ?
+\item Quelles bandes infrarouges permettent de les distinguer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-8}
+\begin{exercice}[2]{Quatre alcools}
+Quatre alcools ont pour formule brute $\ce{C4H10O}$ :
+A : $\ce{CH3-CH2-CH2-CH2-OH}$ ; B : $\ce{CH3-CH(OH)-CH2-CH3}$ ; C : $\ce{CH3-CH(CH3)-CH2-OH}$ ; D : $\ce{CH3-C(CH3)(OH)-CH3}$.
+\begin{questions}
+\item Vérifier qu'ils ont tous la même formule brute.
+\item Nommer A et B.
+\item Nommer C et D, qui ont un squelette ramifié.
+\item Leurs spectres infrarouges présentent tous une large bande vers \qty{3300}{cm^{-1}}. Le spectre permet-il de les distinguer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-9}
+\begin{exercice}[2]{Du vin au vinaigre}
+Au contact de l'air, des bactéries transforment l'éthanol du vin en acide éthanoïque : le vin « tourne » au vinaigre.
+\begin{questions}
+\item Écrire les formules semi-développées de l'éthanol et de l'acide éthanoïque. Entourer leurs groupes caractéristiques.
+\item À l'aide des spectres de l'essentiel, citer deux différences entre les spectres de ces deux molécules.
+\item Comment le spectre d'un vin qui commence à tourner évolue-t-il au fil des jours ?
+\item Pourquoi la bande O--H de l'acide est-elle beaucoup plus large que celle de l'alcool ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-10}
+\begin{exercice}[2]{Des molécules odorantes}
+L'hexanal sent l'herbe coupée, l'acide butanoïque le beurre rance, l'heptan-2-one le fromage à pâte persillée et le
+3-méthylbutan-1-ol la fermentation.
+\begin{questions}
+\item Écrire la formule semi-développée de chaque molécule.
+\item Indiquer la famille de chacune.
+\item Écrire leurs formules brutes.
+\item Laquelle de ces molécules présente une bande C=O, sans bande C--H d'aldéhyde ni bande O--H ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-11}
+\begin{exercice}[2]{Des modèles moléculaires}
+\schema{08-ex11}
+\begin{questions}
+\item Écrire la formule brute de chaque molécule modélisée.
+\item Écrire leurs formules semi-développées et les nommer.
+\item Quelle est la géométrie autour de l'atome de carbone central du modèle A ? autour du carbone lié à l'oxygène dans B ?
+\item Quelle bande infrarouge présente l'un des spectres et pas l'autre, au-dessus de \qty{3000}{cm^{-1}} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-8-12}
+\begin{exercice}[3]{Oxyder le propan-1-ol}
+\begin{docu}{1}{Une oxydation}
+L'oxydation du propan-1-ol par les ions permanganate en milieu acide peut conduire à deux produits : un aldéhyde, si
+l'oxydant est en défaut et le produit distillé au fur et à mesure, ou un acide carboxylique, si l'oxydant est en excès.
+\end{docu}
+\begin{docu}{2}{Les spectres de deux produits obtenus}
+\schema{08-ex12}
+\end{docu}
+\begin{questions}
+\item Écrire la formule semi-développée du propan-1-ol et justifier son nom.
+\item Écrire les formules semi-développées et les noms de l'aldéhyde et de l'acide carboxylique susceptibles de se former.
+\item Attribuer, en justifiant, chaque spectre à l'un des deux produits.
+\item \initiative Comment vérifier, à partir du spectre de chaque produit, qu'il ne reste plus de propan-1-ol ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-13}
+\begin{exercice}[3]{Le gel hydroalcoolique}
+\begin{docu}{1}{Deux formules}
+L'Organisation mondiale de la santé propose deux formulations de solution hydroalcoolique : l'une contient \qty{80}{\percent} en volume
+d'éthanol, l'autre \qty{75}{\percent} en volume de propan-2-ol, complétés avec de l'eau, un peu d'eau oxygénée et de glycérol.
+\end{docu}
+\begin{docu}{2}{Données}
+Masses volumiques : éthanol \qty{0,789}{g.mL^{-1}} ; propan-2-ol \qty{0,786}{g.mL^{-1}}. Masses molaires (\unit{g.mol^{-1}}) : H 1,0 ; C 12,0 ; O 16,0.
+\end{docu}
+\begin{questions}
+\item Écrire les formules semi-développées de l'éthanol et du propan-2-ol, et justifier leurs noms.
+\item Le propan-2-ol a un isomère qui est aussi un alcool : le nommer et écrire sa formule.
+\item Calculer la quantité d'éthanol dans \qty{100}{mL} de la première solution et celle de propan-2-ol dans \qty{100}{mL} de la seconde.
+\item \initiative Le spectre infrarouge d'un gel du commerce présente une bande très large et intense vers \qty{3300}{cm^{-1}}. Ce spectre
+permet-il de savoir quel alcool il contient ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-14}
+\begin{exercice}[3]{Identifier un composé inconnu}
+\begin{docu}{1}{Une formule brute}
+Une analyse élémentaire montre qu'un liquide incolore, utilisé comme solvant de peintures, a pour formule brute $\ce{C4H8O}$
+et que son squelette carboné est saturé. On sait aussi qu'il contient un groupe carbonyle.
+\end{docu}
+\begin{docu}{2}{Son spectre infrarouge}
+\schema{08-ex14}
+\end{docu}
+\begin{questions}
+\item Écrire les formules semi-développées et les noms des trois composés carbonylés saturés de formule $\ce{C4H8O}$.
+\item Relever les bandes caractéristiques du spectre.
+\item \initiative Identifier le composé, en justifiant par la présence et l'absence de bandes.
+\item Dessiner son schéma de Lewis et indiquer la géométrie autour de l'atome de carbone du groupe carbonyle.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-15}
+\begin{exercice}[3]{Suivre une oxydation par infrarouge}
+\begin{docu}{1}{La transformation}
+On oxyde du propan-2-ol en propanone. En fin d'expérience, on isole la phase organique et l'on enregistre son spectre
+infrarouge, que l'on compare à celui du réactif.
+\end{docu}
+\begin{docu}{2}{Les spectres}
+\schema{08-ex15}
+\end{docu}
+\begin{questions}
+\item Écrire les formules semi-développées du réactif et du produit ; indiquer leurs familles.
+\item Quelle bande apparaît au cours de la transformation ? Laquelle diminue ?
+\item \initiative La transformation du propan-2-ol est-elle complète ? Justifier à partir des spectres.
+\item Proposer une méthode pour séparer le produit du réactif restant, sachant que la propanone bout à \qty{56}{\degreeCelsius} et le
+propan-2-ol à \qty{82}{\degreeCelsius}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

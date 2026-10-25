@@ -1,0 +1,14 @@
+% Quatre séries de huit mesures de g comparées à la valeur de référence ; au corrigé, moyenne de chaque série (exercice 5, chapitre 21)
+\begin{tikzpicture}[x=140mm,y=7mm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (9.5,0) -- (10.22,0) node[pcLegende,anchor=north west] {$g$ (\unit{m.s^{-2}})};
+\foreach \v/\t in {9.5/{9,5},9.6/{9,6},9.7/{9,7},9.8/{9,8},9.9/{9,9},10.0/{10,0},10.1/{10,1},10.2/{10,2}}{%
+  \draw[otInk!70,line width=0.4pt] (\v,0) -- (\v,-0.12) node[pcLegende,anchor=north] {\t};}
+\draw[otGreenDark,line width=0.8pt,dash pattern=on 3pt off 2pt] (9.81,0) -- (9.81,4.6) node[pcLegende,anchor=south,text=otGreenDark] {référence : \qty{9,81}{m.s^{-2}}};
+\foreach \y/\n/\liste/\m in {4/A/{9.79,9.81,9.83,9.80,9.82,9.78,9.84,9.81}/9.81,3/B/{9.65,9.95,9.78,9.88,9.70,9.92,9.84,9.75}/9.81,
+  2/C/{9.58,9.60,9.62,9.59,9.61,9.57,9.63,9.60}/9.60,1/D/{9.95,10.15,10.02,9.88,10.10,9.98,10.08,9.92}/10.01}{%
+  \draw[otRule,line width=0.4pt] (9.5,\y) -- (10.2,\y);
+  \node[pcLegendeG,anchor=east] at (9.49,\y) {série \n};
+  \foreach \v in \liste{\fill[otNavy,opacity=0.75] (\v,\y) circle (1.5pt);}
+  \solution{\draw[otRed!85!black,line width=1.2pt] (\m,\y-0.3) -- (\m,\y+0.3);}}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Chaque point est un résultat de mesure de l'intensité de la pesanteur.}\solution{Le trait rouge indique la moyenne de chaque série.}}

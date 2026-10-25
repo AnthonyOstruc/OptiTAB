@@ -1,0 +1,102 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 3 — résultats vérifiés par programme (bac_s3.py)
+
+\corrigeSujet{3}
+
+\begin{corrigeBac}{5}{Probabilités et concentration}
+\partieExo{A}{Une batterie au hasard}
+\begin{questions}
+  \item On note $B=\overline A$.
+\begin{center}
+\begin{tikzpicture}[otArbre, level distance=20mm, level 1/.style={sibling distance=16mm}, level 2/.style={sibling distance=8mm}]
+  \node {}
+    child {node {$A$}
+      child {node {$D$} edge from parent node[otPoids] {$0{,}03$}}
+      child {node {$\overline D$} edge from parent node[otPoids] {$0{,}97$}}
+      edge from parent node[otPoids] {$0{,}6$}}
+    child {node {$B$}
+      child {node {$D$} edge from parent node[otPoids] {$0{,}08$}}
+      child {node {$\overline D$} edge from parent node[otPoids] {$0{,}92$}}
+      edge from parent node[otPoids] {$0{,}4$}};
+\end{tikzpicture}
+\end{center}
+    \pts{0,5 pt}
+  \item Formule des probabilités totales : $P(D)=0{,}6\times0{,}03+0{,}4\times0{,}08=0{,}018+0{,}032=\res{0{,}05}$. \pts{0,75 pt}
+  \item $P_D(B)=\dfrac{P(B\cap D)}{P(D)}=\dfrac{0{,}032}{0{,}05}=\res{0{,}64}$. \pts{0,75 pt}
+  \item $P(A\cap D)=0{,}018$ et $P(A)\times P(D)=0{,}6\times0{,}05=0{,}03$ : ces nombres diffèrent, $A$ et $D$ ne sont
+    $\res{\text{pas indépendants}}$. \pts{0,5 pt}
+\end{questions}
+\partieExo{B}{Un lot de 200 batteries}
+\begin{questions}[resume]
+  \item $E(X)=200\times0{,}05=\res{10}$ et $V(X)=200\times0{,}05\times0{,}95=\res{9{,}5}$. \pts{0,5 pt}
+  \item $P(X\leq12)\approx\res{0{,}796}$ (calculatrice). \pts{0,5 pt}
+  \item $5<X<15\iff|X-10|<5$. D'après l'inégalité de Bienaymé-Tchebychev,
+    $P\big(|X-10|\geq5\big)\leq\dfrac{V(X)}{5^{2}}=\dfrac{9{,}5}{25}=0{,}38$, donc $P\big(5<X<15\big)\geq1-0{,}38=\res{0{,}62}$. \pts{0,75 pt}
+  \item $P\big(5<X<15\big)=P(6\leq X\leq14)\approx\res{0{,}860}$ : la minoration donnée par l'inégalité est juste, mais assez grossière. \pts{0,75 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Équation différentielle}
+\begin{questions}
+  \item $-0{,}08\big(\theta-20\big)=-0{,}08\,\theta+1{,}6$. Une fonction constante $y=c$ est solution si $0=-0{,}08c+1{,}6$, soit
+    $\res{c=20}$. \pts{0,5 pt}
+  \item Les solutions de $y'=-0{,}08\,y$ sont les fonctions $t\mapsto Ce^{-0{,}08t}$, $C\in\R$. Les solutions de $(E)$ sont donc les
+    fonctions $t\mapsto Ce^{-0{,}08t}+20$. La condition $\theta(0)=85$ donne $C+20=85$, soit $C=65$ :
+    $\res{\theta(t)=20+65\,e^{-0{,}08t}}$. \pts{1,25 pt}
+  \item $\theta'(t)=-5{,}2\,e^{-0{,}08t}$ est strictement négatif : $\theta$ est strictement décroissante. Comme
+    $\lim\limits_{t\to+\infty}e^{-0{,}08t}=0$, on obtient $\res{\lim\limits_{t\to+\infty}\theta(t)=20}$ : le café refroidit et sa
+    température tend vers celle de la pièce. \pts{0,75 pt}
+  \item $\theta(t)=60\iff65\,e^{-0{,}08t}=40\iff e^{-0{,}08t}=\frac{8}{13}\iff t=\dfrac{\ln\frac{13}{8}}{0{,}08}\approx6{,}069$. Le café
+    est buvable au bout d'environ $\res{6\text{ min }4\text{ s}}$. \pts{1 pt}
+  \item L'écart $\theta(t)-20=65\,e^{-0{,}08t}$ est divisé par deux lorsque $e^{-0{,}08t}=\frac12$, soit $t=\dfrac{\ln2}{0{,}08}\approx\res{8{,}66}$
+    minutes, quel que soit l'instant de départ. \pts{0,5 pt}
+  \item $\dfrac1{10}\displaystyle\int_0^{10}\left(20+65\,e^{-0{,}08t}\right)\mathrm{d}t=\dfrac1{10}\left[20t-\dfrac{65}{0{,}08}e^{-0{,}08t}\right]_0^{10}
+    =20+\dfrac{65}{0{,}8}\left(1-e^{-0{,}8}\right)\approx\res{64{,}7\,^\circ\text{C}}$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{4}{Vrai ou faux}
+\begin{questions}
+  \item \textbf{Vraie.} Le vecteur directeur $\vec u\,(2\pv-1\pv1)$ de $d$ et le vecteur normal $\vec n\,(1\pv1\pv-1)$ de $\mathcal{P}$
+    vérifient $\vec u\cdot\vec n=2-1-1=0$ : $d$ est parallèle à $\mathcal{P}$. Le point $(1\pv0\pv3)$ de $d$ n'est pas dans $\mathcal{P}$,
+    car $1+0-3+4=2\neq0$ : le parallélisme est strict. \pts{1 pt}
+  \item \textbf{Fausse.} Un point commun vérifierait $t=1+s$, $1+t=3-s$ et $2t=s$. Les deux premières équations donnent $s=\frac12$ et
+    $t=\frac32$, mais alors $2t=3\neq s$. Les droites n'ont aucun point commun (elles sont même non coplanaires). \pts{1 pt}
+  \item \textbf{Fausse.} Les rôles sont distincts : l'ordre compte. Il y a $10\times9\times8=720$ bureaux possibles ($120$ est le nombre de
+    groupes de trois personnes, sans rôle). \pts{1 pt}
+  \item \textbf{Vraie.} $u_{n+1}-u_n=\dfrac{2n+3}{n+4}-\dfrac{2n+1}{n+3}=\dfrac{5}{(n+3)(n+4)}>0$ : la suite est croissante. Et
+    $u_n=\dfrac{2+\frac1n}{1+\frac3n}\to2$ pour $n\geq1$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{6}{Fonction logarithme et intégration par parties}
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item En $0$ : $\ln x\to-\infty$ et $\frac1{x^{2}}\to+\infty$, d'où $\res{\lim\limits_{x\to0}f(x)=-\infty}$ : la droite d'équation
+    $x=0$ est asymptote. En $+\infty$ : $f(x)=\frac{\ln x}{x}\times\frac1x\to0$ par croissances comparées : la droite d'équation $y=0$
+    est asymptote en $+\infty$. \pts{1 pt}
+  \item $f'(x)=\dfrac{\frac1x\times x^{2}-\ln x\times2x}{x^{4}}=\dfrac{1-2\ln x}{x^{3}}$, du signe de $1-2\ln x$, qui s'annule pour
+    $x=\sqrt e$.
+\begin{center}
+\begin{tableau}
+  \otTab[2.2]{$x$/0.8,$f'(x)$/0.8,$f$/1.6}{$0$,$\sqrt e$,$+\infty$}
+  \tkzTabLine{d,+,z,-,}
+  \tkzTabVar{D-/$-\infty$,+/$\frac1{2e}$,-/$0$}
+\end{tableau}
+\end{center}
+    Le maximum vaut $f\left(\sqrt e\right)=\dfrac{1/2}{e}=\res{\tfrac{1}{2e}}$. \pts{1,5 pt}
+  \item $f(x)=0\iff\ln x=0\iff\res{x=1}$. La fonction $f$ est strictement négative sur $\intOO01$ et strictement positive sur
+    $\intOO1{+\infty}$, du signe de $\ln x$. \pts{0,5 pt}
+\end{questions}
+\partieExo{B}{Calculs d'aires}
+\begin{questions}[resume]
+  \item Avec $u(x)=\ln x$, $u'(x)=\frac1x$, $v'(x)=\frac1{x^{2}}$ et $v(x)=-\frac1x$ :
+    $I=\left[-\dfrac{\ln x}{x}\right]_1^{e}+\displaystyle\int_1^{e}\frac{1}{x^{2}}\,\mathrm{d}x=-\frac1e+\left[-\frac1x\right]_1^{e}
+    =-\frac1e+1-\frac1e=\res{1-\tfrac2e}\approx0{,}264$. \pts{1,5 pt}
+  \item $f$ est positive sur $\intFF1e$ : $I$ est l'aire, en unités d'aire, du domaine compris entre $\mathcal{C}_f$, l'axe des
+    abscisses et les droites d'équations $x=1$ et $x=e$. \pts{0,5 pt}
+  \item Le même calcul, mené entre $1$ et $\lambda$, donne $A(\lambda)=-\dfrac{\ln\lambda}{\lambda}-\dfrac1\lambda+1=1-\dfrac{1+\ln\lambda}{\lambda}$.
+    Par croissances comparées, $\frac{\ln\lambda}{\lambda}\to0$ et $\frac1\lambda\to0$ : $\res{\lim\limits_{\lambda\to+\infty}A(\lambda)=1}$.
+    L'aire du domaine illimité situé sous la courbe, à droite de $x=1$, est finie et vaut $1$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}

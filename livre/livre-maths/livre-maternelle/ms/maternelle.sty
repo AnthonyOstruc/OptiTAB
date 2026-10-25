@@ -1,0 +1,192 @@
+%% =====================================================================
+%%  maternelle.sty — mise en page des cahiers OptiTAB Maternelle
+%%  Compilation : LuaLaTeX (deux passes au moins)
+%% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{maternelle}[2026/10/23 Cahiers OptiTAB Maternelle]
+\RequirePackage{iftex}
+\RequireLuaTeX
+\RequirePackage[a4paper,inner=16mm,outer=16mm,top=14mm,bottom=20mm,footskip=11mm,headheight=0pt,headsep=0pt]{geometry}
+\RequirePackage[french]{babel}
+\frenchsetup{StandardItemizeEnv=true}
+\RequirePackage{fontspec}
+\setmainfont{Montserrat}[Extension=.otf,UprightFont=*-Regular,ItalicFont=*-Italic,BoldFont=*-SemiBold,BoldItalicFont=*-SemiBoldItalic]
+\setsansfont{Montserrat}[Extension=.otf,UprightFont=*-Regular,ItalicFont=*-Italic,BoldFont=*-SemiBold]
+\newfontfamily\otLight{Montserrat}[Extension=.otf,UprightFont=*-Light,ItalicFont=*-LightItalic,BoldFont=*-Medium]
+\newfontfamily\otRegular{Montserrat}[Extension=.otf,UprightFont=*-Regular,ItalicFont=*-Italic,BoldFont=*-SemiBold]
+\newfontfamily\otMedium{Montserrat}[Extension=.otf,UprightFont=*-Medium,ItalicFont=*-MediumItalic,BoldFont=*-SemiBold]
+\newfontfamily\otSemi{Montserrat}[Extension=.otf,UprightFont=*-SemiBold,ItalicFont=*-SemiBoldItalic,BoldFont=*-Bold]
+\newfontfamily\otBold{Montserrat}[Extension=.otf,UprightFont=*-Bold,ItalicFont=*-BoldItalic,BoldFont=*-ExtraBold]
+\newcommand{\otCaps}[2][8]{{\addfontfeature{LetterSpace=#1}\MakeUppercase{#2}}}
+\RequirePackage{xcolor}
+\definecolor{otNavy}{HTML}{1B3C8E}
+\definecolor{otNavyDark}{HTML}{122A66}
+\definecolor{otGreen}{HTML}{5FAC60}
+\definecolor{otGreenDark}{HTML}{3B8544}
+\definecolor{otInk}{HTML}{1C2130}
+\definecolor{otMuted}{HTML}{6B7385}
+\definecolor{otRule}{HTML}{D5DAE3}
+\definecolor{otOrange}{HTML}{F0A23B}
+\definecolor{otRed}{HTML}{E0574C}
+\colorlet{otNavyTint}{otNavy!6}
+\colorlet{otGreenTint}{otGreen!13}
+\AtBeginDocument{\color{otInk}}
+\RequirePackage{graphicx}
+\graphicspath{{images/}}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,calc,shapes.geometric}
+\RequirePackage{objets}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{tabularx}
+\RequirePackage{booktabs}
+\RequirePackage{fancyhdr}
+\RequirePackage{qrcode}
+\RequirePackage{adjustbox}
+\RequirePackage[hidelinks,bookmarksnumbered]{hyperref}
+\RequirePackage{bookmark}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedbottom
+
+%% ---------------------------------------------------------------- niveau
+\newcommand{\matNiveau}{Petite Section}
+\newcommand{\matNiveauCourt}{PS}
+\newcommand{\matAge}{avant 4 ans}
+\colorlet{matAccent}{otGreen}
+\newcommand{\otSite}{optitab.net}
+\newcommand{\otURL}{https://www.optitab.net}
+\newcommand{\otCheck}{\tikz[baseline=-0.6ex]{\fill[matAccent] (0,0) circle (2.2mm);\draw[white,line width=1.1pt,line cap=round,line join=round] (-1mm,0) -- (-0.25mm,-0.8mm) -- (1.1mm,0.9mm);}}
+
+%% ---------------------------------------------------------------- solutions
+\newif\ifmatSolution
+\newcommand{\sol}[1]{\ifmatSolution #1\fi}
+\newcommand{\enonce}[1]{\ifmatSolution\else #1\fi}
+\tikzset{
+  sol trait/.style={draw=otGreenDark,line width=2.2pt,line cap=round,line join=round},
+  sol entoure/.style={draw=otGreenDark,line width=2pt},
+  zone/.style={draw=otRule,line width=1pt,rounded corners=6pt,fill=white},
+  zone pleine/.style={draw=otRule,line width=1pt,rounded corners=6pt,fill=matAccent!8},
+  point relier/.style={fill=matTrait,draw=white,line width=.8pt},
+  pointille/.style={draw=otMuted!60,line width=1pt,dash pattern=on 3pt off 3pt},
+}
+% Figure d'activité : \matFigure{nom} ; vignette corrigée : \matFigure[corrige]{nom}
+\NewDocumentCommand{\matFigure}{O{enonce} m}{%
+  \begingroup\ifstrequal{#1}{corrige}{\matSolutiontrue}{\matSolutionfalse}%
+  \input{figures/#2.tex}\endgroup}
+% Sur la page d'activité, la figure est agrandie (au plus 1,45 fois) pour occuper la place libre.
+\newsavebox{\matFigBox}
+\newcommand{\matFigurePage}[1]{%
+  \sbox{\matFigBox}{\matFigure{#1}}%
+  \edef\matDispo{\the\dimexpr\pagegoal-\pagetotal-\matReserve\relax}%
+  \edef\matFacteur{\fpeval{min(1.45, (\linewidth)/(\the\wd\matFigBox), (\matDispo)/(\the\dimexpr\ht\matFigBox+\dp\matFigBox\relax))}}%
+  \typeout{MATFIG|#1|\matFacteur}%
+  \scalebox{\matFacteur}{\usebox{\matFigBox}}}
+\newlength{\matReserve}\setlength{\matReserve}{19mm}
+
+%% ---------------------------------------------------------------- pieds de page
+\newcommand{\matObjectif}{}
+\fancypagestyle{matActivite}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[L]{\begin{minipage}[b]{140mm}\raggedright{\otSemi\fontsize{7}{9}\selectfont\color{matAccent}\otCaps[6]{Objectif}}\par
+    {\otLight\fontsize{7.5}{9.5}\selectfont\color{otMuted}\matObjectif}\end{minipage}}%
+  \fancyfoot[R]{\tikz[baseline=-0.6ex]{\fill[otNavy] (0,0) circle (3.6mm);\node[white,font=\otSemi\fontsize{9}{9}\selectfont] at (0,0) {\thepage};}}}
+\fancypagestyle{matSimple}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{{\otMedium\fontsize{8}{9}\selectfont\color{otMuted}\thepage}}}
+\fancypagestyle{matVide}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{matSimple}
+
+%% ---------------------------------------------------------------- pictogrammes
+\newcommand{\matPicto}[1]{\tikz[baseline=-0.8ex]{\fill[white] (0,0) circle (4.6mm);\draw[otRule,line width=.8pt] (0,0) circle (4.6mm);\pic[scale=.62] at (0,0) {picto #1};}}
+
+%% ---------------------------------------------------------------- page d'activité
+% \begin{activite}{numéro}{titre}{pictos (liste)}{consigne}{objectif}{label}
+\newcounter{matAct}
+\NewDocumentEnvironment{activite}{m m m m m m}{%
+  \clearpage\thispagestyle{matActivite}\gdef\matObjectif{#5}%
+  \phantomsection\label{#6}%
+  \pdfbookmark[1]{#1. #2}{bm-#6}%
+  \begin{tikzpicture}
+    \fill[otNavyTint,rounded corners=7pt] (0,0) rectangle (\linewidth,-15mm);
+    \fill[matAccent] (9mm,-7.5mm) circle (6.2mm);
+    \node[white,font=\otBold\fontsize{15}{15}\selectfont] at (9mm,-7.5mm) {#1};
+    \node[anchor=west,font=\otSemi\fontsize{15}{18}\selectfont,text=otNavy] at (18.5mm,-7.5mm) {#2};
+    \node[anchor=east] at (\linewidth-3mm,-7.5mm) {\foreach \p in {#3}{\matPicto{\p}\hspace{1.2mm}}};
+  \end{tikzpicture}\par\vspace{4mm}%
+  \begin{tcolorbox}[enhanced,colback=white,colframe=matAccent!45,boxrule=1.1pt,arc=6pt,left=21mm,right=5mm,top=3.2mm,bottom=3.2mm,
+    overlay={\pic[scale=1.05] at ([xshift=10.5mm]frame.west) {opti};}]
+    {\otMedium\fontsize{15}{20.5}\selectfont #4}
+  \end{tcolorbox}\par\vspace{2mm}%
+  \vfill\begin{center}}{%
+  \end{center}\vfill
+  \hfill\tikz[baseline=-0.6ex]{\node[font=\otMedium\fontsize{9}{9}\selectfont,text=otMuted,anchor=east] at (-6mm,0) {J'ai fini : je colorie l'étoile.};\pic[scale=1.0,mat/c=white] at (0,0) {etoile};}\par
+}
+
+%% ---------------------------------------------------------------- ouverture de partie
+% \partieMat{numéro}{titre}{sous-titre}{décor tikz}{texte adulte}{liste}
+\NewDocumentCommand{\partieMat}{m m m m m m}{%
+  \clearpage\thispagestyle{matVide}%
+  \phantomsection\pdfbookmark[0]{#1. #2}{bm-partie-#1}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[otNavy] ([shift={(-1mm,1mm)}]current page.north west) rectangle ([shift={(1mm,-118mm)}]current page.north east);
+    \begin{scope}[shift={([yshift=-118mm]current page.north west)}]
+      \draw[white,opacity=.06,line width=.3pt,step=7mm] (0,0) grid (210mm,118mm);
+      #4
+      \node[anchor=north west,inner sep=0pt] at (20mm,104mm) {\tikz{\fill[matAccent,rounded corners=3pt] (0,0) rectangle (34mm,7mm);\node[white,font=\otSemi\fontsize{8}{8}\selectfont] at (17mm,3.5mm) {\otCaps[6]{Partie #1}};}};
+      \node[anchor=south west,inner sep=0pt,text=white,font=\otBold\fontsize{34}{38}\selectfont,text width=150mm,align=left] at (20mm,30mm) {\lefthyphenmin=62\righthyphenmin=62 #2};
+      \node[anchor=north west,inner sep=0pt,text=white,opacity=.85,font=\otRegular\fontsize{12}{15}\selectfont,text width=150mm] at (20mm,25mm) {#3};
+    \end{scope}
+  \end{tikzpicture}\par
+  \vspace*{108mm}%
+  {\otSemi\fontsize{8}{10}\selectfont\color{matAccent}\otCaps[8]{Dans cette partie}}\par\vspace{3mm}
+  {\fontsize{11}{17}\selectfont #6}\par
+  \vfill
+  {\centering\begin{tikzpicture}
+    \pic[scale=2.5] at (0,0) {opti};
+    \node[anchor=west,fill=matAccent!14,rounded corners=9pt,inner xsep=6mm,inner ysep=4mm,
+      font=\otSemi\fontsize{15}{19}\selectfont,text=otNavy] (bulle) at (2.2,0.35) {On commence ?};
+    \fill[matAccent!14] ([yshift=2mm]bulle.west) -- ++(-4mm,-1mm) -- ([yshift=-3mm]bulle.west) -- cycle;
+  \end{tikzpicture}\par}
+  \vfill
+  \begin{tcolorbox}[colback=otNavyTint,colframe=otNavyTint,arc=6pt,left=5mm,right=5mm,top=4mm,bottom=4mm]
+    {\otSemi\fontsize{8}{10}\selectfont\color{otNavy}\otCaps[8]{Pour l'adulte · ce que dit le programme}}\par\vspace{2mm}
+    {\fontsize{9.5}{13.5}\selectfont #5}
+  \end{tcolorbox}
+  \clearpage}
+\newcommand{\ligneAct}[3]{\hyperref[#3]{\tikz[baseline=-0.7ex]{\fill[matAccent] (0,0) circle (2.6mm);\node[white,font=\otSemi\fontsize{8}{8}\selectfont] at (0,0) {#1};}\hspace{2.5mm}#2}\dotfill{\otMedium\small p.\,\pageref*{#3}}\par}
+
+%% ---------------------------------------------------------------- pages titrées (liminaires, guide)
+\newcommand{\matPageTitre}[2]{%
+  {\otLight\fontsize{26}{30}\selectfont\color{otNavy}#1}\par\vspace{1.5mm}
+  {\otMedium\fontsize{9}{11}\selectfont\color{otMuted}#2}\par\vspace{3mm}
+  \tikz{\fill[matAccent] (0,0) rectangle (16mm,1.1mm);\fill[otRule] (16mm,0.3mm) rectangle (\linewidth,0.8mm);}\par\vspace{6mm}}
+\newtcolorbox{encadre}[1][]{colback=otNavyTint,colframe=otNavyTint,arc=5pt,left=4mm,right=4mm,top=3mm,bottom=3mm,
+  fonttitle=\otSemi\fontsize{8.5}{10}\selectfont,coltitle=otNavy,title={#1},attach title to upper={\par\vspace{1.5mm}}}
+\newtcolorbox{encadrevert}[1][]{colback=otGreenTint,colframe=otGreenTint,arc=5pt,left=4mm,right=4mm,top=3mm,bottom=3mm,
+  fonttitle=\otSemi\fontsize{8.5}{10}\selectfont,coltitle=otGreenDark,title={#1},attach title to upper={\par\vspace{1.5mm}}}
+
+%% ---------------------------------------------------------------- guide de l'adulte
+% \guideEntree{label}{numéro}{titre}{objectif}{avant}{dire}{réponse}{vignette ou vide}
+\newsavebox{\matGuideBox}
+\NewDocumentCommand{\guideEntree}{m m m m m m m m}{%
+  \par\vspace{3.2mm}\noindent
+  \begin{lrbox}{\matGuideBox}\begin{minipage}{\linewidth}
+  \begin{minipage}[t]{\ifstrempty{#8}{\linewidth}{0.63\linewidth}}
+    {\tikz[baseline=-0.7ex]{\fill[matAccent] (0,0) circle (2.8mm);\node[white,font=\otSemi\fontsize{8}{8}\selectfont] at (0,0) {#2};}\hspace{2mm}%
+     {\otSemi\fontsize{10.5}{13}\selectfont\color{otNavy}#3}\hfill{\otMedium\fontsize{8}{10}\selectfont\color{otMuted}\hyperref[#1]{page \pageref*{#1}}}}\par\vspace{1.6mm}
+    {\fontsize{8.6}{11.6}\selectfont
+    {\otSemi\color{matAccent}Objectif. }#4\par\vspace{1mm}
+    {\otSemi\color{matAccent}Avant la fiche. }#5\par\vspace{1mm}
+    {\otSemi\color{matAccent}Faire dire. }#6\par\vspace{1mm}
+    {\otSemi\color{otGreenDark}Réponse. }#7\par}
+  \end{minipage}%
+  \ifstrempty{#8}{}{\hfill\begin{minipage}[t]{0.33\linewidth}\vspace{0pt}\centering
+    \tcbox[colback=white,colframe=otRule,boxrule=.6pt,arc=4pt,left=1.5mm,right=1.5mm,top=1.5mm,bottom=1.5mm]{\adjustbox{width=52mm,height=40mm,keepaspectratio}{\matFigure[corrige]{#8}}}\end{minipage}}
+  \end{minipage}\end{lrbox}%
+  \ifdim\dimexpr\ht\matGuideBox+\dp\matGuideBox\relax>0.93\textheight
+    \PackageError{maternelle}{Entrée de guide trop haute : #1}{Raccourcir le texte.}\fi
+  \typeout{MATGUIDE|#1|\the\dimexpr\ht\matGuideBox+\dp\matGuideBox\relax}%
+  \needspace{\dimexpr\ht\matGuideBox+\dp\matGuideBox+4mm\relax}%
+  \usebox{\matGuideBox}\par\vspace{2mm}{\color{otRule}\hrule height .4pt}}
+\RequirePackage{needspace}
+\RequirePackage{etoolbox}
+\endinput

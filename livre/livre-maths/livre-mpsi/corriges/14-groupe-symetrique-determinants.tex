@@ -1,0 +1,452 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 14 — Groupe symétrique et déterminants
+%% Résultats vérifiés par verifications/chapitre_14.py.
+
+\corrigesChapitre{14}{Groupe symétrique et déterminants}
+\corrigesSouples
+
+\begin{blocLivre}{cor-14-1}
+\begin{corrige}{1}{Composer des permutations}
+\demarche{Composer, c'est lire de droite à gauche : on applique d'abord la
+permutation de droite.}
+\begin{questions}
+  \item $\sigma\circ\tau$ : $1\mapsto2\mapsto3$, $2\mapsto1\mapsto2$,
+    $3\mapsto4\mapsto4$, $4\mapsto3\mapsto1$ :
+    $\sigma\tau=\begin{pmatrix}1&2&3&4\\3&2&4&1\end{pmatrix}=(1\ 3\ 4)$.
+    De même $\tau\sigma=\begin{pmatrix}1&2&3&4\\1&4&2&3\end{pmatrix}
+    =(2\ 4\ 3)$ : elles \res{\text{ne commutent pas}}.
+  \item Lire le tableau à l'envers :
+    $\sigma^{-1}=\begin{pmatrix}1&2&3&4\\3&1&2&4\end{pmatrix}=(1\ 3\ 2)$.
+  \item $\sigma=(1\ 2\ 3)$ et $\tau=(1\ 2)(3\ 4)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-2}
+\begin{corrige}{2}{Décomposer en cycles}
+\demarche{Suivre chaque orbite jusqu'à revenir au point de départ.}
+\begin{questions}
+  \item $1\to3\to4\to1$ et $2\to5\to2$, $6$ fixe :
+    $\sigma_1=\res{(1\ 3\ 4)(2\ 5)}$, d'ordre
+    $\operatorname{ppcm}(3,2)=\res{6}$.
+  \item $1\to2\to3\to4\to5\to1$ et $6\to7\to6$ :
+    $\sigma_2=\res{(1\ 2\ 3\ 4\ 5)(6\ 7)}$, d'ordre
+    $\operatorname{ppcm}(5,2)=\res{10}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-3}
+\begin{corrige}{3}{Signatures}
+\demarche{La signature d'un cycle ne dépend que de sa longueur ; celle d'un
+produit se multiplie.}
+\begin{questions}
+  \item $(a_1\ \dots\ a_p)=(a_1\ a_p)\cdots(a_1\ a_2)$ : $p-1$
+    transpositions, donc $\varepsilon=\res{(-1)^{p-1}}$ — les cycles de
+    longueur impaire sont pairs !
+  \item $\varepsilon(\sigma_1)=(+1)(-1)=\res{-1}$ ;
+    $\varepsilon(\sigma_2)=(+1)(-1)=\res{-1}$.
+  \item $\varepsilon(\sigma)=1$ ($3$-cycle), $\varepsilon(\tau)=(-1)^{2}=1$,
+    et $\sigma\tau=(1\ 3\ 4)$ est un $3$-cycle : $1=1\times1$, conforme au
+    morphisme.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-4}
+\begin{corrige}{4}{Déterminants 2 × 2 et 3 × 3}
+\demarche{En petit format, le développement direct est encore raisonnable.}
+\begin{questions}
+  \item $2\times4-3\times1=\res{5}$ ; pour le $3\times3$, en développant :
+    $1(50-48)-2(40-42)+3(32-35)=2+4-9=\res{-3}$.
+  \item $\det B=1(0-1)-0+2(0-1)=-3$, et l'on vérifie
+    $\det(AB)=9=(-3)\times(-3)=\det A\det B$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-5}
+\begin{corrige}{5}{Créer des zéros}
+\demarche{Ajouter à une colonne un multiple d'une autre ne change rien :
+on vide la première ligne.}
+\begin{questions}
+  \item $C_2\leftarrow C_2-C_1$, $C_3\leftarrow C_3-C_1$ :
+    $\begin{vmatrix}1&0&0\\1&1&2\\1&2&5\end{vmatrix}
+    =1\times(5-4)=\res{1}$.
+  \item $L_3-L_2=(1,1,1)=L_2-L_1$ : les lignes sont en progression
+    arithmétique, donc liées ($L_1-2L_2+L_3=0$) : déterminant
+    $\res{0}$, sans calcul.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-6}
+\begin{corrige}{6}{Triangulaires, transposée, inverse}
+\demarche{Triangulaire : produit de la diagonale. Et
+$\det(\lambda A)=\lambda^{n}\det A$.}
+\begin{questions}
+  \item $\det T=2\times3\times4=\res{24}$ ;
+    $\det\bigl(T^{\mathsf T}\bigr)=24$ et
+    $\det\bigl(T^{-1}\bigr)=\res{\dfrac{1}{24}}$.
+  \item $\det(2T)=2^{3}\det T=\res{192}$ — et non $48$ : chaque
+    \emph{colonne} est multipliée par $2$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-7}
+\begin{corrige}{7}{Développer intelligemment}
+\demarche{Choisir la ligne ou colonne la plus vide : ici la deuxième
+colonne.}
+La colonne $2$ ne contient que le $3$ en position $(2,2)$ :
+\[
+\det=3\,(-1)^{2+2}
+\begin{vmatrix}2&0&1\\0&1&4\\1&0&1\end{vmatrix}
+=3\bigl(2(1-0)+1(0-1)\bigr)=3(2-1)=\res{3}.
+\]
+(Le $3\times3$ a lui-même été développé par rapport à sa deuxième
+colonne.)
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-8}
+\begin{corrige}{8}{Aires et volumes orientés}
+\demarche{Le déterminant est l'aire (le volume) algébrique ; la valeur
+absolue donne la mesure, le signe donne l'orientation.}
+\begin{questions}
+  \item $\det(u,v)=\begin{vmatrix}3&1\\1&2\end{vmatrix}=\res{5}$ : aire
+    $5$ ; le triangle en est la moitié : $\res{\dfrac52}$.
+  \item $\begin{vmatrix}1&1&1\\0&1&1\\0&0&1\end{vmatrix}=\res{1}$
+    (triangulaire) : le parallélépipède, pourtant penché, a le même volume
+    que le cube unité.
+  \item Signe positif = base \emph{directe} (même orientation que la base
+    canonique). Exemple indirect : $\bigl((0,1),(1,0)\bigr)$, de
+    déterminant $-1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-9}
+\begin{corrige}{9}{La formule de Leibniz à la main}
+\demarche{Une somme sur les permutations : minuscule pour n = 2, 3 —
+astronomique ensuite.}
+\begin{questions}
+  \item $S_2=\ens{\mathrm{id},(1\ 2)}$ :
+    $\det A=a_{11}a_{22}-a_{12}a_{21}=ad-bc$.
+  \item Les $6$ permutations de $S_3$ donnent
+    $aei+bfg+cdh-ceg-bdi-afh$ : la règle de Sarrus. Sur l'exemple :
+    $50+84+96-105-96-32=\res{-3}$, comme à l'exercice 4.
+  \item $10!=3\,628\,800$ termes : la formule est théorique ; en pratique
+    on pivote (coût en $n^{3}$, pas en $n!$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-10}
+\begin{corrige}{10}{Base ou pas ? Le critère du déterminant}
+\demarche{Un seul nombre décide : plus rapide que résoudre le système.}
+\begin{questions}
+  \item $\begin{vmatrix}1&1&0\\0&1&1\\1&0&1\end{vmatrix}=\res{2}\neq0$ :
+    c'est une base — au chapitre 12, il avait fallu résoudre tout le
+    système pour conclure.
+  \item Coordonnées dans $(1,X,X^{2})$ :
+    $\begin{vmatrix}1&1&0\\1&-1&0\\0&0&1\end{vmatrix}=-2\neq0$ :
+    $(1+X,1-X,X^{2})$ est une base de $\R_2[X]$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-11}
+\begin{corrige}{11}{Déterminants à paramètre}
+\demarche{Calculer, factoriser, puis seulement discuter.}
+\begin{questions}
+  \item $1-t^{2}=\res{(1-t)(1+t)}$ : nul pour $t=\pm1$.
+  \item Sommer toutes les colonnes dans $C_1$ (somme constante $t+2$),
+    factoriser, puis vider :
+    \[
+    \begin{vmatrix}1&1&t\\1&t&1\\t&1&1\end{vmatrix}
+    =\res{-(t-1)^{2}(t+2)}.
+    \]
+    Nul pour $t\in\ens{1,-2}$ : on retrouve exactement la discussion de
+    rang du chapitre 13 (rang $3$ hors de ces valeurs).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-12}
+\begin{corrige}{12}{Le déterminant de Vandermonde en taille 3}
+\demarche{Vider la première colonne, factoriser chaque ligne.}
+\begin{questions}
+  \item $C_2\leftarrow C_2-C_1$, $C_3\leftarrow C_3-C_1$ puis
+    factorisation de $(b-a)$ et $(c-a)$ :
+    \[
+    \begin{vmatrix}1&0&0\\a&b-a&c-a\\a^{2}&b^{2}-a^{2}&c^{2}-a^{2}\end{vmatrix}
+    =(b-a)(c-a)\begin{vmatrix}1&1\\b+a&c+a\end{vmatrix}
+    =\res{(b-a)(c-a)(c-b)}.
+    \]
+  \item Non nul dès que $a,b,c$ sont distincts : le système
+    d'interpolation en trois nœuds est de Cramer, d'où l'existence et
+    l'unicité du polynôme interpolateur — le théorème de Lagrange
+    (chapitre 10), déjà revu par l'isomorphisme $\Phi$ du chapitre 12, et
+    démontré ici une troisième fois, par le déterminant.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-13}
+\begin{corrige}{13}{Matrices de permutation}
+\demarche{Permuter des colonnes de l'identité : le déterminant suit la
+signature à la trace près — qui compte les points fixes.}
+\begin{questions}
+  \item $P_\sigma P_\tau e_j=P_\sigma e_{\tau(j)}=e_{\sigma\tau(j)}$ :
+    c'est $P_{\sigma\tau}$. Les colonnes de $P_\sigma$ sont
+    orthonormées : $P_\sigma^{\mathsf T}P_\sigma=I_n$, donc
+    $P_\sigma^{-1}=P_\sigma^{\mathsf T}$ ($=P_{\sigma^{-1}}$).
+  \item $\det P_\sigma=\det\bigl(e_{\sigma(1)},\dots,e_{\sigma(n)}\bigr)
+    =\varepsilon(\sigma)\det(e_1,\dots,e_n)=\res{\varepsilon(\sigma)}$ :
+    la signature \emph{est} un déterminant — et le caractère morphisme de
+    $\varepsilon$ découle de celui de $\det$.
+  \item $(P_\sigma)_{jj}=1$ si et seulement si $\sigma(j)=j$ :
+    $\operatorname{tr}P_\sigma$ compte les \res{\text{points fixes}} de
+    $\sigma$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-14}
+\begin{corrige}{14}{Comatrice et inversion}
+\demarche{Neuf cofacteurs, une transposition, une division.}
+\begin{questions}
+  \item $\det A=1(1)-2(-1)+0=\res{3}$, et
+    $\operatorname{Com}A=\begin{pmatrix}1&1&-1\\-2&1&2\\2&-1&1\end{pmatrix}$.
+  \item Le produit $A(\operatorname{Com}A)^{\mathsf T}$ vaut bien
+    $3I_3$, d'où
+    \[
+    A^{-1}=\frac13\begin{pmatrix}1&-2&2\\1&1&-1\\-1&2&1\end{pmatrix}.
+    \]
+  \item Pour $\begin{pmatrix}a&b\\c&d\end{pmatrix}$ :
+    $\operatorname{Com}=\begin{pmatrix}d&-c\\-b&a\end{pmatrix}$, donc
+    $A^{-1}=\dfrac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$ :
+    échanger la diagonale, changer les signes de l'autre.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-15}
+\begin{corrige}{15}{Déterminants d'endomorphismes}
+\demarche{Écrire la matrice dans la base canonique : triangulaire deux fois
+sur trois.}
+\begin{questions}
+  \item $\operatorname{Mat}(u)=\begin{pmatrix}1&1&0\\0&1&2\\0&0&1\end{pmatrix}$ :
+    $\det u=\res{1}$ : automorphisme (et son inverse « redescend » les
+    dérivées).
+  \item $\operatorname{Mat}(v)=\begin{pmatrix}1&1&1\\0&1&2\\0&0&1\end{pmatrix}$
+    (binôme) : $\det v=\res{1}$ : automorphisme, de réciproque
+    $P\mapsto P(X-1)$.
+  \item $\operatorname{Mat}(w)=\operatorname{diag}(0,1,2)$ :
+    $\det w=\res{0}$ : pas un automorphisme — son noyau est la droite des
+    constantes.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-16}
+\begin{corrige}{16}{Un déterminant circulant}
+\demarche{Les colonnes $(1,\omega,\omega^{2})$ avec $\omega^{3}=1$ sont
+« propres » pour la structure circulante : le déterminant est le produit
+des trois valeurs.}
+\begin{questions}
+  \item Sarrus :
+    $a^{3}+b^{3}+c^{3}-3abc$ (les trois termes croisés valent chacun
+    $-abc$).
+  \item Pour $\omega^{3}=1$, posons $\lambda=a+b\omega+c\omega^{2}$ ; en
+    utilisant $\omega^{3}=1$ :
+    \[
+    \begin{pmatrix}a&b&c\\c&a&b\\b&c&a\end{pmatrix}
+    \begin{pmatrix}1\\\omega\\\omega^{2}\end{pmatrix}
+    =\lambda\begin{pmatrix}1\\\omega\\\omega^{2}\end{pmatrix}.
+    \]
+    Les trois colonnes $(1,\omega,\omega^{2})$ pour
+    $\omega\in\ens{1,j,j^{2}}$ forment une base (Vandermonde de nœuds
+    distincts !) : dans cette base l'endomorphisme est diagonal, donc
+    \[
+    \res{a^{3}+b^{3}+c^{3}-3abc=(a+b+c)(a+jb+j^{2}c)(a+j^{2}b+jc)} :
+    \]
+    l'identité du chapitre 3, redémontrée par le déterminant.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-17}
+\begin{corrige}{17}{La signature par les inversions}
+\demarche{Chaque échange de voisins crée ou détruit exactement une
+inversion.}
+\begin{questions}
+  \item Pour $\sigma=(3,1,2)$ : les paires $(1,2)$ et $(1,3)$ sont
+    inversées, pas $(2,3)$ : $N(\sigma)=2$, et en effet
+    $\sigma=(1\ 3\ 2)$ est paire. Pour $(2,1)$ : $N=1$, signature $-1$.
+  \item Composer par $(k\ k{+}1)$ échange deux valeurs adjacentes dans la
+    ligne du bas : seule la paire concernée change de statut,
+    $N\mapsto N\pm1$.
+  \item On passe de $\mathrm{id}$ à $\sigma$ par $m$ échanges de voisins
+    (tri à bulles) : $N$ part de $0$ et change de parité à chaque pas,
+    donc $(-1)^{N(\sigma)}=(-1)^{m}=\varepsilon(\sigma)$ — et $N$ donne un
+    algorithme de calcul de la signature.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-18}
+\begin{corrige}{18}{Un déterminant tridiagonal}
+\demarche{Développer deux fois : une récurrence linéaire d'ordre 2
+apparaît.}
+\begin{questions}
+  \item $D_1=2$, $D_2=\begin{vmatrix}2&1\\1&2\end{vmatrix}=3$. En
+    développant par rapport à la première ligne :
+    $D_n=2D_{n-1}-1\cdot D_{n-2}$ (le second développement raye ligne et
+    colonne du coin).
+  \item Équation caractéristique $r^{2}=2r-1$ : racine double $r=1$, donc
+    $D_n=(\alpha+\beta n)$ ; avec $D_1=2$, $D_2=3$ :
+    $\res{D_n=n+1}$ — les récurrences du chapitre 5 au service des
+    déterminants.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-19}
+\begin{corrige}{19}{Générateurs de $S_n$}
+\demarche{Conjuguer une transposition fait voyager son support.}
+\begin{questions}
+  \item Pour $i\neq j$ distincts de $1$ :
+    $(i\ j)=(1\ i)(1\ j)(1\ i)$ ; comme toute permutation est un produit
+    de transpositions, les $(1\ i)$ engendrent $S_n$.
+  \item $c^{k}(1\ 2)c^{-k}=(c^{k}(1)\ c^{k}(2))=(k{+}1\ k{+}2)$ : on
+    obtient toutes les transpositions de voisins ; puis
+    $(1\ k{+}1)=(k\ k{+}1)\cdots(2\ 3)(1\ 2)(2\ 3)\cdots(k\ k{+}1)$
+    reconstruit les $(1\ i)$ : avec a), $\ens{(1\ 2),c}$ engendre
+    $S_n$ — deux générateurs suffisent, quel que soit $n$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-20}
+\begin{corrige}{20}{L'ordre maximal dans $S_n$}
+\demarche{L'ordre ne dépend que du type de cycles : une question
+d'arithmétique sur les partitions.}
+\begin{questions}
+  \item Les cycles disjoints commutent : $\sigma^{m}=\mathrm{id}$ si et
+    seulement si chaque cycle vérifie $c^{m}=\mathrm{id}$, i.e. sa
+    longueur divise $m$ : l'ordre est le
+    \res{\text{ppcm des longueurs}} (chapitres 7 et 8).
+  \item Partitions de $5$ : $5\to5$, $4{+}1\to4$, $3{+}2\to6$,
+    $3{+}1{+}1\to3$, $2{+}2{+}1\to2$… : maximum $\res{6}$ (un $3$-cycle
+    et une transposition). Partitions de $7$ : $7\to7$, $5{+}2\to10$,
+    $4{+}3\to\res{12}$, $3{+}2{+}2\to6$… : maximum $12$, atteint par un
+    $4$-cycle disjoint d'un $3$-cycle.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-21}
+\begin{corrige}{21}{$\det\bigl(A^{\mathsf T}\bigr)=\det A$, par Leibniz}
+\demarche{Sommer sur $\sigma$ ou sur $\sigma^{-1}$, c'est sommer sur le
+même groupe.}
+\begin{questions}
+  \item $\det\bigl(A^{\mathsf T}\bigr)
+    =\sum_{\sigma}\varepsilon(\sigma)\prod_i a_{i,\sigma(i)}$ ; en posant
+    $j=\sigma(i)$, le produit se réécrit
+    $\prod_j a_{\sigma^{-1}(j),j}$. Quand $\sigma$ parcourt $S_n$,
+    $\sigma^{-1}$ aussi, et
+    $\varepsilon(\sigma^{-1})=\varepsilon(\sigma)$ (morphisme) : la somme
+    est exactement celle de $\det A$.
+  \item Les lignes de $A$ étant les colonnes de $A^{\mathsf T}$, le
+    déterminant est $n$-linéaire alterné en les lignes : échanges,
+    combinaisons et développements se pratiquent indifféremment sur les
+    deux.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-22}
+\begin{corrige}{22}{Inversibles dans $\mathcal{M}_n(\Z)$}
+\demarche{La comatrice est entière : tout repose sur
+$\det A\cdot\det\bigl(A^{-1}\bigr)=1$.}
+\begin{questions}
+  \item Si $B=A^{-1}$ est entière : $\det A\det B=1$ avec deux entiers,
+    donc $\det A=\pm1$. Réciproquement si $\det A=\pm1$ :
+    $A^{-1}=\pm(\operatorname{Com}A)^{\mathsf T}$ est entière (les
+    cofacteurs sont des déterminants d'entiers) :
+    \[
+    \res{A^{-1}\in\mathcal{M}_n(\Z)\iff\det A=\pm1}.
+    \]
+  \item $\det\begin{pmatrix}2&1\\1&1\end{pmatrix}=1$ et son inverse
+    $\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$ est entière ;
+    $\operatorname{diag}(2,1)$, de déterminant $2$, a pour inverse
+    $\operatorname{diag}\bigl(\tfrac12,1\bigr)$ : inversible dans
+    $\mathcal{M}_2(\R)$, pas dans $\mathcal{M}_2(\Z)$.
+  \item En taille $1$ : les inversibles de $\Z$ sont $\pm1$. Et
+    l'identité de Cassini (chapitre 13) montrait
+    $\det\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}=\pm1$ :
+    ces matrices de Fibonacci sont inversibles dans $\mathcal{M}_2(\Z)$ —
+    c'était une relation de Bézout.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-23}
+\begin{corrige}{23}{Le déterminant transforme les aires}
+\demarche{Une application linéaire dilate toutes les aires du même
+facteur : |det|.}
+\begin{questions}
+  \item L'image du carré unité par la matrice de colonnes $u,v$ est le
+    parallélogramme construit sur $(u,v)$ : aire
+    $|\det(u,v)|=5$, comme à l'exercice 8.
+  \item Le disque unité, d'aire $\pi$, est envoyé par
+    $\operatorname{diag}(a,b)$ sur l'ellipse : aire
+    $|\det|\times\pi=\res{\pi ab}$.
+  \item $u\circ v$ dilate les aires par $|\det u|\cdot|\det v|$ :
+    la multiplicativité du déterminant est, géométriquement, la
+    composition des facteurs d'échelle (le signe suivant l'orientation).
+\end{questions}
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=0.75,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-3.6,0) -- (3.6,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-2.4) -- (0,2.4);
+  \draw[otMuted,line width=0.8pt,dash pattern=on 2.5pt off 1.8pt] (0,0) circle (1);
+  \fill[otGreen,opacity=0.22] (0,0) ellipse (3 and 2);
+  \draw[otGreenDark,line width=1.1pt] (0,0) ellipse (3 and 2);
+  \node[font=\scriptsize,text=otMuted] at (-0.72,-1.25) {aire $\pi$};
+  \node[font=\scriptsize,text=otGreenDark] at (2.35,-1.75) {aire $\pi ab$};
+  \node[font=\scriptsize,text=otNavy] at (2.2,1.8) {$\operatorname{diag}(a,b)$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Le disque unité devient l'ellipse : chaque aire est multipliée
+par $|\det\operatorname{diag}(a,b)|=ab$.}
+\end{center}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-24}
+\begin{corrige}{24}{Vandermonde en toute taille}
+\demarche{Voir le déterminant comme un polynôme en sa dernière variable :
+racines évidentes, degré connu, coefficient dominant récursif.}
+\begin{questions}
+  \item En développant par rapport à la dernière colonne,
+    $V(a_1,\dots,a_{n-1},x)$ est un polynôme en $x$ de degré au plus
+    $n-1$, dont le coefficient de $x^{n-1}$ est le cofacteur
+    $V(a_1,\dots,a_{n-1})$. Et il s'annule en $x=a_i$ (deux colonnes
+    égales) : il possède les $n-1$ racines $a_1,\dots,a_{n-1}$.
+  \item Donc
+    $V(a_1,\dots,a_{n-1},x)=V(a_1,\dots,a_{n-1})\prod_{i<n}(x-a_i)$, et
+    en $x=a_n$ la récurrence se déroule :
+    \[
+    \res{V(a_1,\dots,a_n)=\prod_{1\leqslant i<j\leqslant n}(a_j-a_i)}.
+    \]
+  \item Pour $(0,1,2,3)$ :
+    $(1)(2)(3)\times(1)(2)\times(1)=12$ — et le calcul direct du
+    déterminant $4\times4$ confirme $12$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-14}

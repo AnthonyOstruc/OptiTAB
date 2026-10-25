@@ -1,0 +1,15 @@
+% Longueur d'un lancer de poids en fonction de l'angle de lancer (corrigé du défi D15)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=50mm,xmin=24,xmax=62,ymin=16,ymax=21.5,
+  xtick={25,30,...,60},ytick={16,17,...,21},
+  xlabel={angle $\alpha$ (°)},ylabel={longueur du jet (m)}]
+\addplot[otNavy,line width=1pt,domain=25:60,samples=120]
+  {13.5*cos(x)*(13.5*sin(x)+sqrt((13.5*sin(x))^2+2*9.81*2.10))/9.81};
+\addplot[otMuted,line width=0.8pt,dash pattern=on 3pt off 1.6pt,domain=32:58,samples=120] {13.5^2*sin(2*x)/9.81};
+\addplot[only marks,mark=*,mark size=1.8pt,otGreenDark] coordinates {(42,20.57)};
+\node[pcLegende,text=otGreenDark,anchor=south] at (axis cs:42,20.65) {$42^\circ$ : \qty{20,6}{m}};
+\node[pcLegende,text=otNavy,anchor=north east] at (axis cs:60,19.0) {lancer depuis $h=\qty{2,10}{m}$};
+\node[pcLegende,text=otMuted,anchor=north] at (axis cs:45,18.3) {lancer depuis le sol : maximum à $45^\circ$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Depuis une hauteur de 2,10 m, la longueur est maximale vers 42° ; depuis le sol, elle le serait à 45°. Le maximum est plat : quelques degrés d'écart coûtent peu.}

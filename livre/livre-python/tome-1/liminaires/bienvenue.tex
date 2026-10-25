@@ -1,0 +1,90 @@
+%% =====================================================================
+%%  Welcome : la promesse de la méthode, les niveaux, le rythme
+%% =====================================================================
+\liminaire{bienvenue}{Welcome!}{Everything you need to know before you start}
+
+{\fontsize{11.4}{15.6}\selectfont
+You have never written a line of code? Or you tried once, got lost in the jargon and gave up? This
+book is for you. It assumes \textbf{no prior knowledge}: no programming, no advanced mathematics,
+nothing but the ability to use a computer. Every idea is explained in plain English, shown in
+programs that you can run, and practised until it becomes natural.\par\vspace{3mm}
+
+Programming is not reserved for geniuses. It is a skill, like cooking or playing the guitar: you
+learn it step by step, by doing. In this first volume, you will write programs that calculate, talk
+to their user, make decisions, repeat actions, organise themselves into functions and keep their
+data in files. Along the way, you will build five complete projects\,---\,and you will start to
+think like a programmer.\par}
+
+\otIntertitre{By the end of this volume, you will be able to\ldots}
+\begin{paire}
+\begin{tcolorbox}[otBase,colback=otNavyTint,colframe=otNavyTint]
+\begin{list}{\otCheck}{\setlength{\leftmargin}{7mm}\setlength{\labelwidth}{4mm}\setlength{\labelsep}{3mm}
+  \setlength{\itemsep}{1.6mm}\setlength{\topsep}{0pt}\setlength{\parsep}{0pt}}\fontsize{10.4}{13}\selectfont
+\item install Python and work with IDLE, its editor;
+\item calculate, and keep values in variables;
+\item work with text: build it, cut it, transform it;
+\item write programs that ask questions and react to the answers;
+\end{list}
+\end{tcolorbox}
+\begin{tcolorbox}[otBase,colback=otNavyTint,colframe=otNavyTint]
+\begin{list}{\otCheck}{\setlength{\leftmargin}{7mm}\setlength{\labelwidth}{4mm}\setlength{\labelsep}{3mm}
+  \setlength{\itemsep}{1.6mm}\setlength{\topsep}{0pt}\setlength{\parsep}{0pt}}\fontsize{10.4}{13}\selectfont
+\item repeat actions with loops and create simple games;
+\item organise your code into functions that you can reuse;
+\item handle errors so that your programs do not crash;
+\item store data in lists, dictionaries and files.
+\end{list}
+\end{tcolorbox}
+\end{paire}
+
+\otIntertitre{Level 1, the first step of a five-volume journey}
+The collection takes you from your very first instruction to the skills of a professional
+developer. This volume is the foundation: everything in the following volumes builds on it.\par\vspace{4mm}
+
+\noindent\begin{tikzpicture}
+  \foreach \n/\nom/\t/\c in {1/Beginner/Volume 1/otGreen,2/Elementary/Volume 2/otGreenDark,
+      3/Intermediate/Volume 3/otNavy!70,4/Advanced/Volume 4/otNavy,5/Expert/Volume 5/otNavyDark}{%
+    \pgfmathsetmacro{\x}{(\n-1)*34.2}
+    \pgfmathsetmacro{\h}{10+(\n-1)*7.5}
+    \fill[\c,rounded corners=1.2mm] (\x mm,0) rectangle ++(32mm,\h mm);
+    \node[text=white,font=\otBold\fontsize{15}{16}\selectfont] at (\x mm+16mm,\h mm-5.6mm) {\n};
+    \node[anchor=north,font=\otSemi\fontsize{8.4}{10}\selectfont,text=otInk] at (\x mm+16mm,-1.6mm) {\nom};
+    \node[anchor=north,font=\otRegular\fontsize{7.8}{9.4}\selectfont,text=otMuted] at (\x mm+16mm,-5.6mm) {\t};}
+  \node[anchor=south,fill=otOrange,text=white,rounded corners=1.4mm,inner xsep=2.4mm,inner ysep=1.2mm,
+    font=\otSemi\fontsize{8}{9}\selectfont] (ici) at (16mm,17mm) {You are here};
+  \draw[otOrange,line width=1pt,-{Stealth[length=2mm]}] (ici.south) -- (16mm,11mm);
+\end{tikzpicture}
+
+\clearpage
+\otIntertitre{Your rhythm: one chapter a week}
+A chapter takes about \textbf{three hours} of work. The most effective way is to spread them over
+\textbf{four sessions of about 45 minutes}, listed on the first page of each chapter, and to keep a
+little time to replay the code. At this pace, you will finish the volume in about six months,
+projects and checkpoints included.\par\vspace{4mm}
+
+\noindent\begin{tikzpicture}
+  \foreach \j/\d/\s/\c in {1/Mon/Session 1/otNavy,2/Tue/Session 2/otViolet,3/Wed/Replay the code/otMuted,
+      4/Thu/Session 3/otTeal,5/Fri/Session 4/otGreenDark,6/Sat/Quick quiz/otOrangeDark,7/Sun/Rest or free coding/otMuted}{%
+    \pgfmathsetmacro{\x}{(\j-1)*24.4}
+    \fill[\c!12,rounded corners=1.4mm] (\x mm,0) rectangle ++(22.6mm,20mm);
+    \fill[\c,rounded corners=1.4mm] (\x mm,13mm) rectangle ++(22.6mm,7mm);
+    \node[text=white,font=\otSemi\fontsize{8.4}{10}\selectfont] at (\x mm+11.3mm,16.5mm) {\d};
+    \node[text width=20mm,align=center,font=\otMedium\fontsize{7.8}{9.4}\selectfont,text=otInk] at (\x mm+11.3mm,6.5mm) {\s};}
+\end{tikzpicture}
+
+\otIntertitre{Six keys to success}
+\begin{tcbraster}[raster columns=3,raster equal height=rows,raster column skip=3.5mm,raster row skip=3.5mm,
+  raster before skip=1mm,raster after skip=2mm]
+\otCartePrg{clavier}{otNavy}{Type the code yourself}{Copying and pasting teaches you nothing. Typing every line, even the short ones, trains your eyes and your fingers.}
+\otCartePrg{lecture}{otGreenDark}{Run it often}{Press F5 after every small change. The sooner you see the result, the sooner you understand.}
+\otCartePrg{bug}{otOrangeDark}{Break things on purpose}{Change a value, delete a parenthesis, and watch what happens. Mistakes are excellent teachers.}
+\otCartePrg{oeil}{otViolet}{Read the messages}{Python's error messages tell you what went wrong and where. Read them from the bottom up.}
+\otCartePrg{bulle}{otTeal}{Explain it out loud}{If you can explain a program line by line to someone else, you have really understood it.}
+\otCartePrg{horloge}{otRedDark}{A little every day}{Forty-five minutes a day beat five hours on Sunday: regularity is everything.}
+\end{tcbraster}
+
+\begin{astuce}[Before you begin]
+Read the next pages: \textbf{How to use this book} (p.~\pageref{lim-mode}) and \textbf{Getting the
+code} (p.~\pageref{lim-code}). Ten minutes well spent: you will know exactly how to work with every
+page.
+\end{astuce}

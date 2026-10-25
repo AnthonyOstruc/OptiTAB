@@ -1,0 +1,18 @@
+% Feuille de tableur : série de mesures, moyenne, écart-type et incertitude-type de type A (L'essentiel, chapitre 21)
+\begin{tikzpicture}[x=1cm,y=4.4mm]
+\def\colA{0.7}\def\colB{3.0}\def\colC{4.7}\def\colD{10.6}
+\fill[otRule!45] (0,0) rectangle (\colD,-1);
+\fill[otRule!45] (0,0) rectangle (\colA,-10);
+\fill[otGreenTint] (\colA,-7) rectangle (\colD,-10);
+\foreach \x/\t in {1.85/A,3.85/B,7.65/C}{\node[pcLegendeG] at (\x,-0.5) {\t};}
+\foreach \n/\a/\b/\c [count=\i] in {1/{groupe}/{$V$ (mL)}/{},2/{1}/{12,20}/{},3/{2}/{12,25}/{},4/{3}/{12,15}/{},
+  {\dots}/{\dots}/{\dots}/{},21/{20}/{12,20}/{},23/{moyenne}/{\textbf{12,2275}}/{=MOYENNE(B2:B21)},
+  24/{écart-type $s$}/{\textbf{0,0819}}/{=ECARTYPE.STANDARD(B2:B21)},25/{$u=s/\sqrt{n}$}/{\textbf{0,0183}}/{=B24/RACINE(20)}}{%
+  \node[pcLegende] at (0.35,{-\i-0.5}) {\n};
+  \node[pcLegende,anchor=west] at (\colA+0.08,{-\i-0.5}) {\a};
+  \node[pcLegende,anchor=east] at (\colC-0.12,{-\i-0.5}) {\b};
+  \node[pcLegende,anchor=west,text=otGreenDark,font=\ttfamily\fontsize{7}{9}\selectfont] at (\colC+0.1,{-\i-0.5}) {\c};}
+\foreach \r in {0,...,10}{\draw[otRule,line width=0.4pt] (0,-\r) -- (\colD,-\r);}
+\foreach \x in {0,\colA,\colB,\colC,\colD}{\draw[otRule,line width=0.4pt] (\x,0) -- (\x,-10);}
+\end{tikzpicture}
+\par\smallskip\legende{Au tableur, des formules donnent la moyenne, l'écart-type (\texttt{ECARTYPE} sous LibreOffice) et l'incertitude-type ; un graphique en colonnes des effectifs trace l'histogramme.}

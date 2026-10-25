@@ -1,0 +1,32 @@
+% Domaines des ondes électromagnétiques : échelles des longueurs d'onde dans le vide et des fréquences, zoom sur le visible (L'essentiel, chapitre 20)
+\begin{tikzpicture}[x=9mm,y=1cm]
+\def\hb{0.8}
+\foreach \a/\b/\c/\n/\e in {-11/-8/otNavy!22/{rayons X}/{radiographie},-8/-6.4/violet!20/{UV}/{Soleil},
+  -6.1/-3/red!18/{infrarouge}/{caméra thermique},-3/0/otOrange!22/{micro-ondes}/{four, wifi},0/3/otGreen!22/{ondes radio}/{radio FM}}{%
+  \fill[\c] (\a,0) rectangle (\b,\hb);
+  \node[pcLegendeG,anchor=south] at ({(\a+\b)/2},{\hb/2-0.02}) {\n};
+  \node[pcLegende,anchor=north,text=otMuted] at ({(\a+\b)/2},{\hb/2}) {\e};}
+\fill[otNavy!40] (-12,0) rectangle (-11,\hb);
+\node[pcLegendeG] at (-11.5,{\hb/2}) {$\gamma$};
+\shade[shading=otArcEnCiel] (-6.4,0) rectangle (-6.1,\hb);
+\draw[otInk!60,line width=0.5pt] (-12,0) rectangle (3,\hb);
+% échelle des longueurs d'onde (en bas)
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (-12,0) -- (3.5,0) node[pcLegende,anchor=north west] {$\lambda$ (m)};
+\foreach \k in {-12,...,3}{\draw[otInk!70,line width=0.4pt] (\k,0) -- (\k,-0.08);}
+\foreach \k/\t in {-12/{10^{-12}},-9/{10^{-9}},-6/{10^{-6}},-3/{10^{-3}},0/{1},3/{10^{3}}}{\node[pcLegende,anchor=north] at (\k,-0.08) {$\t$};}
+% échelle des fréquences (en haut), croissante vers la gauche
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (3,\hb) -- (-12.5,\hb) node[pcLegende,anchor=south east] {$\nu$ (Hz)};
+\foreach \k in {8,...,20}{\draw[otInk!70,line width=0.4pt] ({8.477-\k},\hb) -- ({8.477-\k},\hb+0.08);}
+\foreach \k in {8,11,14,17,20}{\node[pcLegende,anchor=south] at ({8.477-\k},\hb+0.08) {$10^{\k}$};}
+% zoom sur le visible
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (-6.4,0) -- (-10,-0.95) (-6.1,0) -- (-2.5,-0.95);
+\shade[shading=otArcEnCiel] (-10,-1.35) rectangle (-3.4375,-0.95);
+\shade[left color=red!75,right color=red!45!black] (-3.4375,-1.35) rectangle (-2.5,-0.95);
+\draw[otInk!60,line width=0.4pt] (-10,-1.35) rectangle (-2.5,-0.95);
+\foreach \l in {400,500,...,800}{%
+  \draw[otInk!70,line width=0.4pt] ({-10+(\l-400)*7.5/400},-1.35) -- ({-10+(\l-400)*7.5/400},-1.43);
+  \node[pcLegende,anchor=north] at ({-10+(\l-400)*7.5/400},-1.43) {\l};}
+\node[pcLegende,anchor=west] at (-2.4,-1.15) {$\lambda$ (nm)};
+\node[pcLegendeG,anchor=east] at (-10.1,-1.15) {lumière visible};
+\end{tikzpicture}
+\par\smallskip\legende{Les ondes électromagnétiques ne diffèrent que par leur longueur d'onde, ou leur fréquence $\nu=\dfrac{c}{\lambda}$ ; l'œil n'en perçoit qu'une infime partie, de \qty{400}{nm} à \qty{800}{nm}.}

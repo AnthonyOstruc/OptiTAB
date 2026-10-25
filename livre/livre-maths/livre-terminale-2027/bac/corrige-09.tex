@@ -1,0 +1,119 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 9 — résultats vérifiés par programme (bac_s9.py)
+
+\corrigeSujet{9}
+
+\begin{corrigeBac}{4}{Variable aléatoire et simulation}
+\partieExo{A}{Étude de la variable aléatoire}
+\begin{questions}
+  \item Les lancers sont indépendants : obtenir pile pour la première fois au $k$-ième lancer a pour probabilité
+    $\left(\frac12\right)^{k}$, et ne jamais obtenir pile, $\left(\frac12\right)^{4}$.
+\begin{center}
+{\renewcommand{\arraystretch}{1.35}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+$k$ & $0$ & $1$ & $2$ & $3$ & $4$ \\
+\midrule
+$P(X=k)$ & $\frac1{16}$ & $\frac1{16}$ & $\frac18$ & $\frac14$ & $\frac12$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+    \pts{1 pt}
+  \item $E(X)=0\times\frac1{16}+1\times\frac1{16}+2\times\frac18+3\times\frac14+4\times\frac12=\res{\tfrac{49}{16}}=3{,}062\,5$. \pts{0,5 pt}
+  \item $E(X^{2})=\frac1{16}+\frac48+\frac94+\frac{16}{2}=\frac{173}{16}$, d'où
+    $V(X)=\frac{173}{16}-\left(\frac{49}{16}\right)^{2}=\frac{2\,768-2\,401}{256}=\res{\tfrac{367}{256}}\approx1{,}43$. \pts{0,5 pt}
+\end{questions}
+\partieExo{B}{Simulation}
+\begin{questions}[resume]
+  \item Au tour d'indice \code{k} (de $0$ à $3$), c'est le lancer numéro $k+1$ ; un pile rapporte alors $4-k$ points : \code{return 4 - k}. \pts{0,5 pt}
+  \item C'est la moyenne des points obtenus sur $10\,000$ parties simulées. D'après la loi des grands nombres, cette moyenne est proche
+    de l'espérance $E(X)=3{,}062\,5$ : l'écart observé, environ $0{,}03$, est cohérent. \pts{0,5 pt}
+  \item $E(M_n)=E(X)$ et $V(M_n)=\frac{V(X)}{n}$. Pour $n=10\,000$, l'inégalité de concentration donne
+    \[P\big(|M_n-E(X)|\geq0{,}1\big)\leq\frac{V(X)}{n\times0{,}1^{2}}=\frac{367/256}{100}\approx\res{0{,}014}.\]
+    La moyenne simulée diffère de $E(X)$ d'au moins $0{,}1$ avec une probabilité inférieure à $1{,}5\,\%$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Équation différentielle : un médicament}
+\begin{questions}
+  \item La solution constante est $y=\frac{2}{0{,}5}=4$ ; les solutions de $(E)$ sont les fonctions $t\mapsto Ce^{-0{,}5t}+4$, $C\in\R$.
+    La condition $Q(0)=0$ donne $C=-4$ : $\res{Q(t)=4-4e^{-0{,}5t}}$. \pts{1,25 pt}
+  \item $Q'(t)=2e^{-0{,}5t}>0$ : $Q$ est strictement croissante ; $\lim\limits_{t\to+\infty}e^{-0{,}5t}=0$ donne $\res{\lim Q(t)=4}$. La
+    quantité de médicament augmente et se stabilise autour de $4$ mg. \pts{0,75 pt}
+  \item $Q(t)\geq3{,}9\iff4e^{-0{,}5t}\leq0{,}1\iff e^{-0{,}5t}\leq0{,}025\iff-0{,}5t\leq\ln0{,}025\iff t\geq-2\ln0{,}025=2\ln40$.
+    Or $2\ln40\approx7{,}378$ : la quantité atteint $3{,}9$ mg au bout d'environ $\res{7\text{ h }23\text{ min}}$. \pts{1 pt}
+  \item $\dfrac1{10}\displaystyle\int_0^{10}\left(4-4e^{-0{,}5t}\right)\mathrm{d}t=\dfrac1{10}\Big[4t+8e^{-0{,}5t}\Big]_0^{10}
+    =4-0{,}8\left(1-e^{-5}\right)\approx\res{3{,}21}$ mg. \pts{1 pt}
+  \item On applique $20$ fois la relation de récurrence.
+\begin{codecote}[0.46]
+\begin{pythoncol}
+q = 0
+h = 0.1
+for k in range(20):
+    q = q + h * (-0.5 * q + 2)
+print(q)
+\end{pythoncol}
+\cote
+Le programme affiche environ $\res{2{,}566}$, alors que $Q(2)=4-4e^{-1}\approx2{,}528$ : l'erreur est d'environ $0{,}04$.
+\end{codecote}
+    \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{4}{Vrai ou faux : géométrie}
+\begin{questions}
+  \item \textbf{Vraie.} $\vect{AB}\,(1\pv-2\pv-2)$, $\vect{AC}\,(-1\pv-1\pv-1)$ et $\vect{AD}\,(2\pv-1\pv-1)$. On vérifie que
+    $\vect{AD}=\vect{AB}-\vect{AC}$ : les trois vecteurs sont coplanaires, donc les quatre points aussi. \pts{1 pt}
+  \item \textbf{Fausse.} Le vecteur directeur $(2\pv-1\pv1)$ de $d$ n'est pas colinéaire au vecteur normal $(2\pv1\pv-1)$ du plan
+    (la première coordonnée imposerait le coefficient $1$, la deuxième $-1$). \pts{1 pt}
+  \item \textbf{Vraie.} Dans le repère $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$, $\vect{AH}\,(0\pv1\pv1)$ et $\vect{CF}\,(0\pv-1\pv1)$, d'où
+    $\vect{AH}\cdot\vect{CF}=0-1+1=0$. Les droites sont orthogonales, bien qu'elles ne soient pas sécantes. \pts{1 pt}
+  \item \textbf{Fausse.} Le plan médiateur passe par le milieu $I(2\pv1\pv1)$ de $[RS]$. Or $2+1-4=-1\neq0$ : $I$ n'appartient pas au plan
+    proposé. (Le plan médiateur a pour équation $x+y-3=0$.) \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Fonction et algorithme de dichotomie}
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item En $0$, par croissances comparées, $\res{\lim\limits_{x\to0}x\ln x=0}$. En $+\infty$, $x\to+\infty$ et $\ln x\to+\infty$, donc, par
+    produit, $\res{\lim\limits_{x\to+\infty}f(x)=+\infty}$. \pts{0,75 pt}
+  \item $f'(x)=\ln x+x\times\frac1x=\ln x+1$, qui s'annule pour $x=e^{-1}$ et est positif après.
+\begin{center}
+\begin{tableau}
+  \otTab[2]{$x$/0.8,$f'(x)$/0.8,$f$/1.6}{$0$,$e^{-1}$,$+\infty$}
+  \tkzTabLine{d,-,z,+,}
+  \tkzTabVar{D+/ /$0$,-/$-e^{-1}$,+/$+\infty$}
+\end{tableau}
+\end{center}
+    Le minimum vaut $f\left(e^{-1}\right)=-e^{-1}=\res{-\tfrac1e}$. \pts{1 pt}
+  \item $f''(x)=\frac1x>0$ : $f$ est $\res{\text{convexe}}$. La tangente au point d'abscisse $1$ a pour équation $y=f'(1)(x-1)+f(1)$, soit
+    $y=x-1$. Une fonction convexe est au-dessus de ses tangentes : $x\ln x\geq x-1$. \pts{0,75 pt}
+\end{questions}
+\partieExo{B}{Une équation et une aire}
+\begin{questions}[resume]
+  \item Sur $\intOF01$, $\ln x\leq0$ donc $f(x)\leq0<1$ : pas de solution. Sur $\intFO1{+\infty}$, $f$ est continue et strictement
+    croissante, de $f(1)=0$ à $+\infty$ : l'équation $f(x)=1$ y admet une unique solution $\alpha$. \pts{1 pt}
+  \item a) La solution est dans $\intFF am$ si $g(a)$ et $g(m)$ sont de signes contraires : \code{if g(a) * g(m) <= 0:}\\
+    b) L'appel renvoie le couple \code{(1.7626953125, 1.763671875)}, d'où $\res{1{,}762\,6<\alpha<1{,}763\,7}$. \pts{0,75 pt}
+  \item Sur $\intFF1e$, $f\geq0$ : l'aire vaut $\mathcal{A}=\int_1^{e}x\ln x\,\mathrm{d}x$. Avec $u(x)=\ln x$ et $v(x)=\frac{x^{2}}{2}$ :
+\begin{codecote}[0.56]
+\raggedright
+$\mathcal{A}=\left[\frac{x^{2}}{2}\ln x\right]_1^{e}-\int_1^{e}\frac x2\,\mathrm{d}x$\\[1mm]
+$\phantom{\mathcal{A}}=\frac{e^{2}}{2}-\left[\frac{x^{2}}{4}\right]_1^{e}=\frac{e^{2}}{2}-\frac{e^{2}-1}{4}$\\[1mm]
+$\phantom{\mathcal{A}}=\res{\tfrac{e^{2}+1}{4}}\approx\res{2{,}10}$ u.a.
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=62mm, unit vector ratio=, height=42mm, xmin=-0.3, xmax=3.4, ymin=-0.7, ymax=3.7,
+  xtick={1,2}, ytick={1,2,3}, extra x ticks={2.71828}, extra x tick labels={$e$}]
+  \addplot[name path=f,otNavy,line width=1pt,domain=0.005:3.1,samples=100] {x*ln(x)};
+  \path[name path=ax] (axis cs:1,0) -- (axis cs:2.71828,0);
+  \addplot[otGreen,opacity=0.3] fill between[of=f and ax,soft clip={domain=1:2.71828}];
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:2.71828,0) -- (axis cs:2.71828,2.71828);
+\end{axis}
+\end{tikzpicture}
+\end{codecote}
+    \pts{0,75 pt}
+\end{questions}
+\end{corrigeBac}

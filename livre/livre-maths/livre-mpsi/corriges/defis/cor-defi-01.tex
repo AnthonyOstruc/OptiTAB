@@ -1,0 +1,125 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 1 — vérifié par verifications/defis_01_05.py.
+
+\begin{blocLivre}{cor-1-25a}
+\begin{corrige}{25}{Points fixes et théorème de Cantor-Bernstein}
+\demarche{Partie A : la réunion de toutes les parties « sous » leur image
+est stable. Partie B : deux passages au complémentaire rendent
+l'application croissante. Partie C : le théorème au travail.}
+\partieExo{A}{Le théorème du point fixe de Knaster-Tarski}
+\begin{questions}
+  \item $\varnothing\subseteq\varphi(\varnothing)$ : la partie vide
+    appartient à $\mathcal{A}$, qui n'est donc \res{\text{pas vide}}.
+  \item Si $X\in\mathcal{A}$, alors $X\subseteq A$ (définition d'une
+    réunion), donc $\varphi(X)\subseteq\varphi(A)$ par croissance, et
+    $X\subseteq\varphi(X)\subseteq\varphi(A)$. Chaque $X\in\mathcal{A}$
+    est inclus dans $\varphi(A)$ : leur réunion aussi,
+    $\res{A\subseteq\varphi(A)}$.
+  \item En appliquant la croissance à $A\subseteq\varphi(A)$ :
+    $\varphi(A)\subseteq\varphi\bigl(\varphi(A)\bigr)$, c'est-à-dire
+    $\varphi(A)\in\mathcal{A}$. Donc $\varphi(A)\subseteq A$, et avec
+    la question 2 : $\res{\varphi(A)=A}$.
+  \item Si $\varphi(Y)=Y$, alors en particulier $Y\subseteq\varphi(Y)$,
+    donc $Y\in\mathcal{A}$ et $Y\subseteq A$ : $A$ est le
+    \res{\text{plus grand point fixe}}.
+  \item Pour $E\neq\varnothing$ et $x\in E$, l'égalité $X=E\setminus X$
+    donnerait $x\in X\iff x\notin X$ : absurde. L'application
+    $X\mapsto E\setminus X$, décroissante, n'a \res{\text{aucun point
+    fixe}} — la croissance est indispensable.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-25b}
+\begin{corrigeSuite}
+\partieExo{B}{Le théorème de Cantor-Bernstein}
+\begin{questions}[start=6]
+  \item Si $X\subseteq Y$ : $f(X)\subseteq f(Y)$, donc
+    $F\setminus f(Y)\subseteq F\setminus f(X)$, donc
+    $g\bigl(F\setminus f(Y)\bigr)\subseteq g\bigl(F\setminus f(X)\bigr)$,
+    et enfin $\varphi(X)\subseteq\varphi(Y)$ : deux passages au
+    complémentaire, l'inclusion est retournée deux fois —
+    $\res{\varphi\text{ est croissante}}$.
+  \item $A=\varphi(A)=E\setminus g\bigl(F\setminus f(A)\bigr)$ ; en
+    passant au complémentaire dans $E$ :
+    $\res{E\setminus A=g\bigl(F\setminus f(A)\bigr)}$.
+  \item \emph{Bonne définition.} Si $x\in E\setminus A$, la question 7
+    fournit $y\in F\setminus f(A)$ avec $g(y)=x$, unique car $g$ est
+    injective : $g^{-1}(x)=y$ a un sens, et
+    $h(E\setminus A)\subseteq F\setminus f(A)$.
+
+    \emph{Injectivité.} Soient $x\neq x'$. Si $x,x'\in A$ :
+    $f(x)\neq f(x')$ ($f$ injective). Si $x,x'\notin A$ :
+    $g^{-1}(x)\neq g^{-1}(x')$, puisque leurs images par $g$ sont $x$ et
+    $x'$. Si $x\in A$ et $x'\notin A$ : $h(x)\in f(A)$ et
+    $h(x')\in F\setminus f(A)$, ensembles disjoints.
+
+    \emph{Surjectivité.} Soit $y\in F$. Si $y\in f(A)$, $y=f(x)=h(x)$
+    avec $x\in A$. Sinon $x=g(y)\in g\bigl(F\setminus f(A)\bigr)
+    =E\setminus A$ et $h(x)=g^{-1}(x)=y$. Ainsi
+    \res{h\text{ est une bijection de }E\text{ sur }F} : c'est le
+    théorème de Cantor-Bernstein.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-1-25c}
+\begin{corrigeSuite}
+\partieExo{C}{Applications}
+\begin{questions}[start=9]
+  \item Ici $g$ est l'inclusion, donc
+    $g\bigl(F\setminus f(X)\bigr)=\intFO{0}{1}\setminus f(X)$ et, comme
+    $f(X)\subseteq\intFF{0}{\frac12}$,
+    $\varphi(X)=\ens{1}\cup\dfrac X2$. Un point fixe $A$ contient $1$,
+    donc $\frac12$, donc $\frac14$\dots : tous les $2^{-k}$. Réciproquement,
+    si $x\in A$ avec $0<x<1$, alors $x\in\frac A2$, donc $2x\in A$ ; en
+    doublant tant que l'on reste dans $\intFF{0}{1}$, on doit tomber
+    exactement sur $1$, sinon on sortirait de $A$ : $x$ est un $2^{-m}$.
+    Les points fixes sont donc
+    $D=\ens{2^{-k}\mid k\in\N}$ et $D\cup\ens{0}$ ; le plus grand est
+    $A=D\cup\ens{0}$, et
+    \[
+    \res{h(x)=\frac x2\ \text{si}\ x\in A,
+    \qquad h(x)=x\ \text{sinon}} :
+    \]
+    $1\mapsto\frac12\mapsto\frac14\mapsto\cdots$ — la suite des
+    $2^{-k}$ « recule d'un cran » et libère la place de $1$ : c'est
+    l'hôtel de Hilbert.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[x=11cm,y=1cm,line cap=round]
+  \draw[otMuted,line width=0.7pt] (0,0) -- (1,0);
+  \fill[otGreenDark] (0,0) circle (1.5pt);
+  \foreach \k in {1,...,6}{\fill[otGreenDark] ({pow(2,-\k)},0) circle (1.5pt);}
+  \foreach \k in {0,...,4}{%
+    \draw[otGreenDark,line width=0.8pt,-{Stealth[length=1.8mm]}]
+      ({pow(2,-\k)},0.13) to[bend right=50] ({pow(2,-\k-1)},0.13);}
+  \draw[otNavy,line width=0.7pt,fill=white] (1,0) circle (1.6pt);
+  \node[below,font=\scriptsize,text=otMuted] at (0,-0.12) {$0$};
+  \node[below,font=\scriptsize,text=otMuted] at (1,-0.12) {$1$};
+  \node[below,font=\scriptsize,text=otMuted] at (0.5,-0.12) {$\frac12$};
+  \node[below,font=\scriptsize,text=otMuted] at (0.25,-0.12) {$\frac14$};
+  \node[below,font=\scriptsize,text=otMuted] at (0.125,-0.12) {$\frac18$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south] at (0.75,1.5) {$x\mapsto x/2$ sur $A$};
+  \node[font=\scriptsize,text=otNavy] at (0.8,-0.75) {$x\mapsto x$ ailleurs ; $1$ n'est plus atteint};
+\end{tikzpicture}\\[0.5mm]
+\legende{La bijection de $\intFF{0}{1}$ sur $\intFO{0}{1}$ : seuls les
+points $2^{-k}$ bougent, chacun prend la place du suivant ; $1$ n'est plus
+atteint.}
+\end{center}
+\begin{questions}[start=10]
+  \item $n\mapsto(n,0)$ est injective de $\N$ dans $\N\times\N$ ;
+    $(p,q)\mapsto2^{p}3^{q}$ est injective de $\N\times\N$ dans $\N$ par
+    unicité de la décomposition en facteurs premiers. Par la partie B,
+    \res{\N\text{ et }\N\times\N\text{ sont en bijection}}. (Une bijection
+    explicite : $(p,q)\mapsto2^{p}(2q+1)-1$.)
+  \item Si $i:\parties{E}\to E$ était injective (alors $E\neq\varnothing$),
+    on définirait $s:E\to\parties{E}$ par $s(x)=X$ si $x=i(X)$ (unique
+    par injectivité), et $s(x)=\varnothing$ si $x\notin i\bigl(\parties{E}\bigr)$.
+    Alors $s\bigl(i(X)\bigr)=X$ pour toute partie $X$ : $s$ serait
+    surjective, ce que le théorème de Cantor interdit. Il n'existe donc
+    \res{\text{aucune injection de }\parties{E}\text{ dans }E} : les
+    infinis de $E$ et de $\parties{E}$ sont vraiment différents.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

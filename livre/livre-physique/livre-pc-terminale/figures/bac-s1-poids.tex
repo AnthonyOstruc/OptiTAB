@@ -1,0 +1,20 @@
+% Lancer du poids : trajectoire, vitesse initiale et repère (sujet type bac 1, exercice 2)
+\begin{tikzpicture}[x=6.2mm,y=6.2mm]
+\fill[otMuted!12] (-1.2,-0.45) rectangle (22.3,0);
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,0) -- (22.3,0) node[pcLegende,anchor=north east] {$x$};
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,0) -- (0,7.2) node[pcLegende,anchor=north east] {$y$};
+\node[pcLegende,anchor=north east] at (0,0) {$O$};
+\draw[otNavy,line width=1pt,dash pattern=on 3pt off 2pt,domain=0:20.53,samples=80] plot (\x,{-0.04586*\x*\x+0.8391*\x+2.10});
+\fill[otInk] (0,2.10) circle (0.16);
+\draw[otMuted,line width=0.4pt] (-0.25,2.10) -- (0.25,2.10);
+\node[pcLegende,anchor=east] at (-0.3,2.10) {$h$};
+\draw[pcVitesse] (0,2.10) -- ++(40:3.3) node[pcLegende,anchor=south east,text=otNavy] {$\vec{v}_0$};
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (0,2.10) -- (3.0,2.10);
+\draw[otMuted,line width=0.4pt] (2.0,2.10) arc[start angle=0,end angle=40,radius=2.0];
+\node[pcLegende,anchor=west] at (2.05,2.75) {$\alpha$};
+\draw[otGreenDark,line width=0.4pt,-{Stealth[length=1.6mm]}] (19.4,5.2) -- (16.6,4.7);
+\node[pcLegende,anchor=west,text=otGreenDark] at (19.5,5.2) {$\vec{g}$ uniforme};
+\fill[otRed!80!black] (20.53,0) circle (0.14);
+\node[pcLegende,anchor=south,text=otRed!80!black] at (20.53,0.25) {impact};
+\end{tikzpicture}
+\par\smallskip\legende{La boule est lâchée au point de coordonnées $(0~;~h)$ avec la vitesse $\vec{v}_0$ ; la trajectoire est représentée en pointillés.}

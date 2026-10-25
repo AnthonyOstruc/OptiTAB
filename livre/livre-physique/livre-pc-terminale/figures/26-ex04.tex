@@ -1,0 +1,13 @@
+% Charge d'un condensateur enregistrée par une interface d'acquisition (exercice 4, chapitre 26)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=50mm,xmin=0,xmax=13,ymin=0,ymax=7,
+  xtick={0,2,...,12},ytick={0,1,...,7},
+  xlabel={$t$ (ms)},ylabel={$u_C$ (V)}]
+\addplot[otNavy,line width=1pt,domain=0:13,samples=120] {6*(1-exp(-x/2.2))};
+\solution{\addplot[otRed!80!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:2.2,samples=2] {6*x/2.2};
+  \addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:13,samples=2] {6};
+  \fill[otRed!80!black] (axis cs:2.2,3.79) circle (1.5pt);
+  \node[pcLegende,anchor=west,text=otRed!80!black] at (axis cs:2.4,3.5) {$\tau=\qty{2,2}{ms}$ : $u_C=\qty{3,8}{V}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Tension aux bornes du condensateur pendant sa charge, à partir de l'instant où l'on ferme l'interrupteur.}

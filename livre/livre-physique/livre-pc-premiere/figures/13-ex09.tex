@@ -1,0 +1,17 @@
+% Vitesse d'un parachutiste en fonction du temps (exercice 9, chapitre 13)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=110mm,height=50mm,xmin=0,xmax=60,ymin=0,ymax=65,
+  xtick={0,10,...,60},ytick={0,10,...,60},
+  xlabel={$t$ (s)},ylabel={$v$ (\unit{m.s^{-1}})}]
+\addplot[otNavy,line width=1.2pt,domain=0:40,samples=80] {55*(1-exp(-x/5.61))};
+\addplot[otNavy,line width=1.2pt,domain=40:60,samples=60] {6+49*exp(-(x-40)/0.7)};
+\node[pcLegende,anchor=south] at (axis cs:40,56) {ouverture};
+\solution{
+  \draw[otGreenDark,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0) -- (axis cs:5,49.05);
+  \node[pcLegende,anchor=west,text=otGreenDark,align=left,fill=white,inner sep=1pt] at (axis cs:5.5,30) {départ : pente $g$\\$\sum\vec{F}=\vec{P}$};
+  \node[pcLegende,anchor=north,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:31,52) {$\sum\vec{F}=\vec{0}$};
+  \node[pcLegende,anchor=west,text=otOrange!85!black,align=left,fill=white,inner sep=1pt] at (axis cs:42,30) {$\sum\vec{F}$ vers le haut :\\la vitesse chute};
+  \node[pcLegende,anchor=south,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:52,8) {$\sum\vec{F}=\vec{0}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Saut d'un parachutiste de \qty{80}{kg} (équipement compris) ; le parachute s'ouvre à $t=\qty{40}{s}$.\solution{ La pente de la courbe vaut $\dfrac{\Delta v}{\Delta t}$, proportionnelle à la somme des forces.}}

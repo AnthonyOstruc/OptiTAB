@@ -1,0 +1,452 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 9 — Calcul matriciel et systèmes linéaires
+%% Résultats vérifiés par verifications/chapitre_09.py.
+
+\corrigesChapitre{9}{Calcul matriciel et systèmes linéaires}
+\corrigesSouples
+
+\begin{blocLivre}{cor-9-1}
+\begin{corrige}{1}{Combinaisons linéaires}
+\demarche{Les opérations se font coefficient par coefficient.}
+\begin{questions}
+  \item $A+B=\begin{pmatrix}1&3\\5&4\end{pmatrix}$ ;\quad
+    $2A-3B=\begin{pmatrix}2&1\\0&-17\end{pmatrix}$ ;\quad
+    $A-B=\begin{pmatrix}1&1\\1&-6\end{pmatrix}$.
+  \item $A=E_{1,1}+2E_{1,2}+3E_{2,1}-E_{2,2}$ : les coefficients de la
+    combinaison sont ceux de la matrice.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-2}
+\begin{corrige}{2}{Produits matriciels}
+\demarche{Ligne contre colonne — et toujours vérifier la compatibilité des tailles.}
+\begin{questions}
+  \item $AB=\begin{pmatrix}4&11\\-2&-2\end{pmatrix}$ et
+    $BA=\begin{pmatrix}3&-1\\17&-1\end{pmatrix}$ :
+    $\res{AB\neq BA}$, le produit matriciel n'est pas commutatif.
+  \item $CD=\begin{pmatrix}1&7\\2&-3\end{pmatrix}$ ($2\times2$) ; $DC$ a
+    aussi un sens ($3\times2$ par $2\times3$) mais donne une matrice
+    $3\times3$ — même les tailles diffèrent.
+  \item $AX=\begin{pmatrix}0\\7\end{pmatrix}
+    =2\begin{pmatrix}1\\3\end{pmatrix}-\begin{pmatrix}2\\-1\end{pmatrix}$ :
+    c'est bien $2\,C_1-C_2$, combinaison des colonnes de $A$ par les
+    coefficients de $X$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-3}
+\begin{corrige}{3}{Matrices élémentaires et symbole de Kronecker}
+\demarche{Le produit des $E_{i,j}$ est nul sauf raccord des indices.}
+\begin{questions}
+  \item $E_{1,2}E_{2,3}=\res{E_{1,3}}$ et $E_{1,2}E_{1,2}=\res{0}$.
+  \item $(E_{i,j}E_{k,l})_{r,s}=\sum_{t}\delta_{r,i}\delta_{j,t}\,
+    \delta_{t,k}\delta_{l,s}=\delta_{r,i}\,\delta_{j,k}\,\delta_{l,s}$ :
+    c'est le coefficient $(r,s)$ de $\delta_{j,k}E_{i,l}$.
+  \item $E_{1,2}$ et $E_{1,2}$ (ou $E_{1,2}$ et $E_{3,1}$\dots) : deux
+    matrices non nulles de produit nul — l'anneau des matrices n'est pas
+    intègre.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-4}
+\begin{corrige}{4}{Transposées, symétriques, antisymétriques}
+\demarche{La moyenne avec la transposée symétrise ; la demi-différence antisymétrise.}
+\begin{questions}
+  \item $(AB)^{\top}=\begin{pmatrix}4&-2\\11&-2\end{pmatrix}
+    =B^{\top}A^{\top}$ : conforme.
+  \item $A=\underbrace{\begin{pmatrix}1&5/2\\5/2&-1\end{pmatrix}}_{S}
+    +\underbrace{\begin{pmatrix}0&-1/2\\1/2&0\end{pmatrix}}_{K}$,
+    avec $S^{\top}=S$ et $K^{\top}=-K$.
+  \item Si $A=S+K=S'+K'$ : en transposant, $A^{\top}=S-K=S'-K'$ ; par
+    somme et différence, $S=S'=\frac{A+A^{\top}}{2}$ et
+    $K=K'=\frac{A-A^{\top}}{2}$ : unicité.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-5}
+\begin{corrige}{5}{Premières puissances}
+\demarche{Conjecturer sur les petits exposants, prouver par récurrence.}
+\begin{questions}
+  \item $D^{n}=\operatorname{diag}\bigl(2^{n},(-3)^{n}\bigr)$.
+  \item $T^{2}=\begin{pmatrix}1&2\\0&1\end{pmatrix}$,
+    $T^{3}=\begin{pmatrix}1&3\\0&1\end{pmatrix}$ : on conjecture
+    $\res{T^{n}=\begin{pmatrix}1&n\\0&1\end{pmatrix}}$. Hérédité :
+    $T^{n+1}=T^{n}T$ a pour coefficient $(1,2)$ la valeur $n+1$.
+  \item $J^{2}=2J$, puis par récurrence
+    $J^{n}=2^{n-1}J$ : si $J^{n}=2^{n-1}J$, alors
+    $J^{n+1}=2^{n-1}J^{2}=2^{n}J$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-6}
+\begin{corrige}{6}{Inversibles $2\times2$}
+\demarche{Le produit avec la « comatrice » fait apparaître $(ad-bc)\,I_2$.}
+\begin{questions}
+  \item Un calcul direct donne
+    $A\begin{pmatrix}d&-b\\-c&a\end{pmatrix}
+    =\begin{pmatrix}d&-b\\-c&a\end{pmatrix}A=(ad-bc)\,I_2$.
+    Si $ad-bc\neq0$, on divise : $A$ est inversible avec la formule
+    annoncée. Si $ad-bc=0$ : $AB=0$ avec
+    $B=\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$ ; si $A$ était inversible,
+    $B=0$, donc $A=0$ : absurde (sauf $A=0$, non inversible).
+  \item $2\times3-5\times1=1\neq0$ :
+    $\res{\begin{pmatrix}2&5\\1&3\end{pmatrix}^{-1}
+    =\begin{pmatrix}3&-5\\-1&2\end{pmatrix}}$.
+    Pour la seconde : $1\times4-2\times2=0$ : \res{\text{non inversible}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-7}
+\begin{corrige}{7}{Un système, vu matriciellement}
+\demarche{Résoudre, puis relire la solution comme des coefficients de combinaison.}
+\begin{questions}
+  \item $A=\begin{pmatrix}1&1&1\\1&2&3\\2&1&-1\end{pmatrix}$,
+    $X=\begin{pmatrix}x\\y\\z\end{pmatrix}$,
+    $B=\begin{pmatrix}6\\14\\1\end{pmatrix}$.
+  \item La solution est $(1,2,3)$ (chapitre 2). Donc
+    $B=1\,C_1+2\,C_2+3\,C_3$ : le second membre est combinaison linéaire
+    des colonnes de $A$ — c'est exactement la compatibilité du système.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-8}
+\begin{corrige}{8}{Un inverse par la résolution de $AX=Y$}
+\demarche{Résoudre en gardant un second membre littéral : la solution lit l'inverse.}
+\begin{questions}
+  \item $x+2y=u$ et $x+3y=v$ : par différence, $y=v-u$, puis
+    $x=u-2(v-u)=3u-2v$.
+  \item La solution s'écrit
+    $X=\begin{pmatrix}3&-2\\-1&1\end{pmatrix}Y$ pour tout $Y$ : $A$ est
+    inversible et
+    $\res{A^{-1}=\begin{pmatrix}3&-2\\-1&1\end{pmatrix}}$ ;
+    on vérifie $AA^{-1}=I_2$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-9}
+\begin{corrige}{9}{Diviseurs de zéro et nilpotents}
+\demarche{Les matrices élémentaires fournissent tous les contre-exemples voulus.}
+\begin{questions}
+  \item $A=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ et
+    $B=\begin{pmatrix}1&0\\0&0\end{pmatrix}$ : $AB=0$ tandis que
+    $BA=\begin{pmatrix}0&1\\0&0\end{pmatrix}\neq0$.
+  \item $N^{2}=0$ : $N$ est nilpotente. Le chapitre 8 donne alors
+    $(I_2+N)^{-1}=I_2-N=\begin{pmatrix}1&-1\\0&1\end{pmatrix}$
+    (la somme géométrique s'arrête à $N$).
+  \item Si $N^{p}=0$ et $N$ inversible, alors
+    $0=N^{p}(N^{-1})^{p}=I_n$ : absurde. Une nilpotente n'est jamais
+    inversible.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-10}
+\begin{corrige}{10}{Le binôme matriciel}
+\demarche{$I$ commute avec tout : le binôme s'applique, et la nilpotence tronque la somme.}
+\begin{questions}
+  \item $N^{2}=E_{1,3}$ et $N^{3}=0$.
+  \item $I_3$ et $N$ commutent, donc
+    $A^{n}=\sum_{k}\binom{n}{k}N^{k}=I_3+nN+\binom{n}{2}N^{2}$ (les termes
+    suivants sont nuls) :
+    \[
+      \res{A^{n}=\begin{pmatrix}1&n&\binom{n}{2}\\0&1&n\\0&0&1\end{pmatrix}}.
+    \]
+  \item $n=2$ : $\begin{pmatrix}1&2&1\\0&1&2\\0&0&1\end{pmatrix}=A^{2}$ : conforme ;
+    $n=3$ : coefficient $(1,3)$ égal à $3$ : conforme.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-11}
+\begin{corrige}{11}{Puissances : deux méthodes}
+\demarche{Écrire $\lambda I+N$ : le binôme ne garde que deux termes.}
+\begin{questions}
+  \item $A=2I_2+N$ avec $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$,
+    $N^{2}=0$ :
+    \[
+      A^{n}=2^{n}I_2+n\,2^{n-1}N
+      =\res{\begin{pmatrix}2^{n}&n\,2^{n-1}\\0&2^{n}\end{pmatrix}}.
+    \]
+  \item \etape{Initialisation} $n=1$ : immédiate.
+    \etape{Hérédité} $A^{n+1}=A^{n}A$ a pour coefficient $(1,2)$ :
+    $2^{n}\cdot1+n2^{n-1}\cdot2=(n+1)2^{n}$, et pour coefficients
+    diagonaux $2^{n+1}$ : c'est la formule au rang $n+1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-12}
+\begin{corrige}{12}{Suites couplées}
+\demarche{Vectoriser la récurrence : les puissances de la matrice font tout le travail.}
+\begin{questions}
+  \item $X_{n+1}=\begin{pmatrix}2&1\\0&2\end{pmatrix}X_n$, et une
+    récurrence immédiate donne $X_n=A^{n}X_0$.
+  \item Avec $X_0=\begin{pmatrix}1\\1\end{pmatrix}$ et l'exercice 11 :
+    \[
+      \res{u_n=2^{n}+n\,2^{n-1}\qquad v_n=2^{n}}.
+    \]
+    (Contrôle : $u_1=2+1=3=2u_0+v_0$.)
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-13}
+\begin{corrige}{13}{Symétriques : produits et pièges}
+\demarche{Transposer le produit et comparer : tout est dans $(AB)^{\top}=BA$.}
+\begin{questions}
+  \item $(AA^{\top})^{\top}=(A^{\top})^{\top}A^{\top}=AA^{\top}$ :
+    symétrique (de même $A^{\top}A$).
+  \item $S_1=\begin{pmatrix}1&2\\2&0\end{pmatrix}$ et
+    $S_2=\begin{pmatrix}0&1\\1&3\end{pmatrix}$ sont symétriques, mais
+    $S_1S_2=\begin{pmatrix}2&7\\0&2\end{pmatrix}$ ne l'est pas.
+  \item Pour $A,B$ symétriques : $(AB)^{\top}=B^{\top}A^{\top}=BA$.
+    Donc $AB$ symétrique $\iff AB=(AB)^{\top}=BA$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-14}
+\begin{corrige}{14}{Matrices qui commutent}
+\demarche{Écrire la matrice inconnue avec quatre coefficients et identifier.}
+\begin{questions}
+  \item Pour $X=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ :
+    $DX=\begin{pmatrix}a&b\\2c&2d\end{pmatrix}$ et
+    $XD=\begin{pmatrix}a&2b\\c&2d\end{pmatrix}$ : l'égalité impose
+    $b=c=0$. Le commutant de $D$ est l'ensemble des
+    \res{\text{matrices diagonales}}.
+  \item $NX=\begin{pmatrix}c&d\\0&0\end{pmatrix}$ et
+    $XN=\begin{pmatrix}0&a\\0&c\end{pmatrix}$ : $c=0$ et $a=d$. Le
+    commutant de $N$ est $\res{\ens{aI_2+bN \mid a,b\in\K}}$.
+  \item Si $XM=MX$ et $YM=MY$ : $(\lambda X+\mu Y)M=M(\lambda X+\mu Y)$
+    et $(XY)M=XMY=M(XY)$ : le commutant est stable par combinaison
+    linéaire et par produit (c'est un sous-anneau).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-15}
+\begin{corrige}{15}{Gauss-Jordan : un inverse $3\times3$}
+\demarche{Les opérations qui mènent $A$ à $I_3$ mènent $I_3$ à $A^{-1}$.}
+\begin{questions}
+  \item Sur $(A\mid I_3)$ : $L_3\leftarrow L_3-L_1$, puis
+    $L_3\leftarrow L_3-L_2$, puis $L_3\leftarrow-L_3$ échelonnent ;
+    la remontée ($L_2\leftarrow L_2-2L_3$, $L_1\leftarrow L_1-L_3$,
+    $L_1\leftarrow L_1-L_2$) donne
+    \[
+      \res{A^{-1}=\begin{pmatrix}2&0&-1\\-2&-1&2\\1&1&-1\end{pmatrix}}.
+    \]
+  \item $AA^{-1}=I_3$ : vérification directe.
+  \item $X=A^{-1}\begin{pmatrix}2\\1\\3\end{pmatrix}
+    =\res{\begin{pmatrix}1\\1\\0\end{pmatrix}}$
+    (contrôle : $1+1+0=2$, $0+1+2\cdot0=1$, $1+2+0=3$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-16}
+\begin{corrige}{16}{Matrices triangulaires}
+\demarche{Dans un produit triangulaire, seuls les chemins d'indices croissants survivent.}
+\begin{questions}
+  \item Pour $i>j$ :
+    $(TT')_{i,j}=\sum_{k}t_{i,k}t'_{k,j}$, et chaque terme exige $k\geq i$
+    (sinon $t_{i,k}=0$) et $k\leq j$ (sinon $t'_{k,j}=0$) : impossible si
+    $i>j$. Pour $i=j$, seul $k=i$ survit :
+    $(TT')_{i,i}=t_{i,i}t'_{i,i}$.
+  \item Si tous les $t_{i,i}\neq0$, le système $TX=Y$ se résout de bas en
+    haut, avec une solution unique pour chaque $Y$ : $T$ est inversible.
+    Si un $t_{i,i}=0$, le système homogène possède une solution non
+    nulle (on remonte en choisissant $x_i=1$) : $T$ n'est pas inversible.
+  \item Résolution de $TX=Y$ en remontant :
+    \[
+      \res{T^{-1}=\begin{pmatrix}1&-\tfrac12&-\tfrac{1}{12}\\[1mm]
+      0&\tfrac14&-\tfrac{5}{24}\\[1mm]0&0&\tfrac16\end{pmatrix}},
+    \]
+    triangulaire supérieure, de diagonale $\bigl(1,\tfrac14,\tfrac16\bigr)$
+    — les inverses des coefficients diagonaux.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-17}
+\begin{corrige}{17}{Un paramètre dans le système}
+\demarche{Le cas inversible se résout d'un coup ; le cas dégénéré se discute.}
+\begin{questions}
+  \item $ad-bc=m-1$ : $A_m$ est inversible si et seulement si
+    $\res{m\neq1}$. Alors, par différence des lignes :
+    $y=\dfrac{1}{m-1}$ et $x=2-\dfrac{1}{m-1}=\dfrac{2m-3}{m-1}$.
+  \item Pour $m=1$, le système devient $x+y=2$ et $x+y=3$ :
+    \res{\text{incompatible}}. Le système $x+y=2$ (deux fois) est
+    compatible, de solutions
+    \[
+      \res{X=\begin{pmatrix}2\\0\end{pmatrix}
+      +t\begin{pmatrix}1\\-1\end{pmatrix},\quad t\in\R} :
+    \]
+    une solution particulière plus les solutions de l'homogène
+    $x+y=0$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-18}
+\begin{corrige}{18}{Matrices de rotation}
+\demarche{Les formules d'addition du chapitre 2, rangées dans une matrice.}
+\begin{questions}
+  \item Le produit $R(a)R(b)$ a pour première colonne
+    $\begin{pmatrix}\cos a\cos b-\sin a\sin b\\
+    \sin a\cos b+\cos a\sin b\end{pmatrix}
+    =\begin{pmatrix}\cos(a+b)\\\sin(a+b)\end{pmatrix}$, et de même pour la
+    seconde : $R(a)R(b)=R(a+b)$.
+  \item $R(\theta)R(-\theta)=R(0)=I_2$ :
+    $R(\theta)^{-1}=R(-\theta)$, qui est aussi $R(\theta)^{\top}$
+    (parité de $\cos$, imparité de $\sin$). Par récurrence,
+    $R(\theta)^{n}=R(n\theta)$.
+  \item La question 1 dit exactement que $\theta\mapsto R(\theta)$ est un
+    morphisme de $(\R,+)$ dans $\mathrm{GL}_2(\R)$. Son noyau est
+    $\ens{\theta \mid \cos\theta=1,\ \sin\theta=0}=\res{2\pi\Z}$ — le même
+    noyau que $t\mapsto\mathrm{e}^{\mathrm{i}t}$, et ce n'est pas un
+    hasard (exercice 24).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-19}
+\begin{corrige}{19}{Le centre de $\mathcal{M}_n(\K)$}
+\demarche{Tester contre les matrices élémentaires suffit — et contraint tout.}
+\begin{questions}
+  \item Toute matrice est combinaison linéaire des $E_{i,j}$ : si $Z$
+    commute avec chaque $E_{i,j}$, il commute avec toutes les matrices
+    (bilinéarité du produit).
+  \item $ZE_{i,j}$ a pour seule colonne non nulle la colonne $j$, égale à
+    la colonne $i$ de $Z$ ; $E_{i,j}Z$ a pour seule ligne non nulle la
+    ligne $i$, égale à la ligne $j$ de $Z$. L'égalité impose : tous les
+    coefficients hors diagonale de $Z$ sont nuls, et
+    $z_{i,i}=z_{j,j}$ pour tous $i,j$ : $Z=\lambda I_n$.
+  \item Réciproquement, les matrices scalaires commutent avec tout :
+    \res{\text{le centre de }\mathcal{M}_n(\K)\text{ est }\ens{\lambda I_n}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-20}
+\begin{corrige}{20}{Une équation matricielle}
+\demarche{Commuter d'abord, paramétrer ensuite, résoudre enfin.}
+\begin{questions}
+  \item $XT=XX^{2}=X^{2}X=TX$ : toute solution commute avec $T$, donc
+    avec $N=T-I_2$.
+  \item D'après l'exercice 14, $X=aI_2+bN$.
+  \item $X^{2}=a^{2}I_2+2abN$ (car $N^{2}=0$), et $T=I_2+N$ : on identifie
+    $a^{2}=1$ et $2ab=1$, d'où $a=\pm1$ et $b=\dfrac{1}{2a}$ :
+    \[
+      \res{X=\pm\begin{pmatrix}1&\tfrac12\\0&1\end{pmatrix}} :
+    \]
+    exactement deux « racines carrées » — et l'on note que $T$, pourtant
+    très simple, n'en a que deux.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-21}
+\begin{corrige}{21}{Fibonacci, vu par les matrices}
+\demarche{La récurrence de Fibonacci est un produit matriciel déguisé.}
+\begin{questions}
+  \item \etape{Initialisation} $A^{1}=\begin{pmatrix}1&1\\1&0\end{pmatrix}
+    =\begin{pmatrix}F_2&F_1\\F_1&F_0\end{pmatrix}$.
+    \etape{Hérédité} Si la formule vaut au rang $n$ :
+    \[
+      A^{n+1}=A^{n}A=\begin{pmatrix}F_{n+1}+F_n&F_{n+1}\\
+      F_n+F_{n-1}&F_n\end{pmatrix}
+      =\begin{pmatrix}F_{n+2}&F_{n+1}\\F_{n+1}&F_n\end{pmatrix}.
+    \]
+  \item Développement direct : pour
+    $M=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ et
+    $M'=\begin{pmatrix}a'&b'\\c'&d'\end{pmatrix}$, le « $ad-bc$ » de
+    $MM'$ vaut $(ad-bc)(a'd'-b'c')$ (huit termes qui se regroupent).
+  \item Le « $ad-bc$ » de $A$ vaut $-1$ ; celui de $A^{n}$ vaut donc
+    $(-1)^{n}$, c'est-à-dire
+    $F_{n+1}F_{n-1}-F_n^{2}=(-1)^{n}$ : l'identité de Cassini en une
+    ligne.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-22}
+\begin{corrige}{22}{Matrices de permutation}
+\demarche{Permuter les colonnes de $I_3$, et composer.}
+\begin{questions}
+  \item $P_\tau=\begin{pmatrix}0&1&0\\1&0&0\\0&0&1\end{pmatrix}$ et
+    $P_c=\begin{pmatrix}0&0&1\\1&0&0\\0&1&0\end{pmatrix}$ pour
+    $c=(1\,2\,3)$.
+  \item $(P_\sigma P_\tau)_{i,j}=\sum_k\delta_{i,\sigma(k)}\delta_{k,\tau(j)}
+    =\delta_{i,\sigma(\tau(j))}$ : c'est $P_{\sigma\circ\tau}$. Le
+    morphisme est injectif : $P_\sigma=I_3$ impose $\sigma=\mathrm{id}$
+    (noyau trivial).
+  \item $(P_\sigma^{\top}P_\sigma)_{i,j}=\sum_k\delta_{k,\sigma(i)}
+    \delta_{k,\sigma(j)}=\delta_{\sigma(i),\sigma(j)}=\delta_{i,j}$ :
+    donc $P_\sigma^{\top}P_\sigma=I_3$ et
+    $\res{P_\sigma^{-1}=P_\sigma^{\top}}$ ($=P_{\sigma^{-1}}$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-23}
+\begin{corrige}{23}{Un modèle d'évolution : ville et campagne}
+\demarche{Deux combinaisons bien choisies découplent le système.}
+\begin{questions}
+  \item $u_{n+1}=0{,}9u_n+0{,}2v_n$ et $v_{n+1}=0{,}1u_n+0{,}8v_n$ :
+    c'est $X_{n+1}=AX_n$. En sommant :
+    $s_{n+1}=u_{n+1}+v_{n+1}=u_n+v_n=s_n$ : la population totale reste
+    $\res{s_n=60}$.
+  \item $d_{n+1}=u_{n+1}-2v_{n+1}=0{,}7u_n-1{,}4v_n=0{,}7\,d_n$ :
+    géométrique de raison $0{,}7$, avec $d_0=30-60=-30$.
+  \item De $u_n+v_n=60$ et $u_n-2v_n=-30\times0{,}7^{n}$ :
+    \[
+      \res{u_n=40-10\times0{,}7^{n}\qquad v_n=20+10\times0{,}7^{n}},
+    \]
+    de limites $40$ et $20$ (milliers d'habitants).
+  \item $A\begin{pmatrix}40\\20\end{pmatrix}
+    =\begin{pmatrix}36+4\\4+16\end{pmatrix}
+    =\begin{pmatrix}40\\20\end{pmatrix}$ : l'état limite est bien un
+    état d'équilibre, solution de $AX=X$ — le système « oublie » sa
+    répartition initiale et converge vers l'équilibre.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-24}
+\begin{corrige}{24}{Les complexes, cachés dans $\mathcal{M}_2(\R)$}
+\demarche{Comparer le produit matriciel au produit complexe : ils coïncident terme à terme.}
+\begin{questions}
+  \item $M(a,b)+M(c,d)=M(a+c,b+d)$ et
+    \[
+      M(a,b)\,M(c,d)=\begin{pmatrix}ac-bd&-(ad+bc)\\ad+bc&ac-bd\end{pmatrix}
+      =M(ac-bd,\ ad+bc) :
+    \]
+    ce sont les formules de la somme et du produit de
+    $(a+\mathrm{i}b)(c+\mathrm{i}d)$ !
+  \item $\mathcal{C}$ contient $I_2=M(1,0)$, est stable par différence et
+    par produit (question 1) : sous-anneau, \emph{commutatif} puisque le
+    produit complexe l'est. L'application $a+\mathrm{i}b\mapsto M(a,b)$
+    est bijective, additive, multiplicative et envoie $1$ sur $I_2$ :
+    isomorphisme d'anneaux de $\Cx$ sur $\mathcal{C}$.
+  \item $M(0,1)^{2}=M(-1,0)=-I_2$ : la matrice $M(0,1)$ est l'image de
+    $\mathrm{i}$ — « $\mathrm{i}$ est une rotation d'un quart de tour ».
+  \item Le critère $ad-bc$ donne ici $a^{2}+b^{2}$ : $M(a,b)$ est
+    inversible si et seulement si $(a,b)\neq(0,0)$ — fidèle au fait que
+    $\Cx$ est un corps. Enfin
+    $M(\cos\theta,\sin\theta)=R(\theta)$ : la forme trigonométrique
+    $r\mathrm{e}^{\mathrm{i}\theta}$ devient « homothétie de rapport $r$
+    composée avec rotation d'angle $\theta$ » — la géométrie du chapitre 3
+    retrouvée dans les matrices.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-09}

@@ -1,0 +1,161 @@
+\begin{ouverture}[derivation]{4}{Dérivation et optimisation}{Analyse et modèles}{Composition · Variations · Coûts · Extremums}
+\objectif{Calculer les dérivées des fonctions du programme.}
+\objectif{Construire un tableau de variation.}
+\objectif{Optimiser une grandeur sur son domaine.}
+\objectif{Distinguer coût moyen, coût marginal et recette.}
+\prerequis{Dérivées usuelles de Première et règles de calcul.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{La dérivée mesure une variation locale}
+Pour une fonction dérivable, $f\,\!^{\prime}(a)$ est le coefficient directeur de la tangente en $a$.
+L'équation de cette tangente est $y=f(a)+f\,\!^{\prime}(a)(x-a)$.
+Localement, $f(a+h)\simeq f(a)+hf\,\!^{\prime}(a)$ : c'est une approximation, dont la précision dépend de $h$ et de la fonction.
+\begin{propriete}[Règles de calcul]
+$(u+v)'=u'+v'$, $(uv)'=u'v+uv'$ ; pour $v\ne0$,
+$(u/v)'=(u'v-uv')/v^2$.
+\[(f(ax+b))'=af\,\!^{\prime}(ax+b),\quad (u^2)'=2uu',\quad(\mathrm e^u)'=u'\mathrm e^u,\quad(\ln u)'=u'/u\ (u>0).\]
+\end{propriete}
+Un domaine de définition et un domaine de dérivabilité peuvent différer : $\sqrt x$ est définie en $0$, mais sa dérivée $1/(2\sqrt x)$ n'y existe pas comme nombre réel fini.
+\essSection{2}{Du signe aux variations}
+\begin{theoreme}[Admis]
+Sur un intervalle, $f\,\!^{\prime}\geq0$ implique que $f$ est croissante ; $f\,\!^{\prime}\leq0$ implique qu'elle est décroissante.
+Un changement de signe de $+$ vers $-$ donne un maximum local ; de $-$ vers $+$, un minimum local.
+\end{theoreme}
+Un tableau de variation doit contenir le domaine, les valeurs critiques, le signe de la dérivée et les valeurs ou limites aux bornes.
+\begin{exemple}[Production]
+Pour $B(x)=-x^2+12x-20$ sur $[0,10]$, $B\,\!^{\prime}(x)=12-2x$.
+La fonction croît sur $[0,6]$ puis décroît sur $[6,10]$ ; son maximum est $B(6)=16$.
+\begin{center}\begin{tabular}{c|ccc}$x$&$0$&$6$&$10$\\\hline
+$B\,\!^{\prime}(x)$&$+$&$0$&$-$\\$B(x)$&$-20$&$\nearrow16\searrow$&$0$\end{tabular}\end{center}
+\end{exemple}
+\figurelivre{c04-optimisation.pdf}{À périmètre fixé de $40$ m, l'aire $A(x)=x(20-x)$ est maximale pour $x=10$ m. Le domaine physique $[0,20]$ doit être imposé avant l'étude.}
+\essSection{3}{Une méthode d'optimisation complète}
+\begin{savoirfaire}
+Choisir la variable et son unité ; écrire les contraintes ; exprimer la grandeur à optimiser ; déterminer son domaine ; dériver ; étudier le signe ; comparer les valeurs aux bornes et aux points critiques ; conclure dans le contexte.
+\end{savoirfaire}
+Une dérivée nulle ne suffit pas à conclure à un extremum : pour $f(x)=x^3$, $f\,\!^{\prime}(0)=0$ mais $f$ reste croissante.
+Sur un domaine entier, une solution réelle sert à repérer les entiers voisins qu'il faut comparer.
+\essSection{4}{Coût moyen et coût marginal}
+Pour une production positive $x$, le coût moyen est $C_m(x)=C(x)/x$.
+Le coût marginal est souvent modélisé par $C\,\!^{\prime}(x)$ ; le véritable coût d'une unité supplémentaire est $C(x+1)-C(x)$.
+\begin{exemple}[Un minimum de coût moyen]
+Si $C(x)=x^2+20x+400$, alors $C_m(x)=x+20+400/x$ pour $x>0$.
+Sa dérivée vaut $1-400/x^2$ : négative avant $20$, positive après. Le coût moyen minimal est $C_m(20)=60$.
+La recette $R(x)$ et le bénéfice $B(x)=R(x)-C(x)$ sont des grandeurs différentes du coût.
+\end{exemple}
+\essSection{5}{Contrôler un résultat}
+Un graphique permet de détecter un signe inversé ; une valeur numérique teste une formule. Pour conclure, on revient à la dérivée et au domaine.
+Le résultat doit conserver son unité. Si $x$ est un temps en secondes et $f$ une distance en mètres, $f\,\!^{\prime}$ s'exprime en mètres par seconde.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Règles usuelles}
+
+\begin{questions}
+\item Dériver $3x^4-2x+7$.
+\item Dériver $(2x-1)^2$.
+\item Dériver $\mathrm e^{3x+2}$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Quotient et produit}
+
+\begin{questions}
+\item Dériver $x\mathrm e^x$.
+\item Dériver $(x+1)/(x+2)$ sur son domaine.
+\item Dériver $\ln(1+x^2)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Tangente}
+$f(x)=x^2+1$.
+\begin{questions}
+\item Calculer $f(2)$ et $f\,\!^{\prime}(2)$.
+\item Donner la tangente en $2$.
+\item Utiliser cette tangente pour approcher $f(2{,}01)$ et comparer à la valeur exacte.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Signe et tableau}
+$f(x)=x^2-6x+5$ sur $[0,5]$.
+\begin{questions}
+\item Calculer la dérivée et son zéro.
+\item Donner les variations.
+\item Déterminer le minimum et le maximum sur cet intervalle.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Rectangle}
+Un rectangle a un périmètre de $60$ m. Une longueur vaut $x$.
+\begin{questions}
+\item Exprimer son aire et son domaine physique.
+\item Maximiser l’aire.
+\item Conclure avec les dimensions et l’unité de l’aire.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Bénéfice}
+$R(x)=40x$ et $C(x)=x^2+10x+100$ pour $0\leq x\leq30$.
+\begin{questions}
+\item Exprimer $B=R-C$.
+\item Déterminer la production qui maximise $B$.
+\item Déterminer les productions à bénéfice positif.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Coût moyen}
+$C(x)=2x^2+18x+200$ pour $x>0$.
+\begin{questions}
+\item Exprimer le coût moyen.
+\item Trouver son minimum.
+\item Comparer $C\,\!^{\prime}(10)$ et $C(11)-C(10)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une exponentielle composée}
+$f(x)=x\mathrm e^{-x}$ pour $x\geq0$.
+\begin{questions}
+\item Calculer la dérivée.
+\item Dresser les variations.
+\item Déterminer le maximum et préciser sa valeur exacte.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Une boîte sans couvercle}
+Dans un carré de $12$ cm de côté, on découpe quatre carrés de côté $x$ aux coins et on replie les bords.
+\begin{questions}
+\item Exprimer le volume et son domaine.
+\item Factoriser sa dérivée.
+\item Déterminer le volume maximal.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Dérivée nulle : attention}
+
+\begin{questions}
+\item Comparer le signe de la dérivée de $x^3$ de part et d’autre de zéro.
+\item Le point $0$ est-il un extremum ?
+\item Pour $x^4$, quelle différence observe-t-on ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Production entière}
+$B(x)=-2x^2+19x-20$ ; la production doit être un entier de $0$ à $10$.
+\begin{questions}
+\item Trouver le maximum sur le domaine réel.
+\item Comparer les entiers voisins.
+\item Conclure pour le problème initial.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Deux disciplines, un modèle}
+Une distance est modélisée par $s(t)=20t-2t^2$ pour $0\leq t\leq5$, en mètres et secondes.
+\begin{questions}
+\item Exprimer la vitesse et son unité.
+\item À quel instant la distance à l’origine est-elle maximale sur l’intervalle ?
+\item Pourquoi ne peut-on prolonger automatiquement cette formule à tout $t>5$ ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

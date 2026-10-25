@@ -1,0 +1,187 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{10}{Combustions et énergie chimique}
+\corrigesSouples
+
+\begin{blocLivre}{cor-10-1}
+\begin{corrige}{1}{Écrire des équations de combustion}
+\demarche{Ajuster C avec $\ce{CO2}$, H avec $\ce{H2O}$, puis O avec $\ce{O2}$ ; multiplier par 2 si un coefficient est fractionnaire.}
+\begin{questions}
+\item $\res{\ce{CH4 + 2O2 -> CO2 + 2H2O}}$ et $\res{\ce{C3H8 + 5O2 -> 3CO2 + 4H2O}}$.
+\item $\res{\ce{2C4H10 + 13O2 -> 8CO2 + 10H2O}}$.
+\item $\res{\ce{C2H6O + 3O2 -> 2CO2 + 3H2O}}$ et $\res{\ce{2CH4O + 3O2 -> 2CO2 + 4H2O}}$.
+\item Propane, $n=3$ : $\dfrac{3n+1}{2}=5$, $n+1=4$. Éthanol, $n=2$ : $\dfrac{3n}{2}=3$, $n+1=3$. Les formules sont \res{\text{vérifiées}}.
+\end{questions}
+\retiens{Pour ajuster une combustion : le carbone avec $\ce{CO2}$, l'hydrogène avec $\ce{H2O}$, puis l'oxygène avec $\ce{O2}$ en dernier, car le
+dioxygène est la seule espèce qui ne contient qu'un élément.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-2}
+\begin{corrige}{2}{Une combustion est une oxydoréduction}
+\demarche{Le méthane cède 8 électrons, une molécule de dioxygène en capte 4 : il faut deux molécules de dioxygène.}
+\begin{questions}
+\item De chaque côté : 1 C, 2 O, 8 H et une charge nulle : la demi-équation est \res{\text{ajustée}}.
+\item $\res{\ce{O2 + 4H+ + 4e- = 2H2O}}$.
+\item $\ce{CH4 + 2H2O -> CO2 + 8H+ + 8e-}$ et $2\times(\ce{O2 + 4H+ + 4e- -> 2H2O})$ donnent $\res{\ce{CH4 + 2O2 -> CO2 + 2H2O}}$.
+\item Le méthane est le \res{\text{réducteur}}, le dioxygène l'\res{\text{oxydant}} : le méthane cède des \res{\text{électrons}} au dioxygène.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-3}
+\begin{corrige}{3}{Pouvoir calorifique}
+\demarche{$\mathrm{PC}=\dfrac{|E_\mathrm{r}|}{M}$ : des \unit{kJ.mol^{-1}} divisés par des \unit{g.mol^{-1}} donnent des \unit{kJ.g^{-1}}, c'est-à-dire des \unit{MJ.kg^{-1}}.}
+\begin{questions}
+\item $M(\ce{CH4})=\res{\qty{16,0}{g.mol^{-1}}}$ ; $M(\ce{C3H8})=\res{\qty{44,0}{g.mol^{-1}}}$.
+\item $\dfrac{802}{16{,}0}=\res{\qty{50,1}{MJ.kg^{-1}}}$ et $\dfrac{2043}{44{,}0}=\res{\qty{46,4}{MJ.kg^{-1}}}$.
+\item Par mole : le \res{\text{propane}} ; par kilogramme : le \res{\text{méthane}}.
+\item $Q=1{,}0\times50{,}1=\res{\qty{50}{MJ}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-4}
+\begin{corrige}{4}{Chauffer de l'eau au butane}
+\demarche{$Q=m\,c\,\Delta\theta$ ; la masse de combustible vaut $\dfrac{Q}{\mathrm{PC}}$, divisée par le rendement du chauffage.}
+\begin{questions}
+\item $Q=1{,}0\times4{,}18\times80\approx\res{\qty{334}{kJ}}$.
+\item $m=\dfrac{334}{45{,}8}\approx\res{\qty{7,3}{g}}$ (des \unit{kJ} divisés par des \unit{kJ.g^{-1}}).
+\item $m=\dfrac{7{,}3}{0{,}50}\approx\res{\qty{14,6}{g}}$.
+\item Elle chauffe l'\res{\text{air}} autour de la casserole, la casserole elle-même et le réchaud.
+\end{questions}
+\piege{Mélanger les unités : un pouvoir calorifique en \unit{MJ.kg^{-1}} vaut autant de \unit{kJ.g^{-1}}. Avec $Q$ en kilojoules, on obtient
+directement une masse en grammes.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-5}
+\begin{corrige}{5}{Énergies de liaison et dihydrogène}
+\demarche{$E_\mathrm{r}\approx\sum D(\text{rompues})-\sum D(\text{formées})$, pour l'équation écrite.}
+\begin{questions}
+\item \chemfig{H-H} ; \chemfig{\charge{135=\|,225=\|}{O}=\charge{45=\|,315=\|}{O}} ; \chemfig{H-\charge{90=\|,270=\|}{O}-H}.
+\item Rompues : \res{2} liaisons H--H et \res{1} liaison O=O ; formées : \res{4} liaisons O--H.
+\item $E_\mathrm{r}=(2\times436+498)-4\times463=1370-1852=\res{\qty{-482}{kJ.mol^{-1}}}$.
+\item Pour deux moles de dihydrogène : $\dfrac{482}{2}=\res{\qty{241}{kJ}}$ par mole, très proche de \qty{242}{kJ.mol^{-1}}.
+\end{questions}
+\schema[corrige]{10-ex05-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-6}
+\begin{corrige}{6}{Énergies de liaison en Python}
+\demarche{Le propane $\ce{CH3-CH2-CH3}$ possède 2 liaisons C--C et 8 liaisons C--H.}
+\begin{questions}
+\item \code{rompues = \{'C-C': 2, 'C-H': 8, 'O=O': 5\}} et \code{formees = \{'C=O': 6, 'O-H': 8\}}.
+\item \code{Er = -2028 kJ/mol} : un écart d'environ \qty{0,7}{\percent} avec la valeur des tables.
+\item L'équation porte sur deux moles de butane : $\dfrac{-5280}{2}=\res{\qty{-2640}{kJ.mol^{-1}}}$, à \qty{0,6}{\percent} de la valeur des tables.
+\item Les énergies de liaison sont des \res{\text{valeurs moyennes}} : une liaison C--H n'a pas exactement la même énergie dans toutes
+les molécules.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-7}
+\begin{corrige}{7}{Mesurer un pouvoir calorifique}
+\demarche{L'énergie reçue par l'eau, divisée par la masse d'éthanol brûlé, donne un pouvoir calorifique apparent.}
+\begin{questions}
+\item $Q=0{,}200\times4{,}18\times20{,}0\approx\res{\qty{16,7}{kJ}}$.
+\item $\mathrm{PC}=\dfrac{16{,}7}{1{,}20}\approx\res{\qty{13,9}{kJ.g^{-1}}}$.
+\item La valeur des tables est \qty{26,8}{kJ.g^{-1}} : seulement \res{\text{52~\%}} environ de l'énergie libérée a chauffé l'eau.
+\item Entourer la flamme et la canette d'un \res{\text{écran}} isolant ; placer la canette plus près de la flamme ; agiter l'eau ; utiliser
+un récipient en cuivre, bon conducteur thermique.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-8}
+\begin{corrige}{8}{Se chauffer au gaz}
+\demarche{Énergie $\rightarrow$ masse avec le pouvoir calorifique $\rightarrow$ quantité $\rightarrow$ volume et masse de $\ce{CO2}$ (une mole de $\ce{CO2}$ par mole de méthane).}
+\begin{questions}
+\item $15\,000\times3{,}6=\res{\qty{54000}{MJ}}$.
+\item $m=\dfrac{54\,000}{50{,}1}\approx\res{\qty{1078}{kg}}$ et $n=\dfrac{1{,}078\times10^{6}}{16{,}0}\approx\res{\qty{6,74e4}{mol}}$.
+\item $V=\num{6.74e4}\times24{,}0\approx\qty{1,62e6}{L}$, soit \res{\qty{1620}{m^3}}.
+\item $m(\ce{CO2})=\num{6.74e4}\times44{,}0\approx\qty{2,96e6}{g}$, soit \res{\qty{2,96}{t}}.
+\end{questions}
+\piege{Oublier de convertir les kilowattheures : $\qty{1}{kWh}=\qty{3,6}{MJ}$. Un pouvoir calorifique en \unit{MJ.kg^{-1}} ne s'applique qu'à une
+énergie en mégajoules.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-9}
+\begin{corrige}{9}{Une combustion incomplète}
+\demarche{Moins de dioxygène : le carbone n'est pas entièrement oxydé en $\ce{CO2}$.}
+\begin{questions}
+\item $\res{\ce{2CH4 + 3O2 -> 2CO + 4H2O}}$.
+\item $\res{\ce{CH4 + O2 -> C + 2H2O}}$.
+\item Incolore et inodore, il se fixe sur l'hémoglobine à la place du dioxygène : on ne le détecte pas et il
+\res{\text{empêche le transport du dioxygène}} dans le sang.
+\item Faire entretenir les appareils chaque année, \res{\text{aérer}} et ne pas boucher les ventilations, installer un \res{\text{détecteur}} de
+monoxyde de carbone.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-10}
+\begin{corrige}{10}{Bois ou fioul ?}
+\demarche{$\qty{10000}{kWh}=\qty{36000}{MJ}$, puis $m=\dfrac{Q}{\mathrm{PC}}$.}
+\begin{questions}
+\item $m=\dfrac{36\,000}{15}=\res{\qty{2400}{kg}}$ de bois.
+\item $m=\dfrac{36\,000}{42{,}6}\approx\res{\qty{845}{kg}}$ de fioul, soit $\dfrac{845}{0{,}84}\approx\res{\qty{1000}{L}}$.
+\item Le carbone du bois vient du dioxyde de carbone absorbé par l'arbre pendant sa croissance : si la forêt est
+replantée, le bilan est \res{\text{à peu près nul}} sur la durée de vie de l'arbre.
+\item Les \res{\text{particules fines}} et le monoxyde de carbone émis par les foyers mal réglés ou le bois humide.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-11}
+\begin{corrige}{11}{Le dihydrogène, carburant d'avenir ?}
+\demarche{Comparer par masse, puis par volume : $V=n\,V_\mathrm{m}$ ou $V=\dfrac{m}{\rho}$.}
+\begin{questions}
+\item $\res{\ce{2H2 + O2 -> 2H2O}}$ : la combustion ne rejette que de l'eau, \res{\text{aucun dioxyde de carbone}}.
+\item $\dfrac{121}{44{,}5}\approx\res{\qty{2,72}{kg}}$ d'octane.
+\item $n=\dfrac{1000}{2{,}0}=\qty{500}{mol}$, $V=500\times24{,}0=\qty{12000}{L}$, soit \res{\qty{12}{m^3}} ; sous \qty{700}{bar} : $\dfrac{1000}{40}=\res{\qty{25}{L}}$.
+\item Il faut le produire sans rejeter de dioxyde de carbone, par exemple par \res{\text{électrolyse}} de l'eau avec de l'électricité
+renouvelable ou nucléaire.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-12}
+\begin{corrige}{12}{Réchaud à éthanol ou à butane ?}
+\demarche{Pour 1 MJ : $m=\dfrac{\qty{1}{MJ}}{\mathrm{PC}}$. Pour le $\ce{CO2}$ : $n(\ce{CO2})$ par mole de combustible, divisée par $|E_\mathrm{r}|$.}
+\begin{questions}
+\item $\ce{2C4H10 + 13O2 -> 8CO2 + 10H2O}$ et $\ce{C2H6O + 3O2 -> 2CO2 + 3H2O}$.
+\item Butane : $\dfrac{1000}{45{,}8}\approx\res{\qty{21,8}{g}}$ ; éthanol : $\dfrac{1000}{26{,}8}\approx\res{\qty{37,3}{g}}$.
+\item Butane : $\dfrac{4\times44{,}0}{2657}\approx\res{\qty{66,2}{g.MJ^{-1}}}$ ; éthanol : $\dfrac{2\times44{,}0}{1235}\approx\res{\qty{71,3}{g.MJ^{-1}}}$.
+\item Le butane est plus léger à emporter et rejette un peu moins de $\ce{CO2}$ par mégajoule. Mais ce carbone est \res{\text{fossile}} ; celui
+de l'éthanol agricole a été prélevé dans l'atmosphère par les plantes : son bilan peut être bien meilleur.
+\end{questions}
+\retiens{Pour comparer des combustibles, on rapporte leurs émissions de dioxyde de carbone à l'énergie produite (en \unit{g.MJ^{-1}}), et
+non à la masse brûlée.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-13}
+\begin{corrige}{13}{Le bilan énergétique d'une voiture}
+\demarche{Masse $\rightarrow$ quantité $\rightarrow$ énergie $Q=n\,|E_\mathrm{r}|$ ; huit moles de $\ce{CO2}$ par mole d'octane.}
+\begin{questions}
+\item $m=0{,}060\times750=\res{\qty{45,0}{g}}$ par kilomètre et $n=\dfrac{45{,}0}{114{,}0}\approx\res{\qty{0,395}{mol}}$.
+\item $Q=0{,}395\times5074\approx\res{\qty{2,00}{MJ}}$ par kilomètre, dont $0{,}35\times2{,}00=\res{\qty{0,70}{MJ}}$ utiles.
+\item $m(\ce{CO2})=8\times0{,}395\times44{,}0\approx\res{\qty{139}{g}}$ par kilomètre.
+\item La voiture à essence consomme \qty{200}{MJ} d'énergie chimique aux \qty{100}{km}, contre $15\times3{,}6=\qty{54}{MJ}$ pour la voiture
+électrique : environ \res{\text{3,7 fois plus}}, essentiellement perdus en chaleur.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-14}
+\begin{corrige}{14}{Le biogaz d'une ferme}
+\demarche{Le volume de méthane vaut \qty{60}{\percent} du volume de biogaz ; puis $n=\dfrac{V}{V_\mathrm{m}}$ et $Q=n\,|E_\mathrm{r}|$.}
+\begin{questions}
+\item $V(\ce{CH4})=\qty{600}{L}$, $n=\dfrac{600}{24{,}0}=\res{\qty{25,0}{mol}}$.
+\item $Q=25{,}0\times802=\qty{2,005e4}{kJ}$, environ \res{\qty{20}{MJ}}, soit $\dfrac{20{,}05}{3{,}6}\approx\res{\qty{5,6}{kWh}}$.
+\item $300\times5{,}57\approx\qty{1671}{kWh}$ par jour, soit environ \res{\qty{610}{MWh}} par an.
+\item $\dfrac{610}{15}\approx\res{40}$ foyers. Le carbone du méthane provient de la biomasse, qui l'a puisé dans l'atmosphère, et les
+déchets sont produits en continu : l'énergie est \res{\text{renouvelable}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-10-15}
+\begin{corrige}{15}{La puissance d'une bougie}
+\demarche{Puissance $=$ énergie libérée par seconde : $P=\dfrac{Q}{\Delta t}$.}
+\begin{questions}
+\item $\res{\ce{C25H52 + 38O2 -> 25CO2 + 26H2O}}$.
+\item $Q=5{,}0\times42=\res{\qty{210}{kJ}}$ (des \unit{g} multipliés par des \unit{kJ.g^{-1}}).
+\item $P=\dfrac{210\,000}{3600}\approx\res{\qty{58}{W}}$ : près de \res{\text{600 fois}} la puissance de l'ampoule, presque toute sous forme de chaleur.
+\item $n=\dfrac{5{,}0}{352{,}0}=\qty{1,42e-2}{mol}$ et $m(\ce{CO2})=25\times\num{1.42e-2}\times44{,}0\approx\res{\qty{15,6}{g}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}

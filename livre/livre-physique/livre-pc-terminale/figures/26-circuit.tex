@@ -1,0 +1,25 @@
+% Circuit RC série : charge (position 1) et décharge (position 2) du condensateur (L'essentiel, chapitre 26)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% générateur
+\draw[otInk!80,line width=0.7pt] (0,0) -- (0,1.12) (0,1.28) -- (0,2.4) -- (1.6,2.4);
+\draw[otInk!80,line width=0.7pt] (-0.32,1.28) -- (0.32,1.28);
+\draw[otInk!80,line width=1.6pt] (-0.16,1.12) -- (0.16,1.12);
+\draw[otNavy,line width=0.6pt,-{Stealth[length=1.5mm]}] (-0.6,0.6) -- (-0.6,1.8) node[pos=0.5,pcLegende,anchor=east,text=otNavy] {$E$};
+% interrupteur
+\fill[otInk] (1.6,2.4) circle (0.05) node[pcLegende,anchor=south] {1};
+\fill[otInk] (1.6,1.6) circle (0.05) node[pcLegende,anchor=east] {2};
+\fill[otInk] (2.5,2.4) circle (0.05);
+\draw[otInk!80,line width=0.8pt] (2.5,2.4) -- (1.7,2.62);
+\node[pcLegende,anchor=south] at (2.3,2.6) {$K$};
+\draw[otInk!80,line width=0.7pt] (1.6,1.6) -- (1.6,0);
+% résistance et condensateur
+\draw[otInk!80,line width=0.7pt] (2.5,2.4) -- (4.8,2.4) -- (4.8,1.32) (4.8,1.08) -- (4.8,0) -- (0,0);
+\pcResistance{(3.6,2.4)}
+\node[pcLegende,anchor=south] at (3.6,2.55) {$R$};
+\draw[otInk!80,line width=1.4pt] (4.4,1.32) -- (5.2,1.32) (4.4,1.08) -- (5.2,1.08);
+\node[pcLegende,anchor=west] at (5.25,1.2) {$C$};
+\draw[otNavy,line width=0.6pt,-{Stealth[length=1.5mm]}] (5.75,0.5) -- (5.75,1.9) node[pos=0.5,pcLegende,anchor=west,text=otNavy] {$u_C$};
+\draw[otRed!80!black,line width=0.7pt,-{Stealth[length=1.6mm]}] (4.1,2.4) -- (4.5,2.4) node[pcLegende,anchor=south,text=otRed!80!black] {$i$};
+\draw[otNavy,line width=0.6pt,-{Stealth[length=1.5mm]}] (4.1,2.05) -- (3.1,2.05) node[pos=0.5,pcLegende,anchor=north,text=otNavy] {$u_R$};
+\end{tikzpicture}
+\par\smallskip\legende{En position 1, le générateur charge le condensateur à travers la résistance ; en position 2, le condensateur se décharge dans la résistance.}

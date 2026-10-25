@@ -1,0 +1,1254 @@
+%% =====================================================================
+%%  optitab-python.sty — Python, la méthode complète OptiTAB (5 tomes)
+%%  Charte OptiTAB : Libertinus + Montserrat + Fira Mono, bleu marine et vert.
+%%  Le livre est rédigé en anglais (babel english).
+%%  Blocs de code : moteur Lua otpython.lua (capture verbatim + coloration),
+%%  aucune dépendance externe ni -shell-escape.
+%%  Compilation : LuaLaTeX, deux passes (voir README.md).
+%% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{optitab-python}[2026/10/25 v1.0 Methode Python OptiTAB]
+
+\RequirePackage{iftex}
+\RequireLuaTeX
+
+%% ---------------------------------------------------------------------
+%%  Page
+%% ---------------------------------------------------------------------
+\RequirePackage[a4paper,inner=20mm,outer=20mm,top=24mm,bottom=22mm,
+  headheight=14pt,headsep=7mm,footskip=11mm]{geometry}
+\RequirePackage[english]{babel}
+\RequirePackage[autostyle=true]{csquotes}
+
+%% ---------------------------------------------------------------------
+%%  Polices
+%% ---------------------------------------------------------------------
+\RequirePackage{fontspec}
+\setmainfont{LibertinusSerif}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Semibold, BoldItalicFont=*-SemiboldItalic]
+\setsansfont{Montserrat}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-SemiBold, BoldItalicFont=*-SemiBoldItalic]
+\setmonofont{FiraMono}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Oblique,
+  BoldFont=*-Medium, BoldItalicFont=*-MediumOblique, Scale=0.88]
+\newfontfamily\otMonoGras{FiraMono}[Extension=.otf, UprightFont=*-Bold, Scale=0.88]
+\newfontfamily\otLight{Montserrat}[Extension=.otf,
+  UprightFont=*-Light, ItalicFont=*-LightItalic, BoldFont=*-Medium]
+\newfontfamily\otRegular{Montserrat}[Extension=.otf,
+  UprightFont=*-Regular, ItalicFont=*-Italic, BoldFont=*-SemiBold]
+\newfontfamily\otMedium{Montserrat}[Extension=.otf,
+  UprightFont=*-Medium, ItalicFont=*-MediumItalic, BoldFont=*-SemiBold]
+\newfontfamily\otSemi{Montserrat}[Extension=.otf,
+  UprightFont=*-SemiBold, ItalicFont=*-SemiBoldItalic, BoldFont=*-Bold]
+\newfontfamily\otBold{Montserrat}[Extension=.otf,
+  UprightFont=*-Bold, ItalicFont=*-BoldItalic, BoldFont=*-ExtraBold]
+
+\RequirePackage[protrusion=true,expansion=true]{microtype}
+\RequirePackage{lua-ul}
+\linespread{1.06}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{1.5em}
+\newcommand{\otCaps}[2][8]{{\addfontfeature{LetterSpace=#1}\MakeUppercase{#2}}}
+% paragraphe de cours : espace entre deux paragraphes
+\newcommand{\otPara}{\par\vspace{2.2mm}}
+
+%% ---------------------------------------------------------------------
+%%  Couleurs
+%% ---------------------------------------------------------------------
+\RequirePackage[table]{xcolor}
+\RequirePackage{luacolor}
+\definecolor{otNavy}{HTML}{1B3C8E}
+\definecolor{otNavyDark}{HTML}{122A66}
+\definecolor{otGreen}{HTML}{5FAC60}
+\definecolor{otGreenDark}{HTML}{3B8544}
+\definecolor{otInk}{HTML}{1C2130}
+\definecolor{otMuted}{HTML}{6B7385}
+\definecolor{otRule}{HTML}{D5DAE3}
+\definecolor{otOrange}{HTML}{F0A23B}
+\definecolor{otOrangeDark}{HTML}{B86E0C}
+\definecolor{otRed}{HTML}{E0574C}
+\definecolor{otRedDark}{HTML}{B33A30}
+\definecolor{otViolet}{HTML}{6A4FB3}
+\definecolor{otTeal}{HTML}{1E8C93}
+\colorlet{otGreenTint}{otGreen!12}
+\colorlet{otNavyTint}{otNavy!6}
+\colorlet{otOrangeTint}{otOrange!13}
+\colorlet{otVioletTint}{otViolet!8}
+\colorlet{otTealTint}{otTeal!9}
+\colorlet{otRedTint}{otRed!9}
+% Code (page claire)
+\definecolor{otCodeFond}{HTML}{F3F5FA}
+\definecolor{otCodeTitre}{HTML}{E6EAF3}
+\definecolor{otCodeNum}{HTML}{A3ABBB}
+\definecolor{otCodeMarque}{HTML}{FFF1BF}
+\definecolor{otCodeEncre}{HTML}{24356E}
+% Écran (sorties, console)
+\definecolor{otEcran}{HTML}{1B2233}
+\definecolor{otEcranTitre}{HTML}{262F45}
+\definecolor{otEcranTexte}{HTML}{E3E8F1}
+\definecolor{otEcranMuet}{HTML}{8C95AA}
+\definecolor{otEcranSaisie}{HTML}{93DB97}
+\definecolor{otEcranErreur}{HTML}{F4A097}
+\definecolor{otEcranErreurFin}{HTML}{FF8A7F}
+\AtBeginDocument{\color{otInk}}
+
+%% ---------------------------------------------------------------------
+%%  Outils
+%% ---------------------------------------------------------------------
+\RequirePackage{graphicx}
+\graphicspath{{images/}}
+\RequirePackage{needspace}
+\RequirePackage{varwidth}
+\RequirePackage{ifthen}
+\RequirePackage{multicol}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,shapes.callouts,shapes.geometric,shadows,decorations.pathreplacing}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs,tabularx,array,ragged2e}
+\RequirePackage{qrcode}
+\RequirePackage{fancyhdr}
+\RequirePackage[hidelinks,bookmarksnumbered]{hyperref}
+\RequirePackage{bookmark}
+
+%% ---------------------------------------------------------------------
+%%  Informations du tome (redéfinies dans tome-N.tex)
+%% ---------------------------------------------------------------------
+\newcommand{\otCollection}{Python}
+\newcommand{\otTome}{1}
+\newcommand{\otTomeTitre}{First Steps}
+\newcommand{\otNiveau}{1}
+\newcommand{\otNiveauNom}{Beginner}
+\newcommand{\otSite}{optitab.net}
+\newcommand{\otURL}{https://www.optitab.net}
+% Fichiers de code en ligne : https://www.optitab.net/python/t1/chapter-01/
+\newcommand{\otCodeBase}{https://www.optitab.net/python/t1/}
+\newcommand{\otCodeAffiche}{optitab.net/python/t1}
+\newcommand{\otVersionPython}{3.13}
+% Nombre de programmes par chapitre (écrit par outils/verifier_code.py)
+\newcommand{\otNbProgrammes}[2]{\expandafter\gdef\csname otNbProg@#1\endcsname{#2}}
+
+%% ---------------------------------------------------------------------
+%%  Icônes (dessinées en coordonnées [-0,5 ; 0,5], unité \otIcoU)
+%%  \otIco@clé{couleur}{couleur du fond}
+%% ---------------------------------------------------------------------
+\newlength{\otIcoU}
+\newcommand{\otIco@livre}[2]{%
+  \fill[#1] (-0.47,-0.3) -- (-0.47,0.34) .. controls (-0.27,0.4) and (-0.12,0.37) .. (-0.04,0.28)
+    -- (-0.04,-0.37) .. controls (-0.12,-0.29) and (-0.27,-0.26) .. cycle;
+  \fill[#1] (0.47,-0.3) -- (0.47,0.34) .. controls (0.27,0.4) and (0.12,0.37) .. (0.04,0.28)
+    -- (0.04,-0.37) .. controls (0.12,-0.29) and (0.27,-0.26) .. cycle;}
+\newcommand{\otIco@ampoule}[2]{%
+  \fill[#1] (0,0.13) circle (0.3);
+  \fill[#1] (-0.15,-0.2) rectangle (0.15,0.0);
+  \fill[#1,rounded corners=0.04*\otIcoU] (-0.13,-0.43) rectangle (0.13,-0.25);
+  \draw[#2,line width=0.06*\otIcoU] (-0.15,-0.22) -- (0.15,-0.22);}
+\newcommand{\otIco@attention}[2]{%
+  \fill[#1,rounded corners=0.06*\otIcoU] (0,0.46) -- (0.5,-0.4) -- (-0.5,-0.4) -- cycle;
+  \fill[#2,rounded corners=0.03*\otIcoU] (-0.045,-0.08) rectangle (0.045,0.24);
+  \fill[#2] (0,-0.23) circle (0.055);}
+\newcommand{\otIco@etoile}[2]{%
+  \fill[#1] (90:0.48) -- (126:0.2) -- (162:0.48) -- (198:0.2) -- (234:0.48) -- (270:0.2)
+    -- (306:0.48) -- (342:0.2) -- (18:0.48) -- (54:0.2) -- cycle;}
+\newcommand{\otIco@horloge}[2]{%
+  \draw[#1,line width=0.085*\otIcoU] (0,0) circle (0.42);
+  \draw[#1,line width=0.09*\otIcoU,line cap=round] (0,0.24) -- (0,0) -- (0.17,-0.1);}
+\newcommand{\otIco@cible}[2]{%
+  \draw[#1,line width=0.08*\otIcoU] (0,0) circle (0.42) (0,0) circle (0.24);
+  \fill[#1] (0,0) circle (0.09);}
+\newcommand{\otIco@coche}[2]{%
+  \draw[#1,line width=0.085*\otIcoU] (0,0) circle (0.42);
+  \draw[#1,line width=0.11*\otIcoU,line cap=round,line join=round] (-0.2,0.01) -- (-0.05,-0.15) -- (0.22,0.16);}
+\newcommand{\otIco@crayon}[2]{%
+  \begin{scope}[rotate=45]
+    \fill[#1,rounded corners=0.04*\otIcoU] (-0.5,-0.12) rectangle (-0.34,0.12);
+    \fill[#1] (-0.29,-0.12) rectangle (0.22,0.12);
+    \fill[#1] (0.27,-0.12) -- (0.5,0) -- (0.27,0.12) -- cycle;
+  \end{scope}}
+\newcommand{\otIco@bulle}[2]{%
+  \fill[#1,rounded corners=0.13*\otIcoU] (-0.46,-0.2) -- (-0.46,0.42) -- (0.46,0.42) -- (0.46,-0.2) -- (-0.02,-0.2) -- (-0.3,-0.46) -- (-0.24,-0.2) -- cycle;
+  \draw[#2,line width=0.085*\otIcoU,line cap=round] (-0.25,0.19) -- (0.25,0.19) (-0.25,0.01) -- (0.1,0.01);}
+\newcommand{\otIco@blocs}[2]{%
+  \fill[#1,rounded corners=0.07*\otIcoU] (-0.46,-0.44) rectangle (-0.04,-0.02);
+  \fill[#1,rounded corners=0.07*\otIcoU] (0.04,-0.44) rectangle (0.46,-0.02);
+  \fill[#1,rounded corners=0.07*\otIcoU] (-0.21,0.06) rectangle (0.21,0.48);}
+\newcommand{\otIco@globe}[2]{%
+  \draw[#1,line width=0.08*\otIcoU] (0,0) circle (0.42);
+  \draw[#1,line width=0.065*\otIcoU] (0,0) ellipse (0.17 and 0.42);
+  \draw[#1,line width=0.065*\otIcoU] (-0.42,0) -- (0.42,0) (-0.37,0.2) -- (0.37,0.2) (-0.37,-0.2) -- (0.37,-0.2);}
+\newcommand{\otIco@engrenage}[2]{%
+  \foreach \a in {0,45,...,315}{\fill[#1,rotate=\a,rounded corners=0.02*\otIcoU] (-0.085,0.25) rectangle (0.085,0.47);}
+  \fill[#1] (0,0) circle (0.33);
+  \fill[#2] (0,0) circle (0.13);}
+\newcommand{\otIco@bug}[2]{%
+  \draw[#1,line width=0.07*\otIcoU,line cap=round]
+    (-0.18,0.04) -- (-0.43,0.14) (0.18,0.04) -- (0.43,0.14)
+    (-0.2,-0.12) -- (-0.45,-0.12) (0.2,-0.12) -- (0.45,-0.12)
+    (-0.17,-0.27) -- (-0.4,-0.42) (0.17,-0.27) -- (0.4,-0.42)
+    (-0.07,0.36) -- (-0.18,0.49) (0.07,0.36) -- (0.18,0.49);
+  \fill[#1] (0,-0.1) ellipse (0.23 and 0.31);
+  \fill[#1] (0,0.27) circle (0.14);
+  \draw[#2,line width=0.05*\otIcoU] (0,0.17) -- (0,-0.38);}
+\newcommand{\otIco@fusee}[2]{%
+  \begin{scope}[rotate=-40]
+    \fill[#1] (-0.17,-0.06) -- (-0.36,-0.32) -- (-0.15,-0.24) -- cycle;
+    \fill[#1] (0.17,-0.06) -- (0.36,-0.32) -- (0.15,-0.24) -- cycle;
+    \fill[#1] (0,0.5) .. controls (0.22,0.3) and (0.19,0.0) .. (0.15,-0.24) -- (-0.15,-0.24)
+      .. controls (-0.19,0.0) and (-0.22,0.3) .. (0,0.5);
+    \fill[#2] (0,0.13) circle (0.075);
+    \fill[#1] (-0.09,-0.3) -- (0,-0.5) -- (0.09,-0.3) -- cycle;
+  \end{scope}}
+\newcommand{\otIco@terminal}[2]{%
+  \draw[#1,line width=0.08*\otIcoU,rounded corners=0.09*\otIcoU] (-0.46,-0.38) rectangle (0.46,0.38);
+  \draw[#1,line width=0.09*\otIcoU,line cap=round,line join=round] (-0.27,0.15) -- (-0.08,0) -- (-0.27,-0.15);
+  \draw[#1,line width=0.09*\otIcoU,line cap=round] (0.02,-0.17) -- (0.27,-0.17);}
+\newcommand{\otIco@chevrons}[2]{%
+  \draw[#1,line width=0.1*\otIcoU,line cap=round,line join=round] (-0.2,0.25) -- (-0.45,0) -- (-0.2,-0.25);
+  \draw[#1,line width=0.1*\otIcoU,line cap=round,line join=round] (0.2,0.25) -- (0.45,0) -- (0.2,-0.25);
+  \draw[#1,line width=0.09*\otIcoU,line cap=round] (0.09,0.38) -- (-0.09,-0.38);}
+\newcommand{\otIco@cle}[2]{%
+  \draw[#1,line width=0.11*\otIcoU] (-0.27,0) circle (0.17);
+  \fill[#1] (-0.1,-0.045) rectangle (0.46,0.045);
+  \fill[#1] (0.27,-0.045) rectangle (0.33,-0.2) (0.38,-0.045) rectangle (0.44,-0.16);}
+\newcommand{\otIco@oeil}[2]{%
+  \fill[#1] (-0.49,0) .. controls (-0.22,0.38) and (0.22,0.38) .. (0.49,0)
+    .. controls (0.22,-0.38) and (-0.22,-0.38) .. cycle;
+  \fill[#2] (0,0) circle (0.17);
+  \fill[#1] (0,0) circle (0.08);}
+\newcommand{\otIco@puzzle}[2]{%
+  \fill[#1,rounded corners=0.04*\otIcoU] (-0.38,-0.4) rectangle (0.26,0.24);
+  \fill[#1] (-0.06,0.31) circle (0.13);
+  \fill[#1] (0.33,-0.08) circle (0.13);
+  \fill[#2] (-0.38,-0.08) circle (0.1);
+  \fill[#2] (-0.06,-0.4) circle (0.1);}
+\newcommand{\otIco@clavier}[2]{%
+  \fill[#1,rounded corners=0.08*\otIcoU] (-0.49,-0.31) rectangle (0.49,0.31);
+  \foreach \x in {-0.33,-0.11,0.11,0.33}{\fill[#2] (\x-0.07,0.09) rectangle (\x+0.07,0.19);}
+  \foreach \x in {-0.22,0,0.22}{\fill[#2] (\x-0.07,-0.06) rectangle (\x+0.07,0.04);}
+  \fill[#2] (-0.25,-0.21) rectangle (0.25,-0.14);}
+\newcommand{\otIco@trophee}[2]{%
+  \draw[#1,line width=0.07*\otIcoU,line join=round] (-0.24,0.34) -- (-0.42,0.34) -- (-0.38,0.18) -- (-0.18,0.07);
+  \draw[#1,line width=0.07*\otIcoU,line join=round] (0.24,0.34) -- (0.42,0.34) -- (0.38,0.18) -- (0.18,0.07);
+  \fill[#1] (-0.27,0.44) -- (0.27,0.44) -- (0.23,0.1) .. controls (0.18,-0.07) and (-0.18,-0.07) .. (-0.23,0.1) -- cycle;
+  \fill[#1] (-0.06,-0.06) rectangle (0.06,-0.28);
+  \fill[#1,rounded corners=0.03*\otIcoU] (-0.21,-0.44) rectangle (0.21,-0.28);}
+\newcommand{\otIco@fichier}[2]{%
+  \fill[#1] (-0.33,-0.47) -- (-0.33,0.47) -- (0.12,0.47) -- (0.35,0.24) -- (0.35,-0.47) -- cycle;
+  \fill[#2,opacity=0.55] (0.12,0.47) -- (0.12,0.24) -- (0.35,0.24) -- cycle;
+  \draw[#2,line width=0.065*\otIcoU,line cap=round] (-0.18,0.02) -- (0.2,0.02) (-0.18,-0.15) -- (0.2,-0.15) (-0.18,-0.32) -- (0.08,-0.32);}
+\newcommand{\otIco@telecharger}[2]{%
+  \draw[#1,line width=0.1*\otIcoU,line cap=round] (0,0.46) -- (0,-0.12);
+  \draw[#1,line width=0.1*\otIcoU,line cap=round,line join=round] (-0.21,0.09) -- (0,-0.13) -- (0.21,0.09);
+  \draw[#1,line width=0.1*\otIcoU,line cap=round,line join=round] (-0.43,-0.1) -- (-0.43,-0.42) -- (0.43,-0.42) -- (0.43,-0.1);}
+\newcommand{\otIco@lecture}[2]{%
+  \fill[#1,rounded corners=0.05*\otIcoU] (-0.27,0.38) -- (0.4,0) -- (-0.27,-0.38) -- cycle;}
+\newcommand{\otIco@ecran}[2]{%
+  \fill[#1,rounded corners=0.06*\otIcoU] (-0.48,-0.2) rectangle (0.48,0.42);
+  \fill[#2,opacity=0.5] (-0.4,-0.12) rectangle (0.4,0.34);
+  \fill[#1] (-0.06,-0.2) rectangle (0.06,-0.36);
+  \fill[#1,rounded corners=0.03*\otIcoU] (-0.25,-0.44) rectangle (0.25,-0.34);}
+\newcommand{\otIco@dossier}[2]{%
+  \fill[#1,rounded corners=0.05*\otIcoU] (-0.47,-0.38) -- (-0.47,0.36) -- (-0.12,0.36) -- (-0.02,0.24) -- (0.47,0.24) -- (0.47,-0.38) -- cycle;
+  \fill[#2,opacity=0.3] (-0.47,0.12) rectangle (0.47,0.16);}
+\newcommand{\otIco@boucle}[2]{%
+  \draw[#1,line width=0.1*\otIcoU,line cap=round] (0.36,0.1) arc[start angle=15,end angle=300,radius=0.36];
+  \fill[#1] (0.22,0.24) -- (0.5,0.24) -- (0.4,-0.02) -- cycle;}
+% Dessin d'une icône dans une figure TikZ : \otDessinIcone{clé}{couleur}{fond}{taille}{centre}
+\newcommand{\otDessinIcone}[5]{%
+  \pgfmathsetlength{\otIcoU}{#4}%
+  \begin{scope}[shift={#5},x=\otIcoU,y=\otIcoU]\csname otIco@#1\endcsname{#2}{#3}\end{scope}}
+\newcommand{\otIconeSeule}[3]{\tikz[baseline=0pt]{\path (0,0) rectangle (#3,#3);
+  \otDessinIcone{#1}{#2}{white}{#3}{(0.5*#3,0.5*#3)}}}
+% Tuile : carré arrondi coloré + icône blanche : \otTuile[taille]{clé}{couleur}
+\NewDocumentCommand{\otTuile}{O{6mm} m m}{%
+  \tikz[baseline={(0,0.28*#1)}]{\fill[#3,rounded corners=0.22*#1] (0,0) rectangle (#1,#1);
+    \otDessinIcone{#2}{white}{#3}{0.6*#1}{(0.5*#1,0.5*#1)}}}
+
+%% ---------------------------------------------------------------------
+%%  Code : styles de coloration (page claire par défaut)
+%% ---------------------------------------------------------------------
+\directlua{require("otpython")}
+\newcommand{\otStyKw}{\color[HTML]{6A4FB3}\bfseries}
+\newcommand{\otStyConst}{\color[HTML]{B86E0C}\bfseries}
+\newcommand{\otStyNatif}{\color[HTML]{17797F}}
+\newcommand{\otStyFonc}{\color[HTML]{1B3C8E}\bfseries}
+\newcommand{\otStyClasse}{\color[HTML]{1B3C8E}\bfseries}
+\newcommand{\otStyNum}{\color[HTML]{B86E0C}}
+\newcommand{\otStyStr}{\color[HTML]{2F7A3A}}
+\newcommand{\otStyInterp}{\color[HTML]{1B3C8E}}
+\newcommand{\otStyCom}{\color[HTML]{7A8396}\itshape}
+\newcommand{\otStyExc}{\color[HTML]{B33A30}\bfseries}
+\newcommand{\otStyDeco}{\color[HTML]{6A4FB3}}
+\newcommand{\otStyOp}{\color[HTML]{4A5266}}
+% Thème « écran » (console sur fond sombre)
+\newcommand{\otThemeEcran}{%
+  \renewcommand{\otStyKw}{\color[HTML]{C2B0FF}\bfseries}%
+  \renewcommand{\otStyConst}{\color[HTML]{FFC27A}\bfseries}%
+  \renewcommand{\otStyNatif}{\color[HTML]{7FD8DE}}%
+  \renewcommand{\otStyFonc}{\color[HTML]{A9C1FF}\bfseries}%
+  \renewcommand{\otStyClasse}{\color[HTML]{A9C1FF}\bfseries}%
+  \renewcommand{\otStyNum}{\color[HTML]{FFC27A}}%
+  \renewcommand{\otStyStr}{\color[HTML]{9FDDA3}}%
+  \renewcommand{\otStyInterp}{\color[HTML]{FFFFFF}}%
+  \renewcommand{\otStyCom}{\color[HTML]{8C95AA}\itshape}%
+  \renewcommand{\otStyExc}{\color[HTML]{FF8A7F}\bfseries}%
+  \renewcommand{\otStyDeco}{\color[HTML]{C2B0FF}}%
+  \renewcommand{\otStyOp}{\color[HTML]{E3E8F1}}}
+% Thème IDLE Classic (fenêtres d'IDLE dessinées dans le chapitre 1)
+\newcommand{\otThemeIdle}{%
+  \renewcommand{\otStyKw}{\color[HTML]{FF7700}}%
+  \renewcommand{\otStyConst}{\color[HTML]{FF7700}}%
+  \renewcommand{\otStyNatif}{\color[HTML]{900090}}%
+  \renewcommand{\otStyFonc}{\color[HTML]{0000FF}}%
+  \renewcommand{\otStyClasse}{\color[HTML]{0000FF}}%
+  \renewcommand{\otStyNum}{\color{black}}%
+  \renewcommand{\otStyStr}{\color[HTML]{00AA00}}%
+  \renewcommand{\otStyInterp}{\color[HTML]{00AA00}}%
+  \renewcommand{\otStyCom}{\color[HTML]{DD0000}}%
+  \renewcommand{\otStyExc}{\color[HTML]{900090}}%
+  \renewcommand{\otStyDeco}{\color{black}}%
+  \renewcommand{\otStyOp}{\color{black}}%
+  \renewcommand{\otPrompt}[1]{{\color[HTML]{770000}##1}\otSp{1}}%
+  \renewcommand{\otResultat}[1]{{\color[HTML]{0000FF}##1}}%
+  \renewcommand{\otErreurLigne}[1]{{\color[HTML]{FF0000}##1}}%
+  \renewcommand{\otErreurFin}[1]{{\color[HTML]{FF0000}##1}}%
+  \renewcommand{\otSaisie}[1]{{\color{black}##1}}}
+
+%% ---------------------------------------------------------------------
+%%  Code : lignes (appelées par otpython.lua)
+%% ---------------------------------------------------------------------
+\newlength{\otLargeurCar}
+\newlength{\otGouttiere}
+\newcommand{\otSp}[1]{\kern#1\otLargeurCar}
+\newcommand{\otPoliceCode}{\ttfamily\fontsize{9.4}{12.7}\selectfont}
+\newcommand{\otMonoSetup}{\otPoliceCode\frenchspacing\settowidth{\otLargeurCar}{x}%
+  \hyphenchar\font=-1 }
+\newif\ifotCodeNum
+% Trou à compléter dans du code : boîte de n caractères
+\newcommand{\otTrouCode}[1]{{\color{otOrangeDark}\underLine[color=otOrangeDark,top=-0.6pt,bottom=-2.2pt]{\hbox to #1\otLargeurCar{\hfil}}}}
+% Pastille de renvoi dans le code et dans le texte : \otRepere{3} / \repere{3}
+\newcommand{\otRepere}[1]{\raisebox{0.15ex}{\tikz[baseline=-0.6ex]\node[circle,fill=otOrange,text=white,
+  inner sep=0pt,minimum size=3.7mm,font=\otBold\fontsize{6.6}{6.6}\selectfont]{#1};}}
+\newcommand{\repere}[1]{\otRepere{#1}}
+\newcommand{\otLigneCodeDebut}[2]{% numéro, marquée
+  \par\noindent\hbox to\linewidth\bgroup\strut
+  \ifnum#2=1 \rlap{\color{otCodeMarque}\hspace*{-\otGouttiere}%
+    \rule[-\dp\strutbox]{\dimexpr\linewidth+\otGouttiere+3.5mm\relax}{\dimexpr\ht\strutbox+\dp\strutbox\relax}}\fi
+  \ifotCodeNum\llap{{\fontsize{7.6}{9}\selectfont\color{otCodeNum}#1}\hspace{3.4mm}}\fi}
+\newcommand{\otLigneCodeFin}[1]{\hfil\egroup\par\ifnum#1=1 \nobreak\fi}
+\newcommand{\otLigneDebut}{\par\noindent\hbox\bgroup\strut}
+\newcommand{\otLigneFin}[1]{\egroup\par\ifnum#1=1 \nobreak\fi}
+\newcommand{\otPrompt}[1]{{\color{otEcranMuet}#1}\otSp{1}}
+\newcommand{\otResultat}[1]{{\color{otEcranTexte}#1}}
+\newcommand{\otErreurLigne}[1]{{\color{otEcranErreur}#1}}
+\newcommand{\otErreurFin}[1]{{\color{otEcranErreurFin}\bfseries#1}}
+\newcommand{\otSaisie}[1]{{\color{otEcranSaisie}\bfseries#1}}
+
+%% ---------------------------------------------------------------------
+%%  Code : environnements
+%%  \begin{code}{file=hello.py, marks={2,4-5}, first=1, nonum, title=...}
+%%  (accolades obligatoires, même vides : \begin{code}{})
+%%  Les clés run, suite, bug, trous, cible, norun… ne servent qu'au vérificateur.
+%% ---------------------------------------------------------------------
+\pgfkeys{/otcode/.is family,/otcode,
+  file/.store in=\otCodeFichier, marks/.store in=\otCodeMarques, first/.store in=\otCodePremier,
+  title/.store in=\otCodeTitre, nonum/.code={\otCodeNumfalse}, mini/.code={\def\otCodeMini{1}},
+  run/.code={}, suite/.code={}, bug/.code={}, trous/.code={}, norun/.code={}, cible/.code={},
+  erreur/.code={}, aleatoire/.code={}, stdin/.code={}, nocheck/.code={}, setup/.code={}, variante/.code={}}
+\newcommand{\otCodeReglages}[1]{%
+  \def\otCodeFichier{}\def\otCodeMarques{}\def\otCodePremier{1}\def\otCodeTitre{}\def\otCodeMini{0}%
+  \otCodeNumtrue\pgfkeys{/otcode,#1}%
+  \ifx\otCodeMini\otUn\otCodeNumfalse\fi}
+\def\otUn{1}
+% écart unique après un bloc de code : une sortie qui suit immédiatement s'y accole
+\newlength{\otApresCode}\setlength{\otApresCode}{3.53mm}
+\tcbset{
+  otCodeBoite/.style={enhanced,colback=otCodeFond,colframe=otCodeFond,arc=1.6mm,boxrule=0pt,
+    left=\otGouttiere,right=3.5mm,top=2mm,bottom=2mm,boxsep=0pt,before skip=3.5mm,after skip=\otApresCode,
+    fonttitle=\otSemi\fontsize{7.6}{9}\selectfont,coltitle=otNavy,colbacktitle=otCodeTitre,
+    toptitle=1.3mm,bottomtitle=1.1mm,lefttitle=3.5mm,righttitle=3.5mm,titlerule=0pt},
+  otEcranBoite/.style={enhanced,colback=otEcran,colframe=otEcran,arc=1.6mm,boxrule=0pt,
+    left=4mm,right=4mm,top=2mm,bottom=2.2mm,boxsep=0pt,before skip=3.5mm,after skip=3.5mm,
+    fonttitle=\otSemi\fontsize{7}{8.5}\selectfont,coltitle=otEcranMuet,colbacktitle=otEcranTitre,
+    toptitle=1.1mm,bottomtitle=1mm,lefttitle=4mm,righttitle=4mm,titlerule=0pt},
+  otCasseOui/.style={breakable},otCasseNon/.style={}}
+\newcommand{\otCasse}[1]{\ifnum#1>14 \tcbset{otCasse/.style={otCasseOui}}\else\tcbset{otCasse/.style={otCasseNon}}\fi}
+\newcommand{\otTitreCode}{%
+  \ifx\otCodeFichier\@empty
+    \ifx\otCodeTitre\@empty\else\otTuile[3.6mm]{chevrons}{otNavy}\hspace{1.8mm}\otCodeTitre\hfill
+      {\color{otMuted}\otCaps[10]{Python}}\fi
+  \else
+    \otTuile[3.6mm]{fichier}{otNavy}\hspace{1.8mm}{\otMonoGras\fontsize{8.6}{9}\selectfont\expandafter\detokenize\expandafter{\otCodeFichier}}%
+    \ifx\otCodeTitre\@empty\else\hspace{2.4mm}{\otRegular\color{otMuted}\otCodeTitre}\fi
+    \hfill{\color{otMuted}\otCaps[10]{Python}}%
+  \fi}
+\newcommand{\otBoiteCodeDebut}[1]{%
+  \otCasse{#1}%
+  \ifx\otCodeMini\otUn\setlength{\otGouttiere}{3.5mm}\else
+    \ifotCodeNum\setlength{\otGouttiere}{9mm}\else\setlength{\otGouttiere}{4mm}\fi\fi
+  \edef\otTmpTitre{\ifx\otCodeFichier\@empty\ifx\otCodeTitre\@empty 0\else 1\fi\else 1\fi}%
+  \if\otTmpTitre1%
+    \begin{tcolorbox}[otCodeBoite,otCasse,title={\otTitreCode}]%
+  \else
+    \begin{tcolorbox}[otCodeBoite,otCasse]%
+  \fi
+  \otMonoSetup}
+\newcommand{\otBoiteCodeFin}{\end{tcolorbox}}
+\NewDocumentEnvironment{code}{m}
+  {\otCodeReglages{#1}\directlua{otpy.capture("code")}}
+  {\directlua{otpy.rendu_code("\luaescapestring{\otCodeMarques}", "\otCodePremier")}}
+% Sortie d'un programme (écran sombre)
+\newcommand{\otTitreSortie}{Output}
+\newcommand{\titresortie}[1]{\gdef\otTitreSortieSuivante{#1}}
+\newcommand{\otTitreSortieSuivante}{}
+\newcommand{\otAccoler}{\tcbset{otAvant/.style={}}%
+  \ifdim\lastskip=\otApresCode\vskip-\lastskip\vskip1.4mm\relax\tcbset{otAvant/.style={before skip=0pt}}\fi}
+\newcommand{\otEnteteEcran}[3]{% icône, couleur, texte
+  \otDessinIconeTexte{#1}{#2}\hspace{1.8mm}{\color{#2}\otCaps[11]{#3}}}
+\newcommand{\otDessinIconeTexte}[2]{\tikz[baseline=-0.8mm]{\path (-1.7mm,-1.7mm) rectangle (1.7mm,1.7mm);
+  \otDessinIcone{#1}{#2}{otEcranTitre}{3.4mm}{(0,0)}}}
+\newcommand{\otBoiteSortieDebut}[1]{%
+  \par\otAccoler\otCasse{#1}%
+  \ifx\otTitreSortieSuivante\@empty\def\otTmpT{\otTitreSortie}\else\let\otTmpT\otTitreSortieSuivante\fi
+  \begin{tcolorbox}[otEcranBoite,otCasse,otAvant,title={\otEnteteEcran{terminal}{otEcranMuet}{\otTmpT}}]%
+  \global\let\otTitreSortieSuivante\@empty
+  \otMonoSetup\color{otEcranTexte}}
+\newcommand{\otBoiteSortieFin}{\end{tcolorbox}}
+% Marques lues par outils/verifier_code.py :
+%  \cible{clé}   la sortie suivante est un objectif (produite par la solution, option cible=clé)
+%  \sortielibre  la sortie suivante est une illustration non rattachée à un programme
+%  \suiteconsole la console suivante continue la précédente (mêmes variables)
+%  \rattacher    la sortie suivante appartient au dernier bloc de code, malgré le texte entre les deux
+\newcommand{\cible}[1]{\titresortie{Expected output}}
+\newcommand{\sortielibre}{}
+\newcommand{\suiteconsole}{}
+\newcommand{\rattacher}{}
+\newenvironment{sortie}{\directlua{otpy.capture("sortie")}}{\directlua{otpy.rendu_sortie()}}
+% Message d'erreur d'un programme
+\newcommand{\otBoiteErreurDebut}[1]{%
+  \par\otAccoler\otCasse{#1}%
+  \begin{tcolorbox}[otEcranBoite,otCasse,otAvant,borderline west={1.3mm}{0pt}{otRed},
+    title={\otEnteteEcran{attention}{otEcranErreur}{Error message}}]%
+  \otMonoSetup\color{otEcranTexte}}
+\newcommand{\otBoiteErreurFin}{\end{tcolorbox}}
+\newenvironment{erreur}{\directlua{otpy.capture("erreur")}}{\directlua{otpy.rendu_erreur()}}
+% Session dans la console Python (IDLE Shell)
+\newcommand{\otBoiteConsoleDebut}[1]{%
+  \par\otAccoler\otCasse{#1}%
+  \begin{tcolorbox}[otEcranBoite,otCasse,otAvant,title={\otEnteteEcran{terminal}{otEcranMuet}{Python shell}}]%
+  \otMonoSetup\otThemeEcran\color{otEcranTexte}}
+\newcommand{\otBoiteConsoleFin}{\end{tcolorbox}}
+\newenvironment{console}{\directlua{otpy.capture("console")}}{\directlua{otpy.rendu_console()}}
+
+%% Fenêtres d'IDLE dessinées (chapitre 1) : \begin{idleshell}{titre} / \begin{idleediteur}{titre}
+\newcommand{\otFenetreTitre}{}
+\tcbset{otFenetre/.style={enhanced,colback=white,colframe=otMuted!55,boxrule=0.5pt,arc=1.8mm,
+  left=4mm,right=4mm,top=2.4mm,bottom=2.6mm,boxsep=0pt,before skip=3.5mm,after skip=3.5mm,
+  colbacktitle=otRule!60,coltitle=otInk,fonttitle=\otRegular\fontsize{7.8}{9}\selectfont,
+  toptitle=1.4mm,bottomtitle=1.4mm,titlerule=0.5pt,halign title=center,
+  overlay unbroken and first={\foreach \k/\c in {0/otRed,1/otOrange,2/otGreen}{%
+    \fill[\c] ([xshift={3.6mm+\k*3.6mm},yshift=-3.2mm]frame.north west) circle (1.1mm);}}}}
+\newcommand{\otBoiteIdleShellDebut}[1]{%
+  \par\begin{tcolorbox}[otFenetre,title={\otFenetreTitre}]%
+  \otMonoSetup\otThemeIdle}
+\newcommand{\otBoiteIdleShellFin}{\end{tcolorbox}}
+\NewDocumentEnvironment{idleshell}{m}{\gdef\otFenetreTitre{#1}\directlua{otpy.capture("idleshell")}}
+  {\directlua{otpy.rendu_idleshell()}}
+\newcommand{\otBoiteIdleEditeurDebut}[1]{%
+  \par\begin{tcolorbox}[otFenetre,title={\otFenetreTitre}]%
+  \setlength{\otGouttiere}{4mm}\otCodeNumfalse\otMonoSetup\otThemeIdle}
+\newcommand{\otBoiteIdleEditeurFin}{\end{tcolorbox}}
+\NewDocumentEnvironment{idleediteur}{m}{\gdef\otFenetreTitre{#1}\directlua{otpy.capture("idleediteur")}}
+  {\directlua{otpy.rendu_idleediteur()}}
+
+%% Code en ligne : \py{print("Hi")} (échapper # % _ { } \ ^ ~ & $)
+\newcommand{\otCodeCouleur}{\color{otCodeEncre}}
+\NewDocumentCommand{\py}{m}{\NoCaseChange{\mbox{\otCodeCouleur\ttfamily\hyphenchar\font=-1 #1}}}
+\pdfstringdefDisableCommands{\def\py#1{#1}\def\textbackslash{\string\\}}
+% Code coloré en ligne (illustrations) : \codecol{print("Hi")} (pas de # ni de %)
+\NewDocumentCommand{\codecol}{O{0} m}{{\otMonoSetup\otSp{#1}\directlua{otpy.colorer_texte("\luaescapestring{\detokenize{#2}}")}}}
+% Touche du clavier : \touche{F5} ; chemin de menu : \menu{Run > Run Module}
+\newcommand{\touche}[1]{\tikz[baseline=(t.base)]\node[draw=otMuted!70,fill=white,line width=0.5pt,rounded corners=1.2pt,
+  inner xsep=1.3mm,inner ysep=0.55mm,font=\otSemi\fontsize{7.6}{8}\selectfont,text=otInk,
+  minimum height=4.2mm] (t) {#1};}
+\newcommand{\menu}[1]{{\otSemi\fontsize{9.4}{11}\selectfont\color{otNavy}#1}}
+\newcommand{\menusep}{\,{\color{otMuted}\textrightarrow}\,}
+
+%% ---------------------------------------------------------------------
+%%  État courant : partie, chapitre, rubrique
+%% ---------------------------------------------------------------------
+\newcommand{\otChapNum}{0}
+\newcommand{\otChapTitre}{}
+\newcommand{\otChapSousTitre}{}
+\newcommand{\otPartieNum}{0}
+\newcommand{\otPartieNom}{}
+\newcommand{\otPartieCouleur}{otNavy}
+\newcommand{\otEnTeteGauche}{}
+\newcounter{otrub}
+\newcounter{otex}
+\newcounter{otatoi}
+\newcommand{\otPref}{c0}
+\renewcommand{\theHotex}{\otPref.\arabic{otex}}
+\renewcommand{\theHotrub}{\otPref.\arabic{otrub}}
+\renewcommand{\theHotatoi}{\otPref.\arabic{otatoi}}
+\newcommand{\otCorPref}{c0}
+\newcommand{\otChapVu}[1]{\expandafter\gdef\csname otChapVu@#1\endcsname{}}
+
+%% ---------------------------------------------------------------------
+%%  Onglet de chapitre sur le bord extérieur
+%% ---------------------------------------------------------------------
+\newcommand{\otOnglet}{%
+  \ifnum\otChapNum>0\relax
+  \begin{tikzpicture}[remember picture,overlay]
+    \pgfmathsetmacro{\otY}{106+(\otChapNum-1)*8.4}
+    \ifodd\value{page}
+      \fill[\otPartieCouleur] ([yshift=-\otY mm]current page.north east) rectangle ++(-7mm,-7.8mm);
+      \node[text=white,font=\otSemi\fontsize{8}{9}\selectfont]
+        at ([xshift=-3.5mm,yshift=-\otY mm-3.9mm]current page.north east) {\otChapNum};
+    \else
+      \fill[\otPartieCouleur] ([yshift=-\otY mm]current page.north west) rectangle ++(7mm,-7.8mm);
+      \node[text=white,font=\otSemi\fontsize{8}{9}\selectfont]
+        at ([xshift=3.5mm,yshift=-\otY mm-3.9mm]current page.north west) {\otChapNum};
+    \fi
+  \end{tikzpicture}\fi}
+
+%% ---------------------------------------------------------------------
+%%  En-têtes et pieds de page
+%% ---------------------------------------------------------------------
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{{\color{otRule}%
+  \hrule\@height\headrulewidth\@width\headwidth\vskip-\headrulewidth}}
+\newcommand{\otTete}{%
+  {\otSemi\fontsize{7.5}{9}\selectfont\color{\otPartieCouleur}\otCaps[10]{Chapter \otChapNum}}%
+  \hspace{0.7em}{\otMedium\fontsize{7.5}{9}\selectfont\color{otMuted}\otCaps[8]{\otChapTitre}}}
+\newcommand{\otTeteRub}{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}\otCaps[8]{\rightmark}}}
+\newcommand{\otPied}{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}%
+  \otCaps[10]{OptiTAB · \otCollection\ · Volume \otTome\ · \otTomeTitre}}}
+\newcommand{\otNumPage}{{\otSemi\fontsize{8.5}{10}\selectfont\color{otNavy}\thepage}}
+\fancypagestyle{otChapitre}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \fancyhead[LE]{\otTete}\fancyhead[RO]{\otTete}%
+  \fancyhead[RE]{\otTeteRub}\fancyhead[LO]{\otTeteRub}%
+  \fancyfoot[LE]{\otOnglet\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otOnglet\otPied\hspace{1em}\otNumPage}}
+\fancypagestyle{otOuverture}{%
+  \fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE]{\otOnglet\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otOnglet\otPied\hspace{1em}\otNumPage}}
+\fancypagestyle{otAnnexe}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \fancyhead[LE,RO]{{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}\otCaps[10]{\otEnTeteGauche}}}%
+  \fancyhead[RE,LO]{\otTeteRub}%
+  \fancyfoot[LE]{\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otPied\hspace{1em}\otNumPage}}
+\fancypagestyle{otFront}{%
+  \fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE]{\otNumPage}\fancyfoot[RO]{\otNumPage}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{otFront}
+
+% Page blanche de fin de section : page « Notes » lignée
+\newcommand{\otPageNotes}{%
+  \thispagestyle{otFront}%
+  \noindent{\otLight\fontsize{20}{24}\selectfont\color{otMuted!70}Notes}\par\vspace{6mm}
+  {\color{otRule}\offinterlineskip\foreach \i in {1,...,24}{\noindent\rule{\linewidth}{0.4pt}\par\vspace{8.6mm}}}}
+\newcommand{\otPageDroite}{%
+  \clearpage\ifodd\value{page}\else\otPageNotes\clearpage\fi}
+
+%% ---------------------------------------------------------------------
+%%  Petits éléments
+%% ---------------------------------------------------------------------
+\newcommand{\otCheck}[1][otGreen]{%
+  \tikz[baseline=-0.62ex]{\fill[#1] (0,0) circle (1.75mm);
+    \draw[white,line width=0.85pt,line cap=round,line join=round]
+      (-0.8mm,0.05mm) -- (-0.22mm,-0.6mm) -- (0.85mm,0.7mm);}}
+\newcommand{\otCroix}[1][otRed]{%
+  \tikz[baseline=-0.62ex]{\fill[#1] (0,0) circle (1.75mm);
+    \draw[white,line width=0.85pt,line cap=round] (-0.65mm,-0.65mm) -- (0.65mm,0.65mm) (-0.65mm,0.65mm) -- (0.65mm,-0.65mm);}}
+\newcommand{\otCase}{\tikz[baseline=-0.75ex]\draw[otNavy,line width=0.6pt,rounded corners=0.6pt] (0,-1.5mm) rectangle (3mm,1.5mm);}
+\newcommand{\otRond}{\tikz[baseline=-0.75ex]\draw[otNavy,line width=0.6pt] (0,0) circle (1.5mm);}
+\newcommand{\otEtiquette}[2]{{\otSemi\fontsize{6.8}{8}\selectfont\color{#1}\otCaps[11]{#2}}}
+% Terme important dans le cours
+\newcommand{\cle}[1]{\textbf{#1}}
+\newcommand{\hl}[1]{\highLight[otGreen!24]{#1}}
+% Code faux / code juste : \fauxjuste{faux}{juste} (avec \code-style)
+\newcommand{\faux}[1]{\par\noindent\otCroix\hspace{2mm}{\color{otRedDark}\ttfamily\hyphenchar\font=-1 #1}\par\vspace{1mm}}
+\newcommand{\juste}[1]{\par\noindent\otCheck\hspace{2mm}{\color{otCodeEncre}\ttfamily\hyphenchar\font=-1 #1}\par\vspace{1mm}}
+\newcommand{\fauxjuste}[2]{\par\noindent\makebox[0.5\linewidth][l]{\otCroix\hspace{2mm}{\color{otRedDark}\ttfamily\hyphenchar\font=-1 #1}}%
+  \otCheck\hspace{2mm}{\color{otCodeEncre}\ttfamily\hyphenchar\font=-1 #2}\par\vspace{1.2mm}}
+% Intertitre
+\newcommand{\otIntertitre}[2][otNavy]{\par\addvspace{3.5mm}\Needspace{6\baselineskip}\noindent
+  {\otSemi\fontsize{7.6}{9}\selectfont\color{#1}\otCaps[12]{#2}}\par\nopagebreak\vspace{1.6mm}}
+% Tableau de suivi des variables : \begin{suivi}{2} Ligne & Instruction & a & b \\ ... \end{suivi}
+%   \nv{5} : valeur qui vient de changer ; \av{5} : valeur inchangée
+\NewDocumentEnvironment{suivi}{O{Trace table} m}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,left=5mm,right=5mm,halign=center]
+  \otEtiquette{otNavy}{#1}\par\vspace{1.6mm}\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+  \begin{tabular}{@{}c@{\hspace{5mm}}l*{#2}{@{\hspace{5mm}}>{\centering\arraybackslash}p{16mm}}@{}}}
+  {\end{tabular}\end{tcolorbox}}
+\newcommand{\nv}[1]{\colorbox{otOrange!28}{\ttfamily\strut #1}}
+\newcommand{\av}[1]{{\color{otMuted}\ttfamily #1}}
+% Calcul pas à pas : \begin{calcul} \pas{\py{2 + 3 * \hlc{4 ** 2}}}{explication} ... \end{calcul}
+\NewDocumentEnvironment{calcul}{O{Step by step}}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,left=5mm,right=5mm]
+  \otEtiquette{otNavy}{#1}\par\vspace{1.4mm}\renewcommand{\arraystretch}{1.3}%
+  \begin{tabular}{@{}r@{\hspace{2.5mm}}l@{\hspace{7mm}}l@{}}}
+  {\end{tabular}\end{tcolorbox}}
+\newcommand{\pas}[3][\color{otMuted}\textrightarrow]{#1 & #2 & {\fontsize{9.6}{11.6}\selectfont\color{otMuted}#3}\\}
+\newcommand{\hlc}[1]{\highLight[otOrange!32]{#1}}
+% Cas numéroté (erreurs fréquentes, étapes d'un projet) : \cas{3}{titre}
+\newcommand{\cas}[2]{\par\addvspace{3.4mm}\Needspace{12\baselineskip}\noindent
+  \otRepere{#1}\hspace{2mm}{\otSemi\fontsize{10.6}{12.8}\selectfont\color{otInk}#2}\par\nopagebreak\vspace{1mm}}
+\newcommand{\soustitre}[1]{\par\addvspace{4mm}\Needspace{7\baselineskip}\noindent
+  {\otSemi\fontsize{11.2}{13.4}\selectfont\color{otInk}#1}\par\nopagebreak\vspace{1.8mm}}
+
+%% ---------------------------------------------------------------------
+%%  Rubriques d'un chapitre : \rubrique{clé}{titre} -> « 3.2 · LEARN »
+%%  clés : learn, hood, debug, pro, build, practice, review
+%% ---------------------------------------------------------------------
+\newcommand{\otDefRubrique}[4]{% clé, couleur, libellé, icône
+  \expandafter\gdef\csname otRub@#1@coul\endcsname{#2}%
+  \expandafter\gdef\csname otRub@#1@nom\endcsname{#3}%
+  \expandafter\gdef\csname otRub@#1@ico\endcsname{#4}}
+\otDefRubrique{learn}{otNavy}{Learn}{livre}
+\otDefRubrique{hood}{otViolet}{Under the hood}{engrenage}
+\otDefRubrique{debug}{otOrangeDark}{Debug}{bug}
+\otDefRubrique{pro}{otTeal}{Pro habits}{etoile}
+\otDefRubrique{build}{otGreenDark}{Build it}{fusee}
+\otDefRubrique{practice}{otNavy}{Practice}{crayon}
+\otDefRubrique{review}{otGreenDark}{Review}{coche}
+\newcommand{\otRubCoul}[1]{\csname otRub@#1@coul\endcsname}
+\newcommand{\otRubNom}[1]{\csname otRub@#1@nom\endcsname}
+\newcommand{\otRubIco}[1]{\csname otRub@#1@ico\endcsname}
+\NewDocumentCommand{\rubrique}{o m m}{% [titre court], clé, titre
+  \def\otTmpCle{#2}\def\otTmpRev{review}\def\otTmpPra{practice}%
+  \ifx\otTmpCle\otTmpRev\clearpage\fi
+  \ifx\otTmpCle\otTmpPra\clearpage\fi
+  \par\addvspace{7mm}\Needspace{14\baselineskip}%
+  \refstepcounter{otrub}%
+  \IfNoValueTF{#1}{\markright{\otRubNom{#2}\ · #3}%
+    \phantomsection\pdfbookmark[2]{\otChapNum.\theotrub\ #3}{bm-\otPref-r\theotrub}}%
+   {\markright{\otRubNom{#2}\ · #1}%
+    \phantomsection\pdfbookmark[2]{\otChapNum.\theotrub\ #1}{bm-\otPref-r\theotrub}}%
+  \label{sec-\otPref-\theotrub}%
+  \noindent
+  \begin{tikzpicture}[baseline=(titre.base)]
+    \fill[\otRubCoul{#2},rounded corners=2.4mm] (0,-5.5mm) rectangle (11mm,5.5mm);
+    \otDessinIcone{\otRubIco{#2}}{white}{\otRubCoul{#2}}{6.6mm}{(5.5mm,0)}
+    \node[anchor=south west,inner sep=0pt,text=\otRubCoul{#2},font=\otSemi\fontsize{7.4}{9}\selectfont]
+      at (14.5mm,1.2mm) {\otCaps[14]{\otChapNum.\theotrub\enspace·\enspace\otRubNom{#2}}};
+    \node[anchor=base west,inner sep=0pt,text=otInk,font=\otSemi\fontsize{16.5}{19}\selectfont] (titre)
+      at (14.3mm,-4.6mm) {#3};
+  \end{tikzpicture}%
+  \hspace{4mm}{\color{\otRubCoul{#2}!30}\leaders\hrule height 0.6pt\hfill\kern0pt}%
+  \par\nopagebreak\vspace{4.5mm}}
+% Renvoi vers une rubrique : \voirsection{3}{2} -> « section 3.2 »
+\newcommand{\voirsection}[2]{\hyperref[sec-c#1-#2]{section~#1.#2}}
+
+%% ---------------------------------------------------------------------
+%%  Encadrés
+%% ---------------------------------------------------------------------
+\tcbset{otBase/.style={enhanced,breakable=false,arc=1.6mm,
+  left=4mm,right=4mm,top=2.6mm,bottom=2.6mm,boxsep=0pt,
+  before skip=3.5mm,after skip=3.5mm,fontupper=\normalsize}}
+\newcommand{\otTitreBoite}[4]{% icône, couleur, étiquette, intitulé
+  \noindent\otTuile[5mm]{#1}{#2}\hspace{2.2mm}\otEtiquette{#2}{#3}%
+  \if\relax\detokenize{#4}\relax\else\hspace{1.8mm}{\otMedium\fontsize{9.2}{11}\selectfont\color{otInk}#4}\fi
+  \par\vspace{1.8mm}}
+% Idée clé
+\NewDocumentEnvironment{regle}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otVioletTint,colframe=otVioletTint,borderline west={1.2mm}{0pt}{otViolet}]
+  \otTitreBoite{cle}{otViolet}{Key idea}{#1}}{\end{tcolorbox}}
+% Attention, piège
+\NewDocumentEnvironment{attention}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otOrangeTint,colframe=otOrangeTint,borderline west={1.2mm}{0pt}{otOrange}]
+  \otTitreBoite{attention}{otOrangeDark}{Watch out}{#1}}{\end{tcolorbox}}
+% Conseil
+\NewDocumentEnvironment{astuce}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,borderline west={1.2mm}{0pt}{otGreenDark}]
+  \otTitreBoite{ampoule}{otGreenDark}{Tip}{#1}}{\end{tcolorbox}}
+% Le saviez-vous ?
+\NewDocumentEnvironment{culture}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otTealTint,colframe=otTealTint,borderline west={1.2mm}{0pt}{otTeal}]
+  \otTitreBoite{globe}{otTeal}{Did you know?}{#1}}{\end{tcolorbox}}
+% Bonne pratique professionnelle
+\NewDocumentEnvironment{pratique}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otTealTint,colframe=otTealTint,borderline west={1.2mm}{0pt}{otTeal}]
+  \otTitreBoite{etoile}{otTeal}{Pro habit}{#1}}{\end{tcolorbox}}
+% Mot du vocabulaire informatique (alimente le glossaire) : \begin{definition}{term}
+\NewDocumentEnvironment{definition}{m}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otNavy!30,boxrule=0.6pt,left=4mm]
+  \noindent\otTuile[5mm]{livre}{otNavy}\hspace{2.2mm}\otEtiquette{otNavy}{Key term}%
+  \hspace{1.8mm}{\otSemi\fontsize{10.4}{12}\selectfont\color{otNavy}#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+% Encadré neutre à intitulé
+\NewDocumentEnvironment{encadre}{m m O{}}{% icône, étiquette, intitulé
+  \begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt]
+  \otTitreBoite{#1}{otNavy}{#2}{#3}}{\end{tcolorbox}}
+% À vous ! (petit exercice immédiat ; réponse dans les corrigés)
+\NewDocumentEnvironment{atoi}{O{}}{%
+  \refstepcounter{otatoi}\label{atoi-\otPref-\theotatoi}%
+  \begin{tcolorbox}[otBase,breakable,colback=otNavyTint,colframe=otNavyTint,borderline west={1.2mm}{0pt}{otNavy}]
+  \noindent\otTuile[5mm]{clavier}{otNavy}\hspace{2.2mm}\otEtiquette{otNavy}{Your turn \otChapNum.\theotatoi}%
+  \if\relax\detokenize{#1}\relax\else\hspace{1.8mm}{\otMedium\fontsize{9.2}{11}\selectfont\color{otInk}#1}\fi
+  \hfill\ifcsname r@cor-atoi-\otPref-\theotatoi\endcsname
+    {\otLight\fontsize{7}{9}\selectfont\color{otMuted}answer p.~\pageref{cor-atoi-\otPref-\theotatoi}}\fi
+  \par\vspace{1.8mm}}
+  {\end{tcolorbox}}
+% Deux colonnes côte à côte (accepte les blocs de code) :
+% \begin{gauche} ... \end{gauche}\begin{droite} ... \end{droite}
+\NewDocumentEnvironment{gauche}{O{0.5}}{\par\addvspace{1mm}\noindent
+  \begin{minipage}[t]{\dimexpr#1\linewidth-2.5mm\relax}\vspace{0pt}\tcbset{before skip=0pt,after skip=0pt}}
+  {\end{minipage}\hfill\ignorespaces}
+\NewDocumentEnvironment{droite}{O{0.5}}{%
+  \begin{minipage}[t]{\dimexpr#1\linewidth-2.5mm\relax}\vspace{0pt}\tcbset{before skip=0pt,after skip=0pt}}
+  {\end{minipage}\par\vspace{3.5mm}}
+% Paire d'encadrés de même hauteur
+\NewDocumentEnvironment{paire}{O{2}}{%
+  \begin{tcbraster}[raster columns=#1,raster equal height=rows,raster column skip=4mm,
+    raster before skip=3.5mm,raster after skip=3.5mm]}{\end{tcbraster}}
+
+% Listes
+\setlist{leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm,parsep=0pt}
+\setlist[itemize]{label={\color{otGreen}\small\textbullet}}
+\newlist{etapes}{enumerate}{1}
+\setlist[etapes]{label={\otSemi\fontsize{8.4}{10}\selectfont\color{otGreenDark}\arabic*.},
+  leftmargin=1.6em,itemsep=0.9mm,topsep=0.9mm}
+% Liste de renvois numérotés (pastilles) : \begin{renvois} \item[1] ... \end{renvois}
+\NewDocumentEnvironment{renvois}{}{%
+  \begin{list}{}{\setlength{\leftmargin}{7mm}\setlength{\labelwidth}{5mm}\setlength{\labelsep}{2mm}
+    \setlength{\itemsep}{1.2mm}\setlength{\topsep}{1.2mm}\setlength{\parsep}{0pt}}}
+  {\end{list}}
+\newcommand{\renvoi}[1]{\item[\otRepere{#1}]}
+
+% Tableaux
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcommand{\otTH}[1]{{\otSemi\fontsize{7.2}{9}\selectfont\color{otNavy}\otCaps[8]{#1}}}
+\newcommand{\otTableau}{\renewcommand{\arraystretch}{1.42}\arrayrulecolor{otRule}}
+
+%% ---------------------------------------------------------------------
+%%  Schémas de mémoire (« sous le capot ») : noms -> objets
+%%  \begin{memoire}  \nomvar{x}{(0,0)}{nx}  \objet{int}{42}{(4,0)}{o1}  \lien{nx}{o1}
+%% ---------------------------------------------------------------------
+\tikzset{
+  otNom/.style={draw=otViolet,fill=otVioletTint,line width=0.6pt,rounded corners=1.4mm,
+    inner xsep=2.4mm,inner ysep=1.5mm,font=\ttfamily\fontsize{10}{12}\selectfont,text=otInk,minimum height=7mm},
+  otObj/.style={draw=otNavy!55,fill=white,line width=0.6pt,rounded corners=1mm,
+    inner xsep=3mm,inner ysep=1.6mm,font=\ttfamily\fontsize{10}{12}\selectfont,text=otInk,minimum height=8mm,minimum width=14mm},
+  otLien/.style={-{Stealth[length=2.4mm,width=2mm]},otViolet,line width=0.9pt},
+  otLienAncien/.style={-{Stealth[length=2.2mm,width=1.8mm]},otMuted!60,line width=0.7pt,dashed}}
+\newcommand{\nomvar}[3]{\node[otNom] (#3) at #2 {#1};}
+\newcommand{\objet}[4]{% type, valeur, position, nom du nœud
+  \node[otObj] (#4) at #3 {#2};
+  \node[anchor=south west,inner sep=0pt,font=\otSemi\fontsize{6.2}{7}\selectfont,text=otNavy!70]
+    at ([yshift=0.8mm]#4.north west) {\otCaps[10]{#1}};}
+\newcommand{\lien}[2]{\draw[otLien] (#1) -- (#2);}
+\NewDocumentEnvironment{memoire}{O{}}{%
+  \par\addvspace{3mm}\Needspace{8\baselineskip}%
+  \begin{tcolorbox}[otBase,colback=otVioletTint!60,colframe=otVioletTint!60,halign=center,top=2.2mm,bottom=3mm]
+  \noindent\hfill\otEtiquette{otViolet}{In memory}\if\relax\detokenize{#1}\relax\else
+    \hspace{1.6mm}{\otMedium\fontsize{8.6}{10}\selectfont\color{otInk}#1}\fi\hfill\null\par\vspace{2.4mm}
+  \begin{tikzpicture}}
+  {\end{tikzpicture}\end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Exercices : \exercice[type=write,niveau=2]{titre}{consigne}
+%%  types : predict, fix, complete, write, shell, read, explain, challenge
+%% ---------------------------------------------------------------------
+\newcommand{\otDefTypeEx}[3]{% clé, icône, libellé
+  \expandafter\gdef\csname otTypeEx@#1@ico\endcsname{#2}%
+  \expandafter\gdef\csname otTypeEx@#1@nom\endcsname{#3}}
+\otDefTypeEx{predict}{oeil}{Predict}
+\otDefTypeEx{fix}{bug}{Fix}
+\otDefTypeEx{complete}{puzzle}{Complete}
+\otDefTypeEx{write}{clavier}{Write}
+\otDefTypeEx{shell}{terminal}{Shell}
+\otDefTypeEx{read}{livre}{Read}
+\otDefTypeEx{explain}{bulle}{Explain}
+\otDefTypeEx{challenge}{trophee}{Challenge}
+\pgfkeys{/otex/.is family,/otex,
+  type/.store in=\otExType,niveau/.store in=\otExNiveau,points/.store in=\otExPoints}
+\newcommand{\otDifficulte}[1]{%
+  \tikz[baseline=-0.6ex]{\foreach \i in {1,2,3}{%
+    \ifnum\i>#1\relax\draw[otNavy!45,line width=0.5pt] (\i*2.9mm,0) circle (0.95mm);
+    \else\fill[otNavy] (\i*2.9mm,0) circle (1.1mm);\fi}}}
+\newcommand{\otBadgeType}[1]{%
+  \otTuile[4.6mm]{\csname otTypeEx@#1@ico\endcsname}{otNavy!80}\hspace{1.2mm}%
+  {\otSemi\fontsize{6.8}{8}\selectfont\color{otNavy}\otCaps[10]{\csname otTypeEx@#1@nom\endcsname}}}
+\NewDocumentCommand{\exercice}{O{} m m}{%
+  \def\otExType{write}\def\otExNiveau{1}\def\otExPoints{}%
+  \pgfkeys{/otex,#1}%
+  \par\addvspace{6.5mm}\Needspace{10\baselineskip}%
+  \refstepcounter{otex}%
+  \def\@currentlabelname{#2}%
+  \label{ex-\otPref-\theotex}%
+  \noindent
+  \tikz[baseline=(n.base)]\node[fill=otNavy,rounded corners=1.4mm,minimum width=7mm,minimum height=7mm,
+    inner sep=0pt,text=white,font=\otBold\fontsize{10}{10}\selectfont] (n) {\theotex};%
+  \hspace{2.8mm}{\otSemi\fontsize{11.6}{14}\selectfont\color{otInk}#2}%
+  \hfill
+  \otBadgeType{\otExType}\hspace{2.8mm}\otDifficulte{\otExNiveau}%
+  \ifx\otExPoints\@empty\else\hspace{2.6mm}{\otSemi\fontsize{7.4}{9}\selectfont\color{otGreenDark}/\,\otExPoints~pts}\fi
+  \ifcsname r@cor-\otPref-\theotex\endcsname
+    \hspace{2.6mm}{\otLight\fontsize{7}{9}\selectfont\color{otMuted}solution p.~\pageref{cor-\otPref-\theotex}}\fi
+  \par\nopagebreak\vspace{2mm}%
+  \noindent{\fontsize{10.6}{13.4}\selectfont #3\par}%
+  \nopagebreak\vspace{1.4mm}}
+\NewDocumentEnvironment{questions}{O{1}}{%
+  \ifnum#1>1\relax\begin{multicols}{#1}\raggedcolumns\fi
+  \begin{enumerate}[label={\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}\arabic*.},
+    leftmargin=6mm,labelsep=2mm,itemsep=2mm,topsep=0.6mm]}
+  {\end{enumerate}\ifnum#1>1\relax\end{multicols}\fi}
+\NewDocumentCommand{\trou}{O{20mm} m}{\textcolor{otMuted!80}{\rule[-0.9mm]{#1}{0.5pt}}}
+\newcommand{\lignes}[1]{\par\vspace{1mm}{\color{otRule}\foreach \i in {1,...,#1}{%
+  \noindent\vrule width 0pt height 7.5mm\leaders\hbox to 1.4mm{\hss\textperiodcentered\hss}\hfill\kern0pt\par}}\vspace{1mm}}
+\newcommand{\choix}[1]{\otCase\hspace{1.4mm}#1}
+% Cadre « écran vide » pour écrire une sortie prévue : \ecranvide{n lignes}
+\newcommand{\ecranvide}[1]{\par\vspace{1mm}%
+  \begin{tcolorbox}[enhanced,colback=white,colframe=otEcran!35,boxrule=0.6pt,arc=1.6mm,left=4mm,right=4mm,
+    top=1.4mm,bottom=1.4mm,boxsep=0pt,before skip=2mm,after skip=3mm,
+    title={\otEnteteEcran{terminal}{otMuted}{Your prediction}},coltitle=otMuted,colbacktitle=otRule!45,
+    fonttitle=\otSemi\fontsize{7}{8.5}\selectfont,toptitle=1mm,bottomtitle=0.9mm,titlerule=0pt]
+  {\color{otRule}\foreach \i in {1,...,#1}{\noindent\vrule width 0pt height 6.6mm\leaders\hbox to 1.4mm{\hss\textperiodcentered\hss}\hfill\kern0pt\par}}
+  \end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Bilan de chapitre : l'essentiel, quiz, je sais
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{essentiel}{}{%
+  \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=otNavy,boxrule=0.8pt,arc=2mm,
+    left=5mm,right=5mm,top=3.2mm,bottom=3.6mm,boxsep=0pt,before skip=3mm,after skip=3mm,
+    title={\otEtiquette{otGreen}{The essentials}\hspace{2mm}{\otSemi\fontsize{11.5}{13}\selectfont
+      Chapter \otChapNum\ on one page}},colbacktitle=otNavy,coltitle=white,toptitle=2.4mm,bottomtitle=2.4mm,
+    lefttitle=5mm]}
+  {\end{tcolorbox}}
+\newcommand{\otEssTitre}[1]{\par\addvspace{2.6mm}\noindent
+  {\otSemi\fontsize{7.2}{8.5}\selectfont\color{otGreenDark}\otCaps[11]{#1}}\par\nopagebreak\vspace{1.2mm}}
+\newcounter{otqcm}
+\NewDocumentEnvironment{quiz}{}{%
+  \setcounter{otqcm}{0}%
+  \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=otGreenDark!45,boxrule=0.6pt,arc=1.8mm,
+    left=4.5mm,right=4.5mm,top=3.4mm,bottom=3mm,boxsep=0pt,before skip=3mm,after skip=3mm]
+  \noindent\otTuile[6mm]{horloge}{otGreenDark}\hspace{2.4mm}%
+  {\otSemi\fontsize{7.4}{9}\selectfont\color{otGreenDark}\otCaps[12]{Quick quiz}}\hspace{2mm}%
+  {\otMedium\fontsize{10}{12}\selectfont 10 questions\enspace·\enspace 10 minutes}\hfill
+  {\otMedium\fontsize{9}{11}\selectfont\color{otMuted}answers p.~\pageref{cor-\otPref-quiz}}\par\vspace{3mm}}
+  {\par\vspace{1mm}\noindent{\color{otRule}\rule{\linewidth}{0.5pt}}\par\vspace{2.5mm}
+   \noindent{\otSemi\fontsize{9}{11}\selectfont My score:}\hspace{2mm}\rule[-0.6mm]{12mm}{0.5pt}\,{\otSemi\fontsize{9}{11}\selectfont /\,10}%
+   \hfill{\fontsize{9}{11.5}\selectfont\color{otMuted}9--10: well done, move on\enspace·\enspace 6--8: review what you missed\enspace·\enspace 0--5: read the chapter again}\par
+   \end{tcolorbox}}
+% \qcm{question}{a}{b}{c} ; la question peut être suivie d'un bloc de code : \qcmcode
+\NewDocumentCommand{\qcm}{m m m m}{%
+  \stepcounter{otqcm}%
+  \par\addvspace{1mm}\noindent\makebox[6.5mm][l]{\otSemi\fontsize{9}{11}\selectfont\color{otGreenDark}\theotqcm.}%
+  \parbox[t]{\dimexpr\linewidth-6.5mm\relax}{\fontsize{10.2}{12.8}\selectfont #1\par\vspace{1.2mm}
+    \begin{tabularx}{\linewidth}{@{}XXX@{}}
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont a}\hspace{1.2mm}#2 &
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont b}\hspace{1.2mm}#3 &
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont c}\hspace{1.2mm}#4
+    \end{tabularx}}\par\vspace{2.2mm}}
+% Question avec un bloc de code : \begin{qcmcode}{question}{a}{b}{c} <code> \end{qcmcode}
+% (la question, son code et ses réponses forment un bloc insécable)
+\NewDocumentEnvironment{qcmcode}{m m m m}{%
+  \stepcounter{otqcm}%
+  \def\otQa{#2}\def\otQb{#3}\def\otQc{#4}%
+  \begin{tcolorbox}[blank,breakable=false,before skip=1mm,after skip=2.2mm]
+  \noindent\makebox[6.5mm][l]{\otSemi\fontsize{9}{11}\selectfont\color{otGreenDark}\theotqcm.}%
+  {\fontsize{10.2}{12.8}\selectfont #1}\par
+  \begin{list}{}{\setlength{\leftmargin}{6.5mm}\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}
+    \setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}}\item\relax}
+  {\par\noindent
+    \begin{tabularx}{\linewidth}{@{}XXX@{}}
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont a}\hspace{1.2mm}\otQa &
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont b}\hspace{1.2mm}\otQb &
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont c}\hspace{1.2mm}\otQc
+    \end{tabularx}\end{list}\end{tcolorbox}}
+\NewDocumentEnvironment{jesais}{}{%
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,left=4.5mm,right=4.5mm,top=3.2mm,bottom=3mm]
+  \noindent\otTuile[6mm]{cible}{otGreenDark}\hspace{2.4mm}%
+  {\otSemi\fontsize{7.4}{9}\selectfont\color{otGreenDark}\otCaps[12]{Self-check}}\hspace{2mm}%
+  {\otMedium\fontsize{10}{12}\selectfont I can\ldots}\hfill
+  {\otMedium\fontsize{8}{10}\selectfont\color{otMuted}tick each skill you have mastered}\par\vspace{2.4mm}
+  \begin{itemize}[label={\otCase},leftmargin=7mm,itemsep=1.6mm,topsep=0pt]\fontsize{10.2}{12.6}\selectfont}
+  {\end{itemize}\end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Ouverture de chapitre : \chapitre[titre coupé]{n}{titre}{sous-titre}{illustration}
+%% ---------------------------------------------------------------------
+\newsavebox{\otBoiteTitre}
+\newlength{\otLargeurTitre}\setlength{\otLargeurTitre}{100mm}
+\newcommand{\otMesureTitre}[3]{%
+  \sbox{\otBoiteTitre}{\let\otCodeCouleur\relax\color{white}\otBold\fontsize{#1}{#2}\selectfont
+    \begin{tabular}[b]{@{}l@{}}#3\end{tabular}}}
+\newcommand{\otTitreAjuste}[2]{% coupé (true/false), titre
+  \ifthenelse{\boolean{#1}}{\otMesureTitre{40}{43}{#2}}{\otMesureTitre{46}{50}{#2}%
+    \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{40}{43}{#2}\fi}%
+  \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{36}{39}{#2}\fi
+  \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{32}{35}{#2}\fi
+  \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{28}{31}{#2}\fi
+  \ifdim\ht\otBoiteTitre>20mm\def\otTitreY{41mm}\else\def\otTitreY{45mm}\fi}
+\NewDocumentCommand{\chapitre}{o m m m m}{%
+  \otPageDroite
+  \gdef\otChapNum{#2}\gdef\otChapTitre{#3}\gdef\otChapSousTitre{#4}\gdef\otPref{c#2}%
+  \expandafter\gdef\csname otNumDe@c#2\endcsname{#2}%
+  \gdef\otPartieNum{\otPartieDe{#2}}%
+  \xdef\otPartieNom{\otPlanP{titre}{\otPartieDe{#2}}}%
+  \xdef\otPartieCouleur{\otPlanP{coul}{\otPartieDe{#2}}}%
+  \setcounter{otrub}{0}\setcounter{otex}{0}\setcounter{otatoi}{0}%
+  \pagestyle{otChapitre}\thispagestyle{otOuverture}%
+  \markright{\otChapSousTitre}%
+  \phantomsection\label{chapitre-#2}%
+  \pdfbookmark[1]{Chapter #2 — #3}{bm-chapitre-#2}%
+  \immediate\write\@auxout{\string\otChapVu{#2}}%
+  \IfNoValueTF{#1}{\otTitreAjuste{false}{#3}}{\otTitreAjuste{true}{#1}}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \let\otCodeCouleur\relax
+    \begin{scope}[shift={([yshift=-92mm]current page.north west)}]
+      \fill[otNavy] (0,0) rectangle (210mm,92mm);
+      \begin{scope}[yshift=-8mm]\clip (0,8mm) rectangle (210mm,100mm);
+        \draw[white,opacity=0.05,line width=0.3pt,step=7mm] (0,0) grid (210mm,100mm);
+        \csname #5\endcsname
+      \end{scope}
+      \fill[\otPartieCouleur] (0,0) rectangle (210mm,2mm);
+      \fill[otGreen] (0,2mm) rectangle (210mm,2.6mm);
+      \node[anchor=west,fill=otGreen,rounded corners=1.8pt,inner xsep=2.6mm,inner ysep=1.6mm,
+        text=white,font=\otSemi\fontsize{9}{10}\selectfont] (pill) at (20mm,74mm) {\otCaps[14]{Chapter #2}};
+      \node[anchor=west,inner sep=0pt,text=white,opacity=0.78,font=\otMedium\fontsize{8.4}{10}\selectfont]
+        at ([xshift=4mm]pill.east) {\otCaps[12]{Part \otPartieNum\ · \otPartieNom}};
+      \node[anchor=base west,inner sep=0pt] at (19mm,\otTitreY) {\usebox{\otBoiteTitre}};
+      \node[anchor=base west,inner sep=0pt,text=white,opacity=0.9,font=\otLight\fontsize{16.5}{20}\selectfont]
+        at (20mm,30mm) {#4};
+      \fill[otGreen] (20.5mm,20mm) rectangle (50.5mm,21.4mm);
+    \end{scope}
+  \end{tikzpicture}%
+  \vspace*{72mm}\par}
+% La situation : pourquoi ce chapitre
+\newcommand{\histoire}[1]{%
+  \par\noindent
+  \begin{minipage}[t]{\linewidth}
+    \otEtiquette{otGreenDark}{The big picture}\par\vspace{1.4mm}
+    {\fontsize{10.8}{14.1}\selectfont #1\par}
+  \end{minipage}\par\vspace{3.4mm}}
+% Objectifs + carte « code du chapitre »
+\NewDocumentEnvironment{objectifs}{}{%
+  \par\noindent\begin{minipage}[t]{\dimexpr\linewidth-56mm\relax}\vspace{0pt}
+  {\otSemi\fontsize{12}{14}\selectfont\color{otInk}In this chapter, you will learn to\ldots}\par\vspace{2mm}
+  \begin{list}{\otCheck}{\setlength{\leftmargin}{7mm}\setlength{\labelwidth}{4mm}\setlength{\labelsep}{3mm}
+    \setlength{\itemsep}{1.1mm}\setlength{\topsep}{0pt}\setlength{\parsep}{0pt}}\fontsize{10.4}{12.8}\selectfont}
+  {\end{list}\end{minipage}\hfill
+  \begin{minipage}[t]{50mm}\vspace{0pt}\otCarteCode\end{minipage}\par\vspace{3mm}}
+\newcommand{\otURLChapitre}{\otCodeBase chapter-\ifnum\otChapNum<10 0\fi\otChapNum/}
+\newcommand{\otCarteCode}{%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,arc=2mm,left=3.5mm,right=3.5mm,
+    top=2.8mm,bottom=2.8mm,boxsep=0pt,before skip=0pt,after skip=0pt,halign=center]
+  \otTuile[6mm]{telecharger}{otNavy}\par\vspace{1mm}
+  {\otSemi\fontsize{7}{8.5}\selectfont\color{otNavy}\otCaps[11]{All the code}}\par\vspace{0.6mm}
+  {\otMedium\fontsize{9}{11}\selectfont of chapter \otChapNum}\par\vspace{1.8mm}
+  {\color{otInk}\edef\otTmpQR{\noexpand\qrcode[height=18mm,level=M]{\otURLChapitre}}\otTmpQR}\par\vspace{1.4mm}
+  {\otRegular\fontsize{8}{10}\selectfont\color{otMuted}%
+    \ifcsname otNbProg@\otChapNum\endcsname\csname otNbProg@\otChapNum\endcsname\ programs, all tested\par\fi
+    \otCodeAffiche}
+  \end{tcolorbox}}
+% Au programme : \auprogramme{concepts}{python}{outils}{habitudes}{réalisation}
+\newcommand{\otCartePrg}[4]{% icône, couleur, titre, texte
+  \begin{tcolorbox}[enhanced,colback=white,colframe=otRule,boxrule=0.5pt,arc=1.6mm,left=2.6mm,right=2.6mm,
+    top=2.6mm,bottom=2.6mm,boxsep=0pt]
+  \otTuile[5.4mm]{#1}{#2}\par\vspace{1.6mm}
+  {\otSemi\fontsize{6.8}{8}\selectfont\color{#2}\otCaps[10]{#3}}\par\vspace{1mm}
+  {\fontsize{9}{11.2}\selectfont\RaggedRight #4\par}
+  \end{tcolorbox}}
+\newcommand{\auprogramme}[5]{%
+  \par\noindent{\otSemi\fontsize{12}{14}\selectfont\color{otInk}What's inside}\par\vspace{2.6mm}
+  \begin{tcbraster}[raster columns=5,raster equal height=rows,raster column skip=2.6mm,
+    raster before skip=0pt,raster after skip=0pt]
+    \otCartePrg{ampoule}{otNavy}{Concepts}{#1}
+    \otCartePrg{chevrons}{otViolet}{Python}{#2}
+    \otCartePrg{engrenage}{otTeal}{Tools}{#3}
+    \otCartePrg{etoile}{otOrangeDark}{Good habits}{#4}
+    \otCartePrg{fusee}{otGreenDark}{You'll build}{#5}
+  \end{tcbraster}\par\vspace{3.4mm}}
+% Plan de travail : \seances{icône/couleur/titre/contenu, ...}
+\newcommand{\seances}[2][4]{%
+  \par\noindent{\otSemi\fontsize{12}{14}\selectfont\color{otInk}Your study plan}%
+  \hspace{2mm}{\otRegular\fontsize{9.4}{12}\selectfont\color{otMuted}#1 sessions of about 45 minutes}\par\vspace{2.6mm}
+  \pgfmathsetmacro{\otPas}{170/#1}%
+  \noindent\begin{tikzpicture}
+    \foreach \ico/\coul/\titre/\txt [count=\i] in {#2}{%
+      \pgfmathsetmacro{\xx}{(\i-1)*\otPas}
+      \fill[\coul] (\xx mm+4.5mm,0) circle (4.5mm);
+      \otDessinIcone{\ico}{white}{\coul}{5mm}{(\xx mm+4.5mm,0)}
+      \ifnum\i<#1\draw[otRule,line width=0.8pt] (\xx mm+10.5mm,0) -- (\xx mm+\otPas mm-2mm,0);\fi
+      \node[anchor=north west,inner sep=0pt,text width=\otPas mm-4mm,align=left] at (\xx mm,-6.8mm)
+        {\RaggedRight{\otSemi\fontsize{6.6}{8}\selectfont\color{\coul}\otCaps[10]{Session \i}}\par\vspace{0.6mm}
+         {\otSemi\fontsize{8.6}{10.4}\selectfont\color{otInk}\titre}\par\vspace{0.4mm}
+         {\fontsize{8.4}{10.2}\selectfont\color{otMuted}\txt}};}
+  \end{tikzpicture}\par}
+
+%% ---------------------------------------------------------------------
+%%  Illustrations d'ouverture : fenêtres de code stylisées
+%%  \otFenetreIllus{x}{y}{largeur}{titre}{lignes \otIL{retrait}{code}}
+%%  \otTerminalIllus{x}{y}{largeur}{lignes \otITL{texte coloré}}
+%% ---------------------------------------------------------------------
+\newcommand{\otIL}[2]{\par\noindent\strut\codecol[#1]{#2}}
+\newcommand{\otITL}[1]{\par\noindent\strut#1}
+\newcommand{\otFenetreIllus}[5]{%
+  \node[anchor=north west,inner sep=0pt] (fen) at (#1,#2) {%
+    \begin{tikzpicture}
+      \node[anchor=north west,inner xsep=3.6mm,inner ysep=2.6mm,text width=#3-7.2mm,fill=white,
+        rounded corners=1.6mm,font=\otPoliceCode] (corps) at (0,-6mm) {\otMonoSetup#5\par};
+      \fill[otCodeTitre,rounded corners=1.6mm] (corps.north west) rectangle ([yshift=6mm]corps.north east);
+      \fill[otCodeTitre] ([yshift=-1mm]corps.north west) rectangle ([yshift=2mm]corps.north east);
+      \foreach \k/\c in {0/otRed,1/otOrange,2/otGreen}{\fill[\c] ([xshift={3.6mm+\k*3.4mm},yshift=3mm]corps.north west) circle (1mm);}
+      \node[anchor=center,font=\otSemi\fontsize{7.4}{8}\selectfont,text=otMuted] at ([yshift=3mm]corps.north) {#4};
+    \end{tikzpicture}};}
+\newcommand{\otTerminalIllus}[4]{%
+  \node[anchor=north west,inner sep=0pt] (term) at (#1,#2) {%
+    \begin{tikzpicture}
+      \node[anchor=north west,inner xsep=3.6mm,inner ysep=2.6mm,text width=#3-7.2mm,fill=otEcran,
+        rounded corners=1.6mm,font=\otPoliceCode,text=otEcranTexte] (corps) at (0,-5.4mm) {\otMonoSetup\otThemeEcran\color{otEcranTexte}#4\par};
+      \fill[otEcranTitre,rounded corners=1.6mm] (corps.north west) rectangle ([yshift=5.4mm]corps.north east);
+      \fill[otEcranTitre] ([yshift=-1mm]corps.north west) rectangle ([yshift=2mm]corps.north east);
+      \otDessinIcone{terminal}{otEcranMuet}{otEcranTitre}{3.2mm}{([xshift=4.6mm,yshift=2.7mm]corps.north west)}
+      \node[anchor=west,font=\otSemi\fontsize{6.8}{8}\selectfont,text=otEcranMuet] at ([xshift=7.6mm,yshift=2.7mm]corps.north west) {\otCaps[10]{Output}};
+    \end{tikzpicture}};}
+% Mot décoratif dans les ouvertures : \otDeco{texte}{x}{y}{taille}{opacité}
+\newcommand{\otDeco}[5]{\node[text=white,opacity=#5,font=\ttfamily\fontsize{#4}{#4}\selectfont,anchor=center] at (#2,#3) {#1};}
+
+%% ---------------------------------------------------------------------
+%%  Ouverture de partie : \partie{n}{titre}{accroche}{couleur}{texte}{contenu}
+%% ---------------------------------------------------------------------
+\NewDocumentCommand{\partie}{m m m m m m}{%
+  \otPageDroite
+  \gdef\otPartieNum{#1}\gdef\otPartieNom{#2}\gdef\otPartieCouleur{#4}%
+  \gdef\otChapNum{0}%
+  \thispagestyle{empty}%
+  \phantomsection\label{partie-#1}%
+  \pdfbookmark[0]{Part #1 — #2}{bm-partie-#1}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \let\otCodeCouleur\relax
+    \begin{scope}[shift={(current page.south west)}]
+      \fill[#4] (0,0) rectangle (210mm,297mm);
+      \shade[bottom color=otNavyDark,top color=#4,opacity=0.9] (0,0) rectangle (210mm,140mm);
+      \draw[white,opacity=0.05,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+      \node[anchor=north east,inner sep=0pt,text=white,opacity=0.1,font=\otBold\fontsize{300}{300}\selectfont]
+        at (205mm,262mm) {#1};
+      \node[anchor=base west,inner sep=0pt,text=otGreen,font=\otSemi\fontsize{11}{13}\selectfont]
+        at (24mm,214mm) {\otCaps[22]{Part #1}};
+      \node[anchor=base west,inner sep=0pt,text=white,font=\otBold\fontsize{40}{44}\selectfont]
+        at (23mm,190mm) {#2};
+      \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,font=\otLight\fontsize{20}{24}\selectfont]
+        at (24mm,175mm) {#3};
+      \fill[otGreen] (24mm,164mm) rectangle (54mm,165.4mm);
+      \node[anchor=north west,inner sep=0pt,text width=125mm,text=white,opacity=0.9,
+        font=\otRegular\fontsize{11}{15}\selectfont] at (24mm,154mm) {#5};
+      \node[anchor=north west,inner sep=0pt,text width=150mm,text=white] at (24mm,112mm) {#6};
+    \end{scope}
+  \end{tikzpicture}%
+  \clearpage}
+
+%% ---------------------------------------------------------------------
+%%  Plan du tome (tome-N/plan.tex)
+%%  \planPartie{n}{titre}{accroche}{couleur}{de}{à}{texte}
+%%  \planChapitre{n}{titre}{sous-titre}{concepts}{python}{habitudes}{réalisation}
+%%  \planProjet{n}{titre}{sous-titre}
+%% ---------------------------------------------------------------------
+\newcommand{\otPlanNbParties}{0}
+\newcommand{\planPartie}[7]{%
+  \xdef\otPlanNbParties{#1}%
+  \expandafter\gdef\csname otPlanP@titre@#1\endcsname{#2}%
+  \expandafter\gdef\csname otPlanP@en@#1\endcsname{#3}%
+  \expandafter\gdef\csname otPlanP@coul@#1\endcsname{#4}%
+  \expandafter\gdef\csname otPlanP@de@#1\endcsname{#5}%
+  \expandafter\gdef\csname otPlanP@a@#1\endcsname{#6}%
+  \expandafter\gdef\csname otPlanP@texte@#1\endcsname{#7}%
+  \foreach \k in {#5,...,#6}{\expandafter\xdef\csname otPlanC@partie@\k\endcsname{#1}}}
+\newcommand{\planChapitre}[7]{%
+  \expandafter\gdef\csname otPlanU@titre@#1\endcsname{#2}%
+  \expandafter\gdef\csname otPlanU@sous@#1\endcsname{#3}%
+  \expandafter\gdef\csname otPlanU@concepts@#1\endcsname{#4}%
+  \expandafter\gdef\csname otPlanU@python@#1\endcsname{#5}%
+  \expandafter\gdef\csname otPlanU@habitudes@#1\endcsname{#6}%
+  \expandafter\gdef\csname otPlanU@projet@#1\endcsname{#7}}
+\newcommand{\planProjet}[3]{%
+  \expandafter\gdef\csname otPlanJ@titre@#1\endcsname{#2}%
+  \expandafter\gdef\csname otPlanJ@sous@#1\endcsname{#3}}
+\newcommand{\otPlanP}[2]{\csname otPlanP@#1@#2\endcsname}
+\newcommand{\otPlanU}[2]{\csname otPlanU@#1@#2\endcsname}
+\newcommand{\otPlanJ}[2]{\csname otPlanJ@#1@#2\endcsname}
+\newcommand{\otPartieDe}[1]{\csname otPlanC@partie@#1\endcsname}
+% Ouverture de partie à partir du plan
+\newcommand{\partieDuPlan}[1]{%
+  \partie{#1}{\otPlanP{titre}{#1}}{\otPlanP{en}{#1}}{\otPlanP{coul}{#1}}{\otPlanP{texte}{#1}}%
+    {\foreach \u in {\otPlanP{de}{#1},...,\otPlanP{a}{#1}}{\otPartieChap{\u}{\otPlanU{titre}{\u}}{\otPlanU{sous}{\u}}}%
+     \otPartieLigne{fusee}{Project #1: \otPlanJ{titre}{#1}}{\otPlanJ{sous}{#1}}{projet-#1}%
+     \otPartieLigne{coche}{Checkpoint #1}{Review and test of chapters \otPlanP{de}{#1} to \otPlanP{a}{#1}}{bilan-#1}}}
+\newcommand{\otPartieLigne}[4]{% icône, titre, sous-titre, étiquette
+  \noindent\makebox[16mm][l]{\otTuile[7.5mm]{#1}{otGreen}}%
+  \parbox[b]{108mm}{{\otSemi\fontsize{13}{15}\selectfont #2}\par\vspace{0.6mm}
+    {\otLight\fontsize{10}{12}\selectfont\color{white}#3}}\hfill
+  \ifcsname r@#4\endcsname{\otMedium\fontsize{10}{12}\selectfont p.~\pageref{#4}}%
+  \else{\otLight\fontsize{8.5}{10}\selectfont coming soon}\fi\par\vspace{5mm}}
+\newcommand{\otPartieChap}[3]{%
+  \noindent\makebox[16mm][l]{{\otBold\fontsize{20}{22}\selectfont\color{otGreen}#1}}%
+  \parbox[b]{108mm}{{\otSemi\fontsize{13}{15}\selectfont #2}\par\vspace{0.6mm}
+    {\otLight\fontsize{10}{12}\selectfont\color{white}#3}}\hfill
+  \ifcsname otChapVu@#1\endcsname{\otMedium\fontsize{10}{12}\selectfont p.~\pageref{chapitre-#1}}%
+  \else{\otLight\fontsize{8.5}{10}\selectfont coming soon}\fi
+  \par\vspace{5mm}}
+
+%% ---------------------------------------------------------------------
+%%  Annexes : corrigés
+%% ---------------------------------------------------------------------
+\NewDocumentCommand{\annexe}{o m m}{% [clé de renvoi], titre, sous-titre
+  \otPageDroite
+  \gdef\otChapNum{0}\gdef\otEnTeteGauche{#2}%
+  \pagestyle{otAnnexe}\thispagestyle{otFront}%
+  \markright{#3}%
+  \phantomsection\IfNoValueTF{#1}{\label{annexe-#2}}{\label{annexe-#1}}%
+  \pdfbookmark[0]{#2}{bm-annexe-\IfNoValueTF{#1}{#2}{#1}}%
+  \otPageTitre{#2}{#3}}
+\newcommand{\corrigesChapitre}[2]{%
+  \par\addvspace{6mm}\Needspace{14\baselineskip}%
+  \gdef\otCorPref{c#1}\markright{Chapter #1 · #2}%
+  \noindent\begin{tikzpicture}[baseline=(t.base)]
+    \node[fill=otNavy,rounded corners=1.6mm,inner xsep=2.6mm,inner ysep=1.6mm,text=white,
+      font=\otSemi\fontsize{8.6}{10}\selectfont] (u) {\otCaps[12]{Chapter #1}};
+    \node[anchor=base west,inner sep=0pt,font=\otSemi\fontsize{15}{18}\selectfont] (t) at ([xshift=3.5mm]u.base east) {#2};
+  \end{tikzpicture}\hspace{4mm}{\color{otRule}\leaders\hrule height 0.6pt\hfill\kern0pt}\par\vspace{4mm}}
+\NewDocumentEnvironment{corrige}{m}{% numéro d'exercice
+  \par\addvspace{5mm}\Needspace{8\baselineskip}%
+  \phantomsection\label{cor-\otCorPref-#1}%
+  \noindent\tikz[baseline=(n.base)]\node[fill=otGreenDark,rounded corners=1.2mm,minimum width=6mm,minimum height=6mm,
+    inner sep=0pt,text=white,font=\otBold\fontsize{9}{9}\selectfont] (n) {#1};%
+  \hspace{2.4mm}{\otSemi\fontsize{10.8}{13}\selectfont\ifcsname r@ex-\otCorPref-#1\endcsname\nameref{ex-\otCorPref-#1}\fi}%
+  \hfill{\otLight\fontsize{7}{9}\selectfont\color{otMuted}exercise p.~\pageref{ex-\otCorPref-#1}}\par\nopagebreak\vspace{2mm}%
+  \fontsize{10.4}{13.2}\selectfont}
+  {\par}
+\NewDocumentEnvironment{corrigeatoi}{m}{% numéro du « Your turn »
+  \par\addvspace{4mm}\Needspace{7\baselineskip}%
+  \phantomsection\label{cor-atoi-\otCorPref-#1}%
+  \noindent\otTuile[5.6mm]{clavier}{otNavy}%
+  \hspace{2.4mm}{\otSemi\fontsize{10.4}{13}\selectfont Your turn \csname otNumDe@\otCorPref\endcsname.#1}%
+  \hfill{\otLight\fontsize{7}{9}\selectfont\color{otMuted}page~\pageref{atoi-\otCorPref-#1}}\par\nopagebreak\vspace{1.6mm}%
+  \fontsize{10.4}{13.2}\selectfont}
+  {\par}
+\NewDocumentEnvironment{corrigequiz}{}{%
+  \par\addvspace{5mm}\Needspace{8\baselineskip}%
+  \phantomsection\label{cor-\otCorPref-quiz}%
+  \noindent\otTuile[6mm]{horloge}{otGreenDark}%
+  \hspace{2.4mm}{\otSemi\fontsize{10.8}{13}\selectfont Quick quiz}\par\nopagebreak\vspace{2mm}%
+  \fontsize{10.4}{13.2}\selectfont}
+  {\par}
+% Réponses numérotées
+\NewDocumentEnvironment{reponses}{O{1}}{%
+  \ifnum#1>1\relax\begin{multicols}{#1}\raggedcolumns\fi
+  \begin{enumerate}[label={\otSemi\fontsize{8.4}{10}\selectfont\color{otGreenDark}\arabic*.},
+    leftmargin=6mm,labelsep=2mm,itemsep=1.2mm,topsep=0.6mm]}
+  {\end{enumerate}\ifnum#1>1\relax\end{multicols}\fi}
+\newcommand{\rep}[1]{\textcolor{otGreenDark}{\textbf{#1}}}
+% Explications pédagogiques
+\newcommand{\demarche}[1]{\par\vspace{0.6mm}\noindent\hangindent=23mm\hangafter=1
+  \makebox[23mm][l]{\otEtiquette{otNavy}{Approach}}{\fontsize{10}{12.8}\selectfont #1}\par\vspace{1.4mm}}
+\newcommand{\pourquoi}[1]{\par\vspace{1.2mm}\noindent\hangindent=23mm\hangafter=1
+  \makebox[23mm][l]{\otEtiquette{otNavy}{Why?}}{\fontsize{10}{12.8}\selectfont #1}\par\vspace{1mm}}
+\newcommand{\retiens}[1]{\par\vspace{1.4mm}%
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,left=3mm,right=3mm,top=1.8mm,bottom=1.8mm,
+    before skip=1mm,after skip=1.5mm]
+  \otEtiquette{otGreenDark}{Remember}\hspace{2mm}{\fontsize{9.8}{12.4}\selectfont #1}\end{tcolorbox}}
+\newcommand{\piege}[1]{\par\vspace{1.4mm}%
+  \begin{tcolorbox}[otBase,colback=otOrangeTint,colframe=otOrangeTint,left=3mm,right=3mm,top=1.8mm,bottom=1.8mm,
+    before skip=1mm,after skip=1.5mm]
+  \otEtiquette{otOrangeDark}{Common mistake}\hspace{2mm}{\fontsize{9.8}{12.4}\selectfont #1}\end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Pages liminaires
+%% ---------------------------------------------------------------------
+\newcommand{\otPageTitre}[2]{%
+  \noindent{\otLight\fontsize{30}{34}\selectfont\color{otInk}#1}\par\vspace{2.2mm}
+  \if\relax\detokenize{#2}\relax\else
+    \noindent{\otRegular\fontsize{10.6}{13.4}\selectfont\color{otMuted}#2}\par\vspace{2.2mm}\fi
+  \noindent{\color{otNavy}\rule{16mm}{1.3pt}}%
+  {\color{otRule}\rule[0.45pt]{\dimexpr\linewidth-16mm\relax}{0.4pt}}\par\vspace{8mm}}
+\NewDocumentCommand{\liminaire}{m m m}{% clé, titre, sous-titre
+  \clearpage\gdef\otEnTeteGauche{#2}\markright{#3}%
+  \thispagestyle{otFront}%
+  \phantomsection\label{lim-#1}\pdfbookmark[0]{#2}{bm-lim-#1}%
+  \otPageTitre{#2}{#3}}
+
+%% ---------------------------------------------------------------------
+%%  Sommaire et programme (données du plan)
+%% ---------------------------------------------------------------------
+\newcommand{\otSomRubrique}[2]{% titre, couleur
+  \par\addvspace{5mm}\Needspace{6\baselineskip}\noindent
+  {\otSemi\fontsize{7.2}{9}\selectfont\color{#2}\otCaps[12]{#1}}\par
+  \vspace{1.2mm}{\color{#2}\hrule height 0.6pt}\vspace{2mm}}
+\newcommand{\otSomLigne}[3]{% numéro ou icône, texte, étiquette de renvoi
+  \par\noindent\makebox[10mm][l]{#1}%
+  \parbox[b]{\dimexpr\linewidth-30mm\relax}{\RaggedRight #2}%
+  {\color{otMuted!45}\leaders\hbox to 2.4mm{\hss.\hss}\hfill}%
+  \makebox[11mm][r]{\ifcsname r@#3\endcsname{\otMedium\fontsize{9.4}{11}\selectfont\color{otNavy}\pageref{#3}}%
+    \else{\otLight\fontsize{7.4}{9}\selectfont\color{otMuted}coming soon}\fi}\par\vspace{1.6mm}}
+\newcommand{\otSomChap}[1]{%
+  \otSomLigne{{\otBold\fontsize{12}{13}\selectfont\color{\otPlanP{coul}{\otPartieDe{#1}}}#1}}%
+    {{\otSemi\fontsize{10.4}{12.4}\selectfont\otPlanU{titre}{#1}}\hspace{2.2mm}%
+     {\otRegular\fontsize{9}{12.4}\selectfont\color{otMuted}\otPlanU{sous}{#1}}}{chapitre-#1}}
+\newcommand{\otSomPartie}[1]{%
+  \otSomRubrique{Part #1\enspace·\enspace\otPlanP{titre}{#1}\enspace{\otLight\otPlanP{en}{#1}}}{\otPlanP{coul}{#1}}%
+  \foreach \u in {\otPlanP{de}{#1},...,\otPlanP{a}{#1}}{\otSomChap{\u}}%
+  \otSomLigne{\otTuile[5mm]{fusee}{\otPlanP{coul}{#1}}}%
+    {{\otSemi\fontsize{10}{12.4}\selectfont Project #1: \otPlanJ{titre}{#1}}\hspace{2.2mm}%
+     {\otRegular\fontsize{9}{12.4}\selectfont\color{otMuted}\otPlanJ{sous}{#1}}}{projet-#1}%
+  \otSomLigne{\otTuile[5mm]{coche}{\otPlanP{coul}{#1}}}%
+    {{\otSemi\fontsize{10}{12.4}\selectfont Checkpoint #1}\hspace{2.2mm}%
+     {\otRegular\fontsize{9}{12.4}\selectfont\color{otMuted}review and test of chapters \otPlanP{de}{#1} to \otPlanP{a}{#1}}}{bilan-#1}}
+% Tableau des contenus d'une partie
+\newcommand{\otPrgPartie}[1]{%
+  \otPrgPrepare{#1}%
+  \par\addvspace{4mm}\Needspace{6\baselineskip}\noindent
+  \begin{tcolorbox}[enhanced,colback=\otPlanP{coul}{#1},colframe=\otPlanP{coul}{#1},arc=1.4mm,left=3mm,right=3mm,
+    top=1.8mm,bottom=1.8mm,boxsep=0pt,before skip=0pt,after skip=1.5mm,coltext=white]
+  {\otSemi\fontsize{7.4}{9}\selectfont\otCaps[12]{Part #1}}\hspace{2.5mm}{\otSemi\fontsize{10.5}{12}\selectfont\otPlanP{titre}{#1}}%
+  \hspace{2mm}{\otLight\fontsize{9.5}{12}\selectfont\otPlanP{en}{#1}}
+  \end{tcolorbox}
+  \noindent{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+  \begin{tabularx}{\linewidth}{@{}>{\RaggedRight\arraybackslash}p{32mm}*{4}{>{\RaggedRight\arraybackslash\fontsize{8.3}{10.2}\selectfont}X}@{}}
+  \otTH{Chapter} & \otTH{Concepts} & \otTH{Python} & \otTH{Good habits} & \otTH{You'll build}\\\midrule
+  \otPrgCorps
+  \end{tabularx}}\par}
+\newcommand{\otPrgCorps}{}
+\newcommand{\otPrgPrepare}[1]{%
+  \gdef\otPrgCorps{}%
+  \foreach \u in {\otPlanP{de}{#1},...,\otPlanP{a}{#1}}{%
+    \ifnum\u=\otPlanP{a}{#1}\relax
+      \xdef\otPrgCorps{\unexpanded\expandafter{\otPrgCorps}\noexpand\otPrgLigne{\u}\noexpand\\\noexpand\bottomrule}%
+    \else
+      \xdef\otPrgCorps{\unexpanded\expandafter{\otPrgCorps}\noexpand\otPrgLigne{\u}\noexpand\\\noexpand\midrule}%
+    \fi}}
+\newcommand{\otPrgLigne}[1]{%
+  {\otBold\fontsize{11}{12}\selectfont\color{\otPlanP{coul}{\otPartieDe{#1}}}#1}\enspace
+  {\otSemi\fontsize{8.6}{10.4}\selectfont\otPlanU{titre}{#1}}\par
+  {\fontsize{8.2}{10}\selectfont\color{otMuted}\otPlanU{sous}{#1}}
+  & \otPlanU{concepts}{#1} & \otPlanU{python}{#1} & \otPlanU{habitudes}{#1} & \otPlanU{projet}{#1}}
+
+%% ---------------------------------------------------------------------
+%%  Glossaire (écrit par outils/glossaire.py)
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{glossaire}{}{%
+  \noindent{\fontsize{10}{13}\selectfont\color{otMuted}Every key term of this volume, with a short definition.
+  The number on the right gives the chapter where the term is explained.\par}\vspace{3mm}
+  \begin{multicols}{2}\raggedcolumns\setlength{\columnseprule}{0.4pt}\def\columnseprulecolor{\color{otRule}}}
+  {\end{multicols}}
+\newcommand{\glolettre}[1]{\par\addvspace{3mm}\Needspace{4\baselineskip}\noindent
+  {\otBold\fontsize{14}{16}\selectfont\color{otNavy}#1}\hspace{2mm}{\color{otRule}\leaders\hrule height 0.5pt\hfill\kern0pt}\par\vspace{1.4mm}}
+\newcommand{\gloterme}[3]{\par\noindent\hangindent=4mm
+  {\otSemi\fontsize{9.6}{12}\selectfont #1}\enspace{\fontsize{9.8}{12.2}\selectfont #2}%
+  \hfill{\otSemi\fontsize{7}{9}\selectfont\color{otNavy}#3}\par\vspace{1.1mm}}
+
+\endinput

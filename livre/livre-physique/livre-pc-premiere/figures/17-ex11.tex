@@ -1,0 +1,18 @@
+% Double périodicité : aspect d'une corde à une date donnée et mouvement d'un point (exercice 11, chapitre 17)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=72mm,height=44mm,xmin=0,xmax=1.0,ymin=-1.5,ymax=1.5,
+  xtick={0,0.1,...,1.0},ytick={-1,0,1},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$x$ (m)},ylabel={$y$ (cm)},name=g1]
+\addplot[otNavy,line width=1.1pt,domain=0:1.0,samples=120] {sin(deg(2*pi*(x/0.40)))};
+\solution{\draw[otGreenDark,line width=0.7pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (axis cs:0.10,1.25) -- (axis cs:0.50,1.25) node[pos=0.5,pcLegende,anchor=south,text=otGreenDark] {$\lambda=\qty{0,40}{m}$};}
+\end{axis}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=72mm,height=44mm,xmin=0,xmax=0.125,ymin=-1.5,ymax=1.5,
+  xtick={0,0.025,...,0.125},ytick={-1,0,1},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=3},
+  xlabel={$t$ (s)},ylabel={$y$ (cm)},at={(g1.east)},anchor=west,xshift=14mm]
+\addplot[otOrange!85!black,line width=1.1pt,domain=0:0.125,samples=120] {cos(deg(2*pi*(x/0.050)))};
+\solution{\draw[otGreenDark,line width=0.7pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (axis cs:0,1.25) -- (axis cs:0.050,1.25) node[pos=0.5,pcLegende,anchor=south,text=otGreenDark] {$T=\qty{0,050}{s}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{À gauche, l'aspect de la corde à une date donnée ; à droite, le mouvement d'un point de la corde au cours du temps.}

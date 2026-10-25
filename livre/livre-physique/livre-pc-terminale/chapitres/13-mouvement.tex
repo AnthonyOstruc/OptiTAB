@@ -1,0 +1,376 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[mouvement]{13}{Décrire un mouvement}{Partie 2 · Mouvement et interactions}
+{Position, vitesse, accélération\enspace·\enspace Mouvements rectilignes\enspace·\enspace Repère de Frenet\enspace·\enspace Mouvement circulaire}
+\objectif{Définir les vecteurs vitesse et accélération comme des dérivées par rapport au temps.}
+\objectif{Établir les coordonnées des vecteurs vitesse et accélération à partir de celles du vecteur position.}
+\objectif{Exploiter les coordonnées des vecteurs vitesse et accélération dans le repère de Frenet.}
+\objectif{Caractériser le vecteur accélération des mouvements rectilignes et circulaires.}
+\objectif{Exploiter une chronophotographie ou une vidéo ; représenter des vecteurs accélération en Python.}
+\prerequis{Référentiel, vecteur position, vecteur vitesse (classes de seconde et de première).}
+\prerequis{Dérivée d'une fonction ; dérivée de $t\mapsto t^2$, de $\cos$ et de $\sin$.}
+\prerequis{Lien entre variation du vecteur vitesse et forces (classe de première).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Position, vitesse et accélération}
+\begin{definition}[Vecteurs position, vitesse et accélération]
+Dans un référentiel muni d'un repère $(O\,;\vec{\imath},\vec{\jmath},\vec{k})$, la position d'un point M est repérée par le
+vecteur $\vect{OM}=x\,\vec{\imath}+y\,\vec{\jmath}+z\,\vec{k}$. Le \textbf{vecteur vitesse} est la dérivée du vecteur position
+par rapport au temps, le \textbf{vecteur accélération} la dérivée du vecteur vitesse :
+\[\vec{v}=\ddt{\vect{OM}},\qquad \vec{a}=\ddt{\vec{v}}=\frac{\mathrm{d}^2\vect{OM}}{\mathrm{d}t^2}.\]
+En coordonnées cartésiennes : $v_x=\ddt{x}$, $v_y=\ddt{y}$, $v_z=\ddt{z}$ et $a_x=\ddt{v_x}$, $a_y=\ddt{v_y}$, $a_z=\ddt{v_z}$. La
+vitesse s'exprime en \unit{m.s^{-1}}, l'accélération en \unit{m.s^{-2}}.
+\end{definition}
+\begin{exemple}
+Une balle lancée a pour coordonnées $x(t)=5{,}0\,t$ et $y(t)=-4{,}9\,t^2+8{,}7\,t$ (en mètres et secondes). En dérivant :
+$v_x=5{,}0$ et $v_y=-9{,}8\,t+8{,}7$, puis $a_x=0$ et $a_y=-9{,}8$. L'accélération est constante, verticale, vers le bas.
+À $t=\qty{0,50}{s}$ : $\vec{v}$ a pour coordonnées $(5{,}0\,;\,3{,}8)$ et pour norme
+$v=\sqrt{5{,}0^2+3{,}8^2}=\qty{6,3}{m.s^{-1}}$.
+\end{exemple}
+\begin{savoirfaire}[Exploiter une chronophotographie]
+Les positions $M_0, M_1, M_2\,\dots$ sont enregistrées à intervalles réguliers $\tau$. On approche la vitesse en $M_i$ par
+$\vec{v}_i\approx\dfrac{\vect{M_{i-1}M_{i+1}}}{2\tau}$, puis l'accélération par
+$\vec{a}_i\approx\dfrac{\vec{v}_{i+1}-\vec{v}_{i-1}}{2\tau}$ : on construit le vecteur $\Delta\vec{v}=\vec{v}_{i+1}-\vec{v}_{i-1}$
+au point $M_i$, puis on le divise par $2\tau$.
+\end{savoirfaire}
+\schema{13-chrono}
+\begin{python}
+import matplotlib.pyplot as plt
+tau = 0.040                                            # s
+x = [0.000, 0.048, 0.096, 0.144, 0.192, 0.240, 0.288]  # m
+y = [0.000, 0.068, 0.121, 0.157, 0.179, 0.184, 0.174]  # m
+vx = [(x[i+1] - x[i-1]) / (2*tau) for i in range(1, 6)]
+vy = [(y[i+1] - y[i-1]) / (2*tau) for i in range(1, 6)]
+ax = [(vx[i+1] - vx[i-1]) / (2*tau) for i in range(1, 4)]
+ay = [(vy[i+1] - vy[i-1]) / (2*tau) for i in range(1, 4)]
+print([round(a, 1) for a in ay])
+plt.plot(x, y, "o")
+plt.quiver(x[2:5], y[2:5], ax, ay)       # accélérations en M2, M3, M4
+plt.show()
+\end{python}
+\begin{console}
+[-9.8, -9.7, -9.8]
+\end{console}
+\noindent\capacite{Capacité numérique}Les listes contiennent les coordonnées d'une balle pointées sur une vidéo. Le
+programme calcule les vitesses par la méthode précédente, puis les accélérations, et représente les vecteurs
+accélération avec \code{quiver}. Aux erreurs de pointage près, $a_y\approx\qty{-9,8}{m.s^{-2}}$ et $a_x\approx0$ :
+l'accélération est verticale, dirigée vers le bas.
+\essSection{2}{Mouvements rectilignes}
+\begin{propriete}[Accélération d'un mouvement rectiligne]
+Le mouvement est rectiligne si la trajectoire est une droite : $\vec{v}$ et $\vec{a}$ sont alors colinéaires à cette
+droite.
+\begin{itemize}[leftmargin=1.4em,itemsep=0.1em]
+\item \textbf{Rectiligne uniforme} : $\vec{v}$ est constant et $\vec{a}=\vec{0}$.
+\item \textbf{Rectiligne uniformément varié} : $\vec{a}$ est constant. Sur un axe $(Ox)$ :
+$a_x=a$, $v_x(t)=a\,t+v_0$ et $x(t)=\frac12\,a\,t^2+v_0\,t+x_0$.
+\item Le mouvement est \textbf{accéléré} si $\vec{a}$ et $\vec{v}$ ont le même sens, \textbf{ralenti} s'ils sont de sens
+contraires.
+\end{itemize}
+\end{propriete}
+\begin{exemple}
+Une voiture roulant à $v_0=\qty{25}{m.s^{-1}}$ (90~km/h) freine avec une accélération constante de norme
+\qty{8,0}{m.s^{-2}}. Sur un axe orienté dans le sens du mouvement, $v_x(t)=25-8{,}0\,t$ s'annule à $t=\qty{3,1}{s}$ ;
+la distance de freinage vaut alors $x=25\times3{,}125-\frac12\times8{,}0\times3{,}125^2=\qty{39}{m}$.
+\end{exemple}
+\begin{attention}
+Pour le physicien, « accélérer » signifie que le vecteur vitesse varie, en norme \emph{ou} en direction. Une voiture qui
+freine a une accélération, opposée à sa vitesse ; une voiture qui prend un virage à vitesse constante a aussi une
+accélération, dirigée vers l'intérieur du virage.
+\end{attention}
+\essSection{3}{Mouvement circulaire et repère de Frenet}
+\begin{definition}[Repère de Frenet]
+Pour un point M en mouvement sur un cercle de centre $O$ et de rayon $R$, le repère de Frenet $(M\,;\ut,\un)$ est mobile :
+$\ut$ est tangent à la trajectoire, orienté dans le sens du mouvement, et $\un$ est dirigé vers le centre du cercle.
+Dans ce repère :
+\[\vec{v}=v\,\ut,\qquad \vec{a}=\ddt{v}\,\ut+\frac{v^2}{R}\,\un.\]
+La coordonnée tangentielle $a_\mathrm{t}=\ddt{v}$ traduit la variation de la valeur de la vitesse ; la coordonnée normale
+$a_\mathrm{n}=\frac{v^2}{R}$, toujours positive, traduit le changement de direction.
+\end{definition}
+\schema{13-frenet}
+\begin{propriete}[Mouvement circulaire uniforme]
+Si la valeur $v$ de la vitesse est constante, $a_\mathrm{t}=0$ : l'accélération est \textbf{centripète}, de norme
+$a=\frac{v^2}{R}$. Si $T$ est la période (durée d'un tour), $v=\frac{2\pi R}{T}$.
+\end{propriete}
+\begin{exemple}
+Le tambour d'une centrifugeuse de laboratoire, de rayon \qty{0,10}{m}, tourne à 3000 tours par minute, soit 50 tours
+par seconde : $v=2\pi\times0{,}10\times50=\qty{31}{m.s^{-1}}$ et $a=\frac{v^2}{R}=\qty{9,9e3}{m.s^{-2}}$, soit environ
+\num{1000} fois l'intensité de la pesanteur.
+\end{exemple}
+\begin{propriete}[Récapitulatif]
+\par\smallskip
+{\small\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}lY@{}}\toprule
+\otTete{Mouvement} & \otTete{Vecteur accélération}\\\midrule
+rectiligne uniforme & nul\\
+rectiligne uniformément varié & constant, colinéaire à la trajectoire\\
+circulaire uniforme & centripète, de norme constante $v^2/R$\\
+circulaire non uniforme & $a_\mathrm{t}=\mathrm{d}v/\mathrm{d}t$ non nulle et $a_\mathrm{n}=v^2/R$ : orienté vers l'intérieur du cercle\\\bottomrule
+\end{tabularx}}
+\end{propriete}
+\begin{experience}[Étudier un mouvement par vidéo]
+On filme le lancer d'une balle devant une règle étalon, en plaçant la caméra loin et perpendiculairement au plan du
+mouvement. Un logiciel de pointage (ou un programme Python) fournit les coordonnées $x$ et $y$ à chaque image ; on
+modélise $x(t)$ par une fonction affine et $y(t)$ par un polynôme du second degré, puis on dérive. On trouve
+$a_x\approx0$ et $a_y\approx\qty{-9,8}{m.s^{-2}}$ quelle que soit la façon dont la balle est lancée.
+\end{experience}
+\begin{rediger}
+Toujours préciser le référentiel et le repère. Écrire les dérivées une à une : « $v_y=\ddt{y}=-9{,}8\,t+8{,}7$ ». Pour
+caractériser un vecteur, donner sa direction, son sens et sa norme, avec l'unité.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-13-1}
+\begin{exercice}[1]{Dériver pour décrire un mouvement}
+Dans un repère $(O\,;\vec{\imath},\vec{\jmath})$ lié au sol, les coordonnées d'un point M sont, en mètres et en secondes :
+\[x(t)=3{,}0\,t+1{,}0\qquad\text{et}\qquad y(t)=-2{,}0\,t^2+4{,}0\,t.\]
+\begin{questions}
+\item Établir les coordonnées du vecteur vitesse, puis celles du vecteur accélération.
+\item Caractériser le vecteur accélération. Le mouvement est-il rectiligne ?
+\item Calculer la valeur de la vitesse à $t=0$ et à $t=\qty{1,0}{s}$. À quelle date la vitesse est-elle minimale ?
+\item Établir l'équation de la trajectoire $y=f(x)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-2}
+\begin{exercice}[1]{Trois chronophotographies}
+Les chronophotographies A, B et C représentent les positions successives d'un mobile se déplaçant de gauche à droite,
+enregistrées toutes les $\tau=\qty{0,20}{s}$.
+\schema{13-ex02}
+\begin{questions}
+\item Préciser la nature du mouvement dans chaque cas.
+\item Pour les mouvements B et C, comparer le sens du vecteur accélération à celui du vecteur vitesse.
+\item Calculer la vitesse du mobile A.
+\item Pour le mobile B, calculer les vitesses aux positions $M_2$ et $M_4$, puis la valeur de l'accélération en $M_3$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-3}
+\begin{exercice}[1]{L'accélération du physicien}
+Pour chacun des mouvements suivants, préciser si le vecteur accélération est nul ou non et, s'il ne l'est pas,
+indiquer sa direction et son sens.
+\begin{questions}[label=\otLabel{\alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item Une voiture roule à 90~km/h sur une ligne droite.
+\item La même voiture aborde un virage circulaire à 90~km/h.
+\item Un cycliste freine sur une route rectiligne.
+\item Une bille est lâchée sans vitesse initiale.
+\item La Lune tourne autour de la Terre, sur une orbite supposée circulaire, à vitesse constante.
+\item Un ascenseur monte à vitesse constante.
+\end{questions}
+\begin{questions}
+\item Répondre pour chacun des six mouvements.
+\item Un conducteur affirme : « dans ce virage, je n'accélère pas, je garde 90~km/h ». Commenter du point de vue du
+physicien.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-4}
+\begin{exercice}[1]{Les chaises volantes}
+Dans un manège de chaises volantes, chaque nacelle décrit un cercle horizontal de rayon $R=\qty{8,0}{m}$ ; en régime
+établi, elle fait un tour en 6,0~s.
+\begin{questions}
+\item Pourquoi le mouvement d'une nacelle est-il circulaire uniforme en régime établi ?
+\item Calculer la valeur de la vitesse d'une nacelle.
+\item Caractériser le vecteur accélération : direction, sens et norme. Comparer sa norme à $g=\qty{9,8}{m.s^{-2}}$.
+\item Représenter, sur un schéma vu de dessus, le repère de Frenet et les vecteurs vitesse et accélération d'une
+nacelle.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-5}
+\begin{exercice}[1]{Lire un vecteur accélération}
+Une voiture parcourt un virage circulaire de rayon $R=\qty{50}{m}$, dans le sens indiqué. Le schéma représente son
+vecteur accélération en trois points A, B et C.
+\schema{13-ex05}
+\begin{questions}
+\item En quel point la valeur de la vitesse est-elle constante ? croissante ? décroissante ? Justifier.
+\item Au point B, la vitesse vaut \qty{12}{m.s^{-1}} et $a_\mathrm{t}=\qty{1,5}{m.s^{-2}}$. Calculer $a_\mathrm{n}$, puis la norme
+de l'accélération.
+\item Que vaudrait $\vec{a}$ si la voiture roulait en ligne droite à vitesse constante ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-13-6}
+\begin{exercice}[2]{Le départ d'un sprinteur}
+Un sprinteur accélère de façon uniforme depuis le départ jusqu'à atteindre \qty{11,6}{m.s^{-1}} au bout de 4,0~s, puis
+court à vitesse constante jusqu'à l'arrivée du 100~m.
+\schema{13-ex06}
+\begin{questions}
+\item Quelle est la nature du mouvement dans chaque phase ?
+\item Calculer l'accélération pendant la première phase et écrire les équations horaires $v(t)$ et $x(t)$.
+\item Quelle distance le sprinteur a-t-il parcourue au bout de 4,0~s ? Retrouver ce résultat à l'aide de l'aire sous la
+courbe $v(t)$.
+\item En déduire le temps réalisé sur 100~m.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-7}
+\begin{exercice}[2]{La distance d'arrêt}
+Un automobiliste roule à 90~km/h sur une route rectiligne. Il aperçoit un obstacle : il lui faut 1,0~s pour réagir,
+puis il freine avec une accélération constante de norme \qty{7,5}{m.s^{-2}} sur route sèche, ou
+\qty{4,0}{m.s^{-2}} sur route mouillée.
+\begin{questions}
+\item Quelle distance la voiture parcourt-elle pendant le temps de réaction ? Quelle est la nature du mouvement ?
+\item Pendant le freinage, on prend l'origine des dates et des positions au début du freinage. Écrire $v(t)$ et $x(t)$.
+\item Calculer la durée du freinage et la distance de freinage sur route sèche, puis la distance d'arrêt.
+\item Calculer la distance d'arrêt sur route mouillée. Commenter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-8}
+\begin{exercice}[2]{Une chute filmée}
+Une balle est lâchée sans vitesse initiale devant une règle. On pointe sa position sur un axe $(Oy)$ vertical,
+\textbf{orienté vers le bas}, toutes les $\tau=\qty{0,050}{s}$ ; le programme calcule les vitesses aux points
+intermédiaires.
+\begin{python}
+tau = 0.050
+y = [0.000, 0.012, 0.049, 0.110, 0.196, 0.307, 0.441]   # m
+v = [(y[i+1] - y[i-1]) / (2 * tau) for i in range(1, 6)]
+print([round(vi, 2) for vi in v])
+\end{python}
+\begin{console}
+[0.49, 0.98, 1.47, 1.97, 2.45]
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle approximation de la vitesse le programme utilise-t-il ? À quelles dates
+correspondent les cinq vitesses affichées ?
+\item Tracer l'allure de $v_y$ en fonction du temps. Quelle est la nature du mouvement ?
+\item Déterminer la valeur de l'accélération. Commenter.
+\item Ajouter au programme les lignes qui calculent et affichent les accélérations.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-9}
+\begin{exercice}[2]{Sur un rond-point}
+Une voiture s'engage sur un rond-point circulaire de rayon $R=\qty{20}{m}$. Sa vitesse passe de \qty{5,0}{m.s^{-1}} à
+\qty{10,0}{m.s^{-1}} en 4,0~s, la coordonnée tangentielle de l'accélération restant constante.
+\begin{questions}
+\item Calculer $a_\mathrm{t}$.
+\item Calculer $a_\mathrm{n}$ lorsque la vitesse vaut \qty{8,0}{m.s^{-1}}, puis la norme de l'accélération.
+\item Représenter, en ce point, les vecteurs $\vec{v}$ et $\vec{a}$ dans le repère de Frenet ; calculer l'angle entre
+$\vec{a}$ et $\un$.
+\item Comment évolue $a_\mathrm{n}$ pendant la phase d'accélération ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-10}
+\begin{exercice}[2]{La Station spatiale internationale}
+Dans le référentiel géocentrique, la Station spatiale internationale décrit une orbite circulaire à 420~km d'altitude ;
+elle fait un tour en 92,8~min.
+\begin{donnees}
+Rayon de la Terre : $R_\mathrm{T}=\qty{6371}{km}$.
+\end{donnees}
+\begin{questions}
+\item Calculer le rayon de l'orbite, puis la valeur de la vitesse de la station, en \unit{m.s^{-1}} et en km/h.
+\item Caractériser son vecteur accélération.
+\item Combien de tours la station fait-elle par jour ?
+\item Comparer la valeur de l'accélération à celle de la pesanteur au sol. Ce résultat sera interprété au chapitre~16.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-11}
+\begin{exercice}[2]{Représenter l'accélération d'un mouvement circulaire}
+Un point M décrit un cercle de rayon $R=\qty{2,0}{m}$ à vitesse constante, avec une période $T=\qty{4,0}{s}$. Le
+programme suivant calcule une valeur approchée de son accélération à la date $t=\qty{0,5}{s}$.
+\begin{python}
+from math import cos, sin, pi
+R, T, tau = 2.0, 4.0, 0.1                 # m, s, s
+def x(t): return R * cos(2 * pi * t / T)
+def y(t): return R * sin(2 * pi * t / T)
+t = 0.5
+ax = (x(t + tau) - 2 * x(t) + x(t - tau)) / tau**2
+ay = (y(t + tau) - 2 * y(t) + y(t - tau)) / tau**2
+print(round(ax, 3), round(ay, 3))
+\end{python}
+\begin{console}
+-3.482 -3.482
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Calculer les coordonnées de M à $t=\qty{0,5}{s}$ et placer le point sur un schéma.
+\item Justifier que $\frac{x(t+\tau)-2x(t)+x(t-\tau)}{\tau^2}$ est une valeur approchée de $a_x$.
+\item Représenter le vecteur accélération obtenu. Vers quel point est-il dirigé ?
+\item Comparer sa norme à la valeur $v^2/R$ attendue.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-13-12}
+\begin{exercice}[3]{La centrifugeuse des pilotes}
+\begin{docu}{1}{S'entraîner aux fortes accélérations}
+Les pilotes de chasse et les astronautes s'entraînent dans des centrifugeuses : une cabine, fixée au bout d'un bras de
+longueur $R=\qty{7,6}{m}$, tourne dans un plan horizontal. L'accélération subie s'exprime en multiples de $g$ ; un
+pilote entraîné supporte environ $8\,g$ pendant quelques secondes.
+\end{docu}
+\begin{docu}{2}{Le protocole de montée en régime}
+Partant de l'arrêt, la valeur de la vitesse de la cabine augmente avec une accélération tangentielle constante pendant
+20~s, jusqu'à la vitesse correspondant à $8\,g$, puis reste constante.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{m.s^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Quelle est la nature du mouvement de la cabine en régime établi ? Caractériser son vecteur accélération.
+\item Calculer la vitesse de la cabine correspondant à $8\,g$, puis le nombre de tours par minute.
+\item Calculer l'accélération tangentielle pendant la montée en régime.
+\item \initiative Au milieu de la montée en régime, déterminer la norme de l'accélération de la cabine et l'angle qu'elle
+fait avec la direction du bras.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-13}
+\begin{exercice}[3]{Le lancer franc}
+\begin{docu}{1}{Une vidéo analysée}
+Un basketteur tire un lancer franc. Le pointage vidéo du centre du ballon, dans un repère d'origine au sol, sous le
+point de lâcher, avec $(Ox)$ horizontal vers le panier et $(Oy)$ vertical vers le haut, est modélisé par :
+\[x(t)=4{,}78\,t\qquad\text{et}\qquad y(t)=-4{,}90\,t^2+5{,}70\,t+2{,}10\quad\text{(m, s)}.\]
+\end{docu}
+\begin{docu}{2}{Le panier}
+Le centre de l'anneau se trouve à $x=\qty{4,60}{m}$, à une hauteur de \qty{3,05}{m}.
+\end{docu}
+\begin{questions}
+\item Établir les coordonnées des vecteurs vitesse et accélération du ballon. Caractériser l'accélération.
+\item Calculer la valeur de la vitesse initiale et l'angle de tir par rapport à l'horizontale.
+\item À quelle date le ballon atteint-il le sommet de sa trajectoire ? À quelle hauteur ?
+\item \initiative Le centre du ballon passe-t-il par le centre de l'anneau ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-14}
+\begin{exercice}[3]{Le looping d'un grand huit}
+\begin{docu}{1}{Une boucle en forme de goutte}
+Les loopings des montagnes russes ne sont pas circulaires : leur rayon de courbure est grand en bas et petit en haut.
+Au point bas A, où le rayon de courbure vaut \qty{15}{m}, le wagon passe à \qty{22}{m.s^{-1}} ; au sommet B, où il vaut
+\qty{8,0}{m}, il passe à \qty{12}{m.s^{-1}}.
+\end{docu}
+\schema{13-ex14}
+\begin{docu}{2}{Limite de confort}
+Pour le grand public, les constructeurs limitent l'accélération à environ $5\,g$, avec $g=\qty{9,8}{m.s^{-2}}$.
+\end{docu}
+\begin{questions}
+\item En assimilant la trajectoire, au voisinage de A et de B, à des arcs de cercle, calculer la coordonnée normale de
+l'accélération en A et en B. Les exprimer en multiples de $g$.
+\item En A et en B, la coordonnée tangentielle de l'accélération est nulle. Représenter les vecteurs accélération en ces
+deux points.
+\item \initiative Que vaudrait l'accélération en A pour une boucle circulaire de rayon \qty{8,0}{m} parcourue à la même
+vitesse ? Justifier le choix d'une boucle en forme de goutte.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-15}
+\begin{exercice}[3]{Le TGV dans les courbes}
+\begin{docu}{1}{Des courbes à très grand rayon}
+Sur une ligne à grande vitesse, où les TGV circulent à 320~km/h, le rayon des courbes est d'au moins 7,0~km. Sur une
+ligne classique, certaines courbes ont un rayon de 1,2~km seulement.
+\end{docu}
+\begin{docu}{2}{Le freinage}
+Lancé à 320~km/h, un TGV a besoin d'environ 3,3~km pour s'arrêter.
+\end{docu}
+\begin{questions}
+\item Calculer la coordonnée normale de l'accélération d'un TGV roulant à 320~km/h dans une courbe de 7,0~km de rayon.
+\item À quelle vitesse doit-il aborder une courbe de 1,2~km de rayon pour subir la même accélération normale ? Commenter.
+\item \initiative En supposant le freinage uniformément ralenti, calculer l'accélération et la durée du freinage.
+\item Comparer les deux accélérations calculées à $g=\qty{9,8}{m.s^{-2}}$. Pourquoi les passagers les supportent-ils
+sans difficulté ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

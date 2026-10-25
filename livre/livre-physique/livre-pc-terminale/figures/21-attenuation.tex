@@ -1,0 +1,12 @@
+% Niveau sonore en fonction de la distance pour une source ponctuelle de 0,10 W, distance en échelle logarithmique (L'essentiel, chapitre 21)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=50mm,xmode=log,xmin=1,xmax=120,ymin=50,ymax=105,
+  xtick={1,2,4,8,16,32,64},xticklabels={1,2,4,8,16,32,64},ytick={50,60,...,100},
+  xlabel={$d$ (m)},ylabel={$L$ (dB)},grid=major]
+\addplot[otNavy,line width=1pt,domain=1:120,samples=60] {99.0-20*log10(x)};
+\addplot[only marks,mark=*,mark size=1.5pt,otRed!80!black] coordinates {(1,99.0) (2,93.0) (4,87.0) (8,80.9) (16,74.9)};
+\draw[otGreenDark,line width=0.6pt,-{Stealth[length=1.5mm]}] (axis cs:2.15,93.0) -- (axis cs:2.15,87.3);
+\node[pcLegende,anchor=west,text=otGreenDark] at (axis cs:2.25,90) {$-\qty{6}{dB}$ quand $d$ double};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Le niveau sonore diminue de \qty{6}{dB} chaque fois que la distance double : c'est l'atténuation géométrique.}

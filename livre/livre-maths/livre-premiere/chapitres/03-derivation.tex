@@ -1,0 +1,234 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[derivation]{3}{Dérivation}{Partie 2 · Analyse}
+{Taux de variation\enspace·\enspace Nombre dérivé\enspace·\enspace Tangentes\enspace·\enspace Calculs}
+\objectif{Calculer et interpréter un taux de variation.}
+\objectif{Comprendre le nombre dérivé et lire une pente.}
+\objectif{Déterminer l'équation d'une tangente.}
+\objectif{Dériver des sommes, produits et quotients sur leur domaine.}
+\prerequis{Équations de droites et coefficient directeur.}
+\prerequis{Calcul littéral, puissances et fractions.}
+\end{ouverture}
+\essentiel
+\essSection{1}{D'une sécante à une tangente}
+\begin{definition}
+Pour $h\neq0$, le taux de variation entre $a$ et $a+h$ est
+$\dfrac{f(a+h)-f(a)}h$. Lorsqu'il se rapproche d'un nombre réel quand $h$
+se rapproche de 0, ce nombre est le \textbf{nombre dérivé} $f'(a)$.
+\end{definition}
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=108mm,height=62mm,xmin=-0.5,xmax=3.1,ymin=-1,ymax=8,xtick={0,1,2,3},ytick={1,2,4,6,8}]
+\addplot[otNavy,thick,domain=-0.5:2.8,samples=90]{x^2};
+\addplot[otGreen,thick,domain=-0.2:3]{2*x-1};
+\addplot[otOrange,dashed,domain=0:2.6]{3*x-2};
+\addplot[only marks,otNavy]coordinates{(1,1)(2,4)};
+\node[above left,font=\small]at(axis cs:1,1){$A$};
+\node[above left,font=\small]at(axis cs:2,4){$B$};
+\node[otEtiquette,text=otGreenDark]at(axis cs:2.6,3.5){$T$};
+\end{axis}\end{tikzpicture}\par
+\legende{Pour $f(x)=x^2$, la sécante $(AB)$ a pour pente 3 ; la tangente $T$ en $A$ a pour pente 2.}
+\end{center}
+\begin{theoreme}[Équation de la tangente]
+Si $f$ est dérivable en $a$, la tangente au point $A(a;f(a))$ a pour équation
+\[y=f'(a)(x-a)+f(a).\]
+Pour un petit $h$, on utilise l'approximation $f(a+h)\approx f(a)+hf'(a)$.
+\end{theoreme}
+\begin{exemple}
+Pour $f(x)=x^2$ et $a=1$, $f(1)=1$ et $f'(1)=2$, donc $T:y=2x-1$.
+Ainsi $1{,}02^2\approx1+2\times0{,}02=1{,}04$.
+\end{exemple}
+\clearpage
+\essSection{2}{Les dérivées de référence}
+{\renewcommand{\arraystretch}{1.7}\begin{tabularx}{\linewidth}{@{}Y Y Y@{}}
+\toprule \textbf{Fonction} & \textbf{Dérivée} & \textbf{Domaine de dérivabilité}\\\midrule
+$k$ (constante) & $0$ & $\R$\\
+$x^n$, entier $n\geq1$ & $nx^{n-1}$ & $\R$\\
+$1/x$ & $-1/x^2$ & $\R\setminus\{0\}$\\
+$x^n$, entier $n<0$ & $nx^{n-1}$ & $\R\setminus\{0\}$\\
+$\sqrt x$ & $1/(2\sqrt x)$ & $]0;+\infty[$\\\bottomrule
+\end{tabularx}}
+\essSection{3}{Sommes, produits et quotients}
+\begin{propriete}
+Pour des fonctions $u$ et $v$ dérivables, et une constante $k$ :
+\[(ku+v)'=ku'+v',\qquad(uv)'=u'v+uv'.\]
+Sur les intervalles où $v$ ne s'annule pas :
+\[\left(\frac uv\right)'=\frac{u'v-uv'}{v^2},\qquad
+\left(\frac1v\right)'=-\frac{v'}{v^2}.\]
+\end{propriete}
+\begin{savoirfaire}[Dériver puis simplifier]
+Pour $f(x)=\dfrac{x+1}{x-2}$, on exclut $2$, puis
+$f'(x)=\dfrac{(x-2)-(x+1)}{(x-2)^2}=\dfrac{-3}{(x-2)^2}$.
+Toujours annoncer le domaine avant de dériver.
+\end{savoirfaire}
+\begin{attention}
+$(uv)'$ n'est pas $u'v'$. Une fonction peut être définie en un point sans y
+être dérivable : $\sqrt x$ en 0, ou $|x|$ en 0. Les taux à gauche et à droite
+de 0 de $|x|$ valent respectivement $-1$ et $1$.
+\end{attention}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-3-1}
+\begin{exercice}[1]{Calculer une pente moyenne}
+Soit $f(x)=x^2-2x$.
+\begin{questions}\item Calculer le taux de variation entre 1 et 3, puis entre 1 et 2.
+\item Calculer le taux entre 1 et $1+h$ pour $h\neq0$. En déduire $f'(1)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-2}
+\begin{exercice}[1]{Lire la dérivée sur une tangente}
+La tangente à une courbe en $A(2;3)$ passe aussi par $B(4;7)$.
+\begin{questions}\item Déterminer $f(2)$ et $f'(2)$.
+\item Écrire l'équation de cette tangente.
+\end{questions}
+\label{figlivre-r03-02-tangente-ex}
+\figureLivre{r03-02-tangente}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-3}
+\begin{exercice}[1]{Dérivées immédiates}
+Donner les dérivées de $f(x)=5x^4-3x^2+7x-8$, $g(x)=3/x$,
+et $h(x)=\sqrt x+2x$. Préciser les domaines de dérivabilité.
+Donner aussi la dérivée de $k(x)=x^{-3}$ sur $\R\setminus\{0\}$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-4}
+\begin{exercice}[1]{Une tangente à un polynôme}
+$f(x)=x^2+3x-1$.
+\begin{questions}\item Calculer $f'(x)$, $f(1)$ et $f'(1)$.
+\item Déterminer la tangente au point d'abscisse 1.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-5}
+\begin{exercice}[1]{Reconnaître l'opération}
+Sans développer, dériver $u(x)=(2x+1)(x^2-3)$ et
+$v(x)=\dfrac{x+1}{x-2}$. Préciser les domaines.
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-3-6}
+\begin{exercice}[2]{Revenir à la définition}
+On considère $f(x)=x^2$ et un réel $a$.
+\begin{questions}
+\item Montrer que $\dfrac{f(a+h)-f(a)}h=2a+h$ pour $h\neq0$.
+\item En déduire $f'(a)$, puis la tangente au point d'abscisse $a$.
+\item Pour $a=2$, calculer les pentes des sécantes correspondant à $h=1$, $0{,}1$, $-0{,}1$ et $0{,}01$.
+\item Pour un pas $h>0$, écrire une fonction Python \code{secantes(h, n)} qui renvoie la liste
+des coefficients directeurs des sécantes passant par les points d'abscisses $kh$ et $(k+1)h$,
+pour $k$ allant de 0 à $n-1$. Prévoir \code{secantes(0.5, 4)} et comparer à $f'(kh)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-7}
+\begin{exercice}[2]{Dériver trois produits}
+Calculer et simplifier les dérivées de :
+\begin{questions}\item $f(x)=(x^2+1)(3x-2)$ sur $\R$.
+\item $g(x)=x^2\sqrt x$ sur $]0;+\infty[$.
+\item $h(x)=(x-1)^2(x+2)$ sur $\R$, en développant d'abord ou en utilisant la règle du produit.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-8}
+\begin{exercice}[2]{Dériver trois quotients}
+Préciser le domaine de dérivabilité et calculer la dérivée de :
+\begin{tasks}(3)
+\task $f(x)=\dfrac{2x-1}{x+3}$.
+\task $g(x)=\dfrac{x^2+1}{x}$.
+\task $h(x)=\dfrac{x}{x^2+1}$.
+\end{tasks}
+Expliquer pourquoi une simplification préalable peut être utile pour $g$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-9}
+\begin{exercice}[2]{Des tangentes parallèles}
+$f(x)=x^3-3x+1$.
+\begin{questions}\item Calculer $f'(x)$.
+\item Déterminer les abscisses où la tangente est parallèle à $y=9x-2$.
+\item Donner les équations des deux tangentes et vérifier qu'elles sont distinctes.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-10}
+\begin{exercice}[2]{Approcher une racine carrée}
+Soit $f(x)=\sqrt x$.
+\begin{questions}\item Déterminer la tangente à sa courbe en $x=4$.
+\item Utiliser cette tangente pour approcher $\sqrt{4{,}08}$.
+\item Comparer à une valeur donnée par la calculatrice et calculer l'erreur absolue à $10^{-6}$ près.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-11}
+\begin{exercice}[2]{Deux exemples de non-dérivabilité}
+\begin{questions}
+\item Pour $f(x)=|x|$, calculer $\dfrac{f(h)-f(0)}h$ lorsque $h>0$, puis $h<0$.
+Conclure sur la dérivabilité en 0.
+\item Pour $g(x)=\sqrt x$ et $h>0$, montrer que le taux entre 0 et $h$ vaut $1/\sqrt h$.
+Pourquoi cela ne donne-t-il pas un nombre dérivé réel en 0 ?
+\item Ces fonctions sont-elles malgré tout définies en 0 ?
+\end{questions}
+\label{figlivre-r03-11-nonderivable-ex}
+\figureLivre{r03-11-nonderivable}
+
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-3-12}
+\begin{exercice}[3]{Tangentes à une parabole}
+On considère $\Cf:y=x^2$ et le point $P(0;-1)$.
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=97mm,height=56mm,xmin=-2.3,xmax=2.3,ymin=-2,ymax=5,xtick={-2,-1,0,1,2},ytick={-1,1,3,5}]
+\addplot[otNavy,thick,domain=-2.2:2.2,samples=80]{x^2};
+\addplot[otGreen,domain=-2.3:2.3]{2*x-1};
+\addplot[otGreen,domain=-2.3:2.3]{-2*x-1};
+\addplot[only marks,otNavy]coordinates{(0,-1)(1,1)(-1,1)};
+\node[below right,font=\small]at(axis cs:0,-1){$P$};
+\end{axis}\end{tikzpicture}\end{center}
+\begin{questions}
+\item Écrire l'équation $T_a$ de la tangente au point d'abscisse $a$.
+\item Montrer que $P$ appartient à $T_a$ si et seulement si $a^2=1$.
+\item Donner les points de contact et les deux équations. Retrouver le dessin.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-13}
+\begin{exercice}[3]{Vitesse moyenne et vitesse instantanée}
+Un mobile a pour position $s(t)=t^3-6t^2+12t$, en mètres, pour $t\in[0;4]$ secondes.
+\begin{questions}
+\item Calculer la vitesse moyenne entre $t=1$ et $t=3$.
+\item Calculer la vitesse instantanée $v(t)=s'(t)$ et l'écrire sous forme factorisée.
+\item Quand le mobile est-il instantanément à l'arrêt ? Calculer sa position à cet instant.
+\item Le mobile peut-il avoir une vitesse négative selon ce modèle ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-14}
+\begin{exercice}[3]{Retrouver un polynôme grâce à une tangente}
+On cherche $f(x)=ax^2+bx+c$ telle que $f(0)=1$, $f(2)=3$ et $f'(2)=4$.
+\begin{questions}
+\item Traduire les trois conditions en équations sur $a$, $b$ et $c$.
+\item Déterminer ces coefficients et vérifier les trois conditions.
+\item Écrire la tangente $T$ en $x=2$.
+\item Factoriser $f(x)-(4x-5)$. La courbe est-elle au-dessus ou au-dessous de $T$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-15}
+\begin{exercice}[3]{Coût marginal et coût supplémentaire}
+Le coût de fabrication de $q$ objets est modélisé, pour $q\in[0;100]$, par
+$C(q)=0{,}02q^3-0{,}6q^2+10q+100$ euros.
+\partieExo{A}{Calculer et interpréter}
+\begin{questions}\item Calculer $C'(q)$ et le coût marginal $C'(20)$.
+\item Calculer exactement $C(21)-C(20)$ ; comparer à $C'(20)$.
+\item À l'aide de l'approximation affine, estimer $C(20{,}1)-C(20)$.
+\end{questions}
+\partieExo{B}{Contrôler une approximation}
+\begin{questions}[resume]
+\item Développer $C(20+h)-C(20)$ et montrer que cette différence vaut
+$10h+0{,}6h^2+0{,}02h^3$.
+\item Pour $h=0{,}1$, calculer l'erreur de l'approximation de la question 3.
+Expliquer pourquoi une dérivée ne donne pas toujours exactement le coût d'un objet supplémentaire.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

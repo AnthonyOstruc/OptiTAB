@@ -1,0 +1,11 @@
+% Pression mesurée par un ordinateur de plongée en fonction de la profondeur ; au corrigé, droite modèle (devoir n° 4, exercice 2)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=90mm,height=52mm,xmin=0,xmax=27,ymin=0,ymax=4,
+  xtick={0,5,...,25},ytick={0,1,...,3},
+  xlabel={$h$ (m)},ylabel={$P$ (bar)}]
+\solution{\addplot[otNavy,line width=1pt,domain=0:26.5] {1.01+0.101*x};
+  \node[pcLegende,anchor=south east,text=otNavy] at (axis cs:26,3.62) {$P=1{,}01+0{,}101\,h$};}
+\addplot[only marks,mark=*,mark size=1.8pt,otRed!85!black] coordinates {(0,1.01) (5,1.52) (10,2.02) (15,2.52) (20,3.03) (25,3.53)};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Pression absolue relevée par l'ordinateur de plongée au cours d'une descente.}\solution{Les points sont alignés sur une droite : la pression augmente d'environ \qty{0,1}{bar} par mètre.}}

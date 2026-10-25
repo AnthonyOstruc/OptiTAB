@@ -1,0 +1,55 @@
+%% =====================================================================
+%%  Les personnages
+%% =====================================================================
+\liminaire{personnages}{Les personnages}{Six habitants de New York, que vous retrouverez d'unité en unité}
+
+\newcommand{\otCartePerso}[6]{% clé, fond, nom, identité, texte, voix
+  \begin{tcolorbox}[enhanced,colback=white,colframe=otRule,boxrule=0.5pt,arc=2mm,left=3.5mm,right=3.5mm,
+    top=3.5mm,bottom=3.5mm,boxsep=0pt]
+  \begin{minipage}[t]{25mm}\vspace{0pt}\otAvatar[#2]{#1}{24mm}\end{minipage}\hspace{3.5mm}%
+  \begin{minipage}[t]{\dimexpr\linewidth-28.5mm\relax}\vspace{0pt}
+    {\otSemi\fontsize{13}{15}\selectfont\color{\otCoulPerso{#1}}#3}\par\vspace{0.8mm}
+    {\otMedium\fontsize{8.2}{10}\selectfont\color{otMuted}#4}\par\vspace{1.6mm}
+    {\fontsize{9.8}{12.4}\selectfont #5\par}\vspace{1.4mm}
+    {\otRegular\fontsize{7.8}{9.6}\selectfont\color{otMuted}\raisebox{-0.5mm}{\otIconeSeule{casque}{otMuted}{2.8mm}}\enspace #6}
+  \end{minipage}
+  \end{tcolorbox}}
+
+\begin{tcbraster}[raster columns=2,raster equal height=rows,raster column skip=4mm,raster row skip=4mm]
+\otCartePerso{lea}{otGreenTint}{Léa Martin}{27 ans · française, de Lyon · graphiste}
+  {Elle vient d'arriver à New York pour travailler chez \en{Bright Ideas}. Curieuse et un peu
+   timide au début, elle apprend l'anglais… comme vous !}{accent américain}
+\otCartePerso{jack}{otNavyTint}{Jack Miller}{30 ans · américain, de New York · développeur web}
+  {Le collègue de Léa. Toujours de bonne humeur, il connaît tous les cafés du quartier et ne
+   rate jamais un match de basket.}{accent américain}
+\otCartePerso{emma}{otVioletTint}{Emma Clarke}{29 ans · britannique, de Londres · illustratrice}
+  {Arrivée de Londres il y a deux ans. Elle aime le thé, les musées et taquiner Jack sur
+   l'anglais « des Américains ».}{accent britannique}
+\otCartePerso{carter}{otOrangeTint}{Ben Carter}{52 ans · américain, de Chicago · directeur du studio}
+  {Le patron de \en{Bright Ideas}. Chaleureux et exigeant, il veut que toute son équipe
+   l'appelle par son prénom.}{accent américain}
+\otCartePerso{lopez}{otRedTint}{Rosa Lopez}{61 ans · américaine, d'origine mexicaine · propriétaire}
+  {Elle loue à Léa un petit appartement à Brooklyn. Elle connaît tout le quartier… et tous
+   ses habitants.}{accent américain}
+\otCartePerso{sam}{otTealTint}{Sam Brooks}{24 ans · américain, de Brooklyn · étudiant en musique}
+  {Le voisin de palier de Léa. Barista le matin, guitariste le soir, il est toujours prêt à
+   rendre service.}{accent américain}
+\end{tcbraster}
+
+\vspace{4mm}
+\noindent\begin{tikzpicture}
+  \fill[otNavyTint,rounded corners=2mm] (0,0) rectangle (170mm,34mm);
+  \begin{scope}
+    \clip[rounded corners=2mm] (0,0) rectangle (170mm,34mm);
+    % silhouette de Manhattan
+    \foreach \x/\w/\h in {62/7/14,70/5/19,76/8/12,85/6/24,92/4/16,97/7/21,105/5/28,111/8/15,
+        120/6/22,127/4/13,132/7/18,140/5/25,146/8/14,155/6/20,162/7/12}{%
+      \fill[otNavy!22] (\x mm,0) rectangle ++(\w mm,\h mm);}
+    \fill[otNavy!30] (105.8mm,28mm) -- (107.5mm,33mm) -- (109.2mm,28mm) -- cycle;
+    \fill[otNavy!35] (0,0) rectangle (170mm,2mm);
+  \end{scope}
+  \node[anchor=north west,inner sep=0pt,text width=54mm,align=left] at (6mm,29mm)
+    {{\otSemi\fontsize{7}{8.5}\selectfont\color{otNavy}\otCaps[11]{Le décor}}\par\vspace{1.4mm}
+     {\fontsize{9.6}{12}\selectfont\textbf{New York} : le studio est à Manhattan, l'appartement
+      de Léa à Brooklyn, de l'autre côté du pont.}};
+\end{tikzpicture}

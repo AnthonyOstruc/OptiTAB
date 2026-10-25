@@ -1,0 +1,16 @@
+% Usure d'une pile Daniell qui débite 20 mA : quantités d'ions au cours du temps (L'essentiel, chapitre 8)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=42mm,xmin=0,xmax=16.5,ymin=0,ymax=11.5,
+  xtick={0,2,...,16},ytick={0,2,...,10},
+  xlabel={$t$ (h)},ylabel={quantité de matière (mmol)}]
+\addplot[otNavy,line width=1pt,domain=0:13.40,samples=2] {5.0-5.0*x/13.40};
+\addplot[otNavy,line width=1pt,domain=13.40:16,samples=2] {0};
+\addplot[otGreenDark,line width=1pt,domain=0:13.40,samples=2] {5.0+5.0*x/13.40};
+\addplot[otGreenDark,line width=1pt,domain=13.40:16,samples=2] {10};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:13.40,0) -- (axis cs:13.40,11);
+\node[pcLegende,text=otNavy,anchor=north east] at (axis cs:6.4,2.5) {ions \ce{Cu^2+}};
+\node[pcLegende,text=otGreenDark,anchor=south east] at (axis cs:6.4,7.6) {ions \ce{Zn^2+}};
+\node[pcLegende,anchor=east,align=right] at (axis cs:13.1,4.6) {ions \ce{Cu^2+} épuisés :\\pile usée à 13,4~h};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{À intensité constante, les quantités d'ions varient linéairement ; la pile est usée quand le réactif limitant, \ce{Cu^2+}, est épuisé.}

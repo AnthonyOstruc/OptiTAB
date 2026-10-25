@@ -1,0 +1,1063 @@
+\BeginChapter{01}{Formation des images}
+\Page{Chapitre 01\quad /\quad Ondes et signaux}{Formation des images}{ch01-chapitre-01}
+\vspace{2mm}
+{\otLight\fontsize{18}{23}\selectfont\color{otNavy}Optique géométrique, instruments et guidage}\par
+\vspace{3mm}
+Comment une lentille peut-elle former une image sur un écran, donner une image virtuelle ou guider la lumière vers un capteur ? Le même modèle de rayons permet d'étudier ces situations, à condition de connaître ses hypothèses et ses limites.
+\Sub{Les objectifs du chapitre}
+\begin{itemize}
+\item Caractériser une source lumineuse et relier fréquence, longueur d'onde, vitesse et indice.
+\item Appliquer les lois de Snell-Descartes, établir un seuil de réflexion totale et tracer le trajet d'un rayon.
+\item Construire et calculer des images par un miroir plan ou une lentille mince, avec des distances algébriques cohérentes.
+\item Relier la netteté à un détecteur et comprendre les réglages d'un œil ou d'un appareil photographique.
+\item Établir les conditions de guidage et l'étalement temporel d'une fibre à saut d'indice.
+\item Former une image au laboratoire, exploiter des mesures et discuter une incertitude.
+\end{itemize}
+\Sub{Les acquis à réactiver}
+Conversions d'unités, trigonométrie du triangle rectangle, angles en radians, proportionnalité et résolution d'équations simples. Le diagnostic p.\,\pageref{ch01-diagnostic} permet de faire le point avant de commencer.
+\begin{loi}{Le parcours du chapitre}
+\begin{tabularx}{\linewidth}{@{}Y r@{}}
+\tocrow{Notions et capacités du programme}{ch01-concordance}
+\tocrow{Cours et schémas}{ch01-c-sources}
+\tocrow{TP et activité numérique}{ch01-c-tp}
+\tocrow{24 exercices progressifs}{ch01-td1}
+\tocrow{3 défis, DM et DS}{ch01-defis1}
+\tocrow{Indications puis corrigés}{ch01-indices}
+\tocrow{Parcours sur des sujets authentiques}{ch01-authentiques}
+\end{tabularx}
+\end{loi}
+
+
+\Page{Programme officiel}{Ce que tu dois savoir faire}{ch01-concordance}
+La concordance ci-dessous couvre la section \textbf{1.1 Formation des images}, pages internes 12 et 13 de l'annexe de physique-chimie MPSI. Le découpage en chapitres est un choix éditorial ; il n'est pas imposé par le texte officiel.
+\begingroup\small\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}Y p{43mm}@{}}
+\toprule
+Capacité travaillée & Où la vérifier\\\midrule
+Décrire un spectre et relier couleur et longueur d'onde & Cours p.\,\pageref{ch01-c-sources} ; E01, E02\\
+Définir le modèle des rayons et ses limites & p.\,\pageref{ch01-c-modele} ; E03\\
+Appliquer Snell-Descartes et établir la réflexion totale & p.\,\pageref{ch01-c-lois}--\pageref{ch01-c-totale} ; E04--E06\\
+Construire une image par un miroir plan & p.\,\pageref{ch01-c-miroir} ; E07\\
+Énoncer les conditions de Gauss et relier netteté et détecteur & p.\,\pageref{ch01-c-gauss} ; E08, E20\\
+Définir centre, foyers principaux et secondaires, focale, vergence & p.\,\pageref{ch01-c-rayons} ; E09, E13\\
+Construire des images réelles ou virtuelles, à distance finie ou infinie & p.\,\pageref{ch01-c-reelle}--\pageref{ch01-c-virtuelle} ; E10--E13\\
+Employer Descartes et Newton, calculer le grandissement & p.\,\pageref{ch01-c-newton} ; E10, E14\\
+Établir la condition de projection d'un objet réel & p.\,\pageref{ch01-c-projection} ; E15, DM\\
+Modéliser l'œil, citer résolution et accommodation & p.\,\pageref{ch01-c-oeil} ; E16, E17\\
+Modéliser un appareil photographique et ses réglages & p.\,\pageref{ch01-c-photo} ; E18, E19\\
+Construire géométriquement la profondeur de champ & p.\,\pageref{ch01-c-profondeur} ; E20, D1\\
+Établir cône d'acceptance et dispersion intermodale & p.\,\pageref{ch01-c-fibre}--\pageref{ch01-c-dispersion} ; E21, E22, D2\\
+Former et mesurer une image ; exploiter les incertitudes & TP et numérique p.\,\pageref{ch01-c-tp}--\pageref{ch01-c-numerique}\\
+\bottomrule
+\end{tabularx}\endgroup
+\begin{methode}{Approfondissements identifiés}
+La méthode de Bessel, les associations de lentilles et le microscope sont des applications des outils du programme. Les défis et les parcours de concours sont guidés ; leurs résultats spécifiques ne sont pas des formules supplémentaires à mémoriser.
+\end{methode}
+
+\Page{Diagnostic\quad /\quad 15 min}{Avant d'ouvrir le cours}{ch01-diagnostic}
+Sans document, répondre en une ou deux phrases ou par un calcul court. Ce diagnostic n'est pas une note de niveau : il identifie les acquis à réactiver.
+\begin{enumerate}[label=\textcolor{otNavy}{\bfseries D\arabic*.},itemsep=5mm]
+\item Une lumière de fréquence $5{,}00\times10^{14}\ \mathrm{Hz}$ se propage dans le vide. Calculer sa longueur d'onde avec $c=3{,}00\times10^8\ \mathrm{m\,s^{-1}}$.
+\item Un rayon atteint une surface sous un angle de $30^\circ$ avec la surface. Quel angle faut-il introduire dans la loi de réfraction ?
+\item La fréquence d'une onde lumineuse change-t-elle quand elle traverse un dioptre immobile ? Et sa longueur d'onde ?
+\item Une lentille convergente de focale $10\ \mathrm{cm}$ a quelle vergence en dioptries ?
+\item Un objet est à $30\ \mathrm{cm}$ à gauche d'une lentille. L'axe est orienté vers la droite. Donner la valeur algébrique de $\oa$.
+\item Une image virtuelle peut-elle être photographiée ? Peut-on la recueillir directement sur un écran placé à sa position ? Expliquer la différence.
+\item Pour un petit angle de $2^\circ$, calculer sa valeur en radians puis estimer sa tangente.
+\item Quel élément de l'œil joue le rôle de capteur ? Quel paramètre varie lors de l'accommodation dans le modèle de l'œil réduit ?
+\end{enumerate}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les angles sont maîtrisés.}
+\checkline{Je distingue longueur positive et distance algébrique.}
+\checkline{Je sais expliquer ce qu'est une image virtuelle.}
+\checkline{Je peux dessiner une lentille et ses foyers.}
+Corrigé p.\,\pageref{ch01-corr-diag}. Une hésitation sur D2 ou D5 mérite d'être corrigée avant les exercices.
+\end{docu}
+\Page{Cours\quad /\quad 1}{Sources et spectres}{ch01-c-sources}
+La lumière émise par un objet peut comporter une seule fréquence dans un modèle idéal, quelques raies ou une gamme continue de fréquences. Un \textbf{spectre} décrit la répartition de l'intensité lumineuse en fonction de la fréquence ou de la longueur d'onde dans le vide.
+\begin{loi}{Deux idéalisations utiles}
+Une source \textbf{ponctuelle} a des dimensions négligeables à l'échelle de l'expérience. Une source \textbf{monochromatique} est décrite par une seule fréquence $\nu$ et une longueur d'onde dans le vide $\lambda_0$ :
+\[\result{\lambda_0=\frac{c}{\nu}},\qquad c=299\,792\,458\ \mathrm{m\,s^{-1}}.\]
+Une source étendue se modélise par un ensemble de sources ponctuelles. Une source polychromatique se décompose en composantes monochromatiques.
+\end{loi}
+\fig{ch01/spectres}{Deux types de spectres ; les hauteurs de raies ne sont pas des données expérimentales.}
+\Sub{Couleur et longueur d'onde}
+Le visible s'étend approximativement de $400$ à $800\ \mathrm{nm}$, selon la sensibilité du détecteur humain. Repères : violet vers $400$ nm, bleu vers $450$ nm, vert vers $550$ nm, rouge vers $650$ nm. Ces limites ne sont pas des frontières absolues. Une couleur perçue peut aussi résulter d'un mélange spectral.
+\begin{methode}{Exemple à refaire}
+Pour $\nu=5{,}45\times10^{14}\ \mathrm{Hz}$, on trouve $\lambda_0\simeq550\ \mathrm{nm}$ : cette composante est verte. Le nanomètre vaut $10^{-9}\ \mathrm{m}$.
+\end{methode}
+\source{Modèles usuels : filament chaud, spectre continu ; lampe spectrale, raies ; laser, bande étroite que l'on assimile souvent à une composante monochromatique.}
+
+\Page{Cours\quad /\quad 2}{Le modèle des rayons}{ch01-c-modele}
+Un \textbf{rayon lumineux} représente localement une direction et un sens de propagation de la lumière. Il ne représente ni une particule matérialisée, ni un faisceau de diamètre strictement nul que l'on pourrait isoler au laboratoire.
+\begin{loi}{Milieu transparent et indice}
+Dans le domaine considéré, un milieu transparent laisse se propager la lumière avec une absorption négligeable. Il est homogène si ses propriétés sont indépendantes de la position et isotrope si elles sont indépendantes de la direction.
+\[\result{n(\lambda_0)=\frac{c}{v}},\qquad
+\lambda=\frac{v}{\nu}=\frac{\lambda_0}{n}.\]
+L'indice est sans dimension ; $v$ est la vitesse de phase dans le milieu. Pour les milieux transparents ordinaires étudiés ici, $n\geq1$. La fréquence est conservée au passage d'une interface immobile.
+\end{loi}
+\fig{ch01/modele}{Propagation rectiligne et limite liée à la diffraction.}
+\Sub{Domaine de validité}
+Dans un milieu homogène et isotrope, les rayons sont rectilignes. Dans un système réciproque, le chemin peut être parcouru en sens inverse : c'est le \textbf{retour inverse de la lumière}. Les lois géométriques s'appliquent séparément à chaque longueur d'onde si le milieu est dispersif.
+\begin{piege}{Une échelle doit être comparée à une autre}
+L'approximation géométrique demande que les dimensions pertinentes, par exemple une ouverture, soient grandes devant $\lambda$. Elle ne décrit pas correctement la diffraction, les interférences, la polarisation ni les détails d'une propagation guidée à l'échelle de la longueur d'onde.
+\end{piege}
+
+\Page{Cours\quad /\quad 3}{Réflexion et réfraction}{ch01-c-lois}
+Un \textbf{dioptre} est une interface entre deux milieux transparents. Le point d'arrivée est le point d'incidence $I$. La normale est perpendiculaire à la surface locale ; elle définit avec le rayon incident le \textbf{plan d'incidence}.
+\fig{ch01/descartes}{Les angles d'incidence et de réfraction se mesurent depuis la normale.}
+\begin{loi}{Lois de Snell-Descartes}
+Les rayons incident, réfléchi et réfracté appartiennent au plan d'incidence. Avec des angles géométriques positifs entre $0$ et $\pi/2$ :
+\[\result{i_{\mathrm{réfléchi}}=i},\qquad
+\result{n_1\sin i=n_2\sin r}.\]
+Les rayons incident et réfléchi se trouvent de part et d'autre de la normale. Lorsque $n_2>n_1$, le rayon réfracté se rapproche de la normale : $r<i$.
+\end{loi}
+\begin{methode}{Traiter un dioptre sans erreur d'angle}
+Tracer la surface et sa normale ; identifier le milieu de départ ; écrire la loi avant tout calcul ; vérifier que l'argument de $\arcsin$ appartient à $[0,1]$ ; comparer $i$ et $r$ avec les indices.
+\end{methode}
+\Sub{Application numérique}
+De l'air ($n_1=1{,}00$) vers un verre ($n_2=1{,}50$), à $i=40{,}0^\circ$ :
+\[r=\arcsin\!\left(\frac{1{,}00}{1{,}50}\sin40{,}0^\circ\right)=25{,}4^\circ.\]
+Le modèle fournit une direction. Il ne donne pas la proportion d'énergie réfléchie et transmise ; les coefficients de Fresnel ne sont pas nécessaires ici.
+
+\Page{Cours\quad /\quad 4}{La réflexion totale}{ch01-c-totale}
+\Sub{Une condition d'existence du rayon transmis}
+La relation $\sin r=(n_1/n_2)\sin i$ n'admet un angle réel que si $(n_1/n_2)\sin i\leq1$. Si $n_1\leq n_2$, cette condition est toujours satisfaite pour un angle d'incidence admissible.
+\begin{loi}{Seuil de réflexion totale}
+Pour un passage d'un milieu d'indice $n_1$ vers un milieu d'indice $n_2<n_1$, on définit
+\[\result{i_c=\arcsin\!\left(\frac{n_2}{n_1}\right)}.\]
+Si $i<i_c$, un rayon transmis existe. Si $i=i_c$, la direction transmise est rasante. Si $i>i_c$, il n'existe plus de rayon propagatif réfracté : il y a \textbf{réflexion totale} dans ce modèle.
+\end{loi}
+\fig{ch01/totale}{La réflexion totale exige à la fois $n_1>n_2$ et une incidence suffisante.}
+\begin{methode}{Démonstration à savoir refaire}
+Partir de $\sin r\leq1$, isoler $\sin i\leq n_2/n_1$ puis utiliser la croissance de $\sin$ sur $[0,\pi/2]$. Il faut annoncer le sens du passage avant d'introduire $i_c$.
+\end{methode}
+\Sub{Exemple et interprétation}
+Pour verre-air, $n_1=1{,}50$ et $n_2=1{,}00$, donc $i_c=41{,}8^\circ$. Un rayon dans le verre arrivant à $50^\circ$ est totalement réfléchi. Le même angle pour un rayon arrivant depuis l'air ne produit aucune réflexion totale.
+\begin{piege}{Le mot « totale » concerne ici l'absence de transmission propagative}
+On néglige l'absorption et on suppose une interface idéale entre milieux transparents. La description ondulatoire d'un champ évanescent dépasse ce chapitre.
+\end{piege}
+
+\Page{Cours\quad /\quad 5}{Objet et image dans un miroir}{ch01-c-miroir}
+Un point objet est \textbf{réel} pour un système lorsque les rayons incidents en proviennent effectivement. Un point image est \textbf{réel} si les rayons émergents y convergent ; il est \textbf{virtuel} si seuls leurs prolongements en arrière se coupent. Un objet virtuel correspond à un faisceau incident qui convergerait vers ce point en l'absence du système.
+\fig{ch01/miroir}{L'image virtuelle $A'$ est le symétrique de $A$ par rapport au miroir.}
+\begin{loi}{Miroir plan et stigmatisme}
+Un miroir plan associe à un point objet un point image symétrique par rapport à son plan. Tous les rayons réfléchis ont des prolongements passant par ce point : le miroir plan réalise un \textbf{stigmatisme rigoureux} dans le modèle géométrique.
+\end{loi}
+\Sub{Justifier la construction}
+Projeter $A$ orthogonalement sur le miroir en $H$. Construire $A'$ de l'autre côté avec $HA'=HA$. Pour un point d'incidence quelconque, les triangles rectangles $AHI$ et $A'HI$ ont mêmes dimensions ; leurs angles vérifient donc la loi de réflexion. Le rayon réfléchi est aligné avec $A'I$.
+\begin{piege}{Une image virtuelle est observable}
+Les rayons réfléchis entrent réellement dans l'œil ou l'appareil photographique. Un instrument peut ensuite en former une image réelle sur son propre capteur. En revanche, un écran placé au point virtuel ne reçoit pas des rayons qui y convergent.
+\end{piege}
+Pour un objet étendu, on construit l'image de plusieurs points. Les longueurs sont conservées. La formulation usuelle « le miroir inverse droite et gauche » est imprécise : la symétrie agit suivant la direction normale au miroir.
+
+\Page{Cours\quad /\quad 6}{Netteté et conditions de Gauss}{ch01-c-gauss}
+Un système est \textbf{stigmatique} pour un couple de points si tous les rayons issus du point objet et traversant le système passent par un même point image, ou semblent en provenir. Une lentille réelle ne possède généralement pas cette propriété pour tous les rayons.
+\begin{loi}{L'approximation de Gauss}
+Pour un système centré, on ne conserve que les rayons \textbf{proches de l'axe optique} et \textbf{faiblement inclinés} par rapport à cet axe. Les angles paraxiaux sont petits et s'expriment en radians :
+\[\sin\theta\simeq\tan\theta\simeq\theta.\]
+Dans ce cadre, une lentille mince réalise un stigmatisme et un aplanétisme approchés. Un petit objet plan perpendiculaire à l'axe a une image approximativement plane et perpendiculaire à l'axe.
+\end{loi}
+\fig{ch01/gauss}{Le diaphragme réduit les rayons éloignés de l'axe ; il ne rend pas tout objet paraxial.}
+\Sub{Le rôle du détecteur}
+Un point peut former une petite tache et être jugé net si celle-ci est plus petite que le détail résolu par le détecteur. Sur un capteur numérique, on compare sa taille à une dimension de pixel ou à un cercle de confusion choisi. Sur la rétine, la résolution angulaire fournit un autre critère.
+\begin{methode}{Vérifier une approximation}
+À $\theta=0{,}050\ \mathrm{rad}$, $\tan\theta=0{,}05004$ : l'erreur relative est d'environ $0{,}083\,\%$. À $30^\circ$, l'écart relatif dépasse $10\,\%$. « Petit » doit être rapporté à la précision recherchée.
+\end{methode}
+\begin{piege}{Conditions et conséquences}
+« Les rayons convergent » n'est pas une condition de Gauss. Proximité de l'axe et faible inclinaison sont les conditions ; stigmatisme et aplanétisme approchés en sont les conséquences.
+\end{piege}
+
+\Page{Cours\quad /\quad 7}{Lentilles et rayons particuliers}{ch01-c-rayons}
+Une lentille mince est représentée par un plan passant par son centre optique $O$. L'axe est orienté dans le sens de propagation incidente, ici de gauche à droite. On note $f'=\overline{OF'}$ la distance focale image et $V=1/f'$ la vergence, en $\mathrm{m^{-1}}$ ou dioptries ($\delta$).
+\begin{loi}{Trois propriétés de construction}
+\begin{itemize}
+\item Le rayon passant par $O$ n'est pas dévié, dans le modèle de lentille mince.
+\item Un rayon incident parallèle à l'axe ressort en passant par $F'$, ou en semblant en provenir.
+\item Un rayon incident passant par $F$, ou dirigé vers $F$, ressort parallèle à l'axe.
+\end{itemize}
+Dans le même milieu de part et d'autre, $\overline{OF}=-f'$. Une lentille convergente a $f'>0$ ; une lentille divergente a $f'<0$.
+\end{loi}
+\fig{ch01/foyers}{Un faisceau parallèle incliné converge dans le plan focal image en un foyer secondaire.}
+\Sub{Foyers secondaires et objet à l'infini}
+Chaque direction incidente correspond à un point du plan focal image. Pour le construire, tracer le rayon de cette direction qui traverse $O$ ; son intersection avec le plan passant par $F'$ donne l'image. À une direction faisant un angle algébrique $\theta$ avec l'axe correspond $y'\simeq f'\theta$.
+Le \textbf{plan focal objet}, perpendiculaire à l'axe en $F$, est l'ensemble des points dont les faisceaux émergents sont parallèles. Les foyers secondaires sont les points hors axe de ces plans.
+\begin{piege}{Le foyer est un point ; le plan focal est un plan}
+Un point à l'infini hors de l'axe ne donne pas une image en $F'$. Son image appartient au plan focal image et se trouve hors de l'axe.
+\end{piege}
+
+\Page{Cours\quad /\quad 8}{Construire une image réelle}{ch01-c-reelle}
+\begin{methode}{Une construction entièrement justifiée}
+Pour un petit objet $AB$ perpendiculaire à l'axe, placer $A$, $B$, $O$, $F$ et $F'$. Depuis $B$, tracer deux rayons particuliers ; leur intersection donne $B'$. Le point $A'$ est la projection de $B'$ sur l'axe. Ajouter les flèches de propagation et distinguer les prolongements des trajets réels.
+\end{methode}
+\fig{ch01/lentille-reelle}{Objet au-delà de $2f'$ : image réelle, renversée et réduite. Les positions du dessin sont calculées.}
+\begin{loi}{Relations de Descartes}
+Dans les conditions de Gauss, pour une lentille mince dans le même milieu de part et d'autre :
+\[\result{\frac{1}{\oap}-\frac{1}{\oa}=\frac{1}{f'}},\qquad
+\result{\gamma=\frac{\overline{A'B'}}{\overline{AB}}=\frac{\oap}{\oa}}.\]
+Le grandissement $\gamma$ est algébrique. $\gamma<0$ signifie que l'image est renversée ; $|\gamma|>1$ qu'elle est agrandie.
+\end{loi}
+\Sub{Exemple avec unités cohérentes}
+Une lentille a $f'=15{,}0\ \mathrm{cm}$. L'objet est à $\oa=-40{,}0\ \mathrm{cm}$, de taille $\overline{AB}=2{,}00\ \mathrm{cm}$.
+\[\frac1{\oap}=\frac1{15{,}0}-\frac1{40{,}0}=\frac1{24{,}0}\ \mathrm{cm^{-1}}.\]
+Ainsi $\oap=+24{,}0\ \mathrm{cm}$, $\gamma=-0{,}600$ et $\overline{A'B'}=-1{,}20\ \mathrm{cm}$. Le calcul et le dessin donnent les mêmes nature et orientation.
+
+\Page{Cours\quad /\quad 9}{Construire une image virtuelle}{ch01-c-virtuelle}
+\Sub{La loupe : objet entre $F$ et $O$}
+\fig{ch01/lentille-virtuelle}{Lentille convergente : les rayons émergents divergent ; leurs prolongements se coupent du côté de l'objet.}
+Ici $f'=2$ unités et $\oa=-1$ unité : $\oap=-2$ unités et $\gamma=+2$. L'image est virtuelle, droite et agrandie. Les traits pointillés ne représentent pas de la lumière qui repart vers la gauche.
+\Sub{Une lentille divergente et un objet réel}
+\fig{ch01/lentille-divergente}{Lentille divergente : l'image d'un objet réel est virtuelle, droite et réduite.}
+Ici $f'=-2$ unités et $\oa=-4$ unités : $\oap=-4/3$ unités et $\gamma=1/3$. Le foyer image $F'$ est à gauche et le foyer objet $F$ à droite. Les propriétés des rayons restent valables avec des prolongements.
+\begin{piege}{La nature dépend du faisceau}
+« Convergente » qualifie la lentille ; « réelle » qualifie l'image. Une lentille convergente ne donne pas systématiquement une image réelle. Une lentille divergente peut donner une image réelle si elle reçoit un objet virtuel adapté.
+\end{piege}
+
+\Page{Cours\quad /\quad 10}{Distances et formules de Newton}{ch01-c-newton}
+\fig{ch01/distances}{Une distance algébrique est positive dans le sens choisi pour l'axe ; l'origine intervient dans sa définition.}
+\Sub{Passer de Descartes à Newton}
+Posons $p=\oa$, $q=\oap$, $x=\overline{FA}=p+f'$ et $x'=\overline{F'A'}=q-f'$. La relation $1/q-1/p=1/f'$ donne $pq=f'(p-q)$, donc
+\[(p+f')(q-f')=pq-f'p+f'q-f'^2=-f'^2.\]
+\begin{loi}{Relations de Newton et grandissement}
+\[\result{\overline{FA}\,\overline{F'A'}=-f'^2},\qquad
+\result{\gamma=\frac{f'}{\overline{FA}}=-\frac{\overline{F'A'}}{f'}}.\]
+Les expressions du grandissement découlent de $q/p$ et des mêmes substitutions. Elles s'utilisent avec des distances algébriques, jamais avec des longueurs arbitrairement rendues positives.
+\end{loi}
+\Sub{Choisir la bonne origine}
+Si l'objet est donné à $2{,}0\ \mathrm{mm}$ avant le foyer objet d'une lentille de $f'=20{,}0\ \mathrm{mm}$, on dispose directement de $\overline{FA}=-2{,}0\ \mathrm{mm}$. Newton donne $\overline{F'A'}=+200\ \mathrm{mm}$, puis $\oap=220\ \mathrm{mm}$ et $\gamma=-10$.
+\begin{methode}{Contrôle de cohérence en quatre points}
+\begin{enumerate}
+\item Toutes les distances d'une même équation utilisent la même unité.
+\item Les signes correspondent au schéma orienté.
+\item Chaque membre de la conjugaison a la dimension d'un inverse de longueur.
+\item Un grandissement est sans dimension ; son signe décrit l'orientation.
+\end{enumerate}
+\end{methode}
+Un objet placé exactement en $F$ donne une image à l'infini : la formule impose $1/q=0$. Ce cas ne se traite pas en divisant par une distance nulle dans l'écriture de Newton.
+
+\Page{Cours\quad /\quad 11}{Projeter sur un écran}{ch01-c-projection}
+On considère un objet réel et un écran, séparés par une distance $D>0$. Une lentille convergente de focale $f'>0$ est placée entre eux. Notons $x>0$ la distance objet-lentille : $\oa=-x$ et $\oap=D-x>0$.
+\Sub{Démonstration de la condition de projection}
+\[\frac1{D-x}+\frac1x=\frac1{f'}
+\quad\Longleftrightarrow\quad x(D-x)=Df'
+\quad\Longleftrightarrow\quad x^2-Dx+Df'=0.\]
+Le discriminant est $D(D-4f')$. Une position physique existe donc si et seulement si $D\geq4f'$, avec $0<x<D$.
+\begin{loi}{Une condition à établir}
+\[\result{D\geq4f'}.\]
+Si $D>4f'$, deux positions donnent une image nette. Si $D=4f'$, une seule position convient : l'objet et l'image sont à $2f'$ de la lentille et $\gamma=-1$. Si $D<4f'$, aucune position de la lentille entre objet et écran ne convient.
+\end{loi}
+\fig{ch01/bessel}{Les deux positions s'échangent les distances objet et image.}
+\Sub{Application : méthode de Bessel}
+Pour $D>4f'$, les solutions sont $x_{1,2}=(D\mp\sqrt{D(D-4f')})/2$. Leur écart $d$ vérifie $d^2=D(D-4f')$, d'où
+\[\result{f'=\frac{D^2-d^2}{4D}}.\]
+Cette formule est une application à retrouver, pas un remplacement des relations de conjugaison. Pour $D=1{,}00\ \mathrm{m}$ et $d=0{,}600\ \mathrm{m}$, on obtient $f'=0{,}160\ \mathrm{m}$ et les positions $x_1=0{,}200\ \mathrm{m}$, $x_2=0{,}800\ \mathrm{m}$.
+
+\Page{Cours\quad /\quad 12}{Le modèle de l'œil}{ch01-c-oeil}
+Dans le modèle de l'\textbf{œil réduit}, une lentille convergente de vergence variable représente l'effet de la cornée et du cristallin. La rétine est un capteur plan fixe à une distance $\ell$ de l'ordre de $17\ \mathrm{mm}$ de la lentille équivalente. La pupille joue le rôle de diaphragme.
+\fig{ch01/oeil}{L'accommodation fait varier la vergence ; la rétine reste à la même place.}
+\begin{loi}{Accommodation et points limites}
+Pour un objet réel à distance $d>0$, $\oa=-d$ et $\oap=\ell$ :
+\[\result{V=\frac1\ell+\frac1d}.\]
+Le \textbf{punctum remotum} est le point le plus éloigné vu net sans accommodation. Il est à l'infini pour un œil emmétrope. Le \textbf{punctum proximum} est le point le plus proche vu net à accommodation maximale.
+\end{loi}
+\Sub{Ordres de grandeur à connaître}
+Pour un jeune œil emmétrope, on adopte souvent une distance minimale conventionnelle de vision distincte de $25\ \mathrm{cm}$ ; elle varie beaucoup avec l'âge et la personne. La plage de vision nette s'étend alors approximativement de $25\ \mathrm{cm}$ à l'infini.
+La limite de résolution angulaire usuelle de l'œil est de l'ordre d'\textbf{une minute d'arc}, soit $\pi/10800\simeq2{,}9\times10^{-4}\ \mathrm{rad}$. Deux détails séparés de $s$ à une distance $d\gg s$ sous-tendent $\theta\simeq s/d$.
+\begin{methode}{Exemple}
+Avec $\ell=17\ \mathrm{mm}$, la vergence au repos vaut $58{,}8\ \delta$. À $d=25\ \mathrm{cm}$, elle vaut $62{,}8\ \delta$ : l'effort d'accommodation correspond à une variation de $4{,}0\ \delta$.
+\end{methode}
+
+\Page{Cours\quad /\quad 13}{L'appareil photographique}{ch01-c-photo}
+Un appareil photographique est modélisé par une lentille convergente, un diaphragme et un capteur. La mise au point ajuste la distance objectif-capteur ; dans le modèle élémentaire, la focale reste fixe lors de ce réglage.
+\fig{ch01/photo}{Le capteur reçoit une image réelle et généralement renversée. Le dessin représente le modèle, sans échelle métrique.}
+\Sub{Focale et cadrage}
+Pour un objet lointain, l'image se forme près du plan focal image. À un petit angle de champ $\theta$ correspond $y'\simeq f'\theta$. Augmenter la focale agrandit l'image d'un objet donné et réduit le champ cadré par un capteur de taille fixée.
+Pour un objet réel à distance $p>f'$, la distance de mise au point est
+\[\result{q=\frac{f'p}{p-f'}},\qquad |\gamma|=\frac{q}{p}.\]
+\begin{loi}{Trois réglages à distinguer}
+\textbf{Focale} : agit sur le grandissement et le champ.\par
+\textbf{Ouverture} : le nombre d'ouverture est $N=f'/a$, où $a$ est le diamètre du diaphragme. Fermer augmente $N$, diminue la lumière reçue et réduit le flou géométrique de défocalisation.\par
+\textbf{Durée d'exposition} : une durée plus grande augmente l'énergie reçue mais aussi le flou de mouvement. À éclairement de scène fixé, le modèle simple donne une exposition proportionnelle à $T/N^2$.
+\end{loi}
+\begin{piege}{Fermer ne rend pas toujours l'image plus nette}
+À très petite ouverture, la diffraction augmente. L'amélioration de la profondeur de champ géométrique doit être distinguée de la résolution globale de l'instrument.
+\end{piege}
+
+\Page{Cours\quad /\quad 14}{Construire la profondeur de champ}{ch01-c-profondeur}
+Le capteur est fixé au plan $q_0$, correspondant à une mise au point sur un objet à distance $p_0$. Un autre point de l'axe, à distance $p$, aurait son image ponctuelle au plan $q=f'p/(p-f')$. Sur le capteur, le faisceau dessine donc un disque plutôt qu'un point.
+\fig{ch01/profondeur}{Suivre les deux rayons issus des bords du diaphragme. Leur écart au plan du capteur donne le diamètre de flou.}
+\Sub{Construction géométrique exigible}
+\begin{enumerate}
+\item Construire l'image idéale du point objet en utilisant la conjugaison.
+\item Relier les bords de l'ouverture à ce point image.
+\item Intersecter le cône ainsi obtenu avec le plan du capteur.
+\item Déclarer le point acceptable si le diamètre $b$ de la tache est inférieur au diamètre admissible $\varepsilon$.
+\end{enumerate}
+\begin{loi}{Expression obtenue par triangles semblables}
+Si le diaphragme de diamètre $a$ est dans le plan de la lentille :
+\[\result{b=a\left|1-\frac{q_0}{q}\right|},\qquad
+\text{image acceptable si }b\leq\varepsilon.\]
+La \textbf{profondeur de champ} est l'intervalle des distances objets satisfaisant ce critère pour le réglage choisi. Elle dépend donc du critère de netteté, et pas seulement de la lentille.
+\end{loi}
+Fermer le diaphragme diminue $a$ et élargit l'intervalle acceptable dans ce modèle. Pour chiffrer un effet de focale, il faut préciser ce qui reste fixé : distance de mise au point, cadrage, taille du capteur et nombre d'ouverture.
+\source{Le défi D1 déduit les bornes de cet intervalle sans demander de mémoriser une formule d'hyperfocale.}
+
+\Page{Cours\quad /\quad 15}{Guider dans une fibre optique}{ch01-c-fibre}
+Une fibre à saut d'indice possède un cœur d'indice $n_1$ entouré d'une gaine d'indice $n_2<n_1$. On étudie les rayons \textbf{méridiens}, contenus dans un plan passant par l'axe. Le milieu d'entrée a l'indice $n_0$ et la face d'entrée est perpendiculaire à l'axe.
+\fig{ch01/fibre}{Attention : l'incidence sur la paroi se mesure à la normale locale, et non à l'axe de la fibre.}
+\Sub{Démonstration du cône d'acceptance}
+À l'entrée, $n_0\sin\alpha=n_1\sin\theta$. À la paroi cœur-gaine, l'incidence vaut $i=\pi/2-\theta$. Pour la réflexion totale, $\sin i>n_2/n_1$, donc $\cos\theta>n_2/n_1$. Ainsi
+\[n_0^2\sin^2\alpha=n_1^2\sin^2\theta<n_1^2-n_2^2.\]
+\begin{loi}{Ouverture numérique et angle limite}
+\[\mathrm{ON}=\sqrt{n_1^2-n_2^2},\qquad
+\result{\alpha_{\max}=\arcsin\!\left(\frac{\mathrm{ON}}{n_0}\right)}\]
+si $\mathrm{ON}\leq n_0$. Les rayons effectivement guidés par réflexion totale satisfont $|\alpha|<\alpha_{\max}$ ; l'égalité décrit le seuil. Si $\mathrm{ON}>n_0$, tous les angles d'entrée physiquement accessibles satisfont la condition géométrique.
+\end{loi}
+\Sub{Application et limites}
+Avec $n_1=1{,}48$, $n_2=1{,}46$ et $n_0=1{,}00$, $\mathrm{ON}=0{,}242$ et $\alpha_{\max}=14{,}0^\circ$. Le cône d'entrée complet a une ouverture angulaire de $2\alpha_{\max}$.
+Le modèle néglige les pertes, les courbures et la structure ondulatoire des modes. Il est adapté à l'interprétation géométrique d'une fibre multimode de dimensions grandes devant $\lambda$.
+
+\Page{Cours\quad /\quad 16}{La dispersion intermodale}{ch01-c-dispersion}
+Deux rayons guidés peuvent parcourir des longueurs différentes pour la même longueur axiale $L$. Une impulsion brève se répartit donc sur plusieurs temps d'arrivée : c'est la \textbf{dispersion intermodale}. On suppose les indices indépendants de la fréquence dans le calcul qui suit.
+\fig{ch01/dispersion}{Les trajets axial et oblique n'ont pas la même durée.}
+\Sub{Démonstration à savoir reconstruire}
+Pour un rayon d'angle interne $\theta$, la longueur parcourue est $L/\cos\theta$ ; avec la célérité $c/n_1$, on obtient
+\[t(\theta)=\frac{n_1L}{c\cos\theta}.
+\]
+Le rayon axial est le plus rapide : $t_{\min}=n_1L/c$. Au seuil de guidage, $\cos\theta_{\max}=n_2/n_1$, donc la borne supérieure des temps vaut $t_{\max}=n_1^2L/(cn_2)$.
+\begin{loi}{Étalement temporel maximal géométrique}
+\[\result{\Delta t=\frac{n_1L}{c}\left(\frac{n_1}{n_2}-1\right)}.\]
+La valeur limite est un supremum pour les rayons strictement guidés. Si $n_1-n_2\ll n_1$, alors $\Delta t\simeq L(n_1-n_2)/c$.
+\end{loi}
+\Sub{Application}
+Avec $L=1{,}00\ \mathrm{km}$, $n_1=1{,}48$, $n_2=1{,}46$ et $c=3{,}00\times10^8\ \mathrm{m\,s^{-1}}$ : $t_{\min}=4{,}93\ \mu\mathrm{s}$ et $\Delta t=67{,}6\ \mathrm{ns}$. Une largeur d'impulsion initiale non nulle s'ajoute au problème.
+\begin{piege}{Un critère de débit doit être annoncé}
+Si l'on impose une séparation des impulsions de $2\Delta t$, un débit binaire maximal estimé est $R\leq1/(2\Delta t)$. Le facteur 2 relève de ce critère choisi ; ce n'est pas une loi universelle de la fibre.
+\end{piege}
+
+\Page{Pratique\quad /\quad TP}{Former et mesurer une image}{ch01-c-tp}
+\textbf{Objectif.} Mesurer la focale d'une lentille convergente, confronter plusieurs méthodes et présenter un résultat avec une incertitude. Matériel : banc gradué, objet diffus éclairé par LED, lentille convergente, écran et règle. Ne pas utiliser le Soleil comme objet ni regarder dans un faisceau laser.
+\fig{ch01/banc}{Mesurer les positions des plans utiles : objet, centre optique approché et écran.}
+\Sub{Protocole à concevoir puis à réaliser}
+\begin{enumerate}
+\item Aligner objet, lentille et écran à la même hauteur. Réaliser une image nette et vérifier qu'elle est renversée.
+\item Mesurer $x_A$, $x_L$, $x_E$ puis calculer $p=x_L-x_A>0$ et $q=x_E-x_L>0$. Estimer l'intervalle de positions de l'écran encore jugées nettes.
+\item Refaire au moins cinq mises au point indépendantes, avec plusieurs distances objets. Calculer chaque focale par $f'=pq/(p+q)$.
+\item Fixer une distance $D>4f'$ ; rechercher les deux positions de Bessel et mesurer leur écart $d$. Comparer les résultats.
+\item Expliquer l'effet d'un diaphragme sur la luminosité, la netteté perçue et la précision de mise au point.
+\end{enumerate}
+\begin{docu}{Jeu d'essai simulé, pour préparer l'exploitation}
+Ces valeurs ne sont pas des mesures réellement réalisées.
+\begin{center}\begin{tabular}{c r r r}
+\toprule Essai & 1 & 2 & 3\\\midrule
+$p$ (cm)&30,0&40,0&60,0\\
+$q$ (cm)&30,1&24,0&20,0\\\bottomrule
+\end{tabular}\end{center}
+Les focales calculées valent environ $15{,}025$, $15{,}000$ et $15{,}000\ \mathrm{cm}$. L'accord des valeurs ne suffit pas à établir à lui seul l'incertitude instrumentale.
+\end{docu}
+\source{Compte rendu attendu : schéma légendé, procédure, tableau avec unités, incertitudes, résultat, comparaison et limites du modèle.}
+
+\Page{Pratique\quad /\quad numérique}{Incertitude et simulation}{ch01-c-numerique}
+Pour $f'=pq/(p+q)$ et des valeurs $p,q$ supposées indépendantes, la propagation au premier ordre donne
+\[u(f')=\sqrt{\left(\frac{q^2}{(p+q)^2}u(p)\right)^2+
+\left(\frac{p^2}{(p+q)^2}u(q)\right)^2}.\]
+Pour $p=40{,}0\ \mathrm{cm}$, $q=24{,}0\ \mathrm{cm}$ et $u(p)=u(q)=0{,}10\ \mathrm{cm}$, on obtient $u(f')=0{,}0415\ \mathrm{cm}$. On peut écrire $f'=15{,}00\ \mathrm{cm}$ avec une incertitude-type $u(f')=0{,}04\ \mathrm{cm}$.
+\begin{piege}{Attention à une position commune}
+Sur un banc, $p=x_L-x_A$ et $q=x_E-x_L$ partagent $x_L$. Si les trois positions sont indépendantes, $\operatorname{cov}(p,q)=-u(x_L)^2$. Les traiter indépendamment serait alors injustifié. Simuler directement les trois positions évite cet oubli.
+\end{piege}
+\Sub{Une simulation reproductible en Python}
+\begingroup\small
+\begin{verbatim}
+import numpy as np
+rng = np.random.default_rng(2026)
+M = 100_000
+# Toutes les positions sont en centimetres.
+# Hypothese : erreurs normales independantes,
+# d'incertitude-type 0.10 cm sur chaque position.
+xA = rng.normal(0.0, 0.10, M)
+xL = rng.normal(40.0, 0.10, M)
+xE = rng.normal(64.0, 0.10, M)
+p, q = xL-xA, xE-xL
+f = p*q/(p+q)
+print(np.mean(f), np.std(f, ddof=1))
+\end{verbatim}
+\endgroup
+Le résultat attendu est proche de $15{,}00\ \mathrm{cm}$ avec une dispersion de $0{,}0485\ \mathrm{cm}$ ; les derniers chiffres fluctuent avec le tirage. Les lois normales sont des hypothèses de simulation, pas une propriété automatique des règles graduées.
+\begin{methode}{Comparer deux résultats}
+Pour des résultats indépendants $f_1,f_2$, calculer $z=|f_1-f_2|/\sqrt{u(f_1)^2+u(f_2)^2}$. Une valeur inférieure à 2 est un repère usuel de compatibilité ; elle ne prouve ni l'exactitude du modèle ni l'absence de biais commun.
+\end{methode}
+
+\Page{Bilan de cours}{Les réflexes à conserver}{ch01-c-synthese}
+\begin{loi}{Les relations et leurs conditions}
+\begin{align*}
+&\lambda_0=c/\nu,\quad n=c/v,\quad\lambda=\lambda_0/n,\\
+&n_1\sin i=n_2\sin r,\quad i_c=\arcsin(n_2/n_1)\quad(n_1>n_2),\\
+&\frac1{\oap}-\frac1{\oa}=\frac1{f'},\quad
+\gamma=\frac{\oap}{\oa},\quad V=1/f',\\
+&\overline{FA}\,\overline{F'A'}=-f'^2,\quad
+\gamma=\frac{f'}{\overline{FA}}=-\frac{\overline{F'A'}}{f'},\\
+&D\geq4f'\quad\text{pour projeter avec une lentille entre objet et écran},\\
+&n_0\sin\alpha_{\max}=\sqrt{n_1^2-n_2^2},\\
+&\Delta t=\frac{n_1L}{c}\left(\frac{n_1}{n_2}-1\right).
+\end{align*}
+Les relations des lentilles demandent le modèle mince, les conditions de Gauss et le même milieu de chaque côté. Celles de la fibre demandent le modèle géométrique méridien sans dispersion matérielle.
+\end{loi}
+\Sub{Cinq démonstrations à refaire sans corrigé}
+\begin{enumerate}
+\item La condition de réflexion totale à partir de l'existence de $r$.
+\item Les relations de Newton à partir de Descartes.
+\item La condition $D\geq4f'$ et les deux positions de projection.
+\item Le cône d'acceptance à partir des angles d'entrée et de paroi.
+\item La dispersion intermodale à partir des longueurs parcourues.
+\end{enumerate}
+\Sub{Avant de rendre une copie}
+\checkline{Mon schéma comporte axe orienté, normales, foyers, noms et flèches.}
+\checkline{Mes pointillés désignent des prolongements, pas des trajets réels.}
+\checkline{J'annonce les hypothèses et je distingue longueurs et distances algébriques.}
+\checkline{Je donne une expression littérale, une unité et une interprétation.}
+\checkline{Je vérifie l'ordre de grandeur, la nature et l'orientation de l'image.}
+
+\Page{Exercices\quad /\quad Découverte}{Sources et modèle}{ch01-td1}
+\source{Énoncés originaux OptiTAB. Dans tous les exercices, sauf indication contraire, $c=3{,}00\times10^8\ \mathrm{m\,s^{-1}}$ et les lentilles sont minces dans les conditions de Gauss.}
+\ex{E01}{Lire une signature spectrale}{Niveau 1}{8 min}
+Un spectromètre mesure trois raies à $486{,}1$, $589{,}0$ et $656{,}3\ \mathrm{nm}$ dans le vide.
+\begin{questions}
+\item Le spectre est-il continu ? La source est-elle monochromatique ?
+\item Associer à chaque raie une couleur approximative, puis calculer sa fréquence.
+\item Peut-on conclure que la source contient un élément chimique unique à partir de ces seules données ? Justifier.
+\end{questions}
+\ex{E02}{Une lumière dans le verre}{Niveau 1}{8 min}
+Un faisceau de fréquence $5{,}00\times10^{14}\ \mathrm{Hz}$ passe de l'air, assimilé au vide, dans un verre d'indice $1{,}50$.
+\begin{questions}
+\item Calculer $\lambda_0$, puis la vitesse et la longueur d'onde dans le verre.
+\item Quelle grandeur reste inchangée à l'interface immobile ?
+\item La longueur d'onde dans le verre est voisine de celle d'une lumière violette dans le vide. Doit-on pour autant dire que le faisceau a changé de couleur spectrale ?
+\end{questions}
+\ex{E03}{Quand les rayons ne suffisent plus}{Niveau 1}{10 min}
+Une onde de longueur d'onde $\lambda=600\ \mathrm{nm}$ éclaire une ouverture de largeur $a$. Pour estimer la diffraction, on fournit $\theta\sim\lambda/a$ ; cette formule n'est qu'un ordre de grandeur.
+\begin{questions}
+\item Calculer $\lambda/a$ pour $a=1{,}0\ \mathrm{mm}$, puis $a=1{,}0\ \mu\mathrm{m}$.
+\item Dans quel cas le modèle des rayons rectilignes au voisinage de l'ouverture est-il le plus adapté ?
+\item Pour l'ouverture millimétrique, estimer la demi-largeur de la zone diffractée sur un écran à $2{,}0\ \mathrm{m}$. Expliquer pourquoi « négligeable » dépend de la résolution demandée.
+\end{questions}
+\begin{methode}{Le réflexe de ce premier groupe}
+Écrire chaque conversion en mètres avant de calculer. Une longueur d'onde dans un milieu et une longueur d'onde dans le vide ne se comparent pas directement pour nommer une couleur.
+\end{methode}
+
+\Page{Exercices\quad /\quad Découverte}{Traverser une interface}{ch01-td2}
+\source{Énoncés originaux OptiTAB. Dessiner la normale avant d'écrire une loi.}
+\ex{E04}{Le piège des $30^\circ$}{Niveau 1}{10 min}
+Un rayon dans l'air arrive sur l'eau ($n=1{,}33$) sous un angle de $30{,}0^\circ$ avec la surface.
+\begin{questions}
+\item Dessiner la situation et préciser l'angle d'incidence.
+\item Calculer l'angle de réfraction et l'angle entre les directions incidente et transmise.
+\item Décrire le trajet inverse et préciser l'angle d'incidence correspondant dans l'eau.
+\end{questions}
+\ex{E05}{Deux faces d'un même verre}{Niveau 1}{12 min}
+Un rayon dans un verre d'indice $1{,}52$ arrive à $50{,}0^\circ$ sur une interface, d'abord verre-air, puis verre-eau ($n_e=1{,}33$).
+\begin{questions}
+\item Calculer les deux incidences critiques et décider s'il existe un rayon transmis dans chaque cas.
+\item Quand ce rayon existe, déterminer son angle.
+\item Trouver l'intervalle des angles pour lesquels le verre réfléchit totalement au contact de l'air mais transmet au contact de l'eau.
+\end{questions}
+\ex{E06}{Une lame à faces parallèles}{Niveau 2}{20 min}
+Une lame de verre d'épaisseur $e=6{,}00\ \mathrm{mm}$ et d'indice $n=1{,}50$ est entourée d'air. L'incidence est $i=45{,}0^\circ$.
+\fig{ch01/ex-lame}{Schéma de situation à reproduire en ajoutant les normales et les angles ; dimensions schématiques.}
+\begin{questions}
+\item Faire un schéma comportant les deux normales et déterminer l'angle interne $r$.
+\item Montrer que la direction émergente est parallèle à la direction incidente.
+\item Le décalage latéral est la distance perpendiculaire entre ces deux droites. Établir $s=e\sin(i-r)/\cos r$ puis le calculer.
+\end{questions}
+\Page{Exercices\quad /\quad Découverte}{Images et conventions}{ch01-td3}
+\ex{E07}{Un miroir qui tourne}{Niveau 2}{15 min}
+Un objet est placé à $40{,}0\ \mathrm{cm}$ devant un miroir plan. Un rayon incident fixe se réfléchit sur ce miroir.
+\begin{questions}
+\item Construire l'image de l'objet et donner sa nature et la distance objet-image.
+\item Le miroir pivote de $\beta=3{,}0^\circ$ autour du point d'incidence, dans le plan du dessin. Démontrer que la direction du rayon réfléchi tourne de $2\beta$ en valeur absolue.
+\item Expliquer pourquoi une photographie de l'image virtuelle est possible.
+\end{questions}
+\ex{E08}{Assez net pour quel capteur ?}{Niveau 1}{10 min}
+Un point donne une tache de diamètre $12\ \mu\mathrm{m}$. Deux détecteurs ont des pas de pixels respectifs de $5$ et $20\ \mu\mathrm{m}$. On adopte ici le critère simplifié « diamètre inférieur ou égal à un pixel ».
+\begin{questions}
+\item Pour quel détecteur le point est-il jugé net ? Ce critère signifie-t-il que la tache est physiquement ponctuelle ?
+\item Donner les deux conditions de Gauss et leurs conséquences.
+\item Pour un rayon de $3{,}0^\circ$, comparer $\tan\theta$ à $\theta$ en radians et calculer l'erreur relative $(\tan\theta-\theta)/\theta$.
+\end{questions}
+\ex{E09}{Reconnaître une lentille}{Niveau 1}{10 min}
+Deux lentilles ont pour focales $f'_1=+8{,}0\ \mathrm{cm}$ et $f'_2=-20{,}0\ \mathrm{cm}$.
+\begin{questions}
+\item Les classer et calculer leurs vergences en dioptries.
+\item Pour chaque lentille, tracer l'axe, $O$, $F$ et $F'$, puis un rayon parallèle à l'axe et un rayon passant par $O$.
+\item Expliquer ce que devient un faisceau parallèle incliné et définir le foyer secondaire image correspondant.
+\end{questions}
+\source{Pour E07 et E09, une construction sans flèche de propagation ou sans distinction entre rayon et prolongement reste incomplète.}
+
+\Page{Exercices\quad /\quad Entraînement}{Trois images à comparer}{ch01-td4}
+\ex{E10}{Une projection réduite}{Niveau 1}{12 min}
+Un objet $AB$ de hauteur $1{,}20\ \mathrm{cm}$ est à $30{,}0\ \mathrm{cm}$ à gauche d'une lentille convergente de focale $10{,}0\ \mathrm{cm}$.
+\fig{ch01/ex-construction}{Repères de départ pour E10 ; compléter les rayons et l'image. La hauteur est schématique.}
+\begin{questions}
+\item Donner $\oa$ et calculer $\oap$, $\gamma$ et $\overline{A'B'}$.
+\item Caractériser l'image et réaliser une construction à l'échelle.
+\end{questions}
+\ex{E11}{La même lentille devient une loupe}{Niveau 1}{12 min}
+On conserve la lentille de E10, mais l'objet est à $6{,}00\ \mathrm{cm}$ à gauche de $O$.
+\begin{questions}
+\item Déterminer la position de l'image et le grandissement.
+\item Construire l'image et expliquer pourquoi on ne peut pas la recueillir directement sur un écran à sa position.
+\end{questions}
+\ex{E12}{Une divergente en autonomie}{Niveau 2}{15 min}
+Un objet réel est à $36{,}0\ \mathrm{cm}$ d'une lentille de focale $-12{,}0\ \mathrm{cm}$.
+\begin{questions}
+\item Calculer position et grandissement de l'image ; vérifier les signes sur une construction.
+\item Montrer plus généralement que l'image d'un objet réel par une lentille divergente est virtuelle, droite et réduite.
+\end{questions}
+\begin{docu}{Grille commune de correction}
+\begin{tabularx}{\linewidth}{@{}Y Y Y@{}}\toprule
+Position & Orientation & Taille\\\midrule
+$q>0$ : réelle & $\gamma<0$ : renversée & $|\gamma|>1$ : agrandie\\
+$q<0$ : virtuelle & $\gamma>0$ : droite & $|\gamma|<1$ : réduite\\\bottomrule
+\end{tabularx}
+Ces critères supposent l'orientation d'axe et le sens de propagation fixés dans le cours. La construction fournit un contrôle indépendant du calcul.
+\end{docu}
+
+\Page{Exercices\quad /\quad Entraînement}{Foyers et projection}{ch01-td5}
+\ex{E13}{Une étoile hors de l'axe}{Niveau 2}{12 min}
+Un point à l'infini envoie sur une lentille convergente de focale $200\ \mathrm{mm}$ un faisceau dont la direction fait un angle $+0{,}500^\circ$ avec l'axe, orienté vers le haut.
+\begin{questions}
+\item Construire son image et préciser le plan qui la contient.
+\item Calculer sa hauteur algébrique par rapport à l'axe dans l'approximation de Gauss.
+\item Où placer un point source pour obtenir, en sens inverse, un faisceau parallèle de même inclinaison ?
+\end{questions}
+\ex{E14}{Un objet très proche du foyer}{Niveau 2}{12 min}
+Une lentille convergente a $f'=5{,}00\ \mathrm{mm}$. Un objet réel est situé $1{,}00\ \mathrm{mm}$ avant son foyer objet.
+\begin{questions}
+\item Donner $\overline{FA}$ et utiliser Newton pour déterminer $\overline{F'A'}$.
+\item En déduire $\oap$ et $\gamma$, puis contrôler par Descartes.
+\item Que devient l'image si l'objet se rapproche du foyer par la gauche ?
+\end{questions}
+\ex{E15}{Deux positions ou aucune}{Niveau 2}{20 min}
+Un objet et un écran sont séparés de $90{,}0\ \mathrm{cm}$. On dispose d'une lentille de focale $20{,}0\ \mathrm{cm}$.
+\begin{questions}
+\item Sans résoudre l'équation, justifier que deux positions sont possibles.
+\item Déterminer les deux distances objet-lentille et les grandissements.
+\item Reprendre la conclusion si la distance objet-écran vaut $75{,}0\ \mathrm{cm}$, puis $80{,}0\ \mathrm{cm}$.
+\end{questions}
+\begin{methode}{Une formule n'est pas toujours le plus court chemin}
+Dans E14, l'origine au foyer évite une soustraction peu lisible. Dans E15, le discriminant renseigne sur l'existence avant de donner les valeurs.
+\end{methode}
+
+\Page{Exercices\quad /\quad Applications}{Voir et photographier}{ch01-td6}
+\ex{E16}{L'accommodation chiffrée}{Niveau 1}{12 min}
+Un œil réduit emmétrope possède une distance lentille-rétine $\ell=17{,}0\ \mathrm{mm}$ et voit net de $25{,}0\ \mathrm{cm}$ à l'infini.
+\begin{questions}
+\item Donner les positions du punctum remotum et du punctum proximum.
+\item Calculer les vergences extrêmes et leur différence.
+\item Pourquoi un modèle à focale constante et rétine mobile ne décrit-il pas l'accommodation de cet œil ?
+\end{questions}
+\ex{E17}{Distinguer deux détails}{Niveau 1}{10 min}
+Deux traits espacés de $2{,}00\ \mathrm{cm}$ sont observés à $100\ \mathrm{m}$. La résolution angulaire de l'observateur est de $1{,}00$ minute d'arc.
+\begin{questions}
+\item Convertir cette limite en radians.
+\item Les traits sont-ils résolus avec le critère $\theta\geq\theta_{\min}$ ?
+\item À quelle distance maximale pourraient-ils être distingués ?
+\end{questions}
+\ex{E18}{Un portrait qui ne tient pas}{Niveau 2}{18 min}
+Un appareil est modélisé par une lentille de focale $50{,}0\ \mathrm{mm}$ et un capteur de hauteur $24{,}0\ \mathrm{mm}$. Une personne de hauteur $1{,}80\ \mathrm{m}$ se trouve à $2{,}00\ \mathrm{m}$ de la lentille.
+\begin{questions}
+\item Calculer la distance de mise au point et son écart à la position pour un objet à l'infini.
+\item Calculer la taille de l'image et déterminer si la personne tient entièrement dans le cadre.
+\item À quelle distance minimale placer cette personne pour que son image ait une hauteur inférieure ou égale à celle du capteur ?
+\end{questions}
+\source{Pour E18, les distances de l'objet et du capteur se mesurent à partir du centre optique du modèle. On ne remplace pas systématiquement $q$ par $f'$ pour un objet à distance finie.}
+
+\Page{Exercices\quad /\quad Applications}{Ouverture et fibre}{ch01-td7}
+\ex{E19}{Exposition et mouvement}{Niveau 2}{15 min}
+Un réglage $N=2{,}8$ et $T=1/500\ \mathrm{s}$ donne une exposition correcte. L'image d'un détail mobile se déplace sur le capteur à $10{,}0\ \mathrm{mm\,s^{-1}}$ ; le pas de pixel est $4{,}00\ \mu\mathrm{m}$.
+\begin{questions}
+\item Quelle durée conserve l'exposition lorsque l'on ferme à $N=5{,}6$ ?
+\item Calculer le flou de mouvement, en micromètres puis en pixels, pour chaque réglage.
+\item Quel compromis faut-il expliquer avant de choisir le réglage ?
+\end{questions}
+\ex{E20}{Un point encore acceptable}{Niveau 2}{18 min}
+Un objectif de focale $50{,}0\ \mathrm{mm}$ est réglé sur $p_0=5{,}00\ \mathrm{m}$, à $N=8{,}00$. Un point de l'axe est à $p=4{,}00\ \mathrm{m}$. Le diamètre admissible de flou est $\varepsilon=30{,}0\ \mu\mathrm{m}$.
+\fig{ch01/ex-profondeur}{Compléter le cône issu de $A$ après la lentille, puis sa trace sur le capteur ; schéma sans échelle.}
+\begin{questions}
+\item Calculer le diamètre de l'ouverture, le plan du capteur $q_0$ et le plan image idéal $q$ du point.
+\item Construire les deux rayons extrêmes et calculer $b=a|1-q_0/q|$.
+\item Le point est-il acceptable ? Que devient $b$ si l'on ferme à $N=16$, à réglage de mise au point inchangé ?
+\end{questions}
+\ex{E21}{Injecter dans une fibre}{Niveau 2}{15 min}
+Une fibre possède $n_1=1{,}48$, $n_2=1{,}46$ et une face d'entrée normale à son axe.
+\begin{questions}
+\item Calculer son ouverture numérique et son angle d'acceptance dans l'air.
+\item Un rayon arrivant à $10{,}0^\circ$ de l'axe est-il guidé dans le modèle méridien ? Justifier à la paroi.
+\item Que devient l'angle d'acceptance si le milieu d'injection est l'eau d'indice $1{,}33$ ?
+\end{questions}
+
+\Page{Exercices\quad /\quad Approfondissement}{Assembler et vérifier}{ch01-td8}
+\ex{E22}{Une impulsion qui s'étale}{Niveau 2}{18 min}
+Une fibre rectiligne de $1{,}00\ \mathrm{km}$ a les indices $n_1=1{,}48$ et $n_2=1{,}46$. On néglige toute dispersion matérielle.
+\begin{questions}
+\item Établir $t(\theta)$, puis calculer $t_{\min}$ et $\Delta t$.
+\item Quel débit maximal estime-t-on si la période binaire doit être au moins égale à $2\Delta t$ ?
+\item Distinguer le retard de propagation et l'étalement de l'impulsion.
+\end{questions}
+\ex{E23}{Deux lentilles successives}{Niveau 3}{25 min}
+Un objet est à $30{,}0\ \mathrm{cm}$ à gauche d'une lentille $L_1$ de focale $+10{,}0\ \mathrm{cm}$. Une lentille $L_2$ de focale $-10{,}0\ \mathrm{cm}$ est à $20{,}0\ \mathrm{cm}$ à droite de $L_1$.
+\fig{ch01/ex-association}{Les deux lentilles et leurs foyers : ajouter l'image intermédiaire puis l'image finale.}
+\begin{questions}
+\item Trouver l'image intermédiaire $A_1B_1$ donnée par $L_1$.
+\item Donner $\overline{O_2A_1}$ et déterminer l'image finale, sa nature et sa position par rapport à $O_1$.
+\item Calculer le grandissement total et expliquer pourquoi les deux origines ne doivent pas être confondues.
+\end{questions}
+\ex{E24}{Un résultat de mesure défendable}{Niveau 3}{20 min}
+Une lentille donne une image nette pour $p=30{,}0\ \mathrm{cm}$ et $q=60{,}0\ \mathrm{cm}$. Ces deux distances sont ici mesurées indépendamment, avec $u(p)=u(q)=0{,}10\ \mathrm{cm}$.
+\begin{questions}
+\item Calculer la focale, le grandissement et la vergence.
+\item Propager les incertitudes à l'aide des dérivées partielles de $f'=pq/(p+q)$.
+\item Un résultat indépendant vaut $f'_r=20{,}10\ \mathrm{cm}$ avec $u(f'_r)=0{,}08\ \mathrm{cm}$. Calculer l'écart normalisé et conclure avec le repère $z\leq2$.
+\end{questions}
+
+\Page{Défis avancés\quad /\quad D1}{Combien de plans sont nets ?}{ch01-defis1}
+\phantomsection\label{ch01-ex-D1}
+\source{Problème original OptiTAB. Niveau 3 ; 45 minutes. Indices p.\,\pageref{ch01-indices} ; solution p.\,\pageref{ch01-corr-d1}.}
+Un objectif est modélisé par une lentille de focale $f'>0$ et un diaphragme de diamètre $a=f'/N$ dans son plan. Il est réglé sur un objet à distance $p_0>f'$ ; le capteur est fixé à $q_0=f'p_0/(p_0-f')$. Un point est acceptable si sa tache de flou a un diamètre inférieur à $\varepsilon$.
+\fig{ch01/profondeur}{Reprendre la construction en précisant les deux plans de convergence et le plan du capteur.}
+\begin{questions}
+\item Retrouver $b=a|1-q_0/q|$ par similitude. Montrer ensuite que
+\[\left|\frac1p-\frac1{p_0}\right|\leq k,\qquad k=\frac{\varepsilon}{a q_0}.\]
+\item En déduire la borne proche $p_-$ et la borne lointaine $p_+$ de la zone acceptable. Distinguer les cas $k<1/p_0$ et $k\geq1/p_0$.
+\item Calculer les deux bornes pour $f'=50{,}0\ \mathrm{mm}$, $p_0=5{,}00\ \mathrm{m}$, $N=8{,}00$ et $\varepsilon=30{,}0\ \mu\mathrm{m}$.
+\item Déterminer la distance de réglage $H$ à partir de laquelle la borne lointaine atteint l'infini. Vérifier que $H=f'+f'^2/(N\varepsilon)$ dans ce modèle.
+\item Expliquer ce que ce modèle ne permet pas de conclure lorsque l'on ferme fortement le diaphragme.
+\end{questions}
+\begin{methode}{Ce qui rend ce défi formateur}
+Une valeur absolue cache deux inégalités. Un dénominateur nul ou négatif change le sens physique d'une borne ; il faut le discuter au lieu d'appliquer une expression aveuglément.
+\end{methode}
+
+\Page{Défis avancés\quad /\quad D2}{Dimensionner une liaison optique}{ch01-defis2}
+\phantomsection\label{ch01-ex-D2}
+\source{Problème original OptiTAB. Niveau 3 ; 40 minutes. Aucune connaissance de télécommunications n'est supposée.}
+Une liaison utilise une fibre à saut d'indice $n_1=1{,}48$, $n_2=1{,}46$. Une impulsion injectée a une durée initiale $\tau_0=20{,}0\ \mathrm{ns}$. Pour ce modèle d'ingénierie simplifié, on définit la durée reçue par $\tau_{\rm rec}=\tau_0+\Delta t$ et l'on impose $2\tau_{\rm rec}\leq1/R$, où $R$ est le débit binaire.
+\fig{ch01/dispersion}{Le temps de transit et la dispersion intermodale ne jouent pas le même rôle dans le cahier des charges.}
+\begin{questions}
+\item Établir l'expression exacte de $\Delta t$ en fonction de $L$, puis écrire $\Delta t=\kappa L$ en donnant l'unité de $\kappa$.
+\item Une fibre de $1{,}00\ \mathrm{km}$ convient-elle à $R=10{,}0\ \mathrm{Mbit\,s^{-1}}$ selon le critère fourni ?
+\item Déterminer la longueur maximale acceptable. Quelle impossibilité apparaît si $1/(2R)\leq\tau_0$ ?
+\item Dans l'air, un connecteur injecte un rayon méridien à $12{,}0^\circ$ de l'axe. Vérifier son guidage ; déterminer l'angle interne et le temps de transit à travers la longueur maximale calculée.
+\item On propose de réduire $n_1-n_2$ en conservant $n_1$ fixé. Prévoir qualitativement l'effet sur l'étalement et sur le cône d'entrée. Quel compromis apparaît ?
+\end{questions}
+\begin{docu}{Ce qui est donné, ce qui est à établir}
+La règle d'addition des durées et la marge de séparation 2 sont imposées pour ce problème. La dépendance géométrique de $\Delta t$ et la condition de guidage sont à démontrer. On ne tient compte ni des pertes ni de la dispersion chromatique.
+\end{docu}
+
+\Page{Défis avancés\quad /\quad D3}{Un microscope à deux lentilles}{ch01-defis3}
+\phantomsection\label{ch01-ex-D3}
+\source{Problème original OptiTAB. Niveau 3 ; 50 minutes. Prolongement : sujet Mines-Ponts MP 2021, parcours p.\,\pageref{ch01-auth-concours}.}
+Un microscope comporte un objectif de focale $f'_1=4{,}00\ \mathrm{mm}$ et un oculaire de focale $f'_2=25{,}0\ \mathrm{mm}$. L'intervalle optique est $\Delta=\overline{F'_1F_2}=160\ \mathrm{mm}$. L'image finale est à l'infini ; les deux lentilles sont dans l'air et dans les conditions de Gauss.
+\fig{ch01/microscope}{Schéma de principe calculé avec des proportions lisibles, différentes des valeurs du problème ; les rayons émergents sont parallèles.}
+\begin{questions}
+\item Où doit se trouver l'image intermédiaire ? Déterminer $\overline{O_1A_1}$ et la distance entre les lentilles.
+\item Calculer la position de l'objet par rapport à $O_1$, puis sa distance au foyer $F_1$.
+\item Déterminer le grandissement de l'objectif. Pour un objet de hauteur $h=10{,}0\ \mu\mathrm{m}$, calculer la hauteur de l'image intermédiaire.
+\item Définir $\alpha'$ comme la valeur absolue du petit angle sous lequel l'image finale est observée. Établir la puissance intrinsèque $P_i=\alpha'/h=\Delta/(f'_1f'_2)$ et la calculer.
+\item Comparer l'angle obtenu à celui de la vision directe du même objet à $d_m=25{,}0\ \mathrm{cm}$. Donner le grossissement angulaire en valeur absolue.
+\item Expliquer l'intérêt de l'image finale à l'infini pour un œil emmétrope. Est-ce une preuve que tous les détails de l'objet sont résolus ?
+\end{questions}
+
+\Page{Évaluation\quad /\quad DM}{Mesurer une focale par Bessel}{ch01-dm}
+\phantomsection\label{ch01-ex-DM}
+\source{Devoir maison original OptiTAB. Travail estimé : 1 h 30 ; calculatrice autorisée. Barème pédagogique sur 20. À rendre avec un schéma et une discussion des incertitudes.}
+On place un objet et un écran à une distance fixe $D$. Une lentille convergente peut coulisser entre eux. On observe deux positions de netteté séparées de $d$. Les distances sont mesurées indépendamment :
+\[D=(1000{,}0\ \mathrm{mm}),\quad u(D)=1{,}0\ \mathrm{mm},\qquad
+d=(600{,}0\ \mathrm{mm}),\quad u(d)=2{,}0\ \mathrm{mm}.\]
+\fig{ch01/bessel}{Les positions sont mesurées par rapport à l'objet. Les schémas et la notation doivent rester cohérents.}
+\begin{questions}
+\item En notant $x$ la distance objet-lentille, établir l'équation donnant les positions nettes et la condition sur $D$ et $f'$. \textbf{4 points}
+\item Exprimer les deux solutions et montrer que $f'=(D^2-d^2)/(4D)$. \textbf{3 points}
+\item Calculer $f'$ et les deux positions. \textbf{2 points}
+\item Déterminer les deux grandissements et interpréter leur produit. \textbf{2 points}
+\item Calculer $u(f')$ par propagation au premier ordre avec $D,d$ indépendants. Présenter le résultat. \textbf{3 points}
+\item Une méthode indépendante donne $f'_r=158{,}5\ \mathrm{mm}$ et $u(f'_r)=0{,}8\ \mathrm{mm}$. Calculer l'écart normalisé et commenter. \textbf{2 points}
+\item Proposer une méthode pour estimer l'incertitude de mise au point. \textbf{2 points}
+\item Citer deux limites physiques ou expérimentales susceptibles de biaiser le résultat. \textbf{2 points}
+\end{questions}
+
+\Page{Évaluation\quad /\quad DS\quad /\quad 1 sur 2}{Interfaces et projection}{ch01-ds1}
+\phantomsection\label{ch01-ex-DS}
+\source{Devoir surveillé original OptiTAB. Durée : 2 h ; calculatrice autorisée ; note sur 20. Les deux pages constituent un seul sujet. Toute valeur doit être justifiée par une expression littérale.}
+\Sub{Partie A\quad /\quad Un capteur par réflexion totale\quad /\quad 8 points}
+Une source envoie un rayon dans une plaque de verre d'indice $n_v=1{,}50$. L'angle dans le verre avec la normale à la face extérieure vaut $i=50{,}0^\circ$. Cette face est en contact avec l'air ($n_a=1{,}00$) ou avec une goutte d'eau ($n_e=1{,}33$). Un détecteur reçoit le faisceau réfléchi. Le trajet d'injection n'est pas étudié.
+\fig{ch01/capteur-pluie}{Le dispositif compare la lumière réfléchie quand la face extérieure est sèche ou mouillée.}
+\begin{questions}
+\item Énoncer les lois de réflexion et de réfraction en identifiant les angles et les indices. \textbf{2 points}
+\item Établir et calculer les deux angles critiques. \textbf{2 points}
+\item Décider du comportement à $50{,}0^\circ$ dans chaque situation et calculer l'angle transmis quand il existe. \textbf{2 points}
+\item Donner l'intervalle d'incidences permettant de distinguer les deux situations par réflexion totale ; expliquer la diminution du signal réfléchi en présence d'eau. \textbf{2 points}
+\end{questions}
+\Sub{Partie B\quad /\quad La projection d'un repère\quad /\quad 8 points}
+Une lentille de focale $f'=+100\ \mathrm{mm}$ reçoit la lumière d'un objet réel de hauteur $h=12{,}0\ \mathrm{mm}$ placé à $300\ \mathrm{mm}$ à sa gauche. L'axe est orienté de gauche à droite. Les questions de cette partie se poursuivent page suivante.
+\begin{questions}
+\item Écrire la distance objet algébrique et la relation de conjugaison adaptée. \textbf{1 point}
+\end{questions}
+
+\Page{Évaluation\quad /\quad DS\quad /\quad 2 sur 2}{Mesurer et transmettre}{ch01-ds2}
+\Sub{Partie B\quad /\quad Suite}
+\begin{enumerate}[label=\textcolor{otNavy}{\bfseries B\arabic*.},start=2]
+\item Déterminer la position de l'image, son grandissement et sa hauteur algébrique. Donner sa nature et son orientation. \textbf{3 points}
+\item On fixe ensuite la distance objet-écran à $D=450\ \mathrm{mm}$. Vérifier la condition de projection et déterminer les deux positions de netteté de la même lentille. \textbf{2 points}
+\item Réaliser une construction justifiée à deux rayons pour la position initiale. Que deviennent le grandissement et la taille de l'image pour l'autre position à $D=450\ \mathrm{mm}$ ? \textbf{2 points}
+\end{enumerate}
+\Sub{Partie C\quad /\quad Une fibre de 500 mètres\quad /\quad 4 points}
+Une fibre à saut d'indice a un cœur d'indice $n_1=1{,}48$, une gaine d'indice $n_2=1{,}46$ et une longueur $L=500\ \mathrm{m}$. On étudie les rayons méridiens et on néglige la dispersion matérielle. Le milieu d'entrée est l'air. On prend $c=3{,}00\times10^8\ \mathrm{m\,s^{-1}}$.
+\begin{enumerate}[label=\textcolor{otNavy}{\bfseries C\arabic*.}]
+\item À partir de la condition à la paroi, établir l'angle d'acceptance et le calculer. \textbf{2 points}
+\item Établir l'étalement maximal $\Delta t$, puis estimer le débit maximal avec le critère explicite $T\geq2\Delta t$. Les impulsions injectées sont supposées de durée négligeable. \textbf{2 points}
+\end{enumerate}
+\begin{docu}{Gestion du temps proposée}
+Lecture et schémas : 10 min ; partie A : 30 min ; partie B : 35 min ; partie C : 30 min ; relecture : 15 min. Un résultat incohérent doit être signalé et discuté plutôt que masqué.
+\end{docu}
+\begin{methode}{Autoévaluation avant le corrigé}
+\checkline{Je sais identifier l'angle dans le milieu incident.}
+\checkline{Je sais décider de l'existence d'un rayon réfracté.}
+\checkline{Je sais obtenir une image par calcul et par construction.}
+\checkline{Je sais démontrer la condition de guidage et le temps de parcours.}
+\end{methode}
+
+\Page{Aides progressives}{Des indices pour repartir}{ch01-indices}
+Ne lire que la première indication utile. Chercher à nouveau avant de passer à la suivante.
+\Sub{Exercices}
+\begin{description}[style=nextline,leftmargin=0pt,font=\sffamily\bfseries\small]
+\item[E04--E06] La normale et la surface font $90^\circ$. Dans la lame, les deux normales sont parallèles ; isoler le triangle qui relie l'épaisseur au trajet interne.
+\item[E10--E12] Écrire $1/q=1/f'+1/p$ avec $p=\oa<0$. Ne pas introduire une distance objet positive dans cette écriture.
+\item[E14] $\overline{FA}$ est immédiatement connu ; calculer ensuite la distance à partir de $O$.
+\item[E15] Poser $x$ et $D-x$ comme deux longueurs positives ; le produit doit valoir $Df'$.
+\item[E18] Pour cadrer, imposer $h\,f'/(p-f')\leq h_c$ avec des unités cohérentes.
+\item[E20] Les triangles formés après la lentille donnent un rapport de longueurs. Commencer par les plans images.
+\item[E23] L'image de $L_1$ devient l'objet de $L_2$. Sa position absolue et sa coordonnée relative à $O_2$ sont différentes.
+\item[E24] Dériver par rapport à $p$ en gardant $q$ constant, puis réciproquement. Les incertitudes s'additionnent en variance sous l'hypothèse d'indépendance.
+\end{description}
+\Sub{Défi D1}
+\textbf{Indice 1.} Écrire $1/q=1/f'-1/p$ et utiliser $1/q_0=1/f'-1/p_0$.\par
+\textbf{Indice 2.} L'expression dans la valeur absolue devient $q_0(1/p-1/p_0)$.\par
+\textbf{Indice 3.} Encadrer $1/p$ puis discuter le signe de sa borne inférieure.
+\Sub{Défi D2}
+\textbf{Indice 1.} Le trajet le plus lent est la limite de guidage.\par
+\textbf{Indice 2.} La durée initiale consomme déjà une partie du budget temporel.\par
+\textbf{Indice 3.} Isoler $L$ dans $\tau_0+\kappa L\leq1/(2R)$.
+\Sub{Défi D3 et DM}
+Pour le microscope, partir de la condition sur l'image finale et remonter vers l'objet. Pour Bessel, relier l'écart des deux racines au discriminant avant de faire les applications numériques.
+
+\Page{Corrigés\quad /\quad Diagnostic}{Réactiver les bons réflexes}{ch01-corr-diag}
+\Sub{D1\quad /\quad Longueur d'onde}
+$\lambda_0=c/\nu=3{,}00\times10^8/(5{,}00\times10^{14})=6{,}00\times10^{-7}\ \mathrm{m}=600\ \mathrm{nm}$. La puissance de dix se contrôle séparément du quotient des coefficients.
+\Sub{D2\quad /\quad Angle utile}
+L'angle avec la normale est $90^\circ-30^\circ=60^\circ$. C'est cet angle d'incidence qu'utilise la loi de Snell-Descartes. Le rayon réfléchi fait le même angle avec la normale.
+\Sub{D3\quad /\quad Grandeur conservée}
+La fréquence est conservée à une interface immobile. La vitesse et la longueur d'onde changent si les indices diffèrent : $v=c/n$ et $\lambda=\lambda_0/n$.
+\Sub{D4\quad /\quad Vergence}
+$f'=+0{,}10\ \mathrm{m}$, donc $V=1/f'=+10\ \delta$. La conversion en mètres est indispensable pour obtenir des dioptries.
+\Sub{D5\quad /\quad Distance algébrique}
+$\oa=-30\ \mathrm{cm}$. L'objet est à gauche de l'origine, dans le sens opposé à celui choisi pour l'axe.
+\Sub{D6\quad /\quad Image virtuelle}
+Une image virtuelle est observable et photographiable : les rayons qui semblent en provenir peuvent entrer dans une seconde lentille. Ils ne convergent toutefois pas à l'emplacement virtuel ; un écran placé là ne recueille pas cette image.
+\Sub{D7\quad /\quad Petit angle}
+$2^\circ=2\pi/180\simeq0{,}0349\ \mathrm{rad}$. On peut donc estimer $\tan(2^\circ)\simeq0{,}0349$. Écrire $\tan(2^\circ)\simeq2$ serait une confusion d'unité.
+\Sub{D8\quad /\quad Œil réduit}
+La rétine joue le rôle de capteur fixe. La vergence de la lentille équivalente varie pour que l'image d'objets à différentes distances se forme sur cette rétine.
+\begin{methode}{Transformer un diagnostic en travail utile}
+Pour chaque réponse erronée, noter la règle qui la corrige et inventer un exemple numérique voisin. Refaire le diagnostic une semaine plus tard sans relire les solutions.
+\end{methode}
+
+\Page{Corrigés\quad /\quad E01 à E03}{Fréquence et changement d'échelle}{ch01-corr-e01}
+\sol{E01}{Lire une signature spectrale}
+Le spectre comporte des raies ; il est discontinu et la source est polychromatique. Avec $\nu=c/\lambda_0$ :
+\begin{center}\begin{tabular}{r l r}
+\toprule $\lambda_0$ (nm)&Couleur approximative&$\nu$ (Hz)\\\midrule
+486,1&bleu-vert&$6{,}172\times10^{14}$\\
+589,0&jaune&$5{,}093\times10^{14}$\\
+656,3&rouge&$4{,}571\times10^{14}$\\\bottomrule
+\end{tabular}\end{center}
+Ces trois raies peuvent provenir d'un mélange ou de plusieurs transitions. Sans comparaison à une référence spectrale et sans information sur les raies absentes, l'unicité d'un élément n'est pas établie.
+\sol{E02}{Une lumière dans le verre}
+Dans l'air assimilé au vide, $\lambda_0=600\ \mathrm{nm}$. Dans le verre,
+\[v=\frac{c}{1{,}50}=2{,}00\times10^8\ \mathrm{m\,s^{-1}},\qquad
+\lambda=\frac{600}{1{,}50}=400\ \mathrm{nm}.\]
+La fréquence demeure $5{,}00\times10^{14}\ \mathrm{Hz}$. On ne doit pas renommer la composante « violette » en comparant sa longueur d'onde dans le verre à une table établie dans le vide. À la sortie du verre vers l'air, sa longueur d'onde redevient $600\ \mathrm{nm}$.
+\sol{E03}{Quand les rayons ne suffisent plus}
+Pour $a=10^{-3}\ \mathrm{m}$, $\lambda/a=6{,}0\times10^{-4}$. Pour $a=10^{-6}\ \mathrm{m}$, le rapport vaut $0{,}60$. L'ouverture millimétrique est grande devant la longueur d'onde ; l'ouverture micrométrique ne l'est pas suffisamment pour négliger la diffraction.
+Dans le premier cas, le petit angle estimé donne sur un écran à $2{,}0\ \mathrm{m}$ une demi-largeur $y\sim D\theta=1{,}2\ \mathrm{mm}$. Une ouverture grande devant $\lambda$ ne signifie donc pas que tous les effets ondulatoires sont invisibles à toute précision.
+\begin{piege}{L'erreur à éviter}
+Utiliser la formule de petit angle avec $\theta=0{,}60\ \mathrm{rad}$ pour annoncer une largeur précise serait incohérent. L'énoncé fournit une estimation d'échelle, pas un profil complet de diffraction.
+\end{piege}
+
+\Page{Corrigés\quad /\quad E04 à E06}{Vérifier les angles et les seuils}{ch01-corr-e04}
+\sol{E04}{Le piège des $30^\circ$}
+L'incidence vaut $i=60{,}0^\circ$. La loi donne
+\[r=\arcsin\!\left(\frac{\sin60{,}0^\circ}{1{,}33}\right)=40{,}6^\circ.\]
+L'angle entre la direction incidente et la direction transmise vaut $i-r=19{,}4^\circ$. Pour le retour inverse, le rayon arrive dans l'eau à $40{,}6^\circ$ et ressort dans l'air à $60{,}0^\circ$.
+\sol{E05}{Deux faces d'un même verre}
+Les seuils sont $i_{c,a}=\arcsin(1/1{,}52)=41{,}1^\circ$ et $i_{c,e}=\arcsin(1{,}33/1{,}52)=61{,}0^\circ$. À $50{,}0^\circ$, il y a réflexion totale contre l'air, mais transmission contre l'eau. Dans ce dernier cas,
+\[r=\arcsin\!\left(\frac{1{,}52}{1{,}33}\sin50{,}0^\circ\right)=61{,}1^\circ.\]
+L'intervalle strict $i_{c,a}<i<i_{c,e}$ assure les deux comportements recherchés avec un rayon transmis non rasant dans l'eau. On traite les égalités comme des cas limites.
+\sol{E06}{Une lame à faces parallèles}
+À l'entrée, $r=\arcsin(\sin45^\circ/1{,}50)=28{,}1^\circ$. À la sortie, l'incidence interne vaut aussi $r$ car les normales sont parallèles. La loi $n\sin r=\sin i'$ donne $i'=i$ : les directions sont parallèles.
+Le segment parcouru dans la lame a pour longueur $\ell=e/\cos r$. L'angle entre ce segment et la direction incidente vaut $i-r$. Sa projection perpendiculaire donne
+\[\result{s=\ell\sin(i-r)=e\frac{\sin(i-r)}{\cos r}=1{,}97\ \mathrm{mm}}.\]
+\fig{ch01/corr-lame}{Le décalage $s$ est perpendiculaire à la direction incidente prolongée ; il ne se mesure pas le long de la face.}
+\begin{methode}{Contrôles limites}
+Si $i=0$, le rayon ne subit aucun décalage. Si le verre était remplacé par de l'air, $r=i$ et le décalage serait également nul. Ces deux tests confirment la structure de l'expression.
+\end{methode}
+
+\Page{Corrigés\quad /\quad E07 à E09}{Construire avant de conclure}{ch01-corr-e07}
+\sol{E07}{Un miroir qui tourne}
+L'image est le symétrique de l'objet, à $40{,}0\ \mathrm{cm}$ derrière le miroir. Elle est virtuelle et la distance objet-image vaut $80{,}0\ \mathrm{cm}$. Pour une rotation du miroir de $\beta$, la normale tourne aussi de $\beta$. Avec une direction incidente fixe, la direction réfléchie, symétrique de l'incidente par rapport à la normale, tourne de $2\beta$, soit $6{,}0^\circ$ en valeur absolue.
+Une photographie reste possible car les rayons réfléchis atteignent l'objectif, qui en forme une image réelle sur son capteur.
+\fig{ch01/miroir}{Les prolongements se rencontrent derrière le miroir ; aucun rayon réfléchi n'y pénètre.}
+\sol{E08}{Assez net pour quel capteur ?}
+Avec le critère fourni, $12>5$ : le premier détecteur ne juge pas le point net ; $12<20$ : le second le juge net. La tache demeure étendue dans les deux cas.
+Gauss impose des rayons proches de l'axe et peu inclinés. Le système est alors approximativement stigmatique et aplanétique. Pour $3{,}0^\circ=0{,}05236\ \mathrm{rad}$, $\tan\theta=0{,}05241$ ; l'erreur relative est $9{,}15\times10^{-4}$, soit $0{,}0915\,\%$.
+\sol{E09}{Reconnaître une lentille}
+$L_1$ est convergente, $V_1=+12{,}5\ \delta$ ; $L_2$ est divergente, $V_2=-5{,}0\ \delta$. Dans les deux cas $F$ a pour coordonnée $-f'$ et $F'$ pour coordonnée $f'$. Le rayon par $O$ n'est pas dévié ; le rayon parallèle ressort par $F'$ ou son prolongement. Pour une direction inclinée, le foyer secondaire image est l'intersection du rayon par $O$ et du plan focal image.
+
+\Page{Corrigés\quad /\quad E10 à E12}{Une même loi et trois natures}{ch01-corr-e10}
+\sol{E10}{Une projection réduite}
+$\oa=-30{,}0\ \mathrm{cm}$. On calcule $1/q=1/10-1/30=1/15$, donc $q=+15{,}0\ \mathrm{cm}$. Puis $\gamma=15/(-30)=-0{,}500$ et $\overline{A'B'}=-0{,}600\ \mathrm{cm}$. L'image est réelle, renversée et réduite. Deux rayons depuis $B$, l'un parallèle puis passant par $F'$, l'autre par $O$, se coupent à droite.
+\sol{E11}{La même lentille devient une loupe}
+Cette fois $1/q=1/10-1/6=-1/15$, d'où $q=-15{,}0\ \mathrm{cm}$ et $\gamma=+2{,}50$. L'image est virtuelle, droite et agrandie. Les rayons émergents divergent ; seuls leurs prolongements se coupent à gauche de la lentille.
+\fig{ch01/corr-loupe}{Construction de E11 : l'objet est à $0{,}60f'$ de $O$ et l'image virtuelle à $1{,}50f'$ du même côté.}
+\sol{E12}{Une divergente en autonomie}
+$1/q=-1/12-1/36=-1/9$, donc $q=-9{,}00\ \mathrm{cm}$ et $\gamma=+0{,}250$. L'image est virtuelle, droite et réduite.
+Plus généralement, avec une longueur objet $d>0$ et $f'=-g$, $g>0$ :
+\[q=-\frac{gd}{g+d}<0,\qquad\gamma=\frac{g}{g+d}\in]0,1[.\]
+Ces signes démontrent les trois propriétés sans se limiter au cas numérique.
+\begin{piege}{Un contrôle de signe vaut mieux qu'une intuition isolée}
+Si le calcul de E11 donnait $q>0$ ou celui de E12 donnait $\gamma<0$, il faudrait reprendre l'insertion de $\oa$ dans Descartes. Le mot « distance » ne permet pas de supprimer les signes.
+\end{piege}
+
+\Page{Corrigés\quad /\quad E13 à E15}{Passer du foyer à l'écran}{ch01-corr-e13}
+\sol{E13}{Une étoile hors de l'axe}
+Le faisceau incident est parallèle ; l'image est dans le plan focal image, à l'intersection du rayon passant par $O$ et de ce plan. Avec $\theta=0{,}500\pi/180=8{,}73\times10^{-3}\ \mathrm{rad}$ :
+\[y'\simeq f'\theta=200\times8{,}73\times10^{-3}=+1{,}75\ \mathrm{mm}.\]
+En plaçant une source au point ainsi construit et en inversant le sens de propagation, on retrouve le faisceau parallèle initial parcouru en sens inverse. Cette précision sur le sens est essentielle.
+\sol{E14}{Un objet très proche du foyer}
+$\overline{FA}=-1{,}00\ \mathrm{mm}$. Newton donne $\overline{F'A'}=-25/(-1)=+25{,}0\ \mathrm{mm}$, donc $\oap=30{,}0\ \mathrm{mm}$. L'objet est à $\oa=-6{,}00\ \mathrm{mm}$, d'où $\gamma=-5{,}00$. Vérification : $1/30-1/(-6)=1/5$.
+Lorsque $\overline{FA}\to0^-$, l'image s'éloigne vers $+\infty$ et $|\gamma|$ augmente sans borne dans le modèle idéal. L'image sort alors de tout écran de taille finie.
+\sol{E15}{Deux positions ou aucune}
+$D=90{,}0\ \mathrm{cm}>4f'=80{,}0\ \mathrm{cm}$ : deux positions existent. Les solutions de $x^2-90x+1800=0$ sont $x_1=30{,}0$ et $x_2=60{,}0\ \mathrm{cm}$. Les distances images sont respectivement $60{,}0$ et $30{,}0\ \mathrm{cm}$ ; les grandissements sont $-2{,}00$ et $-0{,}500$.
+\fig{ch01/bessel}{Pour deux positions, les distances objets et images s'échangent ; les grandissements sont réciproques.}
+Pour $D=75{,}0\ \mathrm{cm}$, aucune position ne convient. Pour $D=80{,}0\ \mathrm{cm}$, la position unique est $x=40{,}0\ \mathrm{cm}$ et $\gamma=-1$.
+
+\Page{Corrigés\quad /\quad E16 à E18}{Accommodation et cadrage}{ch01-corr-e16}
+\sol{E16}{L'accommodation chiffrée}
+L'œil emmétrope a un punctum remotum à l'infini et un punctum proximum à $25{,}0\ \mathrm{cm}$. Le modèle donne
+\[V_{\min}=\frac1{0{,}0170}=58{,}8\ \delta,\qquad
+V_{\max}=\frac1{0{,}0170}+\frac1{0{,}250}=62{,}8\ \delta.\]
+La variation vaut $4{,}00\ \delta$. L'accommodation agit sur la vergence tandis que la rétine reste fixe ; le déplacement d'un capteur à focale constante correspond plutôt à la mise au point du modèle photographique.
+\sol{E17}{Distinguer deux détails}
+$\theta_{\min}=\pi/(180\times60)=2{,}91\times10^{-4}\ \mathrm{rad}$. À $100\ \mathrm{m}$, les traits sous-tendent $s/d=0{,}0200/100=2{,}00\times10^{-4}\ \mathrm{rad}$ : le critère de résolution n'est pas satisfait.
+La distance maximale est $d_{\max}=s/\theta_{\min}=68{,}8\ \mathrm{m}$. Cette conclusion suppose que le contraste et l'éclairement permettent d'atteindre la limite annoncée.
+\sol{E18}{Un portrait qui ne tient pas}
+Avec toutes les longueurs en millimètres,
+\[q=\frac{50{,}0\times2000}{2000-50{,}0}=51{,}28\ \mathrm{mm}.\]
+Le tirage supplémentaire par rapport à l'infini est $q-f'=1{,}28\ \mathrm{mm}$. Le grandissement en valeur absolue vaut $q/p=0{,}02564$, donc l'image mesure $1800\times0{,}02564=46{,}2\ \mathrm{mm}$ : elle dépasse la hauteur du capteur.
+Pour cadrer entièrement la personne,
+\[\frac{hf'}{p-f'}\leq h_c\quad\Longleftrightarrow\quad
+p\geq f'+\frac{hf'}{h_c}
+=50+\frac{1800\times50}{24}=3800\ \mathrm{mm}.\]
+Il faut donc au moins $3{,}80\ \mathrm{m}$ dans ce modèle, à orientation du capteur inchangée.
+\begin{methode}{Le résultat raconte une expérience}
+Un faible déplacement du capteur peut suffire à changer la mise au point, mais le cadrage dépend aussi de la distance de l'objet. « Faire le point » et « faire tenir dans le cadre » sont deux opérations distinctes.
+\end{methode}
+
+\Page{Corrigés\quad /\quad E19 à E21}{Les compromis d'un instrument}{ch01-corr-e19}
+\sol{E19}{Exposition et mouvement}
+Comme l'exposition est proportionnelle à $T/N^2$, doubler $N$ demande de multiplier $T$ par 4 : $T'=1/125\ \mathrm{s}$. Les flous valent $vT=0{,}0200\ \mathrm{mm}=20{,}0\ \mu\mathrm{m}$ puis $80{,}0\ \mu\mathrm{m}$, soit 5 et 20 pixels.
+Fermer élargit la profondeur de champ géométrique, mais la durée accrue augmente ici le flou de mouvement. Une image peut être bien mise au point et néanmoins floue à cause du déplacement.
+\sol{E20}{Un point encore acceptable}
+$a=f'/N=6{,}25\ \mathrm{mm}$, $q_0=50{,}505\ \mathrm{mm}$ et $q=50{,}633\ \mathrm{mm}$. La coupe du cône par le capteur donne
+\[b=6{,}25\left|1-\frac{50{,}505}{50{,}633}\right|
+=0{,}0158\ \mathrm{mm}=15{,}8\ \mu\mathrm{m}<30{,}0\ \mu\mathrm{m}.\]
+Le point est acceptable selon le critère fourni. À $N=16$, l'ouverture et le flou géométrique sont divisés par 2 : $b=7{,}89\ \mu\mathrm{m}$.
+\fig{ch01/profondeur}{La netteté acceptable se décide dans le plan du capteur, même si l'image idéale se forme ailleurs.}
+\sol{E21}{Injecter dans une fibre}
+$\mathrm{ON}=\sqrt{1{,}48^2-1{,}46^2}=0{,}2425$ ; dans l'air, $\alpha_{\max}=14{,}0^\circ$. Pour $\alpha=10{,}0^\circ$, Snell donne $\sin\theta=\sin10^\circ/1{,}48$, donc $\theta=6{,}74^\circ$. L'incidence à la paroi est $83{,}26^\circ$, supérieure au seuil $\arcsin(1{,}46/1{,}48)\simeq80{,}57^\circ$ : le rayon est guidé. Dans l'eau, $\alpha_{\max}=\arcsin(0{,}2425/1{,}33)=10{,}5^\circ$.
+
+\Page{Corrigés\quad /\quad E22 à E24}{Des modèles aux résultats}{ch01-corr-e22}
+\sol{E22}{Une impulsion qui s'étale}
+Un trajet interne d'angle $\theta$ a pour longueur $L/\cos\theta$, d'où $t(\theta)=n_1L/(c\cos\theta)$. Le trajet axial donne $t_{\min}=4{,}93\ \mu\mathrm{s}$ ; la limite de guidage impose $\cos\theta_{\max}=n_2/n_1$. Ainsi
+\[\Delta t=\frac{n_1L}{c}\left(\frac{n_1}{n_2}-1\right)=67{,}6\ \mathrm{ns}.\]
+Le critère fourni donne $R_{\max}=1/(2\Delta t)=7{,}40\ \mathrm{Mbit\,s^{-1}}$. Le retard de plusieurs microsecondes décrit le temps d'attente avant réception ; les dizaines de nanosecondes d'étalement décrivent la difficulté à séparer des impulsions proches.
+\sol{E23}{Deux lentilles successives}
+Pour $L_1$, $\overline{O_1A}=-30\ \mathrm{cm}$ donne $\overline{O_1A_1}=+15\ \mathrm{cm}$ et $\gamma_1=-1/2$. Donc $\overline{O_2A_1}=15-20=-5\ \mathrm{cm}$ : l'image intermédiaire est un objet réel pour $L_2$.
+\[\frac1{\overline{O_2A_2}}=-\frac1{10}-\frac15=-\frac3{10},\qquad
+\overline{O_2A_2}=-\frac{10}{3}\ \mathrm{cm}.\]
+L'image finale est virtuelle pour $L_2$, à $20-10/3=16{,}7\ \mathrm{cm}$ à droite de $O_1$. Puis $\gamma_2=(-10/3)/(-5)=2/3$ et $\gamma_{\rm total}=-1/3$. Elle est renversée et réduite par rapport à l'objet initial.
+\sol{E24}{Un résultat de mesure défendable}
+$f'=pq/(p+q)=20{,}0\ \mathrm{cm}$, $\gamma=-q/p=-2{,}00$ et $V=+5{,}00\ \delta$. Les dérivées partielles sont $\partial f'/\partial p=q^2/(p+q)^2$ et $\partial f'/\partial q=p^2/(p+q)^2$, donc
+\[u(f')=\sqrt{(4u(p)/9)^2+(u(q)/9)^2}=0{,}0458\ \mathrm{cm}.\]
+On peut présenter $f'=20{,}00\ \mathrm{cm}$ avec $u(f')=0{,}05\ \mathrm{cm}$. Avec la valeur non arrondie de l'incertitude, $z=0{,}10/\sqrt{0{,}0458^2+0{,}08^2}=1{,}08$. Les résultats sont compatibles selon le repère adopté, sans que cela exclue un biais commun.
+
+\Page{Corrigé du défi D1}{Résoudre l'inégalité de netteté}{ch01-corr-d1}
+\source{Énoncé p.\,\pageref{ch01-ex-D1}. Les distances objets $p,p_0$ sont ici des longueurs positives, différentes de $\oa$.}
+\Sub{1\quad /\quad Des triangles à l'inégalité}
+Au plan de la lentille, le cône a un diamètre $a$ ; son sommet est à $q$. Les triangles semblables donnent $b/a=|q-q_0|/q$. Or
+\[1-\frac{q_0}{q}=1-q_0\left(\frac1{f'}-\frac1p\right)
+=q_0\left(\frac1p-\frac1{p_0}\right).\]
+Le critère $b\leq\varepsilon$ équivaut donc à $|1/p-1/p_0|\leq k$, avec $k=\varepsilon/(a q_0)>0$.
+\Sub{2\quad /\quad Deux bornes à discuter}
+\[\frac1{p_0}-k\leq\frac1p\leq\frac1{p_0}+k.
+\]
+La borne proche est toujours $\displaystyle p_-=(1/p_0+k)^{-1}$. Si $k<1/p_0$, la borne lointaine est $\displaystyle p_+=(1/p_0-k)^{-1}$. Si $k\geq1/p_0$, toute distance suffisamment grande convient, donc $p_+=+\infty$. On conserve le domaine physique $p>f'$.
+\Sub{3\quad /\quad Valeurs numériques}
+En millimètres, $a=6{,}25$, $q_0=50{,}505$ et $k=9{,}504\times10^{-5}\ \mathrm{mm^{-1}}$. On trouve
+\[\result{p_-=3{,}39\ \mathrm{m}},\qquad\result{p_+=9{,}53\ \mathrm{m}}.\]
+Ce sont des limites de netteté acceptable pour le diamètre choisi, et non deux plans de netteté parfaite.
+\Sub{4\quad /\quad Distance de réglage limite}
+La borne lointaine atteint l'infini quand $k=1/p_0$, soit
+\[\frac{\varepsilon}{a}\frac{p_0-f'}{f'p_0}=\frac1{p_0}
+\quad\Longleftrightarrow\quad
+\result{H=f'+\frac{a f'}{\varepsilon}=f'+\frac{f'^2}{N\varepsilon}}.\]
+Numériquement $H=10{,}47\ \mathrm{m}$. Les effets de diffraction, d'aberration et de contraste ne sont pas prédits par cette seule géométrie ; ils empêchent de conclure qu'une fermeture arbitrairement forte améliorerait toujours la résolution.
+
+\Page{Corrigé du défi D2}{Un budget temporel explicite}{ch01-corr-d2}
+\source{Énoncé p.\,\pageref{ch01-ex-D2}. Garder les durées en secondes pendant le calcul.}
+\Sub{1\quad /\quad Étalement par unité de longueur}
+Le temps du trajet axial vaut $n_1L/c$. La limite la plus lente donne $n_1^2L/(cn_2)$ ; ainsi
+\[\kappa=\frac{n_1}{c}\left(\frac{n_1}{n_2}-1\right)
+=6{,}758\times10^{-11}\ \mathrm{s\,m^{-1}}.\]
+Sur $1{,}00\ \mathrm{km}$, $\Delta t=67{,}58\ \mathrm{ns}$ et $\tau_{\rm rec}=87{,}58\ \mathrm{ns}$. À $10{,}0\ \mathrm{Mbit\,s^{-1}}$, la période binaire est $100\ \mathrm{ns}$ alors que la condition impose au moins $175{,}16\ \mathrm{ns}$ : la liaison ne satisfait pas le cahier des charges.
+\Sub{2\quad /\quad Longueur maximale}
+\[\tau_0+\kappa L\leq\frac1{2R}\quad\Longrightarrow\quad
+\result{L_{\max}=\frac{1/(2R)-\tau_0}{\kappa}=444\ \mathrm{m}}.\]
+Si $1/(2R)=\tau_0$, seule la longueur nulle satisfait le modèle. Si $1/(2R)<\tau_0$, même une liaison sans étalement est insuffisante selon le critère donné. Il ne faut pas annoncer une « longueur maximale négative » comme un résultat physique.
+\Sub{3\quad /\quad Guidage et temps de transit}
+L'angle d'entrée maximal vaut $14{,}03^\circ$ : le rayon à $12{,}0^\circ$ est accepté. La loi d'entrée donne $\sin\theta=\sin12^\circ/1{,}48$, soit $\theta=8{,}08^\circ$. L'incidence à la paroi est $81{,}92^\circ$, supérieure au seuil de $80{,}57^\circ$.
+Avec la longueur non arrondie $443{,}919\ \mathrm{m}$,
+\[t(\theta)=\frac{1{,}48\times443{,}919}{3{,}00\times10^8\cos8{,}08^\circ}
+=2{,}21\ \mu\mathrm{s}.\]
+\Sub{4\quad /\quad Le compromis}
+Réduire l'écart $n_1-n_2$ diminue $n_1/n_2-1$ et donc la dispersion intermodale. Cela réduit aussi $\sqrt{n_1^2-n_2^2}$ : le cône d'entrée se resserre, ce qui rend l'injection plus exigeante. Une seule amélioration chiffrée ne suffit pas à juger l'ensemble d'un dispositif.
+
+\Page{Corrigé du défi D3}{Remonter le microscope}{ch01-corr-d3}
+\source{Énoncé p.\,\pageref{ch01-ex-D3}. Les grandeurs angulaires finales sont prises en valeur absolue.}
+\Sub{1\quad /\quad Partir de la sortie}
+Pour une image finale à l'infini, $A_1B_1$ doit être dans le plan focal objet de l'oculaire : $A_1=F_2$. Donc $q_1=\overline{O_1A_1}=f'_1+\Delta=164\ \mathrm{mm}$. Les centres sont séparés de $f'_1+\Delta+f'_2=189\ \mathrm{mm}$.
+\Sub{2\quad /\quad Position de l'objet}
+En notant $p_1>0$ la distance de l'objet à l'objectif, $1/p_1=1/f'_1-1/q_1$, d'où
+\[p_1=\frac{f'_1(f'_1+\Delta)}{\Delta}=4{,}10\ \mathrm{mm}.\]
+Ainsi $\overline{O_1A}=-4{,}10\ \mathrm{mm}$ et $\overline{F_1A}=-0{,}100\ \mathrm{mm}$ : l'objet est juste avant le foyer objet.
+\Sub{3\quad /\quad Grandissement et angle}
+$\gamma_1=-q_1/p_1=-\Delta/f'_1=-40{,}0$. Pour $h=10{,}0\ \mu\mathrm{m}$, la hauteur intermédiaire vaut $-0{,}400\ \mathrm{mm}$. L'oculaire donne $\alpha'\simeq|h_1|/f'_2=0{,}0160\ \mathrm{rad}$.
+\[\result{P_i=\frac{\alpha'}h=\frac{\Delta}{f'_1f'_2}=1{,}60\times10^3\ \mathrm{m^{-1}}}.\]
+\fig{ch01/microscope}{L'image intermédiaire est réelle et renversée ; elle sert d'objet à l'oculaire. Le dessin conserve les conjugaisons, sans reprendre les proportions numériques du défi.}
+\Sub{4\quad /\quad Interpréter le grossissement}
+À l'œil nu à $d_m=0{,}250\ \mathrm{m}$, $\alpha\simeq h/d_m=4{,}00\times10^{-5}\ \mathrm{rad}$. Le grossissement en valeur absolue est $\alpha'/\alpha=P_i d_m=400$. L'œil emmétrope peut observer sans accommoder. Ce grossissement ne garantit pas la résolution : diffraction, ouverture, aberrations et contraste restent à considérer.
+
+\Page{Corrigé du DM\quad /\quad Sur 20}{La focale et son incertitude}{ch01-corr-dm}
+\source{Énoncé p.\,\pageref{ch01-ex-DM}. Barème proposé : il valorise la méthode même si une erreur numérique isolée est reportée de manière cohérente.}
+\Sub{1 et 2\quad /\quad Construire la méthode\quad /\quad 7 points}
+$\oa=-x$, $\oap=D-x$, donc $1/x+1/(D-x)=1/f'$. On obtient $x^2-Dx+Df'=0$ : \textbf{2 points}. Le discriminant $D(D-4f')$ impose $D\geq4f'$ : \textbf{2 points}.
+Les racines sont $(D\mp\sqrt{D^2-4Df'})/2$ : \textbf{1 point}. Leur différence donne $d^2=D^2-4Df'$, puis $f'=(D^2-d^2)/(4D)$ : \textbf{2 points}.
+\Sub{3 et 4\quad /\quad Exploiter les positions\quad /\quad 4 points}
+$f'=160{,}0\ \mathrm{mm}$ et $x_1=(D-d)/2=200{,}0\ \mathrm{mm}$, $x_2=(D+d)/2=800{,}0\ \mathrm{mm}$ : \textbf{2 points}.
+$\gamma_1=-(D-x_1)/x_1=-4{,}00$ et $\gamma_2=-0{,}250$ ; leur produit vaut 1 car les distances objets et images s'échangent : \textbf{2 points}.
+\Sub{5\quad /\quad Propager l'incertitude\quad /\quad 3 points}
+\[\frac{\partial f'}{\partial D}=\frac14+\frac{d^2}{4D^2}=0{,}340,
+\qquad \frac{\partial f'}{\partial d}=-\frac d{2D}=-0{,}300.\]
+\[u(f')=\sqrt{(0{,}340\times1{,}0)^2+(0{,}300\times2{,}0)^2}
+=0{,}690\ \mathrm{mm}.\]
+Une présentation adaptée est $f'=160{,}0\ \mathrm{mm}$ avec $u(f')=0{,}7\ \mathrm{mm}$. Dérivées, composition et présentation : \textbf{1 point chacune}.
+\Sub{6\quad /\quad Comparer\quad /\quad 2 points}
+$z=|160{,}0-158{,}5|/\sqrt{0{,}690^2+0{,}8^2}=1{,}42$. Les valeurs sont compatibles au repère $z\leq2$ ; le résultat ne prouve pas l'absence de biais commun. \textbf{1 point pour le calcul, 1 pour l'interprétation.}
+\Sub{7 et 8\quad /\quad Expérimenter et critiquer\quad /\quad 4 points}
+Déplacer la lentille de part et d'autre du meilleur réglage, relever l'intervalle jugé net, puis répéter indépendamment la mise au point. Une estimation d'incertitude doit préciser le modèle de distribution : \textbf{2 points}.
+Exemples de limites : épaisseur non négligeable de la lentille, mauvaise référence au centre optique, défaut d'alignement, aberrations, parallaxe de lecture : \textbf{1 point par limite correctement expliquée, maximum 2}.
+
+\Page{Corrigé du DS\quad /\quad Partie A}{Un seuil physique pour détecter l'eau}{ch01-corr-ds1}
+\source{Énoncé p.\,\pageref{ch01-ex-DS}. Partie A : 8 points sur les 20 du devoir.}
+\Sub{A1\quad /\quad Les lois\quad /\quad 2 points}
+Les rayons sont dans le plan d'incidence. L'angle réfléchi égale l'angle incident, tous deux mesurés depuis la normale. La réfraction vérifie $n_v\sin i=n_{\rm ext}\sin r$. Attribution : \textbf{1 point} pour réflexion et coplanarité, \textbf{1 point} pour réfraction avec identification des angles et milieux.
+\Sub{A2\quad /\quad Les seuils\quad /\quad 2 points}
+L'existence de $r$ exige $(n_v/n_{\rm ext})\sin i\leq1$. Comme $n_v>n_{\rm ext}$, la réflexion totale commence strictement au-delà de $i_c=\arcsin(n_{\rm ext}/n_v)$. On obtient
+\[\result{i_{c,a}=41{,}8^\circ},\qquad\result{i_{c,e}=62{,}5^\circ}.\]
+\textbf{1 point} pour la démonstration et \textbf{1 point} pour les deux valeurs.
+\Sub{A3\quad /\quad À l'incidence imposée\quad /\quad 2 points}
+À $50{,}0^\circ$, le verre-air est en réflexion totale. Le verre-eau admet un rayon transmis :
+\[r=\arcsin\!\left(\frac{1{,}50}{1{,}33}\sin50{,}0^\circ\right)=59{,}8^\circ.\]
+\textbf{1 point} pour les comportements et \textbf{1 point} pour $r$ avec son expression.
+\fig{ch01/capteur-pluie}{Lorsqu'un rayon transmis apparaît, une partie de l'énergie peut quitter le verre.}
+\Sub{A4\quad /\quad Une information exploitable\quad /\quad 2 points}
+Le domaine $41{,}8^\circ<i<62{,}5^\circ$, en gardant les seuils non arrondis pour la décision, donne réflexion totale à sec et transmission non rasante dans l'eau : \textbf{1 point}. Dans le modèle idéal sans absorption, l'énergie transmise réduit l'énergie réfléchie reçue par le détecteur : \textbf{1 point}.
+\begin{piege}{Ce que l'on ne peut pas chiffrer ici}
+La loi de Snell-Descartes ne donne pas le rapport des puissances réfléchies. Le devoir demande une explication qualitative, pas un pourcentage de signal inventé.
+\end{piege}
+
+\Page{Corrigé du DS\quad /\quad Parties B et C}{Projection et transmission}{ch01-corr-ds2}
+\Sub{B1 et B2\quad /\quad L'image\quad /\quad 4 points}
+$\oa=-300\ \mathrm{mm}$ et $1/\oap-1/\oa=1/f'$ : \textbf{1 point}. Donc $\oap=+150\ \mathrm{mm}$ : \textbf{1 point} ; $\gamma=-0{,}500$ et $h'=-6{,}00\ \mathrm{mm}$ : \textbf{1 point} ; image réelle, renversée et réduite : \textbf{1 point}.
+\Sub{B3 et B4\quad /\quad Deux constructions\quad /\quad 4 points}
+$450>4\times100$ : deux positions sont possibles. Les solutions sont $x=(450\mp150)/2$, soit $150$ et $300\ \mathrm{mm}$ depuis l'objet : \textbf{2 points} pour condition et positions.
+Construction initiale : rayon de $B$ parallèle à l'axe puis passant par $F'$ ; rayon de $B$ passant par $O$ sans déviation. Ils se coupent à $150\ \mathrm{mm}$ à droite : \textbf{1 point}. Dans l'autre position, $q=300\ \mathrm{mm}$ et $p=150\ \mathrm{mm}$, donc $\gamma=-2{,}00$ et $h'=-24{,}0\ \mathrm{mm}$ : \textbf{1 point}.
+\Sub{C1\quad /\quad Guidage\quad /\quad 2 points}
+L'incidence à la paroi est $i=\pi/2-\theta$. La réflexion totale impose $\cos\theta>n_2/n_1$. À l'entrée $\sin\alpha=n_1\sin\theta$, d'où $\sin^2\alpha<n_1^2-n_2^2$ : \textbf{1 point}. La limite donne $\alpha_{\max}=\arcsin\sqrt{1{,}48^2-1{,}46^2}=14{,}0^\circ$ : \textbf{1 point}.
+\Sub{C2\quad /\quad Étalement et débit\quad /\quad 2 points}
+Le temps interne est $n_1L/(c\cos\theta)$ ; les extrêmes sont $n_1L/c$ et $n_1^2L/(cn_2)$. Leur différence donne
+\[\Delta t=\frac{n_1L}{c}\left(\frac{n_1}{n_2}-1\right)=33{,}8\ \mathrm{ns}.\]
+Démonstration et valeur : \textbf{1 point}. Le critère $T\geq2\Delta t$ donne $R\leq1/(2\Delta t)=14{,}8\ \mathrm{Mbit\,s^{-1}}$ : \textbf{1 point}.
+\begin{methode}{Analyser sa note par capacité}
+Une note totale masque parfois une fragilité locale. Reprendre séparément : angles et seuils (A), signes et construction (B), chaîne de raisonnement (C). Un schéma inexpliqué ou un résultat sans unité ne constitue pas une démonstration.
+\end{methode}
+
+\Page{Supports authentiques\quad /\quad DM et DS}{Travailler de vrais devoirs}{ch01-authentiques}
+Les deux parcours suivants s'appuient sur des documents réellement publiés en MPSI. Ouvrir le lien pour conserver l'énoncé, ses figures et ses consignes d'origine. Les repères ci-dessous permettent de vérifier le raisonnement sans rééditer ces devoirs comme des sujets OptiTAB.
+\Sub{Parcours R1\quad /\quad DM du 10 septembre 2026}
+\source{MPSI, site pédagogique schleck.ovh, \href{https://mpsi.schleck.ovh/fichiers/devoirs/dm1_optique_ad.pdf}{DM1 « Optique, analyse dimensionnelle »}, exercice 2, partie II, questions 7 et 9, page 3/3.}
+\textbf{Travail.} Résoudre les questions indiquées sur l'anneau catadioptrique et la rotation d'un miroir. Identifier la normale en chaque point ; utiliser le seuil verre-air avec l'indice $1{,}7$ fourni dans le devoir.
+\begin{docu}{Repères de correction R1}
+Le seuil vaut $\alpha_L=\arcsin(1/1{,}7)=36{,}0^\circ$. La réflexion est totale pour $\alpha>\alpha_L$, l'angle étant mesuré depuis la normale en $H$. Une rotation du miroir de $\beta$ fait tourner cette normale de $\beta$ ; la symétrie de la direction incidente par rapport à la normale fait tourner le rayon réfléchi de $2\beta$. Le point clé est la définition de l'angle, pas la mémorisation d'une figure.
+\end{docu}
+\Sub{Parcours R2\quad /\quad DS du 17 septembre 2026}
+\source{MPSI, site pédagogique schleck.ovh, \href{https://mpsi.schleck.ovh/fichiers/devoirs/ds01_enonce.pdf}{DS1 « De l'analyse dimensionnelle et de l'optique géométrique »}, partie II « Détecteur de pluie », page 2/5. Durée du devoir complet : 2 h.}
+\textbf{Travail.} Traiter la partie II avec les indices originaux du plexiglas, du verre, de l'eau et de l'air. Ne pas remplacer ce trajet d'injection par celui du DS OptiTAB.
+\begin{docu}{Repères de correction R2}
+À l'entrée dans le verre, $\theta_2=\arcsin[(1{,}50/1{,}55)\sin50^\circ]=47{,}85^\circ$. Les seuils verre-air et verre-eau valent $40{,}18^\circ$ et $59{,}10^\circ$. Il y a donc réflexion totale à sec, mais transmission vers l'eau ; le rayon dans l'eau fait $59{,}76^\circ$ avec la normale. L'apparition d'une voie transmise diminue la lumière réfléchie. Les lois géométriques ne chiffrent pas cette diminution.
+\end{docu}
+\source{Documents consultés le 25 octobre 2026. Les dates, numéros de partie et valeurs ci-dessus sont ceux des PDF sources, et non des dates créées pour ce manuel.}
+
+\Page{Support authentique\quad /\quad Concours}{Mines-Ponts MP 2021}{ch01-auth-concours}
+\source{GIP Concours commun Mines-Ponts, Physique I, filière MP, session 2021, partie IV « Observations optiques », questions 21 à 24, pages 5/6 et 6/6 du sujet.}
+\begin{loi}{Accéder au sujet d'origine}
+\href{https://concoursminesponts.fr/annales/}{Page officielle des annales Mines-Ponts}\par
+\href{https://wordpress.concoursminesponts.fr/wp-content/uploads/2024/07/2021.zip}{Archive officielle de la session 2021}\par
+Fichier dans l'archive : \texttt{2021/MP/Physique-MP-1-2021.pdf}.
+\end{loi}
+\Sub{Un parcours accessible après ce chapitre}
+Traiter les questions 21 à 24 sur le microscope, en conservant les figures et données du sujet. Pour ce parcours ciblé, prévoir 40 minutes. La durée officielle de l'épreuve complète est de 3 heures, sans calculatrice ; cette durée ne concerne pas uniquement la partie optique.
+\begin{docu}{Repères de correction R3}
+\textbf{Q21.} Rayons proches de l'axe et faiblement inclinés ; stigmatisme et aplanétisme approchés.\par
+\textbf{Q22.} L'image intermédiaire appartient au plan focal objet de l'oculaire ; les rayons émergents sont parallèles.\par
+\textbf{Q23.} Avec $f'_1=1\ \mathrm{mm}$, $f'_2=20\ \mathrm{mm}$ et $\Delta=150\ \mathrm{mm}$, $q_1=151\ \mathrm{mm}$ et $p_1=f'_1q_1/(q_1-f'_1)=1{,}0067\ \mathrm{mm}$. L'objet est juste avant $F_1$ ; l'œil emmétrope n'accommode pas. Si l'objet est entre $F_1$ et $O_1$, son image par l'objectif devient virtuelle.\par
+\textbf{Q24.} En valeur absolue, $P_i=\Delta/(f'_1f'_2)=7{,}5\times10^3\ \mathrm{m^{-1}}$. Pour le rayon de grain $R_b=0{,}2\ \mu\mathrm{m}$ donné plus haut dans le sujet, son diamètre sous-tend environ $P_i(2R_b)=3\times10^{-3}\ \mathrm{rad}$, supérieur à la résolution angulaire usuelle de l'œil. Ce modèle géométrique prédit une taille apparente suffisante.
+\end{docu}
+\fig{ch01/microscope}{Construction originale pour accompagner le parcours : image intermédiaire en $F_2$ et faisceau final parallèle.}
+\source{Le sujet original demeure la propriété du GIP CCMP. Ses conditions de diffusion figurent sur la page officielle et dans le PDF. Ce chapitre fournit un parcours et des repères indépendants ; il ne reproduit pas l'épreuve complète.}
+
+\Page{Références et suivi}{Un socle pour la suite du livre}{ch01-references}
+\Sub{Références primaires}
+\begin{enumerate}
+\item Ministère de l'Enseignement supérieur, \href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{arrêté du 5 janvier 2021, ESRS2035779A}. \href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexes officielles}, annexe 2, physique-chimie MPSI ; section 1.1, pages internes 12 et 13 (pages 49 et 50 du fichier regroupé). La formation expérimentale est utilisée pour le TP et l'exploitation des mesures.
+\item Site pédagogique \href{https://mpsi.schleck.ovh/}{Physique-chimie MPSI, schleck.ovh}, DM1 et DS1 de septembre 2026 ; références détaillées dans les parcours R1 et R2.
+\item \href{https://concoursminesponts.fr/annales/}{GIP CCMP, annales officielles}, Physique I MP 2021, partie IV, questions 21 à 24. Les autres parties de ce sujet font appel à d'autres chapitres et ne sont pas exigées ici.
+\end{enumerate}
+\Sub{Nature des contenus}
+Le cours, les constructions vectorielles, les 24 exercices, les trois défis, le DM et le DS OptiTAB sont rédigés pour ce chapitre. Les exemples numériques et le tableau du TP sont des données pédagogiques créées pour le travail ; ils ne sont pas présentés comme des mesures réelles. Les trois parcours R1 à R3 identifient explicitement les supports extérieurs.
+\Sub{Compétences avant de poursuivre}
+\checkline{Je peux refaire seul les cinq démonstrations du bilan de cours.}
+\checkline{Je trace les images virtuelles aussi sûrement que les images réelles.}
+\checkline{Je relie le critère de netteté à un détecteur donné.}
+\checkline{Je peux corriger mon DS à partir d'une grille de capacités.}
+\checkline{Je distingue un exercice d'application et un sujet authentique référencé.}
+\Sub{Pour poursuivre}
+Le chapitre 2 traite les signaux électriques dans l’ARQS. Les méthodes de schématisation, de contrôle des unités et de confrontation aux mesures restent les mêmes. Les chapitres suivants poursuivent la progression annoncée au sommaire commun.

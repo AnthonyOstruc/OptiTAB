@@ -1,0 +1,12 @@
+% Vitesse d'un sprinteur en fonction du temps (exercice 6, chapitre 13)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=96mm,height=46mm,xmin=0,xmax=11.6,ymin=0,ymax=13.5,
+  xtick={0,1,...,11},ytick={0,2,...,12},
+  xlabel={$t$ (s)},ylabel={$v$ (m$\cdot$s$^{-1}$)}]
+\addplot[otNavy,line width=1pt] coordinates {(0,0)(4,11.6)(10.62,11.6)};
+\solution{\fill[otGreenTint,opacity=0.8] (axis cs:0,0) -- (axis cs:4,11.6) -- (axis cs:4,0) -- cycle;
+  \node[pcLegende,text=otGreenDark] at (axis cs:2.9,3.2) {aire : 23,2~m};}
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:4,0) -- (axis cs:4,11.6);
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Modèle de la vitesse du sprinteur : phase d'accélération puis vitesse constante.}

@@ -1,0 +1,13 @@
+% Cercle chromatique : couleurs complémentaires diamétralement opposées (L'essentiel et exercice 5, chapitre 19)
+\definecolor{pcR}{RGB}{235,30,30}\definecolor{pcV}{RGB}{20,190,60}\definecolor{pcB}{RGB}{30,70,235}
+\definecolor{pcC}{RGB}{0,200,230}\definecolor{pcM}{RGB}{225,30,205}\definecolor{pcJ}{RGB}{250,215,0}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \a/\c/\n in {90/pcR/rouge,30/pcJ/jaune,-30/pcV/vert,-90/pcC/cyan,-150/pcB/bleu,150/pcM/magenta}{%
+  \fill[\c] ({\a-30}:0.55) arc ({\a-30}:{\a+30}:0.55) -- ({\a+30}:1.25) arc ({\a+30}:{\a-30}:1.25) -- cycle;
+  \node[pcLegende,anchor={\a+180}] at (\a:1.32) {\n};}
+\solution{
+  \draw[otInk,line width=0.7pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (90:0.5) -- (-90:0.5);
+  \draw[otInk,line width=0.7pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (30:0.5) -- (-150:0.5);
+  \draw[otInk,line width=0.7pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (-30:0.5) -- (150:0.5);}
+\end{tikzpicture}
+\par\smallskip\legende{Deux couleurs opposées sur le cercle sont complémentaires : leur superposition (synthèse additive) donne du blanc.}

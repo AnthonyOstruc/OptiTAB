@@ -1,0 +1,540 @@
+\BeginChapter{09}{Interférences}
+\Page{Chapitre 09 / Programme officiel}{Superposition et interférences}{ch09-chapitre-09}
+Deux perturbations peuvent se renforcer ou se compenser au même point. L’intensité observée dépend alors du déphasage accumulé le long des trajets, pas seulement de l’énergie de chaque onde prise séparément. Les interférences rendent ainsi mesurables de très petites différences de chemin.
+\begin{loi}{Notions et capacités travaillées}
+Amplitude résultante de deux ondes de même fréquence ; conditions constructives et destructives ; déphasage et différence de chemin optique ; trous d’Young ; établissement de la différence de marche ; exploitation de la formule de Fresnel fournie ; caractérisation expérimentale.
+\end{loi}
+
+\Sub{Prérequis}
+Chapitre 8 : retard, phase et longueur d’onde. Chapitre 6 : addition complexe. Identités trigonométriques et approximation $\sqrt{1+u}\simeq1+u/2$ pour |u| très petit.
+
+\begin{methode}{La méthode du chapitre}
+Fixer l’ordre des deux chemins et des phases ; calculer leur différence ; ajouter les phases initiales et éventuelles phases de réflexion ; utiliser la formule d’amplitude ou de Fresnel ; déterminer les maxima et minima ; vérifier les hypothèses de cohérence.
+\end{methode}
+
+\source{Concordance : annexe 2 de l’arrêté du 5 janvier 2021, rubrique 1.6 / interférences. La formule de Fresnel lumineuse est fournie, conformément au programme. Le contraste et les lames minces sont des applications guidées ; la cohérence est expliquée au niveau nécessaire à l’expérience.}
+
+\Page{Diagnostic / 15 min}{Avant d’ouvrir le cours}{ch09-diagnostic}
+\begin{questions}
+\item Additionner $A\cos\omega t$ à lui-même.
+\item Additionner $A\cos\omega t$ et $A\cos(\omega t+\pi)$.
+\item Un chemin supplémentaire \ensuremath{\lambda} donne quelle phase ?
+\item Un chemin supplémentaire \ensuremath{\lambda}/2 ?
+\item Les intensités s’additionnent-elles toujours pour deux ondes cohérentes ?
+\item Un milieu d’indice n possède quelle célérité lumineuse ?
+\item La fréquence lumineuse change-t-elle au passage d’un dioptre immobile ?
+\item Peut-on avoir une annulation totale si les deux amplitudes sont différentes ?
+\end{questions}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les unités sont maîtrisées.}\checkline{Je peux orienter un schéma et annoncer les hypothèses.}\checkline{Je sais expliquer une condition initiale.}Corrigé p.\,\pageref{ch09-corr-diag}.
+\end{docu}
+
+
+\Page{Cours / 1}{Additionner des signaux, pas des amplitudes}{ch09-cours-1}
+\begin{loi}{Principe de superposition}
+Dans un milieu linéaire, la grandeur totale est $s=s_1+s_2$. Pour deux sinusoïdes de même pulsation :\[s=A_1\cos(\omega t+\varphi_1)+A_2\cos(\omega t+\varphi_2).\]La somme est une sinusoïde de même pulsation ; son amplitude dépend de $\Delta\varphi=\varphi_2-\varphi_1$.
+\end{loi}
+\Sub{Trois cas immédiats}
+En phase, la somme a l’amplitude $A_1+A_2$. En opposition, elle a l’amplitude $|A_1-A_2|$. En quadrature, le carré de l’amplitude vaut $A_1^2+A_2^2$. On ne peut donc additionner les amplitudes positives que dans le premier cas.
+\Sub{Le rôle du lieu d’observation}
+Les phases reçues en un point dépendent des phases d’émission et des distances parcourues. Déplacer le récepteur change la différence de chemin et peut transformer un maximum en minimum. La fréquence reste celle des sources dans le cas étudié.
+\begin{methode}{Fixer une convention}
+Dans ce chapitre, $\Delta\varphi=\varphi_2-\varphi_1$ et $\delta=L_2-L_1$. Avec la convention temporelle $e^{j\omega t}$, la propagation donne $\Delta\varphi=\Delta\varphi_{\rm source}-2\pi\delta/\lambda$. Le cosinus de cette phase est insensible au signe global, mais les déplacements de franges ne le sont pas.
+\end{methode}
+
+
+\Page{Cours / 2}{Construire l’amplitude résultante}{ch09-cours-2}
+\fig{ch09/phasors}{La somme vectorielle des amplitudes complexes permet de traiter des amplitudes différentes.}\begin{loi}{Somme de deux sinus de même fréquence}
+\[S_m^2=A_1^2+A_2^2+2A_1A_2\cos\Delta\varphi.\]Cette identité se déduit du module au carré de $A_1e^{j\varphi_1}+A_2e^{j\varphi_2}$. Elle implique $|A_1-A_2|\leq S_m\leq A_1+A_2$.
+\end{loi}
+\Sub{Exemple}
+A1 = 3 mm, A2 = 4 mm et \ensuremath{\Delta}\ensuremath{\varphi} = \ensuremath{\pi}/2 donnent Sm = 5 mm. Pour \ensuremath{\Delta}\ensuremath{\varphi} = \ensuremath{\pi}, le minimum vaut 1 mm : il reste une vibration. La phase de la somme peut être calculée avec l’argument du complexe total ; elle est indéfinie quand l’amplitude totale est nulle.
+
+
+\Page{Cours / 3}{Le cas d’amplitudes égales}{ch09-cours-3}
+\begin{loi}{Identité trigonométrique}
+\[s=2A\cos\left(\frac{\Delta\varphi}{2}\right)\cos\left(\omega t+\frac{\varphi_1+\varphi_2}{2}\right).\]\[S_m=2A\left|\cos\left(\frac{\Delta\varphi}{2}\right)\right|.\]Le coefficient devant le second cosinus peut être négatif ; l’amplitude physique est positive. Un changement de signe est absorbé dans une phase de \ensuremath{\pi}.
+\end{loi}
+\fig{ch09/amplitude}{L’amplitude est maximale en phase, nulle en opposition et périodique en déphasage.}\Sub{Conditions}
+Constructif : $\Delta\varphi=2m\pi$. Destructif : $\Delta\varphi=(2m+1)\pi$. Une annulation complète exige en plus des amplitudes égales. « Destructif » peut donc désigner un minimum non nul si les amplitudes sont inégales.
+
+
+\Page{Cours / 4}{Interférences acoustiques et mécaniques}{ch09-cours-4}
+\Sub{Deux sources synchronisées}
+Pour des chemins géométriques d1 et d2 dans le même milieu de longueur d’onde \ensuremath{\lambda} :\[\Delta\varphi=\Delta\varphi_0-\frac{2\pi}{\lambda}(d_2-d_1).\]Avec des sources en phase et sans déphasage de réflexion, les maxima vérifient $d_2-d_1=m\lambda$ et les minima $d_2-d_1=(m+1/2)\lambda$.
+\begin{methode}{Un exemple sonore}
+À 1 kHz et c = 340 m/s, \ensuremath{\lambda} = 0,340 m. Une différence de trajet de 0,170 m produit une opposition pour des émissions en phase. Si l’on inverse électriquement un haut-parleur, on ajoute \ensuremath{\pi} : le même lieu devient constructif.
+\end{methode}
+\Sub{La géométrie des lieux}
+Dans un plan, les lieux de différence constante de distance à deux points sont des hyperboles, sauf cas dégénérés. Sur la médiatrice des sources, les distances sont égales. Le son ne disparaît pas partout lorsqu’un minimum apparaît : l’interférence redistribue les amplitudes selon le lieu.
+\begin{piege}{Réflexion et phase initiale}
+Une différence de trajet seule ne suffit pas si une réflexion ajoute une phase ou si les sources ne sont pas en phase. Ajouter toutes les contributions avant d’appliquer la condition de maximum.
+\end{piege}
+
+
+\Page{Cours / 5}{De l’onde lumineuse à l’intensité}{ch09-cours-5}
+\begin{loi}{Formule de Fresnel fournie}
+Pour deux ondes lumineuses cohérentes dans le modèle scalaire :\[I=I_1+I_2+2\sqrt{I_1I_2}\cos\Delta\varphi.\]L’intensité est liée à une moyenne temporelle du carré du champ ; elle n’est pas le champ lui-même. Pour $I_1=I_2=I_0$, $I=2I_0(1+\cos\Delta\varphi)$.
+\end{loi}
+\Sub{Pourquoi une cohérence est nécessaire}
+Si la phase relative varie très rapidement de façon désordonnée pendant la mesure, la moyenne du terme cosinus s’annule. On observe alors $I_1+I_2$. Deux lampes indépendantes ne produisent donc pas en général une figure d’interférences stable. Les deux trous d’Young sont éclairés par une même source afin de produire deux ondes reliées en phase.
+\Sub{Conditions du modèle}
+On suppose une même fréquence, une relation de phase stable sur la durée et les chemins étudiés, et des états de polarisation compatibles. La théorie complète de cohérence n’est pas requise ici. Dans un montage réel, l’étendue de source et la largeur spectrale limitent la visibilité.
+\begin{piege}{Une lumière monochromatique idéale}
+Une source réelle a une largeur spectrale finie. « Monochromatique » est une approximation adaptée aux distances de l’expérience, pas une preuve de cohérence à toute différence de chemin.
+\end{piege}
+
+
+\Page{Cours / 6}{Le chemin optique}{ch09-cours-6}
+\begin{loi}{De la distance au déphasage}
+Dans un milieu homogène d’indice n, le chemin optique est $\mathcal L=n\ell$. Pour plusieurs portions, $\mathcal L=\sum n_i\ell_i$. En prenant $\lambda_0$ dans le vide :\[\Delta\varphi=\Delta\varphi_0-\frac{2\pi}{\lambda_0}(\mathcal L_2-\mathcal L_1).\]La différence de chemin optique est une longueur, pas une phase.
+\end{loi}
+\Sub{La fréquence est conservée}
+La longueur d’onde dans un milieu vaut $\lambda=\lambda_0/n$. Écrire la phase comme $2\pi n\ell/\lambda_0$ ou $2\pi\ell/\lambda$ est équivalent pour une portion homogène. Ne pas employer à la fois n et la longueur d’onde déjà divisée par n : ce serait compter deux fois l’indice.
+\Sub{Insérer une lame}
+Une lame d’épaisseur e et d’indice n, placée normalement sur un trajet initialement dans l’air assimilé au vide, remplace e de chemin optique par ne. Elle ajoute donc $(n-1)e$ à ce trajet. Dans un bras seulement, elle déplace la figure sans changer l’interfrange si les autres paramètres restent fixes.
+\begin{methode}{Réflexions}
+Une phase de réflexion éventuellement fournie doit être ajoutée séparément au déphasage de propagation. La différence géométrique ne la contient pas.
+\end{methode}
+
+
+\Page{Cours / 7}{La géométrie des trous d’Young}{ch09-cours-7}
+\fig{ch09/young}{Les trous sont en x = +a/2 pour S1 et -a/2 pour S2. Dans cette convention, r2 est plus long que r1 pour x positif.}\Sub{Établir la différence de marche}
+En air assimilé au vide : $r_1=\sqrt{D^2+(x-a/2)^2}$ et $r_2=\sqrt{D^2+(x+a/2)^2}$. Pour $a,|x|\ll D$ :\[r_1\simeq D+\frac{(x-a/2)^2}{2D},\quad r_2\simeq D+\frac{(x+a/2)^2}{2D}.\]\[\delta=r_2-r_1\simeq\frac{ax}{D}.\]
+\begin{piege}{Un signe qui suit les noms}
+Inverser S1 et S2 inverse \ensuremath{\delta}. La figure symétrique d’intensité ne change pas, mais une lame ou une phase initiale impose de garder la convention jusqu’au déplacement des franges.
+\end{piege}
+
+
+\Page{Cours / 8}{Interfrange et positions des franges}{ch09-cours-8}
+\begin{loi}{Sources en phase et intensités égales}
+\[I(x)=2I_0\left[1+\cos\left(\frac{2\pi ax}{\lambda_0D}\right)\right].\]Franges brillantes : $x_m=m\lambda_0D/a$. Franges sombres : $x=(m+1/2)\lambda_0D/a$.\[i=\frac{\lambda_0D}{a}.\]L’interfrange sépare deux maxima voisins ou deux minima voisins, pas un maximum du minimum adjacent.
+\end{loi}
+\fig{ch09/franges}{Figure idéale sans enveloppe de diffraction, intensités égales et source axiale.}\Sub{Un exemple}
+\ensuremath{\lambda_0} = 600 nm, D = 2,00 m et a = 0,50 mm donnent i = 2,40 mm. Les premières franges sombres sont à ±1,20 mm. L’intensité maximale vaut 4I0, alors que chaque trou seul donne I0.
+
+
+\Page{Cours / 9}{Contraste et amplitudes différentes}{ch09-cours-9}
+\fig{ch09/contraste}{Avec des intensités inégales, les minima restent non nuls et la modulation est moins contrastée.}\begin{loi}{Application guidée de Fresnel}
+\[I_{\max}=(\sqrt{I_1}+\sqrt{I_2})^2,\quad I_{\min}=(\sqrt{I_1}-\sqrt{I_2})^2.\]\[\mathcal C=\frac{I_{\max}-I_{\min}}{I_{\max}+I_{\min}}=\frac{2\sqrt{I_1I_2}}{I_1+I_2}.\]Ce contraste idéal vaut 1 si les intensités sont égales et décroît en cas de déséquilibre.
+\end{loi}
+\Sub{Diagnostic expérimental}
+Une baisse de contraste peut venir d’un déséquilibre d’intensité, d’une cohérence insuffisante, d’un fond lumineux ou d’un capteur saturé. Mesurer chaque trou séparément et soustraire un fond mesuré permet de tester ces causes. Un minimum non nul ne prouve donc pas à lui seul un défaut de cohérence.
+
+
+\Page{Cours / 10}{Déplacer et mesurer les franges}{ch09-cours-10}
+\Sub{Une phase initiale imposée}
+Avec $\Delta\varphi=\Delta\varphi_0-2\pi ax/(\lambda_0D)$, les maxima satisfont cette phase égale à 2m\ensuremath{\pi}. Une variation de phase déplace toute la figure d’une quantité $\Delta x=\lambda_0D\,\Delta\varphi_0/(2\pi a)$, avec le signe donné par la convention choisie.
+\begin{methode}{Lame sur le trajet 2}
+Si la lame ajoute $(n-1)e$ à $\mathcal L_2$, alors $\delta=ax/D+(n-1)e$. La frange d’ordre zéro vérifie \ensuremath{\delta} = 0 et se déplace de $x_0=-D(n-1)e/a$. L’interfrange est conservé dans cette approximation. Une seule position finale ne donne que l’ordre modulo i si l’on n’a pas suivi le déplacement.
+\end{methode}
+\Sub{Mesurer une longueur d’onde}
+Mesurer N interfranges sur une distance L ; utiliser i = L/N puis $\lambda_0=ia/D$. Les incertitudes de i, a et D doivent être discutées. Augmenter D élargit les franges mais réduit souvent l’éclairement ; réduire a élargit aussi les franges, avec des contraintes pratiques sur les ouvertures.
+\begin{docu}{Une représentation schématique}
+L’enveloppe de diffraction des trous réels n’est pas incluse dans la formule idéale précédente. Travailler dans la région où les deux intensités sont suffisamment proches et lentement variables.
+\end{docu}
+
+
+\Page{Cours / 11}{Interpréter les limites du modèle}{ch09-cours-11}
+\Sub{Conservation et redistribution}
+Un maximum peut recevoir quatre fois l’intensité d’un trou seul, tandis qu’un minimum en reçoit zéro. Il n’y a pas création d’énergie locale par la formule : l’ensemble du champ distribue différemment le flux dans l’espace. Une annulation à un point ne signifie pas que chaque onde y cesse d’exister séparément.
+\Sub{Même fréquence, phases stables}
+Les interférences stationnaires étudiées supposent des fréquences égales. Deux fréquences proches donnent une amplitude modulée dans le temps, appelée battement ; c’est un prolongement guidé, pas une figure fixe décrite par une phase relative constante. Un détecteur lent peut moyenner cette modulation.
+\begin{methode}{Une rédaction complète}
+Préciser les sources, la cohérence supposée, les amplitudes reçues, la convention de \ensuremath{\delta} et les éventuelles phases de réflexion. Établir \ensuremath{\delta} avant d’écrire les conditions de maximum et minimum. Pour Young, annoncer l’approximation paraxiale et les limites de l’enveloppe.
+\end{methode}
+\begin{piege}{Trois grandeurs}
+Distinguer l’amplitude de champ A, l’intensité I proportionnelle à $A^2$ et l’amplitude de modulation du profil d’intensité. Un rapport d’intensités 4 correspond à un rapport d’amplitudes 2.
+\end{piege}
+
+
+\Page{Pratique / TP}{Mesurer un interfrange}{ch09-tp}
+\fig{ch09/young}{Travailler avec un dispositif optique prévu pour la classe et conserver le faisceau sous le niveau des yeux.}\Sub{Protocole}
+Éclairer deux trous ou deux fentes étroites par une même source monochromatique. Mesurer D et l’écartement a. Relever une distance couvrant dix interfranges, puis répéter la lecture. Masquer chaque ouverture séparément pour comparer les intensités et observer l’enveloppe.
+\Sub{Données simulées}
+a = 0,500 mm, D = 2,000 m et L = 24,0 mm pour N = 10. Avec u(a) = 0,005 mm, u(D) = 0,005 m et u(L) = 0,2 mm indépendantes, déterminer \ensuremath{\lambda_0} et son incertitude-type.
+\begin{methode}{Exploitation corrigée}
+i = 2,40 mm et \ensuremath{\lambda_0} = ia/D = 600 nm. L’incertitude relative est $\sqrt{(0{,}2/24)^2+(0{,}005/0{,}500)^2+(0{,}005/2{,}000)^2}=0{,}01326$, donc u(\ensuremath{\lambda_0}) ≈ 8 nm. Compter dix intervalles exige de repérer onze maxima. Le jeu fourni est simulé.
+\end{methode}
+
+
+\Page{Pratique / Numérique}{Faire varier une différence de phase}{ch09-numerique}
+Le code calcule la formule de Fresnel et compare une figure équilibrée à une figure déséquilibrée. Les unités de x sont les mètres.
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+lam, D, a = 600e-9, 2., 0.5e-3
+i = lam*D/a
+x = np.linspace(-3*i, 3*i, 6001)
+delta = a*x/D
+profiles = {}
+for I2 in (1., 0.25):
+    I1 = 1.
+    phase = -2*np.pi*delta/lam
+    I = I1 + I2 + 2*np.sqrt(I1*I2)*np.cos(phase)
+    profiles[I2] = I
+    plt.plot(x*1e3, I, label=f"I2={I2}")
+plt.xlabel("x (mm)"); plt.ylabel("I / Iref")
+plt.grid(); plt.legend(); plt.tight_layout()
+\end{verbatim}
+Les extrema sont 0 et 4 pour les intensités égales ; 0,25 et 2,25 pour I2 = 0,25. Les contrastes valent 1 et 0,8. Ajouter une phase initiale dans le code translate les franges ; doubler a divise i par deux. Contrôler le sens du déplacement avec la convention explicite de \ensuremath{\delta} avant de lire le tracé.
+
+
+\Page{Bilan de cours}{Les réflexes à conserver}{ch09-synthese}
+\begin{loi}{Les relations et leurs hypothèses}
+$S_m^2=A_1^2+A_2^2+2A_1A_2\cos\Delta\varphi$. Fresnel : $I=I_1+I_2+2\sqrt{I_1I_2}\cos\Delta\varphi$. $\Delta\varphi=\Delta\varphi_0-2\pi\delta/\lambda_0$. Pour Young en air : \ensuremath{\delta} ≈ ax/D et i = \ensuremath{\lambda_0}D/a.
+\end{loi}
+\Sub{Une résolution rédigée}
+Faire l’inventaire des phases, choisir \ensuremath{\delta}, établir la géométrie, appliquer la formule fournie puis interpréter le contraste et les limites. Indiquer les hypothèses de cohérence et les approximations de distance.
+\begin{piege}{Erreurs à éviter}
+Additionner les intensités de deux ondes cohérentes sans terme croisé ; confondre chemin optique et géométrique ; oublier une phase de réflexion ; annoncer une annulation avec amplitudes inégales ; compter un demi-interfrange comme i.
+\end{piege}
+\begin{docu}{S’autoévaluer}
+\checkline{Je retrouve les relations à partir du modèle.}\checkline{Je sais interpréter les limites d’une expression.}\checkline{Je peux dessiner et commenter les courbes.}\checkline{Je relie une mesure à la grandeur calculée.}
+\end{docu}
+
+
+\Page{Exercices / Applications}{Additionner deux sinus}{ch09-td1}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E01}{Deux signaux en phase}{Niveau 1}{10 à 15 min}
+A1 = 2 mm et A2 = 3 mm, même fréquence et même phase. Donner l’amplitude totale.
+\ex{E02}{Une opposition incomplète}{Niveau 1}{10 à 15 min}
+Mêmes amplitudes que E01 mais opposition de phase. Donner le minimum.
+\ex{E03}{En quadrature}{Niveau 1}{10 à 15 min}
+A1 = 3 mm, A2 = 4 mm et \ensuremath{\Delta}\ensuremath{\varphi} = \ensuremath{\pi}/2. Donner Sm.
+
+
+\Page{Exercices / Applications}{Conditions d’interférence}{ch09-td2}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E04}{Une phase intermédiaire}{Niveau 1}{10 à 15 min}
+Deux ondes d’amplitude A = 2 mm ont un déphasage 2\ensuremath{\pi}/3. Donner Sm.
+\ex{E05}{Un rapport d’intensités}{Niveau 1}{10 à 15 min}
+Une onde a une amplitude double d’une autre. Quel est le rapport des intensités dans le même modèle ?
+\ex{E06}{Des extrema}{Niveau 1}{10 à 15 min}
+I1 = 9 et I2 = 4 en unités communes. Calculer Imax et Imin.
+
+
+\Page{Exercices / Applications}{Trajets acoustiques}{ch09-td3}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E07}{Un son destructif}{Niveau 2}{10 à 15 min}
+f = 1 kHz, c = 340 m/s, sources en phase. Donner la plus petite différence positive de trajet produisant un minimum.
+\ex{E08}{Une inversion de source}{Niveau 2}{10 à 15 min}
+Pour E07, une source reçoit une inversion de phase \ensuremath{\pi}. Que se passe-t-il au même point ?
+\ex{E09}{Une réflexion déphasante}{Niveau 2}{10 à 15 min}
+Deux trajets sonores diffèrent de \ensuremath{\delta}. Le second ajoute une phase \ensuremath{\pi} à la réflexion. Écrire la condition constructive.
+
+
+\Page{Exercices / Méthodes}{Chemins optiques}{ch09-td4}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E10}{Une lame transparente}{Niveau 2}{10 à 15 min}
+n = 1,50 et e = 12 \ensuremath{\mu}m remplacent la même épaisseur d’air sur le trajet 2. Donner le chemin optique ajouté.
+\ex{E11}{Longueur d’onde dans le verre}{Niveau 2}{10 à 15 min}
+\ensuremath{\lambda_0} = 600 nm et n = 1,50. Donner \ensuremath{\lambda} et comparer les phases sur une épaisseur e.
+\ex{E12}{Une différence optique}{Niveau 2}{10 à 15 min}
+Les chemins géométriques sont égaux ; l’un contient 2 mm d’air, l’autre 2 mm d’un milieu d’indice 1,25. Calculer \ensuremath{\delta}.
+
+
+\Page{Exercices / Méthodes}{Trous d’Young}{ch09-td5}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E13}{Calculer l’interfrange}{Niveau 2}{15 à 25 min}
+\ensuremath{\lambda_0} = 500 nm, D = 1,50 m et a = 0,30 mm. Calculer i.
+\ex{E14}{Une frange sombre}{Niveau 2}{15 à 25 min}
+Pour E13, donner les deux premières positions sombres de part et d’autre du centre.
+\ex{E15}{Changer la géométrie}{Niveau 2}{15 à 25 min}
+Que devient i si D double et a triple ?
+
+
+\Page{Exercices / Méthodes}{Mesures et contraste}{ch09-td6}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E16}{Mesurer \ensuremath{\lambda_0}}{Niveau 2}{15 à 25 min}
+12 interfranges occupent 30,0 mm ; a = 0,40 mm et D = 2,00 m. Déterminer \ensuremath{\lambda_0}.
+\ex{E17}{Le contraste d’un déséquilibre}{Niveau 2}{15 à 25 min}
+I2 = I1/4. Calculer le contraste idéal.
+\ex{E18}{Un fond lumineux}{Niveau 2}{15 à 25 min}
+Une figure idéale varie entre 0 et 4 unités ; un fond uniforme de 1 unité est ajouté. Quel contraste est mesuré ?
+
+
+\Page{Exercices / Approfondissement}{Déplacer une figure}{ch09-td7}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E19}{Une lame déplace le centre}{Niveau 3}{15 à 25 min}
+Young : D = 2 m, a = 0,50 mm, \ensuremath{\lambda_0} = 600 nm. Une lame n = 1,50, e = 1,20 \ensuremath{\mu}m est placée sur le trajet 2. Donner x0 avec \ensuremath{\delta} = ax/D + (n-1)e.
+\ex{E20}{Une phase imposée}{Niveau 3}{15 à 25 min}
+$\Delta\varphi_0=\pi/2$ dans $\Delta\varphi=\Delta\varphi_0-2\pi x/i$. Où est le maximum de phase nulle ?
+\ex{E21}{Des sources indépendantes}{Niveau 3}{15 à 25 min}
+Deux sources lumineuses de même fréquence moyenne sont indépendantes. Pourquoi n’observe-t-on pas nécessairement de franges stables ?
+
+
+\Page{Exercices / Approfondissement}{Interpréter un résultat}{ch09-td8}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E22}{Une formule exacte}{Niveau 3}{15 à 25 min}
+Pour les trous en ±a/2, montrer que $r_2-r_1=2ax/(r_1+r_2)$ puis retrouver \ensuremath{\delta} ≈ ax/D.
+\ex{E23}{L’intensité centrale}{Niveau 3}{15 à 25 min}
+Sources de même intensité I0 avec phase initiale \ensuremath{\pi}. Donner I(0) et les premiers maxima en Young.
+\ex{E24}{Une énergie mystérieuse ?}{Niveau 3}{15 à 25 min}
+Un maximum donne 4I0 alors que chaque onde seule donne I0. Cela viole-t-il la conservation de l’énergie ?
+
+
+\Page{Défi avancé / D1}{Mesurer l’indice d’une lame par déplacement}{ch09-defi1}
+\label{ch09-ex-D1}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch09-indices} ; corrigé p.\,\pageref{ch09-corr-defi1}.}
+Deux trous d’Young ont a = 0,500 mm, D = 2,00 m et \ensuremath{\lambda_0} = 600 nm. Une lame d’épaisseur e = 10,0 \ensuremath{\mu}m, d’indice inconnu n, est introduite progressivement sur le trajet 2. On suit un déplacement de la frange d’ordre zéro de -20,0 mm.\begin{questions}
+\item Établir l’expression de \ensuremath{\delta} et relier x0 à n.
+\item Déterminer n et le nombre de franges ayant défilé.
+\item Expliquer pourquoi une simple photographie finale ne suffit pas à lever le nombre de franges.
+\item Avec u(x0) = 0,2 mm et u(e) = 0,2 \ensuremath{\mu}m, les autres grandeurs étant exactes et les incertitudes indépendantes, estimer u(n).
+\end{questions}
+
+
+\Page{Défi avancé / D2}{Retrouver un déséquilibre d’intensité}{ch09-defi2}
+\label{ch09-ex-D2}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch09-indices} ; corrigé p.\,\pageref{ch09-corr-defi2}.}
+Une figure d’interférences cohérentes présente un contraste 0,60 après soustraction du fond. On suppose des phases stables et on note r = I2/I1 ≤ 1.\begin{questions}
+\item Établir $\mathcal C=2\sqrt r/(1+r)$.
+\item Résoudre pour r en posant u = √r.
+\item Prédire les extrema en unités de I1.
+\item Un fond de 0,50I1 est maintenant ajouté. Calculer le nouveau contraste.
+\item Pourquoi faut-il justifier le modèle avant de déduire un rapport d’intensités d’un contraste ?
+\end{questions}
+
+
+\Page{Défi avancé / D3}{Deux étoiles : additionner deux figures}{ch09-defi3}
+\label{ch09-ex-D3}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch09-indices} ; corrigé p.\,\pageref{ch09-corr-defi3}.}
+Un modèle fourni donne les figures produites séparément par deux étoiles incohérentes : $I_\pm=2I_0\{1+\cos[2\pi a(x/D\mp\varepsilon)/\lambda_0]\}$. Les intensités des étoiles s’additionnent. On suppose \ensuremath{\varepsilon} très petit.\begin{questions}
+\item Exprimer l’intensité totale comme constante plus produit de cosinus.
+\item Donner le contraste en fonction de a.
+\item Déterminer la plus petite séparation a donnant un contraste nul.
+\item Pour \ensuremath{\lambda_0} = 600 nm et cette séparation a = 75,0 mm, calculer la séparation angulaire 2\ensuremath{\varepsilon}.
+\item Pourquoi additionne-t-on ici des intensités alors qu’on additionnait des amplitudes entre les trous ?
+\end{questions}
+
+
+\Page{Évaluation / DM}{DM - Un montage de Young déséquilibré}{ch09-dm}
+\source{Devoir maison OptiTAB original ; 1 h 30 à 2 h ; calculatrice autorisée. Barème pédagogique sur 20.}
+On donne \ensuremath{\lambda_0} = 600 nm, D = 1,80 m, a = 0,450 mm, I1 = 4 unités et I2 = 1 unité. Les sources sont cohérentes et en phase. On adopte \ensuremath{\delta} = r2 - r1 ≈ ax/D.\Sub{A. Figure initiale - 10 points}
+\begin{questions}
+\item Établir \ensuremath{\delta} à partir des distances exactes. (3)
+\item Écrire I(x) avec Fresnel et calculer i. (3)
+\item Donner Imax, Imin et le contraste. (4)
+\end{questions}
+
+\Sub{B. Une lame - 6 points}
+\begin{questions}
+\item Une lame d’indice 1,50 et d’épaisseur 0,60 \ensuremath{\mu}m est placée sur le trajet 2. Donner \ensuremath{\delta} nouveau et x0. (4)
+\item Que vaut alors I au centre géométrique x = 0 ? (2)
+\end{questions}
+
+\Sub{C. Mesure - 4 points}
+\begin{questions}
+\item Proposer une mesure de \ensuremath{\lambda_0} sur plusieurs franges et expliquer comment distinguer déséquilibre et fond lumineux. (4)
+\end{questions}
+
+
+
+\Page{Évaluation / DS / 1 sur 2}{DS - Du son à la lumière}{ch09-ds1}
+\source{Devoir surveillé OptiTAB original ; durée 2 h ; calculatrice autorisée ; note sur 20. Les deux pages forment un seul sujet.}
+\Sub{A. Deux ondes acoustiques - 7 points}
+Deux sources en phase émettent à 850 Hz dans l’air à 340 m/s. Au point M, les amplitudes reçues sont 0,30 Pa et 0,20 Pa ; le trajet 2 dépasse le trajet 1 de 0,20 m.\begin{questions}
+\item Calculer \ensuremath{\lambda} et le déphasage reçu. (2)
+\item Déterminer l’amplitude totale. (2)
+\item Que devient-elle si l’on inverse la phase de la source 2 ? (2)
+\item Pourquoi le premier minimum n’est-il pas nul ? (1)
+\end{questions}
+
+\Sub{B. Young - 9 points}
+\ensuremath{\lambda_0} = 500 nm, a = 0,250 mm, D = 1,50 m, intensités égales I0.\begin{questions}
+\item Établir \ensuremath{\delta} puis I(x). (4)
+\item Calculer i et les deux positions sombres les plus proches du centre. (3)
+\item Que devient i si l’expérience entière est placée dans un milieu transparent d’indice 1,25 ? (2)
+\end{questions}
+
+
+
+\Page{Évaluation / DS / 2 sur 2}{Approfondir et conclure}{ch09-ds2}
+\Sub{C. Interprétation expérimentale - 4 points}
+\begin{questions}
+\item Une figure possède Imax = 10 et Imin = 2 unités. Calculer son contraste. (1)
+\item On mesure un fond uniforme de 1 unité. Donner le contraste après soustraction. (1)
+\item Ce résultat permet-il à lui seul de déterminer si la source est partiellement incohérente ? Justifier et proposer un contrôle. (2)
+\end{questions}
+
+\begin{docu}{Gestion du temps}
+Lecture : 10 min ; parties A et B : 70 min ; partie C : 30 min ; vérification : 10 min. Une expression littérale, une unité et une interprétation accompagnent les résultats.
+\end{docu}
+
+
+\Page{Aides progressives}{Des indices pour repartir}{ch09-indices}
+\Sub{Défi D1}
+1. Lame : supplément (n-1)e. 2. Le centre suivi satisfait \ensuremath{\delta} = 0. 3. Propager l’incertitude sur n-1.
+\Sub{Défi D2}
+1. Utiliser les extrema de Fresnel. 2. La racine u doit être au plus 1. 3. Le fond augmente les deux extrema du même montant.
+\Sub{Défi D3}
+1. Utiliser cos(u-v)+cos(u+v). 2. Le contraste est une valeur positive. 3. Les deux étoiles n’ont pas de phase relative stable.
+\Sub{Exercices}
+E06 : prendre les racines des intensités. E09 : ajouter la phase de réflexion. E19 : le centre satisfait \ensuremath{\delta} = 0, mais son ordre doit être suivi. E22 : multiplier par la somme des distances.
+\Sub{Évaluations}
+DM : garder le signe de la différence optique. DS : les minima avec amplitudes inégales ne sont pas nuls ; en milieu uniforme, employer soit n\ensuremath{\delta} avec \ensuremath{\lambda_0}, soit \ensuremath{\delta} avec \ensuremath{\lambda_0}/n.
+
+
+\Page{Corrigés / Diagnostic}{Réactiver les bons réflexes}{ch09-corr-diag}
+\Sub{D1}
+$2A\cos\omega t$ : l’amplitude double.
+
+\Sub{D2}
+La somme est nulle à tout instant.
+
+\Sub{D3}
+Un retard de phase $-2\pi$, donc un retour en phase.
+
+\Sub{D4}
+Un déphasage de \ensuremath{\pi} modulo 2\ensuremath{\pi} : opposition.
+
+\Sub{D5}
+Non, il existe un terme d’interférence ; additionner les champs avant d’obtenir l’intensité.
+
+\Sub{D6}
+$c=c_0/n$ dans le modèle de la fréquence étudiée.
+
+\Sub{D7}
+Non ; la longueur d’onde devient $\lambda_0/n$ dans le milieu.
+
+\Sub{D8}
+Non dans le modèle scalaire de deux sinus : le minimum d’amplitude est $|A_1-A_2|$.
+
+
+\Page{Corrigés / Exercices}{Additionner deux sinus}{ch09-corr-td1}
+\sol{E01}{Deux signaux en phase}
+Sm = A1 + A2 = 5 mm. La phase est la phase commune ; ce cas particulier permet l’addition des amplitudes positives.
+\sol{E02}{Une opposition incomplète}
+Sm = |3 - 2| = 1 mm. La somme garde la phase du signal d’amplitude 3 mm. L’interférence est destructive sans être une annulation totale.
+\sol{E03}{En quadrature}
+$S_m=\sqrt{3^2+4^2}=5$ mm. Le terme croisé est nul ; les amplitudes ne s’additionnent pas.
+
+
+\Page{Corrigés / Exercices}{Conditions d’interférence}{ch09-corr-td2}
+\sol{E04}{Une phase intermédiaire}
+$S_m=2A|\cos(\pi/3)|=A=2$ mm. Le coefficient trigonométrique et l’amplitude sont ici positifs.
+\sol{E05}{Un rapport d’intensités}
+L’intensité étant proportionnelle au carré de l’amplitude, le rapport vaut 4. Les coefficients de proportionnalité doivent être les mêmes pour cette comparaison.
+\sol{E06}{Des extrema}
+$I_{\max}=(3+2)^2=25$ ; $I_{\min}=(3-2)^2=1$. Le contraste idéal est (25 - 1)/(25 + 1) = 12/13.
+
+
+\Page{Corrigés / Exercices}{Trajets acoustiques}{ch09-corr-td3}
+\sol{E07}{Un son destructif}
+\ensuremath{\lambda} = 0,340 m. Le premier minimum est à \ensuremath{\delta} = \ensuremath{\lambda}/2 = 0,170 m, en l’absence de phase supplémentaire.
+\sol{E08}{Une inversion de source}
+La phase totale devient \ensuremath{\pi} - 2\ensuremath{\pi}(1/2) = 0 modulo 2\ensuremath{\pi}. Le lieu devient constructif. La différence géométrique seule ne détermine pas le résultat.
+\sol{E09}{Une réflexion déphasante}
+$\Delta\varphi=\pi-2\pi\delta/\lambda=2m\pi$ impose $\delta=(m^{\prime}+1/2)\lambda$ avec un entier $m^{\prime}$. Les conditions habituelles sont échangées.
+
+
+\Page{Corrigés / Exercices}{Chemins optiques}{ch09-corr-td4}
+\sol{E10}{Une lame transparente}
+$(n-1)e=6\ \mu$m. À \ensuremath{\lambda_0} = 600 nm, cela vaut dix longueurs d’onde : déphasage supplémentaire -20\ensuremath{\pi}, équivalent à zéro à cette seule fréquence.
+\sol{E11}{Longueur d’onde dans le verre}
+\ensuremath{\lambda} = \ensuremath{\lambda_0}/n = 400 nm. La phase accumulée est $-2\pi ne/\lambda_0=-2\pi e/\lambda$. Employer ne et \ensuremath{\lambda} simultanément compterait l’indice deux fois.
+\sol{E12}{Une différence optique}
+La différence de chemin optique est (1,25 - 1) × 2 mm = 0,50 mm. Les chemins géométriques égaux ne garantissent pas des phases égales si les indices diffèrent.
+
+
+\Page{Corrigés / Exercices}{Trous d’Young}{ch09-corr-td5}
+\sol{E13}{Calculer l’interfrange}
+$i=\lambda_0D/a=2{,}50$ mm. Le quotient doit être effectué en unités cohérentes.
+\sol{E14}{Une frange sombre}
+Les plus proches sont x = ±i/2 = ±1,25 mm ; les suivantes x = ±3i/2 = ±3,75 mm. La frange centrale est brillante pour les sources en phase.
+\sol{E15}{Changer la géométrie}
+$i^{\prime}/i=(2D/D)/(3a/a)=2/3$. La longueur d’onde est supposée inchangée ; l’approximation paraxiale doit rester valable.
+
+
+\Page{Corrigés / Exercices}{Mesures et contraste}{ch09-corr-td6}
+\sol{E16}{Mesurer \ensuremath{\lambda_0}}
+i = 30/12 = 2,50 mm, puis \ensuremath{\lambda_0} = ia/D = 500 nm. Il faut distinguer le nombre de maxima du nombre d’intervalles.
+\sol{E17}{Le contraste d’un déséquilibre}
+$\mathcal C=2\sqrt{1/4}/(1+1/4)=1/1{,}25=0{,}80$. Le minimum est I1/4 et le maximum 9I1/4.
+\sol{E18}{Un fond lumineux}
+Les extrema deviennent 1 et 5 ; $\mathcal C=(5-1)/(5+1)=2/3$. Une perte de contraste peut donc provenir du fond sans changement de cohérence.
+
+
+\Page{Corrigés / Exercices}{Déplacer une figure}{ch09-corr-td7}
+\sol{E19}{Une lame déplace le centre}
+$x_0=-D(n-1)e/a=-2{,}40$ mm = -i. La figure finale coïncide avec la figure initiale par périodicité, même si la frange d’ordre zéro s’est déplacée d’un interfrange.
+\sol{E20}{Une phase imposée}
+$x_0=i\Delta\varphi_0/(2\pi)=i/4$. Le signe vient de la convention affichée ; inverser l’ordre de \ensuremath{\delta} sans changer la phase source donnerait une incohérence.
+\sol{E21}{Des sources indépendantes}
+La phase relative peut fluctuer pendant l’intégration du détecteur. La moyenne du terme croisé devient nulle ; les intensités s’additionnent. Une fréquence moyenne égale n’assure pas une relation de phase stable.
+
+
+\Page{Corrigés / Exercices}{Interpréter un résultat}{ch09-corr-td8}
+\sol{E22}{Une formule exacte}
+Rationaliser : $(r_2-r_1)(r_2+r_1)=r_2^2-r_1^2=(x+a/2)^2-(x-a/2)^2=2ax$. Si r1 + r2 ≈ 2D, alors \ensuremath{\delta} ≈ ax/D.
+\sol{E23}{L’intensité centrale}
+Au centre, les chemins sont égaux et la phase totale vaut \ensuremath{\pi} : I(0) = 0. Les premiers maxima sont x = ±i/2. L’interfrange reste i.
+\sol{E24}{Une énergie mystérieuse ?}
+Non. L’interférence redistribue l’intensité : d’autres régions deviennent moins éclairées. La conservation s’évalue sur l’ensemble du flux et du dispositif, pas en additionnant les intensités isolées en un point cohérent.
+
+
+\Page{Corrigé du défi D1}{Mesurer l’indice d’une lame par déplacement}{ch09-corr-defi1}
+$\delta=ax/D+(n-1)e$ et $x_0=-D(n-1)e/a$. Donc $n-1=-ax_0/(De)=0{,}500$ et n = 1,500. L’interfrange vaut 2,40 mm ; le défilement est 20/2,4 = 8,333 franges. La figure est périodique : une photographie finale donne le décalage modulo i, sans le nombre entier de franges passées. Le suivi continu ou une autre mesure est nécessaire. $u(n)=|n-1|\sqrt{[u(x_0)/|x_0|]^2+[u(e)/e]^2}=0{,}5\sqrt{0{,}01^2+0{,}02^2}=0{,}0112$. La mesure est compatible avec n = 1,50 à cette précision ; il faudrait inclure a et D si leurs incertitudes n’étaient pas négligeables.
+
+\Page{Corrigé du défi D2}{Retrouver un déséquilibre d’intensité}{ch09-corr-defi2}
+$\mathcal C=2\sqrt r/(1+r)$. Avec u = √r : $0{,}60u^2-2u+0{,}60=0$, soit u = 1/3 ou 3. La condition r ≤ 1 impose u = 1/3, donc r = 1/9. Les extrema valent $(1+1/3)^2I_1=16I_1/9$ et $(1-1/3)^2I_1=4I_1/9$. Après ajout de 0,50I1, le contraste est $(16/9-4/9)/(16/9+4/9+1)=12/29=0{,}4138$. Si les sources étaient partiellement incohérentes, si le fond n’était pas retiré ou si le détecteur saturait, la même visibilité ne conduirait pas nécessairement à r = 1/9. Mesurer chaque voie séparément permet de contrôler cette interprétation.
+
+\Page{Corrigé du défi D3}{Deux étoiles : additionner deux figures}{ch09-corr-defi3}
+$I=4I_0[1+\cos(2\pi ax/(\lambda_0D))\cos(2\pi a\varepsilon/\lambda_0)]$. Les extrema donnent $\mathcal C=|\cos(2\pi a\varepsilon/\lambda_0)|$. La première annulation est à $a\varepsilon=\lambda_0/4$. Donc $2\varepsilon=\lambda_0/(2a)=4{,}00\times10^{-6}$ rad, environ 0,825 seconde d’arc. Chaque étoile éclaire les deux trous de façon cohérente et produit sa propre figure ; les deux étoiles sont incohérentes entre elles et leurs figures s’additionnent en intensité. La visibilité disparaît lorsque les maxima de l’une comblent les minima de l’autre. Ce problème est un approfondissement guidé : la loi fournie contient la géométrie de l’éclairage incliné.
+
+\Page{Corrigé / DM / Sur 20}{DM - Un montage de Young déséquilibré}{ch09-corr-dm}
+\Sub{A - 10 points}
+$r_{1,2}=\sqrt{D^2+(x\mp a/2)^2}$ ; la rationalisation donne \ensuremath{\delta} = 2ax/(r1 + r2) ≈ ax/D (3). $I=5+4\cos(2\pi x/i)$, i = 2,40 mm (3). Imax = 9, Imin = 1, contraste 8/10 = 0,80 (4).
+\Sub{B - 6 points}
+Le trajet 2 gagne (n - 1)e = 0,30 \ensuremath{\mu}m = \ensuremath{\lambda_0}/2. $\delta=ax/D+0{,}30\ \mu$m et $x_0=-D(0{,}30\ \mu\mathrm m)/a=-1{,}20$ mm (4). Au centre géométrique, la phase vaut \ensuremath{\pi} modulo 2\ensuremath{\pi} ; I(0) = 1 unité, minimum non nul à cause du déséquilibre (2).
+\Sub{C - 4 points}
+Mesurer une longueur couvrant N interfranges, puis \ensuremath{\lambda_0} = (L/N)a/D (2). Masquer chaque ouverture pour mesurer I1 et I2 ; mesurer le fond avec les deux voies masquées, puis le soustraire avant d’interpréter le contraste (2).
+
+
+\Page{Corrigé / DS / 1 sur 2}{Calculer et interpréter}{ch09-corr-ds1}
+\Sub{A - 7 points}
+\ensuremath{\lambda} = 340/850 = 0,400 m ; \ensuremath{\Delta}\ensuremath{\varphi} = -2\ensuremath{\pi}(0,20/0,40) = -\ensuremath{\pi} (2). Sm = |0,30 - 0,20| = 0,10 Pa (2). L’inversion ajoute \ensuremath{\pi}, donc les ondes deviennent en phase et Sm = 0,50 Pa (2). L’annulation totale exige des amplitudes égales (1).
+\Sub{B - 9 points}
+Les distances donnent $\delta\simeq ax/D$ ; la phase reçue est $-2\pi\delta/\lambda_0$. Fresnel donne $I=2I_0[1+\cos(2\pi ax/(\lambda_0D))]$ (4). i = 3,00 mm ; minima proches à ±1,50 mm (3). En milieu uniforme, \ensuremath{\lambda} = \ensuremath{\lambda_0}/n ; i devient i/n = 2,40 mm si a et D géométriques sont inchangés (2).
+
+
+\Page{Corrigé / DS / 2 sur 2}{Calculer et interpréter}{ch09-corr-ds2}
+\Sub{C - 4 points}
+Contraste brut : (10 - 2)/(10 + 2) = 2/3 (1). Après soustraction, extrema 9 et 1 : contraste 8/10 = 0,80 (1). Ce contraste peut provenir d’un déséquilibre avec cohérence parfaite, ou d’autres limitations. Mesurer chaque voie séparément et vérifier sa stabilité ; comparer au contraste idéal prédit par les deux intensités avant d’invoquer un défaut de cohérence (2).
+
+
+\Page{Support authentique / 1}{DS publié - Interférométrie stellaire}{ch09-sources-1}
+\source{Source consultée le 25 octobre 2026. DS5 du 21 janvier 2026, exercice 3, p. 3-4. Sélection : questions 1 à 9 ; 10 à 14 en prolongement guidé.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/ds5_molecules_ondes_cinematique.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Refaire la géométrie de Young sous incidence inclinée ; suivre les conventions du schéma original. Réserver l’addition des deux figures au prolongement annoncé.
+\Sub{Repères de correction indépendants}
+Le centre est $x_0=D\varepsilon$ et $i=\lambda D/a$. Deux étoiles incohérentes donnent la somme de deux intensités. Le contraste est $|\cos(2\pi a\varepsilon/\lambda)|$ ; la première annulation impose $2\varepsilon=\lambda/(2a_{\min})$. Avec les données originales, 600 nm et 71 mm, on obtient $4{,}225\times10^{-6}$ rad. Les deux figures se compensent sans annuler leur intensité totale.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Support authentique / 2}{DM publié - Réflexion sur un mur}{ch09-sources-2}
+\source{Source consultée le 25 octobre 2026. Le fichier lié comme DM5 porte le titre DM6, à rendre le 8 janvier 2026. Exercice 1, p. 1, questions 1 à 8.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/dm5_ondes_chimie.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Utiliser le dessin d’origine pour fixer les axes et le sens des deux ondes. Former la somme de surpressions avant de chercher les zones silencieuses.
+\Sub{Repères de correction indépendants}
+Les surfaces silencieuses satisfont une différence de phase impaire de $\pi$. Les deux directions étant perpendiculaires, la norme du gradient de cette différence vaut $k\sqrt2$. Deux plans voisins sont donc distants de $d=2\pi/(k\sqrt2)=\lambda/\sqrt2$, mesuré perpendiculairement aux plans. À 440 Hz et 340 m/s, $d=0{,}546$ m. Une différence de coordonnées lue sur un axe ne donne pas directement cet espacement.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Références et suivi}{Préparer la suite}{ch09-references}
+\Sub{Référence réglementaire}
+\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{Bulletin officiel spécial n° 1 du 11 février 2021, arrêté du 5 janvier 2021.}\par
+\href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexe officielle regroupée}, rubrique 1.6 / interférences. La formule de Fresnel lumineuse est fournie, conformément au programme. Le contraste et les lames minces sont des applications guidées ; la cohérence est expliquée au niveau nécessaire à l’expérience.
+\Sub{Nature des contenus}
+Le cours, les 24 exercices, les trois défis et les évaluations OptiTAB sont rédigés pour cette collection. Les graphiques sont calculés avec les équations annoncées. Les supports authentiques sont identifiés sur les pages précédentes ; leurs énoncés et figures restent dans le document d’origine.
+\Sub{Compétences à confirmer}
+\checkline{Je peux retrouver l’équation sans mémoriser une suite de signes.}
+\checkline{Je vérifie les conditions initiales et les limites.}
+\checkline{Je peux confronter un calcul, un graphe et un bilan énergétique.}
+\checkline{Je sais corriger mon DS et refaire une question sans aide.}
+\begin{methode}{Prochaine étape}
+Le chapitre 10 approfondit la superposition de deux ondes de sens contraires et les modes d’une corde.
+\end{methode}
+

@@ -1,0 +1,346 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[avancement]{4}{Avancement et bilan de matière}{Partie 1 · Constitution et transformations de la matière}
+{Avancement\enspace·\enspace Tableau d'avancement\enspace·\enspace Réactif limitant\enspace·\enspace État final\enspace·\enspace Transformation totale}
+\objectif{Décrire qualitativement l'évolution des quantités de matière au cours d'une transformation.}
+\objectif{Établir un tableau d'avancement à partir de l'équation de la réaction et de l'état initial.}
+\objectif{Déterminer l'avancement maximal et le réactif limitant ; reconnaître un mélange stœchiométrique.}
+\objectif{Déterminer la composition de l'état final et comparer l'avancement final à l'avancement maximal.}
+\objectif{Déterminer l'état final d'une transformation totale à l'aide d'un programme Python.}
+\prerequis{Relations $n=\dfrac{m}{M}$, $n=c\times V$ et $n=\dfrac{V}{V_\mathrm{m}}$ (chapitre~1).}
+\prerequis{Équation de réaction ajustée, réactif limitant (classe de seconde et chapitre~3).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Décrire l'évolution d'un système}
+\begin{definition}[Avancement d'une réaction]
+Au cours d'une transformation, les réactifs sont consommés et les produits se forment dans les proportions données par les
+nombres stœchiométriques de l'équation. L'\textbf{avancement} $x$, en mole, mesure la progression de la réaction : pour la
+réaction $a\,\mathrm{A}+b\,\mathrm{B}\longrightarrow c\,\mathrm{C}+d\,\mathrm{D}$,
+\[n(\mathrm{A})=n_0(\mathrm{A})-a\,x\qquad n(\mathrm{B})=n_0(\mathrm{B})-b\,x\qquad n(\mathrm{C})=n_0(\mathrm{C})+c\,x\qquad n(\mathrm{D})=n_0(\mathrm{D})+d\,x.\]
+\end{definition}
+\essSection{2}{Le tableau d'avancement}
+\begin{savoirfaire}[Établir un tableau d'avancement]
+\begin{questions}
+\item Écrire l'équation ajustée de la réaction sur la première ligne.
+\item Calculer les quantités de matière initiales et les reporter sur la ligne de l'état initial, où $x=0$.
+\item Exprimer, dans l'état intermédiaire, la quantité de chaque espèce en fonction de $x$ : on retranche $a\,x$ pour un
+réactif, on ajoute $c\,x$ pour un produit.
+\item Compléter l'état final avec la valeur de l'avancement final.
+\end{questions}
+\end{savoirfaire}
+\begin{exemple}
+On brûle \qty{0,040}{mol} de méthane dans \qty{0,100}{mol} de dioxygène. La transformation est totale.
+\begin{avancement}{4}
+\tavEquation{\ce{CH4} & $+\;2\,\ce{O2}$ & $\longrightarrow\;\ce{CO2}$ & $+\;2\,\ce{H2O}$}
+\tavTitres{4}
+initial & $x=0$ & $0{,}040$ & $0{,}100$ & $0$ & $0$ \\
+en cours & $x$ & $0{,}040-x$ & $0{,}100-2x$ & $x$ & $2x$ \\
+final & $x_\mathrm{max}=0{,}040$ & $0$ & $0{,}020$ & $0{,}040$ & $0{,}080$ \\
+\end{avancement}
+\end{exemple}
+\schema{04-evolution}
+\essSection{3}{Avancement maximal et réactif limitant}
+\begin{propriete}[Réactif limitant]
+Une transformation totale s'arrête quand un réactif est épuisé : c'est le \textbf{réactif limitant}. L'\textbf{avancement
+maximal} $x_\mathrm{max}$ est la plus petite des valeurs de $x$ qui annulent la quantité d'un réactif :
+\[x_\mathrm{max}=\text{la plus petite des valeurs }\frac{n_0(\mathrm{A})}{a}\text{ et }\frac{n_0(\mathrm{B})}{b}.\]
+Dans l'exemple, $\dfrac{0{,}040}{1}=0{,}040$ et $\dfrac{0{,}100}{2}=0{,}050$ : le méthane est limitant et $x_\mathrm{max}=\qty{0,040}{mol}$.
+\end{propriete}
+\begin{definition}[Mélange stœchiométrique]
+Les réactifs sont introduits dans les \textbf{proportions stœchiométriques} si $\dfrac{n_0(\mathrm{A})}{a}=\dfrac{n_0(\mathrm{B})}{b}$ : ils sont alors tous
+épuisés en même temps. Pour brûler \qty{0,040}{mol} de méthane, le mélange stœchiométrique contient \qty{0,080}{mol} de dioxygène.
+\end{definition}
+\essSection{4}{Transformations totales et non totales}
+\begin{definition}[Avancement final]
+L'\textbf{avancement final} $x_\mathrm{f}$ se déduit de la composition de l'état final, mesurée expérimentalement. Si $x_\mathrm{f}=x_\mathrm{max}$, la
+transformation est \textbf{totale} ; si $x_\mathrm{f}<x_\mathrm{max}$, elle est \textbf{non totale} : tous les réactifs restent présents dans l'état
+final. Ainsi, \qty{1,0}{mol} d'acide éthanoïque et \qty{1,0}{mol} d'éthanol ne forment que \qty{0,67}{mol} d'ester : $x_\mathrm{f}=\qty{0,67}{mol}<x_\mathrm{max}=\qty{1,0}{mol}$.
+\end{definition}
+\begin{python}
+# CH4 + 2 O2 -> CO2 + 2 H2O
+# chaque espece : [nombre stoechiometrique, quantite initiale en mol]
+reactifs = {'CH4': [1, 0.040], 'O2': [2, 0.100]}
+produits = {'CO2': [1, 0.0], 'H2O': [2, 0.0]}
+
+candidats = [n0 / a for a, n0 in reactifs.values()]
+xmax = min(candidats)
+print('xmax =', round(xmax, 4), 'mol')
+for espece, (a, n0) in reactifs.items():
+    print(espece, round(n0 - a * xmax, 4), 'mol')
+for espece, (c, n0) in produits.items():
+    print(espece, round(n0 + c * xmax, 4), 'mol')
+\end{python}
+\begin{console}
+xmax = 0.04 mol
+CH4 0.0 mol
+O2 0.02 mol
+CO2 0.04 mol
+H2O 0.08 mol
+\end{console}
+\noindent\capacite{Capacité numérique} Pour chaque réactif, la liste \code{candidats} contient la valeur de $x$ qui l'épuiserait ; la plus petite
+est $x_\mathrm{max}$. Les deux boucles calculent ensuite les quantités de matière de l'état final, $n_0-a\,x_\mathrm{max}$ pour un réactif et
+$n_0+c\,x_\mathrm{max}$ pour un produit. Il suffit de modifier les deux dictionnaires pour traiter une autre transformation totale.
+\begin{attention}
+Pour trouver le réactif limitant, on ne compare pas directement les quantités initiales : on compare les quotients
+$\dfrac{n_0}{a}$, qui tiennent compte des nombres stœchiométriques. Dans l'exemple, il y a plus de dioxygène que de méthane, mais
+chaque molécule de méthane en consomme deux.
+\end{attention}
+\begin{experience}[Des ballons qui gonflent]
+Quatre flacons contiennent chacun \qty{50}{mL} d'acide chlorhydrique à \qty{0,20}{mol.L^{-1}}. On y fait tomber \qty{0,05}{g}, \qty{0,10}{g}, \qty{0,15}{g}
+et \qty{0,20}{g} de magnésium, puis on coiffe chaque flacon d'un ballon. Le dihydrogène formé gonfle les ballons, de plus en plus
+jusqu'au troisième ; les deux derniers ont le même volume, environ \qty{120}{mL} : à partir de là, l'acide est le réactif limitant.
+\end{experience}
+\begin{rediger}
+Écrire l'équation, calculer les quantités initiales avec leurs unités, dresser le tableau d'avancement, comparer les
+quotients $\dfrac{n_0}{a}$ pour conclure sur le réactif limitant, puis donner la composition de l'état final en quantités de
+matière, et en masses ou en volumes si l'énoncé le demande.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-4-1}
+\begin{exercice}[1]{Compter des molécules}
+Le schéma représente un mélange de dihydrogène et de dioxygène avant et après la réaction $\ce{2H2 + O2 -> 2H2O}$.
+\schema{04-particules}
+\begin{questions}
+\item Combien de molécules de chaque réactif l'état initial contient-il ?
+\item Combien de fois la réaction peut-elle se produire au maximum ? Quel réactif est entièrement consommé ?
+\item Vérifier que l'état final représenté conserve les atomes de chaque élément.
+\item Un échantillon réel contient environ $10^{23}$ molécules. Pourquoi exprime-t-on l'avancement en moles ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-2}
+\begin{exercice}[1]{Le fer et le soufre}
+On chauffe un mélange de \qty{0,100}{mol} de fer et de \qty{0,080}{mol} de soufre. Il se forme du sulfure de fer selon la réaction
+totale d'équation $\ce{Fe + S -> FeS}$.
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : Fe 55,8 ; S 32,1 ; FeS 87,9.
+\end{donnees}
+\begin{questions}
+\item Calculer les masses de fer et de soufre du mélange initial.
+\item Établir le tableau d'avancement de la transformation.
+\item Déterminer l'avancement maximal et le réactif limitant.
+\item Calculer les masses des espèces présentes dans l'état final et vérifier la conservation de la masse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-3}
+\begin{exercice}[1]{Réactif limitant ou mélange stœchiométrique ?}
+Un ruban de magnésium brûle dans le dioxygène avec une flamme éblouissante, selon la réaction totale d'équation
+$\ce{2Mg + O2 -> 2MgO}$. On étudie trois mélanges.
+\par\smallskip\noindent\hfill\begin{tabular}{lccc}
+\toprule
+Mélange & A & B & C \\
+\midrule
+$n_0(\ce{Mg})$ (\unit{mol}) & 0,20 & 0,20 & 0,30 \\
+$n_0(\ce{O2})$ (\unit{mol}) & 0,10 & 0,20 & 0,10 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\begin{questions}
+\item Pour chaque mélange, calculer les quotients $\dfrac{n_0(\ce{Mg})}{2}$ et $\dfrac{n_0(\ce{O2})}{1}$.
+\item En déduire l'avancement maximal et le réactif limitant de chaque mélange.
+\item Quel mélange est stœchiométrique ? Écrire la relation que vérifient alors les quantités initiales.
+\item Donner la composition de l'état final du mélange B.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-4}
+\begin{exercice}[1]{Brûler du propane}
+Un réchaud brûle \qty{8,8}{g} de propane $\ce{C3H8}$. La combustion complète a pour équation $\ce{C3H8 + 5O2 -> 3CO2 + 4H2O}$.
+\begin{donnees}
+$M(\ce{C3H8})=\qty{44,0}{g.mol^{-1}}$ ; $M(\ce{CO2})=\qty{44,0}{g.mol^{-1}}$ ; $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ à \qty{20}{\degreeCelsius}. L'air contient 21~\% de dioxygène en volume.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité de matière de propane.
+\item Quelle quantité de dioxygène faut-il pour un mélange stœchiométrique ? Quel volume occupe-t-elle à \qty{20}{\degreeCelsius} ?
+\item En déduire le volume d'air nécessaire.
+\item Calculer la masse de dioxyde de carbone formée.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-5}
+\begin{exercice}[1]{Une transformation non totale}
+On mélange \qty{1,0}{mol} d'acide éthanoïque et \qty{1,0}{mol} d'éthanol. Il se forme de l'éthanoate d'éthyle, un solvant à l'odeur de
+dissolvant pour vernis, et de l'eau : $\ce{CH3COOH + C2H6O -> C4H8O2 + H2O}$. Après quelques jours, la composition ne
+change plus ; le système contient alors \qty{0,67}{mol} d'ester.
+\begin{questions}
+\item Établir le tableau d'avancement et déterminer l'avancement maximal.
+\item Déterminer l'avancement final.
+\item La transformation est-elle totale ? Justifier.
+\item Donner la composition de l'état final, puis la masse d'ester obtenue ($M=\qty{88,0}{g.mol^{-1}}$).
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-4-6}
+\begin{exercice}[2]{Un programme pour l'état final}
+On reprend le programme de l'essentiel, qui détermine l'état final de la combustion du méthane.
+\begin{questions}
+\item \capacite{Capacité numérique}Que contient la liste \code{candidats} dans l'exemple ? Pourquoi \code{xmax} est-il le minimum de cette liste ?
+\item On remplace la quantité initiale de dioxygène par \num{0.060}. Prévoir les cinq lignes affichées.
+\item Écrire les dictionnaires à utiliser pour la réaction $\ce{Fe + S -> FeS}$, avec \qty{0,100}{mol} de fer et \qty{0,080}{mol} de soufre.
+Prévoir l'affichage.
+\item Proposer une ligne à ajouter dans la première boucle pour afficher le nom du réactif limitant.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-7}
+\begin{exercice}[2]{Le coussin gonflable de sécurité}
+En cas de choc, un capteur déclenche dans le coussin gonflable (airbag) la décomposition de l'azoture de sodium $\ce{NaN3}$ :
+$\ce{2NaN3 -> 2Na + 3N2}$. Le diazote formé gonfle le coussin en quelques centièmes de seconde.
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : N 14,0 ; O 16,0 ; Na 23,0 ; K 39,1. $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Le coussin contient \qty{130}{g} d'azoture de sodium. Calculer sa quantité de matière et l'avancement maximal.
+\item Calculer le volume de diazote libéré à \qty{20}{\degreeCelsius}. Comparer au volume d'un coussin conducteur, d'environ \qty{60}{L}.
+\item Quelle masse de sodium se forme-t-elle ?
+\item Le sodium, dangereux, est éliminé par du nitrate de potassium : $\ce{10Na + 2KNO3 -> K2O + 5Na2O + N2}$. Quelle masse de nitrate
+de potassium faut-il prévoir ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-8}
+\begin{exercice}[2]{Souder des rails}
+Pour souder deux rails, on enflamme dans un moule un mélange d'aluminium en poudre et d'oxyde de fer(III) : la réaction,
+très exothermique, produit du fer fondu qui remplit l'espace entre les rails. Son équation est $\ce{2Al + Fe2O3 -> Al2O3 + 2Fe}$.
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : O 16,0 ; Al 27,0 ; Fe 55,8.
+\end{donnees}
+\begin{questions}
+\item Une charge contient \qty{2,70}{kg} d'aluminium et \qty{7,98}{kg} d'oxyde de fer(III). Calculer les quantités de matière.
+\item Montrer que le mélange est stœchiométrique.
+\item Calculer la masse de fer produite.
+\item Calculer la masse d'oxyde d'aluminium formée et vérifier la conservation de la masse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-9}
+\begin{exercice}[2]{Vinaigre et bicarbonate}
+On verse \qty{2,10}{g} d'hydrogénocarbonate de sodium, $\ce{NaHCO3}$, dans \qty{50,0}{mL} de vinaigre contenant \qty{50}{g} d'acide éthanoïque
+par litre. La réaction a pour équation $\ce{CH3COOH + HCO3- -> CH3COO- + CO2 + H2O}$.
+\schema{04-ex09}
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : $\ce{NaHCO3}$ 84,0 ; $\ce{CH3COOH}$ 60,0 ; $\ce{CO2}$ 44,0.
+\end{donnees}
+\begin{questions}
+\item Calculer les quantités initiales des deux réactifs.
+\item Déterminer l'avancement maximal et le réactif limitant. Quelle masse de dioxyde de carbone peut-on attendre ?
+\item Déduire des mesures l'avancement final.
+\item Comparer $x_\mathrm{f}$ et $x_\mathrm{max}$. Comment expliquer le petit écart, sachant que le dioxyde de carbone est un peu soluble dans l'eau ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-10}
+\begin{exercice}[2]{Un précipité blanc}
+On mélange \qty{20,0}{mL} de nitrate d'argent, $\ce{Ag+}+\ce{NO3-}$, à \qty{0,050}{mol.L^{-1}} et \qty{10,0}{mL} de chlorure de sodium,
+$\ce{Na+}+\ce{Cl-}$, à \qty{0,080}{mol.L^{-1}}. Il se forme un précipité blanc de chlorure d'argent : $\ce{Ag+ + Cl- -> AgCl}$, réaction totale.
+\begin{donnees}
+$M(\ce{AgCl})=\qty{143,4}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer les quantités initiales d'ions argent et d'ions chlorure.
+\item Établir le tableau d'avancement et identifier le réactif limitant.
+\item Calculer la masse de précipité formé.
+\item Calculer les concentrations des ions encore présents dans la solution finale, de volume \qty{30,0}{mL}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-11}
+\begin{exercice}[2]{Retrouver une quantité initiale}
+On ajoute une masse inconnue $m$ de zinc en poudre à \qty{50,0}{mL} d'une solution de sulfate de cuivre à \qty{0,100}{mol.L^{-1}}. Une
+fois le zinc entièrement consommé, une mesure d'absorbance donne $[\ce{Cu^{2+}}]=\qty{0,040}{mol.L^{-1}}$. L'équation de la réaction est
+$\ce{Zn + Cu^{2+} -> Zn^{2+} + Cu}$.
+\begin{questions}
+\item Établir le tableau d'avancement en notant $n_0$ la quantité initiale de zinc.
+\item Exprimer la quantité finale d'ions cuivre(II) en fonction de $x_\mathrm{f}$, puis résoudre cette équation du premier degré.
+\item En déduire $n_0$ et la masse $m$ de zinc ($M=\qty{65,4}{g.mol^{-1}}$).
+\item Calculer la concentration finale en ions zinc(II).
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-4-12}
+\begin{exercice}[3]{Un réchaud de camping}
+\begin{docu}{1}{La cartouche}
+Une cartouche de réchaud contient \qty{190}{g} de butane $\ce{C4H10}$. Sa combustion complète a pour équation
+$\ce{2C4H10 + 13O2 -> 8CO2 + 10H2O}$.
+\end{docu}
+\begin{docu}{2}{Une mise en garde}
+Le fabricant précise : « Ne pas utiliser dans un espace clos, une tente ou un véhicule. » Lorsque le dioxygène vient à
+manquer, la combustion devient incomplète et produit du monoxyde de carbone, un gaz incolore, inodore et mortel.
+\end{docu}
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : H 1,0 ; C 12,0 ; O 16,0. $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ ; l'air contient 21~\% de dioxygène en volume.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité de butane de la cartouche et l'avancement maximal de sa combustion complète.
+\item Calculer le volume de dioxygène, puis le volume d'air, nécessaires pour brûler toute la cartouche.
+\item Calculer les masses de dioxyde de carbone et d'eau produites.
+\item \initiative Une tente de \qty{3}{m^3} contient environ \qty{0,6}{m^3} de dioxygène. Expliquer, à l'aide d'un raisonnement sur le réactif
+limitant, la mise en garde du document~2.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-13}
+\begin{exercice}[3]{Fabriquer de l'ammoniac}
+\begin{docu}{1}{Le procédé Haber-Bosch}
+L'ammoniac $\ce{NH3}$, matière première des engrais azotés, est synthétisé à partir de diazote et de dihydrogène :
+$\ce{N2 + 3H2 -> 2NH3}$. Dans le réacteur, à \qty{450}{\degreeCelsius} et sous \qty{200}{bar}, la transformation n'est pas totale.
+\end{docu}
+\begin{docu}{2}{Un essai}
+On introduit \qty{1,00}{mol} de diazote et \qty{3,00}{mol} de dihydrogène. À la sortie du réacteur, le mélange contient \qty{0,30}{mol}
+d'ammoniac. On le refroidit : l'ammoniac se liquéfie et est séparé, tandis que les gaz restants sont renvoyés dans le
+réacteur.
+\end{docu}
+\begin{questions}
+\item Le mélange initial est-il stœchiométrique ? Déterminer l'avancement maximal.
+\item Établir le tableau d'avancement et déterminer l'avancement final.
+\item La transformation est-elle totale ? Donner la composition du mélange sortant du réacteur.
+\item \initiative À chaque passage, \qty{15}{\percent} du diazote présent est transformé. Combien de passages faut-il pour transformer au
+moins \qty{90}{\percent} du diazote initial ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-14}
+\begin{exercice}[3]{La lampe à carbure}
+\begin{docu}{1}{L'éclairage des spéléologues}
+Une lampe à carbure contient deux réservoirs. L'eau du réservoir supérieur goutte sur du carbure de calcium $\ce{CaC2}$ : il
+se forme de l'acétylène $\ce{C2H2}$, un gaz qui brûle à la sortie d'un bec, et de l'hydroxyde de calcium :
+\[\ce{CaC2 + 2H2O -> C2H2 + Ca(OH)2}\qquad\qquad\ce{2C2H2 + 5O2 -> 4CO2 + 2H2O}.\]
+\end{docu}
+\begin{docu}{2}{Une charge}
+Une charge contient \qty{100}{g} de carbure de calcium. Le bec débite environ \qty{12}{L} d'acétylène par heure.
+\end{docu}
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : H 1,0 ; C 12,0 ; O 16,0 ; Ca 40,1. $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ (température de la grotte assimilée à \qty{20}{\degreeCelsius}).
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité de carbure de calcium d'une charge.
+\item Quelle masse minimale d'eau faut-il prévoir pour la transformer entièrement ? Quel volume d'acétylène obtient-on ?
+\item Quel volume de dioxygène la combustion de cet acétylène consomme-t-elle ?
+\item \initiative Estimer l'autonomie de la lampe avec une charge.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-15}
+\begin{exercice}[3]{La paille de fer qui brûle}
+\begin{docu}{1}{L'expérience}
+De la paille de fer chauffée au rouge est plongée dans un flacon de dioxygène : elle brûle en projetant des étincelles et
+se transforme en oxyde magnétique $\ce{Fe3O4}$. La réaction est totale.
+\end{docu}
+\begin{docu}{2}{Un graphique}
+Les trois droites représentent les quantités de matière du fer, du dioxygène et de l'oxyde en fonction de l'avancement.
+\schema{04-ex15}
+\end{docu}
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : O 16,0 ; Fe 55,8. $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quelle droite correspond au produit ? Justifier.
+\item \initiative À l'aide des pentes des droites, identifier les deux autres espèces et établir l'équation de la réaction.
+\item Lire les quantités initiales ; en déduire la masse de fer et le volume de dioxygène introduits.
+\item Déterminer l'avancement maximal, le réactif limitant et la masse d'oxyde magnétique obtenue.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

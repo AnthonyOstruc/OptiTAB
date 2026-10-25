@@ -1,0 +1,523 @@
+% !TEX root = ../main.tex
+%% Chapitre 9 — Calcul matriciel et systèmes linéaires
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Calcul matriciel et systèmes linéaires » : a) opérations sur les
+%% matrices ; b) opérations élémentaires ; c) systèmes linéaires ; anneau des
+%% matrices carrées ; matrices inversibles, GL_n(K), calcul d'inverse,
+%% matrices triangulaires.
+%% Résultats vérifiés par verifications/chapitre_09.py.
+
+\begin{ouverture}[matrices]{9}{Calcul matriciel et systèmes linéaires}{Partie 1 · Premier semestre}
+  {Produit matriciel\enspace·\enspace Transposée\enspace·\enspace Anneau $\mathcal{M}_n(\K)$\enspace·\enspace
+   Inversibilité\enspace·\enspace Systèmes $AX=B$}
+  \objectif{Calculer avec les matrices : combinaisons linéaires, produit, transposée.}
+  \objectif{Manipuler les matrices élémentaires et le symbole de Kronecker.}
+  \objectif{Calculer dans l'anneau $\mathcal{M}_n(\K)$ : puissances, binôme, nilpotents.}
+  \objectif{Reconnaître une matrice inversible et calculer son inverse.}
+  \objectif{Exploiter les matrices triangulaires et diagonales.}
+  \objectif{Traduire un système linéaire sous la forme $AX=B$ et structurer ses solutions.}
+  \prerequis{Systèmes linéaires et algorithme du pivot (chapitre 2).}
+  \prerequis{Anneaux, groupes, éléments inversibles et nilpotents (chapitre 8).}
+  \prerequis{Formule du binôme (chapitre 2) et trigonométrie (chapitre 2).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{L'espace des matrices}
+
+\begin{definition}[Matrices]
+Pour $n,p\geq1$ et $\K=\R$ ou $\Cx$, on note $\mathcal{M}_{n,p}(\K)$
+l'ensemble des \textbf{matrices} à $n$ lignes et $p$ colonnes à
+coefficients dans $\K$ ; on écrit $A=(a_{i,j})$ où $a_{i,j}$ est le
+coefficient en ligne $i$, colonne $j$. L'addition et la multiplication par
+un scalaire se font coefficient par coefficient. La \textbf{matrice
+élémentaire} $E_{i,j}$ a un unique coefficient non nul, un $1$ en position
+$(i,j)$ : toute matrice est combinaison linéaire de matrices élémentaires,
+$A=\sum_{i,j}a_{i,j}E_{i,j}$. On utilise le \textbf{symbole de Kronecker} :
+$\delta_{i,j}=1$ si $i=j$, $0$ sinon.
+\end{definition}
+
+\essSection{2}{Le produit matriciel}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{definition}
+Pour $A\in\mathcal{M}_{n,p}(\K)$ et $B\in\mathcal{M}_{p,q}(\K)$, le
+\textbf{produit} $AB\in\mathcal{M}_{n,q}(\K)$ a pour coefficients
+\[
+  (AB)_{i,j}=\sum_{k=1}^{p}a_{i,k}\,b_{k,j} :
+\]
+la \emph{ligne $i$ de $A$} rencontre la \emph{colonne $j$ de $B$}. Le
+produit est \emph{bilinéaire} et \emph{associatif}. Si $X$ est une matrice
+colonne, $AX$ est la combinaison linéaire des colonnes de $A$ dont les
+coefficients sont ceux de $X$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.44,line cap=round]
+  % B (en haut à droite)
+  \draw[otMuted,line width=0.5pt,rounded corners=0.8mm] (4.6,4.6) rectangle (9.4,9.4);
+  \fill[otGreenTint] (6.8,4.75) rectangle (7.9,9.25);
+  \foreach \i in {0,...,3}{\foreach \j in {0,...,3}{
+    \fill[otMuted!55] (5.3+\j*1.1,5.3+\i*1.1) circle (0.16);}}
+  \foreach \i in {0,...,3}{\fill[otGreenDark] (7.5,5.3+\i*1.1) circle (0.19);}
+  \node[font=\scriptsize,text=otMuted] at (9.9,9.0) {$B$};
+  % A (en bas à gauche)
+  \draw[otMuted,line width=0.5pt,rounded corners=0.8mm] (-0.4,-0.4) rectangle (4.4,4.4);
+  \fill[otGreenTint] (-0.25,1.65) rectangle (4.25,2.75);
+  \foreach \i in {0,...,3}{\foreach \j in {0,...,3}{
+    \fill[otMuted!55] (0.3+\j*1.1,0.3+\i*1.1) circle (0.16);}}
+  \foreach \j in {0,...,3}{\fill[otNavy] (0.3+\j*1.1,2.5) circle (0.19);}
+  \node[font=\scriptsize,text=otMuted] at (-1.0,0.2) {$A$};
+  % AB (en bas à droite)
+  \draw[otMuted,line width=0.5pt,rounded corners=0.8mm] (4.6,-0.4) rectangle (9.4,4.4);
+  \fill[otGreen] (7.5,2.5) circle (0.3);
+  \node[font=\scriptsize,text=otMuted] at (9.9,0.2) {$AB$};
+  \draw[otRule!90!otMuted,densely dotted,line width=0.5pt] (4.4,2.5) -- (7.1,2.5);
+  \draw[otRule!90!otMuted,densely dotted,line width=0.5pt] (7.5,4.6) -- (7.5,2.9);
+\end{tikzpicture}\\[0.5mm]
+\legende{Le coefficient $(i,j)$ de $AB$ : la ligne $i$ de $A$ contre la colonne $j$ de $B$.}
+\end{minipage}
+
+\begin{propriete}[Produit des matrices élémentaires]
+Dans $\mathcal{M}_n(\K)$ :
+$E_{i,j}\,E_{k,l}=\delta_{j,k}\,E_{i,l}$ — le produit est nul sauf si les
+indices « se raccordent ». Première conséquence : le produit matriciel
+n'est \emph{pas} commutatif, et un produit peut être nul sans qu'aucun
+facteur ne le soit ($E_{1,2}E_{1,2}=0$).
+\end{propriete}
+
+\essSection{3}{Transposée, matrices symétriques}
+
+\begin{definition}
+La \textbf{transposée} $A^{\top}\in\mathcal{M}_{p,n}(\K)$ de
+$A\in\mathcal{M}_{n,p}(\K)$ échange lignes et colonnes :
+$(A^{\top})_{i,j}=a_{j,i}$. La transposition est linéaire, involutive, et
+\emph{renverse les produits} :
+\[
+  (AB)^{\top}=B^{\top}A^{\top}.
+\]
+Une matrice carrée est \textbf{symétrique} si $A^{\top}=A$ (ensemble
+$\mathcal{S}_n(\K)$), \textbf{antisymétrique} si $A^{\top}=-A$ (ensemble
+$\mathcal{A}_n(\K)$). Toute matrice carrée se décompose de manière unique
+en somme d'une symétrique et d'une antisymétrique :
+$A=\frac{A+A^{\top}}{2}+\frac{A-A^{\top}}{2}$.
+\end{definition}
+
+\essSection{4}{L'anneau $\mathcal{M}_n(\K)$}
+
+\begin{theoreme}
+Muni de l'addition et du produit, $\mathcal{M}_n(\K)$ est un \emph{anneau},
+d'unité la matrice identité $I_n$ ; les matrices \emph{scalaires}
+$\lambda I_n$ commutent avec tout le monde. Pour $n\geq2$, cet anneau est
+\textbf{non commutatif} et \textbf{non intègre} : il possède des diviseurs
+de zéro et des éléments \emph{nilpotents}, comme
+$N=E_{1,2}$ ($N^{2}=0$).
+\end{theoreme}
+
+\begin{savoirfaire}[Puissances d'une matrice]
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item \etape{Diagonale} $\operatorname{diag}(d_1,\dots,d_n)^{k}
+    =\operatorname{diag}(d_1^{k},\dots,d_n^{k})$ ; plus généralement, le
+    produit de matrices diagonales (resp. triangulaires supérieures) est
+    diagonal (resp. triangulaire supérieur).
+  \item \etape{Binôme} si $AB=BA$, alors
+    $(A+B)^{k}=\sum\binom{k}{j}A^{j}B^{k-j}$. Cas d'école : $A=\lambda I+N$
+    avec $N$ nilpotente — la somme est alors \emph{finie}.
+  \item \etape{Récurrence} conjecturer la forme de $A^{k}$ sur les
+    premières puissances, puis démontrer par récurrence.
+\end{itemize}
+\end{savoirfaire}
+
+\essSection{5}{Matrices inversibles}
+
+\begin{definition}[Groupe linéaire]
+$A\in\mathcal{M}_n(\K)$ est \textbf{inversible} s'il existe $B$ telle que
+$AB=BA=I_n$ ; l'inverse $A^{-1}$ est alors unique. Les matrices
+inversibles forment un groupe, le \textbf{groupe linéaire}
+$\mathrm{GL}_n(\K)$, avec
+\[
+  (AB)^{-1}=B^{-1}A^{-1}
+  \qquad\text{et}\qquad
+  (A^{\top})^{-1}=(A^{-1})^{\top}.
+\]
+\end{definition}
+
+\begin{exemple}[Le cas $2\times2$]
+$A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ est inversible si et seulement si
+$ad-bc\neq0$, et alors
+\[
+  A^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}.
+\]
+\end{exemple}
+
+\begin{savoirfaire}[Calculer un inverse]
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item \etape{Par le système} résoudre $AX=Y$ d'inconnue $X$ : si la
+    solution s'écrit $X=BY$ pour toute colonne $Y$, alors $A$ est
+    inversible et $A^{-1}=B$.
+  \item \etape{Par les opérations élémentaires} chaque opération
+    élémentaire sur les lignes est la multiplication à gauche par une
+    matrice inversible ; en transformant $A$ en $I_n$, les mêmes
+    opérations transforment $I_n$ en $A^{-1}$ (disposition
+    $(A\mid I_n)\to(I_n\mid A^{-1})$).
+\end{itemize}
+Les opérations élémentaires \emph{préservent l'inversibilité}.
+\end{savoirfaire}
+
+\begin{theoreme}[Matrices triangulaires]
+Une matrice triangulaire est inversible si et seulement si ses coefficients
+diagonaux sont tous non nuls ; son inverse est alors triangulaire de même
+type. En particulier,
+$\operatorname{diag}(d_1,\dots,d_n)^{-1}
+=\operatorname{diag}(d_1^{-1},\dots,d_n^{-1})$ lorsque tous les $d_i$ sont
+non nuls.
+\end{theoreme}
+
+\essSection{6}{Systèmes linéaires : la vision matricielle}
+
+\begin{definition}
+Tout système linéaire s'écrit $AX=B$, avec $A\in\mathcal{M}_{n,p}(\K)$ la
+matrice des coefficients, $X$ la colonne des inconnues et $B$ le second
+membre ; le système \textbf{homogène} associé est $AX=0$. Le système est
+\textbf{compatible} si et seulement si $B$ est combinaison linéaire des
+colonnes de $A$.
+\end{definition}
+
+\begin{theoreme}[Structure des solutions]
+Si $AX=B$ est compatible, de solution particulière $X_0$, alors ses
+solutions sont exactement les
+\[
+  X=X_0+Y,\qquad\text{où $Y$ parcourt les solutions de }AX=0 :
+\]
+« solution particulière $+$ solutions de l'homogène » — la même structure
+que pour les équations différentielles linéaires (chapitre 4). L'algorithme
+du pivot (chapitre 2) se relit comme une suite d'opérations élémentaires
+sur les lignes de $(A\mid B)$. Enfin, si $A$ est \emph{carrée inversible},
+le système possède l'unique solution $X=A^{-1}B$.
+\end{theoreme}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $AB\neq BA$ en général : développer $(A+B)^{2}$ donne
+    $A^{2}+AB+BA+B^{2}$, et le binôme exige $AB=BA$.
+  \item $AB=0$ n'implique pas $A=0$ ou $B=0$ : on ne simplifie pas par une
+    matrice non inversible.
+  \item Les tailles doivent s'enchaîner : $AB$ exige
+    (colonnes de $A$) $=$ (lignes de $B$).
+  \item $(AB)^{\top}=B^{\top}A^{\top}$ et $(AB)^{-1}=B^{-1}A^{-1}$ :
+    l'ordre se renverse dans les deux cas.
+  \item Une matrice à coefficients tous non nuls peut être non inversible,
+    et une triangulaire à diagonale sans zéro l'est toujours : c'est la
+    \emph{diagonale} qui décide pour les triangulaires.
+  \item Un système compatible à matrice non inversible a une infinité de
+    solutions : toujours donner la \emph{structure} ($X_0$ + homogène).
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Combinaisons linéaires}
+On pose $A=\begin{pmatrix}1&2\\3&-1\end{pmatrix}$ et
+$B=\begin{pmatrix}0&1\\2&5\end{pmatrix}$.
+\begin{questions}
+  \item Calculer $A+B$, $2A-3B$ et $A-B$.
+  \item Écrire $A$ comme combinaison linéaire des matrices élémentaires
+    $E_{1,1}$, $E_{1,2}$, $E_{2,1}$, $E_{2,2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Produits matriciels}
+Avec les matrices $A$ et $B$ de l'exercice 1, et
+$C=\begin{pmatrix}1&0&2\\0&1&-1\end{pmatrix}$,
+$D=\begin{pmatrix}1&1\\2&0\\0&3\end{pmatrix}$ :
+\begin{questions}
+  \item Calculer $AB$ et $BA$. Que constate-t-on ?
+  \item Calculer $CD$. Le produit $DC$ a-t-il un sens ? De quelle taille ?
+  \item Pour $X=\begin{pmatrix}2\\-1\end{pmatrix}$, calculer $AX$ et
+    vérifier que c'est la combinaison correspondante des colonnes de $A$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Matrices élémentaires et symbole de Kronecker}
+Dans $\mathcal{M}_3(\K)$ :
+\begin{questions}
+  \item Calculer $E_{1,2}E_{2,3}$, puis $E_{1,2}E_{1,2}$.
+  \item Démontrer la formule générale
+    $E_{i,j}E_{k,l}=\delta_{j,k}E_{i,l}$.
+  \item En déduire deux matrices non nulles dont le produit est nul.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Transposées, symétriques, antisymétriques}
+\begin{questions}
+  \item Vérifier sur les matrices $A$ et $B$ de l'exercice 1 que
+    $(AB)^{\top}=B^{\top}A^{\top}$.
+  \item Décomposer $A$ en somme d'une matrice symétrique et d'une matrice
+    antisymétrique.
+  \item Montrer que cette décomposition est unique pour toute matrice
+    carrée.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Premières puissances}
+\begin{questions}
+  \item Pour $D=\operatorname{diag}(2,-3)$, donner $D^{n}$.
+  \item Pour $T=\begin{pmatrix}1&1\\0&1\end{pmatrix}$, calculer $T^{2}$,
+    $T^{3}$, conjecturer $T^{n}$ et le démontrer par récurrence.
+  \item Pour $J=\begin{pmatrix}1&1\\1&1\end{pmatrix}$, vérifier que
+    $J^{2}=2J$ et en déduire $J^{n}$ pour $n\geq1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Inversibles $2\times2$}
+\begin{questions}
+  \item Démontrer le critère du cours : $A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$
+    est inversible si et seulement si $ad-bc\neq0$, avec la formule de
+    l'inverse. \emph{On pourra calculer
+    $A\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$.}
+  \item Les matrices $\begin{pmatrix}2&5\\1&3\end{pmatrix}$ et
+    $\begin{pmatrix}1&2\\2&4\end{pmatrix}$ sont-elles inversibles ? Donner
+    l'inverse le cas échéant.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Un système, vu matriciellement}
+On considère le système
+$\begin{cases}x+y+z=6\\x+2y+3z=14\\2x+y-z=1\end{cases}$ (chapitre 2).
+\begin{questions}
+  \item L'écrire sous la forme $AX=B$.
+  \item Le résoudre, et en déduire que $B$ est combinaison linéaire des
+    colonnes de $A$, avec les coefficients que l'on précisera.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Un inverse par la résolution de $AX=Y$}
+Soit $A=\begin{pmatrix}1&2\\1&3\end{pmatrix}$.
+\begin{questions}
+  \item Résoudre le système $AX=Y$, d'inconnue
+    $X=\begin{pmatrix}x\\y\end{pmatrix}$, pour un second membre
+    $Y=\begin{pmatrix}u\\v\end{pmatrix}$ quelconque.
+  \item En déduire que $A$ est inversible et donner $A^{-1}$ ; vérifier
+    par le produit.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Diviseurs de zéro et nilpotents}
+\begin{questions}
+  \item Trouver deux matrices $A,B\in\mathcal{M}_2(\K)$ non nulles telles
+    que $AB=0$ mais $BA\neq0$.
+  \item Montrer que $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ est
+    nilpotente, et calculer $(I_2+N)^{-1}$ à l'aide du résultat du
+    chapitre 8 sur $1-x$ nilpotent.
+  \item Montrer qu'une matrice nilpotente n'est jamais inversible.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le binôme matriciel}
+Soit $N=\begin{pmatrix}0&1&0\\0&0&1\\0&0&0\end{pmatrix}$ et $A=I_3+N$.
+\begin{questions}
+  \item Calculer $N^{2}$ et $N^{3}$.
+  \item Justifier que la formule du binôme s'applique à $A=I_3+N$, et en
+    déduire $A^{n}$ pour tout $n\in\N$.
+  \item Vérifier la formule obtenue pour $n=2$ et $n=3$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Puissances : deux méthodes}
+Soit $A=\begin{pmatrix}2&1\\0&2\end{pmatrix}$.
+\begin{questions}
+  \item Écrire $A=2I_2+N$ avec $N$ nilpotente, et calculer $A^{n}$ par la
+    formule du binôme.
+  \item Retrouver le résultat par récurrence.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Suites couplées}
+On définit deux suites par $u_0=v_0=1$ et, pour tout $n$ :
+$u_{n+1}=2u_n+v_n$, $v_{n+1}=2v_n$.
+\begin{questions}
+  \item Écrire la récurrence sous la forme $X_{n+1}=AX_n$, avec
+    $X_n=\begin{pmatrix}u_n\\v_n\end{pmatrix}$, et justifier que
+    $X_n=A^{n}X_0$.
+  \item À l'aide de l'exercice précédent, exprimer $u_n$ et $v_n$ en
+    fonction de $n$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Symétriques : produits et pièges}
+\begin{questions}
+  \item Montrer que, pour toute matrice $A\in\mathcal{M}_{n,p}(\K)$, la
+    matrice $AA^{\top}$ est symétrique.
+  \item Montrer qu'un produit de deux matrices symétriques n'est pas
+    toujours symétrique, à l'aide d'un contre-exemple $2\times2$.
+  \item Montrer que, pour $A$ et $B$ symétriques : $AB$ est symétrique si
+    et seulement si $AB=BA$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Matrices qui commutent}
+\begin{questions}
+  \item Déterminer toutes les matrices de $\mathcal{M}_2(\K)$ qui
+    commutent avec $D=\operatorname{diag}(1,2)$.
+  \item Déterminer toutes les matrices qui commutent avec
+    $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$.
+  \item Montrer que l'ensemble des matrices commutant avec une matrice
+    $M$ fixée est stable par combinaison linéaire et par produit.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Gauss-Jordan : un inverse $3\times3$}
+Soit $A=\begin{pmatrix}1&1&1\\0&1&2\\1&2&2\end{pmatrix}$.
+\begin{questions}
+  \item En appliquant des opérations élémentaires au tableau
+    $(A\mid I_3)$, calculer $A^{-1}$.
+  \item Vérifier le résultat en calculant $AA^{-1}$.
+  \item En déduire la solution du système $AX=\begin{pmatrix}2\\1\\3\end{pmatrix}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Matrices triangulaires}
+\begin{questions}
+  \item Montrer que le produit de deux matrices triangulaires supérieures
+    de $\mathcal{M}_3(\K)$ est triangulaire supérieur, et que les
+    coefficients diagonaux du produit sont les produits des coefficients
+    diagonaux.
+  \item Justifier qu'une matrice triangulaire est inversible si et
+    seulement si ses coefficients diagonaux sont non nuls.
+    \emph{Raisonner sur le système triangulaire $TX=Y$.}
+  \item Calculer l'inverse de
+    $T=\begin{pmatrix}1&2&3\\0&4&5\\0&0&6\end{pmatrix}$, et vérifier
+    qu'il est triangulaire supérieur.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Un paramètre dans le système}
+Pour $m\in\R$, on pose $A_m=\begin{pmatrix}1&1\\1&m\end{pmatrix}$ et
+$B=\begin{pmatrix}2\\3\end{pmatrix}$.
+\begin{questions}
+  \item Pour quelles valeurs de $m$ la matrice $A_m$ est-elle inversible ?
+    Résoudre alors $A_mX=B$.
+  \item Pour $m=1$ : le système $A_1X=B$ est-il compatible ? Et le système
+    $A_1X=\begin{pmatrix}2\\2\end{pmatrix}$ ? Décrire dans ce dernier cas
+    l'ensemble des solutions sous la forme « particulière $+$ homogène ».
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Matrices de rotation}
+Pour $\theta\in\R$, on pose
+$R(\theta)=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}$.
+\begin{questions}
+  \item Montrer que $R(a)R(b)=R(a+b)$ pour tous réels $a,b$.
+  \item En déduire que $R(\theta)$ est inversible, avec
+    $R(\theta)^{-1}=R(-\theta)=R(\theta)^{\top}$, et que
+    $R(\theta)^{n}=R(n\theta)$.
+  \item Montrer que $\theta\mapsto R(\theta)$ est un morphisme de groupes
+    de $(\R,+)$ dans $\mathrm{GL}_2(\R)$, et déterminer son noyau.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Le centre de $\mathcal{M}_n(\K)$}
+On cherche les matrices $Z\in\mathcal{M}_n(\K)$ qui commutent avec
+\emph{toutes} les matrices.
+\begin{questions}
+  \item Justifier qu'il suffit que $Z$ commute avec toutes les matrices
+    élémentaires $E_{i,j}$.
+  \item En examinant les coefficients de $ZE_{i,j}$ et de $E_{i,j}Z$,
+    montrer que $Z$ est nécessairement scalaire : $Z=\lambda I_n$.
+  \item Conclure : le centre de l'anneau $\mathcal{M}_n(\K)$ est
+    l'ensemble des matrices scalaires.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une équation matricielle}
+On cherche toutes les matrices $X\in\mathcal{M}_2(\R)$ telles que
+$X^{2}=T$, où $T=\begin{pmatrix}1&1\\0&1\end{pmatrix}$.
+\begin{questions}
+  \item Montrer que toute solution $X$ commute avec $T$.
+  \item En déduire, à l'aide de l'exercice 14, que $X$ est de la forme
+    $aI_2+bN$ avec $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$.
+  \item Résoudre alors l'équation, et conclure :
+    $X=\pm\begin{pmatrix}1&1/2\\0&1\end{pmatrix}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Fibonacci, vu par les matrices}
+Soit $A=\begin{pmatrix}1&1\\1&0\end{pmatrix}$ et $(F_n)$ la suite de
+Fibonacci ($F_0=0$, $F_1=1$).
+\begin{questions}
+  \item Démontrer par récurrence que, pour tout $n\geq1$ :
+    \[
+      A^{n}=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}.
+    \]
+  \item Vérifier que l'application
+    $\begin{pmatrix}a&b\\c&d\end{pmatrix}\mapsto ad-bc$ est
+    multiplicative sur $\mathcal{M}_2(\K)$ :
+    le « $ad-bc$ » d'un produit est le produit des « $ad-bc$ ».
+  \item En déduire, en une ligne, l'identité de Cassini :
+    $F_{n+1}F_{n-1}-F_n^{2}=(-1)^{n}$ — déjà rencontrée au chapitre 5.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Matrices de permutation}
+Pour $\sigma\in S_3$, on note $P_\sigma\in\mathcal{M}_3(\K)$ la matrice
+dont la colonne $j$ est la colonne $\sigma(j)$ de\dots{} plus précisément :
+$(P_\sigma)_{i,j}=\delta_{i,\sigma(j)}$.
+\begin{questions}
+  \item Écrire $P_\sigma$ pour la transposition $\tau=(1\,2)$ et pour le
+    cycle $c=(1\,2\,3)$.
+  \item Montrer que $P_\sigma P_\tau=P_{\sigma\circ\tau}$ : l'application
+    $\sigma\mapsto P_\sigma$ est un morphisme de groupes de $S_3$ dans
+    $\mathrm{GL}_3(\K)$. Est-il injectif ?
+  \item Montrer que $P_\sigma^{-1}=P_\sigma^{\top}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Un modèle d'évolution : ville et campagne}
+Chaque année, $10\,\%$ des habitants de la ville partent à la campagne, et
+$20\,\%$ des habitants de la campagne s'installent en ville. On note $u_n$
+et $v_n$ les populations (en milliers) la $n$-ième année, avec
+$u_0=v_0=30$.
+\begin{questions}
+  \item Justifier que $X_{n+1}=AX_n$ avec
+    $A=\begin{pmatrix}0{,}9&0{,}2\\0{,}1&0{,}8\end{pmatrix}$, et vérifier
+    que la population totale $s_n=u_n+v_n$ est constante.
+  \item On pose $d_n=u_n-2v_n$. Montrer que $(d_n)$ est géométrique de
+    raison $0{,}7$.
+  \item En déduire $u_n$ et $v_n$ en fonction de $n$, puis leurs limites.
+  \item Interpréter la limite : vérifier que le vecteur limite est un
+    \emph{état d'équilibre}, c'est-à-dire une solution de $AX=X$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Les complexes, cachés dans $\mathcal{M}_2(\R)$}
+Pour $(a,b)\in\R^{2}$, on pose
+$M(a,b)=\begin{pmatrix}a&-b\\b&a\end{pmatrix}$, et
+$\mathcal{C}=\ens{M(a,b) \mid (a,b)\in\R^{2}}$.
+\begin{questions}
+  \item Calculer $M(a,b)+M(c,d)$ et $M(a,b)\,M(c,d)$. Que reconnaît-on ?
+  \item Montrer que $\mathcal{C}$ est un sous-anneau \emph{commutatif} de
+    $\mathcal{M}_2(\R)$, et que l'application
+    $a+\mathrm{i}b\mapsto M(a,b)$ est un isomorphisme d'anneaux de $\Cx$
+    sur $\mathcal{C}$.
+  \item Vérifier que $M(0,1)^{2}=-I_2$ : quelle est l'image de
+    $\mathrm{i}$ ?
+  \item Montrer que $M(a,b)$ est inversible si et seulement si
+    $(a,b)\neq(0,0)$, et faire le lien avec les matrices de rotation :
+    $M(\cos\theta,\sin\theta)=R(\theta)$.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-09}

@@ -1,0 +1,19 @@
+% Hémisphères de Magdebourg : la pression atmosphérique plaque les deux demi-sphères (énoncé du défi D12)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\shade[ball color=orange!45!brown!60] (0,0) circle (1.25);
+\fill[white,opacity=0.45] (0,0) circle (1.0);
+\node[pcLegende,align=center] at (-0.58,0) {air\\raréfié};
+\fill[otInk!65] (-0.1,-1.45) rectangle (0.1,1.45);
+\foreach \a in {20,55,125,160,200,235,305,340}{%
+  \draw[otNavy!70,line width=0.6pt,-{Stealth[length=1.4mm]}] (\a:1.85) -- (\a:1.32);}
+\node[pcLegende,anchor=south west,text=otNavy] at (55:1.9) {$P_\mathrm{atm}$};
+% Anneaux et attelages
+\draw[otInk!75,line width=0.9pt] (-1.25,0) -- (-1.6,0); \draw[otInk!75,line width=0.8pt] (-1.75,0) circle (0.15);
+\draw[otInk!75,line width=0.9pt] (1.25,0) -- (1.6,0); \draw[otInk!75,line width=0.8pt] (1.75,0) circle (0.15);
+\draw[otGreenDark,line width=1.3pt,-{Stealth[length=2.6mm]}] (-1.9,0) -- (-3.6,0) node[pcLegende,anchor=north,text=otGreenDark,align=center,pos=0.55,yshift=-1mm] {attelage\\de 8 chevaux};
+\draw[otGreenDark,line width=1.3pt,-{Stealth[length=2.6mm]}] (1.9,0) -- (3.6,0) node[pcLegende,anchor=north,text=otGreenDark,align=center,pos=0.55,yshift=-1mm] {attelage\\de 8 chevaux};
+\draw[otMuted,line width=0.4pt] (0.1,-1.3) -- (0.6,-1.85) node[pcLegende,anchor=north west] {joint étanche};
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (-1.25,1.75) -- (0,1.75) node[midway,pcLegende,anchor=south,yshift=1pt] {$R=\qty{25}{cm}$};
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (-1.25,0) -- (-1.25,1.75) (0,1.45) -- (0,1.75);
+\end{tikzpicture}
+\par\smallskip\legende{Les deux demi-sphères creuses sont simplement posées l'une contre l'autre ; on pompe l'air qu'elles contiennent.}

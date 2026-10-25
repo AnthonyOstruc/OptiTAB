@@ -1,0 +1,403 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 20 — Fonctions de deux variables
+%% Résultats vérifiés par verifications/chapitre_20.py.
+
+\corrigesChapitre{20}{Fonctions de deux variables}
+\corrigesSouples
+
+\begin{blocLivre}{cor-20-1}
+\begin{corrige}{1}{Dérivées partielles : premiers calculs}
+\demarche{Dériver par rapport à une variable en gelant l'autre.}
+\begin{questions}
+  \item $\dfrac{\partial f}{\partial x}=2xy$,
+    $\dfrac{\partial f}{\partial y}=x^{2}+3y^{2}$.
+  \item $\dfrac{\partial g}{\partial x}=y\,\mathrm{e}^{xy}$,
+    $\dfrac{\partial g}{\partial y}=x\,\mathrm{e}^{xy}$.
+  \item $\dfrac{\partial h}{\partial x}=\dfrac{2x}{x^{2}+y^{2}}$,
+    $\dfrac{\partial h}{\partial y}=\dfrac{2y}{x^{2}+y^{2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-2}
+\begin{corrige}{2}{Le développement limité d'ordre 1}
+\demarche{Le plan tangent remplace la surface, à o(||(h,k)||) près.}
+\begin{questions}
+  \item $\nabla f(1,2)=(2,4)$ :
+    $f(1+h,\,2+k)=5+2h+4k+o\bigl(\norme{(h,k)}\bigr)$.
+  \item $f(1{,}02\,;\,1{,}99)\approx5+2(0{,}02)+4(-0{,}01)=\res{5{,}00}$ ;
+    la valeur exacte est $5{,}0005$ : erreur de $5\cdot10^{-4}$, l'ordre
+    du carré des accroissements.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-3}
+\begin{corrige}{3}{Plans tangents}
+\demarche{z - z0 = fx (x - x0) + fy (y - y0) : recopier le gradient.}
+\begin{questions}
+  \item $\nabla f(1,2)=(2,4)$ :
+    $\res{z=5+2(x-1)+4(y-2)}$.
+  \item Pour $z=xy$ : $\nabla f(2,3)=(3,2)$ :
+    $\res{z=6+3(x-2)+2(y-3)}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-4}
+\begin{corrige}{4}{Le gradient et la plus grande pente}
+\demarche{Le gradient est la boussole de la montée.}
+\begin{questions}
+  \item $\nabla f(3,4)=(6,8)$, de norme $\res{10}$.
+  \item La croissance est maximale dans la direction du gradient, ici la
+    direction \emph{radiale} $(6,8)/10$ : perpendiculaire aux cercles de
+    niveau, droit vers l'extérieur — et la pente maximale vaut
+    $\norme{\nabla f}=10$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-5}
+\begin{corrige}{5}{Lignes de niveau}
+\demarche{Résoudre f = c pour chaque constante : la carte se dessine.}
+Pour $f$ : les cercles $x^{2}+y^{2}=c$ ($c>0$), réduits à l'origine pour
+$c=0$. Pour $g$ : les hyperboles $xy=c$, et la réunion des deux axes pour
+$c=0$. Pour $h$ : les hyperboles $x^{2}-y^{2}=c$, et les deux
+bissectrices pour $c=0$. Par $(1,2)$ passent le cercle de rayon
+$\sqrt5$, l'hyperbole $xy=2$ et l'hyperbole $x^{2}-y^{2}=-3$.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-6}
+\begin{corrige}{6}{Dérivée selon un vecteur}
+\demarche{Un produit scalaire avec le gradient — chapitre 18 en action.}
+\begin{questions}
+  \item $\nabla f(1,1)=(2,1)$ et
+    $D_uf(1,1)=\dfrac{3\times2+4\times1}{5}=\res{2}$.
+  \item Par Cauchy-Schwarz,
+    $D_uf=\langle\nabla f,u\rangle\leqslant\norme{\nabla f}=\sqrt5$,
+    avec égalité pour $u=\dfrac{(2,1)}{\sqrt5}$ : la plus grande pente,
+    de valeur $\res{\sqrt5}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-7}
+\begin{corrige}{7}{La règle de la chaîne}
+\demarche{Gradient le long du chemin, produit scalaire avec la vitesse.}
+\begin{questions}
+  \item $\bigl(f\circ\gamma\bigr)'(t)
+    =2\cos t\,(-\sin t)+2\sin t\,\cos t=\res{0}$ : prévisible, le cercle
+    unité est une \emph{ligne de niveau} de $f$ ($f\circ\gamma\equiv1$).
+  \item Direct : $(\cos t\sin t)'=\cos2t$. Par la chaîne :
+    $y\,(-\sin t)+x\,\cos t=\cos^{2}t-\sin^{2}t=\cos2t$ : accord
+    parfait.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-8}
+\begin{corrige}{8}{Premiers points critiques}
+\demarche{Gradient nul d'abord, étude locale ensuite — le col guette.}
+Les trois fonctions ont $(0,0)$ pour unique point critique.
+$x^{2}+y^{2}$ : \res{\text{minimum global}} (valeurs positives).
+$x^{2}-y^{2}$ : $f(t,0)=t^{2}>0>-t^{2}=f(0,t)$ :
+\res{\text{point-selle}}, pas d'extremum. $xy$ : $f(t,t)=t^{2}>0>
+f(t,-t)$ : point-selle également — le gradient nul ne promet rien.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-9}
+\begin{corrige}{9}{Dérivées partielles sans continuité}
+\demarche{Deux directions ne suffisent pas : la diagonale raconte une
+autre histoire que les axes.}
+\begin{questions}
+  \item Le long de $y=0$ : $f(x,0)=0\to0$. Le long de $y=x$ :
+    $f(x,x)=\dfrac{x^{2}}{2x^{2}}=\dfrac12$ : deux limites différentes,
+    $f$ n'est \res{\text{pas continue}} en $(0,0)$.
+  \item $\dfrac{f(h,0)-f(0,0)}{h}=0\to0$ : les deux dérivées partielles
+    existent et valent $0$. Il manque la \emph{continuité des dérivées
+    partielles} (classe $\mathcal{C}^{1}$) : seule elle garantit le
+    développement limité — les dérivées partielles seules ne contrôlent
+    que deux directions sur une infinité.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-10}
+\begin{corrige}{10}{Composées et dérivées partielles}
+\demarche{La chaîne, variable par variable : chaque argument transmet sa
+dérivée.}
+\begin{questions}
+  \item $\dfrac{\partial F}{\partial u}
+    =\dfrac{\partial f}{\partial x}(u+v,\,uv)
+    +v\,\dfrac{\partial f}{\partial y}(u+v,\,uv)$, et symétriquement
+    $\dfrac{\partial F}{\partial v}
+    =\dfrac{\partial f}{\partial x}+u\,\dfrac{\partial f}{\partial y}$.
+  \item Avec $f(x,y)=x^{2}y+y^{3}$ : le développement complet de
+    $F(u,v)=(u+v)^{2}uv+(uv)^{3}$ et la formule donnent le même
+    polynôme — vérification faite, la règle est fiable.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-11}
+\begin{corrige}{11}{Le gradient orthogonal aux lignes de niveau}
+\demarche{Constante le long du chemin : dérivée nulle, produit scalaire
+nul.}
+\begin{questions}
+  \item $f\bigl(\gamma(t)\bigr)=3\cos^{2}t+2\cdot\dfrac32\sin^{2}t=3$ :
+    l'ellipse est la ligne de niveau $3$.
+  \item $\nabla f(\gamma)=\bigl(2\sqrt3\cos t,\,4\sqrt{3/2}\sin t\bigr)$
+    et $\gamma'=\bigl(-\sqrt3\sin t,\,\sqrt{3/2}\cos t\bigr)$ : le
+    produit scalaire vaut $-2\cdot3\ldots+2\cdot3\ldots=0$ — mais sans
+    calcul : $f\circ\gamma$ est constante, donc
+    $\langle\nabla f(\gamma),\gamma'\rangle=(f\circ\gamma)'=0$ : le
+    gradient est \res{\text{orthogonal aux lignes de niveau}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-12}
+\begin{corrige}{12}{Dériver le long d'un arc}
+\demarche{Deux routes, un résultat : c'est la règle de la chaîne qui se
+vérifie.}
+\begin{questions}
+  \item $f\bigl(\gamma(t)\bigr)=t^{2}\cdot t^{2}=t^{4}$ : dérivée
+    $\res{4t^{3}}$.
+  \item $\nabla f(t,t^{2})=(2t^{3},\,t^{2})$ et
+    $\gamma'(t)=(1,2t)$ : produit scalaire
+    $2t^{3}+2t^{3}=4t^{3}$ — identique.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-13}
+\begin{corrige}{13}{Des équations aux dérivées partielles}
+\demarche{Dérivée partielle nulle : constante par rapport à cette variable,
+fonction arbitraire de l'autre.}
+\begin{questions}
+  \item À $y$ fixé, $x\mapsto f(x,y)$ a une dérivée nulle sur $\R$ :
+    elle est constante, et $\res{f(x,y)=\varphi(y)}$ avec $\varphi$ de
+    classe $\mathcal{C}^{1}$ arbitraire.
+  \item $\dfrac{\partial f}{\partial x}=y$ donne
+    $f(x,y)=xy+\varphi(y)$ ; la seconde équation impose
+    $x+\varphi'(y)=x$, soit $\varphi$ constante :
+    $\res{f(x,y)=xy+c}$ — à constante près, la fonction est
+    reconstituée de ses dérivées.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-14}
+\begin{corrige}{14}{Le col et le sommet}
+\demarche{Résoudre le gradient, puis faire parler des chemins bien
+choisis.}
+\begin{questions}
+  \item $\nabla f=0$ s'écrit $y=x^{2}$ et $x=y^{2}$ : en substituant,
+    $x=x^{4}$, d'où les points critiques $\res{(0,0)}$ et
+    $\res{(1,1)}$.
+  \item En $(0,0)$ : $f(t,0)=t^{3}$ change de signe : pas d'extremum
+    (un col). En $(1,1)$, posons $x=1+h$, $y=1+k$ :
+    \[
+    f(1+h,1+k)+1=3\bigl(h^{2}-hk+k^{2}\bigr)+h^{3}+k^{3},
+    \]
+    et $h^{2}-hk+k^{2}=\bigl(h-\tfrac k2\bigr)^{2}+\tfrac34k^{2}>0$ hors
+    de l'origine : le terme quadratique domine localement,
+    $(1,1)$ est un \res{\text{minimum local, de valeur }-1}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-15}
+\begin{corrige}{15}{Extremums sur un carré}
+\demarche{L'intérieur par le gradient, le bord segment par segment.}
+\begin{questions}
+  \item $\nabla f=(2x-1,\,2y-1)=0$ :
+    $\Bigl(\dfrac12,\dfrac12\Bigr)$, où
+    $f=-\dfrac12$.
+  \item Sur $y=0$ : $x^{2}-x$, minimum $-\frac14$ en $\frac12$, maximum
+    $0$ aux extrémités — et de même sur les trois autres côtés (symétrie
+    $x\leftrightarrow y$, $t\leftrightarrow1-t$). Bilan :
+    \res{\text{minimum global }-\tfrac12} au centre,
+    \res{\text{maximum global }0} atteint aux \emph{quatre coins} du
+    carré.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-16}
+\begin{corrige}{16}{Le plan tangent comme calculette}
+\demarche{Le DL d'ordre 1 est la meilleure calculatrice de poche.}
+\begin{questions}
+  \item $\nabla f(3,4)=\Bigl(\dfrac35,\dfrac45\Bigr)$ — un vecteur
+    unitaire : la norme croît à vitesse $1$ le long des rayons.
+  \item $\sqrt{3{,}03^{2}+3{,}96^{2}}\approx5+\dfrac35(0{,}03)
+    +\dfrac45(-0{,}04)=\res{4{,}986}$ ; la valeur exacte est
+    $4{,}98623$ : quatre décimales sûres.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-17}
+\begin{corrige}{17}{L'identité d'Euler}
+\demarche{Dériver l'homogénéité par rapport au facteur d'échelle.}
+\begin{questions}
+  \item $(\lambda x)^{2}(\lambda y)=\lambda^{3}x^{2}y$ et
+    $(\lambda x)^{3}-2(\lambda x)(\lambda y)^{2}
+    =\lambda^{3}\bigl(x^{3}-2xy^{2}\bigr)$ : degré $3$.
+  \item Soit $g(t)=f(tx,ty)=t^{d}f(x,y)$. La règle de la chaîne donne
+    $g'(t)=x\dfrac{\partial f}{\partial x}(tx,ty)
+    +y\dfrac{\partial f}{\partial y}(tx,ty)$, et la dérivée directe
+    $g'(t)=d\,t^{d-1}f(x,y)$ ; en $t=1$ :
+    \[
+    \res{x\frac{\partial f}{\partial x}+y\frac{\partial f}{\partial y}
+    =d\,f} .
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-18}
+\begin{corrige}{18}{La droite des moindres carrés}
+\demarche{Annuler le gradient d'une somme de carrés : deux équations
+linéaires.}
+\begin{questions}
+  \item $\dfrac{\partial E}{\partial a}=0$ et
+    $\dfrac{\partial E}{\partial b}=0$ s'écrivent
+    $5a+3b=3$ et $3a+3b=2$ :
+    $\res{a=\dfrac12,\quad b=\dfrac16}$.
+  \item La droite $y=\dfrac x2+\dfrac16$, avec l'erreur minimale
+    $E=\dfrac16$. C'est bien un minimum : $E$ est une fonction
+    quadratique positive qui tend vers $+\infty$ à l'infini, et ne
+    possède qu'un point critique — la droite de régression des
+    statisticiens.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-19}
+\begin{corrige}{19}{Le théorème de Schwarz, et sa limite}
+\demarche{Pour les fonctions régulières, l'ordre de dérivation est
+indifférent — pour les autres, non.}
+\begin{questions}
+  \item Les deux dérivées croisées de
+    $\mathrm{e}^{xy}\sin(x+y)$ coïncident (calcul direct) : c'est le
+    théorème de Schwarz, valable pour toute fonction de classe
+    $\mathcal{C}^{2}$.
+  \item Pour $g$, un calcul (ou une vérification numérique) donne en
+    $(0,0)$ :
+    $\dfrac{\partial^{2}g}{\partial y\partial x}=-1$ et
+    $\dfrac{\partial^{2}g}{\partial x\partial y}=+1$ : sans la
+    continuité des dérivées secondes, \res{\text{l'ordre de dérivation
+    compte}} — la régularité n'est pas une politesse de rédaction.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-20}
+\begin{corrige}{20}{Fonctions harmoniques}
+\demarche{Deux dérivées secondes, une somme nulle — et les complexes en
+coulisse.}
+\begin{questions}
+  \item $\Delta(x^{2}-y^{2})=2-2=0$ ; $\Delta(xy)=0$ ;
+    $\Delta\bigl(\mathrm{e}^{x}\cos y\bigr)
+    =\mathrm{e}^{x}\cos y-\mathrm{e}^{x}\cos y=0$ ; et pour
+    $\ln\bigl(x^{2}+y^{2}\bigr)$, le calcul donne également $0$ hors de
+    l'origine : quatre fonctions \res{\text{harmoniques}}.
+  \item $x^{2}-y^{2}$ et $2xy$ sont les parties réelle et imaginaire de
+    $z^{2}=(x+\mathrm{i}y)^{2}$ (chapitre 3) — comme
+    $\mathrm{e}^{x}\cos y=\operatorname{Re}\bigl(\mathrm{e}^{z}\bigr)$ :
+    les fonctions de la variable complexe fabriquent des harmoniques en
+    série, porte ouverte sur l'analyse complexe de deuxième année.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-21}
+\begin{corrige}{21}{Une étude complète}
+\demarche{Pour le global : minorer par deux problèmes à une variable.}
+\begin{questions}
+  \item $\nabla f=\bigl(4x^{3}-4(x-y),\,4y^{3}+4(x-y)\bigr)$ ; en
+    sommant, $x^{3}+y^{3}=0$, donc $y=-x$, puis $4x^{3}-8x=0$ : points
+    critiques $\res{(0,0)}$ et $\res{\pm(\sqrt2,-\sqrt2)}$.
+  \item En $(0,0)$ : $f(t,t)=2t^{4}>0$ et
+    $f(t,-t)=2t^{4}-8t^{2}<0$ près de $0$ : col. Pour le global :
+    $(x-y)^{2}\leqslant2\bigl(x^{2}+y^{2}\bigr)$ donne
+    \[
+    f(x,y)\geqslant\bigl(x^{4}-4x^{2}\bigr)+\bigl(y^{4}-4y^{2}\bigr)
+    \geqslant-4-4=-8 ,
+    \]
+    car $t^{4}-4t^{2}\geqslant-4$. Et $f\bigl(\sqrt2,-\sqrt2\bigr)=-8$ :
+    le \res{\text{minimum global vaut }-8}, atteint exactement en
+    $\pm(\sqrt2,-\sqrt2)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-22}
+\begin{corrige}{22}{Distance d'un point à une parabole}
+\demarche{Une variable suffit — et le gradient explique la géométrie.}
+\begin{questions}
+  \item $d(x)=x^{2}+\bigl(x^{2}-1\bigr)^{2}$ a pour dérivée
+    $2x\bigl(2x^{2}-1\bigr)$ : candidats $0$ et
+    $\pm\dfrac{1}{\sqrt2}$, avec $d(0)=1$ et
+    $d\bigl(\pm\tfrac{1}{\sqrt2}\bigr)=\dfrac34$ : la distance vaut
+    $\res{\dfrac{\sqrt3}{2}}$.
+  \item Au point $\bigl(\tfrac{1}{\sqrt2},\tfrac12\bigr)$, le vecteur
+    joignant $(0,1)$ au point est
+    $\bigl(\tfrac{1}{\sqrt2},-\tfrac12\bigr)$ et la tangente a pour
+    direction $(1,\sqrt2)$ : produit scalaire
+    $\tfrac{1}{\sqrt2}-\tfrac{\sqrt2}{2}=0$ — le plus court chemin
+    arrive \emph{perpendiculairement} à la courbe, comme la projection
+    orthogonale du chapitre 18.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-23}
+\begin{corrige}{23}{Passage en coordonnées polaires}
+\demarche{La chaîne appliquée au changement de variables le plus utile du
+plan.}
+\begin{questions}
+  \item $\dfrac{\partial g}{\partial r}
+    =\cos\theta\,\dfrac{\partial f}{\partial x}
+    +\sin\theta\,\dfrac{\partial f}{\partial y}$ et
+    $\dfrac{\partial g}{\partial\theta}
+    =-r\sin\theta\,\dfrac{\partial f}{\partial x}
+    +r\cos\theta\,\dfrac{\partial f}{\partial y}$.
+  \item Pour $f=x^{2}+y^{2}$ : $g=r^{2}$, donc
+    $\dfrac{\partial g}{\partial r}=2r$ et
+    $\dfrac{\partial g}{\partial\theta}=0$ — prévisible : $f$ est
+    \emph{radiale}, constante sur les cercles ; les polaires épousent
+    ses lignes de niveau.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-24}
+\begin{corrige}{24}{Moindres carrés, version matricielle}
+\demarche{Gradient, équations normales, projection : trois chapitres pour
+un même minimum.}
+\begin{questions}
+  \item $\norme{AX-B}^{2}=(AX-B)^{\mathsf T}(AX-B)$ a pour gradient
+    $2A^{\mathsf T}(AX-B)$ : il s'annule exactement pour
+    $A^{\mathsf T}AX=A^{\mathsf T}B$, soit
+    $\begin{pmatrix}5&3\\3&3\end{pmatrix}X
+    =\begin{pmatrix}3\\2\end{pmatrix}$ :
+    $\res{X=\Bigl(\dfrac12,\ \dfrac16\Bigr)}$ — la droite de
+    l'exercice 18, retrouvée matriciellement.
+  \item Le résidu $AX-B$ vérifie $A^{\mathsf T}(AX-B)=0$ : il est
+    orthogonal aux colonnes de $A$, donc $AX$ est la
+    \res{\text{projection orthogonale}} de $B$ sur
+    $\operatorname{Im}A$ (chapitre 18), et le coût minimal vaut
+    $\dfrac16$.
+  \item Le même problème s'est laissé résoudre par le gradient
+    (chapitre 20), par les équations normales (chapitre 13) et par la
+    projection orthogonale (chapitre 18) : trois langages, une seule
+    géométrie — c'est sur cette convergence que s'achève le cours.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-20}

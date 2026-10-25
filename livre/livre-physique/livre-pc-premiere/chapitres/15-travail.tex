@@ -1,0 +1,307 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[newton]{15}{Travail et énergie cinétique}{Partie 3 · L'énergie : conversions et transferts}
+{Énergie cinétique\enspace·\enspace Travail d'une force\enspace·\enspace Travail du poids\enspace·\enspace Frottements\enspace·\enspace Théorème de l'énergie cinétique}
+\objectif{Utiliser l'expression de l'énergie cinétique d'un système modélisé par un point matériel.}
+\objectif{Utiliser l'expression du travail $W_{\mathrm{AB}}(\vec{F})=\vec{F}\cdot\overrightarrow{\mathrm{AB}}$ d'une force constante.}
+\objectif{Calculer le travail du poids et celui d'une force de frottement d'intensité constante sur une trajectoire rectiligne.}
+\objectif{Énoncer et exploiter le théorème de l'énergie cinétique.}
+\prerequis{Énergie cinétique, conversions d'énergie (collège) ; forces usuelles, poids $P=m\,g$.}
+\prerequis{Vecteurs, angles ; cosinus d'un angle (mathématiques) ; vitesse en \unit{m.s^{-1}}.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Énergie cinétique}
+\begin{definition}[Énergie cinétique]
+L'énergie cinétique d'un système de masse $m$ (en kg), modélisé par un point de vitesse $v$ (en \unit{m.s^{-1}}), vaut
+\[E_\mathrm{c}=\frac{1}{2}\,m\,v^2\qquad\text{(en joules, J).}\]
+Elle est proportionnelle au carré de la vitesse : à vitesse double, énergie quadruple. Une voiture de \qty{1000}{kg} à \qty{72}{km/h} (\qty{20}{m.s^{-1}})
+possède \qty{2,0e5}{J}.
+\end{definition}
+\essSection{2}{Travail d'une force constante}
+\begin{definition}[Travail d'une force constante]
+Le travail d'une force constante $\vec{F}$ dont le point d'application se déplace de A à B est le produit scalaire
+\[W_{\mathrm{AB}}(\vec{F})=\vec{F}\cdot\overrightarrow{\mathrm{AB}}=F\times\mathrm{AB}\times\cos\alpha\qquad\text{(en J ; $F$ en N, AB en m),}\]
+où $\alpha$ est l'angle entre $\vec{F}$ et $\overrightarrow{\mathrm{AB}}$. Le travail est \textbf{moteur} ($W>0$) si $\alpha<\ang{90}$, \textbf{nul} si la force est perpendiculaire
+au déplacement, \textbf{résistant} ($W<0$) si $\alpha>\ang{90}$. Exemple : \qty{100}{N} à \ang{60} sur \qty{10}{m} donnent \qty{500}{J}.
+\end{definition}
+\schema{15-travail}
+\begin{propriete}[Deux forces usuelles]
+\textbf{Poids} : $W_{\mathrm{AB}}(\vec{P})=m\,g\,(z_\mathrm{A}-z_\mathrm{B})$, avec un axe $z$ vertical vers le haut. Il ne dépend que des altitudes de départ et
+d'arrivée, pas du chemin suivi : on dit que le poids est une force \textbf{conservative}.\par
+\textbf{Frottement} d'intensité constante $f$, opposé au mouvement, sur une trajectoire rectiligne : $W_{\mathrm{AB}}(\vec{f})=-f\times\mathrm{AB}$. Toujours
+résistant, il dépend de la longueur du trajet : force \textbf{non conservative}.
+\end{propriete}
+\par\penalty0
+\schema{15-poids}
+\essSection{3}{Théorème de l'énergie cinétique}
+\begin{loi}[Théorème de l'énergie cinétique]
+Entre deux positions A et B, la variation de l'énergie cinétique d'un système est égale à la somme des travaux des forces
+qui s'exercent sur lui :
+\[E_\mathrm{c}(\mathrm{B})-E_\mathrm{c}(\mathrm{A})=\sum W_{\mathrm{AB}}(\vec{F}).\]
+Les forces motrices augmentent l'énergie cinétique, les forces résistantes la diminuent. Exemple : un objet lâché sans vitesse
+qui tombe de \qty{5,0}{m} sans frottement atteint $v=\sqrt{2\,g\,h}=\qty{9,9}{m.s^{-1}}$, quelle que soit sa masse.
+\end{loi}
+\par\penalty0
+\schema{15-tec}
+\begin{python}
+m, g, v = 0.50, 9.81, 0.0          # kg, N/kg, m/s : objet lache
+for h in [1, 2, 3, 4, 5]:          # hauteur de chute en m
+    v = (2 * g * h) ** 0.5         # Ec = m g h (theoreme)
+    print(h, 'm :', round(v, 1), 'm/s ; Ec =', round(0.5 * m * v**2, 1), 'J')
+\end{python}
+\begin{console}
+1 m : 4.4 m/s ; Ec = 4.9 J
+2 m : 6.3 m/s ; Ec = 9.8 J
+3 m : 7.7 m/s ; Ec = 14.7 J
+4 m : 8.9 m/s ; Ec = 19.6 J
+5 m : 9.9 m/s ; Ec = 24.5 J
+\end{console}
+\noindent\capacite{Capacité numérique} L'énergie cinétique gagnée est proportionnelle à la hauteur de chute, mais la vitesse ne l'est pas : il faut
+quatre fois plus de hauteur pour doubler la vitesse.
+\begin{attention}
+Le travail d'une force n'est pas une force : c'est une énergie, en joules. Ne pas oublier les forces dont le travail est nul (réaction
+d'un support sans frottement) dans l'inventaire, et utiliser la vitesse en \unit{m.s^{-1}} dans $E_\mathrm{c}$.
+\end{attention}
+\begin{savoirfaire}[Appliquer le théorème de l'énergie cinétique]
+\begin{enumerate}
+\item Définir le système et les positions initiale A et finale B ; faire l'inventaire des forces et un schéma.
+\item Calculer le travail de chaque force entre A et B, avec son signe.
+\item Écrire $E_\mathrm{c}(\mathrm{B})-E_\mathrm{c}(\mathrm{A})=\sum W_{\mathrm{AB}}$ et isoler l'inconnue : vitesse, distance ou force.
+\end{enumerate}
+\end{savoirfaire}
+\begin{experience}[Étudier une chute ou une glissade]
+On filme la descente d'un mobile sur un rail incliné. Un logiciel de pointage donne la vitesse en différents points ; on compare
+l'énergie cinétique gagnée au travail du poids et l'on en déduit le travail des frottements.
+\end{experience}
+\begin{rediger}
+Préciser le système, le référentiel et les deux positions ; écrire chaque travail littéralement avec son signe, puis le théorème,
+avant de passer aux valeurs numériques.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-15-1}
+\begin{exercice}[1]{Calculer des énergies cinétiques}
+\begin{questions}
+\item Calculer l'énergie cinétique d'une voiture de \qty{1200}{kg} roulant à \qty{90}{km/h}, puis à \qty{130}{km/h}.
+\item Par quel facteur l'énergie cinétique est-elle multipliée ? Le comparer au rapport des vitesses.
+\item Calculer l'énergie cinétique d'une balle de tennis de \qty{58}{g} à \qty{50}{m.s^{-1}} et celle d'un piéton de \qty{70}{kg} marchant à \qty{1,4}{m.s^{-1}}.
+\item À quelle vitesse la voiture aurait-elle la même énergie cinétique que la balle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-2}
+\begin{exercice}[1]{Tirer une luge}
+\schema{15-ex02}
+\begin{questions}
+\item Calculer le travail de la force exercée par l'enfant sur \qty{20}{m}.
+\item Que vaudrait ce travail si la corde était horizontale ?
+\item Représenter la composante de $\vec{F}$ qui travaille et calculer sa valeur.
+\item Quel est le travail du poids de la luge ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-3}
+\begin{exercice}[1]{Le travail du poids}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Une balle de \qty{0,50}{kg} tombe de \qty{2,0}{m}. Calculer le travail de son poids. Est-il moteur ou résistant ?
+\item Une personne de \qty{60}{kg} monte un étage de \qty{3,0}{m}. Calculer le travail de son poids.
+\item Un randonneur de \qty{70}{kg} gravit un sommet situé \qty{800}{m} plus haut que son point de départ. Calculer le travail de son poids.
+\item Le travail est-il le même s'il emprunte un sentier en lacets plutôt qu'un chemin direct ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-4}
+\begin{exercice}[1]{Moteur, résistant ou nul ?}
+\schema{15-ex04}
+\begin{questions}
+\item Pour chaque situation, indiquer l'angle entre la force et le déplacement.
+\item En déduire si le travail de la force est moteur, résistant ou nul.
+\item Dans quelle situation la force fait-elle augmenter l'énergie cinétique ?
+\item Pourquoi le poids d'un objet qui glisse sur une table horizontale ne travaille-t-il pas ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-5}
+\begin{exercice}[1]{Une chute libre}
+On lâche une bille de \qty{0,20}{kg} sans vitesse initiale d'une hauteur de \qty{5,0}{m}. On néglige l'action de l'air.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Faire l'inventaire des forces et calculer le travail du poids pendant la chute.
+\item Appliquer le théorème de l'énergie cinétique et calculer la vitesse de la bille à l'arrivée au sol.
+\item La vitesse dépend-elle de la masse de la bille ?
+\item Quelle serait la vitesse après une chute de \qty{20}{m} ? Commenter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-15-6}
+\begin{exercice}[2]{Le travail selon l'angle, en Python}
+\begin{python}
+from math import cos, radians
+F, d = 100, 10                     # N, m
+for angle in [0, 30, 60, 90, 120, 180]:
+    W = F * d * cos(radians(angle))
+    print(angle, 'degres :', round(W), 'J')
+\end{python}
+\begin{console}
+0 degres : 1000 J
+30 degres : 866 J
+60 degres : 500 J
+90 degres : 0 J
+120 degres : -500 J
+180 degres : -1000 J
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle relation le programme utilise-t-il ? Pourquoi faut-il la fonction \code{radians} ?
+\item Pour quels angles le travail est-il moteur ? Résistant ? Nul ?
+\item Vérifier le résultat affiché pour \ang{60}.
+\item Donner un exemple concret de force faisant un angle de \ang{180} avec le déplacement.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-7}
+\begin{exercice}[2]{Le freinage d'une voiture}
+Une voiture de \qty{1000}{kg} roulant à \qty{90}{km/h} freine en ligne droite et s'arrête sur \qty{50}{m}. On suppose la force de freinage constante.
+\begin{questions}
+\item Calculer la variation de l'énergie cinétique de la voiture.
+\item Quelles forces s'exercent sur la voiture ? Lesquelles travaillent ?
+\item Appliquer le théorème de l'énergie cinétique pour calculer la force de freinage.
+\item Avec la même force, sur quelle distance la voiture s'arrêterait-elle depuis \qty{130}{km/h} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-8}
+\begin{exercice}[2]{La descente du skieur}
+\schema{15-ex08}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Faire l'inventaire des forces qui s'exercent sur le skieur et les représenter.
+\item Calculer le travail du poids entre A et B. En déduire la vitesse en B en l'absence de frottement.
+\item La vitesse mesurée en B vaut \qty{18}{m.s^{-1}}. Calculer le travail des frottements.
+\item En déduire la valeur de la force de frottement, supposée constante.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-9}
+\begin{exercice}[2]{Lancer dans toutes les directions}
+Une balle est lancée à \qty{10}{m.s^{-1}} depuis une hauteur de \qty{1,5}{m}, horizontalement, vers le haut ou vers le bas. On néglige l'air.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Appliquer le théorème de l'énergie cinétique entre le lancer et l'arrivée au sol.
+\item Montrer que $v_\mathrm{sol}=\sqrt{v_0^2+2\,g\,h}$ et calculer cette vitesse.
+\item La direction du lancer a-t-elle une influence sur la vitesse d'arrivée au sol ?
+\item Calculer la vitesse au sol si la balle est lancée depuis \qty{2,0}{m}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-10}
+\begin{exercice}[2]{Le chariot de supermarché}
+\schema{15-ex10}
+On pousse un chariot de \qty{30}{kg}, initialement immobile, avec une force de \qty{40}{N}.
+\begin{questions}
+\item Calculer le travail de la force de poussée sur \qty{15}{m}.
+\item Calculer le travail des frottements. Quels sont les travaux du poids et de la réaction du sol ?
+\item Appliquer le théorème de l'énergie cinétique et calculer la vitesse finale du chariot.
+\item Pourquoi est-il plus efficace de pousser horizontalement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-11}
+\begin{exercice}[2]{Descendre un col à vitesse constante}
+Une voiture de \qty{1500}{kg} descend un col à vitesse constante : sur \qty{200}{m} de route, elle perd \qty{16}{m} d'altitude.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Que vaut la variation d'énergie cinétique de la voiture ?
+\item Calculer le travail du poids sur ce trajet.
+\item En déduire le travail des forces de freinage (freins et frottements), puis leur valeur moyenne.
+\item Que devient l'énergie correspondante ? Pourquoi conseille-t-on d'utiliser le frein moteur en descente ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-15-12}
+\begin{exercice}[3]{Le tir à l'arc}
+\begin{docu}{1}{La corde de l'arc}
+L'archer tend la corde en reculant la flèche de \qty{50}{cm}. Lorsqu'il la lâche, la corde exerce sur la flèche une force moyenne de \qty{150}{N},
+dans le sens du déplacement, sur ces \qty{50}{cm}.
+\end{docu}
+\begin{docu}{2}{La flèche}
+Masse : \qty{20}{g}. Le travail du poids pendant la détente est négligeable.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer le travail de la force exercée par la corde.
+\item Appliquer le théorème de l'énergie cinétique et calculer la vitesse de la flèche, en \unit{m.s^{-1}} puis en \unit{km/h}.
+\item \initiative Sans frottement, quelle altitude atteindrait une flèche tirée verticalement ?
+\item En réalité, la flèche monte beaucoup moins haut. Pourquoi ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-13}
+\begin{exercice}[3]{La distance de freinage}
+\begin{docu}{1}{Freinage d'urgence}
+Lors d'un freinage d'urgence, la route exerce sur une voiture de masse $m$ une force de freinage d'intensité $f=0{,}8\,m\,g$ sur route sèche et
+$f=0{,}5\,m\,g$ sur route mouillée, opposée au mouvement.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Appliquer le théorème de l'énergie cinétique pour montrer que la distance de freinage vaut $d=\dfrac{v^2}{2\times0{,}8\,g}$ sur route sèche.
+\item Calculer la distance de freinage à 50, 90 et \qty{130}{km/h}.
+\item Que devient la distance de freinage quand la vitesse double ? La masse de la voiture intervient-elle ?
+\item \initiative Calculer la distance de freinage à \qty{90}{km/h} sur route mouillée. Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-14}
+\begin{exercice}[3]{Le saut à la perche}
+\begin{docu}{1}{Le principe}
+Le perchiste court, plante sa perche, qui se courbe puis se redresse : l'énergie cinétique de la course sert à élever le sauteur.
+Au mieux, on peut considérer qu'elle est entièrement utilisée pour monter, la vitesse au sommet étant presque nulle.
+\end{docu}
+\begin{docu}{2}{Le sauteur}
+Masse : \qty{75}{kg} ; vitesse de course juste avant le saut : \qty{9,5}{m.s^{-1}} ; son centre de gravité est alors à \qty{1,1}{m} du sol.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie cinétique du perchiste avant le saut.
+\item En appliquant le théorème de l'énergie cinétique entre le début du saut et le sommet, calculer l'élévation maximale de son centre de gravité.
+\item En déduire la hauteur maximale atteinte par son centre de gravité.
+\item \initiative Les meilleurs perchistes franchissent plus de \qty{6,2}{m}. Quelle vitesse de course faudrait-il, d'après ce modèle ? Commenter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-15}
+\begin{exercice}[3]{L'atterrissage d'un avion de ligne}
+\begin{docu}{1}{Les données}
+Un avion de ligne de \qty{64}{t} se pose à \qty{70}{m.s^{-1}} et s'arrête après \qty{1500}{m} de roulage sur une piste horizontale. Pour freiner, il utilise ses
+freins et ses inverseurs de poussée, qui dirigent vers l'avant le jet des moteurs.
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie cinétique de l'avion au moment de l'atterrissage.
+\item En appliquant le théorème de l'énergie cinétique, calculer la force de freinage moyenne. La comparer au poids de l'avion.
+\item Quels sont les travaux du poids et de la réaction de la piste ?
+\item \initiative Les inverseurs de poussée assurent \qty{40}{\percent} de la force de freinage. Sur quelle distance l'avion s'arrêterait-il sans eux, avec les
+seuls freins ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

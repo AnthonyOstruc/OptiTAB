@@ -1,0 +1,381 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[transferts]{20}{Transferts thermiques et bilans}{Partie 3 · L'énergie : conversions et transferts}
+{Conduction, convection, rayonnement\enspace·\enspace Résistance thermique\enspace·\enspace Bilan radiatif de la Terre\enspace·\enspace Loi de Newton}
+\objectif{Caractériser qualitativement les trois modes de transfert thermique : conduction, convection, rayonnement.}
+\objectif{Exploiter la relation entre flux thermique, résistance thermique et écart de température.}
+\objectif{Effectuer un bilan d'énergie pour estimer la température moyenne de la Terre, la loi de Stefan-Boltzmann étant
+donnée ; discuter de l'influence de l'albédo et de l'effet de serre.}
+\objectif{Établir et résoudre l'équation différentielle qui régit la température d'un système au contact d'un thermostat.}
+\objectif{Modéliser l'évolution de la température par la méthode d'Euler en Python.}
+\prerequis{Premier principe, capacité thermique (chapitre~19).}
+\prerequis{Bilan radiatif terrestre, albédo (enseignement scientifique de première).}
+\prerequis{Équations différentielles $y'=a\,y+b$ (mathématiques) ; méthode d'Euler (chapitres~14 et~17).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Les modes de transfert thermique}
+\begin{definition}[Conduction, convection, rayonnement]
+\begin{itemize}
+\item \textbf{Conduction} : l'agitation thermique se transmet de proche en proche par chocs entre entités voisines,
+sans déplacement de matière. C'est le mode principal dans les solides.
+\item \textbf{Convection} : un fluide chauffé se dilate, devient moins dense et s'élève ; il est remplacé par du fluide
+plus froid. Le transfert accompagne un déplacement de matière.
+\item \textbf{Rayonnement} : tout corps émet des ondes électromagnétiques, d'autant plus intenses qu'il est chaud, et
+absorbe une partie de celles qu'il reçoit. Ce transfert se produit même dans le vide.
+\end{itemize}
+\end{definition}
+\schema{20-modes}
+\essSection{2}{Flux thermique et résistance thermique}
+\begin{loi}[Flux thermique et résistance thermique]
+Le \textbf{flux thermique} $\Phi=\dfrac{Q}{\Delta t}$ à travers une paroi est l'énergie transférée par unité de temps, en
+watts. En régime permanent, le flux qui traverse une paroi dont les faces sont aux températures $T_1>T_2$ est
+proportionnel à l'écart de température :
+\[\Phi=\frac{T_1-T_2}{R_\mathrm{th}},\]
+où $R_\mathrm{th}$ est la résistance thermique de la paroi, en \unit{K.W^{-1}}. Pour une paroi plane d'épaisseur $e$, de surface
+$S$, faite d'un matériau de conductivité thermique $\lambda$ (en \unit{W.m^{-1}.K^{-1}}), elle s'exprime par
+$R_\mathrm{th}=\dfrac{e}{\lambda\,S}$. Lorsque plusieurs couches sont traversées successivement par le même flux, leurs
+résistances thermiques s'ajoutent.
+\end{loi}
+\begin{exemple}
+Un mur de béton ($\lambda=\qty{1,75}{W.m^{-1}.K^{-1}}$) de \qty{20}{cm} d'épaisseur et de \qty{10}{m^2} a une résistance thermique
+$R=\dfrac{0{,}20}{1{,}75\times10}=\qty{0,0114}{K.W^{-1}}$ : pour \qty{20}{\degreeCelsius} d'écart, il laisse passer
+\qty{1,75e3}{W}. Recouvert de \qty{10}{cm} de laine de verre ($\lambda=\qty{0,040}{W.m^{-1}.K^{-1}}$, $R=\qty{0,25}{K.W^{-1}}$), il ne
+laisse plus passer que \qty{77}{W}, 23 fois moins.
+\end{exemple}
+\schema{20-mur}
+\essSection{3}{Le bilan radiatif de la Terre}
+\begin{loi}[Loi de Stefan-Boltzmann]
+Un corps de température $T$ qui absorbe tout rayonnement émet une puissance par unité de surface
+$\dfrac{P}{S}=\sigma\,T^4$, avec $\sigma=\qty{5,67e-8}{W.m^{-2}.K^{-4}}$. Cette loi est fournie dans les exercices.
+\end{loi}
+\begin{savoirfaire}[Estimer la température de la Terre sans atmosphère]
+Le Soleil apporte à la Terre la puissance $S_0=\qty{1361}{W.m^{-2}}$ par mètre carré perpendiculaire à ses rayons. La Terre
+intercepte ce rayonnement sur un disque de surface $\pi R^2$ et en réfléchit la fraction $A=0{,}30$ (l'\textbf{albédo}) ;
+elle émet, en infrarouge, sur toute sa surface $4\pi R^2$. À l'équilibre, puissance absorbée et puissance émise sont
+égales :
+\[(1-A)\,S_0\,\pi R^2=\sigma\,T^4\times4\pi R^2\qquad\text{d'où}\qquad T=\left(\frac{(1-A)\,S_0}{4\,\sigma}\right)^{1/4}=\qty{255}{K},\]
+soit environ \qty{-18}{\degreeCelsius}, alors que la température moyenne mesurée au sol vaut \qty{15}{\degreeCelsius}.
+\end{savoirfaire}
+\schema{20-terre}
+\begin{propriete}[Albédo et effet de serre]
+Une surface claire (neige, glace, nuages) réfléchit davantage le rayonnement solaire : un albédo plus élevé abaisse
+la température d'équilibre. L'atmosphère, presque transparente au rayonnement solaire, absorbe en partie le
+rayonnement infrarouge émis par le sol, grâce à la vapeur d'eau, au dioxyde de carbone et au méthane, et en réémet
+une partie vers le sol : c'est l'\textbf{effet de serre}, qui porte la température moyenne de \qty{-18}{\degreeCelsius} à
+\qty{15}{\degreeCelsius}. Son renforcement par les émissions humaines réchauffe le climat.
+\end{propriete}
+\essSection{4}{Évolution de la température d'un système}
+\begin{loi}[Loi phénoménologique de Newton]
+Un système de température $T$, de surface $S$, au contact d'un fluide extérieur de température $T_\mathrm{ext}$ constante
+(un thermostat), reçoit le flux thermique
+\[\Phi=h\,S\,(T_\mathrm{ext}-T),\]
+où $h$ est le coefficient d'échange (en \unit{W.m^{-2}.K^{-1}}). Cette loi est fournie dans les exercices.
+\end{loi}
+\begin{savoirfaire}[Établir et résoudre l'équation différentielle]
+Pour un système incompressible de capacité thermique $C$ qui n'échange pas de travail, le premier principe appliqué
+entre $t$ et $t+\mathrm{d}t$ s'écrit $C\,\mathrm{d}T=\Phi\,\mathrm{d}t$, soit
+\[\frac{\mathrm{d}T}{\mathrm{d}t}=-\frac{1}{\tau}\,(T-T_\mathrm{ext})\qquad\text{avec}\qquad\tau=\frac{C}{h\,S}.\]
+Cette équation linéaire du premier ordre, à coefficients constants et second membre constant, a pour solution, avec
+$T(0)=T_0$ :
+\[T(t)=T_\mathrm{ext}+(T_0-T_\mathrm{ext})\,\mathrm{e}^{-t/\tau}.\]
+Le \textbf{temps caractéristique} $\tau$ mesure la rapidité de l'évolution : à $t=\tau$, il reste 37~\% de l'écart initial ;
+à $t=5\tau$, moins de 1~\%.
+\end{savoirfaire}
+\schema{20-newton}
+\begin{codecote}[0.6]
+\begin{pythoncol}
+from math import exp
+Text, T0, tau = 20.0, 80.0, 1500.0  # °C, s
+T, t, dt = T0, 0.0, 10.0
+while t < 3600:
+    T = T + (Text - T) / tau * dt
+    t = t + dt
+print(round(T, 2),
+      round(Text + (T0-Text)*exp(-t/tau), 2))
+\end{pythoncol}
+\begin{consolecol}
+25.4 25.44
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Le programme applique la méthode d'Euler à l'équation $\dfrac{\mathrm{d}T}{\mathrm{d}t}=\dfrac{T_\mathrm{ext}-T}{\tau}$ : à chaque pas
+$\mathrm{d}t$, la température varie de $\dfrac{T_\mathrm{ext}-T}{\tau}\,\mathrm{d}t$. Au bout d'une heure, une boisson à
+\qty{80}{\degreeCelsius} atteint \qty{25,4}{\degreeCelsius}, contre \qty{25,44}{\degreeCelsius} avec la solution exacte.
+\end{codecote}
+\begin{attention}
+Ne pas confondre le flux thermique $\Phi$, en watts, et le transfert thermique $Q=\Phi\,\Delta t$, en joules. Un écart de
+température a la même valeur en kelvins et en degrés Celsius, mais la loi de Stefan-Boltzmann exige la température
+en kelvins.
+\end{attention}
+\begin{experience}[Suivre et modéliser un refroidissement]
+On remplit un récipient d'eau chaude et l'on enregistre sa température toutes les trente secondes avec une sonde reliée
+à un microcontrôleur, la pièce étant à température constante. On trace $T$ en fonction de $t$, puis
+$\ln(T-T_\mathrm{ext})$ en fonction de $t$ : on obtient une droite de coefficient directeur $-1/\tau$, ce qui valide le
+modèle de Newton et donne le temps caractéristique.
+\end{experience}
+\begin{rediger}
+Pour établir l'équation différentielle, définir le système, écrire le premier principe entre $t$ et $t+\mathrm{d}t$,
+$\mathrm{d}U=\delta Q$, puis remplacer $\mathrm{d}U=C\,\mathrm{d}T$ et $\delta Q=\Phi\,\mathrm{d}t$. Identifier $\tau$, vérifier que la
+solution proposée convient et utiliser la condition initiale pour fixer la constante.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-20-1}
+\begin{exercice}[1]{Trois modes de transfert}
+\begin{questions}
+\item Une cuillère métallique plongée dans un thé chaud devient brûlante à son extrémité. Quel mode de transfert est en
+jeu ?
+\item Un radiateur placé sous une fenêtre chauffe toute la pièce. Expliquer, en précisant le mode de transfert.
+\item Comment l'énergie du Soleil nous parvient-elle à travers l'espace ?
+\item Une bouteille isotherme a une double paroi de verre argentée, entre lesquelles on a fait le vide. Quel mode de
+transfert chaque élément de sa conception limite-t-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-2}
+\begin{exercice}[1]{La porte d'entrée}
+Une porte en bois de \qty{2,0}{m^2} et de \qty{4,0}{cm} d'épaisseur sépare une maison à \qty{20}{\degreeCelsius} de l'extérieur à
+\qty{1}{\degreeCelsius}. On admet que ses faces sont aux températures de l'intérieur et de l'extérieur.
+\begin{donnees}
+$\lambda_\mathrm{bois}=\qty{0,15}{W.m^{-1}.K^{-1}}$ ; $R_\mathrm{th}=\dfrac{e}{\lambda\,S}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la résistance thermique de la porte.
+\item Calculer le flux thermique qui la traverse. Dans quel sens ?
+\item Quelle énergie la maison perd-elle par cette porte en 24~heures ? L'exprimer en kilowattheures.
+\item Quelle épaisseur de bois diviserait ce flux par deux ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-3}
+\begin{exercice}[1]{Rayonner selon sa température}
+\begin{donnees}
+Loi de Stefan-Boltzmann : $\dfrac{P}{S}=\sigma\,T^4$, avec $\sigma=\qty{5,67e-8}{W.m^{-2}.K^{-4}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la puissance émise par mètre carré par la surface du Soleil, à \qty{5772}{K}.
+\item Même question pour le sol terrestre à \qty{288}{K}, puis pour la peau humaine à \qty{306}{K}.
+\item Combien de fois la surface du Soleil émet-elle plus que celle de la Terre, par mètre carré ?
+\item Par quel facteur la puissance rayonnée est-elle multipliée si la température thermodynamique double ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-4}
+\begin{exercice}[1]{Le thé refroidit}
+Une tasse de thé, posée dans une pièce à \qty{20}{\degreeCelsius}, refroidit selon la loi de Newton :
+$T(t)=T_\mathrm{ext}+(T_0-T_\mathrm{ext})\,\mathrm{e}^{-t/\tau}$.
+\schema{20-ex04}
+\begin{questions}
+\item Lire la température initiale du thé. Vers quelle valeur la température tend-elle ?
+\item Déterminer graphiquement le temps caractéristique $\tau$ par deux méthodes : la tangente à l'origine, puis la
+valeur de $T$ pour laquelle il reste 37~\% de l'écart initial.
+\item Calculer la température du thé au bout de $2\tau$, puis de $3\tau$. Vérifier sur la courbe.
+\item On aime boire le thé à \qty{60}{\degreeCelsius}. Combien de temps faut-il attendre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-5}
+\begin{exercice}[1]{L'albédo des surfaces}
+Le rayonnement solaire apporte en moyenne \qty{340}{W.m^{-2}} au sommet de l'atmosphère. On compare des surfaces dont
+l'albédo vaut : neige fraîche 0,85 ; forêt 0,15 ; océan 0,06.
+\begin{questions}
+\item Définir l'albédo d'une surface.
+\item Calculer la puissance absorbée par mètre carré par chaque surface, en négligeant l'atmosphère.
+\item Quelle surface s'échauffe le plus au soleil ? le moins ?
+\item La fonte de la banquise remplace de la glace par de l'océan. Expliquer pourquoi ce phénomène accentue le
+réchauffement des régions polaires.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-20-6}
+\begin{exercice}[2]{Simple ou double vitrage}
+Pour une fenêtre de \qty{1,5}{m^2}, les résistances thermiques totales, couches d'air au contact des vitres comprises,
+valent : simple vitrage \qty{0,115}{K.W^{-1}} ; double vitrage \qty{0,238}{K.W^{-1}} ; double vitrage performant (gaz argon,
+couche peu émissive) \qty{0,606}{K.W^{-1}}.
+\begin{questions}
+\item Calculer le flux thermique perdu par chaque fenêtre pour un écart de \qty{20}{\degreeCelsius} entre intérieur et
+extérieur.
+\item Les fabricants indiquent un coefficient $U=\dfrac{1}{R_\mathrm{th}\,S}$, en \unit{W.m^{-2}.K^{-1}}. Calculer $U$ pour le simple
+vitrage et interpréter.
+\item Pendant l'hiver, l'écart moyen de température vaut \qty{12}{\degreeCelsius} durant \num{3600} heures. Quelle énergie
+économise-t-on en remplaçant le simple vitrage par le double vitrage performant ?
+\item Quelle économie cela représente-t-il à 0,20~€ le kilowattheure ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-7}
+\begin{exercice}[2]{Isoler les combles}
+Un plafond de \qty{80}{m^2} sépare une maison chauffée à \qty{20}{\degreeCelsius} de combles non chauffés. Sans isolant, sa
+résistance thermique totale vaut \qty{3,0e-3}{K.W^{-1}}. On le recouvre de \qty{30}{cm} de laine de verre.
+\begin{donnees}
+$\lambda_\mathrm{laine}=\qty{0,040}{W.m^{-1}.K^{-1}}$ ; $R_\mathrm{th}=\dfrac{e}{\lambda\,S}$ ; les résistances de couches traversées
+successivement s'ajoutent.
+\end{donnees}
+\begin{questions}
+\item Calculer la résistance thermique de la couche de laine de verre.
+\item Pour un écart de \qty{20}{\degreeCelsius}, calculer le flux perdu avant et après isolation.
+\item Les aides publiques à la rénovation exigent une résistance thermique surfacique $R_\mathrm{th}\times S=e/\lambda$ d'au
+moins \qty{7}{m^2.K.W^{-1}}. L'isolation est-elle éligible ? Quelle épaisseur minimale faut-il ?
+\item Avec un écart moyen de \qty{12}{\degreeCelsius} pendant \num{3600} heures, quelle énergie l'isolation fait-elle
+économiser ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-8}
+\begin{exercice}[2]{Modéliser un refroidissement en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle relation la ligne \code{T = T + (Text - T) / tau * dt} traduit-elle ? D'où
+vient-elle ?
+\item Pourquoi la valeur obtenue par la méthode d'Euler diffère-t-elle légèrement de la valeur exacte ? Comment réduire
+cet écart ?
+\item Modifier le programme pour qu'il affiche l'instant où la température passe sous \qty{30}{\degreeCelsius}. Retrouver ce
+résultat par le calcul.
+\item Écrire les lignes qui tracent la température en fonction du temps, en minutes.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-9}
+\begin{exercice}[2]{La température de la Terre sans atmosphère}
+\begin{donnees}
+Constante solaire $S_0=\qty{1361}{W.m^{-2}}$ ; albédo terrestre $A=0{,}30$ ; $\sigma=\qty{5,67e-8}{W.m^{-2}.K^{-4}}$ ; loi de
+Stefan-Boltzmann : $P/S=\sigma\,T^4$.
+\end{donnees}
+\begin{questions}
+\item Exprimer la puissance solaire absorbée par la Terre, de rayon $R$, et la puissance qu'elle rayonne.
+\item En déduire sa température d'équilibre, en kelvins puis en degrés Celsius.
+\item Calculer la température d'équilibre d'une Terre entièrement couverte de glace ($A=0{,}60$), puis d'une Terre
+parfaitement noire ($A=0$).
+\item La température moyenne réelle vaut \qty{15}{\degreeCelsius}. Quel phénomène, absent de ce modèle, explique l'écart ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-10}
+\begin{exercice}[2]{Froid près d'une fenêtre}
+Une personne de surface corporelle \qty{1,8}{m^2} a une peau à \qty{33}{\degreeCelsius}. Les murs de la pièce sont à
+\qty{20}{\degreeCelsius}. On assimile la peau et les murs à des corps qui absorbent tout rayonnement.
+\begin{donnees}
+$\sigma=\qty{5,67e-8}{W.m^{-2}.K^{-4}}$ ; loi de Stefan-Boltzmann : $P/S=\sigma\,T^4$.
+\end{donnees}
+\begin{questions}
+\item Calculer la puissance rayonnée par la peau.
+\item La peau absorbe le rayonnement des murs, soit $\sigma\,S\,T_\mathrm{mur}^4$. Calculer la puissance nette perdue par
+rayonnement.
+\item Même question face à une grande baie vitrée dont la surface intérieure est à \qty{10}{\degreeCelsius}.
+\item Au repos, le corps produit environ \qty{100}{W}. Expliquer la sensation de froid près d'une baie vitrée, même si
+l'air de la pièce est à \qty{20}{\degreeCelsius}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-11}
+\begin{exercice}[2]{Rafraîchir une canette}
+Une canette contient \qty{330}{g} de soda, assimilé à de l'eau, à \qty{25}{\degreeCelsius}. L'aluminium de la canette a une capacité
+thermique de \qty{13}{J.K^{-1}}. On la place dans un réfrigérateur à \qty{4}{\degreeCelsius}.
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; surface de la canette : $S=\qty{0,030}{m^2}$ ; coefficient d'échange avec l'air :
+$h=\qty{10}{W.m^{-2}.K^{-1}}$ ; loi de Newton : $\Phi=h\,S\,(T_\mathrm{ext}-T)$.
+\end{donnees}
+\begin{questions}
+\item Établir l'équation différentielle vérifiée par la température $T$ de la canette.
+\item Calculer la capacité thermique de la canette pleine, puis le temps caractéristique $\tau$.
+\item Au bout de combien de temps le soda atteint-il \qty{8}{\degreeCelsius} ?
+\item Même question dans un congélateur à \qty{-18}{\degreeCelsius}, le coefficient d'échange étant le même. Pourquoi ne faut-il pas
+y oublier la canette ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-20-12}
+\begin{exercice}[3]{Un modèle de l'effet de serre}
+\begin{docu}{1}{Une atmosphère en une couche}
+On modélise l'atmosphère par une couche transparente au rayonnement solaire, qui absorbe la fraction $\varepsilon$ du
+rayonnement infrarouge émis par le sol et en réémet la moitié vers le sol, l'autre moitié vers l'espace. Le bilan
+d'énergie du sol conduit alors à $\sigma\,T_\mathrm{s}^4\left(1-\dfrac{\varepsilon}{2}\right)=\sigma\,T_\mathrm{e}^4$, où $T_\mathrm{e}$ est la
+température d'équilibre sans atmosphère.
+\end{docu}
+\begin{docu}{2}{Valeurs}
+Sans atmosphère, $T_\mathrm{e}=\qty{255}{K}$ (valeur arrondie de $\left(\dfrac{(1-A)\,S_0}{4\sigma}\right)^{1/4}=\qty{254,6}{K}$). Température
+moyenne mesurée au sol : \qty{288}{K}.
+\end{docu}
+\begin{questions}
+\item Que vaut $T_\mathrm{s}$ si $\varepsilon=0$ ? Interpréter.
+\item Calculer $T_\mathrm{s}$ pour une atmosphère qui absorberait tout le rayonnement infrarouge ($\varepsilon=1$).
+\item \initiative Quelle valeur de $\varepsilon$ rend compte de la température moyenne mesurée ? On utilisera
+$T_\mathrm{e}=\qty{254,6}{K}$.
+\item L'augmentation de la concentration en dioxyde de carbone fait croître $\varepsilon$. Calculer la hausse de température
+si $\varepsilon$ passe de 0,78 à 0,80, et conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-13}
+\begin{exercice}[3]{Mars et Vénus}
+\begin{docu}{1}{Deux voisines de la Terre}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Planète & distance au Soleil (ua) & albédo & température moyenne mesurée \\
+Mars & 1,524 & 0,25 & \qty{210}{K} \\
+Vénus & 0,723 & 0,76 & \qty{737}{K} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{docu}
+\begin{docu}{2}{Leurs atmosphères}
+L'atmosphère de Mars, très ténue (pression au sol : \qty{6}{hPa}), contient surtout du dioxyde de carbone. Celle de Vénus,
+presque entièrement composée de dioxyde de carbone, exerce au sol une pression de \qty{92}{bar}.
+\end{docu}
+\begin{donnees}
+Constante solaire à \qty{1}{ua} : \qty{1361}{W.m^{-2}} ; la puissance reçue varie comme l'inverse du carré de la distance ;
+$\sigma=\qty{5,67e-8}{W.m^{-2}.K^{-4}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la puissance solaire reçue par mètre carré au niveau de Mars et au niveau de Vénus.
+\item Établir l'expression de la température d'équilibre d'une planète sans effet de serre, puis la calculer pour Mars et
+pour Vénus.
+\item \initiative Comparer aux températures mesurées et interpréter à l'aide du document~2.
+\item Vénus est plus éloignée du Soleil que Mercure, mais beaucoup plus chaude. Expliquer.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-14}
+\begin{exercice}[3]{La bouteille isotherme}
+\begin{docu}{1}{Un café qui reste chaud}
+On verse \qty{0,50}{L} de café à \qty{90}{\degreeCelsius} dans une bouteille isotherme, dans une pièce à \qty{20}{\degreeCelsius}. Six
+heures plus tard, il est encore à \qty{70}{\degreeCelsius}. Dans une tasse ordinaire, le temps caractéristique de refroidissement
+vaut environ \qty{25}{min}.
+\end{docu}
+\begin{docu}{2}{Modèle}
+On admet que la température suit la loi $T(t)=T_\mathrm{ext}+(T_0-T_\mathrm{ext})\,\mathrm{e}^{-t/\tau}$, avec $\tau=\dfrac{C}{h\,S}$. La
+capacité thermique du café et de la paroi intérieure vaut $C=\qty{2,3e3}{J.K^{-1}}$.
+\end{docu}
+\begin{questions}
+\item Calculer le temps caractéristique de la bouteille isotherme.
+\item Combien de fois la bouteille ralentit-elle le refroidissement par rapport à une tasse ?
+\item \initiative Au bout de combien de temps le café passe-t-il sous \qty{60}{\degreeCelsius} ? Quelle est sa température au bout de
+12~heures ?
+\item Calculer le produit $h\,S$ pour la bouteille et expliquer, à l'aide des modes de transfert, pourquoi il est si
+faible.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-20-15}
+\begin{exercice}[3]{L'heure du crime}
+\begin{docu}{1}{Les constatations}
+Un corps est découvert dans une pièce dont la température est restée égale à \qty{18}{\degreeCelsius}. À 23~h, le médecin
+légiste mesure une température corporelle de \qty{30}{\degreeCelsius} ; à 1~h du matin, de \qty{26}{\degreeCelsius}.
+\end{docu}
+\begin{docu}{2}{Le modèle}
+On admet que la température du corps, égale à \qty{37}{\degreeCelsius} au moment du décès, suit ensuite la loi de refroidissement
+de Newton, avec un temps caractéristique constant. En pratique, les médecins légistes utilisent des modèles plus
+élaborés.
+\end{docu}
+\begin{questions}
+\item Écrire l'expression de $T(t)$ et montrer que $\dfrac{T(t_1)-T_\mathrm{ext}}{T(t_2)-T_\mathrm{ext}}=\mathrm{e}^{(t_2-t_1)/\tau}$.
+\item En déduire le temps caractéristique de refroidissement du corps.
+\item \initiative Estimer l'heure du décès.
+\item Pourquoi les médecins légistes considèrent-ils ce résultat comme une simple estimation ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,239 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{5}{Fonction exponentielle}
+\corrigesSouples
+
+\begin{blocLivre}{cor-5-1}
+\begin{corrige}{1}{Simplifier une expression}
+\demarche{Dans un produit, additionner les exposants ; dans un quotient, les soustraire.}
+On applique les règles de calcul avant de simplifier les exposants :
+\begin{align*}
+e^{2x}e^{3-x}&=e^{2x+3-x}=\res{e^{x+3}},\\
+\frac{e^{5x}}{e^{2x-1}}&=e^{5x-(2x-1)}=\res{e^{3x+1}},\\
+(e^{-x})^3e^{2x}&=e^{-3x}e^{2x}=\res{e^{-x}}.
+\end{align*}
+Dans le quotient, les parenthèses conservent le signe du terme $-1$.
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-2}
+\begin{corrige}{2}{Des équations immédiates}
+\demarche{Utiliser l’injectivité de l’exponentielle et sa stricte positivité.}
+L'exponentielle est strictement croissante, donc injective :
+$e^{2x-1}=e^3\iff2x-1=3\iff\res{x=2}$.
+Puis $e^{x+2}=1=e^0\iff\res{x=-2}$.
+Enfin $e^x>0$ pour tout $x$, donc $e^x=-2$ n'a $\res{\text{aucune solution réelle}}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-3}
+\begin{corrige}{3}{Comparer des exponentielles}
+\demarche{Comparer les exposants grâce à la croissance stricte.}
+Par croissance stricte, $e^{3x+1}\leq e^{x+5}\iff3x+1\leq x+5\iff\res{x\leq2}$.
+$e^{-2x}>1=e^0\iff-2x>0\iff\res{x<0}$.
+Comme $-1<0<1/2$, on a $\res{e^{-1}<1<e^{1/2}}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-4}
+\begin{corrige}{4}{Dériver et donner le signe}
+\demarche{Le signe de la constante devant l’exponentielle détermine celui de la dérivée.}
+$f'(x)=2e^{2x}>0$ : $f$ est strictement croissante.
+$g'(x)=-3e^{-x}<0$ : $g$ est strictement décroissante.
+$h'(x)=e^{x+1}>0$ : $h$ est strictement croissante.
+Ces résultats valent sur tout $\R$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-5}
+\begin{corrige}{5}{La tangente en zéro}
+\demarche{Une tangente fournit une approximation locale, avec un signe d’approximation.}
+$f(0)=1$ et $f'(0)=1$, donc $\res{T:y=x+1}$.
+Pour un petit $h$, $e^h\approx1+h$ : $\res{e^{0{,}03}\approx1{,}03}$.
+Il s'agit d'une approximation, pas d'une égalité.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-6}
+\begin{corrige}{6}{Factoriser avant de résoudre}
+\demarche{Factoriser l’exponentielle, toujours strictement positive.}
+\begin{questions}
+\item $e^{2x}-e^x=e^x(e^x-1)$. Le premier facteur ne s'annule pas :
+$e^x=1\iff\res{x=0}$.
+\item $(x-2)e^x=0\iff\res{x=2}$.
+\item $e^{-x}>0$, donc le signe est celui de
+$x^2-3x+2=(x-1)(x-2)$. L'ensemble des solutions est $\res{[1;2]}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-7}
+\begin{corrige}{7}{Étudier un produit}
+\demarche{Factoriser la dérivée par l’exponentielle et comparer les valeurs aux bornes.}
+\begin{questions}
+\item Par produit, $f'(x)=e^{-x}-(x+1)e^{-x}=\res{-xe^{-x}}$.
+\item Le signe de $f'$ est celui de $-x$.
+\end{questions}
+\begin{center}\begin{tableau}
+\otTab[3.1]{$x$/0.8,$f'(x)$/0.8,$f$/1.8}{$-2$,$0$,$4$}
+\tkzTabLine{,+,z,-,}
+\tkzTabVar{-/$-e^2$,+/$1$,-/$5e^{-4}$}
+\end{tableau}\end{center}
+Le maximum est $\res{1}$ en 0. Le minimum sur le segment vaut $\res{-e^2}$ en $-2$,
+car l'autre borne donne une valeur positive.
+\par\otLabel{3.}\enspace $f(1)=2/e$ et $f'(1)=-1/e$, donc
+$\res{T:y=(3-x)/e}$. Le signe de $f$ est celui de $x+1$ : sur le domaine,
+$\res{f(x)\geq0\iff x\in[-1;4]}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-8}
+\begin{corrige}{8}{Une différence d'exponentielles}
+\demarche{Faire apparaître soit un produit, soit un carré positif.}
+\begin{questions}
+\item $g'(x)=2e^{2x}-2e^x=2e^x(e^x-1)$.
+Elle est négative pour $x<0$, nulle en 0, positive pour $x>0$.
+\item $g$ décroît puis croît : son minimum vaut $\res{g(0)=-1}$.
+\item $(e^x-1)^2\geq0$, donc $g(x)\geq-1$ avec égalité exactement lorsque $e^x=1$,
+c'est-à-dire $x=0$.
+\end{questions}
+\label{figlivre-r05-08-var-cor}
+\figureLivre[corrige]{r05-08-var}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-9}
+\begin{corrige}{9}{Un quotient toujours défini}
+\demarche{La positivité du dénominateur autorise les calculs et la comparaison des fractions.}
+\begin{questions}
+\item Le dénominateur $1+e^x$ est strictement positif sur $\R$.
+Les fonctions en jeu sont dérivables, donc le quotient aussi.
+\item $f'(x)=\dfrac{e^x(1+e^x)-e^xe^x}{(1+e^x)^2}
+=\res{\dfrac{e^x}{(1+e^x)^2}}>0$ : croissance stricte sur $\R$.
+\item Le numérateur est positif et inférieur au dénominateur, donc $0<f<1$.
+$f(x)=1/2\iff2e^x=1+e^x\iff e^x=1\iff\res{x=0}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-10}
+\begin{corrige}{10}{Passer du continu au discret}
+\demarche{Échantillonner le modèle continu aux instants entiers.}
+\begin{questions}
+\item $N(0)=\res{500}$ et $N(5)=\res{500e\approx1359}$ individus.
+L'arrondi concerne la valeur calculée ; le modèle continu peut donner un nombre non entier.
+\item $u_n=500(e^{0{,}2})^n$ : suite géométrique de premier terme 500 et
+de raison $\res{e^{0{,}2}}$.
+\item Le taux annuel vaut $e^{0{,}2}-1\approx0{,}2214028$, soit
+$\res{22{,}1\,\%}$ à 0,1 point près. Ce taux n'est pas 20\,\%.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-11}
+\begin{corrige}{11}{Construire une approximation d'Euler}
+\demarche{Chaque étape d’Euler utilise la pente au début de cette étape.}
+\begin{questions}
+\item $y_{k+1}=(1+1/N)y_k$, donc la suite est géométrique de raison $1+1/N$.
+Après $N$ étapes, $\res{y_N=(1+1/N)^N}$.
+\item Pour $N=2$ : $y_2=(3/2)^2=2{,}25$ ; pour $N=10$ :
+$y_{10}=1{,}1^{10}\approx2{,}593742$.
+Les deux valeurs sont inférieures à $e\approx2{,}718282$ ; celle avec dix étapes est plus proche.
+Les termes de la suite $\big((1+1/n)^n\big)$ fournissent ainsi des valeurs approchées de $e$.
+\item Une boucle reproduit directement l'actualisation d'Euler :
+\end{questions}
+\begin{python}
+def euler(N):
+    h = 1/N
+    y = 1.0
+    for k in range(N):
+        y = y + h*y
+    return y
+\end{python}
+
+Les $N$ étapes de longueur $1/N$ couvrent l’intervalle de 0 à 1. Dans la mise à jour, la pente utilisée est la valeur courante de $y$, puisque la fonction étudiée vérifie $y^\prime=y$.
+
+\label{figlivre-r05-11-euler-cor}
+\figureLivre[corrige]{r05-11-euler}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-12}
+\begin{corrige}{12}{Le refroidissement d'une boisson}
+\demarche{Justifier la décroissance avant de chercher la première minute admissible.}
+\begin{questions}
+\item $T(0)=90\,{}^\circ$C.
+$T'(t)=-7e^{-0{,}1t}<0$ : la température est strictement décroissante.
+\item $70e^{-0{,}1t}>0$, donc $T(t)>20$ pour tout instant fini $t\geq0$.
+\item $T(12)\approx41{,}08\,{}^\circ$C et $T(13)\approx39{,}08\,{}^\circ$C.
+La première minute entière où $T\leq40$ est donc $\res{13}$.
+\item Le programme suivant teste les minutes entières dans l'ordre :
+\end{questions}
+\begin{python}
+from math import exp
+t = 0
+while 20 + 70*exp(-0.1*t) > 40:
+    t = t + 1
+\end{python}
+À la sortie de la boucle, \code{t} vaut 13.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-13}
+\begin{corrige}{13}{Une concentration après injection}
+\demarche{La dérivée permet de localiser et de prouver le pic de concentration.}
+\begin{questions}
+\item $C'(t)=8e^{-0{,}5t}-4te^{-0{,}5t}=\res{4(2-t)e^{-0{,}5t}}$.
+La concentration croît sur $[0;2]$, puis décroît sur $[2;8]$.
+Les valeurs remarquables sont $C(0)=0$, $C(2)=16/e$, $C(8)=64e^{-4}$.
+\item Maximum à $\res{t=2\text{ h}}$, de valeur $\res{16/e\approx5{,}886\text{ mg/L}}$.
+\item $C(0)=0$ et $C'(0)=8$ : la tangente est $\res{y=8t}$.
+La pente est une vitesse initiale d'augmentation de 8 mg/L par heure.
+\item Le taux moyen vaut $(C(3)-C(2))/(3-2)=24e^{-1{,}5}-16/e$
+$\approx\res{-0{,}53\text{ mg/L par heure}}$. Son signe négatif traduit une diminution.
+\end{questions}
+\label{figlivre-r05-13-var-cor}
+\figureLivre[corrige]{r05-13-var}
+
+\label{figlivre-r05-13-concentration-cor}
+\figureLivre[corrige]{r05-13-concentration}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-14}
+\begin{corrige}{14}{Prouver une inégalité sans convexité}
+\demarche{Étudier la différence avec la droite pour prouver une inégalité sur tout le domaine.}
+\begin{questions}
+\item $F'(x)=e^x-1$, négative pour $x<0$, nulle en 0 et positive pour $x>0$.
+\item $F$ décroît jusqu'à 0 puis croît : son minimum est $F(0)=0$.
+Donc $F(x)\geq0$, soit $\res{e^x\geq1+x}$.
+La stricte monotonie de part et d'autre assure que l'égalité a lieu seulement pour $x=0$.
+\item Pour $x=0{,}1$, on obtient $e^{0{,}1}\geq1{,}1$ ; pour $x=-0{,}1$,
+on obtient $e^{-0{,}1}\geq0{,}9$.
+\item Comme les nombres sont positifs, $1/e^{0{,}1}\geq0{,}9$ entraîne
+$e^{0{,}1}\leq1/0{,}9=10/9$. Ainsi $\res{1{,}1\leq e^{0{,}1}\leq10/9}$.
+\item L'approximation affine en 0 vaut 1,1. Elle est ici une borne inférieure.
+L'encadrement garantit une erreur d'au plus $10/9-1{,}1=1/90\approx0{,}0111$.
+\end{questions}
+\label{figlivre-r05-14-var-cor}
+\figureLivre[corrige]{r05-14-var}
+
+\label{figlivre-r05-14-inegalite-cor}
+\figureLivre[corrige]{r05-14-inegalite}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-15}
+\begin{corrige}{15}{Choisir une durée de campagne}
+\demarche{Étudier les variations, puis convertir les centaines d’euros en euros.}
+\begin{questions}
+\item Par produit, $G'(t)=100e^{-0{,}5t}-50(t+1)e^{-0{,}5t}
+=\res{50(1-t)e^{-0{,}5t}}$.
+\item La dérivée a le signe de $1-t$ : croissance sur $[0;1]$, décroissance sur $[1;6]$.
+Le maximum est atteint après $\res{1\text{ semaine}}$ et vaut
+$200e^{-1/2}$ centaines d'euros, soit $\res{20000/\sqrt e\approx12130{,}61\text{ euros}}$.
+\item $G(0)=100$ et $G(1)=200/\sqrt e>100$ car $e<4$.
+\item $G(2)=300/e\approx110{,}36$ et $G(3)=400e^{-1{,}5}\approx89{,}25$.
+Sur $]0;1]$, la croissance stricte depuis $G(0)=100$ donne $G>100$.
+Sur $[1;2]$, la décroissance donne $G(t)\geq G(2)=300/e>100$ car $e<3$.
+\item Les durées entières favorables sont $\res{1\text{ et }2\text{ semaines}}$.
+À partir de 3, le gain est déjà inférieur à 100 et continue de décroître jusqu'à 6.
+\end{questions}
+\label{figlivre-r05-15-var-cor}
+\figureLivre[corrige]{r05-15-var}
+
+\label{figlivre-r05-15-campagne-cor}
+\figureLivre[corrige]{r05-15-campagne}
+
+\end{corrige}
+\end{blocLivre}

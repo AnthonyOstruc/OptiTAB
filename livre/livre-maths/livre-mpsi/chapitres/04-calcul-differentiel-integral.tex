@@ -1,0 +1,709 @@
+% !TEX root = ../main.tex
+%% Chapitre 4 — Techniques de calcul différentiel et intégral
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Techniques fondamentales de calcul différentiel et intégral » :
+%%   A. fonctions d'une variable réelle (généralités, dérivation, fonctions usuelles,
+%%      dérivation des fonctions complexes) ;
+%%   B. primitives et équations différentielles linéaires (1er ordre, 2nd ordre à
+%%      coefficients constants).
+%% Résultats vérifiés par verifications/chapitre_04.py.
+
+\begin{ouverture}[primitives]{4}{Techniques de calcul différentiel et intégral}{Partie 1 · Premier semestre}
+  {Fonctions usuelles\enspace·\enspace Dérivation\enspace·\enspace Arcsin, Arccos, Arctan\enspace·\enspace
+   Primitives\enspace·\enspace Équations différentielles}
+  \objectif{Étudier une fonction : domaine, symétries, variations, extremums, inégalités.}
+  \objectif{Dériver avec sûreté : opérations, composées, réciproques, fonctions à valeurs complexes.}
+  \objectif{Maîtriser les fonctions usuelles : exp, ln, puissances, Arcsin, Arccos, Arctan, sh, ch, th.}
+  \objectif{Calculer des primitives : formes usuelles et composées, intégration par parties, changement de variable.}
+  \objectif{Résoudre les équations différentielles linéaires du premier ordre, avec la variation de la constante.}
+  \objectif{Résoudre les équations du second ordre à coefficients constants et les problèmes de Cauchy.}
+  \prerequis{Dérivation et fonctions exp, ln, cos, sin du lycée.}
+  \prerequis{Trigonométrie du chapitre 2 ; exponentielle complexe du chapitre 3.}
+  \prerequis{Inégalités et encadrements (chapitre 2).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Généralités sur les fonctions}
+
+\begin{definition}[Vocabulaire]
+Une fonction $f$ est définie sur un ensemble de définition $D$. Elle est
+\textbf{paire} si $f(-x)=f(x)$, \textbf{impaire} si $f(-x)=-f(x)$ (pour $D$
+symétrique), \textbf{$T$-périodique} si $f(x+T)=f(x)$. Elle est
+\textbf{majorée} (resp. minorée, bornée) si l'ensemble de ses valeurs l'est ;
+$f$ est bornée si et seulement si $|f|$ est majorée. Elle est
+\textbf{croissante} sur $I$ si $x\leq y\Rightarrow f(x)\leq f(y)$
+(\emph{strictement} croissante avec des inégalités strictes).
+\end{definition}
+
+\begin{propriete}[Transformations de graphes]
+À partir de la courbe de $f$ : celle de $x\mapsto f(x)+b$ s'obtient par
+translation verticale ; celle de $x\mapsto f(x+a)$ par translation
+horizontale de $-a$ ; celle de $x\mapsto f(ax)$ par dilatation horizontale
+de facteur $1/a$ ; celle de $x\mapsto-f(x)$ par symétrie d'axe $(Ox)$.
+Parité, imparité et périodicité permettent de \emph{réduire le domaine
+d'étude} (puis on complète le graphe par symétrie ou translation).
+\end{propriete}
+
+\essSection{2}{Dérivation}
+
+\begin{propriete}[Opérations (rappels)]
+Si $u$ et $v$ sont dérivables :
+$(\lambda u+\mu v)'=\lambda u'+\mu v'$ ;\quad $(uv)'=u'v+uv'$ ;\quad
+$\Bigl(\dfrac{u}{v}\Bigr)'=\dfrac{u'v-uv'}{v^{2}}$ ;\quad
+$(v\circ u)'=u'\times v'\circ u$. Notations : $f'(x)$ ou
+$\dfrac{\mathrm{d}}{\mathrm{d}x}\bigl(f(x)\bigr)$.
+En particulier :
+$(u^{n})'=nu'u^{n-1}$,\quad $(\mathrm{e}^{u})'=u'\mathrm{e}^{u}$,\quad
+$(\ln u)'=\dfrac{u'}{u}$,\quad $(\sqrt{u}\,)'=\dfrac{u'}{2\sqrt{u}}$.
+\end{propriete}
+
+\begin{theoreme}[Monotonie et signe de la dérivée]
+Soit $f$ dérivable sur un \emph{intervalle} $I$. Alors $f$ est constante sur
+$I$ si et seulement si $f'=0$ ; croissante si et seulement si $f'\geq0$ ;
+et si $f'>0$ sauf en un nombre fini de points, $f$ est strictement
+croissante. C'est l'outil central pour dresser un tableau de variations,
+localiser des extremums et \emph{démontrer des inégalités}.
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Dérivée d'une réciproque]
+Si $f:I\to J$ est bijective et dérivable, et si $f'$ ne s'annule pas, alors
+$f^{-1}$ est dérivable sur $J$ et
+\[
+  \bigl(f^{-1}\bigr)'(y)=\frac{1}{f'\bigl(f^{-1}(y)\bigr)}.
+\]
+Géométriquement, les courbes de $f$ et $f^{-1}$ sont symétriques par rapport
+à la droite $y=x$, et les tangentes se correspondent par cette symétrie
+(les pentes sont inverses l'une de l'autre).
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.35,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.3,0) -- (2.5,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,2.5);
+  \draw[otRule!85!otMuted,line width=0.5pt,dash pattern=on 2pt off 1.6pt] (-0.2,-0.2) -- (2.35,2.35);
+  \draw[otNavy,line width=1pt] plot[domain=0.07:2.3,samples=50] ({\x},{0.9*ln(\x)+1.1});
+  \draw[otGreenDark,line width=1pt] plot[domain=0.07:2.3,samples=50] ({0.9*ln(\x)+1.1},{\x});
+  \node[font=\scriptsize,text=otNavy] at (2.0,1.95) {$\mathcal{C}_f$};
+  \node[font=\scriptsize,text=otGreenDark] at (1.95,0.75) {$\mathcal{C}_{f^{-1}}$};
+  \node[font=\scriptsize,text=otMuted,rotate=45] at (1.3,1.52) {$y=x$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Les courbes de $f$ et de $f^{-1}$, symétriques par rapport à $y=x$.}
+\end{minipage}
+
+\vspace{1mm}
+Une fonction est de \textbf{classe $\mathscr{C}^{1}$} sur $I$ si elle est
+dérivable et si $f'$ est continue sur $I$ ; on définit de même les dérivées
+successives $f''$, $f^{(3)}$, \dots
+
+\essSection{3}{Exponentielle, logarithme, puissances}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{propriete}
+$\exp$ est strictement croissante de $\R$ sur $\intOO{0}{+\infty}$, avec
+$\exp'=\exp$ ; $\ln$ est sa réciproque, avec $\ln'(x)=\dfrac1x$.
+Pour $x>0$ et $\alpha\in\R$, on pose
+$x^{\alpha}=\mathrm{e}^{\alpha\ln x}$, et
+\[
+  (xy)^{\alpha}=x^{\alpha}y^{\alpha},\quad
+  x^{\alpha+\beta}=x^{\alpha}x^{\beta},\quad
+  (x^{\alpha})^{\beta}=x^{\alpha\beta},
+\]
+avec $(x^{\alpha})'=\alpha x^{\alpha-1}$. Logarithme décimal :
+$\log_{10}(x)=\frac{\ln x}{\ln10}$ ; logarithme en base 2 :
+$\log_{2}(x)=\frac{\ln x}{\ln2}$.
+\end{propriete}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.08,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-1.7,0) -- (2.7,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.7) -- (0,2.7);
+  \draw[otRule!85!otMuted,line width=0.5pt,dash pattern=on 2pt off 1.6pt] (-1.5,-1.5) -- (2.5,2.5);
+  \draw[otNavy,line width=1pt] plot[domain=-1.6:0.93,samples=60] ({\x},{exp(\x)});
+  \draw[otGreenDark,line width=1pt] plot[domain=0.21:2.55,samples=60] ({\x},{ln(\x)});
+  \node[font=\scriptsize,text=otNavy] at (0.42,2.3) {$\mathrm{e}^{x}$};
+  \node[font=\scriptsize,text=otGreenDark] at (2.3,1.12) {$\ln x$};
+  \fill[otInk] (0,1) circle (1pt); \fill[otInk] (1,0) circle (1pt);
+  \node[left,font=\tiny,text=otMuted] at (0,1) {$1$};
+  \node[below,font=\tiny,text=otMuted] at (1,0) {$1$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$\exp$ et $\ln$ : deux réciproques, symétriques par rapport à $y=x$.}
+\end{minipage}
+
+\begin{theoreme}[Croissances comparées]
+En $+\infty$, l'exponentielle l'emporte sur les puissances, qui l'emportent
+sur le logarithme : pour tous $\alpha,\beta>0$,
+\[
+  \lim_{x\to+\infty}\frac{\mathrm{e}^{\alpha x}}{x^{\beta}}=+\infty,\qquad
+  \lim_{x\to+\infty}\frac{(\ln x)^{\beta}}{x^{\alpha}}=0,\qquad
+  \lim_{x\to0^{+}}x^{\alpha}\ln x=0.
+\]
+Deux inégalités à connaître : pour tout $x\in\R$,
+$\mathrm{e}^{x}\geq1+x$ ; pour tout $x>-1$, $\ln(1+x)\leq x$.
+\end{theoreme}
+
+\essSection{4}{Fonctions circulaires réciproques}
+
+\begin{definition}[Arcsin, Arccos, Arctan]
+Par restriction à un intervalle de stricte monotonie :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item $\arcsin:\intFF{-1}{1}\to\bigl[-\frac{\pi}{2},\frac{\pi}{2}\bigr]$,
+    réciproque de $\sin$ restreinte à $\bigl[-\frac{\pi}{2},\frac{\pi}{2}\bigr]$ ;
+  \item $\arccos:\intFF{-1}{1}\to\intFF{0}{\pi}$, réciproque de $\cos$ restreinte à $\intFF{0}{\pi}$ ;
+  \item $\arctan:\R\to\bigl]-\frac{\pi}{2},\frac{\pi}{2}\bigr[$, réciproque de $\tan$
+    restreinte à $\bigl]-\frac{\pi}{2},\frac{\pi}{2}\bigr[$.
+\end{itemize}
+\end{definition}
+
+\begin{propriete}[Dérivées]
+Sur leurs domaines de dérivabilité :
+\[
+  \arcsin'(x)=\frac{1}{\sqrt{1-x^{2}}},\qquad
+  \arccos'(x)=\frac{-1}{\sqrt{1-x^{2}}},\qquad
+  \arctan'(x)=\frac{1}{1+x^{2}}.
+\]
+Identités utiles : $\arcsin x+\arccos x=\dfrac{\pi}{2}$ ;
+$\cos(\arcsin x)=\sqrt{1-x^{2}}$ ;
+$\sin(\arccos x)=\sqrt{1-x^{2}}$.
+\end{propriete}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95,line cap=round]
+  % arcsin
+  \begin{scope}
+    \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-1.5,0) -- (1.6,0);
+    \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-1.9) -- (0,1.95);
+    \draw[otNavy,line width=1pt] plot[domain=-1:1,samples=60] ({\x},{asin(\x)/57.296});
+    \draw[otRule!90!otMuted,line width=0.4pt,dash pattern=on 1.6pt off 1.3pt]
+      (1,0) -- (1,1.5708) -- (0,1.5708) (-1,0) -- (-1,-1.5708) -- (0,-1.5708);
+    \node[left,font=\tiny,text=otMuted] at (0,1.5708) {$\frac{\pi}{2}$};
+    \node[below,font=\tiny,text=otMuted] at (1,0) {$1$};
+    \node[below,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk] at (0,-2.1) {$\arcsin$};
+  \end{scope}
+  % arccos
+  \begin{scope}[shift={(4.6,0)}]
+    \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-1.5,0) -- (1.6,0);
+    \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-0.5) -- (0,3.5);
+    \draw[otNavy,line width=1pt] plot[domain=-1:1,samples=60] ({\x},{acos(\x)/57.296});
+    \draw[otRule!90!otMuted,line width=0.4pt,dash pattern=on 1.6pt off 1.3pt]
+      (-1,0) -- (-1,3.1416) -- (0,3.1416);
+    \node[right,font=\tiny,text=otMuted] at (0.03,3.1416) {$\pi$};
+    \node[left,font=\tiny,text=otMuted] at (0,1.5708) {$\frac{\pi}{2}$};
+    \node[below,font=\tiny,text=otMuted] at (1,0) {$1$};
+    \node[below,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk] at (0,-0.75) {$\arccos$};
+  \end{scope}
+  % arctan
+  \begin{scope}[shift={(9.9,0)}]
+    \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-2.6,0) -- (2.7,0);
+    \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-1.9) -- (0,1.95);
+    \draw[otRule!90!otMuted,line width=0.5pt,dash pattern=on 1.8pt off 1.4pt]
+      (-2.5,-1.5708) -- (2.6,-1.5708) (-2.5,1.5708) -- (2.6,1.5708);
+    \draw[otNavy,line width=1pt] plot[domain=-2.5:2.5,samples=80] ({\x},{atan(\x)/57.296});
+    \node[above left,font=\tiny,text=otMuted,inner sep=1pt] at (2.6,1.5708) {$\frac{\pi}{2}$};
+    \node[below left,font=\tiny,text=otMuted,inner sep=1pt] at (2.6,-1.5708) {$-\frac{\pi}{2}$};
+    \node[below,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk] at (0,-2.1) {$\arctan$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{attention}
+$\arcsin(\sin t)=t$ \emph{seulement} si
+$t\in\bigl[-\frac{\pi}{2},\frac{\pi}{2}\bigr]$ : ainsi
+$\arcsin\bigl(\sin\frac{5\pi}{6}\bigr)=\arcsin\frac12=\frac{\pi}{6}$.
+Toujours ramener l'angle dans le bon intervalle avant de simplifier.
+\end{attention}
+
+\essSection{5}{Fonctions hyperboliques}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{definition}
+Pour $x\in\R$ :
+\[
+  \operatorname{ch}x=\frac{\mathrm{e}^{x}+\mathrm{e}^{-x}}{2},\quad
+  \operatorname{sh}x=\frac{\mathrm{e}^{x}-\mathrm{e}^{-x}}{2},\quad
+  \operatorname{th}x=\frac{\operatorname{sh}x}{\operatorname{ch}x}.
+\]
+$\operatorname{ch}$ est paire, $\operatorname{sh}$ et $\operatorname{th}$
+sont impaires, et l'on a l'identité
+$\operatorname{ch}^{2}x-\operatorname{sh}^{2}x=1$.
+Dérivées : $\operatorname{ch}'=\operatorname{sh}$,
+$\operatorname{sh}'=\operatorname{ch}$,
+$\operatorname{th}'=1-\operatorname{th}^{2}=\dfrac{1}{\operatorname{ch}^{2}}$.
+$\operatorname{th}$ est strictement croissante de $\R$ sur $\intOO{-1}{1}$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.82,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-2.3,0) -- (2.5,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-2.3) -- (0,2.7);
+  \draw[otNavy,line width=1pt] plot[domain=-1.55:1.55,samples=60] ({\x},{cosh(\x)});
+  \draw[otGreenDark,line width=1pt] plot[domain=-1.65:1.65,samples=60] ({\x},{sinh(\x)});
+  \draw[otOrange,line width=1pt] plot[domain=-2.2:2.2,samples=60] ({\x},{tanh(\x)});
+  \node[font=\scriptsize,text=otNavy] at (1.25,2.45) {$\operatorname{ch}$};
+  \node[font=\scriptsize,text=otGreenDark] at (1.95,2.0) {$\operatorname{sh}$};
+  \node[font=\scriptsize,text=otOrange!80!black] at (2.15,0.62) {$\operatorname{th}$};
+  \node[left,font=\tiny,text=otMuted] at (0,1) {$1$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$\operatorname{ch}$, $\operatorname{sh}$ et $\operatorname{th}$ (asymptotes $y=\pm1$).}
+\end{minipage}
+
+\essSection{6}{Dérivation des fonctions à valeurs complexes}
+
+\begin{definition}
+Une fonction $f:I\to\Cx$ s'écrit $f=u+\mathrm{i}v$ avec $u,v$ réelles ; elle
+est dérivable si $u$ et $v$ le sont, et $f'=u'+\mathrm{i}v'$. Les règles sur
+les combinaisons linéaires, produits et quotients subsistent, et surtout :
+si $\varphi:I\to\Cx$ est dérivable, alors
+\[
+  \bigl(\mathrm{e}^{\varphi}\bigr)'=\varphi'\,\mathrm{e}^{\varphi}.
+\]
+Exemple : $\bigl(\mathrm{e}^{(a+\mathrm{i}b)x}\bigr)'=(a+\mathrm{i}b)\,\mathrm{e}^{(a+\mathrm{i}b)x}$,
+très utile pour primitiver $\mathrm{e}^{ax}\cos(bx)$ et $\mathrm{e}^{ax}\sin(bx)$.
+\end{definition}
+
+\essSection{7}{Primitives}
+
+\begin{definition}
+$F$ est une \textbf{primitive} de $f$ sur l'intervalle $I$ si $F'=f$. Deux
+primitives de $f$ sur $I$ diffèrent d'une constante. Pour $f$ continue,
+$x\mapsto\displaystyle\int_{x_0}^{x}f(t)\,\mathrm{d}t$ est la primitive de $f$ qui
+s'annule en $x_0$ (résultat admis à ce stade), et
+$\displaystyle\int_{a}^{b}f(t)\,\mathrm{d}t=F(b)-F(a)$.
+\end{definition}
+
+\otIntertitre{Primitives usuelles (sur un intervalle convenable)}
+{\renewcommand{\arraystretch}{1.7}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}X>{\centering\arraybackslash}X|>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
+\toprule
+{\otTete{Fonction}} & {\otTete{Primitive}} & {\otTete{Fonction}} & {\otTete{Primitive}} \\
+\midrule
+$x^{\alpha}\ (\alpha\neq-1)$ & $\dfrac{x^{\alpha+1}}{\alpha+1}$ &
+  $\cos x$ & $\sin x$ \\
+$\dfrac1x$ & $\ln|x|$ & $\sin x$ & $-\cos x$ \\
+$\mathrm{e}^{\lambda x}\ (\lambda\in\Cx^{*})$ & $\dfrac{\mathrm{e}^{\lambda x}}{\lambda}$ &
+  $1+\tan^{2}x$ & $\tan x$ \\
+$\ln x$ & $x\ln x-x$ & $\operatorname{ch}x$, $\operatorname{sh}x$ & $\operatorname{sh}x$, $\operatorname{ch}x$ \\
+$\dfrac{1}{1+x^{2}}$ & $\arctan x$ &
+  $\dfrac{1}{\sqrt{1-x^{2}}}$ & $\arcsin x$ \\
+\bottomrule
+\end{tabularx}}
+
+\begin{savoirfaire}[Reconnaître une dérivée de composée]
+\[
+  u'u^{n}\to\frac{u^{n+1}}{n+1}\qquad
+  \frac{u'}{u}\to\ln|u|\qquad
+  u'\mathrm{e}^{u}\to\mathrm{e}^{u}\qquad
+  \frac{u'}{\sqrt{u}}\to2\sqrt{u}\qquad
+  \frac{u'}{1+u^{2}}\to\arctan u
+\]
+Pour $x\mapsto\dfrac{1}{ax^{2}+bx+c}$ : si le trinôme a deux racines, le
+décomposer ; s'il n'en a pas, l'écrire sous forme canonique pour se ramener
+à un $\arctan$. Pour $\mathrm{e}^{ax}\cos(bx)$ : primitiver
+$\mathrm{e}^{(a+\mathrm{i}b)x}$ et prendre la partie réelle.
+\end{savoirfaire}
+
+\begin{theoreme}[Intégration par parties, changement de variable]
+Pour $u,v$ de classe $\mathscr{C}^{1}$ :
+\[
+  \int_{a}^{b}u'(t)\,v(t)\,\mathrm{d}t
+  =\bigl[u(t)\,v(t)\bigr]_{a}^{b}-\int_{a}^{b}u(t)\,v'(t)\,\mathrm{d}t.
+\]
+Changement de variable $u=\varphi(t)$ (avec $\varphi$ de classe $\mathscr{C}^{1}$) :
+$\displaystyle\int_{a}^{b}f\bigl(\varphi(t)\bigr)\varphi'(t)\,\mathrm{d}t
+=\int_{\varphi(a)}^{\varphi(b)}f(u)\,\mathrm{d}u$ —
+en pratique, « $u=\varphi(t)$, $\mathrm{d}u=\varphi'(t)\,\mathrm{d}t$ », sans
+oublier de changer les bornes.
+\end{theoreme}
+
+\essSection{8}{Équations différentielles linéaires du premier ordre}
+
+\begin{theoreme}[Structure des solutions]
+Soit l'équation $(E):y'+a(x)\,y=b(x)$, avec $a$, $b$ continues sur un
+intervalle $I$ (à valeurs réelles ou complexes), et $A$ une primitive de $a$
+sur $I$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item Les solutions de l'équation \emph{homogène} $y'+a(x)y=0$ sont les
+    $x\mapsto C\,\mathrm{e}^{-A(x)}$, $C$ constante.
+  \item Les solutions de $(E)$ sont les $y_p+C\,\mathrm{e}^{-A}$, où $y_p$ est
+    \emph{une} solution particulière de $(E)$.
+  \item \etape{Superposition} si $b=b_1+b_2$, une solution particulière
+    s'obtient en ajoutant des solutions particulières pour $b_1$ et $b_2$.
+  \item \etape{Cauchy} pour tout $(x_0,y_0)\in I\times\Cx$, il existe une
+    unique solution vérifiant $y(x_0)=y_0$.
+\end{itemize}
+\end{theoreme}
+
+\begin{savoirfaire}[Méthode de la variation de la constante]
+Pour trouver une solution particulière de $y'+a(x)y=b(x)$ :
+\begin{enumerate}[label=\otLabel{\arabic*.},leftmargin=1.6em,itemsep=0.6mm,topsep=0.5mm]
+  \item résoudre l'équation homogène : $y_h=C\,\mathrm{e}^{-A(x)}$ ;
+  \item chercher $y_p=C(x)\,\mathrm{e}^{-A(x)}$ : l'équation se réduit à
+    $C'(x)\,\mathrm{e}^{-A(x)}=b(x)$ ;
+  \item primitiver $C'(x)=b(x)\,\mathrm{e}^{A(x)}$ et conclure.
+\end{enumerate}
+Si $a$ est constante et $b$ de forme simple ($P(x)$, $\mathrm{e}^{\lambda x}$,
+$\cos(\omega x)$\dots), chercher directement $y_p$ de la même forme.
+\end{savoirfaire}
+
+\essSection{9}{Second ordre à coefficients constants}
+
+\begin{theoreme}[Équation homogène]
+Soit $(H):y''+ay'+by=0$ avec $a,b$ réels, et $r^{2}+ar+b=0$ son
+\textbf{équation caractéristique}, de discriminant $\Delta$. Les solutions
+réelles de $(H)$ sont :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item si $\Delta>0$, racines réelles $r_1\neq r_2$ :
+    $y=A\,\mathrm{e}^{r_1x}+B\,\mathrm{e}^{r_2x}$ ;
+  \item si $\Delta=0$, racine double $r_0$ :
+    $y=(A+Bx)\,\mathrm{e}^{r_0x}$ ;
+  \item si $\Delta<0$, racines $\alpha\pm\mathrm{i}\omega$ :
+    $y=\mathrm{e}^{\alpha x}\bigl(A\cos(\omega x)+B\sin(\omega x)\bigr)$.
+\end{itemize}
+\end{theoreme}
+
+\begin{propriete}[Second membre, problème de Cauchy]
+Pour $y''+ay'+by=f(x)$ : les solutions sont $y_p$ + solutions de $(H)$, et
+le principe de superposition s'applique. On sait trouver $y_p$ pour
+$f(x)=A\,\mathrm{e}^{\lambda x}$ (chercher $y_p=\mu\,\mathrm{e}^{\lambda x}$, multiplié
+par $x$ si $\lambda$ est racine simple de l'équation caractéristique, par $x^{2}$ si
+racine double) et pour $f(x)=B\cos(\omega x)$ ou $B\sin(\omega x)$ (chercher
+$y_p=\mu\cos(\omega x)+\nu\sin(\omega x)$). Pour tout $(x_0,y_0,y_1)$, il
+existe une unique solution vérifiant $y(x_0)=y_0$ et $y'(x_0)=y_1$
+(démonstration hors programme).
+\end{propriete}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Une primitive vit sur un \emph{intervalle} : préciser lequel, surtout pour $\ln|x|$.
+  \item Ne pas confondre $(\mathrm{e}^{u})'=u'\mathrm{e}^{u}$ avec $u'\mathrm{e}^{u'}$ ; vérifier chaque
+    primitive en la dérivant.
+  \item Dans un changement de variable, \emph{changer les bornes} et remplacer $\mathrm{d}t$.
+  \item $\arcsin'$ n'existe qu'à l'intérieur de $\intFF{-1}{1}$ ; les tangentes sont verticales aux bords.
+  \item Pour une équation différentielle, ne jamais oublier la constante de
+    l'homogène dans la solution générale — et ajuster la constante \emph{après}
+    avoir écrit la solution générale, avec la condition initiale.
+  \item En cas de résonance ($\lambda$ racine de l'équation caractéristique),
+    la forme $\mu\,\mathrm{e}^{\lambda x}$ échoue : penser à $\mu x\,\mathrm{e}^{\lambda x}$.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Ensembles de définition et transformations}
+\begin{questions}
+  \item Déterminer l'ensemble de définition de chacune des fonctions :
+    \[
+      x\mapsto\sqrt{x-2},\qquad x\mapsto\frac{1}{x^{2}-1},\qquad
+      x\mapsto\ln(3-x),\qquad x\mapsto\sqrt{x^{2}-4}.
+    \]
+  \item La courbe de $f$ étant donnée, comment obtient-on celles de
+    $x\mapsto f(x)+1$, $x\mapsto f(x+1)$, $x\mapsto f(2x)$ et
+    $x\mapsto-f(x)$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Parité, périodicité}
+\begin{questions}
+  \item Étudier la parité de :
+    $x\mapsto x^{3}-x$,\quad $x\mapsto x^{2}+\cos x$,\quad
+    $x\mapsto x+1$,\quad $x\mapsto x|x|$,\quad $x\mapsto\mathrm{e}^{-x^{2}}$.
+  \item Donner une période de $x\mapsto\cos(3x)$, de
+    $x\mapsto\sin\bigl(\frac{x}{2}\bigr)$, puis de leur somme.
+  \item Soit $f$ paire et $2$-périodique sur $\R$. Sur quel intervalle
+    minimal suffit-il de l'étudier ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Calculs de dérivées}
+Dériver les fonctions suivantes (on précisera le domaine de validité) :
+\begin{tasks}(2)
+  \task $x^{3}-2x+1$
+  \task $x^{2}\mathrm{e}^{x}$
+  \task $\dfrac{\mathrm{e}^{x}}{x+1}$
+  \task $\ln(1+x^{2})$
+  \task $\cos^{3}x$
+  \task $\sqrt{x^{2}+1}$
+  \task $\tan(2x)$
+  \task $x\ln x-x$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Variations et extremums}
+\begin{questions}
+  \item Dresser le tableau de variations de $f:x\mapsto x^{3}-3x+1$ et
+    préciser ses extremums locaux.
+  \item Étudier $g:x\mapsto x\,\mathrm{e}^{-x}$ sur $\R$ : variations, maximum,
+    limite en $+\infty$.
+  \item Montrer que, pour tout $x>0$ : $x+\dfrac1x\geq2$. Quand y a-t-il
+    égalité ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Croissances comparées : limites}
+Déterminer les limites suivantes :
+\begin{tasks}(3)
+  \task $\displaystyle\lim_{x\to0^{+}}x\ln x$
+  \task $\displaystyle\lim_{x\to+\infty}x^{2}\mathrm{e}^{-x}$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{\ln x}{\sqrt{x}}$
+  \task $\displaystyle\lim_{x\to0^{+}}x^{x}$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{\mathrm{e}^{x}}{x^{3}}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Arcsin, Arccos, Arctan : premiers calculs}
+\begin{questions}
+  \item Calculer $\arcsin\dfrac12$, $\arccos\Bigl(-\dfrac{\sqrt2}{2}\Bigr)$,
+    $\arctan1$ et $\arctan\sqrt3$.
+  \item Calculer $\arcsin\Bigl(\sin\dfrac{5\pi}{6}\Bigr)$ et
+    $\arccos\Bigl(\cos\Bigl(-\dfrac{\pi}{3}\Bigr)\Bigr)$.
+  \item Dériver $x\mapsto\arctan(2x)$ et $x\mapsto\arcsin(x^{2})$, en
+    précisant les domaines.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Primitives usuelles}
+Déterminer une primitive de chacune des fonctions suivantes, sur un
+intervalle que l'on précisera :
+\begin{tasks}(2)
+  \task $x^{3}+\dfrac{1}{x^{2}}$
+  \task $\mathrm{e}^{2x}$
+  \task $\cos(3x)$
+  \task $\dfrac{1}{2x+1}$
+  \task $\dfrac{x}{x^{2}+1}$
+  \task $\sin x\cos x$
+  \task $\dfrac{1}{1+4x^{2}}$
+  \task $\dfrac{1}{\sqrt{1-x^{2}}}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Équations homogènes du premier ordre}
+\begin{questions}
+  \item Résoudre $y'+3y=0$ sur $\R$, puis déterminer la solution vérifiant
+    $y(0)=2$.
+  \item Résoudre $y'=2y$ avec la condition $y(0)=-1$.
+  \item Pourquoi une solution d'une telle équation qui s'annule en un point
+    est-elle identiquement nulle ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Deux études de fonctions}
+\begin{questions}
+  \item Étudier $f:x\mapsto\dfrac{x}{1+x^{2}}$ : parité, variations, limites,
+    extremums. En déduire que $f$ est bornée sur $\R$ et préciser
+    $\max f$ et $\min f$.
+  \item Étudier $g:x\mapsto\dfrac{\ln x}{x}$ sur $\intOO{0}{+\infty}$ :
+    variations, maximum, limites. En comparant $g(\mathrm{e})$ et $g(\pi)$,
+    montrer que $\mathrm{e}^{\pi}>\pi^{\mathrm{e}}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Des inégalités par étude de fonctions}
+\begin{questions}
+  \item Montrer que, pour tout $x\in\R$ : $\mathrm{e}^{x}\geq1+x$, avec égalité
+    uniquement en $0$.
+  \item En déduire que, pour tout $x>-1$ : $\ln(1+x)\leq x$.
+  \item Montrer que, pour tout $x\geq0$ :
+    $x-\dfrac{x^{2}}{2}\leq\ln(1+x)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Dérivée d'une fonction réciproque}
+Soit $f:x\mapsto x+\mathrm{e}^{x}$.
+\begin{questions}
+  \item Montrer que $f$ réalise une bijection de $\R$ sur $\R$.
+  \item Justifier que $f^{-1}$ est dérivable sur $\R$, et calculer
+    $\bigl(f^{-1}\bigr)'(1)$.
+  \item Donner l'équation de la tangente à la courbe de $f^{-1}$ au point
+    d'abscisse $1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Identités avec Arcsin, Arccos, Arctan}
+\begin{questions}
+  \item Montrer que, pour tout $x\in\intFF{-1}{1}$ :
+    $\cos(\arcsin x)=\sqrt{1-x^{2}}$.
+  \item Montrer que, pour tout $x\in\intFF{-1}{1}$ :
+    $\arcsin x+\arccos x=\dfrac{\pi}{2}$.
+  \item Montrer que, pour tout $x>0$ :
+    $\arctan x+\arctan\dfrac1x=\dfrac{\pi}{2}$. Que vaut cette somme pour
+    $x<0$ ?
+  \item Montrer que, pour tout $x\in\R$ :
+    $\sin(2\arctan x)=\dfrac{2x}{1+x^{2}}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Fonctions hyperboliques}
+\begin{questions}
+  \item Démontrer que, pour tout $x\in\R$ :
+    $\operatorname{ch}^{2}x-\operatorname{sh}^{2}x=1$.
+  \item Démontrer la formule d'addition
+    $\operatorname{sh}(a+b)=\operatorname{sh}a\operatorname{ch}b+\operatorname{ch}a\operatorname{sh}b$.
+  \item Étudier les variations et les limites de $\operatorname{th}$, et
+    vérifier $\operatorname{th}'=1-\operatorname{th}^{2}$.
+  \item Résoudre l'équation $\operatorname{ch}x=2$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Primitives : formes composées}
+Déterminer une primitive de chacune des fonctions suivantes, sur un
+intervalle convenable :
+\begin{tasks}(3)
+  \task $x\,\mathrm{e}^{x^{2}}$
+  \task $\tan x$
+  \task $\dfrac{1}{x\ln x}$
+  \task $\cos x\sin^{3}x$
+  \task $\dfrac{x}{\sqrt{1+x^{2}}}$
+  \task $\dfrac{\mathrm{e}^{x}}{1+\mathrm{e}^{2x}}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Intégration par parties}
+Calculer les intégrales suivantes :
+\begin{tasks}(2)
+  \task $\displaystyle\int_{0}^{1}x\,\mathrm{e}^{x}\,\mathrm{d}x$
+  \task $\displaystyle\int_{1}^{\mathrm{e}}\ln t\,\mathrm{d}t$
+  \task $\displaystyle\int_{0}^{\pi/2}t\sin t\,\mathrm{d}t$
+  \task $\displaystyle\int_{0}^{1}x^{2}\mathrm{e}^{x}\,\mathrm{d}x$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Changements de variable}
+Calculer, à l'aide du changement de variable indiqué :
+\begin{questions}
+  \item $\displaystyle\int_{0}^{1}\frac{\mathrm{d}x}{1+\sqrt{x}}$\quad($u=\sqrt{x}$) ;
+  \item $\displaystyle\int_{0}^{1}\frac{\mathrm{d}t}{\mathrm{e}^{t}+1}$\quad($u=\mathrm{e}^{t}$) ;
+  \item $\displaystyle\int_{0}^{\pi/2}\cos^{3}t\,\mathrm{d}t$\quad($u=\sin t$).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Premier ordre avec second membre}
+\begin{questions}
+  \item Résoudre $y'+2y=\mathrm{e}^{3x}$ sur $\R$, puis déterminer la solution
+    vérifiant $y(0)=0$.
+  \item Déterminer une solution particulière de $y'-y=\cos x$ de la forme
+    $y_p=\alpha\cos x+\beta\sin x$, puis résoudre l'équation.
+  \item Résoudre $y'+y=1+\mathrm{e}^{-x}$.
+    \emph{Attention : $\mathrm{e}^{-x}$ est solution de l'équation homogène
+    (résonance) — chercher un terme en $x\,\mathrm{e}^{-x}$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Variation de la constante}
+\begin{questions}
+  \item Résoudre sur $\intOO{0}{+\infty}$ l'équation
+    $y'+\dfrac{y}{x}=3x$, puis déterminer la solution vérifiant $y(1)=2$.
+  \item Résoudre sur $\R$ l'équation $y'-2xy=\mathrm{e}^{x^{2}}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Second ordre à coefficients constants}
+\begin{questions}
+  \item Résoudre $y''+\omega^{2}y=0$ ($\omega>0$), puis
+    $y''-3y'+2y=0$,\quad $y''+4y'+4y=0$,\quad $y''+2y'+5y=0$.
+  \item Résoudre $y''+y=\cos(2x)$.
+  \item Résoudre $y''-3y'+2y=\mathrm{e}^{x}$
+    \emph{(résonance : chercher $y_p=\mu x\,\mathrm{e}^{x}$)}.
+  \item Déterminer la solution de $y''+\omega^{2}y=0$ vérifiant $y(0)=y_0$
+    et $y'(0)=v_0$, et l'écrire sous la forme $A\cos(\omega x-\varphi)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La formule de Machin}
+\begin{questions}
+  \item Montrer que $\arctan\dfrac12+\arctan\dfrac13=\dfrac{\pi}{4}$.
+    \emph{On calculera la tangente de la somme, en justifiant que celle-ci
+    appartient à $\bigl]0,\frac{\pi}{2}\bigr[$.}
+  \item On pose $a=\arctan\dfrac15$. Calculer $\tan(2a)$ puis $\tan(4a)$.
+  \item Justifier que $4a-\dfrac{\pi}{4}\in\bigl]-\frac{\pi}{4},\frac{\pi}{4}\bigr[$,
+    calculer sa tangente, et en déduire la \emph{formule de Machin} :
+    \[
+      \frac{\pi}{4}=4\arctan\frac15-\arctan\frac{1}{239}.
+    \]
+    \emph{C'est avec cette formule que John Machin calcula, en 1706, cent
+    décimales de $\pi$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Un encadrement de Arctan}
+\begin{questions}
+  \item Montrer que, pour tout $x\geq0$ : $\arctan x\leq x$.
+  \item Montrer que, pour tout $x\geq0$ :
+    $x-\dfrac{x^{3}}{3}\leq\arctan x$.
+  \item En déduire $\displaystyle\lim_{x\to0}\frac{\arctan x}{x}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Les intégrales de Wallis}
+Pour $n\in\N$, on pose
+$I_n=\displaystyle\int_{0}^{\pi/2}\sin^{n}t\,\mathrm{d}t$.
+\begin{questions}
+  \item Calculer $I_0$ et $I_1$.
+  \item Montrer que la suite $(I_n)$ est décroissante et à termes
+    strictement positifs.
+  \item À l'aide d'une intégration par parties
+    \emph{(écrire $\sin^{n+2}t=\sin t\times\sin^{n+1}t$)}, établir :
+    \[
+      I_{n+2}=\frac{n+1}{n+2}\,I_n.
+    \]
+  \item En déduire $I_2$, $I_3$ et $I_4$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Refroidissement de Newton}
+Un café à $90\,^\circ$C est posé dans une pièce à $20\,^\circ$C. La loi de
+Newton modélise sa température $T$ (en $^\circ$C, le temps $t$ en minutes)
+par :
+\[
+  T'(t)=-k\,\bigl(T(t)-20\bigr),\qquad k>0.
+\]
+\begin{questions}
+  \item Résoudre cette équation différentielle et exprimer $T(t)$ en
+    fonction de $k$, sachant que $T(0)=90$.
+  \item Après $10$ minutes, le café est à $60\,^\circ$C. Déterminer $k$.
+  \item Au bout de combien de temps le café atteint-il $30\,^\circ$C ?
+    Donner la valeur exacte, puis une valeur approchée à la minute.
+  \item Pourquoi la température ne descend-elle jamais sous
+    $20\,^\circ$C dans ce modèle ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Équations fonctionnelles et équations différentielles}
+\partieExo{A}{L'équation $f(x+y)=f(x)\,f(y)$}
+Soit $f:\R\to\R$ dérivable, non identiquement nulle, telle que
+$f(x+y)=f(x)f(y)$ pour tous réels $x,y$.
+\begin{questions}
+  \item Montrer que $f(0)=1$, puis que $f$ ne s'annule jamais et que
+    $f>0$ sur $\R$.
+  \item En dérivant par rapport à $y$, puis en évaluant en $y=0$, montrer
+    que $f'=f'(0)\,f$.
+  \item En déduire toutes les solutions du problème.
+\end{questions}
+\partieExo{B}{L'équation $y''=y$}
+\begin{questions}[resume]
+  \item Résoudre l'équation $y''-y=0$.
+  \item Déterminer l'unique solution vérifiant $y(0)=1$ et $y'(0)=0$.
+    Quelle fonction retrouve-t-on ?
+  \item Quelle est, de même, l'unique solution vérifiant $y(0)=0$ et
+    $y'(0)=1$ ?
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-04}

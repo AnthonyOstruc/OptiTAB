@@ -1,0 +1,70 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 19 — vérifié par verifications/defis_16_20.py.
+
+\begin{blocLivre}{cor-19-25a}
+\begin{corrige}{25}{Le problème de Bâle : $\zeta(2)=\pi^{2}/6$}
+\demarche{Les $m$ nombres $\cot^{2}\frac{r\pi}{2m+1}$ sont les racines d'un
+polynôme explicite : Viète donne leur somme ; l'encadrement
+$\cot^{2}\theta<\theta^{-2}<1+\cot^{2}\theta$ transmet cette somme exacte à
+$\sum1/r^{2}$.}
+\partieExo{A}{Une identité polynomiale}
+\begin{questions}
+  \item Moivre : $(\cos\theta+\mathrm{i}\sin\theta)^{2m+1}
+    =\cos(2m+1)\theta+\mathrm{i}\sin(2m+1)\theta$. Par le binôme, la partie
+    imaginaire provient des indices impairs $j=2k+1$, avec
+    $\mathrm{i}^{2k+1}=(-1)^{k}\mathrm{i}$ : on obtient la formule.
+  \item On divise par $\sin^{2m+1}\theta\neq0$ :
+    $\frac{\cos^{2m-2k}\theta\,\sin^{2k+1}\theta}{\sin^{2m+1}\theta}
+    =\bigl(\cot^{2}\theta\bigr)^{m-k}$, d'où
+    $\res{\dfrac{\sin(2m+1)\theta}{\sin^{2m+1}\theta}=P_m\bigl(\cot^{2}\theta\bigr)}$.
+  \item Pour $1\leqslant r\leqslant m$, $\theta_r=\frac{r\pi}{2m+1}\in\intOO{0}{\frac\pi2}$
+    et $\sin\bigl((2m+1)\theta_r\bigr)=\sin r\pi=0$ : $P_m(x_r)=0$. La
+    fonction $\cot^{2}$ est strictement décroissante sur $\intOO{0}{\frac\pi2}$ :
+    les $x_r$ sont distincts. $P_m$ est de degré $m$, de coefficient
+    dominant $\binom{2m+1}{1}=2m+1$ : ce sont toutes ses racines, et Viète
+    donne
+    \[
+    \sum_{r=1}^{m}x_r=\frac{\binom{2m+1}{3}}{2m+1}=\frac{(2m)(2m-1)}{6}
+    =\res{\frac{m(2m-1)}{3}} .
+    \]
+\end{questions}
+\partieExo{B}{L'encadrement}
+\begin{questions}[resume]
+  \item $\theta-\sin\theta$ et $\tan\theta-\theta$ sont nulles en $0$ et de
+    dérivées $1-\cos\theta>0$ et $\tan^{2}\theta>0$ sur
+    $\intOO{0}{\frac\pi2}$ : $0<\sin\theta<\theta<\tan\theta$. En passant à
+    l'inverse des carrés :
+    $\cot^{2}\theta<\frac{1}{\theta^{2}}<\frac{1}{\sin^{2}\theta}=1+\cot^{2}\theta$.
+  \item Avec $\frac1{\theta_r^{2}}=\frac{(2m+1)^{2}}{\pi^{2}r^{2}}$ et en
+    sommant :
+    $\frac{m(2m-1)}{3}<\frac{(2m+1)^{2}}{\pi^{2}}\sum_{r=1}^{m}\frac1{r^{2}}
+    <m+\frac{m(2m-1)}{3}=\frac{2m(m+1)}{3}$.
+  \item En multipliant par $\frac{\pi^{2}}{(2m+1)^{2}}$, les deux bornes
+    $\frac{\pi^{2}m(2m-1)}{3(2m+1)^{2}}$ et
+    $\frac{2\pi^{2}m(m+1)}{3(2m+1)^{2}}$ tendent vers
+    $\frac{2\pi^{2}}{12}$ : par encadrement,
+    $\res{\zeta(2)=\dfrac{\pi^{2}}{6}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Conséquences}
+\begin{questions}[start=7]
+  \item Les termes pairs donnent
+    $\sum\frac{1}{(2k)^{2}}=\frac{\zeta(2)}{4}$, donc les impairs
+    $\frac34\zeta(2)=\res{\frac{\pi^{2}}{8}}$ ; et la série alternée vaut
+    $\frac{\pi^{2}}{8}-\frac{\pi^{2}}{24}=\res{\frac{\pi^{2}}{12}}$
+    (sommation par paquets de séries absolument convergentes).
+  \item $\zeta(2)\in\intOO{S_{10}+\frac1{11}}{S_{10}+\frac{1}{10{,}5}}
+    =\intOO{1{,}640\,677}{1{,}645\,006}$, et $\pi=\sqrt{6\zeta(2)}$ :
+    \[
+    \res{3{,}1375<\pi<3{,}1417},
+    \]
+    encadrement d'amplitude $0{,}0041$ avec dix termes seulement — grâce au
+    contrôle fin du reste. (La vraie valeur $3{,}14159\dots$ est bien dans
+    l'intervalle.)
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

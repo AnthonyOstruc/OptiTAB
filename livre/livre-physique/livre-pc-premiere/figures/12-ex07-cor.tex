@@ -1,0 +1,15 @@
+% Volume des poumons d'un apnéiste en fonction de la profondeur (corrigé de l'exercice 7, chapitre 12)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=100mm,height=40mm,xmin=0,xmax=42,ymin=0,ymax=7,
+  xtick={0,10,...,40},ytick={0,1,...,6},
+  xlabel={profondeur $h$ (m)},ylabel={$V$ (L)}]
+\addplot[otNavy,line width=1.1pt,domain=0:42,samples=60] {6.0*1.013/(1.013+0.10104*x)};
+\addplot[only marks,mark=*,mark size=1.6pt,otOrange!85!black] coordinates {(0,6.0) (10,3.0) (20,2.0) (30,1.5) (40,1.2)};
+\node[pcLegende,anchor=south west] at (axis cs:10,3.0) {\qty{3,0}{L}};
+\node[pcLegende,anchor=south west] at (axis cs:20,2.0) {\qty{2,0}{L}};
+\node[pcLegende,anchor=south west] at (axis cs:30,1.5) {\qty{1,5}{L}};
+\node[pcLegende,anchor=south west] at (axis cs:40,1.2) {\qty{1,2}{L}};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:12,5.2) {$V=\dfrac{P_0\,V_0}{P}$ : le volume diminue de moins en moins vite};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{C'est près de la surface que le volume varie le plus : il est divisé par deux dans les dix premiers mètres.}

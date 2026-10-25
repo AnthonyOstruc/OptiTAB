@@ -1,0 +1,24 @@
+% pH d'une solution très diluée d'acide chlorhydrique : formule simple et valeur exacte (corrigé du défi D01)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=112mm,height=52mm,xmin=4,xmax=10,ymin=4,ymax=10.3,
+  xtick={4,5,...,10},ytick={4,5,...,10},
+  xlabel={$-\log(c/c^{\circ})$},ylabel={pH},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk},
+  legend style={at={(0.03,0.97)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,
+    cells={anchor=west},row sep=0.5mm}]
+\addplot[otNavy,dashed,line width=0.8pt,domain=4:10] {x};
+\addlegendentry{formule simple : pH $=-\log(c/c^{\circ})$}
+\addplot[otGreenDark,line width=1.2pt,domain=4:10,samples=120]
+  {-log10((10^(-x)+sqrt(10^(-2*x)+4e-14))/2)};
+\addlegendentry{pH exact, en tenant compte de l'eau}
+\addplot[otMuted,dotted,line width=0.8pt,domain=4:10] {7};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:6.19,4) -- (axis cs:6.19,6.4);
+\node[pcLegende,anchor=north west,text=otOrange!70!black] at (axis cs:6.22,5.35) {écart de 0,01 pour\\$c\approx6{,}5\times10^{-7}$ mol$\cdot$L$^{-1}$};
+\addplot[only marks,mark=*,mark size=1.8pt,otNavy] coordinates {(8,8)};
+\addplot[only marks,mark=*,mark size=1.8pt,otGreenDark] coordinates {(8,6.978)};
+\node[pcLegende,anchor=west] at (axis cs:8.08,8.05) {8 : absurde};
+\node[pcLegende,anchor=north west] at (axis cs:8.05,6.92) {6,98};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Une solution d'acide, même très diluée, ne peut pas avoir un pH supérieur à 7.}

@@ -1,0 +1,15 @@
+% Chronophotographie d'une pierre de curling (intervalle 0,50 s) ; au corrigé, vecteurs vitesse et variation de vitesse (devoir n° 4, exercice 3)
+\begin{tikzpicture}[x=16mm,y=1cm]
+\draw[otInk!60,line width=0.5pt,-{Stealth[length=2mm]}] (-0.2,0) -- (7.4,0) node[pcLegende,anchor=north west] {$x$ (m)};
+\foreach \k in {0,...,7}{\draw[otInk!60,line width=0.4pt] (\k,0) -- (\k,-0.1) node[pcLegende,anchor=north] {\k};}
+\foreach \x [count=\i from 0] in {0,1.40,2.70,3.90,5.00,6.00,6.90}{%
+  \fill[otNavy] (\x,0.25) circle (2.2pt);
+  \node[pcLegende,anchor=south] at (\x,0.33) {M$_{\i}$};}
+\enonce{\node[pcLegende,anchor=west,text=otMuted] at (-0.2,1.0) {sens du mouvement $\longrightarrow$ \quad positions toutes les \qty{0,50}{s}};}
+\solution{
+  \draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.2mm]}] (2.70,1.05) -- ++(3.125,0) node[pcLegende,anchor=west,text=otGreenDark] {$\vec v_2$ : \qty{2,50}{m.s^{-1}}};
+  \draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.2mm]}] (3.90,1.6) -- ++(2.875,0) node[pcLegende,anchor=west,text=otGreenDark] {$\vec v_3$ : \qty{2,30}{m.s^{-1}}};
+  \draw[otRed!85!black,line width=1.1pt,-{Stealth[length=1.8mm]}] (3.90,2.15) -- ++(-0.25,0) node[pcLegende,anchor=east,text=otRed!85!black] {$\Delta\vec v=\vec v_3-\vec v_2$ : \qty{0,20}{m.s^{-1}}};
+  \node[pcLegende,anchor=west,text=otMuted] at (-0.2,2.55) {échelle des vitesses : \qty{1}{cm} pour \qty{0,5}{m.s^{-1}}};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Positions successives du centre de la pierre, repérées toutes les \qty{0,50}{s}.}\solution{$\Delta\vec v$ est opposé au mouvement : la somme des forces freine la pierre.}}

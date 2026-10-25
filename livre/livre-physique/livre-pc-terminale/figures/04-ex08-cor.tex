@@ -1,0 +1,10 @@
+% Concentration en peroxyde d'hydrogène déduite des titrages (corrigé de l'exercice 8, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=54mm,xmin=0,xmax=63,ymin=0,ymax=90,
+  xtick={0,10,...,60},ytick={0,20,...,80},xlabel={$t$ (min)},ylabel={$[\mathrm{H_2O_2}]$ (mmol$\cdot$L$^{-1}$)}]
+\addplot[otNavy,line width=0.9pt,domain=0:60,samples=100] {80*0.75^(x/5)};
+\addplot[only marks,mark=*,mark size=1.7pt,otNavy] table[x index=0,y expr=5*\thisrowno{1}] {figures/donnees/04-peroxyde-titrage.dat};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,40) -- (axis cs:12.05,40) -- (axis cs:12.05,0);
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:12.5,14) {$t_{1/2}\approx12$ min};
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,178 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{19}{Couleurs et vision}
+\corrigesSouples
+
+\begin{blocLivre}{cor-19-1}
+\begin{corrige}{1}{Trois projecteurs}
+\demarche{Des lumières se superposent sur un écran blanc : synthèse additive, les couleurs s'ajoutent.}
+\begin{questions}
+\item \res{\text{Synthèse additive}} : on superpose des lumières.
+\item 1 : rouge + vert = \res{\text{jaune}} ; 2 : rouge + bleu = \res{\text{magenta}} ; 3 : vert + bleu = \res{\text{cyan}} ; 4 : les trois = \res{\text{blanc}}.
+\item Rouge + vert : la zone 4 devient \res{\text{jaune}}.
+\item Avec deux lumières \res{\text{complémentaires}} : rouge et cyan, vert et magenta, ou bleu et jaune.
+\end{questions}
+\schema[corrige]{19-ex01}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-2}
+\begin{corrige}{2}{Trois filtres superposés}
+\demarche{Chaque filtre retire une couleur primaire ; seule la lumière transmise par tous les filtres subsiste.}
+\begin{questions}
+\item \res{\text{Synthèse soustractive}} : les filtres retirent une partie de la lumière blanche.
+\item Jaune : le \res{\text{bleu}} ; cyan : le \res{\text{rouge}} ; magenta : le \res{\text{vert}}.
+\item 1 : jaune + cyan = \res{\text{vert}} ; 2 : jaune + magenta = \res{\text{rouge}} ; 3 : cyan + magenta = \res{\text{bleu}} ; 4 : \res{\text{noir}}.
+\item L'\res{\text{imprimerie}} (et la peinture).
+\end{questions}
+\schema[corrige]{19-ex02}
+\retiens{Additive : on part du noir et on ajoute des lumières. Soustractive : on part du blanc et on retire des couleurs.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-3}
+\begin{corrige}{3}{La couleur d'une tomate}
+\demarche{L'objet ne peut diffuser que les lumières qu'il reçoit et qu'il n'absorbe pas.}
+\begin{questions}
+\item Elle absorbe le \res{\text{vert et le bleu}} et diffuse le \res{\text{rouge}}.
+\item Lumière verte : \res{\text{noire}} ; jaune (rouge + vert) : \res{\text{rouge}} ; cyan (vert + bleu) : \res{\text{noire}}.
+\item Le \res{\text{rouge et le vert}} (il absorbe le bleu).
+\item En lumière rouge : \res{\text{rouge}} ; en lumière bleue : \res{\text{noir}}.
+\end{questions}
+\piege{Croire qu'un objet « a » une couleur : sa couleur perçue dépend toujours de la lumière qui l'éclaire.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-4}
+\begin{corrige}{4}{Des filtres successifs}
+\demarche{Chaque filtre ne laisse passer que les composantes qu'il transmet : on garde les composantes communes.}
+\begin{questions}
+\item Jaune : rouge et vert ; cyan : vert et bleu ; rouge : rouge.
+\item Premier montage : \res{\text{vert}} ; second : \res{\text{rien}}, le cyan arrête le rouge (noir).
+\item Magenta (rouge, bleu) puis jaune (rouge, vert) : \res{\text{rouge}}.
+\item Magenta (rouge, bleu) à travers le cyan (vert, bleu) : \res{\text{bleu}}.
+\end{questions}
+\schema[corrige]{19-ex04}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-5}
+\begin{corrige}{5}{Couleurs complémentaires}
+\demarche{Deux couleurs sont complémentaires si, à elles deux, elles contiennent le rouge, le vert et le bleu.}
+\begin{questions}
+\item \res{\text{Rouge et cyan}}, \res{\text{vert et magenta}}, \res{\text{bleu et jaune}}.
+\item Du \res{\text{blanc}}.
+\item Elle paraît \res{\text{magenta}} (complémentaire du vert) ; celle qui absorbe le bleu paraît \res{\text{jaune}}.
+\item Chacune apporte ce qui manque à l'autre pour \res{\text{compléter}} le blanc.
+\end{questions}
+\schema[corrige]{19-cercle}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-6}
+\begin{corrige}{6}{Des objets sous un projecteur jaune, en Python}
+\demarche{L'ensemble d'un objet contient les composantes qu'il diffuse ; l'intersection avec la lumière donne ce qui est effectivement diffusé.}
+\begin{questions}
+\item Les composantes \res{\text{diffusées}} par l'objet ; \code{\&} calcule celles qui sont à la fois reçues et diffusées.
+\item Blanc : diffuse R et V reçus, \res{\text{jaune}} ; rouge : R, \res{\text{rouge}} ; cyan : V seulement, \res{\text{vert}} ; bleu : rien, \res{\text{noir}}.
+\item Magenta (R, B) : seul le rouge est reçu et diffusé, il paraît \res{\text{rouge}}.
+\item Écrire \code{lumiere = couleurs['cyan']} : blanc $\to$ cyan, rouge $\to$ noir, cyan $\to$ cyan, bleu $\to$ bleu.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-7}
+\begin{corrige}{7}{Les couleurs d'un écran}
+\demarche{Les trois lumières des sous-pixels s'ajoutent : synthèse additive, avec des intensités réglables.}
+\begin{questions}
+\item La \res{\text{synthèse additive}}.
+\item \res{\text{Jaune}}, \res{\text{magenta}}, \res{\text{cyan}}, \res{\text{blanc}} et \res{\text{noir}}.
+\item Les trois couleurs à demi-intensité : du \res{\text{gris}}.
+\item $256\times256\times256=\res{\num{16777216}}$ couleurs.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-8}
+\begin{corrige}{8}{Les éclairages d'un spectacle}
+\demarche{Lumière reçue : rouge + bleu (magenta) ; chaque costume ne diffuse que ce qu'il reçoit et n'absorbe pas.}
+\begin{questions}
+\item Il diffuse le rouge et le bleu reçus : il paraît \res{\text{magenta}}.
+\item Elle ne diffuse que le rouge : elle paraît \res{\text{rouge}}.
+\item Le costume blanc paraît \res{\text{vert}}, la robe rouge \res{\text{noire}}.
+\item Une lumière qui contient du rouge mais pas de vert : un projecteur \res{\text{rouge}} (ou magenta).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-9}
+\begin{corrige}{9}{Spectres d'absorption}
+\demarche{La couleur perçue est la complémentaire de la couleur absorbée.}
+\begin{questions}
+\item A absorbe surtout vers \res{\qty{625}{nm}} (rouge-orangé) ; B vers \res{\qty{450}{nm}} (bleu).
+\item A paraît \res{\text{cyan}} (bleu-vert) ; B paraît \res{\text{jaune-orangé}}.
+\item La \res{\text{synthèse soustractive}} : la solution retire une partie de la lumière blanche.
+\item A absorbe le rouge : elle paraît presque \res{\text{noire}}.
+\end{questions}
+\schema[corrige]{19-ex09}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-10}
+\begin{corrige}{10}{Les cônes et le daltonisme}
+\demarche{Le cerveau compare les signaux des trois types de cônes ; une couleur est un « dosage » de ces trois signaux.}
+\begin{questions}
+\item \res{\text{Trois}} : S (bleu), M (vert), L (rouge).
+\item \res{\text{Non}} : elle excite fortement les cônes L et un peu moins les M ; le cerveau interprète ce rapport comme du jaune.
+\item Un mélange de rouge et de vert excite les cônes L et M \res{\text{dans le même rapport}} : l'œil ne fait pas la différence.
+\item Sans cônes L, le rouge et le vert n'excitent que les cônes M : ils produisent des \res{\text{signaux semblables}}.
+\end{questions}
+\schema[corrige]{19-cones}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-11}
+\begin{corrige}{11}{Le capteur d'un appareil photo}
+\demarche{Chaque filtre ne laisse passer qu'une couleur primaire : le capteur mesure trois composantes, comme les cônes.}
+\begin{questions}
+\item Ne laisser passer qu'une couleur vers chaque photosite : \res{\text{synthèse soustractive}} (absorption par les filtres).
+\item La moitié : \res{\num{6e6}} filtres verts ; un quart : \res{\num{3e6}} rouges (et autant de bleus).
+\item L'œil est le plus sensible au \res{\text{vert}} : les cônes M et L sont tous deux sensibles dans le vert.
+\item Il \res{\text{combine}} les mesures des photosites voisins (interpolation) pour attribuer trois valeurs R, V, B à chaque pixel.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-12}
+\begin{corrige}{12}{L'imprimante}
+\demarche{Chaque encre retire une couleur primaire de la lumière blanche réfléchie par le papier.}
+\begin{questions}
+\item \res{\text{Synthèse soustractive}} : les encres absorbent une partie de la lumière que le papier blanc renverrait.
+\item Bleu : \res{\text{cyan + magenta}} ; rouge : \res{\text{magenta + jaune}} ; vert : \res{\text{cyan + jaune}}.
+\item Cyan : absorbe le rouge, \res{\text{noir}} ; jaune : diffuse le rouge, \res{\text{rouge}} ; rouge : \res{\text{rouge}} ; le papier blanc paraît rouge aussi.
+\item Les encres réelles ne sont pas parfaites : leur superposition donne un brun foncé. L'encre noire donne un \res{\text{vrai noir}} et économise les encres de couleur.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-13}
+\begin{corrige}{13}{Les lunettes anaglyphes}
+\demarche{Un filtre ne laisse passer que sa couleur : un dessin de la même couleur que le filtre se confond avec le fond blanc.}
+\begin{questions}
+\item Fond blanc : \res{\text{rouge}} ; dessin rouge : \res{\text{rouge}}, invisible sur le fond ; dessin cyan : \res{\text{noir}}.
+\item Fond : cyan ; dessin cyan : invisible ; dessin rouge : \res{\text{noir}}.
+\item L'œil gauche ne voit que le dessin cyan, l'œil droit que le dessin rouge : chacun reçoit \res{\text{une image différente}}.
+\item Chaque filtre arrête complètement la couleur de l'autre dessin, qui apparaît alors bien noir : la séparation est parfaite.
+\end{questions}
+\schema[corrige]{19-ex13-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-14}
+\begin{corrige}{14}{Des pixels invisibles}
+\demarche{Plus petit détail visible = angle limite (en radians) × distance d'observation.}
+\begin{questions}
+\item $\dfrac{\qty{25,4}{mm}}{400}\approx\res{\qty{63,5}{\micro m}}$.
+\item $\num{2,9e-4}\times300\approx\res{\qty{87}{\micro m}}>\qty{63,5}{\micro m}$ : les pixels \res{\text{ne sont pas distingués}}.
+\item Pixel de $\dfrac{1000}{1920}\approx\qty{0,52}{mm}$ : $d=\dfrac{0{,}52}{\num{2,9e-4}}\approx\qty{1,8e3}{mm}$, soit au-delà de \res{\qty{1,8}{m}} environ.
+\item Les lumières des sous-pixels voisins arrivent sur les mêmes cônes : elles s'\res{\text{additionnent}} dans l'œil (synthèse additive).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-19-15}
+\begin{corrige}{15}{La couleur des feuilles}
+\demarche{Couleur perçue = lumière diffusée = lumière reçue moins lumière absorbée.}
+\begin{questions}
+\item La chlorophylle absorbe le bleu et le rouge : la feuille diffuse surtout le \res{\text{vert}}.
+\item Les caroténoïdes absorbent le bleu : les feuilles diffusent le rouge et le vert, elles paraissent \res{\text{jaunes à orangées}}.
+\item Seule la lumière \res{\text{absorbée}} sert à la photosynthèse : le vert, presque entièrement diffusé, serait gaspillé.
+\item Éclairées en rouge et bleu, deux couleurs qu'elles absorbent, elles diffusent très peu : elles paraissent \res{\text{presque noires}}, un peu violacées.
+\end{questions}
+\end{corrige}
+\end{blocLivre}

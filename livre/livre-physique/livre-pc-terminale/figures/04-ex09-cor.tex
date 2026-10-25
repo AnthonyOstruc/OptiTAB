@@ -1,0 +1,9 @@
+% Élimination de la caféine : ln C en fonction du temps (corrigé de l'exercice 9, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=54mm,xmin=0,xmax=13,ymin=-0.5,ymax=1.6,
+  xtick={0,2,...,12},ytick={-0.5,0,0.5,1,1.5},xlabel={$t$ (h)},ylabel={$\ln C$ ($C$ en mg$\cdot$L$^{-1}$)}]
+\addplot[otGreenDark,line width=0.7pt,domain=0:12.6] {1.4236-0.13964*x};
+\addplot[only marks,mark=*,mark size=1.8pt,otNavy] table[x index=0,y expr=ln(\thisrowno{1})] {figures/donnees/04-cafeine.dat};
+\node[pcLegende,anchor=south west,text=otGreenDark,fill=white] at (axis cs:6.4,0.75) {modèle affine :\\$\ln C=1{,}42-0{,}140\,t$};
+\end{axis}
+\end{tikzpicture}

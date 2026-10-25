@@ -1,0 +1,21 @@
+% Énergie d'un photon en fonction de la longueur d'onde, comparée au seuil du silicium (corrigé de l'exercice 14, chapitre 20)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=44mm,xmin=300,xmax=1600,ymin=0,ymax=4.4,
+  xtick={300,500,...,1500},ytick={0,1,...,4},
+  xlabel={$\lambda$ (nm)},ylabel={$E$ (eV)}]
+\addplot[draw=none,fill=otGreen!18,domain=300:1110,samples=60] {1243/x} \closedcycle;
+\addplot[otNavy,line width=1.2pt,domain=300:1600,samples=120] {1243/x};
+\draw[otRed!85!black,line width=0.8pt] (axis cs:300,1.12) -- (axis cs:1600,1.12);
+\node[pcLegende,anchor=south east,text=otRed!85!black] at (axis cs:1590,1.12) {seuil du silicium : \qty{1,12}{eV}};
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:1110,0) -- (axis cs:1110,1.12);
+\node[pcLegende,anchor=north west] at (axis cs:1115,1.0) {$\lambda_\text{max}=\qty{1110}{nm}$};
+\node[pcLegende,anchor=south,text=otMuted] at (axis cs:1380,0.05) {non absorbés};
+\draw[otOrange!85!black,line width=0.8pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (axis cs:500,1.14) -- (axis cs:500,2.47);
+\draw[otGreenDark,line width=0.8pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (axis cs:500,0.03) -- (axis cs:500,1.1);
+\fill[otNavy] (axis cs:500,2.49) circle (1.2pt);
+\draw[pcRepere] (axis cs:505,2.55) -- (axis cs:760,3.45) node[pcLegende,anchor=west,text=otNavy] {photon de \qty{500}{nm} : \qty{2,49}{eV}};
+\draw[pcRepere] (axis cs:505,1.85) -- (axis cs:760,2.55) node[pcLegende,anchor=west,text=otOrange!85!black] {perdus en chaleur : \qty{1,37}{eV}};
+\node[pcLegende,anchor=west,text=otGreenDark] at (axis cs:520,0.55) {utiles : \qty{1,12}{eV}};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque photon absorbé ne fournit que \qty{1,12}{eV} ; son excédent chauffe la cellule.}

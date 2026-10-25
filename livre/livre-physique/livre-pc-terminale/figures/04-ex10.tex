@@ -1,0 +1,11 @@
+% Disparition des ions permanganate : une transformation autocatalysée (exercice 10, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=54mm,xmin=0,xmax=16.5,ymin=0,ymax=2.4,
+  xtick={0,2,...,16},ytick={0,0.5,...,2},xlabel={$t$ (min)},ylabel={$[\mathrm{MnO_4^{-}}]$ (mmol$\cdot$L$^{-1}$)}]
+\addplot[otNavy,line width=1pt,domain=0:16,samples=160] {2.0/(1+exp((x-6)/1.2))};
+\solution{\addplot[otRed!80!black,line width=0.7pt,domain=3.6:8.4] {1-(x-6)/2.4};
+\addplot[only marks,mark=*,mark size=1.8pt,otRed!80!black] coordinates {(6,1)};
+\addplot[only marks,mark=o,mark size=2.2pt,otRed!80!black,line width=0.7pt] coordinates {(3.6,2)(8.4,0)};
+\node[pcLegende,anchor=west,text=otRed!80!black,fill=white] at (axis cs:8.9,1.45) {tangente en $t=6$ min ;\\coefficient directeur :\\$\approx-0{,}42$ mmol$\cdot$L$^{-1}\cdot$min$^{-1}$};}
+\end{axis}
+\end{tikzpicture}

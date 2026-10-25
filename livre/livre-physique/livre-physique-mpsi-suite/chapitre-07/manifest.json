@@ -1,0 +1,61 @@
+{
+  "chapitre": 7,
+  "titre": "Filtrage linéaire",
+  "rubrique": "1.5",
+  "scope": "les spectres de signaux périodiques, les fonctions de transfert, les diagrammes de Bode et le choix d’un filtre selon un cahier des charges.",
+  "cours": 11,
+  "exercices": 24,
+  "defis": 3,
+  "dm": 1,
+  "ds": 1,
+  "sources": [
+    {
+      "titre": "TD publié — Deux filtres réels",
+      "url": "https://mpsi.schleck.ovh/fichiers/td/td7_filtrage_lineaire.pdf",
+      "cible": "TD7, 2025–2026 : exercice 1 et exercice 8.",
+      "travail": "Traiter le filtre RL sortie bobine, puis la cascade RC directe. Redessiner les ports et les masses.",
+      "corrige": "Pour RL : $H=jL\\omega/(R+jL\\omega)$, passe-haut de coupure R/L. Pour deux RC identiques directement raccordés : $H=1/[1+3jRC\\omega-(RC\\omega)^2]$. Le second étage modifie le premier ; la simple multiplication à vide échoue."
+    },
+    {
+      "titre": "DS publié — Le signal d’une guitare",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/ds04_enonce.pdf",
+      "cible": "DS n°4 du 11 décembre 2025, partie I, p. 1–2. Sélection : I.1.1 puis I.1.2 a et b.",
+      "travail": "Lire le plateau de basse fréquence et la pente de haute fréquence. Choisir parmi les quatre transferts proposés et établir les asymptotes, sans reprendre les parties de chimie.",
+      "corrige": "Le modèle est un passe-bas d’ordre 2 : fonction 2, $H=H_0/(1-x^2+jx/Q)$. À basse fréquence, $G_{\\rm dB}\\simeq20\\log_{10}H_0$ ; à haute fréquence, $G_{\\rm dB}\\simeq20\\log_{10}H_0-40\\log_{10}x$, avec $x=\\omega/\\omega_0$. À $\\omega_0$, $H=-jH_0Q$ : gain $H_0Q$, phase $-\\pi/2$. Les valeurs de H0 et Q se déterminent ensuite avec les niveaux du graphe, question c."
+    }
+  ],
+  "controles": [
+    {
+      "nom": "efficace-ex13",
+      "valeur": 1.4317821063276353,
+      "attendu": 1.4317821063276353,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "fc-DM",
+      "valeur": 9.947183943243457,
+      "attendu": 9.94718394324346,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "contrainte-D1-bas",
+      "valeur": 304.24349222966543,
+      "attendu": 304.2434922296653,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "gain-DS2",
+      "valeur": 0.039968038348871575,
+      "attendu": 0.039968038348871575,
+      "tolerance": 1e-07
+    }
+  ],
+  "figures": [
+    "rc-filtre",
+    "cr-filtre",
+    "bode-bas",
+    "bode-haut",
+    "spectre",
+    "cascade"
+  ]
+}

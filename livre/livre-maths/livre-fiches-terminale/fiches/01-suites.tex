@@ -1,0 +1,391 @@
+% !TEX root = ../main.tex
+%% Fiche 01 — Suites numériques (programme de Terminale spécialité, BO spécial n°8 du 25/07/2019)
+%% Toutes les valeurs numériques sont vérifiées par verifications/fiche_01.py.
+
+\fiche[suites]{1}{Suites numériques}
+  {Récurrence\sepmot Limites\sepmot Comparaison~et~gendarmes\sepmot
+   Convergence~monotone\sepmot Suites~$u_{n+1}=f(u_n)$\sepmot Algorithmes~de~seuil}
+
+%% ---------------------------------------------------------------------
+\sect{L'indispensable de Première}
+
+{\otTableau
+\begin{tabularx}{\linewidth}{@{}L{23mm}YY@{}}
+ & \otTH{Suite arithmétique de raison $r$} & \otTH{Suite géométrique de raison $q$} \\
+\midrule
+\otCaps[8]{Relation} & $u_{n+1}=u_n+r$ & $u_{n+1}=q\,u_n$ \\
+\otCaps[8]{Terme général} & $u_n=u_0+nr=u_p+(n-p)\,r$ & $u_n=u_0\,q^{n}=u_p\,q^{n-p}$ \\
+\otCaps[8]{Somme} & $u_0+\dots+u_n=(n+1)\times\dfrac{u_0+u_n}{2}$
+  & $u_0+\dots+u_n=u_0\times\dfrac{1-q^{n+1}}{1-q}\quad(q\neq1)$ \\
+\otCaps[8]{Variations} & croissante si $r>0$, décroissante si $r<0$
+  & si $u_0>0$ : croissante si $q>1$, décroissante si $0<q<1$ \\
+\bottomrule
+\end{tabularx}}
+
+\vspace{1mm}
+\noindent
+\begin{minipage}[t]{0.485\linewidth}
+\formule{1+2+\dots+n=\frac{n(n+1)}{2}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\formule{1+q+\dots+q^{n}=\frac{1-q^{n+1}}{1-q}\quad(q\neq1)}
+\end{minipage}
+
+\begin{paire}
+\begin{methode}[Étudier le sens de variation]
+\begin{itemize}
+  \item Étudier le signe de $u_{n+1}-u_n$.
+  \item Termes tous strictement positifs : comparer $\frac{u_{n+1}}{u_n}$ à $1$.
+  \item Si $u_n=f(n)$ : variations de $f$ sur $\intFO{0}{+\infty}$.
+  \item Si $u_{n+1}=f(u_n)$ : par récurrence (§\,5).
+\end{itemize}
+\end{methode}
+\begin{methode}[Suite $u_{n+1}=a\,u_n+b$, avec $a\neq1$]
+\begin{etapes}
+  \item Chercher $\ell$ tel que $\ell=a\ell+b$, soit $\ell=\frac{b}{1-a}$.
+  \item Poser $v_n=u_n-\ell$ : $v_{n+1}=a\,v_n$, donc $(v_n)$ est géométrique.
+  \item Conclure : $u_n=\ell+(u_0-\ell)\,a^{n}$.
+\end{etapes}
+\end{methode}
+\end{paire}
+
+%% ---------------------------------------------------------------------
+\sect{Le raisonnement par récurrence}
+
+\noindent
+\begin{minipage}[c]{0.565\linewidth}
+\begin{theoreme}[Principe de récurrence]
+Soit $P(n)$ une propriété dépendant d'un entier naturel $n$, et $n_0\in\N$. Si
+\begin{itemize}
+  \item \etape{Initialisation} $P(n_0)$ est vraie,
+  \item \etape{Hérédité} pour tout entier $k\geq n_0$, $P(k)$ vraie entraîne $P(k+1)$ vraie,
+\end{itemize}
+alors $P(n)$ est vraie pour tout entier $n\geq n_0$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.405\linewidth}\centering
+\begin{tikzpicture}[x=1mm,y=1mm,line join=round]
+  \fill[otRule] (-2,-0.6) rectangle (64,0);
+  \begin{scope}[shift={(4,0)},rotate=-28]
+    \fill[otGreen,rounded corners=0.5pt] (0,0) rectangle (3,14);
+  \end{scope}
+  \foreach \i in {1,...,6}{\fill[otNavy,rounded corners=0.5pt] ({4+9*\i},0) rectangle ++(3,14);}
+  \draw[otGreenDark,line width=0.6pt,-{Stealth[length=1.6mm]}] (1,18) to[bend left=35] (10.5,16.5);
+  \node[font=\otSemi\fontsize{6}{7}\selectfont,text=otGreenDark,anchor=south] at (4,19.5) {INITIALISATION};
+  \draw[otNavy,line width=0.6pt,-{Stealth[length=1.6mm]}] (32.5,16) to[bend left=40] (41.5,16);
+  \node[font=\otSemi\fontsize{6}{7}\selectfont,text=otNavy,anchor=south] at (37,19.5) {HÉRÉDITÉ};
+  \node[font=\scriptsize,text=otMuted,anchor=north] at (5.5,-1.2) {$n_0$};
+  \node[font=\scriptsize,text=otMuted,anchor=north] at (32.5,-1.2) {$k$};
+  \node[font=\scriptsize,text=otMuted,anchor=north] at (41.5,-1.2) {$k+1$};
+\end{tikzpicture}\\[1mm]
+\legende{Le premier domino tombe et chacun fait tomber le suivant : tous tombent.}
+\end{minipage}
+
+\begin{paire}
+\begin{redaction}[le modèle à reproduire]
+\fontsize{9.6}{12}\selectfont
+Pour $n\in\N$, on note $P(n)$ : « $0\leq u_n\leq3$ ».\par
+\etape{Initialisation} $u_0=0$, donc $P(0)$ est vraie.\par
+\etape{Hérédité} Soit $k\in\N$ tel que $P(k)$ est vraie : $0\leq u_k\leq3$. Montrons $P(k+1)$.
+[…calcul utilisant $0\leq u_k\leq3$…] Donc $0\leq u_{k+1}\leq3$.\par
+\etape{Conclusion} Par récurrence, $P(n)$ est vraie pour tout $n\in\N$.
+\end{redaction}
+\begin{attention}
+\begin{itemize}
+  \item Sans initialisation, rien n'est prouvé : « $4^{n}+1$ est divisible par $3$ » est héréditaire,
+    car \mbox{$4^{k+1}+1=4(4^{k}+1)-3$}, mais toujours fausse.
+  \item Dans l'hérédité, on \emph{utilise} $P(k)$ pour un $k$ fixé ; on ne suppose jamais
+    « $P(n)$ vraie pour tout $n$ ».
+\end{itemize}
+\end{attention}
+\end{paire}
+
+%% ---------------------------------------------------------------------
+\sect{Suites bornées et limites}
+
+\begin{definition}[Suites majorées, minorées, bornées]
+$(u_n)$ est \cle{majorée} s'il existe un réel $M$ tel que $u_n\leq M$ pour tout $n$ ;
+\cle{minorée} s'il existe $m$ tel que $u_n\geq m$ pour tout $n$ ; \cle{bornée} si elle est
+majorée et minorée.
+\end{definition}
+
+\begin{paire}
+\begin{definition}[Limite finie]
+$(u_n)$ \cle{converge} vers $\ell$ si tout intervalle ouvert contenant $\ell$ contient tous les
+termes $u_n$ à partir d'un certain rang. On note $\displaystyle\lim_{n\to+\infty}u_n=\ell$ ou
+$u_n\to\ell$ ; cette limite est \cle{unique}.\par\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema,width=80mm,height=33mm,xmin=0,xmax=15.5,ymin=0,ymax=3.6,
+  xtick=\empty,ytick=\empty,xlabel={$n$},xlabel style={at={(1,0)},anchor=west}]
+  \fill[otGreen,opacity=0.14] (axis cs:0,1.62) rectangle (axis cs:15.5,2.38);
+  \draw[otGreen,line width=0.45pt] (axis cs:0,1.62) -- (axis cs:15.5,1.62)
+    (axis cs:0,2.38) -- (axis cs:15.5,2.38);
+  \draw[otNavy,dashed,line width=0.5pt] (axis cs:0,2) -- (axis cs:15.5,2);
+  \draw[otMuted,densely dotted,line width=0.5pt] (axis cs:4.6,0) -- (axis cs:4.6,3.4);
+  \addplot[only marks,mark=*,mark size=1.3pt,draw=otNavy,fill=white,samples at={0,...,4}]
+    {2+1.4*cos(180*x)*0.75^x};
+  \addplot[only marks,mark=*,mark size=1.3pt,otGreen,samples at={5,...,15}]
+    {2+1.4*cos(180*x)*0.75^x};
+  \node[anchor=east,font=\small,text=otNavy] at (axis cs:0,2) {$\ell$};
+  \node[anchor=north,font=\otMedium\fontsize{6.5}{8}\selectfont,text=otMuted] at (axis cs:4.6,0) {rang $N$};
+\end{axis}
+\end{tikzpicture}\par
+\legende{À partir du rang $N$, tous les termes restent dans la bande.}
+\end{definition}
+\begin{definition}[Limite infinie]
+$u_n\to+\infty$ si tout intervalle $\intOO{A}{+\infty}$ contient tous les termes $u_n$ à partir
+d'un certain rang. De même $u_n\to-\infty$ avec les intervalles $\intOO{-\infty}{A}$.\par\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema,width=80mm,height=33mm,xmin=0,xmax=14.5,ymin=0,ymax=3.8,
+  xtick=\empty,ytick=\empty,xlabel={$n$},xlabel style={at={(1,0)},anchor=west}]
+  \fill[otGreen,opacity=0.14] (axis cs:0,1.8) rectangle (axis cs:14.5,3.75);
+  \draw[otGreen,line width=0.45pt] (axis cs:0,1.8) -- (axis cs:14.5,1.8);
+  \draw[otMuted,densely dotted,line width=0.5pt] (axis cs:6.6,0) -- (axis cs:6.6,3.6);
+  \addplot[only marks,mark=*,mark size=1.3pt,draw=otNavy,fill=white,samples at={0,...,6}]
+    {0.25+0.25*x+0.35*sin(deg(1.8*x))};
+  \addplot[only marks,mark=*,mark size=1.3pt,otGreen,samples at={7,...,13}]
+    {0.25+0.25*x+0.35*sin(deg(1.8*x))};
+  \node[anchor=east,font=\small,text=otGreenDark] at (axis cs:0,1.8) {$A$};
+  \node[anchor=north,font=\otMedium\fontsize{6.5}{8}\selectfont,text=otMuted] at (axis cs:6.6,0) {rang $N$};
+\end{axis}
+\end{tikzpicture}\par
+\legende{Aussi grand que soit $A$, la suite finit par le dépasser définitivement.}
+\end{definition}
+\end{paire}
+
+\noindent
+\begin{minipage}[t]{0.385\linewidth}
+\otIntertitre{Limites de référence}
+{\otTableau
+\begin{tabularx}{\linewidth}{@{}Yl@{}}
+\toprule
+$\frac1n$,\enspace $\frac1{n^{2}}$,\enspace $\frac1{\sqrt n}$,\enspace $\frac1{n^{p}}$ & $\to0$ \\
+$n$,\enspace $n^{2}$,\enspace $\sqrt n$,\enspace $n^{p}$\enspace($p\geq1$) & $\to+\infty$ \\
+\midrule
+$q>1$ & $q^{n}\to+\infty$ \\
+$q=1$ & $q^{n}=1$ \\
+$-1<q<1$ & $q^{n}\to0$ \\
+$q\leq-1$ & pas de limite \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.575\linewidth}
+\otIntertitre{Opérations sur les limites ($\ell$, $\ell'$ réels)}
+{\otTableau\fontsize{9.4}{11}\selectfont
+\begin{tabularx}{\linewidth}{@{}L{13mm}CCCC@{}}
+\toprule
+ & $\ell$ et $\ell'$ & $\ell$ et $+\infty$ & $+\infty$ et $+\infty$ & $+\infty$ et $-\infty$ \\
+\midrule
+\otCaps[6]{Somme} & $\ell+\ell'$ & $+\infty$ & $+\infty$ & \cellcolor{otOrangeTint}\textbf{F.I.} \\
+\otCaps[6]{Produit} & $\ell\ell'$ & $\pm\infty$\,\textsuperscript{(1)} & $+\infty$ & $-\infty$ \\
+\bottomrule
+\end{tabularx}}\par\vspace{1mm}
+{\fontsize{9}{11.4}\selectfont\RaggedRight
+\textsuperscript{(1)} Règle des signes si $\ell\neq0$ ; \colorbox{otOrangeTint}{\textbf{F.I.}} si $\ell=0$.\\
+Quotient : $\frac{\ell}{\pm\infty}\to0$ ; $\frac{\ell}{0}$ avec $\ell\neq0$ donne $\pm\infty$
+(signe du dénominateur).\par}
+\vspace{1.2mm}
+{\RaggedRight Les quatre \cle{formes indéterminées} :\quad
+$\infty-\infty$,\quad $0\times\infty$,\quad $\dfrac{\infty}{\infty}$,\quad $\dfrac00$.\par}
+\end{minipage}
+
+\begin{methode}[Lever une forme indéterminée]
+{\otTableau\renewcommand{\arraystretch}{1.6}%
+\begin{tabularx}{\linewidth}{@{}L{25mm}>{\RaggedRight\arraybackslash}p{47mm}Y@{}}
+\otCaps[6]{Quotient de polynômes} & factoriser par le terme de plus haut degré
+  & $\dfrac{3n^{2}-n}{1-2n^{2}}=\dfrac{3-\frac1n}{\frac1{n^{2}}-2}\to\res{-\dfrac32}$ \\
+\otCaps[6]{Différence de racines} & multiplier par la quantité conjuguée
+  & $\sqrt{n+1}-\sqrt n=\dfrac{1}{\sqrt{n+1}+\sqrt n}\to\res{0}$ \\
+\otCaps[6]{Puissances} & factoriser par la puissance dominante
+  & $3^{n}-2^{n}=3^{n}\Bigl(1-\bigl(\tfrac23\bigr)^{n}\Bigr)\to\res{+\infty}$ \\
+\end{tabularx}}
+\end{methode}
+
+\begin{attention}[les pièges classiques]
+\begin{itemize}
+  \item $\infty-\infty$ et $0\times\infty$ ne valent ni $0$ ni $1$ : ce sont des formes indéterminées,
+    il faut transformer l'expression.
+  \item $\bigl((-1)^{n}\bigr)$ est bornée mais n'a pas de limite : une suite bornée ne converge pas forcément.
+  \item Pour $(q^{n})$, tout dépend de $q$ : $0{,}9^{n}\to0$ mais $1{,}1^{n}\to+\infty$.
+  \item On n'écrit « $\lim u_n=\dots$ » qu'après avoir justifié que cette limite existe.
+\end{itemize}
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\sect{Comparaison et convergence}
+
+\noindent
+\begin{minipage}[c]{0.585\linewidth}
+\begin{theoreme}[Comparaison]
+Si $u_n\leq v_n$ à partir d'un certain rang et $u_n\to+\infty$, alors $v_n\to+\infty$.\par
+Si $v_n\leq u_n$ à partir d'un certain rang et $u_n\to-\infty$, alors $v_n\to-\infty$.
+\end{theoreme}
+\begin{theoreme}[Théorème des gendarmes]
+Si $u_n\leq v_n\leq w_n$ à partir d'un certain rang, et si $(u_n)$ et $(w_n)$ convergent vers
+\emph{la même} limite $\ell$, alors $(v_n)$ converge vers $\ell$.\par\vspace{0.6mm}
+{\fontsize{9.4}{11.6}\selectfont Exemple : $-\frac1n\leq\frac{\sin n}{n}\leq\frac1n$, donc
+$\frac{\sin n}{n}\to0$.}
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.385\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema,width=68mm,height=46mm,xmin=0,xmax=15,ymin=0.4,ymax=3.6,
+  xtick=\empty,ytick=\empty,xlabel={$n$},xlabel style={at={(1,0)},anchor=west}]
+  \draw[otNavy,dashed,line width=0.5pt] (axis cs:0,2) -- (axis cs:15,2);
+  \addplot[only marks,mark=*,mark size=1.2pt,draw=otNavy,fill=white,samples at={1,...,14}] {2+1.5/(x+0.5)};
+  \addplot[only marks,mark=*,mark size=1.2pt,draw=otNavy,fill=white,samples at={1,...,14}] {2-1.5/(x+0.5)};
+  \addplot[only marks,mark=*,mark size=1.5pt,otGreen,samples at={1,...,14}] {2+1.5*sin(deg(1.3*x))/(x+0.5)};
+  \node[anchor=east,font=\small,text=otNavy] at (axis cs:0,2) {$\ell$};
+  \node[anchor=west,font=\scriptsize,text=otNavy] at (axis cs:14.3,2.28) {$w_n$};
+  \node[anchor=west,font=\scriptsize,text=otNavy] at (axis cs:14.3,1.72) {$u_n$};
+  \node[anchor=south,font=\scriptsize,text=otGreenDark] at (axis cs:3,3.02) {$v_n$};
+\end{axis}
+\end{tikzpicture}\\
+\legende{Prise en étau entre $(u_n)$ et $(w_n)$, la suite $(v_n)$ converge vers $\ell$.}
+\end{minipage}
+
+\begin{paire}
+\begin{theoreme}[Convergence monotone — admis]
+Toute suite \cle{croissante et majorée} converge.\par
+Toute suite \cle{décroissante et minorée} converge.\par\vspace{1mm}
+\otEtiquette{otNavy}{Conséquences}\par\vspace{0.6mm}
+Une suite croissante \emph{non majorée} tend vers $+\infty$.\par
+Si $(u_n)$ croît et converge vers $\ell$, alors $u_n\leq\ell$ pour tout $n$.
+\end{theoreme}
+\begin{attention}
+\begin{itemize}
+  \item Si la suite est croissante et majorée par $M$, sa limite vérifie \mbox{$\ell\leq M$}
+    sans être forcément égale à $M$ : $1-\frac{1}{n+1}$ est majorée par $5$ et tend vers $1$.
+  \item Le théorème donne l'\emph{existence} de la limite, pas sa valeur.
+  \item Gendarmes : les deux suites qui encadrent doivent avoir la \emph{même} limite.
+\end{itemize}
+\end{attention}
+\end{paire}
+
+\begin{propriete}[Lien avec les fonctions]
+Si $u_n=f(n)$ et $\displaystyle\lim_{x\to+\infty}f(x)=L$, alors $u_n\to L$. Si $u_n\to\ell$ et si
+$f$ est continue en $\ell$, alors $f(u_n)\to f(\ell)$.
+\end{propriete}
+
+\begin{demonstration}[les trois preuves exigibles]
+\etape{1. Croissante non majorée}
+Soit $A$ réel : $A$ ne majore pas la suite, il existe $N$ tel que $u_N>A$ ; comme $(u_n)$ croît,
+$u_n\geq u_N>A$ pour tout $n\geq N$. Donc $u_n\to+\infty$.\par\vspace{0.6mm}
+\etape{2. Minorée par une suite de limite $+\infty$}
+Si $v_n\geq u_n$ pour $n\geq n_1$ et $u_n\to+\infty$ : pour tout $A$, il existe $n_2$ tel que
+$u_n>A$ pour $n\geq n_2$ ; alors $v_n>A$ pour $n\geq\max(n_1,n_2)$.\par\vspace{0.6mm}
+\etape{3. Limite de $(q^{n})$}
+Par récurrence, $(1+a)^{n}\geq1+na$ pour $a>0$ (\emph{inégalité de Bernoulli}). Si $q>1$, avec
+$a=q-1$ : $q^{n}\geq1+n(q-1)\to+\infty$, donc $q^{n}\to+\infty$ par comparaison. Si $0<|q|<1$,
+on applique ce résultat à $\frac{1}{|q|}>1$ : $|q|^{n}\to0$.
+\end{demonstration}
+
+%% ---------------------------------------------------------------------
+\sect{Suites définies par une relation $u_{n+1}=f(u_n)$}
+
+\noindent
+\begin{minipage}[c]{0.585\linewidth}
+\begin{methode}[Étude complète, en quatre temps]
+\begin{etapes}
+  \item \cle{Encadrer} : montrer par récurrence que $u_n\in I$ pour tout $n$, avec
+    $f(I)\subset I$ (souvent grâce aux variations de $f$).
+  \item \cle{Sens de variation} : par récurrence (si $f$ est croissante sur $I$, comparer $u_0$
+    et $u_1$), ou par le signe de $u_{n+1}-u_n$.
+  \item \cle{Convergence} : la suite est monotone et bornée, donc elle converge.
+  \item \cle{Limite} : si $u_n\to\ell$ et $f$ est continue en $\ell$, alors $\ell=f(\ell)$ ; on
+    résout cette équation et on garde la solution compatible avec l'encadrement.
+\end{etapes}
+\end{methode}
+\begin{exemple}[$u_0=0$ et $u_{n+1}=\sqrt{u_n+6}$]
+Par récurrence, $0\leq u_n\leq u_{n+1}\leq3$ : la suite converge vers $\ell\geq0$ tel que
+$\ell=\sqrt{\ell+6}$, soit $\ell^{2}-\ell-6=0$. Donc $\ell=\res{3}$ (la racine $-2$ est exclue).
+\end{exemple}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.385\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema,width=66mm,height=62mm,xmin=0,xmax=4,ymin=0,ymax=4,
+  xtick=\empty,ytick={3},xlabel={$x$},ylabel={$y$},
+  xlabel style={at={(1,0)},anchor=west},ylabel style={at={(0,1)},anchor=south,rotate=-90}]
+  \addplot[otRule!80!otMuted,line width=0.6pt,domain=0:3.9] {x};
+  \addplot[otNavy,line width=1.1pt,domain=0:3.9,samples=60] {sqrt(x+6)};
+  \addplot[otGreen,line width=0.8pt] coordinates
+    {(0,0) (0,2.4495) (2.4495,2.4495) (2.4495,2.9068) (2.9068,2.9068) (2.9068,2.9844) (2.9844,2.9844) (2.9844,2.9974)};
+  \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (axis cs:2.4495,2.4495) -- (axis cs:2.4495,0);
+  \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (axis cs:2.9068,2.9068) -- (axis cs:2.9068,0);
+  \draw[otNavy!60,densely dotted,line width=0.5pt] (axis cs:0,3) -- (axis cs:3,3);
+  \addplot[only marks,mark=*,mark size=1.2pt,otGreen] coordinates {(0,0) (2.4495,0) (2.9068,0)};
+  \fill[otNavy] (axis cs:3,3) circle (1.5pt);
+  \node[anchor=north,font=\scriptsize] at (axis cs:0.08,-0.05) {$u_0$};
+  \node[anchor=north east,font=\scriptsize] at (axis cs:2.5,-0.05) {$u_1$};
+  \node[anchor=north west,font=\scriptsize] at (axis cs:2.86,-0.05) {$u_2$};
+  \node[anchor=south,font=\scriptsize,text=otNavy] at (axis cs:1,2.9) {$y=\sqrt{x+6}$};
+  \node[anchor=west,font=\scriptsize,text=otMuted] at (axis cs:3.55,3.55) {$y=x$};
+\end{axis}
+\end{tikzpicture}\\
+\legende{La « toile d'araignée » : on monte à la courbe, on revient à la droite $y=x$ ; les
+termes s'accumulent vers le point fixe $3$.}
+\end{minipage}
+
+%% ---------------------------------------------------------------------
+\sect{Algorithmes à connaître}
+
+\noindent
+\begin{minipage}[t]{0.485\linewidth}
+\otIntertitre{Recherche d'un seuil}
+\begin{python}
+def seuil(s):
+    n, u = 0, 0         # u0 = 0
+    while u <= s:
+        u = 0.5 * u + 1
+        n = n + 1
+    return n
+\end{python}
+{\fontsize{9.4}{11.8}\selectfont\RaggedRight Pour $u_0=0$ et $u_{n+1}=0{,}5\,u_n+1$, on a
+$u_n=2-2\times0{,}5^{n}$. \texttt{seuil(1.99)} renvoie $\res{8}$ : premier rang où $u_n>1{,}99$
+($u_7\approx1{,}984$ et $u_8\approx1{,}992$). La boucle s'arrête car $u_n\to2>1{,}99$.\par}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\otIntertitre{Somme des premiers termes}
+\begin{python}
+def somme(n):
+    u, S = 1, 1         # u0 = 1
+    for k in range(n):
+        u = 3 * u
+        S = S + u
+    return S            # u0 + ... + un
+\end{python}
+{\fontsize{9.4}{11.8}\selectfont\RaggedRight \texttt{somme(4)} renvoie
+$1+3+9+27+81=\res{121}=\frac{3^{5}-1}{3-1}$. De même, $u_0=1$ et
+$u_{n+1}=\frac12\bigl(u_n+\frac{2}{u_n}\bigr)$ donnent des valeurs approchées de $\sqrt2$ :
+$1{,}5$ ; $1{,}416\,7$ ; $1{,}414\,22$\,…\par}
+\end{minipage}
+
+%% ---------------------------------------------------------------------
+\strategie{Comment trouver la limite d'une suite ?}{%
+  {$u_n$ est donnée en fonction de $n$}/{Limites de référence et opérations ; en cas de forme
+    indéterminée : factoriser, quantité conjuguée.},
+  {On dispose d'un encadrement ou d'une inégalité}/{Gendarmes (limite finie) ou théorème de
+    comparaison (limite infinie).},
+  {$u_{n+1}=a\,u_n+b$ avec $a\neq1$}/{Suite auxiliaire $v_n=u_n-\ell$, géométrique, puis limite
+    de $q^{n}$.},
+  {$u_{n+1}=f(u_n)$}/{Monotone et bornée, donc convergente ; puis $\ell=f(\ell)$ si $f$ est
+    continue en $\ell$.},
+  {On demande seulement si elle converge}/{Convergence monotone : croissante et majorée, ou
+    décroissante et minorée.}}
+
+\begin{jesais}
+  \item calculer un terme et une somme (arithmétique, géométrique) ;
+  \item étudier le sens de variation d'une suite ;
+  \item rédiger une récurrence complète, initialisation comprise ;
+  \item calculer une limite et lever une forme indéterminée ;
+  \item utiliser la comparaison et les gendarmes ;
+  \item justifier une convergence par la convergence monotone ;
+  \item étudier une suite $u_{n+1}=f(u_n)$ et trouver sa limite ;
+  \item écrire un algorithme de seuil en Python.
+\end{jesais}
+
+\pourAllerPlusLoin{Livre OptiTAB \emph{Mathématiques Terminale}, chapitre 1 « Suites
+numériques » : 15 exercices corrigés pas à pas, des applications directes aux problèmes type bac.
+Cours, quiz et exercices en ligne sur \textbf{\otSite}.}

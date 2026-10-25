@@ -1,0 +1,87 @@
+\editionPage[\pdfbookmark[0]{Démonstrations}{bm-preuves-debut-parent}]{preuves-debut}{Comprendre les preuves}{Identités remarquables et parité}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-debut}
+
+\begin{demonstration}[Les trois identités remarquables]
+Par double distributivité, $(a+b)^2=(a+b)(a+b)=a^2+ab+ba+b^2=a^2+2ab+b^2$.
+De même, $(a-b)^2=a^2-ab-ba+b^2=a^2-2ab+b^2$. Enfin
+$(a-b)(a+b)=a^2+ab-ab-b^2=a^2-b^2$ : les deux termes opposés s’annulent.
+Lues de droite à gauche, ces égalités permettent de factoriser.
+\end{demonstration}
+\begin{demonstration}[Le carré d’un entier impair est impair]
+Un entier impair s’écrit $2n+1$ avec n entier. Son carré vaut
+$(2n+1)^2=4n^2+4n+1=2(2n^2+2n)+1$. Le nombre entre parenthèses est entier :
+on obtient bien un multiple de 2 augmenté de 1.
+\end{demonstration}
+\editionRetenir{Une écriture générale prouve ce que quelques essais ne font que suggérer.}
+
+\end{blocEdition}
+\editionPage{preuves-2}{Comprendre les preuves}{Pythagore par les aires}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-2}
+
+Considérons quatre copies d’un triangle rectangle de côtés perpendiculaires
+a et b et d’hypoténuse c, disposées dans un carré de côté $a+b$.
+\begin{center}\begin{tikzpicture}[scale=.65,font=\small]
+\draw[geoTrait](0,0)rectangle(5,5);
+\fill[otGreenTint](2,0)--(5,2)--(3,5)--(0,3)--cycle;
+\draw[geoTrait](2,0)--(5,2)--(3,5)--(0,3)--cycle;
+\node[below]at(1,0){$a$};\node[below]at(3.5,0){$b$};
+\node[right]at(5,1){$a$};\node[right]at(5,3.5){$b$};
+\node at(2.5,2.5){aire $c^2$};
+\end{tikzpicture}\end{center}
+Chaque côté du quadrilatère central est une hypoténuse de longueur c.
+Ses angles sont droits : les deux angles aigus voisins des triangles
+ont une somme de 90 degrés, et complètent un angle plat avec l’angle central.
+Le quadrilatère est donc un carré.\par\medskip
+L’aire du grand carré vaut $(a+b)^2$. Elle est aussi la somme de l’aire
+du carré central et de celles des quatre triangles :
+\[
+(a+b)^2=c^2+4\times\frac{ab}{2}=c^2+2ab.
+\]
+En développant puis en soustrayant $2ab$, on obtient
+$\res{a^2+b^2=c^2}$.
+
+\end{blocEdition}
+\editionPage{preuves-3}{Comprendre les preuves}{Thalès par les aires}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-3}
+
+Dans le triangle ABC, M appartient à [AB], N à [AC] et $(MN)\parallel(BC)$.
+On note $\mathcal A$ l’aire d’un triangle.
+\begin{center}\begin{tikzpicture}[scale=.5,font=\small]
+\draw[geoTrait](0,0)node[below left]{$A$}--(10,0)node[below right]{$B$}--(4,6)node[above]{$C$}--cycle;
+\draw[geoTrait](6,0)node[below]{$M$}--(2.4,3.6)node[left]{$N$};
+\draw[otMuted,dashed](6,0)--(4,6) (2.4,3.6)--(10,0);
+\end{tikzpicture}\end{center}
+\begin{demonstration}[Deux triangles de même aire]
+B et C sont sur une droite parallèle à (MN) : ils sont à la même distance
+de (MN). Les triangles MNB et MNC ont donc la même base [MN] et la même
+hauteur : $\mathcal A(MNB)=\mathcal A(MNC)$. En ajoutant l’aire de AMN,
+on obtient $\mathcal A(ANB)=\mathcal A(AMC)$.
+\end{demonstration}
+\begin{demonstration}[L’égalité des rapports]
+Les triangles AMN et ABN ont la même hauteur issue de N ; leurs bases
+[AM] et [AB] sont sur la même droite. Donc
+$\dfrac{\mathcal A(AMN)}{\mathcal A(ABN)}=\dfrac{AM}{AB}$. De même, avec la
+hauteur issue de M, $\dfrac{\mathcal A(AMN)}{\mathcal A(AMC)}=\dfrac{AN}{AC}$.
+Les dénominateurs sont égaux d’après la première étape :
+$\res{\dfrac{AM}{AB}=\dfrac{AN}{AC}}$.
+\end{demonstration}
+
+\end{blocEdition}
+\editionPage{preuves-4}{Comprendre les preuves}{Trigonométrie et vecteurs}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-4}
+
+\begin{demonstration}[$(\cos\widehat B)^2+(\sin\widehat B)^2=1$]
+Dans ABC rectangle en A, $\cos\widehat B=AB/BC$ et $\sin\widehat B=AC/BC$. Donc
+$(\cos\widehat B)^2+(\sin\widehat B)^2=\dfrac{AB^2+AC^2}{BC^2}$. D’après le théorème
+de Pythagore, $AB^2+AC^2=BC^2$ : la somme vaut 1. Connaissant le cosinus
+d’un angle aigu, on en déduit son sinus, qui est positif.
+\end{demonstration}
+\begin{demonstration}[La règle du parallélogramme]
+Si ABCD est un parallélogramme, ses côtés opposés [AD] et [BC] sont
+parallèles, de même longueur, et parcourus dans le même sens :
+$\vect{AD}=\vect{BC}$. Par la relation de Chasles,
+$\vect{AB}+\vect{AD}=\vect{AB}+\vect{BC}=\vect{AC}$.
+\end{demonstration}
+\editionRetenir{Une égalité de vecteurs traduit à la fois un parallélisme, un sens et une égalité de longueurs.}
+
+\end{blocEdition}

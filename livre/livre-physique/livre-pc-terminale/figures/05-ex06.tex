@@ -1,0 +1,32 @@
+% Deux actes élémentaires acide-base (exercice 6, chapitre 5) ; flèches courbes au corrigé
+{\setchemfig{atom sep=2.1em}\def\titreActe#1{\makebox[13mm][l]{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}#1}}%
+\titreActe{Acte 1}%
+\schemestart
+\chemfig{H_3C-C(=[1]\charge{0=\|,90=\|}{O})-[7]@{ha1}\charge{180=\|,270=\|}{O}-[@{ha2}]@{ha3}H}
+\+
+\chemfig{@{ha4}\charge{90=\|,180=\|,270=\|,45:3.6pt=\cmoins}{O}-H}
+\arrow
+\chemfig{H_3C-C(=[1]\charge{0=\|,90=\|}{O})-[7]\charge{0=\|,180=\|,270=\|,60:3.6pt=\cmoins}{O}}
+\+
+\chemfig{H-\charge{90=\|,270=\|}{O}-H}
+\schemestop
+\hspace{13mm}%
+\solution{\chemmove{%
+  \draw[pcCourbe] ([xshift=-1.8pt,yshift=0.6pt]ha4.west) .. controls +(125:7mm) and +(65:6mm) .. (ha3.north);
+  \draw[pcCourbe] ([yshift=-1pt]ha2) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]ha1.south);}}
+\par\vspace{6mm}
+\titreActe{Acte 2}%
+\schemestart
+\chemfig{H_3C-@{hb1}\charge{0=\|}{N}(-[2]H)-[6]H}
+\+
+\chemfig{@{hb2}H-[@{hb3}]@{hb4}\charge{90=\|,135:4.2pt=\cplus}{O}(-[1]H)-[7]H}
+\arrow
+\chemfig{H_3C-\charge{45:4.2pt=\cplus}{N}(-[2]H)(-[6]H)-H}
+\+
+\chemfig{H-\charge{90=\|,270=\|}{O}-H}
+\schemestop
+\hspace{13mm}%
+\solution{\chemmove{%
+  \draw[pcCourbe] ([xshift=1.8pt,yshift=0.6pt]hb1.east) .. controls +(55:7mm) and +(115:6mm) .. (hb2.north);
+  \draw[pcCourbe] ([yshift=-1pt]hb3) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]hb4.south);}}}
+\solution{\par\smallskip\legende{Dans les deux actes, un doublet non liant de la base capte l'ion \ce{H+} ; le doublet de la liaison rompue reste sur l'atome d'oxygène.}}

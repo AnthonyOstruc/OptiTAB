@@ -1,0 +1,28 @@
+% Principe de l'expérience de Joule (1850) : la chute de masses met en rotation des palettes dans l'eau (défi D19)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% récipient
+\fill[pcEau] (2.0,0.2) rectangle (4.6,2.0);
+\draw[otNavy!45,line width=0.5pt] (2.0,2.0) -- (4.6,2.0);
+\draw[otInk!70,line width=0.9pt] (2.0,2.35) -- (2.0,0.2) -- (4.6,0.2) -- (4.6,2.35);
+\fill[otMuted!55] (1.9,2.35) rectangle (4.7,2.55);
+% axe et palettes
+\draw[otInk!70,line width=1pt] (3.3,0.45) -- (3.3,3.6);
+\foreach \yy in {0.6,1.05,1.5}{\fill[otMuted!70] (2.6,\yy) rectangle (4.0,\yy+0.18);}
+% tambour et cordes
+\fill[otMuted!60] (3.05,3.2) rectangle (3.55,3.6);
+\draw[otInk!70,line width=0.5pt] (3.05,3.45) -- (0.8,3.45);
+\draw[otInk!70,line width=0.5pt] (3.55,3.45) -- (5.8,3.45);
+\foreach \xx in {0.8,5.8}{
+  \fill[white] (\xx,3.25) circle (0.2); \draw[otInk!70,line width=0.6pt] (\xx,3.25) circle (0.2);
+  \draw[otInk!70,line width=0.5pt] ({\xx+(\xx<3?-0.2:0.2)},3.25) -- ({\xx+(\xx<3?-0.2:0.2)},1.7);}
+\fill[otInk!65] (0.35,1.0) rectangle (0.85,1.7);
+\fill[otInk!65] (5.75,1.0) rectangle (6.25,1.7);
+\draw[otRed!80!black,line width=0.9pt,-{Stealth[length=1.8mm]}] (-0.2,1.6) -- (-0.2,0.6);
+\draw[otRed!80!black,line width=0.9pt,-{Stealth[length=1.8mm]}] (6.8,1.6) -- (6.8,0.6);
+\node[pcLegende,anchor=north] at (0.6,0.95) {masse};
+\node[pcLegende,anchor=north] at (6.0,0.95) {masse};
+\draw[otMuted,line width=0.3pt] (4.0,0.7) -- (5.1,0.4) node[pcLegende,anchor=west] {palettes};
+\node[pcLegende,anchor=south] at (3.3,3.65) {tambour};
+\draw[otMuted,line width=0.3pt] (2.3,1.85) -- (1.4,2.4) node[pcLegende,anchor=south east] {eau};
+\end{tikzpicture}
+\par\smallskip\legende{En descendant, les masses font tourner l'axe ; les palettes brassent l'eau, dont la température s'élève légèrement.}

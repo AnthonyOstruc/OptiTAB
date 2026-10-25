@@ -1,0 +1,264 @@
+% !TEX root = ../main.tex
+%% Chapitre 19 — Concentration et loi des grands nombres
+%% Sources : frontend/cours/resume/terminal/resume_concentration_loi_grands_nombres_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_loi_grands_nombres.txt
+%% Exercice 7, question 2 : résultat corrigé (l'intervalle n'est pas centré sur p).
+%% Exercices 2, 4, 8 et 9 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[grandsnombres]{19}{Concentration et loi des grands nombres}{Partie 3 · Probabilités}
+  {Bienaymé-Tchebychev\enspace·\enspace Inégalité de concentration\enspace·\enspace Loi des grands nombres\enspace·\enspace
+   Taille d'échantillon}
+  \objectif{Majorer la probabilité d'un écart à l'espérance avec l'inégalité de Bienaymé-Tchebychev.}
+  \objectif{Appliquer l'inégalité de concentration à la moyenne d'un échantillon.}
+  \objectif{Comprendre et interpréter la loi des grands nombres, y compris par simulation.}
+  \objectif{Déterminer une taille d'échantillon garantissant une précision et un risque donnés.}
+  \objectif{Encadrer une espérance ou une proportion inconnue à partir d'une observation.}
+  \prerequis{Espérance, variance, loi binomiale (chapitre 17).}
+  \prerequis{Somme et moyenne d'un échantillon (chapitre 18).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{L'inégalité de Bienaymé-Tchebychev}
+
+\noindent
+\begin{minipage}[c]{0.54\linewidth}
+\begin{theoreme}[Inégalité de Bienaymé-Tchebychev]
+\raggedright
+Soit $X$ une variable aléatoire d'espérance $\mu$ et de variance $V$. Pour tout réel $\delta>0$ :
+\[ P\big(|X-\mu|\geq\delta\big)\leq\frac{V}{\delta^{2}}. \]
+De façon équivalente : $P\big(|X-\mu|<\delta\big)\geq1-\dfrac{V}{\delta^{2}}$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=68mm, height=44mm, ybar, bar width=1.3mm, bar shift=0pt, xmin=6.5, xmax=33.5, ymin=0, ymax=0.14,
+  xtick={14,20,26}, xticklabels={$\mu-\delta$,$\mu$,$\mu+\delta$}, ytick=\empty, xlabel={$k$},
+  xlabel style={at={(1,0)},anchor=west}]
+  \addplot[fill=otOrange!70,draw=otOrange] coordinates {(8,0.0001) (9,0.0002) (10,0.0008) (11,0.0021) (12,0.0051) (13,0.0109) (14,0.0211)
+    (26,0.0211) (27,0.0109) (28,0.0051) (29,0.0021) (30,0.0008) (31,0.0002) (32,0.0001)};
+  \addplot[fill=otNavySoft,draw=otNavy,line width=0.3pt] coordinates {(15,0.0366) (16,0.0572) (17,0.0807) (18,0.1031) (19,0.1194)
+    (20,0.1254) (21,0.1194) (22,0.1031) (23,0.0807) (24,0.0572) (25,0.0366)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$X\sim\mathcal{B}(40\pv0{,}5)$, $\delta=6$ : la zone orange a pour probabilité $0{,}081$, majorée par $\frac{10}{36}\approx0{,}28$.}
+\end{minipage}
+
+\begin{propriete}[Écarts mesurés en écarts-types]
+Avec $\delta=k\sigma$ ($k>0$) : $P\big(|X-\mu|\geq k\sigma\big)\leq\dfrac{1}{k^{2}}$. Ainsi, un écart d'au moins $2\sigma$ a une probabilité
+au plus égale à $\frac14$, un écart d'au moins $3\sigma$ au plus égale à $\frac19\approx0{,}11$. Cette majoration est valable pour
+\emph{toute} loi, mais elle est souvent grossière.
+\end{propriete}
+
+\essSection{2}{Inégalité de concentration}
+
+\begin{theoreme}[Inégalité de concentration]
+Soit $M_n$ la moyenne d'un échantillon de taille $n$ d'une loi d'espérance $\mu$ et de variance $V$. Pour tout réel $\delta>0$ :
+\[ P\big(|M_n-\mu|\geq\delta\big)\leq\frac{V}{n\,\delta^{2}}. \]
+\end{theoreme}
+
+\begin{demonstration}
+D'après le chapitre 18, $E(M_n)=\mu$ et $V(M_n)=\frac Vn$. On applique l'inégalité de Bienaymé-Tchebychev à la variable $M_n$.
+\end{demonstration}
+
+\essSection{3}{La loi des grands nombres}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\begin{theoreme}[Loi faible des grands nombres]
+\raggedright
+Avec les notations précédentes, pour tout $\delta>0$ :
+\[ \lim_{n\to+\infty}P\big(|M_n-\mu|\geq\delta\big)=0. \]
+La moyenne d'un échantillon se rapproche de l'espérance lorsque sa taille augmente. Pour des épreuves de Bernoulli, la
+\textbf{fréquence} des succès se stabilise autour de $p$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=74mm, height=48mm, xmin=0, xmax=1030, ymin=0.33, ymax=0.69,
+  xtick={0,200,400,600,800,1000}, xticklabels={$0$,$200$,$400$,$600$,$800$,$1\,000$},
+  ytick={0.4,0.5,0.6}, yticklabels={$0{,}4$,$0{,}5$,$0{,}6$}, xlabel={$n$},
+  xlabel style={at={(1,0)},anchor=west}, grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[name path=H,otGreen,line width=0.5pt,domain=175:1000,samples=80] {0.5+1/sqrt(4*0.05*x)};
+  \addplot[name path=L,otGreen,line width=0.5pt,domain=175:1000,samples=80] {0.5-1/sqrt(4*0.05*x)};
+  \addplot[otGreen!16] fill between[of=H and L];
+  \draw[otMuted,dashed,line width=0.5pt] (axis cs:0,0.5) -- (axis cs:1000,0.5);
+  \addplot[otNavy,line width=1pt] coordinates {(2,0.5) (3,0.667) (4,0.5) (5,0.4) (6,0.5) (7,0.429) (8,0.5) (9,0.444) (10,0.5)
+    (11,0.455) (12,0.417) (13,0.385) (14,0.429) (15,0.467) (16,0.5) (17,0.529) (18,0.5) (19,0.526) (20,0.5) (25,0.48) (30,0.467)
+    (35,0.457) (40,0.425) (45,0.444) (50,0.4) (55,0.4) (60,0.4) (65,0.431) (70,0.443) (75,0.467) (80,0.5) (85,0.518) (90,0.511)
+    (95,0.516) (100,0.51) (125,0.56) (150,0.533) (175,0.526) (200,0.54) (225,0.529) (250,0.532) (275,0.542) (300,0.53) (325,0.545)
+    (350,0.534) (375,0.531) (400,0.52) (425,0.525) (450,0.529) (475,0.528) (500,0.518) (525,0.516) (550,0.513) (575,0.515)
+    (600,0.507) (625,0.504) (650,0.506) (675,0.502) (700,0.503) (725,0.499) (750,0.497) (775,0.502) (800,0.5) (825,0.499)
+    (850,0.504) (875,0.499) (900,0.497) (925,0.497) (950,0.496) (975,0.498) (1000,0.497)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Fréquence de pile lors d'une simulation de $1\,000$ lancers ; en vert, les bornes $0{,}5\pm\frac{1}{\sqrt{4\times0{,}05\,n}}$
+garanties avec une probabilité d'au moins $0{,}95$.}
+\end{minipage}
+
+\essSection{4}{Taille d'échantillon et estimation}
+
+\begin{savoirfaire}[Déterminer une taille d'échantillon]
+Pour garantir $P\big(|M_n-\mu|\geq\delta\big)\leq\alpha$ (précision $\delta$, risque $\alpha$), il suffit que $\dfrac{V}{n\delta^{2}}\leq\alpha$,
+c'est-à-dire $n\geq\dfrac{V}{\alpha\,\delta^{2}}$. Pour une fréquence, $V=p(1-p)\leq\frac14$ : il suffit alors que $n\geq\dfrac{1}{4\alpha\,\delta^{2}}$,
+même si $p$ est inconnue.
+\end{savoirfaire}
+
+\begin{savoirfaire}[Encadrer une valeur inconnue]
+Si l'on observe une moyenne $m$ sur un échantillon de taille $n$, on choisit $\delta$ tel que $\frac{V}{n\delta^{2}}=\alpha$, soit
+$\delta=\sqrt{\dfrac{V}{n\alpha}}$ : l'intervalle $\intFF{m-\delta}{m+\delta}$ contient $\mu$ avec une probabilité d'au moins $1-\alpha$.
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Les inégalités donnent des \textbf{majorations}, pas des valeurs exactes : la vraie probabilité est souvent bien plus petite.
+  \item $\delta$ est l'écart toléré, $\sigma$ l'écart-type : ne pas les confondre, et ne pas oublier le carré dans $\delta^{2}$.
+  \item L'inégalité porte sur un écart \textbf{symétrique} autour de $\mu$ : pour un intervalle non centré, on prend le plus petit écart.
+  \item La loi des grands nombres n'affirme pas que la fréquence devient égale à $p$, ni qu'elle « compense » les écarts passés.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{La loi des grands nombres}
+\begin{questions}
+  \item On lance $100$ fois une pièce équilibrée et l'on obtient $47$ piles. Calculer la fréquence observée et la comparer à la
+    probabilité théorique.
+  \item On lance $600$ fois un dé équilibré. Vers quelle valeur la moyenne des résultats devrait-elle se rapprocher ?
+  \item Sur $1\,000$ lancers d'une pièce, on observe $520$ piles. Ce résultat est-il compatible avec une pièce équilibrée ?
+  \item Un élève a une moyenne « théorique » de $14$ sur $20$. Après $5$ contrôles, sa moyenne est de $12$ ; après $50$ contrôles, elle
+    est de $13{,}8$. Commenter au regard de la loi des grands nombres.
+  \item Expliquer pourquoi la loi des grands nombres ne garantit pas que la fréquence sera exactement égale à la probabilité.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Simuler des lancers en Python}
+On simule $n$ lancers d'une pièce équilibrée à l'aide de la fonction ci-dessous.
+\begin{python}
+import random
+
+def frequence(n):
+    s = 0
+    for i in range(n):
+        if random.random() < 0.5:
+            s = s + 1
+    return s / n
+\end{python}
+\begin{questions}
+  \item Que représente la variable \texttt{s} ? Que renvoie \texttt{frequence(n)} ?
+  \item Trois appels ont renvoyé $0{,}7$ pour $n=10$, $0{,}46$ pour $n=100$ et $0{,}503\,2$ pour $n=10\,000$. Commenter.
+  \item On note $X_i$ la variable égale à $1$ si le $i$-ème lancer donne pile, et $0$ sinon. Exprimer la fréquence $F_n$ à l'aide des
+    $X_i$, puis calculer $E(F_n)$ et $V(F_n)$.
+  \item Majorer $P\big(|F_n-0{,}5|\geq0{,}05\big)$ pour $n=10\,000$ et interpréter.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{L'inégalité de Bienaymé-Tchebychev}
+\begin{questions}
+  \item Une variable $X$ a pour espérance $10$ et pour variance $4$. Majorer $P\big(|X-10|\geq4\big)$.
+  \item Les notes d'une classe ont pour moyenne $12$ et pour écart-type $3$. Majorer la probabilité qu'un élève pris au hasard ait
+    une note qui s'écarte de la moyenne d'au moins $6$ points.
+  \item Des boulons ont une longueur moyenne de $5$~cm, avec un écart-type de $0{,}2$~cm. Majorer la probabilité qu'un boulon mesure
+    au plus $4{,}5$~cm ou au moins $5{,}5$~cm.
+  \item $X$ a pour espérance $50$ et pour variance $25$. Minorer $P\big(|X-50|<10\big)$.
+  \item Le temps de fabrication d'une pièce a pour moyenne $8$ minutes et pour écart-type $1{,}5$ minute. Majorer la probabilité qu'il
+    s'écarte de la moyenne d'au moins $3$ minutes.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Majoration et valeur exacte}
+On lance $100$ fois une pièce équilibrée ; $X$ est le nombre de piles, de loi $\mathcal{B}(100\pv0{,}5)$.
+\begin{questions}
+  \item Calculer $E(X)$, $V(X)$ et $\sigma(X)$.
+  \item Majorer $P\big(|X-50|\geq10\big)$ à l'aide de l'inégalité de Bienaymé-Tchebychev.
+  \item À l'aide de la calculatrice, calculer la valeur exacte de $P(X\leq40)+P(X\geq60)$. Comparer.
+  \item Reprendre les questions 2 et 3 avec un écart de $15$, soit $3\sigma$. Quelle conclusion peut-on tirer ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Taille d'échantillon}
+\begin{questions}
+  \item On lance $n$ fois une pièce équilibrée. Combien de lancers faut-il pour que la probabilité que la fréquence de pile s'écarte
+    de $0{,}5$ d'au moins $0{,}1$ soit au plus égale à $0{,}05$ ?
+  \item Un sondage doit estimer une proportion $p=0{,}4$ avec une précision de $0{,}02$ et un risque d'au plus 5\,\%. Combien de
+    personnes faut-il interroger ?
+  \item On lance un dé équilibré $n$ fois. Combien de lancers faut-il pour que $P\left(\left|\frac{S_n}{n}-3{,}5\right|\geq0{,}5\right)\leq0{,}1$ ?
+  \item Pour une épreuve de Bernoulli de paramètre $0{,}5$, combien de répétitions faut-il pour que
+    $P\left(\left|\frac{S_n}{n}-0{,}5\right|\geq0{,}05\right)\leq0{,}01$ ?
+  \item Un institut estime une proportion $p=0{,}3$ avec une précision de $0{,}03$. Quelle taille d'échantillon garantit un risque
+    d'erreur inférieur à 10\,\% ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Estimation}
+Dans chaque cas, on admet que l'écart-type donné est celui de la loi de chaque observation.
+\begin{questions}
+  \item Une variable a une espérance $\mu$ inconnue et une variance de $16$. Sur $400$ observations, la moyenne vaut $25$. Donner un
+    intervalle contenant $\mu$ avec une probabilité d'au moins $0{,}95$.
+  \item Sur $250$ clients, le temps d'attente moyen est de $8{,}5$ minutes, avec un écart-type de $2$ minutes. Donner un intervalle
+    contenant le temps d'attente moyen réel avec une probabilité d'au moins $0{,}9$.
+  \item Sur $1\,000$ pommes, le poids moyen est de $150$~g, avec un écart-type de $20$~g. Minorer la probabilité que le poids moyen
+    réel soit compris entre $148$~g et $152$~g.
+  \item Dans un sondage auprès de $2\,500$ personnes, 60\,\% répondent « oui ». Donner un intervalle contenant la vraie proportion
+    avec une probabilité d'au moins $0{,}96$.
+  \item Une expérience donne une moyenne de $45{,}2$ sur $200$ essais, avec un écart-type de $3$. Déterminer la largeur minimale d'un
+    intervalle centré sur $45{,}2$ qui contient la vraie valeur avec une probabilité d'au moins $0{,}99$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Applications pratiques}
+\begin{questions}
+  \item Des vis ont une longueur moyenne de $10$~cm, avec un écart-type de $0{,}3$~cm. On mesure $100$ vis. Majorer la probabilité que
+    leur longueur moyenne s'écarte de $10$~cm d'au moins $0{,}1$~cm.
+  \item À la roulette ($37$ numéros équiprobables), un casino veut savoir si, sur $10\,000$ parties, la fréquence d'apparition du
+    numéro $17$ sera comprise entre 2,4\,\% et 3,1\,\% avec une probabilité d'au moins $0{,}9$. L'inégalité de concentration
+    permet-elle de le garantir ?
+  \item On accepte un lot si, sur $1\,000$ pièces testées, le taux de défauts est inférieur à 8\,\%. Le taux réel est de 5\,\%. Majorer
+    la probabilité de rejeter ce lot à tort.
+  \item Le temps passé sur un site web a un écart-type de $5$ minutes. Combien d'utilisateurs faut-il observer pour que l'erreur sur
+    le temps moyen soit inférieure à $0{,}5$ minute avec une probabilité d'au moins $0{,}95$ ?
+  \item Un laboratoire mesure une constante physique : sur $500$ mesures, la moyenne est de $9{,}82$, et l'écart-type d'une mesure
+    est de $0{,}4$. Déterminer un intervalle contenant la vraie valeur avec une probabilité d'au moins $0{,}96$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Combien de personnes interroger ?}
+Un institut veut estimer la proportion $p$, inconnue, d'électeurs favorables à un projet. Il interroge $n$ personnes, ce que l'on
+assimile à un tirage avec remise, et note $F$ la fréquence des réponses favorables.
+\begin{questions}
+  \item Étudier la fonction $g:p\mapsto p(1-p)$ sur $\intFF{0}{1}$, puis montrer que $V(F)\leq\dfrac{1}{4n}$.
+  \item En déduire que, pour tout $\delta>0$, $P\big(|F-p|\geq\delta\big)\leq\dfrac{1}{4n\delta^{2}}$.
+  \item Combien de personnes faut-il interroger pour que $P\big(|F-p|\geq0{,}02\big)\leq0{,}05$, quelle que soit la valeur de $p$ ?
+  \item Même question avec une précision de $0{,}03$, puis de $0{,}01$. Que remarque-t-on ?
+  \item Sur $1\,000$ personnes, 52\,\% sont favorables. Donner un intervalle contenant $p$ avec une probabilité d'au moins $0{,}95$.
+    Peut-on affirmer que le projet est majoritairement soutenu ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le casino gagne toujours}
+À la roulette, il y a $37$ numéros : $18$ rouges, $18$ noirs et le zéro, vert. Un joueur mise $1$\,€ sur « rouge » à chaque partie :
+il gagne $1$\,€ si un numéro rouge sort et perd sa mise sinon. On note $G_i$ son gain à la $i$-ème partie ; les parties sont
+indépendantes, et $M_n$ est le gain moyen par partie sur $n$ parties.
+\begin{questions}
+  \item Déterminer la loi de $G_i$, puis montrer que $E(G_i)=-\dfrac1{37}$ et $V(G_i)=\dfrac{1\,368}{1\,369}$.
+  \item Calculer $E(M_n)$ et $V(M_n)$.
+  \item Justifier que $\big\{M_n\geq0\big\}\subset\Big\{\big|M_n-E(M_n)\big|\geq\frac1{37}\Big\}$, puis que $P(M_n\geq0)\leq\dfrac{1\,368}{n}$.
+  \item Que vaut cette majoration pour $n=100\,000$ ? À partir de combien de parties la probabilité de ne pas être perdant est-elle
+    inférieure à 1\,\% ?
+  \item Le casino reçoit, sur une journée, un million de mises indépendantes de $1$\,€ sur « rouge ». Calculer l'espérance et
+    l'écart-type de son gain total $T$, puis majorer la probabilité que ce gain soit inférieur à $20\,000$\,€.
+\end{questions}
+\end{exercice}

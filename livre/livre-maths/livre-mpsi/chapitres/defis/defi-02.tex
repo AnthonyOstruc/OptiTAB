@@ -1,0 +1,67 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 2 — Sommes de puissances et théorème de Nicomaque
+%% Résultats vérifiés par verifications/defis_01_05.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Sommes de puissances et théorème de Nicomaque}{1 h 30}
+Pour $p\in\N$ et $n\in\N^{*}$, on pose
+$S_p(n)=\displaystyle\sum_{k=1}^{n}k^{p}$ ; ainsi $S_0(n)=n$. On note aussi
+$T_n=S_1(n)$, le $n$-ième \emph{nombre triangulaire}.
+
+\partieExo{A}{La méthode de Pascal}
+\begin{questions}
+  \item Calculer de deux façons
+    $\displaystyle\sum_{k=1}^{n}\Bigl((k+1)^{p+1}-k^{p+1}\Bigr)$ et en
+    déduire la relation
+    \[
+    \sum_{j=0}^{p}\binom{p+1}{j}S_j(n)=(n+1)^{p+1}-1 .
+    \]
+  \item En déduire $T_n=\dfrac{n(n+1)}{2}$, puis
+    $S_2(n)=\dfrac{n(n+1)(2n+1)}{6}$.
+  \item Établir de même $S_3(n)=\Bigl(\dfrac{n(n+1)}{2}\Bigr)^{2}$.
+\end{questions}
+
+\partieExo{B}{Le théorème de Nicomaque, en images}
+L'égalité $S_3(n)=T_n^{2}$ est attribuée à Nicomaque de Gérase
+(\textsc{ii}\textsuperscript{e} siècle). On en cherche deux preuves sans calcul.
+\begin{questions}[resume]
+  \item Montrer que $T_k^{2}-T_{k-1}^{2}=k^{3}$ pour $k\geqslant1$ (avec
+    $T_0=0$). Interpréter : le carré de côté $T_n$ se découpe en $n$
+    équerres d'aires $1^{3},2^{3},\dots,n^{3}$ (figure). Conclure.
+  \item Montrer que $k^{3}$ est la somme des $k$ entiers impairs
+    consécutifs $k(k-1)+1,\ k(k-1)+3,\ \dots,\ k(k+1)-1$. En rangeant ces
+    blocs les uns à la suite des autres, retrouver $S_3(n)=T_n^{2}$.
+    \emph{On rappelle que la somme des $m$ premiers impairs vaut $m^{2}$.}
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=0.36,line cap=round]
+  \foreach \k/\a/\b/\c in {1/0/1/otNavy!22,2/1/3/otGreen!28,3/3/6/otNavy!22,4/6/10/otGreen!28}{%
+    \fill[\c] (\a,0) -- (\b,0) -- (\b,\b) -- (0,\b) -- (0,\a) -- (\a,\a) -- cycle;
+    \node[font=\scriptsize,text=otInk] at ({(\a+\b)/2},{(\a+\b)/2}) {$\k^{3}$};}
+  \draw[otRule,line width=0.3pt] (0,0) grid (10,10);
+  \foreach \t in {1,3,6,10}{%
+    \draw[otNavy,line width=0.9pt] (\t,0) -- (\t,\t) -- (0,\t);}
+  \draw[otNavy,line width=0.9pt] (0,0) rectangle (10,10);
+  \node[font=\scriptsize,text=otMuted,below] at (5,-0.1) {$T_4=1+2+3+4=10$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Le carré de côté $T_4=10$ découpé en quatre équerres : la $k$-ième a
+pour largeur $k$ et pour aire $k^{3}$, d'où $1^{3}+2^{3}+3^{3}+4^{3}=10^{2}$.}
+\end{center}
+
+\partieExo{C}{Le cas général}
+\begin{questions}[resume]
+  \item Montrer par récurrence forte sur $p$ que $S_p(n)$ est l'évaluation
+    en $n$ d'un polynôme de degré $p+1$, de coefficient dominant
+    $\dfrac{1}{p+1}$ et de terme constant nul.
+  \item Établir $S_4(n)=\dfrac{n(n+1)(2n+1)(3n^{2}+3n-1)}{30}$, et le
+    contrôler pour $n=1$ et $n=2$.
+  \item En déduire que
+    $\dfrac{1}{n}\displaystyle\sum_{k=1}^{n}\Bigl(\frac kn\Bigr)^{p}
+    \xrightarrow[n\to+\infty]{}\dfrac{1}{p+1}$. Reconnaître
+    $\displaystyle\int_{0}^{1}t^{p}\,\mathrm{d}t$ : c'est une première
+    \emph{somme de Riemann} (chapitre 15).
+\end{questions}
+\end{defi}

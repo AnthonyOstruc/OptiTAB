@@ -1,0 +1,158 @@
+\begin{ouverture}[denombrement]{6}{Divisibilité et congruences}{Arithmétique}{Entiers relatifs · Division euclidienne · Restes}
+\objectif{Manipuler la divisibilité dans $\Z$.}
+\objectif{Effectuer une division euclidienne, y compris d’un entier négatif.}
+\objectif{Calculer avec les congruences.}
+\objectif{Établir des critères de divisibilité.}
+\prerequis{Calcul entier, multiples et puissances.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Diviser dans les entiers}
+\begin{definition}
+Pour $a,b\in\Z$, $a\mid b$ signifie qu'il existe $k\in\Z$ tel que $b=ak$.
+Si $a$ divise $b$ et $c$, il divise toute combinaison $ub+vc$ avec $u,v\in\Z$.
+\end{definition}
+Si $b=ak$ et $c=a\ell$, alors $ub+vc=a(uk+v\ell)$, ce qui prouve la propriété.
+Un diviseur non nul de $n\ne0$ a une valeur absolue au plus $|n|$. Pour trouver les diviseurs positifs d'un entier positif, on peut tester jusqu'à sa racine carrée et associer $d$ à $n/d$.
+\essSection{2}{La division euclidienne}
+\begin{theoreme}
+Pour $a\in\Z$ et $b\in\N^*$, il existe un unique couple $(q,r)\in\Z^2$ tel que
+$a=bq+r$, avec $0\leq r<b$.
+\end{theoreme}
+\begin{exemple}
+$47=6\times7+5$. Pour $-47$, l'écriture euclidienne est $-47=6\times(-8)+1$, et non $6\times(-7)-5$, car le reste doit être positif ou nul.
+En Python, pour un diviseur positif, \code{a//b} et le reste de \code{a} modulo \code{b} donnent quotient et reste.
+\end{exemple}
+L'unicité vient de $b(q-q')=r'-r$ : le second membre est de valeur absolue strictement inférieure à $b$, et le seul multiple de $b$ dans cette situation est zéro.
+\figurelivre{e06-division.pdf}{La droite des entiers repère les multiples de $6$. Le nombre $-47$ se place une unité après $-48=6\times(-8)$, ce qui explique le quotient négatif et le reste positif.}
+\essSection{3}{Raisonner modulo un entier}
+\begin{definition}
+Pour $n\geq1$, $a\equiv b\pmod n$ signifie $n\mid(a-b)$. Cela équivaut à dire que $a$ et $b$ ont le même reste dans la division par $n$.
+\end{definition}
+Les congruences sont compatibles avec l'addition, la soustraction, le produit et les puissances entières naturelles.
+Si $a\equiv b\pmod n$ et $c\equiv d\pmod n$, alors $ac-bd=c(a-b)+b(c-d)$ est divisible par $n$.
+\begin{attention}
+On ne divise pas librement une congruence : $2\times1\equiv2\times4\pmod6$, mais $1\not\equiv4\pmod6$.
+La simplification exige des hypothèses, précisées avec le théorème de Gauss au chapitre suivant.
+\end{attention}
+\figurelivre{e06-modulo.pdf}{Les classes modulo $7$ se lisent sur un cycle : ajouter $1$ au reste $6$ ramène au reste $0$. Le calcul concerne les restes, pas une égalité ordinaire entre entiers.}
+\essSection{4}{Calculer de grandes puissances}
+On réduit la base puis on cherche un cycle ou on utilise des carrés successifs. Par exemple $3^2\equiv2\pmod7$, $3^4\equiv4\pmod7$ et $3^6\equiv1\pmod7$.
+Donc $3^{100}= (3^6)^{16}3^4\equiv4\pmod7$.
+La fonction Python \code{pow(a, n, m)} calcule efficacement le reste de $a^n$ modulo $m$ pour $n\geq0,m>0$.
+\essSection{5}{Construire un test de divisibilité}
+Si $N=\sum a_k10^k$, alors $10\equiv1\pmod9$ donne $N\equiv\sum a_k\pmod9$ : somme des chiffres.
+Comme $10\equiv-1\pmod{11}$, $N\equiv\sum(-1)^ka_k\pmod{11}$ : somme alternée, en partant des unités.
+Ces résultats sont des preuves de critères, pas seulement des recettes expérimentales.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Diviseurs}
+
+\begin{questions}
+\item Donner les diviseurs positifs de $18$.
+\item $-3$ divise-t-il $18$ ?
+\item Zéro divise-t-il un entier non nul ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Division euclidienne}
+
+\begin{questions}
+\item Diviser $83$ par $7$.
+\item Diviser $-83$ par $7$.
+\item Vérifier la contrainte sur les restes.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Lire une congruence}
+
+\begin{questions}
+\item Verifier $29\equiv1\pmod7$.
+\item Donner le reste de $-3$ modulo $7$.
+\item Donner tous les entiers congrus à $2$ modulo $5$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Calcul de restes}
+
+\begin{questions}
+\item Calculer le reste de $24+35$ modulo $6$.
+\item Calculer celui de $24\times35$.
+\item Calculer celui de $5^2$ modulo $6$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Combinaison entière}
+$d$ divise $3n+2$ et $5n+3$.
+\begin{questions}
+\item Montrer que $d$ divise $5(3n+2)-3(5n+3)$.
+\item En déduire les valeurs possibles de $d>0$.
+\item Que peut-on dire de ces deux entiers ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Puissance modulo $7$}
+
+\begin{questions}
+\item Calculer les restes de $3^2,3^4,3^6$ modulo $7$.
+\item En déduire celui de $3^{100}$.
+\item Vérifier avec \code{pow(3, 100, 7)}.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Critère modulo $9$}
+
+\begin{questions}
+\item Prouver le critère de la somme des chiffres.
+\item Tester $7\,326$.
+\item Le critère distingue-t-il le reste $0$ du chiffre zéro ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Critère modulo $11$}
+
+\begin{questions}
+\item Utiliser $10\equiv-1\pmod{11}$ pour énoncer un test.
+\item Tester $1\,331$.
+\item Tester $1\,234$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Ne pas diviser sans condition}
+
+\begin{questions}
+\item Vérifier $2\equiv8\pmod6$.
+\item Pourquoi ne peut-on diviser par $2$ en conservant le module $6$ ?
+\item Quelle congruence correcte obtient-on modulo $3$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Reste d’un polynôme}
+$N=n^3-n$.
+\begin{questions}
+\item Étudier $N$ modulo $2$.
+\item Étudier $N$ modulo $3$.
+\item En déduire une divisibilité par $6$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Un cycle décimal}
+
+\begin{questions}
+\item Montrer que $7^4\equiv1\pmod{10}$.
+\item Donner le dernier chiffre de $7^{2026}$.
+\item Expliquer le rôle de la division de $2026$ par $4$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Deux nombres consécutifs}
+
+\begin{questions}
+\item Montrer que tout diviseur commun de $n$ et $n+1$ divise $1$.
+\item En déduire leur PGCD.
+\item Cette méthode permet-elle de traiter $n$ et $n+2$ ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

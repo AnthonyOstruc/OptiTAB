@@ -1,0 +1,21 @@
+% Coupe d'un barrage-poids retenant 60 m d'eau (exercice 15, chapitre 12) ; 1 unité = 20 m
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otMuted!18] (-0.3,-0.35) rectangle (8.2,0);
+\draw[otInk!60,line width=0.6pt] (-0.3,0) -- (8.2,0);
+\fill[otNavy!14] (-0.3,0) rectangle (4.0,3.0);
+\draw[pcSurface] (-0.3,3.0) -- (4.0,3.0);
+\fill[otMuted!45] (4.0,0) -- (4.0,3.3) -- (4.6,3.3) -- (6.8,0) -- cycle;
+\draw[otInk!70,line width=0.6pt] (4.0,0) -- (4.0,3.3) -- (4.6,3.3) -- (6.8,0);
+\node[pcLegende] at (5.0,1.0) {béton};
+\node[pcLegende] at (1.0,2.5) {retenue d'eau};
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (-0.15,0) -- (-0.15,3.0) node[midway,pcLegende,anchor=west] {$H=\qty{60}{m}$};
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (4.0,-0.6) -- (6.8,-0.6) node[midway,pcLegende,anchor=north] {base épaisse};
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (4.0,3.5) -- (4.6,3.5) node[midway,pcLegende,anchor=south,yshift=1.5pt] {crête étroite};
+\solution{
+  \foreach \y in {2.7,2.4,...,0.15}{\pgfmathsetmacro\lg{(3.0-\y)/3.0*1.9}
+    \draw[otGreenDark,line width=0.8pt,-{Stealth[length=1.6mm]}] ({3.98-\lg},\y) -- (3.98,\y);}
+  \draw[otGreenDark,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (3.98,3.0) -- (2.08,0);
+  \node[pcLegende,anchor=east,text=otGreenDark,fill=otNavy!14,inner sep=1pt] at (2.9,1.5) {\qty{2,94e5}{Pa}};
+  \node[pcLegende,anchor=east,text=otGreenDark,fill=otNavy!14,inner sep=1pt] at (2.0,0.3) {\qty{5,89e5}{Pa}};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Coupe verticale d'un barrage-poids.}\solution{Les forces pressantes dues à l'eau croissent proportionnellement à la profondeur.}}

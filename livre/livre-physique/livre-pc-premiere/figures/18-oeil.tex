@@ -1,0 +1,30 @@
+% L'œil et son modèle réduit : diaphragme, lentille convergente de focale variable, écran (L'essentiel, chapitre 18)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Œil réel
+\begin{scope}
+  \draw[otInk!70,line width=0.8pt] (0,0) circle (1.25);
+  \draw[otOrange!85!black,line width=2pt] (40:1.25) arc (40:-40:1.25);
+  \fill[otNavy!25] (-1.05,0) ellipse (0.12 and 0.42);
+  \draw[otNavy,line width=0.6pt] (-1.05,0) ellipse (0.12 and 0.42);
+  \draw[otInk!80,line width=1.4pt] (-1.12,0.52) -- (-1.12,0.28) (-1.12,-0.28) -- (-1.12,-0.52);
+  \draw[otMuted,line width=0.4pt] (-1.05,0.42) -- (-1.4,1.25) node[pcLegende,anchor=south] {cristallin};
+  \draw[otMuted,line width=0.4pt] (-1.12,-0.45) -- (-1.5,-1.25) node[pcLegende,anchor=north] {iris};
+  \draw[otMuted,line width=0.4pt] (1.15,0.5) -- (1.6,1.1) node[pcLegende,anchor=south] {rétine};
+  \node[pcLegendeG,anchor=north] at (0,-1.55) {l'œil};
+\end{scope}
+% Modèle réduit
+\begin{scope}[shift={(5.0,0)}]
+  \draw[otInk!80,line width=1.4pt] (-1.3,0.62) -- (-1.3,0.3) (-1.3,-0.3) -- (-1.3,-0.62);
+  \draw[otNavy,line width=1.2pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}] (-0.9,-0.8) -- (-0.9,0.8);
+  \fill[otOrange!25] (1.3,-0.9) rectangle (1.42,0.9); \draw[otOrange!85!black,line width=0.6pt] (1.3,-0.9) rectangle (1.42,0.9);
+  \draw[otInk!60,line width=0.4pt] (-1.8,0) -- (1.8,0);
+  \draw[otOrange!85!black,line width=0.6pt] (-1.8,0.25) -- (-0.9,0.25) -- (1.3,0);
+  \draw[otOrange!85!black,line width=0.6pt] (-1.8,-0.25) -- (-0.9,-0.25) -- (1.3,0);
+  \node[pcLegende,anchor=south east] at (-1.32,0.62) {diaphragme};
+  \node[pcLegende,anchor=south,align=center] at (-0.4,0.85) {lentille de\\vergence variable};
+  \node[pcLegende,anchor=west] at (1.48,0.6) {écran};
+  \draw[otInk!60,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (-0.9,-1.05) -- (1.3,-1.05) node[pos=0.5,pcLegende,anchor=north] {distance fixe (\qty{17}{mm} environ)};
+  \node[pcLegendeG,anchor=north] at (0,-1.55) {modèle réduit};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{La distance cristallin-rétine est fixe : pour voir net de près, l'œil augmente la vergence du cristallin (accommodation).}

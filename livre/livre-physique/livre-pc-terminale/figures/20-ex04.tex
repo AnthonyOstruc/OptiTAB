@@ -1,0 +1,13 @@
+% Refroidissement d'une tasse de thé (exercice 4, chapitre 20)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=52mm,xmin=0,xmax=82,ymin=0,ymax=90,
+  xtick={0,10,...,80},ytick={0,10,...,90},
+  xlabel={$t$ (min)},ylabel={$T$ (\unit{\degreeCelsius})}]
+\addplot[otNavy,line width=1pt,domain=0:80,samples=120] {20+65*exp(-x/20)};
+\solution{\addplot[otRed!80!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:20,samples=2] {85-65*x/20};
+  \addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:82,samples=2] {20};
+  \fill[otRed!80!black] (axis cs:20,43.9) circle (1.5pt);
+  \node[pcLegende,anchor=south west,text=otRed!80!black] at (axis cs:21,44) {$\tau=\qty{20}{min}$ : $T=\qty{43,9}{\degreeCelsius}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Température du thé mesurée dans une pièce à \qty{20}{\degreeCelsius}.}

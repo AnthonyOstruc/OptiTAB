@@ -1,0 +1,19 @@
+% Looping en forme de goutte : rayons de courbure en bas et en haut (exercice 14, chapitre 13)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otInk!70,line width=1.6pt] (-3.2,0) -- (0,0);
+\draw[otInk!70,line width=1.6pt] (0,0) arc[start angle=270,end angle=330,radius=1.8]
+  .. controls (1.959,1.593) and (1.176,2.776) .. (0.902,3.528)
+  arc[start angle=20,end angle=160,radius=0.96]
+  .. controls (-1.176,2.776) and (-1.959,1.593) .. (-1.559,0.9)
+  arc[start angle=210,end angle=270,radius=1.8] -- (3.2,0);
+\fill[otInk] (0,0) circle (0.07) node[pcLegendeG,anchor=north] {A};
+\fill[otInk] (0,4.16) circle (0.07) node[pcLegendeG,anchor=south] {B};
+\draw[pcTraj] (-0.25,0) -- (-0.25,1.8) node[pos=0.55,pcLegende,anchor=east] {15~m};
+\draw[pcTraj] (-0.25,4.16) -- (-0.25,3.2) node[pos=0.5,pcLegende,anchor=east] {8,0~m};
+\fill[otMuted] (0,1.8) circle (0.04);
+\fill[otMuted] (0,3.2) circle (0.04);
+\draw[otMuted,line width=0.4pt,-{Stealth[length=1.6mm]}] (-2.6,0.25) -- (-1.6,0.25);
+\solution{\draw[pcAcc] (0.2,0) -- (0.2,1.6) node[pcLegende,anchor=west,text=otRed!80!black] {$\vec{a}_\mathrm{A}$ : $3{,}3\,g$};
+  \draw[pcAcc] (0.2,4.16) -- (0.2,3.26) node[pcLegende,anchor=west,text=otRed!80!black] {$\vec{a}_\mathrm{B}$ : $1{,}8\,g$};}
+\end{tikzpicture}
+\par\smallskip\legende{Le rayon de courbure du looping est plus grand au point bas A qu'au sommet B (schéma sans échelle).}

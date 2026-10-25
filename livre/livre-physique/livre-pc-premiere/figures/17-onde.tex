@@ -1,0 +1,23 @@
+% Ondes transversale (corde) et longitudinale (ressort) (L'essentiel, chapitre 17)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Corde
+\begin{scope}
+  \draw[otInk!70,line width=0.8pt] plot[domain=0:6.0,samples=120] (\x,{0.55*exp(-((\x-3.6)^2)/0.18)});
+  \fill[otOrange] (1.0,0) circle (0.07);
+  \draw[otGreenDark,line width=1pt,-{Stealth[length=2mm]}] (4.4,0.95) -- (5.6,0.95) node[pcLegende,anchor=south,text=otGreenDark] {propagation};
+  \draw[otOrange!85!black,line width=0.9pt,{Stealth[length=1.8mm]}-{Stealth[length=1.8mm]}] (1.0,-0.45) -- (1.0,0.45);
+  \node[pcLegende,anchor=south,text=otOrange!85!black,align=center] at (1.0,0.5) {point du milieu :\\mouvement vertical};
+  \node[pcLegendeG,anchor=north] at (3.0,-0.85) {onde transversale (corde)};
+\end{scope}
+% Ressort
+\begin{scope}[shift={(7.0,0)}]
+  \foreach \x in {0,0.3,...,1.5,1.62,1.74,...,2.6,2.9,3.2,...,5.0}{\draw[otNavy,line width=0.7pt] (\x,-0.35) -- (\x,0.35);}
+  \draw[otNavy,line width=0.5pt] (0,0) -- (5.0,0);
+  \node[pcLegende,anchor=north] at (2.1,-0.4) {compression};
+  \draw[otGreenDark,line width=1pt,-{Stealth[length=2mm]}] (3.3,0.95) -- (4.5,0.95) node[pcLegende,anchor=south,text=otGreenDark] {propagation};
+  \draw[otOrange!85!black,line width=0.9pt,{Stealth[length=1.8mm]}-{Stealth[length=1.8mm]}] (0.3,0.6) -- (1.1,0.6);
+  \node[pcLegende,anchor=south,text=otOrange!85!black] at (0.6,0.65) {spire : va-et-vient};
+  \node[pcLegendeG,anchor=north] at (2.5,-0.85) {onde longitudinale (ressort)};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque point du milieu reprend, avec un retard, le mouvement de la source, puis revient à sa position : l'onde transporte de l'énergie, pas de matière.}

@@ -1,0 +1,14 @@
+% Pression dans le récipient en fonction du nombre de coups de pompe, échelle logarithmique (corrigé du défi D18)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=110mm,height=58mm,xmin=0,xmax=200,ymin=0.5,ymax=2000,ymode=log,
+  xtick={0,25,...,200},ytick={1,10,100,1000},yticklabels={1,10,100,1000},
+  xlabel={nombre de coups $k$},ylabel={$p_k$ (hPa)},grid=major]
+\addplot[otNavy,line width=1pt,domain=0:150,samples=60] {1013*(1/1.05)^x};
+\addplot[otRed!80!black,line width=1pt,domain=0:200,samples=100] {10.03+(1013-10.03)*(1/1.0505)^x};
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:200,samples=2] {10.03};
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:200,samples=2] {1};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:70,600) {sans volume mort : 1~hPa en 142 coups};
+\node[pcLegende,anchor=west,text=otRed!80!black] at (axis cs:70,250) {avec volume mort : palier à 10~hPa};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Sans volume mort, la pression diminue d'un même facteur à chaque coup : en échelle logarithmique, la courbe est une droite. Le volume mort impose une pression limite.}

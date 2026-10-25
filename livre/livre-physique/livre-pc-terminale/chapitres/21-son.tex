@@ -1,0 +1,338 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[son]{21}{Intensité sonore et atténuation}{Partie 4 · Ondes et signaux}
+{Intensité sonore\enspace·\enspace Niveau d'intensité sonore\enspace·\enspace Décibel\enspace·\enspace Atténuation géométrique et par absorption}
+\objectif{Exploiter l'expression du niveau d'intensité sonore d'un signal.}
+\objectif{Utiliser la fonction logarithme décimal et sa fonction réciproque.}
+\objectif{Calculer le niveau sonore produit par plusieurs sources et une atténuation en décibels.}
+\objectif{Illustrer et distinguer l'atténuation géométrique et l'atténuation par absorption.}
+\objectif{Calculer l'évolution d'un niveau sonore avec la distance à l'aide d'un programme Python.}
+\prerequis{Signal sonore, fréquence, célérité (classe de seconde).}
+\prerequis{Puissance par unité de surface d'une onde sonore (classe de première).}
+\prerequis{Fonction logarithme décimal (mathématiques).}
+\end{ouverture}
+\essentiel
+\essSection{1}{L'intensité sonore}
+\begin{definition}[Intensité sonore]
+L'\textbf{intensité sonore} $I$ est la puissance transportée par l'onde sonore par unité de surface perpendiculaire
+à la direction de propagation : $I=\dfrac{P}{S}$, en \unit{W.m^{-2}}. L'oreille humaine perçoit, à \qty{1}{kHz}, des
+intensités comprises entre le \textbf{seuil d'audibilité} $I_0=\qty{1,0e-12}{W.m^{-2}}$ et le seuil de douleur, voisin
+de \qty{1}{W.m^{-2}} : douze ordres de grandeur.
+\end{definition}
+\begin{propriete}[Source ponctuelle]
+Une source ponctuelle qui émet la puissance sonore $P$ de façon identique dans toutes les directions répartit cette
+puissance sur des sphères de surface $4\pi d^2$ : à la distance $d$,
+\[I=\frac{P}{4\pi d^2}.\]
+L'intensité est divisée par 4 lorsque la distance double.
+\end{propriete}
+\schema{21-sphere}
+\essSection{2}{Le niveau d'intensité sonore}
+\begin{definition}[Niveau d'intensité sonore]
+Le \textbf{niveau d'intensité sonore} $L$, exprimé en \textbf{décibels} (dB), est défini par
+\[L=10\log\left(\frac{I}{I_0}\right)\qquad\text{et, réciproquement,}\qquad I=I_0\times10^{L/10},\]
+où $\log$ désigne le logarithme décimal. Le seuil d'audibilité correspond à \qty{0}{dB}, le seuil de douleur à
+\qty{120}{dB}.
+\end{definition}
+\begin{propriete}[Additionner des sources sonores]
+Les intensités sonores de sources indépendantes s'ajoutent ; les niveaux, eux, ne s'ajoutent pas. Multiplier
+l'intensité par 10 augmente le niveau de \qty{10}{dB} ; la multiplier par 2 l'augmente de $10\log2\approx\qty{3}{dB}$ :
+deux sources identiques produisent \qty{3}{dB} de plus qu'une seule.
+\end{propriete}
+\schema{21-echelle}
+\begin{savoirfaire}[Calculer avec des décibels]
+Convertir chaque niveau en intensité, additionner les intensités, puis revenir au niveau. Trois machines produisant
+chacune \qty{80}{dB} en un point y apportent chacune $I=10^{-12}\times10^{8}=\qty{1,0e-4}{W.m^{-2}}$ ; ensemble,
+$I=\qty{3,0e-4}{W.m^{-2}}$, d'où $L=10\log(\num{3.0e8})=\qty{84,8}{dB}$, et non \qty{240}{dB} !
+\end{savoirfaire}
+\essSection{3}{L'atténuation}
+\begin{definition}[Atténuation]
+L'\textbf{atténuation} entre deux points, ou due à un dispositif, est la diminution du niveau d'intensité sonore :
+$A=L_1-L_2$, en décibels.
+\end{definition}
+\begin{propriete}[Atténuation géométrique et atténuation par absorption]
+\begin{itemize}
+\item L'\textbf{atténuation géométrique} résulte de la répartition de la puissance sur une surface de plus en plus grande.
+Pour une source ponctuelle, $L_2=L_1-20\log\dfrac{d_2}{d_1}$ : le niveau baisse de \qty{6}{dB} quand la distance double.
+\item L'\textbf{atténuation par absorption} résulte de la conversion d'une partie de l'énergie de l'onde en énergie
+interne du milieu traversé (air, mur, mousse, protections auditives). Elle dépend du matériau, de son épaisseur et de
+la fréquence ; dans l'air, les sons aigus sont plus absorbés que les sons graves.
+\end{itemize}
+\end{propriete}
+\schema{21-attenuation}
+\begin{codecote}[0.58]
+\begin{pythoncol}
+from math import log10, pi
+P, I0 = 0.10, 1e-12            # W, W/m²
+for d in [1, 2, 4, 8, 16]:     # m
+    I = P / (4 * pi * d**2)
+    L = 10 * log10(I / I0)
+    print(d, round(L, 1))
+\end{pythoncol}
+\begin{consolecol}
+1 99.0
+2 93.0
+4 87.0
+8 80.9
+16 74.9
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Le programme calcule l'intensité, puis le niveau sonore produits par une source ponctuelle de \qty{0,10}{W} à
+différentes distances. Chaque doublement de la distance divise l'intensité par 4 et abaisse le niveau de
+\qty{6,0}{dB}, aux arrondis près.
+\end{codecote}
+\begin{attention}
+On n'additionne jamais des décibels : on additionne les intensités. Par ailleurs, la sensation auditive dépend aussi de
+la fréquence ; les sonomètres affichent souvent un niveau pondéré, en dB(A), qui tient compte de la sensibilité de
+l'oreille.
+\end{attention}
+\begin{experience}[Mesurer une atténuation]
+Face à un haut-parleur alimenté par un générateur basse fréquence, on relève le niveau sonore avec un sonomètre à
+différentes distances : en plein air, il diminue d'environ \qty{6}{dB} à chaque doublement de la distance. On interpose
+ensuite des plaques de matériaux différents (bois, mousse, polystyrène) entre la source et le sonomètre placé à
+distance fixe : la différence de niveau mesure l'atténuation par absorption, qui augmente avec l'épaisseur et la
+fréquence.
+\end{experience}
+\begin{rediger}
+Écrire la relation utilisée, $L=10\log(I/I_0)$ ou $I=I_0\times10^{L/10}$, et préciser l'unité de chaque grandeur. Pour
+plusieurs sources, rédiger en trois étapes : « intensité de chaque source », « intensité totale », « niveau total ».
+Préciser la nature de l'atténuation : géométrique ou par absorption.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-21-1}
+\begin{exercice}[1]{Du niveau à l'intensité}
+\begin{donnees}
+$I_0=\qty{1,0e-12}{W.m^{-2}}$ ; $L=10\log(I/I_0)$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'intensité sonore d'une conversation de \qty{60}{dB}.
+\item Calculer le niveau sonore d'une rue animée où $I=\qty{3,2e-5}{W.m^{-2}}$.
+\item À partir de quel niveau sonore une exposition prolongée devient-elle dangereuse ? Calculer l'intensité
+correspondante, sachant que ce seuil vaut \qty{85}{dB}.
+\item Combien de fois l'intensité d'un concert à \qty{100}{dB} est-elle plus grande que celle d'une rue à \qty{70}{dB} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-2}
+\begin{exercice}[1]{Un, deux, dix violons}
+Un violoniste produit, à l'endroit où se trouve un auditeur, un niveau sonore de \qty{70}{dB}. Tous les violonistes
+d'un orchestre sont supposés produire le même niveau en ce point.
+\begin{questions}
+\item Calculer le niveau sonore produit par deux violons. Le niveau a-t-il doublé ?
+\item Calculer le niveau sonore produit par dix violons.
+\item Combien de violons faut-il pour atteindre \qty{85}{dB} ?
+\item Pourquoi utilise-t-on une échelle logarithmique pour décrire les sons ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-3}
+\begin{exercice}[1]{S'éloigner d'une enceinte}
+À \qty{2,0}{m} d'une enceinte, assimilée à une source ponctuelle, le niveau sonore vaut \qty{100}{dB}. On néglige
+l'absorption par l'air.
+\begin{donnees}
+$I_0=\qty{1,0e-12}{W.m^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer le niveau sonore à \qty{4,0}{m}, puis à \qty{20}{m}.
+\item Quel type d'atténuation est en jeu ?
+\item Calculer la puissance sonore émise par l'enceinte.
+\item À quelle distance le niveau n'est-il plus que de \qty{70}{dB} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-4}
+\begin{exercice}[1]{Les protections auditives}
+Sur un chantier, un ouvrier est exposé à \qty{105}{dB}. Il porte des bouchons d'oreille dont l'atténuation vaut
+\qty{25}{dB}. On admet qu'à \qty{85}{dB} l'oreille supporte 8~heures d'exposition par jour, durée divisée par deux pour
+chaque hausse de \qty{3}{dB}.
+\begin{questions}
+\item Quel type d'atténuation les bouchons réalisent-ils ? Quel niveau sonore l'oreille reçoit-elle ?
+\item Quelle fraction de l'intensité sonore les bouchons laissent-ils passer ?
+\item Quelle est la durée d'exposition admissible à \qty{94}{dB} ?
+\item Combien de temps l'ouvrier pourrait-il travailler sans bouchons avant d'atteindre sa dose quotidienne ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-5}
+\begin{exercice}[1]{Logarithme et puissances de dix}
+\begin{questions}
+\item Calculer sans calculatrice $\log(1000)$, $\log(\num{1e-12})$ et $\log(1)$.
+\item À la calculatrice, calculer $\log2$ et $10^{0{,}5}$, puis en déduire l'effet sur le niveau sonore d'une
+intensité doublée.
+\item Montrer que $L=10\log\dfrac{I}{I_0}$ et $I=I_0\times10^{L/10}$ sont deux écritures de la même relation.
+\item Les intensités audibles s'étendent de \qty{1e-12}{W.m^{-2}} à \qty{1}{W.m^{-2}}. Combien d'ordres de grandeur cela
+représente-t-il ? À quel intervalle de niveaux cela correspond-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-21-6}
+\begin{exercice}[2]{Au pied de la scène}
+Lors d'un concert en plein air, le niveau sonore vaut \qty{110}{dB} à \qty{5,0}{m} des enceintes, assimilées à une source
+ponctuelle.
+\begin{questions}
+\item Calculer le niveau sonore pour un spectateur placé à \qty{20}{m}, puis à \qty{40}{m}.
+\item La réglementation impose de ne pas dépasser \qty{102}{dB} en moyenne là où se trouve le public. À quelle distance
+minimale des enceintes faut-il placer la barrière ?
+\item Un spectateur placé à \qty{20}{m} porte des bouchons d'atténuation \qty{20}{dB}. Quel niveau perçoit-il ?
+\item Pourquoi le son entendu de très loin paraît-il plus grave ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-7}
+\begin{exercice}[2]{Le brouhaha de la cantine}
+Dans une cantine, chaque conversation produit un niveau sonore de \qty{55}{dB} au centre de la salle. On néglige les
+autres sources.
+\begin{questions}
+\item Calculer le niveau sonore au centre de la salle lorsque quinze conversations ont lieu en même temps.
+\item Même question pour trente conversations. Commenter.
+\item De combien le niveau augmente-t-il lorsqu'une seizième conversation s'ajoute aux quinze premières ?
+\item Pour se faire entendre, chacun parle plus fort : expliquer pourquoi le niveau sonore d'une cantine a tendance à
+augmenter de lui-même.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-8}
+\begin{exercice}[2]{Programmer l'atténuation}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Que représentent \code{P} et \code{I0} ? Quelle relation la ligne \code{I = P / (4 * pi * d**2)}
+traduit-elle ?
+\item Vérifier, à partir des valeurs affichées, que le niveau diminue de \qty{6}{dB} à chaque doublement de la distance.
+\item L'air absorbe un son de \qty{1}{kHz} à raison d'environ \qty{5}{dB} par kilomètre. Modifier la ligne de calcul de
+\code{L} pour en tenir compte. Ce terme est-il important à \qty{16}{m} ?
+\item Calculer le niveau à \qty{1000}{m}, sans puis avec absorption.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-9}
+\begin{exercice}[2]{Choisir ses fenêtres}
+Une chambre donne sur une rue où le niveau sonore vaut \qty{72}{dB} devant la façade. Une fenêtre en simple vitrage
+apporte une atténuation de \qty{25}{dB} ; une fenêtre à double vitrage acoustique, \qty{35}{dB}.
+\begin{questions}
+\item Quel type d'atténuation les vitrages réalisent-ils ? Calculer le niveau sonore dans la chambre dans les deux cas.
+\item Combien de fois l'intensité transmise par le double vitrage est-elle plus faible que celle transmise par le simple
+vitrage ?
+\item Pour bien dormir, on recommande un niveau inférieur à \qty{35}{dB}. Quelle atténuation minimale faut-il ?
+\item La fenêtre entrouverte n'atténue plus que de \qty{10}{dB}. Quelle fraction de l'intensité laisse-t-elle passer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-10}
+\begin{exercice}[2]{Le grondement lointain du tonnerre}
+Un éclair produit, à \qty{1}{m}, un niveau sonore de \qty{100}{dB} à toutes les fréquences audibles (valeur arbitraire
+choisie pour comparer). L'air absorbe les sons d'autant plus que leur fréquence est élevée ; valeurs approximatives de
+l'absorption :
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Fréquence (Hz) & 500 & \num{1000} & \num{4000} & \num{8000} \\
+Absorption (dB par km) & 2,8 & 4,7 & 24 & 83 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{questions}
+\item Calculer l'atténuation géométrique entre \qty{1}{m} et \qty{1}{km}, l'éclair étant assimilé à une source ponctuelle.
+\item Calculer, pour chaque fréquence, le niveau sonore à \qty{1}{km} en tenant compte des deux atténuations.
+\item Quelles fréquences sont encore audibles à \qty{1}{km} ?
+\item Expliquer pourquoi le tonnerre lointain gronde sourdement alors que le tonnerre proche claque.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-11}
+\begin{exercice}[2]{Source ponctuelle ou source linéaire}
+Une autoroute très fréquentée se comporte comme une source linéaire : la puissance sonore se répartit sur des cylindres
+de surface $2\pi d\,\ell$, où $\ell$ est la longueur considérée. À \qty{25}{m} de l'autoroute, le niveau sonore vaut
+\qty{75}{dB}.
+\begin{questions}
+\item Montrer que, pour une source linéaire, l'intensité est inversement proportionnelle à la distance $d$.
+\item En déduire que le niveau baisse de \qty{3}{dB} quand la distance double.
+\item Calculer le niveau à \qty{100}{m} de l'autoroute. Quelle valeur aurait-on obtenue pour une source ponctuelle ?
+\item À quelle distance de l'autoroute le niveau descend-il à \qty{60}{dB} ? Pourquoi construit-on des murs antibruit ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-21-12}
+\begin{exercice}[3]{Protéger le public d'un concert}
+\begin{docu}{1}{La réglementation}
+Depuis 2017, dans les lieux diffusant de la musique amplifiée, le niveau sonore moyen ne doit dépasser
+\qty{102}{dB} sur 15~minutes en aucun endroit accessible au public.
+\end{docu}
+\begin{docu}{2}{Le dispositif}
+Deux enceintes identiques, placées de part et d'autre de la scène, produisent chacune \qty{110}{dB} à \qty{4,0}{m}. On les
+assimile à des sources ponctuelles et l'on considère un spectateur situé dans l'axe de la scène, à égale distance des
+deux enceintes.
+\end{docu}
+\begin{questions}
+\item Avec une seule enceinte en fonctionnement, à quelle distance minimale doit se trouver le public ?
+\item Quel niveau produisent les deux enceintes ensemble pour un spectateur placé à cette distance ?
+\item \initiative Avec les deux enceintes, à quelle distance minimale de chacune doit se trouver le public ?
+\item Pourquoi les ingénieurs du son préfèrent-ils répartir de nombreuses petites enceintes plutôt que d'augmenter la
+puissance de deux grosses ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-13}
+\begin{exercice}[3]{L'éolienne et ses voisins}
+\begin{docu}{1}{Une éolienne bruyante}
+Le niveau de puissance acoustique d'une éolienne vaut \qty{105}{dB} : sa puissance sonore $P$ vérifie
+$10\log\dfrac{P}{P_0}=105$, avec $P_0=\qty{1e-12}{W}$. On l'assimile à une source ponctuelle et l'on néglige l'absorption
+par l'air et le sol.
+\end{docu}
+\begin{docu}{2}{La réglementation de l'émergence}
+La nuit, le bruit ambiant près d'une maison vaut \qty{35}{dB}. L'émergence, différence entre le niveau total avec
+l'éolienne et le niveau ambiant sans elle, ne doit pas dépasser \qty{3}{dB} la nuit.
+\end{docu}
+\begin{donnees}
+$I_0=\qty{1,0e-12}{W.m^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la puissance sonore de l'éolienne, puis le niveau qu'elle produit seule à \qty{500}{m}.
+\item Calculer le niveau total la nuit pour une maison située à \qty{500}{m}, puis l'émergence. La réglementation est-elle
+respectée ?
+\item \initiative À quelle distance minimale de l'éolienne doit se trouver la maison ?
+\item L'absorption par l'air et par le sol a été négligée. Le résultat obtenu est-il trop exigeant ou pas assez ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-14}
+\begin{exercice}[3]{Choisir la fréquence d'une échographie}
+\begin{docu}{1}{Des ultrasons absorbés}
+En échographie, une sonde émet des ultrasons qui se réfléchissent sur les organes. Dans les tissus mous, l'atténuation
+par absorption vaut environ \qty{0,5}{dB} par centimètre parcouru et par mégahertz de fréquence.
+\end{docu}
+\begin{docu}{2}{Contraintes de l'appareil}
+L'échographe ne peut exploiter que les échos atténués de moins de \qty{60}{dB} sur l'aller-retour. Plus la fréquence est
+élevée, plus l'image est fine.
+\end{docu}
+\begin{questions}
+\item Calculer l'atténuation subie par une onde de \qty{5}{MHz} qui se réfléchit sur un organe situé à \qty{8}{cm} de
+profondeur, aller et retour.
+\item Quelle fraction de l'intensité émise revient alors à la sonde, en négligeant la réflexion partielle ?
+\item \initiative Calculer la profondeur maximale explorable à \qty{7,5}{MHz}, puis à \qty{3,5}{MHz}.
+\item Quelle fréquence choisir pour examiner la thyroïde, juste sous la peau ? pour un foie, à plus de \qty{10}{cm} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-15}
+\begin{exercice}[3]{La dose de bruit quotidienne}
+\begin{docu}{1}{Un niveau moyen}
+L'exposition d'un travailleur se caractérise par un niveau moyen sur 8~heures : c'est le niveau d'un bruit constant qui
+transporterait la même énergie sonore, $L_\mathrm{moy}=10\log\left(\dfrac{1}{8}\sum t_i\times10^{L_i/10}\right)$, les durées $t_i$
+étant en heures. Le port de protections est obligatoire au-delà de \qty{85}{dB}.
+\end{docu}
+\begin{docu}{2}{La journée d'un menuisier}
+1~heure de scie à \qty{94}{dB}, 3~heures de ponceuse à \qty{88}{dB} ; le reste du temps, l'exposition est négligeable.
+\end{docu}
+\begin{questions}
+\item Expliquer pourquoi le niveau moyen fait intervenir les intensités, et non les niveaux.
+\item Calculer le niveau moyen sur 8~heures du menuisier. Doit-il porter des protections ?
+\item \initiative Le menuisier porte des bouchons de \qty{15}{dB} lorsqu'il utilise ses machines. Calculer son nouveau
+niveau moyen.
+\item Retrouver qu'une heure à \qty{94}{dB} transporte autant d'énergie sonore que huit heures à \qty{85}{dB}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

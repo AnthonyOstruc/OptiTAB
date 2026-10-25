@@ -1,0 +1,16 @@
+% Source ponctuelle : la puissance se répartit sur des sphères de plus en plus grandes (L'essentiel, chapitre 21)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otNavy] (0,0) circle (0.08);
+\node[pcLegende,anchor=north] at (0,-0.12) {source};
+\draw[otNavy!60,line width=0.6pt] (0,0) circle (1.2);
+\draw[otNavy!35,line width=0.6pt] (0,0) circle (2.4);
+\fill[otOrange!45] (20:1.2) arc[start angle=20,end angle=-20,radius=1.2] -- (-20:2.4) arc[start angle=-20,end angle=20,radius=2.4] -- cycle;
+\draw[otOrange!90!black,line width=0.9pt] (20:1.2) arc[start angle=20,end angle=-20,radius=1.2];
+\draw[otOrange!90!black,line width=0.9pt] (20:2.4) arc[start angle=20,end angle=-20,radius=2.4];
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (0,0) -- (20:2.6) (0,0) -- (-20:2.6);
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (0,0) -- (115:1.2) node[pos=0.55,pcLegende,anchor=south west] {$d$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (0,0) -- (150:2.4) node[pos=0.6,pcLegende,anchor=south] {$2d$};
+\node[pcLegende,anchor=west,align=left] at (2.7,0.55) {à la distance $d$ : $I=\dfrac{P}{4\pi d^2}$};
+\node[pcLegende,anchor=west,align=left] at (2.7,-0.45) {à $2d$ : surface 4 fois plus grande,\\ intensité 4 fois plus faible};
+\end{tikzpicture}
+\par\smallskip\legende{La puissance émise par la source se répartit sur des sphères dont la surface croît comme le carré de la distance.}

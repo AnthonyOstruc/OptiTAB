@@ -1,0 +1,16 @@
+% Densimètre flottant dans l'eau et dans un liquide inconnu (exercice 10, chapitre 17)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \dx/\fond/\nom/\prof/\coul in {0/0.4/eau/{12,0}/pcEau,3.6/0.8/liquide inconnu/{10,0}/otOrange!12}{
+  \begin{scope}[shift={(\dx,0)}]
+  \fill[\coul] (0,0) rectangle (1.8,2.8);
+  \draw[otInk!70,line width=0.8pt] (0,3.6) -- (0,0) -- (1.8,0) -- (1.8,3.6);
+  \fill[otMuted!35] (0.72,\fond) rectangle (1.08,\fond+3.0);
+  \fill[otInk!55] (0.72,\fond) rectangle (1.08,\fond+0.35);
+  \draw[otInk!60,line width=0.4pt] (0.72,\fond) rectangle (1.08,\fond+3.0);
+  \draw[otNavy!45,line width=0.5pt] (0,2.8) -- (0.72,2.8) (1.08,2.8) -- (1.8,2.8);
+  \draw[otMuted,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (1.35,\fond) -- (1.35,2.8)
+    node[pos=0.5,pcLegende,anchor=west,fill=white,inner sep=1pt] {\qty{\prof}{cm}};
+  \node[pcLegende,anchor=north] at (0.9,-0.05) {\nom};
+  \end{scope}}
+\end{tikzpicture}
+\par\smallskip\legende{Le même densimètre s'enfonce moins dans le liquide inconnu que dans l'eau.}

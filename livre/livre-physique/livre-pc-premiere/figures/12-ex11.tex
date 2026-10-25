@@ -1,0 +1,28 @@
+% Test de la loi de Mariotte : seringue, capteur de pression et microcontrôleur (exercice 11, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Seringue (0,1 cm par mL, 40 mL représentés)
+\fill[otNavy!7] (0,0) rectangle (4.0,0.8);
+\draw[pcVerre] (6.2,0) -- (0,0) -- (0,0.8) -- (6.2,0.8);
+\draw[pcVerre] (6.2,-0.2) -- (6.2,1.0);
+\foreach \v in {0,10,...,60}{\draw[otMuted,line width=0.4pt] ({\v/10},0.8) -- ({\v/10},0.95);}
+\foreach \v in {0,20,40,60}{\node[pcLegende,anchor=south,font=\otLight\fontsize{6.5}{8}\selectfont] at ({\v/10},0.93) {\v};}
+\fill[otInk!60] (4.0,0.03) rectangle (4.2,0.77);
+\fill[otMuted!40] (4.2,0.32) rectangle (6.8,0.48);
+\fill[otInk!60] (6.8,0.05) rectangle (6.95,0.75);
+\node[pcLegende] at (2.0,0.4) {air};
+\node[pcLegende,anchor=north] at (5.5,-0.25) {seringue graduée en mL};
+% Tuyau court vers le capteur
+\draw[otInk!70,line width=1.6pt] (0,0.4) -- (-0.9,0.4) -- (-0.9,1.6);
+\filldraw[pcAppareil,rounded corners=0.8mm] (-1.6,1.55) rectangle (-0.2,2.35);
+\node[pcLegende,align=center,font=\otLight\fontsize{6.5}{8}\selectfont] at (-0.9,1.92) {capteur de\\pression};
+% Carte à microcontrôleur
+\draw[pcFil] (-0.2,2.0) -- (0.8,2.0);
+\filldraw[fill=otGreenDark!70,draw=otInk!80,line width=0.5pt,rounded corners=0.6mm] (0.8,1.55) rectangle (2.6,2.45);
+\foreach \xx in {1.0,1.2,...,2.4}{\fill[otInk!60] (\xx,2.36) rectangle ({\xx+0.08},2.43);}
+\fill[otInk!80] (1.45,1.75) rectangle (1.95,2.15);
+\node[pcLegende,anchor=south] at (1.7,2.5) {microcontrôleur};
+\draw[pcFil] (2.6,2.0) -- (3.4,2.0);
+\pic at (4.3,1.35) {afficheur={largeur=1.8,hauteur=1.25,texte={1012}}};
+\node[pcLegende,anchor=south] at (4.3,2.62) {pression (hPa)};
+\end{tikzpicture}
+\par\smallskip\legende{On fait varier le volume d'air enfermé en déplaçant lentement le piston ; le capteur mesure la pression.}

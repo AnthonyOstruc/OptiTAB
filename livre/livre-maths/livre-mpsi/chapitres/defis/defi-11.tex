@@ -1,0 +1,82 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 11 — La fonction W de Lambert
+%% Résultats vérifiés par verifications/defis_11_15.py.
+
+\rubrique{Défi}
+
+\begin{defi}{La fonction W de Lambert}{2 h}
+L'équation $x\,\mathrm{e}^{x}=y$ n'a pas de solution « exprimable » à l'aide
+des fonctions usuelles ; on en fait donc une fonction nouvelle, la
+fonction $W$ de Lambert, omniprésente en physique, en combinatoire et en
+informatique. On l'étudie ici entièrement par l'analyse asymptotique.
+
+\partieExo{A}{Définition et dérivée}
+\begin{questions}
+  \item Étudier $g:x\mapsto x\,\mathrm{e}^{x}$ sur $\intFO{-1}{+\infty}$ et
+    montrer qu'elle réalise une bijection de $\intFO{-1}{+\infty}$ sur
+    $\intFO{-\frac1{\mathrm{e}}}{+\infty}$. On note $W$ sa réciproque.
+    Préciser $W(0)$, $W(\mathrm{e})$ et $W\bigl(-\frac1{\mathrm{e}}\bigr)$.
+  \item Montrer que $W$ est continue et strictement croissante, dérivable
+    sur $\intOO{-\frac1{\mathrm{e}}}{+\infty}$, avec
+    \[
+    W'(y)=\frac{1}{\bigl(1+W(y)\bigr)\mathrm{e}^{W(y)}}
+    \qquad\text{et}\qquad
+    W'(y)=\frac{W(y)}{y\bigl(1+W(y)\bigr)}\ \ (y\neq0).
+    \]
+    Que vaut $W'(0)$ ? Que se passe-t-il en $-\frac1{\mathrm{e}}$ ?
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=1.35,line cap=round]
+  \draw[otRule,line width=0.3pt] (-1.2,-1.2) grid (2.3,2.3);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-1.3,0) -- (2.45,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.3) -- (0,2.45);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.6pt] (-1.2,-1.2) -- (2.3,2.3);
+  \draw[otNavy,line width=1.2pt] plot[domain=-1:0.9,samples=100] ({\x},{\x*exp(\x)});
+  \draw[otGreenDark,line width=1.2pt] plot[domain=-1:0.9,samples=100] ({\x*exp(\x)},{\x});
+  \fill[otNavy] (-1,-0.3679) circle (1.4pt);
+  \fill[otGreenDark] (-0.3679,-1) circle (1.4pt);
+  \node[font=\scriptsize,text=otNavy,anchor=south west] at (0.75,1.9) {$y=x\,\mathrm{e}^{x}$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (2.05,0.75) {$W$};
+  \node[font=\scriptsize,text=otMuted,anchor=north west] at (-0.36,-1) {$\bigl(-\tfrac1{\mathrm{e}},-1\bigr)$};
+  \node[font=\tiny,text=otMuted,below] at (1,0) {$1$};
+  \node[font=\tiny,text=otMuted,left] at (0,1) {$1$};
+\end{tikzpicture}\\[0.5mm]
+\legende{La fonction $x\mapsto x\,\mathrm{e}^{x}$ (en bleu) et sa réciproque
+$W$ (en vert), symétriques par rapport à la première bissectrice ; $W$ a une
+tangente verticale au point $\bigl(-\frac1{\mathrm{e}},-1\bigr)$.}
+\end{center}
+
+\partieExo{B}{Développement limité en $0$}
+On admet que $W$ admet en $0$ un développement limité à tout ordre.
+\begin{questions}[resume]
+  \item En identifiant les coefficients dans $W(y)\,\mathrm{e}^{W(y)}=y$,
+    montrer que $W(y)=y-y^{2}+\dfrac32y^{3}+o\bigl(y^{3}\bigr)$.
+  \item Pousser le calcul à l'ordre $4$ ; on vérifiera que le coefficient
+    de $y^{n}$ vaut $(-n)^{n-1}/n!$ pour $n\leqslant4$ (c'est vrai pour
+    tout $n$ : formule d'inversion de Lagrange, admise).
+  \item En déduire une valeur approchée de la solution de
+    $x\,\mathrm{e}^{x}=0{,}01$, en précisant l'ordre de grandeur de
+    l'erreur.
+\end{questions}
+
+\partieExo{C}{Comportement en $+\infty$}
+\begin{questions}[resume]
+  \item Montrer que $W(y)\to+\infty$ quand $y\to+\infty$, que
+    $W(y)+\ln W(y)=\ln y$ pour $y>0$, et en déduire $W(y)\sim\ln y$.
+  \item Établir successivement
+    \[
+    W(y)=\ln y-\ln\ln y+o(1),
+    \qquad
+    W(y)=\ln y-\ln\ln y+\frac{\ln\ln y}{\ln y}
+    +o\Bigl(\frac{\ln\ln y}{\ln y}\Bigr).
+    \]
+  \item Pour $y>1$, montrer que l'équation $x^{x}=y$ admet une unique
+    solution $x_y>1$, que
+    \[
+    x_y=\frac{\ln y}{W(\ln y)},
+    \]
+    et en déduire un équivalent simple de $x_y$ quand $y\to+\infty$.
+\end{questions}
+\end{defi}

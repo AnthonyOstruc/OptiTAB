@@ -1,0 +1,15 @@
+% Spectre d'une étoile : sept raies sombres mesurées ; au corrigé, élément responsable de chaque raie (défi D20, chapitre 20)
+\begin{tikzpicture}[x=0.36mm,y=1cm]
+\shade[left color=violet!30!black,right color=violet!70] (380,0) rectangle (400,0.7);
+\shade[shading=otArcEnCiel] (400,0) rectangle (700,0.7);
+\draw[otInk!50,line width=0.4pt] (380,0) rectangle (700,0.7);
+\foreach \l in {656.3,589.0,527.0,517.3,486.1,434.0,393.4}{\draw[black,line width=1.1pt] (\l,0) -- (\l,0.7);}
+\foreach \l/\e in {589.0/Na,517.3/Mg,434.0/H}{%
+  \draw[otMuted,line width=0.4pt] (\l,0.7) -- (\l,0.85);
+  \node[pcLegende,anchor=south,align=center] at (\l,0.85) {\num{\l}\solution{\\\textbf{\e}}};}
+\foreach \l/\e in {656.3/H,527.0/Fe,486.1/H,393.4/Ca}{%
+  \draw[otMuted,line width=0.4pt] (\l,0) -- (\l,-0.15);
+  \node[pcLegende,anchor=north,align=center] at (\l,-0.15) {\num{\l}\solution{\\\textbf{\e}}};}
+\node[pcLegende,anchor=west] at (705,0.35) {$\lambda$ (nm)};
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Spectre de la lumière d'une étoile : longueurs d'onde (en nm) des sept raies sombres mesurées.}\solution{Cinq éléments identifiés : hydrogène, sodium, fer, magnésium et calcium.}}

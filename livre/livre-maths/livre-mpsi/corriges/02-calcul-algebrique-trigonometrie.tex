@@ -1,0 +1,514 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 2 — Calcul algébrique et trigonométrie
+%% Résultats vérifiés par verifications/chapitre_02.py.
+
+\corrigesChapitre{2}{Calcul algébrique et trigonométrie}
+\corrigesSouples
+
+\begin{blocLivre}{cor-2-1}
+\begin{corrige}{1}{Calculer des sommes}
+\demarche{Reconnaître les sommes de référence, puis conclure par linéarité.}
+\begin{questions}
+  \item $\displaystyle\sum_{k=1}^{100}k=\frac{100\times101}{2}=\res{5050}$.
+  \item Somme géométrique de raison $2$ : $\dfrac{1-2^{11}}{1-2}=2^{11}-1=\res{2047}$.
+  \item On ajoute $1$ pour chaque entier $k$ de $5$ à $20$, soit $20-5+1=\res{16}$.
+  \item $\displaystyle\sum_{k=1}^{n}(2k-1)=2\cdot\frac{n(n+1)}{2}-n=\res{n^{2}}$ :
+    la somme des $n$ premiers impairs est un carré parfait.
+  \item $\displaystyle\sum_{k=0}^{n}(3k+2)=3\cdot\frac{n(n+1)}{2}+2(n+1)=\res{\frac{(n+1)(3n+4)}{2}}$.
+  \item $\displaystyle\sum_{k=1}^{50}k^{2}=\frac{50\times51\times101}{6}=\res{42\,925}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-2}
+\begin{corrige}{2}{Manipuler les symboles $\Sigma$ et $\Pi$}
+\demarche{Dans un changement d'indice, les bornes suivent l'indice ; dans un télescopage, tout se compense.}
+\begin{questions}
+  \item $\dfrac12+\dfrac14+\dots+\dfrac{1}{2^{n}}=\displaystyle\sum_{k=1}^{n}\frac{1}{2^{k}}$.
+  \item Avec $j=k+1$ : $\displaystyle\sum_{k=1}^{n}\frac{1}{k+1}=\sum_{j=2}^{n+1}\frac{1}{j}
+    =\sum_{j=1}^{n}\frac{1}{j}+\frac{1}{n+1}-1$.
+  \item $\displaystyle\sum_{k=0}^{n}x^{k+2}=x^{2}\sum_{k=0}^{n}x^{k}=\res{x^{2}\,\frac{1-x^{n+1}}{1-x}}$.
+  \item $\displaystyle\prod_{k=1}^{n}\frac{k+1}{k}=\frac{2}{1}\times\frac{3}{2}\times\dots\times\frac{n+1}{n}
+    =\res{n+1}$ : le produit est télescopique.
+  \item $\displaystyle\prod_{k=1}^{n}2=\res{2^{n}}$ et $\displaystyle\prod_{k=1}^{n}k=\res{n!}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-3}
+\begin{corrige}{3}{Coefficients binomiaux et triangle de Pascal}
+\demarche{Pour un coefficient isolé dans un développement, écrire le terme général du binôme.}
+\begin{questions}
+  \item $\dbinom{7}{2}=\dfrac{7\times6}{2}=\res{21}$ ;\quad
+    $\dbinom{10}{3}=\dfrac{10\times9\times8}{6}=\res{120}$ ;\quad
+    $\dbinom{n}{1}=\dbinom{n}{n-1}=\res{n}$ (symétrie).
+  \item Ligne $n=4$ : $1,4,6,4,1$ ;\quad ligne $n=5$ : $1,5,10,10,5,1$.
+  \item $(a+b)^{4}=a^{4}+4a^{3}b+6a^{2}b^{2}+4ab^{3}+b^{4}$.
+  \item Le terme général est $\dbinom{5}{k}x^{k}(-2)^{5-k}$ ; pour $k=3$ :
+    $\dbinom{5}{3}(-2)^{2}=10\times4=40$. Le terme en $x^{3}$ est $\res{40x^{3}}$.
+  \item $(2x+1)^{4}=\res{16x^{4}+32x^{3}+24x^{2}+8x+1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-4}
+\begin{corrige}{4}{Systèmes de deux équations}
+\demarche{Éliminer une inconnue par une opération élémentaire, puis remonter — et lire la géométrie du résultat.}
+\begin{questions}
+  \item $L_2\leftarrow L_2-3L_1$ donne $-7y=-14$, donc $y=2$, puis $x=5-2y=1$ :
+    solution unique $\res{(1\,;2)}$ — deux droites sécantes.
+  \item $L_2\leftarrow2L_2+L_1$ donne $0=0$ : la seconde équation est redondante.
+    Les solutions sont les couples $\res{(3+2t\,;\,t),\ t\in\R}$ — les deux
+    équations décrivent la même droite.
+  \item $L_2\leftarrow L_2-2L_1$ donne $0=1$ : \res{\text{aucune solution}} —
+    deux droites strictement parallèles.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-5}
+\begin{corrige}{5}{Inéquations et tableaux de signes}
+\demarche{Factoriser, dresser le tableau de signes, lire l'ensemble solution.}
+\begin{questions}
+  \item Le tableau de signes du produit $(x-1)(x+2)$ :
+\begin{center}
+\begin{tableau}
+  \otTab[2.6]{$x$/0.7, $x+2$/0.7, $x-1$/0.7, produit/0.7}{$-\infty$,$-2$,$1$,$+\infty$}
+  \tkzTabLine{,-,z,+,t,+,}
+  \tkzTabLine{,-,t,-,z,+,}
+  \tkzTabLine{,+,z,-,z,+,}
+\end{tableau}
+\end{center}
+    D'où $\res{\mathcal{S}=\intOO{-\infty}{-2}\cup\intOO{1}{+\infty}}$.
+  \item $x^{2}\leq4\iff x^{2}-4\leq0\iff(x-2)(x+2)\leq0$ :
+    $\res{\mathcal{S}=\intFF{-2}{2}}$.
+  \item Le quotient s'annule en $\frac32$ et n'est pas défini en $-1$ ; il est
+    positif quand numérateur et dénominateur ont le même signe :
+    $\res{\mathcal{S}=\intOF{-1}{3/2}}$.
+  \item $x^{3}-x=x(x-1)(x+1)$ ; le produit de trois facteurs est positif sur
+    $\intFF{-1}{0}$ et sur $\intFO{1}{+\infty}$ :
+    $\res{\mathcal{S}=\intFF{-1}{0}\cup\intFO{1}{+\infty}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-6}
+\begin{corrige}{6}{Valeur absolue}
+\demarche{Penser « distance » : $|x-a|$ est la distance de $x$ à $a$.}
+\begin{questions}
+  \item $|x-3|=2\iff x-3=\pm2$ : $\res{\mathcal{S}=\ens{1\,;5}}$.\quad
+    $|x+1|<4\iff-4<x+1<4$ : $\res{\mathcal{S}=\intOO{-5}{3}}$.\quad
+    $|2x-1|\geq3\iff2x-1\geq3$ ou $2x-1\leq-3$ :
+    $\res{\mathcal{S}=\intOF{-\infty}{-1}\cup\intFO{2}{+\infty}}$.
+  \item Selon la position de $x$ par rapport à $-2$ et $1$ :
+    $f(x)=-2x-1$ si $x<-2$ ;\quad $f(x)=3$ si $-2\leq x\leq1$ ;\quad
+    $f(x)=2x+1$ si $x>1$.
+  \item Les solutions de $|x-3|=2$ sont les points à distance $2$ de $3$ ;
+    celles de $|x+1|<4$ les points à distance strictement inférieure à $4$ de
+    $-1$ ; celles de $|2x-1|\geq3$, c'est-à-dire $\bigl|x-\frac12\bigr|\geq\frac32$,
+    les points à distance au moins $\frac32$ de $\frac12$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-7}
+\begin{corrige}{7}{Valeurs usuelles sur le cercle}
+\demarche{Se ramener au premier quadrant par les symétries du cercle.}
+{\renewcommand{\arraystretch}{1.6}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\otSemi\fontsize{8}{10}\selectfont\leavevmode\color{otNavy}}p{14mm}*{6}{>{\centering\arraybackslash}X}@{}}
+\toprule
+$t$ & $\dfrac{2\pi}{3}$ & $-\dfrac{\pi}{4}$ & $\dfrac{7\pi}{6}$ & $\dfrac{5\pi}{3}$ & $\dfrac{3\pi}{4}$ & $-\dfrac{\pi}{6}$ \\
+\midrule
+$\cos t$ & $-\dfrac12$ & $\dfrac{\sqrt2}{2}$ & $-\dfrac{\sqrt3}{2}$ & $\dfrac12$ & $-\dfrac{\sqrt2}{2}$ & $\dfrac{\sqrt3}{2}$ \\
+$\sin t$ & $\dfrac{\sqrt3}{2}$ & $-\dfrac{\sqrt2}{2}$ & $-\dfrac12$ & $-\dfrac{\sqrt3}{2}$ & $\dfrac{\sqrt2}{2}$ & $-\dfrac12$ \\
+\bottomrule
+\end{tabularx}}
+\vspace{1mm}
+Par exemple, $\dfrac{7\pi}{6}=\pi+\dfrac{\pi}{6}$ : le point est le symétrique
+de $M\bigl(\frac{\pi}{6}\bigr)$ par rapport à l'origine, d'où les deux signes négatifs.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-8}
+\begin{corrige}{8}{Angles associés}
+\demarche{Chaque angle associé se lit sur le cercle : symétrie d'axe, de centre, ou quart de tour.}
+\begin{questions}
+  \item $\cos(\pi-x)+\cos(\pi+x)=-\cos x-\cos x=\res{-2\cos x}$.
+  \item $A(x)=-\sin x-\sin x+2\cos x-2\cos x=\res{-2\sin x}$.
+  \item $\cos\Bigl(x+\dfrac{3\pi}{2}\Bigr)=\cos x\cos\dfrac{3\pi}{2}-\sin x\sin\dfrac{3\pi}{2}
+    =0+\sin x=\res{\sin x}$.
+  \item $\dfrac{4\pi}{5}=\pi-\dfrac{\pi}{5}$, donc
+    $\cos\dfrac{4\pi}{5}=-\cos\dfrac{\pi}{5}=\res{-\dfrac{1+\sqrt5}{4}}$ ;
+    et $\dfrac{7\pi}{10}=\dfrac{\pi}{2}+\dfrac{\pi}{5}$, donc
+    $\sin\dfrac{7\pi}{10}=\cos\dfrac{\pi}{5}=\res{\dfrac{1+\sqrt5}{4}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-9}
+\begin{corrige}{9}{Sommes télescopiques}
+\demarche{Écrire le terme général sous la forme $a_{k+1}-a_k$ : seuls les termes extrêmes survivent.}
+\begin{questions}
+  \item $\dfrac{1}{k(k+1)}=\dfrac{1}{k}-\dfrac{1}{k+1}$, donc la somme vaut
+    $1-\dfrac{1}{n+1}=\res{\dfrac{n}{n+1}}$, de limite $\res{1}$.
+  \item $\ln\Bigl(\dfrac{k+1}{k}\Bigr)=\ln(k+1)-\ln k$ : la somme vaut
+    $\ln(n+1)-\ln1=\res{\ln(n+1)}$.
+  \item La somme vaut $\sqrt{n+1}-\sqrt{1}=\res{\sqrt{n+1}-1}$.
+  \item $k\cdot k!=(k+1)\,k!-k!=(k+1)!-k!$, donc la somme vaut
+    $\res{(n+1)!-1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-10}
+\begin{corrige}{10}{Autour de la formule du binôme}
+\demarche{Spécialiser la formule du binôme, ou transformer le terme général avec la formule du pion.}
+\begin{questions}
+  \item La formule du binôme avec $a=b=1$ donne $2^{n}$ ; avec $a=-1$, $b=1$,
+    elle donne $(1-1)^{n}=0$ (pour $n\geq1$).
+  \item En additionnant les deux égalités, les termes d'indice impair se
+    compensent : $2\displaystyle\sum_{k\text{ pair}}\binom{n}{k}=2^{n}+0$, d'où
+    $\res{2^{n-1}}$.
+  \item Pour $k\geq1$ : $k\dbinom{n}{k}=n\dbinom{n-1}{k-1}$, donc
+    \[
+      \sum_{k=0}^{n}k\binom{n}{k}=n\sum_{k=1}^{n}\binom{n-1}{k-1}
+      =n\sum_{j=0}^{n-1}\binom{n-1}{j}=\res{n\,2^{n-1}}.
+    \]
+  \item $\dfrac{1}{k+1}\dbinom{n}{k}=\dfrac{n!}{(k+1)!\,(n-k)!}
+    =\dfrac{1}{n+1}\cdot\dfrac{(n+1)!}{(k+1)!\,(n-k)!}=\dfrac{1}{n+1}\dbinom{n+1}{k+1}$, donc
+    \[
+      \sum_{k=0}^{n}\frac{1}{k+1}\binom{n}{k}
+      =\frac{1}{n+1}\sum_{j=1}^{n+1}\binom{n+1}{j}=\res{\frac{2^{n+1}-1}{n+1}}.
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-11}
+\begin{corrige}{11}{Sommes doubles}
+\demarche{Sommer dans l'ordre le plus commode : lignes, colonnes, ou diagonales.}
+\begin{questions}
+  \item Pour chaque $i$ : $\displaystyle\sum_{j=1}^{n}(i+j)=ni+\frac{n(n+1)}{2}$, puis
+    \[
+      \sum_{i=1}^{n}\Bigl(ni+\frac{n(n+1)}{2}\Bigr)
+      =n\cdot\frac{n(n+1)}{2}+n\cdot\frac{n(n+1)}{2}=\res{n^{2}(n+1)}.
+    \]
+  \item $\displaystyle\sum_{1\leq i,j\leq n}ij=\Bigl(\sum_{i=1}^{n}i\Bigr)\Bigl(\sum_{j=1}^{n}j\Bigr)
+    =\res{\Bigl(\frac{n(n+1)}{2}\Bigr)^{2}}$.
+  \item On compte les couples $(i,j)$ avec $i\leq j$ : pour chaque $j$, il y a
+    $j$ valeurs possibles de $i$, d'où $\displaystyle\sum_{j=1}^{n}j=\res{\frac{n(n+1)}{2}}$.
+  \item La valeur $d=j-i$ parcourt $1,\dots,n-1$, et chaque valeur $d$ est
+    obtenue pour $n-d$ couples $(i,j)$. Donc
+    \[
+      \sum_{1\leq i<j\leq n}(j-i)=\sum_{d=1}^{n-1}d\,(n-d)
+      =n\cdot\frac{(n-1)n}{2}-\frac{(n-1)n(2n-1)}{6}=\res{\frac{n(n-1)(n+1)}{6}}.
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-12}
+\begin{corrige}{12}{Systèmes de trois équations}
+\demarche{Échelonner par le pivot, remonter, puis interpréter : trois plans de l'espace.}
+\begin{questions}
+  \item $L_2\leftarrow L_2-2L_1$ et $L_3\leftarrow L_3-L_1$ donnent
+    $3y-5z=-8$ et $4y-z=-5$ ; puis $L_3\leftarrow3L_3-4L_2$ donne $17z=17$.
+    En remontant : $z=1$, $y=\dfrac{-5+1}{4}=-1$, $x=5+y-2z=2$ :
+    solution unique $\res{(2\,;-1\,;1)}$ — trois plans sécants en un point.
+  \item $L_1+L_2$ redonne exactement $L_3$ ($3x=3$) : le système équivaut à
+    $x=1$ et $y-z=1$. Les solutions sont les triplets
+    $\res{(1\,;\,1+t\,;\,t),\ t\in\R}$ — les trois plans contiennent une même
+    droite.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-13}
+\begin{corrige}{13}{Majorer, minorer, encadrer}
+\demarche{Encadrer chaque brique de l'expression, dans le bon sens à chaque étape.}
+\begin{questions}
+  \item $\dfrac{2x+1}{x+2}=2-\dfrac{3}{x+2}$. Pour $x\in\intFF{1}{3}$ :
+    $3\leq x+2\leq5$, donc $\dfrac35\leq\dfrac{3}{x+2}\leq1$ (passage à
+    l'inverse entre réels strictement positifs, puis multiplication par $3$),
+    d'où $1\leq2-\dfrac{3}{x+2}\leq\dfrac75$.
+  \item La somme compte $n$ termes, et chacun vérifie
+    $\dfrac{1}{2n}\leq\dfrac{1}{k}\leq\dfrac{1}{n+1}$. Donc
+    \[
+      \frac{n}{2n}=\frac12\leq\sum_{k=n+1}^{2n}\frac{1}{k}\leq\frac{n}{n+1}<1.
+    \]
+  \item Par la quantité conjuguée :
+    $\sqrt{n+1}-\sqrt{n}=\dfrac{1}{\sqrt{n+1}+\sqrt{n}}\leq\dfrac{1}{2\sqrt{n}}$,
+    car $\sqrt{n+1}+\sqrt{n}\geq2\sqrt{n}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-14}
+\begin{corrige}{14}{La partie entière}
+\demarche{Revenir systématiquement à la caractérisation $\lfloor x\rfloor\leq x<\lfloor x\rfloor+1$.}
+\begin{questions}
+  \item $\lfloor2{,}7\rfloor=2$ ;\quad $\lfloor-1{,}2\rfloor=\res{-2}$ ;\quad
+    $\lfloor5\rfloor=5$ ;\quad $\lfloor-0{,}5\rfloor=\res{-1}$.
+  \item L'entier $\lfloor x\rfloor+n$ vérifie
+    $\lfloor x\rfloor+n\leq x+n<\lfloor x\rfloor+n+1$ : par unicité de la
+    partie entière, $\lfloor x+n\rfloor=\lfloor x\rfloor+n$.
+  \item $\lfloor2x+1\rfloor=5\iff5\leq2x+1<6\iff\res{2\leq x<\dfrac52}$.
+  \item $\lfloor x\rfloor+\lfloor y\rfloor$ est un entier inférieur ou égal à
+    $x+y$, donc $\lfloor x\rfloor+\lfloor y\rfloor\leq\lfloor x+y\rfloor$.
+    Et $x+y<\lfloor x\rfloor+\lfloor y\rfloor+2$, donc
+    $\lfloor x+y\rfloor\leq\lfloor x\rfloor+\lfloor y\rfloor+1$.
+  \item Écrivons $x=\lfloor x\rfloor+\theta$ avec $\theta\in\intFO{0}{1}$.
+    Alors $\lfloor2x\rfloor=2\lfloor x\rfloor+\lfloor2\theta\rfloor$
+    (question 2), et $\lfloor2\theta\rfloor$ vaut $0$ si
+    $\theta<\frac12$, et $1$ sinon.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-15}
+\begin{corrige}{15}{Formules d'addition et de duplication}
+\demarche{Écrire l'angle cherché comme somme ou différence d'angles usuels.}
+\begin{questions}
+  \item $\cos\dfrac{\pi}{12}=\cos\dfrac{\pi}{3}\cos\dfrac{\pi}{4}+\sin\dfrac{\pi}{3}\sin\dfrac{\pi}{4}
+    =\dfrac{\sqrt2}{4}+\dfrac{\sqrt6}{4}=\res{\dfrac{\sqrt6+\sqrt2}{4}}$ ;
+    de même $\sin\dfrac{\pi}{12}=\dfrac{\sqrt6}{4}-\dfrac{\sqrt2}{4}
+    =\res{\dfrac{\sqrt6-\sqrt2}{4}}$.
+  \item $\dfrac{7\pi}{12}=\dfrac{\pi}{2}+\dfrac{\pi}{12}$, donc
+    $\sin\dfrac{7\pi}{12}=\cos\dfrac{\pi}{12}=\res{\dfrac{\sqrt6+\sqrt2}{4}}$.
+  \item Avec $c=\cos a$ :
+    \[
+      \cos(3a)=\cos(2a)\cos a-\sin(2a)\sin a
+      =(2c^{2}-1)c-2(1-c^{2})c=\res{4c^{3}-3c}.
+    \]
+  \item $\tan\dfrac{\pi}{12}=\dfrac{\tan\frac{\pi}{3}-\tan\frac{\pi}{4}}{1+\tan\frac{\pi}{3}\tan\frac{\pi}{4}}
+    =\dfrac{\sqrt3-1}{1+\sqrt3}=\dfrac{(\sqrt3-1)^{2}}{2}=\res{2-\sqrt3}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-16}
+\begin{corrige}{16}{Équations trigonométriques}
+\demarche{Se ramener à $\cos x=\cos a$, $\sin x=\sin a$ ou $\tan x=\tan a$, puis écrire les deux familles de solutions.}
+\begin{questions}
+  \item $\cos x=\cos\dfrac{\pi}{3}$ :
+    $\res{x\equiv\pm\dfrac{\pi}{3}\ [2\pi]}$.
+  \item $\sin x=\sin\Bigl(-\dfrac{\pi}{4}\Bigr)$ :
+    $\res{x\equiv-\dfrac{\pi}{4}\ [2\pi]\ \text{ou}\ x\equiv\dfrac{5\pi}{4}\ [2\pi]}$.
+  \item $\sin(2x)=\sin x$ équivaut à $2x\equiv x\ [2\pi]$ ou $2x\equiv\pi-x\ [2\pi]$,
+    c'est-à-dire $\res{x\equiv0\ [2\pi]\ \text{ou}\ x\equiv\dfrac{\pi}{3}\ \Bigl[\dfrac{2\pi}{3}\Bigr]}$.
+  \item En posant $c=\cos x$ : $2c^{2}-3c+1=(2c-1)(c-1)=0$, donc
+    $\cos x=\dfrac12$ ou $\cos x=1$ :
+    $\res{x\equiv\pm\dfrac{\pi}{3}\ [2\pi]\ \text{ou}\ x\equiv0\ [2\pi]}$.
+  \item $\tan x=\tan\dfrac{\pi}{3}$ : $\res{x\equiv\dfrac{\pi}{3}\ [\pi]}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-17}
+\begin{corrige}{17}{Inéquations trigonométriques}
+\demarche{Tracer le cercle, colorier l'arc qui convient, lire les intervalles.}
+\noindent
+\begin{minipage}[c]{0.63\linewidth}
+\begin{questions}
+  \item Sur le cercle, $\cos x\leq\dfrac12$ correspond à l'arc situé à gauche
+    de la verticale d'abscisse $\dfrac12$, parcouru de $\dfrac{\pi}{3}$ à
+    $\dfrac{5\pi}{3}$ :
+    $\res{\mathcal{S}=\intFF{\pi/3}{5\pi/3}}$.
+  \item $\sin x>\dfrac{\sqrt2}{2}$ : l'arc strictement au-dessus de
+    l'horizontale d'ordonnée $\dfrac{\sqrt2}{2}$ :
+    $\res{\mathcal{S}=\intOO{\pi/4}{3\pi/4}}$.
+  \item $2\sin^{2}x-1\geq0\iff|\sin x|\geq\dfrac{\sqrt2}{2}$ : deux arcs
+    symétriques, en haut et en bas du cercle :
+    $\res{\mathcal{S}=\intFF{\pi/4}{3\pi/4}\cup\intFF{5\pi/4}{7\pi/4}}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.33\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.5,line cap=round]
+  \draw[otRule,line width=0.3pt] (-1.2,0) -- (1.2,0);
+  \draw[otRule,line width=0.3pt] (0,-1.2) -- (0,1.2);
+  \draw[otNavy,line width=0.8pt] (0,0) circle (1);
+  \draw[otGreen,line width=2pt] (60:1) arc (60:300:1);
+  \draw[otGreenDark,line width=0.6pt,dash pattern=on 1.8pt off 1.4pt] (0.5,-1.1) -- (0.5,1.1);
+  \fill[otGreenDark] (60:1) circle (1.1pt) node[above right,font=\scriptsize,inner sep=1pt] {$\frac{\pi}{3}$};
+  \fill[otGreenDark] (300:1) circle (1.1pt) node[below right,font=\scriptsize,inner sep=1pt] {$\frac{5\pi}{3}$};
+  \node[below,font=\tiny,text=otGreenDark,inner sep=1.6pt] at (0.5,0) {$\frac12$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Question 1 : l'arc solution de $\cos x\leq\frac12$.}
+\end{minipage}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-18}
+\begin{corrige}{18}{Autour de $\tan\frac{t}{2}$}
+\demarche{Tout exprimer avec $\cos\frac{t}{2}$ et $\sin\frac{t}{2}$, puis faire apparaître $u$.}
+\begin{questions}
+  \item Par duplication, $\cos t=\cos^{2}\dfrac{t}{2}-\sin^{2}\dfrac{t}{2}
+    =\cos^{2}\dfrac{t}{2}\,(1-u^{2})$, et
+    $1=\cos^{2}\dfrac{t}{2}+\sin^{2}\dfrac{t}{2}=\cos^{2}\dfrac{t}{2}\,(1+u^{2})$,
+    donc $\cos^{2}\dfrac{t}{2}=\dfrac{1}{1+u^{2}}$ et
+    $\cos t=\dfrac{1-u^{2}}{1+u^{2}}$. De même,
+    $\sin t=2\sin\dfrac{t}{2}\cos\dfrac{t}{2}=2u\cos^{2}\dfrac{t}{2}
+    =\dfrac{2u}{1+u^{2}}$.
+  \item La duplication de la tangente donne
+    $1=\tan\dfrac{\pi}{4}=\dfrac{2u_0}{1-u_0^{2}}$, d'où
+    $1-u_0^{2}=2u_0$, c'est-à-dire $u_0^{2}+2u_0-1=0$. Les racines sont
+    $-1\pm\sqrt2$ ; comme $\dfrac{\pi}{8}\in\intOO{0}{\frac{\pi}{2}}$,
+    $u_0>0$ : $\res{\tan\dfrac{\pi}{8}=\sqrt2-1}$.
+  \item $u_0^{2}=3-2\sqrt2$, donc $1+u_0^{2}=2(2-\sqrt2)$, et
+    \[
+      \sin\frac{\pi}{4}=\frac{2u_0}{1+u_0^{2}}=\frac{\sqrt2-1}{2-\sqrt2}
+      =\frac{\sqrt2-1}{\sqrt2\,(\sqrt2-1)}=\frac{1}{\sqrt2}=\res{\frac{\sqrt2}{2}} :
+    \]
+    c'est bien la valeur attendue.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-19}
+\begin{corrige}{19}{Deux inégalités célèbres}
+\demarche{Faire apparaître un carré : un carré est toujours positif ou nul.}
+\begin{questions}
+  \item $\bigl(\sqrt a-\sqrt b\bigr)^{2}\geq0$ se développe en
+    $a+b\geq2\sqrt{ab}$, c'est-à-dire $\sqrt{ab}\leq\dfrac{a+b}{2}$. Il y a
+    égalité si et seulement si $\sqrt a=\sqrt b$, c'est-à-dire $a=b$.
+  \item $(a+b)\Bigl(\dfrac1a+\dfrac1b\Bigr)=2+\dfrac{a}{b}+\dfrac{b}{a}
+    \geq2+2\sqrt{\dfrac{a}{b}\cdot\dfrac{b}{a}}=4$, d'après la question 1
+    appliquée à $\dfrac ab$ et $\dfrac ba$.
+  \item $T(t)=\Bigl(\displaystyle\sum_k a_k^{2}\Bigr)t^{2}
+    +2\Bigl(\displaystyle\sum_k a_k b_k\Bigr)t+\displaystyle\sum_k b_k^{2}\geq0$ pour tout $t$.
+    Si $\sum a_k^{2}=0$, tous les $a_k$ sont nuls et l'inégalité est triviale.
+    Sinon, ce trinôme de signe constant a un discriminant négatif ou nul :
+    \[
+      4\Bigl(\sum_k a_k b_k\Bigr)^{2}-4\Bigl(\sum_k a_k^{2}\Bigr)\Bigl(\sum_k b_k^{2}\Bigr)\leq0,
+    \]
+    ce qui est l'inégalité de Cauchy-Schwarz.
+  \item Avec $a_k=\sqrt{x_k}$ et $b_k=\dfrac{1}{\sqrt{x_k}}$ pour
+    $(x_1,x_2,x_3)=(a,b,c)$ : $\sum a_kb_k=3$, d'où
+    $9\leq(a+b+c)\Bigl(\dfrac1a+\dfrac1b+\dfrac1c\Bigr)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-20}
+\begin{corrige}{20}{Identités binomiales}
+\demarche{Pascal pour télescoper ; identifier des coefficients pour compter deux fois la même chose.}
+\begin{questions}
+  \item La relation de Pascal donne
+    $\dbinom{k}{p}=\dbinom{k+1}{p+1}-\dbinom{k}{p+1}$, et la somme télescope :
+    \[
+      \sum_{k=p}^{n}\binom{k}{p}
+      =\binom{n+1}{p+1}-\binom{p}{p+1}=\res{\binom{n+1}{p+1}},
+    \]
+    car $\dbinom{p}{p+1}=0$.
+  \item Dans $(1+x)^{n}(1+x)^{n}$, le coefficient de $x^{n}$ s'obtient en
+    croisant les termes : il vaut
+    $\displaystyle\sum_{k=0}^{n}\binom{n}{k}\binom{n}{n-k}=\sum_{k=0}^{n}\binom{n}{k}^{2}$
+    (symétrie). Dans $(1+x)^{2n}$, il vaut $\dbinom{2n}{n}$. L'égalité des
+    deux développements donne
+    $\res{\displaystyle\sum_{k=0}^{n}\binom{n}{k}^{2}=\binom{2n}{n}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-21}
+\begin{corrige}{21}{Un système avec paramètre}
+\demarche{Une combinaison symétrique dégrossit la discussion ; traiter ensuite chaque cas.}
+En additionnant les trois équations : $(m+2)(x+y+z)=3$.
+
+\etape{Cas $m=-2$} L'égalité devient $0=3$ : \res{\text{aucune solution}}.
+Les trois plans n'ont aucun point commun.
+
+\etape{Cas $m\neq-2$} Alors $x+y+z=\dfrac{3}{m+2}$. Par ailleurs,
+$L_1-L_2$ donne $(1-m)(y-z)=0$ et $L_1-L_3$ donne $(1-m)(x-z)=0$.
+
+\etape{Sous-cas $m=1$} Les trois équations coïncident avec $x+y+z=1$ : les
+solutions forment \res{\text{le plan } x+y+z=1} (infinité de solutions, trois
+plans confondus).
+
+\etape{Sous-cas $m\neq1$ et $m\neq-2$} Alors $x=y=z$, et $3x=\dfrac{3}{m+2}$ :
+l'unique solution est
+$\res{\Bigl(\dfrac{1}{m+2},\dfrac{1}{m+2},\dfrac{1}{m+2}\Bigr)}$ — trois
+plans sécants en un point.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-22}
+\begin{corrige}{22}{Produits et télescopages}
+\demarche{Écrire chaque facteur comme un quotient : le produit télescope.}
+\begin{questions}
+  \item $\displaystyle\prod_{k=2}^{n}\frac{k-1}{k}=\frac{1}{2}\times\frac{2}{3}\times\dots\times\frac{n-1}{n}
+    =\res{\frac{1}{n}}$.
+  \item $1-\dfrac{1}{k^{2}}=\dfrac{(k-1)(k+1)}{k^{2}}$, donc le produit se
+    scinde en deux produits télescopiques :
+    \[
+      \prod_{k=2}^{n}\frac{k-1}{k}\times\prod_{k=2}^{n}\frac{k+1}{k}
+      =\frac{1}{n}\times\frac{n+1}{2}=\res{\frac{n+1}{2n}}
+      \;\xrightarrow[n\to+\infty]{}\;\res{\frac12}.
+    \]
+  \item L'identité se vérifie en réduisant au même dénominateur :
+    $\dfrac{1}{k(k+1)}-\dfrac{1}{(k+1)(k+2)}=\dfrac{(k+2)-k}{k(k+1)(k+2)}
+    =\dfrac{2}{k(k+1)(k+2)}$. La somme télescope :
+    \[
+      \sum_{k=1}^{n}\frac{1}{k(k+1)(k+2)}
+      =\frac12\Bigl(\frac{1}{2}-\frac{1}{(n+1)(n+2)}\Bigr)
+      =\res{\frac14-\frac{1}{2(n+1)(n+2)}}
+      \;\xrightarrow[n\to+\infty]{}\;\res{\frac14}.
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-23}
+\begin{corrige}{23}{La valeur exacte de $\cos\frac{\pi}{5}$}
+\demarche{Exploiter la relation $3\theta+2\theta=\pi$ pour obtenir une équation algébrique en $\cos\theta$.}
+\begin{questions}
+  \item $3\theta=\pi-2\theta$, donc $\sin(3\theta)=\sin(\pi-2\theta)=\sin(2\theta)$.
+  \item En développant ($s=\sin\theta$, $c=\cos\theta$) :
+    $3s-4s^{3}=2sc$. Comme $s\neq0$, on simplifie :
+    $3-4s^{2}=2c$, soit $3-4(1-c^{2})=2c$, c'est-à-dire $4c^{2}-2c-1=0$.
+  \item Les racines sont $c=\dfrac{1\pm\sqrt5}{4}$ ; comme
+    $\cos\dfrac{\pi}{5}>0$ :
+    $\res{\cos\dfrac{\pi}{5}=\dfrac{1+\sqrt5}{4}}$. Puis, par duplication :
+    \[
+      \cos\frac{2\pi}{5}=2\cos^{2}\frac{\pi}{5}-1
+      =\frac{6+2\sqrt5}{8}-1=\res{\frac{\sqrt5-1}{4}}.
+    \]
+  \item $\dfrac{\varphi}{2}=\dfrac{1+\sqrt5}{4}$ : c'est bien
+    $\cos\dfrac{\pi}{5}$ — le pentagone cache le nombre d'or (on le
+    retrouvera au chapitre 3 avec les racines cinquièmes de l'unité).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-2-24}
+\begin{corrige}{24}{Vers les polynômes de Tchebychev}
+\demarche{La récurrence double du chapitre 1 transforme une identité trigonométrique en une famille de polynômes.}
+\begin{questions}
+  \item $T_2=2X^{2}-1$ ;\quad $T_3=2X(2X^{2}-1)-X=4X^{3}-3X$ ;\\
+    $T_4=2X(4X^{3}-3X)-(2X^{2}-1)=\res{8X^{4}-8X^{2}+1}$.
+  \item Les formules d'addition donnent
+    $\cos\bigl((n+1)t+t\bigr)+\cos\bigl((n+1)t-t\bigr)=2\cos\bigl((n+1)t\bigr)\cos t$,
+    ce qui est l'égalité annoncée.
+  \item \etape{Initialisation} $\cos(0\cdot t)=1=T_0(\cos t)$ et
+    $\cos(1\cdot t)=T_1(\cos t)$.
+    \etape{Hérédité double} Si la propriété vaut aux rangs $n$ et $n+1$,
+    alors, d'après la question 2 :
+    \[
+      \cos\bigl((n+2)t\bigr)=2\cos t\,\cos\bigl((n+1)t\bigr)-\cos(nt)
+      =2\cos t\;T_{n+1}(\cos t)-T_n(\cos t)=T_{n+2}(\cos t).
+    \]
+  \item Avec $n=3$ : $\cos(3a)=T_3(\cos a)=4\cos^{3}a-3\cos a$.
+  \item Tout $x\in\intFF{-1}{1}$ s'écrit $x=\cos t$ ; alors
+    $T_n(x)=\cos(nt)\in\intFF{-1}{1}$, donc $|T_n(x)|\leq1$.
+  \item $T_4\Bigl(\cos\dfrac{\pi}{8}\Bigr)=\cos\dfrac{\pi}{2}=0$ : le réel
+    $c=\cos\dfrac{\pi}{8}$ vérifie $8c^{4}-8c^{2}+1=0$. Ce trinôme en $c^{2}$
+    a pour racines $c^{2}=\dfrac{2\pm\sqrt2}{4}$. Comme
+    $c>\cos\dfrac{\pi}{4}=\dfrac{\sqrt2}{2}$, on a $c^{2}>\dfrac12$, donc
+    $c^{2}=\dfrac{2+\sqrt2}{4}$ et
+    $\res{\cos\dfrac{\pi}{8}=\dfrac{\sqrt{2+\sqrt2}}{2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-02}

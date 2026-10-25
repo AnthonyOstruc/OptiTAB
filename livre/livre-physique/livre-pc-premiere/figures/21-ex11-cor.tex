@@ -1,0 +1,13 @@
+% Masse volumique mesurée avec son incertitude-type, comparée à celles du zinc et de l'étain (corrigé de l'exercice 11, chapitre 21)
+\begin{tikzpicture}[x=250mm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (7.0,0) -- (7.36,0) node[pcLegende,anchor=north west] {$\rho$ (\unit{g.cm^{-3}})};
+\foreach \v/\t in {7.0/{7,00},7.1/{7,10},7.2/{7,20},7.3/{7,30}}{%
+  \draw[otInk!70,line width=0.4pt] (\v,0) -- (\v,-0.08) node[pcLegende,anchor=north] {\t};}
+\fill[otNavy!15] (7.09,0.3) rectangle (7.15,0.7);
+\draw[otNavy,line width=1pt] (7.09,0.5) -- (7.15,0.5) (7.09,0.38) -- (7.09,0.62) (7.15,0.38) -- (7.15,0.62);
+\fill[otNavy] (7.12,0.5) circle (1.6pt);
+\node[pcLegende,anchor=east,text=otNavy,align=right] at (7.085,0.5) {mesure : \qty{7,12}{g.cm^{-3}}\\$u=\qty{0,03}{g.cm^{-3}}$};
+\draw[otGreenDark,line width=0.9pt] (7.13,0) -- (7.13,1.0) node[pcLegende,anchor=south,text=otGreenDark,align=center] {zinc : \num{7,13}\\écart $<u$};
+\draw[otRed!85!black,line width=0.9pt] (7.29,0) -- (7.29,1.0) node[pcLegende,anchor=south,text=otRed!85!black,align=center] {étain : \num{7,29}\\écart $\approx 6\,u$};
+\end{tikzpicture}
+\par\smallskip\legende{Seul le zinc est compatible avec la mesure ; le fer (\num{7,87}) est hors d'échelle.}

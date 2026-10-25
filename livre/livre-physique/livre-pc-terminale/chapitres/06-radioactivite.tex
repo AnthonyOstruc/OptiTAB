@@ -1,0 +1,419 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[radioactivite]{6}{Décroissance radioactive}{Partie 1 · Constitution et transformations de la matière}
+{Diagramme (N,Z)\enspace·\enspace Radioactivités $\alpha$, $\beta$ et $\gamma$\enspace·\enspace Loi de décroissance\enspace·\enspace Datation et radioprotection}
+\objectif{Déterminer, à partir d'un diagramme (N,Z), les isotopes radioactifs d'un élément.}
+\objectif{Écrire l'équation d'une réaction nucléaire et identifier le type de radioactivité.}
+\objectif{Établir et exploiter la loi de décroissance radioactive et une courbe de décroissance.}
+\objectif{Expliquer le principe d'une datation et dater un événement.}
+\objectif{Citer des applications médicales et des moyens de protection contre les rayonnements ionisants.}
+\prerequis{Composition du noyau, symbole $^A_Z\mathrm{X}$, isotopes.}
+\prerequis{Caractère aléatoire de la désintégration, demi-vie (enseignement scientifique).}
+\prerequis{Équation différentielle $y'=ay$, fonctions exponentielle et logarithme.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Stabilité et instabilité des noyaux}
+\begin{definition}[Noyau radioactif]
+Un noyau $^A_Z\mathrm{X}$ contient $Z$ protons et $N=A-Z$ neutrons ; des isotopes ont le même nombre de protons
+mais des nombres de neutrons différents. Un noyau \textbf{radioactif}, instable, se transforme spontanément en un
+autre noyau en émettant une particule : c'est une \textbf{désintégration}. Elle est \textbf{aléatoire} (on ne peut
+pas prévoir la date de désintégration d'un noyau donné), spontanée et inéluctable : elle ne dépend ni de la
+température, ni de la pression, ni de l'espèce chimique dans laquelle le noyau est engagé.
+\end{definition}
+\begin{propriete}[Diagramme (N,Z) et vallée de stabilité]
+Dans le diagramme (N,Z), les noyaux stables forment la \textbf{vallée de stabilité} : $N\approx Z$ pour les noyaux
+légers ($Z<20$), $N>Z$ pour les noyaux plus lourds. Les noyaux qui ont trop de neutrons, à droite de la vallée,
+sont émetteurs $\beta^-$ ; ceux qui ont trop de protons, à gauche, sont émetteurs $\beta^+$ ; les noyaux les plus
+lourds sont souvent émetteurs $\alpha$.
+\end{propriete}
+\schema{06-diagramme-nz}
+\begin{savoirfaire}[Déterminer les isotopes radioactifs d'un élément]
+Les isotopes d'un élément occupent une même ligne horizontale du diagramme (même $Z$). Les isotopes qui ne
+figurent pas parmi les noyaux stables sont radioactifs ; leur position par rapport à la vallée indique le type de
+radioactivité probable.
+\end{savoirfaire}
+\essSection{2}{Équations des réactions nucléaires}
+\begin{loi}[Lois de conservation]
+Au cours d'une réaction nucléaire, il y a conservation du \textbf{nombre de nucléons} $A$ et conservation du
+\textbf{nombre de charge} $Z$.
+\end{loi}
+\begin{propriete}[Types de radioactivité]
+\par\smallskip
+{\small\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}lYll@{}}\toprule
+\otTete{Type} & \otTete{Particule émise} & \otTete{Équation} & \otTete{Exemple}\\\midrule
+$\alpha$ & noyau d'hélium \ce{^{4}_{2}He} & \ce{^{A}_{Z}X -> ^{A-4}_{Z-2}Y + ^{4}_{2}He} & \ce{^{222}_{86}Rn -> ^{218}_{84}Po + ^{4}_{2}He}\\
+$\beta^-$ & électron \ce{^{0}_{-1}e} & \ce{^{A}_{Z}X -> ^{A}_{Z+1}Y + ^{0}_{-1}e} & \ce{^{14}_{6}C -> ^{14}_{7}N + ^{0}_{-1}e}\\
+$\beta^+$ & positon \ce{^{0}_{1}e} & \ce{^{A}_{Z}X -> ^{A}_{Z-1}Y + ^{0}_{1}e} & \ce{^{18}_{9}F -> ^{18}_{8}O + ^{0}_{1}e}\\
+$\gamma$ & photon de haute énergie & \ce{Y^* -> Y + $\gamma$} & \ce{^{99\text{m}}_{43}Tc -> ^{99}_{43}Tc + $\gamma$}\\\bottomrule
+\end{tabularx}}
+\par\smallskip
+Le noyau formé est souvent dans un état excité ; il revient à son état fondamental en émettant un rayonnement $\gamma$.
+\end{propriete}
+\schema{06-deplacements}
+\begin{savoirfaire}[Écrire l'équation d'une désintégration]
+Écrire le noyau père et la particule émise, déterminer $A$ et $Z$ du noyau fils par les lois de conservation, puis
+identifier l'élément grâce à son numéro atomique $Z$, dans la classification périodique.
+\end{savoirfaire}
+\begin{attention}
+L'électron émis lors d'une désintégration $\beta^-$ ne provient pas du cortège électronique : il est créé dans le
+noyau, où un neutron se transforme en proton. De même, un proton se transforme en neutron lors d'une désintégration $\beta^+$.
+\end{attention}
+\essSection{3}{Loi de décroissance radioactive}
+\begin{definition}[Constante radioactive et activité]
+Dans un échantillon contenant un grand nombre $N(t)$ de noyaux radioactifs identiques, le nombre de noyaux qui se
+désintègrent pendant une durée $\mathrm{d}t$ est proportionnel à $N$ et à $\mathrm{d}t$ :
+$\mathrm{d}N=-\lambda\,N\,\mathrm{d}t$. La \textbf{constante radioactive} $\lambda$, en \unit{s^{-1}}, caractérise le noyau.
+L'\textbf{activité} $A=-\dfrac{\mathrm{d}N}{\mathrm{d}t}=\lambda\,N$ est le nombre de désintégrations par seconde ; elle
+s'exprime en becquerels (Bq).
+\end{definition}
+\begin{theoreme}[Loi de décroissance radioactive]
+\[N(t)=N_0\,\mathrm{e}^{-\lambda t},\qquad A(t)=A_0\,\mathrm{e}^{-\lambda t}\qquad\text{et}\qquad t_{1/2}=\frac{\ln2}{\lambda}.\]
+Le temps de demi-vie $t_{1/2}$ est la durée au bout de laquelle la moitié des noyaux présents se sont désintégrés ;
+au bout de $n$ demi-vies, il reste $N_0/2^n$ noyaux.
+\end{theoreme}
+\begin{demonstration}
+La relation $\frac{\mathrm{d}N}{\mathrm{d}t}=-\lambda N$ est l'équation différentielle $y'=-\lambda y$, dont les solutions
+sont les fonctions $t\mapsto C\,\mathrm{e}^{-\lambda t}$ ; la condition initiale impose $C=N_0$. En multipliant par
+$\lambda$, on obtient $A(t)$. À la date $t_{1/2}$, $N=N_0/2$, d'où $\mathrm{e}^{-\lambda t_{1/2}}=\frac12$ et $\lambda\,t_{1/2}=\ln2$.
+\end{demonstration}
+\schema{06-decroissance}
+\begin{savoirfaire}[Exploiter une loi ou une courbe de décroissance]
+Lire $t_{1/2}$ à l'ordonnée $N_0/2$ (ou $A_0/2$) et en déduire $\lambda=\ln2/t_{1/2}$. La durée nécessaire pour que
+l'activité soit divisée par un facteur $f$ vaut $t=\dfrac{\ln f}{\lambda}$. Le tracé de $\ln A$ en fonction de $t$ donne
+une droite de coefficient directeur $-\lambda$.
+\end{savoirfaire}
+\begin{codecote}[0.58]
+\begin{pythoncol}
+import random
+import matplotlib.pyplot as plt
+N0, p = 1000, 0.10   # p par intervalle
+N, K, L = N0, [0], [N0]
+for k in range(1, 41):
+    N = N - sum(1 for _ in range(N)
+                if random.random() < p)
+    K.append(k)
+    L.append(N)
+plt.plot(K, L, "o")
+plt.plot(K, [N0 * (1 - p)**k for k in K])
+plt.show()
+\end{pythoncol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Pendant chaque intervalle de temps, chacun des noyaux restants se désintègre avec la probabilité $p$ : le test
+\code{random.random() < p} est vrai avec cette probabilité. La simulation reproduit la loi exponentielle
+$N_0\,(1-p)^k$, avec des fluctuations aléatoires d'autant plus faibles, en valeur relative, que les noyaux sont nombreux.
+\end{codecote}
+\schema{06-python-simulation}
+\essSection{4}{Datation, médecine et radioprotection}
+\begin{propriete}[Principe d'une datation]
+On mesure le nombre de noyaux radioactifs, ou l'activité, d'un échantillon et on le compare à sa valeur initiale,
+supposée connue : \[t=\frac{1}{\lambda}\ln\frac{N_0}{N}=\frac{t_{1/2}}{\ln2}\ln\frac{A_0}{A}.\]
+On choisit un noyau dont la demi-vie est du même ordre de grandeur que l'âge à mesurer : le carbone 14 pour des
+restes organiques de moins de \num{50000} ans, l'uranium 238 ou le potassium 40 pour des roches.
+\end{propriete}
+\begin{exemple}
+Un être vivant échange sans cesse du carbone avec l'atmosphère : l'activité du carbone 14 y reste voisine de
+\qty{0,23}{Bq} par gramme de carbone. Après sa mort, elle décroît avec une demi-vie de \num{5700} ans. Un charbon de
+bois d'activité \qty{0,058}{Bq.g^{-1}}, quatre fois plus faible, date donc de deux demi-vies, soit environ \num{11400} ans.
+\end{exemple}
+\begin{propriete}[Applications médicales]
+En imagerie, un traceur radioactif administré au patient se fixe sur l'organe étudié : la scintigraphie utilise
+le technétium 99m (émetteur $\gamma$, $t_{1/2}=\qty{6,0}{h}$), la tomographie par émission de positons (TEP) le
+fluor 18 (émetteur $\beta^+$, $t_{1/2}=\qty{110}{min}$). En thérapie, l'iode 131 (émetteur $\beta^-$,
+$t_{1/2}=\qty{8,0}{jours}$) détruit des cellules de la thyroïde ; la radiothérapie irradie les tumeurs.
+\end{propriete}
+\schema{06-penetration}
+\begin{propriete}[Se protéger des rayonnements ionisants]
+Les rayonnements $\alpha$, $\beta$ et $\gamma$ sont \textbf{ionisants} : ils peuvent endommager les cellules. On limite
+l'exposition externe en réduisant la \textbf{durée} d'exposition, en augmentant la \textbf{distance} à la source et
+en interposant des \textbf{écrans} adaptés au rayonnement ; on évite la \textbf{contamination} (inhalation,
+ingestion), particulièrement dangereuse pour les émetteurs $\alpha$. En France, l'exposition moyenne d'un habitant est
+d'environ 4,5~mSv par an, dont près d'un tiers est dû au radon.
+\end{propriete}
+\begin{rediger}
+Pour une équation nucléaire, expliciter les conservations, par exemple « nombre de nucléons : $14=14+0$ ; nombre de
+charge : $6=7+(-1)$ ». Pour une datation, écrire la loi utilisée, isoler $t$, puis donner le résultat avec un nombre
+de chiffres significatifs cohérent avec les données.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-6-1}
+\begin{exercice}[1]{Lire un extrait du diagramme (N,Z)}
+Le document représente une partie du diagramme (N,Z) des éléments bore (B), carbone (C), azote (N) et oxygène (O).
+\schema{06-ex01}
+\begin{questions}
+\item Combien de protons et de neutrons le noyau de carbone 14 contient-il ? Écrire son symbole $^A_Z\mathrm{X}$.
+\item Citer les isotopes du carbone représentés. Lesquels sont stables ?
+\item Quel est le type de radioactivité du carbone 11 ? du carbone 14 ? Relier ce type à la position de chaque noyau
+par rapport aux noyaux stables.
+\item Écrire l'équation de la désintégration du carbone 14, qui conduit à un noyau d'azote 14.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-2}
+\begin{exercice}[1]{Écrire des équations de désintégration}
+Les noyaux suivants sont radioactifs.
+\begin{questions}[label=\otLabel{\Alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item Le cobalt 60, \ce{^{60}_{27}Co}, émetteur $\beta^-$, utilisé autrefois en radiothérapie.
+\item Le fluor 18, \ce{^{18}_{9}F}, émetteur $\beta^+$, utilisé en imagerie médicale.
+\item L'américium 241, \ce{^{241}_{95}Am}, émetteur $\alpha$, présent dans d'anciens détecteurs de fumée.
+\item Le tritium, \ce{^{3}_{1}H}, émetteur $\beta^-$, utilisé dans des cadrans lumineux.
+\end{questions}
+\begin{donnees}
+Numéros atomiques : He : 2 ; O : 8 ; F : 9 ; Co : 27 ; Ni : 28 ; Np : 93 ; Pu : 94 ; Am : 95.
+\end{donnees}
+\begin{questions}
+\item Énoncer les lois de conservation utilisées pour écrire l'équation d'une réaction nucléaire.
+\item Écrire l'équation de chacune des quatre désintégrations et nommer le noyau fils.
+\item Pour quelle désintégration le noyau fils compte-t-il quatre nucléons de moins que le noyau père ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-3}
+\begin{exercice}[1]{Identifier un type de radioactivité}
+On considère les réactions nucléaires suivantes, incomplètes.
+\begin{questions}[label=\otLabel{\Alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item \ce{^{222}_{86}Rn -> ^{218}_{84}Po + ...}
+\item \ce{^{137}_{55}Cs -> ^{137}_{56}Ba + ...}
+\item \ce{^{11}_{6}C -> ... + ^{0}_{1}e}
+\item \ce{^{232}_{90}Th -> ... + ^{4}_{2}He}
+\item \ce{^{99\text{m}}_{43}Tc -> ^{99}_{43}Tc + ...}
+\end{questions}
+\begin{donnees}
+Numéros atomiques : B : 5 ; C : 6 ; N : 7 ; Ra : 88 ; Th : 90 ; U : 92.
+\end{donnees}
+\begin{questions}
+\item Compléter chaque équation en justifiant à l'aide des lois de conservation.
+\item Identifier le type de radioactivité de chaque réaction.
+\item Pourquoi la réaction E ne modifie-t-elle pas la nature de l'élément ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-4}
+\begin{exercice}[1]{Lire une courbe de décroissance}
+Une gélule contenant de l'iode 131 sert à traiter une hyperthyroïdie. Le graphique donne son activité en fonction du temps.
+\schema{06-ex04}
+\begin{questions}
+\item Définir l'activité d'un échantillon radioactif et donner son unité.
+\item Déterminer graphiquement le temps de demi-vie de l'iode 131.
+\item En déduire la constante radioactive $\lambda$, en jour$^{-1}$.
+\item Quelle est l'activité de la gélule au bout de 24~jours ? Retrouver ce résultat sans utiliser la courbe.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-5}
+\begin{exercice}[1]{Compter les demi-vies}
+Pour une scintigraphie osseuse, on injecte à un patient, à 8~h, une dose de technétium 99m d'activité 600~MBq.
+La demi-vie du technétium 99m vaut 6,0~h ; on ne tient pas compte de l'élimination du traceur par l'organisme.
+\begin{questions}
+\item Quelle est l'activité du technétium à 14~h ? à 20~h ? le lendemain à 8~h ?
+\item Quelle fraction de l'activité injectée reste-t-il au bout de deux jours ?
+\item Pourquoi utilise-t-on en imagerie médicale des noyaux de courte demi-vie ? Citer une contrainte qui en découle.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-6-6}
+\begin{exercice}[2]{Établir et utiliser la loi de décroissance}
+Le césium 137, émetteur $\beta^-$ de demi-vie 30,0~ans, a été dispersé lors des accidents de Tchernobyl (1986) et de
+Fukushima (2011).
+\begin{donnees}
+Numéros atomiques : Xe : 54 ; Cs : 55 ; Ba : 56.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la désintégration du césium 137.
+\item Montrer que $N(t)=N_0\,\mathrm{e}^{-\lambda t}$ vérifie $\frac{\mathrm{d}N}{\mathrm{d}t}=-\lambda N$. Établir la relation
+$t_{1/2}=\frac{\ln2}{\lambda}$, puis calculer $\lambda$ en an$^{-1}$.
+\item Quel pourcentage des noyaux de césium 137 dispersés en 1986 subsistera en 2086 ?
+\item Au bout de combien de temps l'activité d'un sol contaminé par le césium 137 aura-t-elle été divisée par 100 ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-7}
+\begin{exercice}[2]{Le détecteur de fumée}
+Certains détecteurs de fumée anciens contiennent une source d'américium 241 d'activité 37~kBq. Ils sont désormais
+collectés à part en fin de vie.
+\begin{donnees}
+Demi-vie de l'américium 241 : 432,6~ans ; \mbox{1 an $=\qty{3,156e7}{s}$} ; $M=\qty{241}{g.mol^{-1}}$ ;
+$N_\mathrm{A}=\qty{6,02e23}{mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la constante radioactive $\lambda$ de l'américium 241, en \unit{s^{-1}}.
+\item En déduire le nombre de noyaux d'américium 241 contenus dans la source, puis leur masse.
+\item Quelle est l'activité de la source au bout de 10~ans ? Commenter.
+\item Pourquoi ces détecteurs sont-ils sans danger en fonctionnement normal, et pourquoi doivent-ils pourtant être collectés à part ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-8}
+\begin{exercice}[2]{Dater les restes d'un foyer préhistorique}
+L'activité du carbone 14 d'un charbon de bois provenant d'un foyer préhistorique vaut 0,060~Bq par gramme de carbone.
+Celle d'un organisme vivant vaut 0,23~Bq par gramme de carbone. Le graphique représente le rapport $A/A_0$ de
+l'activité du carbone 14 d'un échantillon mort à sa valeur initiale.
+\schema{06-ex08}
+\begin{questions}
+\item Pourquoi l'activité du carbone 14 d'un être vivant reste-t-elle constante ? Pourquoi décroît-elle après sa mort ?
+\item Déterminer graphiquement l'âge du charbon de bois.
+\item Retrouver ce résultat par le calcul, avec $t_{1/2}=\num{5700}$ ans.
+\item Au-delà de \num{50000} ans environ, la datation par le carbone 14 n'est plus possible. Proposer une explication.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-9}
+\begin{exercice}[2]{Le radon dans les habitations}
+Le radon 222, gaz radioactif émetteur $\alpha$, provient de la désintégration de l'uranium contenu dans certaines
+roches, notamment granitiques. Il s'accumule dans les pièces mal ventilées. Depuis 2018, le niveau de référence
+fixé en France est de 300~Bq par mètre cube d'air, en moyenne annuelle.
+\begin{donnees}
+Demi-vie du radon 222 : 3,82~jours ; numéros atomiques : Po : 84 ; Rn : 86 ; Ra : 88.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la désintégration du radon 222.
+\item Combien de noyaux de radon contient un mètre cube d'air dont l'activité vaut \qty{300}{Bq} ?
+\item Si l'arrivée de radon dans une pièce cessait, au bout de combien de jours l'activité serait-elle divisée par 10 ?
+\item Les particules $\alpha$ sont arrêtées par la peau. Pourquoi le radon est-il néanmoins dangereux ? Quelle mesure
+simple limite l'exposition des habitants ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-10}
+\begin{exercice}[2]{Simuler le hasard des désintégrations}
+Le programme suivant simule un échantillon de 500 noyaux, chacun ayant la probabilité $p=0{,}05$ de se désintégrer
+pendant chaque seconde.
+\begin{python}
+import random
+N0, p = 500, 0.05
+N = N0
+noyaux = [N]
+while N > N0 / 2:
+    N = N - sum(1 for _ in range(N) if random.random() < p)
+    noyaux.append(N)
+print(len(noyaux) - 1, N)
+\end{python}
+Trois exécutions successives affichent \code{13 243}, \code{15 246} et \code{12 244}. Avec \code{N0 = 50000}, on
+obtient \code{14 24438}, \code{14 24384} et \code{14 24486}.
+\begin{questions}
+\item \capacite{Capacité numérique}Que simule le test \code{random.random() < p} ? Quel est le rôle de la boucle \code{while} ?
+\item Que représente le premier nombre affiché ?
+\item Pourquoi les exécutions donnent-elles des résultats différents ? Pourquoi les écarts sont-ils plus faibles avec 50\,000 noyaux ?
+\item Le modèle prévoit $N_k=N_0\,(1-p)^k$ au bout de $k$ secondes. Montrer que la demi-vie vaut
+$\ln2/[-\ln(1-p)]$, la calculer et comparer aux résultats de la simulation.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-11}
+\begin{exercice}[2]{L'iode 131 et la thyroïde}
+Pour traiter certaines maladies de la thyroïde, on administre au patient une gélule d'iode 131 d'activité 550~MBq.
+La thyroïde fixe l'iode et les électrons émis détruisent localement ses cellules. En cas d'accident nucléaire, les
+populations proches peuvent recevoir des comprimés d'iodure de potassium, qui contient de l'iode stable.
+\begin{donnees}
+Demi-vie de l'iode 131 : 8,02~jours ; numéros atomiques : Te : 52 ; I : 53 ; Xe : 54.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la désintégration $\beta^-$ de l'iode 131.
+\item Calculer l'activité de l'iode 131 au bout de 8,02~jours, puis au bout de 30~jours.
+\item Pourquoi un émetteur $\beta^-$ convient-il à cette thérapie, alors qu'un émetteur $\gamma$ ne conviendrait pas ?
+\item Expliquer le rôle des comprimés d'iode stable en cas d'accident nucléaire.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-6-12}
+\begin{exercice}[3]{Préparer un examen de TEP}
+\begin{docu}{1}{Un traceur produit chaque matin}
+Le fluorodésoxyglucose (FDG) est une molécule de glucose dans laquelle un groupe hydroxyle est remplacé par un atome
+de fluor 18. Les cellules cancéreuses, grandes consommatrices de glucose, le concentrent. Le fluor 18, émetteur
+$\beta^+$ de demi-vie 110~min, est produit dans un cyclotron, puis acheminé vers les hôpitaux.
+\end{docu}
+\begin{docu}{2}{Deux photons émis en sens opposés}
+Le positon émis s'annihile presque aussitôt avec un électron du milieu : leur masse est convertie en énergie,
+emportée par deux photons $\gamma$ de même énergie, émis dans des directions opposées.
+\end{docu}
+\schema{06-ex12}
+\begin{donnees}
+$t_{1/2}=\qty{109,7}{min}$ ; masse de l'électron et du positon : $m_\mathrm{e}=\qty{9,11e-31}{kg}$ ;
+$c=\qty{3,00e8}{m.s^{-1}}$ ; $\qty{1}{eV}=\qty{1,602e-19}{J}$ ; numéros atomiques : O : 8 ; F : 9 ; Ne : 10.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la désintégration du fluor 18.
+\item Un patient doit recevoir une activité de 250~MBq à 11~h. La dose quitte le cyclotron à 8~h~30. Quelle doit être
+son activité au départ ?
+\item En utilisant la relation $E=m\,c^2$, vérifier que chaque photon emporte une énergie voisine de 511~keV.
+\item \initiative Après l'examen, le patient doit éviter tout contact prolongé avec de jeunes enfants pendant
+quelques heures. Quelle fraction de l'activité injectée subsiste au bout de 24~h ? Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-13}
+\begin{exercice}[3]{La plus vieille roche terrestre}
+\begin{docu}{1}{Des cristaux de zircon}
+Des cristaux de zircon découverts à Jack Hills, en Australie, comptent parmi les plus anciens minéraux terrestres
+connus. En cristallisant, le zircon incorpore de l'uranium mais pas de plomb.
+\end{docu}
+\begin{docu}{2}{De l'uranium 238 au plomb 206}
+L'uranium 238 se transforme en plomb 206, stable, par une suite de désintégrations $\alpha$ et $\beta^-$. Les noyaux
+intermédiaires ont des demi-vies très courtes devant celle de l'uranium 238 : tout se passe comme si chaque noyau
+d'uranium 238 qui se désintègre donnait directement un noyau de plomb 206.
+\end{docu}
+\begin{donnees}
+\ce{^{238}_{92}U} et \ce{^{206}_{82}Pb} ; demi-vie de l'uranium 238 : \num{4.468e9}~ans ; rapport mesuré dans un
+cristal : \mbox{$N(\ce{Pb})/N(\ce{U})=0{,}979$}.
+\end{donnees}
+\begin{questions}
+\item \initiative Déterminer le nombre de désintégrations $\alpha$ et le nombre de désintégrations $\beta^-$ qui
+conduisent de l'uranium 238 au plomb 206.
+\item On note $N_\mathrm{U}(t)$ et $N_\mathrm{Pb}(t)$ les nombres de noyaux d'uranium 238 et de plomb 206 dans le
+cristal, $t$ étant compté depuis sa formation. Montrer que $N_\mathrm{Pb}(t)=N_\mathrm{U}(t)\left(\mathrm{e}^{\lambda t}-1\right)$.
+\item En déduire l'âge du cristal de zircon.
+\item Pourquoi le carbone 14 ne permettrait-il pas de dater ce cristal ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-14}
+\begin{exercice}[3]{Se protéger en médecine nucléaire}
+\begin{docu}{1}{Trois règles de radioprotection}
+En médecine nucléaire, un manipulateur prépare des seringues de technétium 99m, émetteur $\gamma$ de demi-vie 6,0~h.
+Il applique trois règles : réduire la durée d'exposition, s'éloigner de la source, interposer un écran.
+\end{docu}
+\begin{docu}{2}{Débit de dose}
+À 10~cm d'une seringue non protégée contenant 740~MBq de technétium 99m, le débit de dose vaut environ
+\qty{1,4}{mSv.h^{-1}}. Il est inversement proportionnel au carré de la distance à la source. La limite d'exposition
+du public, hors exposition naturelle et médicale, est de 1~mSv par an.
+\end{docu}
+\schema{06-ex14}
+\begin{questions}
+\item Écrire l'équation de l'émission $\gamma$ du technétium 99m. Pourquoi ce noyau convient-il bien à l'imagerie ?
+\item Quel est le débit de dose à 50~cm de la seringue ?
+\item La seringue est glissée dans un protège-seringue en plomb de 2,0~mm d'épaisseur. Par quel facteur le débit de
+dose est-il divisé ?
+\item \initiative À 10~cm de la seringue, au bout de combien de temps une personne recevrait-elle 1~mSv sans
+protection ? avec le protège-seringue ? Conclure.
+\item Quelle est l'activité de la seringue 24~h plus tard ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-15}
+\begin{exercice}[3]{Une pile nucléaire pour Mars}
+\begin{docu}{1}{L'énergie du rover Perseverance}
+Le rover Perseverance tire son énergie d'un générateur thermoélectrique à radio-isotope. Sa source contient 4,8~kg de
+dioxyde de plutonium ; la chaleur libérée par les désintégrations $\alpha$ du plutonium 238 est en partie convertie
+en électricité, ce qui fournit environ 110~W électriques au début de la mission.
+\source{D'après la NASA, Jet Propulsion Laboratory, dossier de presse de la mission Mars 2020.}
+\end{docu}
+\begin{donnees}
+On admet que la source contient 3,5~kg de plutonium 238 ; demi-vie : 87,74~ans ; $M=\qty{238}{g.mol^{-1}}$ ;
+énergie libérée par désintégration : 5,59~MeV ; $\qty{1}{eV}=\qty{1,602e-19}{J}$ ; $N_\mathrm{A}=\qty{6,02e23}{mol^{-1}}$ ;
+\mbox{1 an $=\qty{3,156e7}{s}$} ; numéros atomiques : U : 92 ; Np : 93 ; Pu : 94.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la désintégration du plutonium 238.
+\item Calculer l'activité de 1,0~g de plutonium 238.
+\item En déduire la puissance thermique libérée par 1,0~g de plutonium 238, puis par la source du rover.
+\item \initiative Estimer le rendement de la conversion en électricité. Commenter.
+\item Quelle part de la puissance thermique initiale subsiste au bout de 14~ans ? Pourquoi le plutonium 238
+convient-il mieux que le polonium 210, de demi-vie 138~jours ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

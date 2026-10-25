@@ -1,0 +1,14 @@
+% Compression de l'air dans un cylindre de moteur Diesel (exercice 15, chapitre 18)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \dx/\h/\etat/\vol in {0/2.4/{début de compression}/{\qty{500}{cm^3}},4.4/0.15/{fin de compression}/{\qty{31,25}{cm^3}}}{
+  \begin{scope}[shift={(\dx,0)}]
+  \fill[pcEau] (0,0) rectangle (1.6,\h);
+  \draw[otInk!70,line width=0.8pt] (0,2.9) -- (0,{0-0.0}) -- (1.6,0) -- (1.6,2.9);
+  \fill[otMuted!55] (0.04,\h) rectangle (1.56,\h+0.35);
+  \fill[otMuted!55] (0.65,\h+0.35) rectangle (0.95,\h+1.3);
+  \node[pcLegende,anchor=north] at (0.8,-0.08) {\etat};
+  \node[pcLegende,anchor=west] at (1.75,{\h/2}) {\vol};
+  \end{scope}}
+\draw[otMuted,line width=0.6pt,-{Stealth[length=2mm]}] (3.0,2.2) -- (4.0,2.2) node[pos=0.5,above,pcLegende] {piston};
+\end{tikzpicture}
+\par\smallskip\legende{Le piston divise par 16 le volume de l'air enfermé dans le cylindre, soupapes fermées.}

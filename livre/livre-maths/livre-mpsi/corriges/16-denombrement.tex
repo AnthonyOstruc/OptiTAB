@@ -1,0 +1,446 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 16 — Dénombrement
+%% Résultats vérifiés par verifications/chapitre_16.py.
+
+\corrigesChapitre{16}{Dénombrement}
+\corrigesSouples
+
+\begin{blocLivre}{cor-16-1}
+\begin{corrige}{1}{Premiers décomptes}
+\demarche{Des choix successifs indépendants : on multiplie.}
+\begin{questions}
+  \item $3\times4\times2=\res{24}$ menus.
+  \item $10^{4}=\res{10\,000}$ codes (les répétitions sont permises).
+  \item $26^{2}\times10^{3}\times26^{2}=\res{456\,976\,000}$ plaques.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-2}
+\begin{corrige}{2}{Unions et complémentaires}
+\demarche{Additionner, puis retrancher ce qui a été compté deux fois.}
+\begin{questions}
+  \item $|M\cup P|=18+15-8=\res{25}$ élèves suivent au moins une option ;
+    $30-25=\res{5}$ n'en suivent aucune.
+  \item $A\cup B$ est l'union \emph{disjointe} de $A$ et de
+    $B\setminus A$, et $|B\setminus A|=|B|-|A\cap B|$ : en sommant,
+    $|A\cup B|=|A|+|B|-|A\cap B|$ — l'intersection, comptée dans $|A|$ et
+    dans $|B|$, est retranchée une fois.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-3}
+\begin{corrige}{3}{Listes, avec ou sans répétition}
+\demarche{Répétition permise : une puissance. Interdite : une factorielle
+descendante.}
+\begin{questions}
+  \item $26^{3}=\res{17\,576}$ mots ; sans répétition :
+    $26\times25\times24=\res{15\,600}$.
+  \item $5^{3}=\res{125}$ applications ; injectives :
+    $5\times4\times3=\res{60}$ — à chaque étape, une image de moins est
+    disponible.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-4}
+\begin{corrige}{4}{Permutations et anagrammes}
+\demarche{Des lettres répétées : diviser par leurs permutations internes.}
+\begin{questions}
+  \item $4!=\res{24}$ anagrammes de MPSI ; $5!=\res{120}$ rangements.
+  \item En distinguant fictivement $\mathrm{T}_1$ et $\mathrm{T}_2$ :
+    $7!$ listes ; chaque anagramme réelle est obtenue $2!$ fois (échange
+    des deux T) : $\dfrac{7!}{2!}=\res{2520}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-5}
+\begin{corrige}{5}{Combinaisons : premiers calculs}
+\demarche{Une main, un comité : des parties, pas des listes.}
+\begin{questions}
+  \item $\dbinom52=\res{10}$, $\dbinom{10}3=\res{120}$,
+    $\dbinom{12}4=\res{495}$.
+  \item $\dbinom{32}5=\res{201\,376}$ mains.
+  \item Une main est un \emph{ensemble} de cartes : les
+    $\frac{32!}{27!}$ tirages ordonnés comptent chaque main $5!$ fois,
+    d'où la division par $5!$ dans la formule.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-6}
+\begin{corrige}{6}{Le triangle de Pascal}
+\demarche{Chaque case est la somme des deux cases au-dessus — et chaque
+ligne se lit comme des comptes de parties.}
+\begin{questions}
+  \item Lignes successives :
+    $1$ ; $1\,1$ ; $1\,2\,1$ ; $1\,3\,3\,1$ ; $1\,4\,6\,4\,1$ ;
+    $1\,5\,10\,10\,5\,1$ ; $1\,6\,15\,20\,15\,6\,1$.
+  \item $\dbinom63=\res{20}$ ; la ligne $6$ est un palindrome
+    ($\binom np=\binom n{n-p}$), et sa somme vaut $64=2^{6}$.
+  \item Fixons $a\in E$, $|E|=n$ : les parties à $p$ éléments contenant
+    $a$ sont au nombre de $\binom{n-1}{p-1}$, celles ne le contenant pas
+    $\binom{n-1}p$ : la partition donne
+    $\binom np=\binom{n-1}{p-1}+\binom{n-1}{p}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-7}
+\begin{corrige}{7}{Le binôme en action}
+\demarche{Des valeurs particulières de a et b font jaillir les identités.}
+\begin{questions}
+  \item $(a+b)^{5}=a^{5}+5a^{4}b+10a^{3}b^{2}+10a^{2}b^{3}+5ab^{4}+b^{5}$ ;
+    le coefficient de $x^{3}$ dans $(1+x)^{7}$ est
+    $\dbinom73=\res{35}$.
+  \item $a=b=1$ : $\displaystyle\sum_k\binom nk=2^{n}$ ;
+    $a=-1$, $b=1$ :
+    $\displaystyle\sum_k(-1)^{k}\binom nk=0$ pour $n\geqslant1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-8}
+\begin{corrige}{8}{Compter des parties}
+\demarche{Une partie = une suite de n décisions binaires.}
+\begin{questions}
+  \item L'application $A\mapsto\ind{A}$ est une bijection de
+    $\parties{E}$ sur les applications de $E$ dans $\ens{0,1}$ :
+    $|\parties{E}|=2^{n}$.
+  \item Une partie contenant $a$ est déterminée par sa trace sur
+    $E\setminus\ens{a}$ : $\res{2^{n-1}}$.
+  \item La somme alternée $\sum(-1)^{k}\binom nk=0$ dit que
+    $\sum_{k\text{ pair}}\binom nk=\sum_{k\text{ impair}}\binom nk$ :
+    chaque camp compte $\res{2^{n-1}}$ parties.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-9}
+\begin{corrige}{9}{Le principe des tiroirs}
+\demarche{Plus d'objets que de tiroirs : un tiroir déborde. Tout l'art est
+de choisir les tiroirs.}
+\begin{questions}
+  \item $13$ personnes, $12$ mois : deux personnes partagent un mois.
+  \item Tiroirs : les $n$ paires $\ens{1,2},\ens{3,4},\dots,
+    \ens{2n-1,2n}$. Avec $n+1$ entiers, deux tombent dans la même paire :
+    ils sont consécutifs, et $d\mid a$ et $d\mid a+1$ forcent $d\mid1$ :
+    premiers entre eux (chapitre 7).
+  \item Découper le carré en $4$ carrés de côté $\frac12$, de diagonale
+    $\frac{\sqrt2}{2}$ : avec $5$ points, deux sont dans le même petit
+    carré, donc à distance au plus $\res{\dfrac{\sqrt2}{2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-10}
+\begin{corrige}{10}{Comités et délégations}
+\demarche{« Exactement » : un produit. « Au moins » : le complémentaire.
+Deux comptes d'un même objet : une identité.}
+\begin{questions}
+  \item Choisir $2$ femmes et $2$ hommes :
+    $\dbinom72\dbinom52=21\times10=\res{210}$.
+  \item Complémentaire (comités sans femme) :
+    $\dbinom{12}4-\dbinom54=495-5=\res{490}$.
+  \item Comité puis président : $\dbinom{12}4\times4$ ; président puis
+    reste du comité : $12\times\dbinom{11}3$. Les deux valent
+    $\res{1980}$ : c'est l'identité $k\binom nk=n\binom{n-1}{k-1}$ pour
+    $n=12$, $k=4$ (exercice 13).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-11}
+\begin{corrige}{11}{Mains de cartes}
+\demarche{Partitionner la main : les as d'un côté, le reste de l'autre.}
+\begin{questions}
+  \item $2$ as parmi $4$, puis $3$ cartes parmi les $28$ autres :
+    $\dbinom42\dbinom{28}3=6\times3276=\res{19\,656}$.
+  \item Complémentaire (aucun as, soit $5$ cartes parmi $28$) :
+    $\dbinom{32}5-\dbinom{28}5=201\,376-98\,280=\res{103\,096}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-12}
+\begin{corrige}{12}{Chemins sur une grille}
+\demarche{Un chemin est un mot : il suffit de placer les pas « droite ».}
+\begin{questions}
+  \item Un chemin est une suite de $p+q$ pas dont $p$ « droite » : le
+    choix de leurs positions donne $\res{\dbinom{p+q}{p}}$ chemins.
+  \item $\dbinom74=\res{35}$ ; par $(1,2)$ : $\dbinom31$ chemins jusqu'à
+    $(1,2)$ puis $\dbinom43$ jusqu'à $(4,3)$, soit $3\times4=\res{12}$.
+  \item Le dernier pas arrive de $(p-1,q)$ ou de $(p,q-1)$ :
+    $\binom{p+q}{p}=\binom{p+q-1}{p-1}+\binom{p+q-1}{p}$ — la formule de
+    Pascal, dessinée sur la grille.
+\end{questions}
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=0.72,line cap=round]
+  \draw[otMuted!60,line width=0.4pt] (0,0) grid (4,3);
+  \draw[otGreenDark,line width=1.6pt,line join=round]
+    (0,0) -- (1,0) -- (1,2) -- (3,2) -- (3,3) -- (4,3);
+  \fill[otNavy] (1,2) circle (2.2pt);
+  \fill[otInk] (0,0) circle (2pt);
+  \fill[otInk] (4,3) circle (2pt);
+  \node[below left,font=\scriptsize,text=otInk] at (0,0) {$(0,0)$};
+  \node[above right,font=\scriptsize,text=otInk] at (4,3) {$(4,3)$};
+  \node[above left,font=\scriptsize,text=otNavy] at (1,2) {$(1,2)$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Un des $12$ chemins de $(0,0)$ à $(4,3)$ passant par $(1,2)$ :
+choisir les positions des pas « droite » suffit.}
+\end{center}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-13}
+\begin{corrige}{13}{Le comité et son président}
+\demarche{Compter les comités présidés de deux façons, puis sommer sur la
+taille.}
+\begin{questions}
+  \item Comité de $k$ puis président dedans : $\binom nk\,k$ ; président
+    d'abord puis $k-1$ collègues parmi $n-1$ : $n\binom{n-1}{k-1}$.
+    D'où $\res{k\dbinom nk=n\dbinom{n-1}{k-1}}$.
+  \item En sommant sur $k$ : un « comité présidé de taille quelconque »
+    se construit en choisissant le président ($n$ façons) puis une partie
+    quelconque du reste ($2^{n-1}$) :
+    $\sum_k k\binom nk=\res{n\,2^{n-1}}$. Avec président et trésorier
+    distincts : $n(n-1)$ choix puis $2^{n-2}$ :
+    $\sum_k k(k-1)\binom nk=\res{n(n-1)\,2^{n-2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-14}
+\begin{corrige}{14}{La formule de Vandermonde}
+\demarche{Partitionner les choix selon la part prise dans chaque groupe.}
+\begin{questions}
+  \item Pour choisir $n$ personnes parmi $p$ femmes et $q$ hommes, on
+    classe selon le nombre $k$ de femmes retenues :
+    $\binom pk$ choix de femmes et $\binom q{n-k}$ d'hommes, d'où
+    $\displaystyle\sum_{k}\binom pk\binom q{n-k}=\binom{p+q}{n}$.
+  \item Avec $p=q=n$ et la symétrie $\binom n{n-k}=\binom nk$ :
+    \[
+    \res{\sum_{k=0}^{n}\binom nk^{2}=\binom{2n}{n}}
+    \]
+    — le binôme central, déjà croisé aux chapitres 11 et 15 avec Wallis
+    et Stirling.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-15}
+\begin{corrige}{15}{Surjections sur deux ou trois éléments}
+\demarche{Compter ce qui manque : les applications qui évitent une valeur.}
+\begin{questions}
+  \item Parmi les $2^{n}$ applications, seules les deux constantes ne
+    sont pas surjectives : $\res{2^{n}-2}$.
+  \item Soit $A_i$ l'ensemble des applications évitant la valeur $i$ :
+    $|A_i|=2^{n}$, $|A_i\cap A_j|=1$ (constantes), triple intersection
+    vide. Deux applications de la formule à deux ensembles donnent
+    $|A_1\cup A_2\cup A_3|=3\cdot2^{n}-3$, d'où
+    $\res{3^{n}-3\cdot2^{n}+3}$ surjections — le crible en action
+    (exercice 20).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-16}
+\begin{corrige}{16}{Étoiles et barres}
+\demarche{Coder chaque solution par un dessin : des étoiles séparées par
+des barres.}
+\begin{questions}
+  \item Alignons $n$ étoiles et $p-1$ barres : les barres découpent les
+    étoiles en $p$ paquets de tailles $x_1,\dots,x_p$ (éventuellement
+    vides). Ce codage est une bijection : une solution correspond
+    exactement à un choix des positions des $p-1$ barres parmi les
+    $n+p-1$ symboles :
+    $\res{\dbinom{n+p-1}{p-1}}$ solutions.
+  \item $x+y+z=10$ : $\dbinom{12}2=\res{66}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-17}
+\begin{corrige}{17}{Applications monotones}
+\demarche{Strictement croissante = une partie ; croissante = un décalage
+pour écarter les égalités.}
+\begin{questions}
+  \item Une application strictement croissante est entièrement déterminée
+    par son image, partie à $p$ éléments de $\ens{1,\dots,n}$ — et toute
+    partie, rangée en ordre croissant, en fournit une :
+    $\res{\dbinom np}$.
+  \item Poser $g(i)=f(i)+i-1$ : $f$ est croissante si et seulement si
+    $g$ est \emph{strictement} croissante de $\ens{1,\dots,p}$ dans
+    $\ens{1,\dots,n+p-1}$ : d'après a),
+    $\res{\dbinom{n+p-1}{p}}$ applications — le compte « avec répétition,
+    sans ordre » qui complète le tableau du cours.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-18}
+\begin{corrige}{18}{Le binôme rencontre l'analyse}
+\demarche{Intégrer ou dériver l'identité du binôme terme à terme.}
+\begin{questions}
+  \item $\displaystyle\int_{0}^{1}(1+x)^{n}\mathrm{d}x
+    =\frac{2^{n+1}-1}{n+1}$, et terme à terme
+    $\displaystyle\int_{0}^{1}\sum_k\binom nk x^{k}
+    =\sum_k\binom nk\frac{1}{k+1}$ :
+    \[
+    \res{\sum_{k=0}^{n}\frac{1}{k+1}\binom nk=\frac{2^{n+1}-1}{n+1}}.
+    \]
+  \item En dérivant : $n(1+x)^{n-1}=\sum_k k\binom nk x^{k-1}$, et
+    $x=1$ redonne $\sum_k k\binom nk=n\,2^{n-1}$ — l'analyse confirme le
+    double comptage de l'exercice 13.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-19}
+\begin{corrige}{19}{Les dérangements}
+\demarche{Classer selon le sort du dernier élément, puis télescoper.}
+\begin{questions}
+  \item Soit $\sigma$ un dérangement de $\ens{1,\dots,n}$ et
+    $j=\sigma(n)\neq n$ ($n-1$ choix). Si $\sigma(j)=n$, le reste est un
+    dérangement des $n-2$ autres éléments : $D_{n-2}$ cas. Sinon, en
+    court-circuitant $n$ (envoyer l'antécédent de $n$ directement sur
+    $j$), on obtient un dérangement de $n-1$ éléments : $D_{n-1}$ cas.
+    D'où $\res{D_n=(n-1)\bigl(D_{n-1}+D_{n-2}\bigr)}$.
+  \item En posant $E_n=D_n-nD_{n-1}$, la relation donne
+    $E_n=-E_{n-1}$ avec $E_1=-1$ : $E_n=(-1)^{n}$, soit
+    $D_n=nD_{n-1}+(-1)^{n}$. En divisant par $n!$ :
+    $\dfrac{D_n}{n!}=\dfrac{D_{n-1}}{(n-1)!}+\dfrac{(-1)^{n}}{n!}$, et la
+    somme télescopique donne
+    $\res{D_n=n!\,\displaystyle\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}}$.
+  \item La somme partielle tend vers
+    $\mathrm{e}^{-1}$ (chapitres 5 et 15) :
+    $\dfrac{D_n}{n!}\to\res{\dfrac{1}{\mathrm{e}}}\approx0{,}368$ — plus
+    d'un tiers des permutations ne fixent rien.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-20}
+\begin{corrige}{20}{Le crible pour trois ensembles}
+\demarche{Appliquer deux fois la formule à deux ensembles, en distribuant
+l'intersection.}
+\begin{questions}
+  \item $|A\cup B\cup C|=|A\cup B|+|C|-|(A\cup B)\cap C|$, et
+    $(A\cup B)\cap C=(A\cap C)\cup(B\cap C)$ se développe à son tour :
+    en recollant,
+    \[
+    |A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|A\cap C|-|B\cap C|
+    +|A\cap B\cap C| .
+    \]
+  \item Multiples de $2,3,5$ jusqu'à $100$ : $50,33,20$ ; de
+    $6,10,15$ : $16,10,6$ ; de $30$ : $3$. L'union compte
+    $50+33+20-16-10-6+3=74$ : il reste $\res{26}$ entiers divisibles par
+    aucun des trois — les « survivants » du crible d'Ératosthène
+    (chapitre 7).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-21}
+\begin{corrige}{21}{Chemins sous la diagonale : les nombres de Catalan}
+\demarche{Réfléchir le début du chemin fautif : les fautifs deviennent des
+chemins ordinaires vers un autre coin.}
+\begin{questions}
+  \item À la main : $C_1=1$, $C_2=2$, $C_3=\res{5}$.
+  \item Un chemin fautif touche la droite $y=x+1$ ; en réfléchissant par
+    rapport à elle la portion \emph{avant} le premier contact, on obtient
+    un chemin de $(-1,1)$ — autrement dit un chemin ordinaire compté par
+    $\dbinom{2n}{n-1}$ — et cette correspondance est une bijection. D'où
+    \[
+    C_n=\binom{2n}{n}-\binom{2n}{n-1}
+    =\res{\frac{1}{n+1}\binom{2n}{n}}
+    \]
+    (le calcul de la différence est immédiat avec les factorielles).
+  \item $1,\ 2,\ 5,\ 14,\ 42,\dots$ — ces nombres compteront aussi les
+    parenthésages et bien d'autres structures.
+\end{questions}
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=0.82,line cap=round]
+  \draw[otMuted!60,line width=0.4pt] (0,0) grid (4,4);
+  \draw[otMuted,line width=0.7pt,dash pattern=on 2.5pt off 1.8pt] (0,0) -- (4.35,4.35);
+  \draw[otGreen!60!black,line width=0.7pt,dash pattern=on 2.5pt off 1.8pt] (-0.45,0.55) -- (3.45,4.45);
+  \draw[otNavy,line width=1.6pt,line join=round] (0,0) -- (1,0) -- (1,1) -- (1,2) -- (2,2) -- (2,3);
+  \draw[otGreenDark,line width=1.3pt,dash pattern=on 3pt off 1.8pt,line join=round]
+    (2,3) -- (3,3) -- (3,4) -- (4,4);
+  \fill[otRed!85!black] (1,2) circle (2.6pt);
+  \node[font=\scriptsize,text=otNavy,anchor=east] at (-0.15,-0.3) {$(0,0)$};
+  \node[font=\scriptsize,text=otMuted,anchor=west] at (4.42,4.28) {$y=x$};
+  \node[font=\scriptsize,text=otGreen!50!black,anchor=south] at (2.8,4.5) {$y=x+1$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Un chemin fautif touche $y=x+1$ (point rouge) : la réflexion de
+son début l'identifie à un chemin ordinaire — c'est la bijection de
+comptage.}
+\end{center}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-22}
+\begin{corrige}{22}{Identités par double comptage}
+\demarche{Le même ensemble, deux inventaires : l'égalité est gratuite.}
+\begin{questions}
+  \item Coupons $2n$ personnes en deux moitiés de $n$. Une paire est
+    interne à la première moitié ($\binom n2$ choix), interne à la
+    seconde ($\binom n2$), ou mixte ($n\times n$) :
+    $\res{\dbinom{2n}2=2\dbinom n2+n^{2}}$ — ce qui se vérifie aussi par
+    le calcul.
+  \item Classons les parties $\ens{a<b<c}$ de $\ens{1,\dots,n+1}$ selon
+    leur maximum $c=k+1$ : il reste à choisir $\ens{a,b}$ parmi les $k$
+    entiers inférieurs, soit $\binom k2$ choix. En sommant :
+    $\res{\displaystyle\sum_{k=2}^{n}\binom k2=\binom{n+1}{3}}$ — la
+    « crosse de hockey » du triangle de Pascal.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-23}
+\begin{corrige}{23}{Permutations et points fixes}
+\demarche{Choisir les points fixes, déranger le reste — puis compter les
+couples (permutation, point fixe).}
+\begin{questions}
+  \item Choisir les $k$ points fixes ($\binom nk$ façons) puis déranger
+    les $n-k$ autres ($D_{n-k}$ façons) :
+    $\res{\dbinom nk D_{n-k}}$ permutations à exactement $k$ points
+    fixes.
+  \item Ces classes partitionnent $S_n$ :
+    $\sum_k\binom nk D_{n-k}=n!$. Comptons maintenant les couples
+    $(\sigma,i)$ avec $\sigma(i)=i$ : à $i$ fixé, $(n-1)!$ permutations
+    conviennent, d'où $n\times(n-1)!=n!$ couples ; le nombre moyen de
+    points fixes vaut donc $\dfrac{n!}{n!}=\res{1}$ — quelle que soit la
+    taille $n$ : un avant-goût de l'espérance (chapitre 17).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-24}
+\begin{corrige}{24}{Fibonacci compte aussi}
+\demarche{Le dernier élément entre ou n'entre pas : Fibonacci apparaît ;
+un décalage compte ensuite chaque taille.}
+\begin{questions}
+  \item $a_1=2$, $a_2=3$, $a_3=\res{5}$. Si $n$ est dans la partie, $n-1$
+    n'y est pas et le reste est une partie admissible de
+    $\ens{1,\dots,n-2}$ ; sinon c'en est une de $\ens{1,\dots,n-1}$ :
+    $a_n=a_{n-1}+a_{n-2}$. Avec $a_1=2=F_3$ et $a_2=3=F_4$ :
+    $\res{a_n=F_{n+2}}$ (chapitres 5, 12 et 13).
+  \item Pour une partie $\ens{x_1<\dots<x_k}$ sans éléments consécutifs,
+    poser $y_i=x_i-(i-1)$ : les $y_i$ sont strictement croissants dans
+    $\ens{1,\dots,n-k+1}$, sans autre contrainte — bijection avec les
+    parties à $k$ éléments : $\dbinom{n-k+1}{k}$ choix. En sommant :
+    \[
+    \res{\sum_{k\geqslant0}\binom{n-k+1}{k}=F_{n+2}} :
+    \]
+    les diagonales du triangle de Pascal se somment en nombres de
+    Fibonacci.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-16}

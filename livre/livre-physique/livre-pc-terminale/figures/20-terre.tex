@@ -1,0 +1,15 @@
+% Bilan radiatif simplifié de la Terre sans atmosphère (L'essentiel, chapitre 20)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \yy in {-0.9,-0.45,0,0.45,0.9}{\draw[otOrange!90!black,line width=0.8pt,-{Stealth[length=1.6mm]}] (-3.8,\yy) -- ({-0.15-sqrt(1-(\yy/1.0)^2)},\yy);}
+\node[pcLegende,anchor=south west,text=otOrange!80!black] at (-3.8,1.0) {rayonnement solaire};
+\shade[ball color=otNavy!45] (0,0) circle (1.0);
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (-1.25,-1.0) -- (-1.25,1.0);
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (-1.45,-1.0) -- (-1.45,1.0);
+\node[pcLegende,anchor=north] at (-1.45,-1.08) {disque de surface $\pi R^2$};
+\draw[otOrange!60,line width=0.8pt,-{Stealth[length=1.6mm]}] (-0.75,0.66) -- (-1.5,1.55);
+\node[pcLegende,anchor=south,text=otOrange!70!black] at (-1.5,1.58) {réfléchi : fraction $A$};
+\foreach \a in {-80,-40,0,40,80}{\draw[otRed!75!black,line width=0.8pt,-{Stealth[length=1.5mm]},decorate,
+  decoration={snake,amplitude=0.5mm,segment length=2.2mm,post length=1.8mm}] (\a:1.1) -- (\a:1.85);}
+\node[pcLegende,anchor=west,text=otRed!75!black,align=left] at (1.95,0.2) {rayonnement infrarouge\\ émis par toute la surface $4\pi R^2$};
+\end{tikzpicture}
+\par\smallskip\legende{La Terre absorbe le rayonnement solaire sur un disque de surface $\pi R^2$, mais émet sur toute sa surface $4\pi R^2$ : en moyenne, chaque mètre carré reçoit le quart de la constante solaire.}

@@ -1,0 +1,442 @@
+%% =====================================================================
+%%  Unit 9 — Excuse me, where's the bank?  (Demander son chemin)
+%%  Pistes : 9.01–9.04 dialogues · 9.05–9.06 vocabulaire · 9.07–9.08 grammaire
+%%           9.09 prononciation · 9.10–9.13 exercices (textes en annexe)
+%% =====================================================================
+
+\newcommand{\otIllusUnIX}{\otIllusDuo{left/104/86/15/0.10,right/190/92/20/0.09,street/122/14/13/0.08,
+  avenue/150/8/11/0.08,park/196/22/12/0.07,bank/100/50/12/0.07}{lea}{Excuse me, where's the bank?}{emma}{Turn left!}}
+
+% Plan du quartier (exercices 3, 4, 8 et 11) — #1 : chemins de la solution
+\newcommand{\otPlanVille}[1][]{%
+  \begin{tikzpicture}[x=1mm,y=1mm,
+    lieu/.style={rounded corners=1mm,font=\otSemi\fontsize{7.6}{9}\selectfont,align=center},
+    rue/.style={font=\otMedium\fontsize{6.6}{8}\selectfont,text=otMuted}]
+    \fill[otRule!45] (0,4) rectangle (150,96);
+    % avenues (verticales) et rues (horizontales)
+    \foreach \x in {10,75,140}{\fill[white] (\x-3,4) rectangle (\x+3,96);}
+    \foreach \y in {10,50,90}{\fill[white] (0,\y-3) rectangle (150,\y+3);}
+    \foreach \x/\n in {10/First Avenue,75/Second Avenue,140/Third Avenue}{%
+      \node[rue,rotate=90] at (\x,30) {\enb{\n}};\node[rue,rotate=90] at (\x,70) {\enb{\n}};}
+    \foreach \y/\n in {10/Main Street,50/Oak Street,90/River Street}{%
+      \node[rue] at (42,\y) {\enb{\n}};\node[rue] at (107,\y) {\enb{\n}};}
+    % lieux
+    \fill[otGreen!35,rounded corners=1mm] (14,54) rectangle (71,86);
+    \node[lieu,text=otGreenDark] at (42.5,70) {\enb{PARK}};
+    \fill[otNavyTint!50!otNavy!18,rounded corners=1mm] (14,14) rectangle (42,46);
+    \node[lieu] at (28,30) {\enb{bank}};
+    \fill[otOrangeTint,rounded corners=1mm] (44,14) rectangle (71,46);
+    \node[lieu] at (57.5,30) {\enb{post}\\\enb{office}};
+    \fill[otVioletTint,rounded corners=1mm] (79,14) rectangle (107,46);
+    \node[lieu] at (93,30) {\enb{super-}\\\enb{market}};
+    \fill[otTealTint,rounded corners=1mm] (109,14) rectangle (136,46);
+    \node[lieu] at (122.5,30) {\enb{pharmacy}};
+    \fill[otRedTint,rounded corners=1mm] (79,54) rectangle (107,86);
+    \node[lieu] at (93,70) {\enb{museum}};
+    \fill[otNavyTint,rounded corners=1mm] (109,54) rectangle (136,86);
+    \node[lieu] at (122.5,70) {\enb{hotel}};
+    % départ
+    \node[star,star points=5,star point ratio=2.2,fill=otOrange,inner sep=0pt,minimum size=4.2mm] (dep) at (75,0.5) {};
+    \node[anchor=west,font=\otSemi\fontsize{7.6}{9}\selectfont,text=otOrangeDark] at (78,0.5) {Vous êtes ici};
+    \draw[otOrangeDark,line width=0.6pt,-{Stealth[length=1.6mm]}] (71,0.5) -- (71,5.5) node[left,font=\otMedium\fontsize{6.4}{8}\selectfont] {N};
+    #1
+  \end{tikzpicture}}
+\newcommand{\otChemin}[4]{% couleur, points, position du numéro, numéro
+  \draw[#1,line width=1.4pt,line cap=round,line join=round,-{Stealth[length=2.6mm]},opacity=0.9] #2;
+  \node[circle,fill=#1,text=white,inner sep=0pt,minimum size=4mm,font=\otBold\fontsize{7}{7}\selectfont] at #3 {#4};}
+
+\unite[Excuse me,\\where's the bank?]{9}{Excuse me, where's the bank?}{Demander son chemin}{otIllusUnIX}
+
+\situation{Épisode 9}{Samedi matin, à Manhattan. Léa doit envoyer un colis en France, mais où est
+la poste ? Elle demande son chemin à un passant. L'après-midi, Emma lui donne rendez-vous au musée,
+de l'autre côté de Central Park.}
+
+\begin{objectifs}
+\item demander poliment votre chemin : \en{Excuse me, where's…?} \en{How do I get to…?} ;
+\item comprendre et donner des indications : tout droit, à gauche, à droite… ;
+\item utiliser l'impératif : \en{Turn left}, \en{Don't take the bus} ;
+\item nommer les lieux de la ville et situer un bâtiment sur un plan ;
+\item distinguer \phon{ɪ} et \phon{iː} : \en{ship} et \en{sheep}.
+\end{objectifs}
+
+\auprogramme
+  {Demander et indiquer un chemin}
+  {L'impératif\par\vspace{0.6mm}\en{next to}, \en{opposite}, \en{on the corner of}}
+  {La ville, les lieux, les transports : 29 expressions}
+  {\phon{ɪ} ou \phon{iː} : \en{ship}, \en{sheep}}
+  {Se repérer à Manhattan}
+
+\semaine{casque/otNavy/Dialogues/Écouter et lire les deux scènes,
+  bulle/otGreenDark/Vocabulaire/Apprendre les 29 expressions,
+  blocs/otViolet/Grammaire/L'impératif et le plan,
+  sons/otOrangeDark/Sons et culture/ship ou sheep et Manhattan,
+  crayon/otNavy/Exercices/12 exercices corrigés,
+  coche/otGreenDark/Bilan/L'essentiel et le test express}
+
+\clearpage
+%% ---------------------------------------------------------------------
+\rubrique{ecouter}{Dans les rues de Manhattan}
+
+\begin{dialogue}{1}{Excuse me, where's the post office?}{Samedi, 10 heures, à Manhattan. Léa a un
+  colis à la main. Elle s'adresse à un passant.}{9.01}{9.02}
+\dit{lea}{\hl{Excuse me}, where's the post office, please?\note{1}}{Excusez-moi, où est la poste, s'il vous plaît ?}
+\dit{passant}{The post office? \hl{Go straight ahead}, then \hl{turn left} on Fifth Avenue.\note{2}}{La poste ? Allez tout droit, puis tournez à gauche sur la Cinquième Avenue.}
+\dit{lea}{Straight ahead, then left on Fifth Avenue.}{Tout droit, puis à gauche sur la Cinquième Avenue.}
+\dit{passant}{That's right. It's \hl{next to} a bank, \hl{opposite} a big park.}{C'est ça. Elle est à côté d'une banque, en face d'un grand parc.}
+\dit{lea}{\hl{Is it far}?}{C'est loin ?}
+\dit{passant}{No, it isn't far. It's \hl{a five-minute walk}.\note{3}}{Non, ce n'est pas loin. C'est à cinq minutes à pied.}
+\dit{lea}{Thank you very much!}{Merci beaucoup !}
+\dit{passant}{You're welcome. Oh, and \hl{don't take} the bus. The traffic is terrible!\note{4}}{Je vous en prie. Ah, et ne prenez pas le bus. La circulation est épouvantable !}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{1} \en{\textbf{Excuse me}} « Excusez-moi », pour aborder poliment un inconnu. On termine
+  la question par \en{please}.
+\pointnote{2} \en{\textbf{Go straight ahead, then turn left.}} Pour donner une indication, on emploie
+  l'\textbf{impératif} : la base verbale seule, sans sujet. \en{turn left} = « tournez à gauche ».
+\pointnote{3} \en{\textbf{a five-minute walk}} « à cinq minutes à pied ». Dans cette expression,
+  \en{minute} reste au singulier.
+\pointnote{4} \en{\textbf{Don't take the bus.}} L'impératif négatif se forme avec \en{Don't} + base
+  verbale : « ne prenez pas le bus ».
+\end{comprendre}
+
+\begin{dialogue}{2}{How do I get to the museum?}{Samedi, 14 heures. Au téléphone, Emma explique à
+  Léa comment la rejoindre au musée.}{9.03}{9.04}
+\dit{emma}{Hi, Léa! Are you ready?}{Salut, Léa ! Tu es prête ?}
+\dit{lea}{Yes! \hl{How do I get to} the museum?\note{5}}{Oui ! Comment je vais au musée ?}
+\dit{emma}{\hl{Take the subway} from your apartment. \hl{Get off} at Central Park.}{Prends le métro depuis chez toi. Descends à Central Park.}
+\dit{lea}{And then?}{Et ensuite ?}
+\dit{emma}{\hl{Walk} across the park. The museum is \hl{on the right}, in front of a big fountain.\note{6}}{Traverse le parc à pied. Le musée est sur la droite, devant une grande fontaine.}
+\dit{lea}{Across the park, on the right\ldots{} OK!}{Traverser le parc, sur la droite… D'accord !}
+\dit{emma}{And \hl{don't be late}!}{Et ne sois pas en retard !}
+\dit{lea}{Me? Late? Never! See you at three!}{Moi ? En retard ? Jamais ! À 15 heures !}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{5} \en{\textbf{How do I get to…?}} « Comment je vais à… ? », « comment se rendre à… ? ».
+  C'est la question la plus utile pour se déplacer. \en{get off} = « descendre » (d'un bus, du métro).
+\pointnote{6} \en{\textbf{on the right}} « sur la droite » ; \en{on the left} = « sur la gauche ».
+  \en{across the park} = « à travers le parc ».
+\end{comprendre}
+
+%% ---------------------------------------------------------------------
+\rubrique{mots}{Les mots de l'unité}
+
+Voici les 29 expressions de l'unité. Retenez en particulier la différence entre \en{turn right}
+(« tournez à droite ») et \en{go straight ahead} (« allez tout droit ») : en anglais, « droit » et
+« droite » ne se ressemblent pas du tout !
+
+\begin{vocabulaire}{Les lieux de la ville}{9.05}
+\categorie{Les bâtiments}
+\mot{a bank}{ə ˈbæŋk}{une banque}
+\mot{a post office}{ə ˈpoʊst ˌɑːfɪs}{une poste}
+\mot{a museum}{ə mjuːˈziːəm}{un musée}
+\mot{a supermarket}{ə ˈsuːpɚˌmɑːrkɪt}{un supermarché}
+\mot{a pharmacy}{ə ˈfɑːrməsi}{une pharmacie}
+\mot{a hospital}{ə ˈhɑːspɪtəl}{un hôpital}
+\mot{a hotel}{ə hoʊˈtel}{un hôtel}
+\mot{a restaurant}{ə ˈrestərɑːnt}{un restaurant}
+\categorie{Se déplacer}
+\mot{a park}{ə ˈpɑːrk}{un parc}
+\mot{a street}{ə ˈstriːt}{une rue}
+\mot{an avenue}{ən ˈævənuː}{une avenue}
+\mot{a bridge}{ə ˈbrɪdʒ}{un pont}
+\mot{a station}{ə ˈsteɪʃən}{une gare}
+\mot{a subway station}{ə ˈsʌbweɪ ˌsteɪʃən}{une station de métro}
+\mot{a bus stop}{ə ˈbʌs ˌstɑːp}{un arrêt de bus}
+\end{vocabulaire}
+
+\begin{vocabulaire}{Demander et indiquer le chemin}{9.06}
+\categorie{Demander}
+\mot{Excuse me.}{ɪkˈskjuːz miː}{Excusez-moi.}
+\mot{Where's the bank?}{ˌwerz ðə ˈbæŋk}{Où est la banque ?}
+\mot{How do I get to the museum?}{ˌhaʊ duː aɪ ˈɡet tə ðə mjuːˈziːəm}{Comment je vais au musée ?}
+\mot{Is it far?}{ɪz ɪt ˈfɑːr}{C'est loin ?}
+\mot{It's near here.}{ɪts ˌnɪr ˈhɪr}{C'est près d'ici.}
+\mot{It's a five-minute walk.}{ɪts ə ˌfaɪv ˌmɪnɪt ˈwɑːk}{C'est à cinq minutes à pied.}
+\categorie{Indiquer}
+\mot{go straight ahead}{ˌɡoʊ ˌstreɪt əˈhed}{aller tout droit}
+\mot{turn left · turn right}{ˌtɝːn ˈleft · ˌtɝːn ˈraɪt}{tourner à gauche · à droite}
+\mot{on the left · on the right}{ɑːn ðə ˈleft · ɑːn ðə ˈraɪt}{sur la gauche · sur la droite}
+\mot{cross the street}{ˌkrɑːs ðə ˈstriːt}{traverser la rue}
+\mot{take the subway}{ˌteɪk ðə ˈsʌbweɪ}{prendre le métro}
+\mot{get off}{ˌɡet ˈɑːf}{descendre (du métro, du bus)}
+\mot{on the corner of}{ɑːn ðə ˈkɔːrnɚ əv}{à l'angle de}
+\mot{across from}{əˈkrɑːs frəm}{en face de \registre{américain}}
+\end{vocabulaire}
+
+%% ---------------------------------------------------------------------
+\rubrique{grammaire}{L'impératif et les indications}
+
+\otIntertitre[otViolet]{1 · L'impératif}
+\begin{paire}
+\begin{regle}[Affirmatif : la base verbale seule]
+\exen{Go straight ahead.}{Allez tout droit.}
+\exen{Turn left.}{Tournez à gauche.}
+\exen{Take the subway.}{Prends le métro.}
+\exen{Please, sit down.}{Asseyez-vous, je vous prie.}
+\end{regle}
+\begin{regle}[Négatif : \en{Don't} + base verbale]
+\exen{Don't take the bus.}{Ne prenez pas le bus.}
+\exen{Don't be late!}{Ne sois pas en retard !}
+\exen{Don't worry.}{Ne t'inquiète pas.}
+\exen{Don't cross here.}{Ne traversez pas ici.}
+\end{regle}
+\end{paire}
+{\fontsize{10}{13}\selectfont L'impératif est le même pour « tu » et pour « vous ». Pour adoucir une
+demande, ajoutez \en{please}, au début ou à la fin.\par}
+
+\blocaudio{9.07}{Écoutez et répétez}{Six indications à l'impératif, affirmatives puis négatives.}
+
+\otIntertitre[otViolet]{2 · Demander son chemin}
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\enOn\bfseries}l<{\enOff}@{\hspace{8mm}}l@{}}
+Excuse me, where's the post office?    & Excusez-moi, où est la poste ?\\
+How do I get to the station?           & Comment je vais à la gare ?\\
+Is there a bank near here?             & Y a-t-il une banque près d'ici ?\\
+Is it far? — No, it's near here.       & C'est loin ? — Non, c'est près d'ici.\\\bottomrule
+\end{tabular}\end{center}
+
+\blocaudio{9.08}{Écoutez et répétez}{Quatre questions pour demander son chemin, et leur réponse.}
+
+\begin{attention}[Les pièges des francophones]
+\fauxjuste{Turn at left.}{Turn left.}
+\fauxjuste{Go right ahead.}{Go straight ahead.}
+\fauxjuste{Don't to take the bus.}{Don't take the bus.}
+\fauxjuste{Where is the bank, please, Sir?}{Excuse me, where's the bank?}
+\par\vspace{1mm}{\fontsize{10}{12.6}\selectfont « Tout droit » se dit \en{straight ahead} ;
+\en{right} veut dire « à droite ». Ne les confondez pas : vous enverriez votre interlocuteur dans
+la mauvaise direction !\par}
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique[ship ou sheep]{sons}{\phon{ɪ} ou \phon{iː} : \en{ship} ou \en{sheep}}
+
+L'anglais a deux « i » : le \phon{iː} \textbf{long et tendu} de \en{sheep} (lèvres étirées, comme
+pour sourire) et le \phon{ɪ} \textbf{bref et relâché} de \en{ship} (presque un « é »). Le français
+n'a que le premier : les francophones prononcent souvent \en{live} comme \en{leave}, et \en{ship}
+comme \en{sheep}. Or ces mots n'ont pas du tout le même sens !
+
+\begin{paires}{9.09}{Le premier mot de chaque paire a le son bref \phon{ɪ}, le second le son long
+\phon{iː}. Écoutez, puis répétez en exagérant la différence de longueur.}
+\sonpaire{to live}{tə lɪv}{habiter, vivre}{to leave}{tə liːv}{partir}
+\sonpaire{rich}{rɪtʃ}{riche}{reach}{riːtʃ}{atteindre}
+\sonpaire{fit}{fɪt}{en forme}{feet}{fiːt}{les pieds}
+\sonpaire{ship}{ʃɪp}{un navire}{sheep}{ʃiːp}{un mouton}
+\sonpaire{fill}{fɪl}{remplir}{feel}{fiːl}{sentir, ressentir}
+\sonpaire{will}{wɪl}{la volonté}{wheel}{wiːl}{une roue}
+\sonpaire{list}{lɪst}{une liste}{least}{liːst}{le moins}
+\sonpaire{slip}{slɪp}{glisser}{sleep}{sliːp}{dormir}
+\end{paires}
+
+\begin{astuce}[Et l'intonation ?]
+Dans une question fermée (réponse \en{yes} ou \en{no}), la voix \textbf{monte} à la fin :
+\en{Is it far?} ↗. Dans une question avec un mot interrogatif, elle \textbf{descend} :
+\en{Where's the bank?} ↘. Écoutez les dialogues en y prêtant attention.
+\end{astuce}
+
+%% ---------------------------------------------------------------------
+\rubrique{culture}{Se repérer à Manhattan}
+
+\begin{culture}[Un quadrillage presque parfait]
+Au nord de \en{Greenwich Village}, Manhattan est un quadrillage : les \en{avenues} vont du nord au
+sud, les \en{streets} d'est en ouest, et la plupart sont numérotées. On mesure les distances en
+\en{blocks} (pâtés de maisons) : \en{It's three blocks from here}. Aller vers le nord, c'est aller
+\en{uptown} ; vers le sud, \en{downtown}.
+\end{culture}
+
+\begin{paire}
+\begin{culture}[Le métro]
+Le métro new-yorkais (\en{the subway}) circule 24 heures sur 24, tous les jours. Les lignes portent un
+numéro ou une lettre (\en{the A train}, \en{the 6}). Aujourd'hui, on paie le plus souvent sans contact,
+avec sa carte bancaire ou son téléphone.
+\end{culture}
+\begin{culture}[Demander poliment]
+Commencez toujours par \en{Excuse me}, et remerciez : \en{Thank you so much!} Les New-Yorkais ont la
+réputation d'être pressés, mais ils indiquent volontiers leur chemin aux visiteurs.
+\end{culture}
+\end{paire}
+
+%% ---------------------------------------------------------------------
+\rubrique{pratique}{Exercices}
+
+\exercice[ecrire,niveau=1]{Où va-t-on ?}{Complétez avec un lieu de la ville.}
+\begin{anglais}
+\begin{questions}
+\item You send a letter at the \trou[40mm]{post office}.
+\item You see paintings at the \trou[40mm]{museum}.
+\item You buy food at the \trou[40mm]{supermarket}.
+\item You sleep at a \trou[40mm]{hotel}.
+\item You take a train at the \trou[40mm]{station}.
+\item You buy medicine at the \trou[40mm]{pharmacy}.
+\end{questions}
+\par\vspace{1mm}{\fontsize{8.6}{10}\selectfont\color{otMuted}\foreignlanguage{french}{\textit{send a letter} : envoyer une lettre · \textit{paintings} : des tableaux · \textit{medicine} : des médicaments}}
+\end{anglais}
+
+\exercice[ecrire,niveau=1]{À l'impératif}{Traduisez ces indications.}
+\begin{questions}[2][french]
+\item Tournez à gauche. → \enb{\trou[40mm]{Turn left.}}
+\item Allez tout droit. → \enb{\trou[40mm]{Go straight ahead.}}
+\item Ne prenez pas le bus. → \enb{\trou[40mm]{Don't take the bus.}}
+\item Prends le métro. → \enb{\trou[40mm]{Take the subway.}}
+\item Traversez la rue. → \enb{\trou[40mm]{Cross the street.}}
+\item Ne sois pas en retard ! → \enb{\trou[36mm]{Don't be late!}}
+\end{questions}
+
+\exercice[lire,niveau=2]{Suivez le guide}{Partez de l'étoile, en regardant vers le nord. Lisez chaque
+itinéraire et écrivez le lieu où vous arrivez.}
+\begin{center}\otPlanVille\end{center}
+\begin{questions}
+\item Go straight ahead on Second Avenue. Turn left on Oak Street. It's on the right. \hfill \enb{\trou[30mm]{the park}}
+\item Go straight ahead. Cross Main Street. It's on your right. \hfill \enb{\trou[30mm]{the supermarket}}
+\item Go straight ahead. Turn right on Oak Street. It's on the left, next to the hotel. \hfill \enb{\trou[30mm]{the museum}}
+\item Go straight ahead, then turn left on Main Street. It's on the right, next to the bank. \hfill \enb{\trou[30mm]{the post office}}
+\end{questions}
+
+\exercice[lire,ecrire,niveau=2]{Sur le plan}{Regardez le plan de l'exercice 3 et complétez avec
+\en{next to}, \en{opposite}, \en{between} ou \en{on the corner of}.}
+\begin{questions}
+\item The bank is \trou[30mm]{next to} the post office.
+\item The museum is \trou[30mm]{opposite} the park.
+\item The post office is \trou[30mm]{between} the bank and Second Avenue.
+\item The hotel is \trou[30mm]{on the corner of} Third Avenue and Oak Street.
+\item The supermarket is \trou[30mm]{opposite} the post office.
+\end{questions}
+
+\exercice[lire,niveau=1]{Le bon ordre}{Remettez ce dialogue dans l'ordre : écrivez les lettres.}
+\begin{anglais}
+\begin{questions}[1][english]
+\item[a.] No, it's a two-minute walk.
+\item[b.] Excuse me, is there a pharmacy near here?
+\item[c.] Thank you very much!
+\item[d.] Yes, there is. Go straight ahead and turn right. It's opposite the bank.
+\item[e.] You're welcome.
+\item[f.] Is it far?
+\end{questions}
+\end{anglais}
+\par\vspace{2mm}\noindent{\otSemi\fontsize{10}{12}\selectfont Ordre :}\hspace{4mm}%
+\trou[9mm]{b}\hspace{3mm}\trou[9mm]{d}\hspace{3mm}\trou[9mm]{f}\hspace{3mm}\trou[9mm]{a}\hspace{3mm}\trou[9mm]{c}\hspace{3mm}\trou[9mm]{e}
+
+\exercice[ecrire,niveau=2]{Demandez poliment}{Écrivez la question polie qui correspond à la situation.}
+\begin{questions}[1][french]
+\item Vous cherchez la gare. \enb{(where)} \hfill \enb{\trou[78mm]{Excuse me, where's the station?}}
+\item Vous voulez aller au musée. \enb{(how)} \hfill \enb{\trou[78mm]{Excuse me, how do I get to the museum?}}
+\item Vous cherchez une banque dans le quartier. \enb{(is there)} \hfill \enb{\trou[78mm]{Excuse me, is there a bank near here?}}
+\item Vous voulez savoir si c'est loin. \hfill \enb{\trou[78mm]{Is it far?}}
+\end{questions}
+
+\exercice[ecouter,niveau=1,piste=9.10]{\phon{ɪ} ou \phon{iː} ?}{Écoutez. Pour chaque numéro, la voix dit
+un seul des deux mots, deux fois. Cochez le mot entendu.}
+\begin{questions}[4]
+\item \choix{live}\quad\choix{leave}
+\item \choix{rich}\quad\choix{reach}
+\item \choix{fit}\quad\choix{feet}
+\item \choix{ship}\quad\choix{sheep}
+\item \choix{fill}\quad\choix{feel}
+\item \choix{will}\quad\choix{wheel}
+\item \choix{list}\quad\choix{least}
+\item \choix{slip}\quad\choix{sleep}
+\end{questions}
+
+\exercice[ecouter,lire,niveau=2,piste=9.11]{Où vont-ils ?}{Trois personnes partent de l'étoile du plan
+(exercice 3). Écoutez les indications et écrivez le lieu où elles arrivent.}
+\begin{questions}[3]
+\item \enb{\trou[30mm]{the hotel}}
+\item \enb{\trou[30mm]{the pharmacy}}
+\item \enb{\trou[30mm]{the bank}}
+\end{questions}
+
+\exercice[ecouter,ecrire,niveau=2,piste=9.12]{Dictée à trous}{Un touriste demande son chemin à Jack.
+Écoutez et complétez.}
+\begin{anglais}
+\noindent\begin{tabular}{@{}l@{\hspace{6mm}}l@{}}
+\otNomDit{passant} & \trou{Excuse} me, how do I get to the station?\\[1.8mm]
+\otNomDit{jack}    & Go \trou{straight} ahead, then turn \trou{right}.\\[1.8mm]
+\otNomDit{passant} & Is it \trou{far}?\\[1.8mm]
+\otNomDit{jack}    & No, it's a ten-minute \trou{walk}. It's \trou{opposite} the museum.\\[1.8mm]
+\otNomDit{passant} & Can I take the bus?\\[1.8mm]
+\otNomDit{jack}    & Yes, but \trou{don't} take the number 4. \trou{Take} the number 2.\\
+\end{tabular}
+\end{anglais}
+
+\exercice[ecrire,niveau=2]{Traduisez}{Traduisez en anglais.}
+\begin{questions}[1][french]
+\item Excusez-moi, où est la gare, s'il vous plaît ?\lignes{1}
+\item Allez tout droit, puis tournez à droite.\lignes{1}
+\item C'est loin ? — Non, c'est à cinq minutes à pied.\lignes{1}
+\item La banque est à côté de la poste.\lignes{1}
+\item Ne prenez pas le métro !\lignes{1}
+\item Descendez à Central Park.\lignes{1}
+\item Y a-t-il un supermarché près d'ici ?\lignes{1}
+\item Le musée est sur la gauche, en face du parc.\lignes{1}
+\end{questions}
+
+\exercice[ecrire,niveau=3]{Votre itinéraire}{Sur le plan de l'exercice 3, écrivez l'itinéraire de
+l'étoile jusqu'à la pharmacie, en trois ou quatre phrases. Puis écrivez le chemin de chez vous jusqu'à
+votre boulangerie (\en{bakery}) préférée.}
+\lignes{6}
+
+\exercice[ecouter,parler,niveau=3,piste=9.13]{À vous de parler !}{Vous êtes à l'étoile du plan.
+Une touriste vous demande son chemin. Répondez \textbf{à voix haute} pendant chaque pause.}
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}}l@{\hspace{3mm}}>{\enOn}p{70mm}<{\enOff}@{\hspace{6mm}}p{78mm}@{}}
+ & \otTH{La touriste dit\ldots} & \otTH{Vous\ldots}\\\midrule
+1. & Excuse me, where's the museum, please? & indiquez le chemin (tout droit, à droite…).\\
+2. & Is it far? & répondez que non : cinq minutes à pied.\\
+3. & And is there a pharmacy near here? & répondez et indiquez où elle est.\\
+4. & Can I take the bus? & conseillez-lui de ne pas prendre le bus.\\
+5. & Thank you so much! & répondez poliment.\\\bottomrule
+\end{tabular}\end{center}
+
+%% ---------------------------------------------------------------------
+\rubrique{bilan}{Faites le point}
+
+\begin{essentiel}
+\begin{minipage}[t]{0.57\linewidth}
+\otEssTitre{Les phrases clés}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}>{\enOn\otSemi\fontsize{9.4}{11}\selectfont}l<{\enOff}@{\hspace{3mm}}>{\fontsize{9.2}{11}\selectfont\color{white!78!otNavy}}l@{}}
+Where's the bank?              & Où est la banque ?\\
+How do I get to the museum?    & Pour aller au musée ?\\
+Go straight ahead.             & Allez tout droit.\\
+Turn left. / Turn right.       & Tournez à gauche / droite.\\
+It's on the right.             & C'est sur la droite.\\
+Is it far? — It's near here.   & C'est loin ? — C'est près.\\
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.38\linewidth}
+\otEssTitre{L'impératif}
+{\enb{\fontsize{9.4}{12}\selectfont \textbf{Take} the subway. · \textbf{Don't} take the bus.}\par}
+\otEssTitre{Situer}
+{\enb{\fontsize{9.2}{11.6}\selectfont next to · opposite · between · on the corner of · on the left / right}\par}
+\otEssTitre{Prononciation}
+{\fontsize{9.2}{11.6}\selectfont \phon{ɪ} bref : \en{live}, \en{ship} · \phon{iː} long : \en{leave}, \en{sheep}\par}
+\end{minipage}
+\end{essentiel}
+
+\begin{jesais}
+\item aborder poliment un passant et demander mon chemin ;
+\item comprendre des indications simples et les suivre sur un plan ;
+\item donner un itinéraire à l'impératif, affirmatif et négatif ;
+\item nommer une quinzaine de lieux de la ville ;
+\item situer un bâtiment : \en{next to}, \en{opposite}, \en{between}, \en{on the corner of} ;
+\item distinguer \phon{ɪ} et \phon{iː} à l'écoute et à l'oral.
+\end{jesais}
+
+\clearpage
+\begin{testexpress}
+\qcm[a]{« Excusez-moi » (pour aborder quelqu'un) se dit :}{\en{Excuse me.}}{\en{Sorry me.}}{\en{Pardon me you.}}
+\qcm[c]{« Allez tout droit » se dit :}{\en{Go right.}}{\en{Go on the right.}}{\en{Go straight ahead.}}
+\qcm[b]{« Tournez à gauche » se dit :}{\en{Turn at left.}}{\en{Turn left.}}{\en{Turn on left.}}
+\qcm[b]{« Ne prenez pas le bus » se dit :}{\en{No take the bus.}}{\en{Don't take the bus.}}{\en{Don't to take the bus.}}
+\qcm[a]{« Comment je vais à la gare ? » se dit :}{\en{How do I get to the station?}}{\en{How I go the station?}}{\en{Where I go to the station?}}
+\qcm[c]{« en face du parc » se dit :}{\en{next to the park}}{\en{behind the park}}{\en{opposite the park}}
+\qcm[a]{« C'est à cinq minutes à pied » se dit :}{\en{It's a five-minute walk.}}{\en{It's five minutes of foot.}}{\en{It's a five-minutes walk.}}
+\qcm[b]{\en{get off} veut dire :}{monter}{descendre (du métro)}{attendre}
+\qcm[c]{Quel mot a le son long \phon{iː} ?}{\en{ship}}{\en{live}}{\en{sheep}}
+\qcm[a]{Aller vers le nord de Manhattan, c'est aller :}{\en{uptown}}{\en{downtown}}{\en{crosstown}}
+\end{testexpress}
+
+\noindent{\fontsize{9.6}{12}\selectfont\color{otMuted}Niveau visé (CECRL, niveau A1) : « peut
+demander son chemin et comprendre des indications simples ». Les corrigés de l'unité sont
+page~\pageref{cor-u9-1} ; les textes des pistes d'exercices, page~\pageref{trans-9.10}.\par}

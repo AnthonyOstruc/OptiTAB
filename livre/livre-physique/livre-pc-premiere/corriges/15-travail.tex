@@ -1,0 +1,176 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{15}{Travail et énergie cinétique}
+\corrigesSouples
+
+\begin{blocLivre}{cor-15-1}
+\begin{corrige}{1}{Calculer des énergies cinétiques}
+\demarche{$E_\mathrm{c}=\dfrac{1}{2}\,m\,v^2$ avec $v$ en \unit{m.s^{-1}} (diviser les km/h par 3,6).}
+\begin{questions}
+\item $\dfrac{90}{3{,}6}=\qty{25}{m.s^{-1}}$ : $E_\mathrm{c}=\dfrac{1}{2}\times1200\times25^2=\res{\qty{3,75e5}{J}}$ ; à \qty{36,1}{m.s^{-1}} : $\res{\qty{7,82e5}{J}}$.
+\item Facteur $\left(\dfrac{130}{90}\right)^2\approx\res{2{,}09}$, alors que la vitesse n'est multipliée que par 1,44.
+\item Balle : $\dfrac{1}{2}\times\num{0,058}\times50^2=\res{\qty{72,5}{J}}$ ; piéton : $\dfrac{1}{2}\times70\times1{,}4^2\approx\res{\qty{68,6}{J}}$.
+\item $v=\sqrt{\dfrac{2\times72{,}5}{1200}}\approx\res{\qty{0,35}{m.s^{-1}}}$ : la voiture avancerait au pas.
+\end{questions}
+\piege{Oublier le carré ou garder des km/h : $E_\mathrm{c}$ se calcule toujours avec $v$ en \unit{m.s^{-1}}.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-2}
+\begin{corrige}{2}{Tirer une luge}
+\demarche{$W=F\times\mathrm{AB}\times\cos\alpha$ ; une force perpendiculaire au déplacement ne travaille pas.}
+\begin{questions}
+\item $W=50\times20\times\cos\ang{30}\approx\res{\qty{866}{J}}$.
+\item $\alpha=0$, $\cos\alpha=1$ : $W=50\times20=\res{\qty{1000}{J}}$.
+\item La composante horizontale $F\cos\alpha=50\times\cos\ang{30}\approx\res{\qty{43,3}{N}}$ (schéma).
+\item $\res{\text{Nul}}$ : le poids est vertical, perpendiculaire au déplacement horizontal.
+\end{questions}
+\schema[corrige]{15-ex02}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-3}
+\begin{corrige}{3}{Le travail du poids}
+\demarche{$W_{\mathrm{AB}}(\vec{P})=m\,g\,(z_\mathrm{A}-z_\mathrm{B})$ : positif à la descente, négatif à la montée.}
+\begin{questions}
+\item $W=0{,}50\times9{,}81\times2{,}0\approx\res{\qty{9,81}{J}}$ : \res{\text{moteur}}.
+\item $W=60\times9{,}81\times(0-3{,}0)\approx\res{\qty{-1766}{J}}$ : résistant.
+\item $W=70\times9{,}81\times(-800)\approx\res{\qty{-5,49e5}{J}}$.
+\item \res{\text{Oui}} : le travail du poids ne dépend que de la différence d'altitude, pas du chemin.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-4}
+\begin{corrige}{4}{Moteur, résistant ou nul ?}
+\demarche{Le signe du travail est celui de $\cos\alpha$, $\alpha$ étant l'angle entre la force et le déplacement.}
+\begin{questions}
+\item a) $\alpha=0$ ; b) $\alpha=\ang{90}$ ; c) $\alpha=\ang{180}$ ; d) $\alpha>\ang{90}$ (le poids « tire » vers le bas, le randonneur monte).
+\item a) \res{\text{moteur}} ; b) \res{\text{nul}} ; c) et d) \res{\text{résistants}}.
+\item Seulement dans la situation \res{\text{a)}} : la pomme accélère.
+\item Le poids, vertical, est \res{\text{perpendiculaire}} au déplacement horizontal : $\cos\ang{90}=0$.
+\end{questions}
+\schema[corrige]{15-ex04}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-5}
+\begin{corrige}{5}{Une chute libre}
+\demarche{Seul le poids agit : $\dfrac{1}{2}\,m\,v^2-0=m\,g\,h$, d'où $v=\sqrt{2\,g\,h}$.}
+\begin{questions}
+\item Le poids seul ; $W=0{,}20\times9{,}81\times5{,}0\approx\res{\qty{9,81}{J}}$.
+\item $\dfrac{1}{2}\,m\,v^2=m\,g\,h$ donc $v=\sqrt{2\times9{,}81\times5{,}0}\approx\res{\qty{9,90}{m.s^{-1}}}$.
+\item \res{\text{Non}} : la masse se simplifie.
+\item $v=\sqrt{2\times9{,}81\times20}\approx\res{\qty{19,8}{m.s^{-1}}}$ : quatre fois plus haut pour une vitesse seulement double.
+\end{questions}
+\retiens{Sans frottement, la vitesse acquise après une chute de hauteur $h$ vaut $\sqrt{2\,g\,h}$, quelle que soit la masse.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-6}
+\begin{corrige}{6}{Le travail selon l'angle, en Python}
+\demarche{Le programme calcule $W=F\,d\cos\alpha$ pour six angles.}
+\begin{questions}
+\item $\res{W=F\times d\times\cos\alpha}$ ; la fonction \code{cos} de Python attend un angle en \res{\text{radians}}.
+\item Moteur pour \ang{0}, \ang{30}, \ang{60} ; \res{\text{nul}} pour \ang{90} ; résistant pour \ang{120} et \ang{180}.
+\item $100\times10\times\cos\ang{60}=1000\times0{,}5=\res{\qty{500}{J}}$.
+\item Un \res{\text{frottement}}, toujours opposé au déplacement : celui de l'air sur un cycliste, par exemple.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-7}
+\begin{corrige}{7}{Le freinage d'une voiture}
+\demarche{Théorème de l'énergie cinétique : $0-\dfrac{1}{2}\,m\,v^2=-f\times d$ ; seule la force de freinage travaille.}
+\begin{questions}
+\item $\Delta E_\mathrm{c}=0-\dfrac{1}{2}\times1000\times25^2=\res{\qty{-3,125e5}{J}}$.
+\item Poids et réaction du sol (travail \res{\text{nul}}, perpendiculaires au déplacement) ; force de freinage (résistante).
+\item $-f\times50=\num{-3,125e5}$, d'où $f=\res{\qty{6,25e3}{N}}$.
+\item $d=\dfrac{\frac{1}{2}\times1000\times36{,}1^2}{\num{6,25e3}}\approx\res{\qty{104}{m}}$, plus du double.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-8}
+\begin{corrige}{8}{La descente du skieur}
+\demarche{$W(\vec{P})=m\,g\,(z_\mathrm{A}-z_\mathrm{B})$ ; $\vec{R}$ ne travaille pas ; le travail des frottements se déduit du théorème.}
+\begin{questions}
+\item Poids, réaction normale de la neige, frottements opposés au mouvement (schéma).
+\item $W(\vec{P})=80\times9{,}81\times30\approx\res{\qty{2,35e4}{J}}$ ; sans frottement, $v_\mathrm{B}=\sqrt{2\,g\,h}\approx\res{\qty{24,3}{m.s^{-1}}}$.
+\item $W(\vec{f})=\dfrac{1}{2}\times80\times18^2-\num{2,35e4}\approx\num{1,30e4}-\num{2,35e4}\approx\res{\qty{-1,06e4}{J}}$.
+\item $f=\dfrac{\num{1,06e4}}{100}\approx\res{\qty{106}{N}}$.
+\end{questions}
+\schema[corrige]{15-ex08}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-9}
+\begin{corrige}{9}{Lancer dans toutes les directions}
+\demarche{Seul le poids travaille, et son travail ne dépend que de la différence d'altitude.}
+\begin{questions}
+\item $\dfrac{1}{2}\,m\,v_\mathrm{sol}^2-\dfrac{1}{2}\,m\,v_0^2=m\,g\,h$.
+\item On simplifie par $m$ : $v_\mathrm{sol}=\sqrt{v_0^2+2\,g\,h}=\sqrt{100+29{,}4}\approx\res{\qty{11,4}{m.s^{-1}}}$.
+\item \res{\text{Aucune}} : la vitesse au sol est la même, seule la durée du vol change.
+\item $v=\sqrt{100+2\times9{,}81\times2{,}0}\approx\res{\qty{11,8}{m.s^{-1}}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-10}
+\begin{corrige}{10}{Le chariot de supermarché}
+\demarche{Travail de chaque force sur \qty{15}{m}, puis $\dfrac{1}{2}\,m\,v^2-0=\sum W$.}
+\begin{questions}
+\item $W(\vec{F})=40\times15\times\cos\ang{20}\approx\res{\qty{564}{J}}$.
+\item $W(\vec{f})=-30\times15=\res{\qty{-450}{J}}$ ; poids et réaction sont perpendiculaires au déplacement : travaux \res{\text{nuls}}.
+\item $\dfrac{1}{2}\times30\times v^2=564-450=\qty{114}{J}$, d'où $v=\sqrt{\dfrac{2\times114}{30}}\approx\res{\qty{2,75}{m.s^{-1}}}$.
+\item La composante verticale de la poussée ne travaille pas et appuie le chariot sur le sol : poussé horizontalement, tout l'effort sert.
+\end{questions}
+\schema[corrige]{15-ex10}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-11}
+\begin{corrige}{11}{Descendre un col à vitesse constante}
+\demarche{Vitesse constante : $\Delta E_\mathrm{c}=0$, donc la somme des travaux est nulle.}
+\begin{questions}
+\item $\res{\Delta E_\mathrm{c}=0}$.
+\item $W(\vec{P})=1500\times9{,}81\times16\approx\res{\qty{2,35e5}{J}}$.
+\item $W_\mathrm{freinage}=-W(\vec{P})=\res{\qty{-2,35e5}{J}}$ ; valeur moyenne $\dfrac{\num{2,35e5}}{200}\approx\res{\qty{1,18e3}{N}}$.
+\item Elle chauffe les freins. Le frein moteur partage l'effort et évite la surchauffe des freins, qui deviendraient inefficaces.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-12}
+\begin{corrige}{12}{Le tir à l'arc}
+\demarche{Le travail de la corde se retrouve en énergie cinétique ; en montée, le travail du poids annule cette énergie.}
+\begin{questions}
+\item $W=150\times0{,}50=\res{\qty{75}{J}}$.
+\item $\dfrac{1}{2}\times\num{0,020}\times v^2=75$, d'où $v=\sqrt{\dfrac{150}{\num{0,020}}}\approx\res{\qty{86,6}{m.s^{-1}}}$, soit \res{\qty{312}{km/h}}.
+\item $0-75=-m\,g\,h$ : $h=\dfrac{75}{\num{0,020}\times9{,}81}\approx\res{\qty{382}{m}}$.
+\item Les \res{\text{frottements de l'air}}, considérables à cette vitesse, effectuent un travail résistant.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-13}
+\begin{corrige}{13}{La distance de freinage}
+\demarche{Théorème de l'énergie cinétique entre le début du freinage et l'arrêt : $0-\dfrac{1}{2}\,m\,v^2=-f\,d$.}
+\begin{questions}
+\item $\dfrac{1}{2}\,m\,v^2=0{,}8\,m\,g\,d$ : la masse se simplifie, $\res{d=\dfrac{v^2}{2\times0{,}8\,g}}$.
+\item \res{\qty{12,3}{m}} à \qty{50}{km/h}, \res{\qty{39,8}{m}} à \qty{90}{km/h}, \res{\qty{83,1}{m}} à \qty{130}{km/h}.
+\item $d$ est proportionnelle à $v^2$ : elle est \res{\text{multipliée par 4}}. La masse \res{\text{n'intervient pas}}.
+\item $d=\dfrac{25^2}{2\times0{,}5\times9{,}81}\approx\res{\qty{63,7}{m}}$ : \qty{60}{\percent} de plus que sur route sèche ; il faut ralentir sous la pluie.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-14}
+\begin{corrige}{14}{Le saut à la perche}
+\demarche{Entre la course et le sommet, seul le travail du poids, résistant, compte : $0-\dfrac{1}{2}\,m\,v^2=-m\,g\,\Delta z$.}
+\begin{questions}
+\item $E_\mathrm{c}=\dfrac{1}{2}\times75\times9{,}5^2\approx\res{\qty{3,38e3}{J}}$.
+\item $\Delta z=\dfrac{v^2}{2\,g}=\dfrac{9{,}5^2}{2\times9{,}81}\approx\res{\qty{4,60}{m}}$.
+\item $1{,}1+4{,}6\approx\res{\qty{5,7}{m}}$.
+\item $v=\sqrt{2\times9{,}81\times(6{,}2-1{,}1)}\approx\res{\qty{10,0}{m.s^{-1}}}$, une vitesse de sprinteur ; le sauteur gagne aussi de l'énergie
+en poussant sur la perche avec les bras.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-15}
+\begin{corrige}{15}{L'atterrissage d'un avion de ligne}
+\demarche{$0-E_\mathrm{c}=-F\times d$ ; le poids et la réaction de la piste, verticaux, ne travaillent pas.}
+\begin{questions}
+\item $E_\mathrm{c}=\dfrac{1}{2}\times\num{6,4e4}\times70^2\approx\res{\qty{1,57e8}{J}}$.
+\item $F=\dfrac{\num{1,57e8}}{1500}\approx\res{\qty{1,05e5}{N}}$, environ \res{\num{0,17}} fois le poids ($\num{6,4e4}\times9{,}81\approx\qty{6,28e5}{N}$).
+\item \res{\text{Nuls}} : ces forces sont perpendiculaires au déplacement horizontal.
+\item Force réduite à \qty{60}{\percent} : $d=\dfrac{1500}{0{,}60}=\res{\qty{2500}{m}}$, une piste bien plus longue.
+\end{questions}
+\end{corrige}
+\end{blocLivre}

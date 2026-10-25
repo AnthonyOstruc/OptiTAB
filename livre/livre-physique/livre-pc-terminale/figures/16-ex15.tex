@@ -1,0 +1,16 @@
+% Orbite de transfert entre une orbite basse et l'orbite géostationnaire (exercice 15, chapitre 16)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% échelle : 1 cm pour 10 000 km ; r1 = 0,667 ; r2 = 4,215 ; a = 2,441 ; c = 1,774 ; b = sqrt(r1 r2) = 1,677
+\shade[ball color=otNavy!35] (0,0) circle (0.42);
+\draw[otMuted,line width=0.6pt] (0,0) circle (0.667);
+\draw[otMuted,line width=0.6pt] (0,0) circle (4.215);
+\draw[otGreenDark,line width=1pt,dash pattern=on 4pt off 2pt] (0.667,0) arc[start angle=0,end angle=180,x radius=2.441,y radius=1.677];
+\fill[otInk] (0.667,0) circle (0.06) node[pcLegende,anchor=north west] {périgée};
+\fill[otInk] (-4.215,0) circle (0.06) node[pcLegende,anchor=north east] {apogée};
+\node[pcLegende,anchor=south] at (70:4.25) {orbite géostationnaire ($r_2$)};
+\node[pcLegende,anchor=north west] at (-45:0.7) {orbite basse ($r_1$)};
+\node[pcLegende,text=otGreenDark,anchor=south] at (-1.774,1.72) {demi-ellipse de transfert};
+\solution{\draw[otMuted,line width=0.4pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (-4.215,-0.35) -- (0.667,-0.35)
+  node[pos=0.5,pcLegende,anchor=north] {$2a=r_1+r_2$};}
+\end{tikzpicture}
+\par\smallskip\legende{Le satellite passe de l'orbite basse à l'orbite géostationnaire en parcourant une demi-ellipse dont la Terre occupe un foyer.}

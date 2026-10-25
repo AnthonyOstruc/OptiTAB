@@ -1,0 +1,16 @@
+% Spectres d'absorption de deux solutions colorées (exercice 1, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otUV,name=a,width=70mm,height=44mm,ymax=1.0,ytick={0,0.5},title={\otMedium\fontsize{7.5}{9}\selectfont Solution 1},
+  title style={yshift=-1mm},xtick={400,500,600,700}]
+\addplot[otNavy,line width=0.9pt,domain=400:750] {0 \bandeUV{450}{40}{0.82}};
+\solution{\draw[otGreenDark,dashed,line width=0.6pt] (axis cs:450,0) -- (axis cs:450,0.82);
+  \node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:455,0.82) {\qty{450}{nm} : bleu absorbé};}
+\end{axis}
+\begin{axis}[otUV,at={(a.east)},anchor=west,xshift=14mm,width=70mm,height=44mm,ymax=1.0,ytick={0,0.5},
+  title={\otMedium\fontsize{7.5}{9}\selectfont Solution 2},title style={yshift=-1mm},xtick={400,500,600,700}]
+\addplot[otNavy,line width=0.9pt,domain=400:750] {0 \bandeUV{525}{30}{0.75} \bandeUV{545}{18}{0.25}};
+\solution{\draw[otGreenDark,dashed,line width=0.6pt] (axis cs:528,0) -- (axis cs:528,0.86);
+  \node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:533,0.86) {\qty{525}{nm} : vert absorbé};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Spectres d'absorption de deux solutions, mesurés dans le domaine visible.}

@@ -1,0 +1,231 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 8 — Équations différentielles
+%% Tous les résultats ont été vérifiés par calcul formel (sympy) et numériquement.
+
+\corrigesChapitre{8}{Équations différentielles}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Vérifier des solutions}
+\begin{questions}
+  \item $y'(x)=6e^{2x}$ et $2y+4=6e^{2x}-4+4=6e^{2x}$ : $\res{y\text{ est solution}}$.
+  \item $T'(t)=-8e^{-0{,}1t}$ et $-0{,}1\,(T-20)=-0{,}1\times80e^{-0{,}1t}$, soit $-8e^{-0{,}1t}$ : $\res{\text{solution}}$.
+  \item $P'(t)=5e^{0{,}05t}$, c'est-à-dire $0{,}05\times100e^{0{,}05t}=0{,}05\,P$ : $\res{\text{solution}}$.
+  \item $y'(x)=2e^{2x}$ mais $2y+4=2e^{2x}+6$ : les deux diffèrent, $\res{y\text{ n'est pas solution}}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Équations de référence}
+\methode{les solutions de $y'=ay+b$ sont $Ce^{ax}-\frac ba$}
+\begin{questions}
+  \item $\res{y(x)=Ce^{3x}}$, $C\in\R$
+  \item $y(x)=Ce^{-2x}$ et $y(0)=C=5$ :\\ $\res{y(x)=5e^{-2x}}$
+  \item $-\frac ba=-\frac{-6}{2}=3$ : $\res{y(x)=Ce^{2x}+3}$
+  \item $-\frac ba=8$, $y(x)=Ce^{-0{,}5x}+8$ et $y(0)=C+8=0$ :\\ $\res{y(x)=8-8e^{-0{,}5x}}$
+  \item $y'=-\frac12y+\frac12$ : $\res{y(x)=Ce^{-x/2}+1}$
+  \item Les solutions sont les primitives de $x^{2}+1$ : $y(x)=\frac{x^{3}}{3}+x+C$ et $y(0)=C=1$ :\\
+    $\res{y(x)=\dfrac{x^{3}}{3}+x+1}$
+  \item $y(x)=Ce^{-4x}+\frac12$ et $y(0)=C+\frac12=\frac72$ :\\ $\res{y(x)=3e^{-4x}+\dfrac12}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Croissance d'une population}
+\begin{questions}
+  \item $P(t)=Ce^{0{,}03t}$ et $P(0)=C=5\,000$ :\\ $\res{P(t)=5\,000\,e^{0{,}03t}}$
+  \item $P(10)=5\,000\,e^{0{,}3}\approx\res{6\,749\text{ habitants}}$
+  \item $e^{0{,}03t}=2\iff t=\dfrac{\ln2}{0{,}03}\approx\res{23{,}1\text{ ans}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Décroissance radioactive}
+\begin{questions}
+  \item $\res{N(t)=1\,000\,e^{-0{,}02t}}$
+  \item $e^{-0{,}02T}=\frac12$ équivaut à $T=\dfrac{\ln2}{0{,}02}$, soit $\res{T\approx34{,}66\text{ min}}$.
+  \item $e^{-0{,}02t}=\frac{1}{10}$ équivaut à $t=\dfrac{\ln10}{0{,}02}$, soit $\res{t\approx115{,}1\text{ min}}$.
+  \item Avec $N(t)=N_0e^{-\lambda t}$, $N(T)=\frac{N_0}{2}$ équivaut à $e^{-\lambda T}=\frac12$, soit $\res{T=\dfrac{\ln2}{\lambda}}$ : $N_0$ n'intervient pas.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Loi de refroidissement de Newton}
+\begin{questions}
+  \item $T'=-0{,}1\,T+2$, donc $T(t)=Ce^{-0{,}1t}+20$ ; et $T(0)=C+20=80$ :\\ $\res{T(t)=20+60e^{-0{,}1t}}$
+  \item $T(10)=20+60e^{-1}\approx\res{42{,}1\text{ °C}}$
+  \item $60e^{-0{,}1t}=5$ équivaut à $t=10\ln12$, soit $\res{t\approx24{,}8\text{ min}}$.
+  \item $\res{T(t)=25+75e^{-0{,}02t}}$ et $T(60)=25+75e^{-1{,}2}\approx\res{47{,}6\text{ °C}}$
+  \item $75e^{-0{,}02t}=5$ équivaut à $t=50\ln15$, soit $\res{t\approx135\text{ min}}$ (2~h~15).
+  \item L'écart vaut $\left(T_0-T_a\right)e^{-kt}$ : il est divisé par $2$ lorsque $e^{-kt}=\frac12$, soit
+    $t=\frac{\ln2}{k}=50\ln2\approx\res{34{,}7\text{ min}}$, quelle que soit $T(0)$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Population avec apport constant}
+\begin{questions}
+  \item $-\frac ba=-\frac{50}{0{,}02}=-2\,500$ :\\ $\res{P(t)=Ce^{0{,}02t}-2\,500}$
+  \item $P(0)=C-2\,500=1\,000$, donc $\res{P(t)=3\,500\,e^{0{,}02t}-2\,500}$ et $P(5)\approx\res{1\,368}$.
+  \item $3\,500\,e^{0{,}02t}=4\,500$ équivaut à $t=50\ln\frac97$, soit $\res{t\approx12{,}57\text{ ans}}$.
+  \item $e^{0{,}02t}\to+\infty$ : $\res{\lim P(t)=+\infty}$, la population croît sans limite.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{Charge d'un condensateur}
+\begin{questions}
+  \item On divise par $RC=0{,}01$ : $u'=-100\,u+500$. Les solutions sont les fonctions $Ke^{-100t}+5$ et $u(0)=K+5=0$ :\\
+    $\res{u(t)=5\left(1-e^{-100t}\right)}$
+  \item $u(0{,}02)=5\left(1-e^{-2}\right)\approx\res{4{,}32\text{ V}}$
+  \item $\tau=\res{0{,}01\text{ s}}$ et $\frac{u(\tau)}{E}=1-e^{-1}\approx\res{0{,}63}$ : au bout de $\tau$, le condensateur est chargé à 63\,\%.
+  \item $\lim u(t)=\res{5\text{ V}}=E$. Puis $1-e^{-100t}\geq0{,}99$ équivaut à $t\geq\frac{\ln100}{100}$, soit $\res{t\geq0{,}046\text{ s}}$, un peu moins
+    que $5\tau=0{,}05$~s : en pratique, le condensateur est chargé après $5\tau$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Datation à l'uranium 238}
+\begin{questions}
+  \item $\res{N(t)=N_0e^{-\lambda t}}$
+  \item $t=10^{9}\times3{,}156\times10^{7}$~s, $\lambda t\approx0{,}155$ et $\frac{N(t)}{N_0}=e^{-\lambda t}\approx\res{0{,}857}$, soit 85,7\,\%.
+  \item $T=\frac{\ln2}{\lambda}\approx1{,}41\times10^{17}$~s, soit $\res{4{,}48\text{ milliards d'années}}$.
+  \item L'écart est inférieur à 1\,\% : le modèle est en accord avec la mesure.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{9}{Mélange dans un réservoir}
+\begin{questions}
+  \item Il entre $2\times0{,}5=1$~kg de sel par minute. La concentration dans le réservoir est $\frac{Q(t)}{100}$~kg/L et il en sort
+    $2$~L/min, soit $\frac{2Q(t)}{100}=\frac{Q(t)}{50}$~kg/min. D'où $Q'(t)=1-\frac{Q(t)}{50}$.
+  \item $Q'=-\frac{1}{50}Q+1$, donc $Q(t)=Ce^{-t/50}+50$, et $Q(0)=C+50=0$ : $\res{Q(t)=50\left(1-e^{-t/50}\right)}$.
+  \item $Q(30)=50\left(1-e^{-0{,}6}\right)\approx\res{22{,}56\text{ kg}}$.
+  \item $e^{-t/50}\to0$, donc $\res{\lim Q(t)=50\text{ kg}}$ : la concentration tend vers $\frac{50}{100}=0{,}5$~kg/L, celle de la solution versée.
+  \item $Q(t)=40\iff e^{-t/50}=\frac15\iff t=50\ln5\approx\res{80{,}5\text{ min}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{10}{Croissance logistique}
+\noindent
+\begin{minipage}[t]{0.54\linewidth}\vspace{0pt}\raggedright
+\begin{questions}
+  \item Le second membre $0{,}1\,P-0{,}000\,1\,P^{2}$ contient $P^{2}$ : l'équation n'est pas linéaire.
+  \item $y'=-\frac{P'}{P^{2}}=-\frac{0{,}1}{P}\left(1-\frac{P}{1\,000}\right)=-\frac{0{,}1}{P}+\frac{0{,}1}{1\,000}=-0{,}1\,y+0{,}000\,1$.
+  \item $-\frac ba=\frac{0{,}000\,1}{0{,}1}=0{,}001$, donc $y(t)=Ce^{-0{,}1t}+0{,}001$. Or $y(0)=\frac{1}{100}$, d'où $C=0{,}009$ et
+    $P(t)=\frac{1}{0{,}009\,e^{-0{,}1t}+0{,}001}=\res{\dfrac{1\,000}{1+9e^{-0{,}1t}}}$.
+  \item $P(20)=\frac{1\,000}{1+9e^{-2}}\approx\res{451}$. $e^{-0{,}1t}\to0$ : $\res{\lim P(t)=1\,000}$. C'est la capacité d'accueil du milieu.
+  \item $P(t)=500\iff9e^{-0{,}1t}=1\iff t=10\ln9\approx\res{22{,}0}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=68mm, height=52mm, xmin=0, xmax=82, ymin=0, ymax=1150,
+  xtick={20,40,60,80}, ytick={500,1000}, yticklabels={$500$,$1\,000$}, xlabel={$t$},
+  xlabel style={at={(1,0)},anchor=west}, grid=major, grid style={otRule!70,line width=0.3pt}]
+  \draw[otGreen,dashed,line width=0.7pt] (axis cs:0,1000) -- (axis cs:80,1000);
+  \addplot[otNavy,line width=1.2pt,domain=0:80,samples=120] {1000/(1+9*exp(-0.1*x))};
+  \addplot[only marks,mark=*,mark size=1.4pt,otNavy] coordinates {(21.97,500)};
+  \draw[otMuted,dash pattern=on 2pt off 1.5pt,line width=0.5pt] (axis cs:21.97,0) -- (axis cs:21.97,500);
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{La courbe « en S » : croissance rapide, puis saturation.}
+\end{minipage}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{Une équation avec second membre}
+\partieExo{A}{Résolution}
+\begin{questions}
+  \item $u'(x)=e^{-x}-xe^{-x}$, donc $u'(x)+u(x)=e^{-x}$ : $\res{u\text{ est solution de }(E)}$.
+  \item $(f-u)'+(f-u)=\left(f'+f\right)-\left(u'+u\right)=\left(f'+f\right)-e^{-x}$ : cette quantité est nulle si et seulement si $f$ est
+    solution de $(E)$.
+  \item $(E_0)$ s'écrit $y'=-y$ : ses solutions sont $Ce^{-x}$. Les solutions de $(E)$ sont donc $\res{x\mapsto(x+C)e^{-x}}$, $C\in\R$.
+  \item $f(0)=C=1$ : $\res{f(x)=(x+1)e^{-x}}$.
+\end{questions}
+\partieExo{B}{Étude de la solution}
+\noindent
+\begin{minipage}[t]{0.52\linewidth}\vspace{0pt}\raggedright
+\begin{questions}[start=5]
+  \item En $-\infty$ : $x+1\to-\infty$ et $e^{-x}\to+\infty$, donc $\res{\lim f=-\infty}$. En $+\infty$ : $f(x)=\frac{x}{e^{x}}+e^{-x}\to\res{0}$
+    par croissances comparées.
+  \item $f'(x)=e^{-x}-(x+1)e^{-x}=\res{-xe^{-x}}$, du signe de $-x$. Maximum $f(0)=1$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.44\linewidth}\vspace{1mm}
+\centering
+\begin{tableau}
+  \otTab[1.6]{$x$/0.8,$f'(x)$/0.8,$f$/1.6}{$-\infty$,$0$,$+\infty$}
+  \tkzTabLine{,+,z,-,}
+  \tkzTabVar{-/$-\infty$,+/$1$,-/$0$}
+\end{tableau}
+\end{minipage}
+\noindent
+\begin{minipage}[t]{0.52\linewidth}\vspace{0pt}\raggedright
+\begin{questions}[start=7]
+  \item Sur $\intOF{-\infty}{0}$, $f$ est continue, strictement croissante, de $-\infty$ à $1$ : une unique solution $\alpha$. Sur
+    $\intFO{0}{+\infty}$, $f$ décroît strictement de $1$ vers $0$ : une unique solution $\beta$. Par balayage :
+    $\res{-0{,}77<\alpha<-0{,}76}$ et $\res{1{,}67<\beta<1{,}68}$.
+  \item $f''(x)=-e^{-x}+xe^{-x}=(x-1)e^{-x}$ : $f$ est concave sur $\intOF{-\infty}{1}$, convexe sur $\intFO{1}{+\infty}$. Le point
+    d'inflexion est $A\left(1\pv\frac2e\right)$ et, comme $f'(1)=-\frac1e$, la tangente en $A$ a pour équation
+    $\res{y=\dfrac{3-x}{e}}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.44\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=72mm, xmin=-1.8, xmax=5.4, ymin=-1.9, ymax=1.6,
+  xtick={-1,1,2,3,4,5}, ytick={-1,1}]
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:-1.2,0.5) -- (axis cs:2.4,0.5);
+  \addplot[otGreen,line width=0.9pt,domain=-0.6:3.6] {(3-x)/2.71828};
+  \addplot[otNavy,line width=1.2pt,domain=-1.44:5.3,samples=150] {(x+1)*exp(-x)};
+  \addplot[only marks,mark=*,mark size=1.4pt,otNavy] coordinates {(0,1) (1,0.7358) (-0.768,0.5) (1.678,0.5)};
+  \node[anchor=south,font=\scriptsize] at (axis cs:-0.85,0.52) {$\alpha$};
+  \node[anchor=south west,font=\scriptsize] at (axis cs:1.7,0.52) {$\beta$};
+  \node[anchor=south west,font=\scriptsize] at (axis cs:1,0.75) {$A$};
+  \node[anchor=west,font=\scriptsize,text=otNavy] at (axis cs:-0.9,-1.3) {$\Cf$};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Perfusion d'un médicament}
+\noindent
+\begin{minipage}[t]{0.54\linewidth}\vspace{0pt}\raggedright
+\partieExo{A}{Pendant la perfusion}
+\begin{questions}
+  \item $-\frac ba=\frac{4}{0{,}2}=20$, donc $Q(t)=Ce^{-0{,}2t}+20$ et $Q(0)=C+20=0$ : $\res{Q(t)=20\left(1-e^{-0{,}2t}\right)}$.
+  \item $\res{\lim Q(t)=20\text{ mg}}$ : si la perfusion durait indéfiniment, la quantité se stabiliserait à $20$~mg, valeur pour
+    laquelle l'élimination ($0{,}2\times20=4$~mg/h) compense exactement l'apport.
+  \item $20\left(1-e^{-0{,}2t}\right)\geq15\iff e^{-0{,}2t}\leq\frac14\iff t\geq5\ln4\approx\res{6{,}93\text{ h}}$.
+\end{questions}
+\partieExo{B}{Après la perfusion}
+\begin{questions}[resume]
+  \item $Q(10)=20\left(1-e^{-2}\right)\approx\res{17{,}29\text{ mg}}$. Les solutions de $y'=-0{,}2\,y$ s'écrivent
+    $Ke^{-0{,}2t}=\left(Ke^{-2}\right)e^{-0{,}2(t-10)}$ ; la valeur en $t=10$ impose $Ke^{-2}=Q(10)$.
+  \item $Q(10)\,e^{-0{,}2(t-10)}<5\iff t>10+5\ln\frac{Q(10)}{5}\approx\res{16{,}2\text{ h}}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=68mm, height=54mm, xmin=0, xmax=25, ymin=0, ymax=21,
+  xtick={5,10,15,20}, ytick={5,10,15,20}, xlabel={$t$}, xlabel style={at={(1,0)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \draw[otGreen,line width=0.7pt] (axis cs:0,15) -- (axis cs:24,15);
+  \draw[otOrange,line width=0.7pt] (axis cs:0,5) -- (axis cs:24,5);
+  \addplot[otNavy,line width=1.2pt,domain=0:10,samples=60] {20*(1-exp(-0.2*x))};
+  \addplot[otNavy,line width=1.2pt,domain=10:24,samples=60] {17.2933*exp(-0.2*(x-10))};
+  \node[anchor=south east,font=\scriptsize,text=otGreenDark] at (axis cs:24,15.2) {efficace};
+  \node[anchor=south east,font=\scriptsize,text=otOrange] at (axis cs:24,5.2) {$5$~mg};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Montée pendant $10$~h, puis élimination.}
+\end{minipage}
+\partieExo{C}{La méthode d'Euler}
+\begin{questions}[start=6]
+  \item $q_{n+1}=q_n-0{,}02\,q_n+0{,}4=\res{0{,}98\,q_n+0{,}4}$ : suite arithmético-géométrique de point fixe $20$. La suite $(q_n-20)$
+    est géométrique de raison $0{,}98$ et de premier terme $-20$, d'où $\res{q_n=20\left(1-0{,}98^{n}\right)}$. Puis
+    $q_{100}\approx17{,}35$, contre $Q(10)\approx17{,}29$ : l'erreur est d'environ $0{,}05$~mg.
+  \item La fonction renvoie $q_{1\,000}$ pour le pas $0{,}01$, valeur approchée de $Q(10)$ : environ $\res{17{,}30}$. Plus le pas est
+    petit, plus l'approximation est précise (l'erreur est ici divisée par $10$ environ quand le pas l'est).
+\end{questions}
+\end{corrige}

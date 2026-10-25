@@ -1,0 +1,257 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[cercleplan]{8}{Géométrie repérée}{Partie 3 · Géométrie}
+{Droites\enspace·\enspace Vecteurs normaux\enspace·\enspace Projections\enspace·\enspace Cercles}
+\objectif{Déterminer une équation cartésienne de droite.}
+\objectif{Calculer les coordonnées d’un projeté orthogonal.}
+\objectif{Reconnaître et utiliser une équation de cercle.}
+\objectif{Résoudre des problèmes d’intersection et de configuration.}
+\prerequis{Repère orthonormé, distances et milieux.}
+\prerequis{Produit scalaire et résolution du second degré.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Équation d'une droite et vecteur normal}
+\begin{definition}
+Un vecteur non nul $n=(a;b)$ est normal à une droite $d$ s'il est orthogonal
+à ses vecteurs directeurs. Si $A(x_A;y_A)$ appartient à $d$, alors
+\[M(x;y)\in d\iff a(x-x_A)+b(y-y_A)=0.\]
+Une équation $ax+by+c=0$, avec $(a;b)\neq(0;0)$, définit une droite de
+vecteur normal $(a;b)$ et de vecteur directeur $(-b;a)$.
+\end{definition}
+\begin{propriete}
+Deux droites sont parallèles si leurs vecteurs normaux sont colinéaires.
+Elles sont perpendiculaires si leurs vecteurs normaux sont orthogonaux.
+Deux équations proportionnelles peuvent représenter la même droite.
+\end{propriete}
+\essSection{2}{Projeter un point sur une droite}
+\begin{savoirfaire}
+Pour projeter $A$ sur $d$, on cherche $H\in d$ tel que $\vect{AH}$ soit
+colinéaire à un vecteur normal de $d$. Cela donne deux équations.
+Pour $d:ax+by+c=0$, on peut écrire $H=A-\lambda(a;b)$, avec
+\[\lambda=\frac{ax_A+by_A+c}{a^2+b^2}.\]
+On vérifie ensuite $H\in d$ et $AH\perp d$.
+\end{savoirfaire}
+\begin{exemple}
+Pour $A(3;1)$ et $d:y=x$, le normal $(1;-1)$ donne $\lambda=1$,
+donc $H(2;2)$. On a bien $2=2$ et $\vect{AH}=(-1;1)$, normal à $d$.
+\end{exemple}
+\begin{attention}
+Une équation cartésienne est valable pour une droite verticale, contrairement
+à une écriture $y=mx+p$. Dans ce chapitre, tous les repères sont orthonormés.
+\end{attention}
+
+\clearpage
+\essSection{3}{Équation d'un cercle}
+\begin{theoreme}
+Le cercle de centre $\Omega(\alpha;\beta)$ et de rayon $R>0$ a pour équation
+\[(x-\alpha)^2+(y-\beta)^2=R^2.\]
+En effet cette égalité exprime $\Omega M^2=R^2$.
+\end{theoreme}
+\begin{savoirfaire}[Reconnaître un cercle]
+Compléter les carrés. Par exemple,
+$x^2+y^2-2x-2y-2=0$ devient $(x-1)^2+(y-1)^2=4$.
+Le centre est $(1;1)$ et le rayon vaut 2. Un second membre négatif donne
+un ensemble vide ; un second membre nul donne un seul point.
+\end{savoirfaire}
+\begin{center}
+\begin{tikzpicture}[scale=.7]
+\draw[otMuted,->](-1.6,0)--(4,0)node[right]{$x$};
+\draw[otMuted,->](0,-1.6)--(0,3.7)node[above]{$y$};
+\draw[otNavy,thick](1,1)circle(2);
+\fill[otGreenDark](1,1)circle(1.7pt)node[above]{$\Omega(1;1)$};
+\draw[otGreenDark](1,1)--node[above]{$2$}(3,1);
+\fill[otNavy](3,1)circle(1.7pt)node[right]{$M(3;1)$};
+\end{tikzpicture}
+\par\legende{Le cercle $(x-1)^2+(y-1)^2=4$.}
+\end{center}
+
+\begin{propriete}[Tangente et intersections]
+Au point $A$ d'un cercle de centre $\Omega$, la tangente est perpendiculaire
+à $\Omega A$. Pour chercher une intersection avec une droite, remplacer
+une coordonnée par son expression dans l'équation du cercle et résoudre.
+\end{propriete}
+
+
+\clearpage
+\essSection{4}{Projections, tangentes et intersections}
+Vérifier les appartenances et les angles droits dans chaque construction.
+\figureGeo[corrige]{08-cours-normal}
+\vspace{5mm}
+\figureGeo[corrige]{08-cours-positions}
+\vspace{5mm}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-8-1}
+\begin{exercice}[1]{Lire une équation de droite}
+On considère $d:3x-2y+5=0$.\begin{questions}
+\item Donner un vecteur normal et un vecteur directeur de $d$.
+\item Vérifier si $A(1;4)$ et $B(0;2)$ appartiennent à $d$.
+\end{questions}
+
+\label{figgeo-08-01-ex}
+\figureGeo{08-01}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-2}
+\begin{exercice}[1]{Construire une équation}
+Déterminer une équation cartésienne de la droite passant par $A(2;-1)$ et de vecteur normal $(3;4)$. Donner ensuite un vecteur directeur et l’ordonnée à l’origine.
+\label{figgeo-08-02-ex}
+\figureGeo{08-02}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-3}
+\begin{exercice}[1]{Écrire un cercle}
+Le cercle $\mathcal C$ a pour centre $(2;-1)$ et pour rayon 3.\begin{questions}
+\item Donner son équation.
+\item Les points $A(5;-1)$, $B(2;2)$ et $C(0;0)$ sont-ils sur le cercle, à l’intérieur ou à l’extérieur ?
+\end{questions}
+
+\label{figgeo-08-03-ex}
+\figureGeo{08-03}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-4}
+\begin{exercice}[1]{Reconnaître une équation de cercle}
+Identifier le centre et le rayon du cercle $x^2+y^2-4x+6y-12=0$. Donner ses points d’intersection avec la droite $x=2$.
+\label{figgeo-08-04-ex}
+\figureGeo{08-04}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-5}
+\begin{exercice}[1]{Deux projections simples}
+\begin{questions}
+\item Projeter $P(3;4)$ sur l’axe des abscisses et calculer la distance correspondante.
+\item Projeter $A(3;1)$ sur $y=x$ et calculer $AH$.
+\end{questions}
+
+\label{figgeo-08-05-ex}
+\figureGeo{08-05}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-8-6}
+\begin{exercice}[2]{Projeter et mesurer une distance}
+On donne $A(4;3)$ et $d:2x+y-5=0$.\begin{questions}
+\item Écrire $H=A-\lambda(2;1)$ et calculer $\lambda$ pour que $H\in d$.
+\item Donner $H$ et vérifier l’orthogonalité.
+\item Calculer la distance de $A$ à $d$.
+\end{questions}
+
+\label{figgeo-08-06-ex}
+\figureGeo{08-06}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-7}
+\begin{exercice}[2]{Droites parallèles et perpendiculaires}
+On donne $d:3x-2y+1=0$, $e:6x-4y-7=0$ et $f:2x+3y-5=0$.\begin{questions}
+\item Comparer les directions de $d$ et $e$. Sont-elles confondues ?
+\item Montrer que $d\perp f$.
+\item Donner une équation de la perpendiculaire à $d$ passant par $(1;2)$.
+\end{questions}
+
+\label{figgeo-08-07-ex}
+\figureGeo{08-07}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-8}
+\begin{exercice}[2]{Intersections avec les axes décalés}
+On considère $\mathcal C:(x-1)^2+(y+2)^2=25$.\begin{questions}
+\item Calculer les intersections avec $y=1$.
+\item Calculer les intersections avec $x=1$.
+\item Faire un schéma avec le centre et les quatre points obtenus.
+\end{questions}
+
+\label{figgeo-08-08-ex}
+\figureGeo{08-08}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-9}
+\begin{exercice}[2]{Une famille d'ensembles}
+Pour $m\in\R$, étudier l’ensemble $E_m$ d’équation $x^2+y^2-2x+4y+m=0$.\begin{questions}
+\item Mettre l’équation sous forme de carrés.
+\item Selon $m$, dire si $E_m$ est un cercle, un point ou l’ensemble vide.
+\item Donner le rayon pour $m=1$.
+\end{questions}
+
+\label{figgeo-08-09-ex}
+\figureGeo{08-09}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-10}
+\begin{exercice}[2]{Déterminer une tangente}
+Le cercle a pour centre $\Omega(1;2)$ et pour rayon 5. On donne $A(4;6)$.\begin{questions}
+\item Vérifier que $A$ appartient au cercle.
+\item Déterminer la tangente au cercle en $A$.
+\item Vérifier que $A$ est le projeté orthogonal de $\Omega$ sur cette tangente.
+\end{questions}
+
+\label{figgeo-08-10-ex}
+\figureGeo{08-10}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-11}
+\begin{exercice}[2]{Une médiatrice}
+On donne $A(-2;1)$ et $B(4;3)$.\begin{questions}
+\item Calculer le milieu $I$ et le vecteur $\vect{AB}$.
+\item Déterminer la médiatrice de $[AB]$.
+\item Vérifier par les distances que $C(0;5)$ appartient à cette médiatrice.
+\end{questions}
+
+\label{figgeo-08-11-ex}
+\figureGeo{08-11}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-8-12}
+\begin{exercice}[3]{Hauteurs et cercle circonscrit}
+On donne $A(0;0)$, $B(6;0)$ et $C(2;4)$.\begin{questions}
+\item Déterminer les hauteurs issues de $C$ et de $A$, puis leur intersection $H$.
+\item Calculer le pied $K$ de la hauteur issue de $A$.
+\item Déterminer le centre $\Omega$ du cercle circonscrit avec deux médiatrices.
+\item Écrire l’équation du cercle circonscrit.
+\end{questions}
+
+\label{figgeo-08-12-ex}
+\figureGeo{08-12}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-13}
+\begin{exercice}[3]{Une droite coupe un cercle}
+On étudie le cercle $\mathcal C:(x-2)^2+(y-1)^2=5$ et la droite $d:x+y=4$.\begin{questions}
+\item Substituer $y=4-x$ et obtenir une équation du second degré.
+\item Calculer les deux points d’intersection.
+\item Projeter le centre sur $d$ et vérifier que la distance obtenue est inférieure au rayon.
+\end{questions}
+
+\label{figgeo-08-13-ex}
+\figureGeo{08-13}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-14}
+\begin{exercice}[3]{Un cercle et des droites horizontales}
+Le cercle $\mathcal C$ a pour centre $(1;3)$ et pour rayon 3. Pour un réel $k$, on considère la droite $d_k:y=k$.\begin{questions}
+\item Écrire l’équation qui détermine les abscisses des intersections.
+\item Selon $k$, déterminer le nombre de points communs.
+\item Donner les points de tangence dans les cas où il existe un seul point commun.
+\item Calculer les intersections pour $k=2$.
+\end{questions}
+
+\label{figgeo-08-14-ex}
+\figureGeo{08-14}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-8-15}
+\begin{exercice}[3]{Une parabole comme lieu géométrique}
+On cherche les points $M(x;y)$ équidistants du point $F(0;2)$ et de l’axe des abscisses.\begin{questions}
+\item Justifier que la distance à l’axe vaut $|y|$ et écrire l’égalité des carrés des distances.
+\item Montrer que le lieu est la parabole $y=x^2/4+1$.
+\item Déterminer les points du lieu d’ordonnée 5.
+\item Au point d’abscisse 4, déterminer la tangente à cette parabole et vérifier l’égalité des deux distances.
+\end{questions}
+
+\label{figgeo-08-15-ex}
+\figureGeo{08-15}
+\end{exercice}
+\end{blocLivre}

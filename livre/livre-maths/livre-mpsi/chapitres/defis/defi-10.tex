@@ -1,0 +1,70 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 10 — Le théorème de Gauss-Lucas
+%% Résultats vérifiés par verifications/defis_06_10.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le théorème de Gauss-Lucas}{1 h 30}
+Soit $P\in\Cx[X]$ de degré $n\geqslant2$, de coefficient dominant $\lambda$,
+de racines distinctes $a_1,\dots,a_p$ de multiplicités $m_1,\dots,m_p$. Le
+plan est identifié à $\Cx$. Le but est de montrer que les racines de $P'$
+sont toujours situées « à l'intérieur » du nuage formé par les racines de
+$P$ — plus précisément dans son \emph{enveloppe convexe}, l'ensemble des
+barycentres à coefficients positifs des $a_k$.
+
+\partieExo{A}{La dérivée logarithmique}
+\begin{questions}
+  \item Montrer l'égalité de fractions rationnelles
+    $\dfrac{P'}{P}=\displaystyle\sum_{k=1}^{p}\frac{m_k}{X-a_k}$.
+  \item Soit $z$ une racine de $P'$ qui n'est pas racine de $P$. Montrer
+    que $\displaystyle\sum_{k=1}^{p}m_k\,\frac{z-a_k}{|z-a_k|^{2}}=0$.
+    \emph{Conjuguer l'égalité obtenue en évaluant la question 1 en $z$.}
+  \item En déduire le \emph{théorème de Gauss-Lucas} : toute racine de
+    $P'$ s'écrit $\sum_k\theta_k a_k$ avec $\theta_k\geqslant0$ et
+    $\sum_k\theta_k=1$.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=1.25,line cap=round,line join=round]
+  \draw[otMuted,line width=0.4pt,-{Stealth[length=1.5mm]}] (-2,0) -- (2.5,0);
+  \draw[otMuted,line width=0.4pt,-{Stealth[length=1.5mm]}] (0,-1.7) -- (0,1.9);
+  \fill[otNavy!10] (2,0) -- (1,1.5) -- (-1.5,1) -- (-1,-1.2) -- (0.8,-1.4) -- cycle;
+  \draw[otNavy,line width=0.7pt,dash pattern=on 2.5pt off 1.5pt] (2,0) -- (1,1.5) -- (-1.5,1) -- (-1,-1.2) -- (0.8,-1.4) -- cycle;
+  \foreach \p in {(2,0),(1,1.5),(-1.5,1),(-1,-1.2),(0.8,-1.4)}{\fill[otNavy] \p circle (2.2pt);}
+  \foreach \p in {(-0.832,0.505),(-0.216,-0.876),(1.011,0.617),(1.077,-0.325)}{%
+    \filldraw[fill=otGreen,draw=otGreenDark,line width=0.5pt] \p circle (2pt);}
+  \draw[otInk,line width=0.6pt] (0.26,-0.02) ++(-0.07,-0.07) -- ++(0.14,0.14) ++(-0.14,0) -- ++(0.14,-0.14);
+  \node[font=\scriptsize,text=otNavy,anchor=south west] at (1,1.5) {racines de $P$};
+  \draw[otGreenDark,line width=0.4pt] (-0.216,-0.95) -- (-0.45,-1.62);
+  \node[font=\scriptsize,text=otGreenDark,anchor=north] at (-0.45,-1.62) {racines de $P'$};
+  \node[font=\scriptsize,text=otInk,anchor=west] at (0.33,0.08) {$g$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Un polynôme de degré $5$ : ses racines (en bleu) délimitent un
+pentagone convexe, à l'intérieur duquel se trouvent les quatre racines de
+$P'$ (en vert) ; $g$ est la moyenne commune des deux familles (question 7).}
+\end{center}
+
+\partieExo{B}{Exemples}
+\begin{questions}[resume]
+  \item Déterminer les racines de $P'$ lorsque $P=X^{n}-1$, et
+    interpréter.
+  \item Soit $P=(X-1)(X+1)(X-2\mathrm{i})$. Calculer $P'$ et ses racines,
+    puis écrire chacune d'elles comme barycentre à coefficients positifs de
+    $1$, $-1$ et $2\mathrm{i}$. Faire une figure.
+  \item On suppose $P\in\R[X]$ scindé sur $\R$, de racines
+    $a_1<\dots<a_p$. Retrouver, à l'aide du théorème de Rolle (chapitre 6)
+    et des multiplicités, que $P'$ est scindé sur $\R$ avec toutes ses
+    racines dans $\intFF{a_1}{a_p}$.
+\end{questions}
+
+\partieExo{C}{Conséquences}
+\begin{questions}[resume]
+  \item À l'aide des relations de Viète, montrer que la moyenne des
+    racines de $P'$ (comptées avec multiplicité) est égale à celle des
+    racines de $P$.
+  \item Montrer que si toutes les racines de $P$ sont dans un disque
+    fermé $D$, il en est de même des racines de $P',P'',\dots,P^{(n-1)}$.
+    Que vaut l'unique racine de $P^{(n-1)}$ ?
+\end{questions}
+\end{defi}

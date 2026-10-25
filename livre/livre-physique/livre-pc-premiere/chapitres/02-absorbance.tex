@@ -1,0 +1,353 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[spectre]{2}{Absorbance et dosage par étalonnage}{Partie 1 · Constitution et transformations de la matière}
+{Couleur\enspace·\enspace Spectre d'absorption\enspace·\enspace Absorbance\enspace·\enspace Loi de Beer-Lambert\enspace·\enspace Gamme étalon}
+\objectif{Expliquer ou prévoir la couleur d'une espèce en solution à partir de son spectre UV-visible.}
+\objectif{Exploiter la loi de Beer-Lambert et connaître ses conditions de validité.}
+\objectif{Déterminer la concentration d'un soluté à partir de l'absorbance de solutions de concentrations connues.}
+\objectif{Proposer un protocole pour réaliser une gamme étalon et tester les limites du dosage.}
+\prerequis{Lumière blanche, spectres, longueur d'onde (classe de seconde).}
+\prerequis{Dosage par étalonnage, dilution et concentrations (classe de seconde et chapitre~1).}
+\prerequis{Lecture graphique et proportionnalité.}
+\end{ouverture}
+\essentiel
+\essSection{1}{La couleur d'une espèce en solution}
+\begin{definition}[Couleur perçue]
+Éclairée en lumière blanche, une solution absorbe certaines radiations et transmet les autres. Lorsqu'elle absorbe
+surtout un domaine de longueurs d'onde, sa couleur perçue est la \textbf{couleur complémentaire} de la couleur absorbée :
+sur le cercle chromatique, elles sont diamétralement opposées. Une solution qui n'absorbe aucune radiation visible est
+incolore.
+\end{definition}
+\schema{02-cercle}
+\essSection{2}{Absorbance et spectre d'absorption}
+\begin{definition}[Absorbance]
+Un spectrophotomètre envoie sur la solution une lumière monochromatique d'intensité $I_0$ et mesure l'intensité $I$ qu'elle
+transmet. L'\textbf{absorbance} $A=\log\dfrac{I_0}{I}$, sans unité, est d'autant plus grande que la solution absorbe. Le
+\textbf{spectre d'absorption} représente $A$ en fonction de la longueur d'onde $\lambda$ ; on repère la longueur d'onde $\lambda_{\max}$ du
+maximum d'absorption.
+\end{definition}
+\schema{02-spectrophotometre}
+\schema{02-spectre}
+\essSection{3}{La loi de Beer-Lambert}
+\begin{loi}[Loi de Beer-Lambert]
+Pour une solution diluée d'une espèce absorbante, à une longueur d'onde donnée, l'absorbance est proportionnelle à la
+concentration de cette espèce :
+\[A=\varepsilon\,\ell\,c=k\,c,\]
+où $\ell$ est l'épaisseur de solution traversée (en cm), $c$ la concentration (en \unit{mol.L^{-1}}) et $\varepsilon$ le \textbf{coefficient
+d'absorption molaire} (en \unit{L.mol^{-1}.cm^{-1}}), qui dépend de l'espèce, de la longueur d'onde et du solvant. La loi est valable
+pour une lumière monochromatique et des solutions assez diluées, en pratique tant que $A$ reste inférieure à 2 environ.
+Si plusieurs espèces absorbent, leurs absorbances s'ajoutent.
+\end{loi}
+\begin{exemple}
+Pour le permanganate de potassium à \qty{525}{nm}, $\varepsilon=\qty{2,4e3}{L.mol^{-1}.cm^{-1}}$. Dans une cuve de \qty{1,00}{cm}, une solution à \qty{1,0e-4}{mol.L^{-1}}
+a pour absorbance $A=\num{2.4e3}\times1{,}00\times\num{1.0e-4}=0{,}24$.
+\end{exemple}
+\begin{attention}
+L'absorbance n'a pas d'unité. Dans $A=\varepsilon\,\ell\,c$, les unités doivent être cohérentes : $\ell$ en cm si $\varepsilon$ est en \unit{L.mol^{-1}.cm^{-1}}. On
+ne lit une concentration que \textbf{dans} le domaine de la gamme étalon : au-delà, rien ne garantit que la loi s'applique.
+\end{attention}
+\essSection{4}{Le dosage par étalonnage}
+\begin{savoirfaire}[Doser une espèce colorée par étalonnage]
+\begin{questions}
+\item Tracer le spectre de l'espèce et régler le spectrophotomètre sur $\lambda_{\max}$, où la mesure est la plus sensible ;
+faire le « blanc » avec le solvant.
+\item Préparer une \textbf{gamme étalon} : des solutions de concentrations connues, obtenues par dilution d'une solution mère.
+\item Mesurer leurs absorbances et tracer $A$ en fonction de $c$ : les points s'alignent sur une droite passant par l'origine,
+ce qui confirme la loi de Beer-Lambert.
+\item Mesurer l'absorbance de la solution à doser, diluée si nécessaire pour rester dans le domaine de la gamme, puis lire
+ou calculer sa concentration, sans oublier le facteur de dilution.
+\end{questions}
+\end{savoirfaire}
+\schema{02-etalonnage}
+\begin{codecote}[0.62]
+\begin{pythoncol}
+c = [1.0, 2.0, 4.0, 6.0, 8.0]        # µmol/L
+A = [0.106, 0.212, 0.424, 0.636, 0.848]
+num, den = 0, 0
+for i in range(len(c)):
+    num = num + c[i] * A[i]
+    den = den + c[i] ** 2
+k = num / den
+print(round(k, 3), round(0.45 / k, 2))
+\end{pythoncol}
+\begin{consolecol}
+0.106 4.25
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Le programme calcule le coefficient directeur $k$ de la droite passant par l'origine la plus proche des points de la
+gamme, par la méthode des moindres carrés : $k=\dfrac{\sum c_i\,A_i}{\sum c_i^2}$. Il en déduit la concentration de la solution
+S, d'absorbance 0,45 : \qty{4,25}{\micro mol.L^{-1}}.
+\end{codecote}
+\begin{experience}[Doser le bleu patenté d'un sirop de menthe]
+À partir d'une solution mère de bleu patenté à \qty{10,0}{\micro mol.L^{-1}}, on prépare une gamme de cinq solutions filles. Après
+avoir fait le blanc avec de l'eau distillée, on mesure leurs absorbances à \qty{638}{nm}, puis celle du sirop dilué vingt fois.
+La droite d'étalonnage donne la concentration du sirop dilué, que l'on multiplie par 20.
+\end{experience}
+\begin{rediger}
+Justifier le choix de la longueur d'onde ($\lambda_{\max}$) et la validité de la loi (points alignés sur une droite passant par
+l'origine). Montrer la lecture graphique par des pointillés ou calculer $c=\dfrac{A}{k}$. Conclure en tenant compte du
+facteur de dilution, avec l'unité demandée.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-2-1}
+\begin{exercice}[1]{Spectre et couleur}
+\schema{02-ex01}
+\begin{questions}
+\item Déterminer la longueur d'onde du maximum d'absorption de chaque solution.
+\item Quelle couleur chaque solution absorbe-t-elle le plus ?
+\item À l'aide du cercle chromatique, prévoir la couleur perçue de chaque solution.
+\item La solution 2 est une solution de permanganate de potassium. Quelle est sa couleur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-2}
+\begin{exercice}[1]{Prévoir l'allure d'un spectre}
+\begin{questions}
+\item Une solution de sulfate de cuivre paraît bleu-cyan. Dans quel domaine de longueurs d'onde absorbe-t-elle ?
+\item Une solution de diiode paraît jaune-orangé. Quelle couleur absorbe-t-elle ?
+\item Une solution de chlorophylle paraît verte ; son spectre présente deux maximums. Où se situent-ils approximativement ?
+\item Une solution n'absorbe aucune radiation visible. Quelle est sa couleur ? Peut-on la doser par spectrophotométrie dans
+le visible ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-3}
+\begin{exercice}[1]{Appliquer la loi de Beer-Lambert}
+Pour le permanganate de potassium, $\ce{KMnO4}$, à \qty{525}{nm} : $\varepsilon=\qty{2,4e3}{L.mol^{-1}.cm^{-1}}$. La cuve a une épaisseur $\ell=\qty{1,00}{cm}$.
+\begin{donnees}
+Masses molaires atomiques (\unit{g.mol^{-1}}) : O 16,0 ; K 39,1 ; Mn 54,9.
+\end{donnees}
+\begin{questions}
+\item Calculer l'absorbance d'une solution de concentration \qty{2,0e-4}{mol.L^{-1}}.
+\item Une autre solution a pour absorbance 0,30. Calculer sa concentration.
+\item Que devient l'absorbance de la première solution dans une cuve de \qty{2,00}{cm} ?
+\item Calculer la concentration en masse de la solution de la question 2, en \unit{mg.L^{-1}}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-4}
+\begin{exercice}[1]{Lire une droite d'étalonnage}
+On a mesuré à \qty{800}{nm} l'absorbance de solutions de sulfate de cuivre de concentrations connues.
+\schema{02-ex04}
+\begin{questions}
+\item Les mesures vérifient-elles la loi de Beer-Lambert ? Justifier.
+\item Déterminer le coefficient $k$ de la relation $A=k\,c$, puis le coefficient d'absorption molaire $\varepsilon$.
+\item Une solution S de sulfate de cuivre a pour absorbance 0,54. Déterminer sa concentration.
+\item En déduire la concentration en masse de sulfate de cuivre de S, avec $M(\ce{CuSO4})=\qty{159,6}{g.mol^{-1}}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-5}
+\begin{exercice}[1]{Diluer avant de mesurer}
+Un sirop de menthe pur a une absorbance de 3,1 à \qty{638}{nm}. Dilué dix fois, il a une absorbance de 0,42. Pour le bleu
+patenté à \qty{638}{nm}, dans la même cuve, $A=k\,c$ avec $k=\qty{0,106}{L.\micro mol^{-1}}$.
+\begin{questions}
+\item Pourquoi la mesure sur le sirop pur n'est-elle pas exploitable ?
+\item Calculer la concentration en bleu patenté du sirop dilué, puis celle du sirop.
+\item Décrire la préparation de \qty{100,0}{mL} de sirop dilué dix fois.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-2-6}
+\begin{exercice}[2]{Préparer une gamme étalon}
+On dispose d'une solution mère S$_0$ de bleu patenté à $c_0=\qty{10,0}{\micro mol.L^{-1}}$. On veut préparer, dans des fioles jaugées de
+\qty{25,0}{mL}, cinq solutions filles de concentrations 1,0 ; 2,0 ; 4,0 ; 6,0 et \qty{8,0}{\micro mol.L^{-1}}.
+\begin{questions}
+\item Établir l'expression du volume $V_0$ de solution mère à prélever pour obtenir une solution fille de concentration $c$.
+\item Calculer les cinq volumes à prélever.
+\item Quel instrument permet de prélever tous ces volumes avec précision ?
+\item Pourquoi faut-il mesurer toutes les absorbances à la même longueur d'onde et avec la même cuve ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-7}
+\begin{exercice}[2]{Le permanganate de l'eau de Dakin}
+L'eau de Dakin, un antiseptique, contient de l'hypochlorite de sodium, incolore, et du permanganate de potassium, qui lui
+donne sa couleur rose. Son étiquette indique « permanganate de potassium : 0,0010~\% », soit \qty{0,0010}{g} pour \qty{100}{mL}.
+On mesure à \qty{525}{nm}, dans une cuve de \qty{1,00}{cm}, une absorbance de 0,150.
+\begin{donnees}
+$\ce{KMnO4}$ : $M=\qty{158,0}{g.mol^{-1}}$ ; $\varepsilon=\qty{2,4e3}{L.mol^{-1}.cm^{-1}}$ à \qty{525}{nm}.
+\end{donnees}
+\begin{questions}
+\item Pourquoi l'eau de Dakin est-elle rose ? Pourquoi mesure-t-on à \qty{525}{nm} ?
+\item L'hypochlorite de sodium gêne-t-il la mesure ? Justifier.
+\item Calculer la concentration en permanganate, puis sa concentration en masse.
+\item Convertir l'indication de l'étiquette en \unit{mg.L^{-1}} et conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-8}
+\begin{exercice}[2]{Le cuivre d'une bouillie bordelaise}
+La bouillie bordelaise, utilisée pour traiter la vigne, contient du sulfate de cuivre. L'étiquette annonce « 20~\% de cuivre »
+en masse. On dissout \qty{1,00}{g} de produit dans une fiole jaugée de \qty{100,0}{mL} ; tout le cuivre passe en solution sous forme
+d'ions $\ce{Cu^{2+}}$. L'absorbance de la solution à \qty{800}{nm} vaut 0,37.
+\begin{donnees}
+Étalonnage : $A=k\,c$ avec $k=\qty{0,012}{L.mmol^{-1}}$ (exercice 4) ; $M(\ce{Cu})=\qty{63,5}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la concentration en ions cuivre de la solution.
+\item En déduire la masse de cuivre contenue dans l'échantillon.
+\item Calculer le pourcentage massique de cuivre du produit. Le résultat est-il conforme à l'étiquette ?
+\item Pourquoi faut-il vérifier que l'absorbance mesurée est comprise dans le domaine de la gamme étalon ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-9}
+\begin{exercice}[2]{Tester la loi de Beer-Lambert en Python}
+Un élève a mesuré l'absorbance de cinq solutions de bleu patenté et teste la proportionnalité avec ce programme.
+\begin{python}
+c = [1.0, 2.0, 4.0, 6.0, 8.0]           # µmol/L
+A = [0.107, 0.210, 0.425, 0.634, 0.851]
+num = 0
+den = 0
+for i in range(len(c)):
+    num = num + c[i] * A[i]
+    den = den + c[i] ** 2
+k = num / den
+print(round(k, 4))
+for i in range(len(c)):
+    print(c[i], round(100 * (A[i] - k * c[i]) / (k * c[i]), 1))
+\end{python}
+\begin{console}
+0.1061
+1.0 0.8
+2.0 -1.0
+4.0 0.1
+6.0 -0.4
+8.0 0.3
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Que représente la valeur 0.1061 ? Quelle est son unité ?
+\item Que calcule la seconde boucle ? Interpréter les valeurs affichées.
+\item La loi de Beer-Lambert est-elle vérifiée ? Justifier.
+\item Une solution inconnue a pour absorbance 0,50. Quelle ligne ajouter pour afficher sa concentration ? Quelle valeur
+obtient-on ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-10}
+\begin{exercice}[2]{Les limites de la loi de Beer-Lambert}
+On mesure l'absorbance de solutions de bleu patenté de plus en plus concentrées.
+\schema{02-ex10}
+\begin{questions}
+\item Sur quel domaine de concentrations la loi de Beer-Lambert est-elle vérifiée ? Justifier.
+\item Quelle absorbance prévoirait la loi pour \qty{25}{\micro mol.L^{-1}} ? Comparer à la mesure.
+\item Une solution inconnue a une absorbance de 2,4. Peut-on en déduire sa concentration avec la droite ? Proposer une
+dilution adaptée.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-11}
+\begin{exercice}[2]{Un sirop vert, deux colorants}
+Un sirop de menthe contient deux colorants : la tartrazine (E102), jaune, et le bleu patenté (E131). On a tracé le spectre
+du sirop dilué vingt fois.
+\schema{02-ex11}
+\begin{questions}
+\item Expliquer la couleur verte du sirop à partir de son spectre.
+\item Quel colorant est responsable de chacun des deux maximums ?
+\item À \qty{638}{nm}, la tartrazine n'absorbe pas. Pourquoi peut-on doser le bleu patenté à cette longueur d'onde ?
+\item Calculer la concentration en bleu patenté du sirop dilué, avec $k=\qty{0,106}{L.\micro mol^{-1}}$ à \qty{638}{nm}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-2-12}
+\begin{exercice}[3]{Combien de verres de sirop ?}
+\begin{docu}{1}{Le colorant bleu}
+Le bleu patenté V (E131) est un colorant alimentaire autorisé. Sa dose journalière admissible (DJA) est de \qty{5}{mg} par
+kilogramme de masse corporelle et par jour (Autorité européenne de sécurité des aliments, 2013).
+\end{docu}
+\begin{docu}{2}{Le dosage}
+Un sirop de menthe est dilué vingt fois. L'absorbance de la solution diluée, mesurée à \qty{638}{nm} dans une cuve de \qty{1,00}{cm},
+vaut 0,53. La droite d'étalonnage du bleu patenté a pour équation $A=0{,}106\,c$, avec $c$ en \unit{\micro mol.L^{-1}}. Un verre de
+boisson contient \qty{20}{mL} de sirop.
+\end{docu}
+\begin{donnees}
+Masse molaire du bleu patenté (sel de sodium) : \qty{582,7}{g.mol^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Calculer la concentration en bleu patenté de la solution diluée, puis celle du sirop.
+\item En déduire la concentration en masse du sirop en bleu patenté, en \unit{mg.L^{-1}}.
+\item Calculer la masse de bleu patenté contenue dans un verre.
+\item \initiative Un enfant de \qty{30}{kg} risque-t-il de dépasser la DJA en buvant du sirop de menthe ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-13}
+\begin{exercice}[3]{Les nitrates d'une eau de puits}
+\begin{docu}{1}{Une limite de qualité}
+Pour être déclarée potable, une eau doit contenir moins de \qty{50}{mg.L^{-1}} d'ions nitrate, $\ce{NO3-}$ (Code de la santé publique).
+\end{docu}
+\begin{docu}{2}{Le dosage}
+Les ions nitrate, incolores, sont transformés par un réactif en une espèce jaune dont on mesure l'absorbance à \qty{410}{nm}.
+\par\smallskip\noindent\hfill\begin{tabular}{lcccccc}
+\toprule
+$t(\ce{NO3-})$ (\unit{mg.L^{-1}}) & 0 & 10 & 20 & 30 & 40 & 50 \\
+$A$ & 0 & 0,085 & 0,170 & 0,255 & 0,340 & 0,425 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+Traitées de la même manière, l'eau du puits A donne une absorbance de 0,392, celle du puits B une absorbance de 0,48.
+\end{docu}
+\begin{donnees}
+N 14,0 ; O 16,0 (\unit{g.mol^{-1}}).
+\end{donnees}
+\begin{questions}
+\item Pourquoi faut-il transformer les ions nitrate avant de mesurer une absorbance dans le visible ?
+\item Les mesures de la gamme vérifient-elles la loi de Beer-Lambert ? Déterminer le coefficient de proportionnalité.
+\item Déterminer la concentration en masse des ions nitrate de l'eau du puits A, puis sa concentration en quantité de matière.
+\item \initiative Les eaux des deux puits sont-elles potables vis-à-vis des nitrates ? Discuter la fiabilité de la conclusion
+pour le puits B.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-14}
+\begin{exercice}[3]{La caféine d'une boisson énergisante}
+\begin{docu}{1}{L'étiquette}
+Une boisson énergisante indique : « caféine : \qty{32}{mg} pour \qty{100}{mL} ». Une canette contient \qty{250}{mL}.
+\end{docu}
+\begin{docu}{2}{Le dosage dans l'ultraviolet}
+La caféine, incolore, absorbe dans l'ultraviolet ; son spectre présente un maximum à \qty{273}{nm}, où $\varepsilon=\qty{9,7e3}{L.mol^{-1}.cm^{-1}}$.
+La boisson, dégazée, est diluée cinquante fois ; l'absorbance de la solution diluée à \qty{273}{nm}, dans une cuve de \qty{1,00}{cm} en
+quartz, vaut 0,318.
+\end{docu}
+\begin{docu}{3}{Une recommandation}
+Pour un adolescent, l'Autorité européenne de sécurité des aliments considère qu'un apport de caféine de \qty{3}{mg} par
+kilogramme de masse corporelle et par jour est sans risque (2015).
+\end{docu}
+\begin{donnees}
+Caféine : $\ce{C8H10N4O2}$, $M=\qty{194,2}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'absorbance qu'aurait la boisson non diluée. Pourquoi faut-il la diluer ?
+\item Calculer la concentration en caféine de la solution diluée, puis celle de la boisson.
+\item En déduire la concentration en masse de la boisson et comparer à l'étiquette.
+\item \initiative Combien de canettes un adolescent de \qty{60}{kg} peut-il boire par jour sans dépasser la recommandation ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-15}
+\begin{exercice}[3]{Le fer d'un complément alimentaire}
+\begin{docu}{1}{Le comprimé}
+Un complément alimentaire annonce \qty{14}{mg} de fer par comprimé, sous forme d'ions $\ce{Fe^{2+}}$.
+\end{docu}
+\begin{docu}{2}{Le protocole}
+On dissout un comprimé dans une fiole jaugée de \qty{1,000}{L}. On prélève \qty{2,00}{mL} de cette solution, que l'on introduit dans une
+fiole jaugée de \qty{50,0}{mL} avec un réactif : les ions $\ce{Fe^{2+}}$ forment une espèce rouge-orangé. Après ajustement au trait de
+jauge, l'absorbance à \qty{510}{nm}, dans une cuve de \qty{1,00}{cm}, vaut 0,108. À cette longueur d'onde, $\varepsilon=\qty{1,11e4}{L.mol^{-1}.cm^{-1}}$ ; chaque ion
+$\ce{Fe^{2+}}$ donne une entité colorée.
+\end{docu}
+\begin{donnees}
+$M(\ce{Fe})=\qty{55,8}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quel est le facteur de dilution entre la fiole de \qty{1,000}{L} et celle de \qty{50,0}{mL} ?
+\item Calculer la concentration de l'espèce colorée dans la fiole de \qty{50,0}{mL}.
+\item \initiative Déterminer la masse de fer contenue dans le comprimé et la comparer à l'indication de l'étiquette.
+\item Quelle absorbance aurait-on mesurée si le comprimé contenait exactement \qty{14}{mg} de fer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

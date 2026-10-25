@@ -1,0 +1,23 @@
+% Évolution vers un état d'équilibre dynamique : avancement et vitesses des deux réactions opposées (L'essentiel, chapitre 7)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,name=g,width=76mm,height=54mm,xmin=0,xmax=210,ymin=0,ymax=1.15,
+  xtick={0,50,...,200},ytick={0,0.25,...,1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=2},
+  xlabel={$t$ (min)},ylabel={$x/V$ (mol$\cdot$L$^{-1}$)}]
+\draw[otMuted,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:0,1) -- (axis cs:205,1);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.6667) -- (axis cs:205,0.6667);
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/07-equilibre.dat};
+\node[pcLegende,anchor=south east,text=otMuted] at (axis cs:205,1.01) {$x_{\max}/V$ : réaction totale};
+\node[pcLegende,anchor=north east,text=otOrange!75!black] at (axis cs:205,0.58) {$x_\mathrm{f}/V$ : état d'équilibre};
+\end{axis}
+\begin{axis}[otMesures,otAxesBout,at={(g.east)},anchor=west,xshift=17mm,width=76mm,height=54mm,xmin=0,xmax=210,ymin=0,ymax=0.022,
+  xtick={0,50,...,200},ytick={0,0.005,...,0.02},scaled y ticks=false,
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=3},
+  xlabel={$t$ (min)},ylabel={vitesse (mol$\cdot$L$^{-1}\cdot$min$^{-1}$)}]
+\addplot[otNavy,line width=1pt] table[x index=0,y index=2] {figures/donnees/07-equilibre.dat};
+\addplot[otGreenDark,line width=1pt] table[x index=0,y index=3] {figures/donnees/07-equilibre.dat};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:14,0.0165) {$v_1$ : sens direct};
+\node[pcLegende,anchor=west,text=otGreenDark] at (axis cs:70,0.0062) {$v_{-1}$ : sens inverse};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{L'avancement final reste inférieur à l'avancement maximal ; à l'équilibre, les deux réactions opposées ont la même vitesse.}

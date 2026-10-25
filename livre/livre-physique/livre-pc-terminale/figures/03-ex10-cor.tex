@@ -1,0 +1,19 @@
+% Quantités de matière au cours du titrage de l'acide éthanoïque par la soude (corrigé de l'exercice 10, chapitre 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=100mm,height=56mm,xmin=0,xmax=20.5,ymin=0,ymax=2.1,
+  xtick={0,5,...,20},ytick={0,0.5,...,2},xlabel={$V_\mathrm{B}$ (mL)},ylabel={$n$ (mmol)},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk},
+  legend style={at={(1.04,0.98)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\addplot[otRed!80!black,line width=1.1pt,domain=0:20,samples=81] {max(1.00-0.100*x,0)};
+\addlegendentry{\ce{CH3COOH}}
+\addplot[otOrange,line width=1.1pt,domain=0:20,samples=81] {min(0.100*x,1.00)};
+\addlegendentry{\ce{CH3COO-}}
+\addplot[otNavy,line width=1.1pt,domain=0:20,samples=81] {max(0.100*x-1.00,0)};
+\addlegendentry{\ce{HO-}}
+\addplot[otGreenDark,line width=1.1pt,dashed,domain=0:20] {0.100*x};
+\addlegendentry{\ce{Na+}}
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:10,0) -- (axis cs:10,2.0);
+\node[pcLegende,anchor=south] at (axis cs:10,2.0) {$V_\mathrm{E}=10{,}0$ mL};
+\end{axis}
+\end{tikzpicture}

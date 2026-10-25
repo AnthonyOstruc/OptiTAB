@@ -1,0 +1,408 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[gazparfait]{18}{Modèle du gaz parfait}{Partie 3 · L'énergie : conversions et transferts}
+{Échelles microscopique et macroscopique\enspace·\enspace Équation d'état\enspace·\enspace Zéro absolu\enspace·\enspace Limites du modèle}
+\objectif{Relier la masse volumique, la pression et la température d'un gaz aux propriétés de ses entités à l'échelle
+microscopique.}
+\objectif{Exploiter l'équation d'état du gaz parfait pour décrire le comportement d'un gaz.}
+\objectif{Calculer la quantité de matière, le volume molaire et la masse volumique d'un gaz.}
+\objectif{Identifier quelques limites du modèle du gaz parfait.}
+\objectif{Tester l'équation d'état à partir de mesures, à l'aide d'un programme Python.}
+\prerequis{Pression, force pressante, loi de Mariotte (classe de première).}
+\prerequis{Quantité de matière, masse molaire, constante d'Avogadro (classe de seconde).}
+\prerequis{Statique des fluides et poussée d'Archimède (chapitre~17).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Du microscopique au macroscopique}
+\begin{definition}[Décrire un gaz]
+Un gaz est constitué d'un très grand nombre d'entités (molécules ou atomes) en mouvement incessant et désordonné :
+c'est l'\textbf{agitation thermique}. À l'échelle macroscopique, son état est décrit par des grandeurs mesurables :
+le volume $V$, la masse volumique $\rho=m/V$, la pression $p$ et la \textbf{température thermodynamique} $T$, exprimée en
+kelvins : $T=\theta+273{,}15$, avec $\theta$ en degrés Celsius.
+\end{definition}
+\begin{propriete}[Interprétation microscopique]
+\begin{itemize}
+\item La masse volumique dépend du nombre d'entités par unité de volume et de leur masse.
+\item La pression résulte des chocs des entités sur les parois : elle augmente avec le nombre de chocs par seconde et
+avec leur violence.
+\item La température mesure l'agitation des entités : elle augmente avec leur énergie cinétique moyenne. Au
+\textbf{zéro absolu}, $T=\qty{0}{K}$, soit \qty{-273,15}{\degreeCelsius}, l'agitation serait minimale ; aucune
+température ne lui est inférieure.
+\end{itemize}
+\end{propriete}
+\schema{18-agitation}
+\begin{exemple}
+Un litre d'air à \qty{20}{\degreeCelsius} sous \qty{1,00}{bar} contient \qty{0,041}{mol} de molécules, soit environ
+\num{2.5e22} molécules, animées de vitesses de l'ordre de \qty{500}{m.s^{-1}}. Chaque centimètre carré de paroi reçoit
+des milliards de milliards de chocs par seconde : à notre échelle, leur effet moyen est une force pressante constante.
+\end{exemple}
+\essSection{2}{L'équation d'état du gaz parfait}
+\begin{definition}[Modèle du gaz parfait]
+Dans le modèle du \textbf{gaz parfait}, les entités sont assimilées à des points matériels, sans interaction entre
+elles en dehors des chocs. Ce modèle décrit bien les gaz réels peu denses.
+\end{definition}
+\begin{loi}[Équation d'état du gaz parfait]
+Pour une quantité de matière $n$ de gaz parfait, de pression $p$, de volume $V$ et de température $T$ :
+\[p\,V=n\,R\,T,\]
+avec $p$ en pascals, $V$ en \unit{m^3}, $n$ en moles, $T$ en kelvins et $R=\qty{8,314}{J.mol^{-1}.K^{-1}}$, la constante des gaz
+parfaits.
+\end{loi}
+\begin{propriete}[Conséquences]
+\begin{itemize}
+\item À $n$ et $T$ fixés, $p\,V$ est constant : c'est la loi de Mariotte, vue en première.
+\item À $n$ et $V$ fixés, $p$ est proportionnelle à $T$ ; à $n$ et $p$ fixés, $V$ est proportionnel à $T$.
+\item Le volume molaire $V_\mathrm{m}=\dfrac{R\,T}{p}$ est le même pour tous les gaz parfaits : \qty{22,4}{L.mol^{-1}} à
+\qty{0}{\degreeCelsius} et \qty{24,1}{L.mol^{-1}} à \qty{20}{\degreeCelsius}, sous \qty{1013}{hPa}.
+\item La masse volumique d'un gaz de masse molaire $M$ vaut $\rho=\dfrac{m}{V}=\dfrac{n\,M}{V}=\dfrac{p\,M}{R\,T}$.
+\end{itemize}
+\end{propriete}
+\begin{savoirfaire}[Exploiter l'équation d'état]
+Préciser le système et vérifier si sa quantité de matière reste constante. Convertir en unités SI :
+$\qty{1}{L}=\qty{e-3}{m^3}$, $\qty{1}{bar}=\qty{e5}{Pa}$, $\qty{1}{hPa}=\qty{100}{Pa}$, $T=\theta+273{,}15$. Si $n$ ne change pas
+entre deux états 1 et 2 :
+\[\frac{p_1\,V_1}{T_1}=\frac{p_2\,V_2}{T_2}\qquad(=n\,R).\]
+\end{savoirfaire}
+\begin{exemple}
+L'air ($M=\qty{29,0}{g.mol^{-1}}$) à \qty{20}{\degreeCelsius} sous \qty{1013}{hPa} a pour masse volumique
+$\rho=\dfrac{\num{1.013e5}\times\num{0.0290}}{8{,}314\times293{,}15}=\qty{1,21}{kg.m^{-3}}$. Chauffé à volume constant, il
+garde la même masse volumique, mais sa pression augmente.
+\end{exemple}
+\schema{18-zero}
+\essSection{3}{Les limites du modèle}
+\begin{propriete}[Domaine de validité]
+Le modèle du gaz parfait est valable lorsque le gaz est \textbf{peu dense} : pressions modérées, de l'ordre de
+quelques bars au plus, et températures éloignées de celle de liquéfaction. À haute pression, le volume propre des
+molécules n'est plus négligeable ; à basse température, leurs interactions attractives deviennent importantes et le
+gaz finit par se liquéfier, ce que le modèle ne prévoit pas.
+\end{propriete}
+\begin{exemple}
+À \qty{0}{\degreeCelsius} sous \qty{1013,25}{hPa}, le volume molaire du dioxyde de carbone vaut \qty{22,26}{L.mol^{-1}}, au lieu de
+\qty{22,41}{L.mol^{-1}} pour un gaz parfait : l'écart n'est que de \qty{0,7}{\percent}. Mais à \qty{20}{\degreeCelsius}, le
+dioxyde de carbone se liquéfie dès \qty{57}{bar} : dans un extincteur, il est liquide.
+\end{exemple}
+\begin{codecote}[0.6]
+\begin{pythoncol}
+V = [60.0, 50.0, 40.0, 30.0, 20.0]   # mL
+p = [1013, 1218, 1521, 2024, 3035]   # hPa
+R, T = 8.314, 293.0                  # SI, K
+for k in range(5):
+    n = p[k]*1e2 * V[k]*1e-6 / (R*T)
+    print(V[k], round(p[k] * V[k]),
+          round(1000 * n, 3))
+\end{pythoncol}
+\begin{consolecol}
+60.0 60780 2.495
+50.0 60900 2.5
+40.0 60840 2.498
+30.0 60720 2.493
+20.0 60700 2.492
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Les listes contiennent les volumes d'air d'une seringue et les pressions mesurées par un capteur, à
+\qty{20}{\degreeCelsius}. Le programme affiche le produit $p\,V$, en \unit{hPa.mL}, et la quantité de matière
+$n=\dfrac{p\,V}{R\,T}$, en millimoles : les deux restent constants, aux incertitudes de mesure près. L'air de la seringue
+se comporte comme un gaz parfait.
+\end{codecote}
+\begin{attention}
+L'équation d'état s'utilise avec la température en \textbf{kelvins} et la pression \textbf{absolue}. Le manomètre d'une
+station-service indique une pression relative, c'est-à-dire l'écart avec la pression atmosphérique : un pneu « gonflé à
+\qty{2,0}{bar} » contient de l'air à environ \qty{3,0}{bar}.
+\end{attention}
+\begin{experience}[Tester la loi de Mariotte et l'équation d'état]
+On relie une seringue à un capteur de pression piloté par un microcontrôleur. À température constante, on fait varier
+le volume d'air enfermé : la pression est inversement proportionnelle au volume, $p$ en fonction de $1/V$ donne une
+droite passant par l'origine, de coefficient directeur $n\,R\,T$. On plonge ensuite un ballon fermé dans des bains d'eau
+de températures croissantes : à volume constant, la pression varie linéairement avec la température, et la droite
+prolongée s'annule vers \qty{-273}{\degreeCelsius}.
+\end{experience}
+\begin{rediger}
+Préciser le système (le gaz, dont la quantité de matière est fixée ou non) et écrire l'équation d'état pour chaque état.
+Convertir toutes les grandeurs en unités SI \textbf{avant} le calcul, puis contrôler l'ordre de grandeur : une mole de
+gaz occupe environ \qty{24}{L} dans les conditions usuelles.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-18-1}
+\begin{exercice}[1]{Interpréter à l'échelle microscopique}
+Un gaz est enfermé dans une seringue bouchée.
+\begin{questions}
+\item Quelles grandeurs macroscopiques permettent de décrire l'état du gaz ? Pour chacune, donner une interprétation
+à l'échelle des molécules.
+\item On enfonce le piston à température constante. Comment évoluent la masse volumique et la pression du gaz ?
+Interpréter à l'échelle microscopique.
+\item On chauffe la seringue en bloquant le piston. Comment évoluent la pression et la masse volumique ? Interpréter.
+\item Convertir en kelvins les températures \qty{20}{\degreeCelsius}, \qty{-18}{\degreeCelsius} et \qty{100}{\degreeCelsius}. Pourquoi une
+température de \qty{-300}{\degreeCelsius} n'a-t-elle aucun sens ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-2}
+\begin{exercice}[1]{L'air d'une chambre}
+Une chambre mesure \qty{4,0}{m} sur \qty{5,0}{m}, pour une hauteur de \qty{2,5}{m}. L'air y est à \qty{20}{\degreeCelsius}
+sous \qty{1013}{hPa} ; on l'assimile à un gaz parfait de masse molaire \qty{29,0}{g.mol^{-1}}.
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer le volume molaire d'un gaz parfait à \qty{0}{\degreeCelsius}, puis à \qty{20}{\degreeCelsius}, sous \qty{1013}{hPa}.
+\item Calculer la quantité de matière d'air contenue dans la chambre.
+\item En déduire la masse de cet air. Le résultat vous surprend-il ?
+\item Le chauffage porte l'air à \qty{25}{\degreeCelsius}, la pression restant égale à \qty{1013}{hPa}. Quelle quantité d'air
+quitte la pièce ? Quelle est sa masse ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-3}
+\begin{exercice}[1]{La seringue bouchée}
+Une seringue bouchée contient \qty{50}{mL} d'air à la pression atmosphérique, \qty{1013}{hPa}. La section de son piston
+vaut \qty{2,5}{cm^2}. La température reste constante.
+\begin{questions}
+\item Quelle loi relie la pression et le volume de l'air enfermé ? Justifier son utilisation.
+\item On enfonce le piston jusqu'à la graduation \qty{20}{mL}. Calculer la nouvelle pression.
+\item Quelle force faut-il alors exercer sur le piston, l'air extérieur exerçant la pression atmosphérique sur son
+autre face ?
+\item On tire maintenant le piston jusqu'à \qty{80}{mL}. Calculer la pression de l'air enfermé.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-4}
+\begin{exercice}[1]{Le pneu qui chauffe}
+Avant un départ en vacances, un conducteur règle la pression de ses pneus à \qty{2,30}{bar}, valeur lue sur le manomètre
+de la station, par une température de \qty{10}{\degreeCelsius}. Après deux heures d'autoroute, l'air des pneus atteint
+\qty{50}{\degreeCelsius}. On prend $p_\mathrm{atm}=\qty{1,00}{bar}$ et l'on néglige la variation du volume des pneus.
+\begin{questions}
+\item Le manomètre indique l'écart entre la pression de l'air du pneu et la pression atmosphérique. Quelle est la
+pression absolue de l'air dans le pneu au départ ?
+\item Calculer la pression absolue, puis la pression lue sur le manomètre, après deux heures de route.
+\item De quel pourcentage la pression absolue a-t-elle augmenté ?
+\item Pourquoi recommande-t-on de vérifier la pression des pneus « à froid » ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-5}
+\begin{exercice}[1]{La masse volumique d'un gaz}
+On considère de l'air ($M=\qty{29,0}{g.mol^{-1}}$), de l'hélium ($M=\qty{4,0}{g.mol^{-1}}$) et du dioxyde de carbone
+($M=\qty{44,0}{g.mol^{-1}}$), à \qty{20}{\degreeCelsius} sous \qty{1013}{hPa}.
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Établir l'expression $\rho=\dfrac{p\,M}{R\,T}$ de la masse volumique d'un gaz parfait.
+\item Calculer la masse volumique de chacun des trois gaz.
+\item Pourquoi un ballon gonflé à l'hélium s'élève-t-il dans l'air ?
+\item Lors de la fermentation du raisin, du dioxyde de carbone se dégage. Pourquoi est-il dangereux de descendre dans
+une cuve de vinification ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-18-6}
+\begin{exercice}[2]{La bouteille de plongée}
+Une bouteille de plongée de \qty{12}{L} est remplie d'air sous \qty{200}{bar} (pression absolue), à \qty{20}{\degreeCelsius}.
+Le plongeur descend à \qty{20}{m}, où l'eau est à \qty{12}{\degreeCelsius} et la pression vaut \qty{3,0}{bar}. Il respire
+\qty{20}{L} d'air par minute, volume mesuré à la pression ambiante.
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; on assimile l'air à un gaz parfait.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité d'air contenue dans la bouteille.
+\item Quel volume cet air occuperait-il sous \qty{1}{bar}, à \qty{20}{\degreeCelsius} ?
+\item La bouteille se met à la température de l'eau. Calculer la nouvelle pression de l'air qu'elle contient.
+\item Le plongeur doit remonter quand la pression dans la bouteille atteint \qty{50}{bar}. Calculer son autonomie à
+\qty{20}{m} de profondeur.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-7}
+\begin{exercice}[2]{La bulle du plongeur}
+À \qty{20}{m} de profondeur, un plongeur expire une bulle d'air de \qty{1,0}{cm^3}. L'eau de mer est à \qty{12}{\degreeCelsius}
+au fond et à \qty{18}{\degreeCelsius} en surface.
+\begin{donnees}
+$p_\mathrm{atm}=\qty{1,013e5}{Pa}$ ; $\rho_\mathrm{mer}=\qty{1025}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; loi de la statique des
+fluides : $p=p_\mathrm{atm}+\rho\,g\,h$ à la profondeur $h$.
+\end{donnees}
+\begin{questions}
+\item Calculer la pression de l'eau à \qty{20}{m} de profondeur.
+\item En supposant que la bulle garde la même quantité d'air, calculer son volume lorsqu'elle atteint la surface.
+\item Quelle part de cette augmentation est due au changement de température ?
+\item Un plongeur en bouteille a les poumons remplis de \qty{6,0}{L} d'air à \qty{20}{m}. Que deviendrait ce volume s'il
+remontait en bloquant sa respiration ? En déduire une règle de sécurité.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-8}
+\begin{exercice}[2]{Tester l'équation d'état en Python}
+On reprend le programme de l'essentiel, qui exploite des mesures réalisées avec une seringue et un capteur de pression.
+\begin{questions}
+\item \capacite{Capacité numérique}Justifier les facteurs \code{1e2} et \code{1e-6} dans le calcul de \code{n}. Que
+représentent les deux nombres calculés pour chaque mesure ?
+\item Pourquoi ces résultats valident-ils la loi de Mariotte ? Les écarts observés sont-ils significatifs ?
+\item Écrire les lignes qui tracent $p$ en fonction de $1/V$. Quelle courbe obtient-on ? Que vaut, en joules, son
+coefficient directeur ?
+\item On réchauffe la seringue à \qty{35}{\degreeCelsius}, le volume étant bloqué à \qty{20}{mL}. Quelle pression le capteur
+doit-il indiquer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-9}
+\begin{exercice}[2]{À la recherche du zéro absolu}
+Un ballon de verre fermé, de volume constant, contient de l'air relié à un capteur de pression. On le plonge dans des
+bains de températures différentes.
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+$\theta$ (\unit{\degreeCelsius}) & 10 & 30 & 50 & 70 & 90 \\
+$p$ (hPa) & 881 & 944 & \num{1005} & \num{1068} & \num{1130} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{questions}
+\item Tracer l'allure de $p$ en fonction de $\theta$. Les mesures sont-elles compatibles avec une fonction affine ?
+\item À l'aide des mesures extrêmes, déterminer le coefficient directeur et l'ordonnée à l'origine de la droite.
+\item Pour quelle température la pression s'annulerait-elle ? Comparer à la valeur attendue.
+\item Montrer que, si l'on utilise la température thermodynamique $T$, la pression est proportionnelle à $T$, comme le
+prévoit l'équation d'état.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-10}
+\begin{exercice}[2]{La bouteille écrasée}
+Une bouteille en plastique de \qty{1,5}{L}, vide, est fermée à \qty{25}{\degreeCelsius} sous \qty{1013}{hPa}, puis placée dans un
+congélateur à \qty{-18}{\degreeCelsius}.
+\begin{questions}
+\item En supposant le volume de la bouteille constant, calculer la pression finale de l'air qu'elle contient.
+\item Calculer l'écart entre la pression extérieure et la pression intérieure.
+\item Une face de la bouteille a une surface de \qty{1,0e-2}{m^2}. Calculer la force pressante résultante qu'elle subit et
+la comparer au poids d'une masse que l'on donnera.
+\item La bouteille s'écrase. Quel volume l'air occuperait-il si sa pression restait égale à \qty{1013}{hPa} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-11}
+\begin{exercice}[2]{Les limites du modèle}
+Le tableau donne les volumes molaires de quelques gaz mesurés à \qty{0}{\degreeCelsius} sous \qty{1013,25}{hPa}.
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Gaz & \ce{N2} & \ce{O2} & \ce{CO2} & \ce{NH3} \\
+$V_\mathrm{m}$ (\unit{L.mol^{-1}}) & 22,40 & 22,39 & 22,26 & 22,09 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $M(\ce{CO2})=\qty{44,0}{g.mol^{-1}}$ ; à \qty{20}{\degreeCelsius}, le dioxyde de carbone se liquéfie
+sous \qty{57}{bar}.
+\end{donnees}
+\begin{questions}
+\item Calculer le volume molaire d'un gaz parfait dans ces conditions, avec quatre chiffres significatifs.
+\item Calculer l'écart relatif pour chaque gaz. Quels gaz s'écartent le plus du modèle ? Proposer une explication à
+l'échelle moléculaire.
+\item Un extincteur de \qty{3,0}{L} contient \qty{2,0}{kg} de dioxyde de carbone à \qty{20}{\degreeCelsius}. Quelle pression le
+modèle du gaz parfait prévoit-il ?
+\item La pression réelle n'est que de \qty{57}{bar}. Expliquer.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-18-12}
+\begin{exercice}[3]{Le coussin gonflable de sécurité}
+\begin{docu}{1}{Un gonflage en 30 millisecondes}
+Lors d'un choc, un capteur déclenche la décomposition d'un solide, l'azoture de sodium \ce{NaN3} ; le diazote libéré
+gonfle le coussin en une trentaine de millisecondes :
+\[\ce{2 NaN3(s) -> 2 Na(s) + 3 N2(g)}.\]
+Toxique, l'azoture a depuis été remplacé par d'autres générateurs de gaz.
+\end{docu}
+\begin{docu}{2}{Le coussin gonflé}
+Volume : \qty{60}{L} ; pression du gaz : \qty{1,30}{bar} ; température du gaz : \qty{50}{\degreeCelsius}.
+\end{docu}
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $M(\ce{NaN3})=\qty{65,0}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité de diazote contenue dans le coussin gonflé.
+\item En déduire la quantité d'azoture de sodium qui doit réagir.
+\item \initiative Quelle masse d'azoture de sodium faut-il prévoir ?
+\item Le gaz se refroidit ensuite à \qty{20}{\degreeCelsius}. Quelle serait sa pression si le coussin restait fermé, de volume
+constant ? En réalité, des évents le dégonflent : pourquoi est-ce indispensable ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-13}
+\begin{exercice}[3]{Le ballon-sonde éclate}
+\begin{docu}{1}{Un ballon qui gonfle en montant}
+Un ballon-sonde en latex est gonflé au sol avec \qty{3,0}{m^3} d'hélium, sous \qty{1013}{hPa} et à \qty{15}{\degreeCelsius}.
+L'enveloppe, très souple, laisse le gaz à la pression extérieure ; elle éclate lorsque son diamètre atteint
+\qty{8,0}{m}.
+\end{docu}
+\begin{docu}{2}{L'atmosphère standard}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Altitude (km) & 20 & 25 & 30 & 35 \\
+Pression (hPa) & 54,7 & 25,5 & 11,97 & 5,75 \\
+Température (K) & 216,7 & 221,6 & 226,5 & 236,5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{docu}
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; volume d'une sphère de diamètre $d$ : $\dfrac{\pi\,d^3}{6}$. On admet que l'hélium reste
+à la température de l'air extérieur.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité d'hélium contenue dans le ballon.
+\item Calculer le volume du ballon à \qty{30}{km} d'altitude, puis son diamètre. Le comparer au diamètre au sol.
+\item \initiative Entre quelles altitudes le ballon éclate-t-il ?
+\item Pourquoi le modèle du gaz parfait est-il ici particulièrement bien adapté ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-14}
+\begin{exercice}[3]{Respirer au sommet de l'Everest}
+\begin{docu}{1}{Le toit du monde}
+Au sommet de l'Everest, à \qty{8849}{m}, la pression atmosphérique n'est que de \qty{337}{hPa} et la température vaut
+souvent \qty{-25}{\degreeCelsius} pendant la saison des ascensions. Au niveau de la mer, on prendra \qty{1013}{hPa} et
+\qty{15}{\degreeCelsius}. L'air contient 21~\% de dioxygène en quantité de matière, quelle que soit l'altitude.
+\end{docu}
+\begin{docu}{2}{Dans les poumons}
+L'air inspiré est réchauffé à \qty{37}{\degreeCelsius} dans les poumons, à la pression ambiante.
+\end{docu}
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $M(\text{air})=\qty{29,0}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la masse volumique de l'air au niveau de la mer et au sommet.
+\item Calculer la quantité de dioxygène contenue dans un litre d'air extérieur, au niveau de la mer puis au sommet.
+\item \initiative Un alpiniste remplit ses poumons du même volume au niveau de la mer et au sommet. Montrer que la quantité
+de dioxygène inspirée au sommet n'est que le tiers environ de celle inspirée au niveau de la mer.
+\item Pourquoi la plupart des alpinistes utilisent-ils des bouteilles de dioxygène au-delà de \qty{8000}{m} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-15}
+\begin{exercice}[3]{Pourquoi un moteur Diesel n'a pas de bougie}
+\begin{docu}{1}{L'allumage par compression}
+Dans un moteur Diesel, le piston comprime fortement l'air admis dans le cylindre ; le gazole, injecté à la fin de la
+compression, s'enflamme spontanément au contact de l'air chaud. Le gazole s'auto-enflamme au-dessus de
+\qty{250}{\degreeCelsius} environ.
+\end{docu}
+\schema{18-ex15}
+\begin{docu}{2}{Mesures}
+Au début de la compression : \qty{500}{cm^3} d'air, \qty{1,0}{bar}, \qty{30}{\degreeCelsius}. À la fin : volume divisé par 16
+(rapport volumétrique), pression \qty{45}{bar}.
+\end{docu}
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $M(\text{air})=\qty{29,0}{g.mol^{-1}}$ ; on néglige les fuites.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité et la masse d'air enfermées dans le cylindre.
+\item Quelle pression obtiendrait-on en fin de compression si la température restait constante ?
+\item \initiative Calculer la température de l'air en fin de compression. Pourquoi le gazole s'enflamme-t-il sans
+étincelle ?
+\item Dans un moteur à essence, le rapport volumétrique ne dépasse guère 10 et une bougie déclenche la combustion.
+Pourquoi ne comprime-t-on pas davantage le mélange d'air et d'essence ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

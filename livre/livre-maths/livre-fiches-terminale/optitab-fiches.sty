@@ -1,0 +1,480 @@
+%% =====================================================================
+%%  optitab-fiches.sty — Collection « L'essentiel » : fiches de révision
+%%  Charte OptiTAB (Libertinus + Montserrat, bleu marine et vert).
+%%  Compilation : LuaLaTeX, deux passes.
+%% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{optitab-fiches}[2026/10/25 v1.0 Fiches de revision OptiTAB]
+
+\RequirePackage{iftex}
+\RequireLuaTeX
+
+%% ---------------------------------------------------------------------
+%%  Page : A4, marges resserrées (une fiche = 3 à 4 pages denses)
+%% ---------------------------------------------------------------------
+\RequirePackage[a4paper,inner=18mm,outer=19mm,top=23mm,bottom=21mm,
+  headheight=14pt,headsep=7mm,footskip=11mm]{geometry}
+
+\RequirePackage[french]{babel}
+\frenchsetup{StandardItemizeEnv=true,StandardEnumerateEnv=true}
+
+%% ---------------------------------------------------------------------
+%%  Polices
+%% ---------------------------------------------------------------------
+\RequirePackage{amsmath,mathtools}
+\RequirePackage{unicode-math}
+\setmainfont{LibertinusSerif}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Semibold, BoldItalicFont=*-SemiboldItalic]
+\setmathfont{LibertinusMath-Regular.otf}
+\setsansfont{Montserrat}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-SemiBold, BoldItalicFont=*-SemiBoldItalic]
+\newfontfamily\otLight{Montserrat}[Extension=.otf,
+  UprightFont=*-Light, ItalicFont=*-LightItalic, BoldFont=*-Medium]
+\newfontfamily\otRegular{Montserrat}[Extension=.otf,
+  UprightFont=*-Regular, ItalicFont=*-Italic, BoldFont=*-SemiBold]
+\newfontfamily\otMedium{Montserrat}[Extension=.otf,
+  UprightFont=*-Medium, ItalicFont=*-MediumItalic, BoldFont=*-SemiBold]
+\newfontfamily\otSemi{Montserrat}[Extension=.otf,
+  UprightFont=*-SemiBold, ItalicFont=*-SemiBoldItalic, BoldFont=*-Bold]
+\newfontfamily\otBold{Montserrat}[Extension=.otf,
+  UprightFont=*-Bold, ItalicFont=*-BoldItalic, BoldFont=*-ExtraBold]
+\newfontfamily\otMono{FiraMono}[Extension=.otf,UprightFont=*-Regular,BoldFont=*-Medium]
+
+\RequirePackage[protrusion=true,expansion=true]{microtype}
+\linespread{1.05}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{1.5em}
+
+\newcommand{\otCaps}[2][8]{{\addfontfeature{LetterSpace=#1}\MakeUppercase{#2}}}
+
+%% ---------------------------------------------------------------------
+%%  Couleurs
+%% ---------------------------------------------------------------------
+\RequirePackage[table]{xcolor}
+\definecolor{otNavy}{HTML}{1B3C8E}
+\definecolor{otNavyDark}{HTML}{122A66}
+\definecolor{otGreen}{HTML}{5FAC60}
+\definecolor{otGreenDark}{HTML}{3B8544}
+\definecolor{otInk}{HTML}{1C2130}
+\definecolor{otMuted}{HTML}{6B7385}
+\definecolor{otRule}{HTML}{D5DAE3}
+\definecolor{otOrange}{HTML}{F0A23B}
+\definecolor{otOrangeDark}{HTML}{B86E0C}
+\definecolor{otRed}{HTML}{E0574C}
+\definecolor{otViolet}{HTML}{6A4FB3}
+\colorlet{otGreenTint}{otGreen!12}
+\colorlet{otNavyTint}{otNavy!6}
+\colorlet{otOrangeTint}{otOrange!13}
+\AtBeginDocument{\color{otInk}}
+
+%% ---------------------------------------------------------------------
+%%  Outils
+%% ---------------------------------------------------------------------
+\RequirePackage{graphicx}
+\graphicspath{{images/}}
+\RequirePackage{needspace}
+\RequirePackage{multicol}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathreplacing}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs,tabularx,array}
+\RequirePackage{qrcode}
+\RequirePackage{listings}
+\RequirePackage{fancyhdr}
+\RequirePackage[hidelinks,bookmarksnumbered]{hyperref}
+\RequirePackage{bookmark}
+
+%% ---------------------------------------------------------------------
+%%  Notations
+%% ---------------------------------------------------------------------
+\AtBeginDocument{%
+  \let\leq\leqslant  \let\le\leqslant
+  \let\geq\geqslant  \let\ge\geqslant}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Cf}{\mathcal{C}_f}
+\newcommand{\intFF}[2]{\mathopen{[}#1\,{;}\,#2\mathclose{]}}
+\newcommand{\intOO}[2]{\mathopen{]}#1\,{;}\,#2\mathclose{[}}
+\newcommand{\intOF}[2]{\mathopen{]}#1\,{;}\,#2\mathclose{]}}
+\newcommand{\intFO}[2]{\mathopen{[}#1\,{;}\,#2\mathclose{[}}
+\newcommand{\ens}[1]{\left\{#1\right\}}
+\newcommand{\vect}[1]{\overrightarrow{#1}}
+\newcommand{\colv}[3]{\begin{pmatrix}#1\\#2\\#3\end{pmatrix}}
+\newcommand{\norme}[1]{\left\lVert#1\right\rVert}
+\newcommand{\limn}{\lim_{n\to+\infty}}
+
+%% ---------------------------------------------------------------------
+%%  Informations de la collection
+%% ---------------------------------------------------------------------
+\newcommand{\otCollection}{L'essentiel}
+\newcommand{\otMatiere}{Mathématiques}
+\newcommand{\otNiveau}{Terminale · Spécialité}
+\newcommand{\otNiveauCourt}{Terminale}
+\newcommand{\otSite}{optitab.net}
+\newcommand{\otURL}{https://www.optitab.net}
+
+%% ---------------------------------------------------------------------
+%%  État courant : fiche, partie, couleur de partie
+%% ---------------------------------------------------------------------
+\newcommand{\otFicheNum}{0}
+\newcommand{\otFicheTitre}{}
+\newcommand{\otPartieNom}{}
+\newcommand{\otPartieCouleur}{otNavy}
+\newcommand{\otTwoDigits}[1]{\ifnum#1<10 0\fi\number#1}
+\newcounter{otsect}
+
+% \partieFiches{nom}{couleur} : à placer avant les fiches d'une partie (pas de page)
+\newcommand{\partieFiches}[2]{%
+  \gdef\otPartieNom{#1}\gdef\otPartieCouleur{#2}}
+
+%% ---------------------------------------------------------------------
+%%  Onglet de fiche sur le bord extérieur
+%% ---------------------------------------------------------------------
+\newcommand{\otOnglet}{%
+  \ifnum\otFicheNum>0\relax
+  \begin{tikzpicture}[remember picture,overlay]
+    \pgfmathsetmacro{\otY}{70+(\otFicheNum-1)*9.3}
+    \ifodd\value{page}
+      \fill[\otPartieCouleur] ([yshift=-\otY mm]current page.north east) rectangle ++(-6.5mm,-8.6mm);
+      \node[text=white,font=\otSemi\fontsize{7.5}{8}\selectfont]
+        at ([xshift=-3.25mm,yshift=-\otY mm-4.3mm]current page.north east) {\otTwoDigits{\otFicheNum}};
+    \else
+      \fill[\otPartieCouleur] ([yshift=-\otY mm]current page.north west) rectangle ++(6.5mm,-8.6mm);
+      \node[text=white,font=\otSemi\fontsize{7.5}{8}\selectfont]
+        at ([xshift=3.25mm,yshift=-\otY mm-4.3mm]current page.north west) {\otTwoDigits{\otFicheNum}};
+    \fi
+  \end{tikzpicture}\fi}
+
+%% ---------------------------------------------------------------------
+%%  En-têtes et pieds de page
+%% ---------------------------------------------------------------------
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{{\color{otRule}%
+  \hrule\@height\headrulewidth\@width\headwidth\vskip-\headrulewidth}}
+\newcommand{\otTete}{%
+  {\otSemi\fontsize{7.5}{9}\selectfont\color{\otPartieCouleur}\otCaps[10]{Fiche \otTwoDigits{\otFicheNum}}}%
+  \hspace{0.7em}{\otMedium\fontsize{7.5}{9}\selectfont\color{otMuted}\otCaps[8]{\otFicheTitre}}}
+\newcommand{\otPied}{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}%
+  \otCaps[10]{OptiTAB · \otCollection\ · \otMatiere\ \otNiveauCourt}}}
+\newcommand{\otNumPage}{{\otSemi\fontsize{8.5}{10}\selectfont\color{otNavy}\thepage}}
+\fancypagestyle{otFiche}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \fancyhead[LE]{\otTete}%
+  \fancyhead[RO]{\otTete}%
+  \fancyhead[RE]{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}\otCaps[8]{\otPartieNom}}}%
+  \fancyhead[LO]{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}\otCaps[8]{\otPartieNom}}}%
+  \fancyfoot[LE]{\otOnglet\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otOnglet\otPied\hspace{1em}\otNumPage}}
+\fancypagestyle{otOuverture}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE]{\otOnglet\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otOnglet\otPied\hspace{1em}\otNumPage}}
+\fancypagestyle{otFront}{%
+  \fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE]{\otNumPage}\fancyfoot[RO]{\otNumPage}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{otFiche}
+
+%% ---------------------------------------------------------------------
+%%  Petits éléments graphiques
+%% ---------------------------------------------------------------------
+% Pastille cochée
+\newcommand{\otCheck}[1][otGreen]{%
+  \tikz[baseline=-0.62ex]{\fill[#1] (0,0) circle (1.75mm);
+    \draw[white,line width=0.85pt,line cap=round,line join=round]
+      (-0.8mm,0.05mm) -- (-0.22mm,-0.6mm) -- (0.85mm,0.7mm);}}
+% Case à cocher vide
+\newcommand{\otCase}{\tikz[baseline=-0.7ex]\draw[otNavy,line width=0.6pt,rounded corners=0.6pt] (0,-1.5mm) rectangle (3mm,1.5mm);}
+% Étiquette en capitales espacées
+\newcommand{\otEtiquette}[2]{{\otSemi\fontsize{6.8}{8}\selectfont\color{#1}\otCaps[11]{#2}}}
+% Mot-clé dans le texte
+\newcommand{\cle}[1]{\textbf{#1}}
+% Mise en évidence d'un résultat
+\tcbset{otResultat/.style={enhanced,colback=otGreenTint,colframe=otGreenTint,
+  boxrule=0pt,arc=1.4pt,left=2.5pt,right=2.5pt,top=1pt,bottom=1pt,boxsep=0pt}}
+\newcommand{\res}[1]{\tcbhighmath[otResultat]{#1}}
+% Légende de schéma
+\newcommand{\legende}[1]{{\otLight\fontsize{7.2}{9.5}\selectfont\color{otMuted}#1}}
+% Mini-intertitre
+\newcommand{\otIntertitre}[1]{\par\addvspace{1.5mm}\noindent
+  {\otSemi\fontsize{7.2}{9}\selectfont\color{otNavy}\otCaps[11]{#1}}\par\nopagebreak\vspace{1mm}}
+
+% Repère pour les schémas
+\pgfplotsset{otSchema/.style={
+  axis lines=left,
+  axis line style={otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}},
+  tick style={otMuted,line width=0.4pt}, major tick length=2pt,
+  ticklabel style={font=\otLight\fontsize{6.5}{8}\selectfont,text=otMuted},
+  label style={font=\small,text=otMuted},
+  clip=false}}
+
+%% ---------------------------------------------------------------------
+%%  Ouverture d'une fiche : bandeau pleine largeur en haut de page
+%%  \fiche[décor]{numéro}{titre}{mots-clés}
+%% ---------------------------------------------------------------------
+\newcommand{\otDecoGrille}{%
+  \draw[white,opacity=0.06,line width=0.3pt,step=6mm] (0,0) grid (210mm,64mm);}
+\newcommand{\otDecoAucun}{\otDecoGrille}
+\newsavebox{\otBoiteTitre}
+% Décor « suites » : termes alternés qui se resserrent dans une bande autour de la limite
+\newcommand{\otDecosuites}{%
+  \otDecoGrille
+  \fill[otGreen,opacity=0.16] (150mm,29mm) rectangle (210mm,39mm);
+  \draw[otGreen,opacity=0.65,line width=0.5pt] (150mm,29mm) -- (210mm,29mm) (150mm,39mm) -- (210mm,39mm);
+  \draw[white,opacity=0.5,line width=0.5pt,dash pattern=on 3pt off 2pt] (140mm,34mm) -- (210mm,34mm);
+  \draw[white,opacity=0.3,line width=0.5pt] (140mm,6mm) -- (140mm,60mm);
+  \foreach \k in {0,...,15}{%
+    \pgfmathsetmacro{\yy}{34+22*0.78^\k*cos(180*\k)}
+    \pgfmathsetmacro{\xx}{143+4*\k}
+    \ifdim\yy pt<39pt\relax\ifdim\yy pt>29pt\relax
+      \fill[otGreen] (\xx mm,\yy mm) circle (1.15mm);
+    \else\fill[white,opacity=0.85] (\xx mm,\yy mm) circle (1.15mm);\fi
+    \else\fill[white,opacity=0.85] (\xx mm,\yy mm) circle (1.15mm);\fi}
+  \node[text=white,opacity=0.8,font=\otMedium\fontsize{9}{10}\selectfont] at (136mm,34mm) {$\ell$};}
+\NewDocumentCommand{\fiche}{O{Aucun} m m m}{%
+  \clearpage
+  \gdef\otFicheNum{#2}\gdef\otFicheTitre{#3}%
+  \setcounter{otsect}{0}%
+  \thispagestyle{otOuverture}%
+  \markboth{#3}{#3}%
+  \phantomsection\label{fiche-#2}%
+  \pdfbookmark[1]{Fiche \otTwoDigits{#2} — #3}{bm-fiche-#2}%
+  \immediate\write\@auxout{\string\otFicheVue{#2}}%
+  \sbox{\otBoiteTitre}{\color{white}\otSemi\fontsize{27}{30}\selectfont #3}%
+  \ifdim\wd\otBoiteTitre>116mm
+    \sbox{\otBoiteTitre}{\color{white}\otSemi\fontsize{21}{24}\selectfont #3}\fi
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={([yshift=-64mm]current page.north west)}]
+      \fill[otNavy] (0,0) rectangle (210mm,64mm);
+      \begin{scope}\clip (0,0) rectangle (210mm,64mm);
+        \csname otDeco#1\endcsname
+      \end{scope}
+      \fill[\otPartieCouleur] (0,0) rectangle (210mm,1.6mm);
+      \node[anchor=west,fill=otGreen,rounded corners=1.6pt,inner xsep=2.2mm,inner ysep=1.4mm,
+        text=white,font=\otSemi\fontsize{8}{9}\selectfont] (pill) at (19mm,50mm)
+        {\otCaps[12]{Fiche \otTwoDigits{#2}}};
+      \node[anchor=west,inner sep=0pt,text=white,opacity=0.8,
+        font=\otMedium\fontsize{8}{9}\selectfont] at ([xshift=3.5mm]pill.east)
+        {\otCaps[12]{\otPartieNom}};
+      \node[anchor=base west,inner sep=0pt] at (18.3mm,30mm) {\usebox{\otBoiteTitre}};
+      \node[anchor=north west,inner sep=0pt,text=white,opacity=0.75,text width=116mm,
+        font=\otLight\fontsize{8.6}{11.5}\selectfont,align=left] at (19mm,22mm)
+        {\hyphenpenalty=10000\exhyphenpenalty=10000 #4\par};
+    \end{scope}
+  \end{tikzpicture}%
+  \vspace*{39mm}\par}
+
+% Séparateur des mots-clés du bandeau (point de coupure de ligne autorisé après le point médian)
+\newcommand{\sepmot}{\unskip\enspace·\hskip 0.5em plus 0.4em\relax}
+
+% Données écrites dans le .aux : fiches réellement présentes
+\newcommand{\otFicheVue}[1]{\expandafter\gdef\csname otFicheVue@#1\endcsname{}}
+
+%% ---------------------------------------------------------------------
+%%  Sections d'une fiche : \sect{titre}
+%% ---------------------------------------------------------------------
+\newcommand{\sect}[1]{%
+  \par\addvspace{4mm}\needspace{9\baselineskip}%
+  \refstepcounter{otsect}%
+  \noindent
+  \begin{tikzpicture}[baseline=(n.base)]
+    \node[fill=\otPartieCouleur,rounded corners=1.4pt,minimum width=6mm,minimum height=6mm,
+      inner sep=0pt,text=white,font=\otBold\fontsize{9.5}{10}\selectfont] (n) {\theotsect};
+  \end{tikzpicture}\hspace{2.6mm}%
+  {\otSemi\fontsize{12.5}{15}\selectfont\color{otInk}#1}%
+  \hspace{3mm}{\color{otRule}\leaders\hrule height 0.45pt\hfill\kern0pt}\par
+  \nopagebreak\vspace{2.6mm}}
+
+%% ---------------------------------------------------------------------
+%%  Encadrés
+%% ---------------------------------------------------------------------
+\tcbset{otBase/.style={enhanced,breakable=false,arc=1.3mm,
+  left=3.2mm,right=3.2mm,top=1.9mm,bottom=1.9mm,boxsep=0pt,
+  before skip=2mm,after skip=2mm,fontupper=\normalsize}}
+% Paire d'encadrés côte à côte, de même hauteur : \begin{paire} ... \end{paire}
+\NewDocumentEnvironment{paire}{O{2}}{%
+  \begin{tcbraster}[raster columns=#1,raster equal height=rows,raster column skip=4mm,
+    raster before skip=2mm,raster after skip=2mm]}{\end{tcbraster}}
+% Titre interne : étiquette + intitulé facultatif
+\newcommand{\otTitreBoite}[3]{% couleur, étiquette, intitulé
+  \noindent\otEtiquette{#1}{#2}%
+  \if\relax\detokenize{#3}\relax\else\hspace{1.6mm}{\otMedium\fontsize{8.6}{10}\selectfont\color{otInk}#3}\fi
+  \par\vspace{1.1mm}}
+
+\NewDocumentEnvironment{definition}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otNavy,boxrule=0pt,
+    borderline west={1.1mm}{0pt}{otNavy},
+    overlay={\draw[otRule,line width=0.5pt,rounded corners=1.3mm]
+      (frame.north west) rectangle (frame.south east);}]
+  \otTitreBoite{otNavy}{Définition}{#1}}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{theoreme}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otNavyTint,colframe=otNavyTint,
+    borderline west={1.1mm}{0pt}{otNavy}]
+  \otTitreBoite{otNavy}{Théorème}{#1}}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{propriete}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otNavyTint,colframe=otNavyTint,
+    borderline west={1.1mm}{0pt}{otNavy!55}]
+  \otTitreBoite{otNavy}{Propriété}{#1}}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{methode}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,
+    borderline west={1.1mm}{0pt}{otGreenDark}]
+  \otTitreBoite{otGreenDark}{Méthode}{#1}}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{attention}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otOrangeTint,colframe=otOrangeTint,
+    borderline west={1.1mm}{0pt}{otOrange}]
+  \otTitreBoite{otOrangeDark}{Attention}{#1}}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{exemple}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,
+    left=3mm,right=3mm]
+  \otTitreBoite{otMuted}{Exemple}{#1}}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{redaction}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otNavy!45,boxrule=0.5pt,
+    left=3mm,right=3mm]
+  \otTitreBoite{otNavy}{Rédiger au bac}{#1}}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{demonstration}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=white,
+    borderline west={0.6mm}{0pt}{otMuted!60},left=3.5mm,
+    fontupper=\fontsize{9.6}{12}\selectfont]
+  \otTitreBoite{otMuted}{Démonstration au programme}{#1}}{\end{tcolorbox}}
+
+% Formule clé (encadrée, centrée) : \formule{...}
+\newcommand{\formule}[1]{\par\addvspace{1mm}\begin{center}%
+  \tcbox[enhanced,on line,colback=white,colframe=otGreen,boxrule=0.7pt,arc=1.4mm,
+    left=4mm,right=4mm,top=1.6mm,bottom=1.6mm]{$\displaystyle #1$}\end{center}\par\addvspace{0.5mm}}
+
+% Étape dans un texte : \etape{Initialisation}
+\newcommand{\etape}[1]{{\otSemi\fontsize{8}{10}\selectfont\color{otGreenDark}#1}\hspace{1.4mm}}
+
+% Listes compactes
+\setlist{leftmargin=1.3em,itemsep=0.4mm,topsep=0.6mm,parsep=0pt}
+\setlist[itemize]{label={\color{\otPartieCouleur}\small\textbullet}}
+\newlist{etapes}{enumerate}{1}
+\setlist[etapes]{label={\otSemi\fontsize{8}{10}\selectfont\color{otGreenDark}\arabic*.},
+  leftmargin=1.5em,itemsep=0.5mm,topsep=0.6mm}
+
+%% ---------------------------------------------------------------------
+%%  Tableaux
+%% ---------------------------------------------------------------------
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\RequirePackage{ragged2e}
+\newcommand{\otTH}[1]{{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}#1}}
+\newcommand{\otTableau}{\renewcommand{\arraystretch}{1.4}\arrayrulecolor{otRule}}
+% Colonne d'intitulés (capitales bleues) : à utiliser comme type de colonne L
+\newcolumntype{L}[1]{>{\leavevmode\otSemi\fontsize{6.8}{9}\selectfont\color{otNavy}\RaggedRight\arraybackslash}p{#1}}
+
+%% ---------------------------------------------------------------------
+%%  Python
+%% ---------------------------------------------------------------------
+\lstdefinestyle{otPython}{language=Python,
+  basicstyle=\NoAutoSpacing\otMono\fontsize{8.2}{11}\selectfont\color{otInk},
+  literate={*}{{\char42}}1,
+  keywordstyle=\color{otNavy}\bfseries,
+  commentstyle=\color{otMuted},
+  stringstyle=\color{otGreenDark},
+  columns=fullflexible,keepspaces=true,showstringspaces=false,upquote=true,
+  morekeywords={True,False,None}}
+\newtcblisting{python}{enhanced,listing only,listing options={style=otPython},
+  colback=otNavyTint,colframe=otNavyTint,boxrule=0pt,arc=1.6mm,
+  left=4mm,right=4mm,top=1.6mm,bottom=1.6mm,before skip=2mm,after skip=2mm,
+  overlay={\node[anchor=north east,inner sep=1.5mm,text=otMuted,
+    font=\otSemi\fontsize{6}{7}\selectfont] at (frame.north east) {\otCaps[10]{Python}};}}
+
+%% ---------------------------------------------------------------------
+%%  Schéma de stratégie : \strategie{titre}{{situation}/{démarche},...}
+%% ---------------------------------------------------------------------
+\tikzset{
+  otStratCond/.style={fill=otNavyTint,draw=otNavy!25,line width=0.4pt,rounded corners=1.2mm,
+    inner xsep=2.4mm,inner ysep=1.8mm,text width=48mm,minimum height=10.5mm,align=left,
+    font=\fontsize{9.2}{11.2}\selectfont},
+  otStratAct/.style={fill=otGreenTint,draw=otGreen!45,line width=0.4pt,rounded corners=1.2mm,
+    inner xsep=2.4mm,inner ysep=1.8mm,minimum height=10.5mm,align=left,
+    font=\fontsize{9.2}{11.2}\selectfont}}
+\newcommand{\strategie}[2]{%
+  \par\addvspace{3mm}\needspace{20\baselineskip}\noindent
+  \begin{tikzpicture}
+    \node[anchor=north west,fill=\otPartieCouleur,rounded corners=1.3mm,inner xsep=3mm,inner ysep=2mm,
+      text width={\linewidth-6mm},text=white,font=\otSemi\fontsize{9.5}{11}\selectfont] (titre) at (0,0)
+      {\otEtiquette{otGreen}{Stratégie}\hspace{2mm}#1};
+    \coordinate (bas) at (titre.south west);
+    \foreach \c/\a [count=\i] in {#2}{%
+      \path let \p1=(bas) in coordinate (haut) at (0,{\y1-2mm});
+      \node[otStratCond,anchor=north west] (c\i) at ([xshift=0.3mm]haut) {\c};
+      \node[otStratAct,anchor=north west,text width={\linewidth-52.8mm-14mm-4.8mm-0.8mm}] (a\i)
+        at ([xshift=14mm]c\i.north east) {\a};
+      \draw[otGreenDark,line width=0.7pt,-{Stealth[length=2mm]}]
+        ([xshift=1.5mm]c\i.east) -- ([xshift=-1.5mm]c\i.east -| a\i.west);
+      \path let \p1=(c\i.south), \p2=(a\i.south) in coordinate (bas) at (0,{min(\y1,\y2)});}
+  \end{tikzpicture}\par\addvspace{2mm}}
+
+%% ---------------------------------------------------------------------
+%%  Fin de fiche : check-list et renvoi
+%% ---------------------------------------------------------------------
+% \begin{jesais} \item ... \end{jesais} — sur deux colonnes
+\NewDocumentEnvironment{jesais}{}{%
+  \par\addvspace{3mm}\needspace{12\baselineskip}%
+  \begin{tcolorbox}[otBase,colback=otNavy,colframe=otNavy,left=4.5mm,right=4.5mm,top=3mm,bottom=3mm,
+    coltext=white]
+  \noindent{\otSemi\fontsize{7}{8}\selectfont\color{otGreen}\otCaps[12]{Check-list}}\hspace{2mm}%
+  {\otSemi\fontsize{10.5}{12}\selectfont Je sais\ldots}\par\vspace{2mm}
+  \begin{multicols}{2}\raggedcolumns
+  \begin{itemize}[label={\tikz[baseline=-0.7ex]\draw[white,line width=0.6pt,rounded corners=0.6pt] (0,-1.5mm) rectangle (3mm,1.5mm);},
+    leftmargin=6mm,itemsep=1.2mm,topsep=0pt]\fontsize{9.4}{11.6}\selectfont}
+  {\end{itemize}\end{multicols}\end{tcolorbox}}
+
+% \pourAllerPlusLoin{texte} : renvoi vers le livre et le site
+\newcommand{\pourAllerPlusLoin}[1]{%
+  \par\addvspace{2.5mm}\noindent
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,left=3mm,right=3mm,
+    top=2mm,bottom=2mm,before skip=0pt]
+  \begin{minipage}[c]{17mm}{\color{otNavy}\qrcode[height=15mm,nolink]{\otURL}}\end{minipage}\hspace{3mm}%
+  \begin{minipage}[c]{\dimexpr\linewidth-20mm\relax}
+  {\otSemi\fontsize{7}{8}\selectfont\color{otGreenDark}\otCaps[12]{Pour s'entraîner}}\par\vspace{0.8mm}
+  {\fontsize{9.4}{11.8}\selectfont #1}
+  \end{minipage}
+  \end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Pages liminaires
+%% ---------------------------------------------------------------------
+\newcommand{\otPageTitre}[2]{%
+  \noindent{\otLight\fontsize{28}{32}\selectfont\color{otInk}#1}\par\vspace{2mm}
+  \if\relax\detokenize{#2}\relax\else
+    \noindent{\otRegular\fontsize{10}{13}\selectfont\color{otMuted}#2}\par\vspace{2mm}\fi
+  \noindent{\color{otNavy}\rule{16mm}{1.3pt}}%
+  {\color{otRule}\rule[0.45pt]{\dimexpr\linewidth-16mm\relax}{0.4pt}}\par\vspace{7mm}}
+
+% Plan de la collection (sommaire) : \otPlanPartie{nom}{couleur} et \otPlanFiche{n}{titre}
+\newcommand{\otPlanPartie}[2]{%
+  \par\addvspace{5mm}\noindent
+  {\otSemi\fontsize{7}{9}\selectfont\color{#2}\otCaps[12]{#1}}\par
+  \vspace{1.2mm}{\color{#2}\hrule height 0.6pt}\vspace{1.8mm}}
+\newcommand{\otPlanFiche}[2]{%
+  \par\noindent\makebox[10mm][l]{{\otSemi\fontsize{9}{11}\selectfont\color{otNavy}\otTwoDigits{#1}}}%
+  \ifcsname otFicheVue@#1\endcsname
+    \hyperref[fiche-#1]{{\otRegular\fontsize{9.4}{12}\selectfont\color{otInk}#2}}%
+    {\color{otMuted!45}\leaders\hbox to 2.4mm{\hss.\hss}\hskip 0pt plus 1fill}
+    {\otMedium\fontsize{9}{11}\selectfont\color{otNavy}\pageref{fiche-#1}}%
+  \else
+    {\otRegular\fontsize{9.4}{12}\selectfont\color{otMuted}#2}\hfill
+    {\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}à paraître}%
+  \fi\par\vspace{1.5mm}}
+
+\endinput

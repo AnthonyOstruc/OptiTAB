@@ -1,0 +1,231 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{3}{Dérivation}
+\corrigesSouples
+
+\begin{blocLivre}{cor-3-1}
+\begin{corrige}{1}{Calculer une pente moyenne}
+\demarche{Utiliser la différence des images divisée par la différence des abscisses.}
+\begin{questions}
+\item $f(1)=-1$, $f(3)=3$, $f(2)=0$. Les taux valent
+$(3+1)/(3-1)=\res{2}$ et $(0+1)/(2-1)=\res{1}$.
+\item $f(1+h)=h^2-1$, donc le taux est $h^2/h=h$ pour $h\neq0$.
+Il se rapproche de 0 avec $h$ : $\res{f'(1)=0}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-2}
+\begin{corrige}{2}{Lire la dérivée sur une tangente}
+\demarche{La pente de la tangente fournit le nombre dérivé au point de contact.}
+\begin{questions}\item $A$ est sur la courbe : $f(2)=3$.
+La pente de $(AB)$ vaut $(7-3)/(4-2)=2$, donc $\res{f'(2)=2}$.
+\item $y=2(x-2)+3$, soit $\res{y=2x-1}$.
+\end{questions}
+\label{figlivre-r03-02-tangente-cor}
+\figureLivre[corrige]{r03-02-tangente}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-3}
+\begin{corrige}{3}{Dérivées immédiates}
+\methode{dériver chaque terme sur le domaine autorisé}\par
+$\res{f'(x)=20x^3-6x+7}$ sur $\R$.\par
+$\res{g'(x)=-3/x^2}$ sur $\R\setminus\{0\}$.\par
+$\res{h'(x)=1/(2\sqrt x)+2}$ sur $]0;+\infty[$.
+La fonction $h$ est définie en 0, mais la formule de dérivée n'y est pas valable.
+Pour la puissance négative, $\res{k'(x)=-3x^{-4}=-3/x^4}$ sur $\R\setminus\{0\}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-4}
+\begin{corrige}{4}{Une tangente à un polynôme}
+\demarche{Calculer séparément l’image et la dérivée avant de former la tangente.}
+\begin{questions}\item $f'(x)=2x+3$, $f(1)=3$ et $f'(1)=5$.
+\item $y=5(x-1)+3=\res{5x-2}$. La tangente passe bien par $(1;3)$.
+\end{questions}
+\label{figlivre-r03-04-tangente-cor}
+\figureLivre[corrige]{r03-04-tangente}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-5}
+\begin{corrige}{5}{Reconnaître l'opération}
+\methode{produit puis quotient}
+$u'(x)=2(x^2-3)+(2x+1)2x=\res{6x^2+2x-6}$ sur $\R$.
+Pour $x\neq2$, $v'(x)=\dfrac{x-2-(x+1)}{(x-2)^2}=\res{-3/(x-2)^2}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-6}
+\begin{corrige}{6}{Revenir à la définition}
+\demarche{Développer le numérateur, puis simplifier seulement lorsque le dénominateur est non nul.}
+\begin{questions}
+\item $(a+h)^2-a^2=2ah+h^2$. En divisant par $h\neq0$, on obtient $2a+h$.
+\item Lorsque $h$ se rapproche de 0, le taux se rapproche de $2a$ :
+$\res{f'(a)=2a}$. La tangente est $y=2a(x-a)+a^2=\res{2ax-a^2}$.
+\item Pour $a=2$, le taux vaut $4+h$ : on obtient
+$\res{5;\ 4{,}1;\ 3{,}9;\ 4{,}01}$, à comparer au nombre dérivé 4.
+\item La fonction accumule les pentes dans une liste, pour un pas donné :
+\end{questions}
+\begin{python}
+def carre(x):
+    return x**2
+def secantes(h, n):
+    pentes = []
+    for k in range(n):
+        x = k*h
+        pentes.append((carre(x + h) - carre(x))/h)
+    return pentes
+\end{python}
+D'après la question 1, la pente entre $kh$ et $(k+1)h$ vaut $2kh+h$.
+Ainsi \code{secantes(0.5, 4)} renvoie $\res{[0{,}5;\ 1{,}5;\ 2{,}5;\ 3{,}5]}$, soit
+\code{[0.5, 1.5, 2.5, 3.5]}, tandis que $f'(kh)=2kh$ donne $0$, $1$, $2$ et $3$.
+Chaque pente dépasse le nombre dérivé au point de départ exactement de $h=0{,}5$ :
+plus le pas est petit, plus les sécantes se rapprochent des tangentes.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-7}
+\begin{corrige}{7}{Dériver trois produits}
+\demarche{Dans un produit, dériver successivement chacun des deux facteurs.}
+\begin{questions}
+\item Avec $u=x^2+1$, $u'=2x$, $v=3x-2$ et $v'=3$, la règle du produit donne
+\[f'(x)=2x(3x-2)+3(x^2+1)=6x^2-4x+3x^2+3=\res{9x^2-4x+3}.\]
+\item Pour $x>0$, $(x^2)'=2x$ et $(\sqrt x)'=1/(2\sqrt x)$.
+Ainsi $g'(x)=2x\sqrt x+x^2/(2\sqrt x)$. Comme $x^2/\sqrt x=x\sqrt x$,
+on obtient $\res{g'(x)=\frac52x\sqrt x}$.
+\item En développant, $(x-1)^2(x+2)=x^3-3x+2$, donc $\res{h'(x)=3x^2-3}$.
+Par produit, on trouve aussi $2(x-1)(x+2)+(x-1)^2=(x-1)(3x+3)$, le même résultat.
+\end{questions}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-8}
+\begin{corrige}{8}{Dériver trois quotients}
+\demarche{Exclure les zéros du dénominateur et simplifier les expressions quand cela raccourcit le calcul.}
+\begin{questions}
+\item Le dénominateur s’annule en $-3$. Pour $x\neq-3$,
+\[f'(x)=\frac{2(x+3)-(2x-1)}{(x+3)^2}=\res{\frac7{(x+3)^2}}.\]
+\item Pour $x\neq0$, $g(x)=x+1/x$, donc $\res{g'(x)=1-1/x^2}$.
+Cette simplification réduit le calcul ; la valeur interdite 0 reste exclue.
+\item Comme $x^2+1>0$, $h$ est dérivable sur $\R$.
+Avec $u=x$, $u'=1$, $v=x^2+1$ et $v'=2x$,
+\[h'(x)=\frac{(x^2+1)-x(2x)}{(x^2+1)^2}=\res{\frac{1-x^2}{(x^2+1)^2}}.\]
+\end{questions}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-9}
+\begin{corrige}{9}{Des tangentes parallèles}
+\demarche{Des tangentes parallèles ont le même coefficient directeur.}
+\begin{questions}
+\item $f'(x)=3x^2-3$.
+\item La droite proposée a pour pente 9. On résout $f'(a)=9$, soit
+$3a^2-3=9\iff a^2=4$. Les abscisses sont $\res{a=-2\text{ et }a=2}$.
+\item $f(2)=3$, donc $T_2:y=9(x-2)+3=\res{9x-15}$.
+$f(-2)=-1$, donc $T_{-2}:y=9(x+2)-1=\res{9x+17}$.
+Les ordonnées à l'origine sont différentes : les droites sont distinctes.
+\end{questions}
+\label{figlivre-r03-09-paralleles-cor}
+\figureLivre[corrige]{r03-09-paralleles}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-10}
+\begin{corrige}{10}{Approcher une racine carrée}
+\demarche{Utiliser l’approximation affine au voisinage du nombre dont la racine est connue.}
+\begin{questions}
+\item $f(4)=2$ et $f'(4)=1/4$, donc $T:y=2+(x-4)/4=\res{x/4+1}$.
+\item Avec $h=0{,}08$, $f(4+h)\approx2+h/4=\res{2{,}02}$.
+\item $\sqrt{4{,}08}\approx2{,}019900988$.
+L'erreur absolue est environ $0{,}000099012$, soit $\res{0{,}000099}$ à $10^{-6}$ près.
+L'approximation est légèrement supérieure à la valeur exacte.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-11}
+\begin{corrige}{11}{Deux exemples de non-dérivabilité}
+\demarche{Comparer les taux de variation près de zéro, et pas seulement les valeurs des fonctions.}
+\begin{questions}
+\item Le taux vaut $|h|/h$, donc 1 pour $h>0$ et $-1$ pour $h<0$.
+Les deux côtés ne donnent pas le même nombre : $|x|$ n'est pas dérivable en 0.
+\item $\sqrt h/h=1/\sqrt h$. Ces valeurs grandissent sans borne quand $h>0$
+se rapproche de 0 : elles ne se rapprochent pas d'un nombre réel fini.
+La fonction racine carrée n'est donc pas dérivable en 0.
+\item Les deux fonctions sont définies en 0 et y valent 0.
+\textbf{Être définie n'implique pas être dérivable.}
+\end{questions}
+\label{figlivre-r03-11-nonderivable-cor}
+\figureLivre[corrige]{r03-11-nonderivable}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-12}
+\begin{corrige}{12}{Tangentes à une parabole}
+\demarche{Écrire une tangente générale puis imposer le passage par le point donné.}
+\begin{questions}
+\item Pour $f(x)=x^2$, $f'(a)=2a$ : $T_a:y=2ax-a^2$.
+\item Le point $P(0;-1)$ est sur cette droite si $-1=-a^2$, soit $a^2=1$.
+\item On trouve $a=1$ ou $a=-1$. Les contacts sont $A(1;1)$ et $B(-1;1)$.
+Les tangentes sont $\res{y=2x-1}$ et $\res{y=-2x-1}$.
+Elles passent toutes deux par $P$ et sont symétriques par rapport à l'axe des ordonnées.
+\end{questions}
+\begin{center}\begin{tikzpicture}[x=14mm,y=9mm]
+\draw[otMuted,->](-2.1,0)--(2.4,0)node[right]{$x$};
+\draw[otMuted,->](0,-1.6)--(0,3.9)node[above]{$y$};
+\draw[otNavy,thick]plot[domain=-1.8:1.8,samples=60](\x,{\x*\x});
+\draw[otGreen](-.1,-1.2)--(2,3);\draw[otGreen](-2,3)--(.1,-1.2);
+\fill[otNavy](1,1)circle(1.5pt)node[right]{$A$};
+\fill[otNavy](-1,1)circle(1.5pt)node[left]{$B$};
+\fill[otGreenDark](0,-1)circle(1.5pt)node[right]{$P$};
+\end{tikzpicture}\end{center}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-13}
+\begin{corrige}{13}{Vitesse moyenne et vitesse instantanée}
+\demarche{Distinguer une vitesse moyenne sur un intervalle d’une vitesse à un instant.}
+\begin{questions}
+\item $s(1)=7$ m et $s(3)=9$ m : la vitesse moyenne vaut $(9-7)/2=\res{1\text{ m/s}}$.
+\item $v(t)=3t^2-12t+12=\res{3(t-2)^2}$.
+\item $v(t)=0$ uniquement à $\res{t=2\text{ s}}$ ; alors $s(2)=\res{8\text{ m}}$.
+\item Un carré est positif ou nul, donc $v(t)\geq0$ sur $[0;4]$.
+La vitesse s'annule un instant mais ne devient jamais négative.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-14}
+\begin{corrige}{14}{Retrouver un polynôme grâce à une tangente}
+\demarche{Traduire chaque donnée par une équation sur les coefficients.}
+\begin{questions}
+\item $c=1$, $4a+2b+c=3$ et, puisque $f'(x)=2ax+b$, $4a+b=4$.
+\item On obtient $4a+2b=2$. Avec $b=4-4a$, cela donne $a=3/2$ et $b=-2$.
+Ainsi $\res{f(x)=\frac32x^2-2x+1}$.
+Vérifications : $f(0)=1$, $f(2)=6-4+1=3$, $f'(2)=6-2=4$.
+\item $T:y=4(x-2)+3=\res{4x-5}$.
+\item $f(x)-(4x-5)=\frac32x^2-6x+6=\res{\frac32(x-2)^2}\geq0$.
+La courbe est au-dessus de la tangente et ne la rencontre qu'en $x=2$.
+\end{questions}
+\label{figlivre-r03-14-position-cor}
+\figureLivre[corrige]{r03-14-position}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-3-15}
+\begin{corrige}{15}{Coût marginal et coût supplémentaire}
+\demarche{Comparer un accroissement fini à la variation prédite par la dérivée.}
+\begin{questions}
+\item En dérivant terme à terme, $C'(q)=0{,}06q^2-1{,}2q+10$.
+Ainsi $C'(20)=24-24+10=\res{10}$ euros par objet.
+\item $C(20)=220$ euros et $C(21)=230{,}62$ euros. L’accroissement exact vaut
+$\res{C(21)-C(20)=10{,}62\text{ euros}}$, soit 0,62 euro de plus que la prévision marginale.
+\item L’approximation affine est $C(20+h)-C(20)\approx hC'(20)$.
+Pour $h=0{,}1$, elle donne $\res{1\text{ euro}}$.
+\item On développe $(20+h)^2=400+40h+h^2$ et $(20+h)^3=8000+1200h+60h^2+h^3$.
+Après soustraction des termes constants,
+\begin{align*}
+C(20+h)-C(20)&=0{,}02(1200h+60h^2+h^3)-0{,}6(40h+h^2)+10h\\
+&=\res{10h+0{,}6h^2+0{,}02h^3}.
+\end{align*}
+\item Pour $h=0{,}1$, l’accroissement exact vaut $1{,}00602$ euro.
+L’erreur absolue de la prévision 1 euro vaut donc $\res{0{,}00602\text{ euro}}$.
+La dérivée mesure une variation instantanée ; sur un intervalle fini, les termes en $h^2$ et $h^3$ interviennent aussi.
+\end{questions}
+
+\end{corrige}
+\end{blocLivre}

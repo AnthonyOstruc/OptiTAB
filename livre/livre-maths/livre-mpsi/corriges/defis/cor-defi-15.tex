@@ -1,0 +1,74 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 15 — vérifié par verifications/defis_11_15.py.
+
+\begin{blocLivre}{cor-15-25a}
+\begin{corrige}{25}{L'intégrale de Gauss}
+\demarche{Encadrer l'intégrande par deux fonctions dont l'intégrale est un
+Wallis, puis laisser l'équivalent de Wallis faire converger les deux
+bornes vers la même limite.}
+\partieExo{A}{Existence et encadrement}
+\begin{questions}
+  \item $F'(A)=\mathrm{e}^{-A^{2}}>0$ : $F$ est croissante. Pour
+    $t\geqslant1$, $t^{2}\geqslant t$ donc $\mathrm{e}^{-t^{2}}\leqslant\mathrm{e}^{-t}$,
+    et pour $A\geqslant1$ :
+    $F(A)\leqslant\int_0^{1}1\,\mathrm{d}t+\int_1^{A}\mathrm{e}^{-t}\,\mathrm{d}t
+    \leqslant1+\frac1{\mathrm{e}}$. Croissante et majorée, $F$ admet une
+    \res{\text{limite finie }G} en $+\infty$ (théorème de la limite
+    monotone).
+  \item $\varphi(u)=\mathrm{e}^{u}-1-u$ a pour dérivée $\mathrm{e}^{u}-1$,
+    du signe de $u$ : minimum $\varphi(0)=0$, donc $\varphi\geqslant0$.
+    Avec $u=-\frac{t^{2}}{n}$ : $0\leqslant1-\frac{t^{2}}{n}\leqslant\mathrm{e}^{-t^{2}/n}$
+    pour $t\leqslant\sqrt n$, et l'on élève à la puissance $n$ (fonction
+    croissante sur $\R_{+}$). Avec $u=\frac{t^{2}}{n}$ :
+    $\bigl(1+\frac{t^{2}}{n}\bigr)^{n}\leqslant\mathrm{e}^{t^{2}}$, puis on
+    passe à l'inverse.
+\end{questions}
+\partieExo{B}{Le calcul par les intégrales de Wallis}
+\begin{questions}[resume]
+  \item $t=\sqrt n\sin\theta$, $\theta\in\intFF{0}{\frac\pi2}$ :
+    $\mathrm{d}t=\sqrt n\cos\theta\,\mathrm{d}\theta$ et
+    $1-\frac{t^{2}}{n}=\cos^{2}\theta$, d'où
+    $\displaystyle\int_0^{\sqrt n}\Bigl(1-\frac{t^{2}}{n}\Bigr)^{n}\mathrm{d}t
+    =\sqrt n\int_0^{\pi/2}\cos^{2n+1}\theta\,\mathrm{d}\theta=\res{\sqrt n\,W_{2n+1}}$.
+  \item $t=\sqrt n\tan\theta$, $\theta\in\intFF{0}{\frac\pi4}$ :
+    $\mathrm{d}t=\frac{\sqrt n}{\cos^{2}\theta}\,\mathrm{d}\theta$ et
+    $\bigl(1+\tan^{2}\theta\bigr)^{-n}=\cos^{2n}\theta$, d'où l'intégrale
+    $\sqrt n\displaystyle\int_0^{\pi/4}\cos^{2n-2}\theta\,\mathrm{d}\theta
+    \leqslant\res{\sqrt n\,W_{2n-2}}$ (intégrande positif, intervalle plus
+    grand).
+  \item En intégrant l'encadrement de la question 2 sur
+    $\intFF{0}{\sqrt n}$ : $\sqrt n\,W_{2n+1}\leqslant F(\sqrt n)\leqslant\sqrt n\,W_{2n-2}$.
+    Or
+    $\sqrt n\,W_{2n+1}\sim\sqrt n\sqrt{\frac{\pi}{4n+2}}\to\frac{\sqrt\pi}{2}$
+    et de même $\sqrt n\,W_{2n-2}\sim\sqrt n\sqrt{\frac{\pi}{4n-4}}\to\frac{\sqrt\pi}2$.
+    Par encadrement $F(\sqrt n)\to\frac{\sqrt\pi}{2}$, et comme $F$ a pour
+    limite $G$ : $\res{G=\dfrac{\sqrt\pi}{2}}\approx0{,}8862$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Applications}
+\begin{questions}[start=6]
+  \item Avec $u=\sqrt a\,t$ :
+    $\displaystyle\int_0^{A}\mathrm{e}^{-at^{2}}\mathrm{d}t
+    =\frac{1}{\sqrt a}\int_0^{\sqrt aA}\mathrm{e}^{-u^{2}}\mathrm{d}u
+    \xrightarrow[A\to+\infty]{}\res{\frac{\sqrt\pi}{2\sqrt a}}$.
+  \item Par parité puis question 6 avec $a=\frac12$ :
+    $\displaystyle\int_{-A}^{A}\mathrm{e}^{-t^{2}/2}\,\mathrm{d}t
+    =2\int_0^{A}\mathrm{e}^{-t^{2}/2}\,\mathrm{d}t\to2\cdot\frac{\sqrt\pi}{2}\sqrt2=\sqrt{2\pi}$,
+    d'où la limite \res{1}. Numériquement, l'intégrale entre $-1{,}96$ et
+    $1{,}96$ vaut déjà environ $0{,}95$ : la règle des « $95\,\%$ » des
+    statisticiens.
+  \item Le même $\sqrt\pi$ vient chaque fois des intégrales de Wallis, donc
+    de $\int_0^{\pi/2}$ : dans Stirling ($n!\sim\sqrt{2\pi n}\,(n/\mathrm{e})^{n}$),
+    dans le binôme central ($\binom{2n}{n}\sim4^{n}/\sqrt{\pi n}$, d'où la
+    probabilité de retour $P(S_{2n}=0)\sim1/\sqrt{\pi n}$ de la marche
+    aléatoire), et ici. Ce n'est pas une coïncidence : la loi binomiale
+    renormalisée converge vers la loi normale, dont la densité est
+    $\frac{1}{\sqrt{2\pi}}\mathrm{e}^{-t^{2}/2}$ — trois chapitres, un seul
+    phénomène.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

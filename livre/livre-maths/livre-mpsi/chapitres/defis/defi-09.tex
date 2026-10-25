@@ -1,0 +1,89 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 9 — Carrés magiques et carré de Lo Shu
+%% Résultats vérifiés par verifications/defis_06_10.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Carrés magiques et carré de Lo Shu}{1 h 30}
+Une matrice $M=(m_{ij})\in\mathcal{M}_3(\R)$ est \emph{magique de somme $s$}
+si ses trois lignes, ses trois colonnes et ses deux diagonales ont toutes
+pour somme $s$ ; elle est \emph{semi-magique} si l'on ne demande la
+condition qu'aux lignes et aux colonnes. On note $J$ la matrice dont tous
+les coefficients valent $1$.
+
+\partieExo{A}{Résoudre le système des carrés magiques}
+\begin{questions}
+  \item Montrer qu'une combinaison linéaire de matrices magiques est
+    magique, et que $J$ est magique de somme $3$.
+  \item Soit $M$ magique de somme $s$. En additionnant la ligne et la
+    colonne du milieu et les deux diagonales, montrer que $m_{22}=s/3$.
+  \item Pour $(c,a,b)\in\R^{3}$, on pose
+    \[
+    L(c,a,b)=\begin{pmatrix}c-a&c+a+b&c-b\\ c+a-b&c&c-a+b\\ c+b&c-a-b&c+a\end{pmatrix}.
+    \]
+    Vérifier que $L(c,a,b)$ est magique de somme $3c$.
+  \item Réciproquement, soit $M$ magique de somme $s$ ; on pose
+    $c=m_{22}$, $a=c-m_{11}$ et $b=c-m_{13}$. En utilisant successivement
+    les équations du système (diagonales, première ligne, première
+    colonne\dots), montrer que $M=L(c,a,b)$. Combien de paramètres
+    décrivent les matrices magiques de $\mathcal{M}_3(\R)$ ?
+\end{questions}
+
+\partieExo{B}{Le carré de Lo Shu}
+\begin{questions}[resume]
+  \item On cherche les carrés magiques dont les coefficients sont
+    exactement les entiers $1,2,\dots,9$. Montrer que $s=15$ et $c=5$, puis
+    que $\ens{|a|,|b|}=\ens{1,3}$. En déduire qu'il y a exactement $8$ tels
+    carrés, et que $L(5,1,3)$ est le carré de Lo Shu de la figure.
+  \item Vérifier que $L(c,a,b)^{\mathsf T}=L(c,a,-b)$. Expliquer pourquoi les
+    huit carrés trouvés sont les images du Lo Shu par les huit symétries du
+    carré (défi du chapitre 8).
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[line cap=round]
+  \foreach \v [count=\k from 0] in {4,9,2,3,5,7,8,1,6}{%
+    \pgfmathtruncatemacro{\ii}{div(\k,3)}\pgfmathtruncatemacro{\jj}{mod(\k,3)}
+    \ifnum\v=5\fill[otGreen!20] (\jj*1.1,-\ii*1.1) rectangle ++(1.1,-1.1);\fi
+    \node[font=\large,text=otInk] at (\jj*1.1+0.55,-\ii*1.1-0.55) {$\v$};}
+  \draw[otNavy,line width=0.9pt] (0,0) rectangle (3.3,-3.3);
+  \draw[otNavy,line width=0.5pt] (1.1,0) -- (1.1,-3.3) (2.2,0) -- (2.2,-3.3)
+    (0,-1.1) -- (3.3,-1.1) (0,-2.2) -- (3.3,-2.2);
+  \begin{scope}[xshift=5.2cm]
+    \foreach \v [count=\k from 0] in {4,9,2,3,5,7,8,1,6}{%
+      \pgfmathtruncatemacro{\ii}{div(\k,3)}\pgfmathtruncatemacro{\jj}{mod(\k,3)}
+      \pgfmathsetmacro{\cx}{\jj*1.1+0.55}\pgfmathsetmacro{\cy}{-\ii*1.1-0.55}
+      \pgfmathtruncatemacro{\impair}{mod(\v,2)}
+      \foreach \d in {1,...,\v}{%
+        \pgfmathsetmacro{\rr}{\v>1 ? 0.34 : 0}
+        \pgfmathsetmacro{\aa}{90+360*(\d-1)/\v}
+        \ifnum\impair=1
+          \filldraw[fill=white,draw=otInk,line width=0.5pt] ($(\cx,\cy)+(\aa:\rr)$) circle (2.5pt);
+        \else
+          \fill[otInk] ($(\cx,\cy)+(\aa:\rr)$) circle (2.5pt);
+        \fi}}
+    \draw[otNavy!40,line width=0.4pt] (0,0) rectangle (3.3,-3.3);
+  \end{scope}
+\end{tikzpicture}\\[0.5mm]
+\legende{Le carré de Lo Shu, connu en Chine depuis l'Antiquité : chaque
+ligne, colonne et diagonale a pour somme $15$. À droite, sa représentation
+traditionnelle (impairs en blanc, pairs en noir).}
+\end{center}
+
+\partieExo{C}{Calcul matriciel}
+\begin{questions}[resume]
+  \item Montrer que $M$ est semi-magique de somme $s$ si et seulement si
+    $MJ=JM=sJ$. En déduire qu'un produit de matrices semi-magiques de
+    sommes $s$ et $t$ est semi-magique de somme $st$, et que l'inverse
+    d'une matrice semi-magique inversible de somme $s$ est semi-magique de
+    somme $1/s$ (on justifiera que $s\neq0$).
+  \item Soit $L=L(5,1,3)$ le Lo Shu. Calculer $L^{2}$ : est-elle
+    semi-magique ? magique ?
+  \item Vérifier que $L$ est inversible d'inverse
+    \[
+    L^{-1}=\frac{1}{360}\begin{pmatrix}23&-52&53\\ 38&8&-22\\ -37&68&-7\end{pmatrix},
+    \]
+    et que $L^{-1}$ est magique : de quelle somme ?
+\end{questions}
+\end{defi}

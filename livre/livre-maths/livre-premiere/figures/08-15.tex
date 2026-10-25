@@ -1,0 +1,22 @@
+\begin{tikzpicture}[x=0.65cm,y=0.65cm,font=\fontsize{8.5}{10}\selectfont,text=otInk,line cap=round,line join=round]
+\draw[otRule!65,line width=.25pt,step=1] (-5,-1) grid (5,7);
+\draw[otMuted,-{Stealth[length=1.4mm]}](-5,0)--(5.3,0)node[right]{$x$};
+\draw[otMuted,-{Stealth[length=1.4mm]}](0,-1)--(0,7.3)node[above]{$y$};
+\node[below left,inner sep=2pt]at(0,0){$O$};
+\draw[otMuted](-4,-.07)--(-4,.07) node[below=2pt,fill=white,inner sep=.4pt]{\scriptsize $-4$};
+\draw[otMuted](-2,-.07)--(-2,.07) node[below=2pt,fill=white,inner sep=.4pt]{\scriptsize $-2$};
+\draw[otMuted](2,-.07)--(2,.07) node[below=2pt,fill=white,inner sep=.4pt]{\scriptsize $2$};
+\draw[otMuted](4,-.07)--(4,.07) node[below=2pt,fill=white,inner sep=.4pt]{\scriptsize $4$};
+\draw[otMuted](-.07,2)--(.07,2) node[left=2pt,fill=white,inner sep=.4pt]{\scriptsize $2$};
+\draw[otMuted](-.07,4)--(.07,4) node[left=2pt,fill=white,inner sep=.4pt]{\scriptsize $4$};
+\draw[otMuted](-.07,6)--(.07,6) node[left=2pt,fill=white,inner sep=.4pt]{\scriptsize $6$};
+\coordinate (F) at (0,2);\fill[otNavy](F) circle(1.6pt) node[below right,inner sep=2pt]{$F$};
+\coordinate (M) at (4,5);\fill[otNavy](M) circle(1.6pt) node[above left,inner sep=2pt]{$M$};
+\coordinate (H) at (4,0);\fill[otNavy](H) circle(1.6pt) node[above right,inner sep=2pt]{$H$};
+\draw[geoAide](F)--(M);
+\draw[geoAide](M)--(H);
+\coordinate (D) at (5,0);
+\draw[otGreenDark,line width=.65pt](4,0.25)--(4.25,0.25)--(4.25,0);
+\geoSolution{\draw[geoReponse,domain=-4.5:4.5,samples=70]plot(\x,{\x*\x/4+1});\draw[otNavy,dashed](1.5,0)--(5,7)node[above right]{$T$};\fill[otGreenDark](-4,5)circle(1.6pt)node[above left]{$N$};}
+\end{tikzpicture}\par\smallskip
+\geoEnonce{\legende{Configuration d’équidistance : comparer $MF$ et $MH$.}}\geoSolution{\legende{La parabole est $y=x^2/4+1$ ; en $M(4;5)$, $MF=MH=5$ et $T:y=2x-3$.}}

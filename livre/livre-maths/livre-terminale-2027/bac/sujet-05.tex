@@ -1,0 +1,98 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 5 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s5.py)
+
+\sujetBac{5}{Variables aléatoires et concentration/5,Suite définie par récurrence/4,QCM justifié : géométrie dans l'espace/4,Fonction trigonométrique et intégrale/5}
+
+\begin{exoBac}{5}{Variables aléatoires et concentration}
+Un jeu consiste à lancer deux dés équilibrés à six faces. Si la somme des deux dés vaut $7$, le joueur gagne $4$ euros ; si les deux
+dés indiquent le même nombre (un « double »), il gagne $2$ euros ; dans tous les autres cas, il perd $1$ euro. On note $X$ le gain
+algébrique du joueur, en euros, à l'issue d'une partie.
+\partieExo{A}{Une partie}
+\begin{questions}
+  \item Justifier qu'une somme égale à $7$ et un double ne peuvent pas se produire simultanément, puis donner la loi de probabilité de $X$.
+  \item Calculer l'espérance $E(X)$. Le jeu est-il favorable au joueur ?
+  \item Montrer que la variance de $X$ vaut $V(X)=\dfrac{35}{9}$.
+\end{questions}
+\partieExo{B}{Un grand nombre de parties}
+Un joueur effectue $100$ parties indépendantes. Pour $1\leq i\leq100$, on note $X_i$ le gain obtenu à la $i$-ième partie ; les variables
+$X_i$ sont indépendantes et suivent la même loi que $X$. On pose $S=X_1+X_2+\dots+X_{100}$ et $M=\dfrac{S}{100}$.
+\begin{questions}[resume]
+  \item Calculer l'espérance et la variance de $S$. Interpréter $E(S)$.
+  \item Calculer l'espérance et la variance de $M$.
+  \item À l'aide de l'inégalité de Bienaymé-Tchebychev, montrer que la probabilité que le gain moyen $M$ soit strictement compris entre
+    $-\frac16$ et $\frac56$ est supérieure à $0{,}84$.
+  \item Pour un nombre $n$ de parties, on note $M_n$ le gain moyen. À l'aide de l'inégalité de concentration, déterminer un nombre de
+    parties $n$ pour lequel $P\left(\left|M_n-\frac13\right|\geq0{,}1\right)\leq0{,}05$.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Suite définie par récurrence}
+On considère la suite $(u_n)$ définie par $u_0=0{,}1$ et, pour tout entier naturel $n$, $u_{n+1}=\dfrac{2u_n}{1+u_n}$. On note $f$ la
+fonction définie sur $\intFO0{+\infty}$ par $f(x)=\dfrac{2x}{1+x}$.
+\begin{questions}
+  \item Calculer les valeurs exactes de $u_1$ et de $u_2$.
+  \item Montrer que la fonction $f$ est strictement croissante sur $\intFO0{+\infty}$, puis démontrer par récurrence que, pour tout
+    entier naturel $n$, $0<u_n<u_{n+1}<1$.
+  \item En déduire que la suite $(u_n)$ converge, puis déterminer sa limite.
+  \item On pose, pour tout entier naturel $n$, $v_n=1-\dfrac{1}{u_n}$.
+    \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Démontrer que la suite $(v_n)$ est géométrique de raison $\frac12$ et préciser son premier terme.
+      \item En déduire que, pour tout entier naturel $n$, $u_n=\dfrac{1}{1+9\times0{,}5^{n}}$, et retrouver la limite de $(u_n)$.
+    \end{enumerate}
+  \item Déterminer le plus petit entier $n$ tel que $u_n>0{,}999$, par le calcul puis à l'aide d'un programme Python que l'on écrira.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Questionnaire à choix multiples justifié}
+L'espace est muni d'un repère orthonormé. Pour chaque question, une seule des quatre réponses proposées est exacte. Indiquer la
+réponse choisie, puis \textbf{justifier ce choix} par un calcul ou un raisonnement rédigé. Une réponse non justifiée ne rapporte
+aucun point.
+\begin{questions}
+  \item Le plan passant par $A(1\pv2\pv-1)$ et de vecteur normal $\vec n\,(2\pv-1\pv3)$ a pour équation :
+\begin{tasks}[label=\alph*)](2)
+  \task $2x-y+3z+3=0$
+  \task $2x-y+3z-3=0$
+  \task $x+2y-z+3=0$
+  \task $2x-y+3z=0$
+\end{tasks}
+  \item On considère la droite $d:\begin{cases}x=1+t\\y=2-t\\z=3t\end{cases}$, $t\in\R$, et le plan $\mathcal{P}:x+y-3=0$.
+\begin{tasks}[label=\alph*)](2)
+  \task $d$ est strictement parallèle à $\mathcal{P}$
+  \task $d$ est orthogonale à $\mathcal{P}$
+  \task $d$ est incluse dans $\mathcal{P}$
+  \task $d$ et $\mathcal{P}$ ont un seul point commun
+\end{tasks}
+  \item On considère les vecteurs $\vec u\,(1\pv2\pv3)$, $\vec v\,(2\pv0\pv1)$ et $\vec w\,(3\pv2\pv4)$.
+\begin{tasks}[label=\alph*)](2)
+  \task $\vec u$ et $\vec v$ sont orthogonaux
+  \task $(\vec u,\vec v,\vec w)$ est une base de l'espace
+  \task $\norme{\vec w}=9$
+  \task $\vec u$, $\vec v$, $\vec w$ sont coplanaires
+\end{tasks}
+  \item La distance du point $M(1\pv1\pv1)$ au plan d'équation $x+2y+2z-14=0$ est égale à :
+\begin{tasks}[label=\alph*)](4)
+  \task $9$
+  \task $3$
+  \task $\sqrt3$
+  \task $1$
+\end{tasks}
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Fonction trigonométrique et intégrale}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=\dfrac{\sin x}{2+\cos x}$, et l'on note $\mathcal{C}_f$ sa courbe
+représentative dans un repère orthonormé.
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item Justifier que $f$ est bien définie sur $\R$, qu'elle est périodique de période $2\pi$ et qu'elle est impaire. En déduire qu'il
+    suffit de l'étudier sur l'intervalle $\intFF0\pi$.
+  \item Montrer que, pour tout réel $x$, $f'(x)=\dfrac{2\cos x+1}{(2+\cos x)^{2}}$, puis étudier le signe de $f'(x)$ sur $\intFF0\pi$.
+  \item Dresser le tableau de variations de $f$ sur $\intFF0\pi$ et préciser la valeur exacte de son maximum.
+  \item Déterminer une équation de la tangente à $\mathcal{C}_f$ à l'origine du repère.
+\end{questions}
+\partieExo{B}{Intégrale et valeur moyenne}
+\begin{questions}[resume]
+  \item En remarquant que $f$ est de la forme $-\dfrac{u'}{u}$, calculer $\displaystyle\int_0^{\pi}f(x)\,\mathrm{d}x$.
+  \item En déduire la valeur moyenne de $f$ sur $\intFF0\pi$, puis une valeur approchée au centième.
+\end{questions}
+\end{exoBac}

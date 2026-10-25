@@ -1,0 +1,347 @@
+% !TEX root = ../main.tex
+%% Chapitre 15 — Combinatoire et dénombrement
+%% Sources : frontend/cours/resume/terminal/resume_combinatoire_denombrement_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_combinatoire_dénombrement.txt
+%% Exercices 11, 12 et 13 : problèmes inédits rédigés pour le livre.
+
+\begin{ouverture}[denombrement]{15}{Combinatoire et dénombrement}{Partie 3 · Probabilités}
+  {Principes additif et multiplicatif\enspace·\enspace Permutations\enspace·\enspace Arrangements\enspace·\enspace
+   Combinaisons\enspace·\enspace Triangle de Pascal}
+  \objectif{Utiliser les principes additif et multiplicatif pour dénombrer.}
+  \objectif{Dénombrer les $k$-uplets, les permutations et les arrangements d'un ensemble fini.}
+  \objectif{Dénombrer les parties à $k$ éléments à l'aide des coefficients binomiaux.}
+  \objectif{Connaître et démontrer la relation de Pascal et le nombre de parties d'un ensemble.}
+  \objectif{Choisir le bon modèle (ordre, répétitions) et l'appliquer au calcul de probabilités.}
+  \prerequis{Calcul de probabilités dans une situation d'équiprobabilité (Seconde et Première).}
+  \prerequis{Raisonnement par récurrence et sommes (chapitre 1).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Principes de dénombrement}
+
+\begin{definition}[Cardinal]
+Le \textbf{cardinal} d'un ensemble fini $E$, noté $\mathrm{Card}(E)$, est son nombre d'éléments. Pour un entier $k\geq1$, un
+\textbf{$k$-uplet} d'éléments de $E$ est une liste ordonnée $(x_1\pv x_2\pv\dots\pv x_k)$ d'éléments de $E$, distincts ou non.
+\end{definition}
+
+\begin{theoreme}[Principes additif et multiplicatif]
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.2em,itemsep=0.5mm,topsep=0.5mm]
+  \item Si $A$ et $B$ sont \textbf{disjoints}, $\mathrm{Card}(A\cup B)=\mathrm{Card}(A)+\mathrm{Card}(B)$.
+  \item Pour tous ensembles finis $A$ et $B$, $\mathrm{Card}(A\times B)=\mathrm{Card}(A)\times\mathrm{Card}(B)$.
+  \item Si $\mathrm{Card}(E)=n$, le nombre de $k$-uplets d'éléments de $E$ est $\mathrm{Card}\left(E^{k}\right)=n^{k}$.
+\end{itemize}
+\emph{Exemple :} il y a $10^{4}=10\,000$ codes de $4$ chiffres, et $3\times5\times4=60$ menus avec $3$ entrées, $5$ plats et $4$ desserts.
+\end{theoreme}
+
+\essSection{2}{Permutations et arrangements}
+
+\begin{theoreme}[$k$-uplets d'éléments distincts]
+Soit $E$ un ensemble à $n$ éléments et $1\leq k\leq n$. Le nombre de $k$-uplets d'éléments \textbf{distincts} de $E$ (on dit aussi
+\emph{arrangements} de $k$ éléments parmi $n$, notés parfois $A_n^k$) est
+\[ n\times(n-1)\times\cdots\times(n-k+1)=\frac{n!}{(n-k)!}, \]
+où $n!=1\times2\times\cdots\times n$ (factorielle $n$) et $0!=1$. Pour $k=n$, on obtient les \textbf{permutations} de $E$ : il y en a $n!$.
+\end{theoreme}
+
+\begin{demonstration}
+On construit le $k$-uplet terme à terme : $n$ choix pour le premier élément, puis $n-1$ pour le deuxième (il doit être différent),
+\dots, puis $n-k+1$ pour le $k$-ième. Le principe multiplicatif donne le produit annoncé.
+\end{demonstration}
+
+\essSection{3}{Combinaisons}
+
+\begin{definition}[Combinaison]
+Une \textbf{combinaison} de $k$ éléments d'un ensemble $E$ à $n$ éléments est une \textbf{partie} de $E$ à $k$ éléments : l'ordre
+ne compte pas. Leur nombre se note $\dbinom nk$ et se lit « $k$ parmi $n$ ».
+\end{definition}
+
+\begin{theoreme}[Coefficients binomiaux]
+Pour $0\leq k\leq n$ : \quad $\dbinom nk=\dfrac{n!}{k!\,(n-k)!}=\dfrac{n(n-1)\cdots(n-k+1)}{k!}$.\\[2mm]
+$\dbinom n0=\dbinom nn=1$\qquad $\dbinom n1=n$\qquad $\dbinom n2=\dfrac{n(n-1)}{2}$\qquad
+\textbf{Symétrie :} $\dbinom nk=\dbinom n{n-k}$\\[2mm]
+\textbf{Relation de Pascal :} $\dbinom nk=\dbinom{n-1}{k-1}+\dbinom{n-1}{k}$ pour $1\leq k\leq n-1$\qquad
+\textbf{Nombre de parties :} $\displaystyle\sum_{k=0}^{n}\binom nk=2^{n}$
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{demonstration}[de la relation de Pascal et du nombre de parties]
+\raggedright
+Fixons un élément $a$ de $E$. Les parties à $k$ éléments contenant $a$ sont au nombre de $\binom{n-1}{k-1}$ (on choisit les
+$k-1$ autres éléments parmi les $n-1$ restants) ; celles qui ne contiennent pas $a$ sont au nombre de $\binom{n-1}{k}$. Ces deux
+familles sont disjointes : on additionne.\\[1mm]
+La somme des $\binom nk$ compte toutes les parties de $E$ ; or une partie est déterminée par $n$ choix successifs (chaque élément
+est dedans ou non), d'où $2^{n}$ parties.
+\end{demonstration}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[x=7.6mm,y=-5.6mm]
+  \foreach \kk in {0,...,6} \node[font=\otSemi\fontsize{7}{8}\selectfont,text=otGreenDark] at (\kk+1,-1) {\kk};
+  \foreach \nn in {0,...,6} \node[font=\otSemi\fontsize{7}{8}\selectfont,text=otGreenDark] at (0,\nn) {\nn};
+  \node[font=\scriptsize,text=otMuted] at (0,-1) {$n\backslash k$};
+  \fill[otNavyTint] (2.5,3.5) rectangle (4.5,4.5);
+  \fill[otGreen!35] (3.5,4.5) rectangle (4.5,5.5);
+  \foreach \nn in {0,...,6}{%
+    \foreach \kk in {0,...,\nn}{%
+      \pgfmathtruncatemacro{\cc}{factorial(\nn)/(factorial(\kk)*factorial(\nn-\kk))}%
+      \node[font=\small] at (\kk+1,\nn) {\cc};}}
+  \draw[otRule,line width=0.4pt] (0.5,-1.5) -- (0.5,6.5);
+  \draw[otRule,line width=0.4pt] (-0.5,-0.5) -- (7.5,-0.5);
+\end{tikzpicture}\\[0.5mm]
+\legende{Triangle de Pascal : $\binom42+\binom43=6+4=\binom53=10$.}
+\end{minipage}
+
+\essSection{4}{Choisir le bon modèle}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[font=\small,
+  q/.style={draw=otNavy,fill=otNavyTint,rounded corners=1.5mm,inner sep=1.6mm,align=center},
+  r/.style={draw=otGreenDark,fill=otGreenTint,rounded corners=1.5mm,inner sep=1.6mm,align=center},
+  e/.style={font=\scriptsize,text=otMuted,fill=white,inner sep=1pt}]
+  \node[q] (Q1) at (0,0) {L'ordre compte-t-il ?};
+  \node[q] (Q2) at (-1.9,-1.6) {Répétitions\\possibles ?};
+  \node[r] (C) at (2,-1.6) {Combinaison\\$\binom nk$};
+  \node[r] (K) at (-3.2,-3.3) {$k$-uplet\\$n^{k}$};
+  \node[r] (A) at (-0.6,-3.3) {Arrangement\\$\frac{n!}{(n-k)!}$};
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=1.6mm]}] (Q1) -- node[e,pos=0.45] {oui} (Q2);
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=1.6mm]}] (Q1) -- node[e,pos=0.45] {non} (C);
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=1.6mm]}] (Q2) -- node[e,pos=0.45] {oui} (K);
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=1.6mm]}] (Q2) -- node[e,pos=0.45] {non} (A);
+\end{tikzpicture}\\[1mm]
+\legende{Si l'on range les $n$ éléments, on obtient $n!$ permutations.}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\begin{savoirfaire}[Une contrainte ?]
+\raggedright
+Pour « au moins un », on passe souvent au \textbf{complémentaire} : on compte tous les cas, puis on retire ceux qui ne
+conviennent pas. Sinon, on découpe en cas \textbf{disjoints} (exactement $2$, exactement $3$\dots) que l'on additionne.
+\end{savoirfaire}
+\end{minipage}
+
+\begin{savoirfaire}[Dénombrement et probabilités]
+En situation d'équiprobabilité, $P(A)=\dfrac{\mathrm{Card}(A)}{\mathrm{Card}(\Omega)}$. Pour un tirage \textbf{simultané} de $k$ objets
+parmi $n$, $\Omega$ est l'ensemble des combinaisons ; pour des tirages \textbf{successifs}, c'est un ensemble de $k$-uplets (avec
+ou sans répétition, selon qu'il y a remise ou non). \emph{Exemple :} on tire simultanément $4$ boules d'une urne contenant $5$
+rouges et $3$ bleues ; la probabilité d'obtenir exactement $2$ rouges est $\dfrac{\binom52\binom32}{\binom84}=\dfrac{30}{70}=\dfrac37$.
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Arrangement : l'ordre compte (un podium) ; combinaison : il ne compte pas (une équipe, une main de cartes).
+  \item Le principe additif ne s'applique qu'à des ensembles \textbf{disjoints} ; le principe multiplicatif, à des choix successifs.
+  \item $\binom nk$ n'a de sens que pour $0\leq k\leq n$, et $0!=1$.
+  \item Lorsque des objets identiques sont rangés (anagrammes), on choisit les \textbf{positions} de chaque type à l'aide de combinaisons.
+  \item Pour former deux équipes \emph{non distinguées}, on divise par $2$ le nombre de choix de la première équipe.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Principes additif et multiplicatif}
+\begin{questions}
+  \item Un restaurant propose $3$ entrées, $5$ plats et $4$ desserts. Combien de menus complets (entrée, plat, dessert) peut-on composer ?
+  \item On lance deux dés équilibrés, l'un rouge et l'autre bleu. Combien de résultats possibles obtient-on ?
+  \item Un code d'accès est formé de $4$ chiffres de $0$ à $9$, les répétitions étant autorisées. Combien y a-t-il de codes ?
+  \item Dans une classe, $12$ élèves font du sport et $8$ font de la musique ; aucun ne fait les deux. Combien d'élèves font du
+    sport ou de la musique ?
+  \item Combien de mots de passe de $6$ lettres majuscules (de A à Z) peut-on former ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Permutations et factorielles}
+\begin{questions}
+  \item De combien de façons peut-on ranger $5$ livres différents sur une étagère ?
+  \item Combien de classements à l'arrivée sont possibles pour $8$ coureurs (sans ex æquo) ?
+  \item Calculer $6!$ et $7!$, puis simplifier $\dfrac{8!}{6!}$.
+  \item De combien de façons peut-on placer $4$ personnes autour d'une table ronde, si deux placements qui se déduisent l'un
+    de l'autre par une rotation sont considérés comme identiques ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Arrangements}
+\begin{questions}
+  \item De combien de façons peut-on attribuer les médailles d'or, d'argent et de bronze à $3$ des $10$ concurrents d'une course ?
+  \item Calculer $A_{12}^{3}$.
+  \item Un code secret est formé de $4$ chiffres \emph{distincts}. Combien y a-t-il de codes possibles ?
+  \item Simplifier $\dfrac{A_n^{p}}{A_n^{p-1}}$ pour $1\leq p\leq n$.
+  \item De combien de façons peut-on choisir un président, un vice-président et un secrétaire parmi $15$ membres d'un club ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Combinaisons}
+\begin{questions}
+  \item De combien de façons peut-on former une équipe de $3$ personnes parmi $8$ ?
+  \item Calculer $\dbinom{10}{3}$ et $\dbinom{10}{7}$. Que remarque-t-on ?
+  \item Combien de mains de $5$ cartes peut-on former avec un jeu de $52$ cartes ?
+  \item Vérifier que $\dbinom73=\dbinom74$, puis exprimer $\dbinom n2$ en fonction de $n$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Problèmes mixtes}
+\begin{questions}
+  \item Dans une classe de $12$ élèves, on choisit un groupe de $4$ délégués. Combien de groupes sont possibles ?
+  \item Combien de mots de $5$ lettres peut-on former avec les lettres du mot MATHS, chacune étant utilisée une fois ?
+  \item Un restaurant propose $5$ entrées, $8$ plats et $4$ desserts. Combien de menus complets peut-on composer ?
+  \item De combien de façons peut-on répartir $10$ personnes en deux équipes de $5$, les équipes n'étant pas distinguées ?
+  \item Combien de diagonales possède un polygone convexe à $n$ côtés ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Applications}
+\begin{questions}
+  \item Une urne contient $5$ boules rouges et $3$ boules bleues. On tire simultanément $4$ boules. Combien de tirages contiennent
+    exactement $2$ boules rouges ?
+  \item Combien de nombres de $4$ chiffres peut-on écrire avec les chiffres $1$, $2$, $3$, $4$, $5$, les répétitions étant autorisées ?
+  \item De combien de façons peut-on choisir $3$ hommes et $2$ femmes parmi $8$ hommes et $6$ femmes ?
+  \item Résoudre l'équation $\dbinom n2=45$, d'inconnue l'entier $n\geq2$.
+  \item Un mot de passe de $6$ caractères comporte $3$ lettres majuscules et $3$ chiffres, placés dans un ordre quelconque, les
+    répétitions étant autorisées. Combien y a-t-il de mots de passe ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Dénombrer avec des contraintes}
+\begin{questions}
+  \item Combien de parties possède un ensemble à $n$ éléments ? Vérifier en les écrivant toutes pour $E=\ens{a\pv b\pv c}$.
+  \item On forme un comité de $5$ personnes parmi $7$ hommes et $5$ femmes. Combien de comités contiennent au moins $2$ femmes ?
+  \item Un club de $20$ membres élit un bureau formé d'un président, d'un secrétaire et d'un trésorier. Combien y a-t-il de bureaux ?
+  \item On range en ligne $8$ boules : $3$ rouges, $2$ bleues et $3$ vertes, les boules de même couleur étant identiques. Combien
+    de rangements sont possibles ?
+  \item Démontrer par le calcul la relation de Pascal $\dbinom nk=\dbinom{n-1}{k-1}+\dbinom{n-1}{k}$, pour $1\leq k\leq n-1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Applications multiples}
+\begin{questions}
+  \item Un club compte $15$ hommes et $10$ femmes. Combien de comités de $5$ personnes contiennent au moins un homme et au moins une femme ?
+  \item On range en ligne $10$ boules : $4$ rouges, $3$ bleues et $3$ vertes, identiques par couleur. Combien de rangements ?
+  \item Un code est formé de $3$ lettres majuscules \emph{distinctes} suivies de $3$ chiffres (répétitions autorisées). Combien de codes ?
+  \item $16$ joueurs participent à un tournoi. Combien y a-t-il de groupes possibles de $4$ demi-finalistes ?
+  \item En interprétant $\displaystyle\sum_{k=0}^{n}\binom nk$ comme un nombre de parties, démontrer que cette somme vaut $2^{n}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Problèmes combinés}
+\begin{questions}
+  \item Un mot de passe de $8$ caractères contient exactement $4$ lettres majuscules \emph{distinctes} et $4$ chiffres (répétitions
+    autorisées), placés dans un ordre quelconque. Combien y a-t-il de mots de passe ?
+  \item Une classe de $30$ élèves élit un président, un vice-président, un secrétaire et un trésorier. Combien de bureaux ?
+  \item Un sac contient $5$ boules rouges, $4$ bleues et $3$ vertes, identiques par couleur. De combien de façons peut-on en
+    choisir $6$, si seul compte le nombre de boules de chaque couleur ?
+  \item On répartit $20$ personnes en une équipe A et une équipe B de $10$ personnes chacune. Combien de répartitions ?
+  \item En associant à chaque partie à $k$ éléments son complémentaire, démontrer que $\dbinom nk=\dbinom n{n-k}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Devoir de synthèse}
+\partieExo{A}{Principes et modèles}
+\begin{questions}
+  \item Un restaurant propose $4$ entrées, $6$ plats et $5$ desserts. Combien de menus complets ? Et de façons de ranger $7$ livres ?
+  \item Combien de podiums (or, argent, bronze) peut-on former avec $12$ concurrents ? Combien de groupes de $5$ délégués dans une classe de $15$ ?
+\end{questions}
+\partieExo{B}{Répétitions et contraintes}
+\begin{questions}[resume]
+  \item Un code comporte $2$ lettres majuscules distinctes suivies de $3$ chiffres (répétitions autorisées). Combien de codes ?
+  \item De combien de façons peut-on ranger en ligne $9$ boules : $4$ rouges, $3$ bleues et $2$ vertes, identiques par couleur ?
+  \item Un club de $12$ hommes et $8$ femmes forme un comité de $4$ personnes comprenant au moins $2$ femmes. Combien de comités ?
+  \item Un mot de passe de $7$ caractères contient exactement $3$ lettres majuscules distinctes et $4$ chiffres (répétitions
+    autorisées), dans un ordre quelconque. Combien de mots de passe ?
+\end{questions}
+\partieExo{C}{Un tournoi}
+Un tournoi de football réunit $16$ équipes.
+\begin{questions}[resume]
+  \item Combien y a-t-il de groupes possibles de $8$ équipes qualifiées pour le deuxième tour ?
+  \item Ces $8$ équipes sont réparties en $4$ matchs (paires d'équipes, sans ordre). Combien de répartitions sont possibles ?
+  \item Combien y a-t-il de groupes possibles de $4$ demi-finalistes parmi les $8$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Chemins sur un quadrillage}
+\noindent
+\begin{minipage}[t]{0.62\linewidth}\vspace{0pt}\raggedright
+On se déplace sur le quadrillage ci-contre, du point $O(0\pv0)$ au point $A(4\pv3)$, en ne faisant que des pas d'une unité vers la
+droite (D) ou vers le haut (H). Un chemin est donc un mot de $7$ lettres formé de $4$ lettres D et de $3$ lettres H, comme
+DDHDHHD (en vert).
+\end{minipage}\hfill
+\begin{minipage}[t]{0.34\linewidth}\vspace{0pt}
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \draw[otRule,line width=0.5pt] (0,0) grid (4,3);
+  \draw[otGreen,line width=1.8pt,line cap=round,line join=round] (0,0) -- (2,0) -- (2,1) -- (3,1) -- (3,3) -- (4,3);
+  \fill[otNavy] (0,0) circle (2.4pt) node[below left,font=\scriptsize] {$O$};
+  \fill[otNavy] (4,3) circle (2.4pt) node[above right,font=\scriptsize] {$A$};
+  \fill[otOrange] (2,1) circle (2.4pt) node[above left,font=\scriptsize] {$B$};
+\end{tikzpicture}
+\end{minipage}
+\begin{questions}
+  \item Expliquer pourquoi un chemin est entièrement déterminé par les positions des $3$ lettres H parmi les $7$. En déduire le
+    nombre de chemins de $O$ à $A$.
+  \item Combien de chemins passent par le point $B(2\pv1)$ ? Combien l'évitent ?
+  \item Combien y a-t-il de chemins de $O$ au point $C(n\pv n)$ ? Calculer ce nombre pour $n=10$.
+  \item Tout chemin de $O$ à $C(n\pv n)$ traverse la droite d'équation $x+y=n$ en un unique point $(k\pv n-k)$. En dénombrant les
+    chemins selon ce point, démontrer que $\displaystyle\sum_{k=0}^{n}\binom nk^{2}=\binom{2n}{n}$.
+  \item La fonction Python ci-dessous construit une ligne du triangle de Pascal à partir de la précédente. Que renvoie
+    \texttt{ligne\_suivante([1, 4, 6, 4, 1])} ? Sur quelle propriété repose cette fonction ?
+\begin{python}
+def ligne_suivante(L):
+    M = [1]
+    for k in range(1, len(L)):
+        M.append(L[k-1] + L[k])
+    M.append(1)
+    return M
+\end{python}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le paradoxe des anniversaires}
+Dans un groupe de $n$ personnes ($2\leq n\leq365$), on suppose que les dates d'anniversaire sont indépendantes et réparties
+uniformément sur les $365$ jours de l'année (on ignore le 29 février).
+\begin{questions}
+  \item Combien y a-t-il de listes possibles des $n$ dates d'anniversaire ? Combien de ces listes sont formées de dates toutes distinctes ?
+  \item En déduire que la probabilité $p_n$ qu'au moins deux personnes du groupe aient la même date d'anniversaire est
+    \[ p_n=1-\frac{365\times364\times\cdots\times(365-n+1)}{365^{n}}. \]
+  \item À l'aide de la calculatrice, donner des valeurs approchées de $p_{10}$, $p_{23}$ et $p_{30}$.
+  \item Que renvoie la fonction ci-dessous ? Interpréter ce résultat, qui surprend souvent.
+\begin{python}
+def seuil():
+    q = 1
+    n = 1
+    while 1 - q <= 0.5:
+        n = n + 1
+        q = q * (365 - n + 1) / 365
+    return n
+\end{python}
+  \item Dans un groupe de $23$ personnes, quelle est la probabilité qu'au moins une des $22$ autres soit née le même jour que vous ?
+    Pourquoi ce résultat est-il très différent de $p_{23}$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Jeux de hasard : loto et poker}
+\partieExo{A}{Le loto}
+Une grille consiste à choisir $5$ numéros parmi $49$, puis un numéro « chance » parmi $10$ ; le tirage est équiprobable.
+\begin{questions}
+  \item Combien y a-t-il de grilles ? Quelle est la probabilité de gagner le gros lot (tout juste) ?
+  \item Combien de choix de $5$ numéros comportent exactement $3$ des numéros tirés ? Quelle est la probabilité correspondante ?
+  \item Quelle est la probabilité d'avoir au moins un bon numéro parmi les $5$ ?
+\end{questions}
+\partieExo{B}{Le poker}
+Une main est un ensemble de $5$ cartes d'un jeu de $52$ cartes ($13$ hauteurs et $4$ couleurs).
+\begin{questions}[resume]
+  \item Combien de mains contiennent un carré (quatre cartes de même hauteur) ?
+  \item Un full est formé de trois cartes d'une même hauteur et de deux cartes d'une autre hauteur. Combien y a-t-il de fulls ?
+  \item Combien de mains contiennent exactement une paire (et rien de mieux) ? En déduire la probabilité d'avoir une paire.
+\end{questions}
+\end{exercice}

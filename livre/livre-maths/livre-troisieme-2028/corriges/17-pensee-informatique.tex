@@ -1,0 +1,61 @@
+\clearpage\pagestyle{otMain}\fontsize{11}{15}\selectfont\corrigesChapitre{17}{Pensée informatique et algorithmique}
+\begin{blocLivre}{cor-17-1}\begin{corrige}{1}{Suivre trois opérations}\demarche{Écrire chaque valeur dans l’ordre.}
+x prend successivement 3, 8 et 16. Le bloc dire affiche $\res{16}$. Ajouter puis multiplier ne donne pas le même résultat que multiplier puis ajouter.
+\label{fig-cor-17-1}\figureGeo[corrige]{script-01}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-2}\begin{corrige}{2}{Un nombre demandé}\demarche{Traduire les modifications successives.}
+Après ajout, on a $x+4$ ; après multiplication, $3(x+4)$. Les résultats sont $\res{18}$ et $\res0$. Les parenthèses traduisent l’ordre des blocs.
+\label{fig-cor-17-2}\figureGeo[corrige]{script-02}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-3}\begin{corrige}{3}{Une boucle bornée}\demarche{Repérer les limites de la boucle.}
+Le bloc ajouter s’exécute quatre fois. Les valeurs sont 3, 6, 9, 12. La sortie est $\res{12}$. Le bloc dire placé après la boucle s’exécute une seule fois.
+\label{fig-cor-17-3}\figureGeo[corrige]{script-03}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-4}\begin{corrige}{4}{Un test et deux branches}\demarche{Tester la valeur située à la frontière.}
+Le test est $x\ge10$, donc il est faux pour 9 et vrai pour 10 et 14. Les sorties sont respectivement $\res{\text{petit, grand, grand}}$. La borne 10 conduit bien à la branche du test vrai.
+\label{fig-cor-17-4}\figureGeo[corrige]{script-04}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-5}\begin{corrige}{5}{Doubler plusieurs fois}\demarche{Distinguer additions et multiplications répétées.}
+Les trois tours donnent 4, 8, 16. La sortie est $\res{16=2\times2^3}$. Le script multiplie à chaque tour ; il n’ajoute pas 2 trois fois.
+\label{fig-cor-17-5}\figureGeo[corrige]{script-05}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-6}\begin{corrige}{6}{Deux variables}\demarche{Faire un tableau des deux variables.}
+Au départ $(s;n)=(0;1)$. Après les cinq tours : $(1;2),(3;3),(6;4),(10;5),(15;6)$. La sortie est $\res{15}$ : le script calcule la somme $1+2+3+4+5$. L’ajout à s précède l’augmentation de n.
+\label{fig-cor-17-6}\figureGeo[corrige]{script-06}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-7}\begin{corrige}{7}{Répéter jusqu’à}\demarche{Vérifier le test avant chaque nouveau tour.}
+En partant de 0, on obtient 6, 12, 18 puis 24. Le test $x\ge20$ devient vrai à 24 : $\res{4\text{ tours}}$ et sortie $\res{24}$. La boucle ne s’arrête pas à 20, qui n’est jamais atteint.
+\label{fig-cor-17-7}\figureGeo[corrige]{script-07}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-8}\begin{corrige}{8}{Une condition composée}\demarche{Évaluer chaque condition simple, puis les combiner.}
+La condition est vraie seulement si $x\ge10$ et $x\le20$ sont vraies toutes les deux. Les affichages sont $\res{\text{hors, dans, dans, hors de la plage}}$ ; les bornes 10 et 20 sont incluses. Avec « ou », tout nombre vérifierait l’une des deux conditions : le script afficherait toujours « dans la plage ».
+\label{fig-cor-17-8}\figureGeo[corrige]{script-08}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-9}\begin{corrige}{9}{Énumérer des diviseurs}\demarche{Comprendre l’intervalle parcouru par la boucle.}
+Le script teste d de 1 à 12 et affiche $\res{1,2,3,4,6,12}$. Ce sont tous les diviseurs positifs de 12. Commencer par 0 rendrait le calcul du reste impossible, car on ne divise pas par zéro.
+\label{fig-cor-17-9}\figureGeo[corrige]{script-09}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-10}\begin{corrige}{10}{Le reste par soustractions}\demarche{Suivre r et q à chaque tour, en testant la condition avant le tour.}
+Pour 23 et 5, r prend les valeurs 23, 18, 13, 8, 3 et q compte 4 soustractions : affichage $\res{4\text{ puis }3}$. Pour 3 et 5, le test $r<b$ est vrai dès le départ : affichage $\res{0\text{ puis }3}$. Le script calcule le quotient q et le reste r de la division euclidienne de a par b : $23=5\times4+3$.
+\label{fig-cor-17-10}\figureGeo[corrige]{script-10}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-11}\begin{corrige}{11}{Une boucle qui dépasse}\demarche{Prouver que la variable progresse vers la condition d’arrêt.}
+Les valeurs sont 1, 2, 4, 8, 16, 32, 64. Il faut $\res6$ tours avant $x>50$. Avec « ajouter 0 », x reste 1 ; le test ne devient jamais vrai et la boucle ne termine pas.
+\label{fig-cor-17-11}\figureGeo[corrige]{script-11}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-12}\begin{corrige}{12}{Un bloc personnalisé}\demarche{Séparer le motif répété et le déplacement entre motifs.}
+Le programme trace trois carrés de côté 30, en relevant le stylo pour avancer de 40 entre deux carrés : leurs points de départ sont espacés de 40 unités. La longueur tracée vaut $3\times4\times30=\res{360}$ unités. Le déplacement n’est pas dans le bloc carré, sinon il déplacerait aussi les coins.
+\label{fig-cor-17-12}\figureGeo[corrige]{script-carres}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-13}\begin{corrige}{13}{Simuler un dé}\demarche{Initialiser une fois, compter à chaque tour, diviser à la fin.}
+On met succès à $\res0$ avant la boucle ; on ajoute $\res1$ à succès quand le dé vaut 6 ; on affiche succès/$\res{600}$ après la boucle. La fréquence devrait approcher la probabilité $1/6\approx0{,}17$, sans être forcément égale.
+\label{fig-cor-17-13}\figureGeo[corrige]{script-simulation}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-14}\begin{corrige}{14}{Deux dés et un « ou »}\demarche{Traduire la condition composée en évènement, puis utiliser la relation de la réunion.}
+Il compte les lancers où le premier dé ou le second donne 6 : l’évènement « au moins un six ». Sa probabilité vaut $1/6+1/6-1/36=\res{11/36}\approx0{,}31$. L’affichage plausible est $\res{0{,}31}$ ; 0,17 correspondrait à un seul dé et 0,50 serait très éloigné pour 1000 lancers.
+\label{fig-cor-17-14}\figureGeo[corrige]{script-deux-des}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-15}\begin{corrige}{15}{Des polygones réguliers}\demarche{Exécuter le bloc pour chaque valeur du paramètre.}
+On obtient un $\res{\text{triangle équilatéral, un carré, un pentagone et un hexagone réguliers}}$. Pour l’hexagone, le lutin tourne de $360/6=\res{60^\circ}$ à chaque sommet. La longueur totale vaut $30\times(3+4+5+6)=\res{540}$ unités. Après chaque polygone, le lutin a tourné de 360° et revient à son point de départ.
+\label{fig-cor-17-15}\figureGeo[corrige]{script-polygones}
+\end{corrige}\end{blocLivre}

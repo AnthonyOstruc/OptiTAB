@@ -1,0 +1,655 @@
+\BeginChapter{02}{Signaux électriques}
+\Page{Chapitre 02 / Programme officiel}{Signaux électriques dans l’ARQS}{ch02-chapitre-02}
+Un voltmètre modifie-t-il la tension qu’il mesure ? Pourquoi un GBF ne fournit-il pas toujours la tension affichée ? Les lois de conservation et un petit nombre de modèles permettent de répondre, à condition de fixer les orientations avant de calculer.
+\begin{loi}{Notions et capacités travaillées}
+Décrire le courant comme un débit de charge ; tester l’ARQS ; algébriser tensions, courants et puissances.\par Appliquer les lois des nœuds et des mailles. Modéliser les dipôles $R$, $C$, $L$ et une source de Thévenin ; calculer stockage et dissipation.\par Établir les associations de résistances et les diviseurs ; prévoir l’effet des résistances d’entrée et de sortie.
+\end{loi}
+
+\Sub{Prérequis}
+Conversions ($\mathrm{mA}$, $\mathrm{k}\Omega$, $\mu\mathrm{ F}$), équations linéaires, dérivée et intégrale simples. Le courant est algébrique ; sa flèche est une référence et ne préjuge pas du sens réel.
+
+\begin{methode}{La méthode du chapitre}
+Choisir une masse, nommer les nœuds, flécher chaque branche, écrire les lois locales puis les relations des dipôles. Ne simplifier le schéma qu’après avoir reconnu les vraies associations.
+\end{methode}
+
+\source{Concordance : annexe 2 de l’arrêté du 5 janvier 2021, rubrique 1.2. Pages internes 13 et 14 de l’annexe de physique-chimie (pages PDF 50 et 51). Les régimes transitoires sont développés au chapitre 03.}
+
+\Page{Diagnostic / 15 min}{Avant d’ouvrir le cours}{ch02-diagnostic}
+\begin{questions}
+\item Convertir $2{,}2\ \mathrm{k}\Omega$, $470\ \mathrm{nF}$ et $3{,}0\ \mathrm{mA}$ en unités SI.
+\item Une charge de $12\ \mathrm{mC}$ traverse une section en $4{,}0\ \mathrm{s}$. Quel est le courant moyen ?
+\item Si $V_A=5$ V et $V_B=-2$ V, calculer $u_{AB}$ et $u_{BA}$.
+\item Deux résistances de $100\ \Omega$ sont en série, puis en parallèle. Donner les deux équivalents.
+\item Une résistance reçoit $u=6$ V et est parcourue par $i=20$ mA en convention récepteur. Calculer sa puissance.
+\item Quel branchement convient à un voltmètre ? À un ampèremètre ?
+\item Que devient le courant d’un condensateur idéal en régime continu établi ? Et la tension d’une bobine idéale ?
+\item Un fil de $1$ m transporte un signal à $2\times10^8$ m/s. Calculer le temps de propagation.
+\end{questions}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les unités sont maîtrisées.}\checkline{Je peux orienter un schéma et annoncer les hypothèses.}\checkline{Je sais expliquer une condition initiale.}Corrigé p.\,\pageref{ch02-corr-diag}.
+\end{docu}
+
+
+\Page{Cours / 1}{Charge, courant et échelles}{ch02-cours-1}
+La charge électrique est quantifiée : $q=Ne$, avec $e=1{,}602\,176\,634\times10^{-19}$ C. À l’échelle d’un circuit usuel, le nombre de porteurs est immense : on décrit donc le transfert par une grandeur continue sans nier sa structure microscopique.
+\begin{loi}{Un débit algébrique}
+$i(t)=\dd q/\dd t$, où $\dd q$ est la charge nette traversant une section dans le sens choisi pendant $\dd t$. Ainsi $\Delta q=\int i(t)\dd t$. Un courant négatif signifie que le transfert conventionnel se fait dans l’autre sens.
+\end{loi}
+\fig{ch02/noeud}{Les flèches définissent les courants algébriques ; elles n’imposent pas leurs signes.}\Sub{Du microscopique au circuit}
+À $1$ mA, environ $6{,}24\times10^{15}$ charges élémentaires franchissent une section par seconde. Dans un métal, les électrons dérivent en sens opposé au courant conventionnel. La vitesse de dérive n’est pas la vitesse de propagation du signal.
+\Sub{Ordres de grandeur}
+Capteur : $\mu\mathrm{ A}$ à $\mathrm{mA}$ ; petit montage électronique : quelques volts et $\mathrm{mA}$ ; démarreur automobile : centaines d’ampères. Le réseau domestique français est caractérisé par $230$ V efficaces et $50$ Hz ; ces valeurs décrivent un signal alternatif, pas sa valeur instantanée.
+
+
+\Page{Cours / 2}{Quand peut-on utiliser l’ARQS ?}{ch02-cours-2}
+Un signal met un temps $t_p=\ell/v$ pour parcourir un circuit de dimension caractéristique $\ell$. L’approximation des régimes quasi stationnaires néglige ce retard devant le temps caractéristique $T$ des variations étudiées.
+\begin{loi}{Comparer deux durées}
+$\ell/v\ll T$. Pour un signal périodique de fréquence $f$, $\result{\ell f/v\ll1}$, soit $\ell\ll\lambda=v/f$. Utiliser la célérité dans le câblage ; $c$ fournit seulement une estimation dans le vide.
+\end{loi}
+\Sub{Exemple raisonné}
+Avec $\ell=1$ m, $v=2\times10^8$ m/s et $f=10$ kHz, le rapport vaut $5\times10^{-5}$ : le modèle de circuit localisé est cohérent. À $100$ MHz il vaut $0{,}5$ : les retards ne sont plus négligeables.
+\begin{piege}{Les fronts rapides comptent}
+Un créneau de faible fréquence peut comporter des fronts très courts. Comparer aussi $\ell/v$ à la durée du front. Une fréquence de répétition seule ne garantit pas l’ARQS.
+\end{piege}
+\Sub{Ce que l’approximation permet}
+On attribue une tension et un courant à chaque dipôle à un même instant. La charge accumulée dans les nœuds de connexion et les effets répartis du câblage sont négligés dans le modèle. Les capacités et inductances des composants restent, elles, explicitement prises en compte.
+
+
+\Page{Cours / 3}{Potentiels, tensions et mailles}{ch02-cours-3}
+On choisit un nœud de référence appelé masse et on lui attribue $V=0$. Les potentiels dépendent de cette référence ; les différences de potentiel n’en dépendent pas.
+\begin{loi}{Une différence orientée}
+$u_{AB}=V_A-V_B$. La flèche de $u_{AB}$ va de $B$ vers $A$. Donc $u_{AB}=-u_{BA}$ et $u_{AB}+u_{BC}=u_{AC}$. Dans le modèle de circuit, la somme des tensions parcourues sur une maille est nulle.
+\end{loi}
+\fig{ch02/thevenin}{La flèche de u pointe vers la borne de potentiel utilisée en premier ; le courant de charge est descendant dans R.}\Sub{Écrire une maille sans récitation}
+Partir du potentiel de la masse et suivre le circuit. Ici la source élève le potentiel de $E$, puis la résistance interne fait chuter le potentiel de $ri$ : $u=E-ri$. Dans la charge, $u=Ri$, d’où $i=E/(R+r)$.
+\begin{piege}{Masse électrique et terre}
+Une masse est une référence de potentiel. La terre est un conducteur de protection. Les masses des voies d’un oscilloscope de laboratoire sont souvent reliées entre elles et à la terre : vérifier la notice avant de connecter les pinces.
+\end{piege}
+
+
+\Page{Cours / 4}{Conservation de la charge et nœuds}{ch02-cours-4}
+Sur un petit volume entourant un nœud, le bilan de charge s’écrit $\dot q_{\rm nœud}=\sum i_{\rm entrants}-\sum i_{\rm sortants}$. Dans le modèle de nœud sans accumulation, le membre de gauche est négligeable.
+\begin{loi}{Loi des nœuds}
+$\sum i_{\rm entrants}=\sum i_{\rm sortants}$. Les signes sont déterminés par les flèches, pas par les valeurs que l’on espère obtenir.
+\end{loi}
+\fig{ch02/noeud}{Un bilan de charge justifie la relation, même lorsqu’un courant calculé est négatif.}\Sub{Exemple}
+Avec $i_1=4$ mA, $i_2=-1$ mA et $i_3=5$ mA, on obtient $i_4=i_1+i_2-i_3=-2$ mA. Le courant réel associé à $i_4$ circule vers le nœud.
+\Sub{Choisir les inconnues utiles}
+Pour $N$ nœuds, toutes les équations de nœud ne sont pas indépendantes : la somme des bilans s’annule. Fixer une masse puis rechercher les potentiels des autres nœuds limite les inconnues. Pour un nœud $V$ relié par $R_j$ aux potentiels connus $V_j$, écrire directement $\sum_j(V-V_j)/R_j=0$.
+\begin{methode}{Vérifier après résolution}
+Réinjecter les valeurs dans un nœud puis dans une maille non utilisée. Cette vérification détecte une inversion de courant ou une tension définie dans l’autre sens.
+\end{methode}
+
+
+\Page{Cours / 5}{Puissance et conventions}{ch02-cours-5}
+La puissance caractérise un transfert d’énergie par unité de temps. Son signe indique un sens d’échange relativement à la convention choisie ; un dipôle peut changer de rôle pendant une évolution.
+\fig{ch02/conventions}{La convention porte sur les flèches ; le fonctionnement dépend ensuite du signe de ui.}\begin{loi}{Énergie reçue et énergie fournie}
+En convention récepteur (flèches opposées), $p_{\rm reçue}=ui$. En convention générateur (flèches de même sens), $p_{\rm fournie}=ui$. L’énergie reçue entre $t_1$ et $t_2$ vaut $\int_{t_1}^{t_2}p_{\rm reçue}\dd t$.
+\end{loi}
+\Sub{Exemple : une batterie qui se recharge}
+En convention récepteur, $u=12$ V et $i=2$ A donnent $p=24$ W reçus. Si $i=-2$ A pour la même tension, la batterie fournit $24$ W. La flèche n’a pas changé ; le fonctionnement, lui, a changé.
+\Sub{Un contrôle global}
+Dans un circuit idéal sans stockage dans les fils, la somme des puissances reçues par tous les dipôles est nulle. Pour une source de Thévenin alimentant $R$ : $Ei=ri^2+Ri^2$. Le bilan sépare puissance produite par la source idéale, perte interne et puissance utile.
+
+
+\Page{Cours / 6}{Résistances et associations}{ch02-cours-6}
+\begin{loi}{Le conducteur ohmique}
+En convention récepteur : $u=Ri$, avec $R>0$ ; $\result{p_J=Ri^2=u^2/R\geq0}$. La conductance $G=1/R$ se mesure en siemens (S). Des résistances de montage vont couramment de quelques ohms à plusieurs mégohms ; leur puissance admissible doit être vérifiée.
+\end{loi}
+\Sub{Association série}
+Deux résistances sont en série si leur nœud commun ne possède aucune autre branche : elles portent le même courant. $u=(R_1+R_2)i$, donc $R_{\rm eq}=R_1+R_2$.
+\Sub{Association parallèle}
+Deux résistances sont en parallèle si elles relient exactement les mêmes nœuds : elles ont la même tension. $i=u/R_1+u/R_2$, donc $R_{\rm eq}=R_1R_2/(R_1+R_2)$. L’équivalent est plus petit que chacune des deux résistances.
+\fig{ch02/diviseur}{Le branchement de Re empêche de traiter R1 et R2 comme une simple série.}\begin{methode}{Tests limites}
+En parallèle, si $R_2\to\infty$, $R_{\rm eq}\to R_1$ ; si $R_2\to0$, $R_{\rm eq}\to0$. Ces limites valent mieux qu’une formule appliquée à un mauvais schéma.
+\end{methode}
+
+
+\Page{Cours / 7}{Diviseurs de tension et de courant}{ch02-cours-7}
+\begin{loi}{Deux résultats à démontrer}
+Deux résistances $R_1,R_2$ en série : $u_2=E\,R_2/(R_1+R_2)$. Deux résistances en parallèle recevant un courant total $I$ : $i_1=I\,R_2/(R_1+R_2)$ et $i_2=I\,R_1/(R_1+R_2)$.
+\end{loi}
+\Sub{Démonstration et sens physique}
+Pour le diviseur de tension, $i=E/(R_1+R_2)$ puis $u_2=R_2i$. Pour le diviseur de courant, $u=I/(1/R_1+1/R_2)$ puis $i_1=u/R_1$. La plus grande résistance reçoit la plus grande tension en série et le plus petit courant en parallèle.
+\fig{ch02/diviseur}{Pour la sortie chargée, remplacer R2 par R2 parallèle Re avant d’utiliser le diviseur.}\Sub{Exemple chargé}
+$E=12$ V, $R_1=2\ \mathrm{k}\Omega$, $R_2=4\ \mathrm{k}\Omega$ : à vide $u=8$ V. Avec $R_e=4\ \mathrm{k}\Omega$, l’équivalent de sortie est $2\ \mathrm{k}\Omega$ et $u=6$ V. La baisse ne vient pas d’une modification de la source idéale mais de la redistribution des courants.
+\begin{piege}{La condition fait partie de la formule}
+Un diviseur de tension exige le même courant dans les deux résistances utilisées. Un diviseur de courant exige la même tension aux bornes des deux branches.
+\end{piege}
+
+
+\Page{Cours / 8}{Condensateur : charge et énergie}{ch02-cours-8}
+Le condensateur idéal est un modèle à deux armatures portant $q$ et $-q$. On oriente $u$ vers l’armature où entre le courant positif : c’est la convention récepteur.
+\begin{loi}{Relations constitutives}
+$q=Cu$ ; $\result{i=C\dot u}$ ; $\result{\mathcal E_C=\tfrac12Cu^2}$. La capacité s’exprime en farads : dans les montages usuels, on rencontre souvent des pF, nF et $\mu\mathrm{ F}$.
+\end{loi}
+\fig{ch02/rc}{Dans ce sens de i, la tension uC est orientée vers l’armature supérieure : i = C duC/dt.}\Sub{Retrouver l’énergie}
+$p=ui=Cu\dot u=\dd(Cu^2/2)/\dd t$. L’énergie reçue par le composant idéal est stockée, puis peut être rendue. Le courant peut donc être de signe opposé à la tension.
+\Sub{Conséquences physiques}
+Une tension constante produit un courant nul : en continu établi, remplacer le condensateur idéal par un circuit ouvert. Si le courant reste fini, $u_C$ est continu ; un saut instantané demanderait un transfert impulsionnel de charge.
+\begin{methode}{Exemple}
+$C=100\ \mathrm{nF}$ et $u=5$ V donnent $q=0{,}50\ \mu\mathrm{ C}$ et $\mathcal E_C=1{,}25\ \mu\mathrm{ J}$. Une rampe de pente $2\times10^3$ V/s impose $i=0{,}20$ mA.
+\end{methode}
+
+
+\Page{Cours / 9}{Bobine : courant et énergie}{ch02-cours-9}
+\begin{loi}{Bobine idéale en convention récepteur}
+$\result{u=L\dot i}$ ; $\result{\mathcal E_L=\tfrac12Li^2}$. L’inductance $L$ s’exprime en henrys. Dans un laboratoire d’enseignement : souvent mH à H ; la résistance du fil peut être significative.
+\end{loi}
+\fig{ch02/rl}{La tension uL est celle de l’inductance idéale. Une bobine réelle ajoute une résistance série r.}\Sub{Stockage et continuité}
+$p=ui=Li\dot i=\dd(Li^2/2)/\dd t$. Avec une tension finie, le courant est continu. En continu établi, la tension de l’inductance idéale est nulle : elle devient un fil. La bobine réelle reste une résistance $r$ dans cette limite.
+\Sub{Exemple}
+$L=20$ mH et $i=0{,}10$ A donnent $\mathcal E_L=0{,}10$ mJ. Si le courant diminue de $0{,}10$ A en $1\ \mu\mathrm{ s}$, l’ordre de grandeur de $|u|$ est $2$ kV. La rupture révèle les limites du modèle idéal et la nécessité d’un trajet de restitution d’énergie.
+\begin{piege}{Ne pas confondre les deux continuités}
+C’est $u_C$ qui reste continu pour un courant fini ; c’est $i_L$ qui reste continu pour une tension finie. $i_C$ et $u_L$ peuvent changer brutalement lors d’une commutation idéale.
+\end{piege}
+
+
+\Page{Cours / 10}{Source réelle et point de fonctionnement}{ch02-cours-10}
+\begin{loi}{Modèle de Thévenin}
+Une source linéaire s’écrit $u=E-ri$ en convention générateur, avec $E$ sa tension à vide et $r$ sa résistance de sortie. La source idéale de tension correspond à $r=0$. Le modèle est valable dans le domaine où la caractéristique est affine.
+\end{loi}
+\fig{ch02/thevenin}{La droite de source et la loi de charge déterminent ensemble le point de fonctionnement.}\Sub{Charge résistive}
+$u=Ri$, donc $i=E/(R+r)$ et $u=ER/(R+r)$. À vide ($R\to\infty$), $u\to E$ ; au court-circuit idéal, $i\to E/r$ si $r>0$. Ce dernier résultat est une prédiction du modèle et peut dépasser les limites réelles du générateur.
+\Sub{Mesurer sans court-circuiter}
+Mesurer $E$ avec un voltmètre de forte résistance, puis $u$ sur une résistance $R$ connue : $r=R(E/u-1)$. Choisir la charge dans le domaine autorisé du générateur.
+\begin{methode}{Exemple GBF}
+Si $E=4{,}0$ V et $r=50\ \Omega$, une entrée $R=50\ \Omega$ reçoit $2{,}0$ V ; une entrée $1\ \mathrm{M}\Omega$ reçoit presque $4{,}0$ V. L’affichage peut être étalonné pour une charge donnée : lire le réglage et la notice.
+\end{methode}
+
+
+\Page{Cours / 11}{Mesurer sans ignorer le montage}{ch02-cours-11}
+Un voltmètre réel présente une résistance d’entrée $R_V$ ; un ampèremètre possède une résistance série $r_A$. Leur insertion change le circuit : il faut estimer cette perturbation avant de conclure.
+\fig{ch02/diviseur}{Le voltmètre se modélise par une résistance d’entrée en parallèle sur la sortie.}\begin{loi}{Adaptation en tension}
+Pour une source de résistance de sortie $R_s$ et une entrée $R_e$, $u=E\,R_e/(R_s+R_e)$. L’erreur relative de charge est $\varepsilon=R_s/(R_s+R_e)$. Pour $\varepsilon<1\,\%$, il faut $R_e>99R_s$.
+\end{loi}
+\Sub{Exemple de mesure}
+Une sortie équivalente à $E=5$ V, $R_s=100\ \mathrm{k}\Omega$ alimente un voltmètre $R_V=1\ \mathrm{M}\Omega$ : $u=4{,}545$ V et l’erreur vaut $9{,}09\,\%$. Avec $10\ \mathrm{M}\Omega$, elle descend à $0{,}990\,\%$.
+\Sub{Résistances typiques : vérifier la notice}
+Un GBF de laboratoire a souvent une sortie de $50\ \Omega$ ; un oscilloscope une entrée de $1\ \mathrm{M}\Omega$, parfois commutable en $50\ \Omega$ ; un multimètre numérique souvent $10\ \mathrm{M}\Omega$. Ce sont des modèles usuels, pas des garanties sur un appareil particulier.
+\begin{piege}{Connexion des masses}
+Les deux pinces de masse d’un oscilloscope de table ne permettent généralement pas de mesurer deux nœuds indépendants. Les placer sur des nœuds différents peut court-circuiter une partie du montage.
+\end{piege}
+
+
+\Page{Pratique / TP}{Identifier une source réelle}{ch02-tp}
+\fig{ch02/thevenin}{Mesurer u pour plusieurs résistances R connues ; calculer i = u/R.}\begin{questions}
+\item Utiliser un générateur basse tension dans ses limites de courant. Choisir cinq charges et vérifier leurs puissances admissibles.
+\item Mesurer la tension à vide, puis $u$ sur chaque charge ; calculer $i=u/R$. Répéter une mesure pour estimer la dispersion.
+\item Ajuster $u=E-ri$ : l’ordonnée à l’origine donne $E$ et l’opposé de la pente donne $r$.
+\item Comparer une charge de $50\ \Omega$ et une entrée de forte résistance ; expliciter le réglage de charge du GBF.
+\item Tracer les résidus, discuter la résolution du voltmètre et la tolérance des charges.
+\end{questions}
+\begin{docu}{Données simulées pour préparer l’exploitation}
+$R$ ($\Omega$) : $100$, $200$, $500$, $1000$.\par $u$ (V) : $4{,}00$, $4{,}80$, $5{,}45$, $5{,}71$.\par Elles correspondent approximativement à $E=6{,}0$ V et $r=50\ \Omega$. Elles ne sont pas des mesures réalisées.
+\end{docu}
+\begin{methode}{Attendu du compte rendu}
+Schéma orienté, tableau avec unités, estimation des incertitudes, droite ajustée, résidus et conclusion sur le domaine où le modèle de Thévenin décrit les résultats.
+\end{methode}
+
+
+\Page{Pratique / Numérique}{Un réseau résolu par les potentiels}{ch02-numerique}
+Deux nœuds $A$ et $B$ : $A$ est relié à $6$ V par $1\ \mathrm{k}\Omega$, à la masse par $2\ \mathrm{k}\Omega$ et à $B$ par $1\ \mathrm{k}\Omega$. $B$ est relié à la masse par $1\ \mathrm{k}\Omega$. Les bilans donnent :
+\[2{,}5V_A-V_B=6,\qquad -V_A+2V_B=0.\]
+\begin{verbatim}
+import numpy as np
+G = np.array([[2.5, -1.0], [-1.0, 2.0]])
+b = np.array([6.0, 0.0])
+VA, VB = np.linalg.solve(G, b)
+print(VA, VB, G @ np.array([VA, VB]) - b)
+\end{verbatim}
+Ici les conductances ont été exprimées en mS ; les courants associés sont donc en mA. On trouve $V_A=3$ V et $V_B=1{,}5$ V.
+\begin{questions}
+\item Retrouver les équations de nœud avant d’exécuter le programme.
+\item Calculer tous les courants puis vérifier que les puissances dissipées totalisent $18$ mW.
+\item Remplacer la résistance $B$-masse par une très grande valeur et retrouver la limite $V_A=V_B=4$ V.
+\item Faire varier une résistance et tracer la tension de sortie ; expliquer la tendance.
+\end{questions}
+\begin{piege}{Le code vérifie le système écrit}
+Un résidu numérique petit garantit que les équations saisies sont résolues. Il ne prouve pas qu’elles correspondent au schéma. La vérification physique reste nécessaire.
+\end{piege}
+
+
+\Page{Bilan de cours}{Les réflexes à conserver}{ch02-synthese}
+\begin{loi}{Les relations et leurs conditions}
+$i=\dot q$ ; ARQS : $\ell/v\ll T$ ; $u_{AB}=V_A-V_B$.\par Nœud sans accumulation : $\sum i_{\rm entrants}=\sum i_{\rm sortants}$.\par Récepteur : $p=ui$ ; $u_R=Ri$ ; $i_C=C\dot u_C$ ; $u_L=L\dot i_L$.\par $\mathcal E_C=Cu_C^2/2$ ; $\mathcal E_L=Li_L^2/2$ ; $p_J=Ri^2$.\par Thévenin : $u=E-ri$. Série : somme des résistances ; parallèle : somme des conductances.
+\end{loi}
+\Sub{Démonstrations à refaire}
+\begin{questions}
+\item Relier la loi des nœuds au bilan de charge.
+\item Retrouver les deux diviseurs et leurs conditions.
+\item Retrouver l’énergie d’un condensateur et d’une bobine à partir de la puissance.
+\item Établir la chute de tension due à une résistance d’entrée finie.
+\end{questions}
+
+\begin{docu}{Avant de rendre une copie}
+\checkline{Toutes les grandeurs ont une orientation.}\checkline{Les associations portent sur les bons nœuds.}\checkline{Les unités et les limites sont cohérentes.}\checkline{Le bilan des puissances est vérifié.}
+\end{docu}
+
+
+\Page{Exercices / Applications}{Charges et approximations}{ch02-td1}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E01}{Compter les porteurs}{Niveau 1}{8 min}
+\begin{questions}
+\item Un courant constant de $0{,}80$ mA circule pendant $2{,}0$ min. Calculer la charge transférée et le nombre de charges élémentaires ($e=1{,}60\times10^{-19}$ C).
+\item Expliquer pourquoi une description continue est pertinente.
+\end{questions}
+
+\ex{E02}{Un courant variable}{Niveau 1}{10 min}
+\begin{questions}
+\item Pour $0\leq t\leq2$ s, $i(t)=3t^2$ mA, avec $t$ en secondes. Calculer la charge transférée et le courant moyen.
+\item Le courant moyen est-il la demi-somme des valeurs extrêmes ?
+\end{questions}
+
+\ex{E03}{Tester l’ARQS}{Niveau 1}{10 min}
+\begin{questions}
+\item Un montage de $2$ m est utilisé à $100$ kHz, avec $v=2\times10^8$ m/s. Calculer $\ell f/v$.
+\item Même question à $50$ MHz. Un front de $2$ ns est-il compatible avec le premier montage ?
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Tensions et conservation}{ch02-td2}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E04}{Changer de référence}{Niveau 1}{8 min}
+\begin{questions}
+\item $V_A=8$ V, $V_B=3$ V, $V_C=-1$ V. Calculer $u_{AB},u_{BC},u_{AC}$.
+\item Prendre $B$ comme nouvelle masse et vérifier les tensions.
+\end{questions}
+
+\ex{E05}{Le courant qui change de sens}{Niveau 1}{8 min}
+\begin{questions}
+\item Un nœud reçoit les courants fléchés $i_1=2$ mA et $i_2=-3$ mA ; $i_3=4$ mA et $i_4$ sont fléchés sortants. Déterminer $i_4$ et son sens réel.
+\end{questions}
+
+\ex{E06}{Une maille et son bilan}{Niveau 1}{12 min}
+\begin{questions}
+\item Une source $E=12$ V et $r=2\ \Omega$ alimente $R=10\ \Omega$. Calculer $i$, $u_R$ et les puissances.
+\item Vérifier la conservation de l’énergie.
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Puissance et composants}{ch02-td3}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E07}{Le rôle d’une batterie}{Niveau 1}{10 min}
+\begin{questions}
+\item En convention récepteur, $u=12{,}0$ V et $i=-1{,}5$ A pendant $40$ s. Calculer la puissance reçue et l’énergie reçue. Identifier le fonctionnement.
+\end{questions}
+
+\ex{E08}{Dimensionner une résistance}{Niveau 1}{10 min}
+\begin{questions}
+\item Une résistance $R=220\ \Omega$ supporte au plus $0{,}25$ W. Calculer les maxima de tension et de courant admissibles dans ce modèle.
+\end{questions}
+
+\ex{E09}{La pente crée le courant}{Niveau 1}{10 min}
+\begin{questions}
+\item Un condensateur de $2\ \mu\mathrm{ F}$ reçoit une rampe de $-1$ à $5$ V en $3$ ms. Calculer le courant, la variation de charge et la variation d’énergie.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Simplifier un réseau}{ch02-td4}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E10}{Deux associations}{Niveau 1}{10 min}
+\begin{questions}
+\item Calculer l’équivalent de $100\ \Omega$ en série avec le parallèle de $300\ \Omega$ et $600\ \Omega$.
+\item Sous $12$ V, donner le courant total et les deux courants de dérivation.
+\end{questions}
+
+\ex{E11}{Un pont équilibré}{Niveau 2}{15 min}
+\begin{questions}
+\item Deux branches en parallèle sur $E=10$ V comportent respectivement $R_1=1\ \mathrm{k}\Omega$ au-dessus de $R_2=2\ \mathrm{k}\Omega$, et $R_3=3\ \mathrm{k}\Omega$ au-dessus de $R_4=6\ \mathrm{k}\Omega$. Donner les potentiels médians $V_A,V_B$.
+\item Quel courant traverse une résistance reliant les milieux ?
+\end{questions}
+
+\ex{E12}{Deux nœuds couplés}{Niveau 2}{18 min}
+\begin{questions}
+\item Reprendre le réseau de l’activité numérique : $A$ relié à $6$ V par $1$ k$\Omega$, à la masse par $2$ k$\Omega$, à $B$ par $1$ k$\Omega$ ; $B$ relié à la masse par $1$ k$\Omega$. Résoudre à la main et établir le bilan des puissances.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Diviser et mesurer}{ch02-td5}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E13}{Un diviseur chargé}{Niveau 2}{12 min}
+\begin{questions}
+\item $E=9$ V ; $R_1=3$ k$\Omega$ et $R_2=6$ k$\Omega$. Calculer la sortie à vide, puis avec $R_e=6$ k$\Omega$ en parallèle sur $R_2$.
+\end{questions}
+
+\ex{E14}{Un courant à partager}{Niveau 1}{10 min}
+\begin{questions}
+\item $I=12$ mA entre dans le parallèle de $R_1=1$ k$\Omega$ et $R_2=2$ k$\Omega$. Calculer les courants et la tension commune.
+\end{questions}
+
+\ex{E15}{La résistance du voltmètre}{Niveau 2}{15 min}
+\begin{questions}
+\item Une sortie de Thévenin $E=3$ V, $R_s=100$ k$\Omega$ est mesurée par $R_V=900$ k$\Omega$. Donner la lecture et l’erreur relative.
+\item Quel $R_V$ minimal faut-il pour une erreur au plus égale à $1\,\%$ ?
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Sources et fonctionnement}{ch02-td6}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E16}{Identifier Thévenin}{Niveau 2}{12 min}
+\begin{questions}
+\item Une source donne $6$ V à vide et $4$ V sur $100\ \Omega$. Identifier $E,r$ ; prédire la tension sur $200\ \Omega$.
+\end{questions}
+
+\ex{E17}{Le GBF et sa terminaison}{Niveau 2}{12 min}
+\begin{questions}
+\item Un GBF est modélisé par $E=8$ V et $r=50\ \Omega$. Calculer la tension sur une entrée $50\ \Omega$, puis $1$ M$\Omega$.
+\item Quel facteur relie approximativement les lectures ?
+\end{questions}
+
+\ex{E18}{Puissance utile maximale}{Niveau 2}{20 min}
+\begin{questions}
+\item Pour une source $(E,r)$ chargée par $R>0$, établir $P_R=E^2R/(R+r)^2$ et déterminer son maximum.
+\item Calculer le rendement $P_R/(Ei)$ au maximum.
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Stocker et restituer}{ch02-td7}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E19}{Décharger une capacité}{Niveau 2}{12 min}
+\begin{questions}
+\item Un condensateur $C=10\ \mu\mathrm{ F}$ passe de $8$ V à $2$ V. Calculer la variation d’énergie et la charge algébrique reçue par l’armature de référence.
+\end{questions}
+
+\ex{E20}{Une bobine réelle}{Niveau 2}{12 min}
+\begin{questions}
+\item Une bobine de $L=50$ mH et de résistance $r=10\ \Omega$ reçoit $i=0{,}2$ A constant. Donner sa tension, sa puissance dissipée et son énergie magnétique.
+\end{questions}
+
+\ex{E21}{Rendre un courant continu}{Niveau 2}{15 min}
+\begin{questions}
+\item Dans un circuit comportant $E=12$ V, une résistance $100\ \Omega$ et une bobine $(L,r=20\ \Omega)$ en série, donner le courant final. Un condensateur idéal en parallèle sur la bobine modifie-t-il ce courant final ?
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Raisonner sur un montage}{ch02-td8}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E22}{Mesurer une résistance}{Niveau 3}{20 min}
+\begin{questions}
+\item Un voltmètre $R_V=1$ M$\Omega$ mesure la tension aux bornes de $R=100$ k$\Omega$. L’ampèremètre en amont mesure la somme des courants de $R$ et du voltmètre. Quelle résistance apparente $U/I$ obtient-on ? Comment corriger ?
+\end{questions}
+
+\ex{E23}{Une échelle répétée}{Niveau 3}{25 min}
+\begin{questions}
+\item Une cellule comprend une résistance $R$ en série, puis une résistance $R$ en parallèle avec la suite du réseau. Écrire la récurrence de $X_n$ si $X_1=2R$.
+\item En admettant la convergence, trouver la limite positive pour $R=1$ k$\Omega$.
+\end{questions}
+
+\ex{E24}{Un résultat avec incertitude}{Niveau 3}{20 min}
+\begin{questions}
+\item Une source est identifiée par $r=R(E/u-1)$ avec $R=100\ \Omega$, $E=6{,}00$ V, $u=4{,}00$ V. On suppose $R$ exact et les tensions indépendantes, d’incertitudes-types $u(E)=u(u)=0{,}01$ V. Calculer $r$ et son incertitude au premier ordre.
+\end{questions}
+
+
+
+\Page{Défi avancé / D1}{Un pont qui révèle un capteur}{ch02-defi1}
+\label{ch02-ex-D1}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch02-indices} ; corrigé p.\,\pageref{ch02-corr-defi1}.}
+Deux branches sont alimentées par $E$ entre le nœud haut et la masse. À gauche : $R$ en haut et $R(1+\varepsilon)$ en bas ; à droite : deux résistances $R$. Le voltmètre relie leurs milieux $A$ et $B$ et possède une résistance $R_V$.
+\begin{questions}
+\item À vide, exprimer $u_{AB}$ puis son équivalent au premier ordre en $\varepsilon$.
+\item Justifier que la résistance de sortie entre $A$ et $B$ vaut $R_s=(R\parallel R(1+\varepsilon))+R/2$ lorsque la source idéale est remplacée par un fil.
+\item En déduire la lecture en charge. Pour $E=5$ V, $R=1$ k$\Omega$, $\varepsilon=0{,}02$, $R_V=100$ k$\Omega$, chiffrer l’erreur de charge.
+\item Quelle grandeur doit-on rendre petite pour mesurer une faible variation ?
+\end{questions}
+
+
+\Page{Défi avancé / D2}{Alimenter : puissance ou rendement ?}{ch02-defi2}
+\label{ch02-ex-D2}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch02-indices} ; corrigé p.\,\pageref{ch02-corr-defi2}.}
+\begin{questions}
+\item Une source $(E,r)$ doit fournir au moins $P_0$ à une charge résistive $R$. Poser $x=R/r$ et $\beta=P_0r/E^2$. Écrire l’inégalité à résoudre.
+\item Déterminer les valeurs admissibles de $x$ et la condition d’existence.
+\item Pour $E=12$ V, $r=2\ \Omega$ et $P_0=10$ W, calculer l’intervalle de $R$ et choisir la résistance donnant le meilleur rendement.
+\item Justifier le compromis obtenu avec la tension de sortie.
+\end{questions}
+
+
+\Page{Défi avancé / D3}{Deux mesures pour une source}{ch02-defi3}
+\label{ch02-ex-D3}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{ch02-indices} ; corrigé p.\,\pageref{ch02-corr-defi3}.}
+\begin{questions}
+\item Une source de Thévenin alimente successivement $R_1$ et $R_2$, donnant $u_1$ et $u_2$. Établir une relation affine entre $1/u$ et $1/R$.
+\item Avec $R_1=100\ \Omega$, $u_1=4$ V, $R_2=200\ \Omega$, $u_2=4{,}8$ V, retrouver $E,r$ sans mesure à vide.
+\item Comment une troisième mesure teste-t-elle le modèle ? Pourquoi deux charges presque égales rendent-elles l’estimation fragile ?
+\end{questions}
+
+
+\Page{Évaluation / DM}{Une sortie de capteur à mesurer}{ch02-dm}
+\source{Devoir maison OptiTAB original ; 1 h 30 à 2 h ; calculatrice autorisée. Barème pédagogique sur 20.}
+\fig{ch02/diviseur}{E = 10 V ; R1 = 10 kΩ ; R2 = 20 kΩ ; Re est la résistance du voltmètre.}\begin{questions}
+\item Calculer la tension de sortie à vide. \textbf{3 points}
+\item Établir son modèle de Thévenin : $E_s$ et $R_s$. Justifier la résistance équivalente. \textbf{4 points}
+\item Pour $R_V=100$ k$\Omega$, donner la lecture et l’erreur relative. \textbf{3 points}
+\item Déterminer $R_V$ minimal pour une erreur de charge au plus égale à $0{,}5\,\%$. \textbf{3 points}
+\item Le voltmètre indique $6{,}24$ V avec $R_V=100$ k$\Omega$. Corriger cette lecture pour estimer la tension à vide. \textbf{3 points}
+\item Proposer un protocole pour tester le modèle de sortie et citer deux limites. \textbf{4 points}
+\end{questions}
+
+
+\Page{Évaluation / DS / 1 sur 2}{Alimenter, diviser et stocker}{ch02-ds1}
+\source{Devoir surveillé OptiTAB original ; durée 2 h ; calculatrice autorisée ; note sur 20. Les deux pages forment un seul sujet.}
+\Sub{Partie A / Source réelle / 8 points}
+Une source donne $U_0=12$ V à vide et $U_1=10$ V sur $R=100\ \Omega$.
+\begin{questions}
+\item Identifier le modèle de Thévenin, en justifiant chaque paramètre. \textbf{3 points}
+\item Pour une charge $80\ \Omega$, calculer courant et tension. \textbf{2 points}
+\item Établir le bilan des puissances sur cette charge. \textbf{2 points}
+\item Énoncer la condition d’ARQS pour un circuit de taille $\ell$ et un signal de fréquence $f$. \textbf{1 point}
+\end{questions}
+\Sub{Partie B / Diviseur chargé / 7 points}
+Une source idéale de $9$ V alimente $R_1=3$ k$\Omega$ en série avec $R_2=6$ k$\Omega$ ; la sortie est prise sur $R_2$.
+\begin{questions}
+\item Donner la sortie à vide et justifier le diviseur. \textbf{2 points}
+\item On branche $R_e=6$ k$\Omega$ sur la sortie. Calculer la nouvelle tension et tous les courants. \textbf{3 points}
+\item Quelle résistance d’entrée minimale limite la baisse à $1\,\%$ de la sortie à vide ? \textbf{2 points}
+\end{questions}
+
+
+\Page{Évaluation / DS / 2 sur 2}{Approfondir et conclure}{ch02-ds2}
+\Sub{Partie C / Stockage et conventions / 5 points}
+Un condensateur $C=4$ $\mu\mathrm{ F}$ reçoit une tension passant linéairement de $2$ V à $8$ V en $6$ ms. Une bobine idéale de $L=100$ mH porte un courant $0{,}20$ A.
+\begin{questions}
+\item Calculer le courant du condensateur avec des orientations explicites. \textbf{2 points}
+\item Calculer l’énergie reçue par le condensateur durant la rampe. \textbf{1 point}
+\item Calculer l’énergie magnétique et estimer la tension si le courant de bobine tombe à zéro en $10\ \mu\mathrm{ s}$. Interpréter le signe en convention récepteur. \textbf{2 points}
+\end{questions}
+\begin{docu}{Gestion du temps}
+Lecture : 10 min ; parties A et B : 70 min ; partie C : 30 min ; vérification : 10 min. Une expression littérale, une unité et une interprétation accompagnent les résultats.
+\end{docu}
+
+
+\Page{Aides progressives}{Des indices pour repartir}{ch02-indices}
+\Sub{Défi D1}
+1. Les deux milieux sont des diviseurs à vide. 2. Éteindre une source idéale de tension revient à court-circuiter ses bornes. 3. Traiter le voltmètre comme la charge de l’équivalent de sortie.
+\Sub{Défi D2}
+1. Écrire la puissance en fonction de x. 2. Le maximum de x/(1+x)² vaut 1/4. 3. Le rendement x/(1+x) est croissant.
+\Sub{Défi D3}
+1. Inverser u = ER/(R+r). 2. La pente donne r/E et l’ordonnée 1/E. 3. Examiner le dénominateur qui sépare les deux mesures.
+\Sub{Exercices}
+E11 : comparer les potentiels médians. E12 : choisir les potentiels comme inconnues. E18 : dériver la puissance, puis calculer séparément le rendement. E23 : remplacer la suite de l’échelle par son équivalent. E24 : propager les deux incertitudes avec les dérivées partielles.
+\Sub{Évaluations}
+Le DM se ramène à une source de sortie chargée par le voltmètre. Dans le DS, commencer chaque partie avec ses données propres ; les sources des parties A et B sont différentes.
+
+
+\Page{Corrigés / Diagnostic}{Réactiver les bons réflexes}{ch02-corr-diag}
+\Sub{D1 à D3}
+$2{,}2\times10^3\ \Omega$ ; $4{,}70\times10^{-7}$ F ; $3{,}0\times10^{-3}$ A. Le courant moyen vaut $\Delta q/\Delta t=3{,}0$ mA. $u_{AB}=V_A-V_B=7$ V et $u_{BA}=-7$ V.
+\Sub{D4 et D5}
+Série : $200\ \Omega$ ; parallèle : $50\ \Omega$. La puissance reçue est $p=ui=0{,}120$ W. Elle est positive avec les orientations annoncées.
+\Sub{D6 à D8}
+Le voltmètre se branche en dérivation ; l’ampèremètre s’insère en série. En continu établi, $\dot u_C=0$ donc $i_C=0$, et $\dot i_L=0$ donc $u_L=0$. Le temps de propagation est $5$ ns.
+\begin{methode}{À reprendre en priorité}
+Une confusion entre série et parallèle se traite en repérant les nœuds. Une erreur de puissance se traite en vérifiant les flèches, puis le signe du produit.
+\end{methode}
+
+
+\Page{Corrigés / Exercices}{Charges et approximations}{ch02-corr-td1}
+\sol{E01}{Compter les porteurs}
+$\Delta q=i\Delta t=0{,}096$ C ; $N=\Delta q/e=6{,}0\times10^{17}$. Le transfert macroscopique comporte un très grand nombre de charges élémentaires.
+\sol{E02}{Un courant variable}
+$\Delta q=\int_0^2 3t^2\dd t=8$ mC ; $I_{\rm moy}=4$ mA. La demi-somme des extrêmes vaut $6$ mA : elle ne donne pas la moyenne temporelle de cette fonction quadratique.
+\sol{E03}{Tester l’ARQS}
+Les rapports valent $10^{-3}$ et $0{,}5$. Le premier cas est cohérent pour un signal sinusoïdal ; le second ne l’est pas. Le retard $10$ ns dépasse la durée du front : la faible fréquence de répétition ne suffit pas.
+
+
+\Page{Corrigés / Exercices}{Tensions et conservation}{ch02-corr-td2}
+\sol{E04}{Changer de référence}
+Les tensions valent $5$, $4$ et $9$ V. Après soustraction de $3$ V à tous les potentiels : $V'_A=5$ V, $V'_B=0$, $V'_C=-4$ V. Les trois différences restent identiques.
+\sol{E05}{Le courant qui change de sens}
+$i_4=i_1+i_2-i_3=-5$ mA. Le courant réel associé entre dans le nœud avec une intensité de $5$ mA.
+\sol{E06}{Une maille et son bilan}
+$i=12/(2+10)=1$ A, $u_R=10$ V. La source idéale fournit $12$ W ; $2$ W sont dissipés dans $r$ et $10$ W dans $R$. La somme des puissances reçues est nulle.
+
+
+\Page{Corrigés / Exercices}{Puissance et composants}{ch02-corr-td3}
+\sol{E07}{Le rôle d’une batterie}
+$p=ui=-18$ W ; $W=-720$ J. La batterie fournit $18$ W et cède $720$ J. La convention récepteur reste celle des flèches.
+\sol{E08}{Dimensionner une résistance}
+$U_{\max}=\sqrt{RP_{\max}}=7{,}42$ V et $I_{\max}=\sqrt{P_{\max}/R}=33{,}7$ mA. La condition de puissance doit être satisfaite en plus des autres limites de la notice.
+\sol{E09}{La pente crée le courant}
+$\dot u=2000$ V/s donc $i=4$ mA ; $\Delta q=C\Delta u=12\ \mu\mathrm{ C}$. $\Delta\mathcal E=C(25-1)/2=24\ \mu\mathrm{ J}$. Le courant est constant pendant la rampe.
+
+
+\Page{Corrigés / Exercices}{Simplifier un réseau}{ch02-corr-td4}
+\sol{E10}{Deux associations}
+Le parallèle vaut $200\ \Omega$, donc $R_{\rm eq}=300\ \Omega$. Le courant total est $40$ mA ; la tension du parallèle vaut $8$ V. Les courants valent $26{,}7$ et $13{,}3$ mA.
+\sol{E11}{Un pont équilibré}
+Chaque diviseur donne $V_A=V_B=20/3$ V. Le branchement entre milieux ne porte alors aucun courant. La condition générale est $R_2R_3=R_1R_4$.
+\sol{E12}{Deux nœuds couplés}
+$2{,}5V_A-V_B=6$ et $2V_B-V_A=0$ donnent $V_A=3$ V et $V_B=1{,}5$ V. Courants : $3$, $1{,}5$, $1{,}5$, $1{,}5$ mA. Dissipations : $9+4{,}5+2{,}25+2{,}25=18$ mW, égales à $6\times3$ mW fournis.
+
+
+\Page{Corrigés / Exercices}{Diviser et mesurer}{ch02-corr-td5}
+\sol{E13}{Un diviseur chargé}
+À vide : $u=6$ V. En charge, $R_2\parallel R_e=3$ k$\Omega$, donc $u=4{,}5$ V. L’erreur relative à la tension à vide vaut $25\,\%$.
+\sol{E14}{Un courant à partager}
+$i_1=I R_2/(R_1+R_2)=8$ mA ; $i_2=4$ mA ; $u=8$ V. Les courants se somment à $12$ mA et la branche la moins résistante porte le plus grand courant.
+\sol{E15}{La résistance du voltmètre}
+$u=3\times900/1000=2{,}7$ V ; erreur $10\,\%$. $R_s/(R_s+R_V)\leq0{,}01$ impose $R_V\geq99R_s=9{,}9$ M$\Omega$.
+
+
+\Page{Corrigés / Exercices}{Sources et fonctionnement}{ch02-corr-td6}
+\sol{E16}{Identifier Thévenin}
+$E=6$ V et $r=100(6/4-1)=50\ \Omega$. Sur $200\ \Omega$, $i=24$ mA et $u=4{,}8$ V. Une seconde charge permet de tester la validité du modèle.
+\sol{E17}{Le GBF et sa terminaison}
+$u_{50}=4$ V ; $u_{1\rm M}=7{,}9996$ V. Le facteur est presque $2$. Il dépend de la résistance de charge et de l’étalonnage de l’affichage.
+\sol{E18}{Puissance utile maximale}
+$P'_R=E^2(r-R)/(R+r)^3$ : maximum pour $R=r$, égal à $E^2/(4r)$. À ce point $P_R=ri^2$, donc le rendement vaut $1/2$. Maximiser la puissance utile ne maximise pas ce rendement.
+
+
+\Page{Corrigés / Exercices}{Stocker et restituer}{ch02-corr-td7}
+\sol{E19}{Décharger une capacité}
+$\Delta\mathcal E=\tfrac12C(2^2-8^2)=-300\ \mu\mathrm{ J}$. $\Delta q=C(2-8)=-60\ \mu\mathrm{ C}$. La capacité rend de l’énergie, indépendamment du détail temporel.
+\sol{E20}{Une bobine réelle}
+La partie inductive a une tension nulle ; la bobine réelle a $u=ri=2$ V. $p_J=ri^2=0{,}4$ W et $\mathcal E_L=Li^2/2=1$ mJ. Une énergie stockée constante n’implique pas une consommation nulle pour le dipôle réel.
+\sol{E21}{Rendre un courant continu}
+En continu établi, remplacer $L$ par un fil et $C$ par un circuit ouvert. Le courant est $12/(100+20)=0{,}10$ A. Le condensateur ne change pas cette valeur finale ; sa tension finale est $2$ V.
+
+
+\Page{Corrigés / Exercices}{Raisonner sur un montage}{ch02-corr-td8}
+\sol{E22}{Mesurer une résistance}
+$R_{\rm app}=R\parallel R_V=90{,}91$ k$\Omega$. L’erreur est $-9{,}09\,\%$. $1/R=1/R_{\rm app}-1/R_V$ permet de retrouver $R$.
+\sol{E23}{Une échelle répétée}
+$X_n=R+RX_{n-1}/(R+X_{n-1})$. À la limite, $X^2-RX-R^2=0$ ; la racine positive est $X=(1+\sqrt5)R/2=1{,}618$ k$\Omega$. La racine négative est incompatible avec un réseau de résistances positives.
+\sol{E24}{Un résultat avec incertitude}
+$r=50\ \Omega$. $\partial r/\partial E=R/u=25\ \Omega$/V ; $\partial r/\partial u=-RE/u^2=-37{,}5\ \Omega$/V. $u(r)=\sqrt{0{,}25^2+0{,}375^2}=0{,}451\ \Omega$. Présentation possible : $r=50{,}0\ \Omega$, $u(r)=0{,}5\ \Omega$. Une erreur commune aux deux lectures invaliderait l’indépendance.
+
+
+\Page{Corrigé du défi D1}{Un pont qui révèle un capteur}{ch02-corr-defi1}
+À vide, $V_A=E(1+\varepsilon)/(2+\varepsilon)$ et $V_B=E/2$, donc
+\[u_0=\frac{E\varepsilon}{2(2+\varepsilon)}\simeq\frac{E\varepsilon}{4}.\]
+La source idéale annulée relie le nœud haut à la masse. Chaque milieu voit ses deux résistances en parallèle ; entre milieux, les deux équivalents s’ajoutent. Ainsi $R_s=R(1+\varepsilon)/(2+\varepsilon)+R/2$.
+\[u_{\rm lu}=u_0\frac{R_V}{R_V+R_s}.\]
+On trouve $u_0=24{,}752$ mV, $R_s=1004{,}95\ \Omega$, $u_{\rm lu}=24{,}506$ mV ; l’erreur de charge vaut $0{,}995\,\%$. L’approximation au premier ordre donne $25$ mV : son erreur doit aussi être distinguée de la perturbation par le voltmètre.
+\begin{methode}{Ce que le résultat apprend}
+La sensibilité à vide vaut environ $E/4$ volt par unité de $\varepsilon$. Une forte résistance d’entrée limite la perturbation, mais ne supprime ni l’erreur du capteur ni l’imprécision de lecture.
+\end{methode}
+
+
+\Page{Corrigé du défi D2}{Alimenter : puissance ou rendement ?}{ch02-corr-defi2}
+$P_R=(E^2/r)x/(1+x)^2$. La contrainte devient $\beta x^2+(2\beta-1)x+\beta\leq0$. Elle admet des solutions si $0<\beta\leq1/4$ ; les bornes sont
+\[x_\pm=\frac{1-2\beta\pm\sqrt{1-4\beta}}{2\beta}.\]
+Ici $\beta=5/36$ ; $R_-=0{,}4\ \Omega$ et $R_+=10\ \Omega$. Le rendement $\eta=x/(1+x)$ augmente avec $R$ : choisir $R=10\ \Omega$ donne $i=1$ A, $u=10$ V, $P_R=10$ W et $\eta=5/6$. À l’autre borne, $i=5$ A, $u=2$ V et le rendement vaut $1/6$.
+\begin{piege}{Le maximum ne répond pas à toute question}
+La puissance maximale $18$ W est atteinte à $R=2\ \Omega$, mais le rendement y vaut seulement $1/2$. Le cahier des charges doit annoncer la grandeur à optimiser.
+\end{piege}
+
+
+\Page{Corrigé du défi D3}{Deux mesures pour une source}{ch02-corr-defi3}
+$1/u=1/E+(r/E)(1/R)$. La pente entre les points vaut $(0{,}25-0{,}20833)/(0{,}01-0{,}005)=8{,}3333\ \Omega$/V, et l’ordonnée vaut $1/6$ V$^{-1}$. Donc $E=6$ V et $r=50\ \Omega$.
+\[r=\frac{u_2-u_1}{u_1/R_1-u_2/R_2},\qquad E=u_1(1+r/R_1).\]
+Une troisième mesure doit se placer sur la droite, dans les incertitudes. Des charges proches donnent des courants proches : l’estimation de la pente résulte alors de la différence de deux lectures voisines, sensible au bruit. Les charges doivent rester dans le domaine linéaire et respecter les limites de courant et de puissance.
+\begin{methode}{Choisir les mesures}
+Écarter suffisamment les courants, répéter les lectures et examiner les résidus. Une droite ajustée n’est convaincante que si l’échelle des écarts est comparée à celle des incertitudes.
+\end{methode}
+
+
+\Page{Corrigé / DM / Sur 20}{Une sortie de capteur à mesurer}{ch02-corr-dm}
+\Sub{1 et 2 / 7 points}
+$E_s=10\times20/(10+20)=20/3$ V (3 points). Source idéale éteinte, les deux résistances relient la sortie à la masse en parallèle : $R_s=R_1R_2/(R_1+R_2)=20/3$ k$\Omega$ (schéma et justification 2 ; valeur 2).
+\Sub{3 et 4 / 6 points}
+$u=E_sR_V/(R_s+R_V)=6{,}25$ V ; $\varepsilon=6{,}25\,\%$ (3 points). $R_V\geq(1/0{,}005-1)R_s=1{,}327$ M$\Omega$ (inégalité 2 ; résultat 1).
+\Sub{5 / 3 points}
+$E_{\rm estimé}=u(1+R_s/R_V)=6{,}656$ V. La correction suppose que $R_s$ et $R_V$ sont connus ; elle ne supprime pas l’incertitude de lecture.
+\Sub{6 / 4 points}
+Mesurer plusieurs charges connues et ajuster la tension en fonction du courant (2). Examiner la dispersion, la tolérance des résistances, l’entrée du voltmètre et le domaine linéaire (deux limites expliquées : 2).
+
+
+\Page{Corrigé / DS / 1 sur 2}{Calculer et interpréter}{ch02-corr-ds1}
+\Sub{A / 8 points}
+$E=12$ V et $r=100(12/10-1)=20\ \Omega$ (3). Pour $R=80\ \Omega$, $i=0{,}12$ A, $u=9{,}6$ V (2). $Ei=1{,}44$ W, $ri^2=0{,}288$ W, $Ri^2=1{,}152$ W : le bilan se ferme (2). ARQS : $\ell f/v\ll1$ (1).
+\Sub{B / 7 points}
+À vide $u_0=6$ V car les résistances portent le même courant (2). En charge $R_2\parallel R_e=3$ k$\Omega$, $u=4{,}5$ V, courant dans $R_1$ : $1{,}5$ mA, dans chaque branche basse : $0{,}75$ mA (3). La sortie a $R_s=R_1\parallel R_2=2$ k$\Omega$ ; $R_e\geq99R_s=198$ k$\Omega$ (2).
+
+
+\Page{Corrigé / DS / 2 sur 2}{Calculer et interpréter}{ch02-corr-ds2}
+\Sub{C / 5 points}
+En convention récepteur, $i=C\dot u=4$ mA (orientation 1 ; calcul 1). $\Delta\mathcal E_C=C(8^2-2^2)/2=120\ \mu\mathrm{ J}$ (1). $\mathcal E_L=Li^2/2=2$ mJ ; la pente vaut $-2\times10^4$ A/s et $u_L=-2000$ V (1). Le signe négatif avec $i>0$ indique que la bobine fournit de l’énergie ; le modèle idéal prévoit une très forte surtension et ses limites doivent être considérées (1).
+\begin{methode}{Correction par capacité}
+Une erreur de signe impose de revoir le schéma orienté. Une mauvaise lecture du diviseur impose de redessiner les nœuds. Une confusion entre énergie et puissance se corrige en vérifiant leurs unités : J et W.
+\end{methode}
+
+
+\Page{Support authentique / 1}{DM réel / Réseau de résistances}{ch02-sources-1}
+\source{Source consultée le 25 octobre 2026. MPSI, schleck.ovh ; DM2 à rendre le 29 septembre 2026 ; exercice 2, questions 1 à 6, page 2/2.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/devoirs/dm2_optique_elec.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 35 minutes. Résoudre d’abord la cellule isolée, puis construire la récurrence du réseau. Garder le dessin original : chaque cellule comporte deux résistances R sur les rails et une branche transversale 2R.
+\Sub{Repères de correction indépendants}
+La cellule isolée est une série $R+2R+R=4R$. La résistance du bas reçoit $u_R=E/4=1{,}5$ V. Sa puissance vaut $E^2/(16R)=2{,}25$ mW ; la source fournit $E^2/(4R)=9$ mW, d’où $\eta=1/4$. La récurrence est $X_n=2R+2RX_{n-1}/(2R+X_{n-1})$ ; $X_1=4R$ et $X_2=10R/3$. La limite positive vérifie $X^2-2RX-4R^2=0$, soit $X=(1+\sqrt5)R=3{,}236$ k$\Omega$. Ces résultats concernent le schéma du DM, différent de E23.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Support authentique / 2}{DS réel / Panneau solaire}{ch02-sources-2}
+\source{Source consultée le 25 octobre 2026. MPSI, schleck.ovh ; DS2 du 8 octobre 2026 ; partie III, questions 1 et 4 à 6, pages 5/7 et 6/7.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/devoirs/ds02_enonce.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 30 minutes. Lire la caractéristique réelle avant de travailler le modèle local de Thévenin. Pour les questions 4 à 6, prendre x branches en parallèle et y cellules par branche, avec xy=N.
+\Sub{Repères de correction indépendants}
+Une courbe d’iso-puissance vérifie $I=P/U$. Les branches donnent $E_{\rm eq}=yE=NE/x$ et $r_{\rm eq}=yr/x=Nr/x^2$, donc $U=NExR/(Rx^2+Nr)$. Dans l’optimisation continue, $x=\sqrt{Nr/R}$ et $y=\sqrt{NR/r}$ : l’adaptation donne $P_{\max}=NE^2/(4r)$ et $P_J=P_{\max}$. Le câblage réel impose des entiers et des diviseurs de N : comparer les configurations réalisables.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Références et suivi}{Préparer la suite}{ch02-references}
+\Sub{Référence réglementaire}
+\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{Bulletin officiel spécial n° 1 du 11 février 2021, arrêté du 5 janvier 2021.}\par
+\href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexe officielle regroupée}, rubrique 1.2. Pages internes 13 et 14 de l’annexe de physique-chimie (pages PDF 50 et 51). Les régimes transitoires sont développés au chapitre 03.
+\Sub{Nature des contenus}
+Le cours, les 24 exercices, les trois défis et les évaluations OptiTAB sont rédigés pour cette collection. Les graphiques sont calculés avec les équations annoncées. Les supports authentiques sont identifiés sur les pages précédentes ; leurs énoncés et figures restent dans le document d’origine.
+\Sub{Compétences à confirmer}
+\checkline{Je peux retrouver l’équation sans mémoriser une suite de signes.}
+\checkline{Je vérifie les conditions initiales et les limites.}
+\checkline{Je peux confronter un calcul, un graphe et un bilan énergétique.}
+\checkline{Je sais corriger mon DS et refaire une question sans aide.}
+\begin{methode}{Prochaine étape}
+Le chapitre 03 étudie l’évolution temporelle des circuits RC et RL. Les relations des dipôles deviennent des équations différentielles ; les continuités permettent d’en fixer les conditions initiales.
+\end{methode}
+

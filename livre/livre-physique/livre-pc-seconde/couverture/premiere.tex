@@ -1,0 +1,74 @@
+%% =====================================================================
+%%  1re de couverture
+%% =====================================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  % Fond
+  \fill[otNavy] (0,0) rectangle (210mm,297mm);
+  \shade[bottom color=otNavyDark,top color=otNavy] (0,0) rectangle (210mm,160mm);
+  \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+  % Ondes circulaires issues de deux sources (interférences)
+  \begin{scope}
+    \clip (0,0) rectangle (210mm,297mm);
+    \foreach \r in {5,10,...,40}{%
+      \draw[white,opacity=0.08,line width=0.6pt] (183mm,270mm) circle (\r mm);
+      \draw[white,opacity=0.08,line width=0.6pt] (205mm,270mm) circle (\r mm);}
+    \fill[white,opacity=0.5] (183mm,270mm) circle (1.1mm);
+    \fill[white,opacity=0.5] (205mm,270mm) circle (1.1mm);
+  \end{scope}
+  % Lentille mince convergente : image d'un objet placé à deux distances focales (f = 30 mm)
+  \draw[white,opacity=0.22,line width=0.6pt] (0,55mm) -- (210mm,55mm);
+  \fill[white,opacity=0.10] (120mm,85mm) .. controls (127mm,70mm) and (127mm,40mm) .. (120mm,25mm)
+    .. controls (113mm,40mm) and (113mm,70mm) .. (120mm,85mm);
+  \draw[white,opacity=0.55,line width=0.8pt] (120mm,85mm) .. controls (127mm,70mm) and (127mm,40mm) .. (120mm,25mm)
+    .. controls (113mm,40mm) and (113mm,70mm) .. (120mm,85mm);
+  \foreach \x in {90,150}{\fill[white,opacity=0.6] (\x mm,55mm) circle (1mm);}
+  \draw[white,opacity=0.85,line width=1.4pt,-{Stealth[length=3mm]}] (60mm,55mm) -- (60mm,73mm);
+  \draw[otGreen,line width=1.4pt,-{Stealth[length=3mm]}] (180mm,55mm) -- (180mm,37mm);
+  \draw[otGreen,line width=1.6pt,line cap=round] (60mm,73mm) -- (120mm,73mm) -- (180mm,37mm);
+  \draw[otGreen,line width=1.6pt,line cap=round] (60mm,73mm) -- (180mm,37mm);
+  \draw[otGreen,line width=1.6pt,line cap=round] (60mm,73mm) -- (120mm,37mm) -- (180mm,37mm);
+  \draw[otGreen,opacity=0.35,line width=1pt,dash pattern=on 3pt off 2pt] (180mm,37mm) -- (205mm,22mm);
+  \fill[white] (180mm,37mm) circle (2.1mm);
+  \fill[otGreen] (180mm,37mm) circle (1.1mm);
+
+  % Logo
+  \node[anchor=north west,inner sep=0pt] at (22mm,279mm)
+    {\includegraphics[width=60mm]{logo-blanc}};
+
+  % Titre
+  \node[anchor=base west,inner sep=0pt,text=otGreen,
+    font=\otSemi\fontsize{11}{13}\selectfont] at (24mm,236mm) {\otCaps[22]{\otNiveau}};
+  \node[anchor=base west,inner sep=0pt,text=white,
+    font=\otBold\fontsize{50}{54}\selectfont] at (21.5mm,212mm) {\otTitreLivre};
+  \node[anchor=base west,inner sep=0pt,text=white,
+    font=\otLight\fontsize{32}{36}\selectfont] at (23mm,194mm) {\otSousTitre};
+  \fill[otGreen] (24mm,181mm) rectangle (54mm,182.4mm);
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.85,
+    font=\otRegular\fontsize{11}{14}\selectfont] at (24mm,168mm)
+    {Année complète\enspace·\enspace Cours illustré\enspace·\enspace Exercices progressifs\enspace·\enspace Corrigés détaillés};
+
+  % Points forts
+  \node[anchor=north west,inner sep=0pt,text width=100mm,text=white,
+    font=\otRegular\fontsize{10.5}{14}\selectfont] at (24mm,146mm)
+    {\otCheck\hspace{3mm}Exercices classés par difficulté\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}Schémas de montages et de molécules\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}\otNbDefis\ défis avec indications progressives\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}Six évaluations avec barèmes détaillés};
+
+  % Pastille
+  \fill[otGreen] (150mm,120mm) circle (18mm);
+  \node[text=white,align=center,inner sep=0pt] at (150mm,120mm)
+    {{\otMedium\fontsize{7}{9}\selectfont Année complète}\\[0.6mm]
+     {\otBold\fontsize{30}{30}\selectfont \otNbExosTotal}\\[1.4mm]
+     {\otSemi\fontsize{7.5}{9}\selectfont\otCaps[10]{exercices}}\\
+     {\otSemi\fontsize{7.5}{9}\selectfont\otCaps[10]{corrigés}}};
+
+  % Pied
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,
+    font=\otMedium\fontsize{10}{12}\selectfont] at (24mm,16mm) {\otSite};
+\end{scope}
+\end{tikzpicture}
+\clearpage
+

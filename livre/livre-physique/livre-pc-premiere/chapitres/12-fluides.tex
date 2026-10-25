@@ -1,0 +1,349 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[gazparfait]{12}{Description d'un fluide au repos}{Partie 2 · Mouvement et interactions}
+{Masse volumique\enspace·\enspace Pression\enspace·\enspace Température\enspace·\enspace Force pressante\enspace·\enspace Loi de Mariotte\enspace·\enspace Statique des fluides}
+\objectif{Relier les grandeurs macroscopiques d'un fluide (masse volumique, pression, température) au comportement microscopique de ses entités.}
+\objectif{Utiliser la relation $F=P\times S$ pour déterminer une force pressante.}
+\objectif{Utiliser et tester la loi de Mariotte.}
+\objectif{Utiliser et tester la loi fondamentale de la statique des fluides : $P_2-P_1=\rho\,g\,(z_1-z_2)$.}
+\prerequis{Masse volumique, états de la matière (classe de seconde).}
+\prerequis{Forces, poids $P=m\,g$ ; conversions d'unités de surface et de volume.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Décrire un fluide : deux échelles}
+\begin{definition}[Grandeurs macroscopiques]
+Un \textbf{fluide} (liquide ou gaz) se décrit à notre échelle par trois grandeurs :
+\begin{itemize}
+\item la \textbf{masse volumique} $\rho=\dfrac{m}{V}$, en \unit{kg.m^{-3}} (eau : \qty{1,00e3}{kg.m^{-3}} ; air : \qty{1,2}{kg.m^{-3}}) ;
+\item la \textbf{pression} $P$, en pascals (Pa), mesurée avec un manomètre ou un capteur ; $\qty{1}{hPa}=\qty{100}{Pa}$, $\qty{1}{bar}=\qty{1e5}{Pa}$ ;
+la pression atmosphérique normale vaut $P_\mathrm{atm}=\qty{1013}{hPa}$ ;
+\item la \textbf{température} : $T$ (en kelvins, K) $=\theta$ (en \unit{\degreeCelsius}) $+\,273{,}15$.
+\end{itemize}
+\end{definition}
+\begin{propriete}[Interprétation microscopique]
+Les entités d'un fluide (molécules, atomes) sont en \textbf{mouvement incessant et désordonné}. La \textbf{pression} résulte de
+leurs chocs sur les parois ; la \textbf{température} mesure leur agitation : plus elle est élevée, plus les entités sont rapides.
+Un gaz est peu dense, car ses entités sont très éloignées les unes des autres ; elles sont au contact dans un liquide.
+\end{propriete}
+\schema{12-micro}
+\essSection{2}{Force pressante}
+\begin{loi}[Force pressante]
+Un fluide à la pression $P$ exerce sur une surface plane d'aire $S$ une \textbf{force pressante} perpendiculaire à la surface,
+orientée du fluide vers la surface, de valeur $\boldsymbol{F=P\times S}$, avec $F$ en N, $P$ en Pa et $S$ en \unit{m^2}. L'air exerce ainsi sur une vitre de \qty{1}{m^2} une force d'environ \qty{1,0e5}{N}, le poids d'une masse de 10 tonnes : elle est
+compensée par la force de l'air situé de l'autre côté.
+\end{loi}
+\par\penalty0
+\schema{12-force-pressante}
+\essSection{3}{La loi de Mariotte}
+\begin{loi}[Loi de Mariotte]
+Pour une quantité de gaz donnée, à \textbf{température constante}, le produit de la pression par le volume reste constant :
+\[P\times V=\text{constante}\qquad\text{soit}\qquad P_1\,V_1=P_2\,V_2.\]
+Cette loi décrit bien les gaz aux pressions usuelles. Exemple : l'air d'une seringue bouchée, à \qty{1013}{hPa} sous \qty{60}{mL},
+comprimé à \qty{20}{mL}, atteint $\dfrac{1013\times60}{20}=\qty{3039}{hPa}$.
+\end{loi}
+\par\penalty0
+\schema{12-mariotte}
+\begin{python}
+P1, V1 = 1013, 60          # hPa, mL : air de la seringue
+for V in [60, 50, 40, 30, 20]:
+    P = P1 * V1 / V        # loi de Mariotte : P x V = P1 x V1
+    print(V, 'mL :', round(P), 'hPa')
+\end{python}
+\begin{console}
+60 mL : 1013 hPa
+50 mL : 1216 hPa
+40 mL : 1520 hPa
+30 mL : 2026 hPa
+20 mL : 3039 hPa
+\end{console}
+\noindent\capacite{Capacité numérique} Le programme applique la loi de Mariotte : diviser le volume par 3 multiplie la pression par 3.
+\essSection{4}{Loi fondamentale de la statique des fluides}
+\begin{loi}[Statique des fluides]
+Dans un fluide \textbf{incompressible} (un liquide) au repos, de masse volumique $\rho$, pour deux points d'altitudes $z_1$ et $z_2$
+repérées sur un axe vertical \textbf{orienté vers le haut} :
+\[P_2-P_1=\rho\,g\,(z_1-z_2).\]
+À la profondeur $h$ sous la surface libre, $P=P_\mathrm{atm}+\rho\,g\,h$ : dans l'eau, la pression augmente de \qty{9,81e4}{Pa}, soit
+environ \qty{1}{bar}, tous les \qty{10}{m}.
+\end{loi}
+\begin{propriete}[Conséquences]
+La pression est la même en tous les points d'un même plan horizontal d'un liquide au repos. La surface libre d'un liquide
+est horizontale ; dans des vases communicants, elle est au même niveau dans toutes les branches.
+\end{propriete}
+\par\penalty0
+\schema{12-statique}
+\begin{propriete}[Quelques ordres de grandeur]
+\par\smallskip\noindent\hfill\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Situation & Pression & Situation & Pression \\
+\midrule
+Sommet du mont Blanc & \qty{550}{hPa} & Autocuiseur en marche & \qty{2}{bar} \\
+Niveau de la mer & \qty{1013}{hPa} & Plongeur à \qty{20}{m} & \qty{3}{bar} \\
+Écart sur un étage (air) & \qty{0,35}{hPa} & Bouteille de plongée & \qty{200}{bar} \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{propriete}
+\begin{attention}
+Dans $F=P\times S$, convertir les surfaces en \unit{m^2} ($\qty{1}{cm^2}=\qty{1e-4}{m^2}$). Dans la loi de la statique, bien vérifier
+l'orientation de l'axe : vers le haut, le point le plus bas a la plus grande pression. La loi de Mariotte ne s'applique qu'aux
+gaz, à température et quantité de matière constantes ; la loi de la statique ne s'applique qu'aux liquides.
+\end{attention}
+\begin{experience}[Tester les deux lois]
+\textbf{Mariotte} : une seringue est reliée à un capteur de pression piloté par un microcontrôleur ; on relève la pression pour
+différents volumes, en déplaçant lentement le piston pour que la température reste constante. \textbf{Statique} : on
+enfonce la sonde d'un manomètre dans une éprouvette d'eau et l'on trace $P$ en fonction de la profondeur : on obtient
+une droite de pente $\rho\,g$.
+\end{experience}
+\begin{rediger}
+Écrire la loi littérale, préciser le système (quantité de gaz enfermée, liquide considéré) et les conditions d'application
+(température constante, liquide au repos), convertir dans les unités du Système international, puis calculer.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-12-1}
+\begin{exercice}[1]{Du microscopique au macroscopique}
+Un automobiliste contrôle la pression de ses pneus le matin, à \qty{10}{\degreeCelsius}. Après une heure de route au soleil, l'air des pneus est à
+\qty{40}{\degreeCelsius} ; le volume des pneus n'a pratiquement pas changé.
+\begin{donnees}
+$\rho_\mathrm{air}=\qty{1,2}{kg.m^{-3}}$ ; $\rho_\mathrm{eau}=\qty{1,00e3}{kg.m^{-3}}$.
+\end{donnees}
+\begin{questions}
+\item Comment la température de l'air se traduit-elle à l'échelle des molécules ? Faire un schéma comparatif.
+\item En déduire comment évolue la pression dans les pneus. Justifier à l'aide des chocs sur les parois.
+\item Calculer la masse d'air contenue dans une pièce de \qty{5}{m} sur \qty{4}{m} et de \qty{2,5}{m} de hauteur.
+\item L'eau liquide est environ 830 fois plus dense que l'air. Interpréter à l'échelle microscopique.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-2}
+\begin{exercice}[1]{La force de l'air sur une fenêtre}
+Une vitre rectangulaire mesure \qty{1,20}{m} sur \qty{0,80}{m}.
+\begin{donnees}
+$P_\mathrm{atm}=\qty{1,013e5}{Pa}$ ; $g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la valeur de la force pressante exercée par l'air extérieur sur la vitre.
+\item Quelle masse aurait un objet dont le poids a cette valeur ?
+\item Pourquoi la vitre ne se brise-t-elle pas ? Représenter les forces sur un schéma.
+\item Pendant une tempête, la pression extérieure devient inférieure de \qty{30}{hPa} à la pression intérieure. Calculer la force
+résultante sur la vitre et préciser son sens.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-3}
+\begin{exercice}[1]{La seringue bouchée}
+\schema{12-ex03}
+\begin{donnees}
+$P_\mathrm{atm}=\qty{1013}{hPa}$.
+\end{donnees}
+\begin{questions}
+\item Quelle loi peut-on appliquer à l'air enfermé ? À quelles conditions ?
+\item Calculer la pression de l'air enfermé lorsque son volume vaut \qty{20}{mL}.
+\item Faire l'inventaire des forces qui s'exercent sur le piston et calculer la force que doit exercer l'opérateur.
+\item Pour quel volume la pression de l'air enfermé vaut-elle \qty{2,0e5}{Pa} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-4}
+\begin{exercice}[1]{La pression sous l'eau}
+\begin{donnees}
+$P_\mathrm{atm}=\qty{1,013e5}{Pa}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; eau douce : $\rho=\qty{1,00e3}{kg.m^{-3}}$ ; eau de mer : $\rho=\qty{1,03e3}{kg.m^{-3}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la pression au fond d'une piscine de \qty{2,0}{m} de profondeur.
+\item Calculer la pression à \qty{10}{m} de profondeur dans la mer. Comparer à la pression atmosphérique.
+\item À quelle profondeur dans la mer la pression atteint-elle \qty{3,0e5}{Pa} ?
+\item Tracer l'allure de la pression en fonction de la profondeur. De quel type de fonction s'agit-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-5}
+\begin{exercice}[1]{Des vases communicants}
+\schema{12-ex05}
+\begin{donnees}
+$P_\mathrm{atm}=\qty{1,013e5}{Pa}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; $\rho_\mathrm{eau}=\qty{1,00e3}{kg.m^{-3}}$.
+\end{donnees}
+\begin{questions}
+\item Classer par ordre croissant les pressions aux points A, C, D et E. Justifier.
+\item Comparer les pressions en A et en B.
+\item Calculer la pression en A puis en C.
+\item Expliquer pourquoi la surface libre de l'eau est à la même hauteur dans les deux branches.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-12-6}
+\begin{exercice}[2]{La pression en plongée, en Python}
+\begin{python}
+rho, g, P0 = 1030, 9.81, 1.013e5     # SI : eau de mer
+for h in range(0, 50, 10):            # profondeur en m
+    P = P0 + rho * g * h
+    print(h, 'm :', round(P / 1e5, 2), 'bar')
+\end{python}
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle relation le programme utilise-t-il ? Que représente \code{P0} ?
+\item Prévoir les cinq lignes affichées.
+\item De combien la pression augmente-t-elle tous les \qty{10}{m} ? À quelle profondeur est-elle le triple de la pression atmosphérique ?
+\item Modifier le programme pour un lac de montagne d'eau douce où $P_0=\qty{0,80e5}{Pa}$. Que vaut la pression à \qty{20}{m} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-7}
+\begin{exercice}[2]{Les poumons de l'apnéiste}
+Un apnéiste inspire \qty{6,0}{L} d'air en surface, à la pression $P_0=\qty{1,013e5}{Pa}$, puis descend en bloquant sa respiration. On
+admet que la température de l'air de ses poumons reste constante.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$ ; eau de mer : $\rho=\qty{1,03e3}{kg.m^{-3}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la pression à \qty{20}{m} de profondeur.
+\item Calculer le volume de l'air de ses poumons à cette profondeur.
+\item Tracer l'allure du volume des poumons en fonction de la profondeur, entre 0 et \qty{40}{m}.
+\item Un plongeur équipé d'une bouteille respire à \qty{20}{m} de l'air à la pression ambiante. Pourquoi ne doit-il jamais
+remonter en bloquant sa respiration ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-8}
+\begin{exercice}[2]{Le baromètre de Torricelli}
+\schema{12-ex08}
+\begin{donnees}
+$\rho_\mathrm{mercure}=\qty{13,6e3}{kg.m^{-3}}$ ; $\rho_\mathrm{eau}=\qty{1,00e3}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; $P_\mathrm{atm}=\qty{1,013e5}{Pa}$.
+\end{donnees}
+\begin{questions}
+\item Que vaut la pression au sommet C de la colonne ? Et au point A du tube situé au niveau de la surface de la cuve ?
+\item Appliquer la loi de la statique entre A et C et en déduire la pression atmosphérique.
+\item Pourquoi parle-t-on encore de « millimètres de mercure » pour mesurer la pression ?
+\item Quelle hauteur atteindrait la colonne avec de l'eau ? Pourquoi a-t-on choisi le mercure ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-9}
+\begin{exercice}[2]{La pression et l'altitude}
+On admet, pour de petites hauteurs, que la masse volumique de l'air reste égale à \qty{1,2}{kg.m^{-3}}.
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$ ; pression au niveau de la mer : \qty{1013}{hPa}.
+\end{donnees}
+\begin{questions}
+\item Calculer la diminution de pression quand on s'élève de \qty{100}{m}, puis de \qty{300}{m} (hauteur de la tour Eiffel).
+\item Un téléphone muni d'un baromètre détecte des écarts de \qty{0,1}{hPa}. Peut-il repérer le passage d'un étage, haut de \qty{3}{m} ?
+\item Calculer la pression au sommet du mont Blanc (\qty{4807}{m}) avec la même hypothèse.
+\item On y mesure en réalité environ \qty{550}{hPa}. Quelle hypothèse est en défaut ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-10}
+\begin{exercice}[2]{Mesurer une masse volumique avec un tube en U}
+\schema{12-ex10}
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1,00e3}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; $P_\mathrm{atm}=\qty{1,013e5}{Pa}$.
+\end{donnees}
+\begin{questions}
+\item On note A le point de l'interface eau-huile et B le point de l'eau situé au même niveau dans l'autre branche. Pourquoi
+$P_\mathrm{A}=P_\mathrm{B}$ ?
+\item Exprimer $P_\mathrm{A}$ en fonction de $P_\mathrm{atm}$, $\rho_\mathrm{h}$, $g$ et $h_\mathrm{h}$, puis $P_\mathrm{B}$ en fonction de $P_\mathrm{atm}$, $\rho_\mathrm{eau}$, $g$ et $h_\mathrm{e}$.
+\item En déduire la masse volumique de l'huile.
+\item Calculer la pression au point A.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-11}
+\begin{exercice}[2]{Tester la loi de Mariotte}
+\schema{12-ex11}
+\par\smallskip\noindent\hfill\begin{tabular}{lcccccc}
+\toprule
+$V$ (mL) & 60 & 50 & 40 & 30 & 24 & 20 \\
+$P$ (hPa) & 1012 & 1218 & 1515 & 2031 & 2526 & 3046 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\begin{questions}
+\item Calculer le produit $P\times V$ pour chaque mesure. La loi de Mariotte est-elle vérifiée ?
+\item Tracer $P$ en fonction de $\dfrac{1}{V}$. Quelle courbe obtient-on ?
+\item Prévoir la pression pour un volume de \qty{15}{mL}.
+\item Pourquoi faut-il déplacer le piston lentement ? Quel défaut du montage peut fausser les mesures ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-12-12}
+\begin{exercice}[3]{La plongée en bouteille}
+\begin{docu}{1}{La bouteille}
+Une bouteille de plongée de \qty{12}{L} est gonflée d'air à \qty{200}{bar}. Par sécurité, le plongeur doit remonter quand la pression
+dans la bouteille descend à \qty{50}{bar} : c'est la réserve.
+\end{docu}
+\begin{docu}{2}{Le détendeur}
+Le détendeur fournit au plongeur de l'air à la pression de l'eau qui l'entoure. Un plongeur au repos respire \qty{20}{L} d'air par
+minute, quelle que soit la profondeur : ce volume est mesuré à la pression ambiante.
+\end{docu}
+\begin{donnees}
+On prend $P_\mathrm{atm}=\qty{1,0}{bar}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; eau de mer : $\rho=\qty{1,03e3}{kg.m^{-3}}$ ; température constante.
+\end{donnees}
+\begin{questions}
+\item Calculer la pression à \qty{20}{m} de profondeur, en bar.
+\item Quel volume occuperait l'air de la bouteille à la pression atmosphérique ? Et l'air utilisable avant la réserve ?
+\item À \qty{20}{m}, quel volume d'air, ramené à la pression atmosphérique, le plongeur consomme-t-il par minute ?
+\item \initiative Calculer la durée de la plongée à \qty{20}{m} avant d'atteindre la réserve, et la comparer à celle d'une plongée près de la
+surface.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-13}
+\begin{exercice}[3]{Le ballon-sonde}
+\begin{docu}{1}{Un ballon météorologique}
+Chaque jour, des ballons gonflés à l'hélium emportent des instruments de mesure jusqu'à plus de \qty{25}{km} d'altitude. Au
+lâcher, l'enveloppe de caoutchouc, presque sphérique, contient \qty{1,5}{m^3} d'hélium à \qty{1013}{hPa}.
+\end{docu}
+\begin{docu}{2}{L'altitude}
+La pression de l'air vaut environ \qty{30}{hPa} à \qty{24}{km} d'altitude. Le ballon éclate quand son diamètre atteint \qty{6,0}{m} ; un parachute
+ramène alors les instruments au sol.
+\end{docu}
+\begin{donnees}
+On admet que l'hélium du ballon reste à la pression de l'air extérieur et que sa température est constante. Volume d'une
+sphère : $V=\dfrac{4}{3}\,\pi\,r^3$.
+\end{donnees}
+\begin{questions}
+\item Calculer le volume du ballon à \qty{24}{km} d'altitude. Combien de fois a-t-il augmenté ?
+\item Calculer le diamètre du ballon au sol et à \qty{24}{km}.
+\item \initiative Calculer la pression de l'air au moment où le ballon éclate.
+\item En réalité, la température vaut environ \qty{-55}{\degreeCelsius} vers \qty{24}{km}. Critiquer le modèle utilisé.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-14}
+\begin{exercice}[3]{Le château d'eau}
+\begin{docu}{1}{Distribuer l'eau}
+Un château d'eau stocke l'eau en hauteur : la pression qu'elle exerce dans les canalisations suffit à la distribuer sans pompe.
+Pour un bon confort, la surpression au robinet (pression de l'eau moins pression atmosphérique) doit atteindre au moins
+\qty{3,0}{bar}.
+\end{docu}
+\begin{docu}{2}{Le réseau}
+\schema{12-ex14}
+\end{docu}
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1,00e3}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; $\qty{1}{bar}=\qty{1e5}{Pa}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la surpression au robinet A de la maison.
+\item Calculer la surpression au robinet B du dernier étage de l'immeuble. Le confort est-il assuré ?
+\item \initiative À quelle altitude minimale devrait se trouver la surface de l'eau pour assurer le confort au robinet B ?
+\item Une trappe de visite de \qty{0,50}{m^2} est placée au fond de la cuve. Calculer la force pressante supplémentaire due à l'eau.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-15}
+\begin{exercice}[3]{Pourquoi les barrages sont-ils si épais à la base ?}
+\begin{docu}{1}{Le barrage-poids}
+\schema{12-ex15}
+Un barrage-poids résiste à la poussée de l'eau grâce à sa masse : sa base, très large, peut dépasser \qty{40}{m} d'épaisseur.
+\end{docu}
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1,00e3}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$. On ne considère que la surpression due à l'eau, l'air agissant des deux côtés.
+\end{donnees}
+\begin{questions}
+\item Calculer la surpression due à l'eau à mi-hauteur, puis au pied du barrage.
+\item Représenter l'allure des forces pressantes sur la paroi verticale, de la surface au pied.
+\item Calculer la force pressante sur une vanne de \qty{1,0}{m^2} placée au pied du barrage.
+\item \initiative En utilisant la pression moyenne sur la paroi, estimer la force exercée par l'eau sur une bande verticale de paroi
+de \qty{1}{m} de large. Conclure sur la forme du barrage.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

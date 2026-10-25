@@ -1,0 +1,24 @@
+% Échanges de dioxyde de carbone entre l'atmosphère et l'océan (exercice 14, chapitre 1)
+\begin{tikzpicture}[x=1mm,y=1mm,
+  esp/.style={font=\otMedium\fontsize{8}{9}\selectfont,text=otNavyDark,fill=white,rounded corners=1mm,inner sep=1.2mm}]
+\fill[otNavy!10] (0,0) rectangle (128,36);
+\fill[otNavy!10] (0,36) \foreach \k in {0,...,15}{-- ++(4,1.2) -- ++(4,-1.2)} -- (128,0) -- cycle;
+\draw[otNavy!55,line width=0.7pt] (0,36) \foreach \k in {0,...,15}{-- ++(4,1.2) -- ++(4,-1.2)};
+\node[pcLegende,anchor=west] at (2,47) {atmosphère};
+\node[pcLegende,anchor=west] at (2,31) {océan};
+\node[esp,fill=otRule!30] (co2) at (34,48) {\ce{CO2(g)}};
+\draw[pcFleche] (co2.south) -- (34,27) node[pos=0.22,right,pcLegende]{dissolution};
+\node[esp] (aq) at (34,21) {\ce{CO2,H2O}};
+\node[esp] (hc) at (66,21) {\ce{HCO3-}};
+\node[esp] (ca) at (96,21) {\ce{CO3^2-}};
+\node[esp] (cal) at (66,7) {\ce{Ca^2+}};
+% Coquille (pétoncle) et corail
+\begin{scope}[shift={(104,3)}]
+  \filldraw[fill=otOrange!25,draw=otOrange!80!black,line width=0.6pt] (0,0) -- (60:11) arc[start angle=60,end angle=120,radius=11] -- cycle;
+  \foreach \a in {66,72,...,114}{\draw[otOrange!80!black,line width=0.35pt] (0,0) -- (\a:10.6);}
+  \filldraw[fill=otOrange!25,draw=otOrange!80!black,line width=0.6pt] (-2.2,-1.2) rectangle (2.2,0.6);
+\end{scope}
+\draw[otGreenDark!80,line width=1.3pt,line cap=round] (12,0) -- (12,9) -- (9,14) (12,6) -- (16,11) -- (17,15) (16,11) -- (20,12);
+\draw[pcRepere] (104,14.5) -- (110,26) node[pcLegende,anchor=south]{coquille en \ce{CaCO3}};
+\end{tikzpicture}
+\par\smallskip\legende{Le dioxyde de carbone dissous et les ions carbonate dans l'eau de mer. Schéma sans échelle.}

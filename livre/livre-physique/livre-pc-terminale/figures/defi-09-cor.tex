@@ -1,0 +1,16 @@
+% pH d'une solution d'acide fort en fonction de la concentration apportée (corrigé du défi D09)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=52mm,xmin=0,xmax=12.4,ymin=0,ymax=8.2,
+  xtick={0,2,...,12},ytick={0,1,...,8},
+  xlabel={$-\log\left(c/\cst\right)$},ylabel={pH}]
+\addplot[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:7.6,samples=2,forget plot] {x};
+\addplot[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:12.2,samples=2,forget plot] {7};
+\addplot[otNavy,line width=1pt,domain=0:12.2,samples=300]
+  {-log10((10^(-x)+sqrt(10^(-2*x)+4e-14))/2)};
+\addplot[only marks,mark=*,mark size=1.7pt,otGreenDark] coordinates {(8,6.98)};
+\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:8.2,6.4) {$c=\qty{1e-8}{mol.L^{-1}}$ : pH 6,98};
+\node[pcLegende,text=otMuted,rotate=38] at (axis cs:3.4,4.25) {$\pH=-\log\left(c/\cst\right)$};
+\node[pcLegende,text=otOrange!80!black,anchor=south east] at (axis cs:12.1,7.05) {$\pH\to7{,}0$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Pour un acide fort très dilué, le pH ne suit plus la droite : il tend vers 7,0, imposé par l'autoprotolyse de l'eau.}

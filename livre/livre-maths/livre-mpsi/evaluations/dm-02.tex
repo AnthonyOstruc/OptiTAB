@@ -1,0 +1,65 @@
+% !TEX root = ../main.tex
+%% Devoir maison n° 2 — Résidus quadratiques (chapitres 1, 7, 16)
+%% Résultats vérifiés par verifications/eval_dm.py.
+
+\sujetEval{DM2}{MPSI · Devoir maison}{Devoir maison \numero2}
+  {À rendre en une semaine\\Résidus quadratiques\\Chapitres 1, 7 et 16}{3}
+  {Partie A/Compter les carrés/Q1 à Q3,Partie B/Les théorèmes de Wilson et d'Euler/Q4 à Q6,%
+   Partie C/Applications/Q7 à Q10}
+\enParties
+\consigne{Dans tout le problème, $p$ désigne un nombre premier impair, et
+les congruences sont prises modulo $p$ sauf mention contraire. Seuls le
+lemme d'Euclide, le théorème de Bézout et le petit théorème de Fermat sont
+supposés connus.}
+
+Un entier $a$ non divisible par $p$ est appelé \emph{résidu quadratique}
+modulo $p$ s'il existe $x\in\Z$ tel que $x^{2}\equiv a\pmod p$, et
+\emph{non-résidu} sinon. Par exemple, $2$ est un résidu modulo $7$ car
+$3^{2}=9\equiv2\pmod7$. On note $R_p$ l'ensemble des résidus quadratiques
+appartenant à $\ens{1,\dots,p-1}$.
+
+\begin{exoEval}[Compter les carrés]{}{}
+\begin{questions}
+  \item Soient $x,y\in\ens{1,\dots,p-1}$. Montrer que
+    $x^{2}\equiv y^{2}\pmod p$ si et seulement si $x=y$ ou $x+y=p$.
+  \item En déduire que $R_p$ possède exactement $\dfrac{p-1}{2}$ éléments :
+    les restes des divisions par $p$ de $1^{2},2^{2},\dots,\bigl(\frac{p-1}{2}\bigr)^{2}$.
+  \item Déterminer $R_{13}$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Les théorèmes de Wilson et d'Euler]{}{}
+\begin{questions}[start=4]
+  \item \begin{enumerate}[label=\alph*)]
+      \item Montrer que pour tout $x\in\ens{1,\dots,p-1}$, il existe un
+        unique $x^{*}\in\ens{1,\dots,p-1}$ tel que $xx^{*}\equiv1$.
+      \item Montrer que $x^{*}=x$ si et seulement si $x\in\ens{1,p-1}$.
+      \item En regroupant chaque $x$ avec $x^{*}$, démontrer le
+        \emph{théorème de Wilson} : $(p-1)!\equiv-1\pmod p$.
+    \end{enumerate}
+  \item Soit $a$ un non-résidu. Montrer que pour tout
+    $x\in\ens{1,\dots,p-1}$, il existe un unique $x'\in\ens{1,\dots,p-1}$
+    tel que $xx'\equiv a$, et que $x'\neq x$. En regroupant les éléments de
+    $\ens{1,\dots,p-1}$ par paires $\ens{x,x'}$, montrer que
+    $(p-1)!\equiv a^{(p-1)/2}$, puis que $a^{(p-1)/2}\equiv-1$.
+  \item Soit $a$ un résidu. Montrer que $a^{(p-1)/2}\equiv1$. En déduire le
+    \emph{critère d'Euler} : pour $a$ non divisible par $p$,
+    \[a\ \text{est un résidu quadratique modulo }p\iff a^{(p-1)/2}\equiv1\pmod p.\]
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Applications]{}{}
+\begin{questions}[start=7]
+  \item À l'aide du critère d'Euler, déterminer si $2$ et $3$ sont des
+    résidus quadratiques modulo $13$.
+  \item Montrer que $-1$ est un résidu quadratique modulo $p$ si et
+    seulement si $p\equiv1\pmod4$.
+  \item On suppose $p\equiv1\pmod4$. En écrivant
+    $(p-1)!=\prod_{k=1}^{(p-1)/2}k\,(p-k)$, montrer que
+    $x=\bigl(\frac{p-1}{2}\bigr)!$ vérifie $x^{2}\equiv-1\pmod p$. Vérifier
+    sur $p=13$.
+  \item Montrer qu'il existe une infinité de nombres premiers congrus à
+    $1$ modulo $4$. \emph{Raisonner par l'absurde en considérant
+    $N=(2p_1p_2\cdots p_r)^{2}+1$.}
+\end{questions}
+\end{exoEval}

@@ -1,0 +1,118 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 19 — Concentration et loi des grands nombres
+%% Tous les résultats ont été vérifiés par programme (calcul exact et simulation).
+
+\corrigesChapitre{19}{Concentration et loi des grands nombres}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{La loi des grands nombres}
+\begin{questions}
+  \item $f=\res{0{,}47}$, soit un écart de $0{,}03$ avec $p=0{,}5$ : normal sur $100$ lancers.
+  \item Vers l'espérance d'un lancer, $\res{3{,}5}$.
+  \item $f=0{,}52$ ; l'écart-type de la fréquence est $\sqrt{\frac{0{,}25}{1\,000}}\approx0{,}016$ : un écart de $0{,}02$ est tout à fait
+    plausible, le résultat est $\res{\text{compatible}}$.
+  \item L'écart à $14$ passe de $2$ points à $0{,}2$ point : la moyenne se rapproche de sa valeur théorique quand le nombre de contrôles
+    augmente.
+  \item La loi des grands nombres affirme que la probabilité d'un écart donné \emph{tend vers $0$} : la fréquence fluctue toujours,
+    mais de moins en moins ; elle n'est pas égale à $p$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Simuler des lancers en Python}
+\begin{questions}
+  \item \texttt{s} compte les piles ; la fonction renvoie la $\res{\text{fréquence de pile}}$ sur $n$ lancers.
+  \item Plus $n$ est grand, plus la fréquence est proche de $0{,}5$ : c'est la loi des grands nombres.
+  \item $F_n=\frac{X_1+\dots+X_n}{n}$, donc $E(F_n)=\res{0{,}5}$ et $V(F_n)=\res{\frac{0{,}25}{n}}$.
+  \item Inégalité de concentration :\\ $P\big(|F_n-0{,}5|\geq0{,}05\big)\leq\frac{0{,}25}{10\,000\times0{,}05^{2}}$,\\ soit $\res{0{,}01}$ :
+    la fréquence est comprise entre $0{,}45$ et $0{,}55$ avec une probabilité d'au moins 99\,\%.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{L'inégalité de Bienaymé-Tchebychev}
+\methode{$P\big(|X-\mu|\geq\delta\big)\leq\frac{V}{\delta^{2}}$}
+\begin{questions}
+  \item $\frac{4}{16}=\res{0{,}25}$
+  \item $V=9$, $\delta=6$ : $\frac{9}{36}=\res{0{,}25}$
+  \item C'est l'événement $|X-5|\geq0{,}5$ : $\frac{0{,}04}{0{,}25}=\res{0{,}16}$
+  \item $P\big(|X-50|<10\big)\geq1-\frac{25}{100}=\res{0{,}75}$
+  \item $\frac{2{,}25}{9}=\res{0{,}25}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Majoration et valeur exacte}
+\begin{questions}
+  \item $E(X)=\res{50}$, $V(X)=\res{25}$, $\sigma(X)=\res{5}$.
+  \item $\frac{25}{10^{2}}=\res{0{,}25}$.
+  \item $P(X\leq40)+P(X\geq60)$\\ $\approx0{,}028\,4+0{,}028\,4\approx\res{0{,}057}$ :\\ environ quatre fois moins que la majoration.
+  \item Majoration $\frac{25}{225}=\frac19\approx\res{0{,}111}$ ;\\ valeur exacte :\\ $P(X\leq35)+P(X\geq65)\approx\res{0{,}003\,5}$.\\ L'inégalité est
+    toujours vraie, quelle que soit la loi, mais elle est très grossière.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Taille d'échantillon}
+\methode{$n\geq\frac{V}{\alpha\,\delta^{2}}$}
+\begin{questions}
+  \item $\frac{0{,}25}{0{,}05\times0{,}01}=\res{500}$ lancers
+  \item $\frac{0{,}24}{0{,}05\times0{,}000\,4}=\res{12\,000}$ personnes
+  \item $\frac{35/12}{0{,}1\times0{,}25}\approx116{,}7$ : $\res{117}$ lancers
+  \item $\frac{0{,}25}{0{,}01\times0{,}002\,5}=\res{10\,000}$
+  \item $\frac{0{,}21}{0{,}1\times0{,}000\,9}\approx2\,333{,}3$ : $\res{2\,334}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Estimation}
+\methode{$\delta=\sqrt{\frac{V}{n\alpha}}$}
+\begin{questions}
+  \item $\delta=\sqrt{\frac{16}{400\times0{,}05}}\approx0{,}894$ :\\ $\res{\intFF{24{,}11}{25{,}89}}$
+  \item $\delta=\sqrt{\frac{4}{250\times0{,}1}}=0{,}4$ :\\ $\res{\intFF{8{,}1}{8{,}9}}$
+  \item $1-\frac{400/1\,000}{2^{2}}=\res{0{,}9}$
+  \item Avec $p(1-p)\leq\frac14$ : $\delta=\sqrt{\frac{0{,}25}{2\,500\times0{,}04}}=0{,}05$, d'où $\res{\intFF{0{,}55}{0{,}65}}$.
+  \item $\delta=\sqrt{\frac{9}{200\times0{,}01}}\approx2{,}12$ : largeur $\res{4{,}24}$, intervalle $\intFF{43{,}08}{47{,}32}$.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{7}{Applications pratiques}
+\begin{questions}
+  \item $V(M_{100})=\frac{0{,}09}{100}$ et $P\big(|M_{100}-10|\geq0{,}1\big)\leq\frac{0{,}000\,9}{0{,}01}=\res{0{,}09}$.
+  \item $p=\frac1{37}\approx0{,}027\,0$ ; l'intervalle n'est pas centré : $p-0{,}024\approx0{,}003\,0$ et $0{,}031-p\approx0{,}004\,0$. On prend le
+    plus petit écart, $\delta\approx0{,}003\,03$ : si $|F-p|<\delta$, alors $F$ est dans l'intervalle. Or $V(F)=\frac{p(1-p)}{10\,000}\approx2{,}63\times10^{-6}$
+    et $P\big(|F-p|\geq\delta\big)\leq\frac{2{,}63\times10^{-6}}{0{,}003\,03^{2}}\approx0{,}287$. L'inégalité garantit seulement une probabilité
+    d'environ $\res{0{,}71}$ : elle ne permet $\res{\text{pas}}$ de garantir $0{,}9$ (la probabilité réelle est pourtant d'environ $0{,}97$).
+  \item On rejette si $F\geq0{,}08$, ce qui implique $|F-0{,}05|\geq0{,}03$ : $P\leq\frac{0{,}05\times0{,}95/1\,000}{0{,}03^{2}}\approx\res{0{,}053}$.
+  \item $n\geq\frac{25}{0{,}05\times0{,}25}=\res{2\,000}$ utilisateurs.
+  \item $\delta=\sqrt{\frac{0{,}16}{500\times0{,}04}}\approx0{,}089$ : $\res{\intFF{9{,}73}{9{,}91}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{8}{Combien de personnes interroger ?}
+\begin{questions}
+  \item $g'(p)=1-2p$ : $g$ croît sur $\intFF{0}{\frac12}$ et décroît ensuite ; son maximum est $g\left(\frac12\right)=\frac14$. Comme
+    $V(F)=\frac{p(1-p)}{n}$, on a $\res{V(F)\leq\frac{1}{4n}}$.
+  \item $E(F)=p$ et l'inégalité de Bienaymé-Tchebychev donne $P\big(|F-p|\geq\delta\big)\leq\frac{V(F)}{\delta^{2}}\leq\frac{1}{4n\delta^{2}}$.
+  \item $\frac{1}{4n\times0{,}02^{2}}\leq0{,}05\iff n\geq\frac{1}{4\times0{,}000\,4\times0{,}05}=\res{12\,500}$.
+  \item Précision $0{,}03$ : $n\geq\res{5\,556}$ ; précision $0{,}01$ : $n\geq\res{50\,000}$. Diviser la précision par $2$ oblige à multiplier
+    la taille de l'échantillon par $4$.
+  \item $\delta=\frac{1}{\sqrt{4\times1\,000\times0{,}05}}=\frac{1}{\sqrt{200}}\approx0{,}071$ : $\res{\intFF{0{,}449}{0{,}591}}$. Cet intervalle contient des
+    valeurs inférieures à $0{,}5$ : on $\res{\text{ne peut pas}}$ conclure que le projet est majoritaire.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{9}{Le casino gagne toujours}
+\begin{questions}
+  \item $P(G_i=1)=\frac{18}{37}$ et $P(G_i=-1)=\frac{19}{37}$ : $E(G_i)=\res{-\frac1{37}}$ ; $E\left(G_i^{2}\right)=1$, donc
+    $V(G_i)=1-\frac{1}{37^{2}}=\res{\frac{1\,368}{1\,369}}$.
+  \item $E(M_n)=\res{-\frac1{37}}$ et $V(M_n)=\res{\frac{1\,368}{1\,369\,n}}$.
+  \item Si $M_n\geq0$, alors $M_n-\left(-\frac1{37}\right)\geq\frac1{37}$. Par l'inégalité de Bienaymé-Tchebychev :
+    $P(M_n\geq0)\leq\frac{V(M_n)}{(1/37)^{2}}=\frac{1\,368}{1\,369\,n}\times1\,369=\res{\frac{1\,368}{n}}$.
+  \item Pour $n=100\,000$ : $\res{0{,}013\,7}$. Puis $\frac{1\,368}{n}\leq0{,}01\iff n\geq\res{136\,800}$ parties.
+  \item Le casino gagne ce que perdent les joueurs : $T=-(G_1+\dots+G_{10^{6}})$, donc $E(T)=\frac{10^{6}}{37}\approx\res{27\,027\text{ €}}$ et
+    $\sigma(T)=\sqrt{10^{6}\times\frac{1\,368}{1\,369}}\approx\res{1\,000\text{ €}}$. Un gain inférieur à $20\,000$\,€ suppose un écart d'au moins
+    $7\,027$\,€ : $P(T<20\,000)\leq\frac{V(T)}{7\,027^{2}}\approx\res{0{,}02}$. Sur un grand nombre de mises, le gain du casino est presque certain.
+\end{questions}
+\end{corrige}

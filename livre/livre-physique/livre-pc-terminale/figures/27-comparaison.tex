@@ -1,0 +1,17 @@
+% Comparer une valeur mesurée à une valeur de référence avec l'écart normalisé (L'essentiel, chapitre 27)
+\begin{tikzpicture}[x=1mm,y=1mm]
+\foreach \yy/\mes/\txt/\coul in {16/45/{compatible : $z\approx0{,}6<2$}/otGreenDark,0/64/{non compatible : $z\approx3>2$}/otRed!80!black}{
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,\yy) -- (100,\yy);
+  \fill[\coul,opacity=0.12] ({\mes-16},{\yy-2.6}) rectangle ({\mes+16},{\yy+2.6});
+  \draw[\coul,line width=1pt,{Bar[width=3mm]}-{Bar[width=3mm]}] ({\mes-8},\yy) -- ({\mes+8},\yy);
+  \fill[\coul] (\mes,\yy) circle (1.3);
+  \node[pcLegende,anchor=south,text=\coul] at (\mes,{\yy+2.8}) {$m_\mathrm{mes}$};
+  \draw[otInk,line width=1pt] (40,{\yy-3.2}) -- (40,{\yy+3.2});
+  \node[pcLegende,anchor=north] at (40,{\yy-3.3}) {$m_\mathrm{ref}$};
+  \node[pcLegende,anchor=west,text=\coul] at (104,\yy) {\txt};}
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (37,23.5) -- (53,23.5);
+\node[pcLegende,anchor=south] at (45,23.6) {$\pm u(m)$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (48,-5.5) -- (80,-5.5);
+\node[pcLegende,anchor=north] at (64,-5.6) {$\pm2\,u(m)$};
+\end{tikzpicture}
+\par\smallskip\legende{Trait épais : la valeur mesurée et son incertitude-type ; zone colorée : $\pm2\,u(m)$. La mesure est compatible avec la référence lorsque celle-ci tombe dans cette zone, c'est-à-dire lorsque $z<2$.}

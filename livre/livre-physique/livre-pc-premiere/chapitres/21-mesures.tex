@@ -1,0 +1,319 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[mesure]{21}{Mesures et incertitudes}{Partie 5 · Outils transversaux}
+{Variabilité\enspace·\enspace Histogramme\enspace·\enspace Moyenne et écart-type\enspace·\enspace Incertitude-type\enspace·\enspace Écriture d'un résultat}
+\objectif{Exploiter une série de mesures indépendantes : histogramme, moyenne, écart-type ; évaluer qualitativement leur dispersion.}
+\objectif{Discuter de l'influence de l'instrument de mesure et du protocole ; distinguer erreurs aléatoires et erreur systématique.}
+\objectif{Définir une incertitude-type et l'évaluer par une approche statistique (type A) ou à partir de l'instrument (type B).}
+\objectif{Écrire un résultat avec un nombre adapté de chiffres significatifs et le comparer qualitativement à une valeur de référence.}
+\prerequis{Variabilité de la mesure, valeur moyenne, chiffres significatifs (classe de seconde).}
+\prerequis{Utilisation d'une calculatrice ou d'un tableur pour des statistiques ; puissances de 10 et racine carrée.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Variabilité de la mesure}
+\begin{definition}[Variabilité d'une mesure]
+Lorsqu'on répète plusieurs fois, de façon indépendante, la mesure d'une même grandeur, on obtient en général des valeurs
+différentes : c'est la \textbf{variabilité} de la mesure. Elle provient de l'instrument (résolution, défauts), de l'opérateur (lecture,
+temps de réaction), du protocole et des conditions de l'expérience. On représente une série de mesures par un \textbf{histogramme} :
+en abscisse les valeurs ou classes de valeurs, en ordonnée leur effectif.
+\end{definition}
+\par\penalty0
+\schema{21-histogramme}
+\begin{propriete}[Moyenne et écart-type]
+La meilleure estimation de la grandeur est la \textbf{moyenne} des $n$ mesures ; leur dispersion est évaluée par l'\textbf{écart-type
+expérimental} $s$ :
+\[\overline{x}=\frac{x_1+x_2+\dots+x_n}{n}\qquad\text{et}\qquad s=\sqrt{\frac{(x_1-\overline{x})^2+(x_2-\overline{x})^2+\dots+(x_n-\overline{x})^2}{n-1}}.\]
+Plus $s$ est petit, moins les mesures sont dispersées. En pratique, on utilise la calculatrice ($\sigma_{n-1}$ ou $s_x$) ou un tableur. Pour
+les vingt volumes de l'histogramme : $\overline{V}=\qty{12,23}{mL}$ et $s=\qty{0,082}{mL}$.
+\end{propriete}
+\begin{propriete}[Erreurs aléatoires et erreur systématique]
+Les \textbf{erreurs aléatoires} dispersent les mesures de part et d'autre de la valeur de la grandeur : on les réduit en répétant
+les mesures ou en améliorant le protocole (chronométrer dix périodes plutôt qu'une). Une \textbf{erreur systématique} décale toutes
+les mesures dans le même sens (appareil mal étalonné, zéro mal réglé, lecture en biais) : répéter les mesures ne la réduit pas, il faut
+la repérer et la corriger. Le choix de l'instrument compte aussi : un capteur relié à un ordinateur disperse moins qu'un chronomètre manuel.
+\end{propriete}
+\par\penalty0
+\schema{21-cibles}
+\begin{python}
+from statistics import mean, stdev
+from math import sqrt
+V = [12.20, 12.25, 12.15, 12.30, 12.20, 12.35, 12.10, 12.25, 12.20, 12.30,
+     12.15, 12.25, 12.20, 12.40, 12.25, 12.20, 12.05, 12.30, 12.25, 12.20]
+n = len(V)
+s = stdev(V)                       # ecart-type experimental (avec n - 1)
+u = s / sqrt(n)                    # incertitude-type de type A
+print(n, 'mesures ; moyenne :', round(mean(V), 2), 'mL')
+print('s =', round(s, 3), 'mL ; u =', round(u, 3), 'mL')
+\end{python}
+\begin{console}
+20 mesures ; moyenne : 12.23 mL
+s = 0.082 mL ; u = 0.018 mL
+\end{console}
+\noindent\capacite{Capacité numérique} Le module \code{statistics} calcule la moyenne et l'écart-type expérimental (\code{stdev}, avec $n-1$). Au tableur,
+on obtient les mêmes résultats avec \code{MOYENNE} et \code{ECARTYPE.STANDARD}, et l'histogramme avec un graphique en colonnes des effectifs.
+\schema{21-tableur}
+\essSection{2}{Incertitude-type}
+\begin{definition}[Incertitude-type]
+L'\textbf{incertitude-type} $u(x)$ caractérise la dispersion des valeurs que l'on peut raisonnablement attribuer à la grandeur mesurée, à
+l'issue de la mesure réalisée. Elle a la même unité que $x$ ; plus elle est petite, plus la mesure est précise. L'\textbf{incertitude-type
+relative} $\dfrac{u(x)}{|x|}$, sans unité, permet de comparer la précision de mesures différentes.
+\end{definition}
+\begin{loi}[Évaluations de type A et de type B]
+\textbf{Type A} (approche statistique) : pour une série de $n$ mesures indépendantes, on retient la moyenne $\overline{x}$, avec
+\[u(\overline{x})=\frac{s}{\sqrt{n}}.\]
+\textbf{Type B} (autre approche) : pour une mesure unique, on utilise les caractéristiques de l'instrument. Lecture sur une échelle
+graduée : $u=\dfrac{\text{1 graduation}}{\sqrt{12}}$ ; instrument dont le fabricant indique une précision $\pm a$ (verrerie jaugée, appareil
+numérique) : $u=\dfrac{a}{\sqrt{3}}$. Un thermomètre gradué au degré donne $u=\qty{0,29}{\degreeCelsius}$ ; une pipette jaugée de \qty{10,00}{mL} à
+$\pm\qty{0,02}{mL}$ donne $u=\qty{0,012}{mL}$.
+\end{loi}
+\begin{attention}
+Ne pas confondre l'écart-type $s$, qui décrit la dispersion des mesures individuelles, et l'incertitude-type $u=\dfrac{s}{\sqrt{n}}$ sur leur
+moyenne, plus petite. Répéter les mesures diminue $u$, mais ne corrige jamais une erreur systématique.
+\end{attention}
+\essSection{3}{Écrire et exploiter un résultat}
+\begin{propriete}[Écriture d'un résultat de mesure]
+On arrondit l'incertitude-type à un ou deux chiffres significatifs, puis on arrondit la valeur mesurée au même rang décimal. On écrit
+par exemple $V_\text{éq}=\qty{12,23}{mL}$ avec $u(V_\text{éq})=\qty{0,02}{mL}$, que l'on note aussi $V_\text{éq}=(12{,}23\pm0{,}02)~\unit{mL}$ en précisant qu'il
+s'agit d'une incertitude-type. L'incertitude-type relative vaut ici $\dfrac{0{,}02}{12{,}23}\approx\qty{0,16}{\percent}$.
+\end{propriete}
+\begin{propriete}[Comparer à une valeur de référence]
+Lorsqu'une valeur de référence existe (valeur tabulée, valeur théorique, indication du fabricant), on compare \textbf{qualitativement}
+l'écart entre le résultat et cette valeur à l'incertitude-type : un écart du même ordre que $u$, ou plus petit, indique un résultat
+compatible ; un écart de nombreuses fois $u$ signale une erreur systématique ou une source d'erreur négligée, qu'il faut rechercher.
+\end{propriete}
+\par\penalty0
+\schema{21-comparaison}
+\begin{experience}[Étudier la variabilité d'une mesure]
+Chaque groupe mesure la période d'un pendule au chronomètre, puis avec un capteur relié à un ordinateur. Les résultats de la classe
+sont rassemblés dans un tableur : on trace les histogrammes, on calcule moyenne, écart-type et incertitude-type, puis l'on compare les
+deux instruments et l'intérêt de chronométrer dix périodes.
+\end{experience}
+\begin{rediger}
+Préciser la méthode d'évaluation (type A ou type B) et la formule utilisée, arrondir l'incertitude-type à un ou deux chiffres
+significatifs, écrire la valeur au même rang décimal avec son unité, puis comparer qualitativement à la référence en citant les
+sources d'erreur possibles.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-21-1}
+\begin{exercice}[1]{Lire un histogramme}
+\schema{21-ex01}
+\begin{questions}
+\item Combien de mesures ont été réalisées ? Quelle classe contient le plus de mesures ?
+\item Quelle proportion des mesures est comprise entre \qty{1,42}{s} et \qty{1,46}{s} ?
+\item Estimer graphiquement la valeur moyenne de la période.
+\item Pourquoi les élèves n'ont-ils pas tous trouvé la même valeur ? Proposer deux sources de variabilité.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-2}
+\begin{exercice}[1]{Moyenne et écart-type à la calculatrice}
+Huit groupes ont mesuré la célérité du son dans l'air, en \unit{m.s^{-1}} : 339 ; 342 ; 345 ; 340 ; 336 ; 343 ; 341 ; 339.
+\begin{questions}
+\item Calculer la moyenne de ces mesures.
+\item Déterminer l'écart-type expérimental $s$ à l'aide de la calculatrice.
+\item Calculer l'incertitude-type de type A sur la moyenne.
+\item Écrire le résultat, avec une incertitude-type arrondie à un chiffre significatif.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-3}
+\begin{exercice}[1]{Deux thermomètres}
+\schema{21-ex03}
+\begin{questions}
+\item Le thermomètre à alcool est gradué tous les degrés. Lire la température et évaluer l'incertitude-type de type B.
+\item Le thermomètre électronique affiche \qty{21,4}{\degreeCelsius} ; son fabricant indique une précision de $\pm\qty{0,2}{\degreeCelsius}$. Évaluer l'incertitude-type.
+\item Écrire les deux résultats (incertitudes-types à un chiffre significatif) et comparer leurs incertitudes-types relatives.
+\item Les deux mesures sont-elles compatibles ? Justifier qualitativement.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-4}
+\begin{exercice}[1]{Écrire un résultat}
+Une calculatrice donne les valeurs brutes suivantes : (a) $m=\qty{12,3467}{g}$ avec $u(m)=\qty{0,0234}{g}$ ; (b) $V=\qty{24,8}{mL}$ avec $u(V)=\qty{0,16}{mL}$ ;
+(c) $t=\qty{1,2345}{s}$ avec $u(t)=\qty{0,034}{s}$ ; (d) $c=\qty{0,051234}{mol.L^{-1}}$ avec $u(c)=\qty{0,00087}{mol.L^{-1}}$.
+\begin{questions}
+\item Écrire les résultats (a) et (b), en arrondissant l'incertitude-type à un chiffre significatif.
+\item Même question pour (c) et (d).
+\item Calculer l'incertitude-type relative du résultat (a).
+\item Un élève écrit « $m=\qty{12,3467}{g}$ avec $u(m)=\qty{0,02}{g}$ ». Quelle erreur commet-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-5}
+\begin{exercice}[1]{Quatre séries de mesures}
+\schema{21-ex05}
+\begin{questions}
+\item Quelles séries sont les plus dispersées ?
+\item Quelles séries présentent une erreur systématique ? Justifier.
+\item Quelle série conduit au meilleur résultat ?
+\item Proposer une cause possible d'erreur systématique lors d'une mesure de $g$ par chute libre.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-21-6}
+\begin{exercice}[2]{Statistiques et histogramme, en Python}
+\begin{python}
+from statistics import mean, stdev
+from math import sqrt
+T = [143, 145, 141, 139, 144, 147, 143, 142, 149, 145,
+     140, 143, 146, 141, 145, 148, 142, 147, 144, 143]      # centiemes de s
+s = stdev(T)
+print('moyenne :', mean(T), 'cs')
+print('s =', round(s, 1), 'cs ; u =', round(s / sqrt(20), 1), 'cs')
+for debut in range(138, 150, 2):
+    nb = len([t for t in T if debut <= t < debut + 2])
+    print(debut, '-', debut + 2, ':', '*' * nb)
+\end{python}
+\begin{console}
+moyenne : 143.85 cs
+s = 2.7 cs ; u = 0.6 cs
+138 - 140 : *
+140 - 142 : ***
+142 - 144 : ******
+144 - 146 : *****
+146 - 148 : ***
+148 - 150 : **
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}La liste \code{T} contient les périodes de l'exercice 1. Pourquoi sont-elles écrites en centièmes de seconde ? Que fait la boucle \code{for} ?
+\item Écrire le résultat de la mesure de la période, en secondes, avec une incertitude-type à deux chiffres significatifs.
+\item Comparer l'affichage obtenu à l'histogramme de l'exercice 1.
+\item Au tableur, les périodes (en s) sont dans les cellules A1 à A20. Quelles formules donnent la moyenne, l'écart-type et le nombre
+de mesures comprises entre \qty{1,42}{s} et \qty{1,44}{s} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-7}
+\begin{exercice}[2]{Pipette jaugée ou éprouvette graduée ?}
+Pour prélever \qty{20}{mL} d'une solution, on dispose d'une pipette jaugée de \qty{20,00}{mL}, de tolérance $\pm\qty{0,03}{mL}$, et d'une éprouvette
+graduée de \qty{25}{mL}, graduée tous les \qty{0,5}{mL}.
+\begin{questions}
+\item Évaluer l'incertitude-type sur le volume prélevé à la pipette jaugée.
+\item Même question pour l'éprouvette graduée, en considérant une seule lecture.
+\item Calculer les incertitudes-types relatives et les comparer.
+\item Pour préparer une solution étalon par dilution, quel instrument faut-il choisir ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-8}
+\begin{exercice}[2]{Mesurer $g$ par chute libre}
+Une bille est lâchée sans vitesse d'une hauteur $h=\qty{1,000}{m}$ ; deux capteurs mesurent la durée de chute $t$, et l'on en déduit
+$g=\dfrac{2\,h}{t^2}$. Dix mesures de $t$ donnent, en s : 0,452 ; 0,448 ; 0,455 ; 0,450 ; 0,446 ; 0,453 ; 0,449 ; 0,451 ; 0,447 ; 0,454.
+\begin{questions}
+\item Calculer la valeur de $g$ obtenue avec la première mesure.
+\item Les dix valeurs de $g$ sont, en \unit{m.s^{-2}} : 9,79 ; 9,96 ; 9,66 ; 9,88 ; 10,05 ; 9,75 ; 9,92 ; 9,83 ; 10,01 ; 9,70. Calculer leur moyenne et leur écart-type.
+\item Évaluer l'incertitude-type et écrire le résultat.
+\item Comparer qualitativement ce résultat à la valeur de référence $g=\qty{9,81}{m.s^{-2}}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-9}
+\begin{exercice}[2]{Une période ou dix périodes ?}
+Trois protocoles de mesure de la période $T$ d'un pendule sont répétés chacun dix fois. A : chronomètre manuel, une période ;
+moyenne \qty{1,43}{s}, $s=\qty{0,080}{s}$. B : chronomètre manuel, dix périodes ; moyenne de $10\,T$ : \qty{14,36}{s}, $s=\qty{0,085}{s}$. C : capteur relié à un
+ordinateur, une période ; moyenne \qty{1,4362}{s}, $s=\qty{0,002}{s}$.
+\begin{questions}
+\item Calculer l'incertitude-type de type A sur $T$ pour le protocole A.
+\item Pour le protocole B, en déduire $T$ et son incertitude-type.
+\item Même question pour le protocole C.
+\item Expliquer l'influence de l'instrument et du protocole sur la précision du résultat.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-10}
+\begin{exercice}[2]{Le voltmètre numérique}
+Un voltmètre numérique affiche \qty{4,52}{V} sur le calibre \qty{20}{V}. Sa notice indique une précision de $\pm$(\qty{0,5}{\percent} de la lecture
++ 2 unités du dernier chiffre affiché).
+\begin{questions}
+\item Calculer la précision $a$ de cette mesure, en volts.
+\item En déduire l'incertitude-type $u=\dfrac{a}{\sqrt{3}}$, puis écrire le résultat avec une incertitude-type à un chiffre significatif.
+\item Sur le calibre \qty{200}{V}, l'appareil affiche \qty{4,5}{V}. Reprendre les questions 1 et 2.
+\item Quel calibre faut-il choisir ? Justifier à l'aide des incertitudes-types relatives.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-11}
+\begin{exercice}[2]{Identifier un métal}
+Dix groupes mesurent la masse volumique d'un même cylindre métallique, en \unit{g.cm^{-3}} : 7,05 ; 7,21 ; 7,12 ; 6,98 ; 7,18 ; 7,09 ; 7,25 ; 7,02 ;
+7,15 ; 7,11.
+\begin{donnees}
+Masses volumiques, en \unit{g.cm^{-3}} : aluminium \num{2,70} ; zinc \num{7,13} ; étain \num{7,29} ; fer \num{7,87}.
+\end{donnees}
+\begin{questions}
+\item Calculer la moyenne et l'écart-type de la série.
+\item Évaluer l'incertitude-type et écrire le résultat.
+\item De quel métal s'agit-il probablement ? Justifier qualitativement.
+\item Un groupe affirme : « Avec ma seule mesure, \qty{7,25}{g.cm^{-3}}, c'est de l'étain. » Que lui répondre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-21-12}
+\begin{exercice}[3]{Le sérum physiologique}
+\begin{docu}{1}{L'étiquette}
+Un flacon de sérum physiologique indique « chlorure de sodium \qty{0,9}{\percent} », soit une concentration en masse de \qty{9,0}{g.L^{-1}}.
+\end{docu}
+\begin{docu}{2}{Les mesures de la classe}
+Douze groupes ont dosé le chlorure de sodium, en \unit{g.L^{-1}} : 8,9 ; 9,1 ; 9,0 ; 8,8 ; 9,2 ; 9,0 ; 8,9 ; 9,1 ; 9,0 ; 9,6 ; 8,9 ; 9,1.
+\schema{21-ex12}
+\end{docu}
+\begin{questions}
+\item Calculer la moyenne et l'écart-type de la série complète.
+\item Une valeur paraît isolée. Laquelle ? Recalculer la moyenne et l'écart-type sans elle, et situer cette valeur.
+\item \initiative Le groupe concerné retrouve une erreur de pipetage. Évaluer l'incertitude-type et écrire le résultat de la classe.
+\item Ce résultat est-il en accord avec l'étiquette ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-13}
+\begin{exercice}[3]{Le temps de réaction}
+\begin{docu}{1}{La règle qui tombe}
+On lâche une règle verticale entre le pouce et l'index d'un camarade, qui la rattrape dès qu'il la voit tomber. La distance $d$
+parcourue par la règle donne le temps de réaction : $t=\sqrt{\dfrac{2\,d}{g}}$, avec $g=\qty{9,81}{m.s^{-2}}$.
+\end{docu}
+\begin{docu}{2}{Dix essais d'un même élève}
+Distances, en cm : 15,2 ; 17,8 ; 14,1 ; 19,5 ; 16,3 ; 18,0 ; 15,7 ; 16,9 ; 17,2 ; 14,8. Les dix durées correspondantes ont pour moyenne
+\qty{0,183}{s} et pour écart-type \qty{0,009}{s}.
+\end{docu}
+\begin{questions}
+\item Calculer le temps de réaction lors du premier essai.
+\item Évaluer l'incertitude-type sur le temps de réaction moyen et écrire le résultat.
+\item \initiative Un chronométreur déclenche son chronomètre en voyant partir les coureurs. Quelle erreur systématique commet-il ?
+Pourquoi ses mesures sont-elles aussi dispersées ?
+\item Un chronomètre manuel affiche le centième de seconde. Cet affichage permet-il de départager deux sprinters ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-14}
+\begin{exercice}[3]{Une balance à vérifier}
+\begin{docu}{1}{Le contrôle}
+Pour contrôler une balance affichant le centième de gramme, on pèse dix fois une masse étalon de \qty{50,000}{g}, dont l'incertitude est
+négligeable. Résultats, en g : 50,03 ; 50,04 ; 50,03 ; 50,02 ; 50,03 ; 50,04 ; 50,03 ; 50,03 ; 50,02 ; 50,03.
+\end{docu}
+\begin{questions}
+\item Calculer la moyenne, l'écart-type et l'incertitude-type de type A.
+\item Comparer qualitativement le résultat à la masse de l'étalon. Conclure.
+\item \initiative Un élève propose de faire cent pesées pour « corriger » le problème. Qu'en penser ?
+\item Comment exploiter malgré tout les pesées faites avec cette balance ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-21-15}
+\begin{exercice}[3]{Le volume d'une goutte}
+\begin{docu}{1}{Le protocole}
+Une burette graduée tous les \qty{0,05}{mL} délivre des gouttes. Lire le volume d'une seule goutte est très imprécis : on compte plutôt
+vingt gouttes et l'on lit le volume écoulé.
+\end{docu}
+\begin{docu}{2}{Les mesures}
+Cinq groupes ont mesuré le volume de vingt gouttes, en mL : 1,00 ; 0,95 ; 1,05 ; 1,00 ; 0,95.
+\end{docu}
+\begin{questions}
+\item Calculer la moyenne et l'incertitude-type de type A sur le volume de vingt gouttes.
+\item En déduire le volume d'une goutte et son incertitude-type.
+\item \initiative Comparer à l'incertitude-type relative obtenue en lisant le volume d'une seule goutte sur la burette.
+\item Lors d'un titrage, on repère l'équivalence « à une goutte près ». Quel ordre de grandeur cela donne-t-il pour l'incertitude sur $V_\text{éq}$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

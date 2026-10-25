@@ -1,0 +1,446 @@
+% !TEX root = ../main.tex
+%% Chapitre 9 — Calcul intégral
+%% Sources : frontend/cours/resume/terminal/resume_calcul_integral_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_calcul_integral.txt
+%% Repris d'autres chapitres : exercice 5 (« Intégration et applications », fonctions trigonométriques)
+%% et exercice 11 (intégrations par parties de exercice_primitives.txt).
+%% Le changement de variable n'est pas au programme : l'exercice correspondant devient « Reconnaître une forme u'f(u) ».
+%% Exercices 15, 16 et 17 : problèmes inédits rédigés pour le livre.
+
+\begin{ouverture}[integrale]{9}{Calcul intégral}{Partie 1 · Analyse}
+  {Intégrale et aire\enspace·\enspace Propriétés\enspace·\enspace Valeur moyenne\enspace·\enspace
+   Intégration par parties\enspace·\enspace Rectangles}
+  \objectif{Interpréter une intégrale comme une aire et la calculer à l'aide d'une primitive.}
+  \objectif{Utiliser la linéarité, la relation de Chasles et la croissance de l'intégrale.}
+  \objectif{Calculer l'aire d'un domaine compris entre deux courbes, et une valeur moyenne.}
+  \objectif{Calculer une intégrale à l'aide d'une intégration par parties.}
+  \objectif{Encadrer une intégrale et l'approcher par la méthode des rectangles.}
+  \prerequis{Primitives (chapitre 7).}
+  \prerequis{Fonctions exponentielle, logarithme et trigonométriques (chapitres 5 et 6).}
+  \prerequis{Suites et raisonnement par récurrence (chapitre 1).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Intégrale d'une fonction continue positive}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{definition}[Intégrale et aire]
+\raggedright
+Le plan est muni d'un repère orthogonal ; l'\textbf{unité d'aire} (u.a.) est l'aire du rectangle construit sur les deux
+vecteurs unités. Soit $f$ continue et positive sur $\intFF{a}{b}$, et $\mathcal{D}$ le domaine compris entre $\Cf$, l'axe des
+abscisses et les droites $x=a$ et $x=b$. L'\textbf{intégrale} de $f$ sur $\intFF{a}{b}$, notée
+$\displaystyle\int_a^b f(x)\,\mathrm{d}x$, est l'aire de $\mathcal{D}$ en u.a.
+\end{definition}
+{\small\color{otMuted}La variable est muette : $\int_a^bf(x)\,\mathrm{d}x=\int_a^bf(t)\,\mathrm{d}t$.}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=64mm, height=48mm, xmin=-0.3, xmax=5.3, ymin=-0.3, ymax=3.6,
+  xtick={1,4}, xticklabels={$a$,$b$}, ytick=\empty, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west}]
+  \addplot[draw=none,fill=otGreen!22,domain=1:4,samples=60] {1.2+0.9*sin(deg(1.3*x))+0.25*x} \closedcycle;
+  \addplot[otNavy,line width=1.2pt,domain=0.2:5,samples=100] {1.2+0.9*sin(deg(1.3*x))+0.25*x};
+  \draw[otGreenDark,line width=0.6pt] (axis cs:1,0) -- (axis cs:1,2.317);
+  \draw[otGreenDark,line width=0.6pt] (axis cs:4,0) -- (axis cs:4,1.405);
+  \node[font=\small,text=otGreenDark] at (axis cs:2.5,0.75) {$\mathcal{D}$};
+  \node[anchor=south,font=\scriptsize,text=otNavy] at (axis cs:4.6,2.5) {$\Cf$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{L'aire de $\mathcal{D}$ est $\int_a^bf(x)\,\mathrm{d}x$ u.a.}
+\end{minipage}
+
+\begin{theoreme}[Théorème fondamental]
+Si $f$ est continue et positive sur $\intFF{a}{b}$, la fonction $F$ définie sur $\intFF{a}{b}$ par $F(x)=\displaystyle\int_a^x f(t)\,\mathrm{d}t$
+est dérivable sur $\intFF{a}{b}$ et $F'=f$ : c'est la primitive de $f$ qui s'annule en $a$.
+\end{theoreme}
+
+\begin{demonstration}[dans le cas où $f$ est croissante]
+Pour $h>0$, $F(x+h)-F(x)$ est l'aire du domaine situé sous $\Cf$ entre $x$ et $x+h$. Ce domaine contient le rectangle de
+hauteur $f(x)$ et est contenu dans celui de hauteur $f(x+h)$ : $hf(x)\leq F(x+h)-F(x)\leq hf(x+h)$. En divisant par $h$, puis
+en faisant tendre $h$ vers $0$ ($f$ est continue), le taux d'accroissement tend vers $f(x)$. On raisonne de même pour $h<0$.
+\end{demonstration}
+
+\begin{theoreme}[Calcul d'une intégrale]
+Toute fonction continue sur un intervalle admet des primitives. Si $f$ est continue sur un intervalle $I$, de signe quelconque,
+et si $F$ est une primitive de $f$ sur $I$, alors pour tous $a$ et $b$ de $I$ :
+\[ \int_a^b f(x)\,\mathrm{d}x=\Big[F(x)\Big]_a^b=F(b)-F(a). \]
+\emph{Exemple :} $\displaystyle\int_1^2x^{2}\,\mathrm{d}x=\left[\frac{x^{3}}{3}\right]_1^2=\frac83-\frac13=\frac73$.
+\end{theoreme}
+
+\essSection{2}{Propriétés et aires}
+
+{\renewcommand{\arraystretch}{1.8}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\leavevmode\color{otNavy}}p{36mm}Y@{}}
+\toprule
+\multicolumn{2}{@{}l}{\otSemi\fontsize{8.5}{11}\selectfont $f$ et $g$ continues sur un intervalle $I$ ; $a$, $b$, $c$ dans $I$ ; $\lambda$ réel} \\
+\midrule
+\otCaps[8]{Linéarité} & $\displaystyle\int_a^b\big(f(x)+g(x)\big)\,\mathrm{d}x=\int_a^bf(x)\,\mathrm{d}x+\int_a^bg(x)\,\mathrm{d}x$\qquad
+  $\displaystyle\int_a^b\lambda f(x)\,\mathrm{d}x=\lambda\int_a^bf(x)\,\mathrm{d}x$ \\
+\otCaps[8]{Chasles} & $\displaystyle\int_a^cf(x)\,\mathrm{d}x=\int_a^bf(x)\,\mathrm{d}x+\int_b^cf(x)\,\mathrm{d}x$\qquad
+  $\displaystyle\int_a^af(x)\,\mathrm{d}x=0$\qquad $\displaystyle\int_b^af(x)\,\mathrm{d}x=-\int_a^bf(x)\,\mathrm{d}x$ \\
+\otCaps[8]{Positivité} & Si $a\leq b$ et $f\geq0$ sur $\intFF{a}{b}$, alors $\displaystyle\int_a^bf(x)\,\mathrm{d}x\geq0$. \\
+\otCaps[8]{Croissance} & Si $a\leq b$ et $f\leq g$ sur $\intFF{a}{b}$, alors $\displaystyle\int_a^bf(x)\,\mathrm{d}x\leq\int_a^bg(x)\,\mathrm{d}x$. \\
+\bottomrule
+\end{tabularx}}
+
+\par\vspace{4mm}
+\noindent
+\begin{minipage}[t]{0.48\linewidth}\vspace{0pt}
+\raggedright
+{\otSemi\color{otNavy}Fonction de signe quelconque.} L'intégrale est une \textbf{aire algébrique} : les parties situées sous
+l'axe des abscisses comptent négativement. Pour une aire, on découpe l'intervalle selon le signe de $f$.
+\par\vspace{2mm}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=70mm, height=40mm, xmin=-0.2, xmax=6.9, ymin=-1.25, ymax=1.35,
+  xtick={3.1416,6.2832}, xticklabels={$\pi$,$2\pi$}, ytick=\empty, xlabel={$x$}, xlabel style={at={(1,0.5)},anchor=west}]
+  \addplot[draw=none,fill=otGreen!25,domain=0:3.1416,samples=50] {sin(deg(x))} \closedcycle;
+  \addplot[draw=none,fill=otOrange!25,domain=3.1416:6.2832,samples=50] {sin(deg(x))} \closedcycle;
+  \addplot[otNavy,line width=1.2pt,domain=0:6.6,samples=100] {sin(deg(x))};
+  \node[font=\small,text=otGreenDark] at (axis cs:1.57,0.45) {$+$};
+  \node[font=\small,text=otOrange] at (axis cs:4.71,-0.45) {$-$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$\int_0^{2\pi}\sin x\,\mathrm{d}x=0$, mais l'aire colorée vaut $4$~u.a.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}\vspace{0pt}
+\raggedright
+{\otSemi\color{otNavy}Aire entre deux courbes.} Si $f\geq g$ sur $\intFF{a}{b}$, l'aire du domaine compris entre les deux
+courbes et les droites $x=a$ et $x=b$ vaut $\displaystyle\int_a^b\big(f(x)-g(x)\big)\,\mathrm{d}x$~u.a.
+\par\vspace{2mm}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=62mm, height=44mm, xmin=-0.3, xmax=2.6, ymin=-0.3, ymax=4.6,
+  xtick={2}, ytick={4}, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west}]
+  \addplot[name path=F,otNavy,line width=1.2pt,domain=-0.1:2.3,samples=60] {4*x-x^2};
+  \addplot[name path=G,otGreenDark,line width=1.2pt,domain=-0.1:2.1,samples=60] {x^2};
+  \addplot[otGreen!22] fill between[of=F and G, soft clip={domain=0:2}];
+  \node[anchor=south east,font=\scriptsize,text=otNavy] at (axis cs:1.2,3.25) {$y=4x-x^{2}$};
+  \node[anchor=west,font=\scriptsize,text=otGreenDark] at (axis cs:2.1,4.3) {$y=x^{2}$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Domaine entre deux courbes : $\int_0^2\left(4x-2x^{2}\right)\mathrm{d}x=\frac83$~u.a.}
+\end{minipage}
+
+\essSection{3}{Valeur moyenne}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{definition}[Valeur moyenne]
+\raggedright
+Si $f$ est continue sur $\intFF{a}{b}$, avec $a<b$, la \textbf{valeur moyenne} de $f$ sur $\intFF{a}{b}$ est le réel
+\[ \mu=\frac{1}{b-a}\int_a^bf(x)\,\mathrm{d}x. \]
+Si $f$ est positive, le rectangle de base $\intFF{a}{b}$ et de hauteur $\mu$ a la même aire que le domaine situé sous $\Cf$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=64mm, height=42mm, xmin=-0.2, xmax=3.6, ymin=-0.15, ymax=1.25,
+  xtick={3.1416}, xticklabels={$\pi$}, ytick={0.6366}, yticklabels={$\frac{2}{\pi}$}, xlabel={$x$},
+  xlabel style={at={(1,0)},anchor=west}]
+  \fill[otGreen!20] (axis cs:0,0) rectangle (axis cs:3.1416,0.6366);
+  \draw[otGreenDark,dashed,line width=0.7pt] (axis cs:0,0.6366) -- (axis cs:3.1416,0.6366) -- (axis cs:3.1416,0);
+  \addplot[otNavy,line width=1.2pt,domain=0:3.1416,samples=80] {sin(deg(x))};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Valeur moyenne de $\sin$ sur $\intFF{0}{\pi}$ : $\mu=\frac{2}{\pi}$.}
+\end{minipage}
+
+\essSection{4}{Intégration par parties}
+
+\begin{theoreme}[Intégration par parties]
+Si $u$ et $v$ sont dérivables sur $\intFF{a}{b}$, à dérivées continues, alors
+\[ \int_a^bu(x)\,v'(x)\,\mathrm{d}x=\Big[u(x)\,v(x)\Big]_a^b-\int_a^bu'(x)\,v(x)\,\mathrm{d}x. \]
+\emph{Démonstration :} $uv$ est une primitive de $(uv)'=u'v+uv'$, donc $\big[uv\big]_a^b=\int_a^bu'v+\int_a^buv'$ par linéarité.
+\end{theoreme}
+
+\begin{savoirfaire}[Choisir $u$ et $v'$]
+On choisit pour $u$ le facteur qui se simplifie en dérivant (un polynôme, un logarithme), et pour $v'$ un facteur dont on
+connaît une primitive (une exponentielle, un sinus, un cosinus). Par exemple, avec $u(x)=x$ et $v'(x)=e^{x}$ :
+$\int_0^1xe^{x}\,\mathrm{d}x=\Big[xe^{x}\Big]_0^1-\int_0^1e^{x}\,\mathrm{d}x=e-(e-1)=1$.
+Pour intégrer $\ln$, on écrit $\ln x=1\times\ln x$, avec $u=\ln$ et $v'=1$.
+\end{savoirfaire}
+
+\essSection{5}{Encadrer et approcher une intégrale}
+
+Si $m\leq f\leq M$ sur $\intFF{a}{b}$, la croissance de l'intégrale donne $m(b-a)\leq\int_a^bf(x)\,\mathrm{d}x\leq M(b-a)$.
+\textbf{Méthode des rectangles :} on partage $\intFF{a}{b}$ en $n$ intervalles de longueur $h=\frac{b-a}{n}$ et l'on additionne
+les aires des rectangles construits sur chacun d'eux. Si $f$ est monotone, les rectangles « inférieurs » et « supérieurs »
+encadrent l'intégrale, et l'encadrement se resserre lorsque $n$ augmente.
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\begin{python}
+def rectangles(f, a, b, n):
+    h = (b - a) / n
+    s = 0
+    for k in range(n):
+        s = s + h * f(a + k * h)
+    return s
+\end{python}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=62mm, height=38mm, xmin=-0.1, xmax=1.18, ymin=-0.08, ymax=1.18,
+  xtick={0.25,0.5,0.75,1}, xticklabels={$\frac14$,$\frac12$,$\frac34$,$1$}, ytick={1}, xlabel={$x$},
+  xlabel style={at={(1,0)},anchor=west}]
+  \draw[otNavy!45,line width=0.5pt,fill=otNavyTint] (axis cs:0,0) rectangle (axis cs:0.25,1);
+  \draw[otNavy!45,line width=0.5pt,fill=otNavyTint] (axis cs:0.25,0) rectangle (axis cs:0.5,0.9394);
+  \draw[otNavy!45,line width=0.5pt,fill=otNavyTint] (axis cs:0.5,0) rectangle (axis cs:0.75,0.7788);
+  \draw[otNavy!45,line width=0.5pt,fill=otNavyTint] (axis cs:0.75,0) rectangle (axis cs:1,0.5698);
+  \fill[otGreen!35] (axis cs:0,0) rectangle (axis cs:0.25,0.9394);
+  \fill[otGreen!35] (axis cs:0.25,0) rectangle (axis cs:0.5,0.7788);
+  \fill[otGreen!35] (axis cs:0.5,0) rectangle (axis cs:0.75,0.5698);
+  \fill[otGreen!35] (axis cs:0.75,0) rectangle (axis cs:1,0.3679);
+  \addplot[otNavy,line width=1.2pt,domain=0:1.1,samples=80] {exp(-x^2)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$f(x)=e^{-x^{2}}$, $n=4$ : rectangles inférieurs (verts) et supérieurs.}
+\end{minipage}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Une intégrale peut être négative, une aire jamais : découper l'intervalle là où $f$ change de signe.
+  \item $\int_a^bf(x)\,\mathrm{d}x=F(b)-F(a)$, dans cet ordre ; échanger les bornes change le signe.
+  \item Dans une intégration par parties, ne pas oublier le crochet $\big[uv\big]_a^b$, ni le signe « $-$ » devant la seconde intégrale.
+  \item La valeur moyenne $\frac{1}{b-a}\int_a^bf$ n'est pas $f\left(\frac{a+b}{2}\right)$ en général.
+  \item On intègre une inégalité seulement si les bornes sont dans l'ordre croissant ($a\leq b$).
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Intégrales de base}
+Calculer les intégrales suivantes.
+\begin{tasks}(3)
+  \task $\displaystyle\int_0^2\left(3x^{2}+2x-1\right)\mathrm{d}x$
+  \task $\displaystyle\int_1^3(2x+5)\,\mathrm{d}x$
+  \task $\displaystyle\int_0^1x^{3}\,\mathrm{d}x$
+  \task $\displaystyle\int_{-1}^2\left(x^{2}-3x+2\right)\mathrm{d}x$
+  \task $\displaystyle\int_0^4\sqrt x\,\mathrm{d}x$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Propriétés de l'intégrale}
+\begin{questions}
+  \item Calculer $\displaystyle\int_0^2\left(3x^{2}-2x+4\right)\mathrm{d}x$ en utilisant la linéarité.
+  \item Calculer $\displaystyle\int_0^1x^{2}\,\mathrm{d}x+\int_1^2x^{2}\,\mathrm{d}x$, puis vérifier le résultat en calculant $\displaystyle\int_0^2x^{2}\,\mathrm{d}x$.
+  \item Calculer $\displaystyle\int_2^0(x+1)\,\mathrm{d}x$.
+  \item Sachant que $\displaystyle\int_0^3f(x)\,\mathrm{d}x=5$ et $\displaystyle\int_0^3g(x)\,\mathrm{d}x=2$, calculer $\displaystyle\int_0^3\big(2f(x)+3g(x)\big)\,\mathrm{d}x$.
+  \item Que vaut $\displaystyle\int_1^1\left(x^{2}+1\right)\mathrm{d}x$ ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Exponentielles et fonctions trigonométriques}
+Calculer les intégrales suivantes.
+\begin{tasks}(3)
+  \task $\displaystyle\int_0^1e^{2x}\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi/2}\sin x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi}\cos x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^1\left(e^{x}+\sin x\right)\mathrm{d}x$
+  \task $\displaystyle\int_{-1}^1e^{-x}\,\mathrm{d}x$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Reconnaître une forme $u'f(u)$}
+Calculer les intégrales suivantes, en reconnaissant la dérivée d'une fonction composée.
+\begin{tasks}(3)
+  \task $\displaystyle\int_0^2 2x\left(x^{2}+1\right)^{3}\mathrm{d}x$
+  \task $\displaystyle\int_0^1\frac{2x}{x^{2}+1}\,\mathrm{d}x$
+  \task $\displaystyle\int_0^1xe^{x^{2}}\,\mathrm{d}x$
+  \task $\displaystyle\int_0^2\frac{1}{\sqrt{2x+3}}\,\mathrm{d}x$
+  \task $\displaystyle\int_1^2\frac{1}{(x+1)^{2}}\,\mathrm{d}x$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Intégrales trigonométriques}
+Calculer les intégrales suivantes.
+\begin{tasks}(3)
+  \task $\displaystyle\int_0^{\pi}\sin x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi/2}\cos^{2}x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi/2}\sin x\cos x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi}\sin(2x)\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi/4}\tan x\,\mathrm{d}x$
+\end{tasks}
+Indications : $\cos^{2}x=\dfrac{1+\cos(2x)}{2}$ ; $\sin x\cos x$ est de la forme $u'u$ ; $\tan x=-\dfrac{u'(x)}{u(x)}$ avec $u=\cos$.
+\end{exercice}
+
+\begin{exercice}[2]{Aires sous une courbe}
+Dans chaque cas, calculer l'aire, en unités d'aire, du domaine compris entre la courbe, l'axe des abscisses et les droites
+d'équations indiquées.
+\begin{tasks}(2)
+  \task $y=x^{2}$, entre $x=0$ et $x=3$
+  \task $y=2x+1$, entre $x=-1$ et $x=2$
+  \task $y=\sqrt x$, entre $x=0$ et $x=4$
+  \task $y=\sin x$, entre $x=0$ et $x=\pi$
+  \task $y=e^{x}$, entre $x=0$ et $x=1$
+\end{tasks}
+Attention : pour la deuxième, la fonction change de signe sur l'intervalle.
+\end{exercice}
+
+\begin{exercice}[2]{Fonctions de signe quelconque}
+Pour chaque fonction, calculer l'intégrale demandée, puis l'aire du domaine compris entre la courbe et l'axe des abscisses
+sur l'intervalle correspondant. Comparer.
+\begin{tasks}(2)
+  \task $\displaystyle\int_{-2}^1\left(x^{2}-1\right)\mathrm{d}x$
+  \task $\displaystyle\int_{-1}^2\left(x^{3}-x\right)\mathrm{d}x$
+  \task $\displaystyle\int_0^{2\pi}\sin x\,\mathrm{d}x$
+  \task $\displaystyle\int_{-2}^2\left(x^{2}-4\right)\mathrm{d}x$
+  \task $\displaystyle\int_0^3\left(x^{2}-4x+3\right)\mathrm{d}x$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Aires entre deux courbes}
+Calculer l'aire du domaine compris entre les deux courbes, sur l'intervalle indiqué.
+\begin{tasks}(2)
+  \task $y=x^{2}$ et $y=2x$ sur $\intFF{0}{2}$
+  \task $y=x$ et $y=x^{2}$ sur $\intFF{0}{1}$
+  \task $y=\sin x$ et $y=\cos x$ sur $\intFF{0}{\frac{\pi}{2}}$
+  \task $y=e^{x}$ et $y=1$ sur $\intFF{0}{1}$
+  \task $y=x^{3}$ et $y=x$ sur $\intFF{-1}{1}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Valeur moyenne}
+Calculer la valeur moyenne de chaque fonction sur l'intervalle indiqué.
+\begin{tasks}(3)
+  \task $x\mapsto x^{2}$ sur $\intFF{0}{3}$
+  \task $\sin$ sur $\intFF{0}{\pi}$
+  \task $\exp$ sur $\intFF{0}{1}$
+  \task $x\mapsto2x+1$ sur $\intFF{1}{4}$
+  \task $\cos$ sur $\intFF{0}{\frac{\pi}{2}}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Intégration par parties}
+Calculer les intégrales suivantes à l'aide d'une intégration par parties.
+\begin{tasks}(3)
+  \task $\displaystyle\int_0^1xe^{x}\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi/2}x\cos x\,\mathrm{d}x$
+  \task $\displaystyle\int_1^e\ln x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^1xe^{2x}\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi}x\sin x\,\mathrm{d}x$
+\end{tasks}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Intégrations par parties successives}
+Calculer les intégrales suivantes. Pour certaines, il faut effectuer deux intégrations par parties successives.
+\begin{tasks}(3)
+  \task $\displaystyle\int_0^1x^{2}e^{x}\,\mathrm{d}x$
+  \task $\displaystyle\int_1^ex\ln x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi/2}x\sin(2x)\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi}x^{2}\sin x\,\mathrm{d}x$
+  \task $\displaystyle\int_0^{\pi/2}x^{2}\cos x\,\mathrm{d}x$
+  \task $\displaystyle\int_1^e(\ln x)^{2}\,\mathrm{d}x$
+\end{tasks}
+Comparer les deux premiers résultats avec les primitives obtenues par identification au chapitre 7 (exercice 9).
+\end{exercice}
+
+\begin{exercice}[3]{Aires de domaines plus complexes}
+Calculer l'aire de chacun des domaines suivants, après avoir déterminé les points d'intersection et les positions relatives.
+\begin{questions}
+  \item Le domaine délimité par la courbe de $x\mapsto x^{3}$, l'axe des abscisses et les droites $x=-1$ et $x=2$.
+  \item Le domaine délimité par les courbes de $x\mapsto x^{2}$ et de $x\mapsto4x-x^{2}$.
+  \item Le domaine compris entre les courbes de $\sin$ et de $\cos$ sur $\intFF{0}{2\pi}$.
+  \item Le domaine compris entre les courbes de $x\mapsto e^{x}$ et de $x\mapsto e^{-x}$ sur $\intFF{0}{1}$.
+  \item Le domaine délimité par les courbes de $x\mapsto x^{4}-2x^{2}$ et de $x\mapsto2x^{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Modélisation}
+\begin{questions}
+  \item Une population évolue selon $P(t)=1\,000\,e^{0{,}02t}$ ($t$ en années). Calculer la population moyenne entre $t=0$ et $t=10$.
+  \item Un mobile se déplace sur un axe à la vitesse $v(t)=3t^{2}-6t+2$ (en m/s). Calculer son déplacement $\int_0^3v(t)\,\mathrm{d}t$
+    entre $t=0$ et $t=3$. Le mobile change de sens : déterminer les instants où $v$ s'annule, puis la distance totale parcourue.
+  \item Le revenu marginal d'une entreprise est $R'(x)=100-2x$, où $x$ est le nombre d'unités produites, avec $R(0)=0$.
+    Calculer le revenu total $R(50)$.
+  \item La température d'un objet est $T(t)=20+80e^{-0{,}1t}$ ($t$ en heures). Calculer sa température moyenne sur les dix premières heures.
+  \item Un réservoir se vide selon $V(t)=1\,000\left(1-\frac{t}{24}\right)^{2}$ ($t$ en heures, $V$ en litres). Calculer le volume moyen
+    sur les douze premières heures.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Synthèse}
+\begin{questions}
+  \item Soit $f(x)=x^{2}-2x+1$. Calculer $\int_0^3f(x)\,\mathrm{d}x$ et l'aire du domaine délimité par $\Cf$, l'axe des abscisses et
+    les droites $x=0$ et $x=3$.
+  \item Soit $g(x)=e^{x}-1$. Calculer la valeur moyenne de $g$ sur $\intFF{0}{2}$.
+  \item Calculer $\int_0^1xe^{2x}\,\mathrm{d}x$ à l'aide d'une intégration par parties.
+  \item Calculer l'aire du domaine compris entre les courbes d'équations $y=x^{2}$ et $y=2x-x^{2}$ sur $\intFF{0}{1}$.
+  \item Soit $h(x)=\dfrac{1}{x+1}$. Calculer $\int_0^2h(x)\,\mathrm{d}x$, puis la valeur moyenne de $h$ sur $\intFF{0}{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une suite d'intégrales}
+Pour tout entier naturel $n$, on pose $I_n=\displaystyle\int_0^1x^{n}e^{x}\,\mathrm{d}x$.
+\partieExo{A}{Calculs}
+\begin{questions}
+  \item Calculer $I_0$.
+  \item À l'aide d'une intégration par parties, montrer que, pour tout $n\in\mathbb{N}$, $I_{n+1}=e-(n+1)I_n$.
+  \item En déduire les valeurs exactes de $I_1$, $I_2$ et $I_3$.
+\end{questions}
+\partieExo{B}{Limite de la suite}
+\begin{questions}[resume]
+  \item Montrer que $I_n\geq0$ pour tout $n$, puis que la suite $(I_n)$ est décroissante.
+  \item Montrer que, pour tout $n\in\mathbb{N}$, $\dfrac{1}{n+1}\leq I_n\leq\dfrac{e}{n+1}$. En déduire la limite de $(I_n)$.
+\end{questions}
+\partieExo{C}{Un calcul qui tourne mal}
+\begin{questions}[resume]
+  \item La fonction Python ci-dessous calcule $I_n$ grâce à la relation de la question 2. Elle renvoie \texttt{suite(18)}
+    $\approx-0{,}20$ et \texttt{suite(20)} $\approx-129$. Pourquoi ces résultats sont-ils absurdes ? En notant $\varepsilon$
+    l'erreur d'arrondi commise sur $I_0$, montrer que l'erreur sur $I_n$ vaut $(-1)^{n}\,n!\,\varepsilon$, et conclure.
+\begin{python}
+from math import exp
+def suite(n):
+    I = exp(1) - 1
+    for k in range(n):
+        I = exp(1) - (k + 1) * I
+    return I
+\end{python}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Méthode des rectangles}
+On note $I=\displaystyle\int_0^1e^{-x^{2}}\,\mathrm{d}x$. La fonction $f:x\mapsto e^{-x^{2}}$ n'a pas de primitive qui s'exprime à
+l'aide des fonctions usuelles : on cherche à encadrer $I$.
+\partieExo{A}{Un premier encadrement}
+\begin{questions}
+  \item Montrer que, pour tout réel $u$, $e^{u}\geq1+u$. En déduire que, pour tout $x\in\intFF{0}{1}$, $1-x^{2}\leq e^{-x^{2}}\leq1$.
+  \item En déduire que $\dfrac23\leq I\leq1$.
+\end{questions}
+\partieExo{B}{Les rectangles}
+Pour $n\geq1$, on pose $s_n=\dfrac1n\displaystyle\sum_{k=1}^{n}f\left(\frac kn\right)$ et $S_n=\dfrac1n\displaystyle\sum_{k=0}^{n-1}f\left(\frac kn\right)$.
+\begin{questions}[resume]
+  \item Étudier les variations de $f$ sur $\intFF{0}{1}$. En intégrant sur chaque intervalle $\intFF{\frac kn}{\frac{k+1}{n}}$,
+    montrer que $s_n\leq I\leq S_n$.
+  \item Montrer que $S_n-s_n=\dfrac{1-e^{-1}}{n}$, puis déterminer le plus petit entier $n$ tel que $S_n-s_n\leq10^{-2}$.
+  \item Pour cette valeur de $n$, un programme donne $s_n\approx0{,}741\,9$ et $S_n\approx0{,}751\,8$. En déduire un encadrement de $I$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Aire entre une courbe et son asymptote}
+On considère la fonction $f$ définie sur $\intFO{0}{+\infty}$ par $f(x)=x+1+xe^{-x}$, de courbe $\Cf$, et la droite $\Delta$
+d'équation $y=x+1$.
+\begin{questions}
+  \item Montrer que $\Delta$ est asymptote à $\Cf$ en $+\infty$, puis étudier la position relative de $\Cf$ et de $\Delta$.
+  \item Montrer que $f'(x)=1+(1-x)e^{-x}$ et $f''(x)=(x-2)e^{-x}$. En déduire les variations de $f'$, puis que $f$ est
+    strictement croissante sur $\intFO{0}{+\infty}$.
+  \item Pour $\lambda>0$, on note $\mathcal{A}(\lambda)$ l'aire, en u.a., du domaine compris entre $\Cf$, $\Delta$ et les droites
+    $x=0$ et $x=\lambda$. À l'aide d'une intégration par parties, montrer que $\mathcal{A}(\lambda)=1-(\lambda+1)e^{-\lambda}$.
+  \item Calculer la limite de $\mathcal{A}(\lambda)$ lorsque $\lambda$ tend vers $+\infty$. Interpréter.
+  \item Déterminer, à l'aide de la calculatrice, le plus petit entier $\lambda$ tel que $\mathcal{A}(\lambda)\geq0{,}99$.
+\end{questions}
+\end{exercice}

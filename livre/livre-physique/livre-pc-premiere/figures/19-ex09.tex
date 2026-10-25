@@ -1,0 +1,16 @@
+% Spectres d'absorption de deux solutions colorées A et B (exercice 9, chapitre 19)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=100mm,height=52mm,xmin=400,xmax=750,ymin=0,ymax=1.2,
+  xtick={400,450,...,750},ytick={0,0.2,...,1.2},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$\lambda$ (nm)},ylabel={$A$}]
+\addplot[otNavy,line width=1.2pt,domain=400:750,samples=120] {0.05+0.95*exp(-((x-625)/45)^2)};
+\addplot[otOrange!85!black,line width=1.2pt,domain=400:750,samples=120] {0.04+0.9*exp(-((x-450)/38)^2)};
+\node[pcLegendeG,text=otNavy,anchor=south] at (axis cs:625,1.0) {A};
+\node[pcLegendeG,text=otOrange!85!black,anchor=south] at (axis cs:450,0.95) {B};
+\solution{
+  \node[pcLegende,anchor=north east,text=otNavy,align=right] at (axis cs:748,1.0) {absorbe le rouge :\\paraît cyan (bleu-vert)};
+  \node[pcLegende,anchor=north west,text=otOrange!85!black,align=left] at (axis cs:480,1.0) {absorbe le bleu :\\paraît jaune-orangé};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Absorbance de deux solutions éclairées en lumière blanche.}

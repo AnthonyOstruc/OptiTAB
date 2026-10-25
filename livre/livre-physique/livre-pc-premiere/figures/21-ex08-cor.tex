@@ -1,0 +1,14 @@
+% Dix valeurs de g obtenues par chute libre, moyenne, incertitude-type et valeur de référence (corrigé de l'exercice 8, chapitre 21)
+\begin{tikzpicture}[x=120mm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (9.6,0) -- (10.12,0) node[pcLegende,anchor=north west] {$g$ (\unit{m.s^{-2}})};
+\foreach \v/\t in {9.6/{9,6},9.7/{9,7},9.8/{9,8},9.9/{9,9},10.0/{10,0},10.1/{10,1}}{%
+  \draw[otInk!70,line width=0.4pt] (\v,0) -- (\v,-0.08) node[pcLegende,anchor=north] {\t};}
+\foreach \v in {9.79,9.96,9.66,9.88,10.05,9.75,9.92,9.83,10.01,9.70}{\fill[otNavy,opacity=0.75] (\v,0.35) circle (1.6pt);}
+\node[pcLegende,anchor=east] at (9.6,0.35) {mesures};
+\fill[otRed!15] (9.82,0.75) rectangle (9.90,1.15);
+\draw[otRed!85!black,line width=1pt] (9.82,0.95) -- (9.90,0.95) (9.82,0.83) -- (9.82,1.07) (9.90,0.83) -- (9.90,1.07);
+\fill[otRed!85!black] (9.86,0.95) circle (1.6pt);
+\node[pcLegende,anchor=west,text=otRed!85!black] at (9.92,0.95) {$\overline{g}=\qty{9,86}{m.s^{-2}}$, $u=\qty{0,04}{m.s^{-2}}$};
+\draw[otGreenDark,line width=0.8pt,dash pattern=on 3pt off 2pt] (9.81,0) -- (9.81,1.45) node[pcLegende,anchor=south,text=otGreenDark] {référence \qty{9,81}{m.s^{-2}}};
+\end{tikzpicture}
+\par\smallskip\legende{L'écart à la référence (\qty{0,05}{m.s^{-2}}) est du même ordre que l'incertitude-type.}

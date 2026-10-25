@@ -1,0 +1,129 @@
+% !TEX root = ../main.tex
+%% Sujet type Centrale-Supélec — Chaînes de Markov et classement PageRank.
+%% Résultats vérifiés par verifications/eval_cc.py (y compris les programmes).
+
+\sujetEval{C3}{Sujet type Centrale-Supélec · Mathématiques}{Sujet type Centrale-Supélec}
+  {Durée : \textbf{4 heures}\\Calculatrice interdite\\Markov, PageRank, Python}{4}
+  {Partie A/Généralités/Q1 et Q2,Partie B/Une chaîne à deux états/Q3 à Q5,%
+   Partie C/Le théorème de convergence/Q6 à Q8,Partie D/Le classement PageRank/Q9 à Q12}
+\enParties
+\consigne{Sujet inédit, conçu dans l'esprit des épreuves de la banque
+Centrale-Supélec : un problème de modélisation, qui mêle algèbre linéaire,
+probabilités, analyse et programmation en Python.}
+
+Pour classer $n$ pages web, on imagine un internaute qui, à chaque instant,
+quitte la page où il se trouve en suivant un lien. On note $X_k$ la page
+visitée à l'instant $k$, et l'on suppose que
+$P(X_{k+1}=j\mid X_k=i)=p_{ij}$ ne dépend pas de $k$. La matrice
+$P=(p_{ij})$ est \emph{stochastique} : ses coefficients sont positifs et la
+somme de chacune de ses lignes vaut $1$. Un \emph{vecteur de probabilité}
+est une ligne $\mu=(\mu_1,\dots,\mu_n)$ de réels positifs de somme $1$ ; on
+note $\mu_k$ la loi de $X_k$, et $\lVert x\rVert_1=\sum_j|x_j|$ pour toute
+ligne $x$. Un vecteur de probabilité $\pi$ tel que $\pi P=\pi$ est dit
+\emph{stationnaire}.
+
+\begin{exoEval}[Généralités]{3 points}{}
+\begin{questions}
+  \item À l'aide de la formule des probabilités totales, montrer que
+    $\mu_{k+1}=\mu_kP$, puis que $\mu_k=\mu_0P^{k}$.
+  \item Montrer qu'un produit de matrices stochastiques est stochastique,
+    et que $\mu P$ est un vecteur de probabilité si $\mu$ en est un.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Une chaîne à deux états]{4 points}{}
+Soient $a,b\in\intFF01$ avec $a+b>0$, et
+\[P=\begin{pmatrix}1-a&a\\b&1-b\end{pmatrix},\qquad
+  R=\frac{1}{a+b}\begin{pmatrix}b&a\\b&a\end{pmatrix},\qquad
+  S=\frac{1}{a+b}\begin{pmatrix}a&-a\\-b&b\end{pmatrix}.\]
+\begin{questions}[start=3]
+  \item Vérifier que $R+S=I_2$, $R^{2}=R$, $S^{2}=S$, $RS=SR=0$, et que
+    $P=R+(1-a-b)\,S$.
+  \item En déduire $P^{k}$ pour $k\in\N$. Montrer que si
+    $(a,b)\neq(1,1)$, la suite $(\mu_k)$ converge, quel que soit $\mu_0$,
+    vers $\pi=\bigl(\frac{b}{a+b},\frac{a}{a+b}\bigr)$, et que $\pi$ est
+    stationnaire. Que se passe-t-il si $a=b=1$ ?
+  \item Un jour ensoleillé est suivi d'un jour de pluie avec probabilité
+    $0{,}3$, un jour de pluie d'un jour ensoleillé avec probabilité $0{,}4$.
+    Quelle est, à long terme, la proportion de jours ensoleillés ?
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Le théorème de convergence]{6 points}{}
+Soit $Q$ une matrice stochastique de taille $n$ dont tous les coefficients
+sont supérieurs ou égaux à un réel $\delta>0$.
+\begin{questions}[start=6]
+  \item Montrer que $n\delta\leqslant1$. Soit $x$ une ligne telle que
+    $\sum_ix_i=0$ ; montrer que $(xQ)_j=\sum_ix_i\,(q_{ij}-\delta)$, puis que
+    $\lVert xQ\rVert_1\leqslant(1-n\delta)\,\lVert x\rVert_1$.
+  \item Soit $\mu_0$ un vecteur de probabilité et $\mu_k=\mu_0Q^{k}$.
+    Montrer que
+    $\lVert\mu_{k+1}-\mu_k\rVert_1\leqslant(1-n\delta)^{k}\lVert\mu_1-\mu_0\rVert_1$.
+    En déduire que chaque suite de coordonnées de $(\mu_k)$ converge, et que
+    la limite $\pi$ est un vecteur de probabilité stationnaire pour $Q$.
+  \item Montrer que $Q$ admet un unique vecteur de probabilité stationnaire,
+    et que $\lVert\mu_k-\pi\rVert_1\leqslant2(1-n\delta)^{k}$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Le classement PageRank]{7 points}{}
+\noindent\begin{minipage}[c]{0.62\linewidth}
+On considère le réseau de quatre pages ci-contre : une flèche de $i$ vers
+$j$ représente un lien de la page $i$ vers la page $j$. L'internaute suit,
+de façon équiprobable, l'un des liens de la page où il se trouve.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.34\linewidth}\centering
+\begin{tikzpicture}[scale=0.8,line cap=round,>={Stealth[length=2.2mm]},
+    pg/.style={circle,draw=otNavy,line width=0.9pt,fill=otNavyTint,minimum size=7.5mm,
+      font=\otSemi\fontsize{9}{10}\selectfont,text=otNavy}]
+  \node[pg] (p1) at (0,1.9) {1};
+  \node[pg] (p2) at (3,1.9) {2};
+  \node[pg] (p3) at (3,0) {3};
+  \node[pg] (p4) at (0,0) {4};
+  \draw[->,otInk,line width=0.7pt] (p1) -- (p2);
+  \draw[->,otInk,line width=0.7pt] (p2) -- (p3);
+  \draw[->,otInk,line width=0.7pt] (p1) to[bend left=12] (p3);
+  \draw[->,otInk,line width=0.7pt] (p3) to[bend left=12] (p1);
+  \draw[->,otInk,line width=0.7pt] (p4) -- (p1);
+  \draw[->,otInk,line width=0.7pt] (p4) -- (p3);
+\end{tikzpicture}
+\end{minipage}\par\vspace{1mm}
+\begin{questions}[start=9]
+  \item Écrire $P$ et vérifier que $\bigl(\frac25,\frac15,\frac25,0\bigr)$ est
+    stationnaire. La partie C s'applique-t-elle à $P$ ? Pourquoi un score
+    nul pour la page $4$ est-il insatisfaisant ?
+  \item Soit $\alpha\in\intOO01$ et $G=\alpha P+\frac{1-\alpha}{n}J$, où $J$
+    est la matrice dont tous les coefficients valent $1$. Interpréter $G$.
+    Montrer que $G$ admet un unique vecteur de probabilité stationnaire
+    $\pi$ (le \emph{PageRank}) et que
+    $\lVert\mu_k-\pi\rVert_1\leqslant2\alpha^{k}$.
+  \item Sans calculer $\pi$, montrer que $\pi_4=\frac{1-\alpha}{4}$.
+  \item On considère la fonction Python suivante, où \texttt{P} est une
+    liste de listes représentant $P$.
+\begin{python}
+def pagerank(P, alpha, eps):
+    n = len(P)
+    mu = [1 / n] * n
+    while True:
+        nu = [(1 - alpha) / n
+              + alpha * sum(mu[i] * P[i][j] for i in range(n))
+              for j in range(n)]
+        if sum(abs(nu[j] - mu[j]) for j in range(n)) < eps:
+            return nu
+        mu = nu
+\end{python}
+    \begin{enumerate}[label=\alph*)]
+      \item Montrer que la liste \texttt{nu} représente $\mu G$, et que la
+        boucle se termine. Majorer le nombre de passages dans la boucle pour
+        $\alpha=0{,}85$ et $\varepsilon=10^{-6}$ (on donne
+        $\ln(2\cdot10^{6})\approx14{,}51$ et $\ln0{,}85\approx-0{,}1625$).
+      \item Avec $\alpha=0{,}85$, le programme renvoie
+        $(0{,}3797;\ 0{,}1989;\ 0{,}3839;\ 0{,}0375)$. Classer les pages ;
+        commenter.
+      \item Évaluer le coût d'un passage dans la boucle. Écrire une fonction
+        \texttt{pagerank\_creux(succ, alpha, eps)}, où \texttt{succ[i]} est
+        la liste (non vide) des pages liées depuis la page \texttt{i}, dont
+        chaque passage coûte $O(n+\text{nombre de liens})$ opérations.
+    \end{enumerate}
+\end{questions}
+\end{exoEval}

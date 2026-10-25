@@ -1,0 +1,154 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 10 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s10.py)
+
+\sujetBac{10}{Dénombrement et loi binomiale/5,Géométrie : un hexagone dans un cube/5,Suite et logarithme/5,Fonction : un modèle logistique/5}
+
+\begin{exoBac}{5}{Dénombrement et loi binomiale}
+Un questionnaire à choix multiples (QCM) comporte $20$ questions. Pour chacune d'elles, quatre réponses sont proposées, dont une seule
+est exacte. Un candidat qui n'a pas révisé répond au hasard : il coche une réponse par question, et toutes les grilles de réponses
+ont la même probabilité d'être remplies.
+\partieExo{A}{Dénombrement}
+\begin{questions}
+  \item Combien de grilles de réponses différentes le candidat peut-il remplir ?
+  \item Soit $k$ un entier compris entre $0$ et $20$. Justifier que le nombre de grilles comportant exactement $k$ réponses exactes est
+    égal à $\binom{20}{k}\times3^{20-k}$.
+\end{questions}
+\partieExo{B}{Nombre de réponses exactes}
+On note $X$ le nombre de réponses exactes du candidat. Les probabilités seront arrondies au millième.
+\begin{questions}[resume]
+  \item Déduire de la partie A l'expression de $P(X=k)$ pour tout entier $k$ compris entre $0$ et $20$. Quelle est la loi de $X$ ?
+    Donner son espérance et sa variance.
+  \item Calculer la probabilité que le candidat obtienne au moins $10$ réponses exactes.
+  \item Le QCM comporte désormais $n$ questions. Déterminer le nombre minimal de questions pour que la probabilité qu'un candidat
+    répondant au hasard obtienne au moins une réponse exacte soit supérieure ou égale à $0{,}999$.
+\end{questions}
+\partieExo{C}{Un barème qui neutralise le hasard}
+On revient au QCM de $20$ questions. Le correcteur attribue $1$ point par réponse exacte et retire $\frac13$ de point par réponse
+fausse. On note $N$ la note obtenue par le candidat.
+\begin{questions}[resume]
+  \item Exprimer $N$ en fonction de $X$, puis calculer l'espérance $E(N)$ et la variance $V(N)$. Interpréter la valeur de $E(N)$.
+  \item Calculer la probabilité que le candidat obtienne une note supérieure ou égale à $10$ ; on en donnera une valeur approchée à
+    $10^{-4}$ près. Commenter.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Géométrie : un hexagone dans un cube}
+\begin{codecote}[0.6]
+On considère un cube $ABCDEFGH$ d'arête $1$ et l'on se place dans le repère orthonormé $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$. On note
+$I$, $J$, $K$, $L$, $M$ et $N$ les milieux respectifs des arêtes $[AB]$, $[BC]$, $[CG]$, $[GH]$, $[HE]$ et $[EA]$, et $O$ le centre du
+cube, c'est-à-dire le milieu du segment $[DF]$.
+\begin{questions}
+  \item Donner les coordonnées des points $D$, $F$, $O$, $I$, $J$, $K$, $L$, $M$ et $N$.
+  \item On considère le plan $\mathcal{P}$ d'équation $x-y+z-\frac12=0$.
+    \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Montrer que le vecteur $\vect{DF}$ est normal au plan $\mathcal{P}$ et que le point $O$ appartient à $\mathcal{P}$. Que
+        représente le plan $\mathcal{P}$ pour le segment $[DF]$ ?
+      \item Vérifier que les six points $I$, $J$, $K$, $L$, $M$ et $N$ appartiennent au plan $\mathcal{P}$. Qu'en déduit-on pour leurs
+        distances aux points $D$ et $F$ ?
+    \end{enumerate}
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.5]
+  \otPaveCoord{1}{1}{1}
+  \coordinate (I) at (0.5,0,0); \coordinate (J) at (1,0.5,0); \coordinate (K) at (1,1,0.5);
+  \coordinate (L) at (0.5,1,1); \coordinate (M) at (0,0.5,1); \coordinate (N) at (0,0,0.5);
+  \coordinate (O) at (0.5,0.5,0.5);
+  \fill[otGreen,opacity=0.2] (I) -- (J) -- (K) -- (L) -- (M) -- (N) -- cycle;
+  \otPaveAretes\otPaveNoms
+  \draw[otCache] (D) -- (F);
+  \draw[otGreenDark,line width=0.9pt] (N) -- (I) (J) -- (K) (L) -- (M);
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (I) -- (J) (K) -- (L) (M) -- (N);
+  \foreach \p/\a in {I/north,J/north west,K/west,L/south,M/south east,N/east}{\node[otPtV] at (\p) {}; \node[otSommet,anchor=\a] at (\p) {$\p$};}
+  \node[otPt] at (O) {}; \node[otSommet,anchor=north west] at (O) {$O$};
+\end{tikzpicture}
+\end{codecote}
+\begin{questions}[start=3]
+  \item Déterminer une représentation paramétrique de la droite $(DF)$ et retrouver par le calcul son intersection avec $\mathcal{P}$.
+    En déduire la distance du point $D$ au plan $\mathcal{P}$.
+  \item \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Calculer les longueurs $OI$, $OJ$ et $IJ$. Quelle est la nature du triangle $OIJ$ ?
+      \item On admet que les triangles $OJK$, $OKL$, $OLM$, $OMN$ et $ONI$ sont de même nature que $OIJ$, avec les mêmes dimensions. En
+        déduire que l'hexagone $IJKLMN$ est régulier, puis calculer son aire. On rappelle que l'aire d'un triangle équilatéral de côté
+        $c$ est $\frac{\sqrt3}{4}c^{2}$.
+    \end{enumerate}
+  \item Calculer le volume de la pyramide de sommet $D$ et de base l'hexagone $IJKLMN$. On rappelle que le volume d'une pyramide est
+    $V=\frac13\times\mathcal{B}\times h$.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Suite et logarithme}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=x\,e^{-x}$, ainsi que la suite $(u_n)$ définie par $u_0=1$ et, pour tout entier
+naturel $n$, $u_{n+1}=f(u_n)=u_n\,e^{-u_n}$.
+\partieExo{A}{Étude d'une fonction}
+\begin{questions}
+  \item Étudier les variations de $f$ sur l'intervalle $\intFF01$, puis montrer que, pour tout réel $x$ de $\intFF01$, $f(x)$
+    appartient à $\intFF01$.
+\end{questions}
+\partieExo{B}{Étude de la suite}
+\begin{questions}[resume]
+  \item Calculer les valeurs exactes de $u_1$ et de $u_2$.
+  \item Démontrer par récurrence que, pour tout entier naturel $n$, $0<u_n\leq1$.
+  \item Montrer que la suite $(u_n)$ est décroissante. En déduire qu'elle converge.
+  \item Déterminer la limite $\ell$ de la suite $(u_n)$.
+  \item On considère la fonction Python ci-contre, où \code{exp} désigne la fonction exponentielle.
+\begin{codecote}[0.46]
+\begin{pythoncol}
+def seuil(s):
+    u = 1
+    n = 0
+    while ... :
+        u = ...
+        n = n + 1
+    return n
+\end{pythoncol}
+\cote
+\begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.6mm,topsep=0mm]
+  \item Recopier et compléter cette fonction pour que \code{seuil(s)} renvoie le plus petit entier $n$ tel que $u_n<s$.
+  \item L'appel \code{seuil(0.01)} renvoie $97$. Interpréter ce résultat.
+\end{enumerate}
+\end{codecote}
+  \item \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Montrer que, pour tout entier naturel $n$, $\ln(u_{n+1})=\ln(u_n)-u_n$.
+      \item En déduire que, pour tout entier naturel $n$, $u_0+u_1+\dots+u_n=-\ln(u_{n+1})$, puis déterminer la limite de cette somme
+        lorsque $n$ tend vers $+\infty$.
+    \end{enumerate}
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Fonction : un modèle logistique}
+\begin{codecote}[0.56]
+On étudie une population de bactéries dans un milieu de culture. Le nombre de bactéries, en milliers, $t$ heures après le début de
+l'expérience, est modélisé par la fonction $f$ définie sur $\intFO0{+\infty}$ par
+\[f(t)=\frac{10}{1+9e^{-0{,}5t}},\]
+dont la courbe représentative $\mathcal{C}_f$ est tracée ci-contre.
+\begin{questions}
+  \item Calculer $f(0)$ et la limite de $f$ en $+\infty$. Interpréter ces deux résultats dans le contexte de l'exercice.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=60mm, unit vector ratio=, height=46mm, xmin=-0.7, xmax=15.2, ymin=-0.9, ymax=11.8,
+  xtick={2,4,...,14}, ytick={2,4,...,10}, xlabel={$t$}]
+  \addplot[otMuted,line width=0.6pt,dash pattern=on 3pt off 2pt,domain=0:14.6] {10};
+  \addplot[otNavy,line width=1pt,domain=0:14.6,samples=90] {10/(1+9*exp(-0.5*x))};
+  \node[font=\small,text=otNavy] at (axis cs:3.4,7.4) {$\mathcal{C}_f$};
+\end{axis}
+\end{tikzpicture}
+\end{codecote}
+\begin{questions}[start=2]
+  \item Montrer que, pour tout réel $t\geq0$, $f'(t)=\dfrac{45\,e^{-0{,}5t}}{\left(1+9e^{-0{,}5t}\right)^{2}}$, et en déduire le sens de
+    variation de $f$.
+  \item Vérifier que la fonction $f$ est solution de l'équation différentielle $y'=0{,}05\,y\,(10-y)$.
+  \item Au bout de combien de temps la population dépasse-t-elle $9\,000$ bactéries ? On donnera la valeur exacte, puis une valeur
+    approchée à la minute près.
+  \item On admet que $f''(t)=\dfrac{22{,}5\,e^{-0{,}5t}\left(9e^{-0{,}5t}-1\right)}{\left(1+9e^{-0{,}5t}\right)^{3}}$. Étudier la
+    convexité de $f$ et déterminer les coordonnées du point d'inflexion de $\mathcal{C}_f$. Interpréter.
+  \item \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Montrer que, pour tout réel $t\geq0$, $f(t)=\dfrac{10\,e^{0{,}5t}}{e^{0{,}5t}+9}$, et en déduire une primitive de $f$ sur
+        $\intFO0{+\infty}$.
+      \item Calculer la valeur moyenne de $f$ sur l'intervalle $\intFF0{10}$ ; on en donnera la valeur exacte, puis une valeur
+        approchée au centième. Interpréter.
+    \end{enumerate}
+\end{questions}
+\end{exoBac}

@@ -1,0 +1,342 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[champuniforme]{15}{Mouvement dans un champ uniforme}{Partie 2 · Mouvement et interactions}
+{Champ de pesanteur\enspace·\enspace Équations horaires et trajectoire\enspace·\enspace Champ électrique d'un condensateur\enspace·\enspace Énergie}
+\objectif{Montrer que le mouvement dans un champ uniforme est plan.}
+\objectif{Établir et exploiter les équations horaires du mouvement et l'équation de la trajectoire.}
+\objectif{Discuter de l'influence des grandeurs physiques sur le champ électrique d'un condensateur plan.}
+\objectif{Décrire le principe d'un accélérateur linéaire de particules chargées.}
+\objectif{Exploiter la conservation de l'énergie mécanique ou le théorème de l'énergie cinétique.}
+\prerequis{Deuxième loi de Newton (chapitre~14) ; vecteurs vitesse et accélération (chapitre~13).}
+\prerequis{Énergies cinétique, potentielle et mécanique ; travail d'une force (classe de première).}
+\prerequis{Primitives des fonctions $t\mapsto a$ et $t\mapsto a\,t+b$ ; équation du second degré.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Mouvement dans le champ de pesanteur}
+\begin{propriete}[Accélération dans un champ de pesanteur uniforme]
+Un projectile soumis à son seul poids (frottements négligés) vérifie, dans le référentiel terrestre supposé galiléen,
+$m\,\vec{a}=m\,\vec{g}$, soit $\vec{a}=\vec{g}$ : son accélération est constante, verticale, dirigée vers le bas, et ne
+dépend pas de sa masse. Le mouvement est \textbf{plan} : il reste dans le plan vertical qui contient le vecteur vitesse
+initiale $\vec{v}_0$.
+\end{propriete}
+\begin{savoirfaire}[Établir les équations horaires]
+Choisir un repère $(O\,;\vec{\imath},\vec{k})$ dans le plan du mouvement, $\vec{k}$ vertical vers le haut, $O$ au sol à la
+verticale du point de lancement, situé à la hauteur $h$. Avec $\vec{v}_0$ incliné d'un angle $\alpha$ :
+$a_x=0$ et $a_z=-g$ ; on cherche des primitives en tenant compte des conditions initiales,
+\[v_x=v_0\cos\alpha,\quad v_z=-g\,t+v_0\sin\alpha\qquad\text{puis}\qquad x=v_0\cos\alpha\;t,\quad z=-\frac12\,g\,t^2+v_0\sin\alpha\;t+h.\]
+En éliminant $t=\dfrac{x}{v_0\cos\alpha}$, on obtient l'équation de la trajectoire, un arc de parabole :
+\[z=-\frac{g}{2\,v_0^2\cos^2\alpha}\,x^2+x\tan\alpha+h.\]
+\end{savoirfaire}
+\schema{15-parabole}
+\begin{exemple}
+Une boule de pétanque est lancée d'une hauteur $h=\qty{1,0}{m}$ avec $v_0=\qty{7,0}{m.s^{-1}}$ et $\alpha=40^\circ$. Au
+sommet, $v_z=0$ : $t_\mathrm{S}=\dfrac{v_0\sin\alpha}{g}=\qty{0,46}{s}$ et la \textbf{flèche} vaut $z_\mathrm{S}=\qty{2,0}{m}$.
+La boule touche le sol quand $z=0$ : la résolution de l'équation du second degré donne $t=\qty{1,10}{s}$, d'où la
+\textbf{portée} $x=v_0\cos\alpha\;t=\qty{5,9}{m}$.
+\end{exemple}
+\essSection{2}{Mouvement dans un champ électrique uniforme}
+\begin{propriete}[Champ électrique d'un condensateur plan]
+Entre deux plaques parallèles distantes de $d$, soumises à la tension $U$, le champ électrique est uniforme :
+perpendiculaire aux plaques, dirigé de la plaque positive vers la plaque négative, de valeur
+\[E=\frac{U}{d}\qquad(E\text{ en }\unit{V.m^{-1}}).\]
+Il est proportionnel à la tension et inversement proportionnel à la distance entre les plaques. Une particule de
+charge $q$ y subit la force $\vec{F}=q\,\vec{E}$.
+\end{propriete}
+\schema{15-condensateur}
+\begin{propriete}[Mouvement d'une particule chargée]
+Pour une particule chargée (électron, proton, ion), le poids est négligeable devant la force électrique : pour un
+électron dans un champ de \qty{1e4}{V.m^{-1}}, $F=e\,E=\qty{1,6e-15}{N}$, alors que $P=m\,g=\qty{8,9e-30}{N}$. La
+deuxième loi donne $\vec{a}=\dfrac{q}{m}\,\vec{E}$, constant : comme dans le champ de pesanteur, le mouvement est plan
+et la trajectoire est rectiligne ou parabolique selon la direction de la vitesse initiale.
+\end{propriete}
+\begin{definition}[Accélérateur linéaire]
+Dans un \textbf{accélérateur linéaire}, des particules chargées traversent successivement des intervalles entre
+électrodes, soumis à une tension $U$ : à chaque traversée, leur énergie cinétique augmente de $|q|\,U$. Entre deux
+intervalles, elles circulent dans des tubes métalliques où le champ est nul ; la tension alternative s'inverse pendant
+ce trajet, si bien que les particules sont toujours accélérées.
+\end{definition}
+\essSection{3}{Aspects énergétiques}
+\begin{propriete}[Théorème de l'énergie cinétique et énergie mécanique]
+Entre deux points A et B, la variation de l'énergie cinétique est égale à la somme des travaux des forces :
+$\Delta E_\mathrm{c}=E_\mathrm{c}(B)-E_\mathrm{c}(A)=\sum W_{AB}(\vec{F})$, avec $W_{AB}(\vec{P})=m\,g\,(z_\mathrm{A}-z_\mathrm{B})$ et
+$W_{AB}(q\vec{E})=q\,U_{AB}$. Si seul le poids travaille, l'énergie mécanique $E_\mathrm{m}=\frac12\,m\,v^2+m\,g\,z$ se
+\textbf{conserve}.
+\end{propriete}
+\begin{exemple}
+Un électron, initialement immobile, est accéléré sous une tension $U=\qty{2,0}{kV}$ : $E_\mathrm{c}=e\,U=\qty{3,2e-16}{J}$,
+d'où $v=\sqrt{\dfrac{2\,e\,U}{m}}=\qty{2,7e7}{m.s^{-1}}$, près du dixième de la vitesse de la lumière.
+\end{exemple}
+\begin{python}
+m, g, tau = 0.058, 9.81, 0.040                         # kg, N/kg, s
+x = [0.000, 0.120, 0.240, 0.360, 0.480, 0.600, 0.720]  # m
+z = [1.000, 1.152, 1.289, 1.409, 1.514, 1.604, 1.677]  # m
+for i in range(1, 6):
+    vx = (x[i+1] - x[i-1]) / (2 * tau)
+    vz = (z[i+1] - z[i-1]) / (2 * tau)
+    Ec = 0.5 * m * (vx**2 + vz**2)
+    Ep = m * g * z[i]
+    print(round(Ec, 2), round(Ep, 2), round(Ec + Ep, 2))
+\end{python}
+\begin{console}
+0.64 0.66 1.29
+0.56 0.73 1.29
+0.49 0.8 1.29
+0.43 0.86 1.29
+0.38 0.91 1.29
+\end{console}
+\noindent\capacite{Capacité numérique}Les listes contiennent les coordonnées d'une balle de tennis de 58~g pointées
+sur une vidéo. Le programme calcule à chaque position l'énergie cinétique, l'énergie potentielle de pesanteur et leur
+somme : pendant la montée, $E_\mathrm{c}$ diminue, $E_\mathrm{pp}$ augmente et $E_\mathrm{m}$ reste égale à
+\qty{1,29}{J}. Les frottements sont bien négligeables.
+\begin{experience}[Étudier un lancer par vidéo]
+On filme un lancer de balle devant une règle étalon, puis on pointe les positions avec un logiciel ou un programme. On
+modélise $x(t)$ par une fonction affine et $z(t)$ par un polynôme du second degré : le coefficient de $t^2$ vaut
+$-g/2$, et les coefficients du premier degré donnent $v_0\cos\alpha$ et $v_0\sin\alpha$. Le tracé des énergies vérifie la
+conservation de l'énergie mécanique.
+\end{experience}
+\begin{rediger}
+Pour établir les équations horaires, citer la loi utilisée, écrire les conditions initiales, puis primitiver une
+coordonnée à la fois. Pour une question de portée ou de hauteur, préciser la condition qui la caractérise : « au sommet,
+$v_z=0$ » ; « au sol, $z=0$ ».
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-15-1}
+\begin{exercice}[1]{Une chute libre verticale}
+Une bille est lâchée sans vitesse initiale d'une hauteur de 20~m. On néglige les frottements et on prend un axe $(Oz)$
+vertical, orienté vers le bas, d'origine au point de lâcher.
+\begin{donnees}
+$g=\qty{9,81}{m.s^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Appliquer la deuxième loi de Newton et en déduire l'accélération de la bille.
+\item Établir, par primitives successives, les équations horaires $v_z(t)$ et $z(t)$.
+\item Calculer la durée de la chute et la vitesse de la bille quand elle touche le sol.
+\item Retrouver cette vitesse par la conservation de l'énergie mécanique.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-2}
+\begin{exercice}[1]{Le champ d'un condensateur plan}
+Deux plaques métalliques parallèles, distantes de $d=\qty{2,0}{cm}$, sont soumises à une tension $U=\qty{500}{V}$.
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$ ; masse de l'électron : $m=\qty{9,11e-31}{kg}$ ; $g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Caractériser le champ électrique entre les plaques : direction, sens et valeur.
+\item Comment varie la valeur du champ si l'on double la tension ? si l'on double la distance entre les plaques ?
+\item Calculer la force électrique subie par un électron entre les plaques, puis son poids. Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-3}
+\begin{exercice}[1]{La bille qui quitte la table}
+Une bille roule sur une table horizontale de hauteur \qty{0,80}{m} et la quitte avec une vitesse horizontale de
+\qty{2,5}{m.s^{-1}}. On néglige les frottements de l'air.
+\begin{questions}
+\item Établir les équations horaires du mouvement de la bille, l'origine étant prise au sol, à la verticale du bord de la
+table.
+\item Calculer la durée de la chute.
+\item À quelle distance du pied de la table la bille touche-t-elle le sol ?
+\item Calculer la valeur de sa vitesse à l'arrivée au sol.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-4}
+\begin{exercice}[1]{Les énergies d'une balle}
+Une balle de masse $m=\qty{0,20}{kg}$ est lancée verticalement vers le haut, depuis une hauteur de \qty{1,5}{m}, à la
+vitesse de \qty{8,0}{m.s^{-1}}. On néglige les frottements ; l'énergie potentielle de pesanteur est nulle au sol.
+\begin{questions}
+\item Calculer l'énergie cinétique, l'énergie potentielle et l'énergie mécanique de la balle au départ.
+\item Pourquoi l'énergie mécanique se conserve-t-elle ?
+\item En déduire l'altitude maximale atteinte par la balle.
+\item Avec quelle vitesse la balle touche-t-elle le sol ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-5}
+\begin{exercice}[1]{Accélérer un électron}
+Dans un canon à électrons, des électrons émis sans vitesse sont accélérés entre deux électrodes soumises à une tension
+$U=\qty{1,0}{kV}$.
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$ ; $m=\qty{9,11e-31}{kg}$.
+\end{donnees}
+\begin{questions}
+\item Exprimer le travail de la force électrique entre les deux électrodes.
+\item Appliquer le théorème de l'énergie cinétique et calculer l'énergie cinétique finale.
+\item En déduire la vitesse des électrons à la sortie.
+\item Comment faudrait-il modifier la tension pour doubler cette vitesse ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-15-6}
+\begin{exercice}[2]{Le lancer du poids}
+Un athlète lance le poids depuis une hauteur $h=\qty{2,10}{m}$, avec une vitesse $v_0=\qty{13,5}{m.s^{-1}}$ inclinée de
+$\alpha=42^\circ$ sur l'horizontale. On néglige les frottements de l'air.
+\begin{questions}
+\item Justifier que le mouvement du centre du poids est plan.
+\item Établir les équations horaires, puis l'équation de la trajectoire.
+\item Calculer la flèche, c'est-à-dire l'altitude maximale.
+\item Calculer la longueur du jet, mesurée au sol depuis la verticale du point de lâcher.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-7}
+\begin{exercice}[2]{Réussir son tir}
+Un basketteur tire depuis une hauteur de \qty{2,20}{m}, avec un angle $\alpha=52^\circ$. Le centre de l'anneau se trouve à
+la distance horizontale \qty{4,20}{m} du point de tir, à \qty{3,05}{m} du sol.
+\begin{questions}
+\item Rappeler l'équation de la trajectoire du centre du ballon.
+\item Montrer que la vitesse initiale nécessaire vérifie
+$v_0^2=\dfrac{g\,x^2}{2\cos^2\alpha\,(x\tan\alpha+h-z)}$, avec $x=\qty{4,20}{m}$ et $z=\qty{3,05}{m}$.
+\item Calculer $v_0$.
+\item Le joueur lance à \qty{7,4}{m.s^{-1}} : le ballon passe-t-il au-dessus ou au-dessous du centre de l'anneau ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-8}
+\begin{exercice}[2]{Dévier un faisceau d'électrons}
+Des électrons pénètrent en O, avec une vitesse horizontale $v_0=\qty{2,0e7}{m.s^{-1}}$, entre deux plaques horizontales de
+longueur $L=\qty{5,0}{cm}$, distantes de $d=\qty{2,0}{cm}$, soumises à la tension $U=\qty{200}{V}$.
+\schema{15-ex08}
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$ ; $m=\qty{9,11e-31}{kg}$ ; le poids des électrons est négligeable.
+\end{donnees}
+\begin{questions}
+\item Calculer la valeur du champ électrique et préciser le sens de la force subie par les électrons.
+\item Établir les équations horaires du mouvement entre les plaques, puis l'équation de la trajectoire.
+\item Calculer la déviation verticale à la sortie des plaques. Les électrons touchent-ils une plaque ?
+\item Calculer l'angle que fait leur vitesse avec l'horizontale à la sortie.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-9}
+\begin{exercice}[2]{Tracer l'évolution des énergies}
+On reprend le programme de l'essentiel : il calcule les énergies d'une balle de tennis de 58~g à partir d'un pointage
+vidéo.
+\begin{questions}
+\item \capacite{Capacité numérique}Expliquer comment le programme calcule la vitesse de la balle en chaque point.
+\item Quelle est l'origine de l'énergie potentielle choisie ? Pourquoi peut-on ignorer les positions extrêmes de la
+liste ?
+\item Interpréter l'évolution des trois grandeurs affichées.
+\item Écrire les lignes à ajouter pour tracer $E_\mathrm{c}$, $E_\mathrm{pp}$ et $E_\mathrm{m}$ en fonction du temps.
+\item En présence de frottements notables, comment évoluerait la troisième colonne ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-10}
+\begin{exercice}[2]{Le toboggan aquatique}
+Un enfant de 30~kg se laisse glisser, sans vitesse initiale, du haut d'un toboggan de \qty{8,0}{m} de dénivelé et de
+\qty{30}{m} de long. Il arrive en bas à \qty{9,0}{m.s^{-1}}.
+\begin{questions}
+\item Sans frottement, quelle serait sa vitesse en bas ? Justifier.
+\item Comparer à la vitesse mesurée. Que conclure ?
+\item Appliquer le théorème de l'énergie cinétique pour calculer le travail des forces de frottement.
+\item En supposant la force de frottement constante et parallèle à la piste, calculer sa valeur.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-11}
+\begin{exercice}[2]{L'accélérateur linéaire}
+Un accélérateur linéaire comporte une succession de tubes métalliques alignés ; entre deux tubes, les protons traversent
+un intervalle soumis à une tension de \qty{50}{kV}, qui les accélère à chaque passage. La tension alternative a pour
+fréquence $f=\qty{10}{MHz}$.
+\schema{15-ex11}
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$ ; masse du proton : $m_\mathrm{p}=\qty{1,67e-27}{kg}$ ; $\qty{1}{eV}=\qty{1,60e-19}{J}$.
+\end{donnees}
+\begin{questions}
+\item Quelle énergie cinétique un proton gagne-t-il à chaque intervalle ? L'exprimer en joules et en électronvolts.
+\item Les protons entrent avec une vitesse négligeable. Calculer leur vitesse après 1 intervalle, puis après 20.
+\item À l'intérieur d'un tube, le champ est nul. Quelle est la nature du mouvement ?
+\item Pour être accélérés au bon moment, les protons doivent traverser chaque tube en une demi-période de la tension.
+Calculer la longueur du premier tube et celle du vingtième. Pourquoi les tubes sont-ils de plus en plus longs ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-15-12}
+\begin{exercice}[3]{Le service au tennis}
+\begin{docu}{1}{Le terrain}
+Le serveur frappe la balle à \qty{2,80}{m} de hauteur, sur sa ligne de fond. Le filet, haut de \qty{0,914}{m}, est à
+\qty{11,9}{m} ; la balle doit retomber dans le carré de service, avant la ligne située à \qty{18,3}{m}.
+\end{docu}
+\begin{docu}{2}{Des services à 180 km/h}
+Les meilleurs joueurs servent à plus de 180~km/h, soit \qty{50}{m.s^{-1}}. On néglige ici les frottements et l'effet
+donné à la balle.
+\end{docu}
+\begin{questions}
+\item La balle est frappée horizontalement à \qty{45}{m.s^{-1}}. Établir les équations horaires de son mouvement.
+\item Passe-t-elle au-dessus du filet ? Où retombe-t-elle ? Conclure.
+\item Quelle vitesse horizontale maximale permet à une balle frappée horizontalement de tomber dans le carré ?
+\item \initiative Pour un service à \qty{50}{m.s^{-1}}, la balle doit être frappée vers le bas. Montrer qu'un angle de
+$6{,}7^\circ$ sous l'horizontale convient, et vérifier qu'elle franchit le filet.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-13}
+\begin{exercice}[3]{L'imprimante à jet d'encre}
+\begin{docu}{1}{Des gouttes déviées}
+Dans certaines imprimantes industrielles, une buse projette des gouttes d'encre de masse $m=\qty{1,0e-10}{kg}$ à
+$v_0=\qty{20}{m.s^{-1}}$. Chaque goutte reçoit une charge électrique $q$ réglable, puis passe entre deux plaques de
+longueur $L=\qty{1,0}{cm}$ où règne un champ uniforme $E=\qty{1,0e6}{V.m^{-1}}$, perpendiculaire à $\vec{v}_0$. Le papier est
+situé à $D=\qty{1,0}{cm}$ après les plaques.
+\end{docu}
+\schema{15-ex13}
+\begin{donnees}
+Pour la goutte étudiée, $|q|=\qty{1,5e-13}{C}$ ; $g=\qty{9,81}{m.s^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Comparer la force électrique au poids de la goutte. Quelle approximation peut-on faire ?
+\item Calculer l'accélération de la goutte entre les plaques et la durée de la traversée.
+\item Calculer la déviation à la sortie des plaques et la coordonnée verticale de la vitesse à cet instant.
+\item \initiative Après les plaques, la goutte n'est plus soumise à aucune force notable. Calculer la déviation totale
+sur le papier. Comment l'imprimante place-t-elle les gouttes à des hauteurs différentes ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-14}
+\begin{exercice}[3]{Le saut en longueur}
+\begin{docu}{1}{L'impulsion}
+Au moment de l'impulsion, le centre de masse d'un sauteur est à \qty{1,10}{m} du sol ; sa vitesse vaut
+\qty{9,5}{m.s^{-1}}, inclinée de $22^\circ$ sur l'horizontale. À la réception, les jambes tendues vers l'avant, son centre de
+masse est à \qty{0,50}{m} du sol.
+\end{docu}
+\begin{docu}{2}{Un angle faible}
+Les sauteurs décollent sous un angle de 20 à 25°, très inférieur à 45° : en s'élevant davantage, ils perdent beaucoup de
+vitesse horizontale au moment de l'impulsion.
+\end{docu}
+\begin{questions}
+\item Établir les équations horaires du mouvement du centre de masse pendant le saut, frottements négligés.
+\item Calculer l'altitude maximale atteinte par le centre de masse.
+\item \initiative Calculer la durée du saut et la distance horizontale parcourue par le centre de masse.
+\item Calculer la vitesse du centre de masse à la réception, à l'aide de la conservation de l'énergie mécanique.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-15}
+\begin{exercice}[3]{La gouttelette de Millikan}
+\begin{docu}{1}{Peser une charge électrique}
+En 1909, Robert Millikan immobilise de fines gouttelettes d'huile électrisées entre deux plaques horizontales : en
+ajustant la tension, il compense exactement le poids de chaque gouttelette par la force électrique.
+\end{docu}
+\begin{docu}{2}{Une gouttelette immobile}
+Une gouttelette sphérique de rayon $r=\qty{0,80}{\micro m}$ et de masse volumique \qty{900}{kg.m^{-3}} est immobile entre
+deux plaques distantes de $d=\qty{1,00}{cm}$, la plaque supérieure étant positive, pour $U=\qty{394}{V}$.
+\end{docu}
+\begin{docu}{3}{D'autres gouttelettes}
+Charges mesurées sur quatre autres gouttelettes, en valeur absolue : \qty{3,20e-19}{C} ; \qty{4,81e-19}{C} ;
+\qty{8,00e-19}{C} ; \qty{6,41e-19}{C}.
+\end{docu}
+\begin{donnees}
+Volume d'une sphère : $\frac43\pi r^3$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; $e=\qty{1,602e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la masse de la gouttelette, puis son poids.
+\item Caractériser le champ électrique entre les plaques. Quel est le signe de la charge de la gouttelette ?
+\item \initiative Déterminer la valeur absolue de la charge de la gouttelette.
+\item Que suggèrent l'ensemble des valeurs obtenues ? Quelle grandeur Millikan a-t-il ainsi mesurée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,19 @@
+% Cycle catalytique du chlore dans la destruction de l'ozone (corrigé de l'exercice 12, chapitre 5)
+\begin{tikzpicture}[x=1mm,y=1mm,
+  esp/.style={circle,minimum size=13mm,inner sep=0pt,font=\otMedium\fontsize{10}{12}\selectfont},
+  flux/.style={otMuted,line width=0.6pt,-{Stealth[length=1.8mm]}}]
+\node[esp,fill=otGreenTint,draw=otGreen,line width=0.8pt] (cat) at (-22,0) {Cl};
+\node[esp,fill=otNavyTint,draw=otNavy!50,line width=0.8pt] (int) at (22,0) {ClO};
+\draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.6mm]}] (cat.north) to[out=70,in=110]
+  coordinate[pos=0.3] (h1) coordinate[pos=0.7] (h2) node[pos=0.5,below=1.2mm,pcLegendeG] {acte 1} (int.north);
+\draw[otNavy,line width=1.1pt,-{Stealth[length=2.6mm]}] (int.south) to[out=-110,in=-70]
+  coordinate[pos=0.3] (b1) coordinate[pos=0.7] (b2) node[pos=0.5,above=1.2mm,pcLegendeG] {acte 2} (cat.south);
+\draw[flux] ([shift={(-7,9)}]h1) node[above,pcLegende] {\ce{O3}} to[out=-80,in=135] (h1);
+\draw[flux] (h2) to[out=45,in=-100] ([shift={(7,9)}]h2) node[above,pcLegende] {\ce{O2}};
+\draw[flux] ([shift={(7,-9)}]b1) node[below,pcLegende] {O} to[out=100,in=-45] (b1);
+\draw[flux] (b2) to[out=-135,in=80] ([shift={(-7,-9)}]b2) node[below,pcLegende] {\ce{O2}};
+\node[pcLegende,anchor=east,text=otGreenDark] at ([xshift=-1.5mm]cat.west) {catalyseur};
+\node[pcLegende,anchor=west,text=otNavy] at ([xshift=1.5mm]int.east) {intermédiaire};
+\node[pcLegende,anchor=west,align=left] at (50,0) {acte 1 : \ce{Cl + O3 -> ClO + O2}\\[0.6mm]acte 2 : \ce{ClO + O -> Cl + O2}\\[1.6mm]
+  {\otMedium bilan :} \ce{O3 + O -> 2 O2}};
+\end{tikzpicture}

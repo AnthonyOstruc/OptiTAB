@@ -1,0 +1,15 @@
+% Surpression due au dioxygène formé lors de la décomposition de l'eau oxygénée (sujet type bac 4, exercice 1)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=118mm,height=56mm,xmin=0,xmax=31,ymin=0,ymax=22,
+  xtick={0,2,...,30},ytick={0,2,...,22},
+  xlabel={$t$ (min)},ylabel={$\Delta P$ (kPa)}]
+\addplot[otNavy,line width=0.8pt,domain=0:30,samples=120] {19.82*(1-exp(-0.17329*x))};
+\addplot[only marks,mark=*,mark size=1.6pt,otInk] coordinates {(0,0) (1,3.2) (2,5.8) (3,8.0) (4,9.9) (6,12.8) (8,14.9) (10,16.3) (12,17.3) (16,18.6) (20,19.2) (25,19.6) (30,19.7)};
+\solution{\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:30,samples=2] {19.8};
+  \draw[otRed!80!black,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:0,9.9) -- (axis cs:4,9.9) -- (axis cs:4,0);
+  \fill[otRed!80!black] (axis cs:4,9.9) circle (1.6pt);
+  \node[pcLegende,anchor=north west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:4.4,9.4) {$\Delta P_\mathrm{max}/2$ atteint à $t_{1/2}=\qty{4,0}{min}$};
+  \node[pcLegende,anchor=south east,text=otMuted,fill=white,inner sep=1pt] at (axis cs:30,20.1) {$\Delta P_\mathrm{max}=\qty{19,8}{kPa}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Surpression mesurée dans le flacon fermé à partir de l'introduction du catalyseur.}

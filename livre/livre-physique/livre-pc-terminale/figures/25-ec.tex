@@ -1,0 +1,19 @@
+% Énergie cinétique maximale des électrons en fonction de la fréquence, pour le sodium et le zinc (L'essentiel, chapitre 25)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=52mm,xmin=0,xmax=16,ymin=-0.2,ymax=2.4,
+  xtick={0,2,...,16},ytick={0,0.5,...,2},
+  xlabel={$\nu$ ($10^{14}$ Hz)},ylabel={$E_\mathrm{c,max}$ (eV)}]
+\addplot[otNavy,line width=1pt,domain=5.5:11.2,samples=2] {4.144*x/10-2.28};
+\addplot[otRed!80!black,line width=1pt,domain=10.38:16,samples=2] {4.144*x/10-4.3};
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=5.05:5.5,samples=2] {4.144*x/10-2.28};
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=9.93:10.38,samples=2] {4.144*x/10-4.3};
+\fill[otNavy] (axis cs:5.5,0) circle (1.6pt);
+\fill[otRed!80!black] (axis cs:10.38,0) circle (1.6pt);
+\node[pcLegende,anchor=north,text=otNavy] at (axis cs:5.5,-0.03) {$\nu_0$ (Na)};
+\node[pcLegende,anchor=north,text=otRed!80!black] at (axis cs:10.38,-0.03) {$\nu_0$ (Zn)};
+\node[pcLegende,anchor=south east,text=otNavy] at (axis cs:8.0,1.4) {sodium};
+\node[pcLegende,anchor=west,text=otRed!80!black] at (axis cs:14.6,1.25) {zinc};
+\node[pcLegende,anchor=west,align=left] at (axis cs:0.4,1.7) {pente : $h$\\ (même droite\\ pour tous les métaux)};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{$E_\mathrm{c,max}=h\nu-W_\mathrm{ext}$ : des droites parallèles de pente $h$, qui coupent l'axe des fréquences au seuil $\nu_0=W_\mathrm{ext}/h$ propre à chaque métal.}

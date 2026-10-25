@@ -1,0 +1,45 @@
+%% =====================================================================
+%%  Illustrations des pages d'ouverture de chapitre (bandeau bleu)
+%%  Repère : x de 0 à 210 mm ; y visible de 8 à 100 mm ; le titre occupe
+%%  la zone x < 125 mm. Chaque programme dessiné ici est exact : sa sortie
+%%  est celle que Python affiche réellement.
+%% =====================================================================
+
+% Chapitre 1 — Hello, Python!
+\newcommand{\illusHello}{%
+  \otDeco{>>>}{196mm}{96mm}{30}{0.08}
+  \otDeco{print()}{146mm}{30mm}{20}{0.07}
+  \otFenetreIllus{126mm}{93mm}{74mm}{hello.py}{%
+    \otIL{0}{print("Hello, world!")}
+    \otIL{0}{print("I am learning Python.")}}
+  \otTerminalIllus{142mm}{66mm}{58mm}{%
+    \otITL{Hello, world!}
+    \otITL{I am learning Python.}}}
+
+% Chapitre 2 — Python as a calculator
+\newcommand{\illusCalcul}{%
+  \otDeco{+}{132mm}{24mm}{40}{0.08}
+  \otDeco{**}{200mm}{24mm}{30}{0.08}
+  \otDeco{//}{198mm}{96mm}{30}{0.08}
+  \otFenetreIllus{126mm}{93mm}{74mm}{calculator.py}{%
+    \otIL{0}{print(7 * 6)}
+    \otIL{0}{print(17 // 5, 17 \% 5)}
+    \otIL{0}{print(2 ** 10)}}
+  \otTerminalIllus{150mm}{62mm}{50mm}{%
+    \otITL{42}
+    \otITL{3 2}
+    \otITL{1024}}}
+
+% Chapitre 3 — Variables
+\newcommand{\illusVariables}{%
+  \otDeco{=}{134mm}{26mm}{40}{0.08}
+  \otFenetreIllus{126mm}{95mm}{74mm}{trip.py}{%
+    \otIL{0}{nights = 5}
+    \otIL{0}{price = 89.5}
+    \otIL{0}{total = nights * price}
+    \otIL{0}{print("Total:", total)}}
+  \otTerminalIllus{150mm}{58mm}{50mm}{%
+    \otITL{Total: 447.5}}
+  \node[otNom,fill=white,draw=otGreen,font=\ttfamily\fontsize{9}{10}\selectfont] (n) at (152mm,24mm) {nights};
+  \node[otObj,draw=white,fill=otNavyDark,text=white,minimum width=10mm,font=\ttfamily\fontsize{9}{10}\selectfont] (o) at (184mm,24mm) {5};
+  \draw[-{Stealth[length=2.2mm]},otGreen,line width=1pt] (n) -- (o);}

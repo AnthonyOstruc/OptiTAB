@@ -1,0 +1,164 @@
+\begin{ouverture}[conditionnelles]{8}{Probabilités conditionnelles et Bayes}{Probabilités et décision}{Arbres · Fréquences · Conditionnement · Prévalence}
+\objectif{Traduire un énoncé avec un arbre ou un tableau.}
+\objectif{Calculer une probabilité totale.}
+\objectif{Inverser un conditionnement avec la formule de Bayes.}
+\objectif{Interpréter sensibilité, spécificité et valeurs prédictives.}
+\prerequis{Événements, intersection, réunion et probabilités de Première.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Changer l'univers de référence}
+\begin{definition}
+Si $P(A)>0$, la probabilité de $B$ sachant $A$ est $P_A(B)=P(A\cap B)/P(A)$.
+Ainsi $P(A\cap B)=P(A)P_A(B)$.
+Les événements $A$ et $B$ sont indépendants si $P(A\cap B)=P(A)P(B)$.
+\end{definition}
+Conditionner consiste à se restreindre aux cas où l'information est réalisée. Il ne s'agit pas simplement de multiplier deux probabilités quelconques.
+Dans un arbre, les poids issus d'un même nœud totalisent $1$. Un chemin se calcule par produit ; des chemins incompatibles se réunissent par addition.
+\figurelivre{c08-bayes.pdf}{Arbre d'un test fictif : $M$ désigne la présence d'une caractéristique et $+$ un résultat positif. Les fréquences à droite sont les effectifs théoriques pour $10\,000$ personnes.}
+\essSection{2}{La formule des probabilités totales}
+\begin{propriete}
+Si $A$ et $\bar A$ ont des probabilités non nulles,
+\[P(B)=P(A)P_A(B)+P(\bar A)P_{\bar A}(B).\]
+Plus généralement, on additionne sur une partition de l'univers : des événements incompatibles dont la réunion est l'univers.
+\end{propriete}
+Un tableau d'effectifs permet souvent de vérifier les calculs de l'arbre. Les probabilités conditionnelles se lisent en divisant par le total du groupe conditionnant, pas toujours par le total général.
+\essSection{3}{Inverser avec Bayes}
+\begin{theoreme}[Formule de Bayes]
+Pour $P(B)>0$,
+\[P_B(A)=\frac{P(A)P_A(B)}{P(B)}.
+\]
+La probabilité $P(A)$ est dite a priori ; $P_B(A)$ est la probabilité a posteriori après observation de $B$.
+\end{theoreme}
+Cette formule découle directement des deux expressions de $P(A\cap B)$.
+\begin{exemple}[Un test fictif]
+On donne $P(M)=0{,}02$, $P_M(+)=0{,}95$ et $P_{\bar M}(+)=0{,}05$.
+Alors $P(+)=0{,}02\times0{,}95+0{,}98\times0{,}05=0{,}068$.
+Ainsi $P_+(M)=0{,}019/0{,}068=19/68\simeq27{,}94\,\%$.
+Sur $10\,000$ personnes, on attend $190$ vrais positifs et $490$ faux positifs. Parmi les $680$ résultats positifs, $190$ concernent $M$.
+\end{exemple}
+\essSection{4}{Nommer les quatre groupes}
+La sensibilité est $s=P_M(+)$ ; la spécificité est $c=P_{\bar M}(-)$.
+La valeur prédictive positive est $P_+(M)$ ; la valeur prédictive négative est $P_-(\bar M)$.
+Les vrais positifs sont $M\cap+$, les faux positifs $\bar M\cap+$ ; les faux négatifs $M\cap-$ et les vrais négatifs $\bar M\cap-$.
+\begin{attention}
+Une sensibilité de $95\,\%$ ne signifie pas qu'une personne ayant un test positif a $95\,\%$ de probabilité de posséder la caractéristique.
+Les modèles de dépistage du manuel servent uniquement à apprendre le raisonnement probabiliste ; les données sont fictives.
+\end{attention}
+\essSection{5}{L'effet de la proportion initiale}
+Si $p=P(M)$ et si $s,c$ sont fixés, la valeur prédictive positive vaut
+\[V(p)=\frac{sp}{sp+(1-c)(1-p)}.\]
+Lorsque $s>0$ et $1-c>0$, elle augmente avec $p$. Pour une caractéristique rare, des faux positifs peu fréquents peuvent être nombreux parmi tous les résultats positifs.
+Deux tests successifs ne peuvent être traités comme indépendants sans hypothèse. Une indépendance conditionnelle sachant $M$, et une autre sachant $\bar M$, doivent être explicitement annoncées avant de multiplier leurs probabilités.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Lire un conditionnement}
+$P(A)=0{,}4$ et $P_A(B)=0{,}7$.
+\begin{questions}
+\item Calculer $P(A\cap B)$.
+\item Calculer $P_A(\bar B)$.
+\item Peut-on déjà calculer $P(B)$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Compléter un arbre}
+$P(A)=0{,}3$, $P_A(B)=0{,}8$ et $P_{\bar A}(B)=0{,}2$.
+\begin{questions}
+\item Donner les trois poids complémentaires.
+\item Calculer $P(B)$.
+\item Calculer $P(B\cap\bar A)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Indépendance}
+$P(A)=0{,}5$, $P(B)=0{,}4$ et $P(A\cap B)=0{,}2$.
+\begin{questions}
+\item Les événements sont-ils indépendants ?
+\item Calculer $P_A(B)$.
+\item Sont-ils incompatibles ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Deux urnes}
+On choisit une urne $U$ avec probabilité $1/3$, sinon $V$. $U$ contient $3$ boules rouges sur $4$ ; $V$ en contient $1$ sur $4$.
+\begin{questions}
+\item Calculer $P(R)$.
+\item Calculer $P_R(U)$.
+\item Comparer $P_R(U)$ à $P(U)$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Production et défauts}
+Une machine $A$ produit $60\,\%$ des pièces, avec $2\,\%$ de défauts ; $B$ produit le reste, avec $5\,\%$ de défauts.
+\begin{questions}
+\item Calculer le taux global de défaut.
+\item Une pièce est défectueuse : calculer la probabilité qu’elle vienne de $B$.
+\item Pourquoi la moyenne simple de $2\,\%$ et $5\,\%$ serait-elle incorrecte ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un tableau de test}
+Sur $1\,000$ personnes fictives, $50$ possèdent $M$. Parmi elles, $45$ ont un résultat positif. Parmi les autres, $19$ ont un résultat positif.
+\begin{questions}
+\item Donner sensibilité et spécificité.
+\item Calculer la valeur prédictive positive.
+\item Calculer la valeur prédictive négative.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Trois origines}
+Trois ateliers ont les parts $0{,}2$, $0{,}3$, $0{,}5$ et les taux de défaut $0{,}01$, $0{,}02$, $0{,}04$.
+\begin{questions}
+\item Calculer la probabilité d’un défaut.
+\item Calculer la part du troisième atelier parmi les pièces défectueuses.
+\item Vérifier que les trois probabilités a posteriori totalisent $1$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Retrouver une proportion}
+$P_A(B)=0{,}8$, $P_{\bar A}(B)=0{,}2$ et $P(B)=0{,}35$.
+\begin{questions}
+\item Poser $p=P(A)$ et écrire l’équation.
+\item Déterminer $p$.
+\item Calculer $P_B(A)$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Prévalence et valeur prédictive}
+Un test fictif a $s=0{,}9$ et $c=0{,}95$.
+\begin{questions}
+\item Exprimer $V(p)$.
+\item Déterminer les $p$ pour lesquels $V(p)>1/2$.
+\item Interpréter sans confondre les deux conditionnements.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Deux résultats positifs}
+$P(M)=0{,}1$, $P_M(+)=0{,}9$, $P_{\bar M}(+)=0{,}1$. On suppose deux répétitions indépendantes conditionnellement à chacun des deux groupes.
+\begin{questions}
+\item Calculer la probabilité de deux positifs sachant chaque groupe.
+\item Calculer la probabilité de $M$ sachant deux positifs.
+\item Que faudrait-il revoir si les erreurs des répétitions étaient liées ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{L’erreur de l’inversion}
+Un élève affirme : « $P_A(B)=0{,}8$, donc $P_B(A)=0{,}8$. »
+\begin{questions}
+\item Construire un contre-exemple avec $P(A)=0{,}1$ et $P_{\bar A}(B)=0{,}2$.
+\item Calculer les deux probabilités.
+\item Formuler la règle correcte.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une preuve de croissance}
+$V(p)=sp/(sp+f(1-p))$ avec $s>0,f>0$ et $0\leq p\leq1$.
+\begin{questions}
+\item Calculer la dérivée.
+\item En déduire le sens de variation.
+\item Donner les valeurs aux bornes et une conclusion.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

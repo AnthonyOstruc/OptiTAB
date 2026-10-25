@@ -1,0 +1,424 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 19 — Procédés sommatoires discrets
+%% Résultats vérifiés par verifications/chapitre_19.py.
+
+\corrigesChapitre{19}{Procédés sommatoires discrets}
+\corrigesSouples
+
+\begin{blocLivre}{cor-19-1}
+\begin{corrige}{1}{Convergence ou divergence ?}
+\demarche{Réflexe n°1 : le terme général tend-il vers 0 ?}
+\begin{questions}
+  \item Géométrique de raison $\dfrac12$ : converge, somme
+    $\dfrac{1}{1-1/2}=\res{2}$.
+  \item $\dfrac{n}{n+1}\to1\neq0$ : \res{\text{divergence grossière}}.
+  \item $(-1)^{n}$ ne tend pas vers $0$ : divergence grossière.
+  \item $\dfrac{1}{n(n+1)}=\dfrac1n-\dfrac{1}{n+1}$ : télescopage,
+    $S_N=1-\dfrac{1}{N+1}\to\res{1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-2}
+\begin{corrige}{2}{Séries géométriques et exponentielle}
+\demarche{Trois sommes du cours.}
+$\displaystyle\sum\frac{1}{3^{n}}=\frac{1}{1-1/3}=\res{\frac32}$ ;
+$\displaystyle\sum\frac{(-1)^{n}}{2^{n}}=\frac{1}{1+1/2}=\res{\frac23}$ ;
+$\displaystyle\sum\frac{1}{n!}=\res{\mathrm{e}}$ — la série exponentielle
+en $z=1$.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-3}
+\begin{corrige}{3}{Télescopages}
+\demarche{Décomposer en différences : tout s'annule sauf les bords.}
+\begin{questions}
+  \item $\res{1}$ (exercice 1). Et
+    $\dfrac{1}{n(n+1)(n+2)}=\dfrac12\Bigl(\dfrac{1}{n(n+1)}
+    -\dfrac{1}{(n+1)(n+2)}\Bigr)$ : somme
+    $\dfrac12\times\dfrac12=\res{\dfrac14}$.
+  \item $\ln\Bigl(1+\dfrac1n\Bigr)=\ln(n+1)-\ln n$ :
+    $S_N=\ln(N+1)\to+\infty$ : la série \res{\text{diverge}} — alors que
+    son terme général tend vers $0$ : la réciproque de la divergence
+    grossière est fausse.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-4}
+\begin{corrige}{4}{Comparer des séries positives}
+\demarche{Majorer par une convergente, minorer par une divergente.}
+\begin{questions}
+  \item Pour $n\geqslant2$ :
+    $\dfrac{1}{n^{2}}\leqslant\dfrac{1}{n(n-1)}
+    =\dfrac{1}{n-1}-\dfrac1n$, télescopique convergente : les sommes
+    partielles de $\sum\frac{1}{n^{2}}$ sont majorées (par $2$) :
+    \res{\text{convergence}}.
+  \item $\dfrac{1}{n^{2}+n+1}\leqslant\dfrac{1}{n^{2}}$ : converge.
+    $\dfrac{1}{\sqrt n}\geqslant\dfrac1n$ et l'harmonique diverge :
+    \res{\text{divergence}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-5}
+\begin{corrige}{5}{Le critère des équivalents}
+\demarche{Un équivalent positif transfère la nature — chapitre 11 au
+service des séries.}
+\begin{questions}
+  \item $\sin\dfrac{1}{n^{2}}\sim\dfrac{1}{n^{2}}$ :
+    \res{\text{converge}}.
+  \item $1-\cos\dfrac1n\sim\dfrac{1}{2n^{2}}$ : converge.
+  \item $\ln\Bigl(1+\dfrac1n\Bigr)\sim\dfrac1n$ : diverge (on retrouve
+    l'exercice 3).
+  \item $\dfrac{\sqrt{n+1}-\sqrt n}{n}=\dfrac{1}{n(\sqrt{n+1}+\sqrt n)}
+    \sim\dfrac{1}{2n^{3/2}}$ : converge (Riemann $\alpha=\frac32$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-6}
+\begin{corrige}{6}{Les séries de Riemann}
+\demarche{Les rectangles encadrent l'intégrale de $t^{-\alpha}$ : la
+primitive décide.}
+\begin{questions}
+  \item Pour $\alpha>1$ :
+    $\sum_{n=2}^{N}\dfrac{1}{n^{\alpha}}
+    \leqslant\displaystyle\int_{1}^{N}\frac{\mathrm{d}t}{t^{\alpha}}
+    \leqslant\dfrac{1}{\alpha-1}$ : sommes partielles majorées,
+    convergence. Pour $\alpha\leqslant1$ :
+    $\sum_{n=1}^{N}\dfrac{1}{n^{\alpha}}\geqslant
+    \displaystyle\int_{1}^{N+1}\frac{\mathrm{d}t}{t^{\alpha}}
+    \to+\infty$ : divergence. D'où le critère :
+    \res{\text{convergence si et seulement si }\alpha>1}.
+  \item $\alpha=2$ et $\alpha=\dfrac32$ : convergentes ;
+    $\alpha=\dfrac12$ : divergente.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-7}
+\begin{corrige}{7}{Sommes partielles par série-intégrale}
+\demarche{Quand la série diverge, la même comparaison donne l'équivalent
+des sommes partielles.}
+\begin{questions}
+  \item $2\bigl(\sqrt{N+1}-1\bigr)\leqslant
+    \displaystyle\sum_{k=1}^{N}\frac{1}{\sqrt k}\leqslant1+2\bigl(\sqrt
+    N-1\bigr)$ : en divisant par $2\sqrt N$, les deux bornes tendent vers
+    $1$ : $\res{\sum_{k\leqslant N}\tfrac{1}{\sqrt k}\sim2\sqrt N}$.
+  \item Le même encadrement avec $\dfrac1t$ donne
+    $\ln(N+1)\leqslant H_N\leqslant1+\ln N$ : $H_N\sim\ln N$, et
+    $H_N-\ln N$ converge vers $\gamma$ (chapitre 15).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-8}
+\begin{corrige}{8}{Séries alternées : premiers pas}
+\demarche{Décroissance vers 0 : le théorème s'applique, et le premier terme
+négligé majore l'erreur.}
+\begin{questions}
+  \item $\dfrac1n$ et $\dfrac{1}{\sqrt n}$ décroissent vers $0$ : les
+    deux séries convergent par le théorème des séries alternées.
+  \item $|R_N|\leqslant\dfrac{1}{N+1}\leqslant10^{-2}$ dès
+    $N\geqslant\res{99}$ ; la somme est $\res{\ln2}$ — vue par les restes
+    intégraux aux chapitres 11 et 15, par le théorème général ici.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-9}
+\begin{corrige}{9}{Du lien suite-série}
+\demarche{Un produit converge quand la série des logarithmes converge.}
+\begin{questions}
+  \item $\ln u_n=\displaystyle\sum_{k=1}^{n}\ln\Bigl(1+\frac{1}{k^{2}}\Bigr)$,
+    et $\ln\Bigl(1+\dfrac{1}{k^{2}}\Bigr)\sim\dfrac{1}{k^{2}}$ : la série
+    converge, donc $(\ln u_n)$ converge et
+    $u_n\to\mathrm{e}^{S}>0$ : le produit infini \res{\text{converge}}
+    (vers $\dfrac{\operatorname{sh}\pi}{\pi}\approx3{,}676$, pour la
+    curiosité).
+  \item Tout produit $\prod(1+a_k)$ avec $a_k>-1$ se traite ainsi : le
+    logarithme transforme les produits infinis en séries.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-10}
+\begin{corrige}{10}{Restes de séries convergentes}
+\demarche{Encadrer le terme entre deux télescopiques voisins.}
+\begin{questions}
+  \item $\dfrac{1}{n(n+1)}\leqslant\dfrac{1}{n^{2}}\leqslant
+    \dfrac{1}{(n-1)n}$ ; en sommant pour $n>N$ :
+    $\dfrac{1}{N+1}\leqslant R_N\leqslant\dfrac1N$, d'où
+    $\res{R_N\sim\dfrac1N}$ — convergence lente.
+  \item $\displaystyle\sum_{n>N}\Bigl(\frac12\Bigr)^{n}
+    =\Bigl(\frac12\Bigr)^{N}$ : décroissance \emph{exponentielle},
+    incomparablement plus rapide que $\frac1N$ (chapitre 11 :
+    croissances comparées).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-11}
+\begin{corrige}{11}{Convergence absolue}
+\demarche{La valeur absolue ramène aux séries positives.}
+\begin{questions}
+  \item $\Bigl|\dfrac{\sin n}{n^{2}}\Bigr|\leqslant\dfrac{1}{n^{2}}$ :
+    absolument convergente, donc \res{\text{convergente}} — sans avoir à
+    comprendre les signes de $\sin n$.
+  \item Non : $\sum\bigl|\tfrac{(-1)^{n-1}}{n}\bigr|=\sum\tfrac1n$
+    diverge. Une série convergente non absolument convergente est dite
+    \res{\text{semi-convergente}} — espèce fragile, comme le montrera
+    l'exercice 15.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-12}
+\begin{corrige}{12}{Le produit de Cauchy et l'exponentielle}
+\demarche{Dans le produit de Cauchy des exponentielles, le binôme attend.}
+\begin{questions}
+  \item $c_n=\displaystyle\sum_{k=0}^{n}\frac{a^{k}}{k!}
+    \frac{b^{n-k}}{(n-k)!}
+    =\frac{1}{n!}\sum_{k=0}^{n}\binom nk a^{k}b^{n-k}
+    =\frac{(a+b)^{n}}{n!}$ : le produit de Cauchy des séries de
+    $\mathrm{e}^{a}$ et $\mathrm{e}^{b}$ est la série de
+    $\mathrm{e}^{a+b}$, d'où
+    $\res{\mathrm{e}^{a}\mathrm{e}^{b}=\mathrm{e}^{a+b}}$.
+  \item Ici $c_n=\sum_{k=0}^{n}1=n+1$ :
+    $\displaystyle\sum_{n\geqslant0}(n+1)x^{n}
+    =\Bigl(\frac{1}{1-x}\Bigr)^{2}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-13}
+\begin{corrige}{13}{L'exponentielle complexe, enfin fondée}
+\demarche{La convergence absolue est réelle ; le reste est tri de termes.}
+\begin{questions}
+  \item $\Bigl|\dfrac{z^{n}}{n!}\Bigr|=\dfrac{|z|^{n}}{n!}$, terme d'une
+    série convergente : convergence absolue pour tout $z$, et par
+    inégalité triangulaire
+    $\bigl|\mathrm{e}^{z}\bigr|\leqslant\mathrm{e}^{|z|}$.
+  \item Les termes pairs sont réels, les impairs imaginaires purs :
+    \[
+    \mathrm{e}^{\mathrm{i}\theta}
+    =\underbrace{\sum_{p\geqslant0}\frac{(-1)^{p}\theta^{2p}}{(2p)!}}_{\cos\theta}
+    +\mathrm{i}\,\underbrace{\sum_{p\geqslant0}
+    \frac{(-1)^{p}\theta^{2p+1}}{(2p+1)!}}_{\sin\theta} ,
+    \]
+    et le morphisme (exercice 12) donne
+    $\bigl|\mathrm{e}^{\mathrm{i}\theta}\bigr|^{2}
+    =\mathrm{e}^{\mathrm{i}\theta}\mathrm{e}^{-\mathrm{i}\theta}=1$ : le
+    cercle trigonométrique du chapitre 3 repose désormais sur des
+    fondations complètes.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-14}
+\begin{corrige}{14}{Sommes du type $\sum nx^{n}$}
+\demarche{Décaler, soustraire : $(1-x)$ transforme $nx^{n}$ en
+géométrique.}
+\begin{questions}
+  \item $(1-x)\displaystyle\sum_{n\geqslant1}nx^{n}
+    =\sum_{n\geqslant1}nx^{n}-\sum_{n\geqslant1}nx^{n+1}
+    =\sum_{n\geqslant1}x^{n}=\frac{x}{1-x}$ (les coefficients se
+    télescopent), d'où
+    $\res{\displaystyle\sum_{n\geqslant1}nx^{n}=\frac{x}{(1-x)^{2}}}$.
+  \item En $x=\dfrac12$ : $\res{2}$. Et avec $n^{2}=n(n-1)+n$ :
+    $\displaystyle\sum\frac{n^{2}}{2^{n}}
+    =\frac14\cdot\frac{2}{(1/2)^{3}}+2=4+2=\res{6}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-15}
+\begin{corrige}{15}{Le réarrangement qui change la somme}
+\demarche{Les développements de $H_n$ font le calcul ; la semi-convergence
+explique le scandale.}
+\begin{questions}
+  \item La somme des $3N$ premiers termes vaut
+    $S_{3N}=\bigl(H_{4N}-\tfrac12H_{2N}\bigr)-\tfrac12H_{N}$ (impairs
+    jusqu'à $4N$, pairs jusqu'à $2N$). Avec
+    $H_n=\ln n+\gamma+o(1)$ (chapitre 15) :
+    \[
+    S_{3N}=\ln(4N)-\tfrac12\ln(2N)-\tfrac12\ln N+o(1)
+    =2\ln2-\tfrac12\ln2+o(1)\to\res{\tfrac32\ln2} .
+    \]
+    La même série, réordonnée, a changé de somme.
+  \item Une série absolument convergente est une famille sommable : sa
+    somme est \emph{invariante par permutation}. La harmonique alternée
+    ne l'est pas — la semi-convergence vit de compensations que le
+    réarrangement détruit.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-16}
+\begin{corrige}{16}{Fubini positif : premiers calculs}
+\demarche{Positif : tous les ordres de sommation sont permis et égaux.}
+\begin{questions}
+  \item En produit :
+    $\Bigl(\sum_i\frac{1}{2^{i}}\Bigr)\Bigl(\sum_j\frac{1}{2^{j}}\Bigr)
+    =2\times2=\res{4}$. Par paquets diagonaux $i+j=n$ : le paquet
+    contient $n+1$ termes égaux à $\frac{1}{2^{n}}$, d'où
+    $\sum_n\dfrac{n+1}{2^{n}}=4$.
+  \item La cohérence des deux calculs redonne
+    $\displaystyle\sum_{n\geqslant0}\frac{n+1}{2^{n}}=4$ — la formule de
+    l'exercice 14, retrouvée sans aucune manipulation de séries.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-17}
+\begin{corrige}{17}{Sommation par paquets}
+\demarche{Éléments simples, puis télescopage à pas 2.}
+$\dfrac{1}{n^{2}-1}=\dfrac12\Bigl(\dfrac{1}{n-1}-\dfrac{1}{n+1}\Bigr)$
+(chapitre 10) : la somme partielle vaut
+$\dfrac12\Bigl(1+\dfrac12-\dfrac1N-\dfrac{1}{N+1}\Bigr)\to\res{\dfrac34}$.
+Le regroupement des termes distants de $2$ est licite : la série
+converge (termes positifs équivalents à $\frac{1}{n^{2}}$), et l'on ne
+fait que réécrire ses sommes partielles — ou invoquer la sommation par
+paquets d'une famille positive.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-18}
+\begin{corrige}{18}{Fubini en action}
+\demarche{Un triangle sommé par lignes puis par colonnes.}
+\begin{questions}
+  \item À $i$ fixé :
+    $\displaystyle\sum_{j\geqslant i}x^{j}=\frac{x^{i}}{1-x}$, puis
+    $\displaystyle\sum_{i\geqslant0}\frac{x^{i}}{1-x}
+    =\frac{1}{(1-x)^{2}}$.
+  \item À $j$ fixé, le terme $x^{j}$ apparaît pour
+    $i=0,\dots,j$ : contribution $(j+1)x^{j}$, d'où
+    $\sum_j(j+1)x^{j}$.
+\end{questions}
+La famille est positive : Fubini égalise les deux calculs,
+$\res{\displaystyle\sum_{j\geqslant0}(j+1)x^{j}=\frac{1}{(1-x)^{2}}}$ —
+troisième preuve de la formule, la plus conceptuelle.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-19}
+\begin{corrige}{19}{Encadrer les valeurs de $\zeta$}
+\demarche{Les rectangles donnent des fourchettes explicites.}
+\begin{questions}
+  \item $\zeta(2)\leqslant1+\displaystyle\int_{1}^{+\infty}
+    \frac{\mathrm{d}t}{t^{2}}=2$ et
+    $\zeta(2)\geqslant1+\displaystyle\int_{2}^{+\infty}
+    \frac{\mathrm{d}t}{t^{2}}=\frac32$ ; de même
+    $\dfrac98\leqslant\zeta(3)\leqslant\dfrac32$.
+  \item $\dfrac{\pi^{2}}{6}\approx1{,}645\in\intFF{1{,}5}{2}$ :
+    cohérent. (La valeur exacte, le « problème de Bâle », dépasse le
+    programme — mais la fourchette, elle, est en notre pouvoir.)
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-20}
+\begin{corrige}{20}{Développement asymptotique d'un reste}
+\demarche{Des télescopages de plus en plus fins serrent le reste.}
+\begin{questions}
+  \item Sommer l'encadrement
+    $\dfrac{1}{n(n+1)}\leqslant\dfrac{1}{n^{2}}\leqslant\dfrac{1}{(n-1)n}$
+    pour $n>N$ : $\dfrac{1}{N+1}\leqslant R_N\leqslant\dfrac1N$, donc
+    $NR_N\to1$ : $\res{R_N\sim\dfrac1N}$.
+  \item Le télescopage médian donne \emph{exactement}
+    $\displaystyle\sum_{n>N}\frac{1}{n^{2}-\frac14}=\frac{1}{N+\frac12}$,
+    qui majore $R_N$ : avec a),
+    $\dfrac{1}{N+1}<R_N<\dfrac{1}{N+\frac12}$, d'où
+    $R_N=\dfrac1N+O\Bigl(\dfrac{1}{N^{2}}\Bigr)$ — un développement
+    asymptotique de reste, dans l'esprit du chapitre 11.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-21}
+\begin{corrige}{21}{La constante d'Euler par les séries}
+\demarche{La différence entre la somme et l'intégrale, terme à terme.}
+\begin{questions}
+  \item $\dfrac1k-\ln\Bigl(1+\dfrac1k\Bigr)
+    =\dfrac{1}{2k^{2}}+o\Bigl(\dfrac{1}{k^{2}}\Bigr)\geqslant0$
+    (chapitre 11) : série convergente par équivalence avec Riemann.
+  \item La somme partielle vaut $H_n-\ln(n+1)$, qui tend vers
+    $\gamma$ (chapitre 15) : ainsi
+    \[
+    \res{\gamma=\sum_{k=1}^{+\infty}\Bigl(\frac1k
+    -\ln\Bigl(1+\frac1k\Bigr)\Bigr)} :
+    \]
+    la constante d'Euler, née d'une limite, devient la somme d'une série
+    positive — et chaque terme la rapproche par en dessous.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-22}
+\begin{corrige}{22}{Un produit eulérien miniature}
+\demarche{L'unicité de la factorisation transforme une somme en produit.}
+\begin{questions}
+  \item La décomposition en facteurs premiers (chapitre 7) rend
+    $(a,b)\mapsto2^{a}3^{b}$ bijective de $\N^{2}$ sur $A$ : par Fubini
+    positif,
+    \[
+    \sum_{n\in A}\frac1n=\sum_{a,b}\frac{1}{2^{a}3^{b}}
+    =\Bigl(\sum_a\frac{1}{2^{a}}\Bigr)\Bigl(\sum_b\frac{1}{3^{b}}\Bigr)
+    =2\times\frac32=\res{3} :
+    \]
+    famille sommable, somme exacte.
+  \item Avec \emph{tous} les premiers, le même calcul écrirait
+    $\sum\frac1n=\prod_p\frac{1}{1-1/p}$ : si les premiers étaient en
+    nombre fini, le produit serait fini et l'harmonique convergente —
+    absurde. C'est la preuve d'Euler de l'infinité des nombres premiers,
+    où l'analyse rejoint l'arithmétique.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-23}
+\begin{corrige}{23}{Le critère de condensation de Cauchy}
+\demarche{Dans chaque paquet dyadique, la décroissance encadre tous les
+termes par les extrêmes.}
+\begin{questions}
+  \item Le paquet $\ens{2^{k},\dots,2^{k+1}-1}$ contient $2^{k}$ termes
+    compris entre $u_{2^{k+1}}$ et $u_{2^{k}}$ :
+    \[
+    \tfrac12\cdot2^{k+1}u_{2^{k+1}}\leqslant
+    \sum_{n=2^{k}}^{2^{k+1}-1}u_n\leqslant2^{k}u_{2^{k}} .
+    \]
+    Par sommation par paquets (famille positive), $\sum u_n$ et
+    $\sum2^{k}u_{2^{k}}$ ont les mêmes sommes partielles à constantes
+    près : \res{\text{même nature}}.
+  \item Pour $u_n=n^{-\alpha}$ : la condensée est géométrique de raison
+    $2^{1-\alpha}$, d'où le critère de Riemann. Pour
+    $u_n=\dfrac{1}{n\ln n}$ : la condensée vaut
+    $\sum\dfrac{1}{k\ln2}$, harmonique : $\res{\text{divergence}}$ — une
+    série qui diverge plus lentement encore que $\sum\frac1n$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-19-24}
+\begin{corrige}{24}{Quand Fubini s'effondre}
+\demarche{Un tableau de 1 et de -1 : chaque ordre de sommation raconte une
+autre histoire.}
+\begin{questions}
+  \item Lignes : la ligne $0$ somme à $1$, chaque ligne suivante à
+    $1-1=0$ : total $\res{1}$. Colonnes : chaque colonne somme à
+    $1-1=0$ : total $\res{0}$. Deux réponses différentes pour « la même
+    somme ».
+  \item La famille des valeurs absolues contient une infinité de $1$ :
+    $\sum|a_{ij}|=+\infty$, la famille n'est \res{\text{pas sommable}} —
+    Fubini ne promet rien.
+  \item La sommabilité est exactement la frontière : en dessous, l'ordre
+    des termes fabrique le résultat (ici $1$ ou $0$, et l'exercice 15
+    fabriquait $\frac32\ln2$) ; au-dessus, toutes les routes mènent à la
+    même somme. C'est le mot de la fin du chapitre — et la raison d'être
+    des familles sommables.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-19}

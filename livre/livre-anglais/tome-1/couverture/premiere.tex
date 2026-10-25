@@ -1,0 +1,64 @@
+%% =====================================================================
+%%  1re de couverture — Anglais, tome 1
+%% =====================================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  % Fond
+  \fill[otNavy] (0,0) rectangle (210mm,297mm);
+  \shade[bottom color=otNavyDark,top color=otNavy] (0,0) rectangle (210mm,150mm);
+  \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+
+  % Logo et collection
+  \node[anchor=north west,inner sep=0pt] at (22mm,279mm) {\includegraphics[width=58mm]{logo-blanc}};
+  \node[anchor=base west,inner sep=0pt,text=otGreen,font=\otSemi\fontsize{11}{13}\selectfont]
+    at (24mm,232mm) {\otCaps[22]{Méthode complète · Tome \otTome}};
+
+  % Titre
+  \node[anchor=base west,inner sep=0pt,text=white,font=\otBold\fontsize{66}{70}\selectfont]
+    at (21mm,201mm) {Anglais};
+  \node[anchor=base west,inner sep=0pt,text=white,font=\otLight\fontsize{32}{36}\selectfont]
+    at (23mm,181mm) {\otTomeTitre};
+  \fill[otGreen] (24mm,169mm) rectangle (54mm,170.4mm);
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.88,font=\otRegular\fontsize{12}{15}\selectfont]
+    at (24mm,157mm) {Apprendre l'anglais de zéro, pas à pas};
+
+  % Pastille de niveau
+  \fill[otGreen] (172mm,238mm) circle (17mm);
+  \node[text=white,align=center,inner sep=0pt] at (172mm,238mm)
+    {{\otBold\fontsize{32}{32}\selectfont \otNiveau}\\[1.6mm]{\otSemi\fontsize{8}{9}\selectfont\otCaps[12]{\otNiveauNom}}};
+
+  % Points forts
+  \node[anchor=north west,inner sep=0pt,text width=92mm,text=white,
+    font=\otRegular\fontsize{10.5}{14}\selectfont] at (24mm,134mm)
+    {\otCheck\hspace{3mm}20 unités progressives, sans prérequis\par\vspace{3.4mm}
+     \otCheck\hspace{3mm}Plus de 250 pistes audio, à scanner\par\vspace{3.4mm}
+     \otCheck\hspace{3mm}Grammaire expliquée en français, simplement\par\vspace{3.4mm}
+     \otCheck\hspace{3mm}Exercices corrigés et bilans réguliers\par\vspace{3.4mm}
+     \otCheck\hspace{3mm}Guide de prononciation pour francophones};
+
+  % Illustration : personnages et bulles
+  \fill[white,opacity=0.06] (158mm,88mm) circle (44mm);
+  \otDessinAvatar{emma}{(184mm,104mm)}{13mm}{otViolet!45!otNavy}
+  \otDessinAvatar{jack}{(132mm,62mm)}{14mm}{otNavyDark!60!otNavy}
+  \otDessinAvatar{lea}{(165mm,58mm)}{19mm}{otGreen!40!otNavy}
+  \otBulle{(140mm,118mm)}{south}{Hello!}{white}{otNavy}{(137mm,79mm)}
+  \otBulle{(184mm,130mm)}{south}{Nice to meet you!}{otViolet!80!white}{white}{(184mm,119mm)}
+  \otBulle{(158mm,88mm)}{south}{How are you?}{otGreen}{white}{(162mm,78mm)}
+  % Carte audio
+  \begin{scope}[shift={(110mm,20mm)}]
+    \fill[white,rounded corners=2.2mm] (0,0) rectangle (78mm,16mm);
+    \fill[otNavy,rounded corners=1.6mm] (3mm,3mm) rectangle (13mm,13mm);
+    \otDessinIcone{casque}{white}{otNavy}{7mm}{(8mm,8mm)}
+    \node[anchor=west,text=otInk,font=\otSemi\fontsize{9.5}{11}\selectfont] at (16mm,10.5mm) {Audio inclus};
+    \node[anchor=west,text=otMuted,font=\otRegular\fontsize{8}{10}\selectfont] at (16mm,5.5mm) {Scannez, écoutez, répétez};
+    \foreach \i in {0,...,11}{\pgfmathsetmacro{\hh}{2+2.6*abs(sin(\i*47))}
+      \fill[otGreen,rounded corners=0.3mm] ({(58.5+1.4*\i)*1mm},{(8-\hh/2)*1mm}) rectangle ++(0.8mm,\hh mm);}
+  \end{scope}
+
+  % Pied
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,font=\otMedium\fontsize{10}{12}\selectfont]
+    at (24mm,16mm) {\otSite};
+\end{scope}
+\end{tikzpicture}
+\clearpage

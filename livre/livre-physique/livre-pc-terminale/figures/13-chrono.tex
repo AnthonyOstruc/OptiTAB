@@ -1,0 +1,20 @@
+% Chronophotographie d'une balle : construction des vecteurs vitesse et accélération (L'essentiel, chapitre 13)
+\begin{tikzpicture}[x=40cm,y=40cm]
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (-0.01,-0.015) -- (0.31,-0.015) node[pcLegende,anchor=north east] {$x$};
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (-0.01,-0.015) -- (-0.01,0.215) node[pcLegende,anchor=north east] {$y$};
+\foreach \x/\y/\n/\ancre in {0.000/0.000/0/north west,0.048/0.068/1/north west,0.096/0.121/2/north west,0.144/0.157/3/north east,0.192/0.179/4/south east,0.240/0.184/5/north west,0.288/0.174/6/north west}{%
+  \fill[otInk] (\x,\y) circle (0.0028);
+  \node[pcLegende,anchor=\ancre,inner sep=1.5pt] at (\x,\y) {$M_{\n}$};}
+% vecteurs vitesse en M2 et M4 (1 m/s pour 2 cm)
+\draw[pcVitesse] (0.096,0.121) -- ++(0.060,0.0556) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_2$};
+\draw[pcVitesse] (0.192,0.179) -- ++(0.060,0.0169) node[pcLegende,anchor=south west,text=otNavy] {$\vec{v}_4$};
+% construction de la variation de vitesse en M3
+\draw[otNavy!45,line width=0.7pt,-{Stealth[length=1.8mm]}] (0.144,0.157) -- ++(0.060,0.0556);
+\draw[otNavy!45,line width=0.7pt,-{Stealth[length=1.8mm]}] (0.144,0.157) -- ++(0.060,0.0169);
+\draw[otOrange!90!black,line width=0.8pt,-{Stealth[length=1.8mm]}] (0.204,0.2126) -- (0.204,0.1739);
+\draw[otOrange!70,line width=0.4pt] (0.205,0.205) -- (0.226,0.222)
+  node[pcLegende,anchor=south west,text=otOrange!80!black] {$\Delta\vec{v}=\vec{v}_4-\vec{v}_2$};
+% vecteur accélération en M3 (1 m/s² pour 0,4 cm)
+\draw[pcAcc] (0.144,0.157) -- ++(0,-0.0969) node[pcLegende,anchor=north,text=otRed!80!black] {$\vec{a}_3=\dfrac{\Delta\vec{v}}{2\tau}$};
+\end{tikzpicture}
+\par\smallskip\legende{Positions d'une balle toutes les 40 ms. Le vecteur $\Delta\vec{v}$, construit en $M_3$, est vertical : l'accélération est verticale, vers le bas.}

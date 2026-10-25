@@ -1,0 +1,38 @@
+%% =====================================================================
+%%  1re de couverture — cahiers OptiTAB Maternelle
+%% =====================================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  \fill[otNavy] (-1mm,-1mm) rectangle (211mm,298mm);
+  \shade[bottom color=otNavyDark,top color=otNavy] (-1mm,-1mm) rectangle (211mm,150mm);
+  \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+  \node[anchor=north west,inner sep=0pt] at (22mm,279mm) {\includegraphics[width=58mm]{logo-blanc}};
+  \node[anchor=base west,inner sep=0pt,text=matAccent,font=\otSemi\fontsize{11}{13}\selectfont] at (24mm,236mm) {\otCaps[22]{Maternelle · \matNiveau}};
+  \node[anchor=base west,inner sep=0pt,text=white,font=\otBold\fontsize{48}{52}\selectfont] at (21.5mm,213mm) {Mathématiques};
+  \node[anchor=base west,inner sep=0pt,text=white,font=\otLight\fontsize{28}{32}\selectfont] at (23mm,196mm) {Mon cahier d’activités};
+  \fill[matAccent] (24mm,184mm) rectangle (54mm,185.4mm);
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.85,font=\otRegular\fontsize{11}{14}\selectfont] at (24mm,171mm)
+    {\matNbActivites{} activités\enspace·\enspace Programme 2025\enspace·\enspace Guide de l’adulte avec réponses};
+  % Panneau illustré
+  \fill[white,rounded corners=10mm] (16mm,26mm) rectangle (194mm,156mm);
+  \fill[matAccent!14,rounded corners=10mm] (16mm,26mm) rectangle (194mm,62mm);
+  \pic[scale=6.2] at (60mm,94mm) {opti};
+  \pic[scale=2.6,mat/n=\matCouvMain] at (112mm,126mm) {main};
+  \pic[scale=1.9,mat/n=\matCouvDe] at (146mm,128mm) {de};
+  \pic[scale=1.9,mat/c=matRouge] at (172mm,124mm) {pomme};
+  \pic[scale=1.7,mat/c=matJaune] at (112mm,92mm) {etoile};
+  \pic[scale=1.8,mat/c=matBleu,mat/c2=matJaune] at (140mm,95mm) {ballon};
+  \pic[scale=1.7,mat/c=matRose] at (168mm,92mm) {papillon};
+  \draw[mat contour,fill=matRouge] (106mm,48mm) circle (6mm);
+  \draw[mat contour,fill=matJaune,rotate around={18:(130mm,48mm)}] (124mm,42mm) rectangle (136mm,54mm);
+  \draw[mat contour,fill=otGreen] (148mm,41mm) -- (164mm,44mm) -- (152mm,56mm) -- cycle;
+  \foreach \k/\c in {0/matRouge,1/matBleu,2/matRouge,3/matBleu}{\pic[scale=1.25,mat/c=\c] at (172mm+\k*5.5mm,48mm) {perle};}
+  % Pastille d’âge
+  \fill[matAccent] (170mm,166mm) circle (17mm);
+  \node[text=white,align=center,inner sep=0pt] at (170mm,166mm)
+    {{\otSemi\fontsize{7.5}{9}\selectfont\otCaps[8]{Maternelle}}\\[0.8mm]{\otBold\fontsize{22}{22}\selectfont\matNiveauCourt}\\[1.2mm]{\otMedium\fontsize{7}{8}\selectfont\matAge}};
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,font=\otMedium\fontsize{10}{12}\selectfont] at (24mm,12mm) {\otSite};
+\end{scope}
+\end{tikzpicture}
+\clearpage

@@ -1,0 +1,90 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 8 — vérifié par verifications/defis_06_10.py.
+
+\begin{blocLivre}{cor-8-25a}
+\begin{corrige}{25}{Le groupe du carré et le comptage des coloriages}
+\demarche{Tout calcul dans $D_4$ se ramène aux deux règles $r^{4}=s^{2}=\mathrm{id}$
+et $sr=r^{-1}s$ ; un coloriage invariant est constant sur chaque cycle.}
+\partieExo{A}{Les huit isométries}
+\begin{questions}
+  \item L'image de $A_1$ est l'un des $4$ sommets ; celle de $A_2$ est un
+    sommet à distance $A_1A_2$ de celle de $A_1$, donc l'un de ses $2$
+    voisins : au plus $4\times2=\res{8}$ éléments. En permutations :
+    $r=(1\ 2\ 3\ 4)$ et $s=(2\ 4)$.
+  \item $srs(1)=s(r(1))=s(2)=4$, $srs(2)=s(r(4))=s(1)=1$,
+    $srs(3)=s(r(3))=s(4)=2$, $srs(4)=s(r(2))=s(3)=3$ : ainsi
+    $srs=(1\ 4\ 3\ 2)=r^{3}=\res{r^{-1}}$. Les $r^{k}$ ($0\leqslant k\leqslant3$)
+    sont distincts et préservent l'orientation, les $r^{k}s$ la renversent
+    et sont distincts entre eux : on a $8$ éléments distincts, donc tout
+    $D_4$. Il n'est \res{\text{pas commutatif}} : $sr=r^{-1}s=r^{3}s\neq rs$.
+  \item $rs=(1\ 2)(3\ 4)$ : réflexion d'axe la médiatrice de
+    $[A_1A_2]$ ; $r^{2}s=(1\ 3)$ : axe $(A_2A_4)$ ;
+    $r^{3}s=(1\ 4)(2\ 3)$ : médiatrice de $[A_1A_4]$. Ordres :
+    $\mathrm{id}$ : $1$ ; $r$, $r^{3}$ : $\res{4}$ ; $r^{2}$ et les
+    quatre réflexions : $\res{2}$.
+\end{questions}
+\partieExo{B}{Structure du groupe}
+\begin{questions}[resume]
+  \item $\langle r\rangle$ est cyclique d'ordre $4$. Pour
+    $V_1=\ens{\mathrm{id},r^{2},s,r^{2}s}$ : $sr^{2}s=(srs)^{2}=r^{-2}=r^{2}$,
+    d'où $s\cdot r^{2}s=r^{2}$, $r^{2}\cdot s=r^{2}s$,
+    $(r^{2}s)^{2}=r^{2}(sr^{2}s)=r^{4}=\mathrm{id}$ : stable, et chaque
+    élément est son propre inverse. Même calcul pour
+    $V_2=\ens{\mathrm{id},r^{2},rs,r^{3}s}$. Dans $V_1$ et $V_2$, tout
+    élément non trivial est d'ordre $2$ : ils \res{\text{ne sont pas
+    cycliques}} (groupes de Klein), seul $\langle r\rangle$ l'est.
+  \item $r^{k}$ commute avec $s$ si et seulement si
+    $r^{k}s=sr^{k}=r^{-k}s$, i.e. $r^{2k}=\mathrm{id}$, i.e. $k\in\ens{0,2}$.
+    Une réflexion $r^{k}s$ ne commute pas avec $r$ :
+    $(r^{k}s)r=r^{k-1}s\neq r^{k+1}s=r(r^{k}s)$. Enfin $r^{2}$ commute
+    avec $r$ et avec $s$, donc avec tout : le centre est
+    $\res{\ens{\mathrm{id},r^{2}}}$.
+  \item Un isomorphisme transporte la commutativité, et $D_4$ n'est pas
+    commutatif. Le groupe commutatif $\Z/4\Z\times\Z/2\Z$ est d'ordre $8$
+    et $(\overline1,\overline0)$ y est d'ordre $4$ : avoir les mêmes
+    ordres d'éléments ne suffit pas à être isomorphes.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Compter les coloriages à symétrie près}
+\begin{questions}[start=7]
+  \item Un coloriage $c$ est invariant par $g$ si et seulement si
+    $c(g(i))=c(i)$ pour tout $i$, c'est-à-dire si $c$ est constant sur
+    chaque cycle de $g$ : on choisit librement une couleur par cycle,
+    d'où $\mathrm{Fix}(g)=2^{c(g)}$.
+    \begin{center}
+    \begin{tabular}{@{}lcccccccc@{}}
+      $g$ & $\mathrm{id}$ & $r$ & $r^{2}$ & $r^{3}$ & $s$ & $rs$ & $r^{2}s$ & $r^{3}s$\\\hline
+      $c(g)$ & $4$ & $1$ & $2$ & $1$ & $3$ & $2$ & $3$ & $2$\\
+      $\mathrm{Fix}(g)$ & $16$ & $2$ & $4$ & $2$ & $8$ & $4$ & $8$ & $4$
+    \end{tabular}
+    \end{center}
+  \item Somme : $48$, d'où $\dfrac{48}{8}=\res{6}$ classes. Directement,
+    une classe est déterminée par le nombre de sommets noirs ($0$ à $4$),
+    sauf pour deux sommets noirs, qui peuvent être voisins ou opposés :
+    $5+1=6$ classes (figure).
+  \item Avec trois couleurs, $\mathrm{Fix}(g)=3^{c(g)}$ :
+    $\dfrac{81+3+9+3+27+9+27+9}{8}=\dfrac{168}{8}=\res{21}$ colliers.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[line cap=round]
+  \foreach \cfg [count=\i] in {{0,0,0,0},{1,0,0,0},{1,1,0,0},{1,0,1,0},{1,1,1,0},{1,1,1,1}}{%
+    \begin{scope}[xshift={(\i-1)*2.2cm}]
+      \draw[otNavy,line width=0.7pt] (0.6,0) -- (0,0.6) -- (-0.6,0) -- (0,-0.6) -- cycle;
+      \foreach \b [count=\k] in \cfg {%
+        \pgfmathsetmacro{\ang}{(\k-1)*90}
+        \ifnum\b=1
+          \fill[otInk] (\ang:0.6) circle (2.6pt);
+        \else
+          \filldraw[fill=white,draw=otInk,line width=0.6pt] (\ang:0.6) circle (2.6pt);
+        \fi}
+    \end{scope}}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les six coloriages à symétrie près : $0$, $1$, $2$ voisins,
+$2$ opposés, $3$ et $4$ sommets noirs.}
+\end{center}
+\end{corrigeSuite}
+\end{blocLivre}

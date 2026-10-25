@@ -1,0 +1,177 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{14}{Énergie et puissance électriques}
+\corrigesSouples
+
+\begin{blocLivre}{cor-14-1}
+\begin{corrige}{1}{Un débit d'électrons}
+\demarche{$Q=I\,\Delta t$ avec $\Delta t$ en secondes, puis $N=\dfrac{Q}{e}$.}
+\begin{questions}
+\item Des \res{\text{électrons libres}}, qui se déplacent en sens \res{\text{inverse}} du sens conventionnel du courant.
+\item $Q=I\,\Delta t=0{,}20\times60=\res{\qty{12}{C}}$.
+\item $N=\dfrac{12}{\num{1,60e-19}}=\res{\num{7,5e19}}$ électrons.
+\item Le circuit est déjà rempli d'électrons libres : à la fermeture, ils se mettent \res{\text{tous en mouvement en même temps}}, comme l'eau
+d'un tuyau déjà plein.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-2}
+\begin{corrige}{2}{Lire une caractéristique}
+\demarche{Pour $U=E-r\,I$ : l'ordonnée à l'origine donne $E$, la pente donne $-r$ (lecture ci-dessous).}
+\begin{questions}
+\item $\res{E=\qty{4,5}{V}}$, tension pour $I=0$.
+\item Pente $\dfrac{-1{,}5}{1{,}0}=\qty{-1,5}{V.A^{-1}}$ : $\res{r=\qty{1,5}{\ohm}}$ et $\res{U=4{,}5-1{,}5\,I}$.
+\item $U=4{,}5-1{,}5\times0{,}40=\res{\qty{3,9}{V}}$ ; $P=U\,I=3{,}9\times0{,}40\approx\res{\qty{1,56}{W}}$.
+\item $I_\mathrm{cc}=\dfrac{E}{r}=\res{\qty{3,0}{A}}$ : toute la puissance, $r\,I_\mathrm{cc}^2=\qty{13,5}{W}$, est dissipée \res{\text{dans la pile}}, qui chauffe et s'abîme.
+\end{questions}
+\schema[corrige]{14-ex02}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-3}
+\begin{corrige}{3}{Puissance et énergie}
+\demarche{$E=P\,\Delta t$ : en joules avec P en W et $\Delta t$ en s ; en kWh avec P en kW et $\Delta t$ en h.}
+\begin{questions}
+\item $E=2000\times180=\res{\qty{3,6e5}{J}}$, soit $2{,}0\times\dfrac{3}{60}=\res{\qty{0,10}{kWh}}$.
+\item $0{,}10\times0{,}25=\res{\text{0,025~€}}$, soit 2,5 centimes.
+\item LED : $7\times1000=\qty{7000}{Wh}=\res{\qty{7}{kWh}}$ ; incandescence : $\res{\qty{60}{kWh}}$.
+\item $(60-7)\times0{,}25\approx\res{\text{13~€}}$ d'économie.
+\end{questions}
+\retiens{Puissance (W) = rapidité du transfert ; énergie (J ou kWh) = quantité transférée. $\qty{1}{kWh}=\qty{3,6e6}{J}$.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-4}
+\begin{corrige}{4}{Un conducteur ohmique qui chauffe}
+\demarche{Loi d'Ohm $U=R\,I$, puis effet Joule $P=R\,I^2$.}
+\begin{questions}
+\item $U=47\times0{,}10=\res{\qty{4,7}{V}}$.
+\item $P=47\times0{,}10^2=\res{\qty{0,47}{W}}$, transférée sous forme \res{\text{thermique}}.
+\item $E=0{,}47\times600\approx\res{\qty{282}{J}}$.
+\item $\qty{0,47}{W}>\qty{0,25}{W}$ : il risque d'être \res{\text{détérioré}}. $I_\mathrm{max}=\sqrt{\dfrac{0{,}25}{47}}\approx\res{\qty{73}{mA}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-5}
+\begin{corrige}{5}{Le rendement d'un moteur}
+\demarche{$P_\mathrm{reçue}=U\,I$ ; $\eta=\dfrac{P_\mathrm{utile}}{P_\mathrm{reçue}}$ ; les pertes valent $P_\mathrm{reçue}-P_\mathrm{utile}$.}
+\begin{questions}
+\item $P=12\times2{,}5=\res{\qty{30}{W}}$.
+\item $\eta=\dfrac{21}{30}=\res{\num{0,70}}$, soit \qty{70}{\percent}.
+\item \qty{9}{W} de pertes \res{\text{thermiques}} : effet Joule dans les bobinages et frottements (schéma).
+\item $9\times300=\res{\qty{2,7e3}{J}}$.
+\end{questions}
+\schema[corrige]{14-ex05-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-6}
+\begin{corrige}{6}{La facture d'électricité, en Python}
+\demarche{$E=P\times\Delta t$ : des watts multipliés par des heures donnent des wattheures, divisés par 1000 pour des kWh.}
+\begin{questions}
+\item La \res{\text{puissance}} (W) et la \res{\text{durée d'utilisation}} quotidienne (h) ; la ligne calcule $E=P\,\Delta t$ sur 365 jours.
+\item Le compresseur ne fonctionne que \res{\text{par intermittence}}, environ un tiers du temps, pour maintenir le froid.
+\item $105\times0{,}25\approx\res{\text{26~€}}$ par an : faible puissance, mais allumée \res{\text{en permanence}}.
+\item $6\times20\times365=\qty{43800}{Wh}\approx\res{\qty{44}{kWh}}$ par an, pour un appareil inutilisé.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-7}
+\begin{corrige}{7}{La batterie d'un smartphone}
+\demarche{$\qty{1}{mAh}=\num{1e-3}\times3600=\qty{3,6}{C}$ ; l'énergie stockée vaut $U\times Q$.}
+\begin{questions}
+\item La \res{\text{charge}} que la batterie peut débiter : $Q=4{,}000\times3600=\res{\qty{1,44e4}{C}}$.
+\item $N=\dfrac{\num{1,44e4}}{\num{1,60e-19}}=\res{\num{9,0e22}}$ électrons.
+\item $E=U\,Q=3{,}85\times\num{1,44e4}\approx\res{\qty{5,54e4}{J}}$, soit $3{,}85\times4{,}0=\res{\qty{15,4}{Wh}}$.
+\item La batterie reçoit $18\times0{,}85\approx\qty{15,3}{W}$ : $\Delta t=\dfrac{15{,}4}{15{,}3}\approx\res{\qty{1,0}{h}}$.
+\end{questions}
+\piege{Prendre les mAh pour une énergie : c'est une charge. L'énergie s'obtient en multipliant par la tension.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-8}
+\begin{corrige}{8}{Ne jamais court-circuiter une pile}
+\demarche{Même tension pour la pile et le conducteur : $E-r\,I=R\,I$. Bilan : $E\,I=U\,I+r\,I^2$.}
+\begin{questions}
+\item $I_\mathrm{cc}=\dfrac{9{,}0}{2{,}0}=\res{\qty{4,5}{A}}$ ; $r\,I_\mathrm{cc}^2=\res{\qty{40,5}{W}}$ dissipés dans la pile : elle chauffe fortement, risque de fuite.
+\item $I=\dfrac{E}{r+R}=\dfrac{9{,}0}{18}=\res{\qty{0,50}{A}}$.
+\item $U=16\times0{,}50=\res{\qty{8,0}{V}}$ ; $P=U\,I=\res{\qty{4,0}{W}}$.
+\item $E\,I=\qty{4,5}{W}=\qty{4,0}{W}+\qty{0,50}{W}$ ; $\eta=\dfrac{4{,}0}{4{,}5}\approx\res{\num{0,89}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-9}
+\begin{corrige}{9}{Démarrer par grand froid}
+\demarche{$U=E-r\,I$ : avec un courant intense, même une petite résistance interne fait chuter la tension.}
+\begin{questions}
+\item $U=12{,}6-0{,}010\times200=\res{\qty{10,6}{V}}$.
+\item $P=10{,}6\times200=\res{\qty{2,12e3}{W}}$ ; $r\,I^2=0{,}010\times200^2=\res{\qty{400}{W}}$ dans la batterie.
+\item $U=12{,}6-0{,}030\times200=\res{\qty{6,6}{V}}$.
+\item Le froid ralentit les réactions chimiques et \res{\text{augmente $r$}} : la tension tombe sous \qty{9}{V}, le démarreur ne tourne plus.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-10}
+\begin{corrige}{10}{Le bilan de puissance d'un circuit}
+\demarche{$U=E-r\,I$ (générateur) et $U=R\,I$ (lampe) : on égale les deux expressions.}
+\begin{questions}
+\item $E-r\,I=R\,I$ donc $I=\dfrac{E}{r+R}=\dfrac{6{,}0}{12}=\res{\qty{0,50}{A}}$.
+\item $U=11\times0{,}50=\res{\qty{5,5}{V}}$ ; $P=U\,I=\res{\qty{2,75}{W}}$.
+\item $E\,I=\res{\qty{3,0}{W}}$, $r\,I^2=\res{\qty{0,25}{W}}$ : $2{,}75+0{,}25=\qty{3,0}{W}$, le bilan est vérifié.
+\item $\eta=\dfrac{U\,I}{E\,I}=\dfrac{5{,}5}{6{,}0}\approx\res{\num{0,92}}$.
+\end{questions}
+\schema[corrige]{14-ex10}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-11}
+\begin{corrige}{11}{Un panneau photovoltaïque}
+\demarche{Puissance reçue = éclairement × surface ; puissance électrique $U\,I$ ; $E=P\,\Delta t$.}
+\begin{questions}
+\item $P_\mathrm{reçue}=1000\times1{,}7=\res{\qty{1700}{W}}$ ; $P_\mathrm{e}=34\times10=\res{\qty{340}{W}}$.
+\item $\eta=\dfrac{340}{1700}=\res{\num{0,20}}$, soit \qty{20}{\percent} (schéma).
+\item $340\times1300=\qty{4,42e5}{Wh}=\res{\qty{442}{kWh}}$.
+\item $\dfrac{2500}{442}\approx5{,}7$ : il faudrait \res{\text{6 panneaux}}.
+\end{questions}
+\schema[corrige]{14-ex11-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-12}
+\begin{corrige}{12}{Le chauffe-eau électrique}
+\demarche{Énergie pour l'eau, puis énergie électrique consommée $=\dfrac{\text{énergie utile}}{\eta}$, puis $\Delta t=\dfrac{E}{P}$.}
+\begin{questions}
+\item $Q=200\times4180\times50=\res{\qty{4,18e7}{J}}$, soit $\dfrac{\num{4,18e7}}{\num{3,6e6}}\approx\res{\qty{11,6}{kWh}}$.
+\item $I=\dfrac{P}{U}=\dfrac{3000}{230}\approx\res{\qty{13,0}{A}}$ ; $R=\dfrac{U^2}{P}=\dfrac{230^2}{3000}\approx\res{\qty{17,6}{\ohm}}$.
+\item $E_\mathrm{élec}=\dfrac{\num{4,18e7}}{0{,}90}\approx\qty{4,64e7}{J}$ ; $\Delta t=\dfrac{\num{4,64e7}}{3000}\approx\qty{1,55e4}{s}\approx\res{\qty{4,3}{h}}$.
+\item $\dfrac{11{,}6}{0{,}90}\approx\qty{12,9}{kWh}$, soit $12{,}9\times0{,}20\approx\res{\text{2,58~€}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-13}
+\begin{corrige}{13}{La voiture électrique}
+\demarche{Autonomie = énergie / consommation ; $I=\dfrac{P}{U}$ ; durée = énergie / puissance de recharge.}
+\begin{questions}
+\item $\dfrac{52}{15}\times100\approx\res{\qty{347}{km}}$.
+\item $I=\dfrac{\num{1,00e5}}{400}=\res{\qty{250}{A}}$.
+\item $\Delta t=\dfrac{52}{7{,}4\times0{,}90}\approx\res{\qty{7,8}{h}}$ : une nuit.
+\item $0{,}80\times52\approx\qty{41,6}{kWh}$ ; $\dfrac{41{,}6}{100}\approx\qty{0,42}{h}\approx\res{\qty{25}{min}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-14}
+\begin{corrige}{14}{Pourquoi la haute tension ?}
+\demarche{Pour une même puissance, $I=\dfrac{P}{U}$ ; les pertes en ligne valent $R\,I^2$ avec $R=0{,}030\times100=\qty{3,0}{\ohm}$.}
+\begin{questions}
+\item $I=\dfrac{\num{1e9}}{\num{4e5}}=\res{\qty{2,5e3}{A}}$ ; $P_\mathrm{J}=3{,}0\times(\num{2,5e3})^2\approx\res{\qty{1,9e7}{W}}$, soit environ \res{\qty{1,9}{\percent}}.
+\item $I=\qty{5,0e4}{A}$ et $P_\mathrm{J}=\res{\qty{7,5e9}{W}}$ : plus que la puissance transportée, c'est \res{\text{impossible}}.
+\item $I$ est divisée par 20 et les pertes, proportionnelles à $I^2$, par \res{400}.
+\item Diminuer $R$ avec des câbles plus gros : plus de métal, des câbles plus lourds et des pylônes plus coûteux.
+\end{questions}
+\retiens{À puissance transportée égale, élever la tension diminue l'intensité, donc les pertes par effet Joule.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-15}
+\begin{corrige}{15}{Le vrai prix de l'énergie d'une pile}
+\demarche{Énergie stockée $=U\times Q$, avec $Q$ en Ah pour obtenir des Wh ; prix du kWh = prix / énergie en kWh.}
+\begin{questions}
+\item $1{,}5\times2{,}5=\res{\qty{3,75}{Wh}}$, soit $3{,}75\times3600=\res{\qty{1,35e4}{J}}$.
+\item $\dfrac{3{,}75}{0{,}50}=\res{\qty{7,5}{h}}$.
+\item $\dfrac{2}{\num{3,75e-3}}\approx\res{\text{533~€}}$ le kWh : environ \res{2100} fois le prix du réseau.
+\item $1{,}2\times2{,}0\times500=\qty{1200}{Wh}$ ; $\dfrac{5}{1{,}2}\approx\res{\text{4,2~€}}$ le kWh : 130 fois moins cher que la pile, mais 17 fois plus que le réseau.
+\end{questions}
+\end{corrige}
+\end{blocLivre}

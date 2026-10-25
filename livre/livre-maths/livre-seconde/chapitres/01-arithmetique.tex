@@ -1,0 +1,118 @@
+\begin{ouverture}[algorithmique]{1}{Arithmétique et nombres entiers}{Partie 1 · Nombres et calculs}
+{Divisibilité · Parité · Fractions · Raisonnement}
+\objectif{Traduire une divisibilité par une égalité.}
+\objectif{Reconnaître les nombres pairs et impairs.}
+\objectif{Simplifier une fraction et organiser une preuve.}
+\prerequis{Tables de multiplication et division euclidienne.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Multiples, diviseurs et parité}
+\begin{definition}
+Pour des entiers $a$ et $b$, dire que $a$ est un multiple de $b$ signifie qu'il existe un entier $k$ tel que $a=bk$. On dit aussi que $b$ divise $a$. Un entier pair s'écrit $2k$ ; un entier impair s'écrit $2k+1$, avec $k\in\mathbb Z$.
+\end{definition}
+\begin{exemple}Les multiples de 6 sont $\ldots,-12,-6,0,6,12,\ldots$. Le nombre 0 est multiple de tout entier. On ne divise jamais par 0.\end{exemple}
+\begin{propriete}Si $a$ et $b$ sont multiples de 7, $a+b$ et $a-b$ le sont aussi : écrire $a=7m$ et $b=7n$, puis factoriser 7.\end{propriete}
+\begin{savoirfaire}[Prouver une propriété de parité]
+Remplacer les entiers par leur écriture générale. Par exemple,
+\[(2k+1)^2=4k^2+4k+1=2(2k^2+2k)+1.\]
+Le nombre entre parenthèses est entier : le carré d'un impair est impair.
+\end{savoirfaire}
+\begin{attention}Tester dix exemples peut suggérer une règle. Cela ne démontre pas une affirmation portant sur tous les entiers.\end{attention}
+\clearpage
+\essSection{2}{Fractions et résolution de problèmes}
+\begin{definition}Une fraction $a/b$, avec $b\ne0$, est irréductible lorsque le seul diviseur positif commun à $a$ et $b$ est 1.\end{definition}
+\begin{savoirfaire}[Simplifier sans changer le nombre]
+Diviser numérateur et dénominateur par un même entier non nul. Pour $84/126$, les divisions successives par 2 puis 3 puis 7 donnent $2/3$. Le PGCD permet de le faire en une seule étape.
+\end{savoirfaire}
+\begin{exemple}[Un multiple dans une plage donnée]
+Pour chercher les multiples de 12 entre 90 et 130, écrire $90\le12k\le130$. Les entiers possibles sont $k=8,9,10$ : on obtient 96, 108 et 120.
+\end{exemple}
+\begin{propriete}Pour $a>0$ et $b\ge0$ entiers, la division euclidienne s’écrit $b=aq+r$ avec $0\le r<a$. Le plus grand multiple de $a$ inférieur ou égal à $b$ est alors $aq$, car $aq\le b<a(q+1)$. En Python, le quotient $q$ s’obtient par \code{b // a} et le multiple par \code{a * (b // a)}.\end{propriete}
+\begin{attention}Dans un problème, préciser si l'on cherche des entiers positifs, des entiers relatifs ou des nombres réels. Cette information change l'ensemble des réponses.\end{attention}
+\otIntertitre{À expliquer à l'oral}
+Pourquoi une fraction peut-elle changer d'écriture sans changer de valeur ? Donner une explication par partage d'une même unité.
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-1-1}
+\begin{exercice}[1]{Reconnaître un multiple}
+\begin{questions}
+\item Parmi $-36,0,14,42,55$, relever les multiples de 6.
+\item Écrire chacun d’eux sous la forme $6k$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-2}
+\begin{exercice}[1]{Diviseurs positifs}
+Lister tous les diviseurs positifs de 36, puis ceux de 24. Relever leurs diviseurs communs.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-3}
+\begin{exercice}[1]{Parité sans calcul lourd}
+Dire si $2\times137$, $2\times137+1$ et $137^2$ sont pairs ou impairs. Justifier.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-4}
+\begin{exercice}[1]{Rendre irréductible}
+Simplifier $\dfrac{90}{126}$ et $\dfrac{-132}{84}$ sous forme irréductible.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-5}
+\begin{exercice}[1]{Additionner des fractions}
+Calculer exactement $A=\dfrac56-\dfrac7{15}+\dfrac1{10}$.
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-1-6}
+\begin{exercice}[2]{Somme de multiples}
+Les entiers $a$ et $b$ sont des multiples de 9. Démontrer que $a+b$ et $2a-3b$ sont multiples de 9.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-7}
+\begin{exercice}[2]{Deux entiers consécutifs}
+Démontrer que la somme de deux entiers consécutifs est impaire et que leur produit est pair.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-8}
+\begin{exercice}[2]{Tester une divisibilité en Python}
+Expliquer les résultats de \code{35 \% 7 == 0} et \code{35 \% 6 == 0}. Écrire une fonction \code{multiple(a,b)} pour $b\ne0$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-9}
+\begin{exercice}[2]{Le dernier multiple}
+Déterminer le plus grand multiple de 17 inférieur ou égal à 1000. Expliquer le rôle de la division entière.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-10}
+\begin{exercice}[2]{Une affirmation à réfuter}
+« La somme de deux nombres impairs est toujours un multiple de 4. » Cette affirmation est-elle vraie ? Donner ensuite une propriété correcte.
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-1-11}
+\begin{exercice}[3]{Des colis identiques}
+Une association possède 84 cahiers et 126 stylos. Elle veut préparer le plus grand nombre de colis identiques sans reste. Chaque colis doit contenir les deux objets. Combien de colis et quel contenu ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-12}
+\begin{exercice}[3]{Un départ simultané}
+Deux navettes passent à 8 h au même arrêt, puis toutes les 12 minutes pour l’une et toutes les 18 minutes pour l’autre. À quelle heure se retrouvent-elles pour la première fois après 8 h ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-13}
+\begin{exercice}[3]{Un carré et sa parité}
+Démontrer que si $n^2$ est pair, alors $n$ est pair. Peut-on conclure de même avec « multiple de 4 » à la place de « pair » dans les deux occurrences ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-14}
+\begin{exercice}[3]{Un entier mystérieux}
+Un entier naturel est compris entre 200 et 250. Il est multiple de 6 et de 8. La somme de ses chiffres vaut 9. Le déterminer et justifier l’unicité.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-1-15}
+\begin{exercice}[3]{Une fraction qui se simplifie toujours}
+Pour un entier $n\ge1$, montrer que $\dfrac{3n+3}{6n+6}$ a une valeur indépendante de $n$. Pourquoi la même écriture ne convient-elle pas pour $n=-1$ ?
+\end{exercice}
+\end{blocLivre}
+
+\clearpage

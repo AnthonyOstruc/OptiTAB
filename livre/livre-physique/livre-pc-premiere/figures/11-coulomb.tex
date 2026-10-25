@@ -1,0 +1,24 @@
+% Forces d'interaction électrostatique entre deux charges ponctuelles (L'essentiel, chapitre 11)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  charge/.style={circle,minimum size=5mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont,text=white},
+  force/.style={otGreenDark,line width=1.1pt,-{Stealth[length=2.4mm]}}]
+% Charges de même signe
+\begin{scope}
+  \node[charge,fill=otRed!80] (a) at (0,0) {$+$}; \node[charge,fill=otRed!80] (b) at (3,0) {$+$};
+  \node[pcLegende,anchor=north] at (0,-0.3) {A ($q_\mathrm{A}$)}; \node[pcLegende,anchor=north] at (3,-0.3) {B ($q_\mathrm{B}$)};
+  \draw[force] (b.east) -- ++(1.0,0) node[pcLegende,anchor=south,text=otGreenDark] {$\vec{F}_{\mathrm{A}/\mathrm{B}}$};
+  \draw[force] (a.west) -- ++(-1.0,0) node[pcLegende,anchor=south,text=otGreenDark] {$\vec{F}_{\mathrm{B}/\mathrm{A}}$};
+  \draw[otNavy,line width=0.8pt,-{Stealth[length=2mm]}] (0.3,0.45) -- (1.0,0.45) node[pcLegende,anchor=south,text=otNavy] {$\vec{u}_{\mathrm{AB}}$};
+  \draw[otMuted,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (0,-0.85) -- (3,-0.85) node[midway,below,pcLegende] {$d$};
+  \node[pcLegendeG,anchor=north] at (1.5,-1.2) {charges de même signe : répulsion};
+\end{scope}
+% Charges de signes opposés
+\begin{scope}[shift={(7.4,0)}]
+  \node[charge,fill=otRed!80] (a) at (0,0) {$+$}; \node[charge,fill=otNavy] (b) at (3,0) {$-$};
+  \node[pcLegende,anchor=north] at (0,-0.3) {A}; \node[pcLegende,anchor=north] at (3,-0.3) {B};
+  \draw[force] (b.west) -- ++(-1.0,0) node[pos=0.5,pcLegende,anchor=south,text=otGreenDark] {$\vec{F}_{\mathrm{A}/\mathrm{B}}$};
+  \draw[force] (a.east) -- ++(1.0,0) node[pos=0.5,pcLegende,anchor=south,text=otGreenDark] {$\vec{F}_{\mathrm{B}/\mathrm{A}}$};
+  \node[pcLegendeG,anchor=north] at (1.5,-1.2) {charges de signes opposés : attraction};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Les deux forces ont la même valeur et des sens opposés ; elles sont portées par la droite (AB).}

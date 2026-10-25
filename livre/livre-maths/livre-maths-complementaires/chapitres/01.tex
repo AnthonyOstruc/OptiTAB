@@ -1,0 +1,170 @@
+\begin{ouverture}[suites]{1}{Suites et modèles discrets}{Analyse et évolution}{Récurrence · Équilibre · Limites · Seuils}
+\objectif{Construire une suite à partir d’un phénomène.}
+\objectif{Étudier une récurrence arithmético-géométrique.}
+\objectif{Calculer une somme et une limite.}
+\objectif{Lire une construction en escalier et chercher un seuil.}
+\prerequis{Pourcentages, suites arithmétiques et géométriques de Première.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Choisir un modèle et son indice}
+Une suite $(u_n)$ décrit une grandeur observée à des instants séparés. L'indice $n$ est un entier ; $u_0$ est la valeur de départ, pas la valeur après une étape. Une formule explicite donne directement $u_n$ ; une relation de récurrence utilise les termes précédents.
+\begin{definition}[Deux modèles de référence]
+Variation absolue constante : $u_{n+1}=u_n+r$, donc $u_n=u_0+nr$.
+Variation relative constante : $u_{n+1}=qu_n$, donc $u_n=u_0q^n$.
+Pour un taux d'évolution $t$ écrit sous forme décimale, $q=1+t$.
+\end{definition}
+\begin{exemple}[Une réserve d'eau]
+Une réserve contient $100$ litres. Chaque jour, elle perd $20\,\%$ de son contenu, puis reçoit $30$ litres. Le modèle est $u_0=100$, $u_{n+1}=0{,}8u_n+30$.
+Ainsi $u_1=110$ et $u_2=118$. Inverser les deux opérations donnerait un autre modèle.
+\end{exemple}
+\essSection{2}{Déplacer l'équilibre}
+\begin{savoirfaire}[Résoudre $u_{n+1}=au_n+b$]
+Si $a\ne1$, chercher $\ell=a\ell+b$, donc $\ell=b/(1-a)$. Poser $v_n=u_n-\ell$.
+Alors $v_{n+1}=av_n$ et
+\[u_n=\ell+(u_0-\ell)a^n.\]
+Si $a=1$, la suite est arithmétique : $u_n=u_0+nb$.
+\end{savoirfaire}
+Dans l'exemple, $\ell=150$ et $u_n=150-50(0{,}8)^n$.
+Le modèle prédit une augmentation vers $150$ litres, sans jamais atteindre exactement cet équilibre en un temps fini.
+\figurelivre{c01-suite.pdf}{À gauche : les termes de la réserve. À droite : la construction en escalier de $u_{n+1}=0{,}8u_n+30$, avec la droite $y=x$. Les deux axes portent des volumes en litres.}
+\essSection{3}{Comprendre une limite}
+Une suite tend vers $\ell$ si ses termes finissent par rester aussi près de $\ell$ qu'on le souhaite. Elle tend vers $+\infty$ si elle finit par dépasser tout niveau fixé. Il s'agit ici d'une approche intuitive.
+\begin{propriete}[Raison positive]
+Pour $0<q<1$, $q^n\longrightarrow0$. Pour $q=1$, $q^n=1$. Pour $q>1$, $q^n\longrightarrow+\infty$.
+Les limites se combinent par somme, produit et quotient lorsque cela ne produit pas une forme indéterminée, et lorsque la limite du dénominateur n'est pas nulle.
+\end{propriete}
+Si $a_n\leq u_n\leq b_n$ à partir d'un certain rang et si les deux bornes tendent vers le même réel $\ell$, le théorème des gendarmes donne $u_n\to\ell$.
+Une inégalité large se conserve à la limite : $u_n\leq v_n$ et des limites finies donnent $\lim u_n\leq\lim v_n$. Une inégalité stricte peut devenir une égalité.
+\essSection{4}{Additionner des termes}
+\begin{propriete}[Attention au nombre de termes]
+\[\sum_{k=0}^{n}u_0q^k=u_0\frac{1-q^{n+1}}{1-q}\quad(q\ne1).
+\qquad\sum_{k=0}^{n}(u_0+kr)=(n+1)\frac{u_0+u_n}{2}.\]
+Si $0<q<1$, la première somme tend vers $u_0/(1-q)$.
+\end{propriete}
+\begin{demonstration}[Somme géométrique]
+Avec $S=1+q+\cdots+q^n$, la différence $S-qS$ vaut $1-q^{n+1}$. On divise par $1-q$. Lorsque $0<q<1$, $q^{n+1}\to0$, d'où la limite annoncée.
+\end{demonstration}
+\essSection{5}{Chercher un seuil et critiquer le modèle}
+Pour la réserve, dépasser $145$ litres revient à $0{,}8^n<0{,}1$.
+Une boucle calcule successivement les termes jusqu'au premier succès ; le logarithme permettra aussi un calcul direct au chapitre 2.
+\begin{python}
+def seuil_reserve(seuil):
+    n, u = 0, 100.0
+    while u <= seuil:
+        n, u = n + 1, 0.8*u + 30
+    return n
+\end{python}
+Cette fonction est prévue pour $100\leq\text{seuil}<150$. Hors de ce domaine, elle doit être adaptée : un seuil de $150$ ne serait jamais atteint. Une réserve réelle peut déborder ou subir des pertes variables : le modèle a un domaine de validité.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Reconnaître la règle}
+
+\begin{questions}
+\item Donner les quatre premiers termes de $u_n=5+3n$, à partir de $n=0$.
+\item Donner la raison et $v_4$ si $v_0=16$, $v_{n+1}=v_n/2$.
+\item Quel modèle convient à une hausse annuelle de $4\,\%$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Indices et sommes}
+
+\begin{questions}
+\item Combien de termes contient $u_0+\cdots+u_{12}$ ?
+\item Calculer $\sum_{k=0}^{4}2^k$.
+\item Calculer la somme des dix premiers termes de $u_n=3+2n$ à partir de $0$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Limites de référence}
+
+\begin{questions}
+\item Donner les limites de $3(0{,}6)^n$ et $2(1{,}1)^n$.
+\item Calculer $\lim(7-4/n)$ puis $\lim(5n+2)/(2n+3)$.
+\item Pourquoi $u_n<2$ n’entraîne-t-il pas $\lim u_n<2$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Un équilibre}
+$u_0=4$ et $u_{n+1}=0{,}5u_n+3$.
+\begin{questions}
+\item Calculer $u_1,u_2$.
+\item Déterminer l’équilibre $\ell$.
+\item Montrer que $u_n=6-2(0{,}5)^n$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Épargne périodique}
+Un compte théorique contient $1\,000$ euros ; chaque année il est multiplié par $1{,}02$, puis reçoit $200$ euros. Aucuns frais ni impôts ne sont modélisés.
+\begin{questions}
+\item Écrire la récurrence.
+\item Établir $u_n=11\,000(1{,}02)^n-10\,000$.
+\item Calculer $u_2$ et interpréter la limite.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Amortissement}
+Une dette de $5\,000$ euros porte un intérêt annuel théorique de $5\,\%$, puis un remboursement de $600$ euros a lieu.
+\begin{questions}
+\item Écrire le modèle tant que la dette reste positive.
+\item Exprimer $d_n$.
+\item Expliquer pourquoi le modèle doit être arrêté, et non poursuivi indéfiniment.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une somme infinie}
+
+\begin{questions}
+\item Calculer $S_n=\sum_{k=0}^{n}6(1/3)^k$.
+\item Donner sa limite.
+\item Trouver le premier $n$ tel que $9-S_n<0{,}01$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Gendarmes}
+Pour tout $n\geq1$, $3-2/n\leq u_n\leq3+1/n$.
+\begin{questions}
+\item Déterminer $\lim u_n$.
+\item Donner un rang garantissant $|u_n-3|\leq0{,}01$.
+\item Peut-on déduire que $(u_n)$ est croissante ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Construire et conjecturer}
+$u_0=0$, $u_{n+1}=\sqrt{2+u_n}$.
+\begin{questions}
+\item Calculer $u_1,u_2,u_3$ à $10^{-3}$ près.
+\item Décrire la construction avec $y=\sqrt{2+x}$ et $y=x$.
+\item Si une limite positive existe, quelle est-elle ? Cette seule équation prouve-t-elle la convergence ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Changer le pas de temps}
+Une population est multipliée par $1{,}21$ tous les deux ans. On suppose une même évolution relative chaque année.
+\begin{questions}
+\item Déterminer le coefficient annuel positif.
+\item Exprimer la population annuelle si $P_0=100$.
+\item Pourquoi la multiplication par $1{,}105$ chaque année ne convient-elle pas ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Modèle logistique discret}
+On propose $u_{n+1}=u_n+0{,}5u_n(1-u_n/100)$, avec $u_0=20$. Ce modèle guidé est un approfondissement.
+\begin{questions}
+\item Calculer les deux termes suivants.
+\item Déterminer les équilibres.
+\item Comparer le facteur multiplicatif à celui d’un modèle géométrique et expliquer l’effet de saturation.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une preuve plutôt qu’un graphique}
+$u_n=150-50(0{,}8)^n$.
+\begin{questions}
+\item Prouver que $u_n<150$ et que la suite est croissante.
+\item Justifier que le programme de seuil du cours s’arrête pour $100\leq s<150$.
+\item Déterminer le premier rang tel que $u_n>145$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

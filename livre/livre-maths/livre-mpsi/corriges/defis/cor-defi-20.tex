@@ -1,0 +1,78 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 20 — vérifié par verifications/defis_16_20.py.
+
+\begin{blocLivre}{cor-20-25a}
+\begin{corrige}{25}{Le point de Fermat}
+\demarche{Le gradient d'une distance est un vecteur unitaire : annuler
+$\nabla f$, c'est équilibrer trois vecteurs unitaires — d'où les angles de
+$120^{\circ}$. Une dérivée directionnelle négative écarte les sommets.}
+\partieExo{A}{Gradient et points critiques}
+\begin{questions}
+  \item Avec $P=(a,b)$ : $d_P(x,y)=\sqrt{(x-a)^{2}+(y-b)^{2}}$, racine
+    d'une fonction polynomiale strictement positive sur
+    $\R^{2}\setminus\ens{P}$ : $d_P$ y est $\mathcal{C}^{1}$, avec
+    $\frac{\partial d_P}{\partial x}=\frac{x-a}{d_P}$ et
+    $\frac{\partial d_P}{\partial y}=\frac{y-b}{d_P}$, soit
+    $\res{\nabla d_P(M)=\frac{M-P}{\norme{M-P}}}$, de norme $1$.
+  \item $f=d_A+d_B+d_C$ est $\mathcal{C}^{1}$ sur $U$ et
+    $\nabla f(M)=u_A+u_B+u_C$ : les points critiques sont ceux où cette
+    somme de vecteurs unitaires est \res{\text{nulle}}.
+  \item Si $u+v+w=0$ avec $\norme u=\norme v=\norme w=1$ :
+    $1=\norme{u+v}^{2}=2+2\langle u,v\rangle$, d'où $\langle u,v\rangle=-\frac12$
+    et un angle de $\frac{2\pi}{3}$ ; de même pour les autres couples.
+    L'angle $\widehat{AMB}$ est celui de $-u_A$ et $-u_B$, donc celui de
+    $u_A$ et $u_B$ : \res{\tfrac{2\pi}{3}}, comme les deux autres.
+\end{questions}
+\partieExo{B}{Existence et position du minimum}
+\begin{questions}[resume]
+  \item $MP\geqslant\norme M-\norme P$, d'où la minoration. Si
+    $\norme M>R=\frac13\bigl(\norme A+\norme B+\norme C+f(O)\bigr)$, alors
+    $f(M)>f(O)$. Sur le disque fermé de centre $O$ et de rayon $R$, $f$
+    continue atteint un minimum $f(M_0)\leqslant f(O)$ ; hors du disque,
+    $f(M)>f(O)\geqslant f(M_0)$ : $f(M_0)$ est un
+    \res{\text{minimum global}}.
+  \item $d_B$ et $d_C$ sont dérivables en $A$, et
+    $\frac{\mathrm{d}}{\mathrm{d}t}f(A+tu)\big|_{t=0^{+}}
+    =1+\langle u,\nabla d_B(A)\rangle+\langle u,\nabla d_C(A)\rangle
+    =1-\langle u,e_B+e_C\rangle$, où $e_B$, $e_C$ sont les vecteurs
+    unitaires de $A$ vers $B$ et $C$. Comme
+    $\norme{e_B+e_C}^{2}=2+2\cos\widehat A=4\cos^{2}\frac{\widehat A}{2}$, le
+    choix $u=\frac{e_B+e_C}{\norme{e_B+e_C}}$ donne la dérivée
+    $1-2\cos\frac{\widehat A}{2}$, strictement négative car
+    $\frac{\widehat A}{2}<\frac\pi3$ : $f$ décroît en partant de $A$, qui
+    n'est pas un minimum. Le minimum est donc atteint dans l'ouvert $U$,
+    en un \res{\text{point critique}} $F$ : les côtés y sont vus sous des
+    angles de $\frac{2\pi}{3}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-20-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Un exemple, et le retour de Napoléon}
+\begin{questions}[start=6]
+  \item $\cos\widehat A=\frac{\langle(2,0),(1,2)\rangle}{2\sqrt5}=\frac{1}{\sqrt5}$,
+    soit $\widehat A=\widehat B\approx63{,}4^{\circ}$ et
+    $\widehat C\approx53{,}1^{\circ}$ : tous inférieurs à $120^{\circ}$.
+    Pour $F=(0,y)$, $\widehat{AFB}=\frac{2\pi}{3}$ équivaut à
+    $\tan\frac\pi3=\frac1y$, soit $y=\frac{1}{\sqrt3}$ ; alors $u_A$, $u_B$,
+    $u_C$ ont pour angles polaires $30^{\circ}$, $150^{\circ}$, $270^{\circ}$ :
+    leur somme est nulle, $F$ est bien le point critique, et
+    \[
+    f(F)=2\sqrt{1+\tfrac13}+\Bigl(2-\tfrac{1}{\sqrt3}\Bigr)
+    =\tfrac{4}{\sqrt3}-\tfrac{1}{\sqrt3}+2=\res{2+\sqrt3}\approx3{,}732 .
+    \]
+  \item Le triangle équilatéral de côté $AB=2$ a pour hauteur $\sqrt3$ :
+    $C'=(0,-\sqrt3)$. Les points $C'$, $F$, $C$ sont sur l'axe, dans cet
+    ordre : $F\in[CC']$, et $CC'=2+\sqrt3=\res{f(F)}$. On retrouve le défi
+    du chapitre 3 : les droites $(AA')$, $(BB')$, $(CC')$ concourent au point
+    de Fermat, et leur longueur commune est la longueur minimale du
+    réseau.
+  \item Le gradient de $f$ est orthogonal aux lignes de niveau (chapitre 20)
+    et s'annule en $F$, où les lignes se resserrent en petites courbes
+    fermées autour du minimum. Loin du triangle,
+    $f(M)\approx3\,\norme{M-G}$ ($G$ centre de gravité) : les lignes de
+    niveau ressemblent à des cercles centrés près de $G$.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

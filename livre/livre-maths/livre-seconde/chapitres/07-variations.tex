@@ -1,0 +1,128 @@
+\begin{ouverture}[courbe]{7}{Variations et optimisation}{Partie 2 · Fonctions}
+{Croissance · Extrémums · Comparaisons · Recherche numérique}
+\objectif{Lire et construire un tableau de variations.}
+\objectif{Démontrer un sens de variation dans des cas simples.}
+\objectif{Résoudre un problème d’optimisation sans dérivée.}
+\prerequis{Fonctions de référence et identités remarquables.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Décrire les variations}
+\begin{definition}Sur un intervalle $I$, $f$ est croissante si pour tous $a,b\in I$ tels que $a<b$, on a $f(a)\le f(b)$. Elle est décroissante si $f(a)\ge f(b)$. Avec des inégalités strictes sur les images, on parle de croissance ou décroissance stricte.\end{definition}
+\begin{propriete}Pour $f(x)=mx+p$, $f(b)-f(a)=m(b-a)$. Comme $b-a>0$, le signe de la différence est celui de $m$ : croissance stricte pour $m>0$, décroissance stricte pour $m<0$, fonction constante pour $m=0$.\end{propriete}
+\begin{definition}Un maximum est une valeur $M=f(c)$ supérieure ou égale à toutes les images de l’intervalle. Le point $c$ est une abscisse où il est atteint. Un minimum se définit en inversant l’ordre.\end{definition}
+\begin{attention}Le signe d’une fonction et ses variations sont deux informations différentes. Une fonction peut être négative et croissante, par exemple $f(x)=x$ sur $[-4;-1]$.\end{attention}
+\begin{savoirfaire}[Lire un tableau]Une flèche indique une comparaison d’images sur tout un intervalle. Elle ne donne pas les images des valeurs intermédiaires, sauf information supplémentaire sur la fonction.\end{savoirfaire}
+\begin{center}\begin{tableau}
+\otTab[2.5]{$x$/0.7,$f(x)$/1.5}{$-2$,$0$,$2$,$4$}
+\tkzTabVar{-/$1$,+/$3$,-/$-1$,+/$1$}
+\end{tableau}\par\legende{Exemple : la fonction monte de 1 à 3, descend à $-1$, puis remonte à 1.}\end{center}
+\clearpage
+\essSection{2}{Chercher et démontrer un optimum}
+\begin{savoirfaire}[Faire apparaître un carré]
+Pour $A(x)=x(12-x)$, écrire $A(x)=36-(x-6)^2$. Comme le carré est positif, $A(x)\le36$ ; l’égalité est atteinte pour $x=6$. C’est une démonstration d’un maximum, sans calcul de dérivée.
+\end{savoirfaire}
+\begin{savoirfaire}[Balayer un intervalle]
+Calculer les images d’une grille de valeurs, retenir la meilleure, puis affiner la grille. Le balayage propose un candidat ; sa précision dépend du pas. Il ne constitue pas à lui seul une preuve d’optimum sur tous les réels.
+\end{savoirfaire}
+\begin{exemple}[Dichotomie autour d’un optimum connu par les variations]
+Si $f$ augmente jusqu’à une abscisse $c$ puis diminue, on peut réduire un intervalle contenant $c$ en comparant des images selon une procédure justifiée. Un exemple complet est donné dans le chapitre Python. Ne pas confondre recherche de maximum et recherche d’un zéro.
+\end{exemple}
+\otIntertitre{Rédiger une conclusion}
+Nommer la grandeur optimisée, sa valeur avec l’unité, l’abscisse ou les dimensions correspondantes, et vérifier le domaine. « 36 » seul ne dit pas si l’on parle d’une longueur, d’une aire ou d’une valeur de $x$.
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-7-1}
+\begin{exercice}[1]{Une pente, un sens, un signe}
+\begin{questions}
+\item Donner les variations de $f(x)=4x-7$, $g(x)=-3x+2$ et $h(x)=5$ sur $\mathbb R$.
+\item Dresser le tableau de signes de $f$ et de $g$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-2}
+\begin{exercice}[1]{Lire une ligne brisée}
+La courbe passe par $(-2;1)$, $(0;3)$, $(2;-1)$ et $(4;1)$ et est affine entre ces points. Donner les intervalles de variation, le minimum et le maximum.
+\label{fig-ex-7-2}
+\figureGeo{fonction-morceaux}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-3}
+\begin{exercice}[1]{Carré sur un intervalle négatif}
+Donner les variations de $x^2$ sur $[-5;-1]$ et son image minimale et maximale sur cet intervalle.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-4}
+\begin{exercice}[1]{Un carré décalé}
+Pour $f(x)=(x-2)^2+3$, déterminer le minimum sur $\mathbb R$ et l’abscisse où il est atteint.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-5}
+\begin{exercice}[1]{Comparer sans connaître les images}
+Une fonction est strictement décroissante sur $[1;8]$. Comparer $f(2)$ et $f(7)$. Peut-on comparer $f(2)$ à 0 avec cette seule information ?
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-7-6}
+\begin{exercice}[2]{Un tableau ne donne pas tout}
+Une fonction est décrite par le tableau de variations ci-dessous : elle croît de $f(0)=1$ à $f(2)=5$ puis décroît jusqu’à $f(6)=-3$. Encadrer $f(1)$ et $f(4)$. Peut-on déterminer exactement ces deux images ?
+\label{fig-ex-7-6}
+\figureGeo{variations-lecture}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-7}
+\begin{exercice}[2]{Prouver la croissance d’une affine}
+Pour $f(x)=\dfrac32x-4$, démontrer que $f$ est strictement croissante en comparant $f(b)-f(a)$ pour $a<b$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-8}
+\begin{exercice}[2]{Une symétrie utile}
+Pour $f(x)=(x-3)^2-2$ sur $[0;7]$, donner les variations et les extrémums.
+\label{fig-ex-7-8}
+\figureGeo{variation-decalee}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-9}
+\begin{exercice}[2]{Maximum d’un produit}
+Pour $x\in[0;10]$, montrer que $A(x)=x(10-x)$ ne dépasse pas 25. Quand vaut-il 25 ?
+\label{fig-ex-7-9}
+\figureGeo{aire-produit}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-10}
+\begin{exercice}[2]{Un balayage et sa limite}
+Pour $f(x)=4-(x-1{,}3)^2$ sur $[0;3]$, on teste seulement les entiers 0, 1, 2 et 3. Quel maximum trouve-t-on sur cette grille ? Est-ce le maximum réel ?
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-7-11}
+\begin{exercice}[3]{Un enclos contre un mur}
+On dispose de 24 m de clôture pour trois côtés d’un rectangle appuyé contre un mur. Si $x$ est la largeur perpendiculaire au mur, exprimer l’aire et trouver ses dimensions maximales.
+\label{fig-ex-7-11}
+\figureGeo{enclos}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-12}
+\begin{exercice}[3]{La recette d’une vente}
+Un modèle prévoit $100-5p$ objets vendus au prix $p$ euros, pour $0\le p\le20$. Exprimer la recette et déterminer son maximum dans ce modèle.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-13}
+\begin{exercice}[3]{Un minimum de distance au carré}
+Pour $M(x;0)$ et $A(2;3)$, exprimer $AM^2$ et déterminer la position de $M$ qui rend $AM$ minimale.
+\label{fig-ex-7-13}
+\figureGeo{distance-minimale}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-14}
+\begin{exercice}[3]{Un maximum sur un domaine restreint}
+La fonction $f(x)=9-(x-4)^2$ est étudiée sur $[0;2]$. Un élève répond que son maximum est 9. Corriger sa démarche et donner les bons extrémums.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-15}
+\begin{exercice}[3]{Une garantie pour toutes les valeurs}
+Pour quel plus petit réel $k$ l’inégalité $x(8-x)\le k$ est-elle vraie pour tout $x\in[0;8]$ ? Prouver que toute valeur plus petite échoue.
+\end{exercice}
+\end{blocLivre}
+
+\clearpage

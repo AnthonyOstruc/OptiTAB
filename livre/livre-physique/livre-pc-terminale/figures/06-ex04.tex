@@ -1,0 +1,13 @@
+% Activité d'une gélule d'iode 131 en fonction du temps (exercice 4, chapitre 6)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=54mm,xmin=0,xmax=42,ymin=0,ymax=440,
+  xtick={0,5,...,40},ytick={0,100,...,400},xlabel={$t$ (jours)},ylabel={$A$ (MBq)}]
+\addplot[otNavy,line width=1pt,domain=0:40,samples=120] {400*2^(-x/8.02)};
+\solution{\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,200) -- (axis cs:8.02,200) -- (axis cs:8.02,0);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,50) -- (axis cs:24.06,50) -- (axis cs:24.06,0);
+\addplot[only marks,mark=*,mark size=1.8pt,otGreenDark] coordinates {(8.02,200)};
+\addplot[only marks,mark=*,mark size=1.8pt,otOrange] coordinates {(24.06,50)};
+\node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:8.6,205) {$t_{1/2}\approx8$ jours};
+\node[pcLegende,anchor=south west,text=otOrange!75!black] at (axis cs:24.6,55) {$A=50$ MBq à 24 jours};}
+\end{axis}
+\end{tikzpicture}

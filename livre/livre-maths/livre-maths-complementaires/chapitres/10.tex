@@ -1,0 +1,163 @@
+\begin{ouverture}[grandsnombres]{10}{Échantillonnage et décision statistique}{Probabilités et inférence}{Fluctuation · Intervalles · Simulation · Biais}
+\objectif{Distinguer proportion théorique et fréquence observée.}
+\objectif{Construire un intervalle binomial de probabilité prescrite.}
+\objectif{Conduire une décision sous une hypothèse annoncée.}
+\objectif{Simuler des échantillons et discuter les biais.}
+\prerequis{Loi binomiale, probabilités cumulées et listes Python.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Une fréquence change d'un échantillon à l'autre}
+On suppose des observations indépendantes de même probabilité $p$. Si $X$ compte les succès sur $n$ observations, $X\sim\mathcal B(n,p)$ et la fréquence est $F=X/n$.
+\[E(F)=p,\qquad \sigma(F)=\sqrt{\frac{p(1-p)}n}.\]
+Ces formules décrivent le modèle. La fréquence observée $f$ est une valeur réalisée, et ne devient pas automatiquement égale à $p$.
+\figurelivre{c10-fluctuation.pdf}{Distributions théoriques des fréquences pour une pièce équilibrée, à $n=20$ puis $n=100$. Les fréquences se concentrent davantage autour de $1/2$ quand la taille augmente.}
+\essSection{2}{Construire un intervalle garanti dans le modèle}
+\begin{savoirfaire}[Procédure exacte binomiale]
+Sous une hypothèse $p=p_0$, choisir des entiers $a,b$ tels que
+$P(a\leq X\leq b)\geq1-\alpha$.
+Pour une construction centrale, prendre la plus grande borne basse compatible avec $P(X<a)\leq\alpha/2$, et la plus petite borne haute compatible avec $P(X>b)\leq\alpha/2$.
+L'intervalle des fréquences est $[a/n,b/n]$.
+\end{savoirfaire}
+La loi étant discrète, la probabilité obtenue dépasse souvent le niveau demandé. Les bornes ne sont pas uniques ; annoncer la règle de construction permet de reproduire le résultat.
+Pour $X\sim\mathcal B(10,1/2)$, $P(2\leq X\leq8)=1-22/1024=0{,}978515625$.
+Le complément a donc une probabilité inférieure à $0{,}05$.
+\essSection{3}{Décider sans prétendre prouver une hypothèse}
+Sous l'hypothèse d'une pièce équilibrée, observer un résultat dans une zone très peu probable peut conduire à remettre cette hypothèse en cause.
+\begin{attention}
+Une décision de rejet peut être erronée : un événement rare peut se produire. Une observation dans l'intervalle ne prouve pas que l'hypothèse est vraie ; elle ne la contredit pas selon la règle choisie.
+Le risque $\alpha$ concerne la procédure sous l'hypothèse, pas la probabilité que l'hypothèse soit vraie après les données.
+\end{attention}
+Pour une surréservation, on cherche plutôt une borne unilatérale $k$ telle que $P(X\leq k)\geq1-\alpha$ : le risque de dépasser la capacité $k$ est alors au plus $\alpha$ dans le modèle.
+\essSection{4}{Simuler des échantillons}
+\begin{python}
+from random import Random
+def frequences(n, p, repetitions, graine=2026):
+    rng = Random(graine)
+    resultats = []
+    for j in range(repetitions):
+        succes = sum(rng.random() < p for k in range(n))
+        resultats.append(succes/n)
+    return resultats
+\end{python}
+Le générateur produit des valeurs dans $[0,1[$ ; le test \code{random() < p} simule une Bernoulli de paramètre $p$. Une graine fixe rend l'expérience reproductible.
+Pour une variable d'espérance $\mu$ et d'écart type $\sigma$, on peut simuler des moyennes d'échantillons indépendants, puis comparer leur dispersion à $\sigma/\sqrt n$.
+Dans une série de $R$ moyennes $m_j$, l'écart type descriptif est $s=\sqrt{\sum(m_j-\bar m)^2/R}$.
+Comparer les proportions vérifiant $|m_j-\mu|\leq2\sigma/\sqrt n$ ou $3\sigma/\sqrt n$ explore la concentration. Il ne faut pas annoncer des pourcentages universels à partir de ces seuls seuils.
+\essSection{5}{Du modèle à un vrai sondage}
+Une grande taille réduit la fluctuation aléatoire dans un modèle pertinent ; elle ne corrige pas un biais de sélection ou de réponse.
+Une consultation volontaire en ligne n'est pas automatiquement un échantillon aléatoire représentatif.
+Une estimation de proportion peut utiliser $\hat p=f$, mais une « fourchette » doit préciser sa construction et ses hypothèses.
+Inverser des tests pour tous les $p$ possibles fournit un ensemble de valeurs compatibles : la construction d'un intervalle de confiance ne se confond pas avec la simple substitution de $f$ dans une formule de fluctuation.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Fréquence et proportion}
+$X\sim\mathcal B(100,0{,}4)$ et $F=X/100$.
+\begin{questions}
+\item Calculer $E(X)$ puis $E(F)$.
+\item Calculer $\sigma(F)$.
+\item Si l’on observe $X=45$, donner la fréquence et dire si elle est égale à $p$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Effet de la taille}
+
+\begin{questions}
+\item Par quel facteur l’écart type d’une fréquence est-il divisé si la taille est multipliée par $4$ ?
+\item Et si elle est multipliée par $100$ ?
+\item Cela supprime-t-il un biais de sélection ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Intervalle exact simple}
+$X\sim\mathcal B(4,1/2)$.
+\begin{questions}
+\item Calculer $P(1\leq X\leq3)$.
+\item Cette probabilité atteint-elle $0{,}95$ ?
+\item Quel intervalle entier atteint au moins $0{,}95$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Complément}
+Un intervalle $I$ vérifie $P(X\in I)=0{,}96$.
+\begin{questions}
+\item Calculer la probabilité du complément.
+\item Le complément a-t-il une probabilité inférieure à $0{,}05$ ?
+\item Une observation hors de $I$ est-elle impossible ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Tester une pièce}
+Sous l’hypothèse d’une pièce équilibrée, $X\sim\mathcal B(10,1/2)$. On retient $I=[2,8]$.
+\begin{questions}
+\item Calculer la probabilité hors de $I$.
+\item On observe neuf piles : quelle décision suit cette règle ?
+\item On observe six piles : que peut-on conclure ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une borne de capacité}
+Quatre clients viennent indépendamment avec probabilité $0{,}8$. $X$ est le nombre de présents.
+\begin{questions}
+\item Calculer $P(X\leq2)$.
+\item Calculer $P(X\leq3)$.
+\item Pour un risque de dépassement au plus $0{,}5$, quelle est la plus petite capacité entière ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Simulation reproductible}
+
+\begin{questions}
+\item Expliquer le rôle de la graine dans le programme du cours.
+\item Pourquoi calcule-t-on \code{succes/n} ?
+\item Que représente la liste des résultats ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Sondage biaisé}
+Un site propose une question à ses visiteurs ; $50\,000$ répondent volontairement.
+\begin{questions}
+\item La grande taille garantit-elle la représentativité ?
+\item Citer deux biais possibles.
+\item Quelle différence ferait un tirage aléatoire correctement organisé ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Deux types de risque}
+Une procédure rejette une hypothèse lorsque $X$ sort d’une zone contenant au moins $95\,\%$ de probabilité sous cette hypothèse.
+\begin{questions}
+\item Quel risque est majoré par $5\,\%$ ?
+\item Peut-on dire que l’hypothèse a $95\,\%$ de chances d’être vraie si l’observation reste dans la zone ?
+\item Pourquoi le non-rejet peut-il aussi être trompeur ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Moyennes d’un dé}
+On simule des moyennes de $n=100$ lancers indépendants d’un dé équilibré. On donne $\mu=3{,}5$ et $\sigma=\sqrt{35/12}$.
+\begin{questions}
+\item Calculer l’écart type théorique des moyennes.
+\item Donner le seuil $2\sigma/\sqrt n$.
+\item Comment mesurer la proportion de moyennes à une distance au plus ce seuil de $\mu$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une zone rare}
+$X\sim\mathcal B(10,1/2)$.
+\begin{questions}
+\item Calculer $P(X\in\{0,1,9,10\})$.
+\item Cette zone a-t-elle une probabilité inférieure à $0{,}025$ ?
+\item Expliquer le lien avec l’intervalle $[2,8]$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Construire plutôt que deviner}
+$X\sim\mathcal B(20,1/2)$. On veut un intervalle centré sur $10$, de probabilité au moins $0{,}95$.
+\begin{questions}
+\item Proposer une recherche par rayons entiers $r$.
+\item Calculer les probabilités pour $[6,14]$ et $[5,15]$.
+\item Conclure sur le plus petit rayon.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

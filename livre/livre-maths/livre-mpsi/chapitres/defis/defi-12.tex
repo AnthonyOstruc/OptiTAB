@@ -1,0 +1,77 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 12 — L'opérateur de différence et la formule de Newton
+%% Résultats vérifiés par verifications/defis_11_15.py.
+
+\rubrique{Défi}
+
+\begin{defi}{L'opérateur de différence et la formule de Newton}{1 h 30}
+Soit $n\in\N^{*}$ et $E=\R_n[X]$. On définit l'opérateur de différence
+$\Delta:P\mapsto P(X+1)-P(X)$, version « discrète » de la dérivation, et
+les polynômes
+\[
+H_0=1,\qquad H_k=\frac{X(X-1)\cdots(X-k+1)}{k!}\quad(k\geqslant1),
+\]
+qui vérifient $H_k(m)=\dbinom mk$ pour tout entier $m\geqslant0$.
+
+\partieExo{A}{Un endomorphisme nilpotent}
+\begin{questions}
+  \item Montrer que $\Delta$ est un endomorphisme de $E$, et que si
+    $\deg P=d\geqslant1$, alors $\deg\Delta P=d-1$ : préciser le
+    coefficient dominant de $\Delta P$.
+  \item Déterminer $\operatorname{Ker}\Delta$ et $\operatorname{Im}\Delta$
+    (théorème du rang). Montrer que $\Delta^{n+1}=0$ mais
+    $\Delta^{n}\neq0$.
+  \item Écrire la matrice de $\Delta$ dans la base canonique de $\R_3[X]$.
+\end{questions}
+
+\partieExo{B}{La base binomiale et la formule de Newton}
+\begin{questions}[resume]
+  \item Montrer que $(H_0,\dots,H_n)$ est une base de $E$, et que
+    $\Delta H_k=H_{k-1}$ pour $k\geqslant1$ : c'est la formule de Pascal
+    pour les polynômes. Écrire la matrice de $\Delta$ dans cette base.
+  \item En déduire la \emph{formule de Newton} : pour tout $P\in E$,
+    \[
+    P=\sum_{k=0}^{n}\bigl(\Delta^{k}P\bigr)(0)\,H_k .
+    \]
+    Décomposer ainsi $X^{3}$, en lisant les $\bigl(\Delta^{k}P\bigr)(0)$
+    sur la table des différences ci-dessous.
+  \item Montrer que $P$ prend des valeurs entières en tout entier relatif
+    si et seulement si ses coordonnées dans la base $(H_k)$ sont entières.
+    Exemple : $\frac{X(X+1)}{2}$, à coefficients non entiers, mais à
+    valeurs entières.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[x=1.05cm,y=0.72cm]
+  \foreach \v [count=\i from 0] in {0,1,8,27,64,125}{%
+    \node[font=\small,text=otInk] at (\i,0) {$\v$};}
+  \foreach \v [count=\i from 0] in {1,7,19,37,61}{%
+    \node[font=\small,text=otNavy] at (\i+0.5,-1) {$\v$};}
+  \foreach \v [count=\i from 0] in {6,12,18,24}{%
+    \node[font=\small,text=otNavy] at (\i+1,-2) {$\v$};}
+  \foreach \v [count=\i from 0] in {6,6,6}{%
+    \node[font=\small,text=otNavy] at (\i+1.5,-3) {$\v$};}
+  \foreach \v [count=\i from 0] in {0,0}{%
+    \node[font=\small,text=otMuted] at (\i+2,-4) {$\v$};}
+  \foreach \xx/\yy in {0/0,0.5/-1,1/-2,1.5/-3}{%
+    \draw[otGreenDark,line width=0.8pt,rounded corners=2pt] (\xx-0.27,\yy-0.3) rectangle (\xx+0.27,\yy+0.3);}
+  \foreach \l/\yy in {$P(k)=k^{3}$/0,$\Delta P$/-1,$\Delta^{2}P$/-2,$\Delta^{3}P$/-3,$\Delta^{4}P$/-4}{%
+    \node[font=\scriptsize,text=otMuted,anchor=east] at (-0.6,\yy) {\l};}
+\end{tikzpicture}\\[0.5mm]
+\legende{La table des différences de $k\mapsto k^{3}$ : chaque ligne est
+formée des différences de la précédente ; la diagonale encadrée donne
+$\bigl(\Delta^{k}P\bigr)(0)=0,1,6,6$.}
+\end{center}
+
+\partieExo{C}{Sommation discrète}
+\begin{questions}[resume]
+  \item Montrer que si $\Delta Q=P$, alors
+    $\sum_{k=0}^{m-1}P(k)=Q(m)-Q(0)$ pour tout $m\in\N^{*}$ :
+    $Q$ joue le rôle d'une « primitive discrète » de $P$.
+  \item Trouver $Q$ tel que $\Delta Q=X^{2}$, et en déduire
+    $\sum_{k=0}^{m-1}k^{2}$. Faire de même pour
+    $\sum_{k=0}^{m-1}k^{3}$, et retrouver le théorème de
+    Nicomaque (défi du chapitre 2).
+\end{questions}
+\end{defi}

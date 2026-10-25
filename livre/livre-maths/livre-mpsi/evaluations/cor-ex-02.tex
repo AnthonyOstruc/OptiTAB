@@ -1,0 +1,173 @@
+% !TEX root = ../main.tex
+%% Corrigé de l'examen de fin d'année — vérifié par verifications/eval_ex.py.
+
+\corrigeSujetEval{EX2}{Examen de fin d'année}
+
+\begin{corrigeEval}{4 points}{Points fixes d'une permutation aléatoire}
+\begin{questions}
+  \item Les permutations fixant $i$ correspondent aux permutations des
+    $n-1$ autres éléments : $P(X_i=1)=\frac{(n-1)!}{n!}=\frac1n$. Comme
+    $X=\sum_iX_i$, par linéarité $\res{E(X)=n\cdot\frac1n=1}$. \pts{1 pt}
+  \item De même $P(X_i=1,X_j=1)=\frac{(n-2)!}{n!}=\frac{1}{n(n-1)}$. Avec
+    $X_i^{2}=X_i$ :
+    \[E(X^{2})=\sum_{i}E(X_i)+\sum_{i\neq j}E(X_iX_j)=1+n(n-1)\cdot\frac{1}{n(n-1)}=2,\]
+    d'où $\res{V(X)=2-1^{2}=1}$ : moyenne et variance ne dépendent pas de $n$.
+    \pts{1,5 pt}
+  \item Seule l'identité a $n$ points fixes : $\res{P(X=n)=\frac{1}{n!}}$. Une
+    permutation qui fixe $n-1$ points fixe aussi le dernier :
+    $\res{P(X=n-1)=0}$. Enfin
+    $P(X\geqslant3)\leqslant P\bigl(|X-1|\geqslant2\bigr)\leqslant\frac{V(X)}{2^{2}}=\res{\frac14}$.
+    \pts{1 pt}
+  \item On compte les permutations de $S_4$ selon leurs points fixes (les
+    dérangements de $k$ éléments sont $1,0,1,2,9$ pour $k=0,\dots,4$) :
+    $9$ sans point fixe, $4\times2=8$ avec un seul, $\binom42\times1=6$ avec
+    deux, $0$ avec trois, $1$ avec quatre. D'où la loi (figure) et
+    $E(X)=\frac{8+12+4}{24}=1$, $E(X^{2})=\frac{8+24+16}{24}=2$.
+    \pts{0,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=1.15cm,y=11cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-0.6,0) -- (4.7,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-0.6,0) -- (-0.6,0.44);
+  \foreach \k/\p/\lab in {0/0.375/{9/24},1/0.3333/{8/24},2/0.25/{6/24},3/0/{0},4/0.04167/{1/24}}{
+    \fill[otNavy,rounded corners=0.6pt] ({\k-0.28},0) rectangle ({\k+0.28},\p);
+    \node[font=\scriptsize,anchor=south] at (\k,\p) {$\lab$};
+    \node[font=\scriptsize,anchor=north] at (\k,-0.005) {$\k$};}
+  \node[font=\scriptsize,anchor=west] at (4.7,0) {$k$};
+  \node[font=\scriptsize,anchor=south] at (-0.6,0.44) {$P(X=k)$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{La loi du nombre de points fixes pour $n=4$ : on vérifie
+$E(X)=V(X)=1$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Matrices de rang 1}
+\begin{questions}
+  \item La $j$-ième colonne de $M$ est $v_jU$ : toutes les colonnes sont
+    colinéaires à $U$, et l'une au moins est non nulle ($V\neq0$), donc
+    $\res{\operatorname{rg}M=1}$. Puis
+    $\operatorname{tr}M=\sum_iu_iv_i=V^{\mathsf{T}}U$, et par associativité
+    \[M^{2}=U\,(V^{\mathsf{T}}U)\,V^{\mathsf{T}}=(V^{\mathsf{T}}U)\,UV^{\mathsf{T}}=\res{(\operatorname{tr}M)\,M},\]
+    car $V^{\mathsf{T}}U$ est un scalaire. \pts{1,5 pt}
+  \item Si $t=\operatorname{tr}M\neq0$, $P=\frac1tM$ vérifie
+    $P^{2}=\frac{1}{t^{2}}\,tM=P$ : \res{\text{projecteur}} (de rang $1$). Si
+    $t=0$, $M^{2}=0$ : $M$ est \res{\text{nilpotente}}. \pts{1 pt}
+  \item Si $t\neq-1$ :
+    $(I_n+M)\bigl(I_n-\frac{1}{1+t}M\bigr)=I_n+M-\frac{1}{1+t}(M+tM)=I_n$,
+    d'où l'inversibilité et
+    $\res{(I_n+M)^{-1}=I_n-\dfrac{1}{1+\operatorname{tr}M}\,M}$. Si $t=-1$ :
+    $(I_n+M)U=U+U\,(V^{\mathsf{T}}U)=U-U=0$ avec $U\neq0$ : $I_n+M$ n'est
+    \res{\text{pas inversible}}. \pts{1 pt}
+  \item Si $t\neq0$, $\frac1tM$ est un projecteur de rang $1$ : dans une base
+    adaptée, $M$ est semblable à $\operatorname{diag}(t,0,\dots,0)$, donc
+    $I_n+M$ à $\operatorname{diag}(1+t,1,\dots,1)$. Si $t=0$, $M^{2}=0$ donne
+    $U\in\operatorname{Im}M\subseteq\operatorname{Ker}M$, de dimension $n-1$ :
+    on complète $e_1=U$ en une base $(e_1,\dots,e_{n-1})$ de
+    $\operatorname{Ker}M$, puis en une base $(e_1,\dots,e_n)$ de $\R^{n}$.
+    Comme $Me_n\in\operatorname{Vect}(e_1)$, $M$ est semblable à une matrice
+    dont seul le coefficient $(1,n)$ peut être non nul, et $I_n+M$ à une
+    matrice triangulaire de diagonale $1$. Dans les deux cas
+    $\res{\det(I_n+M)=1+\operatorname{tr}M}$. \pts{1 pt}
+  \item $M=\begin{pmatrix}1&1&1\\2&2&2\\3&3&3\end{pmatrix}$, $\operatorname{tr}M=6$ :
+    \[\res{(I_3+M)^{-1}=I_3-\frac17M=\frac17\begin{pmatrix}6&-1&-1\\-2&5&-2\\-3&-3&4\end{pmatrix}},
+      \qquad\res{\det(I_3+M)=7}.\]
+    \pts{0,5 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}{4 points}{Le folium de Descartes}
+\begin{questions}
+  \item $\partial_1f=3x^{2}-3y$ et $\partial_2f=3y^{2}-3x$ : $y=x^{2}$ et
+    $x=y^{2}$, d'où $x=x^{4}$, soit $x\in\ens{0,1}$ (racines réelles) :
+    les points critiques sont $\res{(0,0)\text{ et }(1,1)}$. \pts{1 pt}
+  \item $f(0,0)=0$ et $f(x,0)=x^{3}$ prend des valeurs strictement positives
+    et strictement négatives au voisinage de $0$ : \res{\text{pas d'extremum
+    local}} en $(0,0)$ (point col). \pts{0,5 pt}
+  \item Le développement est un calcul direct. Puis
+    $h^{2}-hk+k^{2}-\frac12(h^{2}+k^{2})=\frac12(h-k)^{2}\geqslant0$. Avec
+    $r=\sqrt{h^{2}+k^{2}}$, on a $|h|,|k|\leqslant r$, donc
+    $|h^{3}+k^{3}|\leqslant|h|^{3}+|k|^{3}\leqslant r\,(h^{2}+k^{2})=r^{3}$, d'où
+    \[f(1+h,1+k)+1\geqslant\frac32r^{2}-r^{3}=r^{2}\Bigl(\frac32-r\Bigr)\geqslant0\quad\text{pour }r\leqslant\frac32.\]
+    $f$ admet donc en $(1,1)$ un \res{\text{minimum local}, f(1,1)=-1}, qui
+    n'est \res{\text{pas global}} : $f(x,0)=x^{3}\to-\infty$ en $-\infty$.
+    \pts{2 pts}
+  \item Avec $x=\frac{3t}{1+t^{3}}$, $y=tx$ :
+    $x^{3}+y^{3}=x^{3}(1+t^{3})=\frac{27t^{3}}{(1+t^{3})^{2}}$ et
+    $3xy=3tx^{2}=\frac{27t^{3}}{(1+t^{3})^{2}}$ : \res{f(x,y)=0}. \pts{0,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[scale=1.05,line cap=round,line join=round]
+  \begin{scope}
+    \clip (-2,-2) rectangle (2.5,2.5);
+    \input{evaluations/fig-folium-niveaux}
+    \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (-2.2,1.2) -- (1.2,-2.2);
+    \draw[otOrange,line width=1.3pt] plot[domain=-0.58:0,samples=60]
+      ({3*\x/(1+\x*\x*\x)},{3*\x*\x/(1+\x*\x*\x)});
+    \draw[otOrange,line width=1.3pt] plot[domain=-0.58:0,samples=60]
+      ({3*\x*\x/(1+\x*\x*\x)},{3*\x/(1+\x*\x*\x)});
+    \draw[otOrange,line width=1.3pt] plot[domain=0:1,samples=80]
+      ({3*\x/(1+\x*\x*\x)},{3*\x*\x/(1+\x*\x*\x)});
+    \draw[otOrange,line width=1.3pt] plot[domain=0:1,samples=80]
+      ({3*\x*\x/(1+\x*\x*\x)},{3*\x/(1+\x*\x*\x)});
+  \end{scope}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-2,0) -- (2.65,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-2) -- (0,2.65);
+  \fill[otGreenDark] (1,1) circle (1.8pt);
+  \fill[otInk] (0,0) circle (1.6pt);
+  \node[font=\scriptsize,text=otGreenDark,anchor=north west,fill=white,inner sep=1pt] at (1.04,0.96) {$(1,1)$};
+  \node[font=\scriptsize,text=otMuted,anchor=north east] at (-0.92,-0.1) {$x+y+1=0$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Lignes de niveau de $f$ : le folium $f=0$ (orange), deux niveaux
+négatifs (vert) entourant le minimum local $(1,1)$, deux niveaux positifs
+(bleu). La droite pointillée est l'asymptote du folium.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Problème]{7 points}{La suite $u_{n+1}=\sin u_n$}
+\begin{questions}
+  \item $\sin$ envoie $\bigl]0,\frac\pi2\bigr]$ dans $\intOF01\subset\bigl]0,\frac\pi2\bigr]$ :
+    récurrence immédiate. Comme $\sin x<x$ pour $x>0$, $u_{n+1}<u_n$ : la
+    suite décroît, minorée par $0$, donc converge vers
+    $\ell\in\bigl[0,\frac\pi2\bigr]$, avec $\sin\ell=\ell$ par continuité ;
+    d'où $\res{\ell=0}$. \pts{1 pt}
+  \item Avec $\sin^{2}x=x^{2}-\frac{x^{4}}3+o(x^{4})$ :
+    \[\frac{1}{\sin^{2}x}-\frac{1}{x^{2}}=\frac{x^{2}-\sin^{2}x}{x^{2}\sin^{2}x}
+      =\frac{\frac{x^{4}}{3}+o(x^{4})}{x^{4}+o(x^{4})}\longrightarrow\frac13.\]
+    Comme $u_n\to0$ avec $u_n>0$, par composition $\res{v_n\to\dfrac13}$.
+    \pts{1,5 pt}
+  \item Soit $\varepsilon>0$ et $N$ tel que $|a_k-\ell|\leqslant\varepsilon$ pour
+    $k\geqslant N$. Pour $n>N$ :
+    \[\Bigl|\frac1n\sum_{k=0}^{n-1}a_k-\ell\Bigr|\leqslant
+      \underbrace{\frac1n\sum_{k=0}^{N-1}|a_k-\ell|}_{\to0\ (N\text{ fixé})}
+      +\frac{n-N}{n}\,\varepsilon\leqslant2\varepsilon\]
+    pour $n$ assez grand : \res{\text{le lemme de Cesàro}} est établi.
+    \pts{1,5 pt}
+  \item Par télescopage,
+    $\frac1n\sum_{k=0}^{n-1}v_k=\frac1n\Bigl(\frac{1}{u_n^{2}}-\frac{1}{u_0^{2}}\Bigr)\to\frac13$,
+    et $\frac{1}{nu_0^{2}}\to0$ : $\frac{1}{nu_n^{2}}\to\frac13$, soit
+    $u_n^{2}\sim\frac3n$, et, $u_n$ étant positif,
+    $\res{u_n\sim\sqrt{\dfrac3n}}$. \pts{1,5 pt}
+  \item Par comparaison de séries à termes positifs avec les séries de
+    Riemann : $u_n\sim\frac{\sqrt3}{n^{1/2}}$ et $u_n^{2}\sim\frac3n$ :
+    $\res{\sum u_n\text{ et }\sum u_n^{2}\text{ divergent}}$ ;
+    $u_n^{3}\sim\frac{3\sqrt3}{n^{3/2}}$ : $\res{\sum u_n^{3}\text{ converge}}$.
+    \pts{1,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=2.6cm,y=2.6cm,line cap=round,line join=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0) -- (1.75,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0) -- (0,1.15);
+  \draw[otMuted,line width=0.5pt] (0,0) -- (1.12,1.12);
+  \draw[otNavy,line width=1.1pt] plot[domain=0:1.68,samples=80] (\x,{sin(deg(\x))});
+  \draw[otGreenDark,line width=0.8pt] (1.5708,0) -- (1.5708,1) -- (1,1) -- (1,0.8415) -- (0.8415,0.8415)
+    -- (0.8415,0.7456) -- (0.7456,0.7456) -- (0.7456,0.6784) -- (0.6784,0.6784) -- (0.6784,0.6276);
+  \foreach \u/\l in {1.5708/0,1/1,0.8415/2}
+    \node[font=\scriptsize,text=otGreenDark,anchor=north] at (\u,-0.02) {$u_{\l}$};
+  \node[font=\scriptsize,text=otNavy,anchor=south] at (1.45,1.0) {$y=\sin x$};
+  \node[font=\scriptsize,text=otMuted,anchor=south east] at (1.1,1.1) {$y=x$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Les itérés pour $u_0=\frac\pi2$ : la courbe de $\sin$ est tangente
+à la droite $y=x$ en $0$, d'où une convergence lente, en $\sqrt{3/n}$ ; par
+exemple $u_n\sqrt n\approx1{,}726$ pour $n=1000$.}
+\end{minipage}\end{center}
+\end{corrigeEval}

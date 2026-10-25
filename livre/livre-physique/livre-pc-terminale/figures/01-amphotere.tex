@@ -1,0 +1,21 @@
+% Deux espèces amphotères : l'eau et l'ion hydrogénocarbonate (L'essentiel, chapitre 1)
+\begin{tikzpicture}[x=1mm,y=1mm,
+  esp/.style={rounded corners=1.4mm,minimum width=22mm,minimum height=8mm,inner sep=1mm,fill=otNavyTint,draw=otNavy!40},
+  amph/.style={esp,fill=otGreenTint,draw=otGreenDark,line width=0.8pt},
+  fl/.style={otNavy,line width=0.7pt,-{Stealth[length=2mm]}},
+  tag/.style={font=\otSemi\fontsize{6.2}{7}\selectfont,text=otGreenDark},
+  cpl/.style={pcLegende,align=center}]
+\node[esp] (w1) at (0,24) {\ce{H3O+}};
+\node[amph] (w2) at (52,24) {\ce{H2O}};
+\node[esp] (w3) at (104,24) {\ce{HO-}};
+\draw[fl] (w1) -- node[above,pcLegende]{cède \ce{H+}} node[below,cpl]{couple \ce{H3O+}/\ce{H2O}} (w2);
+\draw[fl] (w2) -- node[above,pcLegende]{cède \ce{H+}} node[below,cpl]{couple \ce{H2O}/\ce{HO-}} (w3);
+\node[tag,anchor=south] at (w2.north) {\otCaps[8]{amphotère}};
+\node[esp] (c1) at (0,0) {\ce{CO2,H2O}};
+\node[amph] (c2) at (52,0) {\ce{HCO3-}};
+\node[esp] (c3) at (104,0) {\ce{CO3^2-}};
+\draw[fl] (c1) -- node[above,pcLegende]{cède \ce{H+}} node[below,cpl]{couple\\\ce{CO2,H2O}/\ce{HCO3-}} (c2);
+\draw[fl] (c2) -- node[above,pcLegende]{cède \ce{H+}} node[below,cpl]{couple\\\ce{HCO3-}/\ce{CO3^2-}} (c3);
+\node[tag,anchor=south] at (c2.north) {\otCaps[8]{amphotère}};
+\end{tikzpicture}
+\par\smallskip\legende{Une espèce amphotère est la base d'un couple et l'acide d'un autre couple.}

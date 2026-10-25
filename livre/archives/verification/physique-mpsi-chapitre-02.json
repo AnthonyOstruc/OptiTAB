@@ -1,0 +1,403 @@
+{
+  "chapitre": 2,
+  "titre": "Signaux électriques dans l’ARQS",
+  "pages": 54,
+  "pages_prevues": 54,
+  "pagination_conforme": true,
+  "positions": {
+    "titre": 2,
+    "avant": 3,
+    "sommaire": 4,
+    "ressources": 5,
+    "chapitre-02": 6,
+    "diagnostic": 7,
+    "cours-1": 8,
+    "cours-2": 9,
+    "cours-3": 10,
+    "cours-4": 11,
+    "cours-5": 12,
+    "cours-6": 13,
+    "cours-7": 14,
+    "cours-8": 15,
+    "cours-9": 16,
+    "cours-10": 17,
+    "cours-11": 18,
+    "tp": 19,
+    "numerique": 20,
+    "synthese": 21,
+    "td1": 22,
+    "td2": 23,
+    "td3": 24,
+    "td4": 25,
+    "td5": 26,
+    "td6": 27,
+    "td7": 28,
+    "td8": 29,
+    "defi1": 30,
+    "defi2": 31,
+    "defi3": 32,
+    "dm": 33,
+    "ds1": 34,
+    "ds2": 35,
+    "indices": 36,
+    "corr-diag": 37,
+    "corr-td1": 38,
+    "corr-td2": 39,
+    "corr-td3": 40,
+    "corr-td4": 41,
+    "corr-td5": 42,
+    "corr-td6": 43,
+    "corr-td7": 44,
+    "corr-td8": 45,
+    "corr-defi1": 46,
+    "corr-defi2": 47,
+    "corr-defi3": 48,
+    "corr-dm": 49,
+    "corr-ds1": 50,
+    "corr-ds2": 51,
+    "sources-1": 52,
+    "sources-2": 53,
+    "references": 54
+  },
+  "exercices": 24,
+  "defis": 3,
+  "dm": 1,
+  "ds": 1,
+  "sources": [
+    {
+      "titre": "DM réel / Réseau de résistances",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/dm2_optique_elec.pdf",
+      "cible": "MPSI, schleck.ovh ; DM2 à rendre le 29 septembre 2026 ; exercice 2, questions 1 à 6, page 2/2.",
+      "travail": "Prévoir 35 minutes. Résoudre d’abord la cellule isolée, puis construire la récurrence du réseau. Garder le dessin original : chaque cellule comporte deux résistances R sur les rails et une branche transversale 2R.",
+      "corrige": "La cellule isolée est une série $R+2R+R=4R$. La résistance du bas reçoit $u_R=E/4=1{,}5$ V. Sa puissance vaut $E^2/(16R)=2{,}25$ mW ; la source fournit $E^2/(4R)=9$ mW, d’où $\\eta=1/4$. La récurrence est $X_n=2R+2RX_{n-1}/(2R+X_{n-1})$ ; $X_1=4R$ et $X_2=10R/3$. La limite positive vérifie $X^2-2RX-4R^2=0$, soit $X=(1+\\sqrt5)R=3{,}236$ k$\\Omega$. Ces résultats concernent le schéma du DM, différent de E23."
+    },
+    {
+      "titre": "DS réel / Panneau solaire",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/ds02_enonce.pdf",
+      "cible": "MPSI, schleck.ovh ; DS2 du 8 octobre 2026 ; partie III, questions 1 et 4 à 6, pages 5/7 et 6/7.",
+      "travail": "Prévoir 30 minutes. Lire la caractéristique réelle avant de travailler le modèle local de Thévenin. Pour les questions 4 à 6, prendre x branches en parallèle et y cellules par branche, avec xy=N.",
+      "corrige": "Une courbe d’iso-puissance vérifie $I=P/U$. Les branches donnent $E_{\\rm eq}=yE=NE/x$ et $r_{\\rm eq}=yr/x=Nr/x^2$, donc $U=NExR/(Rx^2+Nr)$. Dans l’optimisation continue, $x=\\sqrt{Nr/R}$ et $y=\\sqrt{NR/r}$ : l’adaptation donne $P_{\\max}=NE^2/(4r)$ et $P_J=P_{\\max}$. Le câblage réel impose des entiers et des diviseurs de N : comparer les configurations réalisables."
+    }
+  ],
+  "placements_figures": 12,
+  "figures_distinctes": 6,
+  "controles": [
+    {
+      "nom": "E01-q",
+      "valeur": 0.096,
+      "attendu": 0.096,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E02-q",
+      "valeur": 8.0,
+      "attendu": 8.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E06-i",
+      "valeur": 1.0,
+      "attendu": 1.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E08-U",
+      "valeur": 7.416198487095663,
+      "attendu": 7.416198487095663,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E09-énergie",
+      "valeur": 2.4e-05,
+      "attendu": 2.4e-05,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E10-Req",
+      "valeur": 300.0,
+      "attendu": 300.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E13-u",
+      "valeur": 4.5,
+      "attendu": 4.5,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E15-seuil",
+      "valeur": 9900000.0,
+      "attendu": 9900000.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E16-r",
+      "valeur": 50.0,
+      "attendu": 50.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E18-max",
+      "valeur": 18.0,
+      "attendu": 18.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E19-énergie",
+      "valeur": -0.00030000000000000003,
+      "attendu": -0.0003,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E20-stock",
+      "valeur": 0.0010000000000000002,
+      "attendu": 0.001,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E22-apparent",
+      "valeur": 90909.09090909091,
+      "attendu": 90909.09090909091,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E23-limite",
+      "valeur": 1.618033988749895,
+      "attendu": 1.618033988749895,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E24-incertitude",
+      "valeur": 0.45069390943299864,
+      "attendu": 0.45069390943299864,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "D2-Rplus",
+      "valeur": 10.0,
+      "attendu": 10.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "DS-énergieC",
+      "valeur": 0.00011999999999999999,
+      "attendu": 0.00012,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "DS-surtension",
+      "valeur": -2000.0,
+      "attendu": -2000.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "R1-cellule",
+      "valeur": 4.0,
+      "attendu": 4.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "R1-eta",
+      "valeur": 0.25,
+      "attendu": 0.25,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "réseau-nœud-A",
+      "valeur": 2.220446049250313e-16,
+      "attendu": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "réseau-nœud-B",
+      "valeur": -4.440892098500626e-16,
+      "attendu": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "réseau-puissances",
+      "valeur": 18.0,
+      "attendu": 18.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Thevenin-bilan-0.4",
+      "valeur": 60.0,
+      "attendu": 60.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Thevenin-bilan-2",
+      "valeur": 36.0,
+      "attendu": 36.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Thevenin-bilan-10",
+      "valeur": 12.0,
+      "attendu": 12.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Thevenin-bilan-100",
+      "valeur": 1.4117647058823528,
+      "attendu": 1.4117647058823528,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "source-DM2-échelle",
+      "valeur": 3.23606797749979,
+      "attendu": 3.23606797749979,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "D1-erreur-charge",
+      "valeur": 0.00994951722785864,
+      "attendu": 0.00994951722785864,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "code-publie-execute",
+      "valeur": 1,
+      "attendu": 1,
+      "tolerance": 0
+    }
+  ],
+  "erreurs_compilation": [],
+  "textes_hors_page": [],
+  "collisions_candidates": [],
+  "liens": 60,
+  "liens_invalides": [],
+  "sha256": "3ef89d44183e941fc7a5acb487f6332c93fc6c85f224394dff3aa1968b855d3d",
+  "relecture_visuelle": {
+    "date": "2026-10-25",
+    "pages_relues": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54
+    ],
+    "methode": "Inspection de toutes les pages rendues avec Poppler en planches de quatre ; r?inspection isol?e des pages modifi?es ? 100 dpi.",
+    "constat": "Aucun d?bordement, texte tronqu? ou chevauchement de figure rep?r? dans le rendu final.",
+    "pages_reinspectees": [
+      10,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "empreintes_pages_relues": {
+    "page-01.png": "b9305a515aeefefc816b242ad2c805e21af5c471cc6bba62231478ea1189bdca",
+    "page-02.png": "0fcf755d8f3fcbb50a521aeb41dbdc6bb90724ddd9df3f2d453b9d2a506ef4bc",
+    "page-03.png": "805b2a42acb0eab4cf2db9ff084e6b4fc4381ccd385b3b13e2de36dfef3bc982",
+    "page-04.png": "d552b70c4bc0845680a0838ec15b165d5694ab57c9f54e4235796fcb481536c6",
+    "page-05.png": "66b0c9636ea136fef4dbc93a7efdcad715d81191db2907e8892f8df7da0d524d",
+    "page-06.png": "219b216b0c4cbc71dcf0182e811a183045c23e2d515ea9a9ad70d5032c77c5c0",
+    "page-07.png": "db80b6a86a7a4d4c892fb726629d2451aeaf7f95954a52f750d7ebab29d5d724",
+    "page-08.png": "dde8cd491c4e7d6524576be8e03899c35c37e60b2e832dd2bd91cbe6ad048e4e",
+    "page-09.png": "2ac7db884cd4c68d443ff660dca95b7cfb0ab49e53f8ff42819aaa3e6eb9ed79",
+    "page-10.png": "cd4ed7be2ca576f435c4d6dc0ea9d1ed4abfeb4ceecdce1b3ed6c53d5892de5a",
+    "page-11.png": "feaf3a3228a7991d778c115c8c7b02d31641b1052ecbd57d4a77cb9aab88e1b8",
+    "page-12.png": "06b501e2ccd1a13f2fd34d0a23f57ddcca9a6607dfab88f30cd99f512b9ad81c",
+    "page-13.png": "af2d5a21abe79784a098e2f6f32f9055e49878fa37e202e5904aabcae741cb26",
+    "page-14.png": "e593b00715cdbf34ee9207f06db9726405d18de7726cef219decebd8715ba307",
+    "page-15.png": "fd61ea6b0c523cc30f68f0609a05ea566ef4cf329916052ea35b5efce52f818f",
+    "page-16.png": "1f9d3af443e443244bd7d119381da59b7a70a13ac8066ba6ba0ad16d8ac015ca",
+    "page-17.png": "f17efde1d3d27d0ae9a577b1c1b4a81d93f665771551a4f0cc34d4778278404a",
+    "page-18.png": "f733f1cf2c4a10f64ab570f1984e6bdc6e9f031376b057529213d411e93e29bf",
+    "page-19.png": "07f4fa9f40a199bae5a9f677bd093b890ff3a13dae94ed6d6532cabc64ead265",
+    "page-20.png": "a089aafb838ba49cd9e09deba55d0e4bd3d91cdd47be25e276e976726781666c",
+    "page-21.png": "fa92d5892041b5d159379fbd359e85db58e091eb18f30fc2149f7b404c128e64",
+    "page-22.png": "adc9d1fdfa84f5099722318e623accc68d626fb9a2d4bb8c1f1f1fa3f22e305e",
+    "page-23.png": "51fffe41e503c594f861269ab20a62de31e91e65148c036aa7e3b8a1ee84a2bd",
+    "page-24.png": "d656d867edba90182a1d59bfedce0476333ee1693700ceb2b2840ccc67adc354",
+    "page-25.png": "526b70140d54b13c45ff7dd1aa9326c2eb1f621cc6b5716c06716447e05be49a",
+    "page-26.png": "27a148d34b6905efaefe5702e49b977ed5bba0aeecb4aa571caf6b6c17d4904b",
+    "page-27.png": "eca574c5b9b0de6f00a426e7fce31cca4b051e5b75103d3686770f768d258482",
+    "page-28.png": "90e8b869f9df7114c94300413bcc350eb2c644a96d7ae3b34feef81e2ce9c221",
+    "page-29.png": "7c9259fc6c3cfecbcbab5e190d800973c484c874ac9dd08aef1f4846cb730d1f",
+    "page-30.png": "89dbf3f9468f4b7660666a2d78b9ffc05b2220d6c402cf82a1b62d6caeff9b5c",
+    "page-31.png": "b56fc9dc04d8d7b881b7d9a128d808b68b5ec7a710bced4940b9f99073841ed6",
+    "page-32.png": "d0d9ff08dc7000804de7e6a39cc2e6067355519ee37f0925a5e0a1a7cefaa7e0",
+    "page-33.png": "ad256accec9ec18cba1af0f7bb48ab70110b730151be14917758de20b92c7825",
+    "page-34.png": "c1af9df04d6dc4d9a0417bf0b81ecf15840aa361476686360cd897f299502fbe",
+    "page-35.png": "f80a154b0fe3df28d575cc6314446e918719bb2245f7fc067f5352b96a1af5a8",
+    "page-36.png": "fe2c5e676fb35b735212059ae830077b23cb6b80202acaaa3b74581e3adabb92",
+    "page-37.png": "f13f0ea8a92be6413b295af07df7b0c1d0063e802603fc597e4e9a670f2e64a2",
+    "page-38.png": "6b22bfad0a281883f1fdaf4b9e7da1241685eb6c528739099113b32befdc930d",
+    "page-39.png": "dce93bbe345b58f4e5962e73cf75e0aad7f27003645eca36152c41c3fdbc67e2",
+    "page-40.png": "391df7424f468b9cf0bda3f649230930ca28d797a4d21c0137c54ea22799c0d4",
+    "page-41.png": "6d224643cf308ef6f6ffab55c2c0412cafbc2ddae0baed2a10448b44f5cf68a9",
+    "page-42.png": "7b1d38cf6eafe616520a48669e7033044393fa78b89ae29ca8475483d10bf965",
+    "page-43.png": "25afb127c3e5cfc29406bf6a550ebe3890246ea4aa357991c6e28352e3ad6a0c",
+    "page-44.png": "3e530d905eb5ee476f3ac9484c268f774d95cc052cbc3610a760fdebcc61b3d0",
+    "page-45.png": "531e3ccd80a633520c5a081faf768f8407bca757bbf4e25ed41d8127dd8dbf5a",
+    "page-46.png": "e920c18f63c9f03c0964f1f23b4bfc2e0897a80b1b630b23ff93ec27a32821e5",
+    "page-47.png": "59b38dcd7880cbb3e73b699a11677012bd55e3e51a84c309140356c41d39fff1",
+    "page-48.png": "458f14c63f56a58e6754b203c0ed259543d247b48c0f9fbab3d5f4c6131a2cb4",
+    "page-49.png": "ac5108860436e898e0121de2f8aa5d2b84bc31c257a9f4fb49c08298f7f1e5b9",
+    "page-50.png": "15e74da4876f13aee1df20cefb744c65e2fd420ac939c66df5b21b66cd1e3fbe",
+    "page-51.png": "e7d887c6a9aef026beeb8324750df2d387333703a9412b2d6c86bf9d8aa895da",
+    "page-52.png": "ea642e314c4c0f3f04f43e6381bef4c0b0af0c00b84dc97a21f482866882d171",
+    "page-53.png": "7a5f989bf0dbfd122741824cd37dbeb0a85d9003450d7ca77419e2b0bcf33ae1",
+    "page-54.png": "d76ec071bd1e0cebb8e2817e4acf6a37b16a9db0e76e4d1bf6610de589aeff73"
+  },
+  "livraisons": [
+    "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\output\\pdf\\France\\Physique-chimie\\OptiTAB - Physique - MPSI - Chapitre 02 - Signaux electriques dans l ARQS.pdf",
+    "C:\\Users\\SWEELCO-AT\\Desktop\\Livres OptiTAB - Lycée\\OptiTAB - Physique - MPSI - Chapitre 02 - Signaux electriques dans l ARQS.pdf"
+  ]
+}

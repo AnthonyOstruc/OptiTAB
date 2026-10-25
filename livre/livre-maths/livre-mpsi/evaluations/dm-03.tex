@@ -1,0 +1,77 @@
+% !TEX root = ../main.tex
+%% Devoir maison n° 3 — Méthode des trapèzes et formule de Stirling (chapitres 11, 15, 19)
+%% Résultats vérifiés par verifications/eval_dm.py.
+
+\sujetEval{DM3}{MPSI · Devoir maison}{Devoir maison \numero3}
+  {À rendre en une semaine\\La formule de Stirling\\Chapitres 11, 15 et 19}{3}
+  {Partie A/L'erreur de la méthode des trapèzes/Q1 à Q3,Partie B/Un développement de $\ln n!$/Q4 à Q7,%
+   Partie C/La constante de Stirling/Q8 et Q9}
+\enParties
+\consigne{La partie C utilise le résultat de la question 6, que l'on
+pourra admettre.}
+
+La \emph{méthode des trapèzes} approche l'intégrale d'une fonction sur un
+segment par l'aire du trapèze construit sur ses valeurs aux extrémités. On
+en étudie l'erreur, puis on l'applique au logarithme pour établir la
+\emph{formule de Stirling} :
+\[n!\underset{n\to+\infty}{\sim}\sqrt{2\pi n}\,\Bigl(\frac{n}{\mathrm{e}}\Bigr)^{n}.\]
+
+\begin{exoEval}[L'erreur de la méthode des trapèzes]{}{}
+Soient $a<b$ et $f$ une fonction de classe $\mathcal{C}^{2}$ sur
+$\intFF ab$. On pose
+\[T(f)=(b-a)\,\frac{f(a)+f(b)}{2}\qquad\text{et}\qquad\varphi(t)=(t-a)(b-t).\]
+\begin{questions}
+  \item \begin{enumerate}[label=\alph*)]
+      \item En intégrant deux fois par parties $\int_a^{b}\varphi f''$,
+        montrer que
+        \[\int_a^{b}f(t)\,\mathrm{d}t-T(f)=-\frac12\int_a^{b}\varphi(t)\,f''(t)\,\mathrm{d}t.\]
+      \item Vérifier cette formule pour $f:t\mapsto t^{2}$ sur $\intFF01$.
+    \end{enumerate}
+  \item On suppose que $|f''|\leqslant M$ sur $\intFF ab$. Calculer
+    $\int_a^{b}\varphi$ et en déduire que
+    \[\Bigl|\int_a^{b}f(t)\,\mathrm{d}t-T(f)\Bigr|\leqslant\frac{M(b-a)^{3}}{12}.\]
+  \item On découpe $\intFF01$ en $n$ segments de même longueur et l'on
+    applique la méthode sur chacun d'eux pour approcher
+    \[\int_0^{1}\frac{\mathrm{d}t}{1+t^{2}}=\frac\pi4.\]
+    Montrer que la dérivée seconde de $t\mapsto\frac{1}{1+t^{2}}$ est
+    majorée en valeur absolue par $2$ sur $\intFF01$, puis que l'erreur
+    commise est au plus $\dfrac{1}{6n^{2}}$. Combien de segments suffisent
+    pour garantir une erreur inférieure à $10^{-6}$ ?
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Un développement de $\ln n!$]{}{}
+Pour $k\geqslant1$, on pose
+\[e_k=\int_k^{k+1}\ln t\,\mathrm{d}t-\frac{\ln k+\ln(k+1)}{2}.\]
+\begin{questions}[start=4]
+  \item Montrer que $0\leqslant e_k\leqslant\dfrac{1}{12k^{2}}$, et
+    interpréter $e_k$ comme une aire.
+  \item Montrer que pour tout $n\geqslant2$ :
+    \[\ln n!=n\ln n-n+\frac12\ln n+1-\sum_{k=1}^{n-1}e_k.\]
+  \item En déduire que la série $\sum e_k$ converge, puis qu'il existe une
+    constante $C$ telle que
+    $\ln n!=n\ln n-n+\frac12\ln n+C+o(1)$. En déduire qu'il existe $K>0$ tel
+    que $n!\sim K\sqrt n\,\bigl(\frac n{\mathrm{e}}\bigr)^{n}$.
+  \item Montrer que pour $n\geqslant2$,
+    $0\leqslant\sum_{k=n}^{+\infty}e_k\leqslant\dfrac{1}{12(n-1)}$, et en
+    déduire un encadrement de l'erreur dans le développement de la
+    question 6.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[La constante de Stirling]{}{}
+Pour $n\in\N$, on considère les \emph{intégrales de Wallis}
+\[W_n=\int_0^{\pi/2}\sin^{n}t\,\mathrm{d}t.\]
+\begin{questions}[start=8]
+  \item \begin{enumerate}[label=\alph*)]
+      \item Montrer que $W_{n+2}=\dfrac{n+1}{n+2}\,W_n$, et en déduire
+        $W_{2p}=\dfrac{(2p)!}{4^{p}\,(p!)^{2}}\cdot\dfrac\pi2$.
+      \item Montrer que $(W_n)$ est décroissante et strictement positive,
+        que $(n+1)W_{n+1}W_n=\dfrac\pi2$, puis que
+        $W_n\sim\sqrt{\dfrac{\pi}{2n}}$.
+    \end{enumerate}
+  \item En calculant de deux façons un équivalent de $W_{2p}$, montrer que
+    $K=\sqrt{2\pi}$. En déduire la formule de Stirling, et une valeur
+    approchée de $C$.
+\end{questions}
+\end{exoEval}

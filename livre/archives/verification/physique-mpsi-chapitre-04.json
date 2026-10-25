@@ -1,0 +1,409 @@
+{
+  "chapitre": 4,
+  "titre": "L’oscillateur harmonique",
+  "pages": 54,
+  "pages_prevues": 54,
+  "pagination_conforme": true,
+  "positions": {
+    "titre": 2,
+    "avant": 3,
+    "sommaire": 4,
+    "ressources": 5,
+    "chapitre-04": 6,
+    "diagnostic": 7,
+    "cours-1": 8,
+    "cours-2": 9,
+    "cours-3": 10,
+    "cours-4": 11,
+    "cours-5": 12,
+    "cours-6": 13,
+    "cours-7": 14,
+    "cours-8": 15,
+    "cours-9": 16,
+    "cours-10": 17,
+    "cours-11": 18,
+    "tp": 19,
+    "numerique": 20,
+    "synthese": 21,
+    "td1": 22,
+    "td2": 23,
+    "td3": 24,
+    "td4": 25,
+    "td5": 26,
+    "td6": 27,
+    "td7": 28,
+    "td8": 29,
+    "defi1": 30,
+    "defi2": 31,
+    "defi3": 32,
+    "dm": 33,
+    "ds1": 34,
+    "ds2": 35,
+    "indices": 36,
+    "corr-diag": 37,
+    "corr-td1": 38,
+    "corr-td2": 39,
+    "corr-td3": 40,
+    "corr-td4": 41,
+    "corr-td5": 42,
+    "corr-td6": 43,
+    "corr-td7": 44,
+    "corr-td8": 45,
+    "corr-defi1": 46,
+    "corr-defi2": 47,
+    "corr-defi3": 48,
+    "corr-dm": 49,
+    "corr-ds1": 50,
+    "corr-ds2": 51,
+    "sources-1": 52,
+    "sources-2": 53,
+    "references": 54
+  },
+  "exercices": 24,
+  "defis": 3,
+  "dm": 1,
+  "ds": 1,
+  "sources": [
+    {
+      "titre": "DS réel / Un chariot oscillant",
+      "url": "https://cahier-de-prepa.fr/mp*-condorcet/download?id=98&v=66f32",
+      "cible": "Archive de révision SUP, site MP* Condorcet ; DS5 du 7 janvier 2023 ; problème I, partie I, questions 1 à 5, page PDF 1.",
+      "travail": "Prévoir 30 minutes. Garder le graphe original : il donne une position absolue x, et non directement l’écart à l’équilibre. Mesurer plusieurs périodes.",
+      "corrige": "$x_e=\\ell_0$. La lecture donne environ $\\ell_0=10$ cm, A = 5 cm, x(0) = 15 cm et v(0) = 0 ; T est voisin de 0,71 à 0,72 s. Avec m = 0,10 kg, $k=4\\pi^2m/T^2\\simeq7{,}7$ à 7,8 N/m, cohérent avec 7,78 N/m indiqué ensuite. $x=\\ell_0+A\\cos\\omega_0t$. Pour un lancement à l’équilibre, $x=\\ell_0+(v_0/\\omega_0)\\sin\\omega_0t$. L’exigence de longueur non négative impose $|v_0|\\leq\\omega_0\\ell_0\\simeq0{,}88$ m/s."
+    },
+    {
+      "titre": "Concours réel / Isochronisme",
+      "url": "https://www.concours-commun-inp.fr/_resource/annales%20%C3%A9crits/2024/MP/2024_MP2PC.pdf?download=true",
+      "cible": "CCINP 2024, filière MP, Physique-chimie ; partie III.1, Q19 a à c, pages imprimées 11/19 et 12/19 (PDF 11 et 12).",
+      "travail": "Prévoir 20 minutes. Pour rester dans les outils de ce chapitre, admettre le résultat de Q18 : $J_F\\ddot\\theta=-m_jg\\Delta\\sin\\theta$. Le théorème du moment cinétique nécessaire à sa démonstration sera étudié ultérieurement. Traiter ensuite les trois points de Q19.",
+      "corrige": "À petits angles, $\\sin\\theta\\simeq\\theta$, d’où $\\omega_{os}=\\sqrt{m_jg\\Delta/J_F}$. L’isochronisme signifie que la période ne dépend pas de l’amplitude dans ce modèle. La phase étudiée va d’un extrême à l’autre : sa durée vaut une demi-période, $\\tau_{os}=\\pi\\sqrt{J_F/(m_jg\\Delta)}$. Utiliser une période entière doublerait à tort la durée. Le reste du sujet demande d’autres chapitres."
+    }
+  ],
+  "placements_figures": 9,
+  "figures_distinctes": 5,
+  "controles": [
+    {
+      "nom": "E01-T",
+      "valeur": 0.3141592653589793,
+      "attendu": 0.3141592653589793,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E04-A",
+      "valeur": 0.05,
+      "attendu": 0.05,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E04-phase",
+      "valeur": -0.9272952180016123,
+      "attendu": -0.9272952180016123,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E06-v",
+      "valeur": -0.20784609690826525,
+      "attendu": -0.20784609690826525,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E10-E",
+      "valeur": 0.025000000000000005,
+      "attendu": 0.025,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E12-k",
+      "valeur": 62.5,
+      "attendu": 62.5,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E13-I",
+      "valeur": 0.15811388300841894,
+      "attendu": 0.15811388300841897,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E14-U",
+      "valeur": 3.1622776601683795,
+      "attendu": 3.1622776601683795,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E15-E",
+      "valeur": 9.999999999999999e-05,
+      "attendu": 0.0001,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E19-k",
+      "valeur": 19.89338251668301,
+      "attendu": 19.89338251668301,
+      "tolerance": 1e-08
+    },
+    {
+      "nom": "E20-uT",
+      "valeur": 0.0028284271247461905,
+      "attendu": 0.00282842712474619,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E22-T",
+      "valeur": 2.006066680710647,
+      "attendu": 2.0060666807106475,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E23-dérive",
+      "valeur": 2.7048138294215285,
+      "attendu": 2.7048138294215285,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "D1-gain",
+      "valeur": 0.011,
+      "attendu": 0.011,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "D2-E",
+      "valeur": 0.00025,
+      "attendu": 0.00025,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "D3-m",
+      "valeur": 0.1285714285714285,
+      "attendu": 0.12857142857142853,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "DM-C",
+      "valeur": 0.1,
+      "attendu": 0.1,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "DS-phase",
+      "valeur": -2.498091544796509,
+      "attendu": -2.498091544796509,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "DS-I",
+      "valeur": 0.06324555320336758,
+      "attendu": 0.0632455532033676,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "harmonique-équation-0",
+      "valeur": 0.0,
+      "attendu": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-énergie-0",
+      "valeur": 0.025,
+      "attendu": 0.025,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-équation-0.03",
+      "valeur": 0.0,
+      "attendu": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-énergie-0.03",
+      "valeur": 0.025,
+      "attendu": 0.025,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-équation-0.1",
+      "valeur": 0.0,
+      "attendu": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-énergie-0.1",
+      "valeur": 0.025000000000000005,
+      "attendu": 0.025,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-équation-0.3",
+      "valeur": 0.0,
+      "attendu": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-énergie-0.3",
+      "valeur": 0.024999999999999994,
+      "attendu": 0.025,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-équation-1",
+      "valeur": 0.0,
+      "attendu": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "harmonique-énergie-1",
+      "valeur": 0.024999999999999994,
+      "attendu": 0.025,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Euler-énergie-100-pas",
+      "valeur": 2.704813829421524,
+      "attendu": 2.7048138294215285,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "D2-énergie-LC",
+      "valeur": 0.00025,
+      "attendu": 0.00025,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "code-publie-execute",
+      "valeur": 1,
+      "attendu": 1,
+      "tolerance": 0
+    }
+  ],
+  "erreurs_compilation": [],
+  "textes_hors_page": [],
+  "collisions_candidates": [],
+  "liens": 60,
+  "liens_invalides": [],
+  "sha256": "4dcdd19021b694fa7a4580731e844edc2f51137954fbb1009df48b893ca176aa",
+  "relecture_visuelle": {
+    "date": "2026-10-25",
+    "pages_relues": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54
+    ],
+    "methode": "Inspection de toutes les pages rendues avec Poppler en planches de quatre ; r?inspection isol?e des pages modifi?es ? 100 dpi.",
+    "constat": "Aucun d?bordement, texte tronqu? ou chevauchement de figure rep?r? dans le rendu final.",
+    "pages_reinspectees": [
+      1,
+      10
+    ]
+  },
+  "empreintes_pages_relues": {
+    "page-01.png": "e55a09c7ce2df3fb3960ef3c9c0166816c9630f1113c5f61644bfeaef24ccf15",
+    "page-02.png": "98e06ed5ff44579ccf6724c0682567cc9339c5149127a7254dfafdf3c4028b08",
+    "page-03.png": "ab0ef1993a0eb90e65614c376737de064a12560375dcba05cf30260ccad9dcd8",
+    "page-04.png": "4fcda89b56d7d7e7146dffd03b44fde25524dbecf8ba36ffcf256476d6b7425f",
+    "page-05.png": "66b0c9636ea136fef4dbc93a7efdcad715d81191db2907e8892f8df7da0d524d",
+    "page-06.png": "8d90cc365f76a2f0988274c9b41a085f78d6ad45d3484bc5728008c92fb5502c",
+    "page-07.png": "8309763b8eb08d02b8635b2c8b34531e6734f55d1677a4183dc5db44ada1e33e",
+    "page-08.png": "b9c6b1f058c9c029edd0d5ad071f912ce75242c9a3c3544747b3f5dac774a37f",
+    "page-09.png": "67e6ff4db9ad8835edf366f4891aeedc7b37bbdd0d9a22ee9ee3573191d9d7a9",
+    "page-10.png": "5fb378cfb0628ce85d33174f926db033b48dbf83eeac22dc64f247df37531f94",
+    "page-11.png": "590bf5a1c13836daedd23e34d4fb28a88ca4a35280a5caf12787994ff48867dc",
+    "page-12.png": "2bfcc71107d512bab1b5e2217744f4c58d111b2a9383aaaabb98b0e73e3a6137",
+    "page-13.png": "548c65868f63012c1418f6c8a876de75a20f6b8aac7089122cc68d76feeecdc6",
+    "page-14.png": "e0ce8b308bb7eff6a9fc58f5dc24d4d4a184edd2d4a0cef5c914427ac3ea47de",
+    "page-15.png": "24acd1e098346eb26fb69c6c0dc0ab5223184bded218754da2d8dfabea97cfb5",
+    "page-16.png": "6b9a86fdc4855115dc31b801b1b6d457d12aa7f11ac641f51a959b226102a278",
+    "page-17.png": "c786a50da87e20cce3fff88d47c9b2dc0c02761d35004df10b2f95420ecb0cc8",
+    "page-18.png": "4454e9296f3509dac474b8bcd2d87b4bc3c00474b2b9cfb4a392ba625e2e02f3",
+    "page-19.png": "693d09ead61719ae02c1bac1e1e2f330f0ed29297be4525000491b2920ab510a",
+    "page-20.png": "8b8d25e93dd8c45fc77fd23ebb58ca505f17d83c2c702e269f7ac63786efbb83",
+    "page-21.png": "6d6b8dfd90445a805daa487404f90995caa8e81c46de0b469c42bfce6455c23f",
+    "page-22.png": "a57a18b4db17df125065d8f6fea62cb001ac29dbd1dc2ca3c4af54ce35415c2e",
+    "page-23.png": "91e42bdf7e1d34f60891ecb82d653eec3fb6ac4ed7086233db6dbbdb8fb9256c",
+    "page-24.png": "1be634fe056e65bd0ae5561256b8528db27de8e5a1effda05a463eec16c97d93",
+    "page-25.png": "cdd979ac7a26f1b4a0cf24ec6ef7ed87aaa4f9167953a6fcb34c63825a438302",
+    "page-26.png": "cedf7e7419e4df725e7735365fc7634d2639cbd4e1b6a1836696011f1ca0a43a",
+    "page-27.png": "83c5a7c2b5209da6dab6eccc5cd2f40e0c06a46622a512e692c67f51c147b385",
+    "page-28.png": "34634b83966e05e166513956d60d41b029b94c84886c83d21d0eab6367889fdd",
+    "page-29.png": "5bc9fd2dac1e1c2911c29b376b79f7cb2822584ce66466cfafac3ea88114af75",
+    "page-30.png": "d37550e167a68b7b6c5c39bf22b3d4cc3d4e78bebe6318d1cb672754e20b6a09",
+    "page-31.png": "9c83db77ea450478ca8aa48ddc6c144626f7a2b6ed2d8c6a5fcc09e8f8a37bb0",
+    "page-32.png": "37ffe72ed9c646fb7af053e8169aec6e45f5c542d7378076a29c935302eeb685",
+    "page-33.png": "9cfd9cf53fc953666ad8815eed6581663febc1d3fc873e321fe58f5f5758914f",
+    "page-34.png": "2ba337f87823fd6c774b8bcdeb7fd86b62d0e872a853ac49db6f416c7d04c86c",
+    "page-35.png": "da8a8a6ca2b64a0cd23f41d232434db06e04c756ebcd3991f650486af7685d00",
+    "page-36.png": "e40cc1f0f62c55aa6a8fd5ba9992ce51bb2128bc7f47924e4cc15d980987784a",
+    "page-37.png": "ecf5a588f045c2caae9a250f205436debb49fef4f2438fa8821a2819f8455931",
+    "page-38.png": "14f88a3873ee4d5a3eaf3f7bc769eb8a1bace37adbe399a3a573c0492f9c172b",
+    "page-39.png": "0b7c4cbfe14e72deb2dcab00b5a8bf0e5b0cabbe3a2bd27cf4b142475ba5891b",
+    "page-40.png": "ba478fa35d151a0efa761914e24ae2420d7bc88b9d4050a94ac2aacfecb5199a",
+    "page-41.png": "7a3c43ab586843c8549ce665ace5d10b245d0928a2e138cdaa19f279e0158fcf",
+    "page-42.png": "da600095d510b39a8310337fb554c4789da32a582f864db5101210df4675f5b0",
+    "page-43.png": "6d932ae4115cf43b61e496b618d65a682ca84852ef95fb7a47c0bf1caa39ca23",
+    "page-44.png": "e40a5350075cac4b01774b87aa9f5917f73d6019438011c4ba4b8fefee1c41df",
+    "page-45.png": "0c1b4edb3313b9968db33263c7b178ee3392f59be7a8119761fb3a0137543347",
+    "page-46.png": "1a7dc90e23819198976de2486839836c128fb47bfdf1c435630a1d1b62cd1b2f",
+    "page-47.png": "971fd4d62288a7f021b82fba282c1baaafadecbbbcbcd8cdb327072fb89e0f19",
+    "page-48.png": "231e152f0086a5d99f4e848746f923471eed2386973acdf72c2d1bdcc6cfe1b1",
+    "page-49.png": "918dc5ed8c6f233d1519a03c566f210d1e4c4853cf196e0bfef08cef4fe31be2",
+    "page-50.png": "31c39ffb3b027bc087e6eecf5ec04f16b1c2e06b7bec63d9cd3208471c3b19a1",
+    "page-51.png": "8643e7f422d5dd8c667a32ade834c1097e7a777d71084510ea70ade2b4ec0fe6",
+    "page-52.png": "7d2d2f73ea601fe33dc8bc561f6db5f31c588e4345c81a5e3425f6949ab06615",
+    "page-53.png": "0008a769fc6ae61e6c6149065dfa1ccd5bed627eb8212cf644abfa6dbc590e95",
+    "page-54.png": "dd07cbdcab8bb09a9f576499db3871481cd38e8806300f4c6f2ffc8ad3a04355"
+  },
+  "livraisons": [
+    "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\output\\pdf\\France\\Physique-chimie\\OptiTAB - Physique - MPSI - Chapitre 04 - Oscillateur harmonique.pdf",
+    "C:\\Users\\SWEELCO-AT\\Desktop\\Livres OptiTAB - Lycée\\OptiTAB - Physique - MPSI - Chapitre 04 - Oscillateur harmonique.pdf"
+  ]
+}

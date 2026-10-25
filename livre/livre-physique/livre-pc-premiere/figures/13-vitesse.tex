@@ -1,0 +1,22 @@
+% Chronophotographie d'une balle lancée : vecteurs vitesse et vecteur variation de vitesse (L'essentiel, chapitre 13)
+% Positions (Delta t = 0,10 s, v0 = (2,0 ; 3,5) m/s) à l'échelle 1 m -> 5 cm ; vitesses : 1 m/s -> 0,4 cm (construction : 0,8 cm)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  vit/.style={otNavy,line width=1pt,-{Stealth[length=2mm]}},
+  dv/.style={otGreenDark,line width=1.2pt,-{Stealth[length=2.2mm]}}]
+\draw[otMuted!70,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] plot[domain=0:7.1,samples=40] (\x,{1.75*\x-0.2453*\x*\x});
+\foreach \xx/\yy/\n in {0/0/0,1/1.505/1,2/2.52/2,3/3.045/3,4/3.075/4,5/2.62/5,6/1.67/6,7/0.235/7}{%
+  \fill[otInk] (\xx,\yy) circle (0.06);
+  \node[pcLegende,anchor=north] at (\xx,{\yy-0.08}) {$M_{\n}$};}
+\draw[vit] (2,2.52) -- ++(0.8,0.42) node[pcLegende,anchor=south east,text=otNavy] {$\vec{v}_2$};
+\draw[vit] (3,3.045) -- ++(0.8,0.024) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_3$};
+% Construction de la variation de vitesse
+\begin{scope}[shift={(8.6,1.8)}]
+  \fill[otInk] (0,0) circle (0.04);
+  \draw[vit] (0,0) -- (1.6,0.84) node[pcLegende,anchor=south east,text=otNavy] {$\vec{v}_2$};
+  \draw[vit] (0,0) -- (1.6,0.048) node[pcLegende,anchor=north,text=otNavy] {$\vec{v}_3$};
+  \draw[dv] (1.6,0.84) -- (1.6,0.07);
+  \node[pcLegende,anchor=west,text=otGreenDark] at (1.65,0.5) {$\Delta\vec{v}_2=\vec{v}_3-\vec{v}_2$};
+  \node[pcLegende,anchor=north,align=center] at (1.1,-0.4) {vertical, vers le bas :\\même sens que le poids};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{$\vec{v}_2$ a la direction de $M_2M_3$ et pour valeur $\dfrac{M_2M_3}{\Delta t}$ ; $\Delta\vec{v}_2$ se construit en traçant $\vec{v}_2$ et $\vec{v}_3$ depuis un même point.}

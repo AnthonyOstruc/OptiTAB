@@ -1,0 +1,258 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{12}{Algorithmique et programmation}
+\corrigesSouples
+
+\begin{blocLivre}{cor-12-1}
+\begin{corrige}{1}{Suivre des affectations}
+\demarche{Construire une table de trace et utiliser les valeurs mises à jour à chaque ligne.}
+Après les trois actualisations, les couples $(a,b)$ sont $(8,5)$, $(8,3)$ puis $\res{(5,3)}$. Le programme échange les deux valeurs initiales. Il faut utiliser la valeur de \code{a} déjà actualisée dans les deux dernières lignes.
+\label{figlivre-r12-01-trace-cor}
+\figureLivre[corrige]{r12-01-trace}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-2}
+\begin{corrige}{2}{Tester une condition}
+\demarche{Tester la parité avant de choisir la branche de la fonction.}
+Le reste \code{n \% 2} vaut 0 si $n$ est pair. On obtient $\res{22}$ pour 7, $\res{4}$ pour 8 et $\res{0}$ pour 0. \code{//} désigne la division entière, ici exacte pour les nombres pairs.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-3}
+\begin{corrige}{3}{Définir une fonction}
+\demarche{Traduire la formule avec les opérations de Python et tester quelques entrées.}
+On traduit directement les opérations, avec \code{**} pour la puissance.
+\begin{python}
+def f(x):
+    return x**2 - 3*x + 2
+\end{python}
+Les résultats sont $\res{2}$, $\res{0}$ et $\res{12}$. Le nom $x$ est un paramètre local ; un autre nom conviendrait si on le remplaçait partout de façon cohérente.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-4}
+\begin{corrige}{4}{Modifier une liste}
+\demarche{Suivre les indices et les décalages provoqués par la suppression.}
+Le tableau donne les quatre états de la liste.
+\code{append(2)} ajoute une valeur à la fin, sans changer les anciennes positions.
+Puis \code{L[1] = 5} modifie le deuxième élément, puisque les indices commencent à 0.
+Enfin \code{L.pop(0)} retire le premier élément ; les autres sont décalés d’une position.
+La liste finale est \code{[5, 4, 2]}, d’où $\res{\operatorname{len}(L)=3}$ et $\res{\operatorname{sum}(L)=11}$.
+
+\label{figlivre-r12-04-trace-cor}
+\figureLivre[corrige]{r12-04-trace}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-5}
+\begin{corrige}{5}{Comprendre une liste en compréhension}
+\demarche{Créer la liste initiale avant d’appliquer le filtre à ses valeurs.}
+\code{range(6)} donne 0 à 5 : \code{L = [0, 1, 4, 9, 16, 25]}, de longueur 6. Le filtre garde les valeurs paires : \code{P = [0, 4, 16]}, de longueur 3.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-6}
+\begin{corrige}{6}{Calculer une factorielle}
+\demarche{Initialiser un produit à l’élément neutre 1, y compris pour la boucle vide.}
+On initialise le produit à 1, puis on multiplie par les entiers de 1 à $n$.
+\begin{python}
+def factorielle(n):
+    produit = 1
+    for k in range(1, n+1):
+        produit = produit*k
+    return produit
+\end{python}
+Les résultats sont $\res{1;1;120}$. Pour $n=0$, aucun passage n'a lieu.
+Une initialisation à 0 rendrait tous les produits nuls.
+
+Après le passage utilisant $k$, la variable contient le produit de 1 à $k$. Pour $n=0$, la boucle est vide et la valeur initiale 1 reste la réponse correcte.
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-7}
+\begin{corrige}{7}{Accumuler une somme}
+\demarche{Initialiser une somme à zéro et contrôler la borne exclue de range.}
+Le total part de 0 ; la borne supérieure de \code{range} est exclue.
+\begin{python}
+def somme(n):
+    total = 0
+    for k in range(1, n+1):
+        total = total + k
+    return total
+\end{python}
+On obtient $\res{0}$ pour $n=0$ et $\res{55}$ pour $n=10$, en accord avec la formule.
+Ces tests contrôlent des exemples ; la démonstration générale est donnée dans les annexes.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-8}
+\begin{corrige}{8}{Trouver un premier seuil}
+\demarche{Faire évoluer ensemble le rang et le terme jusqu’au premier seuil.}
+\begin{python}
+def seuil():
+    n = 0
+    u = 100
+    while u < 500:
+        u = u + 30
+        n = n + 1
+    return n, u
+\end{python}
+$u_n=100+30n$ donne $n\geq40/3$, donc le premier entier est $\res{14}$.
+$u_{13}=490<500$ et $u_{14}=520$. Si le seuil est déjà atteint, la boucle ne s'exécute pas et le rang renvoyé est 0.
+
+Après chaque passage, $n$ compte les transitions effectuées et $u$ vaut le terme de ce rang. Le test est effectué avant le passage : un seuil déjà atteint laisse directement $n=0$.
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-9}
+\begin{corrige}{9}{Additionner les termes d'une suite}
+\demarche{Ajouter le terme courant au total avant de préparer le suivant.}
+\begin{python}
+def somme_geometrique(n):
+    u = 2
+    total = 0
+    for k in range(n):
+        total = total + u
+        u = 3*u
+    return total
+\end{python}
+Pour $n=4$, le résultat vaut $2+6+18+54=\res{80}$.
+La formule est $2(3^n-1)/(3-1)=\res{3^n-1}$, qui donne aussi 0 pour la somme vide $n=0$.
+
+Le tableau montre qu’après quatre passages, $u=162$ est déjà préparé pour le passage suivant, mais n’a pas été ajouté. Le total 80 contient exactement les quatre termes demandés.
+
+\label{figlivre-r12-09-trace-cor}
+\figureLivre[corrige]{r12-09-trace}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-10}
+\begin{corrige}{10}{Compter les lettres sans autre collection}
+\demarche{Compter les correspondances exactes en parcourant le texte une seule fois.}
+\begin{python}
+def frequence(texte, lettre):
+    compteur = 0
+    for c in texte:
+        if c == lettre:
+            compteur = compteur + 1
+    return compteur/len(texte)
+\end{python}
+Les résultats sont $\res{1/3}$ pour A et $\res{1/6}$ pour B.
+Les lettres majuscules et minuscules sont distinctes ; les hypothèses du texte doivent rester cohérentes.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-11}
+\begin{corrige}{11}{Calculer les moments d'une loi}
+\demarche{Accumuler séparément le premier et le deuxième moment, puis soustraire le carré de la moyenne.}
+\begin{python}
+def moments(valeurs, probas):
+    mu = 0
+    carre = 0
+    for k in range(len(valeurs)):
+        mu = mu + valeurs[k]*probas[k]
+        carre = carre + valeurs[k]**2*probas[k]
+    return mu, carre - mu**2
+\end{python}
+Le résultat théorique est $\res{(0{,}4;1{,}24)}$.
+Les deux listes doivent être non vides et de même longueur : chaque valeur est associée à la probabilité de même indice. On contrôle que les probabilités sont positives ou nulles et de somme 1.
+La formule employée est celle de König-Huygens.
+
+Ici les accumulateurs finaux valent $\mu=0{,}4$ et $\texttt{carre}=1{,}4$. Le retour calcule $1{,}4-0{,}4^2=1{,}24$. Une variance nulle est possible pour une loi constante.
+
+\label{figlivre-r12-11-moments-cor}
+\figureLivre[corrige]{r12-11-moments}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-12}
+\begin{corrige}{12}{Construire la suite de Fibonacci}
+\demarche{Traiter les petits indices avant de prolonger la liste de Fibonacci.}
+\begin{python}
+def fibonacci(n):
+    if n == 0:
+        return [0]
+    L = [0, 1]
+    for k in range(2, n+1):
+        L.append(L[-1] + L[-2])
+    return L
+\end{python}
+Pour $n=7$, la liste est \code{[0, 1, 1, 2, 3, 5, 8, 13]}.
+En poursuivant, $F_{16}=987$ et $F_{17}=1597$ : le premier rang cherché est $\res{17}$.
+Les termes sont croissants à partir de $F_1$, car chaque terme est augmenté d'un terme positif ou nul.
+
+La liste est initialisée avec les deux premiers termes. Chaque passage ajoute la somme des deux derniers sans les modifier ; le cas $n=0$ est traité avant cette initialisation.
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-13}
+\begin{corrige}{13}{Expérimenter avec Syracuse}
+\demarche{Borner le nombre de passages garantit un arrêt informatique.}
+\begin{python}
+def syracuse(n, max_etapes=1000):
+    L = [n]
+    for k in range(max_etapes):
+        if n == 1:
+            break
+        if n % 2 == 0:
+            n = n//2
+        else:
+            n = 3*n + 1
+        L.append(n)
+    return L
+\end{python}
+Pour 6 : \code{[6, 3, 10, 5, 16, 8, 4, 2, 1]}, soit huit transitions.
+La boucle \code{for} a un nombre borné de passages ; l'arrêt informatique est donc garanti.
+Cet exemple ne démontre pas un comportement pour tous les entiers positifs.
+
+Le mot-clé \code{break} arrête plus tôt si 1 est atteint. Sinon, la boucle s’arrête après \code{max\_etapes} passages : la liste peut alors se terminer par une autre valeur.
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-14}
+\begin{corrige}{14}{Une approximation par Newton}
+\demarche{Remplacer la courbe par sa tangente, puis actualiser la moyenne de deux nombres positifs.}
+Pour $a>0$, $f'(a)=2a$ et la tangente a pour équation $y=2a(x-a)+a^2-2$.
+Elle coupe l'axe des abscisses lorsque $2a(x-a)=2-a^2$, soit
+$x=a+\dfrac{2-a^2}{2a}=\res{\dfrac{a^2+2}{2a}=\dfrac12\left(a+\dfrac2a\right)}$.
+La méthode de Newton remplace ainsi $a$ par l'abscisse de ce point.
+\begin{python}
+def newton(n):
+    x = 1.0
+    for k in range(n):
+        x = (x + 2/x)/2
+    return x
+\end{python}
+$x_1=\res{3/2}$ et $x_2=\res{17/12}$. Pour $n=5$, on obtient environ
+$1{,}414213562373095$ ; son carré est très proche de 2.
+À chaque étape, si $x$ est positif, $2/x$ l'est aussi et leur moyenne est positive.
+Cela justifie que les calculs successifs sont définis ; ce n'est pas à lui seul une preuve de convergence.
+
+Le cas $n=0$ renvoie 1 sans passage. Pour $n=1$, la mise à jour donne $(1+2)/2=3/2$ ; pour $n=2$, elle donne $(3/2+4/3)/2=17/12$.
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-12-15}
+\begin{corrige}{15}{Un mini-projet Monte-Carlo}
+\demarche{Réutiliser les coordonnées, avec deux tests et deux compteurs distincts.}
+\begin{python}
+from random import Random
+def monte_carlo(n, graine=2026):
+    rng = Random(graine)
+    parabole = 0
+    disque = 0
+    for k in range(n):
+        x, y = rng.random(), rng.random()
+        if y <= x*x:
+            parabole = parabole + 1
+        if x*x + y*y <= 1:
+            disque = disque + 1
+    return parabole/n, 4*disque/n
+\end{python}
+Chaque point est uniforme dans le carré et peut être testé dans les deux zones : les deux estimations
+peuvent dépendre l'une de l'autre, ce qui ne les empêche pas d'être calculées.
+L'aire estimée doit appartenir à $[0;1]$ et l'estimation de $\pi$ à $[0;4]$.
+Même graine et même taille doivent reproduire le même résultat.
+
+Les deux tests sont deux instructions \code{if} distinctes : un même point peut appartenir aux deux zones et doit alors incrémenter les deux compteurs. Une instruction \code{elif} ne conviendrait pas.
+
+\label{figlivre-r12-15-zones-cor}
+\figureLivre[corrige]{r12-15-zones}
+
+\end{corrige}
+\end{blocLivre}

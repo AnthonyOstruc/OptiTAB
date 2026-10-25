@@ -1,0 +1,270 @@
+% !TEX root = ../main.tex
+%% Chapitre 18 — Sommes de variables aléatoires
+%% Sources : frontend/cours/resume/terminal/resume_sommes_variables_aleatoires_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercices_sommes_variables_aleatoires.txt
+%% Exercice 7, question 2 : les probabilités nécessaires sont données dans l'énoncé (résultat corrigé).
+%% Exercices 1, 4, 6, 9 et 10 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[sommes]{18}{Sommes de variables aléatoires}{Partie 3 · Probabilités}
+  {Espérance\enspace·\enspace Variance\enspace·\enspace Linéarité\enspace·\enspace
+   Variables indépendantes\enspace·\enspace Échantillon}
+  \objectif{Calculer l'espérance et la variance de $aX+b$ et d'une somme de variables aléatoires.}
+  \objectif{Savoir quand la variance d'une somme est la somme des variances.}
+  \objectif{Décomposer une variable binomiale en somme de variables de Bernoulli.}
+  \objectif{Calculer l'espérance et l'écart-type de la somme et de la moyenne d'un échantillon.}
+  \objectif{Utiliser des variables indicatrices pour calculer une espérance.}
+  \prerequis{Variables aléatoires, espérance, variance, linéarité de l'espérance et formule de König-Huygens (Première).}
+  \prerequis{Loi binomiale (chapitre 17).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Rappels sur l'espérance et la variance}
+
+\begin{definition}[Espérance, variance, écart-type]
+Si $X$ prend les valeurs $x_1$, \dots, $x_r$ avec les probabilités $p_1$, \dots, $p_r$ :
+\[ E(X)=\sum_{i=1}^{r}p_i\,x_i\qquad V(X)=\sum_{i=1}^{r}p_i\big(x_i-E(X)\big)^{2}=E\left(X^{2}\right)-E(X)^{2}\qquad\sigma(X)=\sqrt{V(X)}. \]
+\end{definition}
+
+\begin{propriete}[Transformation affine]
+Pour tous réels $a$ et $b$ :
+\[ E(aX+b)=a\,E(X)+b\qquad\qquad V(aX+b)=a^{2}\,V(X)\qquad\qquad\sigma(aX+b)=|a|\,\sigma(X). \]
+\end{propriete}
+
+\essSection{2}{Somme de deux variables aléatoires}
+
+\begin{theoreme}[Linéarité de l'espérance]
+Pour toutes variables aléatoires $X$ et $Y$ définies sur le même univers, et tous réels $a$ et $b$ :
+\[ E(X+Y)=E(X)+E(Y)\qquad\text{et}\qquad E(aX+bY)=a\,E(X)+b\,E(Y). \]
+Ce résultat est vrai \textbf{même si $X$ et $Y$ ne sont pas indépendantes}.
+\end{theoreme}
+
+\begin{theoreme}[Variance d'une somme de variables indépendantes]
+Deux variables $X$ et $Y$ sont \textbf{indépendantes} si, pour toutes valeurs $x$ et $y$, les événements $\ens{X=x}$ et $\ens{Y=y}$
+sont indépendants. Dans ce cas :
+\[ V(X+Y)=V(X)+V(Y). \]
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.38\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=54mm, height=38mm, ybar, bar width=2.4mm, xmin=0.3, xmax=6.7, ymin=0, ymax=0.21,
+  xtick={1,...,6}, ytick={0.0833,0.1667}, yticklabels={$\frac{1}{12}$,$\frac16$}, xlabel={$k$},
+  xlabel style={at={(1,0)},anchor=west}]
+  \addplot[fill=otNavySoft,draw=otNavy,line width=0.4pt] coordinates {(1,0.1667) (2,0.1667) (3,0.1667) (4,0.1667) (5,0.1667) (6,0.1667)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Un dé : $E=\frac72$, $V=\frac{35}{12}$.}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.58\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=82mm, height=38mm, ybar, bar width=2.6mm, xmin=1.3, xmax=12.7, ymin=0, ymax=0.21,
+  xtick={2,...,12}, ytick={0.0833,0.1667}, yticklabels={$\frac{1}{12}$,$\frac16$}, xlabel={$k$},
+  xlabel style={at={(1,0)},anchor=west}]
+  \addplot[fill=otGreen!45,draw=otGreenDark,line width=0.4pt] coordinates {(2,0.0278) (3,0.0556) (4,0.0833) (5,0.1111) (6,0.1389)
+    (7,0.1667) (8,0.1389) (9,0.1111) (10,0.0833) (11,0.0556) (12,0.0278)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Somme de deux dés indépendants : $E=7$ et $V=\frac{35}{12}+\frac{35}{12}=\frac{35}{6}$.}
+\end{minipage}
+
+\essSection{3}{Application à la loi binomiale}
+
+\begin{theoreme}[Espérance et variance d'une loi binomiale]
+Si $X$ suit la loi $\mathcal{B}(n\pv p)$, alors $X=X_1+\dots+X_n$, où $X_i$ vaut $1$ si la $i$-ème épreuve est un succès et $0$ sinon.
+Les $X_i$ sont des variables de Bernoulli indépendantes, d'espérance $p$ et de variance $p(1-p)$. Donc
+\[ E(X)=np\qquad\text{et}\qquad V(X)=np(1-p). \]
+\end{theoreme}
+
+\essSection{4}{Échantillon, somme et moyenne}
+
+\begin{definition}[Échantillon]
+Un \textbf{échantillon de taille $n$} d'une loi de probabilité est une liste $(X_1\pv\dots\pv X_n)$ de variables aléatoires
+indépendantes suivant toutes cette loi, d'espérance $\mu$ et de variance $V$. On pose $S_n=X_1+\dots+X_n$ et $M_n=\dfrac{S_n}{n}$.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Somme et moyenne d'un échantillon]
+\raggedright
+$E(S_n)=n\mu$\qquad $V(S_n)=nV$\qquad $\sigma(S_n)=\sqrt n\,\sigma$\\[1.5mm]
+$E(M_n)=\mu$\qquad $V(M_n)=\dfrac Vn$\qquad $\sigma(M_n)=\dfrac{\sigma}{\sqrt n}$
+\end{theoreme}
+\begin{demonstration}
+\raggedright
+Linéarité pour l'espérance, indépendance pour la variance de $S_n$ ; puis $M_n=\frac1nS_n$ donne $V(M_n)=\frac{1}{n^{2}}\times nV=\frac Vn$.
+\end{demonstration}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=62mm, height=44mm, xmin=0, xmax=105, ymin=0, ymax=1.1,
+  xtick={1,25,50,100}, ytick={0.2,0.5,1}, yticklabels={$\frac{\sigma}{5}$,$\frac{\sigma}{2}$,$\sigma$}, xlabel={$n$},
+  xlabel style={at={(1,0)},anchor=west}, grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otNavy,line width=1.2pt,domain=1:100,samples=150] {1/sqrt(x)};
+  \fill[otGreen] (axis cs:4,0.5) circle (1.5pt);
+  \fill[otGreen] (axis cs:25,0.2) circle (1.5pt);
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$\sigma(M_n)=\frac{\sigma}{\sqrt n}$ : pour diviser la dispersion par $5$, il faut $25$ fois plus de mesures.}
+\end{minipage}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $V(X+Y)=V(X)+V(Y)$ exige l'\textbf{indépendance} ; la linéarité de l'espérance, non.
+  \item $V(X-Y)=V(X)+V(Y)$ pour $X$ et $Y$ indépendantes (les variances s'ajoutent toujours).
+  \item $V(2X)=4\,V(X)$, alors que $V(X_1+X_2)=2\,V(X)$ pour deux copies indépendantes $X_1$ et $X_2$ de $X$.
+  \item L'écart-type d'une somme n'est pas la somme des écarts-types : $\sigma(S_n)=\sqrt n\,\sigma$, et non $n\sigma$.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Espérance et variance : rappels}
+Une variable aléatoire $X$ a pour loi :\qquad
+{\renewcommand{\arraystretch}{1.3}\begin{tabular}{c|cccc}
+$x_i$ & $-2$ & $0$ & $3$ & $5$\\\hline
+$P(X=x_i)$ & $0{,}1$ & $0{,}3$ & $0{,}4$ & $0{,}2$
+\end{tabular}}
+\begin{questions}
+  \item Calculer $E(X)$, puis $E\left(X^{2}\right)$ et $V(X)$.
+  \item En déduire l'espérance et la variance de $Y=3X-1$ et de $Z=-2X+4$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Linéarité de l'espérance}
+\begin{questions}
+  \item On lance deux dés équilibrés ; $X$ et $Y$ sont leurs résultats, et $E(X)=E(Y)=3{,}5$. Calculer l'espérance de $S=X+Y$.
+  \item On lance deux fois une pièce équilibrée ; $X_1$ (respectivement $X_2$) vaut $1$ si le premier (respectivement le second)
+    lancer donne pile, et $0$ sinon. Calculer $E(X_1+X_2)$.
+  \item Une urne contient $5$ boules rouges et $3$ bleues ; on tire deux boules avec remise. Calculer l'espérance du nombre de
+    boules rouges tirées, en l'écrivant comme une somme de deux variables.
+  \item On lance un dé équilibré ; $X$ est le résultat. Calculer $E(3X+2)$.
+  \item On lance deux dés : on gagne $10$ points en cas de double, $2$ points sinon. La probabilité d'un double est $\frac16$.
+    Calculer l'espérance du gain.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Additivité de la variance}
+\begin{questions}
+  \item On lance deux dés équilibrés indépendants ; on admet que $V(X)=V(Y)=\frac{35}{12}$. Calculer $V(X+Y)$.
+  \item Avec les variables $X_1$ et $X_2$ de l'exercice précédent (question 2), calculer $V(X_1+X_2)$.
+  \item Une urne contient $4$ boules rouges et $6$ bleues ; on tire deux boules avec remise. Calculer la variance du nombre de boules
+    rouges tirées.
+  \item On lance un dé équilibré ; $X$ est le résultat. Calculer $V(3X)$.
+  \item Démontrer que si $X$ suit la loi de Bernoulli de paramètre $p$, alors $V(X)=p(1-p)$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{La somme de deux dés}
+On lance deux dés équilibrés, l'un rouge et l'autre bleu ; on note $S$ la somme des deux résultats.
+\begin{questions}
+  \item À l'aide d'un tableau à double entrée, déterminer la loi de $S$.
+  \item Calculer $E(S)$ et $V(S)$ directement à partir de cette loi.
+  \item Retrouver ces résultats à l'aide des propriétés de l'espérance et de la variance d'une somme.
+  \item On note $D$ la différence « résultat rouge moins résultat bleu ». Calculer $E(D)$ et $V(D)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Applications}
+\begin{questions}
+  \item On lance $10$ fois une pièce équilibrée et l'on note $X$ le nombre de piles. Donner la loi de $X$, écrire $X$ comme une somme
+    de variables de Bernoulli, puis calculer $E(X)$ et $V(X)$.
+  \item Une urne contient $8$ boules : $3$ rouges, $4$ bleues et $1$ verte. On effectue $5$ tirages avec remise ; $X$ est le nombre de
+    boules rouges et $Y$ le nombre de boules bleues.
+    \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.3mm,topsep=0.3mm]
+      \item Donner les lois de $X$ et de $Y$, puis leurs espérances et variances.
+      \item Soit $S=X+Y$. Calculer $E(S)$. Quelle est la loi de $S$ ? En déduire $V(S)$.
+      \item A-t-on $V(S)=V(X)+V(Y)$ ? Expliquer.
+    \end{enumerate}
+  \item On lance $3$ dés équilibrés indépendants. Calculer l'espérance et la variance de leur somme $S$, puis de leur moyenne $M=\frac S3$.
+  \item Un joueur lance $4$ fois un dé : il gagne $5$ points si le résultat est pair et perd $2$ points sinon. Calculer l'espérance
+    et la variance de son gain total $G$.
+  \item On répète $25$ fois une épreuve de Bernoulli de paramètre $0{,}6$ ; $X$ est le nombre de succès. Calculer $E(X)$ et $V(X)$,
+    puis l'espérance et la variance de la fréquence de succès $F=\frac{X}{25}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Moyenne de plusieurs mesures}
+Un appareil mesure la longueur d'une pièce. Chaque mesure est une variable aléatoire d'espérance $\mu$ (la vraie longueur) et
+d'écart-type $0{,}5$~mm ; les mesures successives sont indépendantes. On effectue $n$ mesures et l'on note $M_n$ leur moyenne.
+\begin{questions}
+  \item Calculer $E(M_n)$ et $\sigma(M_n)$. Pourquoi est-il intéressant de faire la moyenne de plusieurs mesures ?
+  \item Combien de mesures faut-il effectuer pour que l'écart-type de $M_n$ soit inférieur ou égal à $0{,}1$~mm ?
+  \item On note $S_n$ la somme des $n$ mesures. Comparer $\sigma(S_n)$ et $\sigma(M_n)$ pour $n=25$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Situations complexes}
+\begin{questions}
+  \item Un composant est défectueux avec la probabilité $0{,}05$ ; on teste un lot de $100$ composants et l'on note $X$ le nombre de
+    composants défectueux. Donner la loi de $X$, son espérance et sa variance, puis l'espérance et l'écart-type de la fréquence
+    $F=\frac{X}{100}$. Interpréter.
+  \item On lance $5$ dés équilibrés ; leur somme $S$ a pour espérance $17{,}5$. Le joueur gagne $20$ points si $S\geq25$, $10$ points
+    si $20\leq S\leq24$, et rien sinon. On admet que $P(S\geq25)=\frac{7}{216}$ et $P(20\leq S\leq24)=\frac{707}{2\,592}$. Calculer
+    l'espérance du gain $G$, puis celle du gain net $N=G-8$ si la mise est de $8$ points. Le jeu est-il favorable ?
+  \item On effectue $50$ tirages avec remise dans une urne contenant $7$ boules rouges et $3$ bleues ; $X$ et $Y$ sont les nombres de
+    boules rouges et bleues. Calculer $E(X)$, $V(X)$, $E(Y)$, $V(Y)$, puis $E(X+Y)$ et $V(X+Y)$. Commenter.
+  \item Dans une population, 60\,\% des individus présentent un caractère. On prélève avec remise un échantillon de $200$ individus ;
+    $X$ est le nombre d'individus présentant ce caractère et $F=\frac{X}{200}$. Calculer $E(X)$, $\sigma(X)$, $E(F)$ et $\sigma(F)$,
+    puis l'intervalle $\intFF{E(F)-2\sigma(F)}{E(F)+2\sigma(F)}$.
+  \item Un système comporte $3$ composants indépendants, qui fonctionnent chacun avec la probabilité $0{,}9$ ; $X_i$ vaut $1$ si le
+    $i$-ème fonctionne, $0$ sinon, et $N=X_1+X_2+X_3$. Calculer $E(N)$ et $V(N)$, donner la loi de $N$, puis la probabilité que le
+    système fonctionne s'il faut au moins $2$ composants en état de marche.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Devoir de synthèse}
+\begin{questions}
+  \item On lance trois dés équilibrés. Calculer l'espérance de la somme des résultats.
+  \item $E(X)=4$ et $E(Y)=6$. Calculer $E(2X+3Y-1)$.
+  \item On lance $4$ fois une pièce équilibrée : pile rapporte $3$ points, face en fait perdre $1$. Calculer l'espérance du gain.
+  \item $X$ et $Y$ sont indépendantes, avec $V(X)=5$ et $V(Y)=3$. Calculer $V(2X-Y+1)$.
+  \item On répète $20$ fois une épreuve de Bernoulli de paramètre $0{,}4$. Calculer l'espérance et la variance du nombre de succès.
+  \item On effectue $15$ tirages avec remise dans une urne de $8$ boules dont $5$ rouges. Calculer l'espérance et l'écart-type du
+    nombre de boules rouges.
+  \item On lance $100$ fois un dé équilibré. Calculer l'espérance et l'écart-type de la somme $S_{100}$ des résultats, puis de leur
+    moyenne $M_{100}$.
+  \item Dans une population, 45\,\% des individus ont un caractère ; on prélève avec remise $80$ individus. Calculer l'espérance et la
+    variance de la fréquence observée $F$, puis l'intervalle $\intFF{E(F)-2\sigma(F)}{E(F)+2\sigma(F)}$.
+  \item Un système comporte $4$ composants indépendants qui fonctionnent chacun avec la probabilité $0{,}85$. On note $N$ le nombre de
+    composants qui fonctionnent. Calculer $E(N)$ et $V(N)$, puis la probabilité qu'au moins $3$ composants fonctionnent.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Un jeu répété}
+Un jeu consiste à miser $m$ euros, puis à lancer un dé équilibré : on reçoit $10$\,€ si l'on obtient $6$, $2$\,€ si l'on obtient $4$
+ou $5$, et rien sinon. On note $R$ la somme reçue et $G=R-m$ le gain algébrique du joueur.
+\begin{questions}
+  \item Déterminer la loi de $R$, puis calculer $E(R)$ et $V(R)$.
+  \item Pour quelle mise le jeu est-il équitable, c'est-à-dire $E(G)=0$ ?
+  \item La mise est de $3$\,€. Calculer $E(G)$ et $V(G)$.
+  \item Un joueur fait $100$ parties indépendantes ; on note $T$ son gain total. Calculer $E(T)$ et $\sigma(T)$. Interpréter.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Combien de faces différentes ?}
+On lance $6$ fois un dé équilibré et l'on note $N$ le nombre de faces \emph{différentes} obtenues. Pour $j\in\ens{1\pv\dots\pv6}$,
+on note $Y_j$ la variable égale à $1$ si la face $j$ apparaît au moins une fois, et à $0$ sinon.
+\begin{questions}
+  \item Exprimer $N$ à l'aide des variables $Y_j$.
+  \item Calculer $P(Y_j=0)$, puis $E(Y_j)$.
+  \item En déduire $E(N)$, puis en donner une valeur approchée.
+  \item Calculer $P(N=6)$. Les variables $Y_1$ et $Y_2$ sont-elles indépendantes ? Pourquoi le calcul de la question 3 reste-t-il valable ?
+  \item Plus généralement, on lance le dé $n$ fois. Montrer que l'espérance du nombre de faces différentes est $6\left(1-\left(\frac56\right)^{n}\right)$,
+    puis déterminer à partir de combien de lancers elle dépasse $5$.
+\end{questions}
+\end{exercice}

@@ -1,0 +1,22 @@
+% Ponts hydrogène entre molécules d'eau (L'essentiel, chapitre 7)
+\begin{tikzpicture}[x=1.35cm,y=1.35cm,
+  aO/.style={circle,fill=otRed!85,minimum size=5.4mm,inner sep=0pt,text=white,font=\otSemi\fontsize{7}{8}\selectfont},
+  aH/.style={circle,fill=white,draw=otInk!55,line width=0.5pt,minimum size=3.6mm,inner sep=0pt,font=\otSemi\fontsize{6}{7}\selectfont},
+  pont/.style={otGreenDark,line width=1pt,dash pattern=on 1.6pt off 1.6pt}]
+% \eau{x}{y}{rotation} : bissectrice vers le bas pour une rotation nulle
+\newcommand{\eau}[3]{%
+  \draw[otInk!70,line width=1pt] ($(#1,#2)+(217.75+#3:0.5)$) -- (#1,#2) -- ($(#1,#2)+(322.25+#3:0.5)$);
+  \node[aH] at ($(#1,#2)+(217.75+#3:0.5)$) {H}; \node[aH] at ($(#1,#2)+(322.25+#3:0.5)$) {H};
+  \node[aO] at (#1,#2) {O};}
+\eau{0}{0}{0}
+\eau{1.147}{-0.888}{52.25}
+\eau{-1.147}{-0.888}{-52.25}
+\eau{0}{1.5}{-52.25}
+\draw[pont] (322.25:0.68) -- (322.25:1.2);
+\draw[pont] (217.75:0.68) -- (217.75:1.2);
+\draw[pont] (0,0.82) -- (0,0.32);
+\pcNote[west]{(0.06,0.6)}{(1.1,0.95)}{pont hydrogène}
+\node[pcDelta,anchor=east] at (-0.2,0.25) {\textcolor{otNavy}{$\delta^{-}$}};
+\node[pcDelta,anchor=west] at (0.3,1.12) {\dplus};
+\end{tikzpicture}
+\par\smallskip\legende{Un atome d'hydrogène lié à un atome d'oxygène interagit avec un doublet non liant de l'oxygène d'une molécule voisine.}

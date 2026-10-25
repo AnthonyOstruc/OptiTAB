@@ -1,0 +1,18 @@
+% Diagramme simplifié des niveaux d'énergie de l'atome de mercure ; au corrigé, trois transitions et leurs longueurs d'onde (exercice 8, chapitre 20)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (0,-4.5) -- (0,0.5) node[pcLegende,anchor=south] {$E$ (eV)};
+\fill[white] (-0.12,-3.5) rectangle (0.12,-3.35);
+\draw[otInk!70,line width=0.5pt] (-0.12,-3.53) -- (0.12,-3.43) (-0.12,-3.42) -- (0.12,-3.32);
+\foreach \y/\v/\n in {0/{0}/{atome ionisé},-0.6/{-1{,}56}/{$E_5$},-1.15/{-2{,}71}/{$E_4$},-1.7/{-3{,}74}/{$E_3$},-2.3/{-4{,}99}/{$E_2$},-2.8/{-5{,}55}/{$E_1$},-4.2/{-10{,}44}/{$E_0$}}{%
+  \draw[otNavy,line width=0.9pt] (0.25,\y) -- (3.5,\y);
+  \node[pcLegende,anchor=east] at (-0.05,\y) {$\v$};
+  \node[pcLegende,anchor=west] at (3.55,\y) {\n};}
+\solution{
+  \draw[blue!75!violet,line width=1.1pt,-{Stealth[length=2.2mm]}] (1.0,-1.15) -- (1.0,-2.76);
+  \node[pcLegende,anchor=east,text=blue!75!violet] at (0.94,-2.0) {\qty{438}{nm}};
+  \draw[green!50!black,line width=1.1pt,-{Stealth[length=2.2mm]}] (2.0,-1.15) -- (2.0,-2.26);
+  \node[pcLegende,anchor=west,text=green!50!black] at (2.06,-1.42) {\qty{545}{nm}};
+  \draw[violet!70!black,line width=1.1pt,-{Stealth[length=2.2mm]}] (3.0,-2.8) -- (3.0,-4.16);
+  \node[pcLegende,anchor=east,text=violet!70!black] at (2.94,-3.5) {\qty{254}{nm} (UV)};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Niveaux d'énergie de l'atome de mercure (échelle non respectée) ; $E_0$ est l'état fondamental.}\solution{Plus la flèche est longue, plus le photon est énergétique et sa longueur d'onde courte.}}

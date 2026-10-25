@@ -1,0 +1,110 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 5 — résultats vérifiés par programme (bac_s5.py)
+
+\corrigeSujet{5}
+
+\begin{corrigeBac}{5}{Variables aléatoires et concentration}
+\partieExo{A}{Une partie}
+\begin{questions}
+  \item Un double s'écrit $(k\pv k)$, de somme $2k$, qui est paire : elle ne peut pas valoir $7$. Les $36$ issues sont équiprobables ;
+    $6$ ont pour somme $7$, $6$ sont des doubles, et les $24$ autres font perdre $1$ euro.
+\begin{center}
+{\renewcommand{\arraystretch}{1.35}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}lccc@{}}
+\toprule
+$x_i$ & $-1$ & $2$ & $4$ \\
+\midrule
+$P(X=x_i)$ & $\frac23$ & $\frac16$ & $\frac16$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+    \pts{1 pt}
+  \item $E(X)=-1\times\frac23+2\times\frac16+4\times\frac16=\res{\tfrac13}\approx0{,}33$. L'espérance est positive : en moyenne, le
+    joueur gagne environ $0{,}33$ euro par partie, le jeu lui est $\res{\text{favorable}}$. \pts{0,75 pt}
+  \item $E(X^{2})=1\times\frac23+4\times\frac16+16\times\frac16=4$, puis $V(X)=E(X^{2})-E(X)^{2}=4-\frac19=\res{\tfrac{35}{9}}$. \pts{0,75 pt}
+\end{questions}
+\partieExo{B}{Un grand nombre de parties}
+\begin{questions}[resume]
+  \item Par linéarité, $E(S)=100E(X)=\res{\tfrac{100}{3}}\approx33{,}33$ ; les $X_i$ étant indépendantes,
+    $V(S)=100V(X)=\res{\tfrac{3\,500}{9}}$. Sur $100$ parties, le joueur gagne en moyenne environ $33$ euros. \pts{0,75 pt}
+  \item $E(M)=\frac{E(S)}{100}=\res{\tfrac13}$ et $V(M)=\frac{V(S)}{100^{2}}=\frac{35}{900}=\res{\tfrac{7}{180}}$. \pts{0,5 pt}
+  \item $-\frac16<M<\frac56\iff\left|M-\frac13\right|<\frac12$. Or
+    $P\left(\left|M-\frac13\right|\geq\frac12\right)\leq\dfrac{V(M)}{(1/2)^{2}}=\dfrac{7}{45}\approx0{,}156$, donc la probabilité cherchée
+    est au moins $1-\frac7{45}\approx\res{0{,}844}$. \pts{0,75 pt}
+  \item L'inégalité de concentration donne $P\left(\left|M_n-\frac13\right|\geq0{,}1\right)\leq\dfrac{V(X)}{n\times0{,}1^{2}}$. Il suffit
+    que $\dfrac{35/9}{0{,}01\,n}\leq0{,}05$, soit $n\geq\dfrac{35/9}{0{,}000\,5}\approx7\,777{,}8$ : par exemple $\res{n=7\,778}$. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Suite définie par récurrence}
+\begin{questions}
+  \item $u_1=\dfrac{0{,}2}{1{,}1}=\res{\tfrac{2}{11}}$ et $u_2=\dfrac{4/11}{13/11}=\res{\tfrac{4}{13}}$. \pts{0,5 pt}
+  \item $f'(x)=\dfrac{2(1+x)-2x}{(1+x)^{2}}=\dfrac{2}{(1+x)^{2}}>0$ : $f$ est strictement croissante. Soit $\mathcal{P}(n)$ :
+    « $0<u_n<u_{n+1}<1$ ».\\
+    \etape{Initialisation} $0<0{,}1<\frac2{11}<1$.\\
+    \etape{Hérédité} Si $0<u_n<u_{n+1}<1$, la stricte croissance de $f$ donne $f(0)<f(u_n)<f(u_{n+1})<f(1)$, soit
+    $0<u_{n+1}<u_{n+2}<1$.\\
+    \etape{Conclusion} La propriété est vraie pour tout entier naturel $n$. \pts{1,5 pt}
+  \item La suite est croissante et majorée par $1$ : elle converge vers un réel $\ell$ tel que $0{,}1\leq\ell\leq1$. La fonction $f$ étant
+    continue, $\ell=\frac{2\ell}{1+\ell}$, soit $\ell^{2}-\ell=0$ : $\ell=0$ ou $\ell=1$. Comme $\ell\geq0{,}1$, $\res{\ell=1}$. \pts{1 pt}
+  \item a) $v_{n+1}=1-\dfrac{1+u_n}{2u_n}=\dfrac{u_n-1}{2u_n}=\dfrac12\left(1-\dfrac1{u_n}\right)=\dfrac12v_n$ : la suite $(v_n)$ est
+    géométrique de raison $\frac12$ et de premier terme $v_0=1-10=\res{-9}$.\\
+    b) $v_n=-9\times0{,}5^{n}$ et $\frac1{u_n}=1-v_n=1+9\times0{,}5^{n}$, d'où $u_n=\dfrac{1}{1+9\times0{,}5^{n}}$. Comme
+    $\lim0{,}5^{n}=0$, on retrouve $\lim u_n=1$. \pts{1,25 pt}
+  \item $u_n>0{,}999\iff1+9\times0{,}5^{n}<\frac{1}{0{,}999}\iff0{,}5^{n}<\frac19\left(\frac{1}{0{,}999}-1\right)\iff
+    n>\dfrac{\ln\left(\frac19\left(\frac1{0{,}999}-1\right)\right)}{\ln0{,}5}\approx13{,}1$ : $\res{n=14}$.
+\begin{codecote}[0.42]
+\begin{pythoncol}
+u = 0.1
+n = 0
+while u <= 0.999:
+    u = 2 * u / (1 + u)
+    n = n + 1
+print(n)
+\end{pythoncol}
+\cote
+Le programme affiche \code{14} : $u_{13}\approx0{,}998\,9$ et $u_{14}\approx0{,}999\,5$.
+\end{codecote}
+    \pts{0,75 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{4}{Questionnaire à choix multiples}
+\begin{questions}
+  \item \textbf{Réponse a).} L'équation est $2x-y+3z+d=0$, et $A$ donne $2-2-3+d=0$, soit $d=3$. \pts{1 pt}
+  \item \textbf{Réponse c).} $(1\pv-1\pv3)\cdot(1\pv1\pv0)=0$ : $d$ est parallèle à $\mathcal{P}$ ; son point $(1\pv2\pv0)$ vérifie
+    $1+2-3=0$ : $d$ est incluse dans $\mathcal{P}$. \pts{1 pt}
+  \item \textbf{Réponse d).} $\vec u+\vec v=(3\pv2\pv4)=\vec w$ : les trois vecteurs sont coplanaires (et $\vec u\cdot\vec v=5$,
+    $\norme{\vec w}=\sqrt{29}$). \pts{1 pt}
+  \item \textbf{Réponse b).} La droite passant par $M$ et dirigée par $\vec n\,(1\pv2\pv2)$ coupe le plan pour
+    $(1+t)+2(1+2t)+2(1+2t)-14=0$, soit $t=1$ ; la distance vaut $|t|\times\norme{\vec n}=1\times3=3$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{6}{Fonction trigonométrique et intégrale}
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item Pour tout réel $x$, $\cos x\geq-1$, donc $2+\cos x\geq1>0$ : $f$ est définie sur $\R$. Les fonctions sinus et cosinus sont
+    $2\pi$-périodiques, donc $f(x+2\pi)=f(x)$. De plus $f(-x)=\frac{-\sin x}{2+\cos x}=-f(x)$ : $f$ est impaire. On l'étudie sur
+    $\intFF0\pi$, puis on complète par symétrie par rapport à l'origine sur $\intFF{-\pi}{\pi}$, et par translations de $2\pi$. \pts{1 pt}
+  \item $f'(x)=\dfrac{\cos x(2+\cos x)-\sin x\times(-\sin x)}{(2+\cos x)^{2}}=\dfrac{2\cos x+\cos^{2}x+\sin^{2}x}{(2+\cos x)^{2}}
+    =\dfrac{2\cos x+1}{(2+\cos x)^{2}}$. Sur $\intFF0\pi$, $2\cos x+1\geq0\iff\cos x\geq-\frac12\iff x\leq\frac{2\pi}{3}$ :
+    $f'$ est positive sur $\intFF0{\frac{2\pi}3}$ et négative sur $\intFF{\frac{2\pi}3}\pi$. \pts{1,5 pt}
+  \item $f(0)=0$, $f\left(\frac{2\pi}{3}\right)=\dfrac{\sqrt3/2}{2-1/2}=\res{\tfrac{\sqrt3}{3}}$ et $f(\pi)=0$.
+\begin{center}
+\begin{tableau}
+  \otTab[2.2]{$x$/0.8,$f'(x)$/0.8,$f$/1.6}{$0$,$\frac{2\pi}{3}$,$\pi$}
+  \tkzTabLine{,+,z,-,}
+  \tkzTabVar{-/$0$,+/$\frac{\sqrt3}{3}$,-/$0$}
+\end{tableau}
+\end{center}
+    \pts{1 pt}
+  \item $f(0)=0$ et $f'(0)=\frac{3}{9}=\frac13$ : la tangente à l'origine a pour équation $\res{y=\tfrac13x}$. \pts{0,5 pt}
+\end{questions}
+\partieExo{B}{Intégrale et valeur moyenne}
+\begin{questions}[resume]
+  \item Avec $u(x)=2+\cos x>0$, $u'(x)=-\sin x$ et $f=-\frac{u'}{u}$, qui a pour primitive $-\ln u$ :
+    $\displaystyle\int_0^{\pi}f(x)\,\mathrm{d}x=\Big[-\ln(2+\cos x)\Big]_0^{\pi}=-\ln1+\ln3=\res{\ln3}\approx1{,}10$. \pts{1,25 pt}
+  \item La valeur moyenne vaut $\dfrac1{\pi-0}\displaystyle\int_0^{\pi}f(x)\,\mathrm{d}x=\res{\tfrac{\ln3}{\pi}}\approx\res{0{,}35}$. \pts{0,75 pt}
+\end{questions}
+\end{corrigeBac}

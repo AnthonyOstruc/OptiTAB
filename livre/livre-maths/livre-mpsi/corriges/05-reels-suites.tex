@@ -1,0 +1,493 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 5 — Nombres réels et suites numériques
+%% Résultats vérifiés par verifications/chapitre_05.py.
+
+\corrigesChapitre{5}{Nombres réels et suites numériques}
+\corrigesSouples
+
+\begin{blocLivre}{cor-5-1}
+\begin{corrige}{1}{Rationnels et irrationnels}
+\demarche{Un contre-exemple bien choisi suffit à réfuter ; un raisonnement par l'absurde établit l'irrationalité.}
+\begin{questions}
+  \item Les deux affirmations sont \textbf{fausses} :
+    $\sqrt2+(-\sqrt2)=0\in\Q$ et $\sqrt2\times\sqrt8=\sqrt{16}=4\in\Q$,
+    alors que $\sqrt2$, $-\sqrt2$ et $\sqrt8=2\sqrt2$ sont irrationnels.
+  \item Supposons $s=\sqrt2+\sqrt3\in\Q$. Alors $s^{2}=5+2\sqrt6\in\Q$,
+    d'où $\sqrt6=\dfrac{s^{2}-5}{2}\in\Q$ : contradiction avec
+    l'irrationalité de $\sqrt6$. Donc $\res{\sqrt2+\sqrt3\notin\Q}$.
+  \item $1{,}414^{2}=1{,}999396<2$ et $1{,}415^{2}=2{,}002225>2$ :
+    $\res{1{,}414\leq\sqrt2<1{,}415}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-2}
+\begin{corrige}{2}{Bornes supérieures et inférieures}
+\demarche{Un sup atteint est un max ; un sup non atteint se reconnaît à une suite d'éléments qui s'en approche.}
+\begin{questions}
+  \item $A=\intFO{0}{1}$ : $\inf A=\min A=0$ ; $\sup A=1$, non atteint
+    (pas de plus grand élément).
+  \item $B$ : $\sup B=\max B=1$ (pour $n=1$) ; $\inf B=0$, non atteint
+    ($\frac1n>0$ mais $\frac1n\to0$).
+  \item $C$ : les termes pairs valent $1+\frac1n\leq\frac32$ (atteint pour
+    $n=2$), les termes impairs $-1+\frac1n>-1$ et s'approchent de $-1$ :
+    $\sup C=\max C=\dfrac32$ ; $\inf C=-1$, non atteint.
+  \item $D$ : $\sup D=\sqrt2$ et $\inf D=-\sqrt2$, non atteints (ils sont
+    irrationnels, donc hors de $D$) : $D$ n'a ni plus grand ni plus petit
+    élément — et ses bornes n'existent pas dans $\Q$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-3}
+\begin{corrige}{3}{Majorée, minorée, bornée ?}
+\demarche{Encadrer quand c'est possible ; pour réfuter, exhiber des termes arbitrairement grands.}
+\begin{questions}
+  \item $1\leq u_n<2$ : \res{\text{bornée}} (croissante, de $1$ vers $2$).
+  \item $v_{2n}=2n\to+\infty$ et $v_{2n+1}=-(2n+1)\to-\infty$ :
+    \res{\text{ni majorée ni minorée}}.
+  \item $-1\leq\sin n\leq1$ et $0<\frac1n\leq1$ : $-1\leq w_n\leq2$,
+    \res{\text{bornée}}.
+  \item $t_n=n(n-1)\geq0$ : \res{\text{minorée}} (par $0$, atteint), non
+    majorée car $t_n\to+\infty$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-4}
+\begin{corrige}{4}{Monotonie}
+\demarche{Étudier $u_{n+1}-u_n$, ou le quotient pour des termes strictement positifs.}
+\begin{questions}
+  \item $u_{n+1}-u_n=2n\geq0$ : \res{\text{croissante}}.
+  \item $\dfrac{v_{n+1}}{v_n}=\dfrac{2}{n+1}\leq1$ dès que $n\geq1$ :
+    \res{\text{décroissante à partir du rang }1}.
+  \item $w_1=0$, $w_2=3$, $w_3=2$ : ni croissante ni décroissante
+    (\res{\text{non monotone}}).
+  \item $t_{n+1}-t_n=\dfrac{1}{n+1}>0$ : \res{\text{strictement croissante}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-5}
+\begin{corrige}{5}{Limites : opérations}
+\demarche{Factoriser par le terme dominant, ou multiplier par la quantité conjuguée.}
+\begin{questions}
+  \item $\dfrac{3+1/n^{2}}{1+2/n^{2}}\to\res{3}$.
+  \item $2+\dfrac{(-1)^{n}}{n}\to\res{2}$ (produit bornée $\times$ nulle).
+  \item $\sqrt{n+1}-\sqrt n=\dfrac{1}{\sqrt{n+1}+\sqrt n}\to\res{0}$.
+  \item Produit de limites : $1\times2=\res{2}$.
+  \item $n-n^{2}=n^{2}\Bigl(\dfrac1n-1\Bigr)\to\res{-\infty}$.
+  \item Pour $n\geq2$ : $0\leq\dfrac{2^{n}}{n!}=2\cdot\displaystyle\prod_{k=2}^{n}\frac{2}{k}
+    \leq2\cdot\Bigl(\dfrac{2}{2}\Bigr)^{?}\!\!\cdots\leq\dfrac{4}{n}$
+    \emph{(tous les facteurs $\frac2k\leq1$ sauf le dernier $\frac2n$)} :
+    par encadrement, la limite vaut $\res{0}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-6}
+\begin{corrige}{6}{Théorème d'encadrement}
+\demarche{Encadrer terme à terme — pour une somme, multiplier l'encadrement d'un terme par leur nombre.}
+\begin{questions}
+  \item $\dfrac{n-1}{n}\leq\dfrac{n+\cos n}{n}\leq\dfrac{n+1}{n}$ :
+    limite $\res{1}$.
+  \item $-\dfrac{1}{n^{2}}\leq\dfrac{\sin n}{n^{2}}\leq\dfrac{1}{n^{2}}$ :
+    limite $\res{0}$.
+  \item Chaque terme vérifie
+    $\dfrac{n}{n^{2}+n}\leq\dfrac{n}{n^{2}+k}\leq\dfrac{n}{n^{2}+1}$, donc
+    \[
+      \frac{n^{2}}{n^{2}+n}\leq\sum_{k=1}^{n}\frac{n}{n^{2}+k}\leq\frac{n^{2}}{n^{2}+1},
+    \]
+    et les deux bornes tendent vers $1$ : la somme tend vers $\res{1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-7}
+\begin{corrige}{7}{Arithmético-géométrique}
+\demarche{Le point fixe transforme la récurrence affine en suite géométrique.}
+\begin{questions}
+  \item $\omega=\dfrac{\omega}{2}+3$ donne $\res{\omega=6}$.
+  \item $u_{n+1}-6=\dfrac{u_n-6}{2}$ : $(u_n-6)$ est géométrique de raison
+    $\dfrac12$ et de premier terme $-6$, donc
+    $\res{u_n=6-6\Bigl(\dfrac12\Bigr)^{n}}$.
+  \item Comme $\Bigl(\dfrac12\Bigr)^{n}\to0$ : $\res{u_n\to6}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-8}
+\begin{corrige}{8}{Avec la définition de la limite}
+\demarche{Exhiber explicitement un rang $N$ en fonction de $\varepsilon$ (ou de $A$).}
+\begin{questions}
+  \item Soit $\varepsilon>0$. Pour $N>\dfrac{1}{\varepsilon}$ (un tel entier
+    existe !) et $n\geq N$ : $\Bigl|\dfrac1n-0\Bigr|=\dfrac1n\leq\dfrac1N\leq\varepsilon$.
+  \item $\Bigl|\dfrac{n+1}{n}-1\Bigr|=\dfrac1n$ : le même rang
+    $N>\dfrac{1}{\varepsilon}$ convient.
+  \item Soit $A>0$. Pour $N>\sqrt A$ et $n\geq N$ : $n^{2}\geq N^{2}>A$.
+    Donc $n^{2}\to+\infty$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-9}
+\begin{corrige}{9}{Opérations sur les bornes supérieures}
+\demarche{Toujours en deux temps : tel réel est un majorant, et aucun réel plus petit ne l'est.}
+\begin{questions}
+  \item $\sup B$ majore $B$, donc majore $A\subset B$ ; or $\sup A$ est le
+    \emph{plus petit} majorant de $A$ : $\sup A\leq\sup B$.
+  \item $\max(\sup A,\sup B)$ majore $A$ et $B$, donc $A\cup B$, d'où
+    $\sup(A\cup B)\leq\max(\sup A,\sup B)$. Inversement, $A\subset A\cup B$
+    et $B\subset A\cup B$ donnent, par la question 1,
+    $\sup A\leq\sup(A\cup B)$ et $\sup B\leq\sup(A\cup B)$ :
+    d'où l'égalité.
+  \item Pour $a\in A$, $b\in B$ : $a+b\leq\sup A+\sup B$, donc $A+B$ est
+    majorée et $\sup(A+B)\leq\sup A+\sup B$. Pour l'autre sens, soit
+    $\varepsilon>0$ : il existe $a\in A$ et $b\in B$ avec
+    $a>\sup A-\dfrac{\varepsilon}{2}$ et $b>\sup B-\dfrac{\varepsilon}{2}$,
+    donc $\sup(A+B)\geq a+b>\sup A+\sup B-\varepsilon$. Ceci valant pour
+    tout $\varepsilon>0$ : $\sup(A+B)\geq\sup A+\sup B$, d'où l'égalité.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-10}
+\begin{corrige}{10}{Traduction séquentielle}
+\demarche{La caractérisation par $\varepsilon$ fournit les termes de la suite, un rang après l'autre.}
+\begin{questions}
+  \item Pour chaque $n\in\N$, la caractérisation de la borne supérieure avec
+    $\varepsilon=\dfrac{1}{n+1}$ fournit un élément $x_n\in X$ tel que
+    $M-\dfrac{1}{n+1}<x_n\leq M$. Par encadrement, $x_n\to M$.
+  \item Par définition de la partie entière :
+    $d_n\leq x<d_n+10^{-n}$, donc $|x-d_n|<10^{-n}\to0$ : $d_n\to x$, et
+    chaque $d_n$ est décimal. Tout réel est donc limite d'une suite de
+    décimaux : $\mathbb{D}$ (et a fortiori $\Q$) est dense dans $\R$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-11}
+\begin{corrige}{11}{Premiers théorèmes, à la main}
+\demarche{Choisir un $\varepsilon$ adapté à la conclusion visée.}
+\begin{questions}
+  \item Avec $\varepsilon=\dfrac{\ell}{2}>0$ : à partir d'un certain rang,
+    $|u_n-\ell|\leq\dfrac{\ell}{2}$, donc
+    $u_n\geq\ell-\dfrac{\ell}{2}=\dfrac{\ell}{2}>0$.
+  \item Soit $M$ tel que $|u_n|\leq M$ pour tout $n$, et $\varepsilon>0$.
+    À partir d'un certain rang, $|v_n|\leq\dfrac{\varepsilon}{M+1}$, donc
+    $|u_nv_n|\leq M\cdot\dfrac{\varepsilon}{M+1}\leq\varepsilon$.
+  \item L'inégalité triangulaire inverse donne
+    $\bigl||u_n|-|\ell|\bigr|\leq|u_n-\ell|\to0$. La réciproque est fausse :
+    $|(-1)^{n}|\to1$ alors que $\bigl((-1)^{n}\bigr)$ diverge.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-12}
+\begin{corrige}{12}{Le théorème de la limite monotone en action}
+\demarche{Croissante + majorée : la convergence est acquise sans connaître la limite.}
+\begin{questions}
+  \item $u_{n+1}-u_n=\dfrac{1}{(n+1)^{2}}>0$ : croissante ; et
+    $u_n\leq2-\dfrac1n\leq2$ : majorée. Donc $(u_n)$ \res{\text{converge}}
+    (sa limite est $\frac{\pi^{2}}{6}$, résultat admis ici).
+  \item Pour $k\geq1$ : $k!=1\times2\times\cdots\times k\geq2^{k-1}$, donc
+    $\dfrac{1}{k!}\leq\dfrac{1}{2^{k-1}}$ et
+    $v_n\leq1+\displaystyle\sum_{k=1}^{n}\frac{1}{2^{k-1}}\leq1+2=3$. Croissante et
+    majorée : $(v_n)$ \res{\text{converge}} (vers $\mathrm{e}$, voir
+    l'exercice 13).
+  \item Soit $(u_n)$ croissante non majorée et $A\in\R$. Comme $A$ ne majore
+    pas la suite, il existe $N$ avec $u_N>A$ ; par croissance, $u_n\geq u_N>A$
+    pour tout $n\geq N$ : c'est la définition de $u_n\to+\infty$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-13}
+\begin{corrige}{13}{Suites adjacentes}
+\demarche{Trois vérifications : l'une monte, l'autre descend, l'écart tend vers 0.}
+\begin{questions}
+  \item $(a_n)$ croît, $(b_n)$ décroît, $b_n-a_n=\dfrac2n\to0$ : adjacentes,
+    de limite commune $\res{1}$ (évidente ici par calcul direct).
+  \item $(a_n)$ est croissante : $a_{n+1}-a_n=\dfrac{1}{(n+1)!}>0$. Pour
+    $(b_n)$ :
+    \[
+      b_{n+1}-b_n=\frac{1}{(n+1)!}+\frac{1}{(n+1)(n+1)!}-\frac{1}{n\,n!}
+      =\frac{n(n+1)+n-(n+1)^{2}}{n(n+1)(n+1)!}
+      =\frac{-1}{n(n+1)(n+1)!}<0 :
+    \]
+    décroissante. Enfin $b_n-a_n=\dfrac{1}{n\,n!}\to0$ : les suites sont
+    \res{\text{adjacentes}}. Pour $n=3$ :
+    $a_3=1+1+\dfrac12+\dfrac16=\dfrac{8}{3}$ et
+    $b_3=\dfrac{8}{3}+\dfrac{1}{18}$, d'où
+    $\res{2{,}6667\leq\mathrm{e}\leq2{,}7223}$ (arrondis).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-14}
+\begin{corrige}{14}{Suites extraites}
+\demarche{Pour diverger : deux sous-suites, deux limites. Pour recoller : contrôler tous les rangs.}
+\begin{questions}
+  \item $u_{2n}=1\to1$ et $u_{2n+1}=-1\to-1$ : deux suites extraites de
+    limites différentes, donc $\bigl((-1)^{n}\bigr)$ \res{\text{diverge}}.
+  \item Pour $n$ multiple de $6$, $\cos\dfrac{n\pi}{3}=1$ ; pour
+    $n=3+6k$, $\cos\dfrac{n\pi}{3}=\cos(\pi)=-1$ : deux sous-suites
+    constantes distinctes, la suite \res{\text{diverge}}.
+  \item Soit $\varepsilon>0$ : il existe $N_1$ tel que
+    $|u_{2n}-\ell|\leq\varepsilon$ pour $n\geq N_1$, et $N_2$ de même pour
+    les rangs impairs. Pour $n\geq\max(2N_1,2N_2+1)$, $n$ est pair ou
+    impair et dans les deux cas $|u_n-\ell|\leq\varepsilon$ : $u_n\to\ell$.
+  \item $u_{2n}=1+\dfrac{1}{2n}\to1$ et $u_{2n+1}\to-1$ :
+    \res{\text{divergente}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-15}
+\begin{corrige}{15}{Récurrences linéaires d'ordre 2}
+\demarche{Équation caractéristique, forme générale, puis conditions initiales.}
+\begin{questions}
+  \item $r^{2}-3r+2=0$ : racines $1$ et $2$, donc $u_n=A+B\cdot2^{n}$ ;
+    $u_0=2$ et $u_1=3$ donnent $A=B=1$ :
+    $\res{u_n=1+2^{n}}$.
+  \item $r^{2}=r+1$ : racines $\varphi=\dfrac{1+\sqrt5}{2}$ et
+    $\psi=\dfrac{1-\sqrt5}{2}$. Avec $F_0=0$, $F_1=1$ :
+    $A+B=0$ et $A\varphi+B\psi=1$, d'où $A=-B=\dfrac{1}{\sqrt5}$ :
+    \[
+      \res{F_n=\frac{\varphi^{n}-\psi^{n}}{\sqrt5}}
+      \qquad\text{(formule de Binet).}
+    \]
+  \item $r^{2}-r+1=0$ : racines $\mathrm{e}^{\pm\mathrm{i}\pi/3}$ (module $1$,
+    argument $\pm\frac{\pi}{3}$), donc
+    $w_n=A\cos\dfrac{n\pi}{3}+B\sin\dfrac{n\pi}{3}$ ; les conditions
+    initiales donnent $A=0$, $B=\dfrac{2}{\sqrt3}$ :
+    $\res{w_n=\dfrac{2}{\sqrt3}\sin\dfrac{n\pi}{3}}$. La suite est
+    \emph{périodique de période $6$} : $0,1,1,0,-1,-1,\dots$
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-16}
+\begin{corrige}{16}{Une suite récurrente complète}
+\demarche{Intervalle stable, signe de $f(x)-x$, limite monotone, équation du point fixe.}
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+\begin{questions}
+  \item Pour $x\in\intFF{0}{2}$ : $2\leq2+x\leq4$, donc
+    $\sqrt2\leq f(x)\leq2$ : l'intervalle est stable. Comme
+    $u_0=0\in\intFF{0}{2}$, une récurrence immédiate donne
+    $0\leq u_n\leq2$ pour tout $n$.
+  \item Pour $x\in\intFF{0}{2}$, $f(x)-x\geq0$ équivaut à $2+x\geq x^{2}$,
+    c'est-à-dire $(2-x)(1+x)\geq0$ : vrai sur $\intFF{0}{2}$. Donc
+    $u_{n+1}=f(u_n)\geq u_n$ : la suite est croissante.
+  \item Croissante et majorée par $2$ : $(u_n)$ converge, vers un réel
+    $\ell\in\intFF{0}{2}$. Par continuité de $f$ : $\ell=\sqrt{2+\ell}$,
+    soit $\ell^{2}-\ell-2=0$, de racines $2$ et $-1$ ; comme $\ell\geq0$ :
+    $\res{\ell=2}$.
+  \item La construction en toile d'araignée ci-contre visualise la montée
+    des termes vers le point fixe $2$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.42,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.15,0) -- (2.35,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.15) -- (0,2.3);
+  \draw[otRule!80!otMuted,line width=0.6pt] (0,0) -- (2.2,2.2);
+  \draw[otNavy,line width=1pt] plot[domain=0:2.2,samples=50] ({\x},{sqrt(2+\x)});
+  \draw[otGreen,line width=0.8pt]
+    (0,0) -- (0,1.414) -- (1.414,1.414) -- (1.414,1.848) -- (1.848,1.848)
+    -- (1.848,1.962) -- (1.962,1.962);
+  \fill[otNavy] (2,2) circle (1.1pt);
+  \node[above left,font=\tiny,text=otNavy,inner sep=0.8pt] at (2.05,2.0) {$2$};
+  \foreach \x in {0,1.414,1.848}{\fill[otGreenDark] (\x,0) circle (0.9pt);}
+  \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (1.414,1.414) -- (1.414,0);
+  \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (1.848,1.848) -- (1.848,0);
+  \node[below,font=\tiny,text=otGreenDark] at (0,-0.04) {$u_0$};
+  \node[below,font=\tiny,text=otGreenDark] at (1.414,-0.04) {$u_1$};
+  \node[below,font=\tiny,text=otGreenDark] at (1.9,-0.04) {$u_2$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$u_0=0$, puis $u_1=\sqrt2$, $u_2\approx1{,}85$\dots{} : la suite monte vers $2$.}
+\end{minipage}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-17}
+\begin{corrige}{17}{Une récurrence à deux visages}
+\demarche{Une formule explicite rend tout limpide — sinon, points fixes et intervalles stables.}
+\begin{questions}
+  \item Par récurrence immédiate : $\res{u_n=u_0^{\,2^{n}}}$.
+  \item Si $0\leq u_0<1$ : $u_0^{2^{n}}\to\res{0}$ (puissances d'un réel de
+    $\intFO{0}{1}$, avec $2^{n}\to+\infty$). Si $u_0=1$ : suite constante
+    égale à $\res{1}$. Si $u_0>1$ : $u_0^{2^{n}}\to\res{+\infty}$.
+  \item Les points fixes de $f:x\mapsto x^{2}$ sont $0$ et $1$. Sur
+    $\intFF{0}{1}$ (stable), $f(x)-x=x(x-1)\leq0$ : la suite décroît vers
+    $0$ (si $u_0<1$). Sur $\intFO{1}{+\infty}$ (stable), $f(x)-x\geq0$ : la
+    suite croît, et ne peut converger (le seul point fixe $\geq1$ est $1$,
+    qu'elle a quitté) : elle tend vers $+\infty$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-18}
+\begin{corrige}{18}{Suites complexes}
+\demarche{Pour les suites géométriques complexes, tout se lit sur le module.}
+\begin{questions}
+  \item $|z_n|=\Bigl|\dfrac{1+\mathrm{i}}{2}\Bigr|^{n}
+    =\Bigl(\dfrac{\sqrt2}{2}\Bigr)^{n}\to0$, car
+    $\dfrac{\sqrt2}{2}<1$ : donc $z_n\to\res{0}$.
+  \item $\omega=\dfrac{\mathrm{i}}{2}\omega+1$ donne
+    $\omega=\dfrac{1}{1-\mathrm{i}/2}=\dfrac{2}{2-\mathrm{i}}
+    =\res{\dfrac{4+2\mathrm{i}}{5}}$. Alors
+    $z_{n+1}-\omega=\dfrac{\mathrm{i}}{2}(z_n-\omega)$, donc
+    $|z_n-\omega|=\Bigl(\dfrac12\Bigr)^{n}|z_0-\omega|
+    =|\omega|\Bigl(\dfrac12\Bigr)^{n}\to0$ :
+    $\res{z_n\to\dfrac{4+2\mathrm{i}}{5}}$.
+  \item La convergence complexe équivaut à celle des parties réelle et
+    imaginaire : $\operatorname{Re}z_n\to\dfrac45$ et
+    $\operatorname{Im}z_n\to\dfrac25$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-19}
+\begin{corrige}{19}{Le théorème de Cesàro}
+\demarche{Couper la somme en deux : un paquet fixe, écrasé par $\frac1n$, et une queue contrôlée par $\varepsilon$.}
+\begin{questions}
+  \item Par inégalité triangulaire :
+    \[
+      |c_n-\ell|=\Bigl|\frac1n\sum_{k=1}^{n}(u_k-\ell)\Bigr|
+      \leq\frac1n\sum_{k=1}^{N-1}|u_k-\ell|+\frac1n\sum_{k=N}^{n}|u_k-\ell|
+      \leq\frac1n\sum_{k=1}^{N-1}|u_k-\ell|+\frac{n-N+1}{n}\,\varepsilon,
+    \]
+    et $\dfrac{n-N+1}{n}\leq1$ donne l'inégalité voulue.
+  \item Le premier terme est de la forme $\dfrac{C}{n}$ avec $C$ constante :
+    il existe $N'$ tel que $\dfrac{C}{n}\leq\varepsilon$ pour $n\geq N'$.
+    Alors $|c_n-\ell|\leq2\varepsilon$ pour $n\geq\max(N,N')$ : comme
+    $\varepsilon$ est arbitraire, $c_n\to\ell$.
+  \item Pour $u_n=(-1)^{n}$ : $c_n\to0$ (les termes se compensent), alors
+    que $(u_n)$ diverge — la réciproque est fausse.
+  \item On applique Cesàro à la suite $(u_{k+1}-u_k)$, qui converge vers
+    $\ell$ : sa moyenne $\dfrac{u_{n+1}-u_1}{n}$ tend vers $\ell$, d'où
+    $\dfrac{u_n}{n}\to\ell$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-20}
+\begin{corrige}{20}{La série harmonique et la constante d'Euler}
+\demarche{Comparer la somme discrète au logarithme, grâce à un encadrement uniforme.}
+\begin{questions}
+  \item L'encadrement $\dfrac{x}{1+x}\leq\ln(1+x)\leq x$ appliqué à
+    $x=\dfrac1k$ donne
+    $\dfrac{1}{k+1}\leq\ln\Bigl(\dfrac{k+1}{k}\Bigr)\leq\dfrac1k$, et
+    $\ln\Bigl(\dfrac{k+1}{k}\Bigr)=\ln(k+1)-\ln k$.
+  \item En sommant l'inégalité de droite pour $k=1,\dots,n$, le télescopage
+    donne $\ln(n+1)\leq H_n$. Comme $\ln(n+1)\to+\infty$ :
+    $\res{H_n\to+\infty}$.
+  \item $\gamma_{n+1}-\gamma_n=\dfrac{1}{n+1}-\ln\Bigl(\dfrac{n+1}{n}\Bigr)\leq0$
+    d'après la question 1 : décroissante. Et
+    $\gamma_n=H_n-\ln n\geq\ln(n+1)-\ln n>0$ : minorée par $0$.
+  \item Décroissante et minorée : $(\gamma_n)$ \res{\text{converge}}. Sa
+    limite est la constante d'Euler $\gamma=0{,}5772\dots$ — on ignore
+    aujourd'hui encore si $\gamma$ est rationnelle !
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-21}
+\begin{corrige}{21}{L'irrationalité de e}
+\demarche{Coincer un entier strictement entre 0 et 1 : la contradiction est immédiate.}
+\begin{questions}
+  \item $q!\,a_q=\displaystyle\sum_{k=0}^{q}\frac{q!}{k!}$ est une somme d'entiers
+    (pour $k\leq q$, $k!$ divise $q!$). Et si $\mathrm{e}=\dfrac{p}{q}$,
+    alors $q!\,\mathrm{e}=p\,(q-1)!$ est entier.
+  \item L'encadrement strict $a_q<\mathrm{e}<b_q$ donne
+    $0<\mathrm{e}-a_q<b_q-a_q=\dfrac{1}{q\cdot q!}$, d'où, en multipliant
+    par $q!>0$ :
+    \[
+      0<q!\,(\mathrm{e}-a_q)<\frac1q\leq1.
+    \]
+  \item Mais $q!\,(\mathrm{e}-a_q)=q!\,\mathrm{e}-q!\,a_q$ serait un entier
+    (différence de deux entiers), strictement compris entre $0$ et $1$ :
+    impossible. Donc $\res{\mathrm{e}\notin\Q}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-22}
+\begin{corrige}{22}{La moyenne arithmético-géométrique}
+\demarche{L'inégalité arithmético-géométrique ordonne tout ; l'écart fond de moitié à chaque étape.}
+\begin{questions}
+  \item Par récurrence : si $0<b_n\leq a_n$, alors $b_{n+1}=\sqrt{a_nb_n}>0$
+    et, par l'inégalité arithmético-géométrique,
+    $b_{n+1}=\sqrt{a_nb_n}\leq\dfrac{a_n+b_n}{2}=a_{n+1}$.
+  \item $a_{n+1}=\dfrac{a_n+b_n}{2}\leq\dfrac{a_n+a_n}{2}=a_n$ et
+    $b_{n+1}=\sqrt{a_nb_n}\geq\sqrt{b_n^{2}}=b_n$.
+  \item $a_{n+1}-b_{n+1}\leq a_{n+1}-b_n=\dfrac{a_n+b_n}{2}-b_n
+    =\dfrac{a_n-b_n}{2}$ (on a utilisé $b_{n+1}\geq b_n$). Par récurrence,
+    $0\leq a_n-b_n\leq\dfrac{a-b}{2^{n}}\to0$.
+  \item $(a_n)$ décroît, $(b_n)$ croît, l'écart tend vers $0$ : suites
+    adjacentes, de limite commune $M(a,b)$. Pour $(a,b)=(4,1)$ :
+    $(a_1,b_1)=(2{,}5\,;2)$ puis $(a_2,b_2)=(2{,}25\,;\sqrt5)$, d'où
+    l'encadrement $\res{2{,}2360\leq M(4,1)\leq2{,}25}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-23}
+\begin{corrige}{23}{Bolzano-Weierstrass par dichotomie}
+\demarche{Dichotomie : on garde toujours une moitié qui contient une infinité de termes.}
+\begin{questions}
+  \item Par récurrence : $\intFF{a_0}{b_0}$ contient tous les termes. Si
+    $\intFF{a_n}{b_n}$ contient $u_k$ pour une infinité d'indices, l'une au
+    moins des deux moitiés en contient une infinité (sinon leur réunion
+    n'en contiendrait qu'un nombre fini) : c'est celle que l'on choisit.
+  \item $(a_n)$ croît, $(b_n)$ décroît (on prend toujours une moitié), et
+    $b_n-a_n=\dfrac{b-a}{2^{n}}\to0$ : suites adjacentes, de limite commune
+    $\ell$.
+  \item On construit $\varphi$ par récurrence : $\varphi(0)=0$ ; puis, comme
+    $\intFF{a_{n+1}}{b_{n+1}}$ contient une infinité de termes, on peut
+    choisir $\varphi(n+1)>\varphi(n)$ avec
+    $u_{\varphi(n+1)}\in\intFF{a_{n+1}}{b_{n+1}}$.
+  \item L'encadrement $a_n\leq u_{\varphi(n)}\leq b_n$ et le théorème des
+    gendarmes donnent $u_{\varphi(n)}\to\ell$ : on vient de démontrer le
+    \res{\text{théorème de Bolzano-Weierstrass}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-24}
+\begin{corrige}{24}{Fibonacci et le nombre d'or}
+\demarche{La formule de Binet révèle la géométrie cachée ; le point fixe la confirme.}
+\begin{questions}
+  \item $|\psi|=\dfrac{\sqrt5-1}{2}\approx0{,}618<1$, donc
+    $\psi^{n}\to0$ et
+    \[
+      \frac{F_{n+1}}{F_n}=\frac{\varphi^{n+1}-\psi^{n+1}}{\varphi^{n}-\psi^{n}}
+      =\varphi\cdot\frac{1-(\psi/\varphi)^{n+1}}{1-(\psi/\varphi)^{n}}
+      \xrightarrow[n\to+\infty]{}\res{\varphi}.
+    \]
+  \item \etape{Initialisation} $F_2F_0-F_1^{2}=0-1=(-1)^{1}$.
+    \etape{Hérédité} Supposons $F_{n+1}F_{n-1}-F_n^{2}=(-1)^{n}$. En
+    utilisant $F_{n+2}=F_{n+1}+F_n$ puis $F_{n+1}-F_n=F_{n-1}$ :
+    \[
+      F_{n+2}F_n-F_{n+1}^{2}=F_{n+1}F_n+F_n^{2}-F_{n+1}^{2}
+      =F_n^{2}-F_{n+1}F_{n-1}=-(-1)^{n}=(-1)^{n+1},
+    \]
+    ce qui est la propriété au rang $n+1$.
+  \item $r_{n+1}=\dfrac{F_{n+2}}{F_{n+1}}=\dfrac{F_{n+1}+F_n}{F_{n+1}}
+    =1+\dfrac{1}{r_n}$. La suite $(r_n)$ converge vers $\varphi>0$
+    (question 1) ; en passant à la limite dans la relation :
+    $\varphi=1+\dfrac{1}{\varphi}$, c'est-à-dire
+    $\varphi^{2}=\varphi+1$ — l'équation du nombre d'or.
+  \item En itérant $r_{n+1}=1+\dfrac{1}{r_n}$ à partir de $r_1=1$, chaque
+    $r_n$ est une fraction « empilée » $1+\cfrac{1}{1+\cfrac{1}{\ddots}}$ ;
+    la convergence de $(r_n)$ vers $\varphi$ justifie l'écriture de
+    $\varphi$ comme fraction continuée infinie, la plus simple — et la plus
+    lente à converger — de toutes.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-05}

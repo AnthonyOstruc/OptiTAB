@@ -1,0 +1,7 @@
+\begin{tikzpicture}[x=10mm,y=10mm,font=\small]
+\draw[otRule!60,step=1](-2.2,-.2)grid(2.2,4.4);\draw[otMuted,->](-2.3,0)--(2.5,0)node[right]{$x$};\draw[otMuted,->](0,-.3)--(0,4.6)node[above]{$y$};
+\draw[otNavy,thick,domain=-2.1:2.1,samples=90]plot(\x,{\x*\x});\fill[otNavy](0,2)circle(1.5pt)node[above right]{$A(0;2)$};
+\geoEnonce{\fill[otNavy](1.5,2.25)circle(1.5pt)node[right]{$M(x;x^2)$};\draw[otGreenDark,dashed](0,2)--(1.5,2.25);}
+\geoSolution{\foreach \s/\lab in {-1/M_1,1/M_2}{\fill[otGreenDark]({\s*sqrt(1.5)},1.5)circle(1.7pt)node[below]{$\lab$};\draw[otGreenDark,dashed](0,2)--({\s*sqrt(1.5)},1.5);}}
+\node[below left]at(0,0){$O$};\end{tikzpicture}
+\par\smallskip\legende{Le carré de la distance permet une étude polynomiale ; les deux positions optimales sont symétriques.}

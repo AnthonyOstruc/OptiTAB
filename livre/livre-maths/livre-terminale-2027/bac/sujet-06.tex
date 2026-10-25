@@ -1,0 +1,79 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 6 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s6.py)
+
+\sujetBac{6}{Vrai ou faux : analyse/4,Loi binomiale et concentration/5,Géométrie : section d'un cube/4,Équation différentielle et aire/5}
+
+\begin{exoBac}{4}{Vrai ou faux}
+Pour chacune des affirmations suivantes, indiquer si elle est vraie ou fausse, en justifiant la réponse. Une réponse non justifiée
+n'est pas prise en compte.
+\begin{questions}
+  \item \textbf{Affirmation 1.} $\displaystyle\lim_{x\to+\infty}\frac{\ln x}{\sqrt x}=0$.
+  \item \textbf{Affirmation 2.} La fonction $f$ définie sur $\R$ par $f(x)=x^{3}-3x$ est convexe sur $\R$.
+  \item \textbf{Affirmation 3.} La fonction $G$ définie sur $\intOO{-\frac12}{+\infty}$ par $G(x)=\ln(2x+1)$ est une primitive de la
+    fonction $g:x\mapsto\dfrac{1}{2x+1}$.
+  \item \textbf{Affirmation 4.} La fonction $h$ définie sur $\R$ par $h(x)=3e^{2x}-1$ est une solution de l'équation différentielle
+    $y'=2y+2$.
+  \item \textbf{Affirmation 5.} L'équation $x^{3}+x+1=0$ admet une unique solution réelle, et celle-ci appartient à l'intervalle
+    $\intOO{-1}{0}$.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Loi binomiale et concentration}
+Une usine fabrique des masques chirurgicaux. On admet que $4\,\%$ des masques produits présentent un défaut. Les masques sont conditionnés
+par cartons de $200$ ; on assimile la constitution d'un carton à $200$ tirages indépendants. On note $X$ le nombre de masques
+défectueux dans un carton. Les probabilités seront arrondies au millième.
+\begin{questions}
+  \item Justifier que $X$ suit une loi binomiale, dont on précisera les paramètres.
+  \item Calculer l'espérance, la variance et l'écart-type de $X$.
+  \item Calculer la probabilité qu'un carton contienne au plus $5$ masques défectueux, puis la probabilité qu'il en contienne au
+    moins $12$.
+  \item À l'aide de l'inégalité de Bienaymé-Tchebychev, montrer que $P(3\leq X\leq13)\geq0{,}78$. Comparer avec la valeur exacte.
+  \item Le contrôle qualité trouve $15$ masques défectueux dans un carton. Calculer $P(X\geq15)$. Ce résultat doit-il alerter
+    l'usine ? Justifier.
+  \item On prélève désormais $n$ masques et l'on note $F$ la fréquence des masques défectueux. Déterminer, à l'aide de l'inégalité de
+    concentration, une valeur de $n$ pour laquelle $P\big(|F-0{,}04|\geq0{,}01\big)\leq0{,}05$.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Géométrie : section d'un cube}
+\begin{codecote}[0.6]
+On considère un cube $ABCDEFGH$ d'arête $1$ et l'on se place dans le repère orthonormé $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$. On note
+$P$ le milieu de l'arête $[EH]$ et $Q$ le milieu de l'arête $[BC]$.
+\begin{questions}
+  \item Donner les coordonnées des points $P$, $Q$ et $G$.
+  \item Montrer que le vecteur $\vec n\,(1\pv-2\pv1)$ est normal au plan $(APQ)$, en déduire une équation de ce plan, puis montrer que le
+    point $G$ appartient au plan $(APQ)$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.3]
+  \otPaveCoord{1}{1}{1}
+  \coordinate (P) at (0,0.5,1); \coordinate (Q) at (1,0.5,0);
+  \fill[otGreen,opacity=0.2] (A) -- (P) -- (G) -- (Q) -- cycle;
+  \otPaveAretes\otPaveNoms
+  \draw[otGreenDark,line width=0.9pt] (P) -- (G) -- (Q);
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (Q) -- (A) -- (P);
+  \foreach \p/\a in {P/south,Q/north west}{\node[otPtV] at (\p) {}; \node[otSommet,anchor=\a] at (\p) {$\p$};}
+\end{tikzpicture}
+\end{codecote}
+\begin{questions}[start=3]
+  \item Montrer que le quadrilatère $APGQ$ est un parallélogramme, puis que c'est un losange.
+  \item Démontrer que les droites $(PQ)$ et $(AG)$ sont orthogonales. Calculer les longueurs $AG$ et $PQ$, puis l'aire du losange $APGQ$.
+  \item Calculer $\cos\widehat{PAQ}$, puis une mesure de l'angle $\widehat{PAQ}$ au dixième de degré près.
+  \item Le quadrilatère $APGQ$ est-il un carré ? Justifier.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Équation différentielle et aire}
+On considère l'équation différentielle $(E):\ y'=-2y+e^{-x}$, où $y$ est une fonction dérivable de la variable réelle $x$.
+\begin{questions}
+  \item Vérifier que la fonction $g:x\mapsto e^{-x}$ est une solution particulière de $(E)$.
+  \item Résoudre l'équation différentielle $(E)$.
+  \item Déterminer la solution $f$ de $(E)$ telle que $f(0)=0$.
+  \item On admet que $f(x)=e^{-x}-e^{-2x}$ pour tout réel $x$. Étudier les variations de $f$ sur $\intFO0{+\infty}$, préciser son
+    maximum et sa limite en $+\infty$.
+  \item Pour tout réel $t\geq0$, on pose $A(t)=\displaystyle\int_0^{t}f(x)\,\mathrm{d}x$. Montrer que $A(t)=\dfrac12\left(1-e^{-t}\right)^{2}$
+    et déterminer la limite de $A(t)$ quand $t$ tend vers $+\infty$.
+  \item Déterminer la valeur exacte du réel $t$ tel que $A(t)=\frac14$, puis en donner une valeur approchée au centième.
+\end{questions}
+\end{exoBac}

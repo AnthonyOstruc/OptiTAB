@@ -1,0 +1,16 @@
+% Agitation des molécules d'air d'un pneu à deux températures (corrigé de l'exercice 1, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=0.85cm,
+  molecule/.style={ball color=otNavy!45,draw=none},
+  vit/.style={otNavy,line width=0.6pt,-{Stealth[length=1.4mm]}}]
+\foreach \bx/\k/\titre in {0/0.55/{à \qty{10}{\degreeCelsius} : agitation modérée},5.2/1.0/{à \qty{40}{\degreeCelsius} : agitation plus forte}}{%
+  \begin{scope}[shift={(\bx,0)}]
+    \fill[otNavy!5] (0,0) rectangle (3.6,2.2);
+    \draw[otNavy,line width=0.9pt] (0,0) rectangle (3.6,2.2);
+    \foreach \x/\y/\dx/\dy in {0.5/0.5/0.4/0.25,1.2/1.6/0.35/-0.3,1.9/0.7/-0.3/0.35,2.6/1.5/0.4/0.2,
+        3.0/0.45/-0.35/-0.15,0.7/1.3/-0.25/0.3,2.2/1.1/0.3/-0.35,1.4/0.35/0.38/-0.05}{%
+      \shade[molecule] (\x,\y) circle (0.09);
+      \draw[vit] ({\x+0.11*\dx/sqrt(\dx*\dx+\dy*\dy)},{\y+0.11*\dy/sqrt(\dx*\dx+\dy*\dy)}) -- ++({\k*\dx},{\k*\dy});}
+    \node[pcLegendeG,anchor=north] at (1.8,-0.12) {\titre};
+  \end{scope}}
+\end{tikzpicture}
+\par\smallskip\legende{Plus chaudes, les molécules sont plus rapides : leurs chocs sur les parois sont plus fréquents et plus violents.}

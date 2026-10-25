@@ -1,0 +1,472 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[cinetique]{4}{Cinétique chimique}{Partie 1 · Constitution et transformations de la matière}
+{Suivi temporel\enspace·\enspace Vitesses volumiques\enspace·\enspace Facteurs cinétiques et catalyse\enspace·\enspace Loi d'ordre 1}
+\objectif{Justifier le choix d'une méthode de suivi temporel d'une transformation chimique.}
+\objectif{Déterminer une vitesse volumique de disparition ou d'apparition et un temps de demi-réaction.}
+\objectif{Identifier des facteurs cinétiques et un catalyseur à partir de données expérimentales.}
+\objectif{Reconnaître une évolution qui suit une loi de vitesse d'ordre 1.}
+\objectif{Tester une loi de vitesse à l'aide d'un programme Python.}
+\prerequis{Tableau d'avancement, réactif limitant, avancement final.}
+\prerequis{Lois de Beer-Lambert et de Kohlrausch, gaz parfait (chapitre 2).}
+\prerequis{Dérivée, fonction exponentielle et logarithme népérien.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Transformations lentes ou rapides et suivi temporel}
+\begin{definition}[Transformation lente, transformation rapide]
+Une transformation est \textbf{rapide} lorsqu'elle semble achevée dès que les réactifs entrent en contact : son
+évolution ne peut être suivie ni à l'œil, ni avec les appareils de mesure usuels. Elle est \textbf{lente} lorsque son
+évolution dure de quelques secondes à plusieurs heures, voire davantage : on peut alors mesurer la composition du
+système au cours du temps. La \textbf{cinétique chimique} étudie cette évolution temporelle.
+\end{definition}
+\begin{propriete}[Méthodes de suivi temporel]
+On suit l'évolution d'un système en mesurant, à différentes dates, une grandeur liée à la concentration d'une espèce.
+\par\smallskip
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{}llY@{}}\toprule
+\otTete{Méthode} & \otTete{Grandeur mesurée} & \otTete{Condition d'utilisation}\\\midrule
+Spectrophotométrie & absorbance $A=k\,c$ & une espèce colorée, seule à absorber à la longueur d'onde choisie\\
+Conductimétrie & conductivité $\sigma$ & des ions apparaissent ou disparaissent\\
+Pression ou volume de gaz & $p$ ou $V$ & un gaz se forme ou est consommé\\
+pH-métrie & pH & les ions oxonium sont formés ou consommés\\
+Titrage de prélèvements & quantité titrée & chaque prélèvement subit une trempe avant le titrage\\\bottomrule
+\end{tabularx}}
+\end{propriete}
+\begin{savoirfaire}[Choisir une méthode de suivi]
+Repérer dans l'équation une espèce dont la concentration varie et qui modifie une grandeur mesurable : couleur
+(spectrophotométrie), ions (conductimétrie), gaz (pression). Les méthodes physiques fournissent des mesures en
+continu, sans prélèvement et sans perturber le système ; une méthode chimique impose d'arrêter la transformation dans
+chaque prélèvement par une \textbf{trempe}, avant de le titrer.
+\end{savoirfaire}
+\essSection{2}{Vitesses volumiques et temps de demi-réaction}
+\begin{definition}[Vitesses volumiques]
+Pour une transformation à volume constant, la vitesse volumique de disparition d'un réactif R et la vitesse
+volumique d'apparition d'un produit P sont, à la date $t$ :
+\[v_\mathrm{disp}(\mathrm{R})=-\frac{\mathrm{d}[\mathrm{R}]}{\mathrm{d}t}\qquad\text{et}\qquad
+v_\mathrm{app}(\mathrm{P})=\frac{\mathrm{d}[\mathrm{P}]}{\mathrm{d}t}.\]
+Ces vitesses sont positives ; elles s'expriment en \unit{mol.L^{-1}.s^{-1}} ou en \unit{mol.L^{-1}.min^{-1}}.
+\end{definition}
+\begin{propriete}[Vitesses et nombres stœchiométriques]
+Pour la réaction $\alpha\,\mathrm{A}+\beta\,\mathrm{B}\longrightarrow\gamma\,\mathrm{C}+\delta\,\mathrm{D}$,
+d'avancement $x$, dans un volume $V$ constant, $[\mathrm{A}]=[\mathrm{A}]_0-\frac{\alpha\,x}{V}$, donc
+\[\frac{v_\mathrm{disp}(\mathrm{A})}{\alpha}=\frac{v_\mathrm{disp}(\mathrm{B})}{\beta}=
+\frac{v_\mathrm{app}(\mathrm{C})}{\gamma}=\frac{v_\mathrm{app}(\mathrm{D})}{\delta}=\frac{1}{V}\,\frac{\mathrm{d}x}{\mathrm{d}t}.\]
+\end{propriete}
+\begin{savoirfaire}[Déterminer une vitesse volumique]
+Tracer la tangente à la courbe $[\mathrm{R}]=f(t)$ au point d'abscisse $t$ : la vitesse volumique de disparition est
+l'opposée de son coefficient directeur. Pour un produit, la vitesse d'apparition est égale au coefficient directeur
+de la tangente à la courbe $[\mathrm{P}]=g(t)$. En général, ces vitesses diminuent au cours du temps.
+\end{savoirfaire}
+\begin{definition}[Temps de demi-réaction]
+Le temps de demi-réaction $t_{1/2}$ est la durée au bout de laquelle l'avancement atteint la moitié de sa valeur
+finale : $x(t_{1/2})=x_\mathrm{f}/2$. Si la transformation est totale, la concentration du réactif limitant est alors
+divisée par deux.
+\end{definition}
+\schema{04-suivi}
+\begin{attention}
+Le temps de demi-réaction n'est pas la moitié de la durée de la transformation : à la date $2\,t_{1/2}$, la
+transformation n'est pas terminée. Il sert à comparer des cinétiques et à choisir l'intervalle entre deux mesures ;
+pour une loi d'ordre 1 (section 4), plus de 99 \% du réactif a disparu au bout de $7\,t_{1/2}$.
+\end{attention}
+\essSection{3}{Facteurs cinétiques et catalyse}
+\begin{propriete}[Facteurs cinétiques]
+Un facteur cinétique est un paramètre qui modifie la vitesse d'une transformation. En général, la vitesse augmente
+quand la \textbf{température} augmente et quand la \textbf{concentration des réactifs} augmente. Lorsqu'un solide
+réagit, la vitesse augmente aussi avec sa surface de contact : un solide divisé réagit plus vite.
+\end{propriete}
+\begin{exemple}
+Le réfrigérateur ralentit la dégradation des aliments ; l'autocuiseur, où l'eau bout vers 120 °C, accélère la cuisson.
+Pour figer la composition d'un prélèvement avant de le titrer, on réalise une trempe : on le verse dans de l'eau
+glacée, ce qui abaisse à la fois la température et les concentrations.
+\end{exemple}
+\begin{definition}[Catalyseur]
+Un catalyseur est une espèce qui \textbf{accélère} une transformation sans être consommée : il est régénéré et
+n'apparaît pas dans l'équation de la réaction. Il ne modifie pas l'état final du système. La catalyse est
+\textbf{homogène} si le catalyseur et les réactifs forment une seule phase, \textbf{hétérogène} dans le cas contraire
+(souvent un solide, comme le platine), et \textbf{enzymatique} si le catalyseur est une enzyme, protéine à la fois
+très efficace et très sélective.
+\end{definition}
+\schema{04-facteurs}
+\essSection{4}{Loi de vitesse d'ordre 1}
+\begin{definition}[Loi de vitesse d'ordre 1]
+La disparition d'un réactif R suit une loi de vitesse d'ordre 1 si, à chaque instant,
+\[v_\mathrm{disp}(\mathrm{R})=k\,[\mathrm{R}],\]
+où $k$ est la constante de vitesse, positive, exprimée en \unit{s^{-1}} ou en \unit{min^{-1}} ; elle dépend de la température.
+\end{definition}
+\begin{theoreme}[Évolution de la concentration]
+Si la loi de vitesse est d'ordre 1, alors
+\[[\mathrm{R}](t)=[\mathrm{R}]_0\,\mathrm{e}^{-kt},\qquad\ln\frac{[\mathrm{R}]}{[\mathrm{R}]_0}=-k\,t
+\qquad\text{et}\qquad t_{1/2}=\frac{\ln2}{k}.\]
+Le temps de demi-réaction ne dépend pas de la concentration initiale : la concentration est divisée par deux à
+chaque nouvelle durée $t_{1/2}$.
+\end{theoreme}
+\begin{demonstration}
+Comme $v_\mathrm{disp}(\mathrm{R})=-\frac{\mathrm{d}[\mathrm{R}]}{\mathrm{d}t}$, la fonction $t\mapsto[\mathrm{R}](t)$
+vérifie l'équation différentielle $y'=-k\,y$, dont les solutions sont les fonctions $t\mapsto C\,\mathrm{e}^{-kt}$.
+La condition initiale impose $C=[\mathrm{R}]_0$. À la date $t_{1/2}$, $[\mathrm{R}]=[\mathrm{R}]_0/2$, d'où
+$\mathrm{e}^{-k\,t_{1/2}}=\frac12$, puis $k\,t_{1/2}=\ln2$.
+\end{demonstration}
+\schema{04-ordre1}
+\begin{savoirfaire}[Reconnaître une loi de vitesse d'ordre 1]
+À partir de mesures, vérifier l'une des propriétés suivantes : la vitesse volumique de disparition est proportionnelle
+à $[\mathrm{R}]$ (les points sont alignés avec l'origine) ; $\ln([\mathrm{R}]/[\mathrm{R}]_0)$ est une fonction
+affine du temps ; les temps de demi-réaction successifs sont égaux et ne dépendent pas de la concentration initiale.
+\end{savoirfaire}
+\begin{codecote}[0.58]
+\begin{pythoncol}
+import matplotlib.pyplot as plt
+t = [0, 5, 10, 15, 20, 25, 30, 35, 40]  # min
+c = [10.0, 8.71, 7.58, 6.60, 5.74,
+     5.00, 4.35, 3.79, 3.30]  # mmol/L
+V, C = [], []
+for i in range(1, len(t) - 1):
+    v = -(c[i+1] - c[i-1]) / (t[i+1] - t[i-1])
+    V.append(v)
+    C.append(c[i])
+plt.plot(C, V, "o")
+plt.xlabel("[R] (mmol/L)")
+plt.ylabel("v (mmol/L/min)")
+plt.show()
+\end{pythoncol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+La vitesse à la date $t_i$ est approchée par le taux de variation de la concentration entre les dates voisines
+$t_{i-1}$ et $t_{i+1}$ : la boucle commence donc au deuxième point et s'arrête à l'avant-dernier.
+Les points obtenus sont alignés avec l'origine : $v=k\,[\mathrm{R}]$. La loi de vitesse est d'ordre 1 et $k$ est le
+coefficient directeur de la droite.
+\end{codecote}
+\schema{04-python-vitesse}
+\begin{rediger}
+Pour une vitesse volumique, préciser la date, tracer la tangente, choisir deux points éloignés sur cette droite et
+donner le résultat avec son unité. Pour conclure à une loi d'ordre 1, citer le critère vérifié (« les points sont
+alignés sur une droite passant par l'origine ») plutôt que « la courbe ressemble à une exponentielle ».
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-4-1}
+\begin{exercice}[1]{Lente ou rapide ?}
+On observe les transformations suivantes.
+\begin{questions}[label=\otLabel{\Alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item Un précipité blanc de chlorure d'argent apparaît dès que l'on verse du nitrate d'argent dans l'eau salée.
+\item Un clou en fer plongé dans de l'eau salée se couvre de rouille en quelques jours.
+\item Une solution violette de permanganate de potassium, mélangée à de l'acide oxalique, se décolore en quelques minutes.
+\item Le pH d'une solution d'acide chlorhydrique varie dès que l'on y verse de la soude.
+\item Un ruban de magnésium plongé dans l'acide chlorhydrique disparaît en une minute, avec un dégagement de dihydrogène.
+\end{questions}
+\begin{questions}
+\item Définir une transformation lente et une transformation rapide, puis classer les transformations A à E.
+\item Pour les transformations C et E, proposer une grandeur physique à mesurer au cours du temps pour suivre
+l'évolution du système.
+\item Pourquoi la réaction support d'un titrage doit-elle être rapide ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-2}
+\begin{exercice}[1]{Lire un temps de demi-réaction}
+On mélange une solution d'iodure de potassium (\ce{K+}, \ce{I-}), en excès, et une solution de peroxodisulfate de
+sodium. La réaction \ce{S2O8^2- + 2 I- -> 2 SO4^2- + I2}, totale, est suivie par spectrophotométrie : le graphique
+donne la concentration du diiode formé.
+\schema{04-ex02}
+\begin{questions}
+\item Définir le temps de demi-réaction.
+\item Déterminer la concentration finale en diiode, puis le temps de demi-réaction.
+\item Les ions peroxodisulfate constituent le réactif limitant. Quelle était leur concentration initiale dans le mélange ?
+\item Lire $[\ce{I2}]$ à $t=\qty{30}{min}$. Est-ce le double de sa valeur à $t=\qty{15}{min}$ ? Interpréter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-3}
+\begin{exercice}[1]{Exploiter des tangentes}
+Le graphique représente la concentration d'un réactif R au cours d'une transformation. On a tracé les tangentes
+T$_0$ et T$_{1/2}$ à la courbe aux dates $t=0$ et $t=t_{1/2}$.
+\schema{04-ex03}
+\begin{questions}
+\item Définir la vitesse volumique de disparition de R. Comment la détermine-t-on graphiquement ?
+\item Déterminer le temps de demi-réaction.
+\item Calculer la vitesse volumique de disparition de R aux dates $t=0$ et $t=t_{1/2}$, en \unit{mol.L^{-1}.min^{-1}}.
+\item Calculer le quotient $v_\mathrm{disp}(\mathrm{R})/[\mathrm{R}]$ à ces deux dates. Que constate-t-on ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-4}
+\begin{exercice}[1]{Identifier des facteurs cinétiques}
+On étudie la réaction \ce{H2O2 + 2 I- + 2 H3O+ -> I2 + 4 H2O}. Dans les quatre expériences, l'eau oxygénée, de
+concentration initiale \qty{1,0e-3}{mol.L^{-1}}, est le réactif limitant.
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{4}{c}@{}}\toprule
+Expérience & 1 & 2 & 3 & 4\\\midrule
+$[\ce{I-}]_0$ (mol$\cdot$L$^{-1}$) & 0,10 & 0,20 & 0,10 & 0,10\\
+Température (°C) & 20 & 20 & 35 & 20\\
+Ajout & -- & -- & -- & ions molybdate\\
+$t_{1/2}$ (min) & 12 & 6 & 4 & 1\\\bottomrule
+\end{tabular}\end{center}
+\begin{questions}
+\item Quelles expériences faut-il comparer pour étudier l'influence de la concentration en ions iodure ? de la
+température ? Conclure dans chaque cas.
+\item Les ions molybdate, dissous, se retrouvent intacts en fin de réaction. Quel est leur rôle ? La catalyse est-elle
+homogène ou hétérogène ?
+\item La quantité finale de diiode est-elle la même dans les quatre expériences ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-5}
+\begin{exercice}[1]{Un catalyseur solide}
+On verse 50 mL d'eau oxygénée dans deux erlenmeyers. Dans le premier, on ajoute une pointe de spatule de dioxyde de
+manganèse \ce{MnO2} en poudre, solide noir : un abondant dégagement de dioxygène se produit aussitôt. Dans le second,
+rien n'est observé. En fin de réaction, le solide noir est filtré, séché et pesé : sa masse n'a pas varié.
+\begin{questions}
+\item Écrire l'équation de la décomposition du peroxyde d'hydrogène \ce{H2O2} en eau et en dioxygène.
+\item Quels arguments montrent que le dioxyde de manganèse est un catalyseur de cette réaction ?
+\item La catalyse est-elle homogène ou hétérogène ?
+\item Le dégagement est beaucoup plus lent avec un seul gros grain de \ce{MnO2} de même masse. Proposer une explication.
+\item Le volume total de dioxygène recueilli dépend-il de la forme sous laquelle on introduit le catalyseur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-4-6}
+\begin{exercice}[2]{Suivi par spectrophotométrie}
+À la date $t=0$, on mélange $V_1=\qty{10,0}{mL}$ d'eau oxygénée de concentration $c_1=\qty{1,0e-2}{mol.L^{-1}}$ et
+$V_2=\qty{40,0}{mL}$ d'une solution acidifiée d'iodure de potassium de concentration $c_2=\qty{0,10}{mol.L^{-1}}$.
+La réaction \ce{H2O2 + 2 I- + 2 H3O+ -> I2 + 4 H2O}, totale, forme du diiode, seule espèce colorée. Un spectrophotomètre
+mesure l'absorbance du mélange, liée à la concentration du diiode par $A=k\,[\ce{I2}]$, avec $k=\qty{2,5e2}{L.mol^{-1}}$.
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{12}{c}@{}}\toprule
+$t$ (min) & 0 & 2 & 4 & 6 & 8 & 10 & 15 & 20 & 25 & 30 & 40 & 50\\
+$A$ & 0 & 0,063 & 0,122 & 0,172 & 0,213 & 0,250 & 0,324 & 0,378 & 0,409 & 0,441 & 0,468 & 0,484\\\bottomrule
+\end{tabular}\end{center}
+\begin{questions}
+\item Les ions oxonium sont en excès. Montrer que l'eau oxygénée est le réactif limitant. En déduire la concentration
+finale en diiode et l'absorbance finale attendue.
+\item Calculer $[\ce{I2}]$ à chaque date et tracer la courbe $[\ce{I2}]=f(t)$.
+\item Déterminer le temps de demi-réaction.
+\item Déterminer graphiquement la vitesse volumique d'apparition du diiode à $t=0$. Comment évolue-t-elle ensuite ? Pourquoi ?
+\item Quelle relation lie la vitesse volumique de disparition des ions iodure à la vitesse volumique d'apparition du diiode ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-7}
+\begin{exercice}[2]{Choisir une méthode de suivi}
+On souhaite suivre l'évolution de quatre transformations lentes, réalisées en solution aqueuse.
+\begin{questions}[label=\otLabel{\Alph*.},leftmargin=1.9em]
+\item \ce{(CH3)3C-Cl + 2 H2O -> (CH3)3C-OH + H3O+ + Cl-}
+\item \ce{Zn(s) + 2 H3O+(aq) -> Zn^2+(aq) + H2(g) + 2 H2O(l)}, dans un flacon fermé
+\item \ce{2 MnO4- + 5 H2C2O4 + 6 H3O+ -> 2 Mn^2+ + 10 CO2 + 14 H2O}
+\item \ce{CH3COOC2H5 + HO- -> CH3COO- + C2H5OH}, avec de la soude (\ce{Na+}, \ce{HO-})
+\end{questions}
+\begin{donnees}
+L'ion permanganate est la seule espèce colorée (violette) ; son spectre présente un maximum vers 530 nm.
+$\lambda$ (mS$\cdot$m$^2\cdot$mol$^{-1}$) : \ce{HO-} : 19,9 ; \ce{CH3COO-} : 4,09 ; \ce{Na+} : 5,01.
+\end{donnees}
+\begin{questions}
+\item Pour chaque transformation, proposer une méthode physique de suivi et la justifier.
+\item Pour la transformation D, prévoir le sens de variation de la conductivité au cours du temps.
+\item Pour la transformation C, à quelle longueur d'onde faut-il régler le spectrophotomètre ? Pourquoi ?
+\item Citer deux avantages des méthodes physiques sur le titrage de prélèvements successifs.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-8}
+\begin{exercice}[2]{Suivi par titrages successifs}
+À la date $t=0$, on ajoute quelques gouttes d'une solution de chlorure de fer(III) à 100 mL d'eau oxygénée : le
+peroxyde d'hydrogène se décompose selon la réaction \ce{2 H2O2 -> 2 H2O + O2}. À différentes dates, on prélève
+10,0 mL du mélange, que l'on verse aussitôt dans 50 mL d'eau glacée, puis on titre le peroxyde d'hydrogène restant
+par une solution acidifiée de permanganate de potassium de concentration $c=\qty{2,00e-2}{mol.L^{-1}}$.
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{8}{c}@{}}\toprule
+$t$ (min) & 0 & 5 & 10 & 15 & 20 & 30 & 40 & 60\\
+$V_\mathrm{E}$ (mL) & 16,0 & 12,0 & 9,0 & 6,7 & 5,1 & 2,8 & 1,6 & 0,5\\\bottomrule
+\end{tabular}\end{center}
+\begin{donnees}
+Réaction support du titrage : \ce{2 MnO4- + 5 H2O2 + 6 H3O+ -> 2 Mn^2+ + 5 O2 + 14 H2O}.
+\end{donnees}
+\begin{questions}
+\item Pourquoi verse-t-on chaque prélèvement dans de l'eau glacée ? Quel est le rôle des ions fer(III) ?
+\item Montrer que $[\ce{H2O2}]=\num{5.00e-3}\times V_\mathrm{E}$, avec $V_\mathrm{E}$ en mL et $[\ce{H2O2}]$ en
+\unit{mol.L^{-1}}. Calculer $[\ce{H2O2}]$ à chaque date.
+\item Tracer la courbe $[\ce{H2O2}]=f(t)$ et déterminer le temps de demi-réaction.
+\item Calculer le quotient $[\ce{H2O2}](t+\qty{5}{min})/[\ce{H2O2}](t)$ pour $t=0$, 5 et 10 min. Montrer que ce
+résultat est compatible avec une loi de vitesse d'ordre 1 et en déduire la constante de vitesse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-9}
+\begin{exercice}[2]{La caféine dans l'organisme}
+Après l'absorption d'une tasse de café, la concentration de caféine dans le plasma sanguin est maximale au bout
+d'une heure environ ; la caféine est ensuite éliminée, principalement par le foie. On mesure chez un adulte :
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{6}{c}@{}}\toprule
+$t$ (h) & 1 & 2 & 4 & 6 & 8 & 12\\
+$C$ (mg$\cdot$L$^{-1}$) & 3,58 & 3,14 & 2,38 & 1,81 & 1,37 & 0,77\\\bottomrule
+\end{tabular}\end{center}
+\begin{docu}{1}{Une grande variabilité}
+Chez l'adulte en bonne santé, la demi-vie de la caféine, c'est-à-dire la durée au bout de laquelle sa concentration
+plasmatique est divisée par deux, vaut en moyenne 4 h environ, avec des écarts de 2 à 8 h selon l'âge, la masse,
+la grossesse, la prise de médicaments ou l'état du foie.
+\source{D'après l'Autorité européenne de sécurité des aliments (EFSA), « La caféine », 2015.}
+\end{docu}
+\begin{questions}
+\item Calculer $\ln C$ (avec $C$ en mg$\cdot$L$^{-1}$) à chaque date et représenter $\ln C$ en fonction de $t$.
+\item Montrer que l'élimination de la caféine suit une loi de vitesse d'ordre 1 et déterminer la constante de vitesse $k$.
+\item En déduire la demi-vie de la caféine chez cette personne. Est-elle cohérente avec le document ?
+\item Cette personne a bu son café à 17 h. Quelle part de la concentration maximale reste-t-il à 23 h ? Commenter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-10}
+\begin{exercice}[2]{Une transformation qui s'accélère}
+On mélange à 20 °C une solution acidifiée de permanganate de potassium et une solution d'acide oxalique
+\ce{H2C2O4} en excès. La réaction
+\[\ce{2 MnO4- + 5 H2C2O4 + 6 H3O+ -> 2 Mn^2+ + 10 CO2 + 14 H2O}\]
+est suivie par spectrophotométrie, ce qui donne la concentration des ions permanganate.
+\schema{04-ex10}
+\begin{questions}
+\item Comment la vitesse volumique de disparition des ions permanganate évolue-t-elle au cours du temps ? Déterminer
+sa valeur maximale.
+\item Cette évolution peut-elle s'expliquer par la seule influence de la concentration des réactifs ?
+\item On admet que les ions manganèse(II) formés catalysent la réaction : on parle d'autocatalyse. Interpréter
+l'allure de la courbe.
+\item Établir la relation entre les vitesses volumiques de disparition de \ce{MnO4-} et de \ce{H2C2O4} et la vitesse
+volumique d'apparition de \ce{CO2}.
+\item Quelle serait l'allure de la courbe si l'on ajoutait des ions \ce{Mn^2+} au mélange initial ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-11}
+\begin{exercice}[2]{Programmer un test de loi de vitesse}
+Le cristal violet, noté \ce{CV+}, réagit avec les ions hydroxyde, en large excès, en formant une espèce incolore.
+Sa concentration, déterminée par spectrophotométrie, est relevée toutes les 4 min et exploitée par le programme suivant.
+\begin{python}
+t = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40]     # en min
+c = [20.00, 18.08, 16.32, 14.70, 13.46, 12.18,
+     11.00, 9.94, 8.97, 8.13, 7.36]               # en µmol/L
+V, C = [], []
+for i in range(1, len(t) - 1):
+    v = -(c[i+1] - c[i-1]) / (t[i+1] - t[i-1])
+    V.append(v)
+    C.append(c[i])
+print([round(v, 3) for v in V])
+print([round(V[i] / C[i], 4) for i in range(len(V))])
+\end{python}
+\begin{console}
+[0.46, 0.422, 0.357, 0.315, 0.308, 0.28, 0.254, 0.226, 0.201]
+[0.0254, 0.0259, 0.0243, 0.0234, 0.0252, 0.0255, 0.0255, 0.0252, 0.0248]
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle grandeur la variable \code{v} calcule-t-elle de façon approchée ? Pourquoi
+la boucle ne porte-t-elle ni sur le premier ni sur le dernier point ?
+\item Que contient la seconde liste affichée ? Montrer que les résultats sont compatibles avec une loi de vitesse
+d'ordre 1 et estimer la constante de vitesse $k$.
+\item En déduire le temps de demi-réaction, puis le vérifier à l'aide des mesures.
+\item Écrire les instructions qui représentent la vitesse en fonction de la concentration. Quelle allure attend-on ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-4-12}
+\begin{exercice}[3]{Décolorer un colorant alimentaire}
+\begin{docu}{1}{Une décoloration à suivre}
+Le colorant bleu E133 (bleu brillant FCF), présent dans de nombreux sirops et confiseries, est décoloré par l'eau de
+Javel, qui contient des ions hypochlorite \ce{ClO-}. Dans deux cuves contenant la même concentration initiale de
+colorant, on ajoute de l'eau de Javel en large excès, à deux concentrations différentes, puis on mesure l'absorbance
+à 630 nm au cours du temps.
+\end{docu}
+\schema{04-ex12}
+\begin{donnees}
+Le colorant E133 absorbe dans le rouge orangé ($\lambda_{\max}=\qty{630}{nm}$) ; les produits de la réaction sont
+incolores. Dans chaque expérience, la concentration en ions hypochlorite reste pratiquement constante.
+\end{donnees}
+\begin{questions}
+\item Justifier le choix de la spectrophotométrie et celui de la longueur d'onde de travail.
+\item Déterminer le temps de demi-réaction de chaque expérience. Quel facteur cinétique est mis en évidence ?
+\item \initiative Montrer que, dans l'expérience 1, la disparition du colorant suit une loi de vitesse d'ordre 1 et
+déterminer la constante de vitesse $k_1$.
+\item On admet que la constante de vitesse est proportionnelle à la concentration en ions hypochlorite. Est-ce cohérent
+avec les mesures ? Prévoir le temps de demi-réaction pour \mbox{$[\ce{ClO-}]=\qty{2,0e-2}{mol.L^{-1}}$}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-13}
+\begin{exercice}[3]{Catalase, ions fer(III) ou rien ?}
+\begin{docu}{1}{Une enzyme protectrice}
+La catalase est une enzyme présente dans presque toutes les cellules vivantes (foie, pomme de terre…). Elle protège
+les cellules en décomposant le peroxyde d'hydrogène, toxique, formé au cours du métabolisme :
+\ce{2 H2O2 -> 2 H2O + O2}.
+\end{docu}
+\begin{docu}{2}{Protocole}
+Dans quatre erlenmeyers, on place 20,0 mL d'une même eau oxygénée, puis on ajoute à $t=0$ : A : 1~mL d'eau
+distillée ; B : 1~mL de solution de chlorure de fer(III) ; C : 1~mL d'extrait de foie, contenant de la catalase ;
+D : 1~mL du même extrait, préalablement porté à ébullition pendant 10~min. On mesure le volume de dioxygène dégagé,
+à 20 °C et sous la pression atmosphérique.
+\end{docu}
+\schema{04-ex13}
+\begin{donnees}
+Volume molaire des gaz dans les conditions de l'expérience : $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quel est le rôle de l'expérience A ?
+\item Préciser le type de catalyse mis en jeu dans les expériences B et C. Quel catalyseur est le plus efficace ?
+\item Interpréter le résultat de l'expérience D.
+\item \initiative Déterminer la concentration initiale de l'eau oxygénée.
+\item Quel volume de dioxygène l'expérience A finirait-elle par produire ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-14}
+\begin{exercice}[3]{Décontaminer des lentilles de contact}
+\begin{docu}{1}{Un système « peroxyde »}
+Certaines solutions d'entretien des lentilles contiennent 3 \% en masse de peroxyde d'hydrogène, qui détruit
+bactéries et champignons mais irrite fortement l'œil. Dans l'étui de trempage, un disque recouvert de platine catalyse
+la décomposition \ce{2 H2O2 -> 2 H2O + O2}. Les lentilles peuvent être portées lorsque la teneur en peroxyde est
+devenue inférieure à 0,01 \%. Le fabricant impose un trempage d'au moins 6 h.
+\end{docu}
+\schema{04-ex14}
+\begin{docu}{2}{Modèle cinétique}
+Au contact d'un disque neuf, la décomposition suit une loi de vitesse d'ordre 1, de temps de demi-réaction
+$t_{1/2}=\qty{30}{min}$. Au fil des utilisations, des dépôts réduisent l'activité du disque.
+\end{docu}
+\begin{questions}
+\item Quel est le rôle du disque de platine ? De quel type de catalyse s'agit-il ? Pourquoi le couvercle est-il muni d'un évent ?
+\item \initiative Avec un disque neuf, la durée minimale de trempage imposée par le fabricant est-elle suffisante ?
+\item Quelle est la teneur en peroxyde d'hydrogène au bout de 6 h ?
+\item Avec un disque usagé, le temps de demi-réaction passe à 45 min. Les lentilles peuvent-elles être portées au bout
+de 6 h ? Pourquoi le fabricant demande-t-il de changer d'étui à chaque nouveau flacon ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-15}
+\begin{exercice}[3]{Hydrolyse du chlorure de tertiobutyle}
+\begin{docu}{1}{Une transformation qui forme des ions}
+Dans un mélange d'eau et d'acétone, le 2-chloro-2-méthylpropane, ou chlorure de tertiobutyle, noté RCl, de
+concentration initiale $c_0$, réagit avec l'eau selon la réaction totale
+\[\ce{(CH3)3C-Cl + 2 H2O -> (CH3)3C-OH + H3O+ + Cl-}.\]
+On la suit par conductimétrie à 25 °C ; au bout de plusieurs heures, la conductivité ne varie plus et vaut
+$\sigma_\infty=\qty{1,62}{mS.cm^{-1}}$.
+\end{docu}
+\schema{04-ex15}
+\begin{docu}{2}{Exploitation des mesures}
+\begin{python}
+import numpy as np
+t = np.arange(100, 1300, 100)          # en s
+s = np.array([0.337, 0.604, 0.809, 0.977, 1.119, 1.211, 1.295,
+              1.365, 1.418, 1.461, 1.493, 1.523])   # en mS/cm
+y = np.log(1 - s / 1.62)
+a, b = np.polyfit(t, y, 1)
+print(round(a, 6), round(b, 3))
+\end{python}
+\begin{console}
+-0.002328 0.006
+\end{console}
+\end{docu}
+\begin{questions}
+\item Justifier le choix de la conductimétrie pour suivre cette transformation.
+\item À l'aide de la loi de Kohlrausch, montrer que $[\mathrm{RCl}]=c_0\left(1-\sigma/\sigma_\infty\right)$.
+\item \capacite{Capacité numérique}Interpréter le résultat affiché : la loi de vitesse est-elle d'ordre 1 ? Donner la
+valeur de la constante de vitesse.
+\item En déduire le temps de demi-réaction et le vérifier sur le graphique.
+\item \initiative À 35 °C, le temps de demi-réaction vaut 120 s. Par quel facteur la constante de vitesse a-t-elle été
+multipliée ? Interpréter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

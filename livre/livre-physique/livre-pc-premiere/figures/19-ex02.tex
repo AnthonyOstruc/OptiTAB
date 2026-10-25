@@ -1,0 +1,17 @@
+% Trois filtres jaune, cyan et magenta superposés sur un papier blanc éclairé en lumière blanche (exercice 2, chapitre 19)
+\definecolor{pcC}{RGB}{0,255,255}\definecolor{pcM}{RGB}{255,0,255}\definecolor{pcJ}{RGB}{255,255,0}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otRule,line width=0.5pt] (-2.0,-1.75) rectangle (2.0,2.05);
+\enonce{
+  \draw[otInk!70,line width=0.6pt] (90:0.65) circle (1.0) (210:0.65) circle (1.0) (330:0.65) circle (1.0);
+  \node[pcLegendeG] at (90:1.15) {jaune}; \node[pcLegendeG] at (210:1.2) {cyan}; \node[pcLegendeG] at (330:1.2) {magenta};}
+\solution{
+  \begin{scope}[blend group=multiply]
+    \fill[pcJ] (90:0.65) circle (1.0);
+    \fill[pcC] (210:0.65) circle (1.0);
+    \fill[pcM] (330:0.65) circle (1.0);
+  \end{scope}}
+\foreach \a/\n in {150/1,30/2,270/3}{\node[pcLegendeG,fill=white,fill opacity=0.6,text opacity=1,inner sep=1pt] at (\a:0.62) {\n};}
+\node[pcLegendeG,fill=white,fill opacity=0.6,text opacity=1,inner sep=1pt] at (0,0) {4};
+\end{tikzpicture}
+\par\smallskip\legende{Trois filtres colorés se recouvrent en partie, posés sur une feuille blanche.}

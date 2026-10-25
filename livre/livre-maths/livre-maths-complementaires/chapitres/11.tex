@@ -1,0 +1,170 @@
+\begin{ouverture}[sommes]{11}{Temps d’attente et lois à densité}{Probabilités et durée}{Géométrique · Uniforme · Exponentielle · Mémoire}
+\objectif{Modéliser le rang d’un premier succès.}
+\objectif{Vérifier une densité et calculer une probabilité par intégration.}
+\objectif{Utiliser les lois uniforme et exponentielle.}
+\objectif{Interpréter la fonction de répartition et l’absence de mémoire.}
+\prerequis{Intégrales, suites géométriques et indépendance.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Attendre un premier succès : le temps discret}
+\begin{definition}[Loi géométrique sur $\N^*$]
+Des essais indépendants ont une probabilité constante $p\in]0,1]$ de succès. Le rang $X$ du premier succès suit la loi géométrique de paramètre $p$ :
+\[P(X=k)=(1-p)^{k-1}p\quad(k\geq1),\qquad P(X>n)=(1-p)^n.\]
+Son espérance est $E(X)=1/p$ (admise).
+\end{definition}
+Le premier succès au rang $k$ impose $k-1$ échecs suivis d'un succès. La probabilité d'au moins un succès avant ou au rang $n$ est $1-(1-p)^n$.
+\begin{propriete}[Sans mémoire]
+Pour $m,n\in\N$ et $0<p<1$,
+$P(X>m+n\mid X>m)=P(X>n)$.
+En effet, le quotient des probabilités de survie vaut $(1-p)^{m+n}/(1-p)^m=(1-p)^n$.
+\end{propriete}
+Réciproquement, une survie discrète sans mémoire vérifie $S(m+n)=S(m)S(n)$, donc $S(n)=S(1)^n$ ; avec $S(1)=1-p$, on retrouve la loi géométrique.
+\figurelivre{c11-geometrique.pdf}{Pour $p=0{,}25$, les masses de la loi géométrique décroissent ; la probabilité de continuer à attendre après $n$ essais vaut $0{,}75^n$. Le rang commence à $1$.}
+\essSection{2}{Passer d'une masse à une densité}
+\begin{definition}
+Une densité $f$ est une fonction positive ou nulle dont l'intégrale sur tout le domaine vaut $1$.
+Pour une variable de densité $f$,
+$P(a\leq X\leq b)=\int_a^bf(x)\,\mathrm dx$.
+La fonction de répartition est $F(x)=P(X\leq x)$.
+\end{definition}
+Une probabilité est une aire, pas la hauteur de la densité. Une densité peut dépasser $1$. Pour une loi à densité, $P(X=x)=0$ ; les inégalités strictes ou larges aux bornes d'un intervalle donnent la même probabilité.
+Lorsque les intégrales existent,
+$E(X)=\int xf(x)\,\mathrm dx$ et
+$V(X)=\int(x-E(X))^2f(x)\,\mathrm dx=\int x^2f(x)\,\mathrm dx-E(X)^2$.
+Les intégrales sur un domaine infini sont comprises comme des limites d'intégrales sur des intervalles bornés.
+\essSection{3}{Une attente uniforme}
+\begin{propriete}[Loi uniforme sur $[a,b]$, $a<b$]
+La densité vaut $1/(b-a)$ sur $[a,b]$ et $0$ ailleurs.
+Pour $a\leq c\leq d\leq b$, $P(c\leq X\leq d)=(d-c)/(b-a)$.
+La répartition vaut $0$ avant $a$, $(x-a)/(b-a)$ entre $a$ et $b$, et $1$ après $b$.
+\[E(X)=\frac{a+b}{2},\qquad V(X)=\frac{(b-a)^2}{12}.\]
+\end{propriete}
+Ces expressions se calculent par intégration. Sur $[0,1]$, $E(X)=\int_0^1x\,\mathrm dx=1/2$ et $V(X)=1/3-1/4=1/12$.
+Une arrivée à un arrêt de bus est modélisée par une attente uniforme seulement si les hypothèses concernant les horaires et l'arrivée du voyageur le permettent.
+\essSection{4}{Une attente exponentielle}
+\begin{propriete}[Paramètre $\lambda>0$]
+Sur $[0,+\infty[$, $f(t)=\lambda\mathrm e^{-\lambda t}$ ; ailleurs, $f=0$.
+Pour $t\geq0$, $F(t)=1-\mathrm e^{-\lambda t}$ et $P(X>t)=\mathrm e^{-\lambda t}$.
+$E(X)=1/\lambda$ ; l'absence de mémoire s'écrit
+$P(X>s+t\mid X>s)=\mathrm e^{-\lambda t}$.
+\end{propriete}
+On vérifie la densité par $\int_0^bf(t)\,\mathrm dt=1-\mathrm e^{-\lambda b}\to1$.
+Une primitive de $t\lambda\mathrm e^{-\lambda t}$ est $-(t+1/\lambda)\mathrm e^{-\lambda t}$ ; sa limite donne l'espérance annoncée.
+\figurelivre{c11-densites.pdf}{À gauche : l'uniforme sur $[0,10]$. À droite : l'exponentielle de paramètre $0{,}2$. Les zones colorées représentent $P(2\leq X\leq6)$, avec des probabilités différentes malgré le même intervalle.}
+La médiane exponentielle vaut $\ln2/\lambda$, différente de l'espérance $1/\lambda$.
+L'absence de mémoire suit du quotient $\mathrm e^{-\lambda(s+t)}/\mathrm e^{-\lambda s}$.
+Pour simuler cette loi à partir de $U$ uniforme sur $[0,1[$, on utilise $-\ln(1-U)/\lambda$.
+En discrétisant par tranches de largeur $h$, le rang de la tranche d'un temps exponentiel suit une géométrique de paramètre $1-\mathrm e^{-\lambda h}$.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Premier succès}
+Chaque essai indépendant réussit avec probabilité $0{,}2$. $X$ est le rang du premier succès.
+\begin{questions}
+\item Calculer $P(X=3)$.
+\item Calculer $P(X>4)$.
+\item Donner l’espérance.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Une uniforme}
+$X$ suit la loi uniforme sur $[2,8]$.
+\begin{questions}
+\item Donner sa densité.
+\item Calculer $P(3\leq X\leq5)$.
+\item Donner espérance et variance.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Une exponentielle}
+$T$ suit une loi exponentielle de paramètre $0{,}5$, en minutes.
+\begin{questions}
+\item Calculer $P(T>2)$.
+\item Calculer $P(T\leq2)$.
+\item Donner la durée moyenne.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Hauteur et aire}
+$X$ est uniforme sur $[0,0{,}2]$.
+\begin{questions}
+\item Donner la hauteur de sa densité.
+\item Pourquoi peut-elle dépasser $1$ ?
+\item Calculer $P(X=0{,}1)$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Vérifier une densité}
+$f(x)=kx$ sur $[0,2]$, et $0$ ailleurs.
+\begin{questions}
+\item Déterminer $k$ pour obtenir une densité.
+\item Calculer $P(X\leq1)$.
+\item Calculer $E(X)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Fonction de répartition}
+$X$ est de densité $2x$ sur $[0,1]$ et zéro ailleurs.
+\begin{questions}
+\item Donner $F(x)$ sur les trois intervalles pertinents.
+\item Calculer $P(1/2<X<3/4)$.
+\item Calculer la variance.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Attendre encore}
+$X$ suit une géométrique de paramètre $0{,}3$.
+\begin{questions}
+\item Calculer $P(X>7\mid X>4)$.
+\item Comparer à $P(X>3)$.
+\item Donner le sens de l’absence de mémoire.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Retrouver le paramètre}
+$T$ suit une exponentielle et $P(T>10)=1/2$.
+\begin{questions}
+\item Déterminer $\lambda$.
+\item Calculer l’espérance.
+\item Calculer $P(T>20\mid T>10)$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Bus et mémoire}
+Un bus passe exactement toutes les $12$ minutes. L’arrivée du voyageur est uniforme dans un cycle, donc l’attente $U$ est uniforme sur $[0,12]$.
+\begin{questions}
+\item Calculer $P(U>6)$.
+\item Calculer $P(U>9\mid U>3)$.
+\item Cette loi est-elle sans mémoire ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Simuler une exponentielle}
+$U$ est uniforme sur $[0,1[$ et $T=-\ln(1-U)/\lambda$.
+\begin{questions}
+\item Pour $t\geq0$, transformer l’événement $T\leq t$.
+\item Retrouver sa probabilité.
+\item Pourquoi préfère-t-on $1-U$ à $U$ si le générateur peut rendre zéro ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Discrétiser une attente}
+$T$ suit une exponentielle de paramètre $\lambda$. On note $K$ le numéro de la tranche $((k-1)h,kh]$ contenant $T$, avec $h>0$.
+\begin{questions}
+\item Calculer $P(K>n)$.
+\item Identifier la loi de $K$.
+\item Comparer le paramètre exact à $\lambda h$ lorsque le pas est petit.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une densité impossible}
+On propose $f(x)=3x-1$ sur $[0,1]$ et $0$ ailleurs.
+\begin{questions}
+\item Calculer l’intégrale totale.
+\item Repérer une zone où $f<0$.
+\item La multiplier par une constante suffit-il à produire une densité sur ce même intervalle ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

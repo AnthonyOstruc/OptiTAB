@@ -1,0 +1,273 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[spectre]{19}{Couleurs et vision}{Partie 4 · Ondes et signaux}
+{Lumière blanche\enspace·\enspace Synthèses additive et soustractive\enspace·\enspace Couleur des objets\enspace·\enspace Filtres\enspace·\enspace Trichromie}
+\objectif{Choisir le modèle de la synthèse additive ou celui de la synthèse soustractive selon la situation.}
+\objectif{Interpréter la couleur perçue d'un objet à partir de la lumière incidente et des phénomènes d'absorption, de diffusion et de transmission.}
+\objectif{Prévoir le résultat de la superposition de lumières colorées et l'effet de filtres colorés.}
+\objectif{Relier la vision des couleurs aux trois types de cônes de la rétine.}
+\prerequis{Lumière blanche, spectre, dispersion par un prisme, longueur d'onde (classe de seconde).}
+\prerequis{Absorbance et couleur d'une solution (chapitre 2).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Lumière blanche et couleurs complémentaires}
+\begin{definition}[Lumière blanche et couleurs]
+La lumière blanche contient toutes les radiations visibles (de \qty{400}{nm} à \qty{800}{nm} environ). Elle peut être reproduite en superposant
+trois lumières colorées dites \textbf{primaires} : rouge, verte et bleue. Deux lumières colorées sont \textbf{complémentaires} si leur
+superposition donne du blanc : rouge et cyan, vert et magenta, bleu et jaune.
+\end{definition}
+\schema{19-cercle}
+\essSection{2}{Synthèse additive et synthèse soustractive}
+\begin{propriete}[Deux modèles]
+\textbf{Synthèse additive} : on superpose des \textbf{lumières} ; les couleurs s'ajoutent. Rouge + vert = jaune, vert + bleu = cyan, rouge + bleu =
+magenta, rouge + vert + bleu = blanc. Exemples : écrans, projecteurs de spectacle.\par
+\textbf{Synthèse soustractive} : on superpose des \textbf{filtres} ou des encres, qui retirent chacun une partie de la lumière blanche. Un filtre jaune
+retire le bleu, un cyan le rouge, un magenta le vert ; les trois ensemble ne laissent rien passer (noir). Exemples : imprimerie,
+peinture, photographie argentique.
+\end{propriete}
+\schema{19-synthese}
+\essSection{3}{Couleur des objets}
+\begin{loi}[Absorption, diffusion, transmission]
+Un objet opaque \textbf{absorbe} une partie de la lumière qu'il reçoit et \textbf{diffuse} le reste dans toutes les directions : sa couleur perçue est
+celle de la lumière diffusée. Un filtre ou une solution colorée absorbe une partie de la lumière et \textbf{transmet} le reste. La couleur
+perçue dépend donc aussi de la lumière incidente : une tomate, qui diffuse le rouge, paraît noire en lumière verte.
+\end{loi}
+\schema{19-objet}
+\begin{python}
+blanche = {'rouge', 'vert', 'bleu'}       # lumiere blanche
+filtre_jaune = {'rouge', 'vert'}          # transmet rouge et vert
+filtre_cyan = {'vert', 'bleu'}            # transmet vert et bleu
+print(sorted(blanche & filtre_jaune))
+print(sorted(blanche & filtre_jaune & filtre_cyan))
+\end{python}
+\begin{console}
+['rouge', 'vert']
+['vert']
+\end{console}
+\noindent\capacite{Capacité numérique} Une lumière est représentée par l'ensemble de ses composantes ; un filtre ne garde que les composantes qu'il
+transmet (intersection \code{\&}). Deux filtres jaune et cyan ne laissent passer que le vert.
+\essSection{4}{Vision des couleurs}
+\begin{propriete}[Trichromie]
+La rétine contient trois types de \textbf{cônes}, sensibles surtout au bleu, au vert ou au rouge. Le cerveau reconstitue la couleur à partir des
+signaux de ces trois capteurs : c'est la \textbf{trichromie}. Un écran trompe l'œil en n'émettant que trois lumières, rouge, verte et bleue,
+d'intensités réglables. L'absence d'un type de cônes entraîne un daltonisme.
+\end{propriete}
+\schema{19-cones}
+\begin{attention}
+Une peinture jaune ne produit pas de lumière jaune : elle absorbe le bleu et diffuse le rouge et le vert. Mélanger des peintures relève
+de la synthèse soustractive, superposer des lumières de la synthèse additive : bleu + jaune donne du blanc en lumière, mais du vert en
+peinture (cyan et jaune, en pratique).
+\end{attention}
+\begin{experience}[Filtres, projecteurs et objets colorés]
+Avec trois projecteurs munis de filtres rouge, vert et bleu, on éclaire un écran blanc puis des objets colorés. On observe les zones de
+superposition, puis la couleur des objets sous différents éclairages, et l'effet de filtres placés devant une lampe blanche.
+\end{experience}
+\begin{rediger}
+Préciser le modèle utilisé (lumières qui s'ajoutent ou filtres qui retranchent), décomposer chaque lumière en rouge, vert et bleu,
+puis indiquer les composantes absorbées, diffusées ou transmises avant de conclure sur la couleur perçue.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-19-1}
+\begin{exercice}[1]{Trois projecteurs}
+\schema{19-ex01}
+\begin{questions}
+\item Quel modèle de synthèse faut-il utiliser ? Justifier.
+\item Indiquer la couleur des zones 1, 2, 3 et 4.
+\item On éteint le projecteur bleu. Quelle est alors la couleur de la zone 4 ?
+\item Avec deux projecteurs seulement, comment obtenir du blanc ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-2}
+\begin{exercice}[1]{Trois filtres superposés}
+\schema{19-ex02}
+\begin{questions}
+\item Quel modèle de synthèse faut-il utiliser ? Justifier.
+\item Quelle couleur chaque filtre absorbe-t-il ?
+\item Indiquer la couleur des zones 1, 2, 3 et 4.
+\item Citer une technique qui utilise ce type de synthèse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-3}
+\begin{exercice}[1]{La couleur d'une tomate}
+Éclairée en lumière blanche, une tomate paraît rouge.
+\begin{questions}
+\item Quelles lumières la tomate absorbe-t-elle ? Laquelle diffuse-t-elle ?
+\item Quelle est sa couleur en lumière verte ? En lumière jaune ? En lumière cyan ?
+\item Un citron paraît jaune en lumière blanche. Quelles lumières diffuse-t-il ?
+\item Quelle est la couleur du citron en lumière rouge ? En lumière bleue ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-4}
+\begin{exercice}[1]{Des filtres successifs}
+\schema{19-ex04}
+\begin{questions}
+\item Quelles lumières chaque filtre transmet-il ?
+\item Quelle lumière sort du premier montage ? Du second ?
+\item On remplace les deux filtres par un filtre magenta suivi d'un filtre jaune. Quelle lumière sort ?
+\item Une lumière magenta éclaire un filtre cyan. Quelle lumière traverse ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-5}
+\begin{exercice}[1]{Couleurs complémentaires}
+\schema{19-cercle}
+\begin{questions}
+\item Citer les trois couples de couleurs complémentaires.
+\item Que donne la superposition de lumières rouge et cyan ?
+\item Une solution absorbe surtout le vert. De quelle couleur paraît-elle ? Et une solution qui absorbe surtout le bleu ?
+\item Pourquoi parle-t-on de couleur « complémentaire » ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-19-6}
+\begin{exercice}[2]{Des objets sous un projecteur jaune, en Python}
+\begin{python}
+couleurs = {'rouge': {'R'}, 'vert': {'V'}, 'bleu': {'B'},
+            'jaune': {'R', 'V'}, 'cyan': {'V', 'B'}, 'magenta': {'R', 'B'},
+            'blanc': {'R', 'V', 'B'}}
+lumiere = couleurs['jaune']
+for objet in ['blanc', 'rouge', 'cyan', 'bleu']:
+    vu = lumiere & couleurs[objet]
+    nom_vu = [n for n in couleurs if couleurs[n] == vu]
+    print(objet, '->', nom_vu[0] if nom_vu else 'noir')
+\end{python}
+\begin{console}
+blanc -> jaune
+rouge -> rouge
+cyan -> vert
+bleu -> noir
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Que représente l'ensemble associé à un objet ? Que calcule \code{lumiere \& couleurs[objet]} ?
+\item Justifier chacune des quatre lignes affichées.
+\item Quelle est la couleur d'un objet magenta sous ce projecteur ?
+\item Comment modifier le programme pour un projecteur cyan ? Prévoir le résultat pour les quatre objets.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-7}
+\begin{exercice}[2]{Les couleurs d'un écran}
+Chaque pixel d'un écran contient trois sous-pixels rouge, vert et bleu. L'intensité de chacun est codée par un nombre entier de 0 (éteint)
+à 255 (intensité maximale) : une couleur est notée $(R ; V ; B)$.
+\begin{questions}
+\item Quel type de synthèse un écran utilise-t-il ?
+\item Indiquer la couleur obtenue pour $(255 ; 255 ; 0)$, $(255 ; 0 ; 255)$, $(0 ; 255 ; 255)$, $(255 ; 255 ; 255)$ et $(0 ; 0 ; 0)$.
+\item Que donne $(128 ; 128 ; 128)$ ?
+\item Combien de couleurs différentes l'écran peut-il afficher ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-8}
+\begin{exercice}[2]{Les éclairages d'un spectacle}
+Sur scène, deux projecteurs, l'un rouge et l'autre bleu, éclairent un danseur vêtu de blanc et une danseuse en robe rouge.
+\begin{questions}
+\item De quelle couleur paraît le costume blanc ? Justifier.
+\item De quelle couleur paraît la robe rouge ?
+\item On éteint les deux projecteurs et l'on allume un projecteur vert. Décrire l'aspect des deux costumes.
+\item Quel éclairage faut-il pour qu'un costume jaune paraisse rouge ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-9}
+\begin{exercice}[2]{Spectres d'absorption}
+\schema{19-ex09}
+\begin{questions}
+\item Quelles radiations la solution A absorbe-t-elle le plus ? Et la solution B ?
+\item En déduire la couleur de chaque solution éclairée en lumière blanche.
+\item Quel modèle de synthèse utilise-t-on pour interpréter ces couleurs ?
+\item On éclaire la solution A avec une lumière rouge. Que voit-on ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-10}
+\begin{exercice}[2]{Les cônes et le daltonisme}
+\schema{19-cones}
+\begin{questions}
+\item Combien de types de cônes la rétine contient-elle ? À quelles couleurs chacun est-il le plus sensible ?
+\item Une lumière jaune de \qty{580}{nm} excite-t-elle un seul type de cônes ? Comment le cerveau l'identifie-t-il ?
+\item Pourquoi un écran peut-il donner l'illusion du jaune avec seulement du rouge et du vert ?
+\item Une personne n'a pas de cônes L. Pourquoi confond-elle le rouge et le vert ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-11}
+\begin{exercice}[2]{Le capteur d'un appareil photo}
+Chaque photosite du capteur d'un appareil photo ne mesure que l'intensité lumineuse. Pour obtenir des couleurs, on place devant lui une
+mosaïque de filtres rouges, verts et bleus : sur un carré de quatre photosites, deux sont verts, un est rouge, un est bleu.
+\begin{questions}
+\item Quel est le rôle des filtres colorés ? Quel modèle de synthèse interviennent-ils ?
+\item Pour un capteur de 12 millions de photosites, combien sont équipés d'un filtre vert ? D'un filtre rouge ?
+\item Pourquoi place-t-on deux fois plus de filtres verts ? Utiliser le graphique des cônes.
+\item Comment l'appareil reconstitue-t-il la couleur de chaque pixel de l'image ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-19-12}
+\begin{exercice}[3]{L'imprimante}
+\begin{docu}{1}{Les cartouches}
+Une imprimante utilise des encres cyan, magenta et jaune, déposées en couches transparentes sur une feuille blanche, ainsi qu'une
+encre noire.
+\end{docu}
+\begin{questions}
+\item Quel modèle de synthèse décrit l'impression ? Justifier.
+\item Quelles encres faut-il superposer pour imprimer du bleu ? Du rouge ? Du vert ?
+\item \initiative On regarde l'impression en lumière rouge. Comment apparaissent les zones cyan, jaune et rouge ?
+\item En théorie, les trois encres superposées donnent du noir. Pourquoi ajoute-t-on une encre noire ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-13}
+\begin{exercice}[3]{Les lunettes anaglyphes}
+\begin{docu}{1}{Voir en relief}
+Une image « en relief » est imprimée sur papier blanc en deux exemplaires légèrement décalés : l'un rouge, l'autre cyan. On la regarde
+avec des lunettes munies d'un filtre rouge devant l'œil gauche et d'un filtre cyan devant l'œil droit. Le cerveau combine les deux
+images reçues et crée l'impression de relief.
+\end{docu}
+\begin{questions}
+\item À travers le filtre rouge, de quelle couleur paraissent le fond blanc, le dessin rouge et le dessin cyan ?
+\item Même question à travers le filtre cyan.
+\item \initiative Expliquer pourquoi chaque œil ne voit qu'un seul des deux dessins.
+\item Pourquoi utilise-t-on deux couleurs complémentaires ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-14}
+\begin{exercice}[3]{Des pixels invisibles}
+\begin{docu}{1}{L'œil}
+L'œil distingue deux points séparés d'un angle d'au moins une minute d'angle ($\dfrac{1}{60}$ de degré), soit \qty{2,9e-4}{rad} ; la distance entre les
+points vaut alors environ cet angle multiplié par la distance d'observation.
+\end{docu}
+\begin{docu}{2}{Deux écrans}
+Un smartphone affiche 400 pixels par pouce (\qty{1}{pouce}~$=\qty{25,4}{mm}$) ; une télévision de \qty{1,0}{m} de large affiche 1920 pixels sur sa largeur.
+\end{docu}
+\begin{questions}
+\item Calculer la taille d'un pixel du smartphone.
+\item Quel est le plus petit détail que l'œil distingue à \qty{30}{cm} ? Voit-on les pixels du smartphone ?
+\item \initiative À partir de quelle distance les sous-pixels de la télévision ne sont-ils plus distingués ?
+\item Expliquer pourquoi l'on voit des couleurs variées et non des points rouges, verts et bleus.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-15}
+\begin{exercice}[3]{La couleur des feuilles}
+\begin{docu}{1}{La chlorophylle}
+La chlorophylle, pigment des feuilles, absorbe fortement le bleu et le rouge et très peu le vert. L'énergie de la lumière absorbée
+permet la photosynthèse. En automne, la chlorophylle se dégrade ; il reste des pigments, les caroténoïdes, qui absorbent surtout le bleu.
+\end{docu}
+\begin{docu}{2}{Une serre éclairée}
+Certaines serres sont éclairées par des LED rouges et bleues seulement.
+\end{docu}
+\begin{questions}
+\item Expliquer la couleur verte des feuilles en lumière blanche.
+\item Expliquer leur couleur en automne.
+\item \initiative Pourquoi éclaire-t-on les serres en rouge et en bleu, et pas en vert ?
+\item De quelle couleur paraissent les plantes dans cette serre ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

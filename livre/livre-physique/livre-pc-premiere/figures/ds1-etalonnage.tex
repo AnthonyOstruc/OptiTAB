@@ -1,0 +1,16 @@
+% Droite d'étalonnage du bleu patenté V à 638 nm ; au corrigé, droite modèle et lecture pour le sirop dilué (devoir n° 1, exercice 1)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=92mm,height=52mm,xmin=0,xmax=5.6,ymin=0,ymax=0.92,
+  xtick={0,1,...,5},ytick={0,0.2,...,0.8},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$c$ (\unit{mg.L^{-1}})},ylabel={$A$}]
+\solution{\addplot[otNavy,line width=1pt,domain=0:5.5] {0.1613*x};}
+\addplot[only marks,mark=*,mark size=1.8pt,otRed!85!black] coordinates {(1,0.16) (2,0.33) (3,0.48) (4,0.64) (5,0.81)};
+\solution{
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 3pt off 2pt] (axis cs:0,0.52) -- (axis cs:3.22,0.52) -- (axis cs:3.22,0);
+  \node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:0.1,0.52) {$A=0{,}52$};
+  \node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:3.27,0.1) {$c\approx\qty{3,2}{mg.L^{-1}}$};
+  \node[pcLegende,anchor=south east,text=otNavy] at (axis cs:5.4,0.86) {$A=0{,}161\,c$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Absorbance des solutions étalons de bleu patenté V, mesurée à \qty{638}{nm}.}\solution{Les points sont alignés sur une droite passant par l'origine : la loi de Beer-Lambert est vérifiée.}}

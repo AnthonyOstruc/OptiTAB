@@ -1,0 +1,136 @@
+% !TEX root = ../main.tex
+%% Corrigé du devoir surveillé n° 2 — vérifié par verifications/eval_ds.py.
+
+\corrigeSujetEval{DS2}{Devoir surveillé \numero2}
+
+\begin{corrigeEval}{6 points}{Fonctions usuelles}
+\begin{questions}
+  \item On étudie les deux différences sur $\R_{+}$ :
+    \[\begin{aligned}
+      \varphi_1(x)&=x-\ln(1+x), &\qquad \varphi_1'(x)&=1-\frac{1}{1+x}=\frac{x}{1+x}\geqslant0,\\
+      \varphi_2(x)&=\ln(1+x)-x+\frac{x^{2}}{2}, &\qquad \varphi_2'(x)&=\frac{1}{1+x}-1+x=\frac{x^{2}}{1+x}\geqslant0.
+    \end{aligned}\]
+    Croissantes et nulles en $0$, elles sont positives sur $\R_{+}$ :
+    $\res{x-\dfrac{x^{2}}{2}\leqslant\ln(1+x)\leqslant x}$. \pts{2 pts}
+  \item Pour $x\neq0$, par dérivation d'une composée :
+    \[\varphi'(x)=\frac{1}{1+x^{2}}+\frac{-1/x^{2}}{1+1/x^{2}}
+      =\frac{1}{1+x^{2}}-\frac{1}{x^{2}+1}=0.\]
+    $\varphi$ est donc constante sur chacun des \emph{intervalles}
+    $\intOO{0}{+\infty}$ et $\intOO{-\infty}{0}$ ; avec
+    $\varphi(1)=\frac\pi2$ et $\varphi(-1)=-\frac\pi2$ :
+    $\res{\varphi=\dfrac\pi2\text{ sur }\intOO{0}{+\infty},\
+      \varphi=-\dfrac\pi2\text{ sur }\intOO{-\infty}{0}}$. \pts{2 pts}
+  \item $h(x)=\mathrm{e}^{\ln x/x}$ a le sens de variation de
+    $x\mapsto\dfrac{\ln x}{x}$, de dérivée $\dfrac{1-\ln x}{x^{2}}$ : $h$
+    croît sur $\intOF{0}{\mathrm{e}}$, décroît sur
+    $\intFO{\mathrm{e}}{+\infty}$, et atteint son maximum
+    $h(\mathrm{e})=\mathrm{e}^{1/\mathrm{e}}$. Comme $\pi>\mathrm{e}$,
+    $\pi^{1/\pi}<\mathrm{e}^{1/\mathrm{e}}$ ; en élevant à la puissance
+    $\mathrm{e}\pi>0$ (fonction croissante sur $\R_{+}$) :
+    $\res{\pi^{\mathrm{e}}<\mathrm{e}^{\pi}}$. \pts{2 pts}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Équations différentielles}
+\begin{questions}
+  \item Le membre de gauche est une dérivée :
+    $(1+x^{2})\,y'+2x\,y=\bigl((1+x^{2})\,y\bigr)'$. L'équation équivaut à
+    $(1+x^{2})\,y=x+C$, d'où les solutions
+    \[y_C(x)=\frac{x+C}{1+x^{2}},\quad C\in\R\,;\qquad y(0)=1\iff C=1\ :\quad
+      \res{y(x)=\frac{x+1}{1+x^{2}}}.\]
+    \pts{2 pts}
+  \item Équation caractéristique $r^{2}-3r+2=(r-1)(r-2)$. Comme $1$ est
+    racine simple, on cherche $y_p(x)=ax\,\mathrm{e}^{x}$ :
+    \[y_p''-3y_p'+2y_p=a\,\mathrm{e}^{x}\bigl((x+2)-3(x+1)+2x\bigr)=-a\,\mathrm{e}^{x},\]
+    d'où $a=-1$. Les solutions sont
+    $y=C_1\mathrm{e}^{x}+C_2\mathrm{e}^{2x}-x\,\mathrm{e}^{x}$ ; les
+    conditions $C_1+C_2=0$ et $C_1+2C_2-1=0$ donnent $C_1=-1$, $C_2=1$ :
+    \[\res{y(x)=\mathrm{e}^{2x}-\mathrm{e}^{x}-x\,\mathrm{e}^{x}}.\]
+    \pts{3 pts}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Suite récurrente}
+\begin{questions}
+  \item Par récurrence : si $u_n\in\intFO{0}{2}$, alors
+    $u_{n+1}=\sqrt{2+u_n}\in\intFO{\sqrt2}{2}$. De plus
+    $u_{n+1}^{2}-u_n^{2}=2+u_n-u_n^{2}=(2-u_n)(1+u_n)>0$ : la suite croît.
+    Croissante et majorée, elle converge vers $\ell\in\intFF02$, et par
+    continuité $\ell=\sqrt{2+\ell}$, soit $\ell^{2}-\ell-2=0$ :
+    $\res{\ell=2}$. \pts{1,5 pt}
+  \item Par la quantité conjuguée :
+    \[2-u_{n+1}=2-\sqrt{2+u_n}=\frac{2-u_n}{2+\sqrt{2+u_n}}\leqslant\frac{2-u_n}{2},\]
+    puis par récurrence
+    $\res{|u_n-2|\leqslant\dfrac{|u_0-2|}{2^{n}}=\dfrac{2}{2^{n}}}$.
+    \pts{1,5 pt}
+  \item $u_0=0=2\cos\frac\pi2$. Si $u_n=2\cos\theta$ avec
+    $\theta=\frac{\pi}{2^{n+1}}$, alors $2+u_n=2(1+\cos\theta)=4\cos^{2}\frac\theta2$
+    et, $\cos\frac\theta2$ étant positif,
+    $u_{n+1}=2\cos\frac\theta2=2\cos\frac{\pi}{2^{n+2}}$. \pts{1 pt}
+  \item $2-u_n=2\bigl(1-\cos2t_n\bigr)=4\sin^{2}t_n$ avec
+    $t_n=\dfrac{\pi}{2^{n+2}}\to0$, donc
+    \[4^{n}(2-u_n)=4^{n+1}t_n^{2}\Bigl(\frac{\sin t_n}{t_n}\Bigr)^{2}
+      =\frac{\pi^{2}}{4}\Bigl(\frac{\sin t_n}{t_n}\Bigr)^{2}\longrightarrow\res{\frac{\pi^{2}}{4}}.\]
+    \pts{1 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=1.75cm,y=1.75cm,line cap=round,line join=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0) -- (2.35,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0) -- (0,2.3);
+  \draw[otMuted,line width=0.5pt] (0,0) -- (2.2,2.2);
+  \draw[otNavy,line width=1.1pt] plot[domain=0:2.2,samples=60] ({\x},{sqrt(2+\x)});
+  \draw[otGreenDark,line width=0.8pt] (0,0) -- (0,1.4142) -- (1.4142,1.4142) -- (1.4142,1.8478)
+    -- (1.8478,1.8478) -- (1.8478,1.9616) -- (1.9616,1.9616) -- (1.9616,1.9904);
+  \foreach \u/\l in {1.4142/1,1.8478/2}{
+    \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (\u,0) -- (\u,\u);
+    \node[font=\scriptsize,text=otGreenDark,anchor=north] at (\u,-0.02) {$u_{\l}$};}
+  \node[font=\scriptsize,text=otGreenDark,anchor=north] at (0,-0.02) {$u_0$};
+  \draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (2,0) -- (2,2);
+  \node[font=\scriptsize,anchor=north] at (2.06,-0.02) {$2$};
+  \fill[otNavy] (2,2) circle (1.3pt);
+  \node[font=\scriptsize,text=otNavy,anchor=south] at (0.62,1.68) {$y=\sqrt{2+x}$};
+  \node[font=\scriptsize,text=otMuted,anchor=west,rotate=45] at (0.95,1.02) {$y=x$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Les itérés montent en « escalier » vers le point fixe $2$ ; l'écart
+est au moins divisé par $2$ à chaque pas.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{4 points}{Continuité, dérivabilité}
+\begin{questions}
+  \item $g$ est continue sur $\intFF0{\frac12}$ et, par télescopage,
+    $g(0)+g\bigl(\frac12\bigr)=f(1)-f(0)=0$ : $g(0)$ et $g\bigl(\frac12\bigr)$
+    sont de signes opposés (ou nuls), et le théorème des valeurs
+    intermédiaires fournit $c\in\intFF0{\frac12}$ avec $g(c)=0$.
+    Géométriquement, la courbe de $f$ possède une
+    \res{\text{corde horizontale de longueur }\tfrac12} (figure).
+    \pts{2 pts}
+  \item Si $a_1<\dots<a_p$ sont des racines de $P$, le théorème de Rolle
+    appliqué sur chaque $\intFF{a_k}{a_{k+1}}$ fournit une racine de $P'$
+    dans $\intOO{a_k}{a_{k+1}}$ : ces $p-1$ racines sont distinctes car les
+    intervalles sont disjoints. Ici $P'=nX^{n-1}+a$ s'annule au plus deux
+    fois sur $\R$ (l'équation $x^{n-1}=-\frac an$ a au plus deux solutions
+    réelles) ; si $P$ avait quatre racines distinctes, $P'$ en aurait trois :
+    $X^{n}+aX+b$ a \res{\text{au plus trois racines réelles distinctes}}.
+    \pts{2 pts}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=5.4cm,y=1.6cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0) -- (1.08,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0) -- (0,1.7);
+  \draw[otNavy,line width=1.1pt] plot[domain=0:1,samples=120] ({\x},{sin(deg(pi*\x))^2*(1+\x)});
+  \draw[otGreenDark,line width=1.2pt] (0.2762,0.7426) -- (0.7762,0.7426);
+  \fill[otGreenDark] (0.2762,0.7426) circle (1.4pt);
+  \fill[otGreenDark] (0.7762,0.7426) circle (1.4pt);
+  \draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (0.2762,0) -- (0.2762,0.7426)
+    (0.7762,0) -- (0.7762,0.7426);
+  \node[font=\scriptsize,anchor=north] at (0.2762,-0.02) {$c$};
+  \node[font=\scriptsize,anchor=north] at (0.7762,-0.02) {$c+\frac12$};
+  \node[font=\scriptsize,anchor=north] at (1,-0.02) {$1$};
+  \node[font=\scriptsize,anchor=north east] at (0,-0.02) {$0$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south] at (0.5262,0.7426) {longueur $\frac12$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Une corde horizontale de longueur $\frac12$, ici pour
+$f(x)=(1+x)\sin^{2}\pi x$, qui vérifie $f(0)=f(1)=0$.}
+\end{minipage}\end{center}
+\end{corrigeEval}

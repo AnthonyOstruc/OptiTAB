@@ -1,0 +1,30 @@
+% Décharge et charge d'un accumulateur (L'essentiel, chapitre 10)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\begin{scope}
+\filldraw[fill=otNavyTint,draw=otNavy,line width=0.7pt,rounded corners=1.2mm] (0,0) rectangle (2.6,1.5);
+\node[pcLegendeG,text=otNavy] at (1.3,0.75) {accumulateur};
+\node[font=\otSemi\fontsize{9}{10}\selectfont] at (0.3,1.75) {$+$};
+\node[font=\otSemi\fontsize{9}{10}\selectfont] at (2.3,1.75) {$-$};
+\draw[pcFil] (0.3,1.5) -- (0.3,2.5) -- (0.88,2.5);
+\draw[pcFil] (2.3,1.5) -- (2.3,2.5) -- (1.72,2.5);
+\pcResistance{(1.3,2.5)}
+\draw[pcCourant] (0.42,2.92) -- (1.15,2.92);
+\node[pcLegende,anchor=south,text=otRed!80!black] at (0.78,2.98) {$I$};
+\node[pcLegendeG,anchor=north,align=center] at (1.3,-0.25) {décharge : la pile débite\\énergie chimique $\to$ électrique};
+\end{scope}
+\begin{scope}[xshift=62mm]
+\filldraw[fill=otGreenTint,draw=otGreenDark,line width=0.7pt,rounded corners=1.2mm] (0,0) rectangle (2.6,1.5);
+\node[pcLegendeG,text=otGreenDark] at (1.3,0.75) {accumulateur};
+\node[font=\otSemi\fontsize{9}{10}\selectfont] at (0.3,1.75) {$+$};
+\node[font=\otSemi\fontsize{9}{10}\selectfont] at (2.3,1.75) {$-$};
+\draw[pcFil] (0.3,1.5) -- (0.3,2.5) -- (0.97,2.5);
+\draw[pcFil] (2.3,1.5) -- (2.3,2.5) -- (1.63,2.5);
+\pcAppareilRond{(1.3,2.5)}{G}
+\draw[pcCourant] (1.15,2.92) -- (0.42,2.92);
+\node[pcLegende,anchor=south,text=otRed!80!black] at (0.78,2.98) {$I$};
+\node[pcLegendeG,anchor=north,align=center] at (1.3,-0.25) {charge : le générateur impose\\le courant inverse};
+\end{scope}
+\draw[pcFleche] (3.35,0.75) -- (5.45,0.75);
+\draw[pcFlecheN] (5.45,0.45) -- (3.35,0.45);
+\end{tikzpicture}
+\par\smallskip\legende{En charge, chaque demi-équation s'inverse : l'électrode qui était la cathode devient l'anode, et les réactifs sont reconstitués.}

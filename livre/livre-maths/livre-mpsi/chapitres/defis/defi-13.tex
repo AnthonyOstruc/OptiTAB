@@ -1,0 +1,74 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 13 — Les matrices 2×2 à similitude près
+%% Résultats vérifiés par verifications/defis_11_15.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Les matrices $2\times2$ à similitude près}{1 h 30}
+On travaille dans $\mathcal{M}_2(\K)$ avec $\K=\R$ ou $\Cx$. Rang et
+trace sont des invariants de similitude, le déterminant aussi
+(chapitre 14). On va montrer qu'en taille $2$, \emph{trace et déterminant
+suffisent} à décider si deux matrices non scalaires sont semblables.
+
+\partieExo{A}{La forme compagnon}
+\begin{questions}
+  \item Montrer que pour tout $A\in\mathcal{M}_2(\K)$ :
+    $A^{2}-\operatorname{tr}(A)\,A+\det(A)\,I_2=0$.
+  \item On suppose que pour tout vecteur non nul $x\in\K^{2}$, la famille
+    $(x,Ax)$ est liée. En appliquant cette hypothèse à $e_1$, $e_2$ et
+    $e_1+e_2$, montrer que $A$ est \emph{scalaire} : $A=\lambda I_2$.
+  \item On suppose $A$ non scalaire. Montrer qu'il existe $x$ tel que
+    $(x,Ax)$ soit une base de $\K^{2}$, et que dans cette base
+    l'endomorphisme canoniquement associé à $A$ a pour matrice
+    \[
+    C_A=\begin{pmatrix}0&-\det A\\ 1&\operatorname{tr}A\end{pmatrix}
+    \qquad(\text{matrice \emph{compagnon}}).
+    \]
+\end{questions}
+
+\partieExo{B}{La classification}
+\begin{questions}[resume]
+  \item En déduire que deux matrices \emph{non scalaires} de
+    $\mathcal{M}_2(\K)$ sont semblables si et seulement si elles ont même
+    trace et même déterminant. Qu'en est-il d'une matrice scalaire ?
+  \item Étudier si les matrices suivantes sont semblables, et donner une
+    matrice de passage quand c'est le cas :
+    \begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.2em,itemsep=0.5mm,topsep=0.6mm]
+      \item $T=\begin{pmatrix}1&1\\0&1\end{pmatrix}$ et
+        $\begin{pmatrix}2&1\\-1&0\end{pmatrix}$ ;
+      \item $R=\begin{pmatrix}0&-1\\1&0\end{pmatrix}$ et
+        $S=\begin{pmatrix}1&-2\\1&-1\end{pmatrix}$ ;
+      \item $T$ et $I_2$.
+    \end{itemize}
+\end{questions}
+
+\partieExo{C}{Puissances et suites récurrentes}
+\begin{questions}[resume]
+  \item Soit $A$ non scalaire avec $\operatorname{tr}A=2$ et $\det A=1$.
+    Montrer que $(A-I_2)^{2}=0$, puis que $A^{n}=I_2+n(A-I_2)$ pour tout
+    $n\in\N$.
+  \item En écrivant matriciellement la récurrence $u_{n+2}=2u_{n+1}-u_n$,
+    retrouver que ses solutions sont les suites arithmétiques.
+  \item Montrer que $S^{2}=-I_2$. En déduire que la suite de vecteurs
+    $X_{n+1}=SX_n$ est périodique de période $4$, et interpréter la figure
+    à l'aide de la question 3 : dans la base $(e_1,Se_1)$, $S$ agit comme
+    le quart de tour $R$.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=1.15,line cap=round,line join=round]
+  \draw[otRule,line width=0.3pt] (-2.2,-1.6) grid (2.2,1.6);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-2.3,0) -- (2.3,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.7) -- (0,1.75);
+  \fill[otGreen,opacity=0.12] (1,0) -- (1,1) -- (-1,0) -- (-1,-1) -- cycle;
+  \draw[otGreenDark,line width=0.7pt,dash pattern=on 2.5pt off 1.5pt] (1,0) -- (1,1) -- (-1,0) -- (-1,-1) -- cycle;
+  \foreach \p/\n/\a in {(1,0)/x/south east,(1,1)/Sx/south west,(-1,0)/S^{2}x/north west,(-1,-1)/S^{3}x/north east}{%
+    \draw[otNavy,line width=1pt,-{Stealth[length=2mm]}] (0,0) -- \p;
+    \node[font=\scriptsize,text=otNavy,anchor=\a] at \p {$\n$};}
+\end{tikzpicture}\\[0.5mm]
+\legende{L'orbite de $x=e_1$ sous $S$ : quatre vecteurs, sommets d'un
+parallélogramme — l'image d'un carré, parcouru par un « quart de tour
+déformé ».}
+\end{center}
+\end{defi}

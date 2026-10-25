@@ -1,0 +1,182 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{13}{Forces et variation de la vitesse}
+\corrigesSouples
+
+\begin{blocLivre}{cor-13-1}
+\begin{corrige}{1}{Le palet sur coussin d'air}
+\demarche{$v_i\approx\dfrac{M_iM_{i+1}}{\Delta t}$ ; si le vecteur vitesse ne change pas, les forces se compensent.}
+\begin{questions}
+\item Les positions sont alignées et régulièrement espacées : mouvement \res{\text{rectiligne uniforme}}.
+\item $v_3=\dfrac{M_3M_4}{\Delta t}=\dfrac{\num{1,6e-2}}{\num{0,040}}=\res{\qty{0,40}{m.s^{-1}}}$.
+\item Deux flèches de \qty{4,0}{cm}, de même direction et de même sens : $\vec{v}_4=\vec{v}_3$, donc $\res{\Delta\vec{v}_3=\vec{0}}$.
+\item $\sum\vec{F}=\vec{0}$ : le \res{\text{poids}} et la \res{\text{réaction}} de la table (via le coussin d'air) se compensent.
+\end{questions}
+\schema[corrige]{13-ex01}
+\retiens{Principe d'inertie : mouvement rectiligne uniforme ou repos $\iff$ forces qui se compensent.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-2}
+\begin{corrige}{2}{Une balle qui tombe}
+\demarche{Vitesses entre positions successives, en mètres et en secondes ($\Delta t=\qty{0,050}{s}$), puis $m\,\dfrac{\Delta v}{\Delta t}$.}
+\begin{questions}
+\item $v_3=\dfrac{(19{,}6-11{,}0)\times10^{-2}}{\num{0,050}}=\res{\qty{1,72}{m.s^{-1}}}$ et $v_4=\dfrac{(30{,}7-19{,}6)\times10^{-2}}{\num{0,050}}=\res{\qty{2,22}{m.s^{-1}}}$.
+\item Flèches verticales vers le bas de \qty{1,72}{cm} et \qty{2,22}{cm} ; $\Delta\vec{v}_3$ : vers le bas, $\res{\qty{0,50}{m.s^{-1}}}$ (schéma).
+\item $m\,\dfrac{\Delta v_3}{\Delta t}=\num{0,058}\times\dfrac{0{,}50}{\num{0,050}}\approx\res{\qty{0,58}{N}}$, très proche du poids $P=\num{0,058}\times9{,}81\approx\qty{0,57}{N}$.
+\item La balle n'est soumise qu'à son \res{\text{poids}} : l'action de l'air est négligeable, c'est une chute libre.
+\end{questions}
+\schema[corrige]{13-ex02-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-3}
+\begin{corrige}{3}{Le rôle de la masse}
+\demarche{$\sum\vec{F}\approx m\,\dfrac{\Delta\vec{v}}{\Delta t}$, donc $\Delta v\approx\dfrac{\sum F\times\Delta t}{m}$.}
+\begin{questions}
+\item $\res{\sum\vec{F}\approx m\,\dfrac{\Delta\vec{v}}{\Delta t}}$.
+\item $\Delta v=\dfrac{20\times0{,}50}{2{,}0}=\res{\qty{5,0}{m.s^{-1}}}$ et $\Delta v=\dfrac{20\times0{,}50}{10}=\res{\qty{1,0}{m.s^{-1}}}$.
+\item Le chariot de \qty{10}{kg} : plus la masse est grande, plus il est \res{\text{difficile de modifier sa vitesse}}.
+\item $\sum F=m\,\dfrac{\Delta v}{\Delta t}=10\times\dfrac{5{,}0}{0{,}50}=\res{\qty{100}{N}}$, cinq fois plus.
+\end{questions}
+\retiens{La masse mesure l'inertie d'un système : sa « résistance » aux changements de vitesse.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-4}
+\begin{corrige}{4}{Un freinage}
+\demarche{Convertir la vitesse en \unit{m.s^{-1}} (diviser par 3,6), puis $\sum F\approx m\,\dfrac{|\Delta v|}{\Delta t}$.}
+\begin{questions}
+\item $v=\dfrac{50}{3{,}6}\approx\qty{13,9}{m.s^{-1}}$ : la vitesse varie de $\res{-\qty{13,9}{m.s^{-1}}}$.
+\item $\sum F\approx\dfrac{1200\times13{,}9}{2{,}5}\approx\res{\qty{6,7e3}{N}}$, horizontale, de sens \res{\text{opposé au mouvement}}.
+\item $\dfrac{13{,}9}{2{,}5}\times0{,}10\approx\res{\qty{0,56}{m.s^{-1}}}$.
+\item Une masse dix fois plus grande demande une force dix fois plus grande : $\res{\qty{6,7e4}{N}}$.
+\end{questions}
+\piege{Garder des \unit{km/h} dans la relation : la vitesse doit être en \unit{m.s^{-1}}, la masse en kg et la durée en s.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-5}
+\begin{corrige}{5}{Lire des vecteurs vitesse}
+\demarche{Tracer $\vec{v}_i$ et $\vec{v}_{i+1}$ depuis un même point : $\Delta\vec{v}$ joint leurs extrémités et a le sens de $\sum\vec{F}$.}
+\begin{questions}
+\item a) et b) : $\Delta\vec{v}$ vertical vers le bas ; c) : vers le \res{\text{centre}} du virage ; d) : $\Delta\vec{v}=\vec{0}$ (schéma).
+\item $\sum\vec{F}$ a la direction et le sens de $\Delta\vec{v}$ dans chaque cas.
+\item Le \res{\text{poids}} seulement, si l'on néglige l'action de l'air.
+\item Seulement dans la situation \res{\text{d)}}.
+\end{questions}
+\schema[corrige]{13-ex05}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-6}
+\begin{corrige}{6}{Une balle lancée, en Python}
+\demarche{Le programme calcule les composantes des vitesses entre positions successives, puis les variations de $v_y$.}
+\begin{questions}
+\item Les composantes horizontale et verticale des \res{\text{vitesses}} : $v_x\approx\dfrac{\Delta x}{\Delta t}$ et $v_y\approx\dfrac{\Delta y}{\Delta t}$.
+\item $v_x$ est \res{\text{constante}} (\qty{3,0}{m.s^{-1}}) ; $v_y$ diminue d'environ \qty{1,0}{m.s^{-1}} toutes les \qty{0,10}{s} (écarts dus aux mesures).
+\item $\Delta\vec{v}$ est vertical, vers le bas ; en moyenne $\dfrac{\Delta v}{\Delta t}\approx\dfrac{0{,}98}{0{,}10}=\res{\qty{9,8}{m.s^{-2}}}$.
+\item $\sum F\approx0{,}060\times9{,}8\approx\res{\qty{0,59}{N}}$, verticale vers le bas : c'est le \res{\text{poids}} ($0{,}060\times9{,}81\approx\qty{0,59}{N}$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-7}
+\begin{corrige}{7}{La balle au bout d'un fil}
+\demarche{Mesurer sur le document à l'échelle 1/10, construire $\Delta\vec{v}_2$ depuis un même point, puis $F\approx m\,\dfrac{\Delta v}{\Delta t}$.}
+\begin{questions}
+\item $M_2M_3\approx\qty{2,0}{cm}$ sur le document, soit \qty{0,20}{m} : $v\approx\dfrac{0{,}20}{0{,}10}=\res{\qty{2,0}{m.s^{-1}}}$.
+\item Deux flèches de \qty{2,0}{cm}, dirigées selon $M_2M_3$ et $M_3M_4$.
+\item $\Delta v_2\approx\res{\qty{0,79}{m.s^{-1}}}$ (\qty{0,79}{cm}), dirigé vers le \res{\text{centre}} O.
+\item Le poids et la réaction de la table se compensent ; le fil exerce une force vers O de valeur $\approx\dfrac{0{,}200\times0{,}79}{0{,}10}\approx\res{\qty{1,6}{N}}$.
+\end{questions}
+\schema[corrige]{13-ex07}
+\piege{Croire que $\sum\vec{F}=\vec{0}$ parce que la valeur de la vitesse est constante : la direction de la vitesse change, donc $\Delta\vec{v}\neq\vec{0}$.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-8}
+\begin{corrige}{8}{Le tir au hockey}
+\demarche{$F\approx m\,\dfrac{\Delta v}{\Delta t}$ avec $\Delta t=\qty{0,010}{s}$.}
+\begin{questions}
+\item $\Delta v=30-0=\res{\qty{30}{m.s^{-1}}}$.
+\item $F\approx\dfrac{0{,}17\times30}{\num{0,010}}=\res{\qty{510}{N}}$.
+\item $P=0{,}17\times9{,}81\approx\qty{1,67}{N}$ : la force de la crosse est environ \res{300} fois plus grande ; on peut \res{\text{négliger le poids}}.
+\item $\Delta v\approx\dfrac{F\,\Delta t}{m}$ double : le palet partirait à \res{\qty{60}{m.s^{-1}}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-9}
+\begin{corrige}{9}{Le saut en parachute}
+\demarche{La pente de la courbe $v(t)$ vaut $\dfrac{\Delta v}{\Delta t}$, et $\sum F\approx m\,\dfrac{\Delta v}{\Delta t}$.}
+\begin{questions}
+\item La tangente à l'origine passe par (\qty{5}{s} ; \qty{49}{m.s^{-1}}) : pente $\approx\qty{9,8}{m.s^{-2}}=g$, comme pour $\sum\vec{F}=\vec{P}$.
+\item Vitesse constante : $\sum\vec{F}=\vec{0}$. Les frottements compensent le poids : $f=80\times9{,}81\approx\res{\qty{785}{N}}$.
+\item $\sum F\approx\dfrac{80\times(6-55)}{3{,}0}\approx-\qty{1,31e3}{N}$ : vers le haut. Air : $F=\num{1,31e3}+785\approx\res{\qty{2,09e3}{N}}$.
+\item Les frottements diminuent avec la vitesse ; quand ils égalent de nouveau le poids, $\sum\vec{F}=\vec{0}$ : vitesse \res{\text{constante}}.
+\end{questions}
+\schema[corrige]{13-ex09}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-10}
+\begin{corrige}{10}{Le chariot tiré}
+\demarche{$v\approx\dfrac{\Delta x}{\Delta t}$ sur chaque intervalle, puis les différences successives.}
+\begin{questions}
+\item \res{\text{0,06 ; 0,18 ; 0,30 ; 0,42 ; 0,54 ; 0,66}} (en \unit{m.s^{-1}}).
+\item La vitesse augmente de \res{\qty{0,12}{m.s^{-1}}} toutes les \qty{0,10}{s} : la variation est \res{\text{constante}}.
+\item $\sum F\approx0{,}500\times\dfrac{0{,}12}{0{,}10}=\res{\qty{0,60}{N}}$, horizontale, dans le sens du mouvement : c'est la force exercée par le fil.
+\item Pour une masse double, la variation de vitesse est \res{\text{deux fois plus petite}} : \qty{0,06}{m.s^{-1}} toutes les \qty{0,10}{s}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-11}
+\begin{corrige}{11}{Construire une variation de vitesse}
+\demarche{$\vec{v}_i\approx\dfrac{\overrightarrow{M_iM_{i+1}}}{\Delta t}$ composante par composante, puis $\Delta\vec{v}_2=\vec{v}_3-\vec{v}_2$.}
+\begin{questions}
+\item $\vec{v}_2=(2{,}0\,;\,1{,}05)$ : $\res{v_2\approx\qty{2,26}{m.s^{-1}}}$ ; $\vec{v}_3=(2{,}0\,;\,0{,}06)$ : $\res{v_3\approx\qty{2,0}{m.s^{-1}}}$.
+\item Flèches de \qty{1,13}{cm} et \qty{1,0}{cm}, dirigées selon $M_2M_3$ et $M_3M_4$ (schéma).
+\item $\Delta\vec{v}_2=(0\,;\,-0{,}99)$ : vertical vers le bas, $\res{\Delta v_2\approx\qty{0,99}{m.s^{-1}}}$ (\qty{0,50}{cm}).
+\item $\sum F\approx0{,}060\times\dfrac{0{,}99}{0{,}10}\approx\res{\qty{0,59}{N}}$, vers le bas : c'est le poids ($\approx\qty{0,59}{N}$).
+\end{questions}
+\schema[corrige]{13-ex11}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-12}
+\begin{corrige}{12}{Le service au tennis}
+\demarche{Pendant le contact, $F\approx m\,\dfrac{\Delta v}{\Delta t}$ ; après, seul le poids agit : $\Delta\vec{v}=\vec{g}\,\Delta t$.}
+\begin{questions}
+\item $F\approx\dfrac{\num{0,058}\times50}{\num{0,0050}}=\res{\qty{580}{N}}$.
+\item $P=\num{0,058}\times9{,}81\approx\qty{0,57}{N}$ : $F\approx\res{1000\,P}$. Le poids est négligeable pendant la frappe.
+\item $\Delta v=g\,\Delta t\approx\res{\qty{0,98}{m.s^{-1}}}$, verticale vers le bas.
+\item $\dfrac{220}{3{,}6}\approx\qty{61,1}{m.s^{-1}}$ : $F\approx\dfrac{\num{0,058}\times61{,}1}{\num{0,0050}}\approx\res{\qty{709}{N}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-13}
+\begin{corrige}{13}{Le décollage d'un lanceur}
+\demarche{Inventaire des forces, somme vectorielle sur l'axe vertical, puis $\Delta v\approx\dfrac{\sum F\times\Delta t}{m}$.}
+\begin{questions}
+\item Poussée $F=\qty{1,40e7}{N}$ vers le haut (\qty{3,5}{cm}) ; poids $P=\num{7,8e5}\times9{,}81\approx\qty{7,65e6}{N}$ vers le bas (\qty{1,9}{cm}).
+\item $\sum F=\num{1,40e7}-\num{7,65e6}=\res{\qty{6,35e6}{N}}$ vers le haut ; $\Delta v\approx\dfrac{\num{6,35e6}\times1{,}0}{\num{7,8e5}}\approx\res{\qty{8,1}{m.s^{-1}}}$.
+\item $P=\num{3,8e5}\times9{,}81\approx\qty{3,73e6}{N}$ ; $\sum F\approx\qty{1,03e7}{N}$ ; $\Delta v\approx\dfrac{\num{1,03e7}}{\num{3,8e5}}\approx\res{\qty{27}{m.s^{-1}}}$ en une seconde.
+\item La poussée reste la même mais la \res{\text{masse diminue}} : la variation de vitesse par seconde augmente.
+\end{questions}
+\schema[corrige]{13-ex13-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-14}
+\begin{corrige}{14}{Ceinture et airbag}
+\demarche{Même variation de vitesse, durées différentes : $F\approx m\,\dfrac{\Delta v}{\Delta t}$ est inversement proportionnelle à $\Delta t$.}
+\begin{questions}
+\item $\Delta v=\dfrac{60}{3{,}6}\approx\res{\qty{16,7}{m.s^{-1}}}$ (le passager s'arrête).
+\item $F\approx\dfrac{75\times16{,}7}{0{,}12}\approx\res{\qty{1,04e4}{N}}$, soit environ \res{14} fois son poids ($75\times9{,}81\approx\qty{736}{N}$).
+\item $F\approx\dfrac{75\times16{,}7}{\num{0,010}}\approx\res{\qty{1,25e5}{N}}$, douze fois plus.
+\item Ceinture et airbag \res{\text{allongent la durée}} de l'arrêt : pour une même $\Delta v$, la force est plus faible, et répartie sur une
+grande surface du corps.
+\end{questions}
+\retiens{Pour une même variation de vitesse, plus l'arrêt est progressif, plus la force subie est faible.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-13-15}
+\begin{corrige}{15}{Simuler un tir}
+\demarche{Chaque pas applique $\Delta\vec{v}=\dfrac{\sum\vec{F}}{m}\,\Delta t$ avec $\sum\vec{F}=m\,\vec{g}$ : seule la composante verticale varie.}
+\begin{questions}
+\item Vitesse initiale \res{\qty{20}{m.s^{-1}}} à \ang{45} au-dessus de l'horizontale ; \code{41.0 m} est la \res{\text{portée}}, distance horizontale à l'arrivée au sol.
+\item Le seul poids, vertical vers le bas : $\Delta v_y=-g\,\Delta t$ à chaque pas. Aucune force horizontale : $v_x$ \res{\text{reste constante}}.
+\item $\Delta\vec{v}=\dfrac{m\,\vec{g}}{m}\,\Delta t=\vec{g}\,\Delta t$ : la masse se \res{\text{simplifie}}, tous les objets ont le même mouvement.
+\item $\dfrac{247{,}1}{41{,}0}\approx\res{6{,}0}$, comme $\dfrac{9{,}81}{1{,}62}\approx6$ : la vitesse verticale diminue six fois moins vite, le vol dure six fois plus longtemps.
+\end{questions}
+\end{corrige}
+\end{blocLivre}

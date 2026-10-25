@@ -1,0 +1,14 @@
+% Tableau électrique simplifié d'une cuisine (énoncé du défi D14)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  dj/.style={draw=otInk!80,fill=white,line width=0.6pt,rounded corners=0.6mm,minimum width=1.25cm,minimum height=0.55cm,font=\otMedium\fontsize{7.5}{9}\selectfont,text=otInk},
+  app/.style={pcLegende,anchor=west,align=left}]
+\node[draw=otNavy,fill=otNavy!10,line width=0.7pt,rounded corners=1mm,minimum width=2.4cm,minimum height=0.7cm,align=center,font=\otMedium\fontsize{7.5}{9}\selectfont] (gen) at (0,0) {disjoncteur général\\abonnement \qty{6}{kVA}};
+\draw[otInk!70,line width=0.8pt] (-1.6,0) -- (gen.west); \node[pcLegende,anchor=east] at (-1.65,0) {réseau \qty{230}{V}};
+\draw[otInk!70,line width=0.8pt] (gen.east) -- (2.2,0) (2.2,1.8) -- (2.2,-1.8);
+\foreach \y/\calib/\txt in {1.8/{16 A}/{prises : bouilloire \qty{2200}{W}, lave-linge \qty{2000}{W}},0.6/{20 A}/{four \qty{2500}{W}},-0.6/{32 A}/{plaque de cuisson \qty{3600}{W}},-1.8/{16 A}/{réfrigérateur \qty{150}{W}, éclairage \qty{100}{W}}}{%
+  \draw[otInk!70,line width=0.8pt] (2.2,\y) -- (2.75,\y);
+  \node[dj] at (3.4,\y) {\calib};
+  \draw[otInk!70,line width=0.8pt] (4.05,\y) -- (4.6,\y);
+  \node[app] at (4.65,\y) {\txt};}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque circuit est protégé par un disjoncteur qui coupe le courant au-delà de son calibre ; le disjoncteur général coupe tout si la puissance appelée dépasse celle de l'abonnement.}

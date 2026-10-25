@@ -1,0 +1,13 @@
+% Évolution de la température en tête de colonne pendant la distillation (corrigé de l'exercice 10, chapitre 9)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=52mm,xmin=0,xmax=60,ymin=20,ymax=110,
+  xtick={0,10,...,60},ytick={20,40,...,100},extra y ticks={56,78},extra y tick style={grid=major,
+  ticklabel style={text=otGreenDark}},
+  xlabel={durée (min)},ylabel={$\theta$ ($\unit{\degreeCelsius}$)}]
+\addplot[otNavy,line width=1.1pt] coordinates {(0,20) (6,56) (18,56) (22,78) (36,78) (40,100) (56,100)};
+\node[pcLegende,anchor=south,text=otGreenDark] at (axis cs:12,57) {la propanone distille};
+\node[pcLegende,anchor=south,text=otGreenDark] at (axis cs:29,79) {l'éthanol distille};
+\node[pcLegende,anchor=north,text=otGreenDark] at (axis cs:48,99) {l'eau distille};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Allure attendue : un palier à la température d'ébullition de chaque espèce, de la plus volatile à la moins volatile.}

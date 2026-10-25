@@ -1,0 +1,54 @@
+%% =====================================================================
+%%  The collection : les cinq volumes de la méthode
+%% =====================================================================
+\liminaire{collection}{The collection}{From your first program to professional development: five volumes, five levels}
+
+\newcommand{\otCarteTome}[8]{% n, niveau, couleur, titre, sous-titre, savoir-faire, notions, statut
+  \begin{tcolorbox}[enhanced,colback=white,colframe=otRule,boxrule=0.5pt,arc=2mm,left=0mm,right=4mm,
+    top=0mm,bottom=0mm,boxsep=0pt,before skip=0pt,after skip=3.2mm,
+    overlay={\fill[#3,rounded corners=2mm] (frame.north west) rectangle ([xshift=30mm]frame.south west);
+      \fill[#3] ([xshift=26mm]frame.north west) rectangle ([xshift=30mm]frame.south west);
+      \node[text=white,font=\otSemi\fontsize{7}{8}\selectfont,anchor=north] at ([xshift=15mm,yshift=-4.5mm]frame.north west) {\otCaps[12]{Volume}};
+      \node[text=white,font=\otBold\fontsize{30}{30}\selectfont] at ([xshift=15mm,yshift=-15.5mm]frame.north west) {#1};
+      \node[fill=white,text=#3,rounded corners=1.2mm,inner xsep=2mm,inner ysep=1mm,font=\otBold\fontsize{7.2}{8}\selectfont]
+        at ([xshift=15mm,yshift=-26mm]frame.north west) {\otCaps[8]{#2}};}]
+  \hspace*{34mm}\begin{minipage}[t]{\dimexpr\linewidth-34mm\relax}\vspace{3.6mm}
+    {\otSemi\fontsize{14}{16}\selectfont #4}\hspace{2.5mm}{\otRegular\fontsize{9.4}{12}\selectfont\color{otMuted}#5}\hfill
+    {\otSemi\fontsize{7}{8.5}\selectfont\color{#3}\otCaps[10]{#8}}\par\vspace{1.6mm}
+    {\fontsize{9.8}{12.4}\selectfont #6\par}\vspace{1.2mm}
+    {\fontsize{9}{11.4}\selectfont\color{otMuted}{\otSemi\fontsize{7}{8.5}\selectfont\color{otViolet}\otCaps[10]{Python}}\enspace #7\par}
+    \vspace{3.6mm}
+  \end{minipage}
+  \end{tcolorbox}}
+
+\otCarteTome{1}{Beginner}{otGreen}{First Steps}{Learn to code from zero}
+  {Your first programs: calculations, text, decisions, loops, functions, lists, dictionaries and
+   files, with five guided projects.}
+  {\py{print()} · variables · \py{input()} · \py{if} · \py{while} and \py{for} · functions ·
+   exceptions · lists · dictionaries · files}{This book}
+\otCarteTome{2}{Elementary}{otGreenDark}{Solid Foundations}{Write clean, reliable programs}
+  {Modules and the standard library, richer data structures, debugging and automated tests, and the
+   tools of professional developers: VS Code, Git, virtual environments.}
+  {comprehensions · sets · \py{*args} and \py{**kwargs} · \py{lambda} · modules and packages ·
+   \py{pathlib} · JSON and CSV · \py{pytest} · \py{pip} and \py{venv}}{Forthcoming}
+\otCarteTome{3}{Intermediate}{otNavy!75}{Thinking in Objects}{Design larger programs}
+  {Classes and objects, Pythonic code, and the design of larger projects that are easy to extend and
+   maintain.}
+  {classes · inheritance and composition · special methods · \py{dataclasses} · iterators and
+   generators · decorators · context managers · type hints}{Forthcoming}
+\otCarteTome{4}{Advanced}{otNavy}{Python at Work}{Real-world applications}
+  {Automation, data analysis and charts, databases, web APIs and web applications: Python in the
+   jobs where it is used every day.}
+  {\py{requests} · SQLite and SQL · NumPy · pandas · Matplotlib · Flask and FastAPI · files, Excel
+   and PDF automation}{Forthcoming}
+\otCarteTome{5}{Expert}{otNavyDark}{Mastering Python}{Professional development}
+  {Performance, concurrency, software architecture, testing at scale, packaging and distribution,
+   algorithms: everything a professional Python developer needs.}
+  {\py{asyncio} · threads and processes · profiling · design patterns · packaging with
+   \py{pyproject.toml} · continuous integration · algorithms and data structures}{Forthcoming}
+
+\begin{astuce}[Which volume should I start with?]
+You have never programmed: start with this volume. You already know variables, conditions, loops
+and functions: do the five checkpoints of this volume. If you score 16 out of 20 or more on each of
+them, you are ready for volume~2.
+\end{astuce}

@@ -1,0 +1,14 @@
+% Échelle des niveaux d'intensité sonore, ordres de grandeur (L'essentiel, chapitre 21)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\shade[left color=otGreenTint,right color=otRed!45] (0,0) rectangle (13,0.45);
+\draw[otInk!60,line width=0.5pt] (0,0) rectangle (13,0.45);
+\foreach \L in {0,20,...,140}{
+  \draw[otInk!60,line width=0.4pt] ({\L*13/140},0) -- ({\L*13/140},-0.12);
+  \node[pcLegende,anchor=north] at ({\L*13/140},-0.12) {\L};}
+\node[pcLegende,anchor=west] at (13.1,-0.3) {dB};
+\foreach \L/\txt/\h in {0/{seuil\\ d'audibilité}/0.55,30/{chambre\\ calme}/0.55,60/{conversation}/0.55,
+    85/{seuil de\\ risque}/1.25,100/{concert}/0.55,120/{seuil de\\ douleur}/1.25,130/{avion au\\ décollage}/0.55}{
+  \draw[otMuted,line width=0.4pt] ({\L*13/140},0.45) -- ({\L*13/140},\h);
+  \node[pcLegende,anchor=south,align=center] at ({\L*13/140},\h) {\txt};}
+\end{tikzpicture}
+\par\smallskip\legende{Ordres de grandeur de niveaux d'intensité sonore. Une exposition prolongée au-delà de \qty{85}{dB} abîme l'oreille.}

@@ -1,0 +1,47 @@
+%% =====================================================================
+%%  4e de couverture
+%% =====================================================================
+\clearpage
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  % Fond
+  \fill[otNavy] (0,0) rectangle (210mm,297mm);
+  \shade[bottom color=otNavyDark,top color=otNavy] (0,0) rectangle (210mm,160mm);
+  \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+
+  % Accroche et texte
+  \node[anchor=north west,inner sep=0pt,text width=150mm,align=left] at (24mm,270mm)
+    {{\otSemi\fontsize{9}{11}\selectfont\color{otGreen}%
+       \otCaps[18]{\otTitreLivre\ · \otNiveau}}\par\vspace{7mm}
+     {\otSemi\fontsize{25}{31}\selectfont\color{white}%
+       Réussir sa Troisième,\\exercice après exercice.}\par\vspace{9mm}
+     {\fontsize{11.5}{16}\selectfont\color{white!88!otNavy}%
+       Cette édition suit le nouveau programme de mathématiques du cycle 4,
+       applicable en Troisième à la rentrée 2028. Elle réunit les cours et
+       288 exercices corrigés : 270 exercices progressifs dans 18 chapitres
+       et 18 défis facultatifs. Vecteurs, quartiles, identités remarquables,
+       inéquations, sphère et sections sont traités en détail. Deux brevets
+       blancs originaux préparent la session 2029.\par}\vspace{9mm}
+     {\otRegular\fontsize{10.5}{14}\selectfont\color{white}%
+       \otCheck\hspace{3mm}Des bases accessibles aux défis très exigeants\par\vspace{3.4mm}
+       \otCheck\hspace{3mm}Des corrigés rédigés, avec la méthode à retenir\par\vspace{3.4mm}
+       \otCheck\hspace{3mm}Des figures, tableaux et scripts par blocs soignés\par\vspace{3.4mm}
+       \otCheck\hspace{3mm}Un tableau de bord pour suivre sa progression\par}};
+
+  % Bloc « en ligne »
+  \fill[white,rounded corners=3mm] (24mm,62mm) rectangle (186mm,98mm);
+  \node[anchor=west,inner sep=0pt] at (30mm,80mm)
+    {\color{otNavy}\qrcode[height=26mm,nolink]{\otURL}};
+  \node[anchor=west,inner sep=0pt,text width=110mm] at (64mm,80mm)
+    {{\otSemi\fontsize{12}{15}\selectfont\color{otNavy}Collection OptiTAB}\par\vspace{2mm}
+     {\fontsize{10.5}{14}\selectfont\color{otInk}Du collège au lycée : une même présentation pour\par apprendre, chercher et progresser.}};
+
+  % Logo, prix et code-barres
+  \node[anchor=south west,inner sep=0pt] at (24mm,20mm)
+    {\includegraphics[width=46mm]{logo-blanc}};
+  \fill[white] (138mm,16mm) rectangle (186mm,44mm);
+  \node[text=otMuted,align=center,font=\otLight\fontsize{7}{9}\selectfont]
+    at (162mm,30mm) {NOUVEAU PROGRAMME\\18 chapitres\\Édition 2028-2029};
+\end{scope}
+\end{tikzpicture}

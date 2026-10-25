@@ -1,0 +1,22 @@
+% Modèle des chocs : influence de la concentration et de la température (L'essentiel, chapitre 5)
+\begin{tikzpicture}[x=1mm,y=1mm,
+  pa/.style={circle,fill=otNavy,inner sep=0pt,minimum size=2.6mm},
+  pb/.style={circle,fill=otGreen,inner sep=0pt,minimum size=2.6mm},
+  vit/.style={otMuted,line width=0.5pt,-{Stealth[length=1.3mm]}},
+  vitt/.style={otOrange!85!black,line width=0.7pt,-{Stealth[length=1.6mm]}}]
+\foreach \bx/\titre in {0/{faible concentration},48/{concentration élevée},96/{température élevée}}{%
+  \draw[otRule,line width=0.6pt,rounded corners=1.5mm,fill=white] (\bx,0) rectangle (\bx+40,30);
+  \node[pcLegendeG,anchor=north] at (\bx+20,-1.5) {\titre};}
+% boîte 1 : peu d'entités
+\foreach \x/\y/\a in {7/7/30,30/22/200,16/23/-40}{\node[pa] at (\x,\y) {}; \draw[vit] (\x,\y) -- ++(\a:4);}
+\foreach \x/\y/\a in {33/8/150,22/13/80,8/18/-80}{\node[pb] at (\x,\y) {}; \draw[vit] (\x,\y) -- ++(\a:4);}
+% boîte 2 : beaucoup d'entités, chocs plus fréquents
+\foreach \x/\y/\a in {53/6/20,62/14/120,74/24/200,82/9/160,57/24/-30,69/5/60,78/17/250,85/26/190}{\node[pa] at (\x,\y) {}; \draw[vit] (\x,\y) -- ++(\a:4);}
+\foreach \x/\y/\a in {58/18/-60,66/22/30,73/11/100,84/18/210,53/13/0,64/8/150,79/4/80,70/27/-100}{\node[pb] at (\x,\y) {}; \draw[vit] (\x,\y) -- ++(\a:4);}
+\foreach \a in {0,45,...,315}{\draw[otOrange,line width=0.7pt] (68.4,16.6) ++(\a:0.9) -- ++(\a:1.5);}
+% boîte 3 : mêmes entités, plus rapides
+\foreach \x/\y/\a in {103/7/30,126/22/200,112/23/-40}{\node[pa] at (\x,\y) {}; \draw[vitt] (\x,\y) -- ++(\a:7.5);}
+\foreach \x/\y/\a in {129/8/150,118/13/80,104/18/-80}{\node[pb] at (\x,\y) {}; \draw[vitt] (\x,\y) -- ++(\a:7.5);}
+\end{tikzpicture}
+\par\smallskip\legende{Plus les entités sont nombreuses par unité de volume, plus les chocs sont fréquents ; plus la température est
+élevée, plus les entités sont rapides : les chocs sont plus fréquents et plus souvent efficaces.}

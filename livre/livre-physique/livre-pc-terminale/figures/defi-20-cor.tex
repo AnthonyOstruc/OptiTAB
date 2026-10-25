@@ -1,0 +1,17 @@
+% Café au lait : lait versé au début (A) ou à la fin (B) (corrigé du défi D20)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=56mm,xmin=0,xmax=11,ymin=40,ymax=95,
+  xtick={0,2,...,10},ytick={40,50,...,90},
+  xlabel={$t$ (min)},ylabel={$T$ (\unit{\degreeCelsius})}]
+\addplot[otNavy,line width=1pt,domain=0:10,samples=60] {20+53*exp(-60*x/1500)};
+\addplot[otRed!80!black,line width=1pt,domain=0:10,samples=60] {20+70*exp(-60*x/1500)};
+\draw[otRed!80!black,line width=1pt,dash pattern=on 2pt off 1.5pt,-{Stealth[length=1.8mm]}] (axis cs:10,66.92) -- (axis cs:10,54.7);
+\fill[otNavy] (axis cs:10,55.53) circle (1.6pt);
+\fill[otRed!80!black] (axis cs:10,54.54) circle (1.6pt);
+\node[pcLegende,anchor=south west,text=otNavy] at (axis cs:0.3,47) {A : lait versé au début, mélange à \qty{73}{\degreeCelsius}};
+\node[pcLegende,anchor=south west,text=otRed!80!black] at (axis cs:0.3,90.5) {B : café seul, lait versé à la fin};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:10.15,56.6) {\qty{55,5}{\degreeCelsius}};
+\node[pcLegende,anchor=west,text=otRed!80!black] at (axis cs:10.15,53.2) {\qty{54,5}{\degreeCelsius}};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Le café seul, plus chaud, perd son énergie plus vite : verser le lait à la fin donne une boisson un peu plus fraîche.}

@@ -1,0 +1,13 @@
+% Indice d'affaiblissement selon la loi de masse pour deux parois (corrigé du défi D21)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=104mm,height=56mm,xmode=log,xmin=50,xmax=5000,ymin=0,ymax=80,
+  xtick={63,125,250,500,1000,2000,4000},xticklabels={63,125,250,500,\num{1000},\num{2000},\num{4000}},ytick={0,20,...,80},
+  xlabel={$f$ (Hz)},ylabel={$R$ (dB)},grid=major]
+\addplot[otNavy,line width=1pt,domain=63:4000,samples=40] {20*log10(230*x)-47};
+\addplot[otOrange!90!black,line width=1pt,domain=63:4000,samples=40] {20*log10(20*x)-47};
+\addplot[only marks,mark=*,mark size=1.4pt,otNavy] coordinates {(125,42.2) (250,48.2) (500,54.2) (1000,60.2) (2000,66.3) (4000,72.3)};
+\node[pcLegende,anchor=south east,text=otNavy] at (axis cs:3500,74) {béton, \qty{10}{cm}};
+\node[pcLegende,anchor=north west,text=otOrange!80!black] at (axis cs:600,33) {cloison de plaques de plâtre};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{L'indice d'affaiblissement gagne \qty{6}{dB} quand la fréquence double : les sons graves traversent bien plus facilement les parois.}

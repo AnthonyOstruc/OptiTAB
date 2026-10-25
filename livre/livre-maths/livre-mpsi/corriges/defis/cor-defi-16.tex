@@ -1,0 +1,81 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 16 — vérifié par verifications/defis_16_20.py.
+
+\begin{blocLivre}{cor-16-25a}
+\begin{corrige}{25}{Les nombres de Stirling de seconde espèce}
+\demarche{Tout repose sur deux idées : suivre le sort d'un élément
+particulier (récurrences), et classer des applications selon leur image
+(identités).}
+\partieExo{A}{Premières valeurs et récurrence}
+\begin{questions}
+  \item $\res{S(n,1)=S(n,n)=1}$ (un seul bloc ; que des singletons). Avec
+    $n-1$ blocs, un seul bloc a deux éléments, les autres sont des
+    singletons : $\binom n2$ choix de la paire. Avec deux blocs $\ens{A,\overline A}$ :
+    les couples $(A,\overline A)$ avec $A\neq\varnothing,\intFF1n$ sont au
+    nombre de $2^{n}-2$, chaque partition étant comptée deux fois :
+    $\res{S(n,2)=2^{n-1}-1}$.
+  \item Si $\ens{n}$ est un bloc, le reste est une partition de
+    $\intFF1{n-1}$ en $k-1$ blocs : $S(n-1,k-1)$ cas. Sinon, $n$ rejoint
+    l'un des $k$ blocs d'une partition de $\intFF1{n-1}$ en $k$ blocs :
+    $k\,S(n-1,k)$ cas. D'où la relation. Ligne $5$ :
+    $1,\ 1+2\cdot7=15,\ 7+3\cdot6=25,\ 6+4\cdot1=10,\ 1$ ; ligne $6$ :
+    $1,\ 31,\ 90,\ 65,\ 15,\ 1$.
+  \item $S(4,2)=2^{3}-1=\res{7}$ partitions (figure) : trois de type
+    « $2+2$ » et quatre de type « $1+3$ ».
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[line cap=round]
+  \foreach \blocA/\blocB [count=\i] in {{1}/{2,3,4},{2}/{1,3,4},{3}/{1,2,4},{4}/{1,2,3},{1,2}/{3,4},{1,3}/{2,4},{1,4}/{2,3}}{%
+    \begin{scope}[xshift={(\i-1)*1.85cm}]
+      \coordinate (p1) at (0,0.8); \coordinate (p2) at (0.8,0.8);
+      \coordinate (p3) at (0.8,0); \coordinate (p4) at (0,0);
+      \foreach \a in \blocA {\foreach \b in \blocA {%
+        \ifnum\a<\b \draw[otGreenDark,line width=1.4pt] (p\a) -- (p\b);\fi}}
+      \foreach \a in \blocB {\foreach \b in \blocB {%
+        \ifnum\a<\b \draw[otNavy,line width=1.4pt] (p\a) -- (p\b);\fi}}
+      \foreach \a in \blocA {\filldraw[fill=otGreen,draw=otGreenDark] (p\a) circle (2.4pt);}
+      \foreach \a in \blocB {\filldraw[fill=otNavy!35,draw=otNavy] (p\a) circle (2.4pt);}
+      \foreach \k in {1,2,3,4}{\node[font=\tiny,text=otMuted] at ($(p\k)+({\k==2||\k==3 ? 0.22 : -0.22},{\k<3 ? 0.18 : -0.18})$) {\k};}
+    \end{scope}}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les sept partitions de $\ens{1,2,3,4}$ en deux blocs : les points
+reliés sont dans le même bloc (un bloc en vert, l'autre en bleu).}
+\end{center}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-16-25b}
+\begin{corrigeSuite}
+\partieExo{B}{Surjections et factorielles descendantes}
+\begin{questions}[start=4]
+  \item Les fibres d'une surjection $f:\intFF1n\to\intFF1k$ forment une
+    partition en $k$ blocs, étiquetés par les $k$ valeurs distinctes ;
+    réciproquement, une partition et une façon d'étiqueter ses blocs
+    ($k!$ façons) définissent une surjection : $\res{k!\,S(n,k)}$
+    surjections.
+  \item Il y a $x^{n}$ applications de $\intFF1n$ dans $\intFF1x$. Celles
+    dont l'image a $j$ éléments s'obtiennent en choisissant l'image
+    ($\binom xj$ façons) puis une surjection sur elle ($j!\,S(n,j)$) ; et
+    $\binom xj\,j!=x(x-1)\cdots(x-j+1)$, nul si $j>x$ : on obtient
+    l'identité.
+  \item Les deux membres sont des polynômes en $x$ de degré au plus $n$, égaux
+    en tout entier naturel, donc en une infinité de points : ils sont
+    égaux. En divisant par $j!$ : $\res{X^{n}=\sum_jj!\,S(n,j)\,H_j}$. Pour
+    $n=3$ : $1!\cdot1$, $2!\cdot3$, $3!\cdot1$, soit
+    $X^{3}=H_1+6H_2+6H_3$ — exactement la diagonale de la table des
+    différences du chapitre 12.
+\end{questions}
+\partieExo{C}{Nombres de Bell et formule explicite}
+\begin{questions}[start=7]
+  \item Le bloc de $n+1$ s'écrit $\ens{n+1}\cup T$, $T\subseteq\intFF1n$ ;
+    si les $k$ éléments restants sont partagés librement ($B_k$ façons),
+    $T$ a $n-k$ éléments, choisis de $\binom n{n-k}=\binom nk$ façons :
+    $\res{B_{n+1}=\sum_{k=0}^{n}\binom nkB_k}$. On trouve
+    $B_1,\dots,B_6=1,2,5,15,52,\res{203}$ — sommes des lignes du triangle.
+  \item D'après l'exercice 15, il y a $3^{n}-3\cdot2^{n}+3$ surjections sur
+    trois éléments, et c'est $3!\,S(n,3)$ (question 4) :
+    $\res{S(n,3)=\dfrac{3^{n}-3\cdot2^{n}+3}{6}}$. Contrôle :
+    $n=4$ donne $\frac{81-48+3}{6}=6$, $n=5$ donne $\frac{243-96+3}{6}=25$.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

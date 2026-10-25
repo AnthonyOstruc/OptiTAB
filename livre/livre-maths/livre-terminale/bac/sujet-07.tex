@@ -1,0 +1,106 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 7 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s7.py)
+
+\sujetBac{7}{Probabilités conditionnelles/4,Fonction logarithme et suite/6,Géométrie : distance et volume/5,Intégration : aire et valeur moyenne/5}
+
+\begin{exoBac}{4}{Probabilités conditionnelles}
+On dispose de deux urnes. L'urne $U_1$ contient $3$ boules rouges et $2$ boules noires ; l'urne $U_2$ contient $1$ boule rouge et $4$ boules
+noires. On lance un dé équilibré à six faces : si l'on obtient $1$ ou $2$, on tire une boule au hasard dans l'urne $U_1$, sinon dans
+l'urne $U_2$. On note $U$ l'événement « le tirage a lieu dans l'urne $U_1$ » et $R$ l'événement « la boule tirée est rouge ».
+\begin{questions}
+  \item Représenter la situation par un arbre pondéré.
+  \item Montrer que $P(R)=\frac13$.
+  \item La boule tirée est rouge. Quelle est la probabilité qu'elle provienne de l'urne $U_1$ ?
+  \item Les événements $U$ et $R$ sont-ils indépendants ?
+  \item On répète cinq fois l'expérience, en remettant à chaque fois la boule tirée dans son urne. On note $Y$ le nombre de boules
+    rouges obtenues. Préciser la loi de $Y$, puis calculer la probabilité d'obtenir au moins une boule rouge et celle d'obtenir
+    exactement deux boules rouges. On donnera les valeurs exactes puis arrondies au millième.
+  \item Combien de fois au minimum faut-il répéter l'expérience pour que la probabilité d'obtenir au moins une boule rouge dépasse
+    $0{,}999$ ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{6}{Fonction logarithme et suite}
+\partieExo{A}{Étude d'une fonction}
+On considère la fonction $f$ définie sur $\intOO0{+\infty}$ par $f(x)=x-\ln x$.
+\begin{questions}
+  \item Déterminer les limites de $f$ en $0$ et en $+\infty$.
+  \item Étudier les variations de $f$ et dresser son tableau de variations.
+  \item En déduire que, pour tout réel $x>0$, $\ln x\leq x-1$.
+\end{questions}
+\partieExo{B}{Une suite récurrente}
+On considère la suite $(u_n)$ définie par $u_0=2$ et, pour tout entier naturel $n$, $u_{n+1}=u_n-\ln u_n$.
+\begin{questions}[resume]
+  \item Calculer $u_1$ et $u_2$ ; on en donnera des valeurs approchées au millième.
+  \item Démontrer par récurrence que, pour tout entier naturel $n$, $1\leq u_{n+1}\leq u_n$.
+  \item En déduire que la suite $(u_n)$ converge, puis déterminer sa limite.
+  \item On considère la fonction Python ci-contre.
+\begin{codecote}[0.44]
+\begin{pythoncol}
+from math import log
+
+def rang(e):
+    u = 2
+    n = 0
+    while u - 1 >= e:
+        u = u - log(u)
+        n = n + 1
+    return n
+\end{pythoncol}
+\cote
+\begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.6mm,topsep=0mm]
+  \item Que représente la valeur renvoyée par \code{rang(e)} ?
+  \item Que renvoie \code{rang(1e-6)} ? On justifiera à l'aide des valeurs successives de $u_n$.
+  \item Que penser de la vitesse de convergence de cette suite ?
+\end{enumerate}
+\end{codecote}
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Géométrie : distance et volume}
+\begin{codecote}[0.6]
+L'espace est muni d'un repère orthonormé d'origine $O$. On considère les points $A(2\pv0\pv0)$, $B(0\pv4\pv0)$, $C(0\pv0\pv4)$ et
+$D(1\pv3\pv3)$.
+\begin{questions}
+  \item Justifier que les points $A$, $B$, $C$ définissent un plan, puis vérifier que ce plan a pour équation $2x+y+z-4=0$.
+  \item Déterminer une représentation paramétrique de la droite $\Delta$ passant par $D$ et orthogonale au plan $(ABC)$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=0.62]
+  \coordinate (O) at (0,0,0); \coordinate (A) at (2,0,0); \coordinate (B) at (0,4,0); \coordinate (C) at (0,0,4);
+  \coordinate (D) at (1,3,3);
+  \draw[otMuted,line width=0.4pt,-{Stealth[length=1.6mm]}] (O) -- (3,0,0);
+  \draw[otMuted,line width=0.4pt,-{Stealth[length=1.6mm]}] (O) -- (0,5,0);
+  \draw[otMuted,line width=0.4pt,-{Stealth[length=1.6mm]}] (O) -- (0,0,5);
+  \fill[otNavyTint,opacity=0.8] (A) -- (B) -- (C) -- cycle;
+  \draw[otVu] (A) -- (B) -- (C) -- cycle;
+  \draw[otGreenDark,line width=0.8pt] (D) -- (A) (D) -- (C);
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 2.2pt off 1.6pt] (D) -- (B);
+  \node[otPtV] at (D) {};
+  \foreach \p/\a in {O/north east,A/north,B/west,C/east,D/south west}{\node[otSommet,anchor=\a] at (\p) {$\p$};}
+\end{tikzpicture}
+\end{codecote}
+\begin{questions}[start=3]
+  \item Déterminer les coordonnées du point $H$, intersection de $\Delta$ et du plan $(ABC)$, puis la distance du point $D$ au plan $(ABC)$.
+  \item Calculer $\vect{AB}\cdot\vect{AC}$, puis $\cos\widehat{BAC}$ et $\sin\widehat{BAC}$. En déduire que l'aire du triangle $ABC$ vaut
+    $4\sqrt6$.
+  \item Calculer le volume du tétraèdre $ABCD$.
+  \item Calculer la distance du point $O$ au plan $(ABC)$ et le volume du tétraèdre $OABC$. Expliquer pourquoi les tétraèdres $OABC$ et
+    $DABC$ ont le même volume.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Intégration : aire et valeur moyenne}
+On note $\mathcal{C}$ la courbe représentative de la fonction exponentielle dans un repère orthonormé, et $T$ sa tangente au point
+d'abscisse $0$.
+\begin{questions}
+  \item Déterminer une équation de $T$, puis démontrer que, pour tout réel $x$, $e^{x}\geq x+1$.
+  \item Calculer l'aire, en unités d'aire, du domaine compris entre $\mathcal{C}$, la droite $T$ et les droites d'équations $x=0$ et $x=1$.
+    On en donnera la valeur exacte, puis une valeur approchée au centième.
+  \item Pour tout réel $a>0$, on note $A(a)$ l'aire du domaine compris entre $\mathcal{C}$, $T$ et les droites d'équations $x=0$ et $x=a$.
+    Exprimer $A(a)$ en fonction de $a$, puis déterminer la limite de $A(a)$ quand $a$ tend vers $+\infty$.
+  \item Montrer que l'équation $A(a)=1$ admet une unique solution sur $\intOO0{+\infty}$, et en donner un encadrement d'amplitude $10^{-2}$.
+  \item Calculer la valeur moyenne de la fonction exponentielle sur l'intervalle $\intFF0{\ln4}$.
+\end{questions}
+\end{exoBac}

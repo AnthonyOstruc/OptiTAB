@@ -1,0 +1,56 @@
+%% =====================================================================
+%%  1re de couverture
+%% =====================================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  % Fond
+  \fill[otNavy] (0,0) rectangle (210mm,297mm);
+  \shade[bottom color=otNavyDark,top color=otNavy] (0,0) rectangle (210mm,160mm);
+  \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+\draw[white,opacity=.22,line width=.6pt](98mm,108mm)rectangle(194mm,130mm);
+\fill[otGreen,opacity=.9](98mm,108mm)rectangle(170mm,130mm);
+\draw[white,opacity=.7,line width=1pt](122mm,108mm)--(122mm,130mm)(146mm,108mm)--(146mm,130mm)(170mm,108mm)--(170mm,130mm);
+\draw[white,opacity=.7,line width=1.2pt](98mm,42mm)--(194mm,42mm);
+\foreach \k in {0,1,2}{\draw[white,opacity=.85,line width=1.2pt]({98mm+\k*48mm},38.5mm)--({98mm+\k*48mm},45.5mm);}
+\foreach \k in {1,2,3,5,6,7}{\draw[white,opacity=.5,line width=.8pt]({98mm+\k*12mm},40mm)--({98mm+\k*12mm},44mm);}
+\fill[white](182mm,42mm)circle(2.1mm);
+\fill[otGreen](182mm,42mm)circle(1.2mm);
+  % Logo
+  \node[anchor=north west,inner sep=0pt] at (22mm,279mm)
+    {\includegraphics[width=60mm]{logo-blanc}};
+
+  % Titre
+  \node[anchor=base west,inner sep=0pt,text=otGreen,
+    font=\otSemi\fontsize{11}{13}\selectfont] at (24mm,236mm) {\otCaps[22]{\otNiveau}};
+  \node[anchor=base west,inner sep=0pt,text=white,
+    font=\otBold\fontsize{50}{54}\selectfont] at (21.5mm,212mm) {\otTitreLivre};
+  \node[anchor=base west,inner sep=0pt,text=white,
+    font=\otLight\fontsize{32}{36}\selectfont] at (23mm,194mm) {\otSousTitre};
+  \fill[otGreen] (24mm,181mm) rectangle (54mm,182.4mm);
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.85,
+    font=\otRegular\fontsize{11}{14}\selectfont] at (24mm,168mm)
+    {Année complète\enspace·\enspace Exercices progressifs\enspace·\enspace Corrigés détaillés\enspace·\enspace Méthodes};
+
+  % Points forts
+  \node[anchor=north west,inner sep=0pt,text width=100mm,text=white,
+    font=\otRegular\fontsize{10.5}{14}\selectfont] at (24mm,146mm)
+    {\otCheck\hspace{3mm}Exercices classés par difficulté\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}La méthode expliquée à chaque étape\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}21 défis avec indications progressives\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}Deux bilans annuels originaux};
+
+  % Pastille
+  \fill[otGreen] (146mm,116mm) circle (18mm);
+  \node[text=white,align=center,inner sep=0pt] at (146mm,116mm)
+    {{\otMedium\fontsize{7}{9}\selectfont Année complète}\\[0.6mm]
+     {\otBold\fontsize{30}{30}\selectfont 336}\\[1.4mm]
+     {\otSemi\fontsize{7.5}{9}\selectfont\otCaps[10]{exercices}}\\
+     {\otSemi\fontsize{7.5}{9}\selectfont\otCaps[10]{corrigés}}};
+
+  % Pied
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,
+    font=\otMedium\fontsize{10}{12}\selectfont] at (24mm,16mm) {\otSite};
+\end{scope}
+\end{tikzpicture}
+\clearpage

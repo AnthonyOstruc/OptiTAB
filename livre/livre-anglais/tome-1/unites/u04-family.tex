@@ -1,0 +1,507 @@
+%% =====================================================================
+%%  Unit 4 — This is my family  (Présenter sa famille)
+%%  Pistes : 4.01–4.04 dialogues · 4.05–4.06 vocabulaire · 4.07–4.08 grammaire
+%%           4.09 prononciation · 4.10–4.13 exercices (textes en annexe)
+%% =====================================================================
+
+\newcommand{\otIllusUnIV}{\otIllusDuo{mother/104/86/15/0.10,father/190/92/18/0.09,sister/122/14/13/0.08,
+  brother/150/8/11/0.08,baby/196/22/12/0.07,family/100/50/12/0.07}{jack}{Who's this?}{lea}{That's my brother!}}
+
+% Arbre généalogique de la famille de Léa
+\newcommand{\otArbreMartin}[1][]{% [solution] : affiche les liens de parenté
+  \begin{tikzpicture}[
+    pers/.style={rounded corners=1.6mm,inner xsep=2.4mm,inner ysep=1.6mm,align=center,minimum width=25mm,
+      font=\otSemi\fontsize{9.4}{11}\selectfont},
+    f/.style={pers,fill=otGreenTint,draw=otGreen!60,line width=0.5pt},
+    h/.style={pers,fill=otNavyTint,draw=otNavy!35,line width=0.5pt},
+    lien/.style={otMuted,line width=0.7pt}]
+    \node[h] (paul) at (40mm,52mm) {Paul\\[-0.4mm]{\otRegular\fontsize{7.6}{9}\selectfont\color{otMuted}58}};
+    \node[f] (claire) at (80mm,52mm) {Claire\\[-0.4mm]{\otRegular\fontsize{7.6}{9}\selectfont\color{otMuted}56}};
+    \draw[lien] (paul) -- node[fill=white,inner sep=1pt,font=\otSemi\fontsize{9}{9}\selectfont,text=otMuted]{=} (claire);
+    \node[f] (chloe) at (14mm,26mm) {Chloé\\[-0.4mm]{\otRegular\fontsize{7.6}{9}\selectfont\color{otMuted}31}};
+    \node[h] (marc) at (-16mm,26mm) {Marc\\[-0.4mm]{\otRegular\fontsize{7.6}{9}\selectfont\color{otMuted}33}};
+    \node[f,draw=otGreenDark,line width=1.1pt] (lea) at (60mm,26mm) {Léa\\[-0.4mm]{\otRegular\fontsize{7.6}{9}\selectfont\color{otMuted}27}};
+    \node[h] (hugo) at (100mm,26mm) {Hugo\\[-0.4mm]{\otRegular\fontsize{7.6}{9}\selectfont\color{otMuted}24}};
+    \node[h] (nathan) at (-1mm,0mm) {Nathan\\[-0.4mm]{\otRegular\fontsize{7.6}{9}\selectfont\color{otMuted}1}};
+    \draw[lien] (60mm,52mm) -- (60mm,39mm) (14mm,39mm) -- (100mm,39mm) (14mm,39mm) -- (chloe) (60mm,39mm) -- (lea) (100mm,39mm) -- (hugo);
+    \draw[lien] (marc) -- node[fill=white,inner sep=1pt,font=\otSemi\fontsize{9}{9}\selectfont,text=otMuted]{=} (chloe);
+    \draw[lien] (-1mm,26mm) -- (nathan);
+    \if\relax\detokenize{#1}\relax\else
+      \foreach \n/\t in {paul/father,claire/mother,chloe/sister,lea/Léa,hugo/brother,marc/brother-in-law,nathan/nephew}{%
+        \node[anchor=north,font=\otMedium\fontsize{7}{8}\selectfont,text=otGreenDark] at ([yshift=-0.6mm]\n.south) {\enb{\t}};}
+    \fi
+  \end{tikzpicture}}
+
+\unite[This is my\\family]{4}{This is my family}{Présenter sa famille}{otIllusUnIV}
+
+\situation{Épisode 4}{Vendredi, à l'heure du déjeuner. Sur son téléphone, Léa montre à Jack et
+Emma des photos de sa famille restée en France. Samedi matin, c'est au tour de Mrs.\ Lopez de
+présenter la sienne… et d'apprendre une grande nouvelle à Léa.}
+
+\begin{objectifs}
+\item présenter les membres de votre famille et dire leur âge ;
+\item utiliser les adjectifs possessifs : \en{my}, \en{your}, \en{his}, \en{her}, \en{its},
+  \en{our}, \en{their} ;
+\item exprimer l'appartenance avec \en{'s} : \en{Léa's brother} ;
+\item prononcer le son \phon{ð} de \en{this} et \en{mother}, qui n'existe pas en français.
+\end{objectifs}
+
+\auprogramme
+  {Présenter sa famille, parler d'une photo}
+  {Les adjectifs possessifs\par\vspace{0.6mm}Le génitif \en{'s}}
+  {La famille, les personnes : 25 expressions}
+  {Le son \phon{ð} de \en{this}}
+  {Prénoms, surnoms et familles}
+
+\semaine{casque/otNavy/Dialogues/Écouter et lire les deux scènes,
+  bulle/otGreenDark/Vocabulaire/Apprendre les 25 expressions,
+  blocs/otViolet/Grammaire/Possessifs et génitif,
+  sons/otOrangeDark/Sons et culture/Le son de this et les prénoms,
+  crayon/otNavy/Exercices/12 exercices corrigés,
+  coche/otGreenDark/Bilan/L'essentiel et le test express}
+
+\clearpage
+%% ---------------------------------------------------------------------
+\rubrique{ecouter}{Les photos de famille}
+
+\begin{dialogue}{1}{This is my family}{Vendredi midi, à la cafétéria du studio. Léa montre des photos
+  sur son téléphone.}{4.01}{4.02}
+\dit{jack}{Is that your family, Léa?}{C'est ta famille, Léa ?}
+\dit{lea}{Yes, it is. This is \hl{my mother}, Claire, and this is \hl{my father}, Paul.\note{1}}{Oui. Voici ma mère, Claire, et voici mon père, Paul.}
+\dit{emma}{And who's this?}{Et qui est-ce ?}
+\dit{lea}{That's \hl{my brother}, Hugo. He's twenty-four.}{C'est mon frère, Hugo. Il a vingt-quatre ans.}
+\dit{jack}{And the girl, with the baby?}{Et la jeune femme, avec le bébé ?}
+\dit{lea}{That's \hl{my sister}, Chloé, and \hl{her husband}, Marc.\note{2}}{C'est ma sœur, Chloé, et son mari, Marc.}
+\dit{emma}{Oh! \hl{Their baby} is so cute!\note{3}}{Oh ! Leur bébé est trop mignon !}
+\dit{lea}{Yes! \hl{His name} is Nathan. He's \hl{my nephew}.}{Oui ! Il s'appelle Nathan. C'est mon neveu.}
+\dit{jack}{And is that your dog?}{Et c'est ton chien ?}
+\dit{lea}{No, it's \hl{my brother's dog}.\note{4}}{Non, c'est le chien de mon frère.}
+\dit{jack}{What's \hl{its name}?\note{5}}{Comment il s'appelle ?}
+\dit{lea}{Filou! It's a French name.}{Filou ! C'est un nom français.}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{1} \en{\textbf{my mother}, \textbf{my father}} \en{my} ne change jamais : « mon »,
+  « ma » et « mes » se disent tous \en{my} : \en{my mother}, \en{my father}, \en{my parents}.
+\pointnote{2} \en{\textbf{her husband}} « son mari », car il s'agit du mari de Chloé : en anglais,
+  le possessif dépend du \textbf{possesseur}. Pour une femme, c'est \en{her} ; pour un homme, \en{his}.
+\pointnote{3} \en{\textbf{Their baby}} \en{their} = « leur », « leurs ». \en{so cute} = « trop
+  mignon ». Le bébé est un garçon : \en{His name is Nathan}.
+\pointnote{4} \en{\textbf{my brother's dog}} « le chien de mon frère ». On place le possesseur en
+  premier, suivi de \en{'s} : c'est le \textbf{génitif}.
+\pointnote{5} \en{\textbf{its name}} Pour un animal ou une chose, le possessif est \en{its}, sans
+  apostrophe. (\en{it's}, avec apostrophe, veut dire \en{it is}.)
+\end{comprendre}
+
+\begin{dialogue}{2}{I'm a grandmother!}{Samedi, 10 heures, devant la porte de Léa. Mrs.\ Lopez a une
+  photo à la main.}{4.03}{4.04}
+\dit{lopez}{Léa, look! This is \hl{my family}.}{Léa, regardez ! Voici ma famille.}
+\dit{lea}{Oh, \hl{what a nice photo}! Who's this?\note{6}}{Oh, quelle jolie photo ! Qui est-ce ?}
+\dit{lopez}{That's \hl{my husband}, Miguel. And this is \hl{our daughter}, Sofia.}{C'est mon mari, Miguel. Et voici notre fille, Sofia.}
+\dit{lea}{Is she in New York?}{Elle est à New York ?}
+\dit{lopez}{No, she isn't. She's in Chicago, with \hl{her husband} and \hl{their two sons}.\note{7}}{Non. Elle est à Chicago, avec son mari et leurs deux fils.}
+\dit{lea}{So you're a \hl{grandmother}!}{Alors vous êtes grand-mère !}
+\dit{lopez}{Yes, I am! Leo is ten and Max is seven.}{Eh oui ! Leo a dix ans et Max en a sept.}
+\dit{lea}{And \hl{Sofia's husband}? Is he American?\note{8}}{Et le mari de Sofia ? Il est américain ?}
+\dit{lopez}{No, he's Canadian. \hl{His name} is David.}{Non, il est canadien. Il s'appelle David.}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{6} \en{\textbf{What a nice photo!}} « Quelle jolie photo ! » : \en{What a…!} sert à
+  s'exclamer. \en{Look!} = « Regarde ! », « Regardez ! ».
+\pointnote{7} \en{\textbf{their two sons}} Au pluriel, le nom prend un \en{-s} : \en{son} →
+  \en{sons}. Le possessif, lui, reste invariable : \en{their son}, \en{their sons}.
+\pointnote{8} \en{\textbf{Sofia's husband}} « le mari de Sofia ». Et pour parler de lui :
+  \en{his name}, puisque c'est un homme.
+\end{comprendre}
+
+%% ---------------------------------------------------------------------
+\rubrique{mots}{Les mots de l'unité}
+
+Voici les 25 expressions de l'unité, souvent par couples féminin · masculin. Remarquez que
+\en{children} (« enfants ») est le pluriel
+irrégulier de \en{child}, et qu'aux États-Unis on dit \en{mom} pour « maman » (\en{mum} au
+Royaume-Uni).
+
+\begin{vocabulaire}{La famille}{4.05}
+\categorie{Parents et enfants (féminin · masculin)}
+\mot{family}{ˈfæməli}{la famille}
+\mot{parents}{ˈperənts}{les parents (père et mère)}
+\mot[Mother, father.]{mother · father}{ˈmʌðɚ · ˈfɑːðɚ}{la mère · le père}
+\mot[Mom, dad.]{mom · dad}{mɑːm · dæd}{maman · papa \registre{américain}}
+\mot[Sister, brother.]{sister · brother}{ˈsɪstɚ · ˈbrʌðɚ}{la sœur · le frère}
+\mot[Daughter, son.]{daughter · son}{ˈdɑːtɚ · sʌn}{la fille (l'enfant) · le fils}
+\mot[Wife, husband.]{wife · husband}{waɪf · ˈhʌzbənd}{la femme (l'épouse) · le mari}
+\mot{children}{ˈtʃɪldrən}{les enfants (singulier : \en{child})}
+\categorie{La famille élargie}
+\mot{grandparents}{ˈɡrænˌperənts}{les grands-parents}
+\mot[Grandmother, grandfather.]{grandmother · grandfather}{ˈɡrænˌmʌðɚ · ˈɡrænˌfɑːðɚ}{la grand-mère · le grand-père}
+\mot[Aunt, uncle.]{aunt · uncle}{ænt · ˈʌŋkəl}{la tante · l'oncle}
+\mot[Niece, nephew.]{niece · nephew}{niːs · ˈnefjuː}{la nièce · le neveu}
+\mot{cousin}{ˈkʌzən}{le cousin, la cousine}
+\end{vocabulaire}
+
+\begin{vocabulaire}{Parler de sa famille}{4.06}
+\categorie{Les personnes et les animaux}
+\mot[A boy, a girl.]{a boy · a girl}{ə ˈbɔɪ · ə ˈɡɝːl}{un garçon · une fille, une jeune femme}
+\mot{a baby}{ə ˈbeɪbi}{un bébé}
+\mot{a dog}{ə ˈdɑːɡ}{un chien}
+\mot{a cat}{ə ˈkæt}{un chat}
+\categorie{Pour commenter une photo}
+\mot{a photo}{ə ˈfoʊtoʊ}{une photo}
+\mot{Look!}{lʊk}{Regarde ! / Regardez !}
+\mot{Who's this?}{ˌhuːz ˈðɪs}{Qui est-ce ? (sur une photo)}
+\mot{What a nice photo!}{ˌwʌt ə ˌnaɪs ˈfoʊtoʊ}{Quelle jolie photo !}
+\mot{He's so cute!}{hiːz ˌsoʊ ˈkjuːt}{Il est trop mignon !}
+\categorie{La situation}
+\mot{married}{ˈmerid}{marié(e)}
+\mot{single}{ˈsɪŋɡəl}{célibataire}
+\mot{an only child}{ən ˌoʊnli ˈtʃaɪld}{un enfant unique}
+\end{vocabulaire}
+
+\otIntertitre{Repère visuel · La famille de Léa}
+\begin{center}\otArbreMartin\end{center}
+
+%% ---------------------------------------------------------------------
+\rubrique{grammaire}{Les possessifs et le génitif}
+
+\otIntertitre[otViolet]{1 · Les adjectifs possessifs}
+Chaque pronom sujet a son adjectif possessif. Il se place devant le nom et \textbf{ne s'accorde
+jamais} avec lui : \en{my brother}, \en{my sister}, \en{my parents}.
+
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\enOn}l<{\enOff}@{\hspace{3mm}}c@{\hspace{3mm}}>{\enOn\bfseries}l<{\enOff}@{\hspace{6mm}}l@{\hspace{6mm}}>{\enOn}l<{\enOff}@{}}
+\otTH{Sujet} & & \otTH{Possessif} & \otTH{Français} & \otTH{Exemple}\\\midrule
+I    & → & my    & mon, ma, mes                & my brother\\
+you  & → & your  & ton, ta, tes, votre, vos    & your family\\
+he   & → & his   & son, sa, ses (à lui)        & Jack and his sister\\
+she  & → & her   & son, sa, ses (à elle)       & Léa and her brother\\
+it   & → & its   & son, sa, ses (chose, animal) & the dog and its name\\\midrule
+we   & → & our   & notre, nos                  & our daughter\\
+you  & → & your  & votre, vos                  & your children\\
+they & → & their & leur, leurs                 & their sons\\\bottomrule
+\end{tabular}\end{center}
+
+\blocaudio{4.07}{Écoutez et répétez}{Une phrase avec un pronom sujet, puis la phrase avec le
+possessif qui lui correspond.}
+
+\begin{regle}[\en{his} ou \en{her} ? Regardez le possesseur !]
+En français, « son » et « sa » s'accordent avec l'objet possédé. En anglais, \en{his} et \en{her}
+dépendent du \textbf{possesseur} : un homme → \en{his}, une femme → \en{her}.\par\vspace{1.4mm}
+\exen{Léa and her brother}{Léa et \textbf{son} frère (le frère de Léa)}
+\exen{Jack and his sister}{Jack et \textbf{sa} sœur (la sœur de Jack)}
+\end{regle}
+
+\otIntertitre[otViolet]{2 · Le génitif \en{'s}}
+Pour dire « le frère de Léa », l'anglais place le \textbf{possesseur en premier}, suivi de
+\en{'s}, puis l'objet possédé, sans article.
+
+\begin{center}
+\begin{tikzpicture}
+  \node[fill=otVioletTint,rounded corners=1.4mm,inner sep=2.4mm,font=\otSemi\fontsize{12}{14}\selectfont] (a) {\enb{Léa}};
+  \node[fill=otViolet,text=white,rounded corners=1.4mm,inner sep=2.4mm,font=\otSemi\fontsize{12}{14}\selectfont,right=1mm of a] (b) {\enb{'s}};
+  \node[fill=otVioletTint,rounded corners=1.4mm,inner sep=2.4mm,font=\otSemi\fontsize{12}{14}\selectfont,right=1mm of b] (c) {\enb{brother}};
+  \node[below=1.5mm of a,font=\otRegular\fontsize{7.6}{9}\selectfont,text=otMuted] {possesseur};
+  \node[below=1.5mm of c,font=\otRegular\fontsize{7.6}{9}\selectfont,text=otMuted] {objet possédé};
+  \draw[otViolet,line width=0.8pt,-{Stealth[length=2mm]}] ([xshift=6mm]c.east) -- ++(8mm,0)
+    node[right,font=\fontsize{10}{12}\selectfont,text=otInk] {le frère \textbf{de} Léa};
+\end{tikzpicture}
+\end{center}
+
+\begin{paire}
+\begin{regle}[Avec un nom au singulier]
+\exen{Léa's brother}{le frère de Léa}
+\exen{my brother's dog}{le chien de mon frère}
+\exen{Mrs.\ Lopez's husband}{le mari de Mrs.\ Lopez}
+\end{regle}
+\begin{regle}[Avec un pluriel en \en{-s}]
+On ajoute seulement l'apostrophe :\par\vspace{1mm}
+\exen{my parents' house}{la maison de mes parents}
+\exen{the girls' names}{le nom des filles}
+\end{regle}
+\end{paire}
+
+\blocaudio{4.08}{Écoutez et répétez}{Six groupes de mots au génitif. Le \en{'s} se prononce
+\phon{s}, \phon{z} ou \phon{ɪz}, comme le pluriel.}
+
+\begin{attention}[Les pièges des francophones]
+\fauxjuste{Léa and his brother}{Léa and her brother}
+\fauxjuste{the dog of my brother}{my brother's dog}
+\fauxjuste{mys parents}{my parents}
+\fauxjuste{The dog? It's name is Filou.}{The dog? Its name is Filou.}
+\fauxjuste{the Léa's brother}{Léa's brother}
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique[Le son th de this]{sons}{Le son \phon{ð} de \en{this}}
+
+Le son \phon{ð}, que l'on entend dans \en{\textbf{th}is}, \en{\textbf{th}e}, \en{mo\textbf{th}er},
+\en{fa\textbf{th}er} et \en{bro\textbf{th}er}, n'existe pas en français. Les francophones le
+remplacent souvent par un « z » ou un « d » : on entend alors « zis » ou « dis ».
+
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt]
+\otTitreBoite{cible}{otOrangeDark}{La position de la langue}{}
+\begin{minipage}[c]{0.4\linewidth}\centering
+\begin{tikzpicture}
+  \fill[otRed!35] (0,0) ellipse (24mm and 13mm);
+  \fill[otInk!85] (0,0) ellipse (18mm and 7.5mm);
+  \fill[white,rounded corners=1mm] (-13mm,1.4mm) rectangle (13mm,6.2mm);
+  \fill[white,rounded corners=1mm] (-12mm,-6mm) rectangle (12mm,-1.4mm);
+  \fill[otRed!75] (0,0) ellipse (12mm and 2.2mm);
+  \draw[otOrangeDark,line width=0.8pt,-{Stealth[length=1.8mm]}] (20mm,14mm) node[above,font=\otRegular\fontsize{7.6}{9}\selectfont] {la langue} -- (9mm,1mm);
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=1.6mm]}] (-24mm,12mm) node[above,font=\otRegular\fontsize{7.6}{9}\selectfont] {les dents} -- (-10mm,5mm);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+\begin{etapes}
+\item Placez le bout de la langue \textbf{entre les dents}, sans serrer.
+\item Faites passer l'air doucement, et faites \textbf{vibrer la voix} (posez la main sur la gorge :
+  elle doit vibrer).
+\item Sans la voix, on obtient le son \phon{θ} de \en{three} : vous l'étudierez à l'unité 8.
+\end{etapes}
+\end{minipage}
+\end{tcolorbox}
+
+\begin{paires}{4.09}{Dans chaque paire, la première série a le son \phon{ð}, la seconde un simple
+\phon{d} ou \phon{z}. Écoutez, puis répétez en sortant bien la langue.}
+\sonpaire{\otH{th}ey}{ðeɪ}{ils, elles}{\otH{d}ay}{deɪ}{le jour}
+\sonpaire{\otH{th}en}{ðen}{ensuite}{\otH{d}en}{den}{la tanière}
+\sonpaire{\otH{th}ere}{ðer}{là}{\otH{d}are}{der}{oser}
+\sonpaire{\otH{th}ough}{ðoʊ}{pourtant}{\otH{d}ough}{doʊ}{la pâte}
+\sonpaire{\otH{th}ose}{ðoʊz}{ceux-là}{\otH{d}oze}{doʊz}{somnoler}
+\sonpaire{\otH{th}ere's}{ðerz}{il y a}{\otH{d}ares}{derz}{il ose}
+\sonpaire{brea\otH{the}}{briːð}{respirer}{bree\otH{ze}}{briːz}{la brise}
+\sonpaire{wor\otH{th}y}{ˈwɝːði}{digne}{wor\otH{d}y}{ˈwɝːdi}{bavard (texte)}
+\end{paires}
+
+%% ---------------------------------------------------------------------
+\rubrique{culture}{Prénoms, surnoms et familles}
+
+\begin{culture}[Les surnoms]
+Les anglophones raccourcissent volontiers les prénoms. Au travail comme entre amis, vous
+rencontrerez souvent la forme courte :\par\vspace{1.4mm}
+\begin{tabularx}{\linewidth}{@{}>{\enOn\bfseries}l<{\enOff}@{\hspace{2mm}}>{\enOn}X<{\enOff}@{\hspace{5mm}}>{\enOn\bfseries}l<{\enOff}@{\hspace{2mm}}>{\enOn}X<{\enOff}@{}}
+Robert    & Bob, Rob      & Elizabeth & Liz, Beth\\
+William   & Bill, Will    & Katherine & Kate, Katie\\
+Michael   & Mike          & Jennifer  & Jen, Jenny\\
+\end{tabularx}
+\end{culture}
+
+\begin{paire}
+\begin{culture}[Le deuxième prénom]
+Beaucoup d'Américains ont un deuxième prénom (\en{a middle name}), souvent réduit à une initiale :
+\en{John F.\ Kennedy}. Quand un fils porte le prénom de son père, on ajoute \en{Jr.}
+(\en{Junior}) : \en{Martin Luther King Jr.}
+\end{culture}
+\begin{culture}[\en{Mom} ou \en{Mum} ?]
+« Maman » se dit \en{Mom} aux États-Unis et \en{Mum} au Royaume-Uni ; « papa » se dit \en{Dad}
+partout. Pour parler d'une famille entière, on met le nom au pluriel avec \en{the} : \en{the Lopezes},
+\en{the Martins}.
+\end{culture}
+\end{paire}
+
+%% ---------------------------------------------------------------------
+\rubrique{pratique}{Exercices}
+
+\exercice[ecrire,niveau=1]{Masculin et féminin}{Écrivez le mot qui correspond, au masculin ou au
+féminin.}
+\begin{questions}[2]
+\item mother → \trou[30mm]{father}
+\item sister → \trou[30mm]{brother}
+\item daughter → \trou[30mm]{son}
+\item wife → \trou[30mm]{husband}
+\item aunt → \trou[30mm]{uncle}
+\item niece → \trou[30mm]{nephew}
+\item grandmother → \trou[30mm]{grandfather}
+\item girl → \trou[30mm]{boy}
+\end{questions}
+
+\exercice[lire,ecrire,niveau=2]{La famille de Léa}{Regardez l'arbre de la famille Martin, puis
+complétez chaque phrase.}
+\begin{center}\otArbreMartin\end{center}
+\begin{questions}[2]
+\item Claire is Léa's \trou[26mm]{mother}.
+\item Hugo is Léa's \trou[26mm]{brother}.
+\item Chloé is Hugo's \trou[26mm]{sister}.
+\item Marc is Chloé's \trou[26mm]{husband}.
+\item Nathan is Chloé's \trou[26mm]{son}.
+\item Léa is Nathan's \trou[26mm]{aunt}.
+\item Paul is Nathan's \trou[26mm]{grandfather}.
+\item Hugo is Nathan's \trou[26mm]{uncle}.
+\end{questions}
+
+\exercice[ecrire,niveau=1]{Le bon possessif}{Complétez avec \en{my}, \en{your}, \en{his}, \en{her},
+\en{its}, \en{our} ou \en{their}.}
+\begin{questions}
+\item I'm Léa. This is \trou[18mm]{my} brother, Hugo.
+\item Jack, is this \trou[18mm]{your} phone?
+\item Mr.\ Carter is here with \trou[18mm]{his} wife.
+\item Emma is in London with \trou[18mm]{her} parents.
+\item The dog? \trou[18mm]{Its} name is Filou.
+\item We're the Lopez family. This is \trou[18mm]{our} daughter, Sofia.
+\item Sofia and David are in Chicago with \trou[18mm]{their} sons.
+\item Léa and \trou[18mm]{her} brother are French.
+\end{questions}
+
+\exercice[ecrire,niveau=2]{Avec \en{'s}}{Traduisez avec le génitif.}
+\begin{questions}[2]
+\item le frère de Léa → \trou[34mm]{Léa's brother}
+\item la sœur de Jack → \trou[34mm]{Jack's sister}
+\item le mari de Sofia → \trou[34mm]{Sofia's husband}
+\item le chien de mon frère → \trou[34mm]{my brother's dog}
+\item le nom de l'enfant → \trou[34mm]{the child's name}
+\item la maison de mes parents →\\ \trou[50mm]{my parents' house}
+\end{questions}
+
+\exercice[ecrire,niveau=2]{Corrigez l'erreur}{Chaque phrase contient une erreur. Récrivez-la
+correctement.}
+\begin{questions}
+\item Léa and his brother are in Lyon. \hfill \trou[74mm]{Léa and her brother are in Lyon.}
+\item Jack is with her sister. \hfill \trou[74mm]{Jack is with his sister.}
+\item This is the dog of my brother. \hfill \trou[74mm]{This is my brother's dog.}
+\item Their names is Leo and Max. \hfill \trou[74mm]{Their names are Leo and Max.}
+\item The cat? It's name is Mango. \hfill \trou[74mm]{The cat? Its name is Mango.}
+\item Emma's parents is British. \hfill \trou[74mm]{Emma's parents are British.}
+\end{questions}
+
+\exercice[lire,niveau=2]{La famille d'Emma}{Lisez le texte d'Emma, puis indiquez si chaque phrase
+est vraie (V) ou fausse (F).}
+\begin{anglais}
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,fontupper=\fontsize{10.8}{14.4}\selectfont]
+Hi! I'm Emma. My family is in London. My father's name is Richard. He's a teacher. My mother's
+name is Anne. My brother, Tom, is twenty-five and he's married. His wife, Niamh, is Irish.
+Their daughter, Lily, is two. She's so cute! And me? I'm single, and I'm in New York!
+\par\vspace{1mm}{\fontsize{8.6}{10}\selectfont\color{otMuted}\foreignlanguage{french}{\textit{a teacher} : un professeur · \textit{Niamh} : prénom irlandais, prononcé « Nive »}}
+\end{tcolorbox}
+\begin{questions}[2]
+\item Emma's family is in New York. \hfill\trou[9mm]{F}
+\item Richard is Emma's father. \hfill\trou[9mm]{V}
+\item Tom is twenty-five. \hfill\trou[9mm]{V}
+\item Tom's wife is British. \hfill\trou[9mm]{F}
+\item Lily is Tom's daughter. \hfill\trou[9mm]{V}
+\item Emma is married. \hfill\trou[9mm]{F}
+\end{questions}
+\end{anglais}
+
+\exercice[ecouter,niveau=1,piste=4.10]{\phon{ð} ou \phon{d} ?}{Écoutez. Pour chaque numéro, la voix dit
+un seul des deux mots, deux fois. Cochez le mot entendu.}
+\begin{questions}[4]
+\item \choix{they}\quad\choix{day}
+\item \choix{then}\quad\choix{den}
+\item \choix{there}\quad\choix{dare}
+\item \choix{though}\quad\choix{dough}
+\item \choix{those}\quad\choix{doze}
+\item \choix{there's}\quad\choix{dares}
+\item \choix{breathe}\quad\choix{breeze}
+\item \choix{worthy}\quad\choix{wordy}
+\end{questions}
+
+\exercice[ecouter,ecrire,niveau=2,piste=4.11]{La famille de Jack}{Jack montre une photo de sa
+famille. Écoutez et complétez le tableau.}
+\begin{center}\otTableau
+\begin{tabular}{@{}l@{\hspace{12mm}}l@{\hspace{12mm}}l@{}}
+\otTH{Prénom} & \otTH{Lien avec Jack} & \otTH{Âge}\\\midrule
+{\otSemi Linda} & \enb{\trou[36mm]{mother}}          & \trou[14mm]{58}\\[1mm]
+{\otSemi Bob}   & \enb{\trou[36mm]{father}}          & \trou[14mm]{61}\\[1mm]
+{\otSemi Kate}  & \enb{\trou[36mm]{sister}}          & \trou[14mm]{27}\\[1mm]
+{\otSemi Josh}  & \enb{\trou[36mm]{nephew}}          & \trou[14mm]{3}\\\bottomrule
+\end{tabular}\end{center}
+
+\exercice[ecouter,ecrire,niveau=2,piste=4.12]{Dictée à trous}{Léa regarde une photo chez Sam.
+Écoutez et complétez.}
+\begin{anglais}
+\noindent\begin{tabular}{@{}l@{\hspace{6mm}}l@{}}
+\otNomDit{lea} & Sam, is that \trou{your} sister?\\[1.8mm]
+\otNomDit{sam} & Yes, it is. \trou{Her} name is Maya.\\[1.8mm]
+\otNomDit{lea} & How \trou{old} is she?\\[1.8mm]
+\otNomDit{sam} & She's \trou{twenty}. And this is my \trou{brother}, Ben.\\[1.8mm]
+\otNomDit{lea} & Are your \trou{parents} in Brooklyn too?\\[1.8mm]
+\otNomDit{sam} & No, they \trou{aren't}. They're in Atlanta.\\[1.8mm]
+\otNomDit{lea} & And who's \trou{this}?\\[1.8mm]
+\otNomDit{sam} & That's \trou{our} cat, Mango!\\
+\end{tabular}
+\end{anglais}
+
+\exercice[ecrire,niveau=2]{Traduisez}{Traduisez en anglais.}
+\begin{questions}[1][french]
+\item Voici ma mère et mon père.\lignes{1}
+\item Emma et son frère sont britanniques.\lignes{1}
+\item Jack et sa sœur sont à New York.\lignes{1}
+\item Le mari de Sofia est canadien.\lignes{1}
+\item Leurs enfants ont dix et sept ans.\lignes{1}
+\item Quelle jolie photo ! Qui est-ce ?\lignes{1}
+\item C'est le chat de mes parents.\lignes{1}
+\item Je suis enfant unique.\lignes{1}
+\end{questions}
+
+\exercice[ecrire,niveau=3]{Votre famille}{Présentez votre famille en cinq ou six phrases : prénoms,
+âges, nationalités, villes. Inspirez-vous du texte d'Emma (exercice 6).}
+\lignes{6}
+
+\exercice[ecouter,parler,niveau=3,piste=4.13]{À vous de parler !}{Jack vous pose des questions
+sur votre famille. Répondez \textbf{à voix haute} pendant chaque pause.}
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}}l@{\hspace{3mm}}>{\enOn}p{70mm}<{\enOff}@{\hspace{6mm}}p{78mm}@{}}
+ & \otTH{Jack dit\ldots} & \otTH{Vous\ldots}\\\midrule
+1. & Is your family in France? & répondez par une réponse courte et dites où elle est.\\
+2. & What's your mother's name? & donnez le prénom de votre mère.\\
+3. & And what's your father's name? & donnez le prénom de votre père.\\
+4. & Are you married? & répondez par une réponse courte.\\
+5. & Is that a photo of your family? What a nice photo! & remerciez-le.\\\bottomrule
+\end{tabular}\end{center}
+
+%% ---------------------------------------------------------------------
+\rubrique{bilan}{Faites le point}
+
+\begin{essentiel}
+\begin{minipage}[t]{0.52\linewidth}
+\otEssTitre{Les phrases clés}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}>{\enOn\otSemi\fontsize{9.4}{11}\selectfont}l<{\enOff}@{\hspace{3mm}}>{\fontsize{9.2}{11}\selectfont\color{white!78!otNavy}}l@{}}
+This is my family.          & Voici ma famille.\\
+Who's this?                 & Qui est-ce ?\\
+That's my brother, Hugo.    & C'est mon frère, Hugo.\\
+He's twenty-four.           & Il a vingt-quatre ans.\\
+What a nice photo!          & Quelle jolie photo !\\
+I'm married. / I'm single.  & Je suis marié(e). / célibataire.\\
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}
+\otEssTitre{Les possessifs}
+{\enb{\fontsize{9.2}{12}\selectfont my · your · his · her · its · our · your · their}}\par
+{\fontsize{9}{11.4}\selectfont\color{white!78!otNavy}\en{his} / \en{her} : selon le possesseur\par}
+\otEssTitre{Le génitif}
+{\fontsize{9.2}{11.6}\selectfont \en{Léa's brother} = le frère de Léa\par
+\en{my parents' house} = la maison de mes parents\par}
+\otEssTitre{Prononciation}
+{\fontsize{9.2}{11.6}\selectfont \phon{ð} : langue entre les dents, avec la voix :
+\en{this}, \en{mother}\par}
+\end{minipage}
+\end{essentiel}
+
+\begin{jesais}
+\item présenter les membres de ma famille, avec leur prénom et leur âge ;
+\item nommer les membres de la famille proche et élargie ;
+\item utiliser \en{my}, \en{your}, \en{his}, \en{her}, \en{its}, \en{our}, \en{their} ;
+\item choisir entre \en{his} et \en{her} d'après le possesseur ;
+\item exprimer l'appartenance avec \en{'s} : \en{Léa's brother} ;
+\item prononcer le son \phon{ð} de \en{this}, \en{mother}, \en{brother}.
+\end{jesais}
+
+\clearpage
+\begin{testexpress}
+\qcm[a]{« mon frère » se dit :}{\en{my brother}}{\en{me brother}}{\en{mine brother}}
+\qcm[b]{« Léa et son frère » se dit :}{\en{Léa and his brother}}{\en{Léa and her brother}}{\en{Léa and its brother}}
+\qcm[b]{« Jack et sa sœur » se dit :}{\en{Jack and her sister}}{\en{Jack and his sister}}{\en{Jack and he sister}}
+\qcm[b]{« le chien de Sam » se dit :}{\en{the dog of Sam}}{\en{Sam's dog}}{\en{Sams dog}}
+\qcm[c]{« leurs enfants » se dit :}{\en{theirs children}}{\en{their childs}}{\en{their children}}
+\qcm[a]{« la mère de mon père », c'est :}{\en{my grandmother}}{\en{my aunt}}{\en{my niece}}
+\qcm[b]{« la nièce » se dit :}{\en{the nephew}}{\en{the niece}}{\en{the cousin}}
+\qcm[a]{Pour prononcer le son \phon{ð} de \en{this}, on place :}{la langue entre les dents, avec la voix}{la langue derrière les dents, comme pour « z »}{les lèvres en avant, comme pour « d »}
+\qcm[b]{Dans \en{Its name is Filou}, \en{its} renvoie à :}{une femme}{un animal ou une chose}{un homme}
+\qcm[a]{« notre fille » se dit :}{\en{our daughter}}{\en{us daughter}}{\en{your daughter}}
+\end{testexpress}
+
+\noindent{\fontsize{9.6}{12}\selectfont\color{otMuted}Niveau visé (CECRL, niveau A1) : « peut
+décrire sa famille en termes simples ». Les corrigés de l'unité sont page~\pageref{cor-u4-1} ; les
+textes des pistes d'exercices, page~\pageref{trans-4.10}.\par}

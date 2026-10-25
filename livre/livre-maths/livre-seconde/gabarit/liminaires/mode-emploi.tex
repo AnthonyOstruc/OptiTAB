@@ -1,0 +1,87 @@
+%% =====================================================================
+%%  Mode d'emploi
+%% =====================================================================
+\thispagestyle{otFront}
+\phantomsection\pdfbookmark[0]{Mode d'emploi}{bm-mode-emploi}
+\otPageTitre{Mode d'emploi}{Comment ce livre est organisé}
+
+%% --- Les trois rubriques -------------------------------------------
+\otIntertitre{Chaque chapitre, trois étapes}
+\begin{tcbraster}[raster columns=3,raster equal height,raster column skip=4mm,raster width=163mm]
+\tcbset{colback=otNavyTint,colframe=otNavyTint,boxrule=0pt,arc=2mm,
+  left=4mm,right=4mm,top=4mm,bottom=4mm}
+\begin{tcolorbox}
+  \otRond[otNavy]{1}\hspace{2mm}{\otSemi\fontsize{8}{10}\selectfont\color{otNavy}\otCaps[10]{Découverte}}\par
+  \vspace{2.5mm}{\raggedright\fontsize{10}{13}\selectfont Des applications directes du cours, pour vérifier que les bases sont en place.\par}
+\end{tcolorbox}
+\begin{tcolorbox}
+  \otRond[otNavy]{2}\hspace{2mm}{\otSemi\fontsize{8}{10}\selectfont\color{otNavy}\otCaps[10]{Entraînement}}\par
+  \vspace{2.5mm}{\raggedright\fontsize{10}{13}\selectfont Les méthodes incontournables, à travailler jusqu'à les maîtriser.\par}
+\end{tcolorbox}
+\begin{tcolorbox}
+  \otRond[otNavy]{3}\hspace{2mm}{\otSemi\fontsize{8}{10}\selectfont\color{otNavy}\otCaps[10]{Problèmes}}\par
+  \vspace{2.5mm}{\raggedright\fontsize{10}{13}\selectfont Des sujets plus complets, dans l'esprit de l'épreuve anticipée de mathématiques.\par}
+\end{tcolorbox}
+\end{tcbraster}
+
+\vspace{8mm}
+%% --- Anatomie d'un exercice ----------------------------------------
+\otIntertitre{Anatomie d'un exercice}
+\begin{tcolorbox}[colback=white,colframe=otRule,boxrule=0.4pt,arc=2mm,
+  left=5mm,right=5mm,top=9mm,bottom=4mm]
+\begin{tikzpicture}
+  \useasboundingbox (0,-9mm) rectangle (\linewidth,4mm);
+  \node[anchor=west,fill=otNavy,rounded corners=1.6pt,inner sep=0pt,minimum width=7mm,
+    minimum height=6.2mm,text=white,font=\otBold\fontsize{10}{10}\selectfont] (num) at (0,0) {6};
+  \node[anchor=west,inner sep=0pt,text=otInk,font=\otSemi\fontsize{10.5}{13}\selectfont]
+    (tit) at (10.5mm,0) {Choisir la bonne forme};
+  \node[anchor=east,inner sep=0pt,text=otMuted,font=\otMedium\fontsize{7}{9}\selectfont]
+    (ref) at (\linewidth,0) {Corrigé p.~\pageref*{cor-1-6}};
+  \node[anchor=east,inner sep=0pt] (dots) at ([xshift=-3mm]ref.west) {\otDots{2}};
+  \node[anchor=west,inner sep=0pt,text=otInk,font=\fontsize{10.5}{13}\selectfont]
+    at (10.5mm,-7mm) {On considère la fonction $f$ définie sur $\R$ par $f(x)=x^{2}-6x+5$.};
+  \foreach \n/\c in {1/num,2/tit,3/dots,4/ref}{%
+    \node[circle,fill=otGreen,inner sep=0pt,minimum size=4.4mm,text=white,
+      font=\otBold\fontsize{7}{8}\selectfont] at ([yshift=6.5mm]\c.north) {\n};
+    \draw[otGreen,line width=0.5pt] ([yshift=4.3mm]\c.north) -- ([yshift=0.6mm]\c.north);}
+\end{tikzpicture}
+\end{tcolorbox}
+\vspace{2mm}
+{\fontsize{10}{13.5}\selectfont
+\begin{tabular}{@{}p{77mm}@{\hspace{6mm}}p{77mm}@{}}
+\otRond{1}\enspace Le numéro, à reporter dans le tableau de bord. &
+\otRond{3}\enspace Le niveau de difficulté, de 1 à 3 points.\\[2mm]
+\otRond{2}\enspace Le titre, qui annonce la notion travaillée. &
+\otRond{4}\enspace La page du corrigé (lien cliquable dans le PDF).
+\end{tabular}}
+
+\vspace{8mm}
+%% --- Les corrigés ---------------------------------------------------
+\otIntertitre{Des corrigés qui expliquent}
+\begin{minipage}[c]{96mm}
+\begin{tcolorbox}[colback=white,colframe=otRule,boxrule=0.4pt,arc=2mm,
+  left=5mm,right=5mm,top=4mm,bottom=4mm]
+\otLabel{1.}\enspace\methode{factoriser un trinôme}\\[1mm]
+\hspace*{1.4em}$x^{2}-4x+3=\res{(x-1)(x-3)}$
+\end{tcolorbox}
+\end{minipage}\hfill
+\begin{minipage}[c]{62mm}
+\fontsize{10}{13.5}\selectfont
+\otRond{5}\enspace La méthode à retenir, rappelée avant chaque calcul.\par\vspace{2.5mm}
+\otRond{6}\enspace Le résultat final, surligné en vert.
+\end{minipage}
+
+\vspace{8mm}
+%% --- En ligne -------------------------------------------------------
+\begin{tcolorbox}[colback=otNavyTint,colframe=otNavyTint,boxrule=0pt,arc=2mm,
+  left=5mm,right=5mm,top=4mm,bottom=4mm]
+\begin{minipage}[c]{24mm}
+{\color{otNavy}\qrcode[height=21mm,nolink]{\otURL}}
+\end{minipage}\hspace{5mm}%
+\begin{minipage}[c]{120mm}
+{\otSemi\fontsize{11}{14}\selectfont\color{otNavy}Et aussi en ligne}\par\vspace{1.5mm}
+{\fontsize{10}{13.5}\selectfont Retrouve les cours, les fiches de synthèse et d'autres
+exercices sur \textbf{\otSite}. Scanne le code avec ton téléphone pour y accéder.}
+\end{minipage}
+\end{tcolorbox}
+\clearpage

@@ -1,0 +1,112 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 2 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s2.py)
+
+\sujetBac{2}{QCM justifié : analyse et probabilités/4,Suite arithmético-géométrique/5,Géométrie dans l'espace/4,Fonction logarithme et intégration/5}
+
+\begin{exoBac}{4}{Questionnaire à choix multiples justifié}
+Pour chacune des questions suivantes, une seule des quatre réponses proposées est exacte. Indiquer sur la copie le numéro de la
+question et la lettre de la réponse choisie, puis \textbf{justifier ce choix} par un calcul ou un raisonnement rédigé. Une réponse
+non justifiée ne rapporte aucun point.
+\begin{questions}
+  \item La limite en $+\infty$ de la fonction $x\mapsto\dfrac{e^{x}-x^{2}}{2e^{x}+1}$ est égale à :
+\begin{tasks}[label=\alph*)](4)
+  \task $0$
+  \task $\frac12$
+  \task $1$
+  \task $+\infty$
+\end{tasks}
+  \item Une primitive sur $\R$ de la fonction $f:x\mapsto x\,e^{x^{2}}$ est la fonction $F$ définie par :
+\begin{tasks}[label=\alph*)](4)
+  \task $F(x)=x^{2}e^{x^{2}}$
+  \task $F(x)=2e^{x^{2}}$
+  \task $F(x)=e^{x^{2}}$
+  \task $F(x)=\frac12e^{x^{2}}$
+\end{tasks}
+  \item Sur l'intervalle $\intOO1{+\infty}$, l'ensemble des solutions de l'équation $\ln x+\ln(x-1)=\ln6$ est :
+\begin{tasks}[label=\alph*)](4)
+  \task $\{3\}$
+  \task $\{-2\pv3\}$
+  \task $\{2\}$
+  \task l'ensemble vide
+\end{tasks}
+  \item Une main est un ensemble de $5$ cartes choisies dans un jeu de $32$ cartes, qui contient $4$ as. Le nombre de mains contenant
+    exactement deux as est :
+\begin{tasks}[label=\alph*)](4)
+  \task $\binom42+\binom{28}{3}$
+  \task $4^{2}\times28^{3}$
+  \task $\binom42\times\binom{28}{3}$
+  \task $\binom{32}{5}-\binom{28}{5}$
+\end{tasks}
+  \item La variable aléatoire $X$ suit la loi binomiale $\mathcal{B}(10\pv0{,}3)$. Une valeur approchée au millième de $P(X\geq1)$ est :
+\begin{tasks}[label=\alph*)](4)
+  \task $0{,}028$
+  \task $0{,}121$
+  \task $0{,}850$
+  \task $0{,}972$
+\end{tasks}
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Suite arithmético-géométrique}
+Au 1\textsuperscript{er} janvier 2026, une lettre d'information compte $2\,000$ abonnés. On estime que, chaque mois, $10\,\%$ des
+abonnés se désabonnent et que $300$ nouvelles personnes s'abonnent. On modélise le nombre d'abonnés $n$ mois après le
+1\textsuperscript{er} janvier 2026 par une suite $(u_n)$, avec $u_0=2\,000$.
+\begin{questions}
+  \item Calculer $u_1$ et $u_2$.
+  \item Justifier que, pour tout entier naturel $n$, $u_{n+1}=0{,}9\,u_n+300$.
+  \item On pose, pour tout entier naturel $n$, $v_n=u_n-3\,000$.
+    \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Démontrer que la suite $(v_n)$ est géométrique ; préciser sa raison et son premier terme.
+      \item En déduire que, pour tout entier naturel $n$, $u_n=3\,000-1\,000\times0{,}9^{n}$.
+    \end{enumerate}
+  \item Étudier le sens de variation de la suite $(u_n)$, puis déterminer sa limite. Interpréter ces résultats.
+  \item Le responsable souhaite dépasser $2\,900$ abonnés.
+    \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Résoudre dans l'ensemble des entiers naturels l'inéquation $u_n>2\,900$. Au cours de quel mois l'objectif sera-t-il atteint ?
+      \item Recopier et compléter la fonction Python ci-dessous pour qu'elle renvoie la plus petite valeur de $n$ telle que $u_n>s$.
+    \end{enumerate}
+\begin{python}
+def seuil(s):
+    u = 2000
+    n = 0
+    while ... :
+        u = ...
+        n = n + 1
+    return n
+\end{python}
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Géométrie dans l'espace}
+L'espace est muni d'un repère orthonormé. On considère les plans $\mathcal{P}_1:x+y-z-1=0$ et $\mathcal{P}_2:2x-y+z-2=0$, ainsi que le
+point $M(0\pv1\pv3)$.
+\begin{questions}
+  \item Justifier que les plans $\mathcal{P}_1$ et $\mathcal{P}_2$ sont sécants.
+  \item Montrer que leur droite d'intersection $\Delta$ admet pour représentation paramétrique
+    \[\begin{cases}x=1\\y=t\\z=t\end{cases}\qquad t\in\R.\]
+  \item Les plans $\mathcal{P}_1$ et $\mathcal{P}_2$ sont-ils perpendiculaires ?
+  \item Déterminer une équation cartésienne du plan $\mathcal{Q}$ passant par $M$ et orthogonal à la droite $\Delta$.
+  \item Déterminer les coordonnées du point $H$, intersection de la droite $\Delta$ et du plan $\mathcal{Q}$.
+  \item Justifier que $H$ est le projeté orthogonal de $M$ sur $\Delta$, puis calculer la distance du point $M$ à la droite $\Delta$.
+  \item Déterminer les coordonnées du point $M'$, symétrique de $M$ par rapport à la droite $\Delta$.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Fonction logarithme et intégration}
+On considère la fonction $f$ définie sur $\intOO0{+\infty}$ par $f(x)=x^{2}-2\ln x$, et l'on note $\mathcal{C}_f$ sa courbe représentative.
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item Déterminer les limites de $f$ en $0$ et en $+\infty$.
+  \item Montrer que $f'(x)=\dfrac{2(x-1)(x+1)}{x}$ et dresser le tableau de variations de $f$.
+  \item En déduire que, pour tout réel $x>0$, $f(x)\geq1$.
+  \item Étudier la convexité de $f$. Que peut-on en déduire pour la position de $\mathcal{C}_f$ par rapport à sa tangente au point
+    d'abscisse $1$ ?
+\end{questions}
+\partieExo{B}{Équation et aire}
+\begin{questions}[resume]
+  \item Montrer que l'équation $f(x)=2$ admet exactement deux solutions $a$ et $b$, avec $a<1<b$. Donner un encadrement de $b$
+    d'amplitude $10^{-2}$.
+  \item On admet que la fonction $F:x\mapsto x\ln x-x$ est une primitive de la fonction $\ln$ sur $\intOO0{+\infty}$. Calculer
+    $\int_1^{e}f(x)\,\mathrm{d}x$, puis interpréter ce résultat en termes d'aire.
+\end{questions}
+\end{exoBac}

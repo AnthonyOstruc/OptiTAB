@@ -1,0 +1,264 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[suites]{2}{Suites numériques}{Partie 1 · Algèbre}
+{Termes\enspace·\enspace Récurrence\enspace·\enspace Suites arithmétiques et géométriques\enspace·\enspace Sommes}
+\objectif{Calculer les termes d'une suite explicite ou récurrente.}
+\objectif{Reconnaître et utiliser une suite arithmétique ou géométrique.}
+\objectif{Étudier un sens de variation et calculer une somme.}
+\objectif{Modéliser une évolution et programmer un seuil.}
+\prerequis{Puissances, pourcentages et calcul littéral.}
+\prerequis{Notions de variable, de boucle et de liste en Python.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Définir une suite et lire ses indices}
+\begin{definition}
+Une suite associe un nombre $u_n$ à chaque entier $n$ d'un ensemble d'indices.
+On la note $(u_n)$ ou $(u(n))$ ; le terme de rang $n$ se note $u_n$ ou $u(n)$.
+Une formule explicite donne directement $u_n$ ; une relation de récurrence
+donne un terme à partir du précédent et nécessite un terme initial.
+\end{definition}
+\begin{exemple}
+Si $u_n=2n+1$ pour $n\geq0$, alors $u_0=1$, $u_1=3$, $u_2=5$.
+Si $v_0=1$ et $v_{n+1}=2v_n+1$, alors $v_1=3$, $v_2=7$, $v_3=15$.
+\end{exemple}
+\begin{attention}
+$u_{n+1}$ est le terme de rang $n+1$, tandis que $u_n+1$ signifie « le terme
+de rang $n$ auquel on ajoute 1 ». De $u_0$ à $u_n$, il y a $n+1$ termes.
+\end{attention}
+\essSection{2}{Étudier les variations}
+\begin{propriete}
+Si $u_{n+1}-u_n\geq0$ pour tout $n$, la suite est croissante ; si cette
+différence est négative ou nulle, elle est décroissante. Pour une suite à
+termes strictement positifs, on peut aussi comparer $\dfrac{u_{n+1}}{u_n}$ à 1.
+\end{propriete}
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=108mm,height=54mm,xmin=-0.4,xmax=6.5,ymin=-0.5,ymax=14,xtick={0,1,2,3,4,5,6},ytick={2,6,10,14},xlabel={$n$},ylabel={$u_n$}]
+\addplot[only marks,otNavy,mark=*,mark size=2pt]coordinates{(0,1)(1,3)(2,5)(3,7)(4,9)(5,11)(6,13)};
+\end{axis}\end{tikzpicture}\par\legende{Les points $(n;u_n)$ de $u_n=2n+1$ : les indices sont entiers.}\end{center}
+\clearpage
+\essSection{3}{Les deux modèles fondamentaux}
+\begin{definition}[Suite arithmétique]
+$u_{n+1}=u_n+r$, où $r$ est constant. Alors $u_n=u_0+nr$, ou plus généralement
+$u_n=u_p+(n-p)r$. Un accroissement constant correspond à ce modèle.
+Les points $(n;u_n)$ sont alignés sur la droite de la fonction affine $x\mapsto u_0+rx$.
+\end{definition}
+\begin{definition}[Suite géométrique]
+$v_{n+1}=qv_n$, où $q$ est constant. Alors $v_n=v_0q^n$, ou
+$v_n=v_pq^{n-p}$. Un taux constant $t$ correspond à une raison $q=1+t$.
+\end{definition}
+\begin{exemple}
+Ajouter 30 chaque mois donne une suite arithmétique de raison 30.
+Augmenter de 3\,\% chaque année donne une suite géométrique de raison $1{,}03$.
+Une diminution de 3\,\% correspond à $0{,}97$.
+\end{exemple}
+\essSection{4}{Calculer une somme sans oublier les bornes}
+\begin{theoreme}
+Pour une suite arithmétique, la somme de termes consécutifs est
+\[\text{nombre de termes}\times\frac{\text{premier terme}+\text{dernier terme}}2.\]
+Pour $q\neq1$, $1+q+\cdots+q^n=\dfrac{1-q^{n+1}}{1-q}$.
+Pour $q=1$, la somme vaut $n+1$.
+\end{theoreme}
+\begin{savoirfaire}[Chercher un seuil]
+Écrire une boucle qui actualise le terme et son indice tant que le seuil n'est
+pas atteint. Vérifier le terme retenu \emph{et son prédécesseur} pour démontrer
+qu'il s'agit du premier rang, après avoir établi le sens de variation.
+\end{savoirfaire}
+\begin{attention}
+Des premiers termes suggèrent un comportement ; ils ne démontrent pas une
+formule générale. Une suite définie par récurrence n'est pas nécessairement
+arithmétique ou géométrique. L'intuition d'une limite ne remplace pas un calcul de seuil.
+\end{attention}
+\clearpage
+\essSection{5}{Observer un comportement à long terme}
+\begin{definition}[Une première intuition de limite]
+On peut observer qu'une suite se rapproche d'un nombre, augmente au-delà
+de tout seuil fixé, ou ne se rapproche d'aucune valeur unique. Cette approche
+reste intuitive en Première : aucune définition formelle de limite ni
+théorème de convergence n'est nécessaire ici.
+\end{definition}
+\begin{exemple}
+Pour $u_n=1/(n+1)$, les valeurs deviennent proches de 0 tout en restant positives.
+Pour $v_n=n^2$, les valeurs dépassent tout seuil fixé si l'on va assez loin.
+Pour $w_n=(-1)^n$, les valeurs alternent entre 1 et $-1$ : elles ne se
+rapprochent pas d'un seul nombre.
+\end{exemple}
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=110mm,height=61mm,xmin=-.4,xmax=8.5,ymin=-1.4,ymax=1.6,xtick={0,1,2,3,4,5,6,7,8},ytick={-1,0,1},xlabel={$n$},ylabel={valeur}]
+\addplot[only marks,otNavy,mark=*]coordinates{(0,1)(1,.5)(2,.333333)(3,.25)(4,.2)(5,.166667)(6,.142857)(7,.125)(8,.111111)};
+\addplot[only marks,otGreenDark,mark=square*]coordinates{(0,1)(1,-1)(2,1)(3,-1)(4,1)(5,-1)(6,1)(7,-1)(8,1)};
+\end{axis}\end{tikzpicture}\par
+\legende{Points ronds : $1/(n+1)$. Carrés : $(-1)^n$.}
+\end{center}
+\begin{attention}
+Une suite croissante n'est pas forcément proche d'un nombre fini : $n^2$
+est croissante et grandit sans borne. Un graphique de quelques termes aide
+à conjecturer ; la formule de la suite reste indispensable à l'analyse.
+\end{attention}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-2-1}
+\begin{exercice}[1]{Substituer un indice}
+On pose $u_n=n^2-3n+2$ pour $n\geq0$.
+\begin{questions}\item Calculer $u_0$, $u_1$, $u_2$ et $u_5$.
+\item Exprimer $u_{n+1}$, puis calculer $u_{n+1}-u_n$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-2}
+\begin{exercice}[1]{Calculer de proche en proche}
+$v_0=2$ et $v_{n+1}=3v_n-1$.
+\begin{questions}\item Calculer $v_1$, $v_2$, $v_3$ et $v_4$.
+\item Les trois premières différences sont-elles constantes ? Et les rapports ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-3}
+\begin{exercice}[1]{Une suite arithmétique}
+$u_0=7$ et la raison est $-3$.
+\begin{questions}\item Donner $u_n$, $u_8$ et le sens de variation.
+\item Résoudre $u_n\leq-20$ pour $n$ entier naturel.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-4}
+\begin{exercice}[1]{Une suite géométrique}
+$v_0=5$ et la raison est 2.
+\begin{questions}\item Donner $v_n$, $v_4$ et $v_6$.
+\item Calculer $v_0+v_1+v_2+v_3+v_4$ de deux façons.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-5}
+\begin{exercice}[1]{Du pourcentage à la formule}
+Un appareil coûte initialement 800 euros. Sa valeur diminue de 15\,\% par an.
+\begin{questions}\item Donner la relation entre $V_{n+1}$ et $V_n$ puis $V_n$ en fonction de $n$.
+\item Calculer la valeur après deux ans. La baisse globale est-elle de 30\,\% ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-2-6}
+\begin{exercice}[2]{Retrouver les paramètres}
+\begin{questions}
+\item Une suite arithmétique vérifie $u_3=11$ et $u_8=31$. Déterminer sa raison, $u_0$ et $u_n$.
+\item Une suite géométrique de raison positive vérifie $v_2=12$ et $v_5=96$.
+Déterminer sa raison, $v_0$ et $v_n$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-7}
+\begin{exercice}[2]{Compter les termes d'une somme}
+\begin{questions}
+\item Calculer $4+7+10+\cdots+61$ en déterminant d'abord le nombre de termes.
+\item Calculer $3+6+12+\cdots+384$.
+\item Calculer $\sum_{k=3}^{10}(2k+1)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-8}
+\begin{exercice}[2]{Comparer des variations}
+Pour $n\geq0$, on pose $u_n=n^2-4n$ et $v_n=\dfrac{n+1}{n+2}$.
+\begin{questions}
+\item Calculer $u_{n+1}-u_n$. La suite $(u_n)$ est-elle monotone sur tous les indices ?
+\item Montrer que $v_{n+1}-v_n=\dfrac1{(n+2)(n+3)}$ et conclure.
+\item Écrire $v_n=1-\dfrac1{n+2}$. Quel comportement semble se dessiner lorsque $n$ grandit ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-9}
+\begin{exercice}[2]{Lire puis justifier un nuage de points}
+Les premiers termes d'une suite sont représentés ci-dessous.
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=105mm,height=51mm,xmin=-0.4,xmax=5.5,ymin=-0.5,ymax=18,xtick={0,1,2,3,4,5},ytick={2,4,8,16},xlabel={$n$},ylabel={$u_n$}]
+\addplot[only marks,otGreenDark,mark=*,mark size=2.3pt]coordinates{(0,16)(1,8)(2,4)(3,2)(4,1)(5,0.5)};
+\end{axis}\end{tikzpicture}\end{center}
+\begin{questions}\item Conjecturer la nature de la suite et une formule explicite.
+\item On précise $u_{n+1}=\frac12u_n$ et $u_0=16$. Justifier la formule et les variations.
+\item Déterminer le premier rang pour lequel $u_n<0{,}1$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-10}
+\begin{exercice}[2]{Comprendre une boucle Python}
+\begin{python}
+u = 3
+termes = [u]
+for n in range(4):
+    u = 2*u + 1
+    termes.append(u)
+\end{python}
+\begin{questions}\item Donner la liste finale \code{termes}.
+\item Quelle relation de récurrence est programmée ? Quel est l'indice du dernier terme ?
+\item Adapter le programme pour obtenir les termes de $u_0$ à $u_{10}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-11}
+\begin{exercice}[2]{Un seuil d'épargne}
+$C_n=1000\times1{,}05^n$ représente un capital après $n$ années.
+\begin{questions}\item Justifier que $(C_n)$ est strictement croissante.
+\item Écrire une boucle qui détermine la première année où le capital atteint 1500 euros.
+\item Exécuter la boucle ou faire des essais, puis vérifier les deux termes qui encadrent le seuil.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-2-12}
+\begin{exercice}[3]{Des rangées de sièges}
+Une salle a 20 rangées. La première comporte 18 sièges ; chaque rangée suivante
+en comporte deux de plus. On note $u_n$ le nombre de sièges de la rangée $n$, pour $1\leq n\leq20$.
+\begin{questions}
+\item Exprimer $u_n$ et calculer le nombre de sièges de la dernière rangée.
+\item Déterminer la capacité totale de la salle.
+\item Les dix dernières rangées sont vendues 12 euros la place, les dix premières 9 euros.
+Calculer la recette si toutes les places sont vendues.
+\item On ajoute des rangées en poursuivant la règle. Quel nombre total minimal de rangées
+faut-il pour atteindre au moins 1000 places ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-13}
+\begin{exercice}[3]{Un traitement répété}
+Après chaque heure, l'organisme conserve 80\,\% de la quantité présente, puis
+reçoit une nouvelle dose de 6 mg. Juste après la première injection, $u_0=10$ mg.
+On mesure $u_n$ juste après la nouvelle dose reçue à l'heure $n$.
+\begin{questions}
+\item Justifier $u_{n+1}=0{,}8u_n+6$, puis calculer $u_1$ et $u_2$.
+\item Poser $v_n=u_n-30$. Montrer que $v_{n+1}=0{,}8v_n$.
+\item En déduire $u_n=30-20\times0{,}8^n$ et justifier que $(u_n)$ est croissante et reste inférieure à 30.
+\item Avec des essais ou Python, déterminer le premier rang où $u_n\geq28$.
+\end{questions}
+\label{figlivre-r02-13-cycle-ex}
+\figureLivre{r02-13-cycle}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-14}
+\begin{exercice}[3]{Deux contrats de rémunération}
+La première année, le salaire annuel vaut 24\,000 euros. Le contrat A prévoit
+une augmentation de 1000 euros chaque année ; le contrat B, une hausse de 4\,\%.
+On note $A_n$ et $B_n$ les salaires de l'année $n+1$ ; ainsi $A_0=B_0=24000$.
+\begin{questions}
+\item Donner $A_n$ et $B_n$. Comparer les salaires de la sixième année.
+\item Calculer le total perçu pendant les dix premières années avec chaque contrat,
+puis comparer. Arrondir les montants au centime.
+\item Utiliser un tableau ou un programme pour déterminer le premier indice $n\geq1$
+où $B_n>A_n$. Vérifier tous les indices antérieurs concernés.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-15}
+\begin{exercice}[3]{Des carrés construits avec des allumettes}
+On aligne $n$ carrés unitaires, deux carrés voisins partageant un côté.
+\begin{center}\begin{tikzpicture}[x=1.1cm,y=1.1cm]
+\foreach \i in {0,1,2,3}{\draw[otNavy,line width=1.1pt](\i,0)rectangle(\i+1,1);}
+\node[below,font=\small]at(2,-0.1){Exemple : quatre carrés alignés.};
+\end{tikzpicture}\end{center}
+\begin{questions}
+\item Donner le nombre $a_n$ d'allumettes nécessaires et expliquer la relation de récurrence.
+\item Combien de carrés peut-on aligner avec 100 allumettes, sans les casser ?
+\item On construit séparément une ligne de 1 carré, puis de 2, jusqu'à $N$ carrés.
+Montrer que le nombre total d'allumettes est $T_N=\dfrac{3N^2+5N}{2}$.
+\item Déterminer le plus grand $N$ permettant ces constructions avec 1000 allumettes.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

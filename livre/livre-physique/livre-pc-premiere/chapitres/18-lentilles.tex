@@ -1,0 +1,263 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[lunette]{18}{Lentilles minces et images}{Partie 4 · Ondes et signaux}
+{Lentille convergente\enspace·\enspace Relation de conjugaison\enspace·\enspace Grandissement\enspace·\enspace Image réelle ou virtuelle\enspace·\enspace Mise au point}
+\objectif{Exploiter les relations de conjugaison et de grandissement pour déterminer la position et la taille de l'image d'un objet-plan réel.}
+\objectif{Déterminer les caractéristiques d'une image : réelle ou virtuelle, droite ou renversée, agrandie ou réduite.}
+\objectif{Estimer la distance focale d'une lentille ; tester la relation de conjugaison.}
+\objectif{Expliquer une mise au point par modification de la distance focale ou de la géométrie du montage (œil, appareil photo).}
+\prerequis{Lentille mince convergente, foyers, distance focale, image réelle, grandissement (classe de seconde).}
+\prerequis{Théorème de Thalès ; grandeurs algébriques sur un axe orienté.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Lentille mince convergente}
+\begin{definition}[Foyers, distance focale, vergence]
+Une lentille mince convergente, de centre optique O, fait converger en son \textbf{foyer image} $F'$ les rayons parallèles à l'axe optique.
+Le \textbf{foyer objet} $F$ est le symétrique de $F'$ par rapport à O. La \textbf{distance focale} vaut $f'=\alg{OF'}>0$ et la \textbf{vergence} $C=\dfrac{1}{f'}$ s'exprime
+en dioptries ($\delta$, avec $f'$ en m) : une lentille de \qty{20}{cm} de focale a une vergence de \num{5,0}\,$\delta$.
+\end{definition}
+\begin{propriete}[Trois rayons particuliers]
+Un rayon passant par O n'est pas dévié ; un rayon parallèle à l'axe ressort en passant par $F'$ ; un rayon passant par $F$ ressort
+parallèle à l'axe. Deux de ces rayons, issus d'un point B de l'objet, suffisent à construire son image B'.
+\end{propriete}
+\schema{18-lentille}
+\essSection{2}{Relations de conjugaison et de grandissement}
+\begin{loi}[Relations de conjugaison et de grandissement]
+On oriente l'axe optique dans le sens de propagation de la lumière, avec l'origine en O. Les grandeurs algébriques, surmontées
+d'une barre, sont positives dans le sens de l'axe. L'image A'B' d'un objet AB perpendiculaire à l'axe vérifie :
+\[\frac{1}{\alg{OA'}}-\frac{1}{\alg{OA}}=\frac{1}{f'}\qquad\text{et}\qquad\gamma=\frac{\alg{A'B'}}{\alg{AB}}=\frac{\alg{OA'}}{\alg{OA}}.\]
+Exemple : avec $f'=\qty{10}{cm}$ et $\alg{OA}=\qty{-30}{cm}$, on trouve $\alg{OA'}=\qty{15}{cm}$ et $\gamma=-0{,}5$.
+\end{loi}
+\begin{propriete}[Caractéristiques de l'image]
+Si $\alg{OA'}>0$, l'image est \textbf{réelle} : on peut la recueillir sur un écran. Si $\alg{OA'}<0$, elle est \textbf{virtuelle}, du même côté que l'objet.
+Si $\gamma<0$, l'image est \textbf{renversée} ; si $\gamma>0$, elle est \textbf{droite}. Elle est agrandie si $|\gamma|>1$. Un objet réel placé entre $F$ et O donne une
+image virtuelle, droite et agrandie : c'est la \textbf{loupe}.
+\end{propriete}
+\par\penalty0
+\schema{18-loupe}
+\begin{python}
+fp = 10                                   # cm : distance focale
+for OA in [-50, -30, -20, -15, -12, -5]:  # cm : position de l'objet
+    OAp = 1 / (1 / fp + 1 / OA)           # relation de conjugaison
+    print(OA, 'cm :', round(OAp, 1), 'cm ; gamma =', round(OAp / OA, 2))
+\end{python}
+\begin{console}
+-50 cm : 12.5 cm ; gamma = -0.25
+-30 cm : 15.0 cm ; gamma = -0.5
+-20 cm : 20.0 cm ; gamma = -1.0
+-15 cm : 30.0 cm ; gamma = -2.0
+-12 cm : 60.0 cm ; gamma = -5.0
+-5 cm : -10.0 cm ; gamma = 2.0
+\end{console}
+\noindent\capacite{Capacité numérique} Quand l'objet s'approche du foyer, l'image réelle s'éloigne et grandit ; entre le foyer et la lentille, elle
+devient virtuelle et droite.
+\essSection{3}{Mise au point : l'œil et l'appareil photo}
+\begin{propriete}[Former une image nette]
+Pour qu'une image soit nette, elle doit se former sur le capteur. Dans un \textbf{appareil photo}, la distance lentille-capteur est
+réglable : la mise au point consiste à déplacer l'objectif. Dans l'\textbf{œil}, la distance cristallin-rétine est fixe : c'est la vergence du
+cristallin qui augmente quand on regarde de près (\textbf{accommodation}). Certains appareils utilisent des lentilles à focale variable.
+\end{propriete}
+\schema{18-oeil}
+\begin{attention}
+Respecter les signes : pour un objet réel placé avant la lentille, $\alg{OA}<0$. Utiliser les mêmes unités pour $\alg{OA}$, $\alg{OA'}$ et $f'$ ; la vergence
+se calcule avec $f'$ en mètres.
+\end{attention}
+\begin{experience}[Tester la relation de conjugaison]
+Sur un banc d'optique, on forme sur un écran l'image nette d'un objet lumineux pour plusieurs positions de l'objet. On trace
+$\dfrac{1}{\alg{OA'}}$ en fonction de $\dfrac{1}{\alg{OA}}$ : on obtient une droite de pente 1, d'ordonnée à l'origine $\dfrac{1}{f'}$.
+\end{experience}
+\begin{rediger}
+Écrire la relation littérale, isoler l'inconnue, puis remplacer en respectant les signes et les unités. Conclure sur la nature de
+l'image (réelle ou virtuelle, droite ou renversée, agrandie ou réduite) à partir des signes de $\alg{OA'}$ et de $\gamma$.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-18-1}
+\begin{exercice}[1]{Distance focale et vergence}
+\begin{questions}
+\item Rappeler la définition du foyer image d'une lentille convergente.
+\item Calculer la vergence d'une lentille de distance focale \qty{20}{cm}.
+\item Calculer la distance focale d'une lentille de vergence \num{8,0}\,$\delta$, puis d'une lentille de \num{50}\,$\delta$.
+\item Laquelle de ces lentilles est la plus convergente ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-2}
+\begin{exercice}[1]{Construire une image}
+\schema{18-ex02}
+\begin{questions}
+\item Lire la distance focale de la lentille et la position de l'objet.
+\item Construire l'image A'B' de l'objet AB à l'aide de trois rayons particuliers.
+\item Mesurer $\alg{OA'}$ et $\alg{A'B'}$. En déduire le grandissement.
+\item Décrire l'image : réelle ou virtuelle, droite ou renversée, agrandie ou réduite.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-3}
+\begin{exercice}[1]{Calculer une position et une taille d'image}
+Un objet AB de \qty{2,0}{cm} est placé à \qty{30}{cm} devant une lentille convergente de distance focale \qty{10}{cm}.
+\begin{questions}
+\item Que vaut $\alg{OA}$ ? Justifier son signe.
+\item Calculer $\alg{OA'}$ à l'aide de la relation de conjugaison.
+\item Calculer le grandissement, puis la taille de l'image.
+\item Calculer la position de l'image si l'objet est placé à \qty{15}{cm} de la lentille.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-4}
+\begin{exercice}[1]{La loupe}
+On observe une lettre de \qty{2,0}{mm} avec une loupe de distance focale \qty{5,0}{cm}, placée à \qty{3,0}{cm} au-dessus de la lettre.
+\begin{questions}
+\item Calculer la position de l'image.
+\item L'image est-elle réelle ou virtuelle ? Peut-on la recueillir sur un écran ?
+\item Calculer le grandissement et la taille de l'image de la lettre.
+\item Construire l'image à l'échelle 1/2.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-5}
+\begin{exercice}[1]{Projeter une image}
+Avec une lentille, on obtient l'image nette d'une diapositive, placée à \qty{25}{cm} de la lentille, sur un écran situé à \qty{1,00}{m} de la lentille.
+\begin{questions}
+\item Que valent $\alg{OA}$ et $\alg{OA'}$, en mètres ?
+\item Calculer la vergence de la lentille, puis sa distance focale.
+\item Calculer le grandissement. L'image est-elle droite ou renversée ?
+\item Pourquoi place-t-on les diapositives à l'envers dans un projecteur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-18-6}
+\begin{exercice}[2]{La relation de conjugaison en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Retrouver la ligne \code{OAp = ...} à partir de la relation de conjugaison.
+\item Pour quelle position de l'objet l'image a-t-elle la même taille que l'objet ? Où se trouve-t-elle alors ?
+\item Que se passe-t-il quand l'objet s'approche du foyer objet ?
+\item Interpréter la dernière ligne affichée.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-7}
+\begin{exercice}[2]{L'appareil photo}
+Un appareil photo a un objectif de distance focale \qty{50}{mm} et un capteur de \qty{24}{mm} sur \qty{36}{mm}. On photographie une personne de
+\qty{1,80}{m} située à \qty{3,0}{m}.
+\begin{questions}
+\item Pour un objet très éloigné, où se forme l'image ? Où place-t-on alors le capteur ?
+\item Calculer la distance objectif-capteur pour photographier la personne. De combien a-t-on déplacé l'objectif ?
+\item Calculer la taille de l'image de la personne sur le capteur. Tient-elle dans la hauteur de \qty{24}{mm} ? Et dans la largeur ?
+\item Calculer la distance objectif-capteur pour un objet situé à \qty{1,0}{m}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-8}
+\begin{exercice}[2]{L'accommodation de l'œil}
+On modélise l'œil par une lentille (le cristallin) placée à \qty{17}{mm} d'un écran (la rétine).
+\begin{questions}
+\item Quand l'œil regarde un objet très éloigné, au repos, quelle est la distance focale du cristallin ? Sa vergence ?
+\item Calculer la distance focale et la vergence nécessaires pour voir nettement un objet situé à \qty{25}{cm}.
+\item De combien de dioptries l'œil doit-il accommoder ?
+\item Calculer la taille, sur la rétine, de l'image d'une lettre de \qty{5}{mm} lue à \qty{25}{cm}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-9}
+\begin{exercice}[2]{Estimer une distance focale}
+Pour estimer la distance focale d'une lentille, on forme sur une feuille l'image d'une fenêtre éloignée : l'image est nette quand la
+feuille est à \qty{15}{cm} de la lentille.
+\begin{questions}
+\item Justifier qu'on obtient ainsi une estimation de la distance focale.
+\item On place ensuite un objet à \qty{50}{cm} de la lentille. Où former son image ?
+\item Si la fenêtre est en réalité à \qty{5,0}{m}, de combien l'image est-elle décalée par rapport au foyer ?
+\item Cette méthode est-elle précise ? Proposer une meilleure méthode.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-10}
+\begin{exercice}[2]{Tester la relation de conjugaison}
+Sur un banc d'optique, avec une lentille de focale inconnue, on a mesuré :
+\par\smallskip\noindent\hfill\begin{tabular}{lcccccc}
+\toprule
+$\alg{OA}$ (cm) & $-15$ & $-20$ & $-25$ & $-30$ & $-40$ & $-50$ \\
+$\alg{OA'}$ (cm) & 30,2 & 19,8 & 16,6 & 15,1 & 13,4 & 12,4 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\begin{questions}
+\item Calculer $\dfrac{1}{\alg{OA'}}-\dfrac{1}{\alg{OA}}$ pour chaque mesure. Que constate-t-on ?
+\item Tracer $\dfrac{1}{\alg{OA'}}$ en fonction de $\dfrac{1}{\alg{OA}}$. Quelle courbe obtient-on ?
+\item En déduire la distance focale et la vergence de la lentille.
+\item Citer une source d'erreur de cette expérience.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-11}
+\begin{exercice}[2]{Démontrer la relation de grandissement}
+\schema{18-ex11}
+\begin{questions}
+\item Pourquoi les droites (AB) et (A'B') sont-elles parallèles ?
+\item Appliquer le théorème de Thalès dans les triangles OAB et OA'B'.
+\item En tenant compte des signes, en déduire que $\gamma=\dfrac{\alg{A'B'}}{\alg{AB}}=\dfrac{\alg{OA'}}{\alg{OA}}$.
+\item Pourquoi une image réelle d'un objet réel est-elle toujours renversée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-18-12}
+\begin{exercice}[3]{Le vidéoprojecteur}
+\begin{docu}{1}{Le principe}
+Dans un vidéoprojecteur, une petite matrice de \qty{14}{mm} de large, fortement éclairée, forme l'objet. Un objectif de distance focale
+\qty{20}{mm} en donne une image agrandie sur un écran.
+\end{docu}
+\begin{docu}{2}{Installation}
+L'écran est d'abord placé à \qty{5,0}{m} de l'objectif, puis à \qty{3,0}{m}.
+\end{docu}
+\begin{questions}
+\item Calculer la distance entre la matrice et l'objectif pour un écran à \qty{5,0}{m}.
+\item Calculer le grandissement et la largeur de l'image.
+\item \initiative L'écran est rapproché à \qty{3,0}{m}. Comment faire la mise au point ? De combien faut-il déplacer l'objectif ?
+\item Calculer la largeur de l'image à \qty{3,0}{m}. Comment obtenir une grande image dans une petite salle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-13}
+\begin{exercice}[3]{L'appareil photo d'un smartphone}
+\begin{docu}{1}{Le module photo}
+L'objectif d'un smartphone a une distance focale de \qty{4,0}{mm}. Un petit moteur peut l'éloigner du capteur d'au plus \qty{0,2}{mm} par rapport à
+sa position pour un objet à l'infini.
+\end{docu}
+\begin{questions}
+\item Où se trouve le capteur quand on photographie un paysage lointain ?
+\item De combien faut-il déplacer l'objectif pour photographier un objet situé à \qty{10}{cm} ?
+\item \initiative Calculer la distance minimale de mise au point du smartphone.
+\item Calculer le grandissement à cette distance. Pourquoi les smartphones ajoutent-ils parfois un objectif « macro » ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-14}
+\begin{exercice}[3]{Observer un timbre à la loupe}
+\begin{docu}{1}{Observer confortablement}
+Un œil normal voit nettement sans fatigue les objets situés au-delà d'environ \qty{25}{cm}. Un philatéliste observe un timbre de \qty{2,5}{cm} de haut
+avec une loupe de distance focale \qty{8,0}{cm}, tenue à \qty{6,0}{cm} du timbre.
+\end{docu}
+\begin{questions}
+\item Calculer la position de l'image du timbre donnée par la loupe.
+\item Calculer le grandissement et la taille de l'image.
+\item L'œil étant placé contre la loupe, l'observation est-elle confortable ? Justifier.
+\item \initiative Que se passerait-il si le timbre était placé à plus de \qty{8,0}{cm} de la loupe ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-18-15}
+\begin{exercice}[3]{La lentille liquide}
+\begin{docu}{1}{Une lentille à focale variable}
+Certaines caméras utilisent une lentille liquide : une goutte dont la courbure varie avec une tension électrique. La distance entre la
+lentille et le capteur reste fixe, égale à \qty{5,0}{mm}, comme la distance cristallin-rétine dans l'œil.
+\end{docu}
+\begin{questions}
+\item Quelle distance focale faut-il pour photographier un objet très éloigné ? Calculer la vergence correspondante.
+\item Calculer la distance focale et la vergence nécessaires pour un objet situé à \qty{20}{cm}.
+\item \initiative Quelle variation de vergence faut-il pour passer de l'infini à \qty{10}{cm} ?
+\item Comparer ce mode de mise au point à celui d'un appareil photo classique et à celui de l'œil.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

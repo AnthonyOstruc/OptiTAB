@@ -1,0 +1,91 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 15 — L'intégrale de Gauss
+%% Résultats vérifiés par verifications/defis_11_15.py.
+
+\rubrique{Défi}
+
+\begin{defi}{L'intégrale de Gauss}{2 h}
+La fonction $t\mapsto\mathrm{e}^{-t^{2}}$ n'a pas de primitive exprimable à
+l'aide des fonctions usuelles (théorème de Liouville, admis) ; on va
+pourtant calculer exactement l'aire totale sous sa courbe, la plus célèbre
+des probabilités. On pose
+\[
+F(A)=\int_0^{A}\mathrm{e}^{-t^{2}}\,\mathrm{d}t\quad(A\geqslant0),
+\qquad
+W_k=\int_0^{\pi/2}\cos^{k}\theta\,\mathrm{d}\theta\quad(k\in\N),
+\]
+ces dernières étant les intégrales de Wallis, dont on rappelle
+l'équivalent $W_k\sim\sqrt{\pi/(2k)}$ (chapitre 11, exercice 23).
+
+\partieExo{A}{Existence et encadrement}
+\begin{questions}
+  \item Montrer que $F$ est croissante et que $F(A)\leqslant1+\frac1{\mathrm{e}}$
+    pour tout $A\geqslant0$. \emph{Comparer $\mathrm{e}^{-t^{2}}$ et
+    $\mathrm{e}^{-t}$ sur $\intFO{1}{+\infty}$.} En déduire que $F(A)$ admet
+    une limite finie $G$ quand $A\to+\infty$.
+  \item Montrer que $1+u\leqslant\mathrm{e}^{u}$ pour tout réel $u$. En
+    déduire, pour $n\geqslant1$ et $t\in\intFF{0}{\sqrt n}$ :
+    \[
+    \Bigl(1-\frac{t^{2}}{n}\Bigr)^{n}\leqslant\mathrm{e}^{-t^{2}}
+    \leqslant\Bigl(1+\frac{t^{2}}{n}\Bigr)^{-n} .
+    \]
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[x=2.3cm,y=2.6cm,line cap=round]
+  \fill[otGreen,opacity=0.18] (0,0) -- plot[domain=0:2.6,samples=90] ({\x},{exp(-\x*\x)}) -- (2.6,0) -- cycle;
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (2.8,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (0,1.2);
+  \draw[otNavy!60,line width=0.9pt,dash pattern=on 3pt off 1.5pt] plot[domain=0:2.6,samples=90]
+    ({\x},{(1+\x*\x/3)^(-3)});
+  \draw[otNavy,line width=0.9pt,dash pattern=on 1pt off 1.2pt] plot[domain=0:1.7320,samples=90]
+    ({\x},{(1-\x*\x/3)^3});
+  \draw[otGreenDark,line width=1.3pt] plot[domain=0:2.6,samples=90] ({\x},{exp(-\x*\x)});
+  \draw[otMuted,line width=0.4pt] (1.7320,0.03) -- (1.7320,-0.03);
+  \node[font=\tiny,text=otMuted,below] at (1.7320,-0.02) {$\sqrt3$};
+  \node[font=\tiny,text=otMuted,anchor=east] at (0,1) {$1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south west] at (0.62,0.72) {$\mathrm{e}^{-t^{2}}$};
+  \node[font=\scriptsize,text=otNavy!70,anchor=west] at (1.25,0.33) {$\bigl(1+\frac{t^{2}}{3}\bigr)^{-3}$};
+  \node[font=\scriptsize,text=otNavy,anchor=east] at (0.5,0.28) {$\bigl(1-\frac{t^{2}}{3}\bigr)^{3}$};
+  \draw[otNavy,line width=0.4pt] (0.5,0.28) -- (0.86,0.31);
+\end{tikzpicture}\\[0.5mm]
+\legende{La courbe de Gauss (en vert, aire $G$ ombrée) encadrée par les
+deux fonctions de la question 2 pour $n=3$.}
+\end{center}
+
+\partieExo{B}{Le calcul par les intégrales de Wallis}
+\begin{questions}[resume]
+  \item Par le changement de variable $t=\sqrt n\sin\theta$, montrer que
+    \[
+    \int_0^{\sqrt n}\Bigl(1-\frac{t^{2}}{n}\Bigr)^{n}\mathrm{d}t
+    =\sqrt n\,W_{2n+1} .
+    \]
+  \item Par le changement de variable $t=\sqrt n\tan\theta$, montrer que,
+    pour $n\geqslant2$,
+    \[
+    \int_0^{\sqrt n}\Bigl(1+\frac{t^{2}}{n}\Bigr)^{-n}\mathrm{d}t
+    \leqslant\sqrt n\,W_{2n-2} .
+    \]
+  \item En déduire $\sqrt n\,W_{2n+1}\leqslant F\bigl(\sqrt n\bigr)\leqslant\sqrt n\,W_{2n-2}$,
+    puis
+    \[
+    G=\lim_{A\to+\infty}\int_0^{A}\mathrm{e}^{-t^{2}}\,\mathrm{d}t=\frac{\sqrt\pi}{2} .
+    \]
+\end{questions}
+
+\partieExo{C}{Applications}
+\begin{questions}[resume]
+  \item Pour $a>0$, déterminer la limite de
+    $\displaystyle\int_0^{A}\mathrm{e}^{-at^{2}}\,\mathrm{d}t$ quand
+    $A\to+\infty$.
+  \item Montrer que
+    $\dfrac{1}{\sqrt{2\pi}}\displaystyle\int_{-A}^{A}\mathrm{e}^{-t^{2}/2}\,\mathrm{d}t
+    \xrightarrow[A\to+\infty]{}1$ : c'est la normalisation de la \emph{loi
+    normale}, limite universelle des sommes de variables aléatoires
+    indépendantes (programme de deuxième année).
+  \item D'où vient le $\sqrt\pi$ ? Comparer avec les apparitions de $\pi$
+    dans la formule de Stirling (chapitre 15) et dans la marche aléatoire
+    (chapitre 17).
+\end{questions}
+\end{defi}

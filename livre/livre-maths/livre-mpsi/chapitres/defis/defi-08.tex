@@ -1,0 +1,81 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 8 — Le groupe du carré et le comptage des coloriages
+%% Résultats vérifiés par verifications/defis_06_10.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le groupe du carré et le comptage des coloriages}{1 h 30}
+Soit $\mathcal{C}$ le carré de sommets $A_1,A_2,A_3,A_4$ (dans le sens
+trigonométrique) et de centre $O$. On note $D_4$ l'ensemble des isométries
+du plan qui laissent $\mathcal{C}$ globalement invariant : c'est un groupe
+pour la composition (on l'admet). On admet aussi qu'une telle isométrie
+fixe $O$, permute les sommets, et qu'elle est entièrement déterminée par
+les images de $A_1$ et $A_2$. On identifie chaque élément de $D_4$ à la
+permutation de $\ens{1,2,3,4}$ qu'il induit sur les indices des sommets.
+
+\partieExo{A}{Les huit isométries}
+\begin{questions}
+  \item Montrer que $D_4$ a au plus $8$ éléments. On note $r$ la rotation
+    de centre $O$ et d'angle $\frac\pi2$, et $s$ la réflexion d'axe
+    $(A_1A_3)$. Écrire $r$ et $s$ comme permutations.
+  \item Vérifier que $srs=r^{-1}$, et en déduire que
+    $D_4=\ens{\mathrm{id},r,r^{2},r^{3},s,rs,r^{2}s,r^{3}s}$ a exactement
+    $8$ éléments. Le groupe $D_4$ est-il commutatif ?
+  \item Décrire géométriquement chacun des éléments $r^{k}s$ (ce sont des
+    réflexions : préciser leurs axes sur la figure), puis donner l'ordre de
+    chaque élément de $D_4$.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=1.25,line cap=round]
+  \fill[otNavyTint] (1,0) -- (0,1) -- (-1,0) -- (0,-1) -- cycle;
+  \draw[otGreenDark,line width=0.6pt] (-1.55,0) -- (1.55,0) (0,-1.55) -- (0,1.55);
+  \draw[otGreen!70!black,line width=0.6pt,dash pattern=on 3pt off 1.8pt]
+    (-1.15,-1.15) -- (1.15,1.15) (-1.15,1.15) -- (1.15,-1.15);
+  \draw[otNavy,line width=1.2pt] (1,0) -- (0,1) -- (-1,0) -- (0,-1) -- cycle;
+  \foreach \p/\n/\a in {(1,0)/1/south east,(0,1)/2/north east,(-1,0)/3/north west,(0,-1)/4/south west}{%
+    \fill[otNavy] \p circle (1.6pt);
+    \node[font=\small,text=otNavy,anchor=\a] at \p {$A_{\n}$};}
+  \fill[otInk] (0,0) circle (1.2pt);
+  \node[font=\scriptsize,text=otInk,anchor=north east] at (0,0) {$O$};
+  \draw[otInk,line width=0.7pt,-{Stealth[length=1.8mm]}] (20:0.42) arc[start angle=20,end angle=110,radius=0.42];
+  \node[font=\scriptsize,text=otInk] at (65:0.6) {$r$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (1.55,0) {axe de $s$};
+  \node[font=\scriptsize,text=otGreen!60!black,anchor=south west] at (1.15,1.15) {médiatrice};
+\end{tikzpicture}\\[0.5mm]
+\legende{Les symétries du carré : la rotation $r$ d'un quart de tour, deux
+réflexions d'axes les diagonales (traits pleins) et deux d'axes les
+médiatrices des côtés (tirets).}
+\end{center}
+
+\partieExo{B}{Structure du groupe}
+\begin{questions}[resume]
+  \item Montrer que $\ens{\mathrm{id},r,r^{2},r^{3}}$,
+    $\ens{\mathrm{id},r^{2},s,r^{2}s}$ et
+    $\ens{\mathrm{id},r^{2},rs,r^{3}s}$ sont des sous-groupes d'ordre $4$
+    de $D_4$ ; lesquels sont cycliques ?
+  \item Déterminer le centre de $D_4$, c'est-à-dire l'ensemble des
+    éléments qui commutent avec tous les autres.
+  \item Montrer que $D_4$ n'est isomorphe à aucun groupe commutatif, et
+    donner un groupe commutatif d'ordre $8$ possédant, comme $D_4$, un
+    élément d'ordre $4$.
+\end{questions}
+
+\partieExo{C}{Compter les coloriages à symétrie près}
+On colorie chaque sommet en noir ou en blanc : il y a $2^{4}=16$
+coloriages. Deux coloriages sont \emph{équivalents} si une isométrie de
+$D_4$ transforme l'un en l'autre. Pour $g\in D_4$, on note $\mathrm{Fix}(g)$
+le nombre de coloriages invariants par $g$.
+\begin{questions}[resume]
+  \item Montrer que $\mathrm{Fix}(g)=2^{c(g)}$, où $c(g)$ est le nombre de
+    cycles (points fixes compris) de la permutation $g$. Calculer
+    $\mathrm{Fix}(g)$ pour les huit éléments de $D_4$.
+  \item On admet la \emph{formule de Burnside} : le nombre de classes
+    d'équivalence vaut $\dfrac{1}{|D_4|}\displaystyle\sum_{g\in D_4}\mathrm{Fix}(g)$.
+    En déduire ce nombre, et le confirmer en décrivant directement les
+    classes.
+  \item Combien de colliers de quatre perles, rigides et retournables,
+    peut-on former avec des perles de trois couleurs ?
+\end{questions}
+\end{defi}

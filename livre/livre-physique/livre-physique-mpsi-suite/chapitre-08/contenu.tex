@@ -1,0 +1,619 @@
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)},x=1mm,y=1mm]
+\fill[otNavy](0,0)rectangle(210,297);\fill[otNavyDark](0,0)rectangle(210,88);
+\draw[white,opacity=.055,step=7mm](0,0)grid(210,297);
+\node[anchor=north west,inner sep=0pt]at(23,278){\includegraphics[width=57mm]{images/logo-blanc.png}};
+\node[anchor=west,text=otGreen,font=\otSemi\fontsize{12}{15}\selectfont]at(24,235){MPSI\quad /\quad PHYSIQUE};
+\node[anchor=west,text=white,font=\sffamily\bfseries\fontsize{52}{56}\selectfont]at(22,211){Physique};
+\node[anchor=north west,text=white,text width=158mm,font=\otLight\fontsize{31}{38}\selectfont]at(24,191){Propagation d’un signal};
+\fill[otGreen](24,149)rectangle(54,150.4);
+\node[anchor=north west,text=white,text width=153mm,font=\sffamily\fontsize{11}{16}\selectfont]at(24,139){Cours développé et schémas vectoriels\par 24 exercices et corrigés expliqués\par 3 défis, TP, activité numérique, DM et DS\par Parcours sur des supports authentiques};
+\draw[white,opacity=.6,-{Stealth}] (24,46)--(185,46);
+\draw[white,opacity=.6,-{Stealth}] (28,17)--(28,81);
+\draw[otGreen,line width=1.8pt] plot[domain=0:6,samples=180] ({30+24*\x},{46+27*cos(deg(3*\x))*exp(-.18*\x)});
+\node[anchor=west,text=white,font=\otSemi\fontsize{9}{12}\selectfont]at(24,8){CHAPITRE 08\quad /\quad COLLECTION OPTITAB\quad /\quad OCTOBRE 2026};
+\end{scope}\end{tikzpicture}\null
+
+\Page{Collection OptiTAB}{Physique MPSI}{titre}
+\thispagestyle{mpsiFront}
+\vspace{8mm}\begin{center}\includegraphics[width=63mm]{images/logo-couleur.png}\par\vspace{15mm}
+{\otSemi\color{otGreenDark}CLASSE PRÉPARATOIRE SCIENTIFIQUE}\par\vspace{5mm}
+{\otLight\fontsize{23}{29}\selectfont Cours et exercices corrigés}\par\vspace{12mm}
+{\fontsize{18}{24}\selectfont Propagation d’un signal}\par\vspace{8mm}
+Chapitre 08\par 24 exercices progressifs ; 3 défis avancés\par TP, numérique, DM et DS avec barèmes\par\vspace{12mm}
+Collection OptiTAB\par\href{https://www.optitab.net}{optitab.net}\end{center}
+\vfill\source{Édition de travail du 25 octobre 2026. Énoncés OptiTAB originaux, figures vectorielles et corrigés indépendants. Les supports extérieurs sont identifiés à la fin du chapitre.}
+
+
+\Page{Pour ouvrir le chapitre}{Avant-propos et mode d’emploi}{avant}
+\thispagestyle{mpsiFront}
+Ce chapitre prolonge le manuel de physique MPSI dans la charte de la collection. Il traite la propagation unidimensionnelle, le retard, la double périodicité, les déphasages et la distinction entre milieux dispersifs et non dispersifs. Le programme de référence est l’\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{arrêté du 5 janvier 2021}, annexe 2, rubrique 1.6 / ondes progressives.
+\Sub{Comprendre, chercher, vérifier}
+Lire un résultat ne suffit pas à se l’approprier. Redessiner le système, orienter les grandeurs, retrouver les équations puis expliquer leurs limites : ces gestes relient le cours aux problèmes. Une réponse numérique doit comporter une unité, un nombre raisonnable de chiffres et une interprétation.
+\begin{loi}{Un parcours en quatre étapes}
+1. Faire le diagnostic p.\,\pageref{diagnostic} et reprendre les prérequis fragiles.\par
+2. Travailler le cours p.\,\pageref{cours-1} et refaire les exemples.\par
+3. Chercher les exercices p.\,\pageref{td1}, puis les défis et évaluations.\par
+4. Corriger, expliquer l’erreur puis refaire une question sans solution.
+\end{loi}
+\Sub{Utiliser les corrigés}
+Les solutions commencent p.\,\pageref{corr-diag}. Avant de les lire, utiliser les indications p.\,\pageref{indices}. Le barème du DM et du DS sert à distinguer mise en équation, calcul et interprétation ; ce n’est pas un barème officiel de concours.
+\Sub{Travailler sur de vrais sujets}
+Les pages p.\,\pageref{sources-1} et suivantes donnent les liens, les questions ciblées et des repères de correction de supports réellement publiés. Conserver leurs données et figures d’origine. Les énoncés OptiTAB sont des créations pédagogiques, clairement distinguées de ces documents.
+\begin{methode}{Une fiche de progrès}
+Après chaque exercice, noter S (réussi seul), A (réussi avec aide) ou R (à reprendre). Choisir une question à refaire deux jours plus tard. Une solution comprise doit pouvoir être reconstruite, pas seulement reconnue.
+\end{methode}
+\source{© OptiTAB, 2026. Les séries de données créées pour le TP et le numérique sont signalées comme simulations. Les références des auteurs extérieurs restent attachées aux documents d’origine.}
+
+
+\Page{Collection OptiTAB}{Sommaire}{sommaire}
+\thispagestyle{mpsiFront}
+\begingroup\setlength{\parskip}{0pt}\fontsize{10}{13.5}\selectfont
+\source{MPSI · Physique · Plan de l’ouvrage}
+\input{plan}
+\endgroup
+\vspace{2mm}\hrule\vspace{2mm}
+\tocresource{Parcours et ressources du chapitre 08}{ressources}
+\source{La pagination concerne ce fascicule. Les autres chapitres sont des volumes séparés ou en préparation ; aucune page fictive n’est attribuée.}
+
+
+\Page{Collection OptiTAB}{Parcours et ressources}{ressources}
+\thispagestyle{mpsiFront}
+\tocresource{Diagnostic}{diagnostic}
+\tocresource{Cours et méthodes}{cours-1}
+\tocresource{Travaux pratiques}{tp}
+\tocresource{Activité numérique}{numerique}
+\tocresource{24 exercices progressifs}{td1}
+\tocresource{Trois défis avancés}{defi1}
+\tocresource{Devoir maison}{dm}
+\tocresource{Devoir surveillé de 2 heures}{ds1}
+\tocresource{Indications progressives}{indices}
+\tocresource{Corrigés du diagnostic}{corr-diag}
+\tocresource{Corrigés des exercices}{corr-td1}
+\tocresource{Corrigés des défis}{corr-defi1}
+\tocresource{Corrigé et barème du DM}{corr-dm}
+\tocresource{Corrigé et barème du DS}{corr-ds1}
+\tocresource{Supports authentiques et références}{sources-1}
+\begin{docu}{Mon objectif de travail}\checkline{Je refais une démonstration.}\checkline{Je réussis une application sans aide.}\checkline{Je justifie le choix d’un modèle.}\checkline{Je corrige une évaluation et repère la capacité à reprendre.}\end{docu}
+
+\Page{Chapitre 08 / Programme officiel}{Propagation d’un signal}{chapitre-08}
+Une perturbation émise en un point n’est pas reçue instantanément ailleurs. Dans un milieu transparent non dispersif, elle se transmet sans changer de forme : la propagation se décrit par une translation. Cette idée permet de prédire un enregistrement, mesurer une célérité et interpréter un déphasage.
+\begin{loi}{Notions et capacités travaillées}
+Grandeurs acoustiques, électriques et électromagnétiques ; formes f(x-ct), g(x+ct), f(t-x/c), g(t+x/c) ; évolution temporelle et spatiale ; célérité, retard et vitesse de phase ; relation \ensuremath{\lambda}f = c ; ordres de grandeur ; mesure et dispersion.
+\end{loi}
+
+\Sub{Prérequis}
+Sinusoïdes, phase, période, fréquence et lecture de graphes. Conversion des durées et longueurs. Le chapitre 7 fournit la décomposition d’un signal en composantes.
+
+\begin{methode}{La méthode du chapitre}
+Identifier la grandeur et le sens de propagation ; choisir une origine ; écrire le retard ; distinguer profil spatial et enregistrement temporel ; contrôler unités et causalité ; discuter le domaine du modèle.
+\end{methode}
+
+\source{Concordance : annexe 2 de l’arrêté du 5 janvier 2021, rubrique 1.6 / ondes progressives. Conformément au programme, aucune équation d’onde n’est utilisée. Les exemples dispersifs restent descriptifs ou utilisent une loi fournie.}
+
+\Page{Diagnostic / 15 min}{Avant d’ouvrir le cours}{diagnostic}
+\begin{questions}
+\item Combien vaut 0,80 ms en secondes ?
+\item Une perturbation parcourt 0,68 m en 2,0 ms. Calculer sa célérité.
+\item Un retard positif \ensuremath{\tau} transforme f(t) en quelle fonction ?
+\item À f = 500 Hz, donner T et \ensuremath{\omega}.
+\item Que vaut $\cos(\theta-2\pi)$ ?
+\item Quelle grandeur oscille dans un son ?
+\item Le son se propage-t-il dans le vide ?
+\item Une onde progressive transporte-t-elle nécessairement le milieu avec elle ?
+\end{questions}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les unités sont maîtrisées.}\checkline{Je peux orienter un schéma et annoncer les hypothèses.}\checkline{Je sais expliquer une condition initiale.}Corrigé p.\,\pageref{corr-diag}.
+\end{docu}
+
+
+\Page{Cours / 1}{Quel signal se propage ?}{cours-1}
+\Sub{Une grandeur mesurable}
+Un signal est la variation d’une grandeur physique. Dans l’air, on peut mesurer la surpression $p-p_0$ avec un microphone ; sur une corde, le déplacement transversal y ; dans un câble, une tension ou un courant ; pour la lumière, des champs électrique et magnétique. La grandeur et son unité doivent accompagner toute fonction s(x,t).
+\begin{loi}{Onde et transport}
+Une onde décrit la propagation d’une perturbation. La célérité de la perturbation n’est pas la vitesse d’une particule du support. Une corde peut porter une bosse qui avance horizontalement alors que ses points se déplacent surtout verticalement.
+\end{loi}
+\Sub{Ordres de grandeur utiles}
+Le domaine audible usuel s’étend environ de 20 Hz à 20 kHz ; au-delà, on parle d’ultrasons. Les vibrations mécaniques d’une corde peuvent être de l’ordre de quelques dizaines à quelques milliers de hertz. Le visible est de l’ordre de $4\times10^{14}$ à $8\times10^{14}$ Hz. Le son dans l’air près de la température ambiante se propage vers 340 m/s ; la lumière dans le vide à $c_0=299\,792\,458$ m/s.
+\begin{piege}{Le support et le signal}
+Une onde électromagnétique peut se propager dans le vide. Une onde sonore ne le peut pas. Ne pas attribuer la célérité de la lumière à un signal électrique dans n’importe quel câble : sa propagation dépend du guide.
+\end{piege}
+
+
+\Page{Cours / 2}{La translation d’un profil}{cours-2}
+\fig{impulsion}{Une même impulsion translatée de 4 m vers la droite en 2 s. Sa largeur et son amplitude sont conservées dans le modèle.}\begin{loi}{Propagation vers les x croissants}
+À t = 0, le profil est F(x). À la date t :\[s(x,t)=F(x-ct),\qquad c>0.\]Un point caractéristique vérifie $x-ct=\text{constante}$, donc se déplace à la vitesse +c. Vers les x décroissants : $s(x,t)=G(x+ct)$.
+\end{loi}
+\Sub{Tester le signe}
+Pour une bosse initialement centrée en $x_0$, $F(x-x_0)$ devient $F(x-x_0-ct)$ : son centre est $x_0+ct$. Ce test évite de mémoriser un signe sans comprendre. La notation F prend un argument de longueur ; elle est distincte d’une fonction source dont l’argument serait un temps.
+
+
+\Page{Cours / 3}{Le retard d’un événement}{cours-3}
+\fig{capteurs}{Deux capteurs séparés dans le sens de propagation. Le retard porte sur le même événement physique.}\begin{loi}{Écriture à partir de la source}
+Si la source en x = 0 émet $s(0,t)=f(t)$, la propagation vers +x donne\[s(x,t)=f(t-x/c).\]À distance x, le signal reçu à t a été émis à $t-x/c$. Entre A et B : $s_B(t)=s_A(t-\tau)$ avec $\tau=(x_B-x_A)/c$.
+\end{loi}
+\Sub{Causalité}
+Une source mise en route à t = 0 n’a encore rien envoyé en x si $t<x/c$. Pour une salve finie, appliquer le retard à l’enveloppe et à l’oscillation qu’elle contient. Écrire un sinus présent depuis toujours ne représente pas à lui seul le front d’allumage.
+
+
+\Page{Cours / 4}{Lire l’espace et le temps}{cours-4}
+\Sub{Deux expériences graphiques}
+Une photographie à t fixé représente s en fonction de x. Un capteur à x fixé représente s en fonction de t. Leurs axes et leurs unités diffèrent ; une largeur de profil en mètres ne peut pas être lue directement comme une durée.
+\begin{loi}{Largeur et durée}
+Pour une impulsion se propageant sans déformation, une largeur spatiale $\ell$ correspond à une durée de passage $\Delta t=\ell/c$. Pour une propagation vers +x, les points les plus à droite du profil passent les premiers devant un capteur placé en aval.
+\end{loi}
+\Sub{Un exemple asymétrique}
+Un profil triangulaire s’étend de x = 1 m à x = 5 m à t = 0, avec son maximum en x = 2 m, et avance à 2 m/s. Au capteur x = 9 m, le bord droit arrive à t = 2 s, le maximum à t = 3,5 s et le bord gauche à t = 4 s. L’enregistrement monte donc pendant 1,5 s puis descend pendant 0,5 s. Il inverse l’ordre de lecture gauche-droite du profil spatial.
+\begin{methode}{Construire sans formule}
+Suivre chaque sommet ou discontinuité avec $x(t)=x(0)+ct$. Ranger ses dates d’arrivée. Relier ensuite les hauteurs dans le bon ordre. Cette méthode fonctionne aussi pour un signal à plusieurs impulsions.
+\end{methode}
+
+
+\Page{Cours / 5}{L’onde progressive sinusoïdale}{cours-5}
+\begin{loi}{Une phase qui se déplace}
+\[s(x,t)=A\cos(\omega t-kx+\varphi_0),\quad k=\omega/c>0.\]Cette écriture décrit une propagation vers +x. Une phase constante donne $\omega\dd t-k\dd x=0$, donc $\dd x/\dd t=\omega/k=c$. Vers -x, remplacer -kx par +kx.
+\end{loi}
+\fig{sinus-espace}{Deux photographies espacées de T/4 : le profil avance de \ensuremath{\lambda}/4 vers les x croissants.}\Sub{Paramètres}
+A est une amplitude, $\omega$ en rad/s une pulsation et k en rad/m un nombre d’onde. L’argument du cosinus est sans dimension. La phase initiale dépend des origines choisies ; le sens de propagation ne dépend pas du signe isolé de tout l’argument, puisque le cosinus est pair.
+
+
+\Page{Cours / 6}{La double périodicité}{cours-6}
+\fig{sinus-temps}{À un point situé \ensuremath{\lambda}/4 plus loin, le signal retarde d’un quart de période. Les deux capteurs mesurent la même fréquence.}\begin{loi}{Périodes temporelle et spatiale}
+\[T=\frac{2\pi}{\omega},\quad \lambda=\frac{2\pi}{k},\quad f=\frac1T,\quad c=\lambda f.\]À position fixée, s se reproduit après T ; à date fixée, le profil se reproduit après \ensuremath{\lambda}. En une période, une crête parcourt une longueur d’onde.
+\end{loi}
+\Sub{Application}
+Un ultrason à 40,0 kHz dans l’air à 340 m/s possède T = 25,0 $\mu$s et \ensuremath{\lambda} = 8,50 mm. Une lumière de longueur d’onde dans le vide 600 nm a une fréquence proche de $5{,}00\times10^{14}$ Hz. Les échelles diffèrent de nombreux ordres de grandeur, mais la relation reste la même.
+
+
+\Page{Cours / 7}{Déphasage dû à la propagation}{cours-7}
+\begin{loi}{Retard et phase}
+Pour B en aval de A dans une propagation vers +x :\[\varphi_B-\varphi_A=-k(x_B-x_A)=-\omega\tau\pmod{2\pi}.\]Deux points sont en phase si leur séparation est un multiple de \ensuremath{\lambda} ; en opposition si elle vaut un multiple impair de \ensuremath{\lambda}/2.
+\end{loi}
+\Sub{L’ambiguïté des sinus}
+Un déphasage de $-\pi/2$ peut correspondre aux retards T/4, 5T/4, 9T/4, etc. Une mesure à une seule fréquence ne suffit donc pas à connaître un grand retard sans information supplémentaire. Une salve, un déplacement progressif du capteur ou plusieurs fréquences permettent de lever l’ambiguïté.
+\Sub{Exemple résolu}
+À 1 kHz, une phase relative $-90^\circ$ donne $\tau=0{,}25$ ms modulo 1 ms. Si la distance est voisine de 0,425 m et c voisine de 340 m/s, le retard plausible est 1,25 ms. Déduire c du retard minimal de 0,25 ms donnerait une valeur cinq fois trop grande.
+\begin{methode}{Dérouler une phase}
+Commencer avec les capteurs proches, puis les éloigner sans perdre la continuité de la courbe. Compter les tours complets de phase, en plus de l’angle affiché.
+\end{methode}
+
+
+\Page{Cours / 8}{Mesurer une célérité}{cours-8}
+\Sub{Retard d’une salve}
+Émettre une impulsion ou une salve courte ; enregistrer les deux capteurs sur la même base de temps ; mesurer leur distance ; comparer le même motif. Alors c = d/\ensuremath{\tau}. Un pic de corrélation peut aider, mais il faut vérifier le sens du décalage et éviter de choisir un autre cycle du sinus.
+\begin{loi}{Incertitude dans un modèle simple}
+Si d et \ensuremath{\tau} ont des incertitudes-types indépendantes et petites :\[\frac{u(c)}c=\sqrt{\left(\frac{u(d)}d\right)^2+\left(\frac{u(\tau)}\tau\right)^2}.\]Une erreur systématique commune aux positions ou aux canaux demande un traitement distinct ; la formule ne remplace pas l’analyse du montage.
+\end{loi}
+\Sub{Mesure par \ensuremath{\lambda} et f}
+À fréquence fixe, déplacer un récepteur entre plusieurs positions en phase. Mesurer une distance correspondant à N longueurs d’onde et diviser par N réduit l’effet d’une incertitude de lecture sur les positions. Utiliser ensuite c = \ensuremath{\lambda}f. Les réflexions parasites peuvent déplacer les maxima : éloigner les obstacles ou analyser une fenêtre temporelle avant leur retour.
+\begin{docu}{Un résultat doit être comparé}
+Comparer à une valeur attendue pour le milieu et ses conditions. Conclure sur la compatibilité au regard des incertitudes, pas seulement sur l’égalité des chiffres affichés.
+\end{docu}
+
+
+\Page{Cours / 9}{Milieux transparents et non dispersifs}{cours-9}
+\begin{loi}{Le modèle de translation}
+Un milieu transparent dans la bande étudiée transmet le signal avec une absorption négligeable. Un milieu non dispersif possède une vitesse de phase indépendante de la fréquence dans cette bande. Si toutes les composantes subissent le même retard et une transmission identique, le signal conserve sa forme.
+\end{loi}
+\Sub{Des hypothèses locales}
+Ces propriétés sont valables sur une bande et une distance données. Un milieu peut être faiblement dispersif sur une bande étroite et nettement dispersif sur une bande plus large. La lumière dans le vide est non dispersive ; le son dans l’air est souvent modélisé ainsi dans le domaine usuel. Une corde idéale sous tension constante fournit aussi un modèle non dispersif.
+\Sub{Atténuation et dispersion}
+Une amplitude qui décroît avec la distance signale une perte ou un étalement géométrique, sans prouver une dispersion. Une déformation peut résulter d’une absorption dépendant de la fréquence, d’une dispersion ou des deux. Pour isoler la dispersion, comparer les phases et les vitesses des composantes, en plus des amplitudes.
+\begin{piege}{Ne pas généraliser sans bande}
+Les vagues à la surface de l’eau peuvent être dispersives ; leur célérité dépend du régime et de la longueur d’onde. Une valeur unique fournie dans un exercice peut être une hypothèse locale de modélisation.
+\end{piege}
+
+
+\Page{Cours / 10}{Comprendre la dispersion}{cours-10}
+\fig{dispersion}{Deux composantes ayant acquis une phase relative différente changent la forme du signal, même avec des amplitudes inchangées.}\Sub{La vitesse de phase}
+Pour une composante sinusoïdale, $v_\varphi=\omega/k$. Dans un milieu dispersif, k dépend de \ensuremath{\omega} autrement que par une proportionnalité de coefficient constant. Chaque composante accumule donc une phase différente de celle d’une translation unique.
+\begin{loi}{Une loi fournie suffit}
+Si deux composantes de fréquences $f_1$ et $f_2$ se propagent à des vitesses c1 et c2, leurs phases après d sont $-2\pi f_1d/c_1$ et $-2\pi f_2d/c_2$. Un même retard décrirait les deux seulement si $d/c_1=d/c_2$, à l’ambiguïté périodique près.
+\end{loi}
+\Sub{Ce que l’on n’en déduit pas}
+La vitesse de phase d’une composante ne suffit pas à connaître la vitesse d’un front ou d’une enveloppe dans un milieu dispersif. Ici, on se limite à comparer les composantes et leur déformation ; une théorie du paquet d’ondes demande d’autres outils.
+
+
+\Page{Cours / 11}{Une méthode complète sur un signal réel}{cours-11}
+\Sub{Étape 1 : annoncer le modèle}
+Préciser le milieu, l’axe, la grandeur mesurée et l’intervalle où l’on néglige pertes et dispersion. Si un mur renvoie une onde, la mesure ne correspond plus à une onde progressive unique. Choisir si possible les dates antérieures au retour de l’écho.
+\Sub{Étape 2 : choisir la bonne fonction}
+Une source f(t) impose $f(t-x/c)$ pour une propagation vers +x. Un profil initial F(x) impose F(x-ct). Dans les deux cas, vérifier le déplacement d’un maximum ou l’arrivée du front. Pour une source démarrant à zéro, conserver la condition de support de f.
+\Sub{Étape 3 : relier les observations}
+Passer d’une distance à un retard, d’une fréquence à une longueur d’onde et d’un retard à une phase. Utiliser plusieurs observations pour vérifier c : une salve donne le retard absolu, tandis qu’un sinus donne une mesure fine modulo sa période.
+\begin{methode}{Une phrase de conclusion utile}
+« Les signaux sont compatibles avec une translation de délai \ensuremath{\tau} dans la bande étudiée. La célérité déduite est c, avec son incertitude. Les différences résiduelles de forme limitent le modèle. » Cette conclusion distingue le résultat mesuré de l’hypothèse d’absence de dispersion.
+\end{methode}
+\begin{docu}{Vers le chapitre 9}
+Quand deux ondes atteignent le même point, la somme dépend de leur phase relative. Le déphasage de propagation devient alors le mécanisme des interférences.
+\end{docu}
+
+
+\Page{Pratique / TP}{Mesurer la célérité des ultrasons}{tp}
+\fig{capteurs}{Deux récepteurs évitent de confondre délai électronique d’émission et délai de propagation entre les points de mesure.}\Sub{Deux méthodes}
+Utiliser une salve à 40 kHz. Relever le retard entre deux récepteurs séparés de d, puis répéter pour plusieurs distances. Ajuster \ensuremath{\tau} = d/c + \ensuremath{\tau_0} : la pente donne 1/c et l’ordonnée teste un décalage des voies. En émission continue, mesurer ensuite une distance couvrant dix retours en phase pour obtenir \ensuremath{\lambda}.
+\Sub{Données simulées et exploitation}
+Pour d = 0,170 ; 0,340 ; 0,510 m, on donne \ensuremath{\tau} = 0,520 ; 1,020 ; 1,520 ms. La pente vaut 2,941 ms/m, donc c = 340 m/s ; l’offset est 20 $\mu$s. Utiliser d/\ensuremath{\tau} sans retirer l’offset sous-estimerait c. Dix longueurs d’onde doivent mesurer 85,0 mm à 40,0 kHz.
+\begin{methode}{Compte rendu attendu}
+Donner les points et résidus de l’ajustement, le choix de l’événement temporel, les incertitudes de position et de temps, la comparaison des deux méthodes et l’effet possible des réflexions. Ces données sont créées pour l’entraînement.
+\end{methode}
+
+
+\Page{Pratique / Numérique}{Translater une impulsion sans équation d’onde}{numerique}
+On calcule directement la fonction retardée d’une source gaussienne. La source est définie pour tout temps ; il s’agit d’un modèle mathématique d’impulsion, sans front abrupt.
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+c = 2.
+t = np.linspace(-1, 6, 7001)
+def source(t):
+    return np.exp(-((t-1)/0.2)**2)
+signals = {}
+for x in (0., 2., 5.):
+    s = source(t-x/c)
+    signals[x] = s
+    plt.plot(t, s, label=f"x={x} m")
+plt.xlabel("t (s)"); plt.ylabel("s / A")
+plt.grid(); plt.legend(); plt.tight_layout()
+peaks = {x: t[s.argmax()] for x,s in signals.items()}
+\end{verbatim}
+Les maxima sont à 1,0 ; 2,0 ; 3,5 s. Les différences de dates valent les différences de positions divisées par c. Construire ensuite les profils spatiaux $s(x,t)$ à deux instants : les maxima doivent être distants de $c\Delta t$. Doubler c divise les retards par deux, sans changer la durée de l’impulsion émise. Une largeur spatiale, elle, est multipliée par c.
+
+
+\Page{Bilan de cours}{Les réflexes à conserver}{synthese}
+\begin{loi}{Les relations et leurs hypothèses}
+Vers +x : F(x-ct) ou f(t-x/c). Vers -x : G(x+ct) ou g(t+x/c). $\tau=d/c$, $\lambda=c/f$, $k=2\pi/\lambda=\omega/c$, $\Delta\varphi=-\omega\tau$ en aval.
+\end{loi}
+\Sub{Une résolution rédigée}
+Faire un dessin de l’axe ; suivre un événement ; légender espace et temps ; traiter les fronts ; lever les tours de phase ; comparer plusieurs mesures et annoncer le domaine du modèle.
+\begin{piege}{Erreurs à éviter}
+Lire une photographie comme un chronogramme ; confondre la vitesse d’un point de corde et c ; prendre la phase minimale pour un retard absolu ; oublier les conversions ms, \ensuremath{\mu}s et mm ; attribuer toute déformation à la dispersion.
+\end{piege}
+\begin{docu}{S’autoévaluer}
+\checkline{Je retrouve les relations à partir du modèle.}\checkline{Je sais interpréter les limites d’une expression.}\checkline{Je peux dessiner et commenter les courbes.}\checkline{Je relie une mesure à la grandeur calculée.}
+\end{docu}
+
+
+\Page{Exercices / Applications}{Grandeurs et ordres de grandeur}{td1}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E01}{Le son et la lumière}{Niveau 1}{10 à 15 min}
+Comparer le temps de parcours de 1 km par le son à 340 m/s et par la lumière à $3\times10^8$ m/s.
+\ex{E02}{Identifier le signal}{Niveau 1}{10 à 15 min}
+Donner une grandeur et son unité pour une onde sur une corde, une onde acoustique et un signal électrique dans un câble.
+\ex{E03}{Un ultrason}{Niveau 1}{10 à 15 min}
+f = 40 kHz et c = 340 m/s. Déterminer T, \ensuremath{\omega} et \ensuremath{\lambda}.
+
+
+\Page{Exercices / Applications}{Retards et impulsions}{td2}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E04}{Un retard court}{Niveau 1}{10 à 15 min}
+Deux capteurs sont séparés de 0,510 m et reçoivent la même salve avec un retard de 1,50 ms. Calculer c.
+\ex{E05}{Un écho}{Niveau 1}{10 à 15 min}
+Un écho revient 0,80 s après l’émission, avec c = 340 m/s. Quelle est la distance de l’obstacle ?
+\ex{E06}{Durée et longueur}{Niveau 1}{10 à 15 min}
+Une impulsion dure 0,20 s à la source et se propage à 3 m/s. Quelle longueur occupe-t-elle ?
+
+
+\Page{Exercices / Applications}{Écrire une propagation}{td3}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E07}{Une bosse vers la droite}{Niveau 2}{10 à 15 min}
+À t = 0, $s=A\exp[-(x-1)^2/a^2]$. Écrire le signal à c = 2 m/s vers +x et donner son centre à t = 3 s.
+\ex{E08}{Une bosse vers la gauche}{Niveau 2}{10 à 15 min}
+Même profil initial que E07, se propageant vers -x à 2 m/s. Où est le maximum à t = 1 s ?
+\ex{E09}{Une source mise en route}{Niveau 2}{10 à 15 min}
+$f(t)=0$ pour t < 0 et $A\sin\omega t$ pour t ≥ 0. Écrire la réception à x > 0 vers +x.
+
+
+\Page{Exercices / Méthodes}{Périodes et phase}{td4}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E10}{Lire une expression}{Niveau 2}{10 à 15 min}
+$s=0{,}002\cos(100\pi t-5\pi x)$, en unités SI. Donner A, f, \ensuremath{\lambda} et c.
+\ex{E11}{Une phase constante}{Niveau 2}{10 à 15 min}
+Pour $s=A\cos(\omega t+kx)$, dériver la condition de phase constante. Quel est le sens ?
+\ex{E12}{Deux photographies}{Niveau 2}{10 à 15 min}
+Une crête passe de x = 1,2 m à x = 2,0 m en 40 ms. L’écart entre deux crêtes est 0,50 m. Déterminer c et f.
+
+
+\Page{Exercices / Méthodes}{Mesurer une célérité}{td5}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E13}{Un quart de longueur d’onde}{Niveau 2}{15 à 25 min}
+Deux points sont séparés de \ensuremath{\lambda}/4 dans le sens de propagation. Donner retard et phase relative.
+\ex{E14}{Une séparation en phase}{Niveau 2}{15 à 25 min}
+À f = 500 Hz et c = 340 m/s, donner la plus petite séparation positive entre points en phase puis en opposition.
+\ex{E15}{Une mesure sur dix périodes spatiales}{Niveau 2}{15 à 25 min}
+Dix longueurs d’onde occupent 84,8 mm à f = 40,0 kHz. Déterminer c.
+
+
+\Page{Exercices / Méthodes}{Lever les ambiguïtés}{td6}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E16}{Propager une incertitude}{Niveau 2}{15 à 25 min}
+d = 0,680 m avec u(d) = 0,002 m ; \ensuremath{\tau} = 2,00 ms avec u(\ensuremath{\tau}) = 0,01 ms, indépendantes. Donner c et u(c).
+\ex{E17}{Un décalage de voies}{Niveau 2}{15 à 25 min}
+Un ajustement donne \ensuremath{\tau} = 0,020 ms + 2,94 ms/m × d. Déterminer c et interpréter l’ordonnée.
+\ex{E18}{Un câble rapide}{Niveau 2}{15 à 25 min}
+Un signal électrique parcourt 30 m en 150 ns. Déterminer sa célérité et la fraction de $c_0=3\times10^8$ m/s.
+
+
+\Page{Exercices / Approfondissement}{Dispersion et modèles}{td7}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E19}{L’ambiguïté d’un angle}{Niveau 3}{15 à 25 min}
+À 1 kHz, le retard de phase mesuré est 90° ; d = 0,425 m. Donner les deux plus petits retards compatibles et la célérité plausible pour le son.
+\ex{E20}{Deux ondes sismiques}{Niveau 3}{15 à 25 min}
+Les vitesses P et S sont 8,0 et 4,5 km/s. L’onde S arrive 180 s après P. Donner la distance au foyer dans un modèle de trajets identiques.
+\ex{E21}{Deux vitesses de phase}{Niveau 3}{15 à 25 min}
+Une composante à 100 Hz se propage à 10 m/s et celle à 200 Hz à 12 m/s. Le milieu est-il dispersif ? Donner leurs longueurs d’onde.
+
+
+\Page{Exercices / Approfondissement}{Interpréter une expérience}{td8}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E22}{Une atténuation sans dispersion}{Niveau 3}{15 à 25 min}
+Une impulsion perd la moitié de son amplitude sur 10 m mais conserve sa forme et son retard relatif. Peut-on conclure à une dispersion ?
+\ex{E23}{Un profil à reconstruire}{Niveau 3}{15 à 25 min}
+Un triangle s’étend de x = 1 à 5 m à t = 0, maximum A à x = 2 m. Il avance à 2 m/s. Donner les trois dates caractéristiques au capteur x = 9 m.
+\ex{E24}{Tester le modèle par la forme}{Niveau 3}{15 à 25 min}
+Deux récepteurs donnent des signaux dont les maxima ont le même retard, mais la seconde impulsion est plus large. Le modèle de translation exacte suffit-il ?
+
+
+\Page{Défi avancé / D1}{Identifier une célérité et un retard instrumental}{defi1}
+\label{ex-D1}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi1}.}
+Des mesures simulées donnent d = 0,20 ; 0,40 ; 0,60 ; 0,80 m et \ensuremath{\tau} = 0,610 ; 1,200 ; 1,790 ; 2,380 ms. On suppose \ensuremath{\tau} = d/c + \ensuremath{\tau_0}.\begin{questions}
+\item Identifier c et \ensuremath{\tau_0} à partir des deux points extrêmes ; vérifier les intermédiaires.
+\item Comparer avec c obtenu par d/\ensuremath{\tau} au premier point.
+\item Chaque date extrême a une incertitude-type indépendante de 5 \ensuremath{\mu}s ; les distances sont ici supposées exactes. Estimer u(c).
+\item Proposer une manipulation qui distingue retard électronique et propagation. Pourquoi des points parfaitement alignés ne prouvent-ils pas l’absence de biais ?
+\end{questions}
+
+
+\Page{Défi avancé / D2}{Un sonar avec deux trajets}{defi2}
+\label{ex-D2}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi2}.}
+Un sonar au repos émet une salve brève dans l’eau, de célérité c = 1500 m/s. Un écho direct sur le fond revient à 0,120 s. Un second retour, à 0,160 s, est attribué à un trajet de longueur totale supérieure de 60 m.\begin{questions}
+\item Déterminer la profondeur déduite du premier écho.
+\item Le second temps est-il compatible avec la différence de trajet annoncée ?
+\item La salve dure 2,0 ms : quelle séparation de profondeur correspond à cette durée d’aller-retour ?
+\item Une oscillation interne à 100 kHz peut-elle donner seule la profondeur absolue ? Expliquer le rôle de l’enveloppe.
+\item Comment une mauvaise valeur de c affecte-t-elle la profondeur ?
+\end{questions}
+
+
+\Page{Défi avancé / D3}{Deux fréquences dans un milieu dispersif}{defi3}
+\label{ex-D3}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi3}.}
+Une source émet $s(0,t)=\cos(2\pi100t)+0{,}5\cos(2\pi200t)$. Les vitesses de phase sont c1 = 10 m/s et c2 = 12 m/s. L’amplitude de chaque composante est supposée conservée.\begin{questions}
+\item Écrire s(d,t) pour une distance d.
+\item À d = 0,30 m, calculer les deux retards de phase et les phases acquises.
+\item Comparer la sortie avec une simple translation de l’entrée de retard d/c1.
+\item Peut-on déduire de ces deux seules vitesses la vitesse d’un front abrupt ?
+\end{questions}
+
+
+\Page{Évaluation / DM}{DM — Retrouver une impulsion}{dm}
+\source{Devoir maison OptiTAB original ; 1 h 30 à 2 h ; calculatrice autorisée. Barème pédagogique sur 20.}
+À t = 0, une corde porte un triangle : y = 0 hors de [1 m ; 5 m], montée linéaire de 0 à A = 2 cm entre 1 et 2 m, puis descente linéaire jusqu’à 0 entre 2 et 5 m. La perturbation se propage vers +x à c = 2 m/s.\Sub{A. Profil — 7 points}
+\begin{questions}
+\item Écrire F(x) par morceaux, puis y(x,t). (4)
+\item Donner support et maximum à t = 1,5 s ; construire le profil. (3)
+\end{questions}
+
+\Sub{B. Enregistrement — 9 points}
+\begin{questions}
+\item Au point x = 9 m, déterminer début, maximum et fin du passage. (3)
+\item Écrire y(9,t) par morceaux et tracer son allure. (4)
+\item Comparer les durées de montée temporelle et spatiale. (2)
+\end{questions}
+
+\Sub{C. Capteurs — 4 points}
+\begin{questions}
+\item Un autre capteur est à x = 11 m. Donner le retard et écrire la relation entre les deux enregistrements. (2)
+\item Que contrôler si le deuxième signal est plus large ? (2)
+\end{questions}
+
+
+
+\Page{Évaluation / DS / 1 sur 2}{DS — Mesurer une onde sonore}{ds1}
+\source{Devoir surveillé OptiTAB original ; durée 2 h ; calculatrice autorisée ; note sur 20. Les deux pages forment un seul sujet.}
+\Sub{A. Identifier l’onde — 7 points}
+La surpression vaut $p(x,t)=0{,}80\cos(4000\pi t-\frac{200\pi}{17}x)$ Pa, en unités SI.\begin{questions}
+\item Donner amplitude, pulsation, fréquence, k, \ensuremath{\lambda}, c et sens de propagation. (4)
+\item Déterminer la phase du point B situé 0,255 m après A et le retard correspondant. (3)
+\end{questions}
+
+\Sub{B. Mesure par salve — 7 points}
+Deux capteurs séparés de d = 0,680 m enregistrent un retard de 2,04 ms. Le décalage propre des voies est +40 \ensuremath{\mu}s, ajouté au temps physique.\begin{questions}
+\item Corriger le retard et calculer c. (3)
+\item Avec u(d) = 2 mm et u(\ensuremath{\tau} corrigé) = 10 \ensuremath{\mu}s, indépendants, calculer u(c). (2)
+\item Expliquer l’intérêt d’un ajustement sur plusieurs distances. (2)
+\end{questions}
+
+
+
+\Page{Évaluation / DS / 2 sur 2}{Approfondir et conclure}{ds2}
+\Sub{C. Une propagation différente — 6 points}
+Un second dispositif transmet 1 kHz à 300 m/s et 2 kHz à 330 m/s.\begin{questions}
+\item Le milieu est-il dispersif ? Calculer les deux longueurs d’onde. (2)
+\item Écrire le signal à x pour une source $s(0,t)=\cos(2\pi1000t)+0{,}5\cos(2\pi2000t)$. (2)
+\item Pourquoi un retard unique n’est-il généralement pas suffisant ? Une perte d’amplitude prouverait-elle la dispersion ? (2)
+\end{questions}
+
+\begin{docu}{Gestion du temps}
+Lecture : 10 min ; parties A et B : 70 min ; partie C : 30 min ; vérification : 10 min. Une expression littérale, une unité et une interprétation accompagnent les résultats.
+\end{docu}
+
+
+\Page{Aides progressives}{Des indices pour repartir}{indices}
+\Sub{Défi D1}
+1. Utiliser la différence des retards. 2. Propager u(\ensuremath{\Delta}\ensuremath{\tau}). 3. Une translation verticale de tous les points ne change pas la pente.
+\Sub{Défi D2}
+1. L’écho parcourt deux fois la profondeur. 2. Comparer c\ensuremath{\Delta}t à 60 m. 3. La phase d’un sinus ne donne qu’un retard modulo T.
+\Sub{Défi D3}
+1. Propager chaque raie. 2. Le retard du premier harmonique n’est pas celui du second. 3. Un front abrupt contient d’autres fréquences.
+\Sub{Exercices}
+E05 : compter l’aller-retour. E08 : suivre le maximum. E16 : propager les incertitudes relatives. E19 : ajouter des périodes entières. E23 : le bord droit passe d’abord.
+\Sub{Évaluations}
+DM : commencer par les trois sommets du triangle. DS : corriger le retard instrumental avant la division ; annoncer si une phase est donnée modulo 2\ensuremath{\pi}.
+
+
+\Page{Corrigés / Diagnostic}{Réactiver les bons réflexes}{corr-diag}
+\Sub{D1}
+$8{,}0\times10^{-4}$ s.
+
+\Sub{D2}
+$c=d/\tau=340$ m/s.
+
+\Sub{D3}
+$f(t-\tau)$ ; le même événement apparaît plus tard.
+
+\Sub{D4}
+T = 2 ms ; $\omega=1000\pi$ rad/s.
+
+\Sub{D5}
+$\cos\theta$ : une phase mesurée seule est ambiguë modulo $2\pi$.
+
+\Sub{D6}
+Notamment la surpression acoustique par rapport à la pression d’équilibre ; les particules du milieu oscillent aussi localement.
+
+\Sub{D7}
+Non ; une onde acoustique a besoin d’un milieu matériel.
+
+\Sub{D8}
+Non. Le déplacement local des particules se distingue du déplacement de la perturbation.
+
+
+\Page{Corrigés / Exercices}{Grandeurs et ordres de grandeur}{corr-td1}
+\sol{E01}{Le son et la lumière}
+$t_s=1000/340=2{,}941$ s ; $t_l=3{,}333\ \mu$s. Pour une observation d’orage à cette distance, le délai visuel est négligeable devant le délai sonore.
+\sol{E02}{Identifier le signal}
+Déplacement transversal y en m ; surpression p en Pa ; tension u en V, ou courant i en A. Ces grandeurs ne sont pas la célérité, exprimée en m/s.
+\sol{E03}{Un ultrason}
+T = 25 $\mu$s ; $\omega=80000\pi=2{,}5133\times10^5$ rad/s ; \ensuremath{\lambda} = 8,50 mm. Le domaine est ultrasonore.
+
+
+\Page{Corrigés / Exercices}{Retards et impulsions}{corr-td2}
+\sol{E04}{Un retard court}
+$c=0{,}510/(1{,}50\times10^{-3})=340$ m/s. Cette valeur suppose que le délai des deux voies est identique ou corrigé.
+\sol{E05}{Un écho}
+Le signal parcourt l’aller-retour : $2d=c\Delta t$. Donc d = 136 m. Employer $d=c\Delta t$ compterait deux fois la distance recherchée.
+\sol{E06}{Durée et longueur}
+$\ell=c\Delta t=0{,}60$ m dans le modèle sans déformation. Sa durée de passage devant chaque point reste 0,20 s.
+
+
+\Page{Corrigés / Exercices}{Écrire une propagation}{corr-td3}
+\sol{E07}{Une bosse vers la droite}
+$s=A\exp[-(x-1-2t)^2/a^2]$. Le centre vérifie x - 1 - 2t = 0, donc x = 7 m à t = 3 s.
+\sol{E08}{Une bosse vers la gauche}
+$s=A\exp[-(x-1+2t)^2/a^2]$. Le centre est x = 1 - 2t, donc -1 m. Le signe +ct dans l’argument correspond bien à une propagation vers les x décroissants.
+\sol{E09}{Une source mise en route}
+Le signal vaut 0 pour t < x/c puis $A\sin[\omega(t-x/c)]$ pour t ≥ x/c. Le front arrive à x/c ; le sinus seul sans cette condition serait acausal pour cette émission.
+
+
+\Page{Corrigés / Exercices}{Périodes et phase}{corr-td4}
+\sol{E10}{Lire une expression}
+A = 2 mm ; f = 50 Hz ; k = 5\ensuremath{\pi} rad/m ; \ensuremath{\lambda} = 0,40 m ; c = \ensuremath{\omega}/k = 20 m/s. La propagation est vers +x.
+\sol{E11}{Une phase constante}
+$\omega\dd t+k\dd x=0$ donne $\dd x/\dd t=-\omega/k$. Si k et \ensuremath{\omega} sont positifs, la propagation est vers -x.
+\sol{E12}{Deux photographies}
+c = 0,80/0,040 = 20 m/s. $f=c/\lambda=40$ Hz. La fréquence provient de la double périodicité, pas du nombre de crêtes photographiées.
+
+
+\Page{Corrigés / Exercices}{Mesurer une célérité}{corr-td5}
+\sol{E13}{Un quart de longueur d’onde}
+$\tau=(\lambda/4)/c=T/4$. La phase du point aval moins celle du point amont vaut $-\pi/2$ modulo $2\pi$. Le point aval retarde.
+\sol{E14}{Une séparation en phase}
+\ensuremath{\lambda} = 0,680 m. En phase : \ensuremath{\lambda} = 0,680 m ; en opposition : \ensuremath{\lambda}/2 = 0,340 m. Des séparations plus grandes peuvent satisfaire les mêmes phases.
+\sol{E15}{Une mesure sur dix périodes spatiales}
+\ensuremath{\lambda} = 8,48 mm ; c = 0,00848 × 40000 = 339,2 m/s. Le comptage porte sur dix intervalles, donc onze positions si l’on marque chaque retour en phase.
+
+
+\Page{Corrigés / Exercices}{Lever les ambiguïtés}{corr-td6}
+\sol{E16}{Propager une incertitude}
+c = 340 m/s. L’incertitude relative vaut $\sqrt{(0{,}002/0{,}680)^2+(0{,}01/2)^2}=0{,}00580$. Donc u(c) = 1,97 m/s, à présenter par exemple 340,0 ± 2,0 m/s en incertitude-type.
+\sol{E17}{Un décalage de voies}
+La pente vaut $2{,}94\times10^{-3}$ s/m, donc c = 340,14 m/s. L’ordonnée 20 \ensuremath{\mu}s peut représenter un décalage instrumental ; elle ne correspond pas à un temps de parcours proportionnel à d.
+\sol{E18}{Un câble rapide}
+c = $30/(150\times10^{-9})=2\times10^8$ m/s, soit $2c_0/3$. Il faut une description de propagation plutôt qu’une transmission instantanée à cette échelle temporelle.
+
+
+\Page{Corrigés / Exercices}{Dispersion et modèles}{corr-td7}
+\sol{E19}{L’ambiguïté d’un angle}
+Les retards positifs sont 0,25 ms, 1,25 ms, 2,25 ms, etc. Les deux premiers donneraient 1700 puis 340 m/s. L’ordre de grandeur sonore sélectionne 1,25 ms ; une salve doit confirmer ce choix.
+\sol{E20}{Deux ondes sismiques}
+$\Delta t=d(1/c_S-1/c_P)$, donc d = $180/(1/4{,}5-1/8)=1851{,}4$ km. Le modèle homogène et les trajets communs sont des simplifications ; une seule station ne donne pas une position complète.
+\sol{E21}{Deux vitesses de phase}
+Oui, les vitesses de phase diffèrent. \ensuremath{\lambda_1} = 0,10 m et \ensuremath{\lambda_2} = 0,060 m. La seule différence de longueurs d’onde ne prouverait pas la dispersion : dans un milieu non dispersif elles varient déjà comme 1/f.
+
+
+\Page{Corrigés / Exercices}{Interpréter une expérience}{corr-td8}
+\sol{E22}{Une atténuation sans dispersion}
+Non. Une atténuation commune à toutes ses composantes peut réduire l’amplitude sans déformer le profil. Il faut analyser la dépendance fréquentielle de la vitesse ou les déphasages pour établir une dispersion.
+\sol{E23}{Un profil à reconstruire}
+Le bord droit x = 5 arrive à 2 s ; le maximum x = 2 à 3,5 s ; le bord gauche x = 1 à 4 s. L’enregistrement monte de 0 à A entre 2 et 3,5 s puis redescend entre 3,5 et 4 s.
+\sol{E24}{Tester le modèle par la forme}
+Non : une translation conserve la largeur. La dispersion, une absorption sélective ou les réponses instrumentales peuvent élargir le signal. Comparer les spectres et permuter les récepteurs aide à séparer les causes. Un seul retard de maximum ne valide pas toute la forme.
+
+
+\Page{Corrigé du défi D1}{Identifier une célérité et un retard instrumental}{corr-defi1}
+La pente est $(2{,}380-0{,}610)/0{,}60=2{,}950$ ms/m ; c = 338,983 m/s. $\tau_0=0{,}610-0{,}20\times2{,}950=0{,}020$ ms. Les deux autres points sont sur la même droite. Au premier point, d/\ensuremath{\tau} = 327,87 m/s, biaisé vers le bas. $u(\Delta\tau)=\sqrt2\times5=7{,}071\ \mu$s ; $u(c)/c=u(\Delta\tau)/\Delta\tau=0{,}003995$, donc u(c) = 1,354 m/s. Permuter les voies et placer les capteurs côte à côte permet de tester le décalage instrumental. Une erreur d’étalonnage de la distance ou de la base de temps peut conserver une excellente linéarité tout en biaisant la pente. La qualité d’un ajustement et la justesse d’une mesure sont deux questions distinctes.
+
+\Page{Corrigé du défi D2}{Un sonar avec deux trajets}{corr-defi2}
+La profondeur est h = c\ensuremath{\tau}/2 = 90 m. Le supplément de trajet est $1500(0{,}160-0{,}120)=60$ m : les données sont cohérentes. Une durée de 2 ms correspond à une séparation de profondeur c\ensuremath{\Delta}t/2 = 1,50 m ; c’est un ordre de grandeur de séparation temporelle dans ce protocole, pas une résolution universelle indépendante du traitement. À 100 kHz, T = 10 \ensuremath{\mu}s, ce qui laisse une ambiguïté de distance aller-retour de 15 mm et de profondeur de 7,5 mm entre deux cycles ; on ne connaît pas le nombre de cycles parcourus par la seule phase. L’enveloppe de la salve fournit le retard absolu. Une erreur relative sur c se transmet directement à h si \ensuremath{\tau} est fixé. La célérité doit être adaptée aux conditions du milieu.
+
+\Page{Corrigé du défi D3}{Deux fréquences dans un milieu dispersif}{corr-defi3}
+$s(d,t)=\cos[2\pi100(t-d/10)]+0{,}5\cos[2\pi200(t-d/12)]$. À d = 0,30 m, \ensuremath{\tau_1} = 30 ms et \ensuremath{\tau_2} = 25 ms ; les phases acquises sont -6\ensuremath{\pi} et -10\ensuremath{\pi}, toutes deux équivalentes à zéro. À cette distance particulière, le signal reçu est donc identique à l’entrée ; il coïncide aussi avec son retard de 30 ms, qui vaut trois périodes fondamentales. Cette coïncidence n’invalide pas la dispersion : les vitesses diffèrent, mais les phases retombent sur des tours entiers. À d = 0,31 m, une translation unique ne convient plus en général. Le profil peut ainsi se reformer à certaines distances. Deux vitesses à deux fréquences ne déterminent pas le comportement d’un front, qui nécessite une information spectrale beaucoup plus large.
+
+\Page{Corrigé / DM / Sur 20}{DM — Retrouver une impulsion}{corr-dm}
+\Sub{A — 7 points}
+$F(x)=A(x-1)/(1\ \mathrm m)$ entre 1 et 2 m, $F(x)=A(5-x)/(3\ \mathrm m)$ entre 2 et 5 m, et zéro ailleurs ; y = F(x-2t), avec x et t en SI (4). À 1,5 s, le support est [4 ; 8] m et le maximum en 5 m, d’amplitude inchangée (3).
+\Sub{B — 9 points}
+Au point 9 m : début 2 s, maximum 3,5 s, fin 4 s (3). Pour 2 ≤ t ≤ 3,5 s : $y=A(2t-4)/3$, en utilisant les valeurs numériques de t en secondes. Pour 3,5 ≤ t ≤ 4 s : $y=A(8-2t)$. Hors de cet intervalle y = 0 (4). La montée temporelle dure 1,5 s, car le flanc spatial droit, long de 3 m, arrive d’abord ; la descente dure 0,5 s. Ce n’est pas le flanc spatial gauche qui passe en premier (2).
+\Sub{C — 4 points}
+Le retard supplémentaire vaut (11 - 9)/2 = 1 s ; $y(11,t)=y(9,t-1)$ (2). Une largeur différente impose de tester dispersion, pertes sélectives, réflexions et réponses des capteurs ; permuter les capteurs est un contrôle utile (2).
+
+
+\Page{Corrigé / DS / 1 sur 2}{Calculer et interpréter}{corr-ds1}
+\Sub{A — 7 points}
+A = 0,80 Pa, \ensuremath{\omega} = 4000\ensuremath{\pi} rad/s, f = 2000 Hz, k = 200\ensuremath{\pi}/17 rad/m, \ensuremath{\lambda} = 0,170 m, c = 340 m/s ; propagation vers +x (4). d = 1,5\ensuremath{\lambda}, donc phase B - A = -3\ensuremath{\pi}, équivalente à \ensuremath{\pi} ; retard d/c = 0,750 ms, soit 1,5 période (3).
+\Sub{B — 7 points}
+Le retard physique vaut 2,04 ms - 0,04 ms = 2,00 ms ; c = 340 m/s (3). L’incertitude relative vaut \[\sqrt{(0{,}002/0{,}680)^2+(0{,}01/2)^2}.\]u(c) = 1,97 m/s (2). La pente \ensuremath{\tau}(d) donne 1/c et l’ordonnée permet de repérer un délai fixe ; les résidus testent la linéarité dans la plage mesurée (2).
+
+
+\Page{Corrigé / DS / 2 sur 2}{Calculer et interpréter}{corr-ds2}
+\Sub{C — 6 points}
+Les vitesses de phase diffèrent : milieu dispersif. \ensuremath{\lambda_1} = 0,300 m, \ensuremath{\lambda_2} = 0,165 m (2). $s(x,t)=\cos[2\pi1000(t-x/300)]+0{,}5\cos[2\pi2000(t-x/330)]$ (2). Les deux composantes n’ont pas le même retard x/c, donc leur phase relative évolue et la forme se déforme en général. Une atténuation seule ne prouve pas la dispersion, car elle peut agir sans changement de vitesse (2).
+
+
+\Page{Support authentique / 1}{TD publié — Deux arrivées sismiques}{sources-1}
+\source{Source consultée le 25 octobre 2026. TD9, 2025–2026, exercice 3, p. 1.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/td/td9_ondes.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Traiter les deux questions. Dessiner les trajets supposés communs et distinguer distance déterminée et localisation spatiale.
+\Sub{Repères de correction indépendants}
+La différence d’arrivée vérifie $\Delta t=d(1/c_S-1/c_P)$. Les données donnent environ 1850 km. Une seule différence de temps fournit une distance dans ce modèle ; plusieurs stations sont nécessaires pour localiser le foyer, avec un modèle de propagation adapté.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Support authentique / 2}{DS publié — Une cuve à ondes}{sources-2}
+\source{Source consultée le 25 octobre 2026. DS5 du 21 janvier 2026, exercice 2, partie I, questions 1 à 4, p. 2.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/ds5_molecules_ondes_cinematique.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Exprimer les paramètres de l’onde puis tracer les trois enregistrements sur une base temporelle commune. Ne pas généraliser l’hypothèse non dispersive à toutes les vagues.
+\Sub{Repères de correction indépendants}
+Les valeurs fournies donnent \ensuremath{\lambda} = 3,6 mm et k = 2\ensuremath{\pi}/\ensuremath{\lambda}. La phase à 3\ensuremath{\lambda}/4 retarde de 3\ensuremath{\pi}/2 ; à 5\ensuremath{\lambda}, les signaux sont en phase. La fonction retardée conserve l’amplitude et la fréquence dans le modèle annoncé.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Références et suivi}{Préparer la suite}{references}
+\Sub{Référence réglementaire}
+\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{Bulletin officiel spécial n° 1 du 11 février 2021, arrêté du 5 janvier 2021.}\par
+\href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexe officielle regroupée}, rubrique 1.6 / ondes progressives. Conformément au programme, aucune équation d’onde n’est utilisée. Les exemples dispersifs restent descriptifs ou utilisent une loi fournie.
+\Sub{Nature des contenus}
+Le cours, les 24 exercices, les trois défis et les évaluations OptiTAB sont rédigés pour cette collection. Les graphiques sont calculés avec les équations annoncées. Les supports authentiques sont identifiés sur les pages précédentes ; leurs énoncés et figures restent dans le document d’origine.
+\Sub{Compétences à confirmer}
+\checkline{Je peux retrouver l’équation sans mémoriser une suite de signes.}
+\checkline{Je vérifie les conditions initiales et les limites.}
+\checkline{Je peux confronter un calcul, un graphe et un bilan énergétique.}
+\checkline{Je sais corriger mon DS et refaire une question sans aide.}
+\begin{methode}{Prochaine étape}
+Le chapitre 9 superpose deux ondes et relie leurs chemins au déphasage d’interférence.
+\end{methode}
+

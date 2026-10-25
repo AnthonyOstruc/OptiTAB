@@ -1,0 +1,486 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 15 — Intégration
+%% Résultats vérifiés par verifications/chapitre_15.py.
+
+\corrigesChapitre{15}{Intégration}
+\corrigesSouples
+
+\begin{blocLivre}{cor-15-1}
+\begin{corrige}{1}{Fonctions en escalier}
+\demarche{Découper là où la fonction change de formule.}
+\begin{questions}
+  \item $\lfloor t\rfloor$ vaut $0,1,2$ sur les trois marches :
+    $\displaystyle\int_{0}^{3}\lfloor t\rfloor=0+1+2=\res{3}$ ; la partie
+    fractionnaire dessine trois triangles d'aire $\frac12$ :
+    $\res{\dfrac32}$.
+  \item $|2x-1|$ est continue : oui ; $\lfloor3x\rfloor$ est en escalier :
+    oui ; $\dfrac1x$ prolongée par $0$ : \res{\text{non}}, pas de limite
+    finie en $0^{+}$ — aucun prolongement continu par morceaux possible.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-2}
+\begin{corrige}{2}{Les propriétés de base}
+\demarche{Encadrer l'intégrande, intégrer l'encadrement.}
+\begin{questions}
+  \item Sur $\intFF{0}{1}$ : $\dfrac12\leqslant\dfrac{1}{1+x}\leqslant1$,
+    donc par croissance $\dfrac12\leqslant\displaystyle\int_{0}^{1}
+    \frac{\mathrm{d}x}{1+x}\leqslant1$ ; la valeur exacte
+    $\ln2\approx0{,}693$ s'y range.
+  \item $\Bigl|\displaystyle\int_{0}^{1}\sin\bigl(x^{2}\bigr)\Bigr|
+    \leqslant\displaystyle\int_{0}^{1}\bigl|\sin\bigl(x^{2}\bigr)\bigr|
+    \leqslant\displaystyle\int_{0}^{1}1=1$.
+  \item $\displaystyle\int_{-1}^{2}|x|
+    =\int_{-1}^{0}(-x)+\int_{0}^{2}x=\frac12+2=\res{\dfrac52}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-3}
+\begin{corrige}{3}{Parité et périodicité}
+\demarche{Symétries d'abord, primitives ensuite.}
+\begin{questions}
+  \item $x\mapsto x^{3}\cos x$ est impaire sur un segment centré :
+    intégrale \res{\text{nulle}}.
+  \item $\cos^{2}t=\dfrac{1+\cos2t}{2}$ :
+    $\displaystyle\int_{0}^{2\pi}\cos^{2}=\res{\pi}$ (le second terme
+    s'intègre sur deux périodes).
+  \item $a\mapsto\displaystyle\int_{a}^{a+2\pi}\sin t\,\mathrm{d}t$ a pour
+    dérivée $\sin(a+2\pi)-\sin a=0$ : constante ; en $a=0$ :
+    $[-\cos]_{0}^{2\pi}=\res{0}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-4}
+\begin{corrige}{4}{Valeur moyenne}
+\demarche{Une intégrale divisée par la longueur : la hauteur du rectangle
+équivalent.}
+\begin{questions}
+  \item $\dfrac1\pi\displaystyle\int_{0}^{\pi}\sin=\res{\dfrac2\pi}\approx0{,}64$ ;
+    $\displaystyle\int_{0}^{1}x^{2}=\res{\dfrac13}$.
+  \item Le rectangle de base $\intFF{a}{b}$ et de hauteur la valeur
+    moyenne a exactement l'aire de la région sous la courbe : la moyenne
+    « nivelle » la fonction.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-5}
+\begin{corrige}{5}{Sommes de Riemann : premiers calculs}
+\demarche{Faire sortir 1/n et reconnaître f(k/n).}
+\begin{questions}
+  \item $\dfrac1n\sum\dfrac{1}{1+k/n}\to
+    \displaystyle\int_{0}^{1}\frac{\mathrm{d}t}{1+t}=\res{\ln2}$.
+  \item $\dfrac1n\sum\dfrac kn\to\displaystyle\int_{0}^{1}t\,\mathrm{d}t
+    =\res{\dfrac12}$.
+  \item $\dfrac1n\sum\dfrac{1}{1+(k/n)^{2}}\to
+    \displaystyle\int_{0}^{1}\frac{\mathrm{d}t}{1+t^{2}}
+    =\arctan1=\res{\dfrac\pi4}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-6}
+\begin{corrige}{6}{Dériver une intégrale}
+\demarche{Borne variable : le théorème fondamental ; borne composée : la
+chaîne.}
+\begin{questions}
+  \item $t\mapsto\mathrm{e}^{-t^{2}}$ est continue : $F$ est
+    $\mathcal{C}^{1}$ et $\res{F'(x)=\mathrm{e}^{-x^{2}}}>0$ : $F$ est
+    strictement croissante sur $\R$ (et impaire).
+  \item $G=H\circ(x\mapsto x^{2})$ avec $H'=\sin$ :
+    $\res{G'(x)=2x\sin\bigl(x^{2}\bigr)}$ — qu'on confirme ici par le
+    calcul direct $G(x)=1-\cos\bigl(x^{2}\bigr)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-7}
+\begin{corrige}{7}{Taylor avec reste intégral}
+\demarche{Le reste est une intégrale : on l'encadre comme une intégrale.}
+\begin{questions}
+  \item $\mathrm{e}=\displaystyle\sum_{k=0}^{n}\frac{1}{k!}
+    +\int_{0}^{1}\frac{(1-t)^{n}}{n!}\,\mathrm{e}^{t}\,\mathrm{d}t$.
+  \item L'intégrande est strictement positif, et majoré par
+    $\mathrm{e}\,\dfrac{(1-t)^{n}}{n!}$ :
+    \[
+    0<\mathrm{e}-\sum_{k=0}^{n}\frac{1}{k!}
+    \leqslant\mathrm{e}\int_{0}^{1}\frac{(1-t)^{n}}{n!}\,\mathrm{d}t
+    =\res{\frac{\mathrm{e}}{(n+1)!}} .
+    \]
+    Pour $10^{-3}$ : $\dfrac{\mathrm{e}}{7!}\approx5{,}4\cdot10^{-4}$
+    convient, pas $\dfrac{\mathrm{e}}{6!}$ : $\res{n=6}$ (sept termes).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-8}
+\begin{corrige}{8}{L'inégalité de Taylor-Lagrange}
+\demarche{Majorer la dérivée d'ordre n+1 par 1 : tout est borné en trigo.}
+\begin{questions}
+  \item Pour $\sin$ à l'ordre $2$ en $0$ (le terme en $x^{2}$ est nul), la
+    dérivée troisième $-\cos$ est bornée par $1$ :
+    $\res{|\sin x-x|\leqslant\dfrac{|x|^{3}}{6}}$. De même à l'ordre $3$
+    pour $\cos$ :
+    $\Bigl|\cos x-1+\dfrac{x^{2}}{2}\Bigr|\leqslant\dfrac{x^{4}}{24}$.
+  \item $\sin(0{,}1)\approx0{,}1$ à
+    $\dfrac{10^{-3}}{6}\approx1{,}7\cdot10^{-4}$ près — la valeur exacte
+    est $0{,}09983\ldots$, conforme.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-9}
+\begin{corrige}{9}{Continuité uniforme : exemples et contre-exemples}
+\demarche{UC : un $\delta$ qui marche partout. Pour la nier : deux suites
+qui se rapprochent sans que leurs images le fassent.}
+\begin{questions}
+  \item Pour $x\geqslant y\geqslant0$ :
+    $(\sqrt x-\sqrt y)^{2}\leqslant(\sqrt x-\sqrt y)(\sqrt x+\sqrt y)=x-y$,
+    d'où $|\sqrt x-\sqrt y|\leqslant\sqrt{|x-y|}$ : le choix
+    $\delta=\varepsilon^{2}$ marche partout : \res{\text{UC}}. Mais
+    $\dfrac{\sqrt h-0}{h}=\dfrac{1}{\sqrt h}\to+\infty$ : pas
+    lipschitzienne sur $\intFF{0}{1}$ — l'UC est strictement plus faible.
+  \item $x_n=n$, $y_n=n+\dfrac1n$ : $|x_n-y_n|\to0$ mais
+    $y_n^{2}-x_n^{2}=2+\dfrac{1}{n^{2}}\geqslant2$ : l'UC échoue pour
+    $\varepsilon=1$.
+  \item $a_n=\dfrac{1}{2n\pi+\pi/2}$ et $b_n=\dfrac{1}{2n\pi}$ :
+    $|a_n-b_n|\to0$ et
+    $\bigl|\sin\tfrac{1}{a_n}-\sin\tfrac{1}{b_n}\bigr|=1$ : pas UC —
+    les oscillations s'accumulent près de $0$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-10}
+\begin{corrige}{10}{Intégrale nulle}
+\demarche{Une valeur strictement positive en un point se propage sur un
+petit segment — et un segment pèse.}
+\begin{questions}
+  \item Supposons $f(c)>0$. Par continuité, $f\geqslant\dfrac{f(c)}{2}$
+    sur un segment $J\subseteq\intFF{a}{b}$ de longueur $\ell>0$ autour
+    de $c$ : alors
+    $\displaystyle\int_{a}^{b}f\geqslant\int_{J}f\geqslant\frac{\ell f(c)}{2}>0$,
+    contradiction. Donc $\res{f=0}$.
+  \item $f^{2}$ est continue, positive, d'intégrale nulle : $f^{2}=0$,
+    donc $f=0$.
+  \item L'indicatrice d'un point ($f(c)=1$, nulle ailleurs) : en escalier,
+    positive, non nulle, d'intégrale nulle — la continuité est
+    essentielle.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-11}
+\begin{corrige}{11}{Sommes de Riemann corsées}
+\demarche{Racine, logarithme, sinus : trois intégrales classiques.}
+\begin{questions}
+  \item $\dfrac1n\sum\sqrt{\dfrac kn}\to
+    \displaystyle\int_{0}^{1}\sqrt t\,\mathrm{d}t=\res{\dfrac23}$.
+  \item Le logarithme vaut
+    $\dfrac1n\sum\ln\Bigl(1+\dfrac kn\Bigr)\to
+    \displaystyle\int_{0}^{1}\ln(1+t)\,\mathrm{d}t=2\ln2-1$ : la limite
+    est $\mathrm{e}^{2\ln2-1}=\res{\dfrac4{\mathrm{e}}}$.
+  \item $\dfrac1n\sum\sin\dfrac{k\pi}{n}\to
+    \displaystyle\int_{0}^{1}\sin(\pi t)\,\mathrm{d}t=\res{\dfrac2\pi}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-12}
+\begin{corrige}{12}{La démonstration lipschitzienne, en pratique}
+\demarche{Erreur par maille : K h²/2 ; multiplier par n mailles.}
+\begin{questions}
+  \item Sur chaque maille,
+    $|f(t)-f(x_k)|\leqslant K(t-x_k)$, donc l'erreur locale est au plus
+    $\displaystyle\int_{x_k}^{x_{k+1}}K(t-x_k)\,\mathrm{d}t=\frac{Kh^{2}}{2}$ ;
+    en sommant : $\Bigl|\displaystyle\int_{a}^{b}f-S_n\Bigr|
+    \leqslant\dfrac{K(b-a)^{2}}{2n}$.
+  \item Sur $\intFF{0}{1}$, $\exp$ est lipschitzienne de constante
+    $K=\mathrm{e}$ : erreur $\leqslant\dfrac{\mathrm{e}}{2n}$, inférieure
+    à $10^{-2}$ dès $\res{n\geqslant136}$. Pour $n=100$, l'erreur
+    observée vaut environ $8{,}6\cdot10^{-3}$, proche de la borne
+    $1{,}36\cdot10^{-2}$ : l'estimation est presque optimale.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-13}
+\begin{corrige}{13}{La suite $I_n=\int_0^1 x^{n}\mathrm{e}^{x}\,\mathrm{d}x$}
+\demarche{Une IPP pour la relation, un encadrement pour la limite, la
+relation pour l'équivalent.}
+\begin{questions}
+  \item En intégrant par parties ($u=x^{n}$, $v'=\mathrm{e}^{x}$… dans
+    l'autre sens) : $I_n=\bigl[x^{n}\mathrm{e}^{x}\bigr]_0^1
+    -n\displaystyle\int_{0}^{1}x^{n-1}\mathrm{e}^{x}
+    =\res{\mathrm{e}-n\,I_{n-1}}$.
+  \item $1\leqslant\mathrm{e}^{x}\leqslant\mathrm{e}$ sur $\intFF{0}{1}$ :
+    $\dfrac{1}{n+1}\leqslant I_n\leqslant\dfrac{\mathrm{e}}{n+1}$, donc
+    $I_n\to\res{0}$.
+  \item La relation donne $n\,I_{n-1}=\mathrm{e}-I_n\to\mathrm{e}$ :
+    ainsi $I_{n-1}\sim\dfrac{\mathrm{e}}{n}$, soit
+    $\res{I_n\sim\dfrac{\mathrm{e}}{n}}$ — toute la masse de
+    $x^{n}\mathrm{e}^{x}$ se concentre en $1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-14}
+\begin{corrige}{14}{Autour de $\int_0^1\frac{\mathrm{d}x}{1+x^{n}}$}
+\demarche{Le changement de variable $u=x^{n}$ transforme le paramètre en
+exposant 1/n — qui s'efface à la limite.}
+\begin{questions}
+  \item $0\leqslant J_n\leqslant\displaystyle\int_{0}^{1}x^{n}
+    =\dfrac{1}{n+1}\to0$ : $K_n=1-J_n\to\res{1}$.
+  \item Avec $u=x^{n}$ ($x=u^{1/n}$,
+    $\mathrm{d}x=\tfrac1n u^{1/n-1}\mathrm{d}u$) :
+    $nJ_n=\displaystyle\int_{0}^{1}\frac{u^{1/n}}{1+u}\,\mathrm{d}u$, d'où
+    \[
+    0\leqslant\ln2-nJ_n
+    =\int_{0}^{1}\frac{1-u^{1/n}}{1+u}\,\mathrm{d}u
+    \leqslant\int_{0}^{1}\bigl(1-u^{1/n}\bigr)\mathrm{d}u
+    =\res{\frac{1}{n+1}} .
+    \]
+  \item Donc $J_n=\dfrac{\ln2}{n}+O\Bigl(\dfrac{1}{n^{2}}\Bigr)$ et
+    $\res{K_n=1-\dfrac{\ln2}{n}+o\Bigl(\dfrac1n\Bigr)}$ (chapitre 11).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-15}
+\begin{corrige}{15}{$\mathrm{e}$ et $\ln2$ : restes et irrationalité}
+\demarche{Multiplier un reste minuscule par n! : s'il reste coincé entre 0
+et 1, aucun rationnel ne survit.}
+\begin{questions}
+  \item $A_n=n!\sum_{k\leqslant n}\frac{1}{k!}$ est entier (chaque
+    $n!/k!$ l'est), et l'exercice 7 donne
+    $0<n!\,\mathrm{e}-A_n\leqslant\dfrac{\mathrm{e}}{n+1}<1$ pour
+    $n\geqslant2$. Si $\mathrm{e}=\dfrac pq$, le choix $n=q$ rendrait
+    $n!\,\mathrm{e}$ entier, coincé strictement entre deux entiers :
+    absurde. $\res{\mathrm{e}\notin\Q}$.
+  \item Taylor reste intégral pour $\ln(1+x)$ entre $0$ et $1$ : le reste
+    d'ordre $n$ vaut, après le changement de variable
+    $u=\frac{1-t}{1+t}$,
+    $(-1)^{n}\displaystyle\int_{0}^{1}\frac{u^{n}}{1+u}\,\mathrm{d}u$ —
+    exactement, au signe près, l'intégrale $I_n$ du chapitre 11
+    (exercice 18), avec le même équivalent $\frac{1}{2n}$ : les deux
+    points de vue coïncident.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-16}
+\begin{corrige}{16}{Rectangles contre trapèzes}
+\demarche{Les trapèzes moyennent points gauches et droits : l'erreur
+d'ordre 1 se compense.}
+\begin{questions}
+  \item $T_n=\dfrac{R_n^{\text{gauche}}+R_n^{\text{droit}}}{2}
+    =R_n+\dfrac{f(b)-f(a)}{2n}(b-a)$ : chaque maille est remplacée par un
+    trapèze.
+  \item Numériquement, pour $\mathrm{e}-1\approx1{,}71828$ :
+    les erreurs des rectangles valent environ $8{,}5\cdot10^{-2}$
+    ($n=10$) et $8{,}6\cdot10^{-3}$ ($n=100$) — division par $\approx10$ ;
+    celles des trapèzes environ $1{,}4\cdot10^{-3}$ et
+    $1{,}4\cdot10^{-5}$ — division par $\approx100$. Ordres $1$ et $2$
+    confirmés : à $n$ égal, les trapèzes sont sans comparaison.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-17}
+\begin{corrige}{17}{L'inégalité de Cauchy-Schwarz intégrale}
+\demarche{Un trinôme positif n'a pas deux racines : discriminant négatif.}
+\begin{questions}
+  \item $t\mapsto\displaystyle\int_{a}^{b}(f+tg)^{2}
+    =\int f^{2}+2t\int fg+t^{2}\int g^{2}$ est positif pour tout $t$ : son
+    discriminant est négatif ou nul, soit
+    \[
+    \res{\Bigl(\int_{a}^{b}fg\Bigr)^{2}
+    \leqslant\int_{a}^{b}f^{2}\int_{a}^{b}g^{2}}
+    \]
+    (si $\int g^{2}=0$, alors $g=0$ par l'exercice 10 et tout est nul).
+  \item Avec $g=1$ sur $\intFF{0}{1}$ :
+    $\bigl(\int_{0}^{1}f\bigr)^{2}\leqslant\int_{0}^{1}f^{2}$ — le carré
+    de la moyenne est majoré par la moyenne des carrés.
+  \item Égalité si et seulement si le trinôme a une racine double $t_0$,
+    i.e. $\int(f+t_0g)^{2}=0$, i.e. $f=-t_0g$ : $f$ et $g$
+    \res{\text{colinéaires}} — le chapitre 18 en fera le cas d'égalité
+    général.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-18}
+\begin{corrige}{18}{Fonctions à valeurs complexes}
+\demarche{On intègre comme en réel : l'exponentielle complexe avale la
+trigonométrie.}
+\begin{questions}
+  \item $\displaystyle\int_{0}^{\pi}\mathrm{e}^{\mathrm{i}t}\,\mathrm{d}t
+    =\Bigl[\frac{\mathrm{e}^{\mathrm{i}t}}{\mathrm{i}}\Bigr]_{0}^{\pi}
+    =\frac{\mathrm{e}^{\mathrm{i}\pi}-1}{\mathrm{i}}=\res{2\mathrm{i}}$,
+    et $|2\mathrm{i}|=2\leqslant\pi
+    =\displaystyle\int_{0}^{\pi}\bigl|\mathrm{e}^{\mathrm{i}t}\bigr|\mathrm{d}t$.
+  \item Une primitive de $\mathrm{e}^{(1+\mathrm{i})x}$ est
+    $\dfrac{\mathrm{e}^{(1+\mathrm{i})x}}{1+\mathrm{i}}$ ; sa partie
+    réelle,
+    $\res{\dfrac{\mathrm{e}^{x}(\cos x+\sin x)}{2}}$, est une primitive de
+    $\mathrm{e}^{x}\cos x$ — sans la double IPP du chapitre 4.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-19}
+\begin{corrige}{19}{La constante d'Euler, enfin}
+\demarche{Comparer la série harmonique aux aires sous l'hyperbole :
+l'écart se stabilise.}
+\begin{questions}
+  \item Pour $t\in\intFF{k}{k+1}$ :
+    $\dfrac{1}{k+1}\leqslant\dfrac1t\leqslant\dfrac1k$, donc
+    $\dfrac{1}{k+1}\leqslant\displaystyle\int_{k}^{k+1}\frac{\mathrm{d}t}{t}
+    \leqslant\dfrac1k$. Alors
+    $u_{n+1}-u_n=\dfrac{1}{n+1}-\displaystyle\int_{n}^{n+1}\frac{\mathrm{d}t}{t}
+    \leqslant0$ : décroissante ; et
+    $u_n\geqslant\displaystyle\sum_{k=1}^{n}\int_{k}^{k+1}\frac{\mathrm{d}t}{t}
+    -\ln n=\ln\frac{n+1}{n}\geqslant0$ : minorée.
+  \item Décroissante minorée : $(u_n)$ converge. Sa limite \emph{définit}
+    $\gamma\approx0{,}577$ — admise au chapitre 5, construite ici.
+  \item $u_n-\gamma=\displaystyle\sum_{k\geqslant n}(u_k-u_{k+1})$ avec
+    $0<u_k-u_{k+1}<\dfrac1k-\dfrac{1}{k+1}$ : la somme télescopique donne
+    $\res{0<u_n-\gamma<\dfrac1n}$ — convergence lente, cohérente avec le
+    développement $H_n=\ln n+\gamma+\frac{1}{2n}+o\bigl(\frac1n\bigr)$ du
+    chapitre 11.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-20}
+\begin{corrige}{20}{Le lemme de Riemann-Lebesgue, version $\mathcal{C}^{1}$}
+\demarche{Une IPP transfère la dérivée sur f et fait descendre un facteur
+1/n.}
+\begin{questions}
+  \item En intégrant par parties :
+    \[
+    \int_{a}^{b}f(t)\sin(nt)\,\mathrm{d}t
+    =\Bigl[-\frac{f(t)\cos(nt)}{n}\Bigr]_{a}^{b}
+    +\frac1n\int_{a}^{b}f'(t)\cos(nt)\,\mathrm{d}t ,
+    \]
+    d'où la majoration par
+    $\dfrac1n\Bigl(|f(a)|+|f(b)|+\displaystyle\int_{a}^{b}|f'|\Bigr)$ :
+    l'intégrale tend vers $\res{0}$ en $O\bigl(\frac1n\bigr)$.
+  \item Deux IPP donnent
+    $\displaystyle\int_{0}^{2\pi}t^{2}\sin(nt)\,\mathrm{d}t
+    =\res{-\dfrac{4\pi^{2}}{n}}$ : conforme.
+  \item Pour une fonction en escalier, chaque palier donne
+    $c\,\frac{\cos(n\alpha)-\cos(n\beta)}{n}\to0$ ; une fonction continue
+    par morceaux s'approche uniformément par des fonctions en escalier
+    (Heine) : un découpage en $\frac\varepsilon2+\frac\varepsilon2$
+    conclut — le lemme vaut pour toutes les fonctions du chapitre.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-21}
+\begin{corrige}{21}{Le théorème de Heine, démonstration guidée}
+\demarche{Nier l'uniformité donne deux suites rebelles ;
+Bolzano-Weierstrass les rattrape.}
+\begin{questions}
+  \item La négation de l'uniforme continuité fournit un $\varepsilon>0$
+    tel que pour chaque $\delta=\frac1n$, il existe $x_n,y_n$ avec
+    $|x_n-y_n|\leqslant\frac1n$ et $|f(x_n)-f(y_n)|>\varepsilon$.
+  \item $(x_n)$ vit dans le segment $\intFF{a}{b}$ : Bolzano-Weierstrass
+    (chapitre 5) extrait $x_{\varphi(n)}\to c\in\intFF{a}{b}$ ; comme
+    $|x_n-y_n|\to0$, $y_{\varphi(n)}\to c$ aussi. Par continuité de $f$
+    en $c$ : $f(x_{\varphi(n)})-f(y_{\varphi(n)})\to0$, ce qui contredit
+    $>\varepsilon$. Donc $f$ est uniformément continue : Heine est
+    démontré.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-22}
+\begin{corrige}{22}{Orthogonale aux polynômes}
+\demarche{Si f changeait peu de signe, un polynôme bien choisi serait
+partout du signe de f — et leur produit d'intégrale strictement positive.}
+\begin{questions}
+  \item Par linéarité : $\displaystyle\int_{0}^{1}fP=0$ pour tout
+    $P\in\R_n[X]$.
+  \item Supposons $f\neq0$ et notons $a_1<\dots<a_p$ les points de
+    $\intOO{0}{1}$ où $f$ change de signe, avec $p\leqslant n$. Le
+    polynôme $P=\prod_{i}(X-a_i)$, de degré $p\leqslant n$, change de
+    signe exactement aux mêmes points : $fP$ est continue, de signe
+    constant, non identiquement nulle, donc
+    $\displaystyle\int_{0}^{1}fP\neq0$ (exercice 10) — contradiction.
+    Ainsi $f$ change de signe, donc s'annule, en au moins
+    $\res{n+1}$ points de $\intOO{0}{1}$.
+  \item $f(x)=6x^{2}-6x+1$ est orthogonale à $1$ et à $x$ ($n=1$) ; ses
+    racines $\dfrac{3\pm\sqrt3}{6}\approx0{,}21$ et $0{,}79$ sont bien
+    \res{\text{deux}} points de $\intOO{0}{1}$ : la borne $n+1$ est
+    atteinte.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-23}
+\begin{corrige}{23}{L'aire de l'ellipse}
+\demarche{Paramétrer, intégrer un sin², retrouver le facteur det = ab.}
+\begin{questions}
+  \item Le paramétrage parcourt l'ellipse, et l'aire s'écrit
+    $\displaystyle\int_{0}^{2\pi}ab\sin^{2}t\,\mathrm{d}t$ (somme des
+    aires balayées $-y\,\mathrm{d}x$, ou le double de l'aire sous la
+    demi-ellipse via $x=a\cos t$).
+  \item $\displaystyle\int_{0}^{2\pi}\sin^{2}=\pi$ :
+    aire $=\res{\pi ab}$ — exactement le point de vue du chapitre 14 :
+    l'image du disque (aire $\pi$) par $\operatorname{diag}(a,b)$, de
+    déterminant $ab$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-15-24}
+\begin{corrige}{24}{La formule de Stirling, enfin démontrée}
+\demarche{Montrer que la suite $n!/\bigl(\sqrt n\,(n/\mathrm{e})^{n}\bigr)$
+converge (série télescopique), puis identifier la limite avec Wallis.}
+\begin{questions}
+  \item Calcul direct :
+    $\ln u_n-\ln u_{n+1}
+    =\ln\dfrac{n!}{(n+1)!}-\dfrac12\ln\dfrac{n}{n+1}-n\ln n+(n+1)\ln(n+1)-1
+    =\Bigl(n+\dfrac12\Bigr)\ln\Bigl(1+\dfrac1n\Bigr)-1$.
+  \item Soit $\varphi(t)=\ln(1+t)-\dfrac{2t}{2+t}$ :
+    $\varphi(0)=0$ et
+    $\varphi'(t)=\dfrac{t^{2}}{(1+t)(2+t)^{2}}\geqslant0$, donc
+    $\ln(1+t)\geqslant\dfrac{2t}{2+t}$. En $t=\dfrac1n$ :
+    $\Bigl(n+\dfrac12\Bigr)\ln\Bigl(1+\dfrac1n\Bigr)
+    \geqslant\Bigl(n+\dfrac12\Bigr)\dfrac{2}{2n+1}=1$ : $d_n\geqslant0$.
+    Et la série alternée
+    $\ln(1+x)\leqslant x-\dfrac{x^{2}}{2}+\dfrac{x^{3}}{3}$ donne
+    $d_n\leqslant\dfrac{1}{12n^{2}}+\dfrac{1}{6n^{3}}
+    \leqslant\dfrac{1}{6n^{2}}$ pour $n\geqslant2$.
+  \item $\sum d_n$ est à termes positifs, majorée par
+    $\sum\frac{1}{6n^{2}}$ qui converge (chapitre 5) : les sommes
+    partielles $\ln u_2-\ln u_{n+1}$ convergent, donc $(\ln u_n)$
+    converge vers un réel $L$, et $u_n\to\ell=\mathrm{e}^{L}>0$ :
+    \[
+    n!\sim\ell\,\sqrt n\,\Bigl(\frac{n}{\mathrm{e}}\Bigr)^{n}.
+    \]
+  \item En insérant cet équivalent dans
+    $\dbinom{2n}{n}=\dfrac{(2n)!}{(n!)^{2}}$ :
+    $\dbinom{2n}{n}\sim\dfrac{\ell\sqrt{2n}\,(2n)^{2n}}
+    {\ell^{2}\,n\,n^{2n}}\,\mathrm{e}^{0}
+    =\dfrac{\sqrt2}{\ell}\cdot\dfrac{4^{n}}{\sqrt n}$. Or Wallis
+    (chapitre 11, exercice 23, obtenu \emph{sans} Stirling) donne
+    $\dbinom{2n}{n}\sim\dfrac{4^{n}}{\sqrt{\pi n}}$ : donc
+    $\dfrac{\sqrt2}{\ell}=\dfrac{1}{\sqrt\pi}$, soit
+    $\ell=\sqrt{2\pi}$ :
+    \[
+    \res{n!\underset{+\infty}{\sim}\sqrt{2\pi n}\,
+    \Bigl(\frac{n}{\mathrm{e}}\Bigr)^{n}}
+    \]
+    — la formule admise au chapitre 11 est désormais entièrement
+    démontrée : un cycle complet du cours se referme.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-15}

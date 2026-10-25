@@ -1,0 +1,28 @@
+% Lignes de champ : charge positive, charge négative, champ uniforme entre deux plaques (L'essentiel, chapitre 11)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  ligne/.style={otNavy!60,line width=0.6pt,-{Stealth[length=1.7mm]}},
+  charge/.style={circle,minimum size=5mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont,text=white}]
+\begin{scope}
+  \foreach \a in {0,30,...,330}{\draw[ligne] (\a:0.35) -- (\a:1.35);}
+  \node[charge,fill=otRed!80] at (0,0) {$+$};
+  \node[pcLegendeG,anchor=north] at (0,-1.55) {charge positive :};
+  \node[pcLegende,anchor=north] at (0,-1.95) {lignes divergentes};
+\end{scope}
+\begin{scope}[shift={(3.6,0)}]
+  \foreach \a in {0,30,...,330}{\draw[ligne] (\a:1.35) -- (\a:0.35);}
+  \node[charge,fill=otNavy] at (0,0) {$-$};
+  \node[pcLegendeG,anchor=north] at (0,-1.55) {charge négative :};
+  \node[pcLegende,anchor=north] at (0,-1.95) {lignes convergentes};
+\end{scope}
+\begin{scope}[shift={(6.4,-1.1)}]
+  \fill[otRed!55] (0,2.2) rectangle (3.4,2.36);
+  \fill[otNavy!60] (0,-0.16) rectangle (3.4,0);
+  \node[font=\otSemi\fontsize{10}{11}\selectfont,text=otRed!80!black] at (-0.3,2.28) {$+$};
+  \node[font=\otSemi\fontsize{10}{11}\selectfont,text=otNavy] at (-0.3,-0.08) {$-$};
+  \foreach \xx in {0.35,0.9,...,3.1}{\draw[ligne] (\xx,2.12) -- (\xx,0.1);}
+  \node[pcLegende,anchor=west,fill=white,inner sep=1pt] at (3.45,1.1) {$\vec{E}$};
+  \node[pcLegendeG,anchor=north] at (1.7,-0.45) {condensateur plan :};
+  \node[pcLegende,anchor=north] at (1.7,-0.85) {champ uniforme, $E=\dfrac{U}{d}$};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Une ligne de champ est tangente au vecteur champ en chacun de ses points ; elle est orientée dans le sens du champ.}

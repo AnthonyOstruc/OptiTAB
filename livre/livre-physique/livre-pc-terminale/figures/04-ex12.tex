@@ -1,0 +1,16 @@
+% Décoloration du colorant E133 par l'eau de Javel : deux concentrations en ions hypochlorite (exercice 12, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=56mm,xmin=0,xmax=63,ymin=0,ymax=0.9,
+  xtick={0,10,...,60},ytick={0,0.2,...,0.8},yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$t$ (min)},ylabel={$A$ à 630 nm},
+  legend style={at={(0.98,0.97)},anchor=north east,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\addplot[otNavy,line width=0.8pt,smooth,mark=*,mark size=1.5pt] table[x index=0,y index=1] {figures/donnees/04-e133-javel.dat};
+\addlegendentry{expérience 1 : $[\mathrm{ClO^-}]=\qty{4,0e-2}{mol.L^{-1}}$}
+\addplot[otGreenDark,line width=0.8pt,smooth,mark=square*,mark size=1.4pt] table[x index=0,y index=2] {figures/donnees/04-e133-javel.dat};
+\addlegendentry{expérience 2 : $[\mathrm{ClO^-}]=\qty{8,0e-2}{mol.L^{-1}}$}
+\solution{\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.4) -- (axis cs:30,0.4) -- (axis cs:30,0);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:15,0.4) -- (axis cs:15,0);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:30,0.2) -- (axis cs:60,0.2) -- (axis cs:60,0);
+\node[pcLegende,anchor=south,text=otOrange!75!black,fill=white,inner sep=0.8pt] at (axis cs:15,0.02) {15};}
+\end{axis}
+\end{tikzpicture}

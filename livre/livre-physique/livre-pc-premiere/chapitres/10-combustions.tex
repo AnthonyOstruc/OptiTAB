@@ -1,0 +1,319 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[flamme]{10}{Combustions et énergie chimique}{Partie 1 · Constitution et transformations de la matière}
+{Combustible\enspace·\enspace Comburant\enspace·\enspace Énergie de réaction\enspace·\enspace Pouvoir calorifique\enspace·\enspace Énergie de liaison}
+\objectif{Citer des combustibles usuels et modéliser une combustion par une réaction d'oxydoréduction.}
+\objectif{Écrire l'équation de la combustion complète d'un alcane et d'un alcool.}
+\objectif{Utiliser l'énergie molaire de réaction et le pouvoir calorifique pour calculer une énergie libérée.}
+\objectif{Estimer une énergie de réaction en phase gazeuse à partir des énergies de liaison.}
+\objectif{Citer des applications des combustions, leurs risques et des pistes de développement durable.}
+\prerequis{Réactions d'oxydoréduction (chapitre~3) ; avancement (chapitre~4).}
+\prerequis{Schémas de Lewis (chapitre~6) ; alcanes et alcools (chapitre~8).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Combustibles et combustions}
+\begin{definition}[Combustion]
+Une \textbf{combustion} est une transformation chimique exothermique entre un \textbf{combustible} et un \textbf{comburant}, le
+plus souvent le dioxygène de l'air. C'est une réaction d'oxydoréduction : le combustible est le réducteur, le dioxygène
+l'oxydant. Les combustibles usuels sont d'origine fossile (gaz naturel, butane, propane, essence, gazole, fioul, charbon)
+ou renouvelable (bois, biogaz, bioéthanol).
+\end{definition}
+\schema{10-triangle}
+\essSection{2}{Écrire l'équation d'une combustion}
+\begin{propriete}[Combustion complète]
+La combustion complète d'une espèce formée de carbone, d'hydrogène et éventuellement d'oxygène produit du dioxyde de
+carbone et de l'eau. Pour un alcane et pour un alcool :
+\[\mathrm{C}_n\mathrm{H}_{2n+2}+\frac{3n+1}{2}\,\ce{O2}\longrightarrow n\,\ce{CO2}+(n+1)\,\ce{H2O}\qquad\qquad\mathrm{C}_n\mathrm{H}_{2n+2}\mathrm{O}+\frac{3n}{2}\,\ce{O2}\longrightarrow n\,\ce{CO2}+(n+1)\,\ce{H2O}.\]
+On ajuste C, puis H, puis O, en multipliant par 2 si nécessaire : $\ce{2C4H10 + 13O2 -> 8CO2 + 10H2O}$. Si le dioxygène manque,
+la combustion est \textbf{incomplète} : elle produit aussi du monoxyde de carbone $\ce{CO}$, toxique, ou du carbone (suie).
+\end{propriete}
+\essSection{3}{L'énergie libérée}
+\begin{definition}[Énergie molaire de réaction, pouvoir calorifique]
+L'\textbf{énergie molaire de réaction} $E_\mathrm{r}$, en \unit{kJ.mol^{-1}}, est l'énergie échangée par le système pour un avancement de
+\qty{1}{mol} ; elle est négative pour une réaction exothermique. La combustion de $n$ moles de combustible (nombre stœchiométrique 1)
+libère $Q=n\times|E_\mathrm{r}|$. Le \textbf{pouvoir calorifique massique} est l'énergie libérée par kilogramme de combustible :
+$\mathrm{PC}=\dfrac{|E_\mathrm{r}|}{M}$, en \unit{MJ.kg^{-1}}.
+\end{definition}
+\begin{propriete}[Quelques valeurs (eau formée à l'état gazeux)]
+\par\smallskip\noindent\hfill\begin{tabular}{lccccc}
+\toprule
+Combustible & méthane & propane & butane & éthanol & dihydrogène \\
+\midrule
+$E_\mathrm{r}$ (\unit{kJ.mol^{-1}}) & $-802$ & $-2043$ & $-2657$ & $-1235$ & $-242$ \\
+PC (\unit{MJ.kg^{-1}}) & 50,1 & 46,4 & 45,8 & 26,8 & 121 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{propriete}
+\essSection{4}{Énergies de liaison}
+\begin{definition}[Énergie de liaison]
+L'\textbf{énergie de liaison} $D_{\mathrm{A-B}}$ est l'énergie qu'il faut fournir pour rompre une mole de liaisons A--B, en phase
+gazeuse. En phase gazeuse, une réaction rompt des liaisons, ce qui consomme de l'énergie, et en forme de nouvelles, ce
+qui en libère :
+\[E_\mathrm{r}\approx\sum D(\text{liaisons rompues})-\sum D(\text{liaisons formées}).\]
+\end{definition}
+\begin{propriete}[Énergies de liaison moyennes (\unit{kJ.mol^{-1}})]
+\par\smallskip\noindent\hfill\begin{tabular}{cccccccc}
+\toprule
+C--H & C--C & C--O & C=O (dans $\ce{CO2}$) & O=O & O--H & H--H \\
+\midrule
+415 & 345 & 358 & 804 & 498 & 463 & 436 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{propriete}
+\schema{10-energie}
+\begin{python}
+D = {'C-H': 415, 'C-C': 345, 'C=O': 804, 'O=O': 498, 'O-H': 463}   # kJ/mol
+rompues = {'C-H': 4, 'O=O': 2}           # CH4 + 2 O2
+formees = {'C=O': 2, 'O-H': 4}           # CO2 + 2 H2O
+
+E_rompues = sum(D[l] * n for l, n in rompues.items())
+E_formees = sum(D[l] * n for l, n in formees.items())
+Er = E_rompues - E_formees
+print('Er =', Er, 'kJ/mol')
+\end{python}
+\begin{console}
+Er = -804 kJ/mol
+\end{console}
+\noindent\capacite{Capacité numérique} Le programme associe à chaque liaison son énergie, puis fait la somme des énergies des liaisons
+rompues et celle des liaisons formées. Le résultat, \qty{-804}{kJ.mol^{-1}}, est très proche de la valeur des tables, \qty{-802}{kJ.mol^{-1}}.
+\essSection{5}{Combustions et enjeux de société}
+\begin{propriete}[Usages, risques, perspectives]
+Les combustions chauffent les logements, propulsent les véhicules et produisent une partie de l'électricité. Elles
+comportent des risques : incendies, explosions, intoxications au monoxyde de carbone. Le dioxyde de carbone qu'elles
+rejettent renforce l'effet de serre. Les axes d'étude actuels visent à réduire ces émissions : biocarburants, biogaz issu
+de la méthanisation des déchets, dihydrogène produit par électrolyse, captage du dioxyde de carbone, et sobriété.
+\end{propriete}
+\schema{10-co2}
+\begin{attention}
+Une énergie molaire de réaction se rapporte à l'équation écrite : si l'on double tous les nombres stœchiométriques,
+elle double. Les énergies de liaison sont des valeurs moyennes, valables en phase gazeuse : le calcul donne une estimation.
+Ne pas confondre l'énergie libérée par mole et par kilogramme : le dihydrogène libère peu d'énergie par mole, mais
+énormément par kilogramme.
+\end{attention}
+\begin{experience}[Estimer un pouvoir calorifique]
+On chauffe une canette contenant \qty{200}{g} d'eau avec une lampe à éthanol, en mesurant l'élévation de température de l'eau
+et la masse d'éthanol brûlé. L'énergie reçue par l'eau vaut $Q=m_\text{eau}\,c\,\Delta\theta$, avec $c=\qty{4,18}{kJ.kg^{-1}.\degreeCelsius^{-1}}$. Le pouvoir
+calorifique estimé est très inférieur à la valeur des tables : une grande partie de l'énergie chauffe l'air ambiant.
+\end{experience}
+\begin{rediger}
+Pour un bilan d'énergie : écrire l'équation ajustée, calculer la quantité de combustible, puis $Q=n\,|E_\mathrm{r}|$ ou $Q=m\times\mathrm{PC}$, en
+précisant les unités. Avec les énergies de liaison, dresser la liste complète des liaisons rompues et formées, à l'aide des
+schémas de Lewis.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-10-1}
+\begin{exercice}[1]{Écrire des équations de combustion}
+Écrire l'équation de la combustion complète de chaque espèce.
+\begin{questions}
+\item Le méthane $\ce{CH4}$ et le propane $\ce{C3H8}$.
+\item Le butane $\ce{C4H10}$.
+\item L'éthanol $\ce{C2H6O}$ et le méthanol $\ce{CH4O}$.
+\item Vérifier, sur le propane et l'éthanol, les formules générales de l'essentiel.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-2}
+\begin{exercice}[1]{Une combustion est une oxydoréduction}
+On étudie la combustion du méthane, mettant en jeu les couples $\ce{CO2}/\ce{CH4}$ et $\ce{O2}/\ce{H2O}$.
+\begin{questions}
+\item Vérifier que la demi-équation $\ce{CO2 + 8H+ + 8e- = CH4 + 2H2O}$ est ajustée.
+\item Écrire la demi-équation du couple $\ce{O2}/\ce{H2O}$ en milieu acide.
+\item En déduire l'équation de la combustion du méthane.
+\item Quel est le réducteur ? l'oxydant ? Que cède le méthane au dioxygène ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-3}
+\begin{exercice}[1]{Pouvoir calorifique}
+\begin{donnees}
+$E_\mathrm{r}(\text{méthane})=\qty{-802}{kJ.mol^{-1}}$ ; $E_\mathrm{r}(\text{propane})=\qty{-2043}{kJ.mol^{-1}}$ ; H 1,0 ; C 12,0 (\unit{g.mol^{-1}}).
+\end{donnees}
+\begin{questions}
+\item Calculer les masses molaires du méthane et du propane.
+\item Calculer leurs pouvoirs calorifiques massiques en \unit{MJ.kg^{-1}}.
+\item Quel combustible libère le plus d'énergie par mole ? par kilogramme ?
+\item Quelle énergie libère la combustion de \qty{1,0}{kg} de méthane ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-4}
+\begin{exercice}[1]{Chauffer de l'eau au butane}
+On veut porter \qty{1,0}{L} d'eau de \qty{20}{\degreeCelsius} à \qty{100}{\degreeCelsius} avec un réchaud à butane. L'énergie nécessaire vaut $Q=m\,c\,\Delta\theta$,
+avec $c=\qty{4,18}{kJ.kg^{-1}.\degreeCelsius^{-1}}$. Le pouvoir calorifique du butane vaut \qty{45,8}{MJ.kg^{-1}}.
+\begin{questions}
+\item Calculer l'énergie nécessaire.
+\item Quelle masse de butane faudrait-il brûler si toute l'énergie libérée chauffait l'eau ?
+\item En réalité, la moitié de l'énergie seulement chauffe l'eau. Quelle masse de butane faut-il ?
+\item Où passe l'énergie « perdue » ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-5}
+\begin{exercice}[1]{Énergies de liaison et dihydrogène}
+On étudie la réaction $\ce{2H2(g) + O2(g) -> 2H2O(g)}$, avec les énergies de liaison de l'essentiel.
+\begin{questions}
+\item Représenter les schémas de Lewis des réactifs et du produit.
+\item Quelles liaisons sont rompues ? formées ? Combien de chaque ?
+\item Calculer l'énergie de réaction pour l'équation écrite.
+\item En déduire l'énergie libérée par mole de dihydrogène et la comparer à la valeur des tables, \qty{242}{kJ.mol^{-1}}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-10-6}
+\begin{exercice}[2]{Énergies de liaison en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Pour la combustion du propane, $\ce{C3H8 + 5O2 -> 3CO2 + 4H2O}$, dénombrer les liaisons rompues et formées et écrire
+les dictionnaires \code{rompues} et \code{formees}.
+\item Prévoir l'affichage et comparer à la valeur des tables, \qty{-2043}{kJ.mol^{-1}}.
+\item On écrit les dictionnaires pour l'équation $\ce{2C4H10 + 13O2 -> 8CO2 + 10H2O}$. Le programme affiche \code{Er = -5280 kJ/mol}. Quelle énergie
+libère une mole de butane ? Comparer à \qty{-2657}{kJ.mol^{-1}}.
+\item Pourquoi les résultats ne coïncident-ils pas exactement avec les valeurs des tables ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-7}
+\begin{exercice}[2]{Mesurer un pouvoir calorifique}
+\schema{10-ex07}
+On chauffe \qty{200}{g} d'eau ; sa température passe de \qty{18,0}{\degreeCelsius} à \qty{38,0}{\degreeCelsius}, tandis que la lampe perd \qty{1,20}{g} d'éthanol.
+\begin{donnees}
+$c=\qty{4,18}{kJ.kg^{-1}.\degreeCelsius^{-1}}$ ; pouvoir calorifique de l'éthanol : \qty{26,8}{MJ.kg^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie reçue par l'eau.
+\item En déduire le pouvoir calorifique expérimental de l'éthanol, en \unit{kJ.g^{-1}}.
+\item Comparer à la valeur des tables. Quelle part de l'énergie libérée a chauffé l'eau ?
+\item Proposer deux améliorations du dispositif.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-8}
+\begin{exercice}[2]{Se chauffer au gaz}
+Une maison consomme \qty{15000}{kWh} de gaz naturel par an, assimilé à du méthane. On rappelle que $\qty{1}{kWh}=\qty{3,6}{MJ}$.
+\begin{donnees}
+Pouvoir calorifique du méthane : \qty{50,1}{MJ.kg^{-1}} ; $M(\ce{CH4})=\qty{16,0}{g.mol^{-1}}$ ; $M(\ce{CO2})=\qty{44,0}{g.mol^{-1}}$ ; $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Convertir la consommation annuelle en mégajoules.
+\item Calculer la masse, puis la quantité de méthane brûlé en un an.
+\item Calculer le volume de gaz consommé à \qty{20}{\degreeCelsius}.
+\item Calculer la masse de dioxyde de carbone rejeté en un an.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-9}
+\begin{exercice}[2]{Une combustion incomplète}
+Une chaudière mal réglée, dans une pièce mal aérée, ne reçoit pas assez de dioxygène.
+\begin{questions}
+\item Écrire l'équation de la combustion du méthane produisant du monoxyde de carbone et de l'eau.
+\item Écrire l'équation de la combustion produisant du carbone (suie) et de l'eau.
+\item Pourquoi le monoxyde de carbone est-il particulièrement dangereux (chapitre~6) ?
+\item Citer deux mesures de prévention.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-10}
+\begin{exercice}[2]{Bois ou fioul ?}
+Un foyer a besoin de \qty{10000}{kWh} de chaleur par an. Le bois sec a un pouvoir calorifique d'environ \qty{15}{MJ.kg^{-1}}, le fioul de
+\qty{42,6}{MJ.kg^{-1}} (masse volumique \qty{0,84}{kg.L^{-1}}).
+\begin{questions}
+\item Calculer la masse de bois nécessaire.
+\item Calculer la masse, puis le volume de fioul nécessaire.
+\item Le bois rejette du dioxyde de carbone en brûlant. Pourquoi le considère-t-on pourtant comme une énergie
+renouvelable ?
+\item Quel inconvénient de la combustion du bois faut-il surveiller pour la qualité de l'air ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-11}
+\begin{exercice}[2]{Le dihydrogène, carburant d'avenir ?}
+\begin{donnees}
+Pouvoir calorifique : dihydrogène \qty{121}{MJ.kg^{-1}}, octane \qty{44,5}{MJ.kg^{-1}}. $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ à \qty{20}{\degreeCelsius} sous \qty{1}{bar} ; à
+\qty{700}{bar}, la masse volumique du dihydrogène vaut environ \qty{40}{g.L^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la combustion du dihydrogène. Quel est son principal avantage pour l'environnement ?
+\item Quelle masse d'octane libère autant d'énergie que \qty{1}{kg} de dihydrogène ?
+\item Quel volume occupe \qty{1}{kg} de dihydrogène à \qty{20}{\degreeCelsius} sous \qty{1}{bar} ? sous \qty{700}{bar} ?
+\item Le dihydrogène est surtout produit aujourd'hui à partir de méthane. À quelle condition est-il un carburant « propre » ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-10-12}
+\begin{exercice}[3]{Réchaud à éthanol ou à butane ?}
+\begin{docu}{1}{Deux réchauds de randonnée}
+Les randonneurs utilisent des réchauds à cartouche de butane ou des réchauds à alcool (éthanol). L'éthanol peut être
+produit à partir de betterave ou de canne à sucre.
+\end{docu}
+\begin{docu}{2}{Données}
+$E_\mathrm{r}(\text{butane})=\qty{-2657}{kJ.mol^{-1}}$ ; $E_\mathrm{r}(\text{éthanol})=\qty{-1235}{kJ.mol^{-1}}$ ; pouvoirs calorifiques : butane \qty{45,8}{MJ.kg^{-1}}, éthanol
+\qty{26,8}{MJ.kg^{-1}} ; $M(\ce{CO2})=\qty{44,0}{g.mol^{-1}}$.
+\end{docu}
+\begin{questions}
+\item Écrire les équations de combustion complète du butane et de l'éthanol.
+\item Quelle masse de chaque combustible faut-il emporter pour disposer de \qty{1}{MJ} ?
+\item Calculer la masse de dioxyde de carbone rejetée par mégajoule pour chaque combustible.
+\item \initiative Lequel choisir ? Argumenter, en tenant compte de l'origine du carbone de chaque combustible.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-13}
+\begin{exercice}[3]{Le bilan énergétique d'une voiture}
+\begin{docu}{1}{La consommation}
+Une voiture consomme \qty{6,0}{L} d'essence aux \qty{100}{km}. On assimile l'essence à l'octane : masse volumique \qty{0,75}{kg.L^{-1}},
+$M=\qty{114,0}{g.mol^{-1}}$, $E_\mathrm{r}=\qty{-5074}{kJ.mol^{-1}}$.
+\end{docu}
+\begin{docu}{2}{Le moteur}
+Le moteur ne convertit en mouvement qu'environ \qty{35}{\percent} de l'énergie libérée par la combustion ; le reste est dissipé sous
+forme de chaleur.
+\end{docu}
+\begin{questions}
+\item Calculer la masse et la quantité d'octane brûlé par kilomètre.
+\item Calculer l'énergie libérée par kilomètre, puis l'énergie utile au mouvement.
+\item Calculer la masse de dioxyde de carbone émise par kilomètre.
+\item \initiative Une voiture électrique consomme environ \qty{15}{kWh} aux \qty{100}{km}. Comparer à l'énergie chimique consommée par la
+voiture à essence sur la même distance.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-14}
+\begin{exercice}[3]{Le biogaz d'une ferme}
+\begin{docu}{1}{La méthanisation}
+Dans un méthaniseur, des bactéries décomposent les fumiers et les déchets agricoles en l'absence de dioxygène : il se
+forme du biogaz, contenant environ \qty{60}{\percent} de méthane et \qty{40}{\percent} de dioxyde de carbone en volume.
+\end{docu}
+\begin{docu}{2}{La production}
+Une exploitation agricole produit \qty{300}{m^3} de biogaz par jour. Un foyer consomme environ \qty{15}{MWh} d'énergie par an pour son
+chauffage et son eau chaude.
+\end{docu}
+\begin{donnees}
+$V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ ; $E_\mathrm{r}(\text{méthane})=\qty{-802}{kJ.mol^{-1}}$ ; $\qty{1}{kWh}=\qty{3,6}{MJ}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité de méthane contenue dans \qty{1}{m^3} de biogaz à \qty{20}{\degreeCelsius}.
+\item Calculer l'énergie libérée par la combustion de \qty{1}{m^3} de biogaz, en mégajoules puis en kilowattheures.
+\item Calculer l'énergie produite en un an par l'exploitation.
+\item \initiative Combien de foyers ce biogaz pourrait-il chauffer ? Pourquoi parle-t-on d'une énergie renouvelable ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-15}
+\begin{exercice}[3]{La puissance d'une bougie}
+\begin{docu}{1}{Une bougie}
+Une bougie est formée de paraffine, que l'on assimile à l'alcane $\ce{C25H52}$, de pouvoir calorifique \qty{42}{MJ.kg^{-1}}. En une heure,
+la bougie perd \qty{5,0}{g}.
+\end{docu}
+\begin{docu}{2}{Une comparaison}
+Une ampoule à DEL éclaire autant qu'une bougie avec une puissance d'environ \qty{0,1}{W}.
+\end{docu}
+\begin{questions}
+\item Écrire l'équation de la combustion complète de la paraffine.
+\item Calculer l'énergie libérée en une heure.
+\item \initiative Calculer la puissance thermique de la bougie, en watts, et la comparer à celle de l'ampoule.
+\item Calculer la masse de dioxyde de carbone rejetée en une heure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,131 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 9 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s9.py)
+
+\sujetBac{9}{Variable aléatoire et simulation/5,Équation différentielle : un médicament/5,Vrai ou faux : géométrie/4,Fonction et algorithme de dichotomie/6}
+
+\begin{exoBac}{5}{Variable aléatoire et simulation}
+Un joueur lance une pièce équilibrée au plus quatre fois, et s'arrête dès qu'il obtient « pile ». Il marque $4$ points s'il obtient
+pile au premier lancer, $3$ points au deuxième, $2$ points au troisième, $1$ point au quatrième, et $0$ point s'il n'obtient jamais
+pile. On note $X$ le nombre de points marqués.
+\partieExo{A}{Étude de la variable aléatoire}
+\begin{questions}
+  \item Déterminer la loi de probabilité de $X$.
+  \item Calculer l'espérance $E(X)$.
+  \item Montrer que la variance de $X$ vaut $V(X)=\dfrac{367}{256}$.
+\end{questions}
+\partieExo{B}{Simulation}
+On considère les fonctions Python ci-dessous, où \code{random()} renvoie un nombre aléatoire de l'intervalle $\intFO01$.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+from random import random
+
+def partie():
+    for k in range(4):
+        if random() < 0.5:
+            return ...
+    return 0
+\end{pythoncol}
+\cote
+\begin{pythoncol}
+def moyenne(n):
+    s = 0
+    for i in range(n):
+        s = s + partie()
+    return s / n
+\end{pythoncol}
+\end{codecote}
+\begin{questions}[resume]
+  \item Recopier et compléter la fonction \code{partie()} pour qu'elle renvoie le nombre de points marqués lors d'une partie.
+  \item Un appel de \code{moyenne(10000)} renvoie $3{,}0916$. Que représente cette valeur ? Ce résultat est-il cohérent ? Justifier.
+  \item On note $M_n$ la moyenne des points obtenus sur $n$ parties indépendantes. À l'aide de l'inégalité de concentration, majorer
+    $P\left(\left|M_n-E(X)\right|\geq0{,}1\right)$ pour $n=10\,000$, puis interpréter.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Équation différentielle : un médicament}
+On administre à un patient un médicament par perfusion continue. On note $Q(t)$ la quantité de médicament présente dans le sang, en
+milligrammes, $t$ heures après le début de la perfusion. On admet que $Q(0)=0$ et que la fonction $Q$ est solution de l'équation
+différentielle $(E):\ y'=-0{,}5\,y+2$.
+\begin{questions}
+  \item Résoudre l'équation $(E)$, puis montrer que, pour tout $t\geq0$, $Q(t)=4-4e^{-0{,}5t}$.
+  \item Étudier les variations de $Q$ sur $\intFO0{+\infty}$ et sa limite en $+\infty$. Interpréter.
+  \item Au bout de combien de temps la quantité de médicament atteint-elle $3{,}9$ mg ? On donnera la réponse à la minute près.
+  \item Calculer la quantité moyenne de médicament présente dans le sang pendant les dix premières heures. On arrondira au centième.
+  \item On approche $Q$ par la méthode d'Euler avec un pas $h=0{,}1$ : on pose $q_0=0$ et
+    $q_{k+1}=q_k+h\left(-0{,}5\,q_k+2\right)$. Écrire un programme Python qui calcule $q_{20}$, approximation de $Q(2)$, et comparer avec la
+    valeur exacte.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Vrai ou faux : géométrie}
+L'espace est muni d'un repère orthonormé. Pour chacune des affirmations suivantes, indiquer si elle est vraie ou fausse, en justifiant
+la réponse.
+\begin{questions}
+  \item \textbf{Affirmation 1.} Les points $A(1\pv2\pv3)$, $B(2\pv0\pv1)$, $C(0\pv1\pv2)$ et $D(3\pv1\pv2)$ sont coplanaires.
+  \item \textbf{Affirmation 2.} La droite $d$ de représentation paramétrique
+    \[\begin{cases}x=2t\\y=1-t\\z=3+t\end{cases}\qquad t\in\R\]
+    est orthogonale au plan d'équation $2x+y-z+1=0$.
+\end{questions}
+\begin{codecote}[0.68]
+\begin{questions}[start=3]
+  \item \textbf{Affirmation 3.} Dans le cube $ABCDEFGH$ représenté ci-contre, les droites $(AH)$ et $(CF)$ sont orthogonales.
+  \item \textbf{Affirmation 4.} Le plan médiateur du segment $[RS]$, avec $R(1\pv0\pv1)$ et $S(3\pv2\pv1)$, a pour équation
+    $x+y-4=0$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=1.75]
+  \otPaveCoord{1}{1}{1}
+  \otPaveAretes
+  \node[otSommet,anchor=north east] at (A) {$A$}; \node[otSommet,anchor=north west] at (B) {$B$};
+  \node[otSommet,anchor=west] at (C) {$C$}; \node[otSommet,anchor=south east] at (D) {$D$};
+  \node[otSommet,anchor=east] at (E) {$E$}; \node[otSommet,anchor=south east] at (F) {$F$};
+  \node[otSommet,anchor=south west] at (G) {$G$}; \node[otSommet,anchor=south east] at (H) {$H$};
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (A) -- (H);
+  \draw[otGreenDark,line width=0.9pt] (C) -- (F);
+\end{tikzpicture}
+\end{codecote}
+\end{exoBac}
+
+\begin{exoBac}{6}{Fonction et algorithme de dichotomie}
+On considère la fonction $f$ définie sur $\intOO0{+\infty}$ par $f(x)=x\ln x$, et l'on note $\mathcal{C}_f$ sa courbe représentative.
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item Déterminer les limites de $f$ en $0$ et en $+\infty$.
+  \item Calculer $f'(x)$ et dresser le tableau de variations de $f$, en précisant la valeur exacte de son minimum.
+  \item Étudier la convexité de $f$. Déterminer une équation de la tangente à $\mathcal{C}_f$ au point d'abscisse $1$ et en déduire que,
+    pour tout réel $x>0$, $x\ln x\geq x-1$.
+\end{questions}
+\partieExo{B}{Une équation et une aire}
+\begin{questions}[resume]
+  \item Montrer que l'équation $f(x)=1$ n'a pas de solution sur $\intOF01$, et qu'elle admet une unique solution $\alpha$ sur
+    $\intFO1{+\infty}$.
+  \item On considère les fonctions Python ci-contre, où \code{g(x)} renvoie $x\ln x-1$.
+\begin{codecote}[0.46]
+\begin{pythoncol}
+from math import log
+
+def g(x):
+    return x * log(x) - 1
+
+def dichotomie(p):
+    a, b = 1, 2
+    while b - a > p:
+        m = (a + b) / 2
+        if ... :
+            b = m
+        else:
+            a = m
+    return a, b
+\end{pythoncol}
+\cote
+\begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.6mm,topsep=0mm]
+  \item Recopier et compléter la condition de la ligne \code{if} pour que \code{dichotomie(p)} renvoie un encadrement de $\alpha$
+    d'amplitude inférieure ou égale à \code{p}, obtenu par dichotomie à partir de l'intervalle $\intFF12$.
+  \item Quel encadrement de $\alpha$ obtient-on avec l'appel \code{dichotomie(0.001)} ?
+\end{enumerate}
+\end{codecote}
+  \item À l'aide d'une intégration par parties, calculer l'aire, en unités d'aire, du domaine compris entre $\mathcal{C}_f$, l'axe des
+    abscisses et les droites d'équations $x=1$ et $x=e$.
+\end{questions}
+\end{exoBac}

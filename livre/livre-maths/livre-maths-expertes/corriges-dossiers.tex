@@ -1,0 +1,99 @@
+\fiche{Solutions des dossiers}{Méthodes et conclusions}\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{1. Une spirale et son centre}\phantomsection\label{projet-cor-1}\pdfbookmark[1]{Une spirale et son centre}{bm-projet-cor-1}
+\repere{projet-1}{Énoncé}
+\begin{questions}
+\item $\ell=1/(1-a)=1+\mathrm i$.
+\item $z_n-\ell=-\ell a^n$ ; sa norme vaut $\sqrt2(1/\sqrt2)^n=2^{(1-n)/2}$.
+\item À chaque étape, la distance au centre est multipliée par $1/\sqrt2$ et la direction tourne de $\pi/4$. Les points tendent vers $\ell$.
+\item $2^{(1-n)/2}<1/100$ donne $n>1+2\ln100/\ln2\simeq14{,}288$ ; le premier rang est $15$.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{2. Le pentagone régulier}\phantomsection\label{projet-cor-2}\pdfbookmark[1]{Le pentagone régulier}{bm-projet-cor-2}
+\repere{projet-2}{Énoncé}
+\begin{questions}
+\item $\omega^5=1$ et $\omega\ne1$ ; la somme géométrique vaut zéro.
+\item Les termes d’angles opposés ont le même cosinus ; les cinq parties réelles se regroupent comme indiqué.
+\item $\cos(4\pi/5)=2c^2-1$ donne $4c^2+2c-1=0$. Comme $2\pi/5<\pi/2$, $c>0$ ; donc $c=(\sqrt5-1)/4$.
+\item Le côté vaut $|\omega-1|=\sqrt{2-2c}=\sqrt{(5-\sqrt5)/2}$.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{3. Un message affine}\phantomsection\label{projet-cor-3}\pdfbookmark[1]{Un message affine}{bm-projet-cor-3}
+\repere{projet-3}{Énoncé}
+\begin{questions}
+\item $\operatorname{PGCD}(7,26)=1$ : $7$ est inversible modulo $26$.
+\item $7\times15\equiv1$, donc $x\equiv15(y-3)\pmod{26}$.
+\item M vaut $12$, A vaut $0$, T vaut $19$. Les images sont $9,3,6$, soit JDG.
+\item $15(9-3)\equiv12$, $15(3-3)=0$, $15(6-3)\equiv19$. On retrouve MAT. Le système illustre l’inverse modulaire mais reste facile à attaquer et ne représente pas une sécurité moderne.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{4. Pourquoi un RSA miniature fonctionne}\phantomsection\label{projet-cor-4}\pdfbookmark[1]{Pourquoi un RSA miniature fonctionne}{bm-projet-cor-4}
+\repere{projet-4}{Énoncé}
+\begin{questions}
+\item $7\times43=301=5\times60+1$.
+\item $2^7=128\equiv51\pmod{77}$.
+\item Fermat donne $m^6\equiv1\pmod7$ et $m^{10}\equiv1\pmod{11}$. Comme $ed-1=300$ est divisible par $6$ et $10$, on obtient dans les deux cas $m^{ed}\equiv m$.
+\item La différence est divisible par $7$ et $11$, premiers entre eux ; Gauss donne la divisibilité par $77$. \code{pow(51, 43, 77)} rend $2$. La preuve a utilisé l’hypothèse de coprimalité annoncée ; ces petits paramètres servent uniquement à l’étude.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{5. Deux calendriers}\phantomsection\label{projet-cor-5}\pdfbookmark[1]{Deux calendriers}{bm-projet-cor-5}
+\repere{projet-5}{Énoncé}
+\begin{questions}
+\item $4+7k\equiv3\pmod5$ donne $2k\equiv4$, donc $k\equiv2\pmod5$.
+\item $k=2+5t$, donc $x=18+35t$, $t\in\Z$.
+\item $18,53,88$.
+\item La différence de deux solutions est divisible par $7$ et $5$, donc par $35$. Réciproquement ajouter $35$ conserve les deux restes.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{6. Visiter toutes les liaisons}\phantomsection\label{projet-cor-6}\pdfbookmark[1]{Visiter toutes les liaisons}{bm-projet-cor-6}
+\repere{projet-6}{Énoncé}
+\begin{questions}
+\item C’est $K_5$, d’ordre $5$ ; chaque sommet a degré $4$ et il y a $10$ arêtes.
+\item Oui, par le critère admis : le graphe est connexe et tous ses degrés sont pairs.
+\item Les dix arêtes parcourues sont $01,12,02,03,13,14,24,23,34,04$, toutes différentes ; elles épuisent les dix arêtes. Le départ et l’arrivée coïncident.
+\item Non : les puissances de la matrice d’adjacence comptent tous les parcours, y compris avec répétition d’arêtes. Un critère supplémentaire serait nécessaire.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{7. Une parabole par trois mesures}\phantomsection\label{projet-cor-7}\pdfbookmark[1]{Une parabole par trois mesures}{bm-projet-cor-7}
+\repere{projet-7}{Énoncé}
+\begin{questions}
+\item $c=1$, $c+b+a=3$, $c+2b+4a=9$.
+\item $V=\begin{pmatrix}1&0&0\\1&1&1\\1&2&4\end{pmatrix}$ ; éliminer $c$ donne $b+a=2$, $2b+4a=8$, système de solution unique. Donc $V$ est inversible.
+\item $a=2,b=0,c=1$, soit $f(x)=2x^2+1$ ; les trois valeurs sont bien $1,3,9$.
+\item Non en général. Trois points d’abscisses distinctes fixent au plus une parabole de degré au plus $2$ ; une quatrième contrainte peut la contredire.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{8. Diffusion d’Ehrenfest à deux particules}\phantomsection\label{projet-cor-8}\pdfbookmark[1]{Diffusion d’Ehrenfest à deux particules}{bm-projet-cor-8}
+\repere{projet-8}{Énoncé}
+\begin{questions}
+\item $R=\begin{pmatrix}0&1&0\\1/2&0&1/2\\0&1&0\end{pmatrix}$. Depuis $1$, chaque particule a une chance sur deux d’être choisie.
+\item $\pi=(1/4;1/2;1/4)$ vérifie $\pi R=\pi$.
+\item Aux temps impairs l’état est certainement $1$ ; aux temps pairs à partir de $2$, la distribution vaut $(1/2;0;1/2)$. Deux sous-suites différentes empêchent la convergence.
+\item $P=(I_3+R)/2=\left(\begin{smallmatrix}1/2&1/2&0\\1/4&1/2&1/4\\0&1/2&1/2\end{smallmatrix}\right)$ : c’est le modèle du chapitre 12, qui converge pour le départ étudié. La possibilité de rester modifie ici la périodicité.
+\end{questions}
+\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{9. Un modèle de classement de pages}\phantomsection\label{projet-cor-9}\pdfbookmark[1]{Un modèle de classement de pages}{bm-projet-cor-9}
+\repere{projet-9}{Énoncé}
+\begin{questions}
+\item $P=\begin{pmatrix}0{,}05&0{,}475&0{,}475\\0{,}9&0{,}05&0{,}05\\0{,}9&0{,}05&0{,}05\end{pmatrix}$. Chaque coefficient comprend le redémarrage uniforme $0{,}15/3=0{,}05$.
+\item Les colonnes d’arrivée en $B,C$ sont identiques, donc les deux produits donnent la même probabilité.
+\item $a=0{,}05a+0{,}9(1-a)$ donne $a=18/37$ ; $b=c=(1-a)/2=19/74$. $A$ a le score le plus élevé, $B,C$ sont ex æquo.
+\item $a_{n+1}=0{,}9-0{,}85a_n$, donc $a_n=18/37+(a_0-18/37)(-0{,}85)^n$. Le terme d’écart tend vers zéro ; les trois probabilités convergent vers la distribution calculée. C’est un modèle pédagogique de classement par marche aléatoire, pas la description exhaustive d’un moteur de recherche.
+\end{questions}
+\fiche{Solutions des évaluations}{Méthodes et conclusions}\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{1. Évaluation 1 · Nombres complexes}\phantomsection\label{evaluation-cor-1}\pdfbookmark[1]{Évaluation 1 · Nombres complexes}{bm-evaluation-cor-1}
+\repere{evaluation-1}{Énoncé}
+\begin{questions}
+\item $P=(z-1)(z^2+4)$ ; solutions $1,2\mathrm i,-2\mathrm i$. Vérification de racine et factorisation : 2 points ; solutions : 2 points.
+\item $|1+\mathrm i|=\sqrt2$, argument $\pi/4$ ; forme $\sqrt2\mathrm e^{\mathrm i\pi/4}$. Puissance $12$ : $64\mathrm e^{3\mathrm i\pi}=-64$. Forme : 2 points ; puissance : 2 points.
+\item Le quotient vaut $\mathrm i$, de module $1$ et d’argument $\pi/2$ : triangle rectangle isocèle en $A$. Calcul : 2 points ; interprétation : 2 points.
+\item $\mathrm e^{\mathrm ik\pi/3}$, $k=0,\ldots,5$, formant un hexagone régulier sur le cercle unité. Expressions : 2 points ; placement et distinction : 2 points.
+\item Moivre au cube puis identification réelle donne la formule ; $\cos^3x=(\cos3x+3\cos x)/4$. L’intégrale vaut $[\sin3x/12+3\sin x/4]_0^{\pi/2}=-1/12+3/4=2/3$. Démonstration : 2 points ; intégrale : 2 points.
+\end{questions}
+\clearpage\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{2. Évaluation 2 · Arithmétique}\phantomsection\label{evaluation-cor-2}\pdfbookmark[1]{Évaluation 2 · Arithmétique}{bm-evaluation-cor-2}
+\repere{evaluation-2}{Énoncé}
+\begin{questions}
+\item Euclide donne les restes $54,36,18,0$ ; PGCD $18$. En remontant : $18=4\times252-5\times198$. Algorithme : 2 points ; identité : 2 points.
+\item Inverse de $7$ : $15$ ; donc $x\equiv15\times5\equiv23\pmod{26}$. Inverse justifié : 2 points ; classe et vérification : 2 points.
+\item Réduire à $5x+7y=2$ ; une solution est $(-1,1)$ ; toutes sont $x=-1+7k$, $y=1-5k$, $k\in\Z$. Réduction et solution particulière : 2 points ; famille complète : 2 points.
+\item Tester les premiers $2,3,5,7,11,13$ suffit pour $223$ ; aucun ne divise. Fermat donne $2^{12}\equiv1\pmod{13}$ ; donc $2^{100}\equiv2^4\equiv3$. Deux points par partie.
+\item Supposer la liste finie $p_1,\ldots,p_r$ exhaustive. $N=p_1\cdots p_r+1>1$ possède un diviseur premier ; aucun $p_i$ ne peut le diviser. Contradiction. Hypothèse et construction : 2 points ; diviseur premier et contradiction : 2 points.
+\end{questions}
+\clearpage\par\addvspace{6mm}\Needspace{9\baselineskip}\souscours{3. Évaluation 3 · Matrices et graphes}\phantomsection\label{evaluation-cor-3}\pdfbookmark[1]{Évaluation 3 · Matrices et graphes}{bm-evaluation-cor-3}
+\repere{evaluation-3}{Énoncé}
+\begin{questions}
+\item $A^n=\left(\begin{smallmatrix}1&n\\0&1\end{smallmatrix}\right)$ ; vérifier $n=0$ et multiplier par $A$ pour l’hérédité. Formule : 1 point ; initialisation et hérédité : 3 points.
+\item $x+y=5,y=3$, donc $X=\binom23$ ; $A^{10}\binom01=\binom{10}1$. Deux points par calcul.
+\item Le graphe porte quatre arcs, boucles comprises, de poids $0{,}8,0{,}2,0{,}3,0{,}7$. $P^2=\left(\begin{smallmatrix}0{,}7&0{,}3\\0{,}45&0{,}55\end{smallmatrix}\right)$. Graphe : 2 points ; produit : 2 points.
+\item $\pi_n=(0{,}6+0{,}4(0{,}5)^n;0{,}4-0{,}4(0{,}5)^n)$ ; limite $(0{,}6;0{,}4)$. Récurrence et formule : 3 points ; limite : 1 point.
+\item L’adjacence compte des parcours de longueur fixée, répétitions comprises ; la transition somme des produits de probabilités et donne une probabilité conditionnelle après plusieurs étapes. Deux points par interprétation, avec départ et arrivée identifiés.
+\end{questions}

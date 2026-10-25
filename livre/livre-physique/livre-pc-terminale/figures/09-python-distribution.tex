@@ -1,0 +1,17 @@
+% Diagrammes de distribution du couple de l'acide éthanoïque (résultat du programme, chapitre 9)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=98mm,height=46mm,xmin=2,xmax=8.3,ymin=0,ymax=1.12,
+  xtick={2,3,...,8},ytick={0,0.25,0.5,0.75,1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2},
+  xlabel={pH},ylabel={proportion de chaque forme},
+  legend style={at={(0.985,0.62)},anchor=east,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont},
+  legend cell align=left]
+\addplot[otNavy,line width=1pt,domain=2:8.2,samples=160] {1/(1+10^(x-4.76))};
+\addplot[otGreenDark,line width=1pt,domain=2:8.2,samples=160] {1/(1+10^(4.76-x))};
+\legend{forme \ce{CH3COOH},forme \ce{CH3COO-}}
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:4.76,0) -- (axis cs:4.76,0.5);
+\addplot[only marks,mark=*,mark size=1.7pt,otOrange] coordinates {(4.76,0.5)};
+\node[pcLegende,anchor=north,text=otOrange!80!black] at (axis cs:4.76,-0.03) {$\pKa$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Résultat du programme : les deux courbes de distribution se croisent à pH = pKa, où chaque forme représente 50 \% du couple.}

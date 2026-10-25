@@ -1,0 +1,24 @@
+% Déplacement dans le diagramme (N,Z) lors des désintégrations alpha, bêta moins et bêta plus (L'essentiel, chapitre 6)
+\begin{tikzpicture}[x=8.5mm,y=8.5mm,
+  case/.style={line width=0.6pt,rounded corners=0.6mm},
+  etiq/.style={font=\otMedium\fontsize{8}{9}\selectfont}]
+\foreach \i in {-3,...,2}{\foreach \j in {-3,...,2}{\draw[otRule,line width=0.4pt] (\i-0.5,\j-0.5) rectangle (\i+0.5,\j+0.5);}}
+\filldraw[case,fill=otInk,draw=otInk] (-0.45,-0.45) rectangle (0.45,0.45);
+\node[etiq,text=white] at (0,0) {X};
+\filldraw[case,fill=otGreenTint,draw=otGreenDark] (-2.45,-2.45) rectangle (-1.55,-1.55);
+\node[etiq,text=otGreenDark] at (-2,-2) {Y};
+\filldraw[case,fill=otNavyTint,draw=otNavy] (-1.45,0.55) rectangle (-0.55,1.45);
+\node[etiq,text=otNavy] at (-1,1) {Y};
+\filldraw[case,fill=otOrange!15,draw=otOrange] (0.55,-1.45) rectangle (1.45,-0.55);
+\node[etiq,text=otOrange!75!black] at (1,-1) {Y};
+\draw[otGreenDark,line width=1pt,-{Stealth[length=2.2mm]}] (-0.32,-0.32) -- (-1.68,-1.68);
+\draw[otNavy,line width=1pt,-{Stealth[length=2.2mm]}] (-0.32,0.32) -- (-0.7,0.7);
+\draw[otOrange!85!black,line width=1pt,-{Stealth[length=2.2mm]}] (0.32,-0.32) -- (0.7,-0.7);
+\draw[pcFlecheN] (-3.5,-3.85) -- (2.9,-3.85) node[right,pcLegende] {$N$};
+\draw[pcFlecheN] (-3.85,-3.5) -- (-3.85,2.9) node[above,pcLegende] {$Z$};
+\node[pcLegende,anchor=west,align=left] at (3.6,1.3) {\textcolor{otGreenDark}{$\alpha$ :} $N-2$ et $Z-2$, soit $A-4$};
+\node[pcLegende,anchor=west,align=left] at (3.6,0.2) {\textcolor{otNavy}{$\beta^-$ :} $N-1$ et $Z+1$, $A$ inchangé};
+\node[pcLegende,anchor=west,align=left] at (3.6,-0.9) {\textcolor{otOrange!75!black}{$\beta^+$ :} $N+1$ et $Z-1$, $A$ inchangé};
+\node[pcLegende,anchor=west,align=left,text=otMuted] at (3.6,-2.1) {X : noyau père ; Y : noyau fils};
+\end{tikzpicture}
+\par\smallskip\legende{Chaque type de désintégration déplace le noyau dans le diagramme (N,Z) d'une façon caractéristique.}

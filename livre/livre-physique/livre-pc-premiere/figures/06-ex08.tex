@@ -1,0 +1,17 @@
+% Filet d'eau et filet de cyclohexane près d'une règle électrisée (exercice 8, chapitre 6)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \bx/\liq/\nom/\dev in {0/pcEau/eau/1,4.6/yellow!12/cyclohexane/0}{
+  \pic at (\bx,2.6) {burette={hauteur=2.8,niveau=2.3,liquide=\liq}};
+  \ifnum\dev=1
+    \draw[otNavy!70,line width=1pt] (\bx,2.6) .. controls (\bx,1.6) and (\bx+0.55,1.2) .. (\bx+0.75,0.1);
+  \else
+    \draw[otNavy!45,line width=1pt] (\bx,2.6) -- (\bx,0.1);
+  \fi
+  \begin{scope}[shift={(\bx+1.25,1.25)},rotate=-12]
+    \filldraw[fill=otOrange!25,draw=otOrange!80!black,line width=0.5pt,rounded corners=0.5mm] (-0.12,-0.95) rectangle (0.12,0.95);
+    \foreach \yy in {-0.6,-0.2,0.2,0.6}{\node[font=\otSemi\fontsize{6.5}{7}\selectfont,text=otRed!80!black] at (0,\yy) {$+$};}
+  \end{scope}
+  \node[pcLegendeG,anchor=north] at (\bx+0.5,-0.15) {filet d'\nom};}
+\pcNote[west]{(1.43,1.95)}{(2.0,2.55)}{règle électrisée}
+\end{tikzpicture}
+\par\smallskip\legende{Une règle en plastique frottée sur un tissu, approchée de deux filets de liquide qui s'écoulent d'une burette.}

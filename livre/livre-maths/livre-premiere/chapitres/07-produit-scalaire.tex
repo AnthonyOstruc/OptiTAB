@@ -1,0 +1,262 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[vecteursplan]{7}{Vecteurs et produit scalaire}{Partie 3 · Géométrie}
+{Coordonnées\enspace·\enspace Projection\enspace·\enspace Orthogonalité\enspace·\enspace Longueurs et angles}
+\objectif{Choisir une méthode de calcul du produit scalaire.}
+\objectif{Démontrer une orthogonalité et calculer un angle.}
+\objectif{Développer des expressions vectorielles.}
+\objectif{Résoudre des problèmes de longueurs et de lieux géométriques.}
+\prerequis{Vecteurs, coordonnées et théorème de Pythagore.}
+\prerequis{Cosinus d’un angle et valeurs remarquables.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Calculer avec des vecteurs}
+\begin{propriete}
+Si $A(x_A;y_A)$ et $B(x_B;y_B)$, alors $\vect{AB}=(x_B-x_A;y_B-y_A)$.
+La relation de Chasles donne $\vect{AB}+\vect{BC}=\vect{AC}$.
+Pour $u=(x;y)$ et $v=(x';y')$, $u+v=(x+x';y+y')$ et $ku=(kx;ky)$.
+Dans un repère orthonormé, $\|u\|=\sqrt{x^2+y^2}$.
+Deux vecteurs du plan sont colinéaires si et seulement si $xy'-yx'=0$.
+\end{propriete}
+\essSection{2}{Définir le produit scalaire}
+\begin{definition}
+Pour deux vecteurs non nuls $u$ et $v$, formant un angle $\theta$,
+$u\cdot v=\|u\|\,\|v\|\cos\theta$. Le produit est nul si l'un des vecteurs est nul.
+Le résultat est un nombre réel, qui peut être positif, négatif ou nul.
+\end{definition}
+\begin{propriete}[Coordonnées et projection]
+En base orthonormée, $u\cdot v=xx'+yy'$. Les vecteurs sont orthogonaux
+exactement lorsque $u\cdot v=0$. Si $H$ est le projeté orthogonal de $C$
+sur $(AB)$, $\vect{AB}\cdot\vect{AC}=AB\times\overline{AH}$,
+où la mesure algébrique est orientée de $A$ vers $B$.
+\end{propriete}
+\begin{center}
+\begin{tikzpicture}[x=9mm,y=9mm]
+\draw[otNavy,thick,->](0,0)--(6,0)node[right]{$B$};
+\draw[otGreenDark,thick,->](0,0)--(2,3)node[above]{$C$};
+\draw[otMuted,dashed](2,3)--(2,0)node[below]{$H$};
+\draw[otMuted](2,.3)--(2.3,.3)--(2.3,0);
+\node[left]at(0,0){$A$};\node[below]at(3,-.3){$\vect{AB}\cdot\vect{AC}=AB\times\overline{AH}$};
+\end{tikzpicture}
+\par\legende{$\overline{AH}$ est la projection algébrique : elle peut être négative.}
+\end{center}
+
+\clearpage
+\essSection{3}{Développer et transformer}
+\begin{propriete}[Symétrie et bilinéarité]
+$u\cdot v=v\cdot u$, $u\cdot(v+w)=u\cdot v+u\cdot w$ et
+$(ku)\cdot v=k(u\cdot v)$. En particulier $u\cdot u=\|u\|^2$ et
+\[\|u+v\|^2=\|u\|^2+2u\cdot v+\|v\|^2,\]
+\[\|u-v\|^2=\|u\|^2-2u\cdot v+\|v\|^2.\]
+Ainsi $u\cdot v=\frac12\left(\|u+v\|^2-\|u\|^2-\|v\|^2\right)$ : on peut calculer
+un produit scalaire à l'aide de normes seulement.
+Dans une base orthonormée $(i;j)$, si $u=xi+yj$, alors $u\cdot i=x$ et $u\cdot j=y$.
+\end{propriete}
+\begin{theoreme}[Al-Kashi]
+Dans un triangle $ABC$, $BC^2=AB^2+AC^2-2AB\,AC\cos\widehat{BAC}$.
+Cette formule prolonge Pythagore et permet de calculer une longueur ou un angle.
+\end{theoreme}
+\begin{savoirfaire}[Choisir une méthode]
+Utiliser les coordonnées lorsqu'elles sont connues ; les longueurs et l'angle
+lorsqu'ils sont donnés ; la projection dans une configuration rectangle ;
+les normes seules lorsque trois longueurs sont connues ;
+la bilinéarité dans un parallélogramme. Pour un angle, isoler son cosinus,
+puis utiliser une valeur remarquable ou la calculatrice.
+\end{savoirfaire}
+\begin{propriete}[Un lieu géométrique]
+Si $A\neq B$, l'ensemble des points $M$ tels que
+$\vect{MA}\cdot\vect{MB}=0$ est le cercle de diamètre $[AB]$,
+en incluant $A$ et $B$. La démonstration figure dans les démonstrations de référence.
+\end{propriete}
+\begin{attention}
+Une base doit être orthonormée pour utiliser $xx'+yy'$.
+Le produit scalaire ne se confond ni avec une longueur ni avec un vecteur.
+Deux vecteurs colinéaires non nuls ne sont pas orthogonaux.
+\end{attention}
+
+
+\clearpage
+\essSection{4}{Longueurs, angles et cercle}
+Les deux configurations à reconnaître avant de commencer un calcul.
+\figureGeo[corrige]{07-cours-angle}
+\vspace{5mm}
+\figureGeo[corrige]{07-cours-cercle}
+\vspace{5mm}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-7-1}
+\begin{exercice}[1]{Coordonnées et norme}
+On donne $A(1;2)$ et $B(4;6)$.\begin{questions}
+\item Calculer $\vect{AB}$ et $\vect{BA}$.
+\item Calculer $AB$ et les coordonnées du milieu de $[AB]$.
+\end{questions}
+
+\label{figgeo-07-01-ex}
+\figureGeo{07-01}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-2}
+\begin{exercice}[1]{Un calcul avec les coordonnées}
+Dans une base orthonormée, $u=(2;-1)$ et $v=(3;4)$.\begin{questions}
+\item Calculer $u\cdot v$, $u\cdot u$ et $v\cdot v$.
+\item Donner $\|u\|$ et $\|v\|$.
+\end{questions}
+
+\label{figgeo-07-02-ex}
+\figureGeo{07-02}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-3}
+\begin{exercice}[1]{Longueurs et angle}
+Deux vecteurs ont pour normes 5 et 6. Calculer leur produit scalaire lorsque l’angle vaut $\pi/3$, $\pi/2$ puis $2\pi/3$.
+\label{figgeo-07-03-ex}
+\figureGeo{07-03}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-4}
+\begin{exercice}[1]{Orthogonaux ou colinéaires}
+On considère $u=(3;2)$, $v=(2;-3)$ et $w=(-6;-4)$.\begin{questions}
+\item Quels vecteurs sont orthogonaux parmi les paires $(u,v)$ et $(u,w)$ ?
+\item Quelle relation de colinéarité peut-on écrire ?
+\end{questions}
+
+\label{figgeo-07-04-ex}
+\figureGeo{07-04}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-5}
+\begin{exercice}[1]{Lire une projection}
+On donne $A(0;0)$, $B(6;0)$ et $C(2;3)$.\begin{questions}
+\item Donner le projeté orthogonal $H$ de $C$ sur $(AB)$.
+\item Calculer $\vect{AB}\cdot\vect{AC}$ par projection, puis par coordonnées.
+\end{questions}
+
+\label{figgeo-07-05-ex}
+\figureGeo{07-05}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-7-6}
+\begin{exercice}[2]{Les normes d'une somme}
+On sait que $\|u\|=3$, $\|v\|=4$ et $u\cdot v=6$.\begin{questions}
+\item Calculer $\|u+v\|^2$ puis $\|u-v\|^2$.
+\item En déduire les deux normes et vérifier l’identité du parallélogramme : la somme des deux carrés vaut $2\|u\|^2+2\|v\|^2$.
+\end{questions}
+
+\label{figgeo-07-06-ex}
+\figureGeo{07-06}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-7}
+\begin{exercice}[2]{Calculer un angle de triangle}
+On donne $A(0;0)$, $B(4;0)$ et $C(1;\sqrt3)$.\begin{questions}
+\item Calculer $\vect{AB}\cdot\vect{AC}$, $AB$ et $AC$.
+\item En déduire l’angle $\widehat{BAC}$.
+\item Calculer $BC$ et déterminer la nature du triangle.
+\end{questions}
+
+\label{figgeo-07-07-ex}
+\figureGeo{07-07}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-8}
+\begin{exercice}[2]{Déterminer un paramètre}
+Les vecteurs $u_m=(m;2)$ et $v=(3;-1)$ sont exprimés dans une base orthonormée.\begin{questions}
+\item Pour quelle valeur de $m$ sont-ils orthogonaux ?
+\item Pour quelle valeur sont-ils colinéaires ?
+\item Pour $m=0$, calculer le cosinus de leur angle.
+\end{questions}
+
+\label{figgeo-07-08-ex}
+\figureGeo{07-08}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-9}
+\begin{exercice}[2]{Les diagonales d'un rectangle}
+$ABCD$ est un rectangle avec $AB=6$ et $AD=4$. On pose $u=\vect{AB}$ et $v=\vect{AD}$.\begin{questions}
+\item Exprimer $\vect{AC}$ et $\vect{BD}$ avec $u$ et $v$.
+\item Calculer $\vect{AC}\cdot\vect{BD}$ et $\vect{AB}\cdot\vect{AC}$.
+\item Les diagonales sont-elles perpendiculaires ?
+\end{questions}
+
+\label{figgeo-07-09-ex}
+\figureGeo{07-09}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-10}
+\begin{exercice}[2]{Un parallélogramme non rectangle}
+$ABCD$ est un parallélogramme avec $AB=3$, $AD=4$ et $\widehat{BAD}=\pi/3$.\begin{questions}
+\item Calculer $\vect{AB}\cdot\vect{AD}$.
+\item Calculer les longueurs des deux diagonales.
+\item Comparer leur somme de carrés à $2AB^2+2AD^2$.
+\end{questions}
+
+\label{figgeo-07-10-ex}
+\figureGeo{07-10}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-11}
+\begin{exercice}[2]{Projeter sans coordonnées}
+Un triangle vérifie $AB=8$, $AC=5$ et $\widehat{BAC}=\pi/3$. On projette $C$ en $H$ sur $(AB)$.\begin{questions}
+\item Calculer le produit $\vect{AB}\cdot\vect{AC}$.
+\item En déduire $AH$, puis $CH$.
+\item Calculer $BC$ par Al-Kashi.
+\end{questions}
+
+\label{figgeo-07-11-ex}
+\figureGeo{07-11}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-7-12}
+\begin{exercice}[3]{Un triangle et sa hauteur}
+On considère $A(1;1)$, $B(5;3)$ et $C(2;4)$.\begin{questions}
+\item Montrer que le triangle est rectangle en $C$.
+\item Calculer l’angle $\widehat{BAC}$.
+\item Déterminer le milieu $H$ de $[AB]$ et vérifier que $CH\perp AB$.
+\item Calculer la hauteur $CH$ et l’aire du triangle.
+\end{questions}
+
+\label{figgeo-07-12-ex}
+\figureGeo{07-12}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-13}
+\begin{exercice}[3]{Le cercle de diamètre donné}
+On donne $A(-2;0)$, $B(2;0)$ et $M(x;y)$.\begin{questions}
+\item Exprimer $\vect{MA}\cdot\vect{MB}$ en fonction de $x$ et $y$.
+\item Décrire l’ensemble où ce produit est nul.
+\item Décrire les zones où il est négatif ou positif.
+\item Situer $P(0;2)$ et $Q(1;1)$ dans ces zones.
+\end{questions}
+
+\label{figgeo-07-13-ex}
+\figureGeo{07-13}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-14}
+\begin{exercice}[3]{Travail d'une force}
+Une force constante est représentée par $F=(30;40)$ en newtons. Un déplacement est $d=(6;0)$ en mètres. Le travail est $W=F\cdot d$, en joules.\begin{questions}
+\item Calculer $W$ et la norme de la force.
+\item Pour un déplacement de 6 m d’angle $\pi/6$ avec l’horizontale, calculer le travail exact.
+\item Quelle direction d’un déplacement de norme 6 maximise le travail ? Donner ce maximum.
+\end{questions}
+
+\label{figgeo-07-14-ex}
+\figureGeo{07-14}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-7-15}
+\begin{exercice}[3]{Une identité avec le milieu}
+$A$ et $B$ sont distincts et $I$ est le milieu de $[AB]$.\begin{questions}
+\item En écrivant $\vect{MA}=\vect{MI}+\vect{IA}$ et $\vect{MB}=\vect{MI}-\vect{IA}$, démontrer $\vect{MA}\cdot\vect{MB}=MI^2-AB^2/4$.
+\item Pour $A(0;0)$ et $B(6;0)$, déterminer le lieu des points tels que $\vect{MA}\cdot\vect{MB}=5$.
+\item Quel est le minimum possible du produit ? Où est-il atteint ?
+\end{questions}
+
+\label{figgeo-07-15-ex}
+\figureGeo{07-15}
+\end{exercice}
+\end{blocLivre}

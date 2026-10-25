@@ -1,0 +1,550 @@
+% !TEX root = ../main.tex
+%% Chapitre 17 — Probabilités sur un univers fini
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre,
+%% section « Probabilités » : A) univers, événements, variables aléatoires ;
+%% espaces probabilisés finis ; conditionnelles (composées, totales, Bayes) ;
+%% lois (uniforme, Bernoulli, binomiale), couples, marginales ; indépendance
+%% d'événements et de variables (lemme des coalitions) ; B) espérance (transfert),
+%% variance, écart type, covariance ; C) inégalités de Markov et de
+%% Bienaymé-Tchebychev, loi faible des grands nombres.
+%% Résultats vérifiés par verifications/chapitre_17.py.
+
+\begin{ouverture}[binomiale]{17}{Probabilités sur un univers fini}{Partie 2 · Deuxième semestre}
+  {Espaces probabilisés\enspace·\enspace Conditionnement\enspace·\enspace Lois\enspace·\enspace
+   Indépendance\enspace·\enspace Espérance et variance\enspace·\enspace Concentration}
+  \objectif{Modéliser une expérience aléatoire : univers fini, événements, variables aléatoires.}
+  \objectif{Conditionner : probabilités composées, formule des probabilités totales, Bayes.}
+  \objectif{Manier les lois usuelles : uniforme, Bernoulli, binomiale — et les couples de variables.}
+  \objectif{Reconnaître et exploiter l'indépendance, d'événements comme de variables.}
+  \objectif{Calculer espérances, variances et covariances (transfert, König-Huygens).}
+  \objectif{Contrôler les écarts : Markov, Bienaymé-Tchebychev, loi faible des grands nombres.}
+  \prerequis{Dénombrement : principe multiplicatif, combinaisons, binôme (chapitre 16).}
+  \prerequis{Ensembles et applications (chapitre 1) ; sommes finies (chapitre 2).}
+  \prerequis{Analyse asymptotique pour les comportements limites (chapitre 11).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Univers, événements, variables aléatoires}
+
+\begin{definition}[Le vocabulaire probabiliste]
+Une expérience aléatoire est modélisée par un \textbf{univers} fini
+$\Omega$ (les issues possibles). Un \textbf{événement} est une partie de
+$\Omega$, un événement \emph{élémentaire} un singleton. Le dictionnaire
+ensembliste se traduit :
+\begin{center}
+\begin{tabularx}{0.9\linewidth}{@{}>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
+\textbf{ensembles} & \textbf{événements}\\[0.4mm]
+$A\cup B$ & $A$ ou $B$\\
+$A\cap B$ & $A$ et $B$\\
+$\overline A$ & événement contraire\\
+$A\cap B=\varnothing$ & incompatibles (disjoints)\\
+partition de $\Omega$ & système complet d'événements\\
+\end{tabularx}
+\end{center}
+Une \textbf{variable aléatoire} est une application $X:\Omega\to E$ ; on
+note $(X\in A)=\ens{\omega\mid X(\omega)\in A}$ et $(X=x)$ : les
+événements s'écrivent désormais en termes de variables.
+\end{definition}
+
+\essSection{2}{Espaces probabilisés finis}
+
+\begin{definition}[Probabilité]
+Une \textbf{probabilité} sur $\Omega$ est une application
+$P:\parties{\Omega}\to\intFF{0}{1}$ telle que $P(\Omega)=1$ et
+$P(A\cup B)=P(A)+P(B)$ pour $A,B$ incompatibles. Elle est entièrement
+déterminée par la \emph{distribution} $\bigl(P(\ens{\omega})\bigr)_{\omega\in\Omega}$ —
+une famille de réels positifs de somme $1$ — via
+$P(A)=\sum_{\omega\in A}P(\ens{\omega})$. La probabilité
+\textbf{uniforme} donne le même poids à chaque issue :
+$P(A)=\dfrac{|A|}{|\Omega|}$ — le dénombrement du chapitre 16 devient du
+calcul de probabilités.
+\end{definition}
+
+\begin{propriete}[Règles de calcul]
+$P(\overline A)=1-P(A)$ ;
+$P(A\cup B)=P(A)+P(B)-P(A\cap B)$ ;
+$P(A\setminus B)=P(A)-P(A\cap B)$ ; et la croissance :
+$A\subseteq B\implies P(A)\leqslant P(B)$. (La formule du crible générale
+est hors programme.)
+\end{propriete}
+
+\essSection{3}{Probabilités conditionnelles}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{definition}[Conditionnement]
+Si $P(B)>0$, la \textbf{probabilité conditionnelle} de $A$ sachant $B$
+est
+\[
+P(A\mid B)=P_B(A)=\frac{P(A\cap B)}{P(B)} ,
+\]
+et $P_B$ est elle-même une probabilité sur $\Omega$. Par convention,
+$P(A\mid B)P(B)=0$ si $P(B)=0$.
+\end{definition}
+\begin{theoreme}[Les trois formules]
+\emph{Composées} :
+$P(A_1\cap\dots\cap A_n)
+=P(A_1)\,P(A_2\mid A_1)\cdots P(A_n\mid A_1\cap\dots\cap A_{n-1})$.
+\emph{Probabilités totales} : si $(B_i)$ est un système complet
+d'événements,
+$P(A)=\sum_i P(A\mid B_i)\,P(B_i)$.
+\emph{Bayes} : si de plus $P(A)>0$,
+$P(B_j\mid A)=\dfrac{P(A\mid B_j)P(B_j)}{\sum_iP(A\mid B_i)P(B_i)}$ —
+remonter des effets aux causes.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.92,line cap=round]
+  \fill[otInk] (0,1.5) circle (1.6pt);
+  \fill[otNavy] (1.5,2.35) circle (1.6pt);
+  \fill[otNavy] (1.5,0.65) circle (1.6pt);
+  \draw[otNavy,line width=0.8pt] (0,1.5) -- (1.5,2.35);
+  \draw[otNavy,line width=0.8pt] (0,1.5) -- (1.5,0.65);
+  \foreach \y/\lab in {2.35/,0.65/}{%
+    \draw[otGreenDark,line width=0.7pt] (1.5,\y) -- (3,{\y+0.45});
+    \draw[otGreenDark,line width=0.7pt] (1.5,\y) -- (3,{\y-0.45});
+    \fill[otGreenDark] (3,{\y+0.45}) circle (1.3pt);
+    \fill[otGreenDark] (3,{\y-0.45}) circle (1.3pt);}
+  \node[font=\tiny,text=otNavy,above,sloped] at (0.72,1.98) {$P(B)$};
+  \node[font=\tiny,text=otNavy,below,sloped] at (0.72,1.02) {$P(\overline B)$};
+  \node[font=\tiny,text=otGreenDark,above,sloped] at (2.3,2.64) {$P(A\mid B)$};
+  \node[font=\tiny,text=otGreenDark,anchor=west] at (3.08,2.8) {$A$};
+  \node[font=\tiny,text=otGreenDark,anchor=west] at (3.08,1.9) {$\overline A$};
+  \node[font=\tiny,text=otGreenDark,anchor=west] at (3.08,1.1) {$A$};
+  \node[font=\tiny,text=otGreenDark,anchor=west] at (3.08,0.2) {$\overline A$};
+  \node[font=\tiny,text=otNavy,anchor=east] at (1.42,2.6) {$B$};
+  \node[font=\tiny,text=otNavy,anchor=east] at (1.42,0.4) {$\overline B$};
+\end{tikzpicture}\\[0.5mm]
+\legende{L'arbre pondéré : on multiplie le long des branches
+(composées), on somme les feuilles d'un même événement (totales).}
+\end{minipage}
+
+\essSection{4}{Lois usuelles ; couples de variables}
+
+\begin{definition}[Loi d'une variable aléatoire]
+La \textbf{loi} de $X$ est la probabilité $P_X$ sur $X(\Omega)$ déterminée
+par la distribution $\bigl(P(X=x)\bigr)_{x}$ ; on note $X\sim Y$ l'égalité
+des lois, et alors $f(X)\sim f(Y)$. Lois à connaître :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \textbf{uniforme} $\mathcal{U}(E)$ :
+    $P(X=x)=\dfrac{1}{|E|}$ pour tout $x\in E$ ;
+  \item \textbf{Bernoulli} $\mathcal{B}(p)$ :
+    $P(X=1)=p$, $P(X=0)=1-p$ — un succès ou un échec ; l'indicatrice
+    $\ind{A}$ suit $\mathcal{B}\bigl(P(A)\bigr)$ ;
+  \item \textbf{binomiale} $\mathcal{B}(n,p)$ :
+    $P(X=k)=\dbinom nk p^{k}(1-p)^{n-k}$ — le nombre de succès de $n$
+    répétitions indépendantes.
+\end{itemize}
+Le \textbf{couple} $(X,Y)$ est une variable à valeurs dans un produit ; sa
+loi \emph{conjointe} $P(X=x,Y=y)$ détermine les lois \emph{marginales}
+(sommer sur l'autre variable), mais la réciproque est fausse
+(exercice 10). On définit de même la loi conditionnelle de $X$ sachant un
+événement, et les $n$-uplets.
+\end{definition}
+
+\essSection{5}{Indépendance}
+
+\begin{definition}[Événements et variables indépendants]
+$A$ et $B$ sont \textbf{indépendants} si $P(A\cap B)=P(A)P(B)$ — soit
+$P(A\mid B)=P(A)$ quand $P(B)>0$ : savoir $B$ n'apprend rien sur $A$. Une
+famille finie est indépendante si la formule produit vaut pour
+\emph{toute} sous-famille. Si $A$ et $B$ sont indépendants, $A$ et
+$\overline B$ aussi. Les variables $X$ et $Y$ sont indépendantes
+(notation $X\perp\!\!\!\perp Y$) si
+$P(X\in A,\ Y\in B)=P(X\in A)\,P(Y\in B)$ pour tous $A,B$, ce qui revient
+à $P(X=x,Y=y)=P(X=x)P(Y=y)$ pour tous $x,y$.
+\end{definition}
+
+\begin{theoreme}[Les outils de l'indépendance]
+Si $X_1,\dots,X_n$ sont indépendantes de loi $\mathcal{B}(p)$, alors
+$X_1+\dots+X_n\sim\mathcal{B}(n,p)$ : la binomiale \emph{est} une somme de
+Bernoulli. Si $X\perp\!\!\!\perp Y$, alors $f(X)\perp\!\!\!\perp g(Y)$.
+Plus généralement (\emph{lemme des coalitions}) : si $X_1,\dots,X_n$ sont
+indépendantes, alors $f(X_1,\dots,X_m)$ et $g(X_{m+1},\dots,X_n)$ le sont
+aussi — et de même pour plus de deux coalitions.
+\end{theoreme}
+
+\begin{attention}
+L'indépendance \emph{deux à deux} n'implique pas l'indépendance de la
+famille : pour deux pièces équilibrées, « la première donne pile », « la
+seconde donne pile » et « les deux donnent le même côté » sont deux à deux
+indépendants, mais pas mutuellement (exercice 9). Vérifier la formule
+produit pour \emph{toutes} les sous-familles.
+\end{attention}
+
+\essSection{6}{Espérance}
+
+\begin{theoreme}[Espérance et ses propriétés]
+L'\textbf{espérance} d'une variable réelle (ou complexe) est
+\[
+\mathrm{E}(X)=\sum_{x\in X(\Omega)}x\,P(X=x)
+=\sum_{\omega\in\Omega}X(\omega)\,P(\ens{\omega}) :
+\]
+la moyenne des valeurs, pondérée par leurs probabilités — un indicateur de
+\emph{position}. Elle est linéaire, positive, croissante, avec
+$|\mathrm{E}(X)|\leqslant\mathrm{E}(|X|)$ ; $\mathrm{E}(c)=c$,
+$\mathrm{E}(\ind A)=P(A)$,
+$\mathrm{E}\bigl(\mathcal{B}(p)\bigr)=p$ et
+$\mathrm{E}\bigl(\mathcal{B}(n,p)\bigr)=np$ (linéarité !). La variable
+$X-\mathrm{E}(X)$ est dite \emph{centrée}.
+\end{theoreme}
+
+\begin{theoreme}[Transfert ; produit de variables indépendantes]
+Pour toute fonction $f$ :
+\[
+\mathrm{E}\bigl(f(X)\bigr)=\sum_{x\in X(\Omega)}f(x)\,P(X=x)
+\]
+— inutile de connaître la loi de $f(X)$ ; la formule s'applique aussi aux
+couples et aux $n$-uplets. Et si $X\perp\!\!\!\perp Y$ :
+$\mathrm{E}(XY)=\mathrm{E}(X)\,\mathrm{E}(Y)$ (extension à $n$ variables
+indépendantes) — la réciproque est fausse (exercice 14).
+\end{theoreme}
+
+\essSection{7}{Variance, écart type, covariance}
+
+\begin{definition}[Dispersion]
+La \textbf{variance} d'une variable réelle est
+$\mathrm{V}(X)=\mathrm{E}\bigl((X-\mathrm{E}(X))^{2}\bigr)\geqslant0$, et
+l'\textbf{écart type} $\sigma(X)=\sqrt{\mathrm{V}(X)}$ : des indicateurs
+de \emph{dispersion}. Formules :
+\[
+\mathrm{V}(X)=\mathrm{E}\bigl(X^{2}\bigr)-\mathrm{E}(X)^{2}
+\quad\text{(König-Huygens)},\qquad
+\mathrm{V}(aX+b)=a^{2}\,\mathrm{V}(X) .
+\]
+Pour $\mathcal{B}(p)$ : $\mathrm{V}=p(1-p)$ ; pour $\mathcal{B}(n,p)$ :
+$\mathrm{V}=np(1-p)$. Si $\sigma(X)>0$, la variable
+$\dfrac{X-\mathrm{E}(X)}{\sigma(X)}$ est \emph{centrée réduite}.
+\end{definition}
+
+\begin{theoreme}[Covariance ; variance d'une somme]
+$\operatorname{Cov}(X,Y)
+=\mathrm{E}\bigl((X-\mathrm{E}X)(Y-\mathrm{E}Y)\bigr)
+=\mathrm{E}(XY)-\mathrm{E}(X)\mathrm{E}(Y)$ ; elle est nulle pour des
+variables indépendantes (on dit alors \emph{décorrélées} — la réciproque
+est fausse). Et
+\[
+\mathrm{V}(X+Y)=\mathrm{V}(X)+\mathrm{V}(Y)+2\operatorname{Cov}(X,Y) :
+\]
+pour des variables deux à deux décorrélées, les variances s'ajoutent — on
+retrouve ainsi $\mathrm{V}\bigl(\mathcal{B}(n,p)\bigr)=np(1-p)$.
+\end{theoreme}
+
+\essSection{8}{Inégalités et loi faible des grands nombres}
+
+\begin{theoreme}[Markov et Bienaymé-Tchebychev]
+Pour $X\geqslant0$ et $a>0$ :
+$P(X\geqslant a)\leqslant\dfrac{\mathrm{E}(X)}{a}$ (Markov — appliquer la
+croissance de l'espérance à $a\,\ind{(X\geqslant a)}\leqslant X$). En
+l'appliquant à $(X-\mathrm{E}X)^{2}$ :
+\[
+P\bigl(|X-\mathrm{E}(X)|\geqslant\varepsilon\bigr)
+\leqslant\frac{\mathrm{V}(X)}{\varepsilon^{2}}
+\qquad\text{(Bienaymé-Tchebychev)} :
+\]
+une variable s'écarte rarement de son espérance de plus de quelques écarts
+types.
+\end{theoreme}
+
+\begin{theoreme}[Loi faible des grands nombres]
+Soient $X_1,\dots,X_n$ indépendantes de même loi, d'espérance $\mu$ et de
+variance $\sigma^{2}$, et $M_n=\dfrac{X_1+\dots+X_n}{n}$ leur moyenne.
+Alors $\mathrm{E}(M_n)=\mu$, $\mathrm{V}(M_n)=\dfrac{\sigma^{2}}{n}$ et,
+pour tout $\varepsilon>0$ :
+\[
+P\bigl(|M_n-\mu|\geqslant\varepsilon\bigr)
+\leqslant\frac{\sigma^{2}}{n\,\varepsilon^{2}}
+\xrightarrow[n\to+\infty]{}0 :
+\]
+la moyenne empirique se \emph{concentre} autour de l'espérance. C'est la
+justification de l'approche fréquentiste : les fréquences observées
+convergent (en probabilité) vers les probabilités théoriques.
+\end{theoreme}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Modéliser une expérience}
+\begin{questions}
+  \item On lance deux dés équilibrés. Décrire l'univers et calculer la
+    probabilité que la somme vaille $7$.
+  \item On lance trois fois une pièce équilibrée. Quelle est la
+    probabilité d'obtenir exactement deux piles ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Les règles de calcul}
+On donne $P(A)=\dfrac12$, $P(B)=\dfrac25$ et $P(A\cap B)=\dfrac15$.
+Calculer $P(A\cup B)$, $P(A\setminus B)$ et
+$P\bigl(\overline A\cap\overline B\bigr)$.
+\end{exercice}
+
+\begin{exercice}[1]{Tirages sans remise}
+Une urne contient $3$ boules rouges et $2$ blanches ; on tire deux boules
+successivement, sans remise.
+\begin{questions}
+  \item Calculer $P(\text{les deux sont rouges})$ par la formule des
+    probabilités composées.
+  \item Que vaut la probabilité que la seconde soit rouge sachant que la
+    première l'est ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{La formule des probabilités totales}
+L'urne $A$ contient $2$ rouges et $1$ blanche, l'urne $B$ contient $1$
+rouge et $2$ blanches. On choisit une urne au hasard, puis une boule.
+Quelle est la probabilité de tirer une rouge ? Dessiner l'arbre.
+\end{exercice}
+
+\begin{exercice}[1]{La formule de Bayes}
+Une maladie touche $1\,\%$ d'une population. Un test la détecte chez
+$95\,\%$ des malades, mais se déclenche aussi chez $10\,\%$ des personnes
+saines.
+\begin{questions}
+  \item Calculer la probabilité qu'un test soit positif.
+  \item Un test est positif : quelle est la probabilité que la personne
+    soit réellement malade ? Commenter ce résultat surprenant.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Uniforme et Bernoulli}
+\begin{questions}
+  \item Soit $X$ le résultat d'un dé équilibré. Calculer
+    $\mathrm{E}(X)$ et $\mathrm{V}(X)$.
+  \item Soit $Y\sim\mathcal{B}(p)$. Retrouver $\mathrm{E}(Y)=p$ et
+    $\mathrm{V}(Y)=p(1-p)$ ; pour quelle valeur de $p$ la variance
+    est-elle maximale ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{La loi binomiale}
+Soit $X\sim\mathcal{B}\bigl(5,\frac13\bigr)$.
+\begin{questions}
+  \item Calculer $P(X=2)$, et vérifier que les probabilités
+    $P(X=k)$ se somment à $1$.
+  \item Donner $\mathrm{E}(X)$ et $\mathrm{V}(X)$.
+  \item De quelle expérience $X$ est-il le modèle naturel ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Espérance : transfert et linéarité}
+$X$ est le résultat d'un dé équilibré.
+\begin{questions}
+  \item Calculer $\mathrm{E}\bigl(X^{2}\bigr)$ par la formule de
+    transfert. A-t-on $\mathrm{E}(X^{2})=\mathrm{E}(X)^{2}$ ?
+  \item Calculer $\mathrm{E}(2X+3)$.
+  \item Justifier $\mathrm{E}(\ind A)=P(A)$ : l'espérance généralise la
+    probabilité.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Indépendance : exemples et pièges}
+\begin{questions}
+  \item On lance deux dés. Montrer que « le premier dé est pair » et « la
+    somme est paire » sont indépendants.
+  \item On lance deux pièces. Soient $A$ : « la première donne pile »,
+    $B$ : « la seconde donne pile », $C$ : « les deux donnent le même
+    côté ». Montrer que $A,B,C$ sont deux à deux indépendants, mais pas
+    mutuellement indépendants.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Loi conjointe et lois marginales}
+\begin{questions}
+  \item Soit $(X,Y)$ de loi conjointe uniforme sur
+    $\ens{0,1}^{2}$ ($\frac14$ partout). Déterminer les marginales ;
+    $X$ et $Y$ sont-elles indépendantes ?
+  \item Soit maintenant $P(X=Y=0)=P(X=Y=1)=\frac12$. Vérifier que les
+    marginales sont les mêmes qu'en a), mais que $X$ et $Y$ ne sont plus
+    indépendantes : la loi conjointe contient strictement plus
+    d'information.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Minimum et maximum de deux dés}
+On lance deux dés indépendants $X,Y$ et on pose $U=\min(X,Y)$,
+$V=\max(X,Y)$.
+\begin{questions}
+  \item Calculer $P(U\geqslant k)$ pour $1\leqslant k\leqslant6$, et en
+    déduire la loi de $U$.
+  \item Montrer que $\mathrm{E}(U)=\dfrac{91}{36}$, puis, sans calculer la
+    loi de $V$, que $\mathrm{E}(V)=\dfrac{161}{36}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Variance d'une somme, covariance}
+Avec les notations de l'exercice 11 :
+\begin{questions}
+  \item Vérifier $\mathrm{E}(XY)=\mathrm{E}(X)\mathrm{E}(Y)$ et calculer
+    $\mathrm{V}(X+Y)$.
+  \item Montrer que $UV=XY$, et en déduire
+    $\operatorname{Cov}(U,V)=\mathrm{E}(X)\mathrm{E}(Y)-\mathrm{E}(U)\mathrm{E}(V)$ ;
+    vérifier qu'elle est strictement positive et interpréter.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La binomiale comme somme de Bernoulli}
+Soient $X_1,\dots,X_n$ indépendantes de loi $\mathcal{B}(p)$, et
+$S=X_1+\dots+X_n$.
+\begin{questions}
+  \item Justifier que $S\sim\mathcal{B}(n,p)$ en comptant les issues.
+  \item En déduire $\mathrm{E}(S)=np$ et $\mathrm{V}(S)=np(1-p)$ sans
+    aucun calcul de somme.
+  \item Si $X\sim\mathcal{B}(n,p)$ et $Y\sim\mathcal{B}(m,p)$ sont
+    indépendantes, quelle est la loi de $X+Y$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Décorrélées mais pas indépendantes}
+Soit $X$ uniforme sur $\ens{-1,0,1}$ et $Y=X^{2}$.
+\begin{questions}
+  \item Calculer $\operatorname{Cov}(X,Y)$.
+  \item Montrer que $X$ et $Y$ ne sont pas indépendantes.
+  \item Montrer en revanche que pour des \emph{indicatrices},
+    $\operatorname{Cov}(\ind A,\ind B)=P(A\cap B)-P(A)P(B)$ : la
+    covariance nulle équivaut alors à l'indépendance.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Points fixes d'une permutation aléatoire}
+Soit $\sigma$ uniforme sur $S_n$ et $X$ son nombre de points fixes
+(chapitres 14 et 16).
+\begin{questions}
+  \item Écrire $X=\sum_{i=1}^{n}\ind{(\sigma(i)=i)}$ et en déduire
+    $\mathrm{E}(X)=1$.
+  \item Calculer $\mathrm{E}\bigl(X(X-1)\bigr)$ en comptant les couples de
+    points fixes, et en déduire $\mathrm{V}(X)=1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Markov et Tchebychev : premiers usages}
+\begin{questions}
+  \item Un serveur traite en moyenne $2$ requêtes par seconde
+    ($X\geqslant0$). Majorer $P(X\geqslant10)$.
+  \item Pour un dé équilibré, majorer
+    $P\bigl(|X-3{,}5|\geqslant2\bigr)$ par Tchebychev, puis calculer la
+    probabilité exacte. Que dire de la précision de la borne ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La loi faible des grands nombres}
+On lance $n$ fois une pièce équilibrée et on note $M_n$ la fréquence des
+piles.
+\begin{questions}
+  \item Donner $\mathrm{E}(M_n)$ et $\mathrm{V}(M_n)$.
+  \item Montrer que
+    $P\bigl(|M_n-\tfrac12|\geqslant\varepsilon\bigr)
+    \leqslant\dfrac{1}{4n\varepsilon^{2}}$.
+  \item Quelle valeur de $n$ garantit
+    $P\bigl(|M_n-\tfrac12|\geqslant0{,}1\bigr)\leqslant5\,\%$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le paradoxe des anniversaires}
+On suppose les $365$ jours de naissance équiprobables et indépendants.
+\begin{questions}
+  \item Montrer que la probabilité que $n$ personnes aient toutes des
+    anniversaires distincts vaut
+    $\displaystyle\prod_{k=0}^{n-1}\frac{365-k}{365}$.
+  \item En déduire qu'à partir de $n=23$ personnes, une coïncidence est
+    plus probable qu'improbable. Commenter.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Dérangements : la loi des points fixes}
+Soit $\sigma$ uniforme sur $S_n$ et $X$ son nombre de points fixes.
+\begin{questions}
+  \item Montrer que $P(X=k)=\dfrac{1}{k!}\cdot\dfrac{D_{n-k}}{(n-k)!}$,
+    où $D_m$ compte les dérangements (chapitre 16).
+  \item En déduire que, à $k$ fixé,
+    $P(X=k)\xrightarrow[n\to+\infty]{}\dfrac{\mathrm{e}^{-1}}{k!}$ :
+    la loi limite des points fixes (une loi de Poisson avant l'heure),
+    cohérente avec $\mathrm{E}(X)=\mathrm{V}(X)=1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Concentration de la binomiale et sondages}
+Soit $S\sim\mathcal{B}(n,p)$ et $F=\dfrac Sn$ la fréquence.
+\begin{questions}
+  \item Montrer que $p(1-p)\leqslant\dfrac14$, puis que
+    $P\bigl(|F-p|\geqslant\varepsilon\bigr)
+    \leqslant\dfrac{1}{4n\varepsilon^{2}}$ — quelle que soit la valeur
+    (inconnue !) de $p$.
+  \item Un sondage vise une précision de $5$ points avec un risque d'au
+    plus $5\,\%$ : quelle taille d'échantillon la borne garantit-elle ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le problème de Monty Hall}
+Derrière une porte sur trois se cache une voiture. Le candidat choisit une
+porte ; l'animateur, qui sait tout, ouvre une \emph{autre} porte, vide,
+puis propose de changer.
+\begin{questions}
+  \item Modéliser soigneusement (position de la voiture, choix, porte
+    ouverte) et calculer la probabilité de gagner en gardant sa porte,
+    puis en changeant.
+  \item Expliquer, avec un conditionnement, pourquoi l'intuition
+    « 50-50 » est fausse.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{L'espérance du maximum}
+Soient $X_1,\dots,X_n$ indépendantes, uniformes sur $\ens{1,\dots,N}$, et
+$M=\max(X_1,\dots,X_n)$.
+\begin{questions}
+  \item Montrer que $P(M\leqslant k)=\bigl(\tfrac kN\bigr)^{n}$, puis que
+    $\mathrm{E}(M)=\displaystyle\sum_{k=0}^{N-1}
+    \Bigl(1-\bigl(\tfrac kN\bigr)^{n}\Bigr)$.
+  \item Vérifier pour $n=2$, $N=6$ la cohérence avec l'exercice 11.
+  \item À l'aide d'une somme de Riemann (chapitre 15), montrer que
+    $\dfrac{\mathrm{E}(M)}{N}\xrightarrow[N\to+\infty]{}\dfrac{n}{n+1}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La marche aléatoire symétrique}
+Soient $\varepsilon_1,\dots,\varepsilon_n$ indépendantes, uniformes sur
+$\ens{-1,1}$, et $S_n=\varepsilon_1+\dots+\varepsilon_n$.
+\begin{questions}
+  \item Calculer $\mathrm{E}(S_n)$ et $\mathrm{V}(S_n)$ ; que dit
+    Tchebychev sur l'ordre de grandeur de $|S_n|$ ?
+  \item Montrer que $P(S_{2n}=0)=\dbinom{2n}{n}4^{-n}$, et donner son
+    équivalent $\dfrac{1}{\sqrt{\pi n}}$ (chapitres 11, 15 et 16) :
+    le retour en $0$ devient rare, mais lentement.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Weierstrass par Bernstein}
+Pour $f$ continue sur $\intFF{0}{1}$ et $x\in\intFF{0}{1}$, on pose
+$B_n(f)(x)=\mathrm{E}\bigl(f(S_n/n)\bigr)
+=\displaystyle\sum_{k=0}^{n}f\bigl(\tfrac kn\bigr)\binom nk
+x^{k}(1-x)^{n-k}$, où $S_n\sim\mathcal{B}(n,x)$.
+\begin{questions}
+  \item Vérifier que $B_n$ transforme les fonctions $1$ et
+    $t\mapsto t$ en elles-mêmes.
+  \item Soit $\varepsilon>0$ et $\delta$ un module de continuité uniforme
+    de $f$ (chapitre 15). En séparant les $k$ selon que
+    $\bigl|\tfrac kn-x\bigr|<\delta$ ou non, et en appliquant
+    Bienaymé-Tchebychev à $S_n$, montrer que
+    \[
+    \bigl|B_n(f)(x)-f(x)\bigr|
+    \leqslant\varepsilon+\frac{2\max|f|}{4n\delta^{2}} .
+    \]
+  \item Conclure : toute fonction continue sur un segment est limite
+    uniforme de polynômes (théorème de Weierstrass) — les probabilités
+    démontrent un grand théorème d'analyse.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-17}

@@ -1,0 +1,19 @@
+% Luge tirée par une corde inclinée de 30 degrés (exercice 2, chapitre 15)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  force/.style={line width=1.2pt,-{Stealth[length=2.4mm]}}]
+\fill[otNavy!6] (-0.5,-0.3) rectangle (7.5,0);
+\draw[otInk!60,line width=0.6pt] (-0.5,0) -- (7.5,0);
+\filldraw[fill=otOrange!55,draw=otOrange!80!black,line width=0.5pt,rounded corners=0.8mm] (0.2,0.12) rectangle (1.6,0.5);
+\draw[otInk!70,line width=0.9pt] (0.05,0.08) -- (1.85,0.08) to[out=0,in=-90] (2.0,0.3);
+\coordinate (O) at (1.6,0.3);
+\draw[otInk!70,line width=0.6pt] (O) -- ++(30:2.6);
+\draw[force,otGreenDark] (O) -- ++(30:1.6) node[pcLegende,anchor=south east,text=otGreenDark] {$\vec{F}$};
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (O) -- ++(2.0,0);
+\draw[otOrange!85!black,line width=0.5pt] ($(O)+(0.7,0)$) arc (0:30:0.7);
+\node[pcLegende,text=otOrange!85!black] at ($(O)+(15:0.95)$) {\ang{30}};
+\draw[otInk!70,line width=0.9pt,-{Stealth[length=2mm]}] (0.2,-0.65) -- (6.8,-0.65) node[pos=0.5,pcLegende,anchor=north] {déplacement : \qty{20}{m}};
+\solution{
+  \draw[force,otGreenDark!60,dash pattern=on 3pt off 1.5pt] (O) -- ++(1.386,0) node[pcLegende,anchor=north,text=otGreenDark,pos=0.7] {$F\cos\alpha$};
+  \draw[otGreenDark!60,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] ($(O)+(30:1.6)$) -- ($(O)+(1.386,0)$);}
+\end{tikzpicture}
+\par\smallskip\legende{L'enfant tire la luge avec une force de \qty{50}{N} sur un sol horizontal.\solution{ Seule la composante horizontale $F\cos\alpha\approx\qty{43,3}{N}$ travaille.}}

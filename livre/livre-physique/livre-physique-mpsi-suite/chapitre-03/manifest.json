@@ -1,0 +1,128 @@
+{
+  "chapitre": 3,
+  "titre": "Circuits linéaires du premier ordre",
+  "rubrique": "1.3",
+  "scope": "les régimes libres et les réponses à un échelon des circuits RC et RL, leurs bilans énergétiques et leur simulation numérique.",
+  "cours": 11,
+  "exercices": 24,
+  "defis": 3,
+  "dm": 1,
+  "ds": 1,
+  "sources": [
+    {
+      "titre": "DM réel / Charge très rapide",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/dm3_elec.pdf",
+      "cible": "MPSI, schleck.ovh ; DM3 à rendre le 5 novembre 2025 ; exercice 2, questions 1 à 5, page 2/3.",
+      "travail": "Prévoir 20 minutes. Travailler seulement la première phase de charge sur le schéma original. La phase suivante comporte deux capacités et relève du deuxième ordre.",
+      "corrige": "Lors de la charge en position A, $rC_1\\dot u_1+u_1=E$ et $u_1(0)=0$. Donc $u_1=E(1-e^{-t/(rC_1)})$. Avec $r=10\\ \\Omega$ et $C_1=30$ nF, $\\tau=0{,}30\\ \\mathrm{\\mu s}$. Atteindre $99{,}9\\,\\%$ demande $t_1=\\tau\\ln1000=2{,}072\\ \\mathrm{\\mu s}$. À 1 ms, $u_1$ est pratiquement égal à 15 V dans ce modèle."
+    },
+    {
+      "titre": "DS réel / Une bobine au démarrage",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/ds3_elec_chimie.pdf",
+      "cible": "MPSI, schleck.ovh ; DS3 du 13 novembre 2025 ; exercice 2, partie I, questions 1 à 6, page 2/4.",
+      "travail": "Prévoir 25 minutes. Établir le courant dans la bobine réelle et différencier la tension inductive de la tension totale. On peut ensuite lire les questions 7 et 8 sur l’ouverture du circuit.",
+      "corrige": "$L\\dot i+(R+r)i=E$, $\\tau=L/(R+r)$ ; si le courant initial est nul, $i=E(1-e^{-t/\\tau})/(R+r)$. Au régime final, $I_0=E/(R+r)$, $U_0=rI_0$, $\\mathcal E_L=LI_0^2/2$ et $P_{J,b}=rI_0^2$. L’ouverture sans trajet de décharge tend à produire une forte tension : elle ne justifie pas un saut instantané du courant dans le modèle de bobine idéale."
+    }
+  ],
+  "controles": [
+    {
+      "nom": "E03-u",
+      "valeur": 7.792723352971346,
+      "attendu": 7.79272335297,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "E04-seuil",
+      "valeur": 0.005545177444479563,
+      "attendu": 0.00554517744448,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E08-C",
+      "valeur": 4.3280851226668904e-07,
+      "attendu": 4.32808512267e-07,
+      "tolerance": 1e-16
+    },
+    {
+      "nom": "E09-u",
+      "valeur": 0.8120116994196761,
+      "attendu": 0.81201169942,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "E11-zéro",
+      "valeur": 0.002027325540540822,
+      "attendu": 0.00202732554054,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E13-tau",
+      "valeur": 0.004,
+      "attendu": 0.004,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E15-perte",
+      "valeur": 2.4999999999999998e-05,
+      "attendu": 2.5e-05,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E20-u",
+      "valeur": 3.1622776601683795e-05,
+      "attendu": 3.16227766017e-05,
+      "tolerance": 1e-15
+    },
+    {
+      "nom": "E22-max",
+      "valeur": 4.38635147178003,
+      "attendu": 4.38635147178,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "D2-Rmin",
+      "valeur": 115.1292546497023,
+      "attendu": 115.1292546497,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "DM-tseuil",
+      "valeur": 0.8239592165010823,
+      "attendu": 0.823959216501,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "DM-chargé-t",
+      "valeur": 0.8798589894180588,
+      "attendu": 0.88,
+      "tolerance": 0.001
+    },
+    {
+      "nom": "DS-WG",
+      "valeur": 3.9999999999999996e-05,
+      "attendu": 4e-05,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "R1-tau",
+      "valeur": 3e-07,
+      "attendu": 3e-07,
+      "tolerance": 1e-12
+    }
+  ],
+  "figures": [
+    "conventions",
+    "thevenin",
+    "diviseur",
+    "noeud",
+    "rc",
+    "rl",
+    "lc",
+    "rlc",
+    "rc-parallele",
+    "ressort",
+    "charge",
+    "courants",
+    "energie"
+  ]
+}

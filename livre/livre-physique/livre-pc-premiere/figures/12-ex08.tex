@@ -1,0 +1,26 @@
+% Baromètre de Torricelli : tube retourné sur une cuve de mercure (exercice 8, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=0.75cm]
+% Cuve de mercure
+\fill[otMuted!45] (0,0) rectangle (4.0,0.7);
+\draw[pcSurface] (0,0.7) -- (4.0,0.7);
+\draw[pcVerre] (0,1.2) -- (0,0) -- (4.0,0) -- (4.0,1.2);
+% Tube retourné : colonne de mercure et vide
+\fill[otMuted!45] (1.75,0.25) rectangle (2.25,3.74);
+\fill[white] (1.77,3.76) rectangle (2.23,4.48);
+\draw[pcVerre] (1.75,0.25) -- (1.75,4.5) arc (180:0:0.25) -- (2.25,0.25);
+\node[pcLegende,anchor=west] at (2.4,4.15) {vide};
+\draw[otMuted,line width=0.4pt] (2.27,4.15) -- (2.38,4.15);
+\node[pcLegende,anchor=east] at (1.6,2.3) {mercure};
+\node[pcLegende,anchor=north] at (3.2,0.6) {mercure};
+% Hauteur de la colonne
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (2.25,3.74) -- (3.3,3.74) (2.25,0.7) -- (3.3,0.7);
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (3.15,0.7) -- (3.15,3.74) node[midway,pcLegende,anchor=west] {$h=\qty{760}{mm}$};
+\node[pcLegende,anchor=south] at (0.8,0.74) {air : $P_\mathrm{atm}$};
+\solution{
+  \fill[otInk] (2.0,0.7) circle (0.05); \node[pcLegendeG,anchor=north,text=otGreenDark] at (2.0,0.66) {A};
+  \fill[otInk] (1.2,0.7) circle (0.05); \node[pcLegendeG,anchor=north,text=otGreenDark] at (1.2,0.66) {B};
+  \fill[otInk] (2.0,3.74) circle (0.05); \node[pcLegendeG,anchor=south,text=otGreenDark,fill=white,inner sep=0.8pt] at (2.0,3.78) {C};
+  \node[pcLegende,anchor=west,text=otGreenDark,align=left] at (4.2,0.55) {$P_\mathrm{A}=P_\mathrm{B}=P_\mathrm{atm}$\\(même niveau)};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (4.2,3.74) {$P_\mathrm{C}=0$ (vide)};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{En 1643, Evangelista Torricelli retourne un tube rempli de mercure sur une cuve : la colonne se stabilise à \qty{760}{mm} environ.}\solution{A et B, au même niveau dans le mercure, sont à la même pression ; en C règne le vide.}}

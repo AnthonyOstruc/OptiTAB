@@ -1,0 +1,20 @@
+% Bilan des charges des ions d'une eau minérale (corrigé du défi D07)
+\begin{tikzpicture}
+\begin{axis}[xbar stacked,width=118mm,height=42mm,bar width=7mm,xmin=0,xmax=36,ymin=0.4,ymax=2.6,
+  ytick={1,2},yticklabels={anions,cations},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  ticklabel style={font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  xlabel={quantité de charges ($\unit{mmol.L^{-1}}$)},label style={font=\small,text=otInk},
+  /pgf/number format/use comma,
+  legend style={at={(0.5,1.04)},anchor=south,legend columns=4,draw=none,font=\otLight\fontsize{7}{8}\selectfont},
+  legend cell align=left,area legend,clip=false]
+\addplot[fill=otNavy!75,draw=white] coordinates {(24.7,1) (24.2,2)};
+\addplot[fill=otGreen!80,draw=white] coordinates {(6.61,1) (6.91,2)};
+\addplot[fill=otOrange!70,draw=white] coordinates {(0.394,1) (0.617,2)};
+\addplot[fill=otMuted!60,draw=white] coordinates {(0.069,1) (0.105,2)};
+\legend{$\ce{SO4^{2-}}$ ou $\ce{Ca^{2+}}$,$\ce{HCO3-}$ ou $\ce{Mg^{2+}}$,$\ce{Cl-}$ ou $\ce{Na+}$,$\ce{NO3-}$ ou $\ce{K+}$}
+\node[pcLegende,anchor=west] at (axis cs:32.2,2) {\qty{31,9}{mmol.L^{-1}}};
+\node[pcLegende,anchor=west] at (axis cs:32.2,1) {\qty{31,8}{mmol.L^{-1}}};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les charges positives et négatives apportées par les ions se compensent à mieux que \qty{1}{\percent} près : la solution est électriquement neutre.}

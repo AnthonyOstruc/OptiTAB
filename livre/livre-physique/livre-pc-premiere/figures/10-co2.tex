@@ -1,0 +1,13 @@
+% Masse de dioxyde de carbone émise par mégajoule produit, pour quelques combustibles (L'essentiel, chapitre 10)
+\begin{tikzpicture}
+\begin{axis}[xbar,width=105mm,height=52mm,bar width=4.2mm,xmin=0,xmax=130,ymin=0.4,ymax=6.6,
+  ytick={1,...,6},yticklabels={dihydrogène,méthane,butane,octane (essence),éthanol,carbone (charbon)},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  ticklabel style={font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  xlabel={masse de $\ce{CO2}$ émise ($\unit{g.MJ^{-1}}$)},label style={font=\small,text=otInk},
+  /pgf/number format/use comma,nodes near coords,nodes near coords style={font=\otLight\fontsize{7}{8}\selectfont,text=otInk},
+  point meta=explicit symbolic,clip=false]
+\addplot[fill=otNavy!70,draw=none] coordinates {(0,1)[0] (54.9,2)[55] (66.2,3)[66] (69.4,4)[69] (71.3,5)[71] (112,6)[112]};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Calcul à partir des équations de combustion complète et des énergies molaires de réaction.}

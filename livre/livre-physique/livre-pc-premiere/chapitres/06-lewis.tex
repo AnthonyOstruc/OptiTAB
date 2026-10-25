@@ -1,0 +1,313 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[lewis]{6}{Schémas de Lewis, géométrie et polarité}{Partie 1 · Constitution et transformations de la matière}
+{Doublet liant\enspace·\enspace Doublet non liant\enspace·\enspace Lacune\enspace·\enspace Géométrie\enspace·\enspace Électronégativité\enspace·\enspace Polarité}
+\objectif{Établir le schéma de Lewis de molécules et d'ions à partir du tableau périodique.}
+\objectif{Interpréter la géométrie d'une entité à partir de son schéma de Lewis.}
+\objectif{Utiliser des modèles moléculaires ou un logiciel pour visualiser la géométrie d'une entité.}
+\objectif{Déterminer le caractère polaire d'une liaison à partir des électronégativités.}
+\objectif{Déterminer le caractère polaire ou apolaire d'une molécule à partir de sa géométrie.}
+\prerequis{Configuration électronique, électrons de valence, stabilité des gaz nobles (classe de seconde).}
+\prerequis{Liaison covalente et lecture de schémas de Lewis (classe de seconde).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Le schéma de Lewis d'une entité}
+\begin{definition}[Doublets et lacune]
+Dans le \textbf{schéma de Lewis} d'une molécule ou d'un ion, les électrons de valence sont regroupés par paires : un
+\textbf{doublet liant}, représenté par un trait entre deux atomes, forme une liaison covalente ; un \textbf{doublet non liant},
+représenté par un trait autour d'un atome, n'appartient qu'à cet atome. Les atomes d'hydrogène s'entourent de 2 électrons
+(\textbf{règle du duet}), les atomes C, N, O et Cl de 8 électrons (\textbf{règle de l'octet}). Un atome entouré de moins
+d'électrons que ne le prévoient ces règles possède une \textbf{lacune électronique}, représentée par un rectangle vide.
+\end{definition}
+\begin{savoirfaire}[Établir un schéma de Lewis]
+\begin{questions}
+\item Compter les électrons de valence de chaque atome, d'après sa colonne dans le tableau périodique : H 1, C 4, N 5, O 6,
+Cl 7. Retrancher la charge de l'ion, s'il y a lieu, puis diviser par deux : on obtient le nombre total de doublets.
+\item Relier les atomes par des doublets liants : un atome d'hydrogène forme 1 liaison, de carbone 4, d'azote 3,
+d'oxygène 2 et de chlore 1, dans une molécule.
+\item Répartir les doublets restants en doublets non liants pour que chaque atome respecte le duet ou l'octet.
+\item Pour un ion, indiquer la charge par un symbole $\oplus$ ou $\ominus$ près de l'atome qui la porte.
+\end{questions}
+\end{savoirfaire}
+\schema{06-lewis}
+\begin{python}
+valence = {'H': 1, 'C': 4, 'N': 5, 'O': 6, 'Cl': 7}
+
+def doublets(atomes, charge=0):
+    ne = 0
+    for symbole, nombre in atomes.items():
+        ne = ne + nombre * valence[symbole]
+    ne = ne - charge
+    return ne // 2
+
+print(doublets({'H': 2, 'O': 1}))              # H2O
+print(doublets({'C': 1, 'O': 2}))              # CO2
+print(doublets({'N': 1, 'H': 4}, charge=1))    # NH4+
+print(doublets({'O': 1, 'H': 1}, charge=-1))   # OH-
+\end{python}
+\begin{console}
+4
+8
+4
+4
+\end{console}
+\noindent\capacite{Capacité numérique} La fonction \code{doublets} additionne les électrons de valence de tous les atomes, en tenant
+compte de leur nombre, retranche la charge de l'entité, puis divise par deux. La molécule d'eau compte ainsi 4 doublets :
+2 liants et 2 non liants.
+\essSection{2}{La géométrie des entités}
+\begin{propriete}[Répulsion des doublets]
+Les doublets qui entourent un atome central, liants ou non liants, se repoussent et s'écartent le plus possible les uns des
+autres ; une liaison double ou triple compte pour une seule direction. Avec quatre directions, elles pointent vers les
+sommets d'un tétraèdre :
+\begin{questions}
+\item quatre doublets liants : géométrie \textbf{tétraédrique}, angles de \qty{109,5}{\degree} ($\ce{CH4}$) ;
+\item trois doublets liants et un non liant : géométrie \textbf{pyramidale} ($\ce{NH3}$) ;
+\item deux doublets liants et deux non liants : géométrie \textbf{coudée} ($\ce{H2O}$).
+\end{questions}
+Avec deux directions, la géométrie est \textbf{linéaire} ($\ce{CO2}$) ; avec trois, elle est \textbf{plane}, à \qty{120}{\degree} environ.
+\end{propriete}
+\schema{06-geometries}
+\essSection{3}{Électronégativité et liaisons polarisées}
+\begin{definition}[Électronégativité]
+L'\textbf{électronégativité} $\chi$ d'un élément traduit l'aptitude de ses atomes à attirer vers eux les électrons d'une liaison
+covalente. Elle augmente de gauche à droite dans une ligne du tableau périodique et de bas en haut dans une colonne : le
+fluor est l'élément le plus électronégatif.
+\end{definition}
+\schema{06-electroneg}
+\begin{propriete}[Liaison polarisée]
+Une liaison entre deux atomes A et B est \textbf{polarisée} si leurs électronégativités sont assez différentes ; on retient
+couramment le critère $\left|\chi(\mathrm{A})-\chi(\mathrm{B})\right|\geqslant0{,}4$. L'atome le plus électronégatif porte une charge partielle
+négative $\delta^{-}$, l'autre une charge partielle positive $\delta^{+}$. Ainsi, $\chi(\ce{O})-\chi(\ce{H})=1{,}24$ : la liaison O--H est polarisée ;
+$\chi(\ce{C})-\chi(\ce{H})=0{,}35$ : la liaison C--H est considérée comme non polarisée.
+\end{propriete}
+\essSection{4}{Polarité d'une molécule}
+\begin{propriete}[Molécule polaire ou apolaire]
+Une molécule est \textbf{polaire} si le centre géométrique G$^{+}$ de ses charges partielles positives et celui G$^{-}$ de ses
+charges partielles négatives sont distincts ; sinon, elle est \textbf{apolaire}. La polarité dépend donc à la fois de la
+polarisation des liaisons et de la géométrie.
+\end{propriete}
+\schema{06-polarite}
+\begin{attention}
+Une molécule dont les liaisons sont polarisées peut être apolaire, si sa géométrie est symétrique : c'est le cas du dioxyde de
+carbone ou du tétrachlorométhane $\ce{CCl4}$. Pour prévoir une géométrie, il ne faut pas oublier les doublets non liants : ils
+orientent les liaisons, même s'ils n'apparaissent pas dans le nom de la géométrie.
+\end{attention}
+\begin{experience}[Construire des molécules]
+Avec une boîte de modèles moléculaires, on construit les molécules de méthane, d'ammoniac et d'eau en respectant les
+directions des doublets. Un logiciel de visualisation moléculaire permet ensuite de faire tourner les modèles, de mesurer
+les angles entre les liaisons et d'afficher la répartition des charges : on retrouve \qty{109,5}{\degree}, \qty{107}{\degree} et \qty{104,5}{\degree}.
+\end{experience}
+\begin{rediger}
+Pour conclure sur la polarité d'une molécule : établir son schéma de Lewis, en déduire sa géométrie, repérer les liaisons
+polarisées grâce aux électronégativités, placer les charges partielles, puis comparer les positions de G$^{+}$ et de G$^{-}$.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-6-1}
+\begin{exercice}[1]{Électrons de valence et liaisons}
+On considère les atomes d'hydrogène ($Z=1$), de carbone ($Z=6$), d'azote ($Z=7$), d'oxygène ($Z=8$) et de chlore ($Z=17$).
+\begin{questions}
+\item Écrire la configuration électronique de chaque atome et en déduire son nombre d'électrons de valence.
+\item Combien d'électrons manque-t-il à chaque atome pour respecter la règle du duet ou de l'octet ?
+\item En déduire le nombre de liaisons covalentes que forme chaque atome dans une molécule.
+\item Combien de doublets non liants porte chaque atome lorsqu'il forme ces liaisons ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-2}
+\begin{exercice}[1]{Vérifier des schémas de Lewis}
+On donne les schémas de Lewis de quatre molécules.
+\par\smallskip\noindent\hfill\begin{tabular}{*{4}{>{\centering\arraybackslash}m{34mm}}}
+\chemfig{H-C(-[2]H)(-[6]H)-\charge{90=\|,270=\|}{O}-H} & \chemfig{H-[1]C(-[3]H)=C(-[1]H)-[7]H} &
+\chemfig{H-C~\charge{0=\|}{N}} & \chemfig{H-\charge{90=\|,270=\|}{O}-\charge{90=\|,270=\|}{O}-H} \\[1mm]
+{\small méthanol} & {\small éthène} & {\small cyanure d'hydrogène} & {\small peroxyde d'hydrogène} \\
+\end{tabular}\hfill\null\par\smallskip
+\begin{questions}
+\item Pour chaque molécule, compter les doublets liants et non liants.
+\item Vérifier que ce nombre de doublets correspond aux électrons de valence des atomes.
+\item Vérifier que chaque atome respecte la règle du duet ou de l'octet.
+\item Quelle molécule comporte une liaison double ? une liaison triple ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-3}
+\begin{exercice}[1]{Des ions}
+\begin{questions}
+\item Établir les schémas de Lewis des ions oxonium $\ce{H3O+}$, hydroxyde $\ce{HO-}$, ammonium $\ce{NH4+}$ et chlorure $\ce{Cl-}$.
+\item L'ion hydrogène $\ce{H+}$ n'a aucun électron. Quelle particularité présente son schéma de Lewis ?
+\item Lors de la formation de l'ion oxonium, $\ce{H+ + H2O -> H3O+}$, quel doublet de la molécule d'eau forme la nouvelle liaison ?
+\item Pourquoi l'atome d'oxygène porte-t-il la charge $\oplus$ dans l'ion oxonium ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-4}
+\begin{exercice}[1]{Prévoir une géométrie}
+\begin{questions}
+\item Pour les molécules $\ce{CH4}$, $\ce{NH3}$ et $\ce{H2O}$, dénombrer les doublets liants et non liants de l'atome central.
+\item En déduire la géométrie de chaque molécule.
+\item Dans $\ce{CO2}$ et $\ce{HCN}$, combien de directions de doublets l'atome de carbone présente-t-il ? Quelle est leur géométrie ?
+\item Le méthanal $\ce{CH2O}$ a pour atome central un carbone lié par une double liaison à l'oxygène. Prévoir sa géométrie.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-5}
+\begin{exercice}[1]{Liaisons polarisées}
+On utilise les électronégativités de l'essentiel.
+\begin{questions}
+\item Calculer l'écart d'électronégativité pour les liaisons H--Cl, C--H, O--H, C--O, C--Cl, N--H, H--H et C--C.
+\item Quelles liaisons sont polarisées ?
+\item Indiquer les charges partielles portées par les atomes des liaisons polarisées.
+\item Quelle liaison est la plus polarisée ? Que peut-on dire d'une liaison entre deux atomes identiques ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-6-6}
+\begin{exercice}[2]{Compter les doublets en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Prévoir l'affichage de \code{doublets(\{'N': 1, 'H': 3\})}, \code{doublets(\{'C': 1, 'H': 4\})},
+\code{doublets(\{'H': 3, 'O': 1\}, charge=1)} et \code{doublets(\{'Cl': 1\}, charge=-1)}.
+\item Pourquoi retranche-t-on la charge ? Que signifie l'opérateur \code{//} ?
+\item Prévoir le nombre de doublets de $\ce{HCN}$ et de $\ce{C2H6O}$.
+\item Pour le dioxyde d'azote, \code{doublets(\{'N': 1, 'O': 2\})} affiche 8, alors que la molécule compte 17 électrons de valence.
+Quelle information le programme cache-t-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-7}
+\begin{exercice}[2]{Le méthanal}
+Le méthanal $\ce{CH2O}$, ou formaldéhyde, est un polluant de l'air intérieur émis par certains meubles et colles.
+\begin{questions}
+\item Calculer le nombre de doublets de la molécule et établir son schéma de Lewis.
+\item Combien de directions de doublets entourent l'atome de carbone ? En déduire la géométrie de la molécule.
+\item Identifier les liaisons polarisées et placer les charges partielles.
+\item La molécule est-elle polaire ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-8}
+\begin{exercice}[2]{Un filet de liquide dévié}
+On approche une règle électrisée de deux filets de liquide : l'un d'eau, l'autre de cyclohexane $\ce{C6H12}$, dont la
+molécule ne comporte que des liaisons C--C et C--H.
+\schema{06-ex08}
+\begin{questions}
+\item Quel filet est dévié ?
+\item Montrer que la molécule d'eau est polaire.
+\item Pourquoi la molécule de cyclohexane est-elle apolaire ?
+\item Expliquer la déviation observée. Que se passerait-il avec une règle chargée négativement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-9}
+\begin{exercice}[2]{L'ammoniac et l'ion ammonium}
+\begin{questions}
+\item Établir les schémas de Lewis de l'ammoniac $\ce{NH3}$ et de l'ion ammonium $\ce{NH4+}$.
+\item Prévoir la géométrie de chaque entité.
+\item L'angle entre deux liaisons N--H vaut \qty{107}{\degree} dans l'ammoniac et \qty{109,5}{\degree} dans l'ion ammonium. Interpréter.
+\item L'ammoniac capte un ion $\ce{H+}$ pour former l'ion ammonium. Expliquer cette réaction à l'aide des schémas de Lewis.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-10}
+\begin{exercice}[2]{Deux solvants chlorés}
+Le trichlorométhane $\ce{CHCl3}$ et le tétrachlorométhane $\ce{CCl4}$, autrefois utilisés comme solvants, sont aujourd'hui
+écartés en raison de leur toxicité.
+\begin{questions}
+\item Établir leurs schémas de Lewis.
+\item Prévoir leur géométrie.
+\item Quelles liaisons sont polarisées ?
+\item Montrer que l'une des molécules est polaire et l'autre apolaire.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-11}
+\begin{exercice}[2]{Deux molécules, une même formule}
+L'éthanol $\ce{CH3-CH2-OH}$ et le méthoxyméthane $\ce{CH3-O-CH3}$ ont la même formule brute $\ce{C2H6O}$.
+\begin{questions}
+\item Calculer le nombre de doublets de ces molécules.
+\item Établir le schéma de Lewis de chacune.
+\item Quelle est la géométrie autour de l'atome d'oxygène ? autour de chaque atome de carbone ?
+\item Ces molécules sont-elles polaires ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-6-12}
+\begin{exercice}[3]{L'eau dans le four à micro-ondes}
+\begin{docu}{1}{Le chauffage par micro-ondes}
+Dans un four à micro-ondes, un champ électrique change de sens environ 5 milliards de fois par seconde. Les molécules
+polaires tendent à s'orienter dans ce champ : elles tournent sans cesse, s'agitent et chauffent l'aliment. Les molécules
+apolaires y sont presque insensibles.
+\end{docu}
+\begin{docu}{2}{La molécule d'eau}
+Dans la molécule d'eau, l'angle entre les deux liaisons O--H vaut \qty{104,5}{\degree}. Électronégativités : $\chi(\ce{H})=2{,}20$ ;
+$\chi(\ce{O})=3{,}44$.
+\end{docu}
+\begin{questions}
+\item Établir le schéma de Lewis de la molécule d'eau.
+\item Justifier sa géométrie coudée et l'angle de \qty{104,5}{\degree}, inférieur à \qty{109,5}{\degree}.
+\item Montrer que la molécule est polaire.
+\item \initiative On compare l'eau à un liquide modèle constitué uniquement de molécules d'alcanes apolaires. Expliquer pourquoi
+la tendance à s'orienter dans le champ électrique est différente. Cette comparaison suffit-elle à prévoir une vitesse de chauffage ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-13}
+\begin{exercice}[3]{Les fluides frigorigènes}
+\begin{docu}{1}{Une histoire de réfrigérateurs}
+Les premiers fluides de réfrigérateurs, comme le dichlorodifluorométhane $\ce{CCl2F2}$, détruisaient la couche d'ozone : ils ont été
+interdits par le protocole de Montréal (1987). On les a remplacés par des fluides sans chlore, comme le difluorométhane
+$\ce{CH2F2}$. Certaines installations utilisent aujourd'hui le dioxyde de carbone.
+\end{docu}
+\begin{docu}{2}{Électronégativités}
+\par\smallskip\noindent\hfill\begin{tabular}{lcccc}
+\toprule
+Élément & H & C & Cl & F \\
+\midrule
+$\chi$ & 2,20 & 2,55 & 3,16 & 3,98 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{docu}
+\begin{questions}
+\item Calculer le nombre de doublets de $\ce{CCl2F2}$ et de $\ce{CH2F2}$, puis établir leurs schémas de Lewis. L'atome central est le carbone.
+\item Prévoir leur géométrie.
+\item Identifier les liaisons polarisées dans chaque molécule.
+\item \initiative Parmi les trois fluides cités, lequel est apolaire ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-14}
+\begin{exercice}[3]{Un gaz incolore et mortel}
+\begin{docu}{1}{Le monoxyde de carbone}
+Le monoxyde de carbone $\ce{CO}$ se forme lors des combustions incomplètes. Incolore et inodore, il se fixe sur l'hémoglobine du
+sang à la place du dioxygène : il cause chaque année plusieurs dizaines de décès en France.
+\end{docu}
+\begin{docu}{2}{Deux molécules jumelles}
+Le diazote $\ce{N2}$ et le monoxyde de carbone possèdent le même nombre d'électrons de valence. Dans le schéma de Lewis de $\ce{N2}$,
+chaque atome d'azote porte un doublet non liant.
+Une mesure montre que, dans $\ce{CO}$, les centres des charges positives et négatives ne sont pas confondus.
+\end{docu}
+\begin{questions}
+\item Établir le schéma de Lewis du diazote et vérifier la règle de l'octet.
+\item Vérifier que $\ce{CO}$ et $\ce{N2}$ ont le même nombre d'électrons de valence.
+\item \initiative Proposer un schéma de Lewis pour le monoxyde de carbone, chaque atome respectant la règle de l'octet. Quelle
+particularité présente l'atome de carbone ?
+\item Quelle est la géométrie de la molécule ? Est-elle polaire ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-15}
+\begin{exercice}[3]{Identifier des modèles moléculaires}
+\begin{docu}{1}{Trois modèles}
+Un élève a construit trois molécules avec une boîte de modèles.
+\schema{06-ex15}
+\end{docu}
+\begin{questions}
+\item Écrire la formule brute de chaque molécule.
+\item \initiative Établir leurs schémas de Lewis et vérifier qu'ils sont compatibles avec les modèles.
+\item Nommer la géométrie de chaque molécule, ou autour de chaque atome de carbone.
+\item Quelles molécules sont polaires ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

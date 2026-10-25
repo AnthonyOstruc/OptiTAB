@@ -1,0 +1,19 @@
+% Piste de ski rectiligne inclinée de 15° ; au corrigé, forces exercées sur le skieur (devoir n° 5, exercice 2)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otRule!35] (0,0) -- (7.5,0) -- (0,2.01) -- cycle;
+\draw[otInk!70,line width=0.8pt] (0,2.01) -- (7.5,0) -- (0,0);
+\draw[otInk!50,line width=0.4pt,dash pattern=on 2pt off 2pt] (0,0) -- (0,2.01);
+\draw[otInk!70,line width=0.5pt] (6.3,0) arc[start angle=180,end angle=165,radius=1.2];
+\node[pcLegende,anchor=east] at (6.25,0.17) {\ang{15}};
+\fill[otNavy] (0,2.01) circle (1.8pt) node[pcLegendeG,anchor=south east] {A};
+\fill[otNavy] (7.5,0) circle (1.8pt) node[pcLegendeG,anchor=north] {B};
+\node[pcLegende,anchor=east] at (-0.05,1.0) {$h$};
+\node[pcLegende,anchor=south,rotate=-15] at (3.75,1.05) {$\mathrm{AB}=\qty{200}{m}$};
+\solution{
+  \coordinate (G) at (2.2,1.55);
+  \fill[otInk] (G) circle (1.6pt);
+  \draw[otRed!85!black,line width=1.1pt,-{Stealth[length=2.2mm]}] (G) -- ++(0,-1.25) node[pcLegende,anchor=north,text=otRed!85!black] {$\vec P$};
+  \draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.2mm]}] (G) -- ++(105:1.2) node[pcLegende,anchor=south,text=otGreenDark] {$\vec R_N$};
+  \draw[otOrange!85!black,line width=1.1pt,-{Stealth[length=2.2mm]}] (G) -- ++(165:0.9) node[pcLegende,anchor=south east,text=otOrange!85!black] {$\vec f$};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Le skieur part sans vitesse de A et atteint B en ligne droite.}\solution{Le poids est moteur, la réaction normale ne travaille pas, le frottement est résistant.}}

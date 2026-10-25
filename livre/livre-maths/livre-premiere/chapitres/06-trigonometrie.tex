@@ -1,0 +1,239 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[trigo]{6}{Trigonométrie}{Partie 2 · Analyse}
+{Radian\enspace·\enspace Cercle unité\enspace·\enspace Sinus et cosinus\enspace·\enspace Angles associés}
+\objectif{Passer des degrés aux radians et calculer une longueur d’arc.}
+\objectif{Placer un point sur le cercle trigonométrique.}
+\objectif{Déterminer des valeurs exactes par symétrie.}
+\objectif{Utiliser les coordonnées du cercle dans une situation géométrique.}
+\prerequis{Triangles rectangles et théorème de Pythagore.}
+\prerequis{Coordonnées et symétries dans le plan.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Enrouler une droite sur le cercle}
+\begin{definition}
+Le cercle trigonométrique est le cercle de centre $O$ et de rayon 1, orienté
+dans le sens inverse des aiguilles d'une montre. Un réel $t$ correspond à un
+déplacement de longueur $|t|$ sur ce cercle : sens positif si $t>0$, sens
+négatif si $t<0$. Un tour correspond à $2\pi$ radians, soit $360^\circ$.
+Ainsi $180^\circ=\pi$ rad et $90^\circ=\pi/2$ rad.
+\end{definition}
+\begin{propriete}
+Sur un cercle de rayon $R$, un angle de mesure $\theta\geq0$ radians intercepte
+un arc de longueur $R\theta$. Deux réels ont le même point-image exactement
+lorsque leur différence est un multiple entier de $2\pi$.
+\end{propriete}
+\essSection{2}{Les coordonnées du point-image}
+\begin{definition}
+Le point-image de $t$ a pour coordonnées $(\cos t;\sin t)$ dans le repère
+orthonormé $(O;I;J)$. On a $-1\leq\cos t\leq1$, $-1\leq\sin t\leq1$ et
+$\cos^2t+\sin^2t=1$.
+\end{definition}
+\begin{center}
+\begin{tikzpicture}[scale=1.45]
+\draw[otMuted,->](-1.45,0)--(1.6,0)node[right]{$\cos t$};
+\draw[otMuted,->](0,-1.25)--(0,1.45)node[above]{$\sin t$};
+\draw[otNavy,thick](0,0)circle(1);
+\draw[otGreen,thick](0,0)--(.5,.8660254);
+\draw[otGreenDark,->](.3,0)arc(0:60:.3);
+\draw[otMuted,dashed](.5,0)--(.5,.8660254)--(0,.8660254);
+\fill[otGreenDark](.5,.8660254)circle(1.4pt)node[above right]{$M$};
+\node[below left]at(0,0){$O$};\node[below right]at(1,0){$I$};
+\node[font=\small]at(.45,.22){$t$};
+\end{tikzpicture}
+\par\legende{Pour $t=\pi/3$, le point $M$ a pour coordonnées $(1/2;\sqrt3/2)$.}
+\end{center}
+
+\clearpage
+\essSection{3}{Les valeurs remarquables}
+{\renewcommand{\arraystretch}{1.9}\begin{tabularx}{\linewidth}{@{}l*{5}{>{\centering\arraybackslash}X}@{}}
+\toprule $t$ & $0$ & $\pi/6$ & $\pi/4$ & $\pi/3$ & $\pi/2$\\\midrule
+$\cos t$ & $1$ & $\sqrt3/2$ & $\sqrt2/2$ & $1/2$ & $0$\\
+$\sin t$ & $0$ & $1/2$ & $\sqrt2/2$ & $\sqrt3/2$ & $1$\\\bottomrule
+\end{tabularx}}
+\begin{propriete}[Les symétries du cercle]
+Pour tout réel $t$,
+\[\cos(-t)=\cos t,\quad\sin(-t)=-\sin t,\]
+\[\cos(\pi-t)=-\cos t,\quad\sin(\pi-t)=\sin t,\]
+\[\cos(t+\pi)=-\cos t,\quad\sin(t+\pi)=-\sin t.\]
+Ajouter $2k\pi$, avec $k$ entier relatif, ne change ni sinus ni cosinus.
+\end{propriete}
+\begin{savoirfaire}[Déterminer une valeur exacte]
+Réduire l'angle d'un nombre entier de tours. Repérer le quadrant. Utiliser
+une symétrie pour revenir à une valeur remarquable, puis vérifier le signe.
+Par exemple, $\cos(5\pi/6)=-\cos(\pi/6)=-\sqrt3/2$.
+\end{savoirfaire}
+\begin{attention}
+Les mesures utilisées dans les calculs sont en radians. Un angle peut avoir
+plusieurs mesures, mais un point-image est unique. Une valeur décimale à la
+calculatrice ne remplace pas une valeur exacte demandée.
+\end{attention}
+\begin{exemple}[Un argument géométrique]
+Dans un triangle rectangle isocèle de côtés de l'angle droit égaux à 1,
+l'hypoténuse vaut $\sqrt2$ ; donc $\cos(\pi/4)=\sin(\pi/4)=1/\sqrt2$.
+La démonstration des autres valeurs est détaillée dans les démonstrations de référence.
+\end{exemple}
+
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-6-1}
+\begin{exercice}[1]{Convertir des angles}
+\begin{questions}
+\item Convertir $30^\circ$, $45^\circ$, $120^\circ$ et $270^\circ$ en radians.
+\item Convertir $\pi/3$, $5\pi/6$ et $7\pi/4$ en degrés.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-2}
+\begin{exercice}[1]{Même point-image}
+\begin{questions}
+\item Les réels $\pi/3$ et $13\pi/3$ ont-ils le même point-image ?
+\item Même question pour $-\pi/2$ et $3\pi/2$, puis pour $\pi/4$ et $5\pi/4$.
+\end{questions}
+\label{figlivre-r06-02-images-ex}
+\figureLivre{r06-02-images}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-3}
+\begin{exercice}[1]{Lire les valeurs remarquables}
+\begin{questions}
+\item Donner les coordonnées des points-images de $0$, $\pi/6$, $\pi/4$ et $\pi/2$.
+\item Donner $\cos\pi$, $\sin\pi$, $\cos(3\pi/2)$ et $\sin(3\pi/2)$.
+\end{questions}
+\label{figlivre-r06-03-valeurs-ex}
+\figureLivre{r06-03-valeurs}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-4}
+\begin{exercice}[1]{Utiliser une symétrie}
+\begin{questions}
+\item Calculer exactement $\cos(-\pi/3)$ et $\sin(-\pi/3)$.
+\item Calculer $\cos(2\pi/3)$ et $\sin(2\pi/3)$.
+\end{questions}
+\label{figlivre-r06-04-symetries-ex}
+\figureLivre{r06-04-symetries}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-5}
+\begin{exercice}[1]{Une longueur d'arc}
+Un cercle a pour rayon 6 cm. Calculer la longueur des arcs associés aux angles $\pi/3$ et $3\pi/4$ radians, puis la longueur du cercle entier.
+\label{figlivre-r06-05-arcs-ex}
+\figureLivre{r06-05-arcs}
+
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-6-6}
+\begin{exercice}[2]{Réduire des grandes mesures}
+\begin{questions}
+\item Ramener $17\pi/6$, $-11\pi/4$ et $29\pi/3$ dans $\mathopen{]}-\pi;\pi]$.
+\item En déduire le sinus et le cosinus de chacune.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-7}
+\begin{exercice}[2]{Retrouver une coordonnée}
+On sait que $\cos t=-3/5$ et que $t\in[\pi/2;\pi]$.\begin{questions}
+\item Calculer $\sin^2t$ puis $\sin t$.
+\item Déterminer les coordonnées des points-images de $-t$ et $t+\pi$.
+\end{questions}
+\label{figlivre-r06-07-coordonnee-ex}
+\figureLivre{r06-07-coordonnee}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-8}
+\begin{exercice}[2]{Deux angles associés}
+\begin{questions}
+\item Calculer $\cos(5\pi/4)$, $\sin(5\pi/4)$, $\cos(7\pi/6)$ et $\sin(7\pi/6)$.
+\item Calculer $A=2\cos(5\pi/4)+\sqrt2\sin(7\pi/6)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-9}
+\begin{exercice}[2]{Retrouver des angles sur le cercle}
+À l’aide du cercle, déterminer tous les réels $t\in[0;2\pi[$ tels que :\begin{questions}
+\item $\cos t=1/2$.
+\item $\sin t=-\sqrt2/2$.
+\item $\cos t=0$.
+\end{questions}
+
+\label{figgeo-06-09-ex}
+\figureGeo{06-09}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-10}
+\begin{exercice}[2]{Une portion de cercle}
+Un disque de rayon 10 cm est partagé en un secteur d’angle $2\pi/5$ et son complément.\begin{questions}
+\item Calculer la fraction du disque occupée par le premier secteur.
+\item Calculer son aire et son périmètre, en incluant les deux rayons.
+\end{questions}
+
+\label{figgeo-06-10-ex}
+\figureGeo{06-10}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-11}
+\begin{exercice}[2]{Une identité à démontrer}
+\begin{questions}
+\item Développer $(\cos t+\sin t)^2+(\cos t-\sin t)^2$.
+\item En déduire sa valeur pour tout réel $t$.
+\item Vérifier le résultat pour $t=\pi/4$ sans calculatrice.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-6-12}
+\begin{exercice}[3]{Une grande roue}
+Une roue tourne à vitesse de rotation uniforme. Son rayon est de 12 m et son centre est à 14 m du sol. Le point $M$ a pour angle $t$ à partir de l’horizontale positive. Ses coordonnées dans un repère au sol sont $M(12\cos t;14+12\sin t)$.\begin{questions}
+\item Donner les positions de $M$ pour $t=0$, $\pi/2$, $\pi$ et $3\pi/2$.
+\item Calculer la hauteur pour $t=\pi/6$ et $7\pi/6$.
+\item Si un tour dure 48 s, quelle durée correspond à un angle parcouru de $5\pi/6$ ?
+\end{questions}
+
+\label{figgeo-06-12-ex}
+\figureGeo{06-12}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-13}
+\begin{exercice}[3]{Un hexagone régulier}
+On inscrit un hexagone régulier dans le cercle unité, un sommet étant $A(1;0)$.\begin{questions}
+\item Donner les angles puis les coordonnées de ses six sommets.
+\item Calculer la longueur d’un côté avec la distance entre les deux premiers sommets.
+\item En déduire le périmètre et l’aire exacte de l’hexagone.
+\end{questions}
+
+\label{figgeo-06-13-ex}
+\figureGeo{06-13}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-14}
+\begin{exercice}[3]{Une zone autorisée}
+Un point $M(\cos t;\sin t)$ appartient au cercle unité, avec $t\in[0;2\pi[$.\begin{questions}
+\item Représenter la zone où $\sin t\geq0$.
+\item Déterminer les angles où $\cos t\leq-1/2$.
+\item Déterminer les angles qui satisfont simultanément les deux conditions et calculer la longueur de l’arc correspondant.
+\end{questions}
+
+\label{figgeo-06-14-ex}
+\figureGeo{06-14}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-6-15}
+\begin{exercice}[3]{Approcher un cercle par des polygones}
+Un polygone régulier à $n\geq3$ côtés est inscrit dans le cercle unité. En partageant un triangle central en deux, on obtient un demi-côté de longueur $\sin(\pi/n)$.\begin{questions}
+\item Exprimer le périmètre $P_n$ de ce polygone.
+\item Calculer exactement $P_6$ et $P_{12}$ en utilisant $\sin(\pi/12)=(\sqrt6-\sqrt2)/4$, fourni ici.
+\item Comparer numériquement ces périmètres à $2\pi$.
+\item Méthode d’Archimède. On admet que le côté $c_{2n}$ du polygone à $2n$ côtés vérifie $c_{2n}=\sqrt{2-\sqrt{4-c_n^2}}$. En partant de l’hexagone, de côté $c_6=1$, écrire une fonction Python, sans utiliser $\pi$, qui renvoie le demi-périmètre du polygone à $6\times2^k$ côtés. Donner une valeur approchée pour 96 côtés.
+\end{questions}
+
+\label{figgeo-06-15-ex}
+\figureGeo{06-15}
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,290 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 3 — Dérivation
+%% Tous les résultats ont été vérifiés par calcul formel (sympy).
+
+\corrigesChapitre{3}{Dérivation}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Polynômes, produits et quotients}
+\begin{questions}
+  \item $\res{f'(x)=12x^{3}-15x^{2}+4x-7}$
+  \item \methode{$(uv)'=u'v+uv'$}\\
+    $g'(x)=2\left(x^{2}-3\right)+(2x+1)\times2x$\\ $\res{g'(x)=6x^{2}+2x-6}$
+  \item \methode{$\left(\frac uv\right)'=\frac{u'v-uv'}{v^{2}}$}\\
+    $h'(x)=\dfrac{2x(x-2)-\left(x^{2}+1\right)}{(x-2)^{2}}$\\[1mm]
+    $\res{h'(x)=\dfrac{x^{2}-4x-1}{(x-2)^{2}}}$
+  \item $k'(x)=3x^{2}(2x-1)^{2}+x^{3}\times4(2x-1)$\\ $=(2x-1)\left(10x^{3}-3x^{2}\right)$\\
+    $\res{k'(x)=20x^{4}-16x^{3}+3x^{2}}$
+  \item $p'(x)=\dfrac{N(x)}{\left(x^{2}+1\right)^{2}}$, avec\\
+    $N(x)=\left(6x^{2}-1\right)\left(x^{2}+1\right)$\\
+    $\phantom{N(x)=}-2x\left(2x^{3}-x+1\right)$\\
+    $\phantom{N(x)}=2x^{4}+7x^{2}-2x-1$\\[1mm]
+    $\res{p'(x)=\dfrac{2x^{4}+7x^{2}-2x-1}{\left(x^{2}+1\right)^{2}}}$
+  \item On développe d'abord :\\ $q(x)=2x^{4}+5x^{3}-4x^{2}-3x$\\
+    $\res{q'(x)=8x^{3}+15x^{2}-8x-3}$
+  \item \methode{simplifier d'abord}\\
+    $r(x)=\dfrac{\left(x^{2}-1\right)^{2}}{x^{2}-1}=x^{2}-1$ pour $x\neq\pm1$ : $\res{r'(x)=2x}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Composer des fonctions}
+\begin{questions}
+  \item $f\big(g(x)\big)=\dfrac{1}{2x-2}=\res{\dfrac{1}{2(x-1)}}$ sur $\R\setminus\{1\}$
+  \item $g\big(f(x)\big)=\dfrac{2}{x+1}-3=\res{\dfrac{-3x-1}{x+1}}$ sur $\R\setminus\{-1\}$
+  \item $(2x-3)^{2}=\res{4x^{2}-12x+9}$ sur $\R$
+  \item $\res{\dfrac{1}{x^{2}+1}}$ sur $\R$, car $x^{2}+1>0$
+  \item $\res{2x^{2}-3}$ sur $\R$
+  \item $f\left(2x^{2}-3\right)=\res{\dfrac{1}{2(x-1)(x+1)}}$ sur $\R\setminus\{-1;1\}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Composées avec racines et valeurs absolues}
+\begin{questions}
+  \item $\res{\sqrt{|x-1|+2}}$, définie sur $\R$
+  \item $\res{\left|\sqrt{x+2}-1\right|}$ sur $\intFO{-2}{+\infty}$
+  \item $\res{\dfrac{|x-1|}{|x-1|-2}}$ : il faut $|x-1|\neq2$, d'où $\R\setminus\{-1;3\}$
+  \item $\sqrt{\dfrac{x}{x-2}+2}=\res{\sqrt{\dfrac{3x-4}{x-2}}}$ ; le quotient est positif ou nul sur $\intOF{-\infty}{\frac43}\cup\intOO{2}{+\infty}$
+  \item $\left|\dfrac{x}{x-2}-1\right|=\left|\dfrac{2}{x-2}\right|=\res{\dfrac{2}{|x-2|}}$ sur $\R\setminus\{2\}$
+  \item $\sqrt{\dfrac{2}{|x-2|}+2}=\res{\sqrt{\dfrac{2\left(1+|x-2|\right)}{|x-2|}}}$ sur $\R\setminus\{2\}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Dériver des fonctions composées}
+\begin{questions}
+  \item \begin{questions}
+      \item $\left(e^{u}\right)'=u'e^{u}$ : $\res{f'(x)=2x\,e^{x^{2}+1}}$
+      \item $\left(\sqrt u\right)'=\dfrac{u'}{2\sqrt u}$ : $\res{h'(x)=\dfrac{1}{\sqrt{2x-1}}}$ sur $\intOO{\frac12}{+\infty}$
+      \item $\left(\frac1u\right)'=-\dfrac{u'}{u^{2}}$ : $\res{k'(x)=-\dfrac{2x}{\left(x^{2}+3\right)^{2}}}$
+      \item $\res{m'(x)=(-4x+5)\,e^{-2x^{2}+5x}}$
+      \item $x^{2}-4x+3=(x-1)(x-3)$ : $n$ est définie sur $\intOF{-\infty}{1}\cup\intFO{3}{+\infty}$, dérivable sur
+        $\intOO{-\infty}{1}\cup\intOO{3}{+\infty}$, et $\res{n'(x)=\dfrac{x-2}{\sqrt{x^{2}-4x+3}}}$
+      \item $\left(u^{n}\right)'=nu'u^{n-1}$ : $\res{p'(x)=24x\left(3x^{2}-1\right)^{3}}$
+    \end{questions}
+  \item $k'(x)$ est du signe de $-2x$ : $k$ est croissante sur $\intOF{-\infty}{0}$, décroissante sur
+    $\intFO{0}{+\infty}$ ; maximum $k(0)=\frac13$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Produit, quotient et convexité}
+\begin{questions}
+  \item $h(x)=2x^{3}+5x^{2}-3x$, donc\\ $\res{h'(x)=6x^{2}+10x-3}$\\[1mm]
+    $\res{k'(x)=\dfrac{x^{2}-6x-2}{(x-3)^{2}}}$
+  \item Le numérateur tend vers $11>0$ :\\ $\lim_{3^{-}}k=-\infty$ et $\lim_{3^{+}}k=+\infty$ :\\
+    asymptote verticale $\res{x=3}$.
+  \item $\Delta=172$ ; racines $x_{1}=\dfrac{-5-\sqrt{43}}{6}\approx-1{,}93$ et $x_{2}=\dfrac{-5+\sqrt{43}}{6}\approx0{,}26$.\\
+    $h$ croît sur $\intOF{-\infty}{x_{1}}$, décroît sur $\intFF{x_{1}}{x_{2}}$, croît sur $\intFO{x_{2}}{+\infty}$.
+  \item $h''(x)=12x+10$ : $h$ est concave sur $\intOF{-\infty}{-\frac56}$, convexe sur $\intFO{-\frac56}{+\infty}$ ;
+    $\res{I\left(-\frac56\pv\frac{130}{27}\right)}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Une racine carrée composée}
+\begin{questions}
+  \item $x^{2}+4x+3=(x+1)(x+3)\geq0$ si et seulement si $x\leq-3$ ou $x\geq-1$.
+  \item $f'(x)=\dfrac{2x+4}{2\sqrt{x^{2}+4x+3}}$\\[1mm]
+    $\res{f'(x)=\dfrac{x+2}{\sqrt{x^{2}+4x+3}}}$, du signe de $x+2$ :
+    $f$ décroît sur $\intOF{-\infty}{-3}$ et croît sur $\intFO{-1}{+\infty}$.
+  \item $x^{2}+4x+3\to+\infty$ en $\pm\infty$ : $\res{\lim f=+\infty}$.
+  \item $f''(x)<0$ : $\res{f\text{ est concave}}$ sur chacun des deux intervalles.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{7}{Étude complète d'un polynôme}
+\noindent
+\begin{minipage}[t]{0.47\linewidth}\vspace{0pt}\raggedright
+\begin{questions}
+  \item $f'(x)=3x^{2}-12x+9=\res{3(x-1)(x-3)}$.
+  \item Trinôme positif à l'extérieur des racines ; limites : $f(x)=x^{3}\left(1-\frac6x+\frac{9}{x^{2}}+\frac{1}{x^{3}}\right)$.
+  \item $\res{\text{maximum local }f(1)=5}$ et $\res{\text{minimum local }f(3)=1}$.
+  \item $f'(1)=0$ : la tangente est horizontale, $\res{y=5}$.
+  \item $f''(x)=6x-12$ : $f$ est concave sur $\intOF{-\infty}{2}$, convexe sur $\intFO{2}{+\infty}$ ;
+    point d'inflexion $\res{I(2\pv3)}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.5\linewidth}\vspace{2mm}
+\centering
+\begin{tableau}
+  \otTab[1.35]{$x$/0.9,$f'(x)$/0.9,$f$/1.9}{$-\infty$,$1$,$3$,$+\infty$}
+  \tkzTabLine{,+,z,-,z,+,}
+  \tkzTabVar{-/$-\infty$,+/$5$,-/$1$,+/$+\infty$}
+\end{tableau}
+\end{minipage}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{8}{Une composée exponentielle}
+\begin{questions}
+  \item $g'(x)=(-2x+2)\,e^{-x^{2}+2x-1}$, du signe de $2-2x$ : $g$ croît sur $\intOF{-\infty}{1}$ et décroît sur
+    $\intFO{1}{+\infty}$ ; $\res{\text{maximum }g(1)=e^{0}=1}$.
+  \item $g'=u\,e^{v}$ avec $u(x)=2-2x$ et $v(x)=-x^{2}+2x-1$ ; comme $v'=u$ :
+    \[ g''(x)=-2e^{v}+(2-2x)^{2}e^{v}=\left((2-2x)^{2}-2\right)e^{v}. \]
+  \item $(2-2x)^{2}-2=0\iff(1-x)^{2}=\frac12\iff x=1\pm\frac{\sqrt2}{2}$. Le trinôme est positif à l'extérieur des racines :
+    $g$ est convexe sur $\intOF{-\infty}{1-\frac{\sqrt2}{2}}$ et sur $\intFO{1+\frac{\sqrt2}{2}}{+\infty}$, concave entre les deux.
+    Points d'inflexion d'abscisses $\res{1\pm\frac{\sqrt2}{2}}$, soit environ $0{,}29$ et $1{,}71$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{9}{Une fonction rationnelle simplifiable}
+\begin{questions}
+  \item $x^{2}+4x+3=(x+1)(x+3)$ et $x^{2}-1=(x-1)(x+1)$ : on simplifie par $x+1\neq0$.
+  \item $f'(x)=\dfrac{(x-1)-(x+3)}{(x-1)^{2}}=\res{-\dfrac{4}{(x-1)^{2}}}<0$ : $f$ est décroissante sur chacun des intervalles
+    $\intOO{-\infty}{-1}$, $\intOO{-1}{1}$ et $\intOO{1}{+\infty}$.
+  \item En $\pm\infty$ : $\res{y=1}$ est asymptote horizontale. En $-1$ : $f(x)\to\frac{2}{-2}=-1$, pas d'asymptote
+    (la courbe a un « trou »). En $1$ : $\lim_{1^{-}}f=-\infty$ et $\lim_{1^{+}}f=+\infty$, asymptote $\res{x=1}$.
+  \item $f''(x)=\dfrac{8}{(x-1)^{3}}$ : $f$ est concave pour $x<1$, convexe pour $x>1$. Le changement de convexité se
+    produit en $1$, qui n'appartient pas à l'ensemble de définition : $\res{\text{pas de point d'inflexion}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{10}{Étude complète avec convexité}
+\partieExo{A}{Variations}
+\begin{questions}
+  \item En $-\infty$ : $2x+1\to-\infty$ et $e^{-x}\to+\infty$, d'où $\res{-\infty}$. En $+\infty$ :
+    $f(x)=2xe^{-x}+e^{-x}\to\res{0}$ (croissances comparées) : l'axe des abscisses est asymptote en $+\infty$.
+  \item $f'(x)=2e^{-x}-(2x+1)e^{-x}=\res{(1-2x)e^{-x}}$, du signe de $1-2x$. $f\left(\frac12\right)=2e^{-1/2}\approx1{,}21$.
+\end{questions}
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tableau}
+  \otTab[2.2]{$x$/0.9,$f'(x)$/0.9,$f$/1.9}{$-\infty$,$\frac12$,$+\infty$}
+  \tkzTabLine{,+,z,-,}
+  \tkzTabVar{-/$-\infty$,+/$2e^{-1/2}$,-/$0$}
+\end{tableau}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=72mm, height=54mm,
+  xmin=-1.6, xmax=7, ymin=-1.5, ymax=2.6, xtick={1,2,4,6}, ytick={1,2},
+  xlabel={$x$}, xlabel style={at={(1,0.366)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otGreen,line width=0.8pt,domain=-1.6:1.6] {x+1};
+  \addplot[otMuted,dashed,line width=0.6pt,domain=0.4:4.2] {exp(-1.5)*(7-2*x)};
+  \addplot[otNavy,line width=1.2pt,domain=-0.8:7,samples=150] {(2*x+1)*exp(-x)};
+  \fill[otNavy] (axis cs:0.5,1.2131) circle (1.4pt);
+  \fill[otNavy] (axis cs:1.5,0.8925) circle (1.4pt);
+  \node[anchor=south west,font=\scriptsize] at (axis cs:1.52,0.92) {$I$};
+  \node[anchor=east,font=\scriptsize,text=otGreenDark] at (axis cs:1.5,2.45) {$T$};
+  \node[anchor=south west,font=\scriptsize,text=otNavy] at (axis cs:3,0.45) {$\Cf$};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\partieExo{B}{Convexité}
+\begin{questions}[start=3]
+  \item $f''(x)=-2e^{-x}-(1-2x)e^{-x}=\res{(2x-3)e^{-x}}$ : $f$ est concave sur $\intOF{-\infty}{\frac32}$ et convexe sur
+    $\intFO{\frac32}{+\infty}$ ; $\res{I\left(\frac32\pv4e^{-3/2}\right)}$, avec $4e^{-3/2}\approx0{,}89$.
+  \item $f'\left(\frac32\right)=-2e^{-3/2}$ : $y=-2e^{-3/2}\left(x-\frac32\right)+4e^{-3/2}$, soit $\res{y=e^{-3/2}(7-2x)}$.
+  \item $f(0)=1$ et $f'(0)=1$ : $\res{T : y=x+1}$.
+  \item $f$ est concave sur $\intOF{-\infty}{\frac32}$, intervalle qui contient $0$ : sur cet intervalle, $\Cf$ est en dessous de
+    sa tangente $T$, d'où $\res{(2x+1)e^{-x}\leq x+1}$ pour tout $x\leq\frac32$.
+  \item Voir la figure ci-dessus.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{La boîte de volume maximal}
+\begin{questions}
+  \item Il faut $x>0$ et $30-2x>0$, soit $x\in\intOO{0}{15}$. Le fond est un carré de côté $30-2x$ et la hauteur vaut $x$ :
+    $\res{V(x)=x(30-2x)^{2}}$.
+  \item $V'(x)=(30-2x)^{2}-4x(30-2x)=(30-2x)(30-6x)=\res{12(15-x)(5-x)}$. Sur $\intOO{0}{15}$, $15-x>0$ : $V'(x)$ est du signe de $5-x$.
+  \item $\res{x=5\text{ cm}}$ et $V(5)=5\times20^{2}=2\,000$ cm$^{3}$, soit $\res{2\text{ litres}}$.
+  \item $V(x)=4x^{3}-120x^{2}+900x$, donc $V''(x)=24x-240=24(x-10)$ : $V$ est concave sur $\intOF{0}{10}$, convexe sur
+    $\intFO{10}{15}$ ; point d'inflexion $\res{(10\pv1\,000)}$.
+  \item \begin{questions}
+      \item On développe : $4(x-10)\left(x^{2}-20x+25\right)=4x^{3}-120x^{2}+900x-1000=V(x)-1000$.
+      \item Les racines de $x^{2}-20x+25$ sont $10\pm5\sqrt3$ ; seule $10-5\sqrt3\approx1{,}34$ est dans $\intOO{0}{15}$.
+        Le tableau de signes de $(x-10)\left(x^{2}-20x+25\right)$ sur $\intOO{0}{15}$ donne $V(x)\geq1\,000$ si et seulement si
+        $\res{x\in\intFF{10-5\sqrt3}{10}}$, soit environ entre $1{,}34$ cm et $10$ cm.
+    \end{questions}
+\end{questions}
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tableau}
+  \otTab[2.2]{$x$/0.9,$V'(x)$/0.9,$V$/1.9}{$0$,$5$,$15$}
+  \tkzTabLine{,+,z,-,}
+  \tkzTabVar{-/$0$,+/$2\,000$,-/$0$}
+\end{tableau}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=72mm, height=50mm, xmin=0, xmax=15.5, ymin=0, ymax=2300,
+  xtick={5,10,15}, ytick={1000,2000}, yticklabels={$1\,000$,$2\,000$},
+  xlabel={$x$}, xlabel style={at={(1,0)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \fill[otGreen,opacity=0.15] (axis cs:1.34,0) rectangle (axis cs:10,2300);
+  \draw[otGreen,line width=0.6pt] (axis cs:0,1000) -- (axis cs:15.5,1000);
+  \addplot[otNavy,line width=1.2pt,domain=0:15,samples=120] {x*(30-2*x)^2};
+  \fill[otNavy] (axis cs:5,2000) circle (1.5pt);
+  \fill[otNavy] (axis cs:10,1000) circle (1.5pt);
+  \node[anchor=south,font=\scriptsize] at (axis cs:5,2020) {max};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{En vert : les valeurs de $x$ pour lesquelles $V(x)\geq1$ L.}
+\end{minipage}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Inégalités de convexité}
+\partieExo{A}{La fonction exponentielle}
+\begin{questions}
+  \item $\exp''=\exp>0$ sur $\R$ : $\res{\exp\text{ est convexe}}$.
+  \item $y=e^{0}(x-0)+e^{0}$, soit $\res{y=x+1}$. Une fonction convexe est au-dessus de ses tangentes : $e^{x}\geq1+x$.
+  \item $(AB)$ passe par $A(0\pv1)$ et $B(1\pv e)$ : $\res{y=1+(e-1)x}$. Une fonction convexe est en dessous de ses cordes :
+    pour $x\in\intFF{0}{1}$, $e^{x}\leq1+(e-1)x$.
+  \item Avec $x=0{,}1$ : $\res{1{,}1\leq e^{0,1}\leq1+0{,}1(e-1)\approx1{,}172}$. La calculatrice donne $e^{0,1}\approx1{,}105$.
+  \item Avec $x=\frac1n$ : $e^{1/n}\geq1+\frac1n>0$. La fonction $t\mapsto t^{n}$ est croissante sur $\intFO{0}{+\infty}$, donc
+    $\left(e^{1/n}\right)^{n}\geq\left(1+\frac1n\right)^{n}$, c'est-à-dire $\res{e\geq\left(1+\frac1n\right)^{n}}$.
+\end{questions}
+\partieExo{B}{La fonction racine carrée}
+\begin{questions}[resume]
+  \item $f'(x)=\dfrac{1}{2\sqrt x}=\dfrac12x^{-1/2}$, donc $f''(x)=-\dfrac14x^{-3/2}=-\dfrac{1}{4x\sqrt x}<0$ : $\res{f\text{ est concave}}$.
+  \item $f(1)=1$ et $f'(1)=\frac12$ : $y=\frac12(x-1)+1=\res{\dfrac{x+1}{2}}$. Une fonction concave est en dessous de ses tangentes.
+  \item La corde joignant $(1\pv1)$ et $(4\pv2)$ a pour équation $y=1+\frac{x-1}{3}=\dfrac{x+2}{3}$. Une fonction concave est
+    au-dessus de ses cordes : $\res{\sqrt x\geq\dfrac{x+2}{3}}$ sur $\intFF{1}{4}$.
+  \item Avec $x=2$ : $\res{\dfrac43\leq\sqrt2\leq\dfrac32}$.
+\end{questions}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=72mm, height=56mm,
+  xmin=-1.7, xmax=1.6, ymin=-0.5, ymax=3.6, xtick={1}, ytick={1,2,3},
+  xlabel={$x$}, xlabel style={at={(1,0.122)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otGreen,line width=0.9pt,domain=-1.5:1.5] {x+1};
+  \addplot[otNavy,dashed,line width=0.8pt,domain=0:1] {1+(exp(1)-1)*x};
+  \addplot[otNavy,line width=1.2pt,domain=-1.7:1.26,samples=80] {exp(x)};
+  \fill[otNavy] (axis cs:0,1) circle (1.4pt);
+  \fill[otNavy] (axis cs:1,2.71828) circle (1.4pt);
+  \node[anchor=south east,font=\scriptsize] at (axis cs:0,1.05) {$A$};
+  \node[anchor=south east,font=\scriptsize] at (axis cs:1,2.75) {$B$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$\exp$ : au-dessus de sa tangente $y=x+1$, sous la corde $[AB]$.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=72mm, height=56mm,
+  xmin=0, xmax=5.2, ymin=0, ymax=3.2, xtick={1,2,4}, ytick={1,2,3},
+  xlabel={$x$}, xlabel style={at={(1,0)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otGreen,line width=0.9pt,domain=0:5] {(x+1)/2};
+  \addplot[otNavy,dashed,line width=0.8pt,domain=1:4] {(x+2)/3};
+  \addplot[otNavy,line width=1.2pt,domain=0:5,samples=120] {sqrt(x)};
+  \fill[otNavy] (axis cs:1,1) circle (1.4pt);
+  \fill[otNavy] (axis cs:4,2) circle (1.4pt);
+  \node[anchor=south east,font=\scriptsize,text=otGreenDark] at (axis cs:4.9,3.0) {$y=\frac{x+1}{2}$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$\sqrt{\phantom{x}}$ : sous sa tangente, au-dessus de la corde sur $\intFF{1}{4}$.}
+\end{minipage}
+\end{corrige}

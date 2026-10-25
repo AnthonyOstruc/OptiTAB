@@ -1,0 +1,23 @@
+% Intensités appelées par les appareils de la cuisine, comparées au calibre 16 A (corrigé du défi D14)
+\begin{tikzpicture}
+\begin{axis}[xbar,bar shift=0pt,width=110mm,height=56mm,bar width=4mm,xmin=0,xmax=21,
+  ytick={1,2,3,4,5,6,7},yticklabels={plaque,four,bouilloire,lave-linge,{bouilloire + lave-linge},réfrigérateur,éclairage},
+  y dir=reverse,ymin=0.4,ymax=7.6,
+  yticklabel style={font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  xticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  xlabel={intensité (A)},label style={font=\small,text=otInk},clip=false]
+\addplot[fill=otNavy!45,draw=none] coordinates {(15.7,1) (10.9,2) (9.57,3) (8.70,4) (0.65,6) (0.43,7)};
+\addplot[fill=otRed!60,draw=none] coordinates {(18.3,5)};
+\draw[otOrange!85!black,line width=0.8pt,dash pattern=on 3pt off 1.5pt] (axis cs:16,0.4) -- (axis cs:16,7.6);
+\node[pcLegende,anchor=south,text=otOrange!85!black] at (axis cs:16,0.4) {calibre \qty{16}{A}};
+\node[pcLegende,anchor=west,fill=white,inner sep=1pt] at (axis cs:15.7,1) {15,7~A};
+\node[pcLegende,anchor=west] at (axis cs:10.9,2) {10,9~A};
+\node[pcLegende,anchor=west] at (axis cs:9.57,3) {9,57~A};
+\node[pcLegende,anchor=west] at (axis cs:8.70,4) {8,70~A};
+\node[pcLegende,anchor=west] at (axis cs:0.65,6) {0,65~A};
+\node[pcLegende,anchor=west] at (axis cs:0.43,7) {0,43~A};
+\node[pcLegende,anchor=west,text=otRed!80!black] at (axis cs:18.3,5) {18,3~A};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Sur le même circuit de prises protégé à \qty{16}{A}, la bouilloire et le lave-linge ensemble font disjoncter.}

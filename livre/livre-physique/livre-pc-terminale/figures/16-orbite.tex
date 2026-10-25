@@ -1,0 +1,15 @@
+% Satellite en orbite circulaire : force, vitesse et accélération dans le repère de Frenet (L'essentiel, chapitre 16)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\shade[ball color=otNavy!35] (0,0) circle (0.9);
+\node[pcLegende,text=white] at (0,0) {Terre};
+\draw[otMuted,line width=0.6pt,dash pattern=on 3pt off 2pt] (0,0) circle (2.6);
+\coordinate (S) at (35:2.6);
+\fill[otInk] (S) circle (0.08);
+\node[pcLegende,anchor=south west] at (S) {satellite};
+\draw[pcTraj] (0,0) -- (S) node[pos=0.62,pcLegende,anchor=south east] {$r$};
+\draw[pcVitesse] (S) -- ++(125:1.6) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}$};
+\draw[pcForce] (S) -- ++(215:1.15) node[pcLegende,anchor=north,text=otGreenDark,yshift=-1pt] {$\vec{F}=m\,\vec{a}$};
+\draw[otMuted,line width=0.4pt,-{Stealth[length=1.5mm]}] (-60:3.0) arc[start angle=-60,end angle=-20,radius=3.0];
+\node[pcLegende,text=otMuted,anchor=north west] at (-40:3.05) {sens de rotation};
+\end{tikzpicture}
+\par\smallskip\legende{La force de gravitation, dirigée vers le centre de la Terre, est perpendiculaire à la vitesse : elle ne change que la direction du vecteur vitesse.}

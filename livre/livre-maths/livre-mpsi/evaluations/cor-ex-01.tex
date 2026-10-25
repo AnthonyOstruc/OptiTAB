@@ -1,0 +1,184 @@
+% !TEX root = ../main.tex
+%% Corrigé de l'examen du premier semestre — vérifié par verifications/eval_ex.py.
+
+\corrigeSujetEval{EX1}{Examen du premier semestre}
+
+\begin{corrigeEval}{4 points}{Le pentagone régulier}
+\begin{questions}
+  \item $\omega\neq1$ et $\omega^{5}=1$ : par la somme géométrique,
+    $\sum_{k=0}^{4}\omega^{k}=\dfrac{1-\omega^{5}}{1-\omega}=\res{0}$.
+    \pts{0,5 pt}
+  \item $|\omega|=1$ donne $\omega^{4}=\omega^{-1}=\overline{\omega}$ et
+    $\omega^{3}=\overline{\omega^{2}}$, d'où
+    $\alpha=2\operatorname{Re}\omega=2\cos\frac{2\pi}5$ et
+    $\beta=2\cos\frac{4\pi}5$. Puis, avec la question 1 et $\omega^{5}=1$ :
+    \[\alpha+\beta=\sum_{k=1}^{4}\omega^{k}=\res{-1},\qquad
+      \alpha\beta=\omega^{3}+\omega^{4}+\omega^{6}+\omega^{7}=\omega^{3}+\omega^{4}+\omega+\omega^{2}=\res{-1}.\]
+    \pts{1,5 pt}
+  \item $\alpha$ et $\beta$ sont les racines de $X^{2}+X-1$, soit
+    $\frac{-1\pm\sqrt5}{2}$ ; comme $\alpha>0$ ($\frac{2\pi}5<\frac\pi2$) :
+    \[\res{\cos\frac{2\pi}{5}=\frac{\sqrt5-1}{4}},\qquad
+      \res{\cos\frac{4\pi}{5}=-\frac{1+\sqrt5}{4}}.\]
+    \pts{1 pt}
+  \item $c^{2}=|1-\omega|^{2}=\bigl(1-\cos\frac{2\pi}5\bigr)^{2}+\sin^{2}\frac{2\pi}5
+    =2-2\cos\frac{2\pi}5=2-\frac{\sqrt5-1}{2}$, d'où
+    $\res{c=\sqrt{\dfrac{5-\sqrt5}{2}}\approx1{,}176}$. \pts{1 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[scale=1.65,line cap=round,line join=round]
+  \draw[otRule,line width=0.7pt] (0,0) circle (1);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-1.25,0) -- (1.35,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-1.15) -- (0,1.25);
+  \draw[otNavy,line width=0.9pt] (0:1) -- (72:1) -- (144:1) -- (216:1) -- (288:1) -- cycle;
+  \draw[otOrange,line width=1.8pt] (0:1) -- (72:1);
+  \draw[otGreenDark,line width=0.6pt,dash pattern=on 1.5pt off 1.2pt] (72:1) -- ({cos(72)},0);
+  \fill[otGreenDark] ({cos(72)},0) circle (1.3pt);
+  \foreach \j/\pos in {0/east,1/south west,2/north west,3/south west,4/north west}
+    \fill[otNavy] ({72*\j}:1) circle (1.5pt);
+  \node[font=\scriptsize,anchor=south west] at (0:1.02) {$1$};
+  \node[font=\scriptsize,anchor=south west] at (72:1.02) {$\omega$};
+  \node[font=\scriptsize,anchor=south east] at (144:1.02) {$\omega^{2}$};
+  \node[font=\scriptsize,anchor=north east] at (216:1.02) {$\omega^{3}$};
+  \node[font=\scriptsize,anchor=north west] at (288:1.02) {$\omega^{4}$};
+  \node[font=\scriptsize,text=otOrange!85!black,anchor=south west] at (36:0.86) {$c$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=north,fill=white,inner sep=1pt] at ({cos(72)},-0.04) {$\cos\frac{2\pi}{5}$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Le pentagone régulier inscrit dans le cercle unité : l'abscisse de
+$\omega$ vaut $\frac{\sqrt5-1}{4}\approx0{,}309$ et le côté
+$c\approx1{,}176$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{4 points}{Une équation singulière}
+\begin{questions}
+  \item Sur $\intOO0{+\infty}$ ou $\intOO{-\infty}0$, $x\neq0$ et $(E)$
+    s'écrit $y'-\frac2x\,y=x^{2}$. Les solutions de l'équation homogène
+    sont les $x\mapsto C\mathrm{e}^{2\ln|x|}=Cx^{2}$, et $x\mapsto x^{3}$ est
+    solution particulière ($x\cdot3x^{2}-2x^{3}=x^{3}$) :
+    \[\res{y(x)=x^{3}+Cx^{2},\quad C\in\R}\quad\text{sur chacun des deux intervalles}.\]
+    \pts{1,5 pt}
+  \item Si $y$ est solution sur $\R$, ses restrictions sont de la forme
+    précédente, avec des constantes $C_1$ (sur $\R_{+}^{*}$) et $C_2$ (sur
+    $\R_{-}^{*}$) ; $(E)$ en $0$ donne $-2y(0)=0$. Réciproquement, une telle
+    fonction, avec $y(0)=0$, est continue en $0$, et
+    $\frac{y(x)-y(0)}{x}=x^{2}+C_ix\to0$ des deux côtés : elle est
+    dérivable en $0$, $y'(0)=0$, et $(E)$ est vérifiée en $0$. Les solutions
+    sur $\R$ sont donc
+    \[\res{y(x)=\begin{cases}x^{3}+C_1x^{2}&\text{si }x\geqslant0\\x^{3}+C_2x^{2}&\text{si }x<0\end{cases}
+      \qquad(C_1,C_2)\in\R^{2}}.\]
+    C'est un plan affine (deux paramètres), et non une droite : le
+    coefficient $x$ de $y'$ s'annule en $0$, et l'équation ne peut pas y être
+    mise sous forme résolue. \pts{1,5 pt}
+  \item Si $x_0>0$, la condition $y(x_0)=y_0$ impose
+    $C_1=\frac{y_0-x_0^{3}}{x_0^{2}}$ et laisse $C_2$ libre : une infinité de
+    solutions (de même si $x_0<0$). Toute solution vérifie $y(0)=0$ : aucune
+    ne passe par $(0,y_0)$ si $y_0\neq0$. \pts{1 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[scale=0.95,line cap=round]
+  \begin{scope}
+    \clip (-2.3,-2.4) rectangle (2.3,2.4);
+    \foreach \c/\t in {-2/90,-1/70,0/50,1/35}
+      \draw[otNavy!\t,line width=1pt] plot[domain=0:2.3,samples=60] (\x,{\x*\x*\x+\c*\x*\x});
+    \foreach \c/\t in {-1/90,0/65,2/45}
+      \draw[otGreenDark!\t,line width=1pt] plot[domain=-2.3:0,samples=60] (\x,{\x*\x*\x+\c*\x*\x});
+  \end{scope}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-2.4,0) -- (2.5,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-2.5) -- (0,2.6);
+  \fill[otInk] (0,0) circle (1.6pt);
+  \node[font=\scriptsize,text=otNavy,anchor=west] at (1.25,-1.6) {$x\geqslant0$ : $C_1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=east] at (-1.2,1.75) {$x<0$ : $C_2$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Toutes les solutions passent par l'origine avec une tangente
+horizontale : on peut raccorder n'importe quelle branche verte à n'importe
+quelle branche bleue.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{4 points}{Nombres de Mersenne}
+\begin{questions}
+  \item Avec $x=2^{a}$ :
+    $x^{b}-1=(x-1)(1+x+\dots+x^{b-1})$, donc
+    $\res{2^{a}-1\mid2^{ab}-1}$. \pts{1 pt}
+  \item $2^{a}-1=2^{r}\cdot2^{bq}-1=2^{r}\bigl(2^{bq}-1\bigr)+2^{r}-1$. Comme
+    $2^{b}-1$ divise $2^{bq}-1$ (question 1), $2^{a}-1\equiv2^{r}-1$ modulo
+    $2^{b}-1$ ; un entier divise $2^{a}-1$ et $2^{b}-1$ si et seulement s'il
+    divise $2^{b}-1$ et $2^{r}-1$ :
+    \[(2^{a}-1)\wedge(2^{b}-1)=(2^{b}-1)\wedge(2^{r}-1).\]
+    Les exposants suivent l'algorithme d'Euclide appliqué à $(a,b)$ ; il
+    s'arrête sur $(a\wedge b,0)$, et $(2^{a\wedge b}-1)\wedge(2^{0}-1)=2^{a\wedge b}-1$
+    (récurrence forte sur $b$) :
+    $\res{(2^{a}-1)\wedge(2^{b}-1)=2^{a\wedge b}-1}$. \pts{2 pts}
+  \item Si $n=ab$ avec $1<a<n$, alors $2^{a}-1$ divise $2^{n}-1$ et
+    $1<2^{a}-1<2^{n}-1$ : $2^{n}-1$ n'est pas premier. Par contraposée,
+    \res{2^{n}-1\text{ premier}\Rightarrow n\text{ premier}}. La réciproque
+    est \res{\text{fausse}} : $11$ est premier mais
+    $2^{11}-1=2047=23\times89$. \pts{1 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Problème]{8 points}{Fibonacci, matrices et polynômes}
+\partieExo{A}{Puissances de $A$}
+\begin{questions}
+  \item Pour $n=1$, c'est $A$ ($F_2=F_1=1$, $F_0=0$). Si la formule vaut au
+    rang $n$ :
+    \[A^{n+1}=A^{n}A=\begin{pmatrix}F_{n+1}+F_n&F_{n+1}\\F_n+F_{n-1}&F_n\end{pmatrix}
+      =\res{\begin{pmatrix}F_{n+2}&F_{n+1}\\F_{n+1}&F_n\end{pmatrix}}.\]
+    \pts{1 pt}
+  \item Le coefficient $(1,2)$ de $A^{m+n}$ est $F_{m+n}$ ; celui de
+    $A^{m}A^{n}$ est $F_{m+1}F_n+F_mF_{n-1}$ (pour $m=0$, $A^{0}=I_2$ et la
+    formule reste vraie) :
+    $\res{F_{m+n}=F_{m+1}F_n+F_mF_{n-1}}$. Avec $m=n$ :
+    $F_{2n}=F_{n+1}F_n+F_nF_{n-1}=\res{F_n(F_{n+1}+F_{n-1})}$. \pts{1,5 pt}
+\end{questions}
+\partieExo{B}{Un détour par les polynômes}
+\begin{questions}[start=3]
+  \item Pour $n=1$, le reste est $X=F_1X+F_0$. Si
+    $X^{n}=Q\,(X^{2}-X-1)+F_nX+F_{n-1}$, alors, en remplaçant $X^{2}$ par
+    $(X^{2}-X-1)+X+1$ :
+    \[X^{n+1}=(XQ+F_n)(X^{2}-X-1)+(F_n+F_{n-1})X+F_n
+      =(XQ+F_n)(X^{2}-X-1)+\res{F_{n+1}X+F_n},\]
+    de degré au plus $1$ : c'est le reste au rang $n+1$. \pts{1,5 pt}
+  \item $A^{2}=\begin{pmatrix}2&1\\1&1\end{pmatrix}=A+I_2$. En évaluant
+    l'égalité de division en $A$ (les polynômes en $A$ commutent) :
+    $A^{n}=Q(A)\,(A^{2}-A-I_2)+F_nA+F_{n-1}I_2=\res{F_nA+F_{n-1}I_2}$.
+    \pts{1 pt}
+  \item $\varphi$ et $\psi$ sont les racines de $X^{2}-X-1$ ; l'évaluation
+    donne $\varphi^{n}=F_n\varphi+F_{n-1}$ et $\psi^{n}=F_n\psi+F_{n-1}$. En
+    soustrayant, $\varphi^{n}-\psi^{n}=F_n(\varphi-\psi)=F_n\sqrt5$ :
+    \[\res{F_n=\frac{\varphi^{n}-\psi^{n}}{\sqrt5}}.\]
+    Comme $|\psi|<1$, $\psi^{n}\to0$ et $\varphi^{n}\to+\infty$ :
+    $\res{F_n\sim\dfrac{\varphi^{n}}{\sqrt5}}$, puis
+    $\res{\dfrac{F_{n+1}}{F_n}\to\varphi}$ (figure). \pts{1,5 pt}
+\end{questions}
+\partieExo{C}{Arithmétique}
+\begin{questions}[start=6]
+  \item Pour $n=1$ : $F_2F_0-F_1^{2}=-1$. Si l'identité vaut au rang $n$ :
+    \[F_{n+2}F_n-F_{n+1}^{2}=(F_{n+1}+F_n)F_n-F_{n+1}(F_n+F_{n-1})
+      =F_n^{2}-F_{n+1}F_{n-1}=-(-1)^{n}=\res{(-1)^{n+1}}.\]
+    \pts{1 pt}
+  \item L'identité de Cassini s'écrit
+    $\bigl((-1)^{n}F_{n-1}\bigr)F_{n+1}+\bigl((-1)^{n+1}F_n\bigr)F_n=1$ :
+    c'est une relation de Bézout, donc $\res{F_n\wedge F_{n+1}=1}$.
+    \pts{0,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=0.95cm,y=2.6cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0.9) -- (11,0.9);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0.9) -- (0,2.15);
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 3pt off 2pt] (0,1.618) -- (10.7,1.618);
+  \node[font=\scriptsize,text=otGreenDark,anchor=south east] at (10.7,1.66) {$\varphi\approx1{,}618$};
+  \draw[otNavy!35,line width=0.5pt] (1,1) -- (2,2) -- (3,1.5) -- (4,1.6667) -- (5,1.6) -- (6,1.625)
+    -- (7,1.6154) -- (8,1.6190) -- (9,1.6176) -- (10,1.6182);
+  \foreach \n/\r in {1/1,2/2,3/1.5,4/1.6667,5/1.6,6/1.625,7/1.6154,8/1.6190,9/1.6176,10/1.6182}{
+    \fill[otNavy] (\n,\r) circle (1.8pt);
+    \node[font=\scriptsize,text=otMuted,anchor=north] at (\n,0.89) {$\n$};}
+  \foreach \yy/\lab in {1/1,1.5/{1{,}5},2/2}{
+    \draw[otMuted,line width=0.4pt] (-0.08,\yy) -- (0.08,\yy);
+    \node[font=\scriptsize,anchor=east] at (-0.08,\yy) {$\lab$};}
+\end{tikzpicture}\\*[0.5mm]
+\legende{Les quotients $F_{n+1}/F_n$ pour $n=1,\dots,10$ : ils encadrent
+alternativement $\varphi$ et s'en approchent très vite (l'écart est en
+$\varphi^{-2n}$).}
+\end{minipage}\end{center}
+\end{corrigeEval}

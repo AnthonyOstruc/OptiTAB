@@ -1,0 +1,16 @@
+% Position des phases dans deux tubes à essais (corrigé de l'exercice 5, chapitre 7)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \bx/\bas/\haut/\cbas/\chaut/\titre in {0/{eau ($d=1{,}00$)}/{cyclohexane ($d=0{,}78$)}/pcEau/yellow!22/{eau et cyclohexane},
+  5.2/{dichlorométhane ($d=1{,}33$)}/{eau ($d=1{,}00$)}/otGreen!14/pcEau/{eau et dichlorométhane}}{
+  \begin{scope}[shift={(\bx,0)}]
+    \fill[\cbas] (-0.24,1.15) -- (-0.24,0.25) arc[start angle=180,end angle=360,radius=0.24] -- (0.24,1.15) -- cycle;
+    \fill[\chaut] (-0.24,1.15) rectangle (0.24,2.05);
+    \draw[pcSurface] (-0.24,1.15) -- (0.24,1.15);
+    \draw[pcSurface] (-0.24,2.05) -- (0.24,2.05);
+    \draw[pcVerre] (-0.3,2.83) -- (-0.24,2.8) -- (-0.24,0.25) arc[start angle=180,end angle=360,radius=0.24] -- (0.24,2.8) -- (0.3,2.83);
+    \pcNote[west]{(0.24,1.6)}{(0.75,1.75)}{\haut}
+    \pcNote[west]{(0.24,0.6)}{(0.75,0.55)}{\bas}
+    \node[pcLegendeG,anchor=north] at (0.9,-0.15) {\titre};
+  \end{scope}}
+\end{tikzpicture}
+\par\smallskip\legende{Deux liquides non miscibles se superposent : le moins dense flotte sur l'autre.}

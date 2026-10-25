@@ -1,0 +1,19 @@
+% Décalage vers le rouge des raies d'absorption d'une galaxie (L'essentiel, chapitre 23)
+% abscisse : x = (lambda - 390 nm) * 10 / 310 (en cm)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \yy/\nom/\dz in {1.0/{laboratoire}/0,0/{galaxie lointaine}/0.38}{
+  \shade[left color=violet!80!blue,right color=blue] (0,\yy) rectangle (1.935,\yy+0.6);
+  \shade[left color=blue,right color=cyan!80!blue] (1.935,\yy) rectangle (3.226,\yy+0.6);
+  \shade[left color=cyan!80!blue,right color=green!75!black] (3.226,\yy) rectangle (4.516,\yy+0.6);
+  \shade[left color=green!75!black,right color=yellow] (4.516,\yy) rectangle (6.129,\yy+0.6);
+  \shade[left color=yellow,right color=orange] (6.129,\yy) rectangle (7.419,\yy+0.6);
+  \shade[left color=orange,right color=red!85!black] (7.419,\yy) rectangle (10,\yy+0.6);
+  \foreach \l in {486.1,656.3}{\fill[black] ({(\l-390)*10/310+\dz},\yy) rectangle ({(\l-390)*10/310+\dz+0.06},\yy+0.6);}
+  \node[pcLegende,anchor=east] at (-0.1,\yy+0.3) {\nom};}
+\draw[otMuted,line width=0.4pt] (0,-0.05) -- (10,-0.05);
+\foreach \l in {400,450,...,700}{\draw[otMuted,line width=0.4pt] ({(\l-390)*10/310},-0.05) -- ({(\l-390)*10/310},-0.15) node[pcLegende,anchor=north] {\l};}
+\node[pcLegende,anchor=west] at (10.1,-0.3) {nm};
+\draw[otRed!80!black,line width=0.6pt,-{Stealth[length=1.4mm]}] ({(656.3-390)*10/310+0.03},0.95) -- ({(656.3-390)*10/310+0.41},0.65);
+\node[pcLegende,anchor=south,text=otRed!80!black] at ({(656.3-390)*10/310+0.03},1.62) {raie H$\alpha$};
+\end{tikzpicture}
+\par\smallskip\legende{Les raies d'une galaxie qui s'éloigne sont décalées vers les grandes longueurs d'onde : $\dfrac{\lambda_\mathrm{R}-\lambda_\mathrm{E}}{\lambda_\mathrm{E}}\approx\dfrac{v_\mathrm{E}}{c}$ (décalage exagéré sur le schéma).}

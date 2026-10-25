@@ -1,0 +1,27 @@
+% Synthèse additive (lumières) et synthèse soustractive (filtres, encres) (L'essentiel, chapitre 19)
+\definecolor{pcR}{RGB}{255,0,0}\definecolor{pcV}{RGB}{0,255,0}\definecolor{pcB}{RGB}{0,0,255}
+\definecolor{pcC}{RGB}{0,255,255}\definecolor{pcM}{RGB}{255,0,255}\definecolor{pcJ}{RGB}{255,255,0}
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Synthèse additive
+\begin{scope}
+  \fill[black] (-2.0,-1.75) rectangle (2.0,2.05);
+  \begin{scope}[blend group=screen]
+    \fill[pcR] (90:0.65) circle (1.0);
+    \fill[pcV] (210:0.65) circle (1.0);
+    \fill[pcB] (330:0.65) circle (1.0);
+  \end{scope}
+  \node[pcLegendeG,anchor=north] at (0,-1.85) {synthèse additive (lumières)};
+\end{scope}
+% Synthèse soustractive
+\begin{scope}[shift={(5.2,0)}]
+  \draw[otRule,line width=0.5pt] (-2.0,-1.75) rectangle (2.0,2.05);
+  \begin{scope}[blend group=multiply]
+    \fill[pcJ] (90:0.65) circle (1.0);
+    \fill[pcC] (210:0.65) circle (1.0);
+    \fill[pcM] (330:0.65) circle (1.0);
+  \end{scope}
+  \node[pcLegendeG,anchor=north] at (0,-1.85) {synthèse soustractive (filtres, encres)};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{À gauche, des projecteurs rouge, vert et bleu : rouge + vert = jaune, rouge + bleu = magenta, vert + bleu = cyan, les trois donnent du blanc.
+À droite, des filtres jaune, cyan et magenta superposés : chacun retire une couleur, les trois donnent du noir.}

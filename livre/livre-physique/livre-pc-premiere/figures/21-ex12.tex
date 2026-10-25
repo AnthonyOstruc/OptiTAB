@@ -1,0 +1,16 @@
+% Histogramme des concentrations en masse de chlorure de sodium mesurées par douze groupes ; au corrigé, valeur isolée et moyenne (exercice 12, chapitre 21)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=96mm,height=40mm,xmin=8.7,xmax=9.75,ymin=0,ymax=4.6,
+  xtick={8.8,8.9,...,9.7},ytick={0,1,...,3},grid=none,
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$t$ (\unit{g.L^{-1}})},ylabel={effectif}]
+\addplot[ybar interval,fill=otNavy!50,draw=white,line width=0.8pt] coordinates
+  {(8.75,1) (8.85,3) (8.95,3) (9.05,3) (9.15,1) (9.25,0) (9.35,0) (9.45,0) (9.55,1) (9.65,0)};
+\solution{
+  \fill[otOrange!80] (axis cs:9.55,0) rectangle (axis cs:9.65,1);
+  \node[pcLegende,anchor=south,text=otOrange!85!black,align=center] at (axis cs:9.6,1.1) {valeur\\isolée};
+  \draw[otRed!85!black,line width=0.8pt,dash pattern=on 3pt off 2pt] (axis cs:9.0,0) -- (axis cs:9.0,3.6);
+  \node[pcLegende,anchor=south,text=otRed!85!black] at (axis cs:9.0,3.6) {moyenne sans elle : \qty{9,00}{g.L^{-1}}};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Concentrations en masse mesurées par les douze groupes d'une classe.}\solution{La valeur \qty{9,6}{g.L^{-1}} est à cinq écarts-types des autres.}}

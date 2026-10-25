@@ -1,0 +1,187 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{26}{Circuit RC et capteurs capacitifs}
+\corrigesSouples
+
+\begin{blocLivre}{cor-26-1}
+\begin{corrige}{1}{Un débit de charges}
+\demarche{Régime continu : $Q=I\,\Delta t$ ; régime variable : $i=\dfrac{\mathrm{d}q}{\mathrm{d}t}$.}
+\begin{questions}
+\item $Q=2{,}0\times30=\res{\qty{60}{C}}$.
+\item $N=\dfrac{60}{\num{1.60e-19}}=\res{\num{3.75e20}}$ électrons.
+\item $i=\dfrac{\mathrm{d}q}{\mathrm{d}t}=t$, en milliampères : $\res{i=\qty{4,0}{mA}}$ à $t=\qty{4}{s}$.
+\item L'intensité \res{\text{varie au cours du temps}} : $Q/\Delta t$ n'en donnerait que la valeur moyenne.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-2}
+\begin{corrige}{2}{Des comportements capacitifs}
+\demarche{Un comportement capacitif : des charges opposées s'accumulent sur deux surfaces en regard, séparées par un isolant.}
+\begin{questions}
+\item L'accumulation de \res{\text{charges de signes opposés}} sur deux surfaces conductrices en regard, séparées par un isolant.
+\item La base du nuage et le sol portent des charges opposées et se font face : ce sont les armatures ; l'\res{\text{air}} est
+l'isolant (jusqu'à l'éclair).
+\item Les faces extérieure et intérieure de la membrane, chargées en sens opposés, sont les armatures ; la membrane
+elle-même, \res{\text{isolante}}, joue le rôle de l'isolant.
+\item La \res{\text{vitre}} de l'écran.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-3}
+\begin{corrige}{3}{Charge et tension}
+\demarche{$q=C\,u_C$ ; nombre d'électrons $=q/e$.}
+\begin{questions}
+\item $q=\num{470e-6}\times12=\res{\qty{5,64e-3}{C}}$.
+\item $N=\dfrac{\num{5.64e-3}}{\num{1.60e-19}}=\res{\num{3.5e16}}$ électrons.
+\item $q=\num{4.7e-9}\times12=\res{\qty{56}{nC}}$ : \res{\text{cent mille fois}} moins.
+\item $q$ est proportionnelle à $u_C$ : elle \res{\text{double}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-4}
+\begin{corrige}{4}{Lire une courbe de charge}
+\demarche{À $t=\tau$, $u_C=0{,}63\,E$ ; la tangente à l'origine coupe l'asymptote en $t=\tau$ ; $C=\tau/R$.}
+\begin{questions}
+\item L'asymptote donne $E=\res{\qty{6,0}{V}}$.
+\item La tangente à l'origine coupe la droite $u_C=E$ en $t=\qty{2,2}{ms}$ ; et $u_C=0{,}63\times6{,}0=\qty{3,8}{V}$ à $t=\qty{2,2}{ms}$ :
+$\res{\tau=\qty{2,2}{ms}}$.
+\item $C=\dfrac{\tau}{R}=\dfrac{\num{2.2e-3}}{\num{1.0e3}}=\res{\qty{2,2}{\micro F}}$.
+\item Au bout de $5\tau=\res{\qty{11}{ms}}$.
+\end{questions}
+\schema[corrige]{26-ex04}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-5}
+\begin{corrige}{5}{Le flash d'un appareil photo}
+\demarche{$q=C\,u$ ; intensité moyenne $=q/\Delta t$ ; énergie $\frac12\,C\,u^2$.}
+\begin{questions}
+\item $q=\num{150e-6}\times300=\res{\qty{0,045}{C}}$.
+\item $I=\dfrac{0{,}045}{\num{1e-3}}=\res{\qty{45}{A}}$.
+\item $\mathcal{E}=\frac12\times\num{150e-6}\times300^2=\res{\qty{6,75}{J}}$.
+\item La pile ne peut pas fournir un courant aussi intense : le condensateur \res{\text{accumule}} lentement l'énergie fournie
+par la pile, puis la restitue en un éclair.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-6}
+\begin{corrige}{6}{Établir l'équation de la décharge}
+\demarche{Le courant est orienté dans le sens de la décharge : $u_R=u_C$, $u_R=R\,i$ et $i=-C\,\dfrac{\mathrm{d}u_C}{\mathrm{d}t}$.}
+\begin{questions}
+\item Le condensateur alimente la résistance. Sur le schéma, $u_R$ et $u_C$ ont la même orientation : $u_R-u_C=0$. Le courant positif quitte l’armature positive ; sa charge diminue, donc $i=-\mathrm{d}q/\mathrm{d}t=-C\,\mathrm{d}u_C/\mathrm{d}t$.
+\item $RC\,\dfrac{\mathrm{d}u_C}{\mathrm{d}t}+u_C=0$, soit $\res{\dfrac{\mathrm{d}u_C}{\mathrm{d}t}=-\dfrac{u_C}{\tau}}$ avec $\tau=RC$.
+\item $\dfrac{\mathrm{d}u_C}{\mathrm{d}t}=-\dfrac{E}{\tau}\,\mathrm{e}^{-t/\tau}=-\dfrac{u_C}{\tau}$ et $u_C(0)=E$ : la fonction \res{\text{convient}}.
+\item $\mathrm{e}^{-2}=\res{\qty{13,5}{\percent}}$ de $E$, soit \qty{1,22}{V} ; $u_C=E/2$ pour $t=\tau\ln2=\res{0{,}69\,\tau}$.
+\end{questions}
+\schema[corrige]{rev-26-ex06-cor}
+\legende{Sens de décharge choisi : le condensateur fournit de l’énergie à la résistance.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-7}
+\begin{corrige}{7}{La minuterie d'un escalier}
+\demarche{$12\,\mathrm{e}^{-t/\tau}=2{,}0$, d'où $t=\tau\ln6$.}
+\begin{questions}
+\item $t=\tau\ln\dfrac{12}{2{,}0}=\res{1{,}79\,\tau}$.
+\item $\tau=\dfrac{60}{\ln6}=\res{\qty{33,5}{s}}$.
+\item $R=\dfrac{\tau}{C}=\dfrac{33{,}5}{\num{1000e-6}}=\res{\qty{33,5}{k\ohm}}$.
+\item En \res{\text{augmentant}} $R$ : $\tau$, donc la durée, lui est proportionnelle.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-8}
+\begin{corrige}{8}{Modéliser la charge en Python}
+\demarche{Méthode d'Euler : $u(t+\mathrm{d}t)\approx u(t)+\dfrac{\mathrm{d}u}{\mathrm{d}t}\,\mathrm{d}t$, avec $\dfrac{\mathrm{d}u}{\mathrm{d}t}=\dfrac{E-u}{\tau}$.}
+\begin{questions}
+\item La ligne traduit $u(t+\mathrm{d}t)=u(t)+\dfrac{E-u}{\tau}\,\mathrm{d}t$ : c'est l'\res{\text{équation différentielle}} de la charge, appliquée
+pas à pas.
+\item La tension progresse par sauts : 2,5 ; 3,75 ; 4,38 ; 4,69 ; \qty{4,84}{V}\,\dots{} La durée trouvée, \qty{2,5}{s}, est très
+\res{\text{éloignée}} des \qty{3,0}{s} attendues : la dérivée varie trop pendant un pas aussi long.
+\item Remplacer \code{0.95} par \code{0.99} et \code{log(0.05)} par \code{log(0.01)} : on obtient environ \res{\qty{4,6}{s}}, soit
+$\tau\ln100$.
+\item Créer \code{temps, tensions = [0], [0]} avant la boucle, ajouter \code{t} et \code{u} dans la boucle, puis tracer avec
+\code{plt.plot(temps, tensions)} et \code{plt.show()}.
+\end{questions}
+\schema[corrige]{rev-26-ex08-cor}
+\legende{Charge avec un pas de 0,001 s ; la courbe d’Euler est presque confondue avec l’exponentielle.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-9}
+\begin{corrige}{9}{La géométrie d'un condensateur}
+\demarche{$C=\dfrac{\varepsilon\,S}{e}$, avec $S=(\qty{0,20}{m})^2$.}
+\begin{questions}
+\item $C=\dfrac{\num{8.85e-12}\times0{,}040}{\num{2.0e-3}}=\res{\qty{177}{pF}}$.
+\item $C$ est multipliée par 3 : \res{\qty{531}{pF}}.
+\item $C$ est inversement proportionnelle à $e$ : \res{\qty{354}{pF}}.
+\item $S=\dfrac{C\,e}{\varepsilon_0}=\res{\qty{226}{m^2}}$ ! On enroule de longues bandes métalliques séparées par des isolants
+\res{\text{très minces}}, de grande permittivité.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-10}
+\begin{corrige}{10}{Le défibrillateur}
+\demarche{$q=Cu$ ; $\mathcal{E}=\frac12Cu^2$ ; décharge : $u_C=E\,\mathrm{e}^{-t/\tau}$, $\tau=RC$.}
+\begin{questions}
+\item $q=\res{\qty{0,30}{C}}$ et $\mathcal{E}=\frac12\times\num{150e-6}\times2000^2=\res{\qty{300}{J}}$.
+\item $\tau=50\times\num{150e-6}=\res{\qty{7,5}{ms}}$ ; $i_0=\dfrac{2000}{50}=\res{\qty{40}{A}}$.
+\item $u_C=2000\,\mathrm{e}^{-10/7{,}5}=\res{\qty{527}{V}}$.
+\item Il faut délivrer l'énergie en un temps très court, avec une forte intensité, pour \res{\text{resynchroniser}} toutes les
+cellules du cœur à la fois.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-11}
+\begin{corrige}{11}{Le signal créneau}
+\demarche{Charge complète si la demi-période dépasse $5\tau$ : $\dfrac{T}{2}\geqslant5\tau$.}
+\begin{questions}
+\item $\tau=\num{1.0e3}\times\num{100e-9}=\res{\qty{0,10}{ms}}$.
+\item $5\tau=\res{\qty{0,50}{ms}}$.
+\item $T\geqslant10\tau$, soit $f\leqslant\dfrac{1}{10\tau}=\res{\qty{1,0}{kHz}}$.
+\item À \qty{5}{kHz}, la demi-période vaut \qty{0,10}{ms} $=\tau$ : $u_C=5\,(1-\mathrm{e}^{-1})=\res{\qty{3,2}{V}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-12}
+\begin{corrige}{12}{L'écran tactile}
+\demarche{$\tau=RC$ ; $u_C=\dfrac{E}{2}$ pour $E\left(1-\mathrm{e}^{-t/\tau}\right)=\dfrac{E}{2}$.}
+\begin{questions}
+\item Sans doigt : $\tau=\num{1.0e6}\times\num{10e-12}=\res{\qty{10}{\micro s}}$ ; avec le doigt : \res{\qty{11}{\micro s}}.
+\item $1-\mathrm{e}^{-t/\tau}=\dfrac12$ donne $\mathrm{e}^{-t/\tau}=\dfrac12$, soit $\res{t=\tau\ln2}$.
+\item $\qty{6,9}{\micro s}$ contre \qty{7,6}{\micro s} : l'écart, \res{\qty{0,69}{\micro s}}, est minuscule, mais facile à mesurer pour un
+circuit électronique cadencé à plusieurs mégahertz.
+\item Un gant peut réduire la variation de capacité détectable en augmentant la séparation entre le doigt et l’électrode. Une couche isolante n’empêche pas, à elle seule, un couplage capacitif ; l’écran est déjà recouvert d’un isolant.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-13}
+\begin{corrige}{13}{L'accéléromètre du smartphone}
+\demarche{$C=\dfrac{\varepsilon_0S}{e}$ ; $x=\dfrac{m\,g}{k}$ ; $\Delta C=C\,\dfrac{x}{e}$.}
+\begin{questions}
+\item $C=\dfrac{\num{8.85e-12}\times\num{1.0e-7}}{\num{2.0e-6}}=\res{\qty{4,4e-13}{F}}$, soit \qty{443}{fF}.
+\item $x=\dfrac{\num{2.0e-9}\times9{,}81}{1{,}0}=\res{\qty{19,6}{nm}}$.
+\item $\dfrac{\Delta C}{C}=\dfrac{\num{19.6e-9}}{\num{2.0e-6}}\approx1~\%$, d'où $\Delta C=\res{\qty{4,3}{fF}}$, quelques millionièmes de milliardième de
+farad : une électronique très sensible est indispensable.
+\item Plusieurs capteurs mesurent l'accélération selon trois axes : au repos, la pesanteur produit une
+\res{\text{déviation}} sur l'axe vertical, ce qui indique l'orientation de l'appareil.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-14}
+\begin{corrige}{14}{Le capteur de niveau d'une cuve}
+\demarche{$\tau=RC$ avec $R$ fixe ; $C$, donc $\tau$, est une fonction affine de $h$ : $\tau=\tau_\text{vide}+(\tau_\text{plein}-\tau_\text{vide})\,\dfrac{h}{H}$.}
+\begin{questions}
+\item $\tau=RC$ avec $R$ constante : $\tau$ est \res{\text{proportionnelle}} à $C$.
+\item $C$ varie linéairement avec $h$ ; $\tau$, proportionnelle à $C$, aussi.
+\item $\dfrac{h}{H}=\dfrac{78-50}{120-50}=0{,}40$, soit $h=\res{\qty{1,0}{m}}$.
+\item $\tau=50+0{,}75\times70=\res{\qty{102,5}{\micro s}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-26-15}
+\begin{corrige}{15}{Le stimulateur cardiaque}
+\demarche{Décharge : $u_C=E\,\mathrm{e}^{-t/\tau}$ ; $u_C=E/\mathrm{e}$ pour $t=\tau$.}
+\begin{questions}
+\item $E\,\mathrm{e}^{-t/\tau}=E\,\mathrm{e}^{-1}$ impose $\res{t=\tau}$.
+\item $\dfrac{60}{70}=\res{\qty{0,857}{s}}$.
+\item $R=\dfrac{\tau}{C}=\dfrac{0{,}857}{\num{1.0e-6}}=\res{\qty{857}{k\ohm}}$.
+\item $\tau=\dfrac{60}{90}=\qty{0,667}{s}$, d'où $R=\res{\qty{667}{k\ohm}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}

@@ -1,0 +1,16 @@
+\begin{tikzpicture}[font=\fontsize{8.5}{10.5}\selectfont,
+ line width=.7pt,>=Stealth, every node/.style={align=center},
+ fleche/.style={->,line width=1pt,otGreenDark},
+ guide/.style={otMuted,dashed,line width=.5pt},
+ lab/.style={fill=white,inner sep=1.5pt,text=otInk},
+ rayon/.style={thick,postaction={decorate},decoration={markings,
+ mark=at position .35 with {\arrow{Stealth}},
+ mark=at position .75 with {\arrow{Stealth}}}}]
+\draw[otInk](0,0)--(0,4)--(4,4)--(4,0)--(0,0);\draw[otNavy,fill=white](0,2)circle(.4);\node at(0,2){G};\node[left]at(-.5,2.6){$U_0$};\node[above left]at(0,2.5){$+$};
+\draw[otNavy,fill=white](3.75,2.7)rectangle(4.25,3.5);\node[anchor=west]at(4.5,3.1){$R_0$};
+\draw[otGreenDark,fill=otGreenTint](3.75,.6)rectangle(4.25,1.4);\node[anchor=east]at(3.5,1){Capteur $R_c$};
+\fill[otInk](4,2)circle(.05);\draw[->,otNavy](4,2)--(7,2);\node[anchor=west]at(7.1,2){Entrée de mesure};
+\draw[->,otGreenDark,thick](6,.1)--(6,1.9);\node[right]at(6,1){$U$};\draw[guide](4,0)--(6.3,0);\node[below]at(4,0){Référence 0 V};
+\draw[fleche](1,4)--(2,4)node[above]{$I$};
+\end{tikzpicture}\par\smallskip\legende{Pont résistif ; entrée d’acquisition de très grande résistance. Tension $U$ : point milieu par rapport à la référence $0\,\mathrm{V}$.}
+

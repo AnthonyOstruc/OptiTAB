@@ -1,0 +1,33 @@
+% Échelles macroscopique et microscopique de description d'un gaz ; chocs sur une paroi (L'essentiel, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  molecule/.style={ball color=otNavy!45,draw=none},
+  vit/.style={otNavy,line width=0.6pt,-{Stealth[length=1.4mm]}}]
+% Échelle macroscopique : un récipient fermé
+\fill[otNavy!6] (0,0) rectangle (3.2,2.2);
+\draw[otNavy,line width=0.9pt] (0,0) rectangle (3.2,2.2);
+\node[pcLegendeG,anchor=south] at (1.6,2.3) {échelle macroscopique};
+\node[pcLegende,align=center] at (1.4,1.3) {gaz enfermé :\\pression $P$\\température $T$\\masse volumique $\rho$};
+\draw[otMuted,line width=0.5pt] (2.95,0.33) circle (0.24);
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (2.98,0.57) -- (6.35,2.45) (3.05,0.11) -- (6.6,-0.25);
+% Échelle microscopique : zoom sur la paroi
+\begin{scope}
+  \clip (6.4,1.1) circle (1.35);
+  \fill[white] (6.4,1.1) circle (1.35);
+  \fill[otNavy!35] (7.05,-0.5) rectangle (8,2.7);
+  \foreach \x/\y/\dx/\dy in {5.45/1.35/0.35/0.28,5.75/0.45/-0.3/0.3,6.1/1.85/0.4/-0.15,6.3/0.95/-0.35/-0.35,
+      5.35/0.75/0.1/-0.42,6.55/0.3/0.38/0.12,5.95/1.25/-0.15/0.4,6.6/2.05/-0.4/-0.1}{%
+    \shade[molecule] (\x,\y) circle (0.09);
+    \draw[vit] ({\x+0.11*\dx/sqrt(\dx*\dx+\dy*\dy)},{\y+0.11*\dy/sqrt(\dx*\dx+\dy*\dy)}) -- ++(\dx,\dy);}
+  \draw[otOrange!85!black,line width=0.5pt,dash pattern=on 1.5pt off 1.2pt,-{Stealth[length=1.3mm]}] (6.35,1.15) -- (6.9,1.5);
+  \draw[otOrange!85!black,line width=0.5pt,dash pattern=on 1.5pt off 1.2pt,-{Stealth[length=1.3mm]}] (6.98,1.55) -- (6.5,1.9);
+  \shade[ball color=otOrange!70] (6.96,1.53) circle (0.09);
+\end{scope}
+\draw[otMuted,line width=0.6pt] (6.4,1.1) circle (1.35);
+\draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.2mm]}] (7.06,1.53) -- (7.75,1.53);
+\node[pcLegende,anchor=west,text=otGreenDark,align=left] at (7.85,1.6) {force exercée\\sur la paroi};
+\node[pcLegende,anchor=west,align=left] at (7.85,0.5) {paroi};
+\draw[otMuted,line width=0.4pt] (7.25,0.5) -- (7.83,0.5);
+\node[pcLegendeG,anchor=south] at (6.4,2.5) {échelle microscopique};
+\node[pcLegende,anchor=north,align=center] at (6.4,-0.32) {entités en mouvement\\incessant et désordonné};
+\end{tikzpicture}
+\par\smallskip\legende{La pression d'un gaz résulte des chocs de ses entités sur les parois ; sa température traduit leur agitation.}

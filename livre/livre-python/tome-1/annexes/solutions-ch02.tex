@@ -1,0 +1,259 @@
+%% =====================================================================
+%%  Solutions du chapitre 2 — Python as a calculator
+%% =====================================================================
+\corrigesChapitre{2}{Python as a calculator}
+
+\begin{corrigeatoi}{1}
+\begin{console}
+>>> 7 * 24 * 60
+10080
+>>> 365 * 24 * 60 * 60
+31536000
+\end{console}
+A week has 10,080 minutes and a year more than 31 million seconds. Python calculated with integers,
+so the results are exact.
+\end{corrigeatoi}
+
+\begin{corrigeatoi}{2}
+\begin{console}
+>>> print(1000 // 60, "min", 1000 % 60, "s")
+16 min 40 s
+\end{console}
+\py{1000 // 60} counts the whole minutes (16), \py{1000 \% 60} the seconds left over (40). Check:
+$16 \times 60 + 40 = 1000$.
+\end{corrigeatoi}
+
+\begin{corrigeatoi}{3}
+\begin{console}
+>>> (12 + 15 + 18) / 3
+15.0
+>>> 12 + 15 + 18 / 3
+33.0
+\end{console}
+The average is 15. Without parentheses, Python only divides 18 by 3, because division has priority
+over addition: it calculates $12 + 15 + 6$. An average of 33 for marks out of 20 is obviously wrong.
+\end{corrigeatoi}
+
+\begin{corrigeatoi}{4}
+Here is an example: four friends, four nights in Rome, a train at 120 euros per person, a flat at
+95 euros per night, food at 30 euros per person per day for 5 days.
+\begin{code}{file=my_trip.py}
+# my_trip.py - four nights in Rome for 4 friends
+print("=== TRIP TO ROME ===")
+print("Train:", 4 * 120)
+print("Flat:", 4 * 95)
+print("Food:", 4 * 5 * 30)
+print("Total:", 4 * 120 + 4 * 95 + 4 * 5 * 30)
+print("Per person:", (4 * 120 + 4 * 95 + 4 * 5 * 30) / 4)
+\end{code}
+\begin{sortie}
+=== TRIP TO ROME ===
+Train: 480
+Flat: 380
+Food: 600
+Total: 1460
+Per person: 365.0
+\end{sortie}
+\end{corrigeatoi}
+
+\begin{corrige}{1}
+\demarche{apply the priorities, and remember that \py{/} always gives a float, as does any
+calculation involving a float.}
+\begin{reponses}[4]
+\item \rep{13}
+\item \rep{20}
+\item \rep{3.0}
+\item \rep{4}
+\item \rep{1}
+\item \rep{16}
+\item \rep{5}
+\item \rep{6.0}
+\end{reponses}
+\pourquoi{1: the multiplication comes first, $7 + 6 = 13$. 3: \py{/} gives a float even when the
+division is exact. 4 and 5: 9 divided by 2 gives 4, remainder 1. 7: same priority, so from left to
+right: $(10 - 2) - 3 = 5$. 8: one operand is a float, so the result is a float.}
+\end{corrige}
+
+\begin{corrige}{2}
+\begin{reponses}[4]
+\item \py{int}
+\item \py{float}
+\item \py{int}
+\item \py{float}
+\item \py{float}
+\item \py{int}
+\item \py{int}
+\item \py{int}
+\end{reponses}
+\pourquoi{\py{5.0} is a float because of its decimal point, even if its value is whole. \py{10 / 5}
+is a float (\py{2.0}) because of \py{/}; \py{10 // 5} is an int (\py{2}). \py{round()} without a
+second argument gives an int.}
+\begin{console}
+>>> type(10 / 5)
+<class 'float'>
+>>> type(10 // 5)
+<class 'int'>
+>>> type(round(2.6))
+<class 'int'>
+\end{console}
+\end{corrige}
+
+\begin{corrige}{3}
+\begin{console}
+>>> 5 * 3 + 2 * 1.2
+17.4
+>>> round(2 / 6, 2)
+0.33
+>>> 80 - 80 * 30 / 100
+56.0
+>>> max(12.5, 8.75, 19.9, 4.6) - min(12.5, 8.75, 19.9, 4.6)
+15.299999999999999
+>>> round(max(12.5, 8.75, 19.9, 4.6) - min(12.5, 8.75, 19.9, 4.6), 2)
+15.3
+\end{console}
+\begin{reponses}
+\item 17.40 euros.
+\item About 0.33 litres per glass.
+\item 56 euros: the discount is $80 \times 30 / 100 = 24$ euros.
+\item 15.30 euros. The first result shows the float approximation of section~2.6: rounding to the
+  cent gives a clean answer.
+\end{reponses}
+\end{corrige}
+
+\begin{corrige}{4}
+\demarche{the quotient of 200 by 60 gives the hours, the remainder gives the minutes.}
+\begin{code}{file=film.py, cible=film}
+print("The film lasts", 200 // 60, "h", 200 % 60, "min.")
+\end{code}
+\piege{writing \py{200 / 60}: it gives \py{3.3333333333333335}, which is neither 3 hours nor
+3 hours and 20 minutes.}
+\end{corrige}
+
+\begin{corrige}{5}
+\demarche{look at the type and the size of each result. \py{3.5} is a float, so it comes from
+\py{/}; \py{49} is much larger than 7, so it is a power.}
+\begin{code}{file=operators.py, cible=operateurs}
+print(7 / 2)
+print(7 // 2)
+print(7 % 2)
+print(7 ** 2)
+print(7 * 2)
+\end{code}
+\end{corrige}
+
+\begin{corrige}{6}
+\begin{code}{file=wrong_results.py, cible=faux}
+print("Square of 5:", 5 ** 2)
+print("Half of 7.5:", 7.5 / 2)
+print("Average of 12 and 14:", (12 + 14) / 2)
+\end{code}
+\begin{reponses}
+\item \py{\textasciicircum} is not the power operator in Python: use \py{**}.
+\item With a comma, \py{print()} received two values, \py{7} and \py{5 / 2}: write \py{7.5}.
+\item Without parentheses, only 14 was divided by 2.
+\end{reponses}
+\retiens{these three mistakes do not produce any error message. Always check that your results are
+plausible.}
+\end{corrige}
+
+\begin{corrige}{7}
+\demarche{translate each sentence of the rule into operators, keeping the order of the steps.}
+\begin{code}{file=degrees.py, cible=degres}
+print("25 degrees Celsius =", 25 * 9 / 5 + 32, "degrees Fahrenheit")
+print("98.6 degrees Fahrenheit =", (98.6 - 32) * 5 / 9,
+      "degrees Celsius")
+\end{code}
+\piege{forgetting the parentheses in the second line: \py{98.6 - 32 * 5 / 9} first multiplies 32 by
+5 and divides by 9, which gives a completely different temperature.}
+\end{corrige}
+
+\begin{corrige}{8}
+\begin{calcul}[The six calculations]
+\pas[1.]{\py{2 + \hlc{3 * 4} - 1} \textrightarrow{} \py{\hlc{2 + 12} - 1} \textrightarrow{} \py{\hlc{14 - 1}}}{\py{13}}
+\pas[2.]{\py{\hlc{(2 + 3)} * (4 - 1)} \textrightarrow{} \py{5 * \hlc{(4 - 1)}} \textrightarrow{} \py{\hlc{5 * 3}}}{\py{15}}
+\pas[3.]{\py{\hlc{2 ** 2} * 3} \textrightarrow{} \py{\hlc{4 * 3}}}{\py{12}}
+\pas[4.]{\py{\hlc{20 / 2} / 5} \textrightarrow{} \py{\hlc{10.0 / 5}}}{\py{2.0}}
+\pas[5.]{\py{10 - \hlc{4 // 3}} \textrightarrow{} \py{\hlc{10 - 1}}}{\py{9}}
+\pas[6.]{\py{-\hlc{3 ** 2} + 10} \textrightarrow{} \py{\hlc{-9} + 10} \textrightarrow{} \py{\hlc{-9 + 10}}}{\py{1}}
+\end{calcul}
+\pourquoi{in 4, the two divisions have the same priority: Python goes from left to right. In 6, the
+power has priority over the minus sign: the result is $-9 + 10 = 1$, not $9 + 10 = 19$.}
+\end{corrige}
+
+\begin{corrige}{9}
+\demarche{a 10\,\% tip means paying 110\,\% of the bill, that is $94.50 \times 1.1$. Then divide by 7
+and round to two decimal places.}
+\begin{code}{file=bill.py, cible=addition}
+print("Total with tip:", round(94.5 * 1.1, 2), "euros")
+print("Each friend pays:", round(94.5 * 1.1 / 7, 2), "euros")
+\end{code}
+\pourquoi{the rounding protects you from float surprises: it guarantees an amount to the cent,
+whatever tiny approximation the calculation may contain.}
+\end{corrige}
+
+\begin{corrige}{10}
+\begin{console}
+>>> 1234 % 10
+4
+>>> 1234 // 10
+123
+>>> 1234 // 10 % 10
+3
+>>> 1234 // 1000
+1
+\end{console}
+\pourquoi{\py{\% 10} keeps only the last digit; \py{// 10} removes the last digit. Combined,
+\py{1234 // 10 \% 10} removes the units, then keeps the last digit of what remains: the tens digit.
+Dividing by 1000 removes three digits and leaves the thousands digit.}
+\end{corrige}
+
+\begin{corrige}{11}
+\demarche{a day has $24 \times 3600 = 86400$ seconds and an hour 3600 seconds. Peel off the units
+one by one: the quotient by 86400 gives the days; the remainder, divided by 3600, the hours; and so
+on.}
+\begin{code}{file=seconds.py, cible=secondes}
+print("100000 seconds =",
+      100000 // 86400, "d",
+      100000 % 86400 // 3600, "h",
+      100000 % 3600 // 60, "min",
+      100000 % 60, "s")
+\end{code}
+\pourquoi{\py{100000 \% 86400} is what is left once the whole days are removed (13,600 seconds);
+dividing it by 3600 gives the hours. For the minutes, \py{100000 \% 3600} keeps what is left after
+the whole hours. Check: $86400 + 3 \times 3600 + 46 \times 60 + 40 = 100000$.}
+\retiens{the pair \py{//} and \py{\%} is the tool for every conversion into several units: hours and
+minutes, metres and centimetres, euros and cents.}
+\end{corrige}
+
+\begin{corrige}{12}
+\demarche{the last square holds $2^{63}$ grains: the first square holds $2^0 = 1$, so square number
+$n$ holds $2^{n-1}$. For the mass, multiply the number of grains by 0.025~g, then divide by one
+million to get tonnes.}
+\begin{code}{file=chessboard.py, cible=riz}
+print("Grains on the last square:", 2 ** 63)
+print("Total number of grains:", 2 ** 64 - 1)
+print("Total mass in tonnes:",
+      round((2 ** 64 - 1) * 0.025 / 1_000_000))
+\end{code}
+\pourquoi{the numbers of grains are exact, because Python's integers have no limit. The mass is a
+float, rounded to the nearest tonne: about 461 billion tonnes of rice, far more than the whole world
+has ever produced.}
+\end{corrige}
+
+\begin{corrigequiz}
+\begin{reponses}[5]
+\item b
+\item a
+\item c
+\item b
+\item b
+\item a
+\item b
+\item b
+\item b
+\item c
+\end{reponses}
+\pourquoi{4: an operation with a float always gives a float (\py{10.0}). 5: the multiplication comes
+first, $2 + 6 = 8$. 7: \py{4.567} rounded to one decimal place is \py{4.6}. 8: \py{int()} cuts off
+the decimal part, it does not round.}
+\end{corrigequiz}

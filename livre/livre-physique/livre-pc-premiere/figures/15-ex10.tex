@@ -1,0 +1,21 @@
+% Chariot de supermarché poussé avec une force inclinée de 20 degrés (exercice 10, chapitre 15)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  force/.style={line width=1.2pt,-{Stealth[length=2.4mm]}}]
+\fill[otNavy!6] (-1.0,-0.3) rectangle (6.5,0);
+\draw[otInk!60,line width=0.6pt] (-1.0,0) -- (6.5,0);
+% Chariot
+\draw[otInk!75,line width=0.8pt] (0,0.35) -- (2.2,0.35) -- (2.5,1.4) -- (-0.2,1.4) -- cycle;
+\foreach \xx in {0.25,0.75,...,2.0}{\draw[otInk!40,line width=0.4pt] (\xx,0.4) -- ({\xx+0.1},1.35);}
+\draw[otInk!75,line width=0.8pt] (-0.2,1.4) -- (-0.75,1.75);
+\fill[otInk!80] (0.2,0.15) circle (0.13); \fill[otInk!80] (2.0,0.15) circle (0.13);
+\coordinate (O) at (-0.75,1.75);
+\draw[force,otGreenDark] ($(O)+(160:1.4)$) -- (O) node[pcLegende,anchor=north east,text=otGreenDark,pos=0.55] {$\vec{F}$};
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] ($(O)+(-1.6,0)$) -- (O);
+\draw[otOrange!85!black,line width=0.5pt] ($(O)+(-0.8,0)$) arc (180:160:0.8);
+\node[pcLegende,text=otOrange!85!black,anchor=east] at ($(O)+(-0.85,-0.15)$) {\ang{20}};
+\draw[force,otRed!70!black] (1.6,0.55) -- (0.6,0.55) node[pcLegende,anchor=east,text=otRed!70!black] {$\vec{f}$};
+\draw[otInk!70,line width=0.9pt,-{Stealth[length=2mm]}] (-0.8,-0.65) -- (5.8,-0.65) node[pos=0.5,pcLegende,anchor=north] {déplacement : \qty{15}{m}};
+\solution{
+  \draw[force,otGreenDark!60,dash pattern=on 3pt off 1.5pt] ($(O)+(160:1.4)$) -- ++(1.316,0) node[pcLegende,anchor=south,text=otGreenDark,pos=0.5] {$F\cos\alpha$};}
+\end{tikzpicture}
+\par\smallskip\legende{La force de poussée est inclinée de \ang{20} vers le bas ; les frottements valent \qty{30}{N}.\solution{ Seule la composante horizontale de $\vec{F}$ travaille.}}

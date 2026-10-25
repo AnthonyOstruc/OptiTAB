@@ -1,0 +1,172 @@
+\begin{ouverture}[denombrement]{7}{PGCD, Bézout et Gauss}{Arithmétique}{Euclide · Inverse modulaire · Équations entières}
+\objectif{Calculer un PGCD et un couple de Bézout.}
+\objectif{Démontrer et utiliser Gauss.}
+\objectif{Résoudre une congruence linéaire.}
+\objectif{Résoudre une équation diophantienne simple.}
+\prerequis{Division euclidienne et congruences.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Le PGCD et Euclide}
+Le PGCD de deux entiers non tous deux nuls est leur plus grand diviseur commun positif. On utilise leurs valeurs absolues ; $\operatorname{PGCD}(a,0)=|a|$.
+Si $a=bq+r$, les diviseurs communs de $a,b$ sont exactement ceux de $b,r$.
+En répétant les divisions, les restes positifs décroissent strictement : l'algorithme s'arrête ; le dernier reste non nul est le PGCD.
+\figurelivre{e07-euclide.pdf}{Euclide pour $252$ et $198$ : $252=198+54$, $198=3\times54+36$, $54=36+18$, $36=2\times18$. Le PGCD est $18$.}
+En remontant les égalités, $18=54-36=54-(198-3\times54)=4\times252-5\times198$.
+\essSection{2}{L'identité de Bézout}
+\begin{theoreme}
+Pour des entiers $a,b$ non tous deux nuls, il existe $u,v\in\Z$ tels que $au+bv=d$, où $d=\operatorname{PGCD}(a,b)$.
+En particulier $a,b$ sont premiers entre eux si et seulement si $au+bv=1$ possède une solution entière.
+\end{theoreme}
+\begin{demonstration}[Construction et réciproque]
+Dans Euclide, chaque reste est une combinaison entière des deux restes précédents, donc, par substitutions successives, une combinaison de $a,b$. Le dernier reste non nul fournit $d=au+bv$.
+Si une combinaison vaut $1$, tout diviseur commun de $a,b$ divise $1$ : le PGCD est $1$. La réciproque découle de la construction.
+\end{demonstration}
+\begin{python}
+def bezout(a, b):
+    r0, r1 = a, b
+    u0, u1, v0, v1 = 1, 0, 0, 1
+    while r1 != 0:
+        q = r0 // r1
+        r0, r1 = r1, r0 - q*r1
+        u0, u1 = u1, u0 - q*u1
+        v0, v1 = v1, v0 - q*v1
+    return r0, u0, v0
+\end{python}
+On utilise ici $a,b$ positifs, ou $a>0,b=0$. L'invariant $r_j=au_j+bv_j$ explique la sortie.
+\essSection{3}{Le théorème de Gauss}
+\begin{theoreme}
+Si $a\mid bc$ et $\operatorname{PGCD}(a,b)=1$, alors $a\mid c$.
+\end{theoreme}
+\begin{demonstration}
+Bézout donne $au+bv=1$. Multiplier par $c$ donne $auc+bvc=c$.
+Le premier terme est divisible par $a$ ; le second aussi puisque $a\mid bc$. Donc $a\mid c$.
+\end{demonstration}
+Une conséquence : si $a,b$ sont premiers entre eux et divisent tous deux $n$, alors $ab\mid n$.
+\essSection{4}{Inverse modulaire et congruence}
+Si $\operatorname{PGCD}(a,n)=1$, Bézout donne $au+nv=1$, donc $au\equiv1\pmod n$ : $u$ est un inverse de $a$ modulo $n$.
+Alors $ax\equiv b\pmod n$ équivaut à $x\equiv ub\pmod n$.
+Si $d=\operatorname{PGCD}(a,n)$ ne divise pas $b$, aucune solution n'existe.
+Si $d\mid b$, diviser $a,n,b$ par $d$ ramène à un coefficient inversible modulo $n/d$.
+\begin{exemple}
+$3x\equiv4\pmod7$. Comme $3\times5\equiv1$, $x\equiv20\equiv6\pmod7$.
+En revanche $6x\equiv5\pmod9$ est impossible, car $3\nmid5$.
+\end{exemple}
+\essSection{5}{Équations diophantiennes}
+Pour $ax+by=c$, une condition nécessaire et suffisante est $d=\operatorname{PGCD}(a,b)\mid c$.
+Après division par $d$, si $(x_0,y_0)$ est une solution et si $a'=a/d,b'=b/d$, toutes les solutions sont
+$x=x_0+b'k$, $y=y_0-a'k$, avec $k\in\Z$.
+En soustrayant une solution particulière, on obtient $a'(x-x_0)=-b'(y-y_0)$. Gauss impose $b'\mid x-x_0$, ce qui justifie la paramétrisation.
+Pour une situation concrète, imposer ensuite les contraintes de positivité ou les bornes ; elles ne sont pas automatiques.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Calculer un PGCD}
+
+\begin{questions}
+\item Calculer $\operatorname{PGCD}(48,18)$ par Euclide.
+\item Calculer $\operatorname{PGCD}(35,12)$.
+\item Donner $\operatorname{PGCD}(-18,30)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Vérifier Bézout}
+
+\begin{questions}
+\item Verifier $4\times252-5\times198=18$.
+\item Pourquoi cette identité seule ne suffit-elle pas encore à affirmer que le PGCD est $18$ ?
+\item Compléter la preuve.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Un inverse}
+
+\begin{questions}
+\item Verifier $3\times5\equiv1\pmod7$.
+\item Résoudre $3x\equiv4\pmod7$.
+\item Donner la solution dans $\{0,\ldots,6\}$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Équation impossible}
+
+\begin{questions}
+\item Calculer le PGCD de $6$ et $9$.
+\item L’équation $6x+9y=5$ a-t-elle une solution entière ?
+\item Et l’équation $6x+9y=3$ ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Remonter Euclide}
+On travaille avec $35$ et $12$.
+\begin{questions}
+\item Effectuer les divisions utiles.
+\item Trouver un couple de Bézout.
+\item En déduire un inverse de $12$ modulo $35$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Gauss en action}
+
+\begin{questions}
+\item Si $7\mid15n$, montrer que $7\mid n$.
+\item Si $6\mid4n$, peut-on conclure $6\mid n$ ?
+\item Quelle divisibilité de $n$ peut-on néanmoins obtenir ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Congruence avec PGCD non trivial}
+
+\begin{questions}
+\item Résoudre $6x\equiv3\pmod9$.
+\item Donner les solutions modulo $9$.
+\item Pourquoi y a-t-il plusieurs classes modulo $9$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Toutes les solutions entières}
+$15x+21y=6$.
+\begin{questions}
+\item Réduire l’équation.
+\item Trouver une solution particulière.
+\item Paramétrer toutes les solutions.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Une contrainte positive}
+$3x+5y=31$, avec $x,y$ entiers naturels.
+\begin{questions}
+\item Trouver les solutions entières générales.
+\item Imposer $x,y\geq0$.
+\item Interpréter le nombre de solutions admissibles.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Inverser modulo $26$}
+
+\begin{questions}
+\item Trouver un inverse de $7$ modulo $26$.
+\item Résoudre $7x\equiv5\pmod{26}$.
+\item Vérifier le représentant choisi.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Deux congruences, problème guidé}
+$x\equiv2\pmod3$ et $x\equiv3\pmod5$.
+\begin{questions}
+\item Poser $x=2+3k$ et résoudre pour $k$ modulo $5$.
+\item Donner toutes les solutions.
+\item Vérifier que la période $15$ est cohérente.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Prouver Gauss}
+
+\begin{questions}
+\item Écrire une identité de Bézout pour $a,b$ premiers entre eux.
+\item La multiplier par $c$.
+\item Utiliser $a\mid bc$ pour conclure.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

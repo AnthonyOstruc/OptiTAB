@@ -1,0 +1,232 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[derivation]{4}{Variations et optimisation}{Partie 2 · Analyse}
+{Signe de la dérivée\enspace·\enspace Tableaux\enspace·\enspace Extremums\enspace·\enspace Modèles}
+\objectif{Relier le signe de la dérivée aux variations.}
+\objectif{Dresser un tableau avec les valeurs aux bornes.}
+\objectif{Déterminer les extremums et comparer deux fonctions.}
+\objectif{Résoudre un problème d'optimisation sur un domaine précis.}
+\prerequis{Calcul des dérivées, tangentes et second degré.}
+\prerequis{Aires, volumes et mise en équation d'un problème.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Du signe de la dérivée au sens de variation}
+\begin{theoreme}
+Soit $f$ dérivable sur un intervalle $I$.
+Si $f'(x)\geq0$ sur $I$, $f$ y est croissante ; si $f'(x)\leq0$, elle y est
+décroissante ; si $f'(x)=0$ partout, elle est constante.
+Si la dérivée est strictement positive sauf en un nombre fini de points,
+la croissance est stricte ; de même pour la décroissance.
+\end{theoreme}
+\begin{savoirfaire}[Les quatre étapes]
+Déterminer le domaine. Calculer et factoriser la dérivée. Étudier son signe.
+Tracer les flèches de variation et calculer les valeurs remarquables.
+\end{savoirfaire}
+\begin{exemple}
+Pour $f(x)=x^3-3x$ sur $[-2;2]$, $f'(x)=3(x-1)(x+1)$.
+\end{exemple}
+\begin{center}\begin{tableau}
+\otTab[2.4]{$x$/0.8,$f'(x)$/0.8,$f$/1.8}{$-2$,$-1$,$1$,$2$}
+\tkzTabLine{,+,z,-,z,+,}
+\tkzTabVar{-/$-2$,+/$2$,-/$-2$,+/$2$}
+\end{tableau}\end{center}
+\begin{attention}
+$f'(a)=0$ ne suffit pas à prouver un extremum : $x^3$ a une dérivée nulle en 0
+et reste strictement croissante. Il faut examiner le changement de signe.
+Un maximum sur un intervalle peut aussi être atteint à une borne.
+\end{attention}
+\clearpage
+\essSection{2}{Extremums et optimisation}
+\begin{propriete}
+Lorsque $f'$ passe de $+$ à $-$ en $a$, $f(a)$ est un maximum local.
+Lorsqu'elle passe de $-$ à $+$, c'est un minimum local. Pour déterminer un
+extremum global sur un segment, comparer également les valeurs aux bornes.
+Si $f$ admet un extremum local en un point $a$ intérieur à l'intervalle, alors
+$f'(a)=0$ : la tangente en ce point est horizontale.
+\end{propriete}
+\begin{exemple}
+Pour $f(x)=ax^2+bx+c$, $f'(x)=2ax+b$ s'annule en $-b/(2a)$ en changeant de signe.
+Si $a>0$, $f$ décroît puis croît : le sommet est un minimum ; si $a<0$, c'est un maximum.
+\end{exemple}
+\begin{savoirfaire}[Modéliser un problème]
+Choisir une variable et son domaine. Exprimer la grandeur à optimiser avec
+cette seule variable. Étudier ses variations. Conclure avec les dimensions,
+la valeur optimale et l'unité demandées. Pour une quantité entière, comparer
+les entiers admissibles voisins de l'optimum réel.
+\end{savoirfaire}
+\essSection{3}{Comparer deux fonctions et exploiter une symétrie}
+\begin{propriete}
+Pour comparer $f$ et $g$, étudier le signe de $f-g$. Si $f-g\geq0$, la courbe
+de $f$ est au-dessus de celle de $g$.
+Sur un domaine symétrique par rapport à 0, $f(-x)=f(x)$ caractérise une fonction
+paire ; $f(-x)=-f(x)$, une fonction impaire.
+\end{propriete}
+\begin{center}
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=74mm,height=52mm,xmin=-2.2,xmax=2.2,ymin=-0.5,ymax=4,xtick={-2,-1,1,2},ytick={1,2,3}]
+\addplot[otNavy,thick,domain=-1.9:1.9]{x^2};
+\addplot[only marks,otGreenDark]coordinates{(-1.5,2.25)(1.5,2.25)};
+\end{axis}\end{tikzpicture}\hspace{3mm}
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=74mm,height=52mm,xmin=-2.2,xmax=2.2,ymin=-3,ymax=3,xtick={-2,-1,1,2},ytick={-2,2}]
+\addplot[otGreenDark,thick,domain=-2:2]{0.3*x^3};
+\addplot[only marks,otNavy]coordinates{(-1.5,-1.0125)(1.5,1.0125)};
+\end{axis}\end{tikzpicture}\par
+\legende{À gauche : une fonction paire. À droite : une fonction impaire.}
+\end{center}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-4-1}
+\begin{exercice}[1]{Du signe aux variations}
+Une fonction $f$ est dérivable sur $[-3;4]$, avec $f'(x)>0$ sur $[-3;1[$,
+$f'(1)=0$ et $f'(x)<0$ sur $]1;4]$.
+\begin{questions}\item Donner les variations de $f$ et la position de son maximum.
+\item Avec $f(-3)=2$, $f(1)=7$ et $f(4)=-1$, donner aussi son minimum global.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-2}
+\begin{exercice}[1]{Un trinôme sur un segment}
+Étudier les variations de $f(x)=x^2-4x+1$ sur $[-1;5]$.
+Déterminer son minimum et son maximum sur cet intervalle.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-3}
+\begin{exercice}[1]{Une dérivée ne change pas de signe}
+Calculer la dérivée de $g(x)=x^3+3x$, justifier ses variations sur $\R$
+et déterminer ses extremums sur $[-1;2]$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-4}
+\begin{exercice}[1]{Un quotient simple}
+Soit $h(x)=\dfrac{x+1}{x+2}$ sur $[0;4]$.
+Calculer $h'$, dresser le tableau de variations et donner les deux extremums.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-5}
+\begin{exercice}[1]{Dérivée nulle et extremum}
+Pour $f(x)=x^3$, calculer $f'(0)$ et étudier le signe de $f'$.
+Le nombre 0 est-il l'abscisse d'un extremum ? Justifier par les variations.
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-4-6}
+\begin{exercice}[2]{Un polynôme du troisième degré}
+$f(x)=x^3-3x^2-9x+5$ sur $[-3;5]$.
+\begin{questions}\item Montrer que $f'(x)=3(x+1)(x-3)$.
+\item Dresser le tableau complet de variations avec les valeurs aux bornes.
+\item Distinguer les extremums locaux et les extremums globaux sur $[-3;5]$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-7}
+\begin{exercice}[2]{Un minimum avec un quotient}
+$f(x)=x+4/x$ sur $]0;+\infty[$.
+\begin{questions}\item Calculer $f'(x)$ et en étudier le signe.
+\item En déduire le minimum de $f$ et l'inégalité $x+4/x\geq4$ pour tout $x>0$.
+\item Retrouver cette inégalité en écrivant $f(x)-4$ sous la forme d'un quotient dont le numérateur est un carré.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-8}
+\begin{exercice}[2]{Étudier une fonction paire}
+$f(x)=x^4-4x^2$ sur $[-3;3]$.
+\begin{questions}\item Vérifier la parité de $f$.
+\item Factoriser $f'(x)$ ; étudier les variations sur $[0;3]$.
+\item Compléter le tableau sur $[-3;3]$ par symétrie et déterminer les extremums globaux.
+\item Vérifier également que $g(x)=x^3-3x$ est impaire sur $\R$ et préciser sa symétrie.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-9}
+\begin{exercice}[2]{Position par rapport à une tangente}
+Pour $f(x)=x^3$ sur $[0;3]$, on considère la tangente $T$ en $x=1$.
+\begin{questions}\item Écrire l'équation de $T$.
+\item Montrer que $x^3-3x+2=(x-1)^2(x+2)$.
+\item Comparer la courbe et $T$ sur $[0;3]$. Où se rencontrent-elles ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-10}
+\begin{exercice}[2]{Une inégalité grâce aux variations}
+Soit $f(x)=\sqrt x-\frac x2$ sur $[1;9]$.
+\begin{questions}\item Calculer $f'(x)$ pour $x\in]1;9[$ et justifier que $f$ est décroissante.
+\item Déterminer ses extremums sur $[1;9]$.
+\item En déduire l'encadrement $-\frac32\leq\sqrt x-\frac x2\leq\frac12$ sur cet intervalle.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-11}
+\begin{exercice}[2]{Optimiser une quantité entière}
+Pour un nombre entier $n$ d'articles, $0\leq n\leq20$, le bénéfice est
+$B(n)=-2n^2+27n-40$ euros.
+\begin{questions}\item Étudier d'abord $B(x)$ sur $[0;20]$ pour une variable réelle.
+\item Quels sont les deux entiers à comparer pour maximiser $B(n)$ ?
+\item Donner la quantité entière optimale et le bénéfice correspondant.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-4-12}
+\begin{exercice}[3]{Une boîte sans couvercle}
+Dans une feuille carrée de 24 cm de côté, on découpe quatre carrés de côté $x$,
+puis on replie les bords. Le volume de la boîte est $V(x)$.
+\begin{center}\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otNavyTint](0,0)rectangle(3.7,3.7);
+\foreach \a/\b in {0/0,3/0,0/3,3/3}{\fill[white](\a,\b)rectangle++(.7,.7);\draw[otMuted](\a,\b)rectangle++(.7,.7);}
+\draw[otNavy,dashed](.7,.7)rectangle(3,3);
+\node at(1.85,1.85){fond};\node at(.35,.35){$x$};
+\draw[otMuted,<->](0,-.3)--node[below]{$24$ cm}(3.7,-.3);
+\end{tikzpicture}\par\legende{Patron schématique, non à l'échelle.}\end{center}
+\begin{questions}\item Justifier le domaine $]0;12[$ et établir $V(x)=x(24-2x)^2$.
+\item Montrer que $V'(x)=12(x-4)(x-12)$ et étudier les variations.
+\item Donner les dimensions de la boîte de volume maximal et ce volume en litres.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-13}
+\begin{exercice}[3]{Un rectangle sous une parabole}
+Les sommets supérieurs d'un rectangle sont $(-x;9-x^2)$ et $(x;9-x^2)$,
+les deux autres étant sur l'axe des abscisses, avec $0<x<3$.
+\begin{questions}\item Faire un schéma et exprimer l'aire $A(x)$.
+\item Calculer $A'$ puis déterminer le rectangle d'aire maximale.
+\item Donner la largeur, la hauteur et l'aire exactes, puis une valeur approchée de l'aire à $10^{-2}$ près.
+\end{questions}
+\label{figlivre-r04-13-rectangle-ex}
+\figureLivre{r04-13-rectangle}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-14}
+\begin{exercice}[3]{Un emballage de périmètre imposé}
+Un rectangle a un périmètre de 40 cm. On le fait tourner autour de l'un de
+ses côtés pour obtenir un cylindre : le rayon vaut $r$ et la hauteur vaut $h$.
+\begin{questions}\item Justifier $h=20-r$ et $0<r<20$.
+\item Exprimer le volume $V(r)$ du cylindre et sa dérivée.
+\item Déterminer le rayon et la hauteur donnant le volume maximal.
+\item Calculer ce volume et expliquer pourquoi les deux limites géométriques
+$r=0$ et $r=20$ ne donnent pas un cylindre utilisable.
+\end{questions}
+\label{figlivre-r04-14-cylindre-ex}
+\figureLivre{r04-14-cylindre}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-4-15}
+\begin{exercice}[3]{Distance minimale à un point}
+Un point mobile $M(x;x^2)$ se déplace sur la parabole $y=x^2$, avec $x\in[-2;2]$.
+On cherche sa distance minimale au point $A(0;2)$.
+\partieExo{A}{Éviter de dériver une racine}
+\begin{questions}\item Montrer que $AM^2=D(x)=x^4-3x^2+4$.
+\item Expliquer pourquoi minimiser $AM$ revient à minimiser $D(x)$.
+\end{questions}
+\partieExo{B}{Trouver tous les points optimaux}
+\begin{questions}[resume]\item Factoriser $D'(x)$ et étudier ses variations sur $[-2;2]$.
+\item Déterminer les deux positions de $M$ qui minimisent $AM$.
+\item Donner la distance minimale exacte et vérifier qu'elle est inférieure à $AO$.
+\end{questions}
+\label{figlivre-r04-15-distance-ex}
+\figureLivre{r04-15-distance}
+
+\end{exercice}
+\end{blocLivre}

@@ -1,0 +1,426 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[fluides]{17}{Écoulement des fluides}{Partie 2 · Mouvement et interactions}
+{Poussée d'Archimède\enspace·\enspace Flottaison\enspace·\enspace Débit volumique\enspace·\enspace Relation de Bernoulli\enspace·\enspace Effet Venturi}
+\objectif{Expliquer qualitativement l'origine de la poussée d'Archimède et utiliser son expression vectorielle.}
+\objectif{Prévoir si un corps flotte et exploiter la condition d'équilibre d'un corps flottant.}
+\objectif{Exploiter la conservation du débit volumique pour déterminer la vitesse d'un fluide incompressible.}
+\objectif{Exploiter la relation de Bernoulli, fournie, pour étudier qualitativement puis quantitativement un écoulement
+permanent.}
+\objectif{Modéliser la vidange d'un réservoir en Python.}
+\prerequis{Pression, loi fondamentale de la statique des fluides (classe de première).}
+\prerequis{Deuxième loi de Newton, équilibre d'un système (chapitre~14).}
+\prerequis{Énergie mécanique et sa conservation (chapitre~15).}
+\end{ouverture}
+\essentiel
+\essSection{1}{La poussée d'Archimède}
+\begin{propriete}[Origine de la poussée d'Archimède]
+Un corps plongé dans un fluide au repos subit, sur toute sa surface, des forces pressantes perpendiculaires à la paroi.
+D'après la loi fondamentale de la statique des fluides, $p_\mathrm{B}-p_\mathrm{A}=\rho_\mathrm{f}\,g\,(z_\mathrm{A}-z_\mathrm{B})$ :
+la pression augmente avec la profondeur. Les forces pressantes exercées sur la partie basse du corps l'emportent donc sur
+celles exercées sur sa partie haute, tandis que les forces latérales se compensent : leur résultante est verticale et
+dirigée vers le haut.
+\end{propriete}
+\schema{17-archimede}
+\begin{loi}[Poussée d'Archimède]
+Tout corps immergé dans un fluide au repos, de masse volumique $\rho_\mathrm{f}$, subit de la part de ce fluide une force
+verticale, dirigée vers le haut, égale à l'opposé du poids du fluide déplacé :
+\[\vec{\Pi}=-\rho_\mathrm{f}\,V_\mathrm{imm}\,\vec{g}\qquad\text{soit}\qquad \Pi=\rho_\mathrm{f}\,V_\mathrm{imm}\,g,\]
+avec $\Pi$ en newtons, $\rho_\mathrm{f}$ en \unit{kg.m^{-3}} et $V_\mathrm{imm}$, volume de la partie immergée, en \unit{m^3}.
+\end{loi}
+\begin{savoirfaire}[Retrouver l'expression pour un pavé immergé]
+Pour un pavé de hauteur $h$ et de base $S$, entièrement immergé, la différence de pression entre les faces inférieure
+et supérieure vaut $p_\mathrm{bas}-p_\mathrm{haut}=\rho_\mathrm{f}\,g\,h$. La résultante des forces pressantes est donc
+verticale, vers le haut, de valeur
+\[F_\mathrm{bas}-F_\mathrm{haut}=(p_\mathrm{bas}-p_\mathrm{haut})\,S=\rho_\mathrm{f}\,g\,h\,S=\rho_\mathrm{f}\,V\,g.\]
+Elle ne dépend pas de la profondeur du pavé, mais seulement de son volume.
+\end{savoirfaire}
+\begin{propriete}[Couler ou flotter]
+Un corps homogène de masse volumique $\rho$, lâché entièrement immergé, est soumis à son poids $P=\rho\,V\,g$ et à la
+poussée $\Pi=\rho_\mathrm{f}\,V\,g$. Si $\rho>\rho_\mathrm{f}$, il coule ; si $\rho<\rho_\mathrm{f}$, il remonte et flotte.
+À l'équilibre, la poussée compense le poids, $\rho_\mathrm{f}\,V_\mathrm{imm}\,g=\rho\,V\,g$, d'où
+\[\frac{V_\mathrm{imm}}{V}=\frac{\rho}{\rho_\mathrm{f}}.\]
+\end{propriete}
+\begin{exemple}
+La glace a pour masse volumique \qty{917}{kg.m^{-3}}. Dans l'eau de mer ($\rho_\mathrm{f}=\qty{1025}{kg.m^{-3}}$), la
+fraction immergée d'un iceberg vaut $\dfrac{917}{1025}\approx\qty{89}{\percent}$ : seuls 11~\% de son volume émergent.
+Un glaçon dans un verre d'eau douce est immergé à \qty{91,7}{\percent}.
+\end{exemple}
+\essSection{2}{Écoulement d'un fluide en régime permanent}
+\begin{definition}[Régime permanent et débit volumique]
+L'écoulement d'un fluide est \textbf{permanent} (ou stationnaire) si, en chaque point, la vitesse et la pression du
+fluide ne dépendent pas du temps. Le \textbf{débit volumique} $D_V$ est le volume de fluide qui traverse une section par
+unité de temps ; si le fluide traverse la section $S$ à la vitesse moyenne $v$, perpendiculaire à $S$,
+\[D_V=\frac{V}{\Delta t}=S\,v\qquad(D_V\text{ en }\unit{m^3.s^{-1}},\ S\text{ en }\unit{m^2},\ v\text{ en }\unit{m.s^{-1}}).\]
+\end{definition}
+\begin{propriete}[Conservation du débit volumique]
+Un liquide se comporte comme un fluide \textbf{incompressible} : sa masse volumique reste constante. En régime permanent,
+le débit volumique se conserve tout au long d'une conduite, même si sa section varie :
+\[S_\mathrm{A}\,v_\mathrm{A}=S_\mathrm{B}\,v_\mathrm{B}.\]
+Là où la section diminue, la vitesse augmente.
+\end{propriete}
+\begin{exemple}
+Le cœur envoie \qty{5,0}{L} de sang par minute, soit $D_V=\qty{8,3e-5}{m^3.s^{-1}}$, dans l'aorte, de diamètre
+\qty{2,5}{cm} : le sang y circule à $v=D_V/S=\qty{0,17}{m.s^{-1}}$. Ce débit se répartit ensuite dans des milliards de
+capillaires dont la section totale atteint environ \qty{0,25}{m^2} : la vitesse n'y vaut plus que \qty{0,33}{mm.s^{-1}},
+ce qui laisse le temps aux échanges avec les cellules.
+\end{exemple}
+\essSection{3}{La relation de Bernoulli}
+\begin{loi}[Relation de Bernoulli]
+Pour un fluide incompressible, en écoulement permanent, dont on néglige les frottements, la grandeur
+\[p+\frac12\,\rho\,v^2+\rho\,g\,z\]
+garde la même valeur en tout point d'une même ligne de courant. Chaque terme est homogène à une pression, c'est-à-dire
+à une énergie par unité de volume : la relation traduit la conservation de l'énergie du fluide. Elle est fournie dans
+les exercices.
+\end{loi}
+\begin{propriete}[Effet Venturi]
+Dans une conduite horizontale, là où la section diminue, la vitesse augmente (conservation du débit) et la pression
+\textbf{diminue} (relation de Bernoulli à $z$ constant) :
+\[p_\mathrm{A}-p_\mathrm{B}=\frac12\,\rho\,\big(v_\mathrm{B}^2-v_\mathrm{A}^2\big).\]
+Cet effet est exploité dans les trompes à eau, les pulvérisateurs, les débitmètres et les carburateurs.
+\end{propriete}
+\schema{17-venturi}
+\begin{savoirfaire}[Établir la formule de Torricelli]
+Un grand réservoir ouvert se vide par un petit orifice B situé à la profondeur $h$ sous la surface libre A. En A et en
+B, le fluide est à la pression atmosphérique ; la surface libre descend très lentement, $v_\mathrm{A}\approx0$. La relation
+de Bernoulli entre A et B s'écrit $p_\mathrm{atm}+\rho\,g\,z_\mathrm{A}=p_\mathrm{atm}+\frac12\,\rho\,v_\mathrm{B}^2+\rho\,g\,z_\mathrm{B}$,
+d'où
+\[v_\mathrm{B}=\sqrt{2\,g\,h}.\]
+Pour $h=\qty{1,25}{m}$, l'eau sort à \qty{4,95}{m.s^{-1}}, comme si elle était tombée en chute libre de la hauteur $h$.
+\end{savoirfaire}
+\schema{17-torricelli}
+\begin{codecote}[0.62]
+\begin{pythoncol}
+from math import pi, sqrt
+g = 9.81
+S = pi * 0.050**2       # récipient (m²)
+s = pi * 0.002**2       # orifice (m²)
+h, t, dt = 0.20, 0.0, 0.01
+while h > 0:
+    v = sqrt(2 * g * h)       # Torricelli
+    h = h - s / S * v * dt    # débit conservé
+    t = t + dt
+T = S / s * sqrt(2 * 0.20 / g)   # exacte
+print(round(t, 1), round(T, 1))
+\end{pythoncol}
+\begin{consolecol}
+126.2 126.2
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Un récipient cylindrique de \qty{10}{cm} de diamètre, rempli sur \qty{20}{cm}, se vide par un orifice de \qty{4}{mm} de
+diamètre. Pendant $\mathrm{d}t$, le volume $S\,|\mathrm{d}h|$ sort à la vitesse de Torricelli : $S\,|\mathrm{d}h|=s\,v\,\mathrm{d}t$.
+La méthode d'Euler donne une durée de vidange de \qty{126,2}{s}, en accord avec l'expression exacte
+$\dfrac{S}{s}\sqrt{\dfrac{2H}{g}}$.
+\end{codecote}
+\begin{attention}
+La poussée d'Archimède dépend du volume immergé et de la masse volumique du \textbf{fluide}, pas de la masse volumique du
+corps, ni de sa profondeur une fois qu'il est entièrement immergé. Dans la relation de Bernoulli, $p$ s'exprime en
+pascals, $\rho$ en \unit{kg.m^{-3}}, $v$ en \unit{m.s^{-1}} et $z$ en mètres, l'axe $(Oz)$ étant vertical vers le haut.
+\end{attention}
+\begin{experience}[Tester l'expression de la poussée d'Archimède]
+On suspend un cylindre à un dynamomètre, puis on l'immerge progressivement dans un liquide. La différence entre le poids
+mesuré dans l'air et l'indication du dynamomètre donne la poussée. Tracée en fonction du volume immergé, elle forme une
+droite passant par l'origine, de coefficient directeur $\rho_\mathrm{f}\,g$ ; elle ne varie plus une fois le cylindre
+entièrement immergé. Dans de l'eau salée, on obtient \qty{10,1}{N} par litre immergé, soit
+$\rho_\mathrm{f}=\qty{1,03e3}{kg.m^{-3}}$.
+\end{experience}
+\begin{rediger}
+Avant d'utiliser la relation de Bernoulli, rappeler ses conditions : fluide incompressible, écoulement permanent,
+frottements négligés. Choisir deux points A et B d'une même ligne de courant et préciser ce que l'on sait en chacun :
+« à l'air libre, $p=p_\mathrm{atm}$ » ; « surface libre d'un grand réservoir, $v\approx0$ ».
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-17-1}
+\begin{exercice}[1]{D'où vient la poussée d'Archimède ?}
+Un cube d'arête $a=\qty{10,0}{cm}$ est maintenu immergé dans l'eau, ses faces horizontales, sa face supérieure à
+\qty{20,0}{cm} sous la surface libre.
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; $p_\mathrm{atm}=\qty{1,013e5}{Pa}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la pression de l'eau sur la face supérieure, puis sur la face inférieure du cube.
+\item En déduire les valeurs des forces pressantes exercées sur ces deux faces.
+\item Pourquoi les forces pressantes exercées sur les faces latérales se compensent-elles ? Calculer la valeur de la
+résultante des forces pressantes et la comparer à $\rho_\mathrm{eau}\,V\,g$.
+\item Le cube est descendu \qty{1}{m} plus bas. La résultante change-t-elle ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-2}
+\begin{exercice}[1]{La couronne du roi Hiéron}
+Selon la légende, le roi Hiéron de Syracuse demanda à Archimède de vérifier, sans l'abîmer, que sa couronne était en or
+pur. Suspendue à un dynamomètre, une couronne de masse \qty{1,000}{kg} donne l'indication \qty{9,810}{N} dans l'air et
+\qty{9,180}{N} lorsqu'elle est entièrement immergée dans l'eau.
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$ ; masse volumique de l'or : \qty{19300}{kg.m^{-3}}.
+\end{donnees}
+\begin{questions}
+\item Faire le bilan des forces exercées sur la couronne immergée et calculer la poussée d'Archimède.
+\item En déduire le volume de la couronne.
+\item Calculer sa masse volumique. La couronne est-elle en or pur ?
+\item Quelle indication le dynamomètre aurait-il donnée pour une couronne d'or pur de même masse ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-3}
+\begin{exercice}[1]{Le tuyau d'arrosage}
+Un tuyau d'arrosage remplit un seau de \qty{10,0}{L} en \qty{50}{s}. Son diamètre intérieur vaut \qty{15}{mm} ; on
+visse à son extrémité un embout de \qty{5,0}{mm} de diamètre.
+\begin{questions}
+\item Calculer le débit volumique, en \unit{m^3.s^{-1}} puis en litres par minute.
+\item Calculer la vitesse de l'eau dans le tuyau.
+\item En utilisant la conservation du débit, calculer la vitesse de l'eau à la sortie de l'embout. Par combien
+a-t-elle été multipliée ?
+\item À quelle hauteur monterait un jet vertical sortant de l'embout, frottements négligés ? Pourquoi, sans embout,
+pince-t-on l'extrémité du tuyau pour arroser plus loin ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-4}
+\begin{exercice}[1]{L'effet Venturi}
+De l'eau s'écoule dans une conduite horizontale qui comporte un étranglement, comme sur le schéma de l'essentiel. La
+section de l'étranglement est quatre fois plus petite que celle de la conduite, où l'eau circule à
+\qty{0,50}{m.s^{-1}}.
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{m.s^{-2}}$ ; relation de Bernoulli :
+$p+\frac12\,\rho\,v^2+\rho\,g\,z=\text{constante}$.
+\end{donnees}
+\begin{questions}
+\item Dans quelle partie la vitesse est-elle la plus grande ? Calculer la vitesse dans l'étranglement.
+\item Dans quelle partie la pression est-elle la plus faible ? Calculer la différence de pression entre la conduite et
+l'étranglement.
+\item Dans les tubes verticaux, la différence de hauteur d'eau vérifie $p_\mathrm{A}-p_\mathrm{B}=\rho\,g\,\Delta h$.
+Calculer $\Delta h$.
+\item Lorsqu'on souffle entre deux feuilles de papier tenues verticalement, elles se rapprochent. Expliquer.
+\end{questions}
+\schema{17-venturi}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-5}
+\begin{exercice}[1]{Le tonneau percé}
+Un tonneau rempli d'eau, ouvert à l'air libre, est percé d'un orifice circulaire de \qty{1,0}{cm} de diamètre, situé
+\qty{0,80}{m} sous la surface libre et \qty{0,50}{m} au-dessus du sol. Le jet sort horizontalement.
+\begin{donnees}
+$g=\qty{9,81}{m.s^{-2}}$ ; formule de Torricelli : $v=\sqrt{2\,g\,h}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la vitesse de l'eau à la sortie de l'orifice.
+\item En déduire le débit volumique, en litres par seconde puis en litres par minute.
+\item En utilisant les résultats du chapitre~15, calculer la distance entre le pied du tonneau et le point où le jet
+touche le sol.
+\item Comment évoluent la vitesse du jet et cette distance au cours de la vidange ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-17-6}
+\begin{exercice}[2]{Le ballon-sonde}
+Météo-France lâche chaque jour des ballons-sondes gonflés à l'hélium, qui emportent des instruments de mesure. Au sol,
+le ballon a un volume de \qty{3,0}{m^3} ; l'enveloppe et les instruments ont une masse totale de \qty{1,50}{kg}.
+\begin{donnees}
+Au sol : $\rho_\mathrm{air}=\qty{1,20}{kg.m^{-3}}$ ; $\rho_\mathrm{He}=\qty{0,17}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Faire le bilan des forces exercées sur le système \{ballon, hélium, instruments\} juste après le lâcher, lorsque
+sa vitesse est encore nulle.
+\item Calculer la poussée d'Archimède et le poids du système.
+\item Appliquer la deuxième loi de Newton pour calculer l'accélération du ballon au moment du lâcher.
+\item En altitude, la pression de l'air diminue. Comment évolue le volume du ballon ? Pourquoi finit-il par éclater,
+vers \qty{30}{km} d'altitude ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-7}
+\begin{exercice}[2]{Une artère rétrécie}
+Une plaque d'athérome réduit de moitié le diamètre d'une artère, sur quelques millimètres : c'est une sténose. En
+amont, l'artère a un diamètre de \qty{6,0}{mm} et le sang y circule à \qty{0,40}{m.s^{-1}}. On assimile le sang à un fluide
+incompressible, en écoulement permanent, et l'on néglige les frottements.
+\begin{donnees}
+$\rho_\mathrm{sang}=\qty{1060}{kg.m^{-3}}$ ; $\qty{1}{mmHg}=\qty{133,3}{Pa}$ ; relation de Bernoulli :
+$p+\frac12\,\rho\,v^2+\rho\,g\,z=\text{constante}$.
+\end{donnees}
+\begin{questions}
+\item Calculer le débit sanguin dans l'artère, en \unit{m^3.s^{-1}} puis en litres par minute.
+\item Calculer la vitesse du sang dans la sténose.
+\item L'artère étant horizontale, calculer la chute de pression dans la sténose, en pascals puis en millimètres de
+mercure.
+\item Pourquoi une sténose importante risque-t-elle de faire s'affaisser la paroi de l'artère ? Le médecin entend alors
+un « souffle » au stéthoscope : quelle est son origine ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-8}
+\begin{exercice}[2]{Le débitmètre de Venturi}
+Pour mesurer le débit d'une canalisation horizontale, on y insère un tube de Venturi, comme sur le schéma de
+l'essentiel : la section passe de $S_\mathrm{A}=\qty{20}{cm^2}$ à $S_\mathrm{B}=\qty{5,0}{cm^2}$. La différence des hauteurs
+d'eau dans les tubes verticaux vaut $\Delta h=\qty{12,0}{cm}$.
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{m.s^{-2}}$ ; relation de Bernoulli :
+$p+\frac12\,\rho\,v^2+\rho\,g\,z=\text{constante}$.
+\end{donnees}
+\begin{questions}
+\item Exprimer $v_\mathrm{B}$ en fonction de $v_\mathrm{A}$.
+\item L'eau étant immobile dans les tubes verticaux, justifier que $p_\mathrm{A}-p_\mathrm{B}=\rho\,g\,\Delta h$. En
+déduire que $v_\mathrm{A}=\sqrt{\dfrac{2\,g\,\Delta h}{(S_\mathrm{A}/S_\mathrm{B})^2-1}}$.
+\item Calculer $v_\mathrm{A}$, puis le débit, en litres par seconde et en \unit{m^3.h^{-1}}.
+\item Montrer que le débit est proportionnel à $\sqrt{\Delta h}$. Quelle différence de hauteur lirait-on pour un débit
+double ?
+\end{questions}
+\schema{17-venturi}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-9}
+\begin{exercice}[2]{Simuler la vidange d'un réservoir}
+On reprend le programme de l'essentiel, qui simule la vidange d'un récipient cylindrique par la méthode d'Euler.
+\begin{questions}
+\item \capacite{Capacité numérique}Quelle relation traduit la ligne \code{v = sqrt(2 * g * h)} ? Justifier la ligne
+\code{h = h - s / S * v * dt} par la conservation du débit.
+\item Pourquoi la boucle s'arrête-t-elle ? Que représente la valeur de \code{t} affichée ? Comparer les deux nombres
+affichés.
+\item Modifier le programme pour enregistrer $t$ et $h$ dans des listes, puis tracer $h$ en fonction de $t$. Décrire
+l'allure de la courbe obtenue.
+\item Comment varie la durée de vidange si le diamètre de l'orifice double ? Vérifier avec le programme.
+\item Une mesure donne \qty{152}{s}. Proposer une explication à l'écart observé.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-10}
+\begin{exercice}[2]{Le densimètre}
+Un densimètre est un tube cylindrique lesté, de masse $m=\qty{24,0}{g}$, de section $S=\qty{2,00}{cm^2}$ et de longueur
+$L=\qty{15,0}{cm}$. Il flotte verticalement ; on lit la profondeur à laquelle il s'enfonce.
+\schema{17-ex10}
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la condition d'équilibre du densimètre et montrer que la profondeur immergée vaut $h=\dfrac{m}{\rho\,S}$,
+$\rho$ étant la masse volumique du liquide. Vérifier la valeur indiquée pour l'eau.
+\item Calculer la masse volumique du liquide inconnu.
+\item Quelle est la plus petite masse volumique mesurable avec ce densimètre ?
+\item Calculer la position de la graduation \qty{1100}{kg.m^{-3}}. Les graduations sont-elles régulièrement espacées ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-11}
+\begin{exercice}[2]{Le château d'eau}
+La surface libre de l'eau d'un château d'eau se trouve \qty{35}{m} au-dessus du robinet d'une cuisine, au rez-de-chaussée
+d'un immeuble. Un autre robinet est situé au troisième étage, \qty{9,0}{m} plus haut.
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{m.s^{-2}}$ ; $p_\mathrm{atm}=\qty{1,013e5}{Pa}$ ; relation de Bernoulli :
+$p+\frac12\,\rho\,v^2+\rho\,g\,z=\text{constante}$.
+\end{donnees}
+\begin{questions}
+\item Les robinets étant fermés, l'eau est immobile. Calculer la pression de l'eau au robinet du rez-de-chaussée.
+\item Calculer la pression au robinet du troisième étage. Pourquoi les châteaux d'eau sont-ils construits sur des points
+hauts ?
+\item On ouvre le robinet du rez-de-chaussée. En négligeant les frottements, calculer la vitesse de l'eau à la sortie.
+\item Ce robinet, de section \qty{1,0}{cm^2}, débite en réalité \qty{12}{L} par minute. Calculer la vitesse réelle et
+expliquer l'écart.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-17-12}
+\begin{exercice}[3]{Le tube de Pitot}
+\begin{docu}{1}{Mesurer la vitesse d'un avion}
+Les avions mesurent leur vitesse par rapport à l'air grâce à des tubes de Pitot, fixés sous le nez de l'appareil. Un
+capteur mesure la différence $\Delta p$ entre la pression au point d'arrêt B, où l'air est immobile par rapport à la
+sonde, et la pression au niveau des orifices latéraux A, où l'air s'écoule à la vitesse $v$.
+\end{docu}
+\schema{17-ex12}
+\begin{docu}{2}{Deux phases du vol}
+En croisière, à \qty{11000}{m} d'altitude, $\rho_\mathrm{air}=\qty{0,41}{kg.m^{-3}}$ et le capteur indique
+$\Delta p=\qty{12,8}{kPa}$. Au niveau du sol, $\rho_\mathrm{air}=\qty{1,22}{kg.m^{-3}}$ ; l'avion décolle à \qty{280}{km.h^{-1}}.
+\end{docu}
+\begin{donnees}
+Relation de Bernoulli : $p+\frac12\,\rho\,v^2+\rho\,g\,z=\text{constante}$ ; on néglige la différence d'altitude entre A et B
+et la compressibilité de l'air.
+\end{donnees}
+\begin{questions}
+\item En appliquant la relation de Bernoulli entre un point de l'écoulement à la vitesse $v$ et le point d'arrêt, montrer
+que $\Delta p=\frac12\,\rho_\mathrm{air}\,v^2$.
+\item Calculer la vitesse de l'avion en croisière, en \unit{m.s^{-1}} puis en \unit{km.h^{-1}}.
+\item Quelle différence de pression le capteur mesure-t-il au moment du décollage ?
+\item \initiative En croisière, quelle vitesse afficherait un instrument qui utiliserait toujours la masse volumique de
+l'air au sol ? Sachant que la portance des ailes est proportionnelle à $\frac12\,\rho_\mathrm{air}\,v^2$, expliquer pourquoi
+cette « vitesse indiquée » reste très utile au pilote.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-13}
+\begin{exercice}[3]{La lance à incendie}
+\begin{docu}{1}{Le matériel}
+Une lance à incendie est alimentée par un tuyau de \qty{70}{mm} de diamètre intérieur ; son embout de sortie a un
+diamètre de \qty{22}{mm}. Le débit vaut \qty{500}{L} par minute.
+\end{docu}
+\begin{docu}{2}{Sur le terrain}
+Les pompiers savent qu'un jet dirigé verticalement monte en pratique jusqu'à environ \qty{18}{m}, nettement moins
+haut que ce que prévoit le modèle sans frottement.
+\end{docu}
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{m.s^{-2}}$ ; relation de Bernoulli :
+$p+\frac12\,\rho\,v^2+\rho\,g\,z=\text{constante}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la vitesse de l'eau dans le tuyau et à la sortie de la lance.
+\item La lance est horizontale. Calculer la surpression $p-p_\mathrm{atm}$ nécessaire à l'entrée de la lance.
+\item \initiative Calculer la hauteur maximale que pourrait atteindre un jet vertical en l'absence de frottements. Un
+pompier peut-il, en théorie, atteindre le toit d'un immeuble de \qty{20}{m} ?
+\item Proposer des explications à l'écart avec le document~2.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-14}
+\begin{exercice}[3]{La montgolfière}
+\begin{docu}{1}{Une enveloppe d'air chaud}
+Une montgolfière a une enveloppe de \qty{2500}{m^3}, ouverte à sa base. La masse de l'enveloppe, de la nacelle, du
+brûleur et des bouteilles de gaz vaut \qty{400}{kg}. Le brûleur maintient l'air intérieur à \qty{100}{\degreeCelsius}.
+\end{docu}
+\begin{docu}{2}{Masse volumique de l'air}
+À la pression atmosphérique, la masse volumique de l'air vaut $\rho=\dfrac{353}{T}$, en \unit{kg.m^{-3}}, la température $T$
+étant exprimée en kelvins ($T=\theta+273$).
+\end{docu}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$ ; masse moyenne d'un passager, pilote compris : \qty{80}{kg} ; on néglige le volume de la
+nacelle et des passagers.
+\end{donnees}
+\begin{questions}
+\item Faire le bilan des forces exercées sur le système \{montgolfière, air chaud, passagers\} et écrire la condition de
+décollage.
+\item Calculer la masse volumique de l'air extérieur à \qty{15}{\degreeCelsius} et celle de l'air chaud. Calculer la poussée
+d'Archimède et le poids de l'air chaud.
+\item \initiative Combien de personnes la montgolfière peut-elle emporter par une matinée à \qty{15}{\degreeCelsius} ?
+\item Reprendre le calcul pour un après-midi d'été à \qty{30}{\degreeCelsius}. Pourquoi les vols ont-ils lieu tôt le matin
+ou en fin de journée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-17-15}
+\begin{exercice}[3]{La centrale de haute chute}
+\begin{docu}{1}{Une conduite forcée}
+Dans une centrale hydroélectrique de montagne, l'eau d'un lac de retenue descend dans une conduite forcée de
+\qty{2,0}{m} de diamètre jusqu'à la turbine, située \qty{600}{m} sous la surface du lac. Le débit vaut
+\qty{20}{m^3.s^{-1}}.
+\end{docu}
+\begin{docu}{2}{Puissance disponible}
+La puissance hydraulique que l'eau peut céder à la turbine vaut $P=\rho\,g\,h\,D_V$, $h$ étant la hauteur de chute. La
+turbine et l'alternateur ont un rendement global de 90~\%. Un foyer consomme en moyenne \qty{4,5}{MWh} d'électricité
+par an.
+\end{docu}
+\begin{donnees}
+$\rho_\mathrm{eau}=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{m.s^{-2}}$ ; $p_\mathrm{atm}=\qty{1,013e5}{Pa}$ ; relation de Bernoulli :
+$p+\frac12\,\rho\,v^2+\rho\,g\,z=\text{constante}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la vitesse de l'eau dans la conduite forcée.
+\item En négligeant les frottements, appliquer la relation de Bernoulli entre la surface du lac et l'entrée de la
+turbine pour calculer la pression de l'eau à l'entrée de la turbine. Commenter l'importance du terme
+$\frac12\,\rho\,v^2$.
+\item Calculer la puissance hydraulique, puis la puissance électrique de la centrale.
+\item \initiative La centrale fonctionne \num{3000} heures par an. Combien de foyers peut-elle alimenter ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

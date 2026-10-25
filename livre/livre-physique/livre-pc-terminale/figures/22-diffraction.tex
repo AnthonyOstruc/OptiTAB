@@ -1,0 +1,25 @@
+% Diffraction d'un faisceau laser par une fente : angle caractéristique et tache centrale (L'essentiel, chapitre 22)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% laser
+\fill[otInk!70,rounded corners=1pt] (-1.6,-0.18) rectangle (-0.6,0.18);
+\node[pcLegende,anchor=north] at (-1.1,-0.22) {laser};
+\draw[otRed!80!black,line width=1.2pt] (-0.6,0) -- (1.0,0);
+% fente
+\fill[otInk!70] (1.0,0.12) rectangle (1.12,1.3) (1.0,-0.12) rectangle (1.12,-1.3);
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.1mm]}-{Stealth[length=1.1mm]}] (0.8,-0.12) -- (0.8,0.12);
+\node[pcLegende,anchor=east] at (0.75,0) {$a$};
+% faisceau diffracté
+\fill[otRed!25] (1.12,0.06) -- (6.0,1.0) -- (6.0,-1.0) -- (1.12,-0.06) -- cycle;
+\draw[otRed!70!black,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (1.12,0) -- (6.0,1.0);
+\draw[otMuted,line width=0.4pt] (1.12,0) -- (6.0,0);
+\draw[otMuted,line width=0.4pt] (3.0,0) arc[start angle=0,end angle=11.6,radius=1.88];
+\node[pcLegende,anchor=west] at (3.05,0.22) {$\theta$};
+% écran
+\fill[otMuted!30] (6.0,-1.6) rectangle (6.12,1.6);
+\fill[otRed!90] (6.12,-1.0) rectangle (6.32,1.0);
+\foreach \y in {1.25,-1.45}{\fill[otRed!35] (6.12,\y) rectangle (6.32,\y+0.2);}
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.2mm]}-{Stealth[length=1.2mm]}] (6.55,-1.0) -- (6.55,1.0) node[pos=0.5,pcLegende,anchor=west] {$L$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.2mm]}-{Stealth[length=1.2mm]}] (1.12,-1.75) -- (6.0,-1.75) node[pos=0.5,pcLegende,anchor=north] {$D$};
+\node[pcLegende,anchor=south] at (6.2,1.65) {écran};
+\end{tikzpicture}
+\par\smallskip\legende{La lumière s'étale bien au-delà du faisceau incident : la tache centrale, de largeur $L$, est bordée de taches plus faibles.}

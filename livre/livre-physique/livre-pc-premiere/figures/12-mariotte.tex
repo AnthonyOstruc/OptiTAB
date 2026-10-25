@@ -1,0 +1,18 @@
+% Loi de Mariotte : pression en fonction du volume, puis de l'inverse du volume (L'essentiel, chapitre 12)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=74mm,height=52mm,xmin=0,xmax=70,ymin=0,ymax=3500,
+  xtick={0,10,...,60},ytick={0,1000,2000,3000},
+  xlabel={$V$ (mL)},ylabel={$P$ (hPa)},name=g1]
+\addplot[otNavy,line width=1.1pt,domain=17:70,samples=60] {60780/x};
+\addplot[only marks,mark=*,mark size=1.5pt,otOrange!85!black] coordinates {(60,1013) (50,1216) (40,1520) (30,2026) (20,3039)};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:33,2700) {$P\times V=\text{constante}$};
+\end{axis}
+\begin{axis}[otMesures,otAxesBout,width=74mm,height=52mm,xmin=0,xmax=6,ymin=0,ymax=3500,
+  xtick={0,1,...,5},ytick={0,1000,2000,3000},
+  xlabel={$\dfrac{1}{V}$ ($10^{-2}$ \unit{mL^{-1}})},ylabel={$P$ (hPa)},at={(g1.east)},anchor=west,xshift=14mm]
+\addplot[otNavy,line width=1.1pt,domain=0:5.6] {607.8*x};
+\addplot[only marks,mark=*,mark size=1.5pt,otOrange!85!black] coordinates {(1.667,1013) (2,1216) (2.5,1520) (3.333,2026) (5,3039)};
+\node[pcLegende,anchor=west,text=otNavy,align=left] at (axis cs:0.4,2700) {droite passant\\par l'origine};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Air enfermé dans une seringue, à température constante : la pression est inversement proportionnelle au volume.}

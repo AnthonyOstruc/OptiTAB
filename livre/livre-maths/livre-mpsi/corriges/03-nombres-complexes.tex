@@ -1,0 +1,506 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 3 — Nombres complexes
+%% Résultats vérifiés par verifications/chapitre_03.py.
+
+\corrigesChapitre{3}{Nombres complexes}
+\corrigesSouples
+
+\begin{blocLivre}{cor-3-1}
+\begin{corrige}{1}{Forme algébrique : calculs}
+\demarche{Développer avec $\mathrm{i}^{2}=-1$ ; pour un quotient, multiplier par le conjugué du dénominateur.}
+\begin{questions}
+  \item $(2+\mathrm{i})(3-2\mathrm{i})=6-4\mathrm{i}+3\mathrm{i}+2=\res{8-\mathrm{i}}$.
+  \item $(1+\mathrm{i})^{2}=1+2\mathrm{i}-1=\res{2\mathrm{i}}$.
+  \item $\dfrac{1}{1+\mathrm{i}}=\dfrac{1-\mathrm{i}}{(1+\mathrm{i})(1-\mathrm{i})}
+    =\res{\dfrac12-\dfrac{\mathrm{i}}{2}}$.
+  \item $\dfrac{1+\mathrm{i}}{2-\mathrm{i}}=\dfrac{(1+\mathrm{i})(2+\mathrm{i})}{5}
+    =\dfrac{1+3\mathrm{i}}{5}=\res{\dfrac15+\dfrac{3\mathrm{i}}{5}}$.
+  \item $2026=4\times506+2$, donc $\mathrm{i}^{2026}=\mathrm{i}^{2}=\res{-1}$.
+  \item $(2-3\mathrm{i})(2+3\mathrm{i})=4+9=\res{13}$ : un produit $z\overline{z}=|z|^{2}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-2}
+\begin{corrige}{2}{Dans le plan complexe}
+\demarche{Traduire chaque condition sur $z$ en une propriété géométrique du point $M(z)$.}
+\begin{questions}
+  \item Le conjugué s'obtient par symétrie par rapport à l'axe réel :
+    $2+\mathrm{i}$ et $2-\mathrm{i}$, $-1+2\mathrm{i}$ et $-1-2\mathrm{i}$,
+    $-2\mathrm{i}$ et $2\mathrm{i}$.
+  \item $\operatorname{Re}(z)=2$ : la droite verticale d'équation $x=2$.\quad
+    $|z-\mathrm{i}|=2$ : le cercle de centre $\mathrm{i}$ et de rayon $2$.\quad
+    $|z|\leq3$ : le disque fermé de centre $O$ et de rayon $3$.
+  \item $z=\overline{z}\iff z\in\R$ (axe réel) ; $z=-\overline{z}\iff z$
+    imaginaire pur (axe imaginaire).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-3}
+\begin{corrige}{3}{Conjugué et module : calculs}
+\demarche{Utiliser les propriétés du module plutôt que de tout développer.}
+\begin{questions}
+  \item $|3+4\mathrm{i}|=\sqrt{9+16}=\res{5}$ ;\quad $|1-\mathrm{i}|=\res{\sqrt2}$ ;\quad
+    $|-2\mathrm{i}|=\res{2}$.
+  \item $z\overline{z}=(3+4\mathrm{i})(3-4\mathrm{i})=9+16=25=|z|^{2}$.
+  \item $|(3+4\mathrm{i})(1-\mathrm{i})|=|3+4\mathrm{i}|\times|1-\mathrm{i}|=\res{5\sqrt2}$.
+  \item $\Bigl|\dfrac{1}{2-\mathrm{i}}\Bigr|=\dfrac{1}{|2-\mathrm{i}|}=\dfrac{1}{\sqrt5}
+    =\res{\dfrac{\sqrt5}{5}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-4}
+\begin{corrige}{4}{Mettre sous forme trigonométrique}
+\demarche{Calculer le module, puis reconnaître $\cos\theta$ et $\sin\theta$ sur le cercle.}
+\begin{questions}
+  \item $|1+\mathrm{i}|=\sqrt2$ et $\dfrac{1+\mathrm{i}}{\sqrt2}=\mathrm{e}^{\mathrm{i}\pi/4}$ :
+    $\res{1+\mathrm{i}=\sqrt2\,\mathrm{e}^{\mathrm{i}\pi/4}}$.
+  \item $|\sqrt3-\mathrm{i}|=2$ : $\res{\sqrt3-\mathrm{i}=2\,\mathrm{e}^{-\mathrm{i}\pi/6}}$.
+  \item $\res{-2=2\,\mathrm{e}^{\mathrm{i}\pi}}$ (le module doit rester positif !).
+  \item $\res{3\mathrm{i}=3\,\mathrm{e}^{\mathrm{i}\pi/2}}$.
+  \item Modules $\sqrt2\times2$ et arguments $\dfrac{\pi}{4}+\dfrac{\pi}{6}$ :
+    $\res{(1+\mathrm{i})(\sqrt3+\mathrm{i})=2\sqrt2\,\mathrm{e}^{\mathrm{i}5\pi/12}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-5}
+\begin{corrige}{5}{Linéariser avec les formules d'Euler}
+\demarche{Euler, binôme, puis regrouper les exponentielles conjuguées deux à deux.}
+Avec $\mathrm{e}=\mathrm{e}^{\mathrm{i}t}$ :
+\[
+  \cos^{2}t=\Bigl(\frac{\mathrm{e}+\mathrm{e}^{-1}}{2}\Bigr)^{2}
+  =\frac{\mathrm{e}^{2}+2+\mathrm{e}^{-2}}{4}
+  =\res{\frac{1+\cos(2t)}{2}}.
+\]
+\[
+  \sin^{3}t=\Bigl(\frac{\mathrm{e}-\mathrm{e}^{-1}}{2\mathrm{i}}\Bigr)^{3}
+  =\frac{\mathrm{e}^{3}-3\mathrm{e}+3\mathrm{e}^{-1}-\mathrm{e}^{-3}}{-8\mathrm{i}}
+  =\frac{2\mathrm{i}\sin(3t)-6\mathrm{i}\sin t}{-8\mathrm{i}}
+  =\res{\frac{3\sin t-\sin(3t)}{4}}.
+\]
+Enfin, $\cos t\sin^{2}t=\cos t\cdot\dfrac{1-\cos(2t)}{2}
+=\dfrac{\cos t}{2}-\dfrac{\cos t\cos(2t)}{2}
+=\dfrac{\cos t}{2}-\dfrac{\cos(3t)+\cos t}{4}
+=\res{\dfrac{\cos t-\cos(3t)}{4}}$.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-6}
+\begin{corrige}{6}{La formule de Moivre}
+\demarche{Développer par le binôme, puis identifier parties réelle et imaginaire.}
+Avec $c=\cos t$ et $s=\sin t$ :
+\[
+  (c+\mathrm{i}s)^{3}=c^{3}+3\mathrm{i}c^{2}s-3cs^{2}-\mathrm{i}s^{3}
+  =\bigl(c^{3}-3cs^{2}\bigr)+\mathrm{i}\bigl(3c^{2}s-s^{3}\bigr).
+\]
+La formule de Moivre identifie ce développement à $\cos(3t)+\mathrm{i}\sin(3t)$ :
+\[
+  \res{\cos(3t)=c^{3}-3cs^{2}}\qquad\text{et}\qquad\res{\sin(3t)=3c^{2}s-s^{3}}.
+\]
+Avec $s^{2}=1-c^{2}$, la première devient $\cos(3t)=4c^{3}-3c$ : c'est bien
+la formule de l'exercice 15 du chapitre 2.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-7}
+\begin{corrige}{7}{Second degré à coefficients réels}
+\demarche{Discriminant négatif : les racines sont conjuguées, en $\frac{-b\pm\mathrm{i}\sqrt{-\Delta}}{2a}$.}
+\begin{questions}
+  \item $\Delta=1-4=-3$ :
+    $\res{\mathcal{S}=\Bigl\{\dfrac{-1-\mathrm{i}\sqrt3}{2}\,;\ \dfrac{-1+\mathrm{i}\sqrt3}{2}\Bigr\}}$
+    — ce sont $j^{2}$ et $j$.
+  \item $\Delta=4-20=-16$ : $z=\dfrac{2\pm4\mathrm{i}}{2}$ :
+    $\res{\mathcal{S}=\ens{1-2\mathrm{i}\,;\ 1+2\mathrm{i}}}$.
+  \item $z^{2}=-4$ : $\res{\mathcal{S}=\ens{-2\mathrm{i}\,;\ 2\mathrm{i}}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-8}
+\begin{corrige}{8}{Trois chemins vers $-64$}
+\demarche{Passer en forme trigonométrique : les puissances deviennent immédiates.}
+\begin{questions}
+  \item $1+\mathrm{i}=\sqrt2\,\mathrm{e}^{\mathrm{i}\pi/4}$, donc
+    $(1+\mathrm{i})^{12}=2^{6}\,\mathrm{e}^{3\mathrm{i}\pi}=\res{-64}$.
+  \item $\sqrt3+\mathrm{i}=2\,\mathrm{e}^{\mathrm{i}\pi/6}$, donc
+    $(\sqrt3+\mathrm{i})^{6}=2^{6}\,\mathrm{e}^{\mathrm{i}\pi}=\res{-64}$.
+  \item $\dfrac{1+\mathrm{i}\sqrt3}{1-\mathrm{i}}
+    =\dfrac{2\,\mathrm{e}^{\mathrm{i}\pi/3}}{\sqrt2\,\mathrm{e}^{-\mathrm{i}\pi/4}}
+    =\sqrt2\,\mathrm{e}^{\mathrm{i}7\pi/12}$, donc la puissance douzième vaut
+    $2^{6}\,\mathrm{e}^{7\mathrm{i}\pi}=\res{-64}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-9}
+\begin{corrige}{9}{Un quotient qui donne $\cos\frac{\pi}{12}$}
+\demarche{Calculer le même nombre de deux façons, puis identifier.}
+\begin{questions}
+  \item $Z=\dfrac{(1+\mathrm{i}\sqrt3)(1-\mathrm{i})}{2}
+    =\dfrac{1+\sqrt3}{2}+\mathrm{i}\,\dfrac{\sqrt3-1}{2}$.
+  \item $1+\mathrm{i}\sqrt3=2\,\mathrm{e}^{\mathrm{i}\pi/3}$ et
+    $1+\mathrm{i}=\sqrt2\,\mathrm{e}^{\mathrm{i}\pi/4}$, donc
+    $|Z|=\dfrac{2}{\sqrt2}=\sqrt2$ et
+    $\arg Z\equiv\dfrac{\pi}{3}-\dfrac{\pi}{4}=\dfrac{\pi}{12}\ [2\pi]$ :
+    $Z=\sqrt2\,\mathrm{e}^{\mathrm{i}\pi/12}$.
+  \item En identifiant $Z=\sqrt2\cos\dfrac{\pi}{12}+\mathrm{i}\sqrt2\sin\dfrac{\pi}{12}$
+    avec la forme algébrique :
+    \[
+      \cos\frac{\pi}{12}=\frac{1+\sqrt3}{2\sqrt2}=\res{\frac{\sqrt6+\sqrt2}{4}},
+      \qquad
+      \sin\frac{\pi}{12}=\frac{\sqrt3-1}{2\sqrt2}=\res{\frac{\sqrt6-\sqrt2}{4}},
+    \]
+    en accord avec le chapitre 2 (formules d'addition).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-10}
+\begin{corrige}{10}{Autour de l'inégalité triangulaire}
+\demarche{Appliquer l'inégalité triangulaire à des découpages bien choisis : $z=(z-z')+z'$.}
+\begin{questions}
+  \item $|z|=|(z-z')+z'|\leq|z-z'|+|z'|$ donne $|z|-|z'|\leq|z-z'|$ ; en
+    échangeant les rôles, $|z'|-|z|\leq|z-z'|$ : d'où
+    $\bigl||z|-|z'|\bigr|\leq|z-z'|$.
+  \item Pour $|z|\leq1$ : $|z^{2}+z|\leq|z|^{2}+|z|\leq1+1=2$ ; et
+    $|1+z|\geq|1|-|z|=1-|z|$ d'après la question 1 (appliquée à $1$ et $-z$).
+  \item Il y a égalité si et seulement si $z'=0$ ou $z=\lambda z'$ avec
+    $\lambda\geq0$ : les vecteurs images sont colinéaires \emph{de même
+    sens}, c'est-à-dire que $O$, $M(z)$, $M(z')$ sont sur une même
+    demi-droite issue de l'origine.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-11}
+\begin{corrige}{11}{La technique de l'angle moitié}
+\demarche{Factoriser par l'exponentielle de l'angle moitié, puis lire module et argument.}
+\begin{questions}
+  \item $1+\mathrm{e}^{\mathrm{i}t}
+    =\mathrm{e}^{\mathrm{i}t/2}\bigl(\mathrm{e}^{-\mathrm{i}t/2}+\mathrm{e}^{\mathrm{i}t/2}\bigr)
+    =2\cos\dfrac{t}{2}\,\mathrm{e}^{\mathrm{i}t/2}$ (formule d'Euler) ; de même,
+    $1-\mathrm{e}^{\mathrm{i}t}
+    =\mathrm{e}^{\mathrm{i}t/2}\bigl(\mathrm{e}^{-\mathrm{i}t/2}-\mathrm{e}^{\mathrm{i}t/2}\bigr)
+    =-2\mathrm{i}\sin\dfrac{t}{2}\,\mathrm{e}^{\mathrm{i}t/2}$.
+  \item $\mathrm{e}^{\mathrm{i}p}+\mathrm{e}^{\mathrm{i}q}
+    =\mathrm{e}^{\mathrm{i}\frac{p+q}{2}}
+    \bigl(\mathrm{e}^{\mathrm{i}\frac{p-q}{2}}+\mathrm{e}^{-\mathrm{i}\frac{p-q}{2}}\bigr)
+    =2\cos\dfrac{p-q}{2}\,\mathrm{e}^{\mathrm{i}\frac{p+q}{2}}$.
+    La partie réelle de cette égalité donne
+    $\cos p+\cos q=2\cos\dfrac{p+q}{2}\cos\dfrac{p-q}{2}$.
+  \item Pour $t\in\intOO{-\pi}{\pi}$, $\cos\dfrac{t}{2}>0$ : le module est
+    $\res{2\cos\dfrac{t}{2}}$ et un argument est $\res{\dfrac{t}{2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-12}
+\begin{corrige}{12}{Sommes trigonométriques}
+\demarche{Une somme de cosinus est la partie réelle d'une somme géométrique complexe.}
+\begin{questions}
+  \item Comme $t\not\equiv0\ [2\pi]$, $\mathrm{e}^{\mathrm{i}t}\neq1$ et la somme
+    géométrique vaut
+    \[
+      \sum_{k=0}^{n}\mathrm{e}^{\mathrm{i}kt}
+      =\frac{1-\mathrm{e}^{\mathrm{i}(n+1)t}}{1-\mathrm{e}^{\mathrm{i}t}}
+      =\frac{-2\mathrm{i}\sin\bigl(\frac{(n+1)t}{2}\bigr)\mathrm{e}^{\mathrm{i}(n+1)t/2}}
+            {-2\mathrm{i}\sin\bigl(\frac{t}{2}\bigr)\mathrm{e}^{\mathrm{i}t/2}}
+      =\res{\mathrm{e}^{\mathrm{i}nt/2}\,
+        \frac{\sin\bigl(\frac{(n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}},
+    \]
+    en factorisant numérateur et dénominateur par l'angle moitié.
+  \item En prenant parties réelle et imaginaire :
+    \[
+      \sum_{k=0}^{n}\cos(kt)=\cos\frac{nt}{2}\,
+        \frac{\sin\bigl(\frac{(n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}
+      \qquad\text{et}\qquad
+      \sum_{k=0}^{n}\sin(kt)=\sin\frac{nt}{2}\,
+        \frac{\sin\bigl(\frac{(n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}.
+    \]
+  \item Si $t\equiv0\ [2\pi]$ : tous les cosinus valent $1$ et tous les sinus
+    sont nuls, d'où $n+1$ et $0$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-13}
+\begin{corrige}{13}{Racines carrées et second degré complexe}
+\demarche{Identifier parties réelle et imaginaire, et ajouter l'équation des modules.}
+\begin{questions}
+  \item Cherchons $(x+\mathrm{i}y)^{2}=3+4\mathrm{i}$ :
+    $x^{2}-y^{2}=3$, $2xy=4$ et $x^{2}+y^{2}=|3+4\mathrm{i}|=5$. D'où
+    $x^{2}=4$, $y^{2}=1$, avec $xy>0$ :
+    les racines carrées sont $\res{\pm(2+\mathrm{i})}$.
+    De même pour $-5+12\mathrm{i}$ ($|{-5+12\mathrm{i}}|=13$) :
+    $x^{2}=4$, $y^{2}=9$, $xy>0$ : $\res{\pm(2+3\mathrm{i})}$.
+  \item $\Delta=(3+2\mathrm{i})^{2}-4(5+5\mathrm{i})=5+12\mathrm{i}-20-20\mathrm{i}
+    =-15-8\mathrm{i}$. Cherchons $\delta=x+\mathrm{i}y$ avec $\delta^{2}=\Delta$ :
+    $x^{2}-y^{2}=-15$, $2xy=-8$, $x^{2}+y^{2}=17$, d'où $x^{2}=1$, $y^{2}=16$,
+    $xy<0$ : $\delta=1-4\mathrm{i}$ convient. Alors
+    \[
+      z=\frac{(3+2\mathrm{i})\pm(1-4\mathrm{i})}{2} :
+      \qquad\res{\mathcal{S}=\ens{2-\mathrm{i}\,;\ 1+3\mathrm{i}}}.
+    \]
+    Vérification : somme $=3+2\mathrm{i}$ et produit
+    $=(2-\mathrm{i})(1+3\mathrm{i})=5+5\mathrm{i}$ — ce sont bien $-b$ et $c$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-14}
+\begin{corrige}{14}{Somme et produit imposés}
+\demarche{Deux nombres de somme $s$ et de produit $p$ sont les racines de $z^{2}-sz+p=0$.}
+\begin{questions}
+  \item Ce sont les racines de $z^{2}-2z+2=0$ : $\Delta=-4$, d'où le couple
+    $\res{\ens{1-\mathrm{i}\,;\ 1+\mathrm{i}}}$.
+  \item Racines de $z^{2}-z+1=0$ : $\Delta=-3$, d'où
+    $z=\dfrac{1\pm\mathrm{i}\sqrt3}{2}$, c'est-à-dire
+    $\res{\mathrm{e}^{\mathrm{i}\pi/3}\ \text{et}\ \mathrm{e}^{-\mathrm{i}\pi/3}}$.
+  \item $z_1+z_2=-\dfrac{b}{a}$ et $z_1z_2=\dfrac{c}{a}$. Pour la question 1 :
+    $(1-\mathrm{i})+(1+\mathrm{i})=2$ et $(1-\mathrm{i})(1+\mathrm{i})=2$ — cohérent.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-15}
+\begin{corrige}{15}{La transformation $a\cos t+b\sin t$}
+\demarche{Factoriser par $\sqrt{a^{2}+b^{2}}$ et reconnaître un cosinus de différence.}
+\begin{questions}
+  \item $\cos t+\sin t=\sqrt2\Bigl(\dfrac{\sqrt2}{2}\cos t+\dfrac{\sqrt2}{2}\sin t\Bigr)
+    =\res{\sqrt2\cos\Bigl(t-\dfrac{\pi}{4}\Bigr)}$.
+  \item $\sqrt3\cos t-\sin t=2\Bigl(\dfrac{\sqrt3}{2}\cos t-\dfrac12\sin t\Bigr)
+    =\res{2\cos\Bigl(t+\dfrac{\pi}{6}\Bigr)}$.
+  \item L'équation devient $\cos\Bigl(t-\dfrac{\pi}{4}\Bigr)=\dfrac{1}{\sqrt2}
+    =\cos\dfrac{\pi}{4}$, d'où $t-\dfrac{\pi}{4}\equiv\pm\dfrac{\pi}{4}\ [2\pi]$ :
+    $\res{t\equiv0\ [2\pi]\ \text{ou}\ t\equiv\dfrac{\pi}{2}\ [2\pi]}$.
+  \item $f(t)=5\cos(t-\varphi)$ avec $\cos\varphi=\dfrac35$,
+    $\sin\varphi=\dfrac45$ : le maximum est $\res{5}$ et le minimum $\res{-5}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-16}
+\begin{corrige}{16}{Le nombre $j$ et les racines de l'unité}
+\demarche{Tout repose sur $j^{3}=1$ et $1+j+j^{2}=0$.}
+\begin{questions}
+  \item $j^{3}=\mathrm{e}^{2\mathrm{i}\pi}=1$ ; la somme $1+j+j^{2}$ est une somme
+    géométrique : $\dfrac{1-j^{3}}{1-j}=0$ ; enfin
+    $j^{2}=\mathrm{e}^{-2\mathrm{i}\pi/3}=\overline{j}$, et $j\,j^{2}=1$ donne
+    $j^{2}=\dfrac1j$.
+  \item $1+j=-j^{2}$, donc $(1+j)^{3}=-j^{6}=\res{-1}$.
+  \item $\mathbb{U}_4=\ens{1,\mathrm{i},-1,-\mathrm{i}}$. Pour $n\geq2$, avec
+    $\omega=\mathrm{e}^{2\mathrm{i}\pi/n}\neq1$ :
+    $\displaystyle\sum_{k=0}^{n-1}\omega^{k}=\frac{1-\omega^{n}}{1-\omega}=0$.
+  \item En développant :
+    $(a+jb)(a+j^{2}b)=a^{2}+(j+j^{2})ab+j^{3}b^{2}=a^{2}-ab+b^{2}$, puis
+    $(a+b)(a^{2}-ab+b^{2})=\res{a^{3}+b^{3}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-17}
+\begin{corrige}{17}{Racines $n$-ièmes d'un nombre complexe}
+\demarche{Écrire le second membre en forme trigonométrique, puis diviser l'argument par $n$.}
+\begin{questions}
+  \item $8\mathrm{i}=8\,\mathrm{e}^{\mathrm{i}\pi/2}$ : les racines cubiques sont
+    $2\,\mathrm{e}^{\mathrm{i}(\pi/6+2k\pi/3)}$ pour $k=0,1,2$, soit
+    \[
+      \res{\sqrt3+\mathrm{i},\quad -\sqrt3+\mathrm{i},\quad -2\mathrm{i}}.
+    \]
+  \item $-4=4\,\mathrm{e}^{\mathrm{i}\pi}$ : les racines quatrièmes ont pour module
+    $\sqrt2$ et pour arguments $\dfrac{\pi}{4}+k\dfrac{\pi}{2}$ :
+    ce sont $\res{\pm1\pm\mathrm{i}}$. Vérification directe :
+    $(1+\mathrm{i})^{2}=2\mathrm{i}$, donc $(1+\mathrm{i})^{4}=-4$.
+  \item $\mathbb{U}_6=\ens{\pm1,\ \pm j,\ \pm j^{2}}
+    =\bigl\{\mathrm{e}^{\mathrm{i}k\pi/3},\ k=0,\dots,5\bigr\}$ : un hexagone
+    régulier inscrit dans le cercle unité.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-18}
+\begin{corrige}{18}{L'exponentielle complexe}
+\demarche{Module $\mathrm{e}^{x}$, argument $y$ : séparer systématiquement partie réelle et partie imaginaire.}
+\begin{questions}
+  \item $\mathrm{e}^{2+\mathrm{i}\pi/3}=\mathrm{e}^{2}\Bigl(\cos\dfrac{\pi}{3}
+    +\mathrm{i}\sin\dfrac{\pi}{3}\Bigr)
+    =\res{\dfrac{\mathrm{e}^{2}}{2}+\mathrm{i}\,\dfrac{\mathrm{e}^{2}\sqrt3}{2}}$.
+  \item $|\mathrm{e}^{z}|=\mathrm{e}^{x}$ et $\arg(\mathrm{e}^{z})\equiv y\ [2\pi]$.
+    Comme $\mathrm{e}^{x}>0$, l'exponentielle ne s'annule jamais.
+  \item $-2=2\,\mathrm{e}^{\mathrm{i}\pi}$ :
+    $\res{z=\ln2+\mathrm{i}\pi+2\mathrm{i}k\pi,\ k\in\Z}$.
+  \item $1+\mathrm{i}=\sqrt2\,\mathrm{e}^{\mathrm{i}\pi/4}$ :
+    $\res{z=\dfrac{\ln2}{2}+\mathrm{i}\dfrac{\pi}{4}+2\mathrm{i}k\pi,\ k\in\Z}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-19}
+\begin{corrige}{19}{Alignement, angle droit, triangle équilatéral}
+\demarche{Tout se lit sur le quotient $\frac{c-a}{b-a}$ : module pour les longueurs, argument pour l'angle.}
+\begin{questions}
+  \item $\dfrac{c-a}{b-a}=\dfrac{6+3\mathrm{i}}{2+\mathrm{i}}=\dfrac{3(2+\mathrm{i})}{2+\mathrm{i}}=3\in\R$ :
+    les points sont \res{\text{alignés}} (et $\vect{AC}=3\,\vect{AB}$).
+  \item $\dfrac{c-a}{b-a}=\dfrac{-2+\mathrm{i}}{1+2\mathrm{i}}
+    =\dfrac{(-2+\mathrm{i})(1-2\mathrm{i})}{5}=\dfrac{5\mathrm{i}}{5}=\mathrm{i}$ :
+    imaginaire pur de module $1$, donc le triangle est
+    \res{\text{rectangle isocèle en } A} (angle droit, $AB=AC$).
+  \item $ABC$ est équilatéral direct si et seulement si $C$ est l'image de
+    $B$ par la rotation de centre $A$ et d'angle $\dfrac{\pi}{3}$ :
+    $c-a=\mathrm{e}^{\mathrm{i}\pi/3}(b-a)$. Or
+    $-j^{2}=\mathrm{e}^{\mathrm{i}\pi}\,\mathrm{e}^{4\mathrm{i}\pi/3}=\mathrm{e}^{7\mathrm{i}\pi/3}
+    =\mathrm{e}^{\mathrm{i}\pi/3}$, donc la condition s'écrit
+    $c-a=-j^{2}(b-a)$, c'est-à-dire $ja+j^{2}b+c=0$ en utilisant
+    $1+j^{2}=-j$. En multipliant enfin par $j^{2}$ (avec $j^{3}=1$), on
+    obtient la forme symétrique annoncée : $a+jb+j^{2}c=0$.
+  \item Pour $a=0$, $b=2$, $c=1+\mathrm{i}\sqrt3=2\,\mathrm{e}^{\mathrm{i}\pi/3}$ :
+    $a+jb+j^{2}c=2j+2\,\mathrm{e}^{\mathrm{i}(4\pi/3+\pi/3)}
+    =2\,\mathrm{e}^{2\mathrm{i}\pi/3}+2\,\mathrm{e}^{-\mathrm{i}\pi/3}=0$,
+    car les deux exponentielles sont opposées. Le triangle est bien
+    équilatéral (côté $2$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-20}
+\begin{corrige}{20}{Transformations du plan}
+\demarche{Chercher le point fixe, puis factoriser $f(z)-\omega$.}
+\begin{questions}
+  \item Translation de vecteur d'affixe $2-\mathrm{i}$ ; homothétie de centre
+    $O$ et de rapport $2$ ; rotation de centre $O$ et d'angle
+    $\dfrac{\pi}{4}$ ; réflexion d'axe $(Ox)$.
+  \item $\omega=(1+\mathrm{i})\omega+2-\mathrm{i}$ donne
+    $\omega=\dfrac{2-\mathrm{i}}{-\mathrm{i}}=\res{1+2\mathrm{i}}$. Alors
+    \[
+      f(z)-\omega=(1+\mathrm{i})z+2-\mathrm{i}-\bigl((1+\mathrm{i})\omega+2-\mathrm{i}\bigr)
+      =(1+\mathrm{i})(z-\omega).
+    \]
+    Comme $1+\mathrm{i}=\sqrt2\,\mathrm{e}^{\mathrm{i}\pi/4}$, $f$ est la similitude
+    directe de \res{\text{centre }1+2\mathrm{i},\ \text{rapport }\sqrt2,\ \text{angle }\pi/4}.
+  \item $|f(z)-\omega|=\sqrt2\,|z-\omega|$ : l'image est le cercle de centre
+    $\omega$ et de rayon $\res{\sqrt2}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-21}
+\begin{corrige}{21}{Lignes de niveau}
+\demarche{Traduire chaque condition : distance, alignement ou angle droit.}
+\noindent
+\begin{minipage}[c]{0.63\linewidth}
+\begin{questions}
+  \item $|z-1|=|z+\mathrm{i}|$ : les points équidistants de $A(1)$ et de
+    $B(-\mathrm{i})$ — la \res{\text{médiatrice de } [AB]}, c'est-à-dire la
+    droite d'équation $y=-x$.
+  \item Le \res{\text{cercle de centre } 2\mathrm{i}\text{ et de rayon }2}.
+  \item $\dfrac{z-1}{z-\mathrm{i}}\in\R$ traduit l'alignement de $M(z)$ avec
+    $A(1)$ et $B(\mathrm{i})$ : la \res{\text{droite } (AB)\text{ privée de } B},
+    d'équation $x+y=1$.
+  \item $\dfrac{z-1}{z-\mathrm{i}}$ imaginaire pur traduit
+    $\bigl(\vect{MB},\vect{MA}\bigr)\equiv\dfrac{\pi}{2}\ [\pi]$ : le
+    \res{\text{cercle de diamètre } [AB]\text{ privé de } B} (et le point $A$
+    correspond au numérateur nul).
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.33\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.35,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-1.3,0) -- (1.7,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.4) -- (0,1.6);
+  \draw[otGreenDark,line width=0.9pt] (-1.2,1.2) -- (1.45,-1.45);
+  \fill[otNavy] (1,0) circle (1.2pt);
+  \node[below right,font=\scriptsize,text=otNavy,inner sep=1pt] at (1,0) {$A(1)$};
+  \fill[otNavy] (0,-1) circle (1.2pt);
+  \node[below left,font=\scriptsize,text=otNavy,inner sep=1pt] at (0,-1) {$B(-\mathrm{i})$};
+  \draw[otRule!90!otMuted,line width=0.5pt,dash pattern=on 1.8pt off 1.4pt] (1,0) -- (0,-1);
+  \node[font=\scriptsize,text=otGreenDark] at (-0.88,0.62) {$y=-x$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Question 1 : la médiatrice de $[AB]$.}
+\end{minipage}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-22}
+\begin{corrige}{22}{Sommes binomiales trigonométriques}
+\demarche{Évaluer $(1+\mathrm{e}^{\mathrm{i}t})^{n}$ de deux façons : binôme d'un côté, angle moitié de l'autre.}
+\begin{questions}
+  \item D'après l'angle moitié,
+    $1+\mathrm{e}^{\mathrm{i}t}=2\cos\dfrac{t}{2}\,\mathrm{e}^{\mathrm{i}t/2}$, donc
+    $(1+\mathrm{e}^{\mathrm{i}t})^{n}=2^{n}\cos^{n}\dfrac{t}{2}\,\mathrm{e}^{\mathrm{i}nt/2}$.
+  \item Le binôme donne par ailleurs
+    $(1+\mathrm{e}^{\mathrm{i}t})^{n}=\displaystyle\sum_{k=0}^{n}\binom{n}{k}\mathrm{e}^{\mathrm{i}kt}$.
+    En identifiant parties réelle et imaginaire :
+    \[
+      \sum_{k=0}^{n}\binom{n}{k}\cos(kt)=2^{n}\cos^{n}\frac{t}{2}\,\cos\frac{nt}{2},
+      \qquad
+      \sum_{k=0}^{n}\binom{n}{k}\sin(kt)=2^{n}\cos^{n}\frac{t}{2}\,\sin\frac{nt}{2}.
+    \]
+  \item Pour $t=\dfrac{\pi}{2}$ : $\cos\dfrac{t}{2}=\dfrac{\sqrt2}{2}$, d'où
+    \[
+      \sum_{k=0}^{n}\binom{n}{k}\cos\frac{k\pi}{2}
+      =2^{n}\Bigl(\frac{\sqrt2}{2}\Bigr)^{n}\cos\frac{n\pi}{4}
+      =\res{2^{n/2}\cos\frac{n\pi}{4}}.
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-23}
+\begin{corrige}{23}{Le pentagone régulier et le nombre d'or}
+\demarche{Regrouper les racines conjuguées : la somme nulle des racines devient une équation du second degré.}
+\begin{questions}
+  \item C'est la somme des éléments de $\mathbb{U}_5$ :
+    $\dfrac{1-\omega^{5}}{1-\omega}=0$.
+  \item $\omega^{4}=\overline{\omega}$, donc
+    $u=\omega+\overline{\omega}=2\cos\dfrac{2\pi}{5}$ ; de même
+    $\omega^{3}=\overline{\omega^{2}}$ et $v=2\cos\dfrac{4\pi}{5}$.
+    La question 1 donne $u+v=-1$. Enfin,
+    \[
+      uv=(\omega+\omega^{4})(\omega^{2}+\omega^{3})
+      =\omega^{3}+\omega^{4}+\omega^{6}+\omega^{7}
+      =\omega^{3}+\omega^{4}+\omega+\omega^{2}=-1,
+    \]
+    en utilisant $\omega^{5}=1$.
+  \item Somme $-1$, produit $-1$ : $u$ et $v$ sont les racines de
+    $X^{2}+X-1=0$, c'est-à-dire $\dfrac{-1\pm\sqrt5}{2}$. Comme
+    $\cos\dfrac{2\pi}{5}>0$, $u=\dfrac{-1+\sqrt5}{2}$, d'où
+    $\res{\cos\dfrac{2\pi}{5}=\dfrac{\sqrt5-1}{4}}$.
+  \item $\cos\dfrac{\pi}{5}=-\cos\dfrac{4\pi}{5}=-\dfrac{v}{2}
+    =\res{\dfrac{1+\sqrt5}{4}}$ — la même valeur qu'au chapitre 2 :
+    deux méthodes, un seul nombre d'or.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-24}
+\begin{corrige}{24}{Le noyau de Dirichlet}
+\demarche{Une somme géométrique symétrique, factorisée par l'angle moitié.}
+\begin{questions}
+  \item $D_n(t)=\mathrm{e}^{-\mathrm{i}nt}\displaystyle\sum_{k=0}^{2n}\mathrm{e}^{\mathrm{i}kt}$ ;
+    d'après l'exercice 12 (avec $2n$ au lieu de $n$) :
+    \[
+      D_n(t)=\mathrm{e}^{-\mathrm{i}nt}\cdot\mathrm{e}^{\mathrm{i}nt}\,
+      \frac{\sin\bigl(\frac{(2n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}
+      =\res{\frac{\sin\bigl(\frac{(2n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}}.
+    \]
+  \item En regroupant les termes $k$ et $-k$ :
+    $D_n(t)=1+\displaystyle\sum_{k=1}^{n}\bigl(\mathrm{e}^{\mathrm{i}kt}+\mathrm{e}^{-\mathrm{i}kt}\bigr)
+    =1+2\sum_{k=1}^{n}\cos(kt)$, d'où l'égalité annoncée.
+  \item Pour $t=\dfrac{2\pi}{2n+1}$ : $\dfrac{(2n+1)t}{2}=\pi$, donc
+    $D_n(t)=\dfrac{\sin\pi}{\sin\frac{t}{2}}=0$, et
+    $1+2\displaystyle\sum_{k=1}^{n}\cos\frac{2k\pi}{2n+1}=0$ :
+    \[
+      \res{\sum_{k=1}^{n}\cos\frac{2k\pi}{2n+1}=-\frac12}.
+    \]
+  \item Pour $n=1$ : $\cos\dfrac{2\pi}{3}=-\dfrac12$. Pour $n=2$ :
+    $\cos\dfrac{2\pi}{5}+\cos\dfrac{4\pi}{5}
+    =\dfrac{\sqrt5-1}{4}-\dfrac{1+\sqrt5}{4}=-\dfrac12$ — en accord avec
+    l'exercice 23.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-03}

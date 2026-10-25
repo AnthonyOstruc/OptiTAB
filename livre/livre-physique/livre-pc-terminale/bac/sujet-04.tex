@@ -1,0 +1,109 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 4 — sujet inédit OptiTAB (valeurs vérifiées : verifications/sujets_bac.py)
+
+\sujetBac{4}{{L'eau oxygénée : oxydoréduction, cinétique, gaz parfait}/9,{Une lunette astronomique : optique, diffraction}/6,{Le château d'eau : statique et dynamique des fluides}/5}
+
+\begin{exoBac}{9}{L'eau oxygénée}
+L'eau oxygénée, solution aqueuse de peroxyde d'hydrogène $\ce{H2O2}$, est un antiseptique. Versée sur une plaie, elle
+mousse : une enzyme du sang, la catalase, accélère fortement sa décomposition en eau et en dioxygène.
+\begin{donnees}
+Couples oxydant-réducteur : $\ce{O2}/\ce{H2O2}$ et $\ce{H2O2}/\ce{H2O}$. Volume molaire d'un gaz à \qty{0}{\degreeCelsius} sous \qty{1,013}{bar} :
+\qty{22,4}{L.mol^{-1}}. $R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $T(\unit{K})=\theta(\unit{\degreeCelsius})+273$.
+\end{donnees}
+
+\partieExo{1}{Le titre d'une eau oxygénée}
+\begin{docu}{1}{Une eau oxygénée « à 10 volumes »}
+Un litre d'eau oxygénée à 10 volumes peut libérer, en se décomposant totalement, \qty{10}{L} de dioxygène, volume
+mesuré à \qty{0}{\degreeCelsius} sous \qty{1,013}{bar}.
+\end{docu}
+\begin{questions}
+\item Écrire les deux demi-équations électroniques, puis montrer que l'équation de la décomposition s'écrit
+$\ce{2H2O2 -> 2H2O + O2}$. Quelle particularité présente le peroxyde d'hydrogène dans cette réaction ?
+\item Montrer que la concentration en peroxyde d'hydrogène d'une eau oxygénée à 10 volumes vaut \qty{0,89}{mol.L^{-1}}.
+\end{questions}
+
+\partieExo{2}{Suivi cinétique de la décomposition}
+\begin{docu}{2}{Le protocole}
+Dans un flacon fermé, relié à un capteur de pression, on place $V=\qty{20,0}{mL}$ d'une solution de peroxyde d'hydrogène de
+concentration $c_0=\qty{0,20}{mol.L^{-1}}$ ; le volume de gaz au-dessus de la solution vaut $V_\mathrm{g}=\qty{250}{mL}$ et la température
+reste égale à \qty{25}{\degreeCelsius}. À $t=0$, on ajoute quelques gouttes d'une solution d'ions fer(III), qui catalysent la décomposition.
+Le capteur mesure la surpression $\Delta P$ due au dioxygène formé.
+\end{docu}
+\schema{bac-s4-pression}
+\begin{questions}[resume]
+\item Établir le tableau d'avancement de la transformation. Montrer que l'avancement vaut $x=\dfrac{\Delta P\,V_\mathrm{g}}{R\,T}$.
+\item Calculer l'avancement maximal et la surpression finale attendue. Comparer à la courbe.
+\item Définir le temps de demi-réaction et déterminer sa valeur.
+\item Les ions fer(III) sont-ils un catalyseur homogène ou hétérogène ? Pourquoi la vitesse de formation du dioxygène
+diminue-t-elle au cours du temps ?
+\item \capacite{Capacité numérique}\initiative Le programme suivant teste l'hypothèse d'une loi de vitesse d'ordre 1, pour laquelle
+$[\ce{H2O2}]=c_0\,\mathrm{e}^{-kt}$, soit $\Delta P=\Delta P_\mathrm{max}\left(1-\mathrm{e}^{-kt}\right)$. Interpréter les valeurs affichées et conclure.
+\begin{codecote}[0.66]
+\begin{pythoncol}
+from math import log
+t = [2, 4, 6, 8, 12, 16]              # min
+dP = [5.8, 9.9, 12.8, 14.9, 17.3, 18.6]  # kPa
+dPmax = 19.8
+for i in range(len(t)):
+    k = log(dPmax / (dPmax - dP[i])) / t[i]
+    print(t[i], round(k, 3))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+2 0.173
+4 0.173
+6 0.173
+8 0.175
+12 0.172
+16 0.175
+\end{consolecol}
+\end{codecote}
+\item Vérifier la cohérence entre la constante $k$ et le temps de demi-réaction, sachant que $t_{1/2}=\ln2/k$ pour une loi
+d'ordre 1. Calculer la vitesse volumique initiale de disparition du peroxyde d'hydrogène.
+\item Sur une plaie, la décomposition est presque instantanée. Citer deux facteurs cinétiques qui l'expliquent.
+\item Les flacons d'eau oxygénée sont opaques et doivent être conservés au frais. Justifier.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{6}{Une lunette astronomique}
+Un astronome amateur dispose d'une lunette dont l'objectif, de diamètre $D=\qty{70}{mm}$, a une distance focale
+$f'_1=\qty{900}{mm}$, et de deux oculaires, de distances focales \qty{10}{mm} et \qty{25}{mm}. Il observe la planète Jupiter, dont le diamètre
+apparent vaut 45 secondes d'arc.
+\begin{donnees}
+$\ang{1}=60'=3600''$. Pour les petits angles, $\tan\alpha\approx\alpha$ en radians. La diffraction limite la plus petite séparation angulaire
+observable à $\theta\approx\dfrac{\lambda}{D}$, avec $\lambda=\qty{550}{nm}$. L'œil distingue deux points vus sous un angle d'au moins $1'$ environ.
+\end{donnees}
+\schema{bac-s4-lunette}
+\begin{questions}
+\item La lunette est afocale. Que signifie ce terme ? Où le foyer objet de l'oculaire doit-il être placé ? Calculer la
+longueur de la lunette avec l'oculaire de \qty{10}{mm}.
+\item Recopier le schéma et tracer la marche du faisceau à travers la lunette. Placer l'image intermédiaire $B_1$.
+\item Définir le grossissement $G$ de la lunette et montrer que $G=\dfrac{f'_1}{f'_2}$.
+\item Calculer le grossissement obtenu avec chaque oculaire.
+\item Sous quel angle l'astronome voit-il Jupiter avec l'oculaire de \qty{10}{mm} ? Comparer au diamètre apparent de la Lune à l'œil nu,
+voisin de \ang{0,5}.
+\item \initiative Les bandes nuageuses de Jupiter ont une largeur apparente d'environ 4 secondes d'arc. Peuvent-elles être
+distinguées avec cette lunette ? Un oculaire de \qty{4}{mm} permettrait-il d'en voir davantage de détails ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Le château d'eau}
+Dans un village, l'eau potable est stockée dans un château d'eau ; la surface libre de l'eau, à l'air libre, se trouve à
+$h=\qty{35}{m}$ au-dessus du robinet d'une maison.
+\schema{bac-s4-chateau}
+\begin{donnees}
+$\rho=\qty{1000}{kg.m^{-3}}$ ; $g=\qty{9,81}{m.s^{-2}}$ ; $P_\mathrm{atm}=\qty{1,013e5}{Pa}$ ; diamètre intérieur du robinet : \qty{12}{mm}.
+Relation de Bernoulli, pour un fluide parfait incompressible en écoulement permanent : $P+\frac12\,\rho\,v^2+\rho\,g\,z$ se conserve le
+long d'une ligne de courant.
+\end{donnees}
+\begin{questions}
+\item Le robinet étant fermé, l'eau est immobile. Calculer la pression de l'eau au niveau du robinet.
+\item Pourquoi les châteaux d'eau sont-ils construits en hauteur ? Que se passe-t-il au dernier étage d'un immeuble de
+\qty{40}{m} de hauteur alimenté par ce château d'eau ?
+\item On ouvre le robinet. En appliquant la relation de Bernoulli entre la surface libre du château d'eau et la sortie du
+robinet, calculer la vitesse de sortie de l'eau. Préciser les hypothèses.
+\item En déduire le débit volumique prévu par ce modèle, en litres par minute.
+\item \initiative Le débit mesuré n'est que de \qty{12}{L.min^{-1}}. Calculer la vitesse réelle de sortie de l'eau et commenter la validité du
+modèle. Combien de temps faut-il pour remplir une baignoire de \qty{150}{L} ?
+\end{questions}
+\end{exoBac}

@@ -1,0 +1,65 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 17 — vérifié par verifications/defis_16_20.py.
+
+\begin{blocLivre}{cor-17-25a}
+\begin{corrige}{25}{Le collectionneur de vignettes}
+\demarche{Écrire le nombre de vignettes manquantes comme une somme
+d'indicatrices : l'espérance est immédiate, la variance aussi, et Markov
+puis Tchebychev encadrent le seuil.}
+\partieExo{A}{Le nombre moyen de vignettes obtenues}
+\begin{questions}
+  \item $A_i$ est réalisé par les $(n-1)^{m}$ suites évitant $i$ :
+    $P(A_i)=\bigl(1-\frac1n\bigr)^{m}$. Par linéarité,
+    $\mathrm{E}(Y_m)=\sum_iP(A_i)=n\bigl(1-\frac1n\bigr)^{m}$ et
+    $\res{\mathrm{E}(X_m)=n\Bigl(1-\bigl(1-\tfrac1n\bigr)^{m}\Bigr)}$.
+  \item $1-x\leqslant\mathrm{e}^{-x}$ donne
+    $\bigl(1-\frac1n\bigr)^{m}\leqslant\mathrm{e}^{-m/n}$. Pour $n=100$ :
+    $\mathrm{E}(X_m)\geqslant90\iff0{,}99^{m}\leqslant0{,}1\iff
+    m\geqslant\frac{\ln10}{-\ln0{,}99}\approx229{,}1$ : \res{230} achats.
+    Les dernières vignettes, elles, coûtent cher\dots
+\end{questions}
+\partieExo{B}{Le seuil $n\ln n$}
+\begin{questions}[resume]
+  \item Markov : $P(Y_m\geqslant1)\leqslant\mathrm{E}(Y_m)$. Si
+    $m\geqslant n\ln n+cn$ :
+    $\mathrm{E}(Y_m)\leqslant n\,\mathrm{e}^{-\ln n-c}=\mathrm{e}^{-c}$,
+    d'où $P(\text{complet})\geqslant\res{1-\mathrm{e}^{-c}}$. Pour $n=100$,
+    $c=3$ : $761$ achats garantissent l'album complet avec une probabilité
+    d'au moins $95\,\%$.
+  \item $A_i\cap A_j$ : suites évitant $i$ et $j$, d'où
+    $q=P(A_i\cap A_j)=\bigl(1-\frac2n\bigr)^{m}$. Avec $p=\bigl(1-\frac1n\bigr)^{m}$ :
+    $\mathrm{E}(Y_m^{2})=\sum_iP(A_i)+\sum_{i\neq j}P(A_i\cap A_j)=np+n(n-1)q$,
+    et $\res{\mathrm{V}(Y_m)=np+n(n-1)q-n^{2}p^{2}}$. Comme
+    $1-\frac2n\leqslant\bigl(1-\frac1n\bigr)^{2}$, $q\leqslant p^{2}$, d'où
+    $\mathrm{V}(Y_m)\leqslant np-np^{2}\leqslant\mathrm{E}(Y_m)$.
+  \item $Y_m=0$ impose $|Y_m-\mathrm{E}(Y_m)|\geqslant\mathrm{E}(Y_m)$ :
+    Tchebychev donne
+    $P(Y_m=0)\leqslant\frac{\mathrm{V}(Y_m)}{\mathrm{E}(Y_m)^{2}}\leqslant\frac{1}{\mathrm{E}(Y_m)}$.
+    L'inégalité $\ln(1-x)\geqslant-\frac{x}{1-x}$ (étudier la différence,
+    de dérivée $\frac{x}{(1-x)^{2}}\geqslant0$) donne
+    $\bigl(1-\frac1n\bigr)^{m}\geqslant\mathrm{e}^{-m/(n-1)}$, donc si
+    $m\leqslant(n-1)(\ln n-c)$ : $\mathrm{E}(Y_m)\geqslant\mathrm{e}^{c}$ et
+    $P(\text{complet})\leqslant\res{\mathrm{e}^{-c}}$. Juste en dessous de
+    $n\ln n$, l'album est presque sûrement incomplet ; juste au-dessus,
+    presque sûrement complet : c'est un \emph{phénomène de seuil}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Formule exacte pour un petit album}
+\begin{questions}[start=6]
+  \item Un résultat de $\Omega$ est une application de $\intFF1m$ (les
+    achats) dans $\intFF1n$ (les vignettes) ; l'album est complet si et
+    seulement si elle est surjective : $n!\,S(m,n)$ cas favorables sur
+    $n^{m}$, d'où $\res{\dfrac{n!\,S(m,n)}{n^{m}}}$.
+  \item $m=12$ : $\dfrac{720\times1\,323\,652}{6^{12}}
+    =\dfrac{953\,029\,440}{2\,176\,782\,336}\approx0{,}438<\frac12$ ;
+    $m=13$ : $\dfrac{720\times9\,321\,312}{6^{13}}\approx0{,}514>\frac12$.
+    Il faut donc \res{13} lancers. C'est plus que $6\ln6\approx10{,}8$ :
+    pour un petit $n$, le terme correctif compte — la médiane vaut environ
+    $n\ln n+n\ln\frac{1}{\ln2}\approx n\ln n+0{,}37\,n\approx12{,}95$.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

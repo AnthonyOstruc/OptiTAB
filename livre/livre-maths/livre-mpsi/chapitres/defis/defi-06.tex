@@ -1,0 +1,82 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 6 — Fonctions plates et fonctions plateaux
+%% Résultats vérifiés par verifications/defis_06_10.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Fonctions plates et fonctions plateaux}{2 h}
+On définit $f:\R\to\R$ par $f(x)=\mathrm{e}^{-1/x}$ si $x>0$ et $f(x)=0$ si
+$x\leqslant0$. On va montrer que $f$ est indéfiniment dérivable, que
+toutes ses dérivées sont nulles en $0$ — et pourtant $f$ n'est nulle sur
+aucun voisinage à droite de $0$. On s'en servira pour raccorder des
+fonctions de manière parfaitement lisse.
+
+\partieExo{A}{Les dérivées sur $\intOO{0}{+\infty}$}
+\begin{questions}
+  \item Montrer que $f$ est continue sur $\R$.
+  \item Montrer qu'il existe des polynômes $P_n$ tels que, pour tout
+    $x>0$, $f^{(n)}(x)=P_n\bigl(\tfrac1x\bigr)\mathrm{e}^{-1/x}$, avec
+    $P_0=1$ et $P_{n+1}=X^{2}\bigl(P_n-P_n'\bigr)$. Calculer $P_1$ et
+    $P_2$.
+  \item Montrer que $P_n$ est de degré $2n$, de coefficient dominant $1$.
+\end{questions}
+
+\partieExo{B}{Une fonction plate en $0$}
+\begin{questions}[resume]
+  \item Montrer que pour tout polynôme $P$,
+    $P\bigl(\tfrac1x\bigr)\mathrm{e}^{-1/x}\xrightarrow[x\to0^{+}]{}0$.
+  \item Montrer par récurrence que $f$ est de classe $\mathcal{C}^{n}$ sur
+    $\R$ et que $f^{(n)}(0)=0$, pour tout $n\in\N$. \emph{On pourra utiliser
+    le théorème de la limite de la dérivée.}
+  \item En déduire que $f$ est de classe $\mathcal{C}^{\infty}$ sur $\R$,
+    que $f(x)=o\bigl(x^{n}\bigr)$ en $0$ pour tout $n$, et pourtant que $f$
+    n'est pas nulle au voisinage de $0$. Pourquoi ce phénomène est-il
+    impossible pour une fonction polynomiale ?
+\end{questions}
+
+\partieExo{C}{Raccords lisses : fonctions plateaux}
+\begin{questions}[resume]
+  \item Soit $g(x)=f(x)\,f(1-x)$. Montrer que $g$ est de classe
+    $\mathcal{C}^{\infty}$, strictement positive sur $\intOO{0}{1}$ et nulle
+    ailleurs ; déterminer son maximum.
+  \item Soit
+    \[
+    h(x)=\frac{f(x)}{f(x)+f(1-x)} .
+    \]
+    Justifier que $h$ est bien
+    définie et de classe $\mathcal{C}^{\infty}$ sur $\R$, que $h=0$ sur
+    $\intOF{-\infty}{0}$, $h=1$ sur $\intFO{1}{+\infty}$, et que $h$ est
+    strictement croissante sur $\intFF{0}{1}$. Calculer
+    $h(x)+h(1-x)$.
+  \item Construire une fonction $\varphi$ de classe $\mathcal{C}^{\infty}$
+    sur $\R$, égale à $1$ sur $\intFF{-1}{1}$, nulle en dehors de
+    $\intOO{-2}{2}$, à valeurs dans $\intFF{0}{1}$ (une \emph{fonction
+    plateau}).
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[x=1.15cm,y=2.1cm,line cap=round]
+  \draw[otRule,line width=0.3pt] (-2.8,1) -- (2.8,1);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-2.9,0) -- (3,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.12) -- (0,1.25);
+  \foreach \v in {-2,-1,1,2}{\draw[otMuted,line width=0.4pt] (\v,0.03) -- (\v,-0.03);
+    \node[font=\tiny,text=otMuted,below] at (\v,-0.03) {$\v$};}
+  \draw[otGreenDark,line width=1.3pt] (-2.8,0) -- (-1.96,0)
+    -- plot[domain=-1.96:-1.04,samples=120]
+    ({\x},{exp(-1/(\x+2))/(exp(-1/(\x+2))+exp(-1/(-1-\x)))})
+    -- (-1.04,1) -- (1.04,1)
+    -- plot[domain=1.04:1.96,samples=120]
+    ({\x},{exp(-1/(2-\x))/(exp(-1/(2-\x))+exp(-1/(\x-1)))})
+    -- (1.96,0) -- (2.8,0);
+  \draw[otNavy,line width=0.9pt,dash pattern=on 3pt off 1.6pt] (-2.8,0) -- (0.07,0)
+    -- plot[domain=0.07:2.8,samples=120] ({\x},{exp(-1/\x)});
+  \node[font=\tiny,text=otMuted,anchor=east] at (0,1) {$1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south] at (0,1.02) {$\varphi$};
+  \node[font=\scriptsize,text=otNavy,anchor=west] at (2.3,0.62) {$f$};
+\end{tikzpicture}\\[0.5mm]
+\legende{En tirets, $f$ : nulle à gauche, elle quitte $0$ « sans
+décoller » ; en vert, la fonction plateau $\varphi$ construite à la
+question 9, de classe $\mathcal{C}^{\infty}$.}
+\end{center}
+\end{defi}

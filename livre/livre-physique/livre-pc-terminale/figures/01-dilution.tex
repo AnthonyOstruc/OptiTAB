@@ -1,0 +1,29 @@
+% Dilution d'un facteur 10 puis mesure du pH (L'essentiel, chapitre 1 ; exercice 15)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  etape/.style={font=\otLight\fontsize{7.5}{9.2}\selectfont,text=otInk,align=center,text width=31mm,anchor=north}]
+% 1. Prélèvement à la pipette jaugée
+\pic at (0,0) {becher={largeur=1.5,hauteur=1.8,niveau=1.0}};
+\pic at (0.05,0.25) {pipette={hauteur=4.1,niveau=1}};
+\node[pcLegendeG] at (-0.45,0.55) {S$_0$};
+\node[etape] at (0,-0.35) {\otRond{1}\enspace Prélever 10,0 mL de S$_0$ à la pipette jaugée, munie d'une propipette.};
+% 2. Transfert dans la fiole jaugée
+\pic at (3.5,0) {fiole={hauteur=3.1,niveau=0.18}};
+\pic at (3.5,2.55) {pipette={hauteur=2.9,niveau=0.35}};
+\draw[pcRepere] (3.2,1.9) -- (2.7,2.25) node[pcLegende,anchor=east]{100,0 mL};
+\node[etape] at (3.5,-0.35) {\otRond{2}\enspace Verser dans une fiole jaugée de 100,0 mL.};
+% 3. Compléter au trait de jauge
+\pic at (7.1,0) {fiole={hauteur=3.1,niveau=1}};
+\pic at (5.85,1.25) {pissette};
+\draw[pcRepere] (7.34,2.35) -- (7.85,2.75) node[pcLegende,anchor=west]{trait de jauge};
+\node[pcLegendeG] at (7.1,0.55) {S$_1$};
+\node[etape] at (6.95,-0.35) {\otRond{3}\enspace Compléter avec de l'eau distillée jusqu'au trait de jauge, boucher, agiter.};
+% 4. Mesure du pH
+\pic at (10.6,0) {agitateur={largeur=2.2}};
+\pic at (10.4,0.5) {becher={largeur=1.4,hauteur=1.7,niveau=0.95}};
+\pic at (10.25,0.58) {barreau};
+\pic (sd) at (10.65,0.72) {sonde={hauteur=2.3}};
+\pic (af) at (12.55,1.55) {afficheur={largeur=1.5,hauteur=1.1,texte={2,04}}};
+\draw[pcFil] (sd-haut) to[out=90,in=180] (af-prise);
+\node[etape] at (11.0,-0.35) {\otRond{4}\enspace Mesurer le pH de S$_1$ avec un pH-mètre étalonné.};
+\end{tikzpicture}
+\par\smallskip\legende{Préparation d'une solution fille S$_1$ dix fois moins concentrée que S$_0$, puis mesure de son pH. Schéma sans échelle.}

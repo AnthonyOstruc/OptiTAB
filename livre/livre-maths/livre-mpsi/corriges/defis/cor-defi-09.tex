@@ -1,0 +1,82 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 9 — vérifié par verifications/defis_06_10.py.
+
+\begin{blocLivre}{cor-9-25a}
+\begin{corrige}{25}{Carrés magiques et carré de Lo Shu}
+\demarche{Huit équations linéaires : on les résout par substitutions
+successives à partir du centre ; puis le produit par $J$ code les sommes
+de lignes et de colonnes.}
+\partieExo{A}{Résoudre le système des carrés magiques}
+\begin{questions}
+  \item Les conditions « telle somme vaut $s$ » sont linéaires : si $M$ et
+    $N$ sont magiques de sommes $s$ et $t$, $\lambda M+\mu N$ est magique
+    de somme $\lambda s+\mu t$. Toutes les sommes de $J$ valent $\res{3}$.
+  \item Les quatre lignes passant par le centre totalisent $4s$ ; elles
+    couvrent le centre quatre fois et chacune des huit autres cases une
+    fois, soit la somme de tous les coefficients ($3s$, somme des trois
+    lignes) plus $3m_{22}$. D'où $4s=3s+3m_{22}$ et
+    $\res{m_{22}=\tfrac s3}$.
+  \item Chaque ligne, colonne et diagonale de $L(c,a,b)$ contient un terme
+    $c$ « central » et des termes en $\pm a$, $\pm b$ qui se compensent :
+    par exemple $(c-a)+(c+a+b)+(c-b)=3c$, et de même pour les sept autres
+    sommes. $L(c,a,b)$ est \res{\text{magique de somme }3c}.
+  \item Avec $s=3c$ : la diagonale donne $m_{33}=2c-m_{11}=c+a$ ;
+    l'antidiagonale $m_{31}=2c-m_{13}=c+b$ ; la première ligne
+    $m_{12}=3c-(c-a)-(c-b)=c+a+b$ ; la première colonne
+    $m_{21}=3c-(c-a)-(c+b)=c+a-b$ ; la colonne du milieu
+    $m_{32}=2c-m_{12}=c-a-b$ ; la ligne du milieu
+    $m_{23}=2c-m_{21}=c-a+b$. Les deux équations restantes sont alors
+    automatiquement vérifiées : $\res{M=L(c,a,b)}$. Les matrices magiques
+    forment une famille à \res{3} paramètres libres (un espace vectoriel
+    de dimension $3$, dira le chapitre 12).
+\end{questions}
+\partieExo{B}{Le carré de Lo Shu}
+\begin{questions}[resume]
+  \item La somme des neuf coefficients vaut $45=3s$, d'où $s=15$ et
+    $c=5$. Les huit autres coefficients sont $5\pm a$, $5\pm b$,
+    $5\pm(a+b)$, $5\pm(a-b)$ et doivent former
+    $\ens{1,2,3,4,6,7,8,9}$ : les nombres $u=|a|$, $v=|b|$,
+    $|a+b|$ et $|a-b|$ — c'est-à-dire $u$, $v$, $u+v$, $|u-v|$ — forment
+    $\ens{1,2,3,4}$. Le plus grand est $u+v=4$, et $u\neq v$ (sinon
+    $|u-v|=0$) : $\ens{u,v}=\ens{1,3}$, $|u-v|=2$. Choix de $a=\pm1$ ou
+    $\pm3$ et de $b$ correspondant : $2\times2\times2=\res{8}$ carrés.
+    $L(5,1,3)=\begin{pmatrix}4&9&2\\3&5&7\\8&1&6\end{pmatrix}$ est le Lo Shu.
+  \item Transposer $L(c,a,b)$ échange $c+a+b$ et $c+a-b$, $c-b$ et $c+b$,
+    $c-a+b$ et $c-a-b$ : c'est $L(c,a,-b)$. Les symétries du carré
+    envoient lignes sur lignes ou colonnes, diagonales sur diagonales :
+    elles transforment un carré magique en carré magique. Le Lo Shu ayant
+    ses quatre coins distincts, ses huit images sont distinctes : ce sont
+    \res{\text{les huit carrés magiques}} à coefficients $1,\dots,9$. Il
+    n'y en a « qu'un seul », à symétrie près.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-9-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Calcul matriciel}
+\begin{questions}[start=7]
+  \item Le coefficient $(i,j)$ de $MJ$ est $\sum_k m_{ik}$, somme de la
+    ligne $i$ ; celui de $JM$ est la somme de la colonne $j$. Donc $M$ est
+    semi-magique de somme $s$ si et seulement si $MJ=JM=sJ$. Alors
+    $(MN)J=M(tJ)=st\,J$ et $J(MN)=(sJ)N=st\,J$ : $MN$ est
+    \res{\text{semi-magique de somme }st}. Si $M$ est inversible, $s\neq0$
+    (sinon $MJ=0$ avec $J\neq0$, et $J=M^{-1}MJ=0$) ; de $MJ=sJ$ on tire
+    $J=sM^{-1}J$, donc $M^{-1}J=\frac1sJ$, et de même $JM^{-1}=\frac1sJ$.
+  \item Le calcul donne
+    \[
+    L^{2}=\begin{pmatrix}59&83&83\\ 83&59&83\\ 83&83&59\end{pmatrix},
+    \]
+    semi-magique de somme $225=15^{2}$ (question 7), mais
+    \res{\text{pas magique}} : sa diagonale vaut $177$. Les produits ne
+    préservent pas les diagonales.
+  \item On vérifie $L\cdot\frac{1}{360}A=I_3$ ligne par colonne (par
+    exemple $4\cdot23+9\cdot38+2\cdot(-37)=360$ et
+    $4\cdot(-52)+9\cdot8+2\cdot68=0$). Toutes les lignes, colonnes et
+    diagonales de la matrice $A$ ont pour somme $24$ (par exemple
+    $23+8-7=24$ et $53+8-37=24$) : $L^{-1}$ est
+    \res{\text{magique de somme }\tfrac{24}{360}=\tfrac{1}{15}} — en
+    accord avec la question 7, et c'est un fait général en taille $3$.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

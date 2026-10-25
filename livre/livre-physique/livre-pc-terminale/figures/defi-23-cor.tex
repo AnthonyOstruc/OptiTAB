@@ -1,0 +1,16 @@
+% Fréquence perçue au passage d'une voiture, pour deux distances à la route (corrigé du défi D23)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=108mm,height=56mm,xmin=-4,xmax=4,ymin=820,ymax=990,
+  xtick={-4,-3,...,4},ytick={840,880,...,960},
+  xlabel={date de réception (s)},ylabel={$f_\mathrm{R}$ (Hz)}]
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=-4:4,samples=2] {971.4};
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=-4:4,samples=2] {838.4};
+\addplot[otNavy,line width=1pt,variable=\t,domain=-4.3:4.3,samples=241] ({\t+sqrt((25*\t)^2+100)/340},{900*340/(340+25*25*\t/sqrt((25*\t)^2+100))});
+\addplot[otRed!80!black,line width=1pt,variable=\t,domain=-4.3:4.3,samples=241] ({\t+sqrt((25*\t)^2+2500)/340},{900*340/(340+25*25*\t/sqrt((25*\t)^2+2500))});
+\node[pcLegende,anchor=south east,text=otMuted] at (axis cs:3.9,972) {\qty{971,4}{Hz}};
+\node[pcLegende,anchor=north west,text=otMuted] at (axis cs:-3.9,837) {\qty{838,4}{Hz}};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:0.35,930) {$b=\qty{10}{m}$};
+\node[pcLegende,anchor=east,text=otRed!80!black] at (axis cs:-0.6,885) {$b=\qty{50}{m}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La fréquence passe d'une valeur à l'autre au moment du passage ; la transition est d'autant plus brusque que l'auditeur est proche de la route.}

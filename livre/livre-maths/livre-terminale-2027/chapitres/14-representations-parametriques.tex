@@ -1,0 +1,301 @@
+% !TEX root = ../main.tex
+%% Chapitre 14 — Représentations paramétriques et équations cartésiennes
+%% Sources : frontend/cours/resume/terminal/resume_representations_parametriques_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_representations_parametriques_terminal.txt
+%% Tous les calculs ont été vérifiés par programme (calcul exact).
+%% Exercice 6 : exercice inédit (remplace un doublon de la source).
+
+\begin{ouverture}[parametriques]{14}{Représentations paramétriques}{Partie 2 · Géométrie dans l'espace}
+  {Droites\enspace·\enspace Plans\enspace·\enspace Équations cartésiennes\enspace·\enspace Intersections\enspace·\enspace
+   Positions relatives}
+  \objectif{Déterminer une représentation paramétrique d'une droite et l'utiliser pour tester l'appartenance d'un point.}
+  \objectif{Passer d'une représentation paramétrique d'un plan à une équation cartésienne, et inversement.}
+  \objectif{Déterminer l'intersection d'une droite et d'un plan, de deux droites, de deux plans.}
+  \objectif{Résoudre des problèmes de synthèse : sections, projetés orthogonaux, distances et volumes.}
+  \prerequis{Vecteurs, droites et plans de l'espace (chapitre 11).}
+  \prerequis{Vecteur normal et équation cartésienne d'un plan (chapitre 13).}
+\end{ouverture}
+\miseEnPageSouple
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Représentation paramétrique d'une droite}
+
+\noindent
+\begin{minipage}[c]{0.58\linewidth}
+\begin{theoreme}[Représentation paramétrique]
+\raggedright
+La droite $d$ passant par $A(x_A\pv y_A\pv z_A)$ et de vecteur directeur $\vec u\,(a\pv b\pv c)$ est l'ensemble des points
+$M(x\pv y\pv z)$ tels que $\vect{AM}=t\vec u$, $t\in\R$, c'est-à-dire
+\[\begin{cases}x=x_A+ta\\ y=y_A+tb\\ z=z_A+tc\end{cases}\qquad t\in\R.\]
+À chaque réel $t$ correspond un unique point de $d$, et réciproquement.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\centering
+\begin{tikzpicture}[scale=1]
+  \draw[otNavy,line width=0.9pt] (-1.3,-0.65) -- (3.6,1.8) node[above,font=\small] {$d$};
+  \foreach \tt/\lab in {-1/{t=-1},0/{t=0},1/{t=1},2/{t=2}}{%
+    \node[otPt] at ({0.4+1.1*\tt},{0.2+0.55*\tt}) {};
+    \node[font=\scriptsize,text=otMuted,anchor=north west] at ({0.4+1.1*\tt},{0.2+0.55*\tt}) {$\lab$};}
+  \draw[otVec] (0.4,0.2) -- (1.5,0.75) node[midway,above left,font=\small,inner sep=1pt] {$\vec u$};
+  \node[otSommet,anchor=south east] at (0.4,0.2) {$A$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Le paramètre $t$ repère la position du point sur la droite.}
+\end{minipage}
+
+\begin{savoirfaire}[Tester l'appartenance d'un point à une droite]
+On cherche $t$ à l'aide d'une des trois équations, puis on vérifie que les deux autres sont satisfaites avec la même valeur. Une droite
+admet une infinité de représentations paramétriques : on peut changer de point $A$ et remplacer $\vec u$ par tout vecteur non nul qui
+lui est colinéaire.
+\end{savoirfaire}
+
+\essSection{2}{Représentation paramétrique et équation d'un plan}
+
+\begin{propriete}[Deux descriptions d'un plan]
+Le plan passant par $A$ et dirigé par deux vecteurs non colinéaires $\vec u$ et $\vec v$ est l'ensemble des points $M$ tels que
+$\vect{AM}=s\vec u+t\vec v$ : c'est une \textbf{représentation paramétrique} à deux paramètres $s$ et $t$. Pour obtenir une
+\textbf{équation cartésienne}, on élimine $s$ et $t$, ou l'on cherche un vecteur $\vec n$ orthogonal à $\vec u$ et à $\vec v$
+(chapitre 13). Réciproquement, de $ax+by+cz+d=0$ on tire une représentation paramétrique en exprimant une coordonnée en fonction des
+deux autres, prises comme paramètres.
+\end{propriete}
+
+\essSection{3}{Intersections et positions relatives}
+
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{20mm}Y@{}}
+\toprule
+\otTete{Objets} & \otTete{Méthode} \\
+\midrule
+\otNom{Droite et plan} & on reporte la représentation de la droite dans l'équation du plan : une solution $t$ (sécants), aucune
+(strictement parallèles) ou une infinité (droite incluse) \\
+\otNom{Deux droites} & on résout le système à \textbf{deux paramètres différents} $t$ et $s$ : une solution (sécantes) ; aucune
+solution et vecteurs non colinéaires (non coplanaires) \\
+\otNom{Deux plans} & normaux colinéaires : parallèles ; sinon sécants suivant une droite, obtenue en prenant une coordonnée comme
+paramètre \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \fill[otNavyTint] (-0.6,-0.6) -- (3.2,-0.6) -- (4.1,1.3) -- (0.3,1.3) -- cycle;
+  \draw[otNavy!45,line width=0.5pt] (-0.6,-0.6) -- (3.2,-0.6) -- (4.1,1.3) -- (0.3,1.3) -- cycle;
+  \draw[otNavy,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (1.45,-1.25) -- (1.75,0.35);
+  \draw[otNavy,line width=0.9pt] (1.75,0.35) -- (2.25,2.4) node[right,font=\small] {$d$};
+  \draw[otNavy,line width=0.9pt] (1.33,-1.9) -- (1.45,-1.25);
+  \node[otPtV] at (1.75,0.35) {}; \node[otSommet,anchor=north west] at (1.75,0.35) {$I$};
+  \node[font=\small,text=otNavy] at (3.6,-0.3) {$\mathcal{P}$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Une droite sécante à un plan en $I$.}
+\end{minipage}
+
+\begin{savoirfaire}[Intersection d'une droite et d'un plan, de deux plans]
+\textbf{Droite et plan.} Pour $d:(1+2t\pv-1+t\pv3-t)$ et $\mathcal{P}:x+y+z-5=0$ : $(1+2t)+(-1+t)+(3-t)-5=2t-2=0$, d'où $t=1$ et le
+point d'intersection $I(3\pv0\pv2)$.\\[1mm]
+\textbf{Deux plans.} $\mathcal{P}_1:x+y+z-3=0$ et $\mathcal{P}_2:x-y+z-1=0$ ont des normaux $(1\pv1\pv1)$ et $(1\pv-1\pv1)$ non colinéaires :
+ils sont sécants. Par différence, $2y-2=0$, soit $y=1$, puis $x+z=2$. En posant $z=t$ : la droite d'intersection est
+$(2-t\pv1\pv t)$, $t\in\R$, de vecteur directeur $(-1\pv0\pv1)$.
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Pour deux droites, il faut deux paramètres de noms différents : un point commun n'a pas le même paramètre sur chaque droite.
+  \item Après avoir trouvé les paramètres avec deux équations, on vérifie toujours la troisième.
+  \item Une représentation paramétrique n'est pas unique : deux élèves peuvent trouver des systèmes différents et justes.
+  \item Dans l'espace, une seule équation $ax+by+cz+d=0$ définit un plan, jamais une droite.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Une droite du plan}
+Dans un repère du plan, on considère la droite $d$ passant par $A(3\pv-2)$ et de vecteur directeur $\vec u\,(1\pv2)$.
+\begin{questions}
+  \item Écrire une représentation paramétrique de $d$.
+  \item Vérifier que le point $B(5\pv2)$ appartient à $d$.
+  \item Déterminer le point de $d$ de paramètre $t=-2$, puis le point de $d$ d'ordonnée $4$.
+  \item Donner un autre vecteur directeur de $d$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Une droite de l'espace}
+On considère la droite $d$ passant par $A(1\pv2\pv-3)$ et de vecteur directeur $\vec u\,(2\pv-1\pv4)$.
+\begin{questions}
+  \item Écrire une représentation paramétrique de $d$.
+  \item Le point $B(3\pv1\pv1)$ appartient-il à $d$ ? Et le point $C(0\pv3\pv-7)$ ?
+  \item Déterminer le point de $d$ de paramètre $t=2$, puis le point de $d$ de cote $z=5$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Plusieurs représentations d'une même droite}
+On considère la droite $d$ passant par $A(2\pv-1\pv3)$ et de vecteur directeur $\vec u\,(1\pv2\pv-1)$.
+\begin{questions}
+  \item Donner une représentation paramétrique de $d$.
+  \item Les points $M(4\pv3\pv1)$ et $N(3\pv1\pv2)$ appartiennent-ils à $d$ ? Que représente $\vect{AM}$ pour la droite ?
+  \item Déterminer le point $P$ de $d$ de paramètre $t=-2$.
+  \item Donner une autre représentation paramétrique de $d$, utilisant le point $M$ et le vecteur $\vect{AM}$. Quel paramètre
+    correspond alors au point $A$ ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Du paramétrique au cartésien dans le plan}
+Dans un repère orthonormé du plan, on considère la droite $d:\begin{cases}x=1+2t\\y=3-4t\end{cases}$, $t\in\R$.
+\begin{questions}
+  \item En exprimant $t$ en fonction de $x$, déterminer une équation cartésienne de $d$. En déduire un vecteur normal à $d$.
+  \item Déterminer une équation de la droite $d'$ parallèle à $d$ passant par l'origine $O$.
+  \item Le projeté orthogonal $H$ de $O$ sur $d$ est sur la droite dirigée par le vecteur normal et passant par $O$. Déterminer $H$ et
+    en déduire la distance entre les droites parallèles $d$ et $d'$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Équation cartésienne d'un plan}
+L'espace est muni d'un repère orthonormé. On considère le plan $\mathcal{P}$ passant par $A(1\pv2\pv-1)$ et de vecteur normal
+$\vec n\,(3\pv-1\pv2)$.
+\begin{questions}
+  \item Déterminer une équation cartésienne de $\mathcal{P}$. Les points $B(2\pv5\pv1)$ et $O$ appartiennent-ils à $\mathcal{P}$ ?
+  \item Vérifier que $\vec{u_1}\,(1\pv3\pv0)$ et $\vec{u_2}\,(0\pv2\pv1)$ dirigent $\mathcal{P}$. En déduire une représentation
+    paramétrique de $\mathcal{P}$.
+  \item Déterminer une équation du plan parallèle à $\mathcal{P}$ passant par l'origine.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{D'une représentation à l'autre}
+L'espace est muni d'un repère orthonormé.
+\begin{questions}
+  \item Le plan $\mathcal{P}$ passe par $A(1\pv1\pv0)$ et il est dirigé par $\vec u\,(1\pv0\pv2)$ et $\vec v\,(0\pv1\pv-1)$. Écrire une
+    représentation paramétrique de $\mathcal{P}$, puis, en éliminant les paramètres, une équation cartésienne.
+  \item Vérifier que le vecteur $\vec n\,(2\pv-1\pv-1)$ est orthogonal à $\vec u$ et à $\vec v$. Est-ce cohérent ?
+  \item Le point $M(3\pv2\pv3)$ appartient-il à $\mathcal{P}$ ? Si oui, déterminer ses paramètres.
+  \item Donner une représentation paramétrique du plan $\mathcal{Q}:x+y+z=3$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Quatre droites et leurs positions}
+L'espace est muni d'un repère. On considère :
+\begin{itemize}[leftmargin=1.4em,itemsep=0.3mm,topsep=0.5mm]
+  \item la droite $d_1$ passant par $A(1\pv-1\pv2)$ et de vecteur directeur $\vec u\,(2\pv1\pv-1)$ ;
+  \item la droite $d_2$ passant par $B(0\pv2\pv1)$ et $C(3\pv-1\pv4)$ ;
+  \item la droite $d_3:\begin{cases}x=3+s\\y=-2s\\z=1+s\end{cases}$, $s\in\R$ ;
+  \item la droite $d_4$ passant par $F(-1\pv0\pv3)$ et parallèle à $d_1$.
+\end{itemize}
+\begin{questions}
+  \item Déterminer une représentation paramétrique de $d_1$, $d_2$ et $d_4$, ainsi qu'un point et un vecteur directeur de $d_3$.
+  \item Les droites $d_1$ et $d_2$ sont-elles coplanaires ?
+  \item Montrer que $d_1$ et $d_3$ sont sécantes et déterminer leur point d'intersection $E$.
+  \item Montrer que $d_2$ et $d_4$ sont sécantes et déterminer leur point d'intersection $G$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Une droite et un plan}
+L'espace est muni d'un repère orthonormé. On considère la droite $d:\begin{cases}x=1+2t\\y=3-t\\z=-1+t\end{cases}$, $t\in\R$, et le plan
+$\mathcal{P}:x+2y-z+4=0$.
+\begin{questions}
+  \item Donner un vecteur directeur $\vec u$ de $d$ et un vecteur normal $\vec n$ de $\mathcal{P}$. Calculer $\vec u\cdot\vec n$.
+  \item En déduire que $d$ et $\mathcal{P}$ sont sécants, puis déterminer leur point d'intersection $I$.
+  \item Déterminer le projeté orthogonal $H$ du point $A(1\pv3\pv-1)$ sur $\mathcal{P}$, puis la distance de $A$ au plan $\mathcal{P}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Deux droites sécantes}
+L'espace est muni d'un repère orthonormé. On considère $d_1:\begin{cases}x=t\\y=2t\\z=1+t\end{cases}$ et
+$d_2:\begin{cases}x=1+s\\y=2+s\\z=2+s\end{cases}$, avec $t,\ s\in\R$.
+\begin{questions}
+  \item Déterminer un vecteur directeur de chaque droite. Les droites sont-elles parallèles ?
+  \item Montrer que $d_1$ et $d_2$ sont sécantes et déterminer leur point d'intersection $I$.
+  \item Calculer, au degré près, l'angle formé par les vecteurs directeurs des deux droites.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Deux droites non coplanaires}
+On considère $d_1:\begin{cases}x=1+2t\\y=3-t\\z=-1+t\end{cases}$ et $d_2:\begin{cases}x=2+s\\y=1+2s\\z=3s\end{cases}$, avec
+$t,\ s\in\R$.
+\begin{questions}
+  \item Les droites $d_1$ et $d_2$ sont-elles parallèles ?
+  \item Résoudre le système formé par les deux premières équations, puis tester la troisième.
+  \item Conclure sur la position relative de $d_1$ et $d_2$. Peut-on trouver un plan qui les contienne toutes les deux ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Deux plans sécants}
+L'espace est muni d'un repère orthonormé. On considère les plans $\mathcal{P}_1:x+y+z-1=0$ et $\mathcal{P}_2:2x-y+z+3=0$.
+\begin{questions}
+  \item Les plans $\mathcal{P}_1$ et $\mathcal{P}_2$ sont-ils parallèles ? perpendiculaires ?
+  \item En prenant $y=t$ comme paramètre, déterminer une représentation paramétrique de leur droite d'intersection $\Delta$.
+  \item Vérifier que le point $M(-4\pv0\pv5)$ appartient aux deux plans, et que le vecteur directeur de $\Delta$ est orthogonal aux
+    deux vecteurs normaux.
+  \item Calculer, au degré près, l'angle formé par les vecteurs normaux des deux plans.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Synthèse : droites, plan et intersection}
+L'espace est muni d'un repère orthonormé. On considère les points $A(1\pv0\pv2)$, $B(3\pv1\pv0)$, $C(2\pv-1\pv3)$ et la droite
+$d:\begin{cases}x=1+t\\y=2-t\\z=3+2t\end{cases}$, $t\in\R$.
+\begin{questions}
+  \item Déterminer une représentation paramétrique de la droite $(AB)$.
+  \item Montrer que $\vec n\,(1\pv4\pv3)$ est normal au plan $(ABC)$, puis que ce plan a pour équation $x+4y+3z-7=0$.
+  \item Le point $D(0\pv-1\pv4)$ appartient-il au plan $(ABC)$ ?
+  \item Montrer que $d$ coupe le plan $(ABC)$ et déterminer les coordonnées du point d'intersection $I$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une pyramide à base rectangulaire}
+\begin{codecote}[0.56]
+Dans un repère orthonormé, on considère la pyramide $SABCD$ avec $A(0\pv0\pv0)$, $B(3\pv0\pv0)$, $C(3\pv2\pv0)$, $D(0\pv2\pv0)$ et
+$S(1\pv1\pv3)$.
+\begin{questions}
+  \item Montrer que $ABCD$ est un rectangle et calculer son aire.
+  \item Déterminer une représentation paramétrique des droites $(SD)$ et $(SA)$.
+  \item $P$ est le point de $[SD]$ tel que $\vect{SP}=\frac14\vect{SD}$. Calculer ses coordonnées.
+  \item Vérifier que $P$, $B$, $C$ ne sont pas alignés et que le plan $(PBC)$ a pour équation $x+z-3=0$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,y={(0.55cm,0.42cm)},scale=1.05]
+  \coordinate (A) at (0,0,0); \coordinate (B) at (3,0,0); \coordinate (C) at (3,2,0); \coordinate (D) at (0,2,0);
+  \coordinate (S) at (1,1,3);
+  \coordinate (P) at (0.75,1.25,2.25); \coordinate (Q) at (0.75,0.75,2.25);
+  \fill[otGreen,opacity=0.2] (B) -- (C) -- (P) -- (Q) -- cycle;
+  \draw[otVu] (A) -- (B) -- (C) -- (S) -- cycle; \draw[otVu] (S) -- (B);
+  \draw[otCache] (A) -- (D) -- (C); \draw[otCache] (D) -- (S);
+  \draw[otGreenDark,line width=0.8pt] (B) -- (Q);
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 2.2pt off 1.6pt] (Q) -- (P) -- (C);
+  \foreach \p/\a in {A/north east,B/north west,C/west,D/south east,S/south}{\node[otSommet,anchor=\a] at (\p) {$\p$};}
+  \node[otPtV] at (P) {}; \node[otSommet,anchor=south east] at (P) {$P$};
+  \node[otPtV] at (Q) {}; \node[otSommet,anchor=east] at (Q) {$Q$};
+\end{tikzpicture}
+\end{codecote}
+\begin{questions}[start=5]
+  \item Montrer que la droite $(SA)$ coupe le plan $(PBC)$ en un point $Q$ dont on donnera les coordonnées.
+  \item Déterminer une représentation paramétrique de la droite $\Delta$ orthogonale au plan $(PBC)$ passant par $S$, puis les
+    coordonnées du point $H$, intersection de $\Delta$ et de $(PBC)$. En déduire la distance du point $S$ au plan $(PBC)$.
+  \item Le projeté orthogonal de $P$ sur la droite $(BC)$ est le point $K\left(3\pv\frac54\pv0\right)$. Calculer $PK$, puis l'aire du
+    triangle $PBC$, et en déduire le volume du tétraèdre $SPBC$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Un tétraèdre trirectangle}
+L'espace est muni d'un repère orthonormé d'origine $O$. On considère les points $A(1\pv0\pv0)$, $B(0\pv2\pv0)$ et $C(0\pv0\pv3)$ :
+les arêtes $[OA]$, $[OB]$ et $[OC]$ du tétraèdre $OABC$ sont deux à deux perpendiculaires.
+\begin{questions}
+  \item Vérifier que le plan $(ABC)$ a pour équation $6x+3y+2z-6=0$.
+  \item Déterminer une représentation paramétrique de la droite $\Delta$ passant par $O$ et orthogonale au plan $(ABC)$, puis les
+    coordonnées du point $H$, intersection de $\Delta$ et de $(ABC)$.
+  \item En déduire la distance du point $O$ au plan $(ABC)$.
+  \item Calculer le volume du tétraèdre $OABC$, puis en déduire l'aire du triangle $ABC$.
+  \item Montrer que $\vect{AH}\cdot\vect{BC}=0$ et $\vect{BH}\cdot\vect{AC}=0$. Que représente le point $H$ pour le triangle $ABC$ ?
+\end{questions}
+\end{exercice}

@@ -1,0 +1,12 @@
+% Oscillogramme d'un son capté par un microphone : 0,5 ms par division (exercice 4, chapitre 17)
+\begin{tikzpicture}[x=0.9cm,y=0.9cm]
+\fill[otNavyDark] (-0.15,-2.15) rectangle (10.15,2.15);
+\foreach \x in {0,...,10}{\draw[white!25!otNavyDark,line width=0.3pt] (\x,-2) -- (\x,2);}
+\foreach \y in {-2,...,2}{\draw[white!25!otNavyDark,line width=0.3pt] (0,\y) -- (10,\y);}
+\draw[otGreen!80!white,line width=1.1pt] plot[domain=0:10,samples=200] (\x,{1.5*sin(deg(2*pi*\x/4))+0.35*sin(deg(4*pi*\x/4+1))});
+\node[pcLegende,anchor=north west] at (0,-2.2) {balayage : \qty{0,5}{ms} par division};
+\solution{
+  \draw[otOrange!70!white,line width=0.9pt,{Stealth[length=1.8mm]}-{Stealth[length=1.8mm]}] (1.0,2.45) -- (5.0,2.45) node[pos=0.5,pcLegende,anchor=south,text=otOrange!80!black] {$T$ : 4 divisions};
+  \draw[otOrange!70!white,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (1.0,2.45) -- (1.0,-2) (5.0,2.45) -- (5.0,-2);}
+\end{tikzpicture}
+\par\smallskip\legende{Tension délivrée par un microphone placé devant un instrument de musique.\solution{ Le motif se répète toutes les 4 divisions : $T=\qty{2,0}{ms}$.}}

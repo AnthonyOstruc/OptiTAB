@@ -1,0 +1,80 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 19 — Le problème de Bâle
+%% Résultats vérifiés par verifications/defis_16_20.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le problème de Bâle : $\zeta(2)=\pi^{2}/6$}{2 h}
+Posé en 1644 par Pietro Mengoli, résolu par Leonhard Euler en 1735, le
+« problème de Bâle » demande la valeur exacte de
+$\zeta(2)=\displaystyle\sum_{k=1}^{+\infty}\frac{1}{k^{2}}$. On en donne une
+preuve entièrement élémentaire, par la trigonométrie et les relations de
+Viète. Soit $m\in\N^{*}$.
+
+\partieExo{A}{Une identité polynomiale}
+\begin{questions}
+  \item À l'aide de la formule de Moivre appliquée à
+    $(\cos\theta+\mathrm{i}\sin\theta)^{2m+1}$, montrer que
+    \[
+    \sin\bigl((2m+1)\theta\bigr)=\sum_{k=0}^{m}(-1)^{k}\binom{2m+1}{2k+1}
+    \cos^{2m-2k}\theta\,\sin^{2k+1}\theta .
+    \]
+  \item En déduire, pour $\theta\in\intOO{0}{\frac\pi2}$ :
+    $\dfrac{\sin\bigl((2m+1)\theta\bigr)}{\sin^{2m+1}\theta}=P_m\bigl(\cot^{2}\theta\bigr)$,
+    où $P_m=\sum_{k=0}^{m}(-1)^{k}\binom{2m+1}{2k+1}X^{m-k}$ et
+    $\cot=\frac{\cos}{\sin}$.
+  \item Montrer que les $m$ réels $x_r=\cot^{2}\frac{r\pi}{2m+1}$
+    ($1\leqslant r\leqslant m$) sont des racines distinctes de $P_m$ ; en
+    déduire que ce sont toutes ses racines, puis, par les relations de
+    Viète :
+    \[
+    \sum_{r=1}^{m}\cot^{2}\frac{r\pi}{2m+1}=\frac{m(2m-1)}{3} .
+    \]
+\end{questions}
+
+\partieExo{B}{L'encadrement}
+\begin{questions}[resume]
+  \item Montrer que $\sin\theta<\theta<\tan\theta$ pour
+    $\theta\in\intOO{0}{\frac\pi2}$, et en déduire
+    $\cot^{2}\theta<\dfrac{1}{\theta^{2}}<1+\cot^{2}\theta$.
+  \item En sommant ces inégalités pour $\theta=\frac{r\pi}{2m+1}$,
+    $1\leqslant r\leqslant m$, montrer que
+    \[
+    \frac{m(2m-1)}{3}<\frac{(2m+1)^{2}}{\pi^{2}}\sum_{r=1}^{m}\frac{1}{r^{2}}
+    <\frac{2m(m+1)}{3} .
+    \]
+  \item En déduire que $\zeta(2)=\dfrac{\pi^{2}}{6}$.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[x=3cm,y=0.42cm,line cap=round]
+  \foreach \v in {2,4,6,8}{\draw[otRule,line width=0.3pt] (0,\v) -- (1.62,\v);
+    \node[font=\tiny,text=otMuted,anchor=east] at (0,\v) {$\v$};}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (1.75,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (0,9.2);
+  \draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (1.5708,0) -- (1.5708,8.6);
+  \draw[otNavy!45,line width=1pt] plot[domain=0.343:1.5708,samples=120] ({\x},{1/(sin(deg(\x))^2)});
+  \draw[otGreenDark,line width=1.2pt] plot[domain=0.343:1.5708,samples=120] ({\x},{1/(\x*\x)});
+  \draw[otNavy,line width=1pt] plot[domain=0.36:1.5708,samples=120] ({\x},{(cos(deg(\x))/sin(deg(\x)))^2});
+  \node[font=\tiny,text=otMuted,below] at (1.5708,0) {$\frac\pi2$};
+  \node[font=\scriptsize,text=otNavy!60,anchor=west] at (0.62,3.6) {$1+\cot^{2}\theta$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (0.86,1.9) {$1/\theta^{2}$};
+  \node[font=\scriptsize,text=otNavy,anchor=north east] at (0.78,0.7) {$\cot^{2}\theta$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Sur $\intOO{0}{\frac\pi2}$, la courbe de $1/\theta^{2}$ (en vert) est
+coincée entre celles de $\cot^{2}\theta$ et de $1+\cot^{2}\theta=1/\sin^{2}\theta$.}
+\end{center}
+
+\partieExo{C}{Conséquences}
+\begin{questions}[resume]
+  \item En séparant termes pairs et impairs, en déduire
+    $\displaystyle\sum_{k\geqslant0}\frac{1}{(2k+1)^{2}}=\frac{\pi^{2}}{8}$ et
+    $\displaystyle\sum_{k\geqslant1}\frac{(-1)^{k+1}}{k^{2}}=\frac{\pi^{2}}{12}$.
+  \item On admet l'encadrement du reste
+    $\frac{1}{N+1}<\sum_{k>N}\frac{1}{k^{2}}<\frac{1}{N+\frac12}$
+    (chapitre 19, exercice 20). Sachant que
+    $\sum_{k=1}^{10}\frac1{k^{2}}\approx1{,}549\,768$, en déduire un
+    encadrement de $\pi$ d'amplitude inférieure à $5\cdot10^{-3}$.
+\end{questions}
+\end{defi}

@@ -1,0 +1,339 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[interferences]{22}{Diffraction et interférences}{Partie 4 · Ondes et signaux}
+{Diffraction\enspace·\enspace Angle caractéristique\enspace·\enspace Interférences constructives et destructives\enspace·\enspace Fentes d'Young}
+\objectif{Caractériser le phénomène de diffraction dans des situations variées et en citer des conséquences concrètes.}
+\objectif{Exploiter la relation entre l'angle caractéristique de diffraction, la longueur d'onde et la taille de
+l'ouverture.}
+\objectif{Établir les conditions d'interférences constructives et destructives de deux ondes issues de sources en phase.}
+\objectif{Prévoir les franges d'interférences des fentes d'Young et établir l'expression de l'interfrange.}
+\objectif{Représenter en Python la somme de deux signaux sinusoïdaux synchrones de déphasage variable.}
+\prerequis{Onde progressive périodique, période, longueur d'onde, célérité : $\lambda=v\,T$ (classe de première).}
+\prerequis{Lumière, spectre, ondes électromagnétiques (classes de seconde et de première).}
+\prerequis{Fonctions trigonométriques (mathématiques).}
+\end{ouverture}
+\essentiel
+\essSection{1}{La diffraction}
+\begin{definition}[Diffraction]
+Lorsqu'une onde rencontre une ouverture ou un obstacle, elle se propage au-delà dans des directions qu'elle n'aurait pas
+prises en ligne droite : c'est la \textbf{diffraction}. Elle est d'autant plus marquée que la taille $a$ de l'ouverture
+ou de l'obstacle est petite devant la longueur d'onde $\lambda$ ; pour $a\gg\lambda$, elle devient négligeable. La
+diffraction ne modifie ni la fréquence ni la longueur d'onde.
+\end{definition}
+\begin{loi}[Angle caractéristique de diffraction]
+Pour une fente de largeur $a$, la tache centrale de diffraction est vue sous le demi-angle
+\[\theta=\frac{\lambda}{a},\]
+avec $\theta$ en radians ; cette relation est valable pour les petits angles. Sur un écran à la distance $D$, la tache
+centrale a pour largeur $L=2D\tan\theta\approx\dfrac{2\lambda D}{a}$.
+\end{loi}
+\schema{22-diffraction}
+\begin{exemple}
+Un laser rouge ($\lambda=\qty{633}{nm}$) éclaire une fente de \qty{0,10}{mm} : $\theta=\qty{6,3e-3}{rad}$. Sur un écran à
+\qty{2,0}{m}, la tache centrale mesure \qty{2,5}{cm}, alors que le faisceau n'avait que quelques millimètres. La
+diffraction explique qu'on entende un son derrière une porte ouverte ($\lambda\approx\qty{1}{m}$), que la houle contourne
+les jetées, et qu'elle limite la finesse des images de tout instrument d'optique.
+\end{exemple}
+\essSection{2}{Interférences de deux ondes}
+\begin{definition}[Interférences]
+Deux ondes de même fréquence, dont le déphasage est constant (on dit qu'elles sont \textbf{cohérentes}), se superposent :
+en certains points, leurs effets s'ajoutent, l'amplitude est maximale (interférences \textbf{constructives}) ; en
+d'autres, ils se compensent, l'amplitude est minimale, voire nulle (interférences \textbf{destructives}).
+\end{definition}
+\schema{22-sommes}
+\begin{propriete}[Conditions d'interférences]
+Deux sources ponctuelles $S_1$ et $S_2$ émettent en phase des ondes de longueur d'onde $\lambda$ dans un milieu
+homogène. En un point $M$, on note $\delta=S_2M-S_1M$ la \textbf{différence de marche}. Les interférences sont :
+\begin{itemize}
+\item constructives si $\delta=k\,\lambda$, avec $k$ entier relatif ;
+\item destructives si $\delta=\left(k+\dfrac12\right)\lambda$.
+\end{itemize}
+\end{propriete}
+\begin{savoirfaire}[Établir les conditions d'interférences]
+L'onde issue de $S_2$ parcourt $\delta$ de plus que celle issue de $S_1$ : elle arrive en $M$ avec le retard
+$\tau=\dfrac{\delta}{v}$. Les deux ondes sont en phase si ce retard est un nombre entier de périodes, $\tau=k\,T$, soit
+$\delta=k\,v\,T=k\,\lambda$ ; elles sont en opposition de phase si $\tau=\left(k+\frac12\right)T$, soit
+$\delta=\left(k+\frac12\right)\lambda$.
+\end{savoirfaire}
+\essSection{3}{Interférences lumineuses : les fentes d'Young}
+\begin{propriete}[Franges d'interférences]
+Deux fentes fines $S_1$ et $S_2$, distantes de $b$ et éclairées par le même laser, se comportent comme deux sources
+cohérentes en phase. Sur un écran à la distance $D\gg b$, au point d'abscisse $x$ mesurée depuis le centre, la
+différence de marche vaut $\delta\approx\dfrac{b\,x}{D}$ (expression fournie). Les franges brillantes ($\delta=k\lambda$)
+sont situées en $x_k=k\,\dfrac{\lambda D}{b}$ : elles sont équidistantes, séparées par l'\textbf{interfrange}
+\[i=\frac{\lambda\,D}{b}.\]
+\end{propriete}
+\schema{22-young}
+\begin{exemple}
+Avec $\lambda=\qty{633}{nm}$, $b=\qty{0,20}{mm}$ et $D=\qty{1,50}{m}$ : $i=\qty{4,75}{mm}$. Mesurer l'interfrange permet donc de
+déterminer une longueur d'onde. Les interférences expliquent aussi les irisations des bulles de savon, les traitements
+antireflets et le fonctionnement des détecteurs d'ondes gravitationnelles.
+\end{exemple}
+\begin{codecote}[0.64]
+\begin{pythoncol}
+from math import sin, pi
+A, T = 1.0, 1.0
+instants = [k / 1000 for k in range(1000)]
+for phi in [0, pi/2, 2*pi/3, pi]:
+    s = [A*sin(2*pi*t/T) + A*sin(2*pi*t/T + phi)
+         for t in instants]
+    print(round(phi, 2), round(max(s), 2))
+\end{pythoncol}
+\begin{consolecol}
+0 2.0
+1.57 1.41
+2.09 1.0
+3.14 0.0
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Le programme additionne, sur une période, deux signaux sinusoïdaux de même amplitude $A$ et de même période, le
+second étant déphasé de $\varphi$, puis affiche l'amplitude de la somme : $2A$ en phase, $\sqrt2\,A$ pour
+$\varphi=\pi/2$, $A$ pour $\varphi=2\pi/3$, zéro en opposition de phase.
+\end{codecote}
+\begin{attention}
+Dans $\theta=\lambda/a$, l'angle s'exprime en radians et $a$ désigne la largeur de la fente ; dans $i=\lambda D/b$, $b$ est la
+distance entre les deux fentes. Deux lampes distinctes n'interfèrent pas : leurs ondes ne sont pas cohérentes.
+\end{attention}
+\begin{experience}[Interférences à la surface de l'eau]
+Dans une cuve à ondes, deux pointes reliées au même vibreur frappent la surface en phase. On observe des lignes où
+l'eau reste immobile, de forme hyperbolique, séparées par des zones de forte agitation. En relevant les distances
+$S_1M$ et $S_2M$ en des points immobiles, on vérifie que $\delta$ vaut $\lambda/2$, $3\lambda/2$\,\dots Avec un laser et des
+fentes d'Young, on mesure de même l'interfrange, éventuellement sur une photographie traitée par un logiciel, pour en
+déduire la longueur d'onde.
+\end{experience}
+\begin{rediger}
+Pour conclure sur la nature des interférences en un point, calculer la différence de marche, puis le rapport
+$\delta/\lambda$ : « $\delta=2{,}5\,\lambda$, demi-entier : interférences destructives ». Pour mesurer un interfrange, mesurer
+plusieurs interfranges à la fois afin de réduire l'incertitude.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-22-1}
+\begin{exercice}[1]{Diffraction ou pas ?}
+\begin{questions}
+\item On entend une conversation à travers une porte ouverte sans voir les personnes qui parlent. Les longueurs d'onde
+des sons de la voix sont comprises entre \qty{0,3}{m} et \qty{3}{m}, celles de la lumière visible entre 400 et \qty{800}{nm}.
+Expliquer.
+\item Dans quel cas la diffraction d'une onde par une ouverture est-elle marquée ?
+\item La diffraction modifie-t-elle la fréquence de l'onde ? sa longueur d'onde ?
+\item Citer deux situations de la vie courante où la diffraction se manifeste.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-2}
+\begin{exercice}[1]{Mesurer la largeur d'une fente}
+Un laser de longueur d'onde \qty{650}{nm} éclaire une fente. Sur un écran placé à \qty{1,80}{m}, la tache centrale de
+diffraction mesure \qty{2,3}{cm}.
+\begin{questions}
+\item Représenter la situation par un schéma où figurent l'angle $\theta$, la distance $D$ et la largeur $L$.
+\item Exprimer $\theta$ en fonction de $L$ et de $D$, en utilisant l'approximation des petits angles, puis le calculer.
+\item En déduire la largeur de la fente.
+\item Comment évolue la tache centrale si l'on utilise une fente deux fois plus fine ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-3}
+\begin{exercice}[1]{La houle entre dans le port}
+Une houle de longueur d'onde \qty{40}{m} arrive perpendiculairement à l'entrée d'un port, large de \qty{60}{m}.
+\begin{questions}
+\item La houle est-elle diffractée par l'entrée du port ? Justifier.
+\item Calculer l'angle caractéristique de diffraction, en radians puis en degrés. On admettra que la relation
+$\theta=\lambda/a$ donne encore un ordre de grandeur.
+\item Pourquoi des bateaux amarrés loin de l'axe de l'entrée sont-ils malgré tout agités ?
+\item Que deviendrait l'angle pour une passe de \qty{400}{m} ? Commenter.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-4}
+\begin{exercice}[1]{Constructives ou destructives ?}
+Deux pointes $S_1$ et $S_2$ frappent en phase la surface de l'eau ; les ondes ont une longueur d'onde de \qty{2,0}{cm}.
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Point & $M$ & $N$ & $P$ & $Q$ \\
+$S_1M$ (cm) & 8,0 & 6,0 & 9,0 & 5,0 \\
+$S_2M$ (cm) & 11,0 & 10,0 & 9,0 & 10,0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{questions}
+\item Rappeler les conditions d'interférences constructives et destructives.
+\item Calculer, pour chaque point, la différence de marche et le rapport $\delta/\lambda$.
+\item En quels points l'eau est-elle immobile ? En quels points l'agitation est-elle maximale ?
+\item Où se trouvent tous les points tels que $S_1M=S_2M$ ? Que vaut l'amplitude en ces points ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-5}
+\begin{exercice}[1]{Les fentes d'Young}
+Deux fentes distantes de $b=\qty{0,25}{mm}$ sont éclairées par un laser vert de longueur d'onde \qty{532}{nm}. L'écran est à
+$D=\qty{2,00}{m}$.
+\begin{questions}
+\item Calculer l'interfrange.
+\item Que devient l'interfrange si l'on recule l'écran à \qty{4,00}{m} ?
+\item Même question avec un laser rouge de \qty{650}{nm}, l'écran étant à \qty{2,00}{m}.
+\item Comment varie l'interfrange si l'on rapproche les deux fentes ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-22-6}
+\begin{exercice}[2]{Mesurer un cheveu}
+Un cheveu tendu devant un laser de longueur d'onde \qty{633}{nm} produit la même figure de diffraction qu'une fente de même
+largeur. Sur un écran à \qty{2,00}{m}, la tache centrale mesure \qty{4,2}{cm}.
+\begin{questions}
+\item Calculer l'angle caractéristique de diffraction.
+\item En déduire le diamètre du cheveu, en micromètres.
+\item Le diamètre d'un cheveu humain est compris entre 50 et \qty{100}{\micro m}. Le résultat est-il plausible ?
+\item Pourquoi la mesure directe avec une règle serait-elle impossible ? Quel est l'intérêt de la méthode ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-7}
+\begin{exercice}[2]{Diffraction de la lumière blanche}
+Une fente de \qty{50}{\micro m} est éclairée en lumière blanche ; l'écran est à \qty{1,5}{m}.
+\begin{questions}
+\item Calculer la largeur de la tache centrale pour une lumière bleue de \qty{400}{nm}, puis pour une lumière rouge de
+\qty{750}{nm}.
+\item Quelle couleur est la plus diffractée ?
+\item Décrire l'aspect du centre et des bords de la tache centrale en lumière blanche.
+\item Pourquoi utilise-t-on un laser, plutôt qu'une lampe, pour mesurer une longueur d'onde par diffraction ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-8}
+\begin{exercice}[2]{La somme de deux signaux en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Que contient la liste \code{instants} ? Que représente la liste \code{s} ?
+\item Comment le programme détermine-t-il l'amplitude de la somme ? Pourquoi suffit-il d'étudier une seule période ?
+\item On admet que l'amplitude de la somme vaut $2A\left|\cos\dfrac{\varphi}{2}\right|$. Vérifier les quatre valeurs affichées.
+\item Écrire les lignes qui tracent, sur un même graphique, les deux signaux et leur somme pour $\varphi=\pi/2$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-9}
+\begin{exercice}[2]{Mesurer une longueur d'onde}
+Des fentes d'Young distantes de $b=\qty{0,40}{mm}$ sont éclairées par une diode laser. Sur un écran à $D=\qty{2,50}{m}$, on
+mesure \qty{3,8}{cm} entre les centres de deux franges brillantes séparées par dix interfranges.
+\begin{questions}
+\item Pourquoi mesure-t-on dix interfranges plutôt qu'un seul ?
+\item Calculer l'interfrange, puis la longueur d'onde de la diode laser. Quelle est sa couleur ?
+\item La mesure sur l'écran est faite à \qty{1}{mm} près. Estimer l'incertitude relative sur l'interfrange.
+\item Établir l'expression de l'interfrange à partir de $\delta=\dfrac{b\,x}{D}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-10}
+\begin{exercice}[2]{La cuve à ondes}
+Dans une cuve à ondes, deux pointes distantes de $S_1S_2=\qty{6,0}{cm}$ vibrent en phase à \qty{20}{Hz}. Les ondes se propagent
+à \qty{0,30}{m.s^{-1}}.
+\begin{questions}
+\item Calculer la longueur d'onde.
+\item Sur le segment $[S_1S_2]$, la différence de marche varie entre \qty{-6,0}{cm} et \qty{6,0}{cm}. Combien de lignes de
+repos coupent ce segment ? Combien de lignes d'amplitude maximale, en dehors des sources ?
+\item Montrer que deux points de repos consécutifs du segment sont séparés de $\lambda/2$.
+\item Comment évoluerait la figure si l'on doublait la fréquence ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-11}
+\begin{exercice}[2]{Deux sources incohérentes}
+On éclaire deux fentes d'Young, non plus avec un laser, mais avec deux lampes identiques placées chacune derrière une
+fente.
+\begin{questions}
+\item Observe-t-on des franges ? Justifier.
+\item Pourquoi un laser, qui éclaire les deux fentes à la fois, produit-il des franges stables ?
+\item Deux haut-parleurs alimentés par le même générateur basse fréquence produisent-ils des interférences ? Et deux
+musiciens qui jouent la même note ?
+\item En lumière blanche, avec une seule source éclairant les deux fentes, la frange centrale est blanche et les
+suivantes sont irisées. Expliquer à l'aide de l'expression de l'interfrange.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-22-12}
+\begin{exercice}[3]{La finesse des images d'un télescope}
+\begin{docu}{1}{La limite de diffraction}
+L'ouverture circulaire d'un instrument d'optique diffracte la lumière : l'image d'une étoile n'est pas un point mais une
+petite tache. Deux points ne sont distingués que s'ils sont vus sous un angle supérieur à $\theta=1{,}22\,\dfrac{\lambda}{D}$,
+où $D$ est le diamètre de l'ouverture.
+\end{docu}
+\begin{docu}{2}{Trois instruments}
+Le télescope spatial Hubble a un miroir de \qty{2,4}{m} de diamètre et observe en lumière visible
+($\lambda=\qty{550}{nm}$) ; le télescope James-Webb, \qty{6,5}{m}, observe en infrarouge ($\lambda\approx\qty{2}{\micro m}$) ; la pupille
+de l'œil mesure environ \qty{3}{mm} en plein jour.
+\end{docu}
+\begin{donnees}
+Distance Terre-Lune : \qty{3,84e8}{m}.
+\end{donnees}
+\begin{questions}
+\item Calculer l'angle limite de résolution de Hubble.
+\item Quelle est la taille du plus petit détail de la surface lunaire que Hubble peut distinguer ?
+\item \initiative Comparer la résolution de l'œil et celle de Hubble pour l'observation de la Lune.
+\item Le James-Webb, plus grand, a-t-il une meilleure résolution que Hubble ? Pourquoi construit-on des télescopes de
+plus en plus grands ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-13}
+\begin{exercice}[3]{Le casque à réduction de bruit active}
+\begin{docu}{1}{Combattre le bruit par le bruit}
+Un micro capte le bruit extérieur ; l'électronique du casque fait émettre par l'écouteur une onde de même amplitude, en
+opposition de phase. Les deux ondes interfèrent de façon destructive dans le conduit auditif.
+\end{docu}
+\begin{docu}{2}{L'importance du retard}
+Si l'onde émise par l'écouteur a un retard $\Delta t$ par rapport à l'opposition de phase parfaite, l'amplitude résiduelle
+vaut $2A\,\sin(\pi f\,\Delta t)$, $A$ étant l'amplitude du bruit. Une amplitude divisée par 10 correspond à une atténuation
+de \qty{20}{dB}.
+\end{docu}
+\begin{questions}
+\item Pour un bruit de \qty{200}{Hz}, de quelle durée faut-il décaler un signal pour le mettre en opposition de phase avec
+lui-même ?
+\item Montrer que l'amplitude résiduelle est nulle pour $\Delta t=0$.
+\item \initiative Quel retard maximal l'électronique peut-elle tolérer pour atténuer de \qty{20}{dB} au moins un bruit de
+\qty{200}{Hz} ? un bruit de \qty{2000}{Hz} ? On admettra que $\sin u\approx u$ pour $u$ petit.
+\item Expliquer pourquoi ces casques sont efficaces contre le grondement d'un moteur d'avion, mais beaucoup moins contre
+les voix.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-14}
+\begin{exercice}[3]{Le traitement antireflet}
+\begin{docu}{1}{Une couche mince}
+Les verres de lunettes sont recouverts d'une couche transparente de fluorure de magnésium, d'indice $n=1{,}38$ et
+d'épaisseur $e$. La lumière se réfléchit en partie sur la face supérieure de la couche et en partie sur le verre.
+\end{docu}
+\begin{docu}{2}{La différence de marche}
+Les deux ondes réfléchies présentent une différence de marche $\delta=2\,n\,e$ (les deux réflexions introduisent le même
+déphasage, qui ne joue donc aucun rôle).
+\end{docu}
+\begin{questions}
+\item Quelle condition sur $\delta$ supprime la lumière réfléchie de longueur d'onde $\lambda$ ?
+\item \initiative Calculer la plus petite épaisseur de couche qui supprime la réflexion à \qty{550}{nm}, au centre du spectre
+visible.
+\item Calculer le rapport $\delta/\lambda$ pour une lumière bleue de \qty{450}{nm} et pour une lumière rouge de \qty{700}{nm}.
+Ces couleurs sont-elles éteintes ?
+\item Expliquer la teinte violacée des reflets sur les verres traités.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-22-15}
+\begin{exercice}[3]{Mesurer la vitesse du son par interférences}
+\begin{docu}{1}{Le dispositif}
+Deux haut-parleurs, face à face et alimentés par le même générateur à \qty{2000}{Hz}, émettent en phase. Un micro se déplace
+sur le segment qui les joint ; un oscilloscope affiche l'amplitude du signal reçu.
+\end{docu}
+\begin{docu}{2}{Les mesures}
+On repère dix positions successives où l'amplitude est minimale. Les positions extrêmes sont distantes de
+\qty{77,4}{cm}.
+\end{docu}
+\begin{questions}
+\item Quand le micro se déplace de $x$ vers l'un des haut-parleurs, de combien varie la différence de marche ?
+\item En déduire que deux minimums successifs sont séparés de $\lambda/2$.
+\item \initiative Calculer la longueur d'onde, puis la célérité du son.
+\item Pourquoi est-il préférable de repérer dix minimums plutôt que deux ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

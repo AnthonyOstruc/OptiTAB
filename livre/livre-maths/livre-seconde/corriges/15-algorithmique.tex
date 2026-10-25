@@ -1,0 +1,117 @@
+\clearpage\pagestyle{otMain}\fontsize{11}{15}\selectfont
+\corrigesChapitre{15}{Algorithmique et programmation}
+\begin{blocLivre}{cor-15-1}
+\begin{corrige}{1}{Suivre les affectations}
+\demarche{Mettre à jour les valeurs ligne après ligne.}
+Après les deux premières lignes, $a=3$ et $b=5$. La troisième remplace $a$ par 10. La quatrième utilise les valeurs alors présentes : $b=10-5=5$. Les valeurs finales sont donc $\res{a=10}$ et $\res{b=5}$. Une affectation n’est pas une égalité algébrique à conserver simultanément avec les anciennes lignes. En langage naturel : $a\leftarrow3$ ; $b\leftarrow a+2$ ; $a\leftarrow2\times b$ ; $b\leftarrow a-b$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-2}
+\begin{corrige}{2}{Reconnaître les types}
+\demarche{Distinguer la valeur affichée de son type informatique.}
+Les types sont respectivement entier, flottant, booléen et chaîne. Le test \code{7 > 3} vaut \code{True}. La division \code{7 / 2} renvoie le flottant 3,5 ; la division entière \code{7 // 2} renvoie 3. La chaîne \code{"7"} n’est pas directement un nombre : le rôle des guillemets est essentiel.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-3}
+\begin{corrige}{3}{Une fonction à appeler}
+\demarche{Traduire la ligne return en formule mathématique.}
+La fonction calcule $2x^2-3$. Elle renvoie $2\times16-3=\res{29}$ pour 4 et $2\times1-3=\res{-1}$ pour $-1$. Les parenthèses de l’appel attribuent une valeur à l’argument local \code{x} ; la ligne \code{def} seule n’affiche pas les images.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-4}
+\begin{corrige}{4}{Une condition}
+\demarche{Examiner la branche exécutée, y compris au seuil.}
+Pour $-5$, la condition est vraie et la fonction renvoie 5. Pour 0 et 2, elle atteint la dernière ligne et renvoie 0 et 2. Elle calcule $\res{|x|}$, la distance à 0. Le cas 0 ne nécessite pas un traitement supplémentaire, car les deux écritures donnent la même valeur.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-5}
+\begin{corrige}{5}{Une somme avec for}
+\demarche{Lister les valeurs réellement parcourues par range.}
+Les valeurs de \code{k} sont 1, 2, 3, 4 et 5, car la borne finale 6 est exclue. Les sommes successives sont 1, 3, 6, 10 et 15. Ainsi $\res{s=15}$. La variable \code{s} est un accumulateur ; l’initialiser à 0 correspond à la somme avant toute addition.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-6}
+\begin{corrige}{6}{La première puissance au-dessus du seuil}
+\demarche{Relier les variables à une puissance et interpréter le test de sortie.}
+Après $n$ passages, $v=2^n$. Or $2^9=512\le1000$ et $2^{10}=1024>1000$. La fonction renvoie $\res{(10;1024)}$. La condition utilise $\le$ pour chercher un dépassement strict. La boucle finit parce que les puissances de 2 dépassent tout seuil fixé ; ici les deux valeurs voisines suffisent à contrôler la sortie. Pour la première puissance de $0{,}5$ strictement inférieure à $0{,}01$, on garde la même structure :
+\begin{python}
+def seuilbas():
+    n = 0
+    v = 1
+    while v >= 0.01:
+        v = 0.5 * v
+        n = n + 1
+    return n, v
+\end{python}
+Comme $0{,}5^6=0{,}015625\ge0{,}01$ et $0{,}5^7=0{,}0078125<0{,}01$, elle renvoie $\res{(7;0{,}0078125)}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-7}
+\begin{corrige}{7}{Un encadrement garanti}
+\demarche{Établir ce qui est vrai avant et après le dernier test.}
+La boucle trouve le dernier entier $k$ tel que $k^2\le2q^2$ ; le suivant a un carré plus grand. Les bornes mathématiques sont donc $k/q\le\sqrt2<(k+1)/q$, d’amplitude $1/q=10^{-n}$. Pour $n=2$, $k=141$ et la sortie est $\res{(1{,}41;1{,}42)}$. Les tests sont entiers ; les flottants retournés ne doivent pas être confondus avec une écriture rationnelle exacte en machine.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-8}
+\begin{corrige}{8}{Tester un alignement}
+\demarche{Reconnaître un critère géométrique dans le calcul du programme.}
+La valeur \code{d} est le déterminant de $\vect{AB}$ et $\vect{AC}$. Pour $C(4;6)$, elle vaut $2\times6-3\times4=0$ : \code{True}. Pour $C(4;7)$, elle vaut $14-12=2$ : \code{False}. Le test exact est adapté à ces coordonnées entières ; avec des données approchées, il faudrait réfléchir à une tolérance.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-9}
+\begin{corrige}{9}{Programmer une droite}
+\demarche{Transformer les formules en fonction et expliciter son domaine.}
+Le domaine impose \code{xb != xa}. Les formules du cours se traduisent directement :
+\begin{python}
+def droite(xa, ya, xb, yb):
+    m = (yb - ya) / (xb - xa)
+    p = ya - m * xa
+    return m, p
+\end{python}
+L’appel donne $\res{(2;1)}$. Une verticale doit être traitée séparément : elle n’a pas de pente réelle et provoquerait ici une division par zéro.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-10}
+\begin{corrige}{10}{Une expérience simulée}
+\demarche{Lire les issues favorables de la condition, puis traduire deux lancers par deux appels.}
+Elle simule un dé équilibré et code le succès « 5 ou 6 » par 1, les autres issues par 0. La probabilité exacte de renvoyer 1 est donc $\res{2/6=1/3}$. Le résultat d’un seul appel ne donne pas cette probabilité ; il représente une réalisation aléatoire de l’expérience. Chaque appel de \code{randint} simule un lancer indépendant :
+\begin{python}
+from random import randint
+def somme2():
+    return randint(1, 6) + randint(1, 6)
+\end{python}
+La fonction renvoie un entier de 2 à 12 ; ces sommes ne sont pas équiprobables.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-11}
+\begin{corrige}{11}{Fréquence simulée}
+\demarche{Interpréter l’accumulateur et le dénominateur de la fréquence.}
+\code{s} compte les succès parmi $n$ lancers et la fonction renvoie leur fréquence. Elle est entre 0 et 1 et fluctue autour de $1/3$ lorsque $n$ est grand. Elle ne vaut pas nécessairement $1/3$, même pour un grand nombre de lancers. Le cas $n=0$ est exclu à cause de la division finale.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-12}
+\begin{corrige}{12}{Moyenne et écart type sans liste}
+\demarche{Relier chaque accumulateur à une somme statistique.}
+\code{s} additionne les valeurs et \code{q} leurs carrés. La moyenne est \code{s / n}. En développant les écarts au carré, leur moyenne vaut $\overline{x^2}-\bar x^2$, d’où la formule. Le \code{max(0,...)} évite une très petite valeur négative due aux arrondis. La fonction renvoie des indicateurs de l’échantillon simulé, pas exactement ceux de la loi uniforme.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-13}
+\begin{corrige}{13}{Corriger une boucle}
+\demarche{Identifier la variable du test et vérifier qu’elle évolue vers la sortie.}
+La variable \code{v} reste égale à 1 : le test est toujours vrai. Ajouter dans la boucle \code{v = 3 * v}, à la même indentation que la mise à jour de \code{n}, rétablit le lien $v=3^n$. Le programme corrigé s’arrête avec $\res{n=5}$ et $\res{v=243}$, puisque $3^4=81\le100<243$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-14}
+\begin{corrige}{14}{Approcher une longueur de courbe}
+\demarche{Reconnaître une formule de distance dans la boucle.}
+Chaque terme est la distance entre deux points successifs de la parabole, d’abscisses $k/n$ et $(k+1)/n$. La somme est la longueur de la ligne polygonale, une approximation de la longueur courbe. Pour $n=2$, elle vaut $\res{(\sqrt5+\sqrt{13})/4\approx1{,}4604}$. Le domaine est $n\ge1$ entier. Augmenter $n$ affine la subdivision, sans transformer la valeur calculée en preuve exacte de la longueur.
+\label{fig-cor-15-14}
+\figureGeo[corrige]{courbe-longueur}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-15-15}
+\begin{corrige}{15}{Une dichotomie pour un maximum}
+\demarche{Démontrer la règle de réduction avant d’interpréter la précision.}
+$f(b)-f(a)=(b-a)(1{,}4-a-b)$. Comme $b-a>0$, si $f(a)<f(b)$ alors $c>(a+b)/2$ ; sinon $c\le(a+b)/2$. On conserve donc la moitié qui contient le maximum. Après $n$ étapes, l’intervalle contient $c$ et a une largeur mathématique $\res{2/2^n}$. Cette règle est justifiée pour cette parabole symétrique ; elle ne s’applique pas automatiquement à toute fonction qui monte puis descend.
+\end{corrige}
+\end{blocLivre}

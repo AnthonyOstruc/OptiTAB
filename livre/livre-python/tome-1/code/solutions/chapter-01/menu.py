@@ -1,0 +1,5 @@
+print("Today's menu")
+print("Starter: soup")
+print("Main course: fish")
+print("Dessert: apple pie")
+print("Enjoy your meal!")

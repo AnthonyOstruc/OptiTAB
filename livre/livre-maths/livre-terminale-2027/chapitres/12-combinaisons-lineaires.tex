@@ -1,0 +1,303 @@
+% !TEX root = ../main.tex
+%% Chapitre 12 — Combinaisons linéaires et indépendance
+%% Sources : frontend/cours/resume/terminal/resume_combinaisons_lineaires_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_combinaisons_lineaires.txt
+%% Tous les calculs ont été vérifiés par programme (calcul exact).
+%% Exercices 10 et 11 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[bases]{12}{Combinaisons linéaires et indépendance}{Partie 2 · Géométrie dans l'espace}
+  {Combinaisons linéaires\enspace·\enspace Indépendance\enspace·\enspace Bases\enspace·\enspace Repères\enspace·\enspace
+   Coordonnées}
+  \objectif{Écrire un vecteur comme combinaison linéaire d'autres vecteurs en résolvant un système.}
+  \objectif{Reconnaître une famille libre ou liée de deux ou trois vecteurs.}
+  \objectif{Démontrer que trois vecteurs forment une base de l'espace et décomposer un vecteur dans cette base.}
+  \objectif{Utiliser les coordonnées dans un repère quelconque de l'espace.}
+  \prerequis{Vecteurs, colinéarité et coplanarité (chapitre 11).}
+  \prerequis{Systèmes d'équations linéaires ; déterminant de deux vecteurs du plan (Seconde).}
+\end{ouverture}
+\miseEnPageSouple
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Familles libres et familles liées}
+
+\begin{definition}[Indépendance linéaire]
+Des vecteurs $\vec{u_1}$, …, $\vec{u_n}$ sont \textbf{linéairement indépendants} (on dit que la famille est \textbf{libre}) si la
+seule combinaison linéaire nulle est celle dont tous les coefficients sont nuls :
+\[a_1\vec{u_1}+\dots+a_n\vec{u_n}=\vec0\ \Longrightarrow\ a_1=\dots=a_n=0.\]
+Sinon, la famille est \textbf{liée} : l'un des vecteurs est une combinaison linéaire des autres.
+\end{definition}
+
+\noindent
+\begin{minipage}[t]{0.5\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.35}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+\toprule
+\otTete{Famille} & \otTete{Libre si et seulement si} \\
+\midrule
+\otNom{deux vecteurs} & ils ne sont pas colinéaires \\
+\otNom{trois vecteurs} & ils ne sont pas coplanaires \\
+\otNom{quatre vecteurs} & jamais : dans l'espace, elle est toujours liée \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.46\linewidth}\vspace{0pt}
+\begin{propriete}[Dans le plan]
+\raggedright
+$\vec u\,(x\pv y)$ et $\vec v\,(x'\pv y')$ sont colinéaires si et seulement si leur \textbf{déterminant} est nul :
+\[\det(\vec u,\vec v)=xy'-x'y=0.\]
+\end{propriete}
+\end{minipage}
+
+\essSection{2}{Bases et repères de l'espace}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Décomposition dans une base]
+\raggedright
+Si $\vec i$, $\vec j$, $\vec k$ ne sont pas coplanaires, ils forment une \textbf{base} de l'espace : tout vecteur $\vec u$ s'écrit de
+façon \textbf{unique}
+\[\vec u=x\vec i+y\vec j+z\vec k.\]
+Le triplet $(x\pv y\pv z)$ est formé des \textbf{coordonnées} de $\vec u$ dans la base $(\vec i,\vec j,\vec k)$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[otEspace,scale=1.15]
+  \coordinate (O) at (0,0,0); \coordinate (M) at (2,1.4,1.5);
+  \draw[otCache] (2,0,0) -- (2,1.4,0) -- (0,1.4,0);
+  \draw[otCache] (2,1.4,0) -- (M);
+  \draw[otCache] (2,0,0) -- (2,0,1.5) -- (M) -- (0,1.4,1.5) -- (0,0,1.5) -- (2,0,1.5);
+  \draw[otCache] (0,1.4,0) -- (0,1.4,1.5);
+  \draw[otVecN] (O) -- (1,0,0) node[below,font=\small] {$\vec i$};
+  \draw[otVecN] (O) -- (0,1,0) node[above left,font=\small,inner sep=1pt] {$\vec j$};
+  \draw[otVecN] (O) -- (0,0,1) node[left,font=\small] {$\vec k$};
+  \draw[otVec] (O) -- (M);
+  \node[otPt] at (O) {}; \node[otSommet,anchor=north east] at (O) {$O$};
+  \node[otPtV] at (M) {}; \node[otSommet,anchor=south west] at (M) {$M$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$\vect{OM}=2\vec i+1{,}4\,\vec j+1{,}5\,\vec k$.}
+\end{minipage}
+
+\begin{propriete}[Repère et coordonnées]
+Un \textbf{repère} $(O\pv\vec i,\vec j,\vec k)$ est formé d'un point $O$ et d'une base. Les coordonnées d'un point $M$ sont celles du
+vecteur $\vect{OM}$. Dans tout repère : $\vect{AB}$ a pour coordonnées $(x_B-x_A\pv y_B-y_A\pv z_B-z_A)$, le milieu de $[AB]$ a pour
+coordonnées $\left(\frac{x_A+x_B}{2}\pv\frac{y_A+y_B}{2}\pv\frac{z_A+z_B}{2}\right)$, et les coordonnées de $\vec u+\vec v$ et de
+$k\vec u$ se calculent coordonnée par coordonnée.
+\end{propriete}
+
+\begin{savoirfaire}[Montrer qu'une famille est une base, puis décomposer]
+\textbf{Exemple.} Soit $\vec u\,(1\pv2\pv0)$, $\vec v\,(0\pv1\pv1)$, $\vec w\,(1\pv0\pv1)$.
+\begin{itemize}[leftmargin=1.2em,itemsep=0.4mm,topsep=0.5mm]
+  \item \textbf{Base :} si $a\vec u+b\vec v+c\vec w=\vec0$, alors $a+c=0$, $2a+b=0$ et $b+c=0$, d'où $c=-a$, $b=-2a$, puis
+    $-3a=0$ : $a=b=c=0$. La famille est libre : c'est une base.
+  \item \textbf{Décomposition de} $\vec s\,(1\pv5\pv0)$ : on résout $a+c=1$, $2a+b=5$, $b+c=0$. On obtient $a=2$, $b=1$, $c=-1$, soit
+    $\vec s=2\vec u+\vec v-\vec w$ : les coordonnées de $\vec s$ dans la base $(\vec u,\vec v,\vec w)$ sont $(2\pv1\pv-1)$.
+\end{itemize}
+\end{savoirfaire}
+
+\begin{demonstration}[Unicité de la décomposition]
+Supposons $\vec u=x\vec i+y\vec j+z\vec k=x'\vec i+y'\vec j+z'\vec k$. Par différence,
+$(x-x')\vec i+(y-y')\vec j+(z-z')\vec k=\vec0$. La famille $(\vec i,\vec j,\vec k)$ étant libre, tous les coefficients sont nuls :
+$x=x'$, $y=y'$ et $z=z'$.
+\end{demonstration}
+
+\begin{exemple}[Deux repères pour un même cube]
+\begin{codecote}[0.62]
+Dans le cube $ABCDEFGH$, les vecteurs $\vect{AB}$, $\vect{AD}$, $\vect{AE}$ ne sont pas coplanaires : $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$
+est un repère, dans lequel $G$ a pour coordonnées $(1\pv1\pv1)$ et $H$ a pour coordonnées $(0\pv1\pv1)$.\\[1mm]
+Dans le repère $\big(B\pv\vect{BA},\vect{BC},\vect{BF}\big)$, on a $\vect{BG}=0\,\vect{BA}+1\,\vect{BC}+1\,\vect{BF}$ :
+$G$ a pour coordonnées $(0\pv1\pv1)$, et $H$ a pour coordonnées $(1\pv1\pv1)$. Les coordonnées d'un point dépendent du repère.
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.2]
+  \otCube
+  \draw[otVecN] (A) -- (B); \draw[otVecN] (A) -- (D); \draw[otVecN] (A) -- (E);
+  \draw[otVec] (B) -- (A); \draw[otVec] (B) -- (C); \draw[otVec] (B) -- (F);
+\end{tikzpicture}
+\end{codecote}
+\end{exemple}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Trois vecteurs deux à deux non colinéaires peuvent être coplanaires : il faut étudier les trois ensemble.
+  \item Les coordonnées d'un vecteur dépendent de la base choisie, et de l'ordre des vecteurs de la base.
+  \item Dans un repère quelconque, la longueur d'un vecteur ne se calcule pas par $\sqrt{x^2+y^2+z^2}$ : il faut un repère
+    orthonormé (chapitre 13).
+  \item Une famille contenant le vecteur nul est toujours liée.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Rappels : calculs dans le plan}
+Dans un repère du plan, on considère $\vec u\,(3\pv2)$, $\vec v\,(-1\pv4)$ et $\vec w\,(5\pv-2)$.
+\begin{questions}
+  \item Calculer les coordonnées de $\vec u+\vec v$, $2\vec u-\vec w$, $\vec u+\vec v+\vec w$ et $3\vec u-2\vec v+\vec w$.
+  \item Déterminer les coordonnées du vecteur $\vect{AB}$, avec $A(2\pv5)$ et $B(7\pv1)$.
+  \item Calculer $\det\big((2\pv5),(3\pv7)\big)$ et $\det\big((6\pv9),(4\pv6)\big)$. Que peut-on en conclure ?
+  \item Pour quelle valeur de $m$ les vecteurs $\vec p\,(m\pv2)$ et $\vec q\,(3\pv6)$ sont-ils colinéaires ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Colinéarité et alignement}
+\begin{questions}
+  \item Les vecteurs $\vec u\,(4\pv6)$ et $\vec v\,(2\pv3)$ sont-ils colinéaires ? Et $\vec a\,(3\pv-2)$ et $\vec b\,(6\pv-5)$ ?
+  \item Déterminer $k$ pour que $\vec p\,(k\pv8)$ et $\vec q\,(3\pv4)$ soient colinéaires.
+  \item Les points $A(1\pv2)$, $B(4\pv5)$ et $C(7\pv8)$ sont-ils alignés ?
+  \item Les vecteurs $\vec u\,(-2\pv3)$ et $\vec v\,(4\pv-6)$ forment-ils une base du plan ? Et $\vec m\,(5\pv2)$ et $\vec n\,(3\pv7)$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Décomposer un vecteur}
+Dans un repère du plan, on considère $\vec u\,(1\pv2)$ et $\vec v\,(3\pv-1)$.
+\begin{questions}
+  \item Vérifier que $\vec u$ et $\vec v$ forment une base du plan.
+  \item Exprimer $\vec w\,(7\pv1)$, puis $\vec a\,(5\pv8)$, comme combinaisons linéaires de $\vec u$ et $\vec v$.
+  \item Le vecteur $\vec b\,(2\pv4)$ peut-il s'exprimer à l'aide de $\vec u$ seulement ?
+  \item Déterminer les coordonnées des vecteurs $a\vec u+b\vec v$ tels que $a+b=5$, en fonction de $a$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Changer de base dans le plan}
+On considère $\vec{e_1}\,(1\pv0)$, $\vec{e_2}\,(0\pv1)$, $\vec u\,(2\pv3)$ et $\vec v\,(1\pv-1)$.
+\begin{questions}
+  \item Exprimer $\vec u$ dans la base $(\vec{e_1},\vec{e_2})$.
+  \item Montrer que $(\vec u,\vec v)$ est une base du plan.
+  \item Exprimer $\vec{e_1}$ puis $\vec{e_2}$ dans la base $(\vec u,\vec v)$.
+  \item Déterminer les réels $a$ et $b$ tels que $a\vec u+b\vec v=(5\pv4)$. Retrouver ce résultat à l'aide de la question 3.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Une famille liée}
+On considère les vecteurs du plan $\vec{u_1}\,(1\pv1)$, $\vec{u_2}\,(2\pv-1)$ et $\vec{u_3}\,(5\pv1)$.
+\begin{questions}
+  \item Montrer que $\vec{u_1}$ et $\vec{u_2}$ sont linéairement indépendants.
+  \item Exprimer $\vec{u_3}$ comme combinaison linéaire de $\vec{u_1}$ et $\vec{u_2}$, puis écrire une relation
+    $a\vec{u_1}+b\vec{u_2}+c\vec{u_3}=\vec0$ à coefficients entiers non tous nuls.
+  \item Expliquer pourquoi trois vecteurs du plan forment toujours une famille liée.
+  \item Le vecteur $\vec w\,(0\pv5)$ peut-il s'exprimer comme combinaison linéaire de $\vec{u_1}$ et $\vec{u_2}$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Applications géométriques}
+\begin{codecote}[0.56]
+Dans un repère du plan, on considère les points $A(2\pv1)$, $B(5\pv3)$, $C(1\pv4)$ et $D(4\pv6)$.
+\begin{questions}
+  \item Calculer les coordonnées du milieu $M$ de $[AB]$.
+  \item Les droites $(AB)$ et $(CD)$ sont-elles parallèles ?
+  \item Déterminer les coordonnées du point $E$ tel que $ABCE$ soit un parallélogramme.
+  \item Exprimer $\vect{AD}$ comme combinaison linéaire de $\vect{AB}$ et $\vect{AC}$. Interpréter.
+  \item Les points $A$, $B$ et $D$ sont-ils alignés ?
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=62mm, xmin=-3, xmax=6.5, ymin=-0.5, ymax=7, xtick={-2,...,6}, ytick={1,...,6},
+  grid=major, grid style={otRule!60,line width=0.3pt}]
+  \addplot[only marks,mark=*,mark size=1.6pt,otNavy] coordinates {(2,1) (5,3) (1,4) (4,6)};
+  \node[font=\small,anchor=north] at (axis cs:2,1) {$A$};
+  \node[font=\small,anchor=west] at (axis cs:5,3) {$B$};
+  \node[font=\small,anchor=east] at (axis cs:1,4) {$C$};
+  \node[font=\small,anchor=south] at (axis cs:4,6) {$D$};
+\end{axis}
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\begin{exercice}[2]{Équations vectorielles}
+On considère les vecteurs du plan $\vec u\,(2\pv1)$, $\vec v\,(-1\pv3)$ et $\vec w\,(3\pv7)$.
+\begin{questions}
+  \item Résoudre l'équation vectorielle $x\vec u+y\vec v=\vec w$.
+  \item Le vecteur $\vec a\,(1\pv5)$ est-il une combinaison linéaire de $\vec u$ et $\vec v$ ?
+  \item Trouver les réels $a$ et $b$ tels que $a\vec u+b\vec v=(0\pv10)$.
+  \item Exprimer $\vec v$ en fonction de $\vec u$ et de $\vec w$.
+  \item Les points $M(2\pv1)$, $N(-1\pv3)$ et $P(8\pv-3)$ sont-ils alignés ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Vecteurs de l'espace}
+Dans un repère de l'espace, on considère $\vec u\,(1\pv0\pv2)$, $\vec v\,(0\pv1\pv1)$ et $\vec w\,(2\pv1\pv5)$.
+\begin{questions}
+  \item Exprimer $\vec w$ comme combinaison linéaire de $\vec u$ et $\vec v$. La famille $(\vec u,\vec v,\vec w)$ est-elle libre ?
+  \item On pose $\vec t\,(0\pv0\pv1)$. Montrer que $(\vec u,\vec v,\vec t)$ est une base de l'espace.
+  \item Les points $O$, $A(1\pv0\pv2)$, $B(1\pv1\pv3)$ et $C(3\pv2\pv7)$ sont-ils coplanaires ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Coplanarité et base dans l'espace}
+On considère $\vec u\,(1\pv2\pv1)$, $\vec v\,(2\pv1\pv3)$, $\vec w\,(3\pv3\pv4)$ et $\vec t\,(1\pv0\pv0)$.
+\begin{questions}
+  \item Montrer que $\vec u$ et $\vec v$ ne sont pas colinéaires, puis exprimer $\vec w$ en fonction de $\vec u$ et $\vec v$.
+  \item Les vecteurs $\vec u$, $\vec v$ et $\vec w$ sont-ils coplanaires ? La famille $(\vec u,\vec v,\vec w)$ est-elle une base ?
+  \item Montrer que $(\vec u,\vec v,\vec t)$ est une base de l'espace.
+  \item Les points $O$, $A(1\pv2\pv1)$, $B(3\pv3\pv4)$ et $C(5\pv4\pv7)$ sont-ils coplanaires ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Coordonnées dans une base non orthogonale}
+Dans un repère $(O\pv\vec i,\vec j,\vec k)$, on considère $\vec u\,(1\pv1\pv0)$, $\vec v\,(0\pv1\pv1)$ et $\vec w\,(1\pv0\pv1)$.
+\begin{questions}
+  \item Démontrer que $(\vec u,\vec v,\vec w)$ est une base de l'espace.
+  \item Déterminer les coordonnées des vecteurs $\vec s\,(4\pv3\pv1)$ et $\vec r\,(1\pv1\pv1)$ dans la base $(\vec u,\vec v,\vec w)$.
+  \item Le point $M$ a pour coordonnées $(2\pv-1\pv3)$ dans le repère $(O\pv\vec u,\vec v,\vec w)$. Quelles sont ses coordonnées dans
+    le repère $(O\pv\vec i,\vec j,\vec k)$ ?
+  \item Plus généralement, exprimer les coordonnées $(x\pv y\pv z)$ d'un point dans $(O\pv\vec i,\vec j,\vec k)$ en fonction de ses
+    coordonnées $(X\pv Y\pv Z)$ dans $(O\pv\vec u,\vec v,\vec w)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une famille dépendant d'un paramètre}
+Pour tout réel $m$, on considère les vecteurs $\vec u\,(1\pv m\pv1)$, $\vec v\,(m\pv1\pv1)$ et $\vec w\,(1\pv1\pv m)$.
+\begin{questions}
+  \item Que dire de la famille $(\vec u,\vec v,\vec w)$ lorsque $m=1$ ?
+  \item Calculer $\vec u+\vec v+\vec w$ lorsque $m=-2$. Conclure.
+  \item On suppose $m\neq1$. Soit $a$, $b$, $c$ des réels tels que $a\vec u+b\vec v+c\vec w=\vec0$. En soustrayant deux à deux les
+    équations obtenues, montrer que $a=b=c$, puis que $(m+2)a=0$.
+  \item En déduire les valeurs de $m$ pour lesquelles $(\vec u,\vec v,\vec w)$ est une base de l'espace.
+  \item Pour $m=0$, exprimer le vecteur $\vec s\,(2\pv2\pv2)$ dans la base $(\vec u,\vec v,\vec w)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Centre de gravité d'un tétraèdre}
+\begin{codecote}[0.58]
+$ABCD$ est un tétraèdre. On travaille dans le repère $\big(A\pv\vect{AB},\vect{AC},\vect{AD}\big)$. On note $G$ le centre de gravité
+du triangle $BCD$, défini par $\vect{GB}+\vect{GC}+\vect{GD}=\vec0$, et $O$ le point tel que
+$\vect{OA}+\vect{OB}+\vect{OC}+\vect{OD}=\vec0$.
+\begin{questions}
+  \item Donner les coordonnées de $A$, $B$, $C$, $D$, puis montrer que $G\left(\frac13\pv\frac13\pv\frac13\right)$.
+  \item Montrer que $O\left(\frac14\pv\frac14\pv\frac14\right)$, puis que $A$, $O$ et $G$ sont alignés. Préciser la position de $O$ sur
+    $[AG]$.
+  \item $I$ et $J$ sont les milieux de $[AB]$ et $[CD]$. Montrer que $O$ est le milieu de $[IJ]$.
+  \item En déduire que les trois segments joignant les milieux de deux arêtes opposées sont concourants.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[scale=1.3]
+  \coordinate (A) at (0,0); \coordinate (B) at (1.6,-0.9); \coordinate (C) at (3,0.15); \coordinate (D) at (1.35,2.35);
+  \coordinate (G) at ($1/3*(B)+1/3*(C)+1/3*(D)$); \coordinate (O) at ($1/4*(A)+1/4*(B)+1/4*(C)+1/4*(D)$);
+  \coordinate (I) at ($(A)!0.5!(B)$); \coordinate (J) at ($(C)!0.5!(D)$);
+  \fill[otGreen,opacity=0.12] (B) -- (C) -- (D) -- cycle;
+  \draw[otVu] (A) -- (B) -- (C) -- (D) -- cycle; \draw[otVu] (B) -- (D);
+  \draw[otCache] (A) -- (C);
+  \draw[otConstr] (A) -- (G);
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 2.2pt off 1.6pt] (I) -- (J);
+  \node[otPtV] at (G) {}; \node[otSommet,anchor=west] at (G) {$G$};
+  \node[otPt] at (O) {}; \node[otSommet,anchor=north] at (O) {$O$};
+  \foreach \p/\a in {I/north east,J/west}{\node[otPtV] at (\p) {}; \node[otSommet,anchor=\a] at (\p) {$\p$};}
+  \node[otSommet,anchor=east] at (A) {$A$}; \node[otSommet,anchor=north] at (B) {$B$};
+  \node[otSommet,anchor=west] at (C) {$C$}; \node[otSommet,anchor=south] at (D) {$D$};
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}

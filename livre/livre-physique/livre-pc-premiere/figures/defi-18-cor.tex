@@ -1,0 +1,11 @@
+% Image de la Lune sur un capteur de 24 x 36 mm avec deux focales (corrigé du défi D18) ; échelle 2/1
+\begin{tikzpicture}[x=2mm,y=2mm]
+\foreach \bx/\d/\t in {0/2.71/{\qty{300}{mm} : \qty{2,7}{mm}},42/10.84/{\qty{1200}{mm} : \qty{10,8}{mm}}}{%
+  \begin{scope}[shift={(\bx,0)}]
+    \fill[otNavyDark] (0,0) rectangle (36,24);
+    \shade[ball color=otMuted!30] (18,12) circle ({\d/2});
+    \node[pcLegendeG,anchor=north] at (18,-0.8) {\t};
+  \end{scope}}
+\node[pcLegende,anchor=south west] at (0,24.4) {capteur \qty{24}{mm} × \qty{36}{mm} (échelle 2)};
+\end{tikzpicture}
+\par\smallskip\legende{Avec un téléobjectif de \qty{300}{mm}, la Lune n'occupe que \qty{11}{\percent} de la hauteur du capteur ; il faudrait plus de \qty{2,6}{m} de focale pour la remplir.}

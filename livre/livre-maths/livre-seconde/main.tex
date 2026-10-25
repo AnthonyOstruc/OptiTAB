@@ -1,0 +1,98 @@
+% !TEX program = lualatex
+\documentclass[11pt,twoside,openany]{book}
+\usepackage{optitab-livre}
+\usepackage{figures-geometrie}
+\usepackage{relecture-livre}
+\usepackage{edition-france}
+\usepackage{longtable}
+\newcommand{\ligneSommaire}[2]{\par\vspace{3.5mm}\hyperref[#2]{#1}\hfill{\small p.\,\pageref*{#2}}\par}
+\newcommand{\otDecoalgorithmique}{\otDecoboucles}
+\newcommand{\otDecostatistique}{\otDecograndsnombres}
+\newcommand{\otDecoprobabilites}{\otDecoconditionnelles}
+\hypersetup{pdftitle={Mathématiques - Seconde générale et technologique - Livre complet},
+pdfsubject={France 2026-2027 : cours, 256 exercices corrigés, questions flash, approfondissements et deux bilans},pdfauthor={OptiTAB}}
+\newcommand{\otDecoseconddegre}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (132mm,47mm)--(210mm,47mm);
+  \draw[white,opacity=.25] (171mm,18mm)--(171mm,118mm);
+  \draw[otGreen,line width=1.8pt] plot[domain=-1.8:1.8,samples=75]
+    ({(171+20*\x)*1mm},{(47+16*\x*\x)*1mm});
+  \fill[white] (171mm,47mm) circle (1.5mm);}
+\newcommand{\otDecovecteursplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.7,line width=1.5pt,-{Stealth[length=3mm]}] (130mm,47mm)--(199mm,61mm);
+  \draw[otGreen,line width=1.8pt,-{Stealth[length=3mm]}] (130mm,47mm)--(157mm,105mm);
+  \draw[white,opacity=.35,dashed] (157mm,105mm)--(168mm,55mm);
+  \fill[white] (130mm,47mm) circle (1.5mm);}
+\newcommand{\otDecocercleplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (130mm,73mm)--(210mm,73mm) (170mm,36mm)--(170mm,116mm);
+  \draw[otGreen,line width=1.8pt] (170mm,73mm) circle (30mm);
+  \draw[white,opacity=.75,line width=1.2pt] (162mm,116.5mm)--(210mm,80.5mm);
+  \draw[white,opacity=.45,dashed] (170mm,73mm)--(188mm,97mm);
+  \fill[white] (188mm,97mm) circle (1.6mm);}
+\newcommand{\otDecoensembles}{%
+  \otDecoGrille
+  \fill[white,opacity=.10] (155mm,76mm) circle (22mm);
+  \fill[otGreen,opacity=.2] (181mm,76mm) circle (22mm);
+  \draw[white,opacity=.8,line width=1.3pt] (155mm,76mm) circle (22mm);
+  \draw[otGreen,line width=1.7pt] (181mm,76mm) circle (22mm);}
+
+\begin{document}
+\pagenumbering{alph}
+\input{couverture/premiere}
+\pagenumbering{arabic}
+\input{liminaires/titre}
+\input{liminaires/copyright}
+\input{liminaires/avant-propos}
+\input{liminaires/mode-emploi}
+\input{liminaires/parcours}
+\input{liminaires/sommaire}
+\input{liminaires/tableau-de-bord}
+\pagestyle{otMain}
+\input{chapitres/01-arithmetique}
+\input{chapitres/02-reels-intervalles}
+\input{chapitres/03-calcul-litteral}
+\input{chapitres/04-equations-inequations}
+\input{chapitres/05-fonctions}
+\input{chapitres/06-fonctions-reference}
+\input{chapitres/07-variations}
+\input{chapitres/08-vecteurs}
+\input{chapitres/09-configurations}
+\input{chapitres/10-droites}
+\input{chapitres/11-information-chiffree}
+\input{chapitres/12-statistiques}
+\input{chapitres/13-tableaux-croises}
+\input{chapitres/14-probabilites}
+\input{chapitres/15-algorithmique}
+\input{chapitres/16-raisonnement-syntheses}
+\input{annexes/automatismes-enonces}
+\input{annexes/defis-enonces}
+\input{annexes/indices-defis}
+\input{annexes/bilans-enonces}
+\input{annexes/demonstrations}
+\partieCorriges
+\input{corriges/01-arithmetique}
+\input{corriges/02-reels-intervalles}
+\input{corriges/03-calcul-litteral}
+\input{corriges/04-equations-inequations}
+\input{corriges/05-fonctions}
+\input{corriges/06-fonctions-reference}
+\input{corriges/07-variations}
+\input{corriges/08-vecteurs}
+\input{corriges/09-configurations}
+\input{corriges/10-droites}
+\input{corriges/11-information-chiffree}
+\input{corriges/12-statistiques}
+\input{corriges/13-tableaux-croises}
+\input{corriges/14-probabilites}
+\input{corriges/15-algorithmique}
+\input{corriges/16-raisonnement-syntheses}
+\input{annexes/automatismes-corriges}
+\input{annexes/defis-corriges}
+\input{annexes/bilans-corriges}
+\input{annexes/ateliers}
+\input{annexes/couverture-programme}
+\input{liminaires/references}
+\input{couverture/quatrieme}
+\end{document}

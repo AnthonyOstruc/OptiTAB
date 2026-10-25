@@ -1,0 +1,17 @@
+% Pression en fonction de la profondeur dans l'eau de mer (corrigé de l'exercice 4, chapitre 12)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otLecture,otAxesBout,width=100mm,height=46mm,xmin=0,xmax=25,ymin=0,ymax=3.6,
+  xtick={0,5,...,25},ytick={0,0.5,...,3.5},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={profondeur $h$ (m)},ylabel={$P$ ($10^5$ Pa)}]
+\addplot[otNavy,line width=1.1pt,domain=0:25] {1.013+0.10104*x};
+\draw[otOrange!85!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:10,0) -- (axis cs:10,2.02) -- (axis cs:0,2.02);
+\fill[otOrange!85!black] (axis cs:10,2.02) circle (1.6pt);
+\node[pcLegende,anchor=south east,text=otOrange!85!black] at (axis cs:10,2.04) {$\qty{2,02e5}{Pa}$ à \qty{10}{m}};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,3.0) -- (axis cs:19.7,3.0) -- (axis cs:19.7,0);
+\fill[otGreenDark] (axis cs:19.7,3.0) circle (1.6pt);
+\node[pcLegende,anchor=south east,text=otGreenDark] at (axis cs:19.6,3.02) {$\qty{3,0e5}{Pa}$ à \qty{19,7}{m}};
+\node[pcLegende,anchor=north west] at (axis cs:0.3,1.0) {$P_\mathrm{atm}$ en surface};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La pression augmente d'environ \qty{1}{bar} tous les \qty{10}{m} : c'est une fonction affine de la profondeur.}

@@ -1,0 +1,9 @@
+% Chaîne de puissance d'un petit moteur électrique (corrigé de l'exercice 5, chapitre 14)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  bloc/.style={draw=otNavy,fill=otNavy!8,line width=0.7pt,rounded corners=1.5mm,minimum width=2.0cm,minimum height=0.9cm,align=center,font=\otMedium\fontsize{8}{10}\selectfont,text=otInk}]
+\node[bloc] (m) at (0,0) {moteur};
+\draw[otGreen,line width=6pt,-{Triangle[length=2.8mm,width=8mm]}] (-3.6,0) -- (m.west) node[pos=0.45,pcLegende,anchor=south,text=otGreenDark,yshift=2mm] {électrique : \qty{30}{W}};
+\draw[otOrange,line width=4.2pt,-{Triangle[length=2.6mm,width=6.5mm]}] (m.east) -- ++(3.0,0) node[pcLegende,anchor=west,text=otOrange!80!black,align=left] {mécanique\\(utile) : \qty{21}{W}};
+\draw[otRed!70,line width=1.8pt,-{Triangle[length=2mm,width=4mm]}] (m.south) -- ++(0,-1.0) node[pcLegende,anchor=north,text=otRed!80!black,align=center] {thermique (pertes) : \qty{9}{W}\\effet Joule, frottements};
+\end{tikzpicture}
+\par\smallskip\legende{Rendement : $\eta=\dfrac{21}{30}=\num{0,70}$, soit \qty{70}{\percent}. La largeur des flèches est proportionnelle aux puissances.}

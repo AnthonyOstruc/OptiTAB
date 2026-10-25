@@ -1,0 +1,464 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 13 — Matrices
+%% Résultats vérifiés par verifications/chapitre_13.py.
+
+\corrigesChapitre{13}{Matrices}
+\corrigesSouples
+
+\begin{blocLivre}{cor-13-1}
+\begin{corrige}{1}{Écrire des matrices}
+\demarche{Les colonnes sont les images des vecteurs de base — rien d'autre.}
+\begin{questions}
+  \item $u(1,0)=(1,2,1)$ et $u(0,1)=(1,-1,0)$ :
+    $\operatorname{Mat}(u)=\begin{pmatrix}1&1\\2&-1\\1&0\end{pmatrix}$.
+  \item $D(1)=0$, $D(X)=1$, $D(X^{2})=2X$ :
+    $\operatorname{Mat}(D)=\begin{pmatrix}0&1&0\\0&0&2\\0&0&0\end{pmatrix}$.
+  \item $T(1)=0$, $T(X)=X$, $T(X^{2})=2X^{2}$ :
+    $\operatorname{Mat}(T)=\operatorname{diag}(0,1,2)$ — diagonale : chaque
+    monôme est envoyé sur un multiple de lui-même, la base canonique est
+    déjà « adaptée » à $T$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-2}
+\begin{corrige}{2}{Produits et composées}
+\demarche{Le produit matriciel traduit la composition — dans le même ordre.}
+\begin{questions}
+  \item $AB=\begin{pmatrix}2&1\\4&3\end{pmatrix}$ et
+    $BA=\begin{pmatrix}3&4\\1&2\end{pmatrix}$ : le produit n'est
+    \res{\text{pas commutatif}}.
+  \item $(AB)C=\begin{pmatrix}4&1\\10&3\end{pmatrix}=A(BC)$ : conforme à
+    l'associativité générale.
+  \item $\operatorname{Mat}(u\circ v)=AB$ et
+    $\operatorname{Mat}(v\circ u)=BA$ : composer, c'est multiplier, dans
+    le même ordre d'écriture.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-3}
+\begin{corrige}{3}{$Y=AX$ : images et antécédents}
+\demarche{Image : un produit. Antécédents : un système.}
+\begin{questions}
+  \item $A\begin{pmatrix}1\\2\end{pmatrix}=\begin{pmatrix}3\\5\end{pmatrix}$ :
+    $u(1,2)=\res{(3,5)}$.
+  \item $x+y=3$, $x+2y=5$ : $y=2$, $x=1$ — l'unique antécédent est
+    $\res{(1,2)}$.
+  \item $\det A=2-1=1\neq0$ : $A$ est inversible, donc $u$ est bijective
+    et chaque vecteur possède exactement un antécédent, $X=A^{-1}Y$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-4}
+\begin{corrige}{4}{Noyau, image, rang d'une matrice}
+\demarche{Les lignes donnent le noyau, les colonnes donnent l'image.}
+\begin{questions}
+  \item $L_2=2L_1$ : le rang est au plus $2$ ; $L_1$ et $L_3$ ne sont pas
+    proportionnelles : $\operatorname{rg}A=\res{2}$.
+  \item Noyau : $x+2y+3z=0$ et $x+y+z=0$ donnent $y=-2z$ puis $x=z$ :
+    $\operatorname{Ker}A=\res{\operatorname{Vect}\bigl((1,-2,1)\bigr)}$.
+    Image : engendrée par les colonnes ;
+    $C_3=-C_1+2C_2$, donc
+    $\operatorname{Im}A=\operatorname{Vect}\bigl((1,2,1),(2,4,1)\bigr)$.
+  \item $\dim\K^{3}=3=\dim\operatorname{Ker}A+\operatorname{rg}A=1+2$ :
+    conforme.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-5}
+\begin{corrige}{5}{Inversible ou pas ?}
+\demarche{Un pivot, ou un argument de rang : inutile d'aller plus loin.}
+\begin{questions}
+  \item $\det A=-2\neq0$ :
+    $A^{-1}=-\dfrac12\begin{pmatrix}4&-2\\-3&1\end{pmatrix}
+    =\res{\begin{pmatrix}-2&1\\3/2&-1/2\end{pmatrix}}$.
+  \item $L_1+L_3=2L_2$ : les lignes sont liées, $\operatorname{rg}B=2<3$ :
+    $B$ n'est \res{\text{pas inversible}}.
+  \item Une triangulaire est inversible si et seulement si sa diagonale ne
+    contient aucun zéro (pivot immédiat). Ici $2,3,4\neq0$ : $T$ est
+    \res{\text{inversible}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-6}
+\begin{corrige}{6}{Matrice de passage : premiers pas}
+\demarche{Colonnes de P = nouveaux vecteurs lus dans l'ancienne base ;
+et X = PX' se renverse en X' = P$^{-1}$X.}
+\begin{questions}
+  \item Vecteurs non colinéaires : base. $P=\begin{pmatrix}1&1\\1&-1\end{pmatrix}$.
+  \item $\det P=-2$ :
+    $P^{-1}=\dfrac12\begin{pmatrix}1&1\\1&-1\end{pmatrix}$ (elle est, à un
+    facteur près, sa propre inverse).
+  \item $X'=P^{-1}\begin{pmatrix}3\\1\end{pmatrix}
+    =\res{\begin{pmatrix}2\\1\end{pmatrix}}$, et en effet
+    $2\,(1,1)+1\,(1,-1)=(3,1)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-7}
+\begin{corrige}{7}{Un endomorphisme dans deux bases}
+\demarche{Dans une base adaptée à Im p et Ker p, un projecteur devient
+une matrice de zéros et de uns.}
+\begin{questions}
+  \item $\operatorname{Im}p=\operatorname{Vect}\bigl((1,1)\bigr)$ et
+    $\operatorname{Ker}p=\operatorname{Vect}\bigl((1,-1)\bigr)$
+    (chapitre 12), et $\R^{2}$ en est la somme directe : la famille
+    $\bigl((1,1),(1,-1)\bigr)$ est une base adaptée.
+  \item Avec $P=\begin{pmatrix}1&1\\1&-1\end{pmatrix}$ :
+    $P^{-1}AP=\res{\begin{pmatrix}1&0\\0&0\end{pmatrix}}$ — dans la bonne
+    base, $p$ « garde la première coordonnée et efface la seconde ». Toute
+    la géométrie du projecteur tient dans ce $\operatorname{diag}(1,0)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-8}
+\begin{corrige}{8}{La trace : premiers calculs}
+\demarche{La trace ignore l'ordre des produits — c'est tout son intérêt.}
+\begin{questions}
+  \item $\operatorname{tr}A=5$ ;
+    $\operatorname{tr}(AB)=2+3=\res{5}$ et
+    $\operatorname{tr}(BA)=3+2=\res{5}$ : égales, comme toujours.
+  \item Non : $\operatorname{tr}A\cdot\operatorname{tr}B=5\times0=0\neq5$.
+  \item $\operatorname{tr}\Bigl(\dfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}\Bigr)
+    =\res{1}=\operatorname{rg}p$ : la trace d'un projecteur compte la
+    dimension de son image.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-9}
+\begin{corrige}{9}{Puissances par changement de base}
+\demarche{Diagonaliser, élever à la puissance, revenir : trois produits.}
+\begin{questions}
+  \item $A\begin{pmatrix}1\\1\end{pmatrix}=\begin{pmatrix}3\\3\end{pmatrix}$
+    et $A\begin{pmatrix}1\\-1\end{pmatrix}=\begin{pmatrix}-1\\1\end{pmatrix}$ :
+    les deux directions sont stables, et
+    $D=P^{-1}AP=\res{\operatorname{diag}(3,-1)}$.
+  \item $A^{n}=PD^{n}P^{-1}$ avec $D^{n}=\operatorname{diag}\bigl(3^{n},(-1)^{n}\bigr)$
+    et $P^{-1}=\frac12P$ :
+    \[
+    A^{n}=\frac12\begin{pmatrix}3^{n}+(-1)^{n}&3^{n}-(-1)^{n}\\
+    3^{n}-(-1)^{n}&3^{n}+(-1)^{n}\end{pmatrix},
+    \]
+    formule qu'on vérifie pour $n=1$ et $n=2$ ($A^{2}=\begin{pmatrix}5&4\\4&5\end{pmatrix}$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-10}
+\begin{corrige}{10}{Le rang par opérations élémentaires}
+\demarche{Le pivot fait apparaître les lignes réellement indépendantes ;
+un paramètre se discute après factorisation.}
+\begin{questions}
+  \item $L_2\leftarrow L_2-2L_1$ annule la deuxième ligne :
+    restent $L_1$ et $L_3$, non proportionnelles : rang $\res{2}$.
+  \item $\det M_t=-(t-1)^{2}(t+2)$ (développer, ou sommer les colonnes).
+    Si $t\notin\ens{1,-2}$ : rang $\res{3}$. Si $t=1$ : toutes les
+    colonnes valent $(1,1,1)$ : rang $\res{1}$. Si $t=-2$ : le déterminant
+    s'annule mais l'extraite $\begin{pmatrix}1&1\\1&-2\end{pmatrix}$ est
+    inversible : rang $\res{2}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-11}
+\begin{corrige}{11}{Équivalence et forme normale $J_r$}
+\demarche{Les opérations élémentaires sont des multiplications par des
+matrices inversibles : les accumuler donne Q et P.}
+\begin{questions}
+  \item $L_2=2L_1$ : rang $1$. L'opération $L_2\leftarrow L_2-2L_1$
+    s'écrit $Q=\begin{pmatrix}1&0\\-2&1\end{pmatrix}$, puis
+    $C_2\leftarrow C_2-2C_1$ et $C_3\leftarrow C_3-3C_1$ s'écrivent
+    $P=\begin{pmatrix}1&-2&-3\\0&1&0\\0&0&1\end{pmatrix}$ :
+    on vérifie $QAP=\begin{pmatrix}1&0&0\\0&0&0\end{pmatrix}=J_1$.
+  \item Chacune est équivalente à $J_r$, et l'équivalence est transitive.
+    Semblables, non : $I_3$ est équivalente à toute matrice inversible,
+    mais n'est semblable qu'à elle-même.
+  \item L'équivalence à $J_1$ se transpose
+    ($J_1^{\mathsf T}$ est un $J_1$ au format transposé) :
+    $\operatorname{rg}\bigl(A^{\mathsf T}\bigr)=\res{1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-12}
+\begin{corrige}{12}{Systèmes de Cramer}
+\demarche{Matrice inversible = une solution et une seule, donnée par
+A$^{-1}$B.}
+\begin{questions}
+  \item $A=\begin{pmatrix}2&1\\1&3\end{pmatrix}$, $\det A=5$ :
+    $A^{-1}=\dfrac15\begin{pmatrix}3&-1\\-1&2\end{pmatrix}$ et
+    $X=A^{-1}\begin{pmatrix}5\\5\end{pmatrix}=\res{\begin{pmatrix}2\\1\end{pmatrix}}$ :
+    $x=2$, $y=1$.
+  \item La matrice $\begin{pmatrix}1&1&1\\1&2&4\\1&3&9\end{pmatrix}$ est
+    inversible (le pivot donne trois pivots non nuls — c'est une matrice
+    de Vandermonde aux nœuds $1,2,3$) : système de Cramer, unique
+    solution pour tout second membre. C'est exactement l'existence et
+    l'unicité du polynôme $a+bx+cx^{2}$ interpolant trois valeurs en
+    $1,2,3$ — l'isomorphisme $\Phi$ du chapitre 12, version matricielle.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-13}
+\begin{corrige}{13}{$\Cx$ vu comme plan réel, le retour}
+\demarche{Multiplier par un complexe, c'est tourner et dilater : la matrice
+le dit mot pour mot.}
+\begin{questions}
+  \item $(a+\mathrm{i}b)\cdot1=a+\mathrm{i}b$ donne la colonne $(a,b)$ ;
+    $(a+\mathrm{i}b)\cdot\mathrm{i}=-b+\mathrm{i}a$ donne $(-b,a)$ : c'est
+    $M(a,b)$. En particulier $J=M(0,1)$ et
+    $J^{2}=M(0,1)^{2}=-I_2$ : l'identité $\mathrm{i}^{2}=-1$, devenue
+    matricielle.
+  \item $\det M(a,b)=a^{2}+b^{2}=\res{|a+\mathrm{i}b|^{2}}$ : le
+    déterminant mesure le facteur d'aire, qui est le module au carré.
+  \item $M(a,b)=r\begin{pmatrix}\cos\theta&-\sin\theta\\
+    \sin\theta&\cos\theta\end{pmatrix}$ : rotation d'angle $\theta$
+    composée avec l'homothétie de rapport $r$ — la similitude directe de
+    rapport $r=|z|$ et d'angle $\theta=\arg z$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-14}
+\begin{corrige}{14}{Semblables ou pas ?}
+\demarche{Pour le oui : une base qui marche. Pour le non : un invariant qui
+cloche, ou une classe réduite à un point.}
+\begin{questions}
+  \item $N$ envoie $e_2$ sur $e_1$ : dans la base échangée $(e_2,e_1)$,
+    elle envoie le premier vecteur sur le second, ce qui est la matrice
+    $N'$. Avec $S=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ :
+    $S^{-1}NS=N'$ : \res{\text{semblables}}.
+  \item $P^{-1}I_2P=I_2$ pour toute $P$ : la classe de similitude de
+    $I_2$ est $\ens{I_2}$. Donc $\begin{pmatrix}1&1\\0&1\end{pmatrix}$,
+    qui n'est pas $I_2$, ne lui est \res{\text{pas semblable}} — alors
+    qu'elles ont même rang et même trace : ces invariants ne suffisent pas.
+  \item $\operatorname{diag}(1,0)$ et $I_2$ : rangs $1\neq2$ (et traces
+    $1\neq2$) : non semblables. $N$ et $0$ : même trace $0$, mais la
+    classe de $0$ est $\ens{0}$ et $N\neq0$ : non semblables. Invariants
+    utilisés : le rang et la trace.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-15}
+\begin{corrige}{15}{La dérivation et la base de Taylor}
+\demarche{Une même application, deux bases « identiques à translation
+près » : la matrice ne bouge pas.}
+\begin{questions}
+  \item $A=\begin{pmatrix}0&1&0&0\\0&0&2&0\\0&0&0&3\\0&0&0&0\end{pmatrix}$,
+    de rang $\res{3}$ ; le noyau est la droite des polynômes constants.
+  \item $D\bigl((X-1)^{k}\bigr)=k\,(X-1)^{k-1}$ : la matrice dans la base
+    de Taylor est \res{\text{la même matrice }A}. Prévisible : la
+    translation $P\mapsto P(X+1)$ commute avec la dérivation, donc le
+    changement de base (la matrice binomiale de passage) commute avec $A$
+    — un endomorphisme peut avoir exactement la même matrice dans deux
+    bases distinctes.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-16}
+\begin{corrige}{16}{L'identité $\operatorname{tr}(AB)=\operatorname{tr}(BA)$}
+\demarche{Deux doubles sommes qui sont la même, lue dans les deux ordres.}
+\begin{questions}
+  \item $\operatorname{tr}(AB)=\sum_{i}\sum_{k}a_{ik}b_{ki}
+    =\sum_{k}\sum_{i}b_{ki}a_{ik}=\operatorname{tr}(BA)$ : on échange
+    simplement l'ordre de sommation.
+  \item $\operatorname{tr}\bigl(P^{-1}AP\bigr)
+    =\operatorname{tr}\bigl((AP)P^{-1}\bigr)=\operatorname{tr}A$ : les
+    matrices d'un même endomorphisme dans deux bases ont la même trace,
+    ce qui définit $\operatorname{tr}u$ sans ambiguïté.
+  \item Dans une base adaptée à
+    $E=\operatorname{Im}p\oplus\operatorname{Ker}p$, la matrice de $p$
+    est $J_r$ avec $r=\operatorname{rg}p$ :
+    $\operatorname{tr}p=\res{\operatorname{rg}p}$.
+  \item Non : on aurait $\operatorname{tr}A=\operatorname{tr}A+n$, absurde
+    — la trace est un invariant de similitude.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-17}
+\begin{corrige}{17}{Rang et matrices extraites}
+\demarche{Une extraite inversible minore le rang ; toutes les extraites
+d'une taille le majorent.}
+\begin{questions}
+  \item Lignes $1,3$ et colonnes $1,2$ :
+    $\begin{pmatrix}1&2\\1&1\end{pmatrix}$, de déterminant $-1\neq0$ :
+    $\operatorname{rg}A\geqslant2$.
+  \item Toute extraite $3\times3$ garde les trois lignes, or $L_2=2L_1$ :
+    ses lignes sont liées, elle n'est pas inversible. Donc
+    $\operatorname{rg}A<3$, et avec a) : $\operatorname{rg}A=\res{2}$ —
+    le rang est la taille maximale d'une extraite inversible.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-18}
+\begin{corrige}{18}{Matrices de rang 1}
+\demarche{Une image de dimension 1 force toutes les colonnes à être
+multiples d'une seule.}
+\begin{questions}
+  \item $\operatorname{Im}A$ est une droite $\operatorname{Vect}(U)$,
+    $U\neq0$ : chaque colonne s'écrit $C_j=v_jU$, d'où
+    $A=UV^{\mathsf T}$ avec $V=(v_1,\dots,v_n)^{\mathsf T}\neq0$.
+  \item $A^{2}=U\bigl(V^{\mathsf T}U\bigr)V^{\mathsf T}
+    =\bigl(V^{\mathsf T}U\bigr)A$, et le scalaire
+    $V^{\mathsf T}U=\sum u_iv_i$ est précisément
+    $\operatorname{tr}\bigl(UV^{\mathsf T}\bigr)=\operatorname{tr}A$ :
+    \[
+    \res{A^{2}=\operatorname{tr}(A)\,A}.
+    \]
+    Sur l'exemple : $\operatorname{tr}A=7$ et on vérifie $A^{2}=7A$.
+  \item Si $\operatorname{tr}A=0$ : $A^{2}=0$, nilpotente. Sinon
+    $A^{n}=(\operatorname{tr}A)^{n-1}A\neq0$ : une matrice de rang $1$ est
+    nilpotente \res{\text{si et seulement si sa trace est nulle}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-19}
+\begin{corrige}{19}{Le commutant d'une matrice diagonale}
+\demarche{Comparer coefficient par coefficient : MD multiplie les colonnes,
+DM multiplie les lignes.}
+\begin{questions}
+  \item C'est le noyau de l'application linéaire $M\mapsto MD-DM$ : un
+    sous-espace vectoriel.
+  \item $(MD)_{ij}=m_{ij}d_j$ et $(DM)_{ij}=d_im_{ij}$ : l'égalité donne
+    $m_{ij}(d_j-d_i)=0$. Les $d_i=1,2,3$ étant deux à deux distincts,
+    $m_{ij}=0$ pour $i\neq j$ : $\mathcal{C}$ est l'ensemble des matrices
+    \res{\text{diagonales}}, de dimension $\res{3}$.
+  \item Si par exemple $d_1=d_2$, le bloc $2\times2$ correspondant devient
+    libre : le commutant grossit (dimension $5$) — plus la diagonale est
+    dégénérée, plus il y a de matrices qui commutent.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-20}
+\begin{corrige}{20}{Le centre de $\mathcal{M}_n(\K)$}
+\demarche{Faire commuter avec chaque matrice élémentaire : colonne contre
+ligne, tout tombe.}
+\begin{questions}
+  \item $AE_{ij}$ a pour seule colonne non nulle la $j$-ième, égale à la
+    $i$-ième colonne de $A$ ; $E_{ij}A$ a pour seule ligne non nulle la
+    $i$-ième, égale à la $j$-ième ligne de $A$. Leur égalité impose :
+    hors diagonale de ces ligne et colonne, tout est nul
+    ($a_{ki}=0$ pour $k\neq i$, $a_{jl}=0$ pour $l\neq j$), et
+    $a_{ii}=a_{jj}$. En faisant varier $i,j$ : $A$ est diagonale à
+    coefficients égaux, $A=\res{\lambda I_n}$.
+  \item Le centre de $\mathcal{M}_n(\K)$ est l'ensemble des matrices
+    scalaires $\K I_n$ ; côté endomorphismes, seuls les
+    \res{\text{homothéties}} commutent avec tout $\mathcal{L}(E)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-21}
+\begin{corrige}{21}{Une base où tout devient simple}
+\demarche{Un vecteur fixe, un vecteur qui « tombe » dessus : la matrice
+devient triangulaire, et le binôme fait le reste.}
+\begin{questions}
+  \item $(A-2I_2)^{2}=0$ (calcul direct). Si $A-\lambda I_2$ était non
+    inversible pour $\lambda\neq2$, un vecteur $v\neq0$ vérifierait
+    $Av=\lambda v$, d'où $(A-2I_2)^{2}v=(\lambda-2)^{2}v\neq0$ :
+    contradiction. Seule valeur possible : $\res{\lambda=2}$.
+  \item $v=(1,1)$ convient ($Av=(2,2)$) ; $(A-2I_2)w=v$ est résolu par
+    $w=(0,1)$. Avec $P=\begin{pmatrix}1&0\\1&1\end{pmatrix}$ :
+    $P^{-1}AP=\res{\begin{pmatrix}2&1\\0&2\end{pmatrix}}$.
+  \item $A=2I_2+N$ avec $N=A-2I_2$, $N^{2}=0$ ; $I_2$ et $N$ commutent,
+    donc le binôme s'arrête à deux termes :
+    \[
+    \res{A^{n}=2^{n}I_2+n\,2^{n-1}N}
+    =\begin{pmatrix}2^{n}-n2^{n-1}&n2^{n-1}\\-n2^{n-1}&2^{n}+n2^{n-1}\end{pmatrix}.
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-22}
+\begin{corrige}{22}{$\operatorname{tr}\bigl(AA^{\mathsf T}\bigr)$, un produit scalaire avant l'heure}
+\demarche{Le coefficient (i,i) de AA$^{\mathsf T}$ est la somme des carrés
+de la ligne i.}
+\begin{questions}
+  \item $\bigl(AA^{\mathsf T}\bigr)_{ii}=\sum_{j}a_{ij}^{2}$, donc
+    $\langle A,A\rangle=\sum_{i,j}a_{ij}^{2}$ : une somme de carrés, nulle
+    si et seulement si tous les coefficients le sont, i.e. $A=0$.
+  \item $\langle B,A\rangle=\operatorname{tr}\bigl(BA^{\mathsf T}\bigr)
+    =\operatorname{tr}\bigl((BA^{\mathsf T})^{\mathsf T}\bigr)
+    =\operatorname{tr}\bigl(AB^{\mathsf T}\bigr)=\langle A,B\rangle$ ; la
+    bilinéarité vient de la linéarité de la trace et de la transposition.
+  \item $t\mapsto\langle A+tB,A+tB\rangle
+    =\langle A,A\rangle+2t\langle A,B\rangle+t^{2}\langle B,B\rangle$ est
+    un trinôme positif ou nul pour tout $t$ : son discriminant est négatif
+    ou nul, soit
+    $\res{\langle A,B\rangle^{2}\leqslant\langle A,A\rangle\langle B,B\rangle}$
+    (cas $B=0$ immédiat). C'est l'inégalité de Cauchy-Schwarz, que le
+    chapitre 18 installera dans tout espace préhilbertien.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-23}
+\begin{corrige}{23}{Le théorème $J_r$, démonstration guidée}
+\demarche{La forme géométrique du théorème du rang, convertie en bases bien
+choisies.}
+\begin{questions}
+  \item Tout sous-espace possède un supplémentaire (chapitre 12) :
+    $E=\operatorname{Ker}u\oplus S$, et le théorème du rang (forme
+    géométrique) dit que $u$ induit un isomorphisme de $S$ sur
+    $\operatorname{Im}u$ ; en particulier $\dim S=r$.
+  \item Soit $(s_1,\dots,s_r)$ une base de $S$ et $(k_1,\dots,k_{p-r})$
+    une base de $\operatorname{Ker}u$ : leur concaténation est une base de
+    $E$. Les $u(s_i)$ forment une base de $\operatorname{Im}u$, qu'on
+    complète en une base de $F$. Dans ces bases : $u(s_i)$ est le
+    $i$-ième vecteur d'arrivée et $u(k_j)=0$ : la matrice est exactement
+    $J_r$.
+  \item Une matrice $A$ de rang $r$ représente une application de rang
+    $r$ ; les formules de changement de bases
+    $B=Q^{-1}AP$ donnent $A$ équivalente à $J_r$. En transposant
+    $QAP=J_r$ : $P^{\mathsf T}A^{\mathsf T}Q^{\mathsf T}=J_r^{\mathsf T}$,
+    qui est un $J_r$ au format transposé : $A^{\mathsf T}$ est de rang
+    $r$ :
+    $\res{\operatorname{rg}\bigl(A^{\mathsf T}\bigr)=\operatorname{rg}A}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-24}
+\begin{corrige}{24}{Fibonacci en matrice}
+\demarche{Toute la combinatoire de Fibonacci tient dans les puissances
+d'une matrice 2 × 2.}
+\begin{questions}
+  \item Pour $n=1$ : $F^{1}=\begin{pmatrix}F_2&F_1\\F_1&F_0\end{pmatrix}$.
+    Hérédité :
+    \[
+    F^{n+1}=F\cdot F^{n}
+    =\begin{pmatrix}F_{n+1}+F_n&F_n+F_{n-1}\\F_{n+1}&F_n\end{pmatrix}
+    =\begin{pmatrix}F_{n+2}&F_{n+1}\\F_{n+1}&F_n\end{pmatrix}.
+    \]
+  \item $\det\bigl(F^{n}\bigr)=(\det F)^{n}=(-1)^{n}$, soit
+    $\res{F_{n+1}F_{n-1}-F_n^{2}=(-1)^{n}}$ (Cassini, chapitre 5). Cette
+    égalité est une relation de Bézout entre $F_{n+1}$ et $F_n$
+    (coefficients $F_{n-1}$ et $-F_n$) : leur pgcd divise $1$, deux
+    Fibonacci consécutifs sont premiers entre eux (chapitre 7).
+  \item $F\begin{pmatrix}\varphi\\1\end{pmatrix}
+    =\begin{pmatrix}\varphi+1\\\varphi\end{pmatrix}
+    =\varphi\begin{pmatrix}\varphi\\1\end{pmatrix}$ car
+    $\varphi^{2}=\varphi+1$, et de même pour $\psi$ : dans la base
+    $\bigl((\varphi,1),(\psi,1)\bigr)$, $F$ devient
+    $\operatorname{diag}(\varphi,\psi)$. C'est la version matricielle de
+    la base de suites géométriques du chapitre 12, et $F^{n}$ redonne la
+    formule de Binet.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-13}

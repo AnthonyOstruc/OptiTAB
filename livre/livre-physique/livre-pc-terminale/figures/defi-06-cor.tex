@@ -1,0 +1,15 @@
+% Générateur de technétium : activités du molybdène 99 et du technétium 99m (corrigé du défi D06)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=104mm,height=54mm,xmin=0,xmax=100,ymin=0,ymax=110,
+  xtick={0,20,...,100},ytick={0,25,50,75,100},xlabel={$t$ (h)},ylabel={activité (unité arbitraire)},
+  legend style={at={(0.97,0.97)},anchor=north east,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\addplot[otNavy,line width=1pt,domain=0:100,samples=150] {100*exp(-0.010502*x)};
+\addlegendentry{molybdène 99 ($A_1$)}
+\addplot[otGreenDark,line width=1pt,domain=0:100,samples=200] {100*1.10018*(exp(-0.010502*x)-exp(-0.115332*x))};
+\addlegendentry{technétium 99m ($A_2$)}
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:22.86,78.66) -- (axis cs:22.86,0);
+\addplot[only marks,mark=*,mark size=1.8pt,otOrange] coordinates {(22.86,78.66)};
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:23.6,30) {$t_\mathrm{m}\approx23$ h :\\$A_2$ maximale, égale à $A_1$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{L'activité du technétium croît jusqu'à $t_\mathrm{m}$, puis décroît au rythme du molybdène en restant environ 1,10 fois plus grande.}

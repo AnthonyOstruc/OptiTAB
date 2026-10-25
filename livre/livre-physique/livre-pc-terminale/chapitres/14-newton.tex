@@ -1,0 +1,364 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[newton]{14}{Deuxième loi de Newton}{Partie 2 · Mouvement et interactions}
+{Centre de masse\enspace·\enspace Référentiel galiléen\enspace·\enspace Somme des forces et accélération\enspace·\enspace Équilibre}
+\objectif{Justifier qualitativement la position du centre de masse d'un système.}
+\objectif{Discuter du caractère galiléen d'un référentiel pour le mouvement étudié.}
+\objectif{Utiliser la deuxième loi de Newton pour déterminer l'accélération à partir des forces.}
+\objectif{Utiliser la deuxième loi de Newton pour déterminer la somme des forces à partir du mouvement.}
+\objectif{Exploiter la condition d'équilibre d'un système.}
+\prerequis{Vecteurs vitesse et accélération, repère de Frenet (chapitre~13).}
+\prerequis{Forces usuelles, principe d'inertie (classes de seconde et de première).}
+\prerequis{Projection d'un vecteur sur des axes ; trigonométrie dans le triangle rectangle.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Centre de masse et référentiels}
+\begin{definition}[Centre de masse]
+Le \textbf{centre de masse} G d'un système est le point dont le mouvement est le plus simple : quel que soit le
+mouvement de rotation du système sur lui-même, G se déplace comme un point matériel qui porterait toute la masse.
+Pour un objet homogène, G est situé sur ses éléments de symétrie ; il est plus proche des parties les plus massives et
+peut se trouver en dehors de la matière (anneau, boomerang).
+\end{definition}
+\schema{14-centre-masse}
+\begin{definition}[Référentiel galiléen]
+Un référentiel est \textbf{galiléen} si le principe d'inertie y est vérifié : tout système soumis à des forces qui se
+compensent y est immobile ou en mouvement rectiligne uniforme. Un référentiel en translation rectiligne uniforme par
+rapport à un référentiel galiléen est galiléen.
+\end{definition}
+\begin{propriete}[Choisir un référentiel]
+Le référentiel \textbf{terrestre} peut être considéré comme galiléen pour des mouvements de courte durée devant une
+journée ; le référentiel \textbf{géocentrique} pour le mouvement des satellites de la Terre ; le référentiel
+\textbf{héliocentrique} pour celui des planètes. Un véhicule qui freine ou qui tourne n'est pas un référentiel
+galiléen : un objet posé sans frottement s'y met en mouvement sans qu'aucune force ne l'y pousse.
+\end{propriete}
+\essSection{2}{La deuxième loi de Newton}
+\begin{loi}[Deuxième loi de Newton]
+Dans un référentiel galiléen, la somme des forces extérieures appliquées à un système de masse $m$ constante est égale
+au produit de sa masse par l'accélération de son centre de masse :
+\[\sum\vec{F}_\text{ext}=m\,\vec{a}_\mathrm{G}.\]
+Si les forces se compensent, $\vec{a}_\mathrm{G}=\vec{0}$ : le centre de masse est immobile ou en mouvement rectiligne
+uniforme (principe d'inertie). On dit que le système est \textbf{à l'équilibre} s'il est immobile.
+\end{loi}
+\begin{propriete}[Forces usuelles]
+\par\smallskip
+{\small\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}lYl@{}}\toprule
+\otTete{Force} & \otTete{Direction et sens} & \otTete{Valeur}\\\midrule
+poids $\vec{P}$ & verticale, vers le bas & $P=m\,g$, $g=\qty{9,81}{N.kg^{-1}}$\\
+réaction normale $\vec{N}$ & perpendiculaire au support, vers l'extérieur & déduite de la deuxième loi\\
+frottement $\vec{f}$ & opposé au mouvement (ou à sa tendance) & selon la situation\\
+tension $\vec{T}$ d'un fil & le long du fil, vers le point d'attache & déduite de la deuxième loi\\
+force électrique & colinéaire au champ $\vec{E}$ & $F=|q|\,E$\\
+gravitation & vers le centre de l'astre attracteur & $F=G\,\dfrac{m\,M}{d^2}$\\\bottomrule
+\end{tabularx}}
+\end{propriete}
+\begin{savoirfaire}[Appliquer la deuxième loi de Newton]
+1. Définir le système et le référentiel, justifier son caractère galiléen. 2. Faire le bilan des forces et les
+représenter sur un schéma. 3. Écrire la deuxième loi sous forme vectorielle. 4. La projeter sur des axes bien choisis
+(l'un dans le sens du mouvement, l'autre perpendiculaire). 5. En déduire l'accélération, ou une force inconnue.
+\end{savoirfaire}
+\begin{exemple}
+Une personne de masse $m=\qty{70}{kg}$ se tient sur un pèse-personne dans un ascenseur qui démarre vers le haut avec
+une accélération $a=\qty{1,5}{m.s^{-2}}$. Dans le référentiel terrestre, sur un axe vertical vers le haut :
+$N-m\,g=m\,a$, d'où $N=m(g+a)=70\times(9{,}81+1{,}5)=\qty{792}{N}$. Le pèse-personne, gradué pour afficher $N/g$,
+indique 80,7~kg.
+\end{exemple}
+\schema{14-ascenseur}
+\begin{attention}
+La somme des forces détermine l'\emph{accélération}, pas la vitesse : au sommet de sa trajectoire, une balle lancée
+verticalement a une vitesse nulle, mais son accélération vaut toujours $\vec{g}$. Le produit $m\,\vec{a}$ n'est pas une
+force : il ne figure jamais dans le bilan des forces.
+\end{attention}
+\essSection{3}{Des forces au mouvement}
+\begin{propriete}[Prévoir un mouvement]
+Connaissant les forces à chaque instant, la deuxième loi donne l'accélération ; on en déduit la vitesse puis la
+position, en intégrant (chapitre~15) ou numériquement. Pour un plan incliné d'angle $\alpha$ sans frottement, par
+exemple, la projection sur la ligne de plus grande pente donne $a=g\sin\alpha$, soit \qty{3,36}{m.s^{-2}} pour
+$\alpha=20^\circ$.
+\end{propriete}
+\begin{codecote}[0.56]
+\begin{pythoncol}
+m, g, k, dt = 80, 9.81, 0.27, 0.1
+v, t = 0, 0
+while t < 30:
+    a = g - k * v**2 / m    # 2e loi
+    v = v + a * dt          # Euler
+    t = t + dt
+print(round(v, 1))
+\end{pythoncol}
+\begin{consolecol}
+53.9
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Un parachutiste de 80~kg en chute libre subit son poids et une force de frottement de l'air de valeur $k\,v^2$. La
+deuxième loi donne $a=g-k\,v^2/m$ ; la méthode d'Euler calcule la vitesse de proche en proche. La vitesse tend vers une
+\textbf{vitesse limite}, atteinte quand le frottement compense le poids : $v_\mathrm{L}=\sqrt{m\,g/k}=\qty{53,9}{m.s^{-1}}$.
+\end{codecote}
+\schema{14-chute}
+\begin{experience}[Vérifier la deuxième loi sur un banc à coussin d'air]
+Un mobile de masse $M$ glisse sans frottement sur un banc horizontal ; il est tiré par un fil passant sur une poulie, au
+bout duquel est suspendue une masse $m$. Un pointage vidéo montre que le mobile a un mouvement rectiligne uniformément
+accéléré. L'accélération mesurée est conforme à la valeur $a=\frac{m\,g}{M+m}$, obtenue en appliquant la deuxième loi au
+système formé du mobile et de la masse suspendue.
+\end{experience}
+\begin{rediger}
+Toujours écrire, dans l'ordre : système, référentiel (galiléen), bilan des forces avec un schéma, loi vectorielle, puis
+projections. Écrire « $\vec{P}+\vec{N}+\vec{f}=m\,\vec{a}_\mathrm{G}$ » avant de projeter, et vérifier l'homogénéité
+du résultat.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-14-1}
+\begin{exercice}[1]{Où est le centre de masse ?}
+Le centre de masse G de chaque objet est indiqué sur le schéma.
+\schema{14-ex01}
+\begin{questions}
+\item Justifier la position de G pour le disque homogène et pour l'haltère symétrique.
+\item Pour l'haltère dissymétrique, les deux boules ont pour masses \qty{3,0}{kg} et \qty{1,0}{kg} ; la masse de la tige
+est négligeable. Pourquoi G est-il plus près de la grosse boule ? Vérifier que $m_1\,d_1=m_2\,d_2$.
+\item Que remarque-t-on pour l'anneau ? Peut-on soutenir l'anneau en équilibre en le posant par son centre de masse
+sur une pointe ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-2}
+\begin{exercice}[1]{Galiléen ou non ?}
+\begin{questions}[label=\otLabel{\alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item On étudie la chute d'une bille dans un laboratoire.
+\item On étudie le mouvement d'un satellite de télécommunication autour de la Terre.
+\item On étudie le mouvement de Mars autour du Soleil.
+\item Dans un bus qui freine, une balle posée sur le sol roule vers l'avant.
+\end{questions}
+\begin{questions}
+\item Pour les situations a, b et c, choisir un référentiel adapté et dire pourquoi on peut le considérer comme galiléen.
+\item Dans la situation d, le référentiel du bus est-il galiléen ? Justifier à l'aide du principe d'inertie.
+\item Décrire le mouvement de la balle dans le référentiel terrestre pendant le freinage.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-3}
+\begin{exercice}[1]{La pierre de curling}
+Une pierre de curling de masse $m=\qty{19}{kg}$ est lâchée à \qty{2,0}{m.s^{-1}} sur une piste horizontale. Pendant sa
+glissade, elle subit une force de frottement constante, de valeur $f=\qty{1,9}{N}$.
+\begin{questions}
+\item Faire le bilan des forces appliquées à la pierre et les représenter sur un schéma.
+\item Appliquer la deuxième loi de Newton et en déduire la valeur de l'accélération. Préciser son sens.
+\item Quelle est la nature du mouvement ? Au bout de combien de temps la pierre s'arrête-t-elle ?
+\item Quelle distance parcourt-elle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-4}
+\begin{exercice}[1]{Le pèse-personne dans l'ascenseur}
+Une personne de 60~kg est debout sur un pèse-personne dans un ascenseur qui monte. Le trajet comporte trois phases :
+démarrage avec une accélération de \qty{1,2}{m.s^{-2}} vers le haut, mouvement à vitesse constante, puis arrêt avec une
+accélération de \qty{1,2}{m.s^{-2}} vers le bas. Le pèse-personne affiche $N/g$, où $N$ est la force qu'il exerce sur
+la personne.
+\begin{questions}
+\item Faire le bilan des forces appliquées à la personne.
+\item Appliquer la deuxième loi de Newton sur un axe vertical orienté vers le haut.
+\item Calculer la valeur affichée par le pèse-personne dans chacune des trois phases.
+\item Que ressent la personne au démarrage ? à l'arrêt ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-5}
+\begin{exercice}[1]{Des systèmes en équilibre}
+\begin{questions}[label=\otLabel{\alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item Un parachutiste équipé, de masse totale 90~kg, descend verticalement à vitesse constante.
+\item Un lustre de 12~kg est suspendu au plafond par une chaîne.
+\end{questions}
+\begin{questions}
+\item Pour chaque système, faire le bilan des forces et justifier qu'elles se compensent.
+\item Calculer la force de frottement de l'air sur le parachutiste et la tension de la chaîne du lustre.
+\item Le parachutiste est-il « à l'équilibre » au sens de la définition du cours ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-14-6}
+\begin{exercice}[2]{Le skieur sur la pente}
+Un skieur de masse $m=\qty{75}{kg}$ descend en ligne droite une piste plane inclinée de $\alpha=20^\circ$ sur
+l'horizontale. Il part sans vitesse ; les frottements (neige et air) sont modélisés par une force constante de valeur
+$f=\qty{120}{N}$, opposée au mouvement.
+\schema{14-ex06}
+\begin{questions}
+\item Faire le bilan des forces et les représenter.
+\item En projetant la deuxième loi de Newton sur un axe parallèle à la pente, montrer que $a=g\sin\alpha-\frac{f}{m}$.
+Calculer $a$.
+\item Calculer la vitesse et la distance parcourue au bout de 8,0~s.
+\item En projetant sur un axe perpendiculaire à la pente, calculer la réaction normale de la neige.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-7}
+\begin{exercice}[2]{Du mouvement aux forces}
+Une voiture de masse $m=\qty{1300}{kg}$ passe de 0 à 100~km/h en 9,0~s sur une route horizontale rectiligne, puis
+s'engage dans un rond-point de rayon \qty{25}{m} à la vitesse constante de 36~km/h.
+\begin{questions}
+\item En supposant l'accélération constante, calculer sa valeur pendant la première phase.
+\item En déduire la valeur de la somme des forces appliquées à la voiture. Quelle force la fournit ?
+\item Dans le rond-point, caractériser le vecteur accélération, puis la somme des forces.
+\item Quelle force permet à la voiture de tourner ? Que se passerait-il sur une plaque de verglas ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-8}
+\begin{exercice}[2]{Le décollage d'une fusée}
+Au décollage, une fusée de type Ariane 5 a une masse de \qty{7,8e5}{kg} ; ses moteurs exercent une poussée verticale de
+\qty{1,3e7}{N} (valeurs arrondies). On néglige les frottements de l'air au décollage.
+\begin{questions}
+\item Faire le bilan des forces. Pourquoi la fusée ne peut-elle décoller que si la poussée dépasse son poids ?
+\item Calculer l'accélération de la fusée au décollage.
+\item En supposant cette accélération constante, calculer la vitesse et l'altitude atteintes au bout de 10~s.
+\item En réalité, l'accélération augmente au cours de la montée, à poussée constante. Proposer une explication.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-9}
+\begin{exercice}[2]{Une bille dans le glycérol}
+Une bille d'acier de masse $m=\qty{8,4}{g}$ tombe dans du glycérol. Elle subit son poids, une poussée verticale vers le
+haut de valeur constante $\Pi=\qty{0,0133}{N}$ (poussée d'Archimède, chapitre~17) et une force de frottement opposée à
+sa vitesse, de valeur $f=k\,v$ avec $k=\qty{0,169}{kg.s^{-1}}$. Le programme simule sa vitesse.
+\begin{python}
+m, g, k, Pi = 8.4e-3, 9.81, 0.169, 0.0133      # kg, N/kg, kg/s, N
+dt, v = 0.005, 0.0
+for n in range(1, 61):
+    a = g - Pi / m - k * v / m
+    v = v + a * dt
+    if n % 20 == 0:
+        print(round(n * dt, 2), round(v, 3))
+\end{python}
+\begin{console}
+0.1 0.36
+0.2 0.403
+0.3 0.408
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Établir l'expression de l'accélération utilisée par le programme.
+\item Que vaut l'accélération au moment où la bille est lâchée sans vitesse ?
+\item Interpréter les valeurs affichées. Établir l'expression de la vitesse limite et la calculer.
+\item Pourquoi la bille atteint-elle sa vitesse limite beaucoup plus vite que le parachutiste de l'essentiel ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-10}
+\begin{exercice}[2]{Prendre un virage sans déraper}
+Une voiture aborde un virage plat de rayon $R=\qty{50}{m}$ à vitesse constante. La force de frottement latérale exercée
+par la route sur les pneus ne peut pas dépasser $\mu\,m\,g$, avec $\mu=0{,}80$ sur route sèche et $\mu=0{,}40$ sur route
+mouillée.
+\begin{questions}
+\item Quelle force permet à la voiture de décrire le virage ? Dans quelle direction est-elle orientée ?
+\item Appliquer la deuxième loi de Newton dans le repère de Frenet et exprimer la force de frottement nécessaire.
+\item Montrer que la vitesse maximale vaut $v_{\max}=\sqrt{\mu\,g\,R}$ ; la calculer, en km/h, sur route sèche puis
+mouillée.
+\item Pourquoi cette vitesse ne dépend-elle pas de la masse du véhicule ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-11}
+\begin{exercice}[2]{Deux patineurs se repoussent}
+Sur une patinoire, deux patineurs A ($m_\mathrm{A}=\qty{80}{kg}$) et B ($m_\mathrm{B}=\qty{50}{kg}$), immobiles l'un
+contre l'autre, se repoussent. Juste après, B s'éloigne à \qty{2,4}{m.s^{-1}}. On néglige les frottements.
+\begin{questions}
+\item Faire le bilan des forces extérieures appliquées au système \{A + B\}. Que dire de son centre de masse ?
+\item En déduire la vitesse de A juste après la poussée. Dans quel sens se déplace-t-il ?
+\item Calculer les distances parcourues par A et par B au bout de 2,0~s, et vérifier que le centre de masse du système
+n'a pas bougé.
+\end{questions}
+\begin{donnees}
+Pour deux points de masses $m_\mathrm{A}$ et $m_\mathrm{B}$, d'abscisses $x_\mathrm{A}$ et $x_\mathrm{B}$, le centre de masse a pour abscisse
+$x_\mathrm{G}=\dfrac{m_\mathrm{A}x_\mathrm{A}+m_\mathrm{B}x_\mathrm{B}}{m_\mathrm{A}+m_\mathrm{B}}$.
+\end{donnees}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-14-12}
+\begin{exercice}[3]{Le saut de Felix Baumgartner}
+\begin{docu}{1}{Un record}
+Le 14 octobre 2012, Felix Baumgartner saute d'une capsule à 39,0~km d'altitude. Il atteint la vitesse maximale de
+1357,6~km/h, franchissant le mur du son, puis ralentit avant d'ouvrir son parachute. Masse de l'ensemble sauteur et
+équipement : $m=\qty{118}{kg}$.
+\end{docu}
+\begin{docu}{2}{Un modèle de frottement}
+L'air exerce une force opposée à la vitesse, de valeur $F=\frac12\,\rho\,C_x S\,v^2$, où $\rho$ est la masse volumique de
+l'air et $C_x S=\qty{0,80}{m^2}$ pour le sauteur. Masse volumique de l'air selon l'altitude :
+\par\smallskip
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{5}{c}@{}}\toprule
+altitude (km) & 25 & 28 & 30 & 32 & 39\\
+$\rho$ (kg$\cdot$m$^{-3}$) & 0,040 & 0,025 & 0,018 & 0,013 & 0,004\\\bottomrule
+\end{tabular}}
+\end{docu}
+\begin{donnees}
+À ces altitudes, $g=\qty{9,7}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Juste après le saut, la vitesse est faible et l'air très peu dense. Justifier que l'accélération vaut alors
+environ $g$.
+\item Dans le modèle de la chute libre, calculer la durée nécessaire pour atteindre la vitesse maximale et la hauteur
+de chute correspondante.
+\item \initiative Au moment où la vitesse est maximale, que vaut l'accélération ? En déduire la masse volumique de l'air
+à cet instant et estimer l'altitude correspondante.
+\item Expliquer pourquoi la vitesse diminue ensuite, alors que le sauteur continue de tomber.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-13}
+\begin{exercice}[3]{L'accéléromètre du smartphone}
+\begin{docu}{1}{Un enregistrement}
+Un élève pose son smartphone sur le plancher d'un ascenseur et enregistre l'accélération verticale (axe orienté vers
+le haut) pendant un trajet, l'ascenseur partant de l'arrêt.
+\end{docu}
+\schema{14-ex13}
+\begin{questions}
+\item Décrire le mouvement de l'ascenseur dans chacune des trois phases. Monte-t-il ou descend-il ?
+\item Calculer la vitesse maximale atteinte et la hauteur parcourue pendant le trajet.
+\item \initiative Un passager de 65~kg se tient debout. Calculer la force exercée par le plancher sur lui dans chaque
+phase.
+\item Le smartphone mesure en réalité $a_z+g$ lorsqu'il est immobile. Pourquoi, selon vous, son logiciel retranche-t-il
+$g$ pour afficher l'enregistrement ci-dessus ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-14}
+\begin{exercice}[3]{Le téléski}
+\begin{docu}{1}{Remonter la pente}
+Un skieur de masse $m=\qty{70}{kg}$ est tiré par la perche d'un téléski sur une piste rectiligne inclinée de
+$\alpha=15^\circ$. La perche fait un angle $\beta=25^\circ$ avec la piste. Les frottements de la neige sont modélisés par
+une force constante de valeur $f=\qty{60}{N}$, parallèle à la piste.
+\end{docu}
+\schema{14-ex14}
+\begin{questions}
+\item Faire le bilan des forces appliquées au skieur et les représenter.
+\item Le skieur monte à vitesse constante. Que peut-on dire de la somme des forces ? Justifier.
+\item \initiative Calculer la force exercée par la perche, puis la réaction normale de la neige.
+\item Au départ, le skieur passe de 0 à \qty{2,5}{m.s^{-1}} en 2,0~s. Quelle force la perche exerce-t-elle alors ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-15}
+\begin{exercice}[3]{Le lancer du marteau}
+\begin{docu}{1}{Un engin de 7,26 kg}
+Le marteau est une boule métallique reliée à une poignée par un câble d'acier ; sa masse totale vaut \qty{7,26}{kg},
+dont environ \qty{7,0}{kg} pour la boule. Juste avant le lâcher, le centre de masse du marteau décrit, à vitesse
+constante, un cercle de rayon $R=\qty{1,9}{m}$ ; sa vitesse atteint \qty{27}{m.s^{-1}}.
+\end{docu}
+\begin{docu}{2}{Après le lâcher}
+Une fois lâché, le marteau tourne sur lui-même pendant son vol ; les frottements de l'air sont négligeables.
+\end{docu}
+\begin{questions}
+\item Où se trouve le centre de masse du marteau ? Justifier qualitativement.
+\item Avant le lâcher, caractériser l'accélération du centre de masse, puis la force exercée par le câble.
+\item \initiative Comparer cette force au poids d'un lanceur de 110~kg. Pourquoi le lanceur se penche-t-il vers
+l'arrière en tournant ?
+\item Après le lâcher, quelle est la seule force appliquée au marteau ? Que peut-on dire de l'accélération de son centre
+de masse, et de sa trajectoire ?
+\end{questions}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\end{exercice}
+\end{blocLivre}

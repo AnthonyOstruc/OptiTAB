@@ -1,0 +1,1509 @@
+%% =====================================================================
+%%  optitab-anglais.sty — Méthode d'anglais OptiTAB (collection en 5 tomes)
+%%  Charte OptiTAB (Libertinus + Montserrat, bleu marine et vert).
+%%  Compilation : LuaLaTeX, deux passes (voir README.md).
+%%  Tout texte anglais passe par \enb{...} ou l'environnement anglais :
+%%  la typographie française (espace avant ! ? : ;) ne s'y applique pas.
+%% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{optitab-anglais}[2026/10/25 v1.0 Methode d'anglais OptiTAB]
+
+\RequirePackage{iftex}
+\RequireLuaTeX
+
+%% ---------------------------------------------------------------------
+%%  Page
+%% ---------------------------------------------------------------------
+\RequirePackage[a4paper,inner=20mm,outer=20mm,top=24mm,bottom=22mm,
+  headheight=14pt,headsep=7mm,footskip=11mm]{geometry}
+
+\RequirePackage[english,french]{babel}
+\frenchsetup{StandardItemizeEnv=true,StandardEnumerateEnv=true,og=«,fg=»}
+% \en{...} : mot anglais dans un texte français (italique, convention des mots étrangers)
+% \enb{...} : texte anglais sans changement de style (dialogues, tableaux, titres)
+\newcommand{\en}[1]{\foreignlanguage{english}{\textit{#1}}}
+\newcommand{\enb}[1]{\foreignlanguage{english}{#1}}
+\newenvironment{anglais}{\begin{otherlanguage}{english}}{\end{otherlanguage}}
+% Cellules de tableau en anglais : >{\enOn}l<{\enOff}
+\newcommand{\enOn}{\begin{otherlanguage*}{english}}
+\newcommand{\enOff}{\end{otherlanguage*}}
+
+%% ---------------------------------------------------------------------
+%%  Polices
+%% ---------------------------------------------------------------------
+\RequirePackage{fontspec}
+\setmainfont{LibertinusSerif}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Semibold, BoldItalicFont=*-SemiboldItalic]
+\setsansfont{Montserrat}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-SemiBold, BoldItalicFont=*-SemiBoldItalic]
+\newfontfamily\otLight{Montserrat}[Extension=.otf,
+  UprightFont=*-Light, ItalicFont=*-LightItalic, BoldFont=*-Medium]
+\newfontfamily\otRegular{Montserrat}[Extension=.otf,
+  UprightFont=*-Regular, ItalicFont=*-Italic, BoldFont=*-SemiBold]
+\newfontfamily\otMedium{Montserrat}[Extension=.otf,
+  UprightFont=*-Medium, ItalicFont=*-MediumItalic, BoldFont=*-SemiBold]
+\newfontfamily\otSemi{Montserrat}[Extension=.otf,
+  UprightFont=*-SemiBold, ItalicFont=*-SemiBoldItalic, BoldFont=*-Bold]
+\newfontfamily\otBold{Montserrat}[Extension=.otf,
+  UprightFont=*-Bold, ItalicFont=*-BoldItalic, BoldFont=*-ExtraBold]
+% Alphabet phonétique : Montserrat n'a pas les symboles, Libertinus les a tous
+\newfontfamily\otIPAfont{LibertinusSerif}[Extension=.otf,
+  UprightFont=*-Regular, ItalicFont=*-Italic, BoldFont=*-Semibold]
+% (protégés des majuscules : \otCaps ne doit jamais transformer « ɪ » en « Ɪ »)
+\newcommand{\phon}[1]{\NoCaseChange{{\otIPAfont/#1/}}}
+\newcommand{\ipa}[1]{\NoCaseChange{{\otIPAfont\color{otMuted}/#1/}}}
+
+\RequirePackage[protrusion=true,expansion=true]{microtype}
+\RequirePackage{lua-ul}
+\linespread{1.06}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{1.5em}
+
+\newcommand{\otCaps}[2][8]{{\addfontfeature{LetterSpace=#1}\MakeUppercase{#2}}}
+
+%% ---------------------------------------------------------------------
+%%  Couleurs
+%% ---------------------------------------------------------------------
+\RequirePackage[table]{xcolor}
+\RequirePackage{luacolor}
+\definecolor{otNavy}{HTML}{1B3C8E}
+\definecolor{otNavyDark}{HTML}{122A66}
+\definecolor{otGreen}{HTML}{5FAC60}
+\definecolor{otGreenDark}{HTML}{3B8544}
+\definecolor{otInk}{HTML}{1C2130}
+\definecolor{otMuted}{HTML}{6B7385}
+\definecolor{otRule}{HTML}{D5DAE3}
+\definecolor{otOrange}{HTML}{F0A23B}
+\definecolor{otOrangeDark}{HTML}{B86E0C}
+\definecolor{otRed}{HTML}{E0574C}
+\definecolor{otRedDark}{HTML}{B33A30}
+\definecolor{otViolet}{HTML}{6A4FB3}
+\definecolor{otTeal}{HTML}{1E8C93}
+\definecolor{otSkin}{HTML}{F2C9A5}
+\colorlet{otGreenTint}{otGreen!12}
+\colorlet{otNavyTint}{otNavy!6}
+\colorlet{otOrangeTint}{otOrange!13}
+\colorlet{otVioletTint}{otViolet!8}
+\colorlet{otTealTint}{otTeal!9}
+\colorlet{otRedTint}{otRed!9}
+\AtBeginDocument{\color{otInk}}
+
+%% ---------------------------------------------------------------------
+%%  Outils
+%% ---------------------------------------------------------------------
+\RequirePackage{graphicx}
+\graphicspath{{images/}}
+\RequirePackage{needspace}
+\RequirePackage{varwidth}
+\RequirePackage{ifthen}
+\RequirePackage{multicol}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,shapes.callouts,shapes.geometric,babel}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs,tabularx,array,ragged2e}
+\RequirePackage{qrcode}
+\RequirePackage{fancyhdr}
+\RequirePackage[hidelinks,bookmarksnumbered]{hyperref}
+\RequirePackage{bookmark}
+
+%% ---------------------------------------------------------------------
+%%  Informations du tome (redéfinies dans tome-N.tex)
+%% ---------------------------------------------------------------------
+\newcommand{\otCollection}{Anglais}
+\newcommand{\otTome}{1}
+\newcommand{\otTomeTitre}{Premiers pas}
+\newcommand{\otNiveau}{A1}
+\newcommand{\otNiveauNom}{Débutant}
+\newcommand{\otSite}{optitab.net}
+\newcommand{\otURL}{https://www.optitab.net}
+% Adresse des audios : https://www.optitab.net/audio/anglais/t1/piste-1-02.mp3
+\newcommand{\otAudioBase}{https://www.optitab.net/audio/anglais/t1/}
+\newcommand{\otAudioAffiche}{optitab.net/audio/anglais/t1}
+% Mode réponses : \otReponsestrue affiche les réponses dans les trous (édition enseignant)
+\newif\ifotReponses \otReponsesfalse
+
+%% ---------------------------------------------------------------------
+%%  Pistes audio : identifiant « 1.02 » -> fichier « piste-1-02.mp3 »
+%%  Les durées viennent de tome-N/audio/durees.tex (écrit par outils/audio.py)
+%% ---------------------------------------------------------------------
+\ExplSyntaxOn
+\tl_new:N \l_ot_url_tl
+\NewDocumentCommand{\otFixeURLPiste}{m}{
+  \tl_set:Nn \l_ot_url_tl {#1}
+  \tl_replace_all:Nnn \l_ot_url_tl {.} {-}
+  \tl_put_left:Nx \l_ot_url_tl {\otAudioBase piste-}
+  \tl_put_right:Nn \l_ot_url_tl {.mp3}
+  \cs_set_eq:NN \otURLPiste \l_ot_url_tl}
+\NewDocumentCommand{\otFixeURL}{m}{
+  \tl_set:Nx \l_ot_url_tl {\otAudioBase #1}
+  \cs_set_eq:NN \otURLPiste \l_ot_url_tl}
+\ExplSyntaxOff
+\newcommand{\otDuree}[2]{\expandafter\gdef\csname otDuree@#1\endcsname{#2}}
+\newcommand{\otDureeDe}[1]{\ifcsname otDuree@#1\endcsname\csname otDuree@#1\endcsname\fi}
+\newcommand{\otUniteAudio}[3]{% unité, nombre de pistes, durée totale
+  \expandafter\gdef\csname otUnitePistes@#1\endcsname{#2}%
+  \expandafter\gdef\csname otUniteDuree@#1\endcsname{#3}}
+% QR code d'une piste (lien cliquable dans le PDF)
+\newcommand{\otQR}[2]{% hauteur, adresse déjà fixée dans \otURLPiste
+  \edef\otQRtmp{\noexpand\qrcode[height=#1,level=M]{\otURLPiste}}\otQRtmp}
+% \qrpiste[taille]{1.02}{légende} : QR + numéro + durée + légende
+\NewDocumentCommand{\qrpiste}{O{14mm} m m}{%
+  \otFixeURLPiste{#2}%
+  \ifcsname otPisteVue@#2\endcsname\else\expandafter\gdef\csname otPisteVue@#2\endcsname{}%
+    \phantomsection\label{piste-#2}\fi
+  \begin{tabular}[t]{@{}c@{}}%
+    {\color{otInk}\otQR{#1}{#2}}\\[0.9mm]
+    \otPastillePiste{#2}%
+    \if\relax\detokenize{#3}\relax\else\\[0.4mm]{\otMedium\fontsize{6.4}{7.5}\selectfont\color{otMuted}#3}\fi
+  \end{tabular}}
+% Pastille « casque 1.02 · 0:42 »
+\newcommand{\otPastillePiste}[1]{%
+  \tikz[baseline=(p.base)]{\node[fill=otNavy,rounded corners=1.5mm,inner xsep=1.6mm,inner ysep=0.9mm,
+    text=white,font=\otSemi\fontsize{6.6}{7.5}\selectfont] (p)
+    {\hspace{3.6mm}#1%
+     \ifcsname otDuree@#1\endcsname{\otLight\ \textperiodcentered\ \csname otDuree@#1\endcsname}\fi};
+   \otDessinIcone{casque}{white}{otNavy}{2.8mm}{([xshift=3.1mm,yshift=0.15mm]p.west)}}}
+% Mention de piste dans le texte : \piste{1.02}
+\newcommand{\piste}[1]{\otPastillePiste{#1}}
+
+%% ---------------------------------------------------------------------
+%%  Icônes (dessinées en coordonnées [-0,5 ; 0,5], unité \otIcoU)
+%% ---------------------------------------------------------------------
+\newlength{\otIcoU}
+\newcommand{\otIco@casque}[2]{%
+  \draw[#1,line width=0.1*\otIcoU,line cap=round] (-0.34,-0.02) arc[start angle=180,end angle=0,radius=0.34];
+  \fill[#1,rounded corners=0.07*\otIcoU] (-0.47,-0.4) rectangle (-0.2,0.06);
+  \fill[#1,rounded corners=0.07*\otIcoU] (0.2,-0.4) rectangle (0.47,0.06);}
+\newcommand{\otIco@bulle}[2]{%
+  \fill[#1,rounded corners=0.13*\otIcoU] (-0.46,-0.2) -- (-0.46,0.42) -- (0.46,0.42) -- (0.46,-0.2) -- (-0.02,-0.2) -- (-0.3,-0.46) -- (-0.24,-0.2) -- cycle;
+  \draw[#2,line width=0.085*\otIcoU,line cap=round] (-0.25,0.19) -- (0.25,0.19) (-0.25,0.01) -- (0.1,0.01);}
+\newcommand{\otIco@blocs}[2]{%
+  \fill[#1,rounded corners=0.07*\otIcoU] (-0.46,-0.44) rectangle (-0.04,-0.02);
+  \fill[#1,rounded corners=0.07*\otIcoU] (0.04,-0.44) rectangle (0.46,-0.02);
+  \fill[#1,rounded corners=0.07*\otIcoU] (-0.21,0.06) rectangle (0.21,0.48);}
+\newcommand{\otIco@sons}[2]{%
+  \fill[#1,rounded corners=0.03*\otIcoU] (-0.47,-0.14) rectangle (-0.25,0.14);
+  \fill[#1] (-0.27,-0.14) -- (-0.02,-0.36) -- (-0.02,0.36) -- (-0.27,0.14) -- cycle;
+  \draw[#1,line width=0.085*\otIcoU,line cap=round] (0,0) ++(-42:0.2) arc[start angle=-42,end angle=42,radius=0.2];
+  \draw[#1,line width=0.085*\otIcoU,line cap=round] (0,0) ++(-46:0.38) arc[start angle=-46,end angle=46,radius=0.38];}
+\newcommand{\otIco@crayon}[2]{%
+  \begin{scope}[rotate=45]
+    \fill[#1,rounded corners=0.04*\otIcoU] (-0.5,-0.12) rectangle (-0.34,0.12);
+    \fill[#1] (-0.29,-0.12) rectangle (0.22,0.12);
+    \fill[#1] (0.27,-0.12) -- (0.5,0) -- (0.27,0.12) -- cycle;
+  \end{scope}}
+\newcommand{\otIco@globe}[2]{%
+  \draw[#1,line width=0.08*\otIcoU] (0,0) circle (0.42);
+  \draw[#1,line width=0.065*\otIcoU] (0,0) ellipse (0.17 and 0.42);
+  \draw[#1,line width=0.065*\otIcoU] (-0.42,0) -- (0.42,0) (-0.37,0.2) -- (0.37,0.2) (-0.37,-0.2) -- (0.37,-0.2);}
+\newcommand{\otIco@coche}[2]{%
+  \draw[#1,line width=0.085*\otIcoU] (0,0) circle (0.42);
+  \draw[#1,line width=0.11*\otIcoU,line cap=round,line join=round] (-0.2,0.01) -- (-0.05,-0.15) -- (0.22,0.16);}
+\newcommand{\otIco@micro}[2]{%
+  \fill[#1,rounded corners=0.13*\otIcoU] (-0.14,-0.05) rectangle (0.14,0.48);
+  \draw[#1,line width=0.08*\otIcoU,line cap=round] (-0.27,0.13) arc[start angle=180,end angle=360,radius=0.27];
+  \draw[#1,line width=0.08*\otIcoU,line cap=round] (0,-0.14) -- (0,-0.38) (-0.16,-0.4) -- (0.16,-0.4);}
+\newcommand{\otIco@livre}[2]{%
+  \fill[#1] (-0.47,-0.3) -- (-0.47,0.34) .. controls (-0.27,0.4) and (-0.12,0.37) .. (-0.04,0.28)
+    -- (-0.04,-0.37) .. controls (-0.12,-0.29) and (-0.27,-0.26) .. cycle;
+  \fill[#1] (0.47,-0.3) -- (0.47,0.34) .. controls (0.27,0.4) and (0.12,0.37) .. (0.04,0.28)
+    -- (0.04,-0.37) .. controls (0.12,-0.29) and (0.27,-0.26) .. cycle;}
+\newcommand{\otIco@ampoule}[2]{%
+  \fill[#1] (0,0.13) circle (0.3);
+  \fill[#1] (-0.15,-0.2) rectangle (0.15,0.0);
+  \fill[#1,rounded corners=0.04*\otIcoU] (-0.13,-0.43) rectangle (0.13,-0.25);
+  \draw[#2,line width=0.06*\otIcoU] (-0.15,-0.22) -- (0.15,-0.22);}
+\newcommand{\otIco@attention}[2]{%
+  \fill[#1,rounded corners=0.06*\otIcoU] (0,0.46) -- (0.5,-0.4) -- (-0.5,-0.4) -- cycle;
+  \fill[#2,rounded corners=0.03*\otIcoU] (-0.045,-0.08) rectangle (0.045,0.24);
+  \fill[#2] (0,-0.23) circle (0.055);}
+\newcommand{\otIco@etoile}[2]{%
+  \fill[#1] (90:0.48) -- (126:0.2) -- (162:0.48) -- (198:0.2) -- (234:0.48) -- (270:0.2)
+    -- (306:0.48) -- (342:0.2) -- (18:0.48) -- (54:0.2) -- cycle;}
+\newcommand{\otIco@horloge}[2]{%
+  \draw[#1,line width=0.085*\otIcoU] (0,0) circle (0.42);
+  \draw[#1,line width=0.09*\otIcoU,line cap=round] (0,0.24) -- (0,0) -- (0.17,-0.1);}
+\newcommand{\otIco@cible}[2]{%
+  \draw[#1,line width=0.08*\otIcoU] (0,0) circle (0.42) (0,0) circle (0.24);
+  \fill[#1] (0,0) circle (0.09);}
+% Objets du quotidien (unité 5 et suivantes)
+\newcommand{\otIco@objcle}[2]{%
+  \draw[#1,line width=0.11*\otIcoU] (-0.27,0) circle (0.17);
+  \fill[#1] (-0.1,-0.045) rectangle (0.46,0.045);
+  \fill[#1] (0.27,-0.045) rectangle (0.33,-0.2) (0.38,-0.045) rectangle (0.44,-0.16);}
+\newcommand{\otIco@objstylo}[2]{%
+  \begin{scope}[rotate=40]
+    \fill[#1,rounded corners=0.03*\otIcoU] (-0.48,-0.075) rectangle (0.26,0.075);
+    \fill[#1] (0.29,-0.075) -- (0.48,0) -- (0.29,0.075) -- cycle;
+    \fill[#2,opacity=0.5] (-0.3,0.075) rectangle (-0.26,-0.075);
+  \end{scope}}
+\newcommand{\otIco@objparapluie}[2]{%
+  \fill[#1] (-0.46,0.05) arc[start angle=180,end angle=0,radius=0.46] -- cycle;
+  \draw[#1,line width=0.07*\otIcoU,line cap=round] (0,0.05) -- (0,-0.32) arc[start angle=0,end angle=-180,radius=0.09];}
+\newcommand{\otIco@objlampe}[2]{%
+  \fill[#1] (-0.32,0.02) -- (-0.17,0.42) -- (0.17,0.42) -- (0.32,0.02) -- cycle;
+  \draw[#1,line width=0.07*\otIcoU] (0,0.02) -- (0,-0.38);
+  \fill[#1,rounded corners=0.02*\otIcoU] (-0.22,-0.46) rectangle (0.22,-0.37);}
+\newcommand{\otIco@objtasse}[2]{%
+  \fill[#1,rounded corners=0.07*\otIcoU] (-0.34,-0.36) rectangle (0.2,0.3);
+  \draw[#1,line width=0.08*\otIcoU] (0.2,0.15) -- (0.3,0.15) arc[start angle=90,end angle=-90,radius=0.14] -- (0.2,-0.13);}
+\newcommand{\otIco@objlunettes}[2]{%
+  \draw[#1,line width=0.08*\otIcoU] (-0.25,-0.04) circle (0.19) (0.25,-0.04) circle (0.19);
+  \draw[#1,line width=0.07*\otIcoU] (-0.07,0.04) .. controls (-0.03,0.1) and (0.03,0.1) .. (0.07,0.04);
+  \draw[#1,line width=0.06*\otIcoU] (-0.44,0.0) -- (-0.5,0.12) (0.44,0.0) -- (0.5,0.12);}
+\newcommand{\otIco@objmontre}[2]{%
+  \fill[#1,rounded corners=0.03*\otIcoU] (-0.11,-0.48) rectangle (0.11,0.48);
+  \fill[#1] (0,0) circle (0.27);
+  \fill[#2] (0,0) circle (0.19);
+  \draw[#1,line width=0.05*\otIcoU,line cap=round] (0,0.13) -- (0,0) -- (0.09,-0.05);}
+\newcommand{\otIco@objcarton}[2]{%
+  \fill[#1] (-0.4,-0.4) rectangle (0.2,0.2);
+  \fill[#1!70] (-0.4,0.2) -- (-0.2,0.4) -- (0.4,0.4) -- (0.2,0.2) -- cycle;
+  \fill[#1!45] (0.2,-0.4) -- (0.4,-0.2) -- (0.4,0.4) -- (0.2,0.2) -- cycle;
+  \fill[#2,opacity=0.6] (-0.14,0.2) -- (0.06,0.4) -- (0.12,0.4) -- (-0.08,0.2) -- cycle;}
+\newcommand{\otIco@objbouteille}[2]{%
+  \fill[#1,rounded corners=0.08*\otIcoU] (-0.2,-0.46) rectangle (0.2,0.12);
+  \fill[#1] (-0.2,0.08) -- (-0.07,0.26) -- (0.07,0.26) -- (0.2,0.08) -- cycle;
+  \fill[#1] (-0.07,0.24) rectangle (0.07,0.46);}
+\newcommand{\otIco@objsac}[2]{%
+  \fill[#1,rounded corners=0.06*\otIcoU] (-0.42,-0.42) -- (-0.34,0.16) -- (0.34,0.16) -- (0.42,-0.42) -- cycle;
+  \draw[#1,line width=0.08*\otIcoU] (-0.18,0.16) arc[start angle=180,end angle=0,radius=0.18];}
+\newcommand{\otIco@objlivre}[2]{%
+  \fill[#1,rounded corners=0.03*\otIcoU] (-0.32,-0.44) rectangle (0.32,0.44);
+  \fill[#2,opacity=0.55] (-0.24,-0.44) rectangle (-0.2,0.44);
+  \fill[#2,opacity=0.55] (-0.08,0.18) rectangle (0.22,0.24);}
+\newcommand{\otIco@objtelephone}[2]{%
+  \fill[#1,rounded corners=0.08*\otIcoU] (-0.24,-0.46) rectangle (0.24,0.46);
+  \fill[#2,opacity=0.55,rounded corners=0.03*\otIcoU] (-0.18,-0.3) rectangle (0.18,0.36);
+  \fill[#2] (0,-0.38) circle (0.04);}
+% Pastille de couleur : \otNuance{HTML}
+\newcommand{\otNuance}[1]{\definecolor{otTmpNuance}{HTML}{#1}%
+  \tikz[baseline=-0.7ex]\filldraw[draw=otMuted!40,line width=0.3pt,fill=otTmpNuance] (0,0) circle (1.6mm);}
+% Carte d'objet (exercices) : \otCarteObjet{icône}{couleur}{nombre}{réponse}
+\newcommand{\otCarteObjet}[4]{%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,arc=1.6mm,left=1.5mm,right=1.5mm,
+    top=2.4mm,bottom=2.4mm,boxsep=0pt,halign=center]
+  \begin{tikzpicture}
+    \foreach \k in {1,...,#3}{\otDessinIcone{#1}{#2}{otNavyTint}{9mm}{({(\k-1)*10.5mm-(#3-1)*5.25mm},0)}}
+    \path (-16mm,-5mm) rectangle (16mm,5mm);
+  \end{tikzpicture}\par\vspace{2.4mm}
+  \enb{\trou[36mm]{#4}}
+  \end{tcolorbox}}
+% Carte d'action (exercices) : \otCarteAction{perso}{icône}{couleur}{indication}{réponse}
+\newcommand{\otCarteAction}[5]{%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,arc=1.6mm,left=1.5mm,right=1.5mm,
+    top=2.4mm,bottom=2.4mm,boxsep=0pt,halign=center]
+  \begin{tikzpicture}
+    \otDessinAvatar{#1}{(0,0)}{8mm}{white}
+    \fill[#3] (8.6mm,-5.2mm) circle (4.4mm);
+    \draw[otNavyTint,line width=0.9pt] (8.6mm,-5.2mm) circle (4.4mm);
+    \otDessinIcone{#2}{white}{#3}{5.2mm}{(8.6mm,-5.2mm)}
+  \end{tikzpicture}\par\vspace{1.4mm}
+  \otNomDit{#1}\par\vspace{0.4mm}
+  {\fontsize{9.2}{11}\selectfont\color{otMuted}\enb{#4}}\par\vspace{2mm}
+  \enb{\trou[46mm]{#5}}
+  \end{tcolorbox}}
+% Écran de téléphone avec des textos : \begin{otTextos}{contact} \otSms{g|d}{texte} … \end{otTextos}
+\newenvironment{otTextos}[1]{%
+  \begin{tcolorbox}[enhanced,width=96mm,center,colback=otNavy!9,colframe=otInk,boxrule=1.6pt,arc=5mm,
+    left=3.5mm,right=3.5mm,top=1.5mm,bottom=3.5mm,
+    overlay={\fill[otInk] ([yshift=-1.6mm]frame.north) ++(-7mm,0) rectangle ++(14mm,-1.4mm);}]
+  \centering{\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}\rule{0pt}{4.6mm}#1}\par
+  \vspace{0.6mm}{\color{otRule}\rule{\linewidth}{0.4pt}}\par\raggedright}
+ {\end{tcolorbox}}
+\tcbset{otSmsG/.style={colback=white,colframe=white,colupper=otInk},
+  otSmsD/.style={colback=otNavy,colframe=otNavy,colupper=white}}
+\newcommand{\otSms}[2]{%
+  \par\vspace{1.6mm}\noindent
+  \ifthenelse{\equal{#1}{d}}{\hfill\otSms@{otSmsD}{#2}}{\otSms@{otSmsG}{#2}}\par}
+\newcommand{\otSms@}[2]{%
+  \begin{tcolorbox}[enhanced,nobeforeafter,width=64mm,varwidth upper,boxsep=0pt,left=2.6mm,right=2.6mm,
+    top=1.6mm,bottom=1.6mm,arc=3.2mm,boxrule=0pt,fontupper=\fontsize{10}{12.6}\selectfont,#1]
+  \enb{#2}\end{tcolorbox}}
+% Dessin d'une icône dans une figure TikZ : \otDessinIcone{clé}{couleur}{fond}{taille}{centre}
+\newcommand{\otDessinIcone}[5]{%
+  \pgfmathsetlength{\otIcoU}{#4}%
+  \begin{scope}[shift={#5},x=\otIcoU,y=\otIcoU]\csname otIco@#1\endcsname{#2}{#3}\end{scope}}
+% Icône seule dans le texte
+\newcommand{\otIconeSeule}[3]{\tikz[baseline=0pt]{\path (0,0) rectangle (#3,#3);
+  \otDessinIcone{#1}{#2}{white}{#3}{(0.5*#3,0.5*#3)}}}
+% Tuile : carré arrondi coloré + icône blanche : \otTuile[taille]{clé}{couleur}
+\NewDocumentCommand{\otTuile}{O{6mm} m m}{%
+  \tikz[baseline={(0,0.28*#1)}]{\fill[#3,rounded corners=0.22*#1] (0,0) rectangle (#1,#1);
+    \otDessinIcone{#2}{white}{#3}{0.6*#1}{(0.5*#1,0.5*#1)}}}
+
+%% ---------------------------------------------------------------------
+%%  Personnages : \otPersonnage{clé}{nom affiché}{couleur}
+%% ---------------------------------------------------------------------
+\newcommand{\otPersonnage}[3]{%
+  \expandafter\gdef\csname otPerso@#1@nom\endcsname{#2}%
+  \expandafter\gdef\csname otPerso@#1@coul\endcsname{#3}}
+\newcommand{\otNomPerso}[1]{\csname otPerso@#1@nom\endcsname}
+\newcommand{\otNomDit}[1]{{\otSemi\fontsize{7.4}{9}\selectfont\color{\otCoulPerso{#1}}\otCaps[9]{\otNomPerso{#1}}}}
+\newcommand{\otCoulPerso}[1]{\csname otPerso@#1@coul\endcsname}
+\otPersonnage{lea}{Léa}{otGreenDark}
+\otPersonnage{jack}{Jack}{otNavy}
+\otPersonnage{emma}{Emma}{otViolet}
+\otPersonnage{carter}{Mr.\ Carter}{otOrangeDark}
+\otPersonnage{lopez}{Mrs.\ Lopez}{otRedDark}
+\otPersonnage{sam}{Sam}{otTeal}
+\otPersonnage{prof}{Voix}{otMuted}
+\otPersonnage{serveur}{Serveur}{otMuted}
+\otPersonnage{serveuse}{Serveuse}{otMuted}
+\otPersonnage{vendeur}{Vendeur}{otMuted}
+\otPersonnage{vendeuse}{Vendeuse}{otMuted}
+\otPersonnage{employe}{Employé}{otMuted}
+\otPersonnage{employee}{Employée}{otMuted}
+\otPersonnage{passant}{Passant}{otMuted}
+\otPersonnage{passante}{Passante}{otMuted}
+\otPersonnage{radio}{Radio}{otMuted}
+\otPersonnage{coach}{Coach}{otMuted}
+\otPersonnage{ana}{Ana}{otMuted}
+\otPersonnage{marco}{Marco}{otMuted}
+\otPersonnage{yuki}{Yuki}{otMuted}
+\otPersonnage{liam}{Liam}{otMuted}
+\otPersonnage{maya}{Maya}{otTeal}
+\otPersonnage{davis}{Mr.\ Davis}{otMuted}
+\otPersonnage{sofia}{Sofia}{otMuted}
+\otPersonnage{vous}{Vous}{otGreenDark}
+
+%% ---------------------------------------------------------------------
+%%  Avatars (style plat) : \otDessinAvatar{clé}{centre}{rayon} dans une figure
+%% ---------------------------------------------------------------------
+\definecolor{otPeau1}{HTML}{F5D2B5}% claire
+\definecolor{otPeau2}{HTML}{E9B48E}% mate
+\definecolor{otPeau3}{HTML}{C98C62}% hâlée
+\definecolor{otPeau4}{HTML}{8D5A3B}% foncée
+\definecolor{otCheveuChatain}{HTML}{5B3A26}
+\definecolor{otCheveuBrun}{HTML}{2E2320}
+\definecolor{otCheveuBlond}{HTML}{D9A85B}
+\definecolor{otCheveuGris}{HTML}{B9BCC4}
+\definecolor{otCheveuNoir}{HTML}{1F1A1A}
+\newcommand{\otAvatarVisage}[2]{% peau, couleur des traits
+  \fill[#1!88!black] (-0.12,-0.62) rectangle (0.12,-0.3);
+  \fill[#1] (-0.37,-0.01) ellipse (0.075 and 0.11);
+  \fill[#1] (0.37,-0.01) ellipse (0.075 and 0.11);
+  \fill[#1] (0,0.02) ellipse (0.355 and 0.41);
+  \fill[#2] (-0.125,0.03) circle (0.036) (0.125,0.03) circle (0.036);
+  \fill[otRed,opacity=0.18] (-0.2,-0.11) circle (0.07) (0.2,-0.11) circle (0.07);
+  \draw[#2,line width=0.034*\otIcoU,line cap=round] (-0.1,-0.15) .. controls (-0.04,-0.21) and (0.04,-0.21) .. (0.1,-0.15);}
+\newcommand{\otAvatarCorps}[1]{\fill[#1] (0,-1.28) ellipse (0.8 and 0.66);}
+\newcommand{\otAvatar@lea}{%
+  \fill[otCheveuChatain] (0,0.08) ellipse (0.47 and 0.53);
+  \fill[otCheveuChatain,rounded corners=0.18*\otIcoU] (-0.47,0.1) rectangle (0.47,-0.6);
+  \otAvatarCorps{otGreen}
+  \fill[otGreen!70!white] (-0.16,-0.62) -- (0,-0.8) -- (0.16,-0.62) -- cycle;
+  \otAvatarVisage{otPeau1}{otInk}
+  \fill[otCheveuChatain] (-0.37,0.08) .. controls (-0.42,0.52) and (-0.05,0.6) .. (0.12,0.5)
+    .. controls (0.3,0.48) and (0.42,0.32) .. (0.37,0.06) .. controls (0.3,0.26) and (0.12,0.31) .. (-0.06,0.3)
+    .. controls (-0.22,0.28) and (-0.32,0.2) .. cycle;}
+\newcommand{\otAvatar@jack}{%
+  \otAvatarCorps{otNavy}
+  \fill[white] (-0.16,-0.62) -- (0,-0.82) -- (0.16,-0.62) -- cycle;
+  \otAvatarVisage{otPeau2}{otInk}
+  \fill[otCheveuChatain!80!otCheveuBlond] (-0.37,0.1) .. controls (-0.42,0.5) and (-0.1,0.62) .. (0.1,0.55)
+    .. controls (0.32,0.54) and (0.42,0.4) .. (0.37,0.1) .. controls (0.33,0.27) and (0.25,0.32) .. (0.12,0.33)
+    .. controls (-0.05,0.34) and (-0.3,0.3) .. cycle;}
+\newcommand{\otAvatar@emma}{%
+  \fill[otCheveuBlond] (0,0.06) ellipse (0.47 and 0.52);
+  \fill[otCheveuBlond,rounded corners=0.12*\otIcoU] (-0.47,0.1) rectangle (0.47,-0.3);
+  \otAvatarCorps{otViolet}
+  \otAvatarVisage{otPeau1}{otInk}
+  \fill[otCheveuBlond] (-0.37,0.12) .. controls (-0.4,0.5) and (-0.1,0.58) .. (0,0.57)
+    .. controls (0.1,0.58) and (0.4,0.5) .. (0.37,0.12) -- (0.33,0.2) -- (-0.33,0.2) -- cycle;}
+\newcommand{\otAvatar@carter}{%
+  \otAvatarCorps{otOrangeDark}
+  \fill[white] (-0.16,-0.62) -- (0,-0.82) -- (0.16,-0.62) -- cycle;
+  \fill[otNavyDark] (-0.04,-0.66) -- (0.04,-0.66) -- (0.07,-0.95) -- (0,-1.02) -- (-0.07,-0.95) -- cycle;
+  \otAvatarVisage{otPeau4}{otInk}
+  \fill[otCheveuGris] (-0.36,0.12) .. controls (-0.38,0.46) and (-0.12,0.52) .. (0,0.52)
+    .. controls (0.12,0.52) and (0.38,0.46) .. (0.36,0.12) .. controls (0.3,0.3) and (-0.3,0.3) .. cycle;
+  \draw[otInk,line width=0.03*\otIcoU] (-0.125,0.03) circle (0.1) (0.125,0.03) circle (0.1) (-0.025,0.04) -- (0.025,0.04);}
+\newcommand{\otAvatar@lopez}{%
+  \fill[otCheveuBrun] (0,0.62) circle (0.17);
+  \otAvatarCorps{otRed}
+  \otAvatarVisage{otPeau3}{otInk}
+  \fill[otCheveuBrun] (-0.37,0.08) .. controls (-0.42,0.5) and (-0.1,0.58) .. (0,0.57)
+    .. controls (0.1,0.58) and (0.42,0.5) .. (0.37,0.08) .. controls (0.3,0.32) and (0.1,0.34) .. (0,0.3)
+    .. controls (-0.1,0.34) and (-0.3,0.32) .. cycle;}
+\newcommand{\otAvatar@sam}{%
+  \otAvatarCorps{otTeal}
+  \otAvatarVisage{otPeau4}{otInk}
+  \foreach \a in {160,135,110,90,70,45,20}{\fill[otCheveuNoir] (0,0.08) ++(\a:0.36) circle (0.12);}
+  \fill[otCheveuNoir] (-0.33,0.18) .. controls (-0.3,0.48) and (0.3,0.48) .. (0.33,0.18) .. controls (0.2,0.3) and (-0.2,0.3) .. cycle;}
+% \otDessinAvatar{clé}{centre}{rayon}{fond}
+\newcommand{\otDessinAvatar}[4]{%
+  \pgfmathsetlength{\otIcoU}{#3}%
+  \begin{scope}[shift={#2},x=\otIcoU,y=\otIcoU]
+    \fill[#4] (0,0) circle (1);
+    \begin{scope}\clip (0,0) circle (1);\csname otAvatar@#1\endcsname\end{scope}
+  \end{scope}}
+\NewDocumentCommand{\otAvatar}{O{otNavyTint} m m}{% fond, clé, diamètre
+  \tikz[baseline={(0,-0.3*#3)}]{\otDessinAvatar{#2}{(0,0)}{0.5*#3}{#1}}}
+
+%% ---------------------------------------------------------------------
+%%  État courant : partie, unité, rubrique
+%% ---------------------------------------------------------------------
+\newcommand{\otUniteNum}{0}
+\newcommand{\otUniteTitre}{}
+\newcommand{\otUniteSousTitre}{}
+\newcommand{\otPartieNum}{0}
+\newcommand{\otPartieNom}{}
+\newcommand{\otPartieCouleur}{otNavy}
+\newcommand{\otEnTeteGauche}{}
+\newcounter{otrub}
+\newcounter{otex}
+\newcommand{\otPref}{u0}
+% Ancres PDF uniques d'une unité à l'autre (sinon les liens « énoncé p. … » visent l'unité 1)
+\renewcommand{\theHotex}{\otPref.\arabic{otex}}
+\renewcommand{\theHotrub}{\otPref.\arabic{otrub}}
+\newcommand{\otCorPref}{u0}
+\newcommand{\otUniteVue}[1]{\expandafter\gdef\csname otUniteVue@#1\endcsname{}}
+
+%% ---------------------------------------------------------------------
+%%  Onglet d'unité sur le bord extérieur
+%% ---------------------------------------------------------------------
+\newcommand{\otOnglet}{%
+  \ifnum\otUniteNum>0\relax
+  \begin{tikzpicture}[remember picture,overlay]
+    \pgfmathsetmacro{\otY}{106+(\otUniteNum-1)*8.4}
+    \ifodd\value{page}
+      \fill[\otPartieCouleur] ([yshift=-\otY mm]current page.north east) rectangle ++(-7mm,-7.8mm);
+      \node[text=white,font=\otSemi\fontsize{8}{9}\selectfont]
+        at ([xshift=-3.5mm,yshift=-\otY mm-3.9mm]current page.north east) {\otUniteNum};
+    \else
+      \fill[\otPartieCouleur] ([yshift=-\otY mm]current page.north west) rectangle ++(7mm,-7.8mm);
+      \node[text=white,font=\otSemi\fontsize{8}{9}\selectfont]
+        at ([xshift=3.5mm,yshift=-\otY mm-3.9mm]current page.north west) {\otUniteNum};
+    \fi
+  \end{tikzpicture}\fi}
+
+%% ---------------------------------------------------------------------
+%%  En-têtes et pieds de page
+%% ---------------------------------------------------------------------
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{{\color{otRule}%
+  \hrule\@height\headrulewidth\@width\headwidth\vskip-\headrulewidth}}
+\newcommand{\otTete}{%
+  {\otSemi\fontsize{7.5}{9}\selectfont\color{\otPartieCouleur}\otCaps[10]{Unit \otUniteNum}}%
+  \hspace{0.7em}{\otMedium\fontsize{7.5}{9}\selectfont\color{otMuted}\enb{\otCaps[8]{\otUniteTitre}}}}
+\newcommand{\otTeteRub}{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}\otCaps[8]{\rightmark}}}
+\newcommand{\otPied}{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}%
+  \otCaps[10]{OptiTAB · \otCollection\ · Tome \otTome\ · \otTomeTitre}}}
+\newcommand{\otNumPage}{{\otSemi\fontsize{8.5}{10}\selectfont\color{otNavy}\thepage}}
+\fancypagestyle{otUnite}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \fancyhead[LE]{\otTete}\fancyhead[RO]{\otTete}%
+  \fancyhead[RE]{\otTeteRub}\fancyhead[LO]{\otTeteRub}%
+  \fancyfoot[LE]{\otOnglet\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otOnglet\otPied\hspace{1em}\otNumPage}}
+\fancypagestyle{otOuverture}{%
+  \fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE]{\otOnglet\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otOnglet\otPied\hspace{1em}\otNumPage}}
+% Pages liminaires et annexes : en-tête = titre de la section (\otEnTeteGauche)
+\fancypagestyle{otAnnexe}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \fancyhead[LE,RO]{{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}\otCaps[10]{\otEnTeteGauche}}}%
+  \fancyhead[RE,LO]{\otTeteRub}%
+  \fancyfoot[LE]{\otNumPage\hspace{1em}\otPied}%
+  \fancyfoot[RO]{\otPied\hspace{1em}\otNumPage}}
+\fancypagestyle{otFront}{%
+  \fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE]{\otNumPage}\fancyfoot[RO]{\otNumPage}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{otFront}
+
+% Page blanche de fin de section : page « Notes » lignée
+\newcommand{\otPageNotes}{%
+  \thispagestyle{otFront}%
+  \noindent{\otLight\fontsize{20}{24}\selectfont\color{otMuted!70}Notes}\par\vspace{6mm}
+  {\color{otRule}\offinterlineskip\foreach \i in {1,...,24}{\noindent\rule{\linewidth}{0.4pt}\par\vspace{8.6mm}}}}
+\newcommand{\otPageDroite}{%
+  \clearpage\ifodd\value{page}\else\otPageNotes\clearpage\fi}
+
+%% ---------------------------------------------------------------------
+%%  Petits éléments
+%% ---------------------------------------------------------------------
+\newcommand{\otCheck}[1][otGreen]{%
+  \tikz[baseline=-0.62ex]{\fill[#1] (0,0) circle (1.75mm);
+    \draw[white,line width=0.85pt,line cap=round,line join=round]
+      (-0.8mm,0.05mm) -- (-0.22mm,-0.6mm) -- (0.85mm,0.7mm);}}
+\newcommand{\otCroix}[1][otRed]{%
+  \tikz[baseline=-0.62ex]{\fill[#1] (0,0) circle (1.75mm);
+    \draw[white,line width=0.85pt,line cap=round] (-0.65mm,-0.65mm) -- (0.65mm,0.65mm) (-0.65mm,0.65mm) -- (0.65mm,-0.65mm);}}
+\newcommand{\otCase}{\tikz[baseline=-0.75ex]\draw[otNavy,line width=0.6pt,rounded corners=0.6pt] (0,-1.5mm) rectangle (3mm,1.5mm);}
+\newcommand{\otRond}{\tikz[baseline=-0.75ex]\draw[otNavy,line width=0.6pt] (0,0) circle (1.5mm);}
+\newcommand{\otEtiquette}[2]{{\otSemi\fontsize{6.8}{8}\selectfont\color{#1}\otCaps[11]{#2}}}
+\newcommand{\cle}[1]{\textbf{#1}}
+% Mise en évidence d'une structure dans un texte anglais
+\newcommand{\hl}[1]{\highLight[otGreen!24]{#1}}
+% Registre de langue : \registre{familier}
+\newcommand{\registre}[1]{\tikz[baseline=(r.base)]\node[draw=otMuted!60,line width=0.4pt,rounded corners=1.2mm,
+  inner xsep=1.2mm,inner ysep=0.5mm,text=otMuted,font=\otMedium\fontsize{6.2}{7}\selectfont] (r) {#1};}
+% Numéro de note dans un dialogue : \note{1}
+\newcommand{\note}[1]{\,\raisebox{0.9ex}{\tikz\node[circle,fill=otOrange,text=white,inner sep=0pt,minimum size=3.3mm,
+  font=\otBold\fontsize{6}{6}\selectfont]{#1};}}
+\newcommand{\otNumNote}[1]{\tikz[baseline=(n.base)]\node[circle,fill=otOrange,text=white,inner sep=0pt,minimum size=4.2mm,
+  font=\otBold\fontsize{7}{7}\selectfont] (n) {#1};}
+% Phrase d'exemple : \exen{anglais}{français}
+\newcommand{\exen}[2]{\par\noindent\hangindent=4.5mm\makebox[4.5mm][l]{\color{otGreen}\small\textbullet}%
+  \enb{#1}\if\relax\detokenize{#2}\relax\else\hspace{0.6em}{\color{otMuted}\itshape\fontsize{9.6}{12}\selectfont#2}\fi\par\vspace{1mm}}
+% Erreur / forme correcte : \faux{...} \juste{...}
+\newcommand{\faux}[1]{\par\noindent\otCroix\hspace{2mm}{\color{otRedDark}\enb{\strikeThrough{#1}}}\par\vspace{1mm}}
+\newcommand{\juste}[1]{\par\noindent\otCheck\hspace{2mm}\enb{#1}\par\vspace{1mm}}
+\newcommand{\fauxjuste}[2]{\par\noindent\otCroix\hspace{2mm}{\color{otRedDark}\enb{\strikeThrough{#1}}}%
+  \hspace{6mm}\otCheck\hspace{2mm}\enb{#2}\par\vspace{1.2mm}}
+% Intertitre
+\newcommand{\otIntertitre}[2][otNavy]{\par\addvspace{3mm}\needspace{5\baselineskip}\noindent
+  {\otSemi\fontsize{7.6}{9}\selectfont\color{#1}\otCaps[12]{#2}}\par\nopagebreak\vspace{1.6mm}}
+
+%% ---------------------------------------------------------------------
+%%  Rubriques d'une unité : \rubrique{clé}{titre français}
+%%  clés : ecouter, mots, grammaire, sons, culture, pratique, bilan
+%% ---------------------------------------------------------------------
+\newcommand{\otDefRubrique}[4]{% clé, couleur, libellé anglais, icône
+  \expandafter\gdef\csname otRub@#1@coul\endcsname{#2}%
+  \expandafter\gdef\csname otRub@#1@en\endcsname{#3}%
+  \expandafter\gdef\csname otRub@#1@ico\endcsname{#4}}
+\otDefRubrique{ecouter}{otNavy}{Listen}{casque}
+\otDefRubrique{mots}{otGreenDark}{Words}{bulle}
+\otDefRubrique{grammaire}{otViolet}{Grammar}{blocs}
+\otDefRubrique{sons}{otOrangeDark}{Sounds}{sons}
+\otDefRubrique{culture}{otTeal}{Culture}{globe}
+\otDefRubrique{pratique}{otNavy}{Practice}{crayon}
+\otDefRubrique{bilan}{otGreenDark}{Check}{coche}
+\newcommand{\otRubCoul}[1]{\csname otRub@#1@coul\endcsname}
+\newcommand{\otRubEN}[1]{\csname otRub@#1@en\endcsname}
+\newcommand{\otRubIco}[1]{\csname otRub@#1@ico\endcsname}
+\NewDocumentCommand{\rubrique}{o m m}{% [texte court], clé, titre
+  \def\otTmpCle{#2}\def\otTmpBilan{bilan}%
+  \ifx\otTmpCle\otTmpBilan\clearpage\fi% le bilan d'unité commence toujours une page
+  \par\addvspace{7mm}\needspace{16\baselineskip}%
+  % le titre « Les mots de l'unité » ne reste jamais seul en bas de page, loin de son tableau
+  \def\otTmpMots{mots}\ifx\otTmpCle\otTmpMots\needspace{30\baselineskip}\fi
+  \refstepcounter{otrub}%
+  \IfNoValueTF{#1}{\markright{\otRubEN{#2}\ · #3}%
+    \phantomsection\pdfbookmark[2]{\theotrub. #3}{bm-\otPref-r\theotrub}}%
+   {\markright{\otRubEN{#2}\ · #1}%
+    \phantomsection\pdfbookmark[2]{\theotrub. #1}{bm-\otPref-r\theotrub}}%
+  \noindent
+  \begin{tikzpicture}[baseline=(titre.base)]
+    \fill[\otRubCoul{#2},rounded corners=2.4mm] (0,-5.5mm) rectangle (11mm,5.5mm);
+    \otDessinIcone{\otRubIco{#2}}{white}{\otRubCoul{#2}}{6.6mm}{(5.5mm,0)}
+    \node[anchor=south west,inner sep=0pt,text=\otRubCoul{#2},font=\otSemi\fontsize{7.4}{9}\selectfont]
+      at (14.5mm,1.2mm) {\otCaps[14]{\theotrub\enspace·\enspace\otRubEN{#2}}};
+    \node[anchor=base west,inner sep=0pt,text=otInk,font=\otSemi\fontsize{16.5}{19}\selectfont] (titre)
+      at (14.3mm,-4.6mm) {#3};
+  \end{tikzpicture}%
+  \hspace{4mm}{\color{\otRubCoul{#2}!30}\leaders\hrule height 0.6pt\hfill\kern0pt}%
+  \par\nopagebreak\vspace{4.5mm}}
+
+%% ---------------------------------------------------------------------
+%%  Encadrés
+%% ---------------------------------------------------------------------
+\tcbset{otBase/.style={enhanced,breakable=false,arc=1.6mm,
+  left=4mm,right=4mm,top=2.6mm,bottom=2.6mm,boxsep=0pt,
+  before skip=3mm,after skip=3mm,fontupper=\normalsize}}
+\newcommand{\otTitreBoite}[4]{% icône, couleur, étiquette, intitulé
+  \noindent\otTuile[5mm]{#1}{#2}\hspace{2.2mm}\otEtiquette{#2}{#3}%
+  \if\relax\detokenize{#4}\relax\else\hspace{1.8mm}{\otMedium\fontsize{9.2}{11}\selectfont\color{otInk}#4}\fi
+  \par\vspace{1.8mm}}
+% La règle (grammaire)
+\NewDocumentEnvironment{regle}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otVioletTint,colframe=otVioletTint,borderline west={1.2mm}{0pt}{otViolet}]
+  \otTitreBoite{blocs}{otViolet}{La règle}{#1}}{\end{tcolorbox}}
+% Attention, piège
+\NewDocumentEnvironment{attention}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otOrangeTint,colframe=otOrangeTint,borderline west={1.2mm}{0pt}{otOrange}]
+  \otTitreBoite{attention}{otOrangeDark}{Attention}{#1}}{\end{tcolorbox}}
+% Le conseil du prof
+\NewDocumentEnvironment{astuce}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,borderline west={1.2mm}{0pt}{otGreenDark}]
+  \otTitreBoite{ampoule}{otGreenDark}{Le conseil du prof}{#1}}{\end{tcolorbox}}
+% Culture
+\NewDocumentEnvironment{culture}{O{}}{%
+  \begin{tcolorbox}[otBase,colback=otTealTint,colframe=otTealTint,borderline west={1.2mm}{0pt}{otTeal}]
+  \otTitreBoite{globe}{otTeal}{Culture}{#1}}{\end{tcolorbox}}
+% Encadré neutre à intitulé
+\NewDocumentEnvironment{encadre}{m m O{}}{% icône, étiquette, intitulé
+  \begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt]
+  \otTitreBoite{#1}{otNavy}{#2}{#3}}{\end{tcolorbox}}
+% Paire d'encadrés de même hauteur
+\NewDocumentEnvironment{paire}{O{2}}{%
+  \begin{tcbraster}[raster columns=#1,raster equal height=rows,raster column skip=4mm,
+    raster before skip=3mm,raster after skip=3mm]}{\end{tcbraster}}
+
+% Listes
+\setlist{leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm,parsep=0pt}
+\setlist[itemize]{label={\color{otGreen}\small\textbullet}}
+\newlist{etapes}{enumerate}{1}
+\setlist[etapes]{label={\otSemi\fontsize{8.4}{10}\selectfont\color{otGreenDark}\arabic*.},
+  leftmargin=1.6em,itemsep=0.8mm,topsep=0.8mm}
+
+% Tableaux
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcommand{\otTH}[1]{{\otSemi\fontsize{7.2}{9}\selectfont\color{otNavy}\otCaps[8]{#1}}}
+\newcommand{\otTableau}{\renewcommand{\arraystretch}{1.42}\arrayrulecolor{otRule}}
+
+%% ---------------------------------------------------------------------
+%%  Dialogue bilingue
+%%  \begin{dialogue}{n}{titre anglais}{situation}{piste lente}{piste normale}
+%%    \dit{personnage}{anglais}{français}   \didascalie{indication}
+%% ---------------------------------------------------------------------
+\newlength{\otDitNom}\setlength{\otDitNom}{19mm}
+\newlength{\otDitEN}\newlength{\otDitFR}
+\newif\ifotTranscription
+\NewDocumentEnvironment{dialogue}{m m m m m}{%
+  \par\addvspace{2mm}\needspace{18\baselineskip}%
+  \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=otRule,boxrule=0.5pt,arc=1.8mm,
+    left=4.5mm,right=4.5mm,top=3.6mm,bottom=2.6mm,boxsep=0pt,before skip=3mm,after skip=3mm,
+    overlay unbroken and first={\fill[otNavy] ([xshift=0.25pt,yshift=-0.25pt]frame.north west)
+      rectangle ([xshift=1.4mm,yshift=-28mm]frame.north west);}]
+  \begin{minipage}[t]{\dimexpr\linewidth-46mm\relax}
+    \otEtiquette{otNavy}{Dialogue #1}\par\vspace{1.2mm}
+    {\otSemi\fontsize{14}{17}\selectfont\color{otInk}\enb{#2}}\par\vspace{2mm}
+    {\itshape\fontsize{9.8}{12.6}\selectfont\color{otMuted}#3\par}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{44mm}\raggedleft
+    \vspace{-1mm}\qrpiste[13.5mm]{#4}{version lente}\hspace{2mm}\qrpiste[13.5mm]{#5}{version normale}
+  \end{minipage}\par
+  \vspace{2.4mm}{\color{otRule}\rule{\linewidth}{0.5pt}}\par\vspace{3mm}
+  \setlength{\otDitEN}{\dimexpr(\linewidth-\otDitNom-7mm)*56/100\relax}%
+  \setlength{\otDitFR}{\dimexpr\linewidth-\otDitNom-7mm-\otDitEN\relax}%
+  \otTranscriptionfalse}
+  {\end{tcolorbox}}
+\NewDocumentCommand{\dit}{O{} m m m}{% [texte prononcé], personnage, anglais, français
+  \par\noindent
+  \parbox[t]{\otDitNom}{\RaggedRight\otSemi\fontsize{7.4}{13.2}\selectfont\color{\otCoulPerso{#2}}\otCaps[9]{\otNomPerso{#2}}}%
+  \hspace{2mm}%
+  \ifotTranscription
+    \parbox[t]{\dimexpr\linewidth-\otDitNom-2mm\relax}{\RaggedRight\enb{\fontsize{10.6}{13.2}\selectfont#3}%
+      \if\relax\detokenize{#4}\relax\else\par\vspace{0.4mm}{\itshape\fontsize{9.2}{11.4}\selectfont\color{otMuted}#4}\fi}%
+  \else
+    \parbox[t]{\otDitEN}{\RaggedRight\enb{\fontsize{11.2}{13.8}\selectfont#3}}%
+    \hspace{5mm}%
+    \parbox[t]{\otDitFR}{\RaggedRight\itshape\fontsize{9.6}{13.8}\selectfont\color{otMuted}#4}%
+  \fi
+  \par\vspace{2mm}}
+\newcommand{\didascalie}[1]{\par\addvspace{1mm}\noindent
+  {\color{otRule}\leaders\hrule height 0.4pt\hfill\kern0pt}\hspace{3mm}%
+  {\itshape\fontsize{9.4}{11}\selectfont\color{otMuted}#1}\hspace{3mm}%
+  {\color{otRule}\leaders\hrule height 0.4pt\hfill\kern0pt}\par\vspace{3mm}}
+
+% Bien comprendre : notes numérotées liées aux \note{n} du dialogue
+\NewDocumentEnvironment{comprendre}{}{%
+  \begin{tcolorbox}[otBase,breakable,colback=otOrangeTint!55,colframe=otOrangeTint!55,
+    borderline west={1.2mm}{0pt}{otOrange}]
+  \otTitreBoite{livre}{otOrangeDark}{Bien comprendre}{}%
+  \begin{list}{}{\setlength{\leftmargin}{7mm}\setlength{\labelwidth}{5mm}\setlength{\labelsep}{2mm}
+    \setlength{\itemsep}{1.4mm}\setlength{\topsep}{0pt}\setlength{\parsep}{0pt}}}
+  {\end{list}\end{tcolorbox}}
+\newcommand{\pointnote}[1]{\item[\otNumNote{#1}]}
+
+%% ---------------------------------------------------------------------
+%%  Vocabulaire : \begin{vocabulaire}{titre}{piste}
+%%    \categorie{Saluer}  \mot[texte prononcé]{anglais}{phonétique}{français}
+%% ---------------------------------------------------------------------
+\newcounter{otmot}
+\newlength{\otMotEN}\newlength{\otMotIPA}\newlength{\otMotFR}
+\NewDocumentEnvironment{vocabulaire}{m m}{%
+  \par\needspace{14\baselineskip}%
+  \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=otGreenDark!35,boxrule=0.6pt,arc=1.8mm,
+    left=0mm,right=0mm,top=3.2mm,bottom=2mm,boxsep=0pt,before skip=3mm,after skip=3mm]
+  \hspace*{4.5mm}\begin{minipage}[t]{\dimexpr\linewidth-36mm\relax}
+    \otEtiquette{otGreenDark}{Vocabulaire}\par\vspace{1.2mm}
+    {\otSemi\fontsize{13}{16}\selectfont\color{otInk}#1}\par\vspace{1.6mm}
+    {\fontsize{9.8}{12.4}\selectfont\color{otMuted}Écoutez chaque mot, puis répétez-le pendant la pause : \en{Listen and repeat.}}
+  \end{minipage}\hfill\begin{minipage}[t]{22mm}\raggedleft\vspace{-1mm}\qrpiste[13.5mm]{#2}{}\end{minipage}\hspace*{4.5mm}\par
+  \vspace{2.4mm}%
+  \setlength{\otMotEN}{\dimexpr(\linewidth-9mm)*35/100\relax}%
+  \setlength{\otMotIPA}{\dimexpr(\linewidth-9mm)*27/100\relax}%
+  \setlength{\otMotFR}{\dimexpr\linewidth-9mm-\otMotEN-\otMotIPA\relax}%
+  \setcounter{otmot}{0}%
+  \noindent\hspace*{4.5mm}\parbox{\otMotEN}{\otTH{Anglais}}\parbox{\otMotIPA}{\otTH{Prononciation}}\parbox{\otMotFR}{\otTH{Français}}\par
+  \vspace{1mm}}
+  {\par\vspace{1mm}\end{tcolorbox}}
+\newcommand{\categorie}[1]{\par\addvspace{2.2mm}\noindent\hspace*{4.5mm}%
+  {\otSemi\fontsize{7.4}{9}\selectfont\color{otGreenDark}\otCaps[12]{#1}}\hspace{2.5mm}%
+  {\color{otGreenDark!25}\leaders\hrule height 0.5pt\hfill\kern4.5mm}\par\nopagebreak\vspace{1.2mm}\setcounter{otmot}{0}}
+\NewDocumentCommand{\mot}{o m m m}{%
+  \stepcounter{otmot}%
+  \par\noindent\begingroup\setlength{\fboxsep}{0pt}%
+  \ifodd\value{otmot}\def\otCoulLigne{otGreenTint!70}\else\def\otCoulLigne{white}\fi
+  \colorbox{\otCoulLigne}{%
+    \parbox{\linewidth}{\vspace{1.25mm}\hspace*{4.5mm}%
+      \parbox[t]{\otMotEN}{\RaggedRight\enb{\fontsize{11}{13.4}\selectfont\textbf{#2}}}%
+      \parbox[t]{\otMotIPA}{\RaggedRight\fontsize{10.6}{13.4}\selectfont\ipa{#3}}%
+      \parbox[t]{\otMotFR}{\RaggedRight\fontsize{10.2}{13.4}\selectfont #4}\par\vspace{1.25mm}}}%
+  \endgroup\par}
+
+%% ---------------------------------------------------------------------
+%%  Grille (alphabet, nombres) : \begin{grille}{piste}{titre}{colonnes}
+%%    \grcase[texte dit]{grand}{phonétique}{petit}
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{grille}{m m m}{%
+  \par\needspace{16\baselineskip}%
+  \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=otGreenDark!35,boxrule=0.6pt,arc=1.8mm,
+    left=4.5mm,right=4.5mm,top=3.2mm,bottom=3.5mm,boxsep=0pt,before skip=3mm,after skip=3mm]
+  \begin{minipage}[t]{\dimexpr\linewidth-26mm\relax}
+    \otEtiquette{otGreenDark}{Vocabulaire}\par\vspace{1.2mm}
+    {\otSemi\fontsize{13}{16}\selectfont\color{otInk}#2}\par\vspace{1.6mm}
+    {\fontsize{9.8}{12.4}\selectfont\color{otMuted}Écoutez, puis répétez pendant la pause : \en{Listen and repeat.}}
+  \end{minipage}\hfill\begin{minipage}[t]{22mm}\raggedleft\vspace{-1mm}\qrpiste[13.5mm]{#1}{}\end{minipage}\par
+  \vspace{3mm}%
+  \begin{tcbraster}[raster columns=#3,raster equal height=rows,raster column skip=2mm,raster row skip=2mm,
+    raster before skip=0pt,raster after skip=0pt]}
+  {\end{tcbraster}\end{tcolorbox}}
+\NewDocumentCommand{\grcase}{o m m m}{%
+  \begin{tcolorbox}[enhanced,colback=otGreenTint!75,colframe=otGreenTint!75,arc=1.2mm,left=0.8mm,right=0.8mm,
+    top=1.5mm,bottom=1.5mm,boxsep=0pt,halign=center]
+  {\otBold\fontsize{15}{17}\selectfont\color{otGreenDark}#2}\par\vspace{0.6mm}
+  \if\relax\detokenize{#4}\relax\else{\enb{\fontsize{9.2}{11}\selectfont\textbf{#4}}}\par\fi
+  {\fontsize{9}{11}\selectfont\ipa{#3}}
+  \end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Prononciation : paires de mots  \begin{paires}{piste}{consigne}
+%%    \sonpaire{I}{aɪ}{je}{hi}{haɪ}{salut}
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{paires}{m m}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otOrange!45,boxrule=0.6pt]
+  \begin{minipage}[t]{\dimexpr\linewidth-24mm\relax}
+    \otEtiquette{otOrangeDark}{Écoutez et répétez}\par\vspace{1.2mm}
+    {\fontsize{10}{12.6}\selectfont #2\par}
+  \end{minipage}\hfill\begin{minipage}[t]{22mm}\raggedleft\vspace{-1mm}\qrpiste[13.5mm]{#1}{}\end{minipage}\par
+  \vspace{2.5mm}\begin{tcbraster}[raster columns=2,raster equal height=rows,raster column skip=3mm,
+    raster row skip=2.4mm,raster before skip=0pt,raster after skip=0pt]}
+  {\end{tcbraster}\end{tcolorbox}}
+\newcommand{\sonpaire}[6]{%
+  \begin{tcolorbox}[enhanced,colback=otOrangeTint!60,colframe=otOrangeTint!60,arc=1.4mm,
+    left=2.6mm,right=2.6mm,top=1.6mm,bottom=1.6mm,boxsep=0pt]
+  \begin{minipage}[t]{0.43\linewidth}\enb{\fontsize{11.5}{13}\selectfont\textbf{#1}}\par
+    {\fontsize{9.6}{11}\selectfont\ipa{#2}}\par
+    {\itshape\fontsize{8.8}{10.5}\selectfont\color{otMuted}#3}\end{minipage}%
+  \hfill{\color{otOrangeDark}\raisebox{-3mm}{\small$\longleftrightarrow$}}\hfill
+  \begin{minipage}[t]{0.43\linewidth}\enb{\fontsize{11.5}{13}\selectfont\textbf{#4}}\par
+    {\fontsize{9.6}{11}\selectfont\ipa{#5}}\par
+    {\itshape\fontsize{8.8}{10.5}\selectfont\color{otMuted}#6}\end{minipage}
+  \end{tcolorbox}}
+% lettre mise en évidence : \otH{h} ; syllabe accentuée : \acc{pan}
+\newcommand{\otH}[1]{\textcolor{otOrangeDark}{#1}}
+\newcommand{\acc}[1]{{\color{otOrangeDark}\underLine[color=otOrangeDark,top=-0.9pt,bottom=-1.5pt]{#1}}}
+
+%% ---------------------------------------------------------------------
+%%  Phrases à répéter (prononciation) : \begin{phrases}{piste}{consigne}
+%%    \phrase[texte dit]{phrase}{remarque}
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{phrases}{m m}{%
+  \begin{tcolorbox}[otBase,colback=white,colframe=otOrange!45,boxrule=0.6pt]
+  \begin{minipage}[t]{\dimexpr\linewidth-24mm\relax}
+    \otEtiquette{otOrangeDark}{Écoutez et répétez}\par\vspace{1.2mm}
+    {\fontsize{10}{12.6}\selectfont #2\par}
+  \end{minipage}\hfill\begin{minipage}[t]{22mm}\raggedleft\vspace{-1mm}\qrpiste[13.5mm]{#1}{}\end{minipage}\par
+  \vspace{2.5mm}%
+  \begin{list}{}{\setlength{\leftmargin}{0pt}\setlength{\itemsep}{1.6mm}\setlength{\topsep}{0pt}\setlength{\parsep}{0pt}}}
+  {\end{list}\end{tcolorbox}}
+\NewDocumentCommand{\phrase}{o m m}{%
+  \item\colorbox{otOrangeTint!60}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\vspace{0.6mm}%
+    \enb{\fontsize{11.2}{13.4}\selectfont\textbf{#2}}\hfill{\fontsize{9.6}{12}\selectfont\color{otMuted}#3}\vspace{0.6mm}}}}
+% Intonation : la voix monte / descend (flèches dessinées, ignorées par la synthèse vocale)
+\newcommand{\otMonte}{\,\tikz[baseline=-0.4ex]\draw[-{Stealth[length=1.5mm,width=1.4mm]},otOrangeDark,line width=0.9pt]
+  (0,-0.55ex) -- (1.7ex,1ex);\,}
+\newcommand{\otDescend}{\,\tikz[baseline=-0.4ex]\draw[-{Stealth[length=1.5mm,width=1.4mm]},otOrangeDark,line width=0.9pt]
+  (0,1ex) -- (1.7ex,-0.55ex);\,}
+
+%% ---------------------------------------------------------------------
+%%  Bloc audio isolé : \blocaudio{piste}{titre}{consigne}
+%% ---------------------------------------------------------------------
+\NewDocumentCommand{\blocaudio}{m m m}{%
+  \begin{tcolorbox}[otBase,colback=otNavyTint,colframe=otNavyTint,top=2.4mm,bottom=2.4mm]
+  \begin{minipage}[c]{21mm}\centering\qrpiste[14mm]{#1}{}\end{minipage}\hspace{3mm}%
+  \begin{minipage}[c]{\dimexpr\linewidth-24mm\relax}
+    \otEtiquette{otNavy}{#2}\par\vspace{1mm}{\fontsize{10}{12.6}\selectfont #3\par}
+  \end{minipage}
+  \end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Exercices : \exercice[options]{titre}{consigne}
+%%  options : ecouter, parler, lire, ecrire, niveau=1|2|3, piste=1.09
+%% ---------------------------------------------------------------------
+\pgfkeys{/otex/.is family,/otex,
+  ecouter/.code={\def\otExEcouter{1}},parler/.code={\def\otExParler{1}},
+  lire/.code={\def\otExLire{1}},ecrire/.code={\def\otExEcrire{1}},
+  niveau/.store in=\otExNiveau,piste/.store in=\otExPiste,points/.store in=\otExPoints}
+\newcommand{\otDifficulte}[1]{%
+  \tikz[baseline=-0.6ex]{\foreach \i in {1,2,3}{%
+    \ifnum\i>#1\relax\draw[otNavy!45,line width=0.5pt] (\i*2.9mm,0) circle (0.95mm);
+    \else\fill[otNavy] (\i*2.9mm,0) circle (1.1mm);\fi}}}
+\newcommand{\otCompetence}[2]{\ifnum#1=1\relax\hspace{0.9mm}\otTuile[4.6mm]{#2}{otNavy!80}\fi}
+\NewDocumentCommand{\exercice}{O{} m m}{%
+  \def\otExEcouter{0}\def\otExParler{0}\def\otExLire{0}\def\otExEcrire{0}%
+  \def\otExNiveau{1}\def\otExPiste{}\def\otExPoints{}%
+  \pgfkeys{/otex,#1}%
+  \par\addvspace{6mm}\needspace{10\baselineskip}%
+  \refstepcounter{otex}%
+  \def\@currentlabelname{#2}%
+  \label{ex-\otPref-\theotex}%
+  \noindent
+  \tikz[baseline=(n.base)]\node[fill=otNavy,rounded corners=1.4mm,minimum width=7mm,minimum height=7mm,
+    inner sep=0pt,text=white,font=\otBold\fontsize{10}{10}\selectfont] (n) {\theotex};%
+  \hspace{2.8mm}{\otSemi\fontsize{11.6}{14}\selectfont\color{otInk}#2}%
+  \hfill
+  \otCompetence{\otExEcouter}{casque}\otCompetence{\otExParler}{micro}%
+  \otCompetence{\otExLire}{livre}\otCompetence{\otExEcrire}{crayon}%
+  \hspace{2.6mm}\otDifficulte{\otExNiveau}%
+  \ifx\otExPoints\@empty\else\hspace{2.6mm}{\otSemi\fontsize{7.4}{9}\selectfont\color{otGreenDark}/\,\otExPoints~pts}\fi
+  \ifcsname r@cor-\otPref-\theotex\endcsname
+    \hspace{2.6mm}{\otLight\fontsize{7}{9}\selectfont\color{otMuted}corrigé p.~\pageref{cor-\otPref-\theotex}}\fi
+  \par\nopagebreak\vspace{2mm}%
+  \ifx\otExPiste\@empty
+    \noindent{\fontsize{10.4}{13}\selectfont #3\par}%
+  \else
+    \noindent\begin{minipage}[c]{\dimexpr\linewidth-24mm\relax}{\fontsize{10.4}{13}\selectfont #3\par}\end{minipage}%
+    \hfill\begin{minipage}[c]{22mm}\raggedleft\qrpiste[13.5mm]{\otExPiste}{}\end{minipage}\par
+  \fi
+  \nopagebreak\vspace{2.6mm}}
+% Items d'exercice (en anglais par défaut) : \begin{questions}[2] ... \end{questions}
+\NewDocumentEnvironment{questions}{O{1} O{english}}{%
+  \begin{otherlanguage}{#2}%
+  \ifnum#1>1\relax\begin{multicols}{#1}\raggedcolumns\fi
+  \begin{enumerate}[label={\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}\arabic*.},
+    leftmargin=6mm,labelsep=2mm,itemsep=2.1mm,topsep=0.5mm]}
+  {\end{enumerate}\ifnum#1>1\relax\end{multicols}\fi\end{otherlanguage}}
+% Trou à compléter : \trou[largeur]{réponse}
+\NewDocumentCommand{\trou}{O{20mm} m}{%
+  \ifotReponses\underLine[color=otGreenDark]{\makebox[#1]{\color{otGreenDark}\textbf{#2}}}%
+  \else\textcolor{otMuted!80}{\rule[-0.9mm]{#1}{0.5pt}}\fi}
+% Lignes d'écriture : \lignes{n}
+\newcommand{\lignes}[1]{\par\vspace{1mm}{\color{otRule}\foreach \i in {1,...,#1}{%
+  \noindent\vrule width 0pt height 7.5mm\leaders\hbox to 1.4mm{\hss\textperiodcentered\hss}\hfill\kern0pt\par}}\vspace{1mm}}
+% Choix à cocher : \choix{mot}
+\newcommand{\choix}[1]{\otCase\hspace{1.4mm}#1}
+
+%% ---------------------------------------------------------------------
+%%  Bilan : l'essentiel, test express, je sais
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{essentiel}{}{%
+  \begin{tcolorbox}[enhanced,breakable,colback=otNavy,colframe=otNavy,coltext=white,arc=2mm,
+    left=5mm,right=5mm,top=4mm,bottom=4mm,boxsep=0pt,before skip=3mm,after skip=3mm]
+  \noindent{\otSemi\fontsize{7}{8}\selectfont\color{otGreen}\otCaps[12]{L'essentiel}}\hspace{2mm}%
+  {\otSemi\fontsize{12}{14}\selectfont Unit \otUniteNum\ en une page}\par\vspace{3mm}}
+  {\end{tcolorbox}}
+\newcommand{\otEssTitre}[1]{\par\addvspace{2.4mm}\noindent{\otSemi\fontsize{7}{8.5}\selectfont\color{otGreen}\otCaps[11]{#1}}\par\vspace{1.4mm}}
+% Test express : \begin{testexpress} \qcm{question}{a}{b}{c} ... \end{testexpress}
+\newcounter{otqcm}
+\NewDocumentEnvironment{testexpress}{}{%
+  \setcounter{otqcm}{0}%
+  \begin{tcolorbox}[enhanced,colback=white,colframe=otGreenDark!45,boxrule=0.6pt,arc=1.8mm,
+    left=4.5mm,right=4.5mm,top=3.4mm,bottom=3mm,boxsep=0pt,before skip=3mm,after skip=3mm]
+  \noindent\otTuile[6mm]{horloge}{otGreenDark}\hspace{2.4mm}%
+  {\otSemi\fontsize{7.4}{9}\selectfont\color{otGreenDark}\otCaps[12]{Test express}}\hspace{2mm}%
+  {\otMedium\fontsize{10}{12}\selectfont 10 questions\enspace·\enspace 5 minutes}\hfill
+  {\otMedium\fontsize{9}{11}\selectfont\color{otMuted}corrigé p.~\pageref{cor-\otPref-test}}\par\vspace{3mm}}
+  {\par\vspace{2mm}\noindent{\color{otRule}\rule{\linewidth}{0.5pt}}\par\vspace{2.5mm}
+   \noindent{\otSemi\fontsize{9}{11}\selectfont Mon score :}\hspace{2mm}\rule[-0.6mm]{12mm}{0.5pt}\,{\otSemi\fontsize{9}{11}\selectfont /\,10}%
+   \hfill{\fontsize{9}{11.5}\selectfont\color{otMuted}9--10 : bravo, passez à la suite\enspace·\enspace 6--8 : revoyez les points manqués\enspace·\enspace 0--5 : reprenez l'unité}\par
+   \end{tcolorbox}}
+\NewDocumentCommand{\qcm}{o m m m m}{% [bonne lettre], question, a, b, c
+  \stepcounter{otqcm}%
+  \par\noindent\makebox[6.5mm][l]{\otSemi\fontsize{9}{11}\selectfont\color{otGreenDark}\theotqcm.}%
+  \parbox[t]{\dimexpr\linewidth-6.5mm\relax}{\fontsize{10.2}{12.6}\selectfont #2\par\vspace{1.2mm}
+    \begin{tabularx}{\linewidth}{@{}XXX@{}}
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont a}\hspace{1.2mm}#3 &
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont b}\hspace{1.2mm}#4 &
+      \otRond\hspace{1.2mm}{\otSemi\fontsize{8}{10}\selectfont c}\hspace{1.2mm}#5
+    \end{tabularx}}\par\vspace{2.2mm}}
+% Je sais...
+\NewDocumentEnvironment{jesais}{}{%
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,left=4.5mm,right=4.5mm,top=3.2mm,bottom=3mm]
+  \noindent\otTuile[6mm]{cible}{otGreenDark}\hspace{2.4mm}%
+  {\otSemi\fontsize{7.4}{9}\selectfont\color{otGreenDark}\otCaps[12]{Auto-évaluation}}\hspace{2mm}%
+  {\otMedium\fontsize{10}{12}\selectfont Je sais\ldots}\hfill
+  {\otMedium\fontsize{8}{10}\selectfont\color{otMuted}cochez quand c'est acquis}\par\vspace{2.4mm}
+  \begin{itemize}[label={\otCase},leftmargin=7mm,itemsep=1.6mm,topsep=0pt]\fontsize{10.2}{12.6}\selectfont}
+  {\end{itemize}\end{tcolorbox}}
+
+%% ---------------------------------------------------------------------
+%%  Ouverture d'unité : \unite{n}{titre anglais}{sous-titre}{illustration}
+%% ---------------------------------------------------------------------
+\newsavebox{\otBoiteTitre}
+% Titre d'ouverture : il ne doit pas déborder sous les personnages (largeur \otLargeurTitre).
+% Sur une ligne : 50 pt si possible ; titre coupé à la main ([ligne 1\\ligne 2]) : 42 pt au plus ;
+% la taille diminue ensuite jusqu'à ce que le titre tienne.
+\newlength{\otLargeurTitre}\setlength{\otLargeurTitre}{105mm}
+\newcommand{\otMesureTitre}[3]{%
+  \sbox{\otBoiteTitre}{\color{white}\otBold\fontsize{#1}{#2}\selectfont
+    \foreignlanguage{english}{\begin{tabular}[b]{@{}l@{}}#3\end{tabular}}}}
+\newcommand{\otTitreAjuste}[2]{% coupé (true/false), titre
+  \ifthenelse{\boolean{#1}}{\otMesureTitre{42}{44}{#2}}{\otMesureTitre{50}{54}{#2}%
+    \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{42}{44}{#2}\fi}%
+  \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{38}{40}{#2}\fi
+  \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{34}{36}{#2}\fi
+  \ifdim\wd\otBoiteTitre>\otLargeurTitre\otMesureTitre{30}{32}{#2}\fi
+  \ifdim\ht\otBoiteTitre>20mm\def\otTitreY{41mm}\else\def\otTitreY{45mm}\fi}
+\NewDocumentCommand{\unite}{o m m m m}{% [titre coupé pour l'ouverture], n, titre, sous-titre, illustration
+  \otPageDroite
+  \gdef\otUniteNum{#2}\gdef\otUniteTitre{#3}\gdef\otUniteSousTitre{#4}\gdef\otPref{u#2}%
+  \setcounter{otrub}{0}\setcounter{otex}{0}%
+  \pagestyle{otUnite}\thispagestyle{otOuverture}%
+  \markright{\otUniteSousTitre}%
+  \phantomsection\label{unite-#2}%
+  \pdfbookmark[1]{Unit #2 — #3}{bm-unite-#2}%
+  \immediate\write\@auxout{\string\otUniteVue{#2}}%
+  \IfNoValueTF{#1}{\otTitreAjuste{false}{#3}}{\otTitreAjuste{true}{#1}}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={([yshift=-92mm]current page.north west)}]
+      \fill[otNavy] (0,0) rectangle (210mm,92mm);
+      \begin{scope}[yshift=-8mm]\clip (0,8mm) rectangle (210mm,100mm);
+        \draw[white,opacity=0.05,line width=0.3pt,step=7mm] (0,0) grid (210mm,100mm);
+        \csname #5\endcsname
+      \end{scope}
+      \fill[\otPartieCouleur] (0,0) rectangle (210mm,2mm);
+      \fill[otGreen] (0,2mm) rectangle (210mm,2.6mm);
+      \node[anchor=west,fill=otGreen,rounded corners=1.8pt,inner xsep=2.6mm,inner ysep=1.6mm,
+        text=white,font=\otSemi\fontsize{9}{10}\selectfont] (pill) at (20mm,74mm) {\otCaps[14]{Unit #2}};
+      \node[anchor=west,inner sep=0pt,text=white,opacity=0.78,font=\otMedium\fontsize{8.4}{10}\selectfont]
+        at ([xshift=4mm]pill.east) {\otCaps[12]{Partie \otPartieNum\ · \otPartieNom}};
+      \node[anchor=base west,inner sep=0pt] at (19mm,\otTitreY) {\usebox{\otBoiteTitre}};
+      \node[anchor=base west,inner sep=0pt,text=white,opacity=0.9,font=\otLight\fontsize{19}{23}\selectfont]
+        at (20mm,30mm) {#4};
+      \fill[otGreen] (20.5mm,20mm) rectangle (50.5mm,21.4mm);
+    \end{scope}
+  \end{tikzpicture}%
+  \vspace*{72mm}\par}
+
+% Situation (épisode du feuilleton)
+\NewDocumentCommand{\situation}{m m}{% épisode, texte
+  \par\noindent
+  \begin{minipage}[t]{\linewidth}
+    \otEtiquette{otGreenDark}{L'histoire\enspace·\enspace#1}\par\vspace{1.4mm}
+    {\fontsize{11}{14.6}\selectfont #2\par}
+  \end{minipage}\par\vspace{4mm}}
+% Objectifs + carte audio de l'unité
+\NewDocumentEnvironment{objectifs}{}{%
+  \par\noindent\begin{minipage}[t]{\dimexpr\linewidth-56mm\relax}\vspace{0pt}
+  {\otSemi\fontsize{12}{14}\selectfont\color{otInk}Dans cette unité, vous allez apprendre à\ldots}\par\vspace{2.4mm}
+  \begin{list}{\otCheck}{\setlength{\leftmargin}{7mm}\setlength{\labelwidth}{4mm}\setlength{\labelsep}{3mm}
+    \setlength{\itemsep}{1.8mm}\setlength{\topsep}{0pt}\setlength{\parsep}{0pt}}\fontsize{10.6}{13.2}\selectfont}
+  {\end{list}\end{minipage}\hfill
+  \begin{minipage}[t]{50mm}\vspace{0pt}\otCarteAudio\end{minipage}\par\vspace{3.5mm}}
+\newcommand{\otCarteAudio}{%
+  \otFixeURL{unite-\ifnum\otUniteNum<10 0\fi\otUniteNum.html}%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,arc=2mm,left=3.5mm,right=3.5mm,
+    top=3.5mm,bottom=3.5mm,boxsep=0pt,before skip=0pt,after skip=0pt,halign=center]
+  \otTuile[6mm]{casque}{otNavy}\par\vspace{1.2mm}
+  {\otSemi\fontsize{7}{8.5}\selectfont\color{otNavy}\otCaps[11]{Tous les audios}}\par\vspace{0.6mm}
+  {\otMedium\fontsize{9}{11}\selectfont de l'unité \otUniteNum}\par\vspace{2.4mm}
+  {\color{otInk}\otQR{21mm}{}}\par\vspace{1.6mm}
+  {\otRegular\fontsize{8}{10}\selectfont\color{otMuted}%
+    \ifcsname otUnitePistes@\otUniteNum\endcsname\csname otUnitePistes@\otUniteNum\endcsname\ pistes\enspace·\enspace
+    \csname otUniteDuree@\otUniteNum\endcsname\par\fi
+    \otAudioAffiche}
+  \end{tcolorbox}}
+% Au programme : \auprogramme{communication}{grammaire}{vocabulaire}{prononciation}{culture}
+\newcommand{\otCartePrg}[4]{% icône, couleur, titre, texte
+  \begin{tcolorbox}[enhanced,colback=white,colframe=otRule,boxrule=0.5pt,arc=1.6mm,left=2.6mm,right=2.6mm,
+    top=2.6mm,bottom=2.6mm,boxsep=0pt]
+  \otTuile[5.4mm]{#1}{#2}\par\vspace{1.6mm}
+  {\otSemi\fontsize{6.8}{8}\selectfont\color{#2}\otCaps[10]{#3}}\par\vspace{1mm}
+  {\fontsize{9}{11.2}\selectfont\RaggedRight #4\par}
+  \end{tcolorbox}}
+\newcommand{\auprogramme}[5]{%
+  \par\noindent{\otSemi\fontsize{12}{14}\selectfont\color{otInk}Au programme}\par\vspace{2.6mm}
+  \begin{tcbraster}[raster columns=5,raster equal height=rows,raster column skip=2.6mm,
+    raster before skip=0pt,raster after skip=0pt]
+    \otCartePrg{bulle}{otNavy}{Communication}{#1}
+    \otCartePrg{blocs}{otViolet}{Grammaire}{#2}
+    \otCartePrg{livre}{otGreenDark}{Vocabulaire}{#3}
+    \otCartePrg{sons}{otOrangeDark}{Prononciation}{#4}
+    \otCartePrg{globe}{otTeal}{Culture}{#5}
+  \end{tcbraster}\par\vspace{4mm}}
+% Votre semaine : \semaine{{icône/couleur/titre/contenu},...}
+\newcommand{\semaine}[1]{%
+  \par\noindent{\otSemi\fontsize{12}{14}\selectfont\color{otInk}Votre programme}%
+  \hspace{2mm}{\otRegular\fontsize{9.4}{12}\selectfont\color{otMuted}6 séances de 30 minutes environ}\par\vspace{3mm}
+  \noindent\begin{tikzpicture}
+    \foreach \ico/\coul/\titre/\txt [count=\i] in {#1}{%
+      \pgfmathsetmacro{\xx}{(\i-1)*28.6}
+      \fill[\coul] (\xx mm+4.5mm,0) circle (4.5mm);
+      \otDessinIcone{\ico}{white}{\coul}{5mm}{(\xx mm+4.5mm,0)}
+      \ifnum\i<6\draw[otRule,line width=0.8pt] (\xx mm+10.5mm,0) -- (\xx mm+26.6mm,0);\fi
+      \node[anchor=north west,inner sep=0pt,text width=26mm,align=left] at (\xx mm,-6.8mm)
+        {\RaggedRight{\otSemi\fontsize{6.6}{8}\selectfont\color{\coul}\otCaps[10]{Séance \i}}\par\vspace{0.6mm}
+         {\otSemi\fontsize{8.6}{10.4}\selectfont\color{otInk}\titre}\par\vspace{0.4mm}
+         {\fontsize{8.4}{10.2}\selectfont\color{otMuted}\txt}};}
+  \end{tikzpicture}\par}
+
+%% ---------------------------------------------------------------------
+%%  Ouverture de partie : \partie{n}{titre}{titre anglais}{couleur}{texte}{unités}
+%% ---------------------------------------------------------------------
+\NewDocumentCommand{\partie}{m m m m m m}{%
+  \otPageDroite
+  \gdef\otPartieNum{#1}\gdef\otPartieNom{#2}\gdef\otPartieCouleur{#4}%
+  \gdef\otUniteNum{0}%
+  \thispagestyle{empty}%
+  \phantomsection\label{partie-#1}%
+  \pdfbookmark[0]{Partie #1 — #2}{bm-partie-#1}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={(current page.south west)}]
+      \fill[#4] (0,0) rectangle (210mm,297mm);
+      \shade[bottom color=otNavyDark,top color=#4,opacity=0.9] (0,0) rectangle (210mm,140mm);
+      \draw[white,opacity=0.05,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+      \node[anchor=north east,inner sep=0pt,text=white,opacity=0.1,font=\otBold\fontsize{300}{300}\selectfont]
+        at (205mm,262mm) {#1};
+      \node[anchor=base west,inner sep=0pt,text=otGreen,font=\otSemi\fontsize{11}{13}\selectfont]
+        at (24mm,214mm) {\otCaps[22]{Partie #1}};
+      \node[anchor=base west,inner sep=0pt,text=white,font=\otBold\fontsize{40}{44}\selectfont]
+        at (23mm,190mm) {#2};
+      \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,font=\otLight\fontsize{20}{24}\selectfont]
+        at (24mm,175mm) {\enb{#3}};
+      \fill[otGreen] (24mm,164mm) rectangle (54mm,165.4mm);
+      \node[anchor=north west,inner sep=0pt,text width=120mm,text=white,opacity=0.9,
+        font=\otRegular\fontsize{11}{15}\selectfont] at (24mm,154mm) {#5};
+      \node[anchor=north west,inner sep=0pt,text width=150mm,text=white] at (24mm,112mm) {#6};
+    \end{scope}
+  \end{tikzpicture}%
+  \clearpage}
+%% ---------------------------------------------------------------------
+%%  Plan du tome (tome-N/plan.tex) : données lues par le sommaire, le
+%%  tableau des contenus et les ouvertures de parties
+%% ---------------------------------------------------------------------
+\newcommand{\otPlanNbParties}{0}
+\newcommand{\planPartie}[7]{%
+  \xdef\otPlanNbParties{#1}%
+  \expandafter\gdef\csname otPlanP@titre@#1\endcsname{#2}%
+  \expandafter\gdef\csname otPlanP@en@#1\endcsname{#3}%
+  \expandafter\gdef\csname otPlanP@coul@#1\endcsname{#4}%
+  \expandafter\gdef\csname otPlanP@de@#1\endcsname{#5}%
+  \expandafter\gdef\csname otPlanP@a@#1\endcsname{#6}%
+  \expandafter\gdef\csname otPlanP@texte@#1\endcsname{#7}}
+\newcommand{\planUnite}[8]{%
+  \expandafter\gdef\csname otPlanU@titre@#1\endcsname{#2}%
+  \expandafter\gdef\csname otPlanU@sous@#1\endcsname{#3}%
+  \expandafter\gdef\csname otPlanU@com@#1\endcsname{#4}%
+  \expandafter\gdef\csname otPlanU@gram@#1\endcsname{#5}%
+  \expandafter\gdef\csname otPlanU@voc@#1\endcsname{#6}%
+  \expandafter\gdef\csname otPlanU@pron@#1\endcsname{#7}%
+  \expandafter\gdef\csname otPlanU@cult@#1\endcsname{#8}}
+\newcommand{\otPlanP}[2]{\csname otPlanP@#1@#2\endcsname}
+\newcommand{\otPlanU}[2]{\csname otPlanU@#1@#2\endcsname}
+% Ouverture de partie à partir du plan
+\newcommand{\partieDuPlan}[1]{%
+  \partie{#1}{\otPlanP{titre}{#1}}{\otPlanP{en}{#1}}{\otPlanP{coul}{#1}}{\otPlanP{texte}{#1}}%
+    {\foreach \u in {\otPlanP{de}{#1},...,\otPlanP{a}{#1}}{\otPartieUnite{\u}{\otPlanU{titre}{\u}}{\otPlanU{sous}{\u}}}%
+     \otPartieBilan{#1}}}
+\newcommand{\otPartieBilan}[1]{%
+  \noindent\makebox[16mm][l]{\otTuile[7.5mm]{coche}{otGreen}}%
+  \parbox[b]{108mm}{{\otSemi\fontsize{13}{15}\selectfont Bilan #1}\par\vspace{0.6mm}
+    {\otLight\fontsize{10}{12}\selectfont\color{white}Révisions et test des unités \otPlanP{de}{#1} à \otPlanP{a}{#1}}}\hfill
+  \ifcsname r@bilan-#1\endcsname{\otMedium\fontsize{10}{12}\selectfont p.~\pageref{bilan-#1}}%
+  \else{\otLight\fontsize{8.5}{10}\selectfont à paraître}\fi\par}
+
+% Ligne d'unité dans l'ouverture de partie : \otPartieUnite{n}{titre}{sous-titre}
+\newcommand{\otPartieUnite}[3]{%
+  \noindent\makebox[16mm][l]{{\otBold\fontsize{20}{22}\selectfont\color{otGreen}#1}}%
+  \parbox[b]{108mm}{{\otSemi\fontsize{13}{15}\selectfont\enb{#2}}\par\vspace{0.6mm}
+    {\otLight\fontsize{10}{12}\selectfont\color{white}#3}}\hfill
+  \ifcsname otUniteVue@#1\endcsname{\otMedium\fontsize{10}{12}\selectfont p.~\pageref{unite-#1}}%
+  \else{\otLight\fontsize{8.5}{10}\selectfont à paraître}\fi
+  \par\vspace{6mm}}
+
+%% ---------------------------------------------------------------------
+%%  Bilan de partie : \bilan{n}  (données du plan)
+%% ---------------------------------------------------------------------
+\NewDocumentCommand{\bilan}{m}{%
+  \otPageDroite
+  \gdef\otUniteNum{0}\gdef\otPref{b#1}%
+  \setcounter{otrub}{0}\setcounter{otex}{0}%
+  \gdef\otEnTeteGauche{Bilan #1 · \otPlanP{titre}{#1}}%
+  \pagestyle{otAnnexe}\thispagestyle{otFront}%
+  \markright{Révisions des unités \otPlanP{de}{#1} à \otPlanP{a}{#1}}%
+  \phantomsection\label{bilan-#1}%
+  \pdfbookmark[1]{Bilan #1 — \otPlanP{titre}{#1}}{bm-bilan-#1}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={([yshift=-76mm]current page.north west)}]
+      \fill[\otPlanP{coul}{#1}] (0,0) rectangle (210mm,76mm);
+      \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,76mm);
+      \fill[otGreen] (0,0) rectangle (210mm,1.6mm);
+      \node[anchor=west,fill=otGreen,rounded corners=1.8pt,inner xsep=2.6mm,inner ysep=1.6mm,
+        text=white,font=\otSemi\fontsize{9}{10}\selectfont] (pill) at (20mm,58mm) {\otCaps[14]{Bilan #1}};
+      \node[anchor=west,inner sep=0pt,text=white,opacity=0.78,font=\otMedium\fontsize{8.4}{10}\selectfont]
+        at ([xshift=4mm]pill.east) {\otCaps[12]{Partie #1 · \otPlanP{titre}{#1}}};
+      \node[anchor=base west,inner sep=0pt,text=white,font=\otBold\fontsize{34}{38}\selectfont] at (19mm,34mm) {Faites le point};
+      \node[anchor=base west,inner sep=0pt,text=white,opacity=0.9,font=\otLight\fontsize{14}{17}\selectfont]
+        at (20mm,21mm) {Révisions et test des unités \otPlanP{de}{#1} à \otPlanP{a}{#1}};
+      \foreach \u [count=\k] in {\otPlanP{de}{#1},...,\otPlanP{a}{#1}}{%
+        \node[anchor=east,fill=white,fill opacity=0.12,text opacity=1,text=white,rounded corners=1.6mm,
+          inner xsep=2.4mm,inner ysep=1.4mm,font=\otSemi\fontsize{8.6}{10}\selectfont,minimum width=46mm,align=left]
+          at (190mm,{(64-\k*11)*1mm}) {\makebox[6mm][l]{\color{otGreen}\u}\enb{\otPlanU{titre}{\u}}};}
+    \end{scope}
+  \end{tikzpicture}%
+  \vspace*{58mm}\par}
+% Score du bilan
+\newcommand{\otScore}[1]{% total de points
+  \par\addvspace{4mm}\noindent
+  \begin{tcolorbox}[otBase,colback=otNavy,colframe=otNavy,coltext=white]
+  {\otSemi\fontsize{7}{8}\selectfont\color{otGreen}\otCaps[12]{Votre score}}\hspace{3mm}%
+  {\otSemi\fontsize{13}{15}\selectfont\rule[-0.6mm]{14mm}{0.6pt}\,/\,#1}\par\vspace{2mm}
+  {\fontsize{9.8}{12.4}\selectfont 16 à 20 : excellent, passez à la partie suivante.\enspace·\enspace
+   11 à 15 : bien ; revoyez les exercices où vous avez perdu des points.\enspace·\enspace
+   10 ou moins : reprenez les rubriques « Grammaire » et « Vocabulaire » des unités concernées,
+   puis refaites ce bilan dans quelques jours.\par}
+  \end{tcolorbox}}
+\newcommand{\corrigesBilan}[1]{%
+  \par\addvspace{6mm}\needspace{14\baselineskip}%
+  \gdef\otCorUnite{0}\gdef\otCorPref{b#1}\markright{Bilan #1 · \otPlanP{titre}{#1}}%
+  \noindent\begin{tikzpicture}[baseline=(t.base)]
+    \node[fill=\otPlanP{coul}{#1},rounded corners=1.6mm,inner xsep=2.6mm,inner ysep=1.6mm,text=white,
+      font=\otSemi\fontsize{8.6}{10}\selectfont] (u) {\otCaps[12]{Bilan #1}};
+    \node[anchor=base west,inner sep=0pt,font=\otSemi\fontsize{15}{18}\selectfont] (t) at ([xshift=3.5mm]u.base east) {\otPlanP{titre}{#1}};
+  \end{tikzpicture}\hspace{4mm}{\color{otRule}\leaders\hrule height 0.6pt\hfill\kern0pt}\par\vspace{4mm}}
+
+%% ---------------------------------------------------------------------
+%%  Illustration type d'ouverture : deux personnages et leurs bulles
+%%  \otIllusDuo{mots décoratifs}{perso1}{bulle1}{perso2}{bulle2}
+%% ---------------------------------------------------------------------
+\newcommand{\otIllusDuo}[5]{%
+  \foreach \motx/\x/\y/\t/\o in {#1}{%
+    \node[text=white,opacity=\o,font=\otBold\fontsize{\t}{\t}\selectfont,anchor=center] at (\x mm,\y mm) {\enb{\motx}};}
+  \fill[white,opacity=0.07] (164mm,52mm) circle (40mm);
+  \otDessinAvatar{#2}{(142mm,48mm)}{15mm}{otNavyDark!70!otNavy}
+  \otDessinAvatar{#4}{(185mm,55mm)}{17.5mm}{otGreen!35!otNavy}
+  \otBulle{(133mm,86mm)}{south}{#3}{white}{otNavy}{(139mm,66mm)}
+  \otBulle{(184mm,91mm)}{south}{#5}{otGreen}{white}{(184mm,75mm)}}
+
+%% ---------------------------------------------------------------------
+%%  Annexes : corrigés et transcriptions
+%% ---------------------------------------------------------------------
+\NewDocumentCommand{\annexe}{o m m}{% [clé de renvoi], titre, sous-titre
+  \otPageDroite
+  \gdef\otUniteNum{0}\gdef\otEnTeteGauche{#2}%
+  \pagestyle{otAnnexe}\thispagestyle{otFront}%
+  \markright{#3}%
+  \phantomsection\IfNoValueTF{#1}{\label{annexe-#2}}{\label{annexe-#1}}%
+  \pdfbookmark[0]{#2}{bm-annexe-\IfNoValueTF{#1}{#2}{#1}}%
+  \otPageTitre{#2}{#3}}
+\newcommand{\corrigesUnite}[2]{%
+  \par\addvspace{6mm}\needspace{14\baselineskip}%
+  \gdef\otCorUnite{#1}\gdef\otCorPref{u#1}\markright{Unit #1 · \enb{#2}}%
+  \noindent\begin{tikzpicture}[baseline=(t.base)]
+    \node[fill=otNavy,rounded corners=1.6mm,inner xsep=2.6mm,inner ysep=1.6mm,text=white,
+      font=\otSemi\fontsize{8.6}{10}\selectfont] (u) {\otCaps[12]{Unit #1}};
+    \node[anchor=base west,inner sep=0pt,font=\otSemi\fontsize{15}{18}\selectfont] (t) at ([xshift=3.5mm]u.base east) {\enb{#2}};
+  \end{tikzpicture}\hspace{4mm}{\color{otRule}\leaders\hrule height 0.6pt\hfill\kern0pt}\par\vspace{4mm}}
+\newcommand{\otCorUnite}{0}
+\NewDocumentEnvironment{corrige}{m}{% numéro d'exercice
+  \par\addvspace{4mm}\needspace{6\baselineskip}%
+  \phantomsection\label{cor-\otCorPref-#1}%
+  \noindent\tikz[baseline=(n.base)]\node[fill=otGreenDark,rounded corners=1.2mm,minimum width=6mm,minimum height=6mm,
+    inner sep=0pt,text=white,font=\otBold\fontsize{9}{9}\selectfont] (n) {#1};%
+  \hspace{2.4mm}{\otSemi\fontsize{10.6}{13}\selectfont\ifcsname r@ex-\otCorPref-#1\endcsname\nameref{ex-\otCorPref-#1}\fi}%
+  \hfill{\otLight\fontsize{7}{9}\selectfont\color{otMuted}énoncé p.~\pageref{ex-\otCorPref-#1}}\par\nopagebreak\vspace{1.8mm}%
+  \fontsize{10.2}{13}\selectfont}
+  {\par}
+\NewDocumentEnvironment{corrigetest}{}{%
+  \par\addvspace{4mm}\needspace{6\baselineskip}%
+  \phantomsection\label{cor-\otCorPref-test}%
+  \noindent\otTuile[6mm]{horloge}{otGreenDark}%
+  \hspace{2.4mm}{\otSemi\fontsize{10.6}{13}\selectfont Test express}\par\nopagebreak\vspace{1.8mm}%
+  \fontsize{10.2}{13}\selectfont}
+  {\par}
+% Réponses numérotées : \begin{reponses}[colonnes] \item ... \end{reponses}
+\NewDocumentEnvironment{reponses}{O{1} O{english}}{%
+  \begin{otherlanguage}{#2}%
+  \ifnum#1>1\relax\begin{multicols}{#1}\raggedcolumns\fi
+  \begin{enumerate}[label={\otSemi\fontsize{8.4}{10}\selectfont\color{otGreenDark}\arabic*.},
+    leftmargin=6mm,labelsep=2mm,itemsep=1mm,topsep=0.4mm]}
+  {\end{enumerate}\ifnum#1>1\relax\end{multicols}\fi\end{otherlanguage}}
+\newcommand{\rep}[1]{\textcolor{otGreenDark}{\textbf{#1}}}
+% Explications pédagogiques
+\newcommand{\pourquoi}[1]{\par\vspace{1.2mm}\noindent\hangindent=21mm\hangafter=1
+  \makebox[21mm][l]{\otEtiquette{otNavy}{Pourquoi ?}}{\fontsize{9.8}{12.4}\selectfont #1}\par\vspace{1mm}}
+\newcommand{\retiens}[1]{\par\vspace{1.4mm}%
+  \begin{tcolorbox}[otBase,colback=otGreenTint,colframe=otGreenTint,left=3mm,right=3mm,top=1.8mm,bottom=1.8mm,
+    before skip=1mm,after skip=1.5mm]
+  \otEtiquette{otGreenDark}{À retenir}\hspace{2mm}{\fontsize{9.8}{12.4}\selectfont #1}\end{tcolorbox}}
+\newcommand{\piege}[1]{\par\vspace{1.4mm}%
+  \begin{tcolorbox}[otBase,colback=otOrangeTint,colframe=otOrangeTint,left=3mm,right=3mm,top=1.8mm,bottom=1.8mm,
+    before skip=1mm,after skip=1.5mm]
+  \otEtiquette{otOrangeDark}{Erreur fréquente}\hspace{2mm}{\fontsize{9.8}{12.4}\selectfont #1}\end{tcolorbox}}
+
+% Transcription d'une piste : \begin{transcription}{piste}{titre}
+%   \dit{perso}{anglais}{français}  \annonce{texte}  \repere{Dialogue A}  \silence{secondes}
+\NewDocumentEnvironment{transcription}{m m}{%
+  \par\addvspace{4mm}\needspace{8\baselineskip}%
+  \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=otRule,boxrule=0.5pt,arc=1.6mm,
+    left=4mm,right=4mm,top=3mm,bottom=2mm,boxsep=0pt,before skip=2mm,after skip=2mm]
+  \phantomsection\label{trans-#1}%
+  \noindent\otPastillePiste{#1}\hspace{2.4mm}{\otSemi\fontsize{10.4}{13}\selectfont #2}\par
+  \vspace{2mm}{\color{otRule}\rule{\linewidth}{0.4pt}}\par\vspace{2mm}%
+  \otTranscriptiontrue\setlength{\otDitNom}{24mm}}
+  {\end{tcolorbox}}
+\newcommand{\annonce}[1]{\par\noindent\hspace*{\dimexpr\otDitNom+2mm\relax}%
+  {\enb{\itshape\fontsize{10}{12.6}\selectfont\color{otMuted}#1}}\par\vspace{1.4mm}}
+\newcommand{\repere}[1]{\par\addvspace{1.4mm}\noindent{\otSemi\fontsize{8.4}{10}\selectfont\color{otNavy}\otCaps[10]{#1}}\par\vspace{1.2mm}}
+\newcommand{\silence}[1]{\par\noindent\hspace*{\dimexpr\otDitNom+2mm\relax}%
+  {\otMedium\fontsize{8}{10}\selectfont\color{otGreenDark}[\,pause de #1 secondes : à vous !\,]}\par\vspace{1.6mm}}
+% Piste « audio seulement » dont le texte est imprimé ailleurs (ex. : un tableau de grammaire)
+\NewDocumentEnvironment{pisteaudio}{m m}{\begin{transcription}{#1}{#2}}{\end{transcription}}
+\newcommand{\dire}[2][prof]{\dit{#1}{#2}{}}
+% Phrase à répéter (l'audio laisse une pause après) : \repete{texte}
+\newcommand{\repete}[2][prof]{\dit{#1}{#2}{}}
+% Deux formes à répéter sur une ligne : \repetepaire{I am.}{I'm.}
+\newcommand{\repetepaire}[2]{\par\noindent\hspace*{\dimexpr\otDitNom+2mm\relax}%
+  \enb{\fontsize{10.6}{13.2}\selectfont #1}{\color{otMuted}\enspace→\enspace}\enb{\fontsize{10.6}{13.2}\selectfont\textbf{#2}}\par\vspace{1.2mm}}
+% Item numéroté (la voix annonce « Number n ») : \numdire{1}{texte}
+\newcommand{\numdire}[2]{\par\noindent
+  \parbox[t]{\otDitNom}{{\otSemi\fontsize{8.6}{13.2}\selectfont\color{otNavy}#1.}}\hspace{2mm}%
+  \parbox[t]{\dimexpr\linewidth-\otDitNom-2mm\relax}{\enb{\fontsize{10.6}{13.2}\selectfont #2}}\par\vspace{1.2mm}}
+
+%% ---------------------------------------------------------------------
+%%  Pages liminaires
+%% ---------------------------------------------------------------------
+\newcommand{\otPageTitre}[2]{%
+  \noindent{\otLight\fontsize{30}{34}\selectfont\color{otInk}#1}\par\vspace{2.2mm}
+  \if\relax\detokenize{#2}\relax\else
+    \noindent{\otRegular\fontsize{10.6}{13.4}\selectfont\color{otMuted}#2}\par\vspace{2.2mm}\fi
+  \noindent{\color{otNavy}\rule{16mm}{1.3pt}}%
+  {\color{otRule}\rule[0.45pt]{\dimexpr\linewidth-16mm\relax}{0.4pt}}\par\vspace{8mm}}
+\NewDocumentCommand{\liminaire}{m m m}{% clé, titre, sous-titre
+  \clearpage\gdef\otEnTeteGauche{#2}\markright{#3}%
+  \thispagestyle{otFront}%
+  \phantomsection\label{lim-#1}\pdfbookmark[0]{#2}{bm-lim-#1}%
+  \otPageTitre{#2}{#3}}
+
+%% ---------------------------------------------------------------------
+%%  Petits dessins réutilisables
+%% ---------------------------------------------------------------------
+% Horloge : \otDessinHorloge{centre}{rayon}{heures}{minutes}{couleur}
+\newcommand{\otDessinHorloge}[5]{%
+  \begin{scope}[shift={#1}]
+    \fill[white] (0,0) circle (#2);
+    \draw[#5,line width=0.9pt] (0,0) circle (#2);
+    \foreach \k in {1,2,4,5,7,8,10,11}{\draw[#5!70,line width=0.45pt] (90-30*\k:0.8*#2) -- (90-30*\k:0.93*#2);}
+    \foreach \k in {0,3,6,9}{\draw[#5,line width=0.9pt] (90-30*\k:0.74*#2) -- (90-30*\k:0.93*#2);}
+    \pgfmathsetmacro{\otAngH}{90-30*(mod(#3,12)+#4/60)}
+    \pgfmathsetmacro{\otAngM}{90-6*#4}
+    \draw[otInk,line width=1.5pt,line cap=round] (0,0) -- (\otAngH:0.5*#2);
+    \draw[otInk,line width=0.95pt,line cap=round] (0,0) -- (\otAngM:0.74*#2);
+    \fill[#5] (0,0) circle (0.07*#2);
+  \end{scope}}
+\newcommand{\otIco@soleil}[2]{%
+  \fill[#1] (0,0) circle (0.22);
+  \foreach \a in {0,45,...,315}{\draw[#1,line width=0.08*\otIcoU,line cap=round] (\a:0.32) -- (\a:0.46);}}
+\newcommand{\otIco@lune}[2]{%
+  \fill[#1] (0,0) circle (0.4);
+  \fill[#2] (0.17,0.12) circle (0.34);}
+% Météo : nuage, pluie, neige, vent, brouillard
+\newcommand{\otIco@nuage}[2]{%
+  \fill[#1] (-0.2,-0.02) circle (0.2) (0.06,0.1) circle (0.26) (0.28,-0.04) circle (0.17);
+  \fill[#1,rounded corners=0.1*\otIcoU] (-0.4,-0.22) rectangle (0.45,0.02);}
+\newcommand{\otIco@pluie}[2]{%
+  \begin{scope}[yshift=0.14*\otIcoU]\otIco@nuage{#1}{#2}\end{scope}
+  \foreach \x in {-0.22,0,0.22}{\draw[#1,line width=0.07*\otIcoU,line cap=round] (\x+0.04,-0.2) -- (\x-0.04,-0.42);}}
+\newcommand{\otIco@neige}[2]{%
+  \foreach \a in {0,60,120}{\draw[#1,line width=0.07*\otIcoU,line cap=round] (\a:0.44) -- (\a+180:0.44);}
+  \foreach \a in {0,60,...,300}{\draw[#1,line width=0.06*\otIcoU,line cap=round]
+    (\a:0.25) -- ++(\a+45:0.13) (\a:0.25) -- ++(\a-45:0.13);}}
+\newcommand{\otIco@vent}[2]{%
+  \draw[#1,line width=0.075*\otIcoU,line cap=round] (-0.44,0.16) -- (0.2,0.16) arc[start angle=-90,end angle=135,radius=0.13];
+  \draw[#1,line width=0.075*\otIcoU,line cap=round] (-0.44,-0.02) -- (0.34,-0.02);
+  \draw[#1,line width=0.075*\otIcoU,line cap=round] (-0.3,-0.2) -- (0.12,-0.2) arc[start angle=90,end angle=-135,radius=0.12];}
+\newcommand{\otIco@brouillard}[2]{%
+  \begin{scope}[yshift=0.17*\otIcoU,scale=0.85]\otIco@nuage{#1}{#2}\end{scope}
+  \draw[#1,line width=0.07*\otIcoU,line cap=round] (-0.42,-0.2) -- (0.3,-0.2) (-0.28,-0.36) -- (0.42,-0.36);}
+% Prévisions sur plusieurs jours : \otPrevision{jour/icône/couleur/°F/°C, …}
+\newcommand{\otPrevision}[1]{%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,arc=1.6mm,left=2mm,right=2mm,
+    top=2.6mm,bottom=2.6mm,boxsep=0pt,halign=center]
+  \begin{tikzpicture}
+    \foreach \j/\i/\c/\f/\cc [count=\k] in {#1}{%
+      \begin{scope}[shift={(\k*30mm,0)}]
+        \node[font=\otSemi\fontsize{8.4}{10}\selectfont,text=otNavy] at (0,11mm) {\enb{\otCaps[10]{\j}}};
+        \otDessinIcone{\i}{\c}{otNavyTint}{11mm}{(0,1.5mm)}
+        \node[font=\otBold\fontsize{12}{14}\selectfont,text=otInk] at (0,-8mm) {\f\,°F};
+        \node[font=\fontsize{8.4}{10}\selectfont,text=otMuted] at (0,-12.6mm) {\cc\,°C};
+      \end{scope}}
+  \end{tikzpicture}
+  \end{tcolorbox}}
+% Carte horaire : \otCarteHeure{h}{min}{heure affichée}{situation}{soleil|lune}{réponse}
+\newcommand{\otCarteHeure}[6]{%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,arc=1.6mm,left=2mm,right=2mm,
+    top=2.4mm,bottom=2.4mm,boxsep=0pt,halign=center]
+  \begin{tikzpicture}
+    \otDessinHorloge{(0,0)}{8mm}{#1}{#2}{otNavy}
+    \otDessinIcone{#5}{otOrangeDark}{otNavyTint}{5mm}{(11mm,6mm)}
+  \end{tikzpicture}\par\vspace{1.4mm}
+  {\otSemi\fontsize{9.6}{11}\selectfont #3}\par\vspace{0.8mm}
+  {\fontsize{9.2}{11}\selectfont #4\par}\vspace{2.6mm}
+  \enb{\trou[30mm]{#6}}
+  \end{tcolorbox}}
+% Prépositions de lieu : \otDessinPrepo{in|on|under|nextto|behind|infront|between}
+\newcommand{\otBoite}[1]{% centre
+  \begin{scope}[shift={#1}]
+    \fill[otNavy!55] (-6mm,6mm) -- (-3mm,9mm) -- (9mm,9mm) -- (6mm,6mm) -- cycle;
+    \fill[otNavy!75] (6mm,-6mm) -- (9mm,-3mm) -- (9mm,9mm) -- (6mm,6mm) -- cycle;
+    \fill[otNavy!35] (-6mm,-6mm) rectangle (6mm,6mm);
+  \end{scope}}
+\newcommand{\otBalle}[1]{\shade[ball color=otRed] #1 circle (3mm);}
+\newcommand{\otDessinPrepo}[1]{%
+  \begin{tikzpicture}
+    \path (-15mm,-9mm) rectangle (15mm,14mm);
+    \draw[otMuted!50,line width=0.5pt] (-15mm,-6mm) -- (15mm,-6mm);
+    \def\otTmpP{#1}%
+    \ifthenelse{\equal{#1}{on}}{\otBoite{(0,0)}\otBalle{(1.5mm,10.4mm)}}{}%
+    \ifthenelse{\equal{#1}{nextto}}{\otBoite{(-3mm,0)}\otBalle{(11mm,-3mm)}}{}%
+    \ifthenelse{\equal{#1}{behind}}{\otBalle{(4mm,9mm)}\otBoite{(0,0)}}{}%
+    \ifthenelse{\equal{#1}{infront}}{\otBoite{(0,1mm)}\otBalle{(-1mm,-3mm)}}{}%
+    \ifthenelse{\equal{#1}{in}}{%
+      \fill[otNavy!55] (-6mm,6mm) -- (-3mm,9mm) -- (9mm,9mm) -- (6mm,6mm) -- cycle;
+      \fill[otNavy!20] (-5mm,6.3mm) -- (-2.6mm,8.6mm) -- (8.3mm,8.6mm) -- (5.7mm,6.3mm) -- cycle;
+      \fill[otNavy!75] (6mm,-6mm) -- (9mm,-3mm) -- (9mm,9mm) -- (6mm,6mm) -- cycle;
+      \otBalle{(1mm,4mm)}
+      \fill[otNavy!35,opacity=0.55] (-6mm,-6mm) rectangle (6mm,6mm);
+      \draw[otNavy!60,line width=0.4pt] (-6mm,-6mm) rectangle (6mm,6mm);}{}%
+    \ifthenelse{\equal{#1}{under}}{%
+      \fill[otOrangeDark!70] (-11mm,3mm) rectangle (11mm,5.5mm);
+      \fill[otOrangeDark!55] (-9.5mm,-6mm) rectangle (-7.5mm,3mm) (7.5mm,-6mm) rectangle (9.5mm,3mm);
+      \otBalle{(0,-3mm)}}{}%
+    \ifthenelse{\equal{#1}{between}}{%
+      \begin{scope}[scale=0.62]\otBoite{(-14mm,-3.6mm)}\otBoite{(13mm,-3.6mm)}\end{scope}
+      \otBalle{(0,-3mm)}}{}%
+  \end{tikzpicture}}
+% Carte de préposition (exercices) : \otCartePrepo{type}{début}{réponse}{fin}
+\newcommand{\otCartePrepo}[4]{%
+  \begin{tcolorbox}[enhanced,colback=otNavyTint,colframe=otNavyTint,arc=1.6mm,left=1.5mm,right=1.5mm,
+    top=2mm,bottom=2.4mm,boxsep=0pt,halign=center]
+  \otDessinPrepo{#1}\par\vspace{1.6mm}
+  {\fontsize{10}{12}\selectfont\enb{#2 \trou[17mm]{#3} #4}}
+  \end{tcolorbox}}
+% Niveau en étoiles : \otEtoiles{n} (sur 3)
+\newcommand{\otEtoiles}[1]{\tikz[baseline=-0.7ex]{\foreach \k in {1,2,3}{%
+  \ifnum\k>#1\relax\otDessinIcone{etoile}{otRule}{white}{3.4mm}{(\k*3.8mm,0)}%
+  \else\otDessinIcone{etoile}{otOrange}{white}{3.4mm}{(\k*3.8mm,0)}\fi}}}
+% Étiquette-mot (exercices de remise en ordre) : \etiq{word}
+\newcommand{\etiq}[1]{\tikz[baseline=(e.base)]\node[draw=otNavy!40,fill=otNavyTint,line width=0.5pt,rounded corners=1.4mm,
+  inner xsep=2mm,inner ysep=1.1mm,font=\fontsize{10.4}{12}\selectfont] (e) {\enb{#1}};}
+% Main ouverte (test du souffle) : \otDessinMain{position}{échelle}
+\newcommand{\otDessinMain}[2]{%
+  \begin{scope}[shift={#1},x=#2,y=#2]
+    \foreach \x/\h in {-0.33/0.62,-0.11/0.72,0.11/0.7,0.33/0.58}{%
+      \fill[otPeau1,draw=otPeau3,line width=0.5pt,rounded corners=0.9mm] (\x-0.1,0) rectangle (\x+0.1,\h);}
+    \fill[otPeau1,draw=otPeau3,line width=0.5pt,rounded corners=1.2mm,rotate around={-38:(-0.42,-0.42)}]
+      (-0.52,-0.42) rectangle (-0.32,0.12);
+    \fill[otPeau1,draw=otPeau3,line width=0.5pt,rounded corners=2.4mm] (-0.45,-0.75) rectangle (0.45,0.12);
+    \fill[otPeau1] (-0.4,-0.05) rectangle (0.4,0.16);
+  \end{scope}}
+
+%% ---------------------------------------------------------------------
+%%  Guide de prononciation : \begin{tableausons}{piste}{titre}
+%%    \son{symbole}{mot}{phonétique}{explication}
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{tableausons}{m m}{%
+  \par\needspace{14\baselineskip}%
+  \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=otOrange!45,boxrule=0.6pt,arc=1.8mm,
+    left=0mm,right=0mm,top=3mm,bottom=2mm,boxsep=0pt,before skip=3mm,after skip=3mm]
+  \hspace*{4.5mm}\begin{minipage}[t]{\dimexpr\linewidth-36mm\relax}
+    \otEtiquette{otOrangeDark}{Écoutez et répétez}\par\vspace{1.2mm}
+    {\otSemi\fontsize{13}{16}\selectfont\color{otInk}#2}\par\vspace{1.4mm}
+    {\fontsize{9.8}{12.4}\selectfont\color{otMuted}La voix lit chaque mot exemple ; répétez-le pendant la pause.}
+  \end{minipage}\hfill\begin{minipage}[t]{22mm}\raggedleft\vspace{-1mm}\qrpiste[13.5mm]{#1}{}\end{minipage}\hspace*{4.5mm}\par
+  \vspace{2mm}\setcounter{otmot}{0}}
+  {\par\vspace{1mm}\end{tcolorbox}}
+\newcommand{\son}[4]{%
+  \stepcounter{otmot}%
+  \ifodd\value{otmot}\def\otCoulLigne{otOrangeTint!55}\else\def\otCoulLigne{white}\fi
+  \par\noindent\begingroup\setlength{\fboxsep}{0pt}%
+  \colorbox{\otCoulLigne}{\parbox{\linewidth}{\vspace{1.1mm}\hspace*{4.5mm}%
+    \parbox[c]{14mm}{\centering{\otIPAfont\fontsize{15}{16}\selectfont\color{otOrangeDark}#1}}%
+    \parbox[c]{38mm}{\enb{\fontsize{11}{13}\selectfont\textbf{#2}}\enspace\ipa{#3}}%
+    \parbox[c]{\dimexpr\linewidth-61mm\relax}{\RaggedRight\fontsize{9.6}{11.8}\selectfont #4}\par\vspace{1.1mm}}}%
+  \endgroup\par}
+\newcommand{\sonsCategorie}[1]{\par\addvspace{2mm}\noindent\hspace*{4.5mm}%
+  {\otSemi\fontsize{7.4}{9}\selectfont\color{otOrangeDark}\otCaps[12]{#1}}\hspace{2.5mm}%
+  {\color{otOrange!30}\leaders\hrule height 0.5pt\hfill\kern4.5mm}\par\nopagebreak\vspace{1.2mm}\setcounter{otmot}{0}}
+
+%% ---------------------------------------------------------------------
+%%  Sommaire et programme (données du plan)
+%% ---------------------------------------------------------------------
+\newcommand{\otSomRubrique}[2]{% titre, couleur
+  \par\addvspace{5mm}\needspace{6\baselineskip}\noindent
+  {\otSemi\fontsize{7.2}{9}\selectfont\color{#2}\otCaps[12]{#1}}\par
+  \vspace{1.2mm}{\color{#2}\hrule height 0.6pt}\vspace{2mm}}
+\newcommand{\otSomLigne}[3]{% numéro ou icône, texte, étiquette de renvoi
+  \par\noindent\makebox[10mm][l]{#1}%
+  \parbox[b]{\dimexpr\linewidth-28mm\relax}{\RaggedRight #2}%
+  {\color{otMuted!45}\leaders\hbox to 2.4mm{\hss.\hss}\hfill}%
+  \makebox[8mm][r]{\ifcsname r@#3\endcsname{\otMedium\fontsize{9.4}{11}\selectfont\color{otNavy}\pageref{#3}}%
+    \else{\otLight\fontsize{7.4}{9}\selectfont\color{otMuted}à paraître}\fi}\par\vspace{1.6mm}}
+\newcommand{\otSomUnite}[1]{%
+  \otSomLigne{{\otBold\fontsize{12}{13}\selectfont\color{\otPlanP{coul}{\otPartieDe{#1}}}#1}}%
+    {{\otSemi\fontsize{10.4}{12.4}\selectfont\enb{\otPlanU{titre}{#1}}}\hspace{2.2mm}%
+     {\otRegular\fontsize{9}{12.4}\selectfont\color{otMuted}\otPlanU{sous}{#1}}}{unite-#1}}
+% Partie à laquelle appartient une unité
+\newcommand{\otPartieDe}[1]{\ifnum#1<5 1\else\ifnum#1<9 2\else\ifnum#1<13 3\else\ifnum#1<17 4\else 5\fi\fi\fi\fi}
+\newcommand{\otSomPartie}[1]{%
+  \otSomRubrique{Partie #1\enspace·\enspace\otPlanP{titre}{#1}\enspace{\otLight\enb{\otPlanP{en}{#1}}}}{\otPlanP{coul}{#1}}%
+  \foreach \u in {\otPlanP{de}{#1},...,\otPlanP{a}{#1}}{\otSomUnite{\u}}%
+  \otSomLigne{\otTuile[5mm]{coche}{\otPlanP{coul}{#1}}}%
+    {{\otSemi\fontsize{10}{12.4}\selectfont Bilan #1}\hspace{2.2mm}%
+     {\otRegular\fontsize{9}{12.4}\selectfont\color{otMuted}révisions et test des unités \otPlanP{de}{#1} à \otPlanP{a}{#1}}}{bilan-#1}}
+% Tableau des contenus d'une partie
+\newcommand{\otPrgPartie}[1]{%
+  \otPrgPrepare{#1}%
+  \par\addvspace{4mm}\needspace{6\baselineskip}\noindent
+  \begin{tcolorbox}[enhanced,colback=\otPlanP{coul}{#1},colframe=\otPlanP{coul}{#1},arc=1.4mm,left=3mm,right=3mm,
+    top=1.8mm,bottom=1.8mm,boxsep=0pt,before skip=0pt,after skip=1.5mm,coltext=white]
+  {\otSemi\fontsize{7.4}{9}\selectfont\otCaps[12]{Partie #1}}\hspace{2.5mm}{\otSemi\fontsize{10.5}{12}\selectfont\otPlanP{titre}{#1}}%
+  \hspace{2mm}{\otLight\fontsize{9.5}{12}\selectfont\enb{\otPlanP{en}{#1}}}
+  \end{tcolorbox}
+  \noindent{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+  \begin{tabularx}{\linewidth}{@{}>{\RaggedRight\arraybackslash}p{30mm}*{5}{>{\RaggedRight\arraybackslash\fontsize{8.3}{10.2}\selectfont}X}@{}}
+  \otTH{Unité} & \otTH{Communication} & \otTH{Grammaire} & \otTH{Vocabulaire} & \otTH{Prononciation} & \otTH{Culture}\\\midrule
+  \otPrgCorps
+  \end{tabularx}}\par}
+% Corps du tableau construit avant la tabularx (pas de conditionnelle autour des &)
+\newcommand{\otPrgCorps}{}
+\newcommand{\otPrgPrepare}[1]{%
+  \gdef\otPrgCorps{}%
+  \foreach \u in {\otPlanP{de}{#1},...,\otPlanP{a}{#1}}{%
+    \ifnum\u=\otPlanP{a}{#1}\relax
+      \xdef\otPrgCorps{\unexpanded\expandafter{\otPrgCorps}\noexpand\otPrgLigne{\u}\noexpand\\\noexpand\bottomrule}%
+    \else
+      \xdef\otPrgCorps{\unexpanded\expandafter{\otPrgCorps}\noexpand\otPrgLigne{\u}\noexpand\\\noexpand\midrule}%
+    \fi}}
+\newcommand{\otPrgLigne}[1]{%
+  {\otBold\fontsize{11}{12}\selectfont\color{\otPlanP{coul}{\otPartieDe{#1}}}#1}\enspace
+  {\otSemi\fontsize{8.6}{10.4}\selectfont\enb{\otPlanU{titre}{#1}}}\par
+  {\fontsize{8.2}{10}\selectfont\color{otMuted}\otPlanU{sous}{#1}}
+  & \otPlanU{com}{#1} & \otPlanU{gram}{#1} & \otPlanU{voc}{#1} & \otPlanU{pron}{#1} & \otPlanU{cult}{#1}}
+
+%% ---------------------------------------------------------------------
+%%  Lexique (écrit par outils/lexique.py)
+%% ---------------------------------------------------------------------
+\NewDocumentEnvironment{lexique}{}{%
+  \noindent{\fontsize{10}{13}\selectfont\color{otMuted}Le chiffre à droite indique l'unité où le mot
+  apparaît pour la première fois. Les expressions sont classées à leur premier mot.\par}\vspace{3mm}
+  \begin{multicols}{2}\raggedcolumns\setlength{\columnseprule}{0.4pt}\def\columnseprulecolor{\color{otRule}}}
+  {\end{multicols}}
+\newcommand{\lexlettre}[1]{\par\addvspace{3mm}\needspace{4\baselineskip}\noindent
+  {\otBold\fontsize{14}{16}\selectfont\color{otNavy}#1}\hspace{2mm}{\color{otRule}\leaders\hrule height 0.5pt\hfill\kern0pt}\par\vspace{1.4mm}}
+\newcommand{\lexmot}[4]{\par\noindent\hangindent=4mm
+  \enb{\textbf{#1}}\enspace{\fontsize{9.6}{12}\selectfont\ipa{#2}}\enspace{\fontsize{10}{12.4}\selectfont #3}%
+  \hfill{\otSemi\fontsize{7}{9}\selectfont\color{otNavy}#4}\par\vspace{0.9mm}}
+
+% Bulle de dialogue (illustrations) : \otBulle{position}{ancre}{texte}{couleur fond}{couleur texte}{pointe}
+\newcommand{\otBulle}[6]{%
+  \node[rectangle callout,fill=#4,text=#5,rounded corners=2.2mm,inner xsep=3.2mm,inner ysep=2.2mm,
+    callout absolute pointer={#6},font=\otSemi\fontsize{11}{13}\selectfont,anchor=#2] at #1 {\enb{#3}};}
+
+\endinput

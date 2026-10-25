@@ -1,0 +1,113 @@
+% !TEX root = ../main.tex
+%% Corrigé du devoir maison n° 1 — vérifié par verifications/eval_dm.py.
+
+\corrigeSujetEval{DM1}{Devoir maison \numero1}
+\enParties
+
+\begin{corrigeEval}[La preuve de Cauchy]{}{}
+\begin{questions}
+  \item Pour $x_1,x_2>0$ :
+    \[\frac{x_1+x_2}{2}-\sqrt{x_1x_2}=\frac{\bigl(\sqrt{x_1}-\sqrt{x_2}\bigr)^{2}}{2}\geqslant0,\]
+    d'où $\res{\sqrt{x_1x_2}\leqslant\dfrac{x_1+x_2}{2}}$, avec égalité si et
+    seulement si $\sqrt{x_1}=\sqrt{x_2}$, c'est-à-dire $x_1=x_2$.
+  \item $G_{2n}^{2n}=(x_1\cdots x_n)(x_{n+1}\cdots x_{2n})=G'^{\,n}G''^{\,n}$,
+    donc $G_{2n}=\sqrt{G'G''}$. On enchaîne alors $\mathcal{P}(2)$ (appliquée
+    à $G'$ et $G''$) et $\mathcal{P}(n)$ (appliquée à chaque moitié) :
+    \[G_{2n}=\sqrt{G'G''}\leqslant\frac{G'+G''}{2}\leqslant\frac{A'+A''}{2}=A_{2n}.\]
+    C'est $\mathcal{P}(2n)$. Comme $\mathcal{P}(1)$ est évidente
+    ($G_1=A_1=x_1$), une récurrence sur $k$ donne
+    \res{\mathcal{P}(2^{k})\ \text{pour tout }k\in\N}.
+  \item La moyenne arithmétique des $n$ réels $x_1,\dots,x_{n-1},A$ vaut
+    $\dfrac{(n-1)A+A}{n}=A$. La propriété $\mathcal{P}(n)$ donne donc
+    \[x_1\cdots x_{n-1}\cdot A\leqslant A^{n},\qquad\text{soit}\qquad
+      x_1\cdots x_{n-1}\leqslant A^{n-1},\]
+    c'est-à-dire $G_{n-1}\leqslant A$ : \res{\mathcal{P}(n-1)\text{ est vraie}}.
+  \item Soit $n\geqslant1$. Comme $2^{n}\geqslant n$, la propriété
+    $\mathcal{P}(2^{n})$ est vraie (question 2), et la question 3,
+    appliquée successivement à $2^{n},2^{n}-1,\dots,n+1$, fournit
+    $\mathcal{P}(2^{n}-1),\dots,\mathcal{P}(n)$ : \res{\mathcal{P}(n)\text{
+    est vraie pour tout }n\geqslant1}.
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[La preuve par la tangente]{}{}
+\begin{questions}[start=5]
+  \item Soit $g(t)=t-1-\ln t$ sur $\intOO0{+\infty}$ :
+    $g'(t)=1-\frac1t=\frac{t-1}{t}$. La fonction $g$ décroît sur
+    $\intOF01$, croît sur $\intFO1{+\infty}$, et son minimum vaut $g(1)=0$ ;
+    elle ne s'annule qu'en $1$ (stricte monotonie de part et d'autre). Donc
+    $\res{\ln t\leqslant t-1}$, avec égalité si et seulement si $t=1$.
+    Graphiquement : la droite $y=t-1$ est la \emph{tangente} en $1$ à la
+    courbe de $\ln$, fonction concave, dont la courbe est située sous ses
+    tangentes.
+  \item Les $t_i=x_i/A_n$ sont strictement positifs, et
+    $\sum_i(t_i-1)=\frac{nA_n}{A_n}-n=0$. En sommant :
+    \[\ln\frac{x_1\cdots x_n}{A_n^{\,n}}=\sum_{i=1}^{n}\ln t_i\leqslant\sum_{i=1}^{n}(t_i-1)=0,\]
+    donc $x_1\cdots x_n\leqslant A_n^{\,n}$ et $\res{G_n\leqslant A_n}$. Il y a
+    égalité si et seulement si $\sum_i g(t_i)=0$ ; les $g(t_i)$ étant positifs,
+    cela équivaut à $g(t_i)=0$ pour tout $i$, soit $t_i=1$, c'est-à-dire
+    \res{x_1=\dots=x_n=A_n}.
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=1.15cm,y=1.15cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-0.2,0) -- (4.4,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-2.3) -- (0,2.4);
+  \draw[otGreenDark,line width=1pt] (-0.15,-1.15) -- (3.4,2.4);
+  \draw[otNavy,line width=1.2pt] plot[domain=0.105:4.2,samples=120] ({\x},{ln(\x)});
+  \fill[otInk] (1,0) circle (1.6pt);
+  \node[font=\scriptsize,anchor=north west] at (1,-0.02) {$1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south east] at (2.8,1.85) {$y=t-1$};
+  \node[font=\scriptsize,text=otNavy,anchor=north west] at (3.2,1.12) {$y=\ln t$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{La courbe de la fonction concave $\ln$ est sous sa tangente en $1$ ;
+elles ne se touchent qu'au point $(1,0)$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Applications]{}{}
+\begin{questions}[start=7]
+  \item L'inégalité appliquée aux réels $\frac1{x_1},\dots,\frac1{x_n}$
+    donne
+    \[\frac{1}{G_n}=\Bigl(\frac{1}{x_1}\cdots\frac{1}{x_n}\Bigr)^{1/n}
+      \leqslant\frac1n\Bigl(\frac{1}{x_1}+\dots+\frac{1}{x_n}\Bigr)=\frac{1}{H_n},\]
+    d'où $\res{H_n\leqslant G_n\leqslant A_n}$.
+  \item Les $n+1$ réels considérés ont pour produit $u_n$ et pour moyenne
+    arithmétique $\dfrac{n\bigl(1+\frac1n\bigr)+1}{n+1}=\dfrac{n+2}{n+1}=1+\dfrac{1}{n+1}$.
+    Ils ne sont pas tous égaux ($1+\frac1n\neq1$), donc l'inégalité est
+    stricte :
+    \[u_n^{1/(n+1)}<1+\frac{1}{n+1},\qquad\text{soit}\qquad
+      u_n<\Bigl(1+\frac{1}{n+1}\Bigr)^{n+1}=u_{n+1}.\]
+    La suite $(u_n)$ est \res{\text{strictement croissante}} ; on sait par
+    ailleurs qu'elle converge vers $\mathrm{e}$ (figure).
+  \item Appliquée aux entiers $1,2,\dots,n$ :
+    \[(n!)^{1/n}\leqslant\frac{1+2+\dots+n}{n}=\frac{n+1}{2},\qquad\text{d'où}\qquad
+      \res{n!\leqslant\Bigl(\frac{n+1}{2}\Bigr)^{n}}.\]
+    Il y a égalité si et seulement si $1=2=\dots=n$, c'est-à-dire $n=1$.
+  \item Pour $x>0$, l'inégalité appliquée aux trois réels
+    $\frac x2,\frac x2,\frac{4}{x^{2}}$, de produit $1$, donne
+    \[x+\frac{4}{x^{2}}=\frac x2+\frac x2+\frac{4}{x^{2}}\geqslant3\Bigl(\frac x2\cdot\frac x2\cdot\frac{4}{x^{2}}\Bigr)^{1/3}=3,\]
+    avec égalité si et seulement si $\frac x2=\frac{4}{x^{2}}$, soit
+    $x^{3}=8$ : le minimum vaut \res{3}, atteint en \res{x=2} seulement.
+  \item Le volume vaut $xyz=G_3^{\,3}\leqslant A_3^{\,3}=1$, avec égalité si
+    et seulement si $x=y=z=1$ : seul le \res{\text{cube d'arête }1} a le
+    volume maximal, égal à $1$.
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=0.95cm,y=2.4cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,1.8) -- (11.2,1.8);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,1.8) -- (0,2.88);
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 3pt off 2pt] (0,2.71828) -- (11,2.71828);
+  \node[font=\scriptsize,text=otGreenDark,anchor=south east] at (11,2.72) {$\mathrm{e}\approx2{,}718$};
+  \foreach \n in {1,...,10}{
+    \fill[otNavy] (\n,{(1+1/\n)^\n}) circle (1.9pt);
+    \node[font=\scriptsize,text=otMuted,anchor=north] at (\n,1.79) {$\n$};}
+  \foreach \yy in {2,2.5}{
+    \draw[otMuted,line width=0.4pt] (-0.08,\yy) -- (0.08,\yy);
+    \node[font=\scriptsize,anchor=east] at (-0.08,\yy) {$\yy$};}
+  \node[font=\scriptsize,text=otNavy,anchor=south] at (1,2.02) {$u_1=2$};
+  \node[font=\scriptsize,text=otNavy,anchor=north west] at (2,2.23) {$u_2=2{,}25$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Les dix premiers termes de $u_n=\bigl(1+\frac1n\bigr)^{n}$ : la suite
+croît strictement vers $\mathrm{e}$.}
+\end{minipage}\end{center}
+\end{corrigeEval}

@@ -1,0 +1,76 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 17 — Le collectionneur de vignettes
+%% Résultats vérifiés par verifications/defis_16_20.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Le collectionneur de vignettes}{2 h}
+Un album compte $n\geqslant2$ vignettes différentes. Chaque achat fournit
+une vignette, uniformément au hasard et indépendamment des autres. Après
+$m$ achats, on modélise l'expérience par $\Omega=\intFF1n^{m}$ muni de la
+probabilité uniforme. Pour $i\in\intFF1n$, on note $A_i$ l'événement « la
+vignette $i$ n'a pas été obtenue », $Y_m=\sum_{i=1}^{n}\ind{A_i}$ le nombre
+de vignettes manquantes, et $X_m=n-Y_m$ le nombre de vignettes distinctes
+obtenues. Combien d'achats faut-il pour compléter l'album ?
+
+\partieExo{A}{Le nombre moyen de vignettes obtenues}
+\begin{questions}
+  \item Calculer $P(A_i)$, puis montrer que
+    $\mathrm{E}(X_m)=n\Bigl(1-\bigl(1-\frac1n\bigr)^{m}\Bigr)$.
+  \item Montrer que $\mathrm{E}(Y_m)\leqslant n\,\mathrm{e}^{-m/n}$. Pour
+    $n=100$, combien d'achats faut-il pour obtenir \emph{en moyenne} $90$
+    vignettes différentes ?
+\end{questions}
+
+\partieExo{B}{Le seuil $n\ln n$}
+\begin{questions}[resume]
+  \item Montrer que $P(\text{album incomplet})=P(Y_m\geqslant1)\leqslant\mathrm{E}(Y_m)$.
+    En déduire que si $m\geqslant n\ln n+cn$ avec $c>0$, l'album est
+    complet avec une probabilité au moins $1-\mathrm{e}^{-c}$. Application
+    numérique : $n=100$, $c=3$.
+  \item Calculer $P(A_i\cap A_j)$ pour $i\neq j$, puis $\mathrm{V}(Y_m)$ ;
+    montrer que $\mathrm{V}(Y_m)\leqslant\mathrm{E}(Y_m)$.
+  \item À l'aide de Bienaymé-Tchebychev, montrer que
+    $P(Y_m=0)\leqslant\dfrac{1}{\mathrm{E}(Y_m)}$. En utilisant
+    $\ln(1-x)\geqslant-\frac{x}{1-x}$ sur $\intFO01$, en déduire que si
+    $m\leqslant(n-1)(\ln n-c)$, l'album est complet avec une probabilité au
+    plus $\mathrm{e}^{-c}$. Conclure : on assiste à un \emph{seuil} brutal
+    autour de $n\ln n$ achats.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[x=0.058cm,y=3.2cm,line cap=round]
+  \draw[otRule,line width=0.3pt] (0,0.5) -- (162,0.5) (0,1) -- (162,1);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (168,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (0,1.12);
+  \draw[otGreenDark,line width=0.7pt,dash pattern=on 2.5pt off 1.5pt] (59.9,0) -- (59.9,1.05);
+  \draw[otNavy!60,line width=0.7pt,dash pattern=on 2.5pt off 1.5pt] (119.9,0) -- (119.9,1.05);
+  \draw[otNavy,line width=1.3pt] (20,0.0000) -- (25,0.0000) -- (30,0.0013) -- (35,0.0098) --
+    (40,0.0359) -- (45,0.0875) -- (50,0.1642) -- (55,0.2585) -- (60,0.3606) -- (65,0.4615) --
+    (70,0.5551) -- (75,0.6379) -- (80,0.7087) -- (85,0.7678) -- (90,0.8162) -- (95,0.8553) --
+    (100,0.8865) -- (105,0.9113) -- (110,0.9308) -- (115,0.9462) -- (120,0.9582) --
+    (125,0.9675) -- (130,0.9748) -- (135,0.9805) -- (140,0.9849) -- (145,0.9883) --
+    (150,0.9909) -- (155,0.9930) -- (160,0.9946);
+  \foreach \v in {0,40,80,120,160}{\node[font=\tiny,text=otMuted,below] at (\v,0) {$\v$};}
+  \node[font=\tiny,text=otMuted,anchor=east] at (0,1) {$1$};
+  \node[font=\tiny,text=otMuted,anchor=east] at (0,0.5) {$\tfrac12$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south] at (59.9,1.05) {$n\ln n$};
+  \node[font=\scriptsize,text=otNavy!70,anchor=south] at (119.9,1.05) {$n\ln n+3n$};
+  \node[font=\scriptsize,text=otMuted,anchor=west] at (168,0) {$m$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Pour $n=20$ vignettes : probabilité exacte d'avoir complété
+l'album après $m$ achats (question 6). Elle passe de presque $0$ à presque
+$1$ autour de $n\ln n\approx60$.}
+\end{center}
+
+\partieExo{C}{Formule exacte pour un petit album}
+\begin{questions}[resume]
+  \item À l'aide du défi du chapitre 16, montrer que
+    $P(\text{album complet après }m\text{ achats})=\dfrac{n!\,S(m,n)}{n^{m}}$.
+  \item Le cas du dé ($n=6$) : sachant que $S(12,6)=1\,323\,652$ et
+    $S(13,6)=9\,321\,312$, déterminer le nombre minimal de lancers pour que
+    la probabilité d'avoir obtenu les six faces dépasse $\frac12$. Comparer
+    avec $n\ln n$.
+\end{questions}
+\end{defi}

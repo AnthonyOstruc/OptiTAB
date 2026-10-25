@@ -1,0 +1,19 @@
+% Distances d'arrêt à 50, 90 et 130 km/h, sur route sèche et mouillée (corrigé du défi D13)
+\begin{tikzpicture}
+\begin{axis}[xbar stacked,width=118mm,height=58mm,bar width=4.2mm,xmin=0,xmax=180,
+  ytick={1,2,3,4,5,6},yticklabels={{50 km/h, sec},{50 km/h, mouillé},{90 km/h, sec},{90 km/h, mouillé},{130 km/h, sec},{130 km/h, mouillé}},
+  y dir=reverse,ymin=0.4,ymax=6.6,
+  yticklabel style={font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  xticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  xlabel={distance (m)},label style={font=\small,text=otInk},
+  legend style={at={(0.98,0.96)},anchor=north east,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}},
+  clip=false]
+\addplot[fill=otNavy!35,draw=none] coordinates {(13.9,1) (13.9,2) (25.0,3) (25.0,4) (36.1,5) (36.1,6)};
+\addlegendentry{réaction (\qty{1,0}{s})}
+\addplot[fill=otOrange!70,draw=none] coordinates {(12.4,1) (19.7,2) (39.9,3) (63.8,4) (83.3,5) (133.1,6)};
+\addlegendentry{freinage}
+\foreach \v/\y in {26/1,34/2,65/3,89/4,119/5,169/6}{\edef\temp{\noexpand\node[pcLegende,anchor=west] at (axis cs:\v,\y) {\qty{\v}{m}};}\temp}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{À \qty{130}{km/h} sur route mouillée, il faut près de \qty{170}{m} pour s'arrêter : la distance de freinage croît bien plus vite que la vitesse.}

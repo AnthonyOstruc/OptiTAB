@@ -1,0 +1,21 @@
+% Consommation de carburant pour 100 km selon la vitesse : part du roulement et part de l'air (corrigé du défi D15)
+\begin{tikzpicture}
+\begin{axis}[ybar stacked,width=96mm,height=58mm,bar width=12mm,ymin=0,ymax=7.6,
+  xtick={1,2,3},xticklabels={\qty{90}{km/h},\qty{110}{km/h},\qty{130}{km/h}},xmin=0.4,xmax=3.6,
+  ytick={0,1,...,7},
+  xticklabel style={font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  yticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  ylabel={carburant (L/100 km)},label style={font=\small,text=otInk},
+  legend style={at={(0.03,0.97)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}},
+  clip=false]
+\addplot[fill=otMuted!45,draw=none] coordinates {(1,1.43) (2,1.43) (3,1.43)};
+\addlegendentry{résistance au roulement}
+\addplot[fill=otNavy!55,draw=none] coordinates {(1,2.32) (2,3.47) (3,4.84)};
+\addlegendentry{frottements de l'air}
+\node[pcLegende,anchor=south] at (axis cs:1,3.75) {\qty{3,75}{L}};
+\node[pcLegende,anchor=south] at (axis cs:2,4.90) {\qty{4,90}{L}};
+\node[pcLegende,anchor=south] at (axis cs:3,6.27) {\qty{6,27}{L}};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La part due à l'air, proportionnelle au carré de la vitesse, devient prépondérante sur autoroute.}

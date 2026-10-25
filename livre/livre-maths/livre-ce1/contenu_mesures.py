@@ -1,0 +1,86 @@
+from modele import C,E
+
+C('Longueurs : cm, m et km','Mesures','Toute l’année',
+ 'Je mesure, je compare et je choisis une unité.','Règle, mètre ruban et ficelle.',
+ 'Mesure une table avec un mètre ruban. Repère un mètre entier, puis les centimètres qui restent. Compare avec une autre table.',
+ ['1 m = 100 cm. Un mètre et 35 centimètres font 135 cm.','1 km = 1 000 m. Le kilomètre sert à décrire une grande distance.','Pour mesurer, j’aligne le zéro avec une extrémité et je lis l’autre.'],
+ 'Un segment commence à 2 et finit à 9 sur la règle : il mesure 9 - 2 = 7 cm.',('ruler',[2,9]),
+ 'Une bande mesure 1 m et 24 cm. Exprime sa longueur en cm.', '100 + 24 = 124 cm.',[
+ E('Lis la longueur du segment sur la règle dessinée.','8 - 1 = 7 cm.',('ruler',[1,8]),'8-1==7'),
+ E('Complète : 1 m = … cm ; 1 km = … m.','100 cm ; 1 000 m.'),
+ E('Avec ta règle, trace un segment de 8 cm sur ta feuille.','Les extrémités sont séparées de 8 cm. Contrôler avec le zéro de la règle.'),
+ E('Exprime en cm : 2 m ; 1 m et 47 cm ; 3 m et 5 cm.','200 cm ; 147 cm ; 305 cm.',None,'2*100==200 and 100+47==147 and 300+5==305'),
+ E('Compare : 1 m et 8 cm ou 98 cm.','1 m et 8 cm = 108 cm, donc c’est plus long que 98 cm.'),
+ E('Un segment est plus long que 6 cm et plus court que 7 cm. Peut-on dire qu’il mesure exactement 6 cm ?','Non. Sa longueur est comprise entre 6 et 7 cm ; on ne l’arrondit pas sans le préciser.'),
+ E('Une bande mesure 136 cm. On coupe 48 cm. Quelle longueur reste ?','136 - 48 = 88 cm.',None,'136-48==88'),
+ E('L’école est à 450 m de la mairie et la mairie à 350 m de la piscine, sur le trajet choisi. Quelle distance parcourt-on en passant par la mairie ?','450 + 350 = 800 m.',None,'450+350==800'),
+ E('Choisis une unité adaptée : largeur d’un livre ; hauteur d’une porte ; distance entre deux villes.','cm ; m ; km. Estimer ensuite avec un objet ou une distance de référence.')],
+ 'Mesurer des objets réels et faire expliquer chaque changement d’unité.', 'Utiliser cm, m et km au CE1, sans tableau de conversion ni écriture décimale des longueurs.')
+
+C('Masses : grammes et kilogrammes','Mesures','Toute l’année',
+ 'Je compare des masses et je lis une pesée.','Balance, masses marquées et objets du quotidien.',
+ 'Soupèse des objets de même volume, puis pèse-les. Cherche un objet proche de 100 g et un autre proche de 1 kg.',
+ ['La balance permet de comparer ou de mesurer une masse.','1 kg = 1 000 g. Le gramme sert souvent pour les petits objets.','Je compare dans la même unité ou avec une référence connue.'],
+ 'Une boîte équilibre 200 g, 100 g et 50 g : sa masse est 350 g.',('massweights',[200,100,50]),
+ 'Un objet pèse 600 g. Est-il plus léger ou plus lourd que 1 kg ?', 'Plus léger : 600 g < 1 000 g.',[
+ E('Quelle masse est indiquée par ces masses marquées ?','500 + 200 + 20 = 720 g.',('massweights',[500,200,20]),'500+200+20==720'),
+ E('Complète : 1 kg = … g.','1 000 g.'),
+ E('Range de la plus légère à la plus lourde : 750 g ; 1 kg ; 80 g ; 500 g.','80 g ; 500 g ; 750 g ; 1 kg.'),
+ E('Choisis : une gomme a-t-elle plutôt une masse de 20 g ou de 20 kg ?','20 g. Vérifier éventuellement par une pesée.'),
+ E('Une boîte pèse 400 g. On ajoute 250 g. Quelle est la masse totale ?','400 + 250 = 650 g.',None,'400+250==650'),
+ E('Une masse de 1 kg est composée de 800 g et de combien de grammes ?','200 g : 800 + 200 = 1 000.',None,'1000-800==200'),
+ E('Un sachet pèse 850 g. On en retire 175 g. Quelle masse reste ?','850 - 175 = 675 g.',None,'850-175==675'),
+ E('Un gros carton vide et une petite boîte pleine de cailloux sont posés devant toi. Peut-on conclure à leur masse en regardant ?','Non. Il faut soupeser ou utiliser la balance ; le volume n’indique pas la masse.'),
+ E('Pèse trois objets, note leur masse et range-les. Explique comment vérifier.','Réponses selon les objets. Utiliser la même unité et contrôler les pesées.')],
+ 'Distinguer masse et volume avec des objets de même taille et de masses différentes.', 'Ne pas introduire l’écriture à virgule des masses ; garder g et kg et leurs relations concrètes.')
+
+C('Euros, centimes et prix à virgule','Monnaie','Centimes au plus tard P2 ; virgule dès P3',
+ 'Je compose un prix et je rends la monnaie.','Pièces et billets de jeu.',
+ 'Compose 1 € avec des centimes de plusieurs façons. Prépare ensuite 2 € et 5 centimes, puis 2 € et 50 centimes. Compare les deux sommes.',
+ ['100 centimes valent 1 €.','2 € et 5 centimes s’écrivent 2,05 € ; 2 € et 50 centimes s’écrivent 2,50 €.','Pour calculer, je peux convertir en centimes ou séparer euros et centimes.'],
+ 'Un objet coûte 2,35 €. Je donne 5 €. 500 - 235 = 265 centimes. On rend 2,65 €.',('centcoins',[200,20,10,5]),
+ 'Écris 3 € et 7 centimes avec une virgule.', '3,07 €, car 7 centimes s’écrivent 07 après la virgule.',[
+ E('Écris la valeur de la somme en euros et centimes, puis avec une virgule.','1 € et 65 centimes ; 1,65 €.',('centcoins',[100,50,10,5]),'100+50+10+5==165'),
+ E('Exprime en centimes : 1 € ; 2,40 € ; 0,85 €.','100 ; 240 ; 85 centimes.'),
+ E('Écris avec une virgule : 4 € et 5 centimes ; 4 € et 50 centimes ; 9 €.','4,05 € ; 4,50 € ; 9,00 €.'),
+ E('Range les prix : 2,50 € ; 2,05 € ; 1,90 € ; 2 €.','1,90 € < 2 € < 2,05 € < 2,50 €.'),
+ E('Avec des pièces de 50, 20 et 10 centimes, compose 80 centimes de deux façons.','50 + 20 + 10 ; ou 20 + 20 + 20 + 20 centimes.'),
+ E('Un cahier coûte 1,25 € et un crayon 0,75 €. Combien faut-il payer ?','125 + 75 = 200 centimes, soit 2 €.',None,'125+75==200'),
+ E('Tu paies un objet à 3,80 € avec 5 €. Quelle monnaie reçoit-on ?','500 - 380 = 120 centimes, soit 1,20 €.',None,'500-380==120'),
+ E('Un livre coûte 2,45 € et un cahier 1,35 €. Tu donnes 5 €. Quelle monnaie reçoit-on ?','245 + 135 = 380 centimes ; 500 - 380 = 120 centimes, soit 1,20 €.',None,'245+135==380 and 500-380==120'),
+ E('Lina dit que 12 € valent moins que 60 centimes parce que 12 < 60. Explique.','Elle compare des unités différentes. 12 € représentent beaucoup plus que 60 centimes ; 60 centimes ne font même pas 1 €.')],
+ 'Faire de vrais échanges avec la monnaie de jeu, puis anticiper le résultat.', 'L’écriture à virgule est travaillée pour les prix, sans enseigner les dixièmes et centièmes comme unités abstraites.')
+
+C('Lire les heures et les quarts d’heure','Temps','P2 puis P3',
+ 'Je lis les heures, les demi-heures et les quarts d’heure.','Horloge à aiguilles manipulables.',
+ 'Fais parcourir un tour à la grande aiguille. Partage ce tour en deux, puis en quatre. Observe que la petite aiguille avance aussi.',
+ ['Un tour de la grande aiguille dure 60 minutes. Un quart d’heure dure 15 minutes.','À 8 h 30, la petite aiguille est à mi-chemin entre 8 et 9.','Pour l’après-midi et le soir, j’ajoute 12 aux heures de 1 à 11. 12 h correspond à midi.'],
+ 'À 8 h 15, la grande aiguille est sur 3 et la petite est un peu après 8. Je dis « huit heures et quart ».',('timeclocks',[[8,15],[8,30],[8,45]]),
+ 'Place 14 h 30 sur l’horloge.', 'Grande aiguille sur 6 ; petite à mi-chemin entre 2 et 3.',[
+ E('Lis les deux horloges pour le matin.','9 h 15 ; 11 h 30.',('timeclocks',[[9,15],[11,30]])),
+ E('Dessine les aiguilles pour 6 h 45.','Grande aiguille sur 9 ; petite entre 6 et 7, proche de 7.',('blankclocks',1)),
+ E('Le cadran montre 4 heures de l’après-midi. Écris cette heure sur 24 heures.','16 h.'),
+ E('Lis ces heures de l’après-midi.','14 h 15 ; 17 h 45.',('timeclocks',[[14,15],[17,45]])),
+ E('Complète : une demi-heure = … min ; un quart d’heure = … min.','30 min ; 15 min.'),
+ E('Dessine les aiguilles pour 20 h 30.','Grande sur 6 ; petite entre 8 et 9.',('blankclocks',1)),
+ E('Il est 10 h 45. Peut-on dire « onze heures moins le quart » ?','Oui : il manque un quart d’heure pour atteindre 11 h.'),
+ E('À 7 h 30, Noé laisse la petite aiguille exactement sur 7. Que doit-il corriger ?','La petite aiguille a avancé : elle doit être à mi-chemin entre 7 et 8.'),
+ E('Le film commence à 18 h 15. Dis cette heure en précisant le moment de la journée.','Six heures et quart du soir, ou 18 heures 15 minutes.')],
+ 'Faire tourner les aiguilles ensemble et distinguer heure du matin et heure de l’après-midi.', 'Les lectures demandées restent aux heures entières, demi-heures et quarts d’heure ; pas de lecture générale à la minute.')
+
+C('Calculer des durées','Temps','P3 puis P4',
+ 'Je distingue une heure de rendez-vous et une durée.','Horloge et frise horaire.',
+ 'Sur l’horloge, avance de 8 h 30 à 9 h, puis à 9 h 15. Compte le temps écoulé pour chaque partie.',
+ ['Une durée indique le temps écoulé entre deux instants.','1 h = 60 min ; une demi-heure = 30 min ; un quart d’heure = 15 min.','Je peux passer par une heure entière pour calculer.'],
+ 'De 8 h 30 à 9 h 15 : 30 min puis 15 min. La durée est 45 min.',('timeline',[[8,30],[9,0],[9,15]]),
+ 'Quelle durée sépare 14 h 15 de 15 h ?', '45 min : trois quarts d’heure.',[
+ E('Calcule la durée de 9 h 30 à 10 h 15 avec la frise.','30 min + 15 min = 45 min.',('timeline',[[9,30],[10,0],[10,15]]),'30+15==45'),
+ E('Exprime en minutes : 1 h ; 2 h ; 1 h 30 min.','60 min ; 120 min ; 90 min.',None,'2*60==120 and 60+30==90'),
+ E('Compare 2 h et 130 min.','2 h = 120 min. Donc 130 min est plus long de 10 min.'),
+ E('Une activité commence à 15 h 45 et finit à 16 h 15. Quelle est sa durée ?','15 min puis 15 min : 30 min.',None,'15+15==30'),
+ E('Un jeu dure un quart d’heure et un autre une demi-heure. Quelle durée au total ?','15 + 30 = 45 min.',None,'15+30==45'),
+ E('Une activité commence à 10 h 30 et dure une demi-heure. À quelle heure finit-elle ?','11 h.'),
+ E('Lina lit de 14 h 15 à 15 h, puis dessine pendant 30 min. Combien de temps a-t-elle consacré aux deux activités ?','45 + 30 = 75 min, soit 1 h 15 min.',None,'45+30==75'),
+ E('Un film finit à 17 h 30 et dure 1 h. À quelle heure a-t-il commencé ?','16 h 30.'),
+ E('Noé calcule 9 h 15 - 8 h 30 = 85 minutes en soustrayant les nombres 915 et 830. Explique son erreur.','Les heures ne sont pas des groupes de 100 minutes. De 8 h 30 à 9 h : 30 min ; puis 15 min. La durée est 45 min.')],
+ 'Dessiner une frise avec des instants et écrire la durée sur les flèches.', 'Les durées se situent dans une même journée et utilisent des instants aux heures, demi-heures et quarts d’heure.')

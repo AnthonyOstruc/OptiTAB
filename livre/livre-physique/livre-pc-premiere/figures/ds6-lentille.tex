@@ -1,0 +1,22 @@
+% Lentille convergente de distance focale 5 cm et objet de 2 cm placé à 15 cm, à l'échelle 1/2 ; au corrigé, construction de l'image (devoir n° 6, exercice 2)
+% f' = 5 cm ; OA = -15 cm ; AB = 2 cm ; OA' = 7,5 cm ; A'B' = -1 cm (coordonnées en cm réels, échelle 1/2)
+\begin{tikzpicture}[x=5mm,y=5mm,
+  rayon/.style={otOrange!85!black,line width=0.8pt,postaction={decorate},
+    decoration={markings,mark=at position 0.3 with {\arrow{Stealth[length=1.6mm]}}}}]
+\draw[otInk!60,line width=0.5pt] (-17,0) -- (11,0);
+\draw[otNavy,line width=1.2pt,{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]}] (0,-3.2) -- (0,3.2);
+\foreach \x/\n in {-5/F,5/F'}{\draw[otInk,line width=0.6pt] (\x,-0.2) -- (\x,0.2); \node[pcLegende,anchor=north] at (\x,-0.15) {$\n$};}
+\node[pcLegende,anchor=north east] at (0,-0.05) {O};
+\draw[otNavy,line width=1.2pt,-{Stealth[length=2.2mm]}] (-15,0) -- (-15,2) node[pcLegende,anchor=south,text=otNavy] {B};
+\node[pcLegende,anchor=north] at (-15,-0.1) {A};
+\foreach \x in {-15,-10,...,10}{\draw[otMuted,line width=0.3pt] (\x,-3.6) -- (\x,-3.4);}
+\draw[otMuted,line width=0.3pt] (-15,-3.5) -- (10,-3.5);
+\node[pcLegende,anchor=north,text=otMuted] at (-12.5,-3.55) {\qty{5}{cm}};
+\solution{
+  \draw[rayon] (-15,2) -- (0,2) -- (10,-2);
+  \draw[rayon] (-15,2) -- (10,-1.333);
+  \draw[rayon] (-15,2) -- (0,-1) -- (10,-1);
+  \draw[otGreenDark,line width=1.2pt,-{Stealth[length=2.2mm]}] (7.5,0) -- (7.5,-1) node[pcLegende,anchor=north west,text=otGreenDark] {B'};
+  \node[pcLegende,anchor=south,text=otGreenDark] at (7.5,0.05) {A'};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Schéma à l'échelle 1/2 : lentille de distance focale \qty{5}{cm} et objet AB de \qty{2}{cm}.}\solution{Image réelle et renversée : $\overline{\mathrm{OA'}}=\qty{7,5}{cm}$ et $\overline{\mathrm{A'B'}}=\qty{-1,0}{cm}$.}}

@@ -1,0 +1,454 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[mesure]{27}{Mesures et incertitudes}{Partie 5 · Outils transversaux}
+{Variabilité\enspace·\enspace Histogramme\enspace·\enspace Incertitude-type\enspace·\enspace Composition\enspace·\enspace Monte-Carlo\enspace·\enspace Écart normalisé}
+\objectif{Exploiter une série de mesures indépendantes : histogramme, moyenne et écart-type.}
+\objectif{Évaluer une incertitude-type par une approche statistique (type A) ou par une autre approche (type B).}
+\objectif{Évaluer une incertitude-type composée à l'aide d'une expression fournie, ou par une simulation de
+Monte-Carlo en Python.}
+\objectif{Écrire un résultat avec un nombre adapté de chiffres significatifs.}
+\objectif{Comparer une valeur mesurée à une valeur de référence à l'aide de l'écart normalisé.}
+\prerequis{Variabilité de la mesure, moyenne et incertitude-type (classes de seconde et de première).}
+\prerequis{Moyenne et écart-type d'une série statistique (mathématiques).}
+\prerequis{Listes et boucles en Python.}
+\end{ouverture}
+\essentiel
+\essSection{1}{La variabilité de la mesure}
+\begin{definition}[Mesurage et variabilité]
+Mesurer une grandeur, le \textbf{mesurande}, c'est lui attribuer une valeur expérimentale. Répétée dans des conditions
+identiques, une mesure ne donne pas toujours la même valeur : l'expérimentateur, l'instrument et les conditions
+introduisent une \textbf{variabilité}. La valeur « vraie » du mesurande reste inaccessible ; on cherche une valeur
+mesurée et une estimation de la dispersion des valeurs qu'on peut raisonnablement lui attribuer.
+\end{definition}
+\begin{propriete}[Moyenne et écart-type d'une série]
+Une série de $N$ mesures indépendantes $m_1$, $m_2$, \ldots, $m_N$ se représente par un \textbf{histogramme}. On la résume par
+sa \textbf{moyenne} et son \textbf{écart-type expérimental}, qui mesure la dispersion des valeurs :
+\[\bar m=\frac{1}{N}\sum_{k=1}^{N}m_k\qquad\qquad s=\sqrt{\frac{1}{N-1}\sum_{k=1}^{N}\left(m_k-\bar m\right)^2}.\]
+La calculatrice, le tableur et Python (\code{mean} et \code{stdev}) les calculent directement. Environ deux tiers des
+valeurs tombent généralement entre $\bar m-s$ et $\bar m+s$.
+\end{propriete}
+\schema{27-histogramme}
+\begin{exemple}
+Les 40 durées de chute de la figure ont pour moyenne $\bar t=\qty{0,45175}{s}$ et pour écart-type $s=\qty{0,013}{s}$ ; elles
+s'étendent de \qty{0,426}{s} à \qty{0,481}{s}, et 29 d'entre elles, soit 72,5~\%, tombent entre $\bar t-s$ et $\bar t+s$.
+\end{exemple}
+\essSection{2}{L'incertitude-type}
+\begin{definition}[Incertitude-type]
+L'\textbf{incertitude-type} $u(m)$ estime l'étendue des valeurs qu'on peut raisonnablement attribuer au mesurande. Elle
+s'exprime dans l'unité de la mesure. L'\textbf{incertitude-type relative} $\dfrac{u(m)}{|m|}$, sans unité, permet de comparer des
+mesures différentes.
+\end{definition}
+\begin{loi}[Évaluation de type A : approche statistique]
+Lorsque la mesure est répétée $N$ fois de façon indépendante, on retient la moyenne $\bar m$, dont l'incertitude-type vaut
+\[u(\bar m)=\frac{s}{\sqrt N}.\]
+Faire la moyenne de nombreuses mesures réduit l'incertitude, mais lentement : il faut quatre fois plus de mesures pour la
+diviser par deux.
+\end{loi}
+\begin{loi}[Évaluation de type B : une seule mesure]
+Sans série de mesures, on estime une demi-étendue $a$ : les valeurs possibles sont comprises entre $m-a$ et $m+a$. On
+prend alors
+\[u(m)=\frac{a}{\sqrt3}.\]
+Pour une lecture sur une graduation, $a$ vaut une demi-graduation ; pour un instrument ou une verrerie, $a$ est la
+tolérance indiquée par le fabricant.
+\end{loi}
+\begin{exemple}
+Type A : $u(\bar t)=\dfrac{0{,}0129}{\sqrt{40}}=\qty{0,0020}{s}$. Type B : un voltmètre affiche \qty{5,03}{V} ; sa notice indique
+« $\pm(0{,}5~\%+2~\text{digits})$ » et le dernier digit vaut \qty{0,01}{V}, d'où $a=0{,}005\times5{,}03+2\times0{,}01=\qty{0,045}{V}$ et
+$u(U)=\qty{0,026}{V}$. Une fiole jaugée de \qty{100,0}{mL} de tolérance $\pm\qty{0,10}{mL}$ donne $u(V)=\qty{0,058}{mL}$ ; une règle graduée
+au millimètre, $u=\qty{0,29}{mm}$ par lecture.
+\end{exemple}
+\schema{27-types}
+\essSection{3}{Les incertitudes-types composées}
+\begin{propriete}[Composer des incertitudes avec une expression fournie]
+Lorsqu'une grandeur est calculée à partir de plusieurs mesures indépendantes, son incertitude-type se calcule avec une
+expression fournie par l'énoncé. Pour un produit ou un quotient, par exemple $G=\dfrac{x\,y}{z}$, les incertitudes relatives se
+composent ainsi :
+\[\frac{u(G)}{|G|}=\sqrt{\left(\frac{u(x)}{x}\right)^2+\left(\frac{u(y)}{y}\right)^2+\left(\frac{u(z)}{z}\right)^2}.\]
+Une grandeur élevée au carré compte double : pour $G=\dfrac{x}{z^2}$, le terme de $z$ devient $2\,\dfrac{u(z)}{z}$. Le terme le plus grand
+domine : c'est la mesure à améliorer en priorité.
+\end{propriete}
+\begin{savoirfaire}[Calculer une incertitude composée]
+On mesure $\bar t=\qty{0,4518}{s}$ ($u=\qty{0,0020}{s}$) pour une chute de hauteur $h=\qty{1,000}{m}$ ($u=\qty{0,0020}{m}$), et
+$g=\dfrac{2h}{t^2}=\qty{9,798}{m.s^{-2}}$. L'expression fournie donne
+\[\frac{u(g)}{g}=\sqrt{\left(\frac{u(h)}{h}\right)^2+\left(2\,\frac{u(t)}{t}\right)^2}=\sqrt{0{,}0020^2+0{,}0089^2}=0{,}0091,\]
+d'où $u(g)=0{,}0091\times9{,}798=\qty{0,089}{m.s^{-2}}$. La durée apporte presque toute l'incertitude.
+\end{savoirfaire}
+\begin{propriete}[Simulation de Monte-Carlo]
+Une simulation de \textbf{Monte-Carlo} évite toute formule : on tire au hasard un grand nombre de valeurs de chaque grandeur
+mesurée, selon sa valeur et son incertitude-type, puis on calcule chaque fois le résultat. La moyenne des résultats
+donne la valeur retenue, leur écart-type donne l'incertitude-type composée.
+\end{propriete}
+\begin{codecote}[0.66]
+\begin{pythoncol}
+import random
+from statistics import mean, stdev
+v = []
+for k in range(20000):
+    d = random.gauss(0.850, 0.003)  # m
+    dt = random.gauss(2.47e-3, 2e-5) # s
+    v.append(d / dt)
+print(round(mean(v), 1), round(stdev(v), 1))
+\end{pythoncol}
+\begin{consolecol}
+344.2 3.0
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Deux microphones distants de $d=\qty{0,850}{m}$ ($u=\qty{0,003}{m}$) reçoivent un clap avec un décalage $\Delta t=\qty{2,47}{ms}$
+($u=\qty{0,02}{ms}$). \code{random.gauss(m, u)} tire une valeur au hasard autour de $m$, avec l'écart-type $u$. Une exécution
+affiche $\bar v=\qty{344,2}{m.s^{-1}}$ et $u(v)=\qty{3,0}{m.s^{-1}}$, en accord avec l'expression des quotients.
+\end{codecote}
+\schema{27-montecarlo}
+\essSection{4}{Écrire et comparer un résultat}
+\begin{propriete}[Écrire un résultat]
+On écrit la valeur mesurée, son incertitude-type et l'unité : $t=\qty{0,4518}{s}$ avec $u(t)=\qty{0,0020}{s}$. L'incertitude-type
+est arrondie à un ou deux chiffres significatifs ; le dernier chiffre conservé de la valeur mesurée est alors de même
+rang que celui de l'incertitude.
+\end{propriete}
+\begin{loi}[Comparer à une valeur de référence]
+On calcule l'\textbf{écart normalisé}
+\[z=\frac{\left|m_\mathrm{mes}-m_\mathrm{ref}\right|}{u(m)}.\]
+Si $z<2$, la valeur mesurée est considérée comme \textbf{compatible} avec la référence ; sinon, on recherche une erreur
+systématique ou une source d'incertitude oubliée.
+\end{loi}
+\schema{27-comparaison}
+\begin{exemple}
+Pour $g=\qty{9,798}{m.s^{-2}}$ avec $u(g)=\qty{0,089}{m.s^{-2}}$, la référence étant $\qty{9,81}{m.s^{-2}}$, $z=\dfrac{0{,}012}{0{,}089}=0{,}13<2$ : la
+mesure est compatible. Pour $v=\qty{344,2}{m.s^{-1}}$ avec $u=\qty{3,0}{m.s^{-1}}$, comparée à \qty{343}{m.s^{-1}} dans l'air à \qty{20}{\degreeCelsius},
+$z=0{,}4$ : compatible également.
+\end{exemple}
+\begin{attention}
+Ne pas confondre l'écart-type $s$, qui décrit la dispersion des mesures, et l'incertitude-type de la moyenne, $s/\sqrt N$.
+Répéter les mesures réduit les erreurs aléatoires, mais pas une erreur systématique, comme le retard d'un chronomètre
+ou un appareil mal étalonné : celle-ci décale toutes les mesures dans le même sens.
+\end{attention}
+\begin{experience}[Mesurer l'intensité de la pesanteur]
+Chaque binôme lâche une bille d'une hauteur de \qty{1,000}{m} mesurée au mètre ruban ; deux cellules photoélectriques
+reliées à un chronomètre électronique mesurent la durée de chute. On rassemble les mesures de la classe dans un
+tableur ou une liste Python, on trace l'histogramme, on calcule $\bar t$, $s$ et $u(\bar t)$, puis $g$ et $u(g)$ avec l'expression
+fournie. On compare enfin à la valeur de référence du lieu, en calculant l'écart normalisé.
+\end{experience}
+\begin{rediger}
+Annoncer le type d'évaluation : « par une approche statistique (type A), $u(\bar t)=s/\sqrt N=\qty{0,0020}{s}$ ». Écrire le
+résultat avec son incertitude-type et son unité, en arrondissant correctement. Conclure par une phrase : « $z=0{,}13<2$ :
+la valeur mesurée est compatible avec la valeur de référence. »
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-27-1}
+\begin{exercice}[1]{Moyenne et écart-type d'une série}
+Un élève chronomètre huit fois, avec un chronomètre électronique, la période $T$ d'un pendule.
+\begin{center}
+\begin{tabular}{lcccccccc}
+\toprule
+Mesure & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+$T$ (s) & 1,43 & 1,45 & 1,41 & 1,44 & 1,46 & 1,42 & 1,44 & 1,43 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{questions}
+\item Pourquoi les huit valeurs ne sont-elles pas identiques ?
+\item Calculer la moyenne $\bar T$ des mesures.
+\item Calculer l'écart-type expérimental $s$ à l'aide de la calculatrice ou de l'expression du cours.
+\item En déduire l'incertitude-type de la moyenne, puis écrire le résultat de la mesure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-2}
+\begin{exercice}[1]{Une seule mesure : évaluation de type B}
+\begin{donnees}
+Évaluation de type B : $u=a/\sqrt3$, où $a$ est la demi-étendue des valeurs possibles.
+\end{donnees}
+\begin{questions}
+\item Un thermomètre gradué en degrés indique \qty{21}{\degreeCelsius}. On estime la demi-étendue à une demi-graduation. Calculer
+l'incertitude-type.
+\item Une fiole jaugée de \qty{250,0}{mL} porte l'indication « $\pm\qty{0,15}{mL}$ ». Calculer l'incertitude-type sur son volume.
+\item Un multimètre affiche \qty{4,82}{V}. Sa notice indique une précision de « $\pm(0{,}8~\%+2~\text{digits})$ » ; le dernier digit vaut
+\qty{0,01}{V}. Calculer la demi-étendue, puis l'incertitude-type.
+\item Calculer les trois incertitudes-types relatives. Quelle mesure est la plus précise ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-3}
+\begin{exercice}[1]{Écrire un résultat}
+Des calculs ont donné les valeurs suivantes, avec leurs incertitudes-types non arrondies.
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Grandeur & masse & concentration & longueur d'onde & célérité \\
+Valeur & \qty{12,3478}{g} & \qty{0,051236}{mol.L^{-1}} & \qty{632,81}{nm} & \qty{343,27}{m.s^{-1}} \\
+Incertitude-type & \qty{0,0236}{g} & \qty{0,00087}{mol.L^{-1}} & \qty{1,47}{nm} & \qty{3,4}{m.s^{-1}} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{questions}
+\item Arrondir chaque incertitude-type à deux chiffres significatifs, puis écrire chaque résultat correctement.
+\item Calculer les incertitudes-types relatives, en pourcentage.
+\item Un élève écrit : « $g=\qty{9,8124}{m.s^{-2}}$ avec $u(g)=\qty{0,1}{m.s^{-2}}$ ». Corriger cette écriture.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-4}
+\begin{exercice}[1]{Lire un histogramme}
+Les 50 binômes d'un lycée ont titré la même solution d'acide chlorhydrique.
+\schema{27-ex04}
+\begin{questions}
+\item Quelle est la classe la plus représentée ? Quelle proportion des binômes a obtenu un volume compris entre
+\qty{11,9}{mL} et \qty{12,1}{mL} ?
+\item En utilisant le centre de chaque classe, estimer la moyenne des 49 volumes regroupés autour de \qty{12}{mL}.
+\item Un binôme a obtenu \qty{13,4}{mL}. Quelle erreur a-t-il pu commettre ?
+\item Recalculer la moyenne en incluant cette valeur. Peut-on l'écarter sans vérification ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-5}
+\begin{exercice}[1]{Comparer à une valeur de référence}
+Trois groupes mesurent la capacité thermique massique de l'eau, dont la valeur de référence est
+\qty{4,18}{kJ.kg^{-1}.K^{-1}}.
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Groupe & A & B & C \\
+$c$ (\unit{kJ.kg^{-1}.K^{-1}}) & 4,02 & 3,85 & 4,25 \\
+$u(c)$ (\unit{kJ.kg^{-1}.K^{-1}}) & 0,12 & 0,08 & 0,02 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{questions}
+\item Calculer l'écart normalisé pour chaque groupe.
+\item Quelles mesures sont compatibles avec la valeur de référence ?
+\item Le groupe C a obtenu la valeur la plus proche de la référence. Pourquoi sa mesure n'est-elle pourtant pas
+compatible ? Proposer une explication.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-27-6}
+\begin{exercice}[2]{Chronométrer un pendule à la main}
+Déclenché et arrêté à la main, un chronomètre donne des durées dispersées avec un écart-type $s=\qty{0,12}{s}$, dû au temps
+de réaction de l'expérimentateur. On veut mesurer la période $T\approx\qty{1,43}{s}$ d'un pendule.
+\begin{questions}
+\item On chronomètre une seule période. Calculer l'incertitude-type relative.
+\item On chronomètre dix fois une période. Calculer l'incertitude-type de la moyenne.
+\item Combien de mesures faudrait-il pour obtenir une incertitude-type de \qty{0,010}{s} ? Commenter.
+\item On chronomètre plutôt 20 périodes consécutives, et l'on divise la durée par 20. Calculer l'incertitude-type sur $T$,
+puis celle obtenue en répétant dix fois cette mesure. Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-7}
+\begin{exercice}[2]{Cuivre ou laiton ?}
+Pour identifier le métal d'un objet, on le pèse : $m=\qty{85,32}{g}$, $u(m)=\qty{0,01}{g}$. On le plonge ensuite dans une éprouvette
+graduée : le niveau de l'eau monte de $V=\qty{9,5}{mL}$, avec $u(V)=\qty{0,3}{mL}$.
+\begin{donnees}
+$\dfrac{u(\rho)}{\rho}=\sqrt{\left(\dfrac{u(m)}{m}\right)^2+\left(\dfrac{u(V)}{V}\right)^2}$ ; masses volumiques : cuivre \qty{8,96}{g.cm^{-3}}, laiton \qty{8,50}{g.cm^{-3}}.
+\end{donnees}
+\begin{questions}
+\item Calculer la masse volumique $\rho$ du métal.
+\item Calculer les deux incertitudes relatives. Laquelle domine ?
+\item Calculer $u(\rho)$, puis les écarts normalisés avec le cuivre et avec le laiton. Peut-on conclure ?
+\item Quelle incertitude-type sur $\rho$, puis sur $V$, permettrait d'exclure le laiton si l'on retrouvait la même valeur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-8}
+\begin{exercice}[2]{Le résultat d'un titrage}
+On titre $V_A=\qty{10,00}{mL}$ d'une solution d'acide par une solution d'hydroxyde de sodium de concentration
+$c_B=\qty{0,100}{mol.L^{-1}}$, avec $u(c_B)=\qty{0,001}{mol.L^{-1}}$. L'équivalence est obtenue pour $V_\mathrm{E}=\qty{12,35}{mL}$, avec
+$u(V_\mathrm{E})=\qty{0,04}{mL}$.
+\begin{donnees}
+Pipette jaugée : tolérance $\pm\qty{0,02}{mL}$. $c_A=\dfrac{c_B\,V_\mathrm{E}}{V_A}$ et
+$\dfrac{u(c_A)}{c_A}=\sqrt{\left(\dfrac{u(c_B)}{c_B}\right)^2+\left(\dfrac{u(V_\mathrm{E})}{V_\mathrm{E}}\right)^2+\left(\dfrac{u(V_A)}{V_A}\right)^2}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'incertitude-type sur le volume prélevé à la pipette.
+\item Calculer la concentration $c_A$.
+\item Calculer $u(c_A)$. Quelle source d'incertitude domine ?
+\item L'étiquette indique \qty{0,125}{mol.L^{-1}}. Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-9}
+\begin{exercice}[2]{Un histogramme en Python}
+Douze élèves ont mesuré la distance focale $f'$ d'une même lentille. Le programme suivant exploite leurs mesures.
+\begin{codecote}[0.6]
+\begin{pythoncol}
+from statistics import mean, stdev
+import matplotlib.pyplot as plt
+f = [98, 101, 103, 99, 100, 102,
+     97, 104, 100, 101, 99, 102]  # mm
+N = len(f)
+m, s = mean(f), stdev(f)
+print(N, m, round(s, 2),
+      round(s / N**0.5, 2))
+plt.hist(f, bins=range(96, 106))
+plt.xlabel("f' (mm)")
+plt.show()
+\end{pythoncol}
+\cote
+\begin{consolecol}
+12 100.5 2.07 0.6
+\end{consolecol}
+\end{codecote}
+\begin{questions}
+\item \capacite{Capacité numérique}Que calculent les fonctions \code{mean} et \code{stdev} ? Que représente la dernière valeur affichée ?
+\item Écrire le résultat de la mesure de $f'$.
+\item Quelles classes l'instruction \code{plt.hist(f, bins=range(96, 106))} utilise-t-elle ? Combien de barres l'histogramme
+comporte-t-il ?
+\item Le fabricant annonce $f'=\qty{100}{mm}$. La mesure est-elle compatible avec cette valeur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-10}
+\begin{exercice}[2]{Une longueur d'onde par les fentes d'Young}
+Un laser éclaire deux fentes distantes de $a$ ; sur un écran situé à $D=\qty{1,500}{m}$ ($u=\qty{0,005}{m}$), on mesure la largeur
+de dix interfranges : $10\,i=\qty{47,5}{mm}$, avec $u(10\,i)=\qty{0,5}{mm}$. Le fabricant des fentes indique $a=\qty{0,200}{mm}\pm\qty{0,010}{mm}$.
+\begin{donnees}
+$\lambda=\dfrac{a\,i}{D}$ et $\dfrac{u(\lambda)}{\lambda}=\sqrt{\left(\dfrac{u(a)}{a}\right)^2+\left(\dfrac{u(i)}{i}\right)^2+\left(\dfrac{u(D)}{D}\right)^2}$.
+\end{donnees}
+\begin{questions}
+\item Pourquoi mesure-t-on dix interfranges plutôt qu'un seul ? Calculer $i$ et $u(i)$.
+\item Calculer $u(a)$ par une évaluation de type B, puis la longueur d'onde $\lambda$.
+\item Calculer $u(\lambda)$. Quel terme domine ?
+\item Le laser est un laser hélium-néon, de longueur d'onde \qty{632,8}{nm}. Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-11}
+\begin{exercice}[2]{Simuler une mesure de résistance}
+On mesure la tension $U=\qty{5,03}{V}$ aux bornes d'une résistance et l'intensité $I=\qty{22,1}{mA}$ qui la traverse. Les notices
+des appareils donnent des demi-étendues de \qty{0,045}{V} et \qty{0,3}{mA}. Le programme suivant simule la mesure.
+\begin{python}
+import random
+from statistics import mean, stdev
+R = []
+for k in range(100000):
+    U = random.uniform(5.03 - 0.045, 5.03 + 0.045)            # V
+    I = random.uniform(22.1e-3 - 0.3e-3, 22.1e-3 + 0.3e-3)    # A
+    R.append(U / I)
+print(round(mean(R), 1), round(stdev(R), 1))
+\end{python}
+\begin{console}
+227.6 2.1
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Pourquoi les valeurs de $U$ et de $I$ sont-elles tirées avec \code{random.uniform} plutôt
+qu'avec \code{random.gauss} ?
+\item Que contient la liste \code{R} ? Interpréter les deux valeurs affichées.
+\item Calculer $u(U)$ et $u(I)$, puis $u(R)$ avec l'expression des quotients. Comparer à la simulation.
+\item La résistance porte l'indication \qty{220}{\ohm} avec une tolérance de 5~\%. Est-elle conforme ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-27-12}
+\begin{exercice}[3]{Étalonner une pipette jaugée}
+\begin{docu}{1}{Le protocole}
+Pour vérifier une pipette jaugée de \qty{10}{mL}, on y prélève de l'eau à \qty{20}{\degreeCelsius}, on la vide dans un bécher posé sur une
+balance tarée au milligramme, et l'on recommence dix fois.
+\end{docu}
+\begin{docu}{2}{Les masses d'eau délivrées (g)}
+\begin{tabular}{cccccccccc}
+9,981 & 9,976 & 9,985 & 9,979 & 9,983 & 9,974 & 9,980 & 9,987 & 9,978 & 9,982 \\
+\end{tabular}
+\end{docu}
+\begin{donnees}
+Masse volumique de l'eau à \qty{20}{\degreeCelsius} : \qty{0,9982}{g.mL^{-1}}, d'incertitude négligeable. Une pipette de classe A doit délivrer
+$\qty{10,00}{mL}\pm\qty{0,02}{mL}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la masse moyenne et l'écart-type expérimental des masses.
+\item Calculer l'incertitude-type de la masse moyenne. De quel type d'évaluation s'agit-il ?
+\item En déduire le volume délivré par la pipette et son incertitude-type.
+\item \initiative La pipette est-elle conforme à la classe A ? Le volume mesuré est-il compatible avec \qty{10,00}{mL} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-13}
+\begin{exercice}[3]{Le comprimé de vitamine C}
+\begin{docu}{1}{Le dosage}
+On dissout un comprimé « vitamine C 500 » dans une fiole jaugée de \qty{200,0}{mL}. On prélève \qty{10,00}{mL} de cette solution, que
+l'on titre par une solution de diiode de concentration $c=\qty{5,00e-3}{mol.L^{-1}}$ ; l'équivalence est repérée pour
+$V_\mathrm{E}=\qty{28,0}{mL}$. Équation de la réaction support :
+\[\ce{C6H8O6 + I2 -> C6H6O6 + 2I- + 2H+}\]
+\end{docu}
+\begin{docu}{2}{Les incertitudes}
+$u(c)/c=1{,}0~\%$ ; $u(V_\mathrm{E})=\qty{0,05}{mL}$ ; pipette : $u=\qty{0,012}{mL}$ ; fiole : $u=\qty{0,087}{mL}$. L'incertitude relative sur la
+masse est la racine de la somme des carrés des quatre incertitudes relatives. La pharmacopée tolère un écart de
+5~\% sur la masse annoncée.
+\end{docu}
+\begin{donnees}
+$M(\ce{C6H8O6})=\qty{176,1}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Établir la relation entre la quantité d'acide ascorbique titrée et celle de diiode versée à l'équivalence.
+\item Montrer que la masse d'acide ascorbique du comprimé vaut $m=c\,V_\mathrm{E}\,M\times\dfrac{200{,}0}{10{,}00}$ et la calculer.
+\item Calculer l'incertitude-type $u(m)$. Quelle source d'incertitude faudrait-il réduire en priorité ?
+\item \initiative Le comprimé est-il conforme à son étiquette ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-14}
+\begin{exercice}[3]{Mesurer g avec un pendule}
+\begin{docu}{1}{Le pendule simple}
+Pour de petites oscillations, la période d'un pendule simple de longueur $L$ vaut $T=2\pi\sqrt{\dfrac{L}{g}}$. On mesure
+$L=\qty{0,510}{m}$ au mètre ruban, avec $u(L)=\qty{0,003}{m}$.
+\end{docu}
+\begin{docu}{2}{Dix mesures de la durée de 20 périodes (s)}
+\begin{tabular}{cccccccccc}
+28,62 & 28,70 & 28,55 & 28,66 & 28,71 & 28,59 & 28,64 & 28,68 & 28,60 & 28,65 \\
+\end{tabular}
+\end{docu}
+\begin{donnees}
+$\dfrac{u(g)}{g}=\sqrt{\left(\dfrac{u(L)}{L}\right)^2+\left(2\,\dfrac{u(T)}{T}\right)^2}$ ; valeur de référence : $g=\qty{9,81}{m.s^{-2}}$.
+\end{donnees}
+\begin{questions}
+\item Exprimer $g$ en fonction de $L$ et $T$.
+\item Calculer la période moyenne et son incertitude-type.
+\item Calculer $g$.
+\item \initiative Évaluer l'incertitude-type sur $g$ et comparer à la valeur de référence. Quelle mesure améliorer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-27-15}
+\begin{exercice}[3]{Verre crown ou verre flint ?}
+\begin{docu}{1}{La mesure}
+Un faisceau de lumière passe de l'air dans un demi-cylindre de verre. On lit sur un rapporteur l'angle d'incidence
+$i=\ang{40}$ et l'angle de réfraction $r=\ang{25}$. Le faisceau étant un peu large, chaque angle est connu à $\pm\ang{1}$ près.
+\end{docu}
+\begin{docu}{2}{La simulation}
+\begin{codecote}[0.66]
+\begin{pythoncol}
+import random
+from math import sin, radians
+from statistics import mean, stdev
+n = []
+for k in range(20000):
+    i = radians(random.uniform(39, 41))
+    r = radians(random.uniform(24, 26))
+    n.append(sin(i) / sin(r))
+print(round(mean(n), 3), round(stdev(n), 3))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+1.522 0.038
+\end{consolecol}
+\par\medskip
+\fontsize{9.5}{12.5}\selectfont
+L'histogramme ci-dessous représente les \num{20000} valeurs de \code{n} calculées.
+\end{codecote}
+\schema{27-ex15}
+\end{docu}
+\begin{donnees}
+Loi de Snell-Descartes : $n_\mathrm{air}\sin i=n\sin r$, avec $n_\mathrm{air}=1{,}00$. Indices : verre crown 1,52 ; verre flint 1,62.
+\end{donnees}
+\begin{questions}
+\item Calculer l'indice $n$ du verre avec les angles lus.
+\item \capacite{Capacité numérique}Expliquer le rôle des lignes \code{random.uniform(39, 41)} et \code{random.uniform(24, 26)}.
+\item Écrire le résultat de la mesure. L'histogramme a-t-il la forme habituelle d'une série de mesures ?
+\item \initiative Le verre est-il un crown ou un flint ?
+\item Proposer une méthode pour réduire l'incertitude.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

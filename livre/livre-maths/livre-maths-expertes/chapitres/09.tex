@@ -1,0 +1,160 @@
+\begin{ouverture}[courbe]{9}{Matrices et systèmes linéaires}{Graphes et matrices}{Dimensions · Produit · Inverse · Transformations}
+\objectif{Lire et calculer avec des matrices de tailles compatibles.}
+\objectif{Déterminer un inverse en ordre $2$ ou $3$.}
+\objectif{Résoudre un système sous forme matricielle.}
+\objectif{Représenter une transformation du plan par une matrice.}
+\prerequis{Systèmes linéaires, coordonnées et calcul algébrique.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Un tableau dont les dimensions comptent}
+Une matrice de taille $m\times n$ comporte $m$ lignes et $n$ colonnes. Le coefficient $a_{ij}$ est situé à la ligne $i$, colonne $j$.
+Une matrice ligne a une seule ligne ; une matrice colonne, une seule colonne. Une matrice carrée d'ordre $n$ a $n$ lignes et $n$ colonnes.
+L'addition et la multiplication par un réel se font coefficient par coefficient ; l'addition exige des dimensions identiques.
+\begin{definition}[Produit]
+Si $A$ est de taille $m\times n$ et $B$ de taille $n\times p$, $AB$ est de taille $m\times p$ et
+$(AB)_{ij}=\sum_{k=1}^na_{ik}b_{kj}$.
+Chaque coefficient est le produit d'une ligne par une colonne.
+\end{definition}
+\figurelivre{e09-produit.pdf}{Le coefficient $(1,2)$ de $AB$ se calcule avec la première ligne de $A$ et la deuxième colonne de $B$. La somme des produits croisés vaut ici $1\times1+2\times0=1$.}
+\begin{exemple}
+Avec $A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$ et $B=\begin{pmatrix}0&1\\1&0\end{pmatrix}$,
+$AB=\begin{pmatrix}2&1\\4&3\end{pmatrix}$ mais $BA=\begin{pmatrix}3&4\\1&2\end{pmatrix}$.
+En général $AB\ne BA$, même lorsque les deux produits sont définis.
+\end{exemple}
+\essSection{2}{L'identité et l'inverse}
+La matrice identité $I_n$ a des $1$ sur la diagonale et des $0$ ailleurs. Pour une matrice carrée $A$, $AI_n=I_nA=A$ et $A^0=I_n$.
+Une matrice $A$ est inversible s'il existe $A^{-1}$ tel que $AA^{-1}=A^{-1}A=I_n$.
+\begin{propriete}[Ordre $2$]
+Pour $A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$, si $ad-bc\ne0$,
+$A^{-1}=\dfrac1{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$.
+Si $ad-bc=0$, $A$ n'est pas inversible. La formule se contrôle en multipliant les matrices.
+\end{propriete}
+On ne « divise » pas par une matrice ; on multiplie par son inverse, du bon côté, lorsqu'il existe.
+\essSection{3}{Systèmes et inverse en ordre $3$}
+Le système $2x+y=5$, $x+y=3$ devient
+$AX=Y$, avec $A=\begin{pmatrix}2&1\\1&1\end{pmatrix}$, $X=\binom xy$, $Y=\binom53$.
+Comme $A^{-1}=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$, on obtient $X=A^{-1}Y=\binom21$.
+En ordre $3$, on peut résoudre successivement les systèmes $AX=e_j$ pour construire les colonnes de l'inverse, ou employer un outil en contrôlant le produit.
+\begin{exemple}
+$T=\begin{pmatrix}1&1&0\\0&1&1\\0&0&1\end{pmatrix}$ a pour inverse
+$\begin{pmatrix}1&-1&1\\0&1&-1\\0&0&1\end{pmatrix}$.
+En effet $TX=Y$ donne successivement $x_3=y_3$, $x_2=y_2-y_3$, $x_1=y_1-y_2+y_3$.
+\end{exemple}
+\essSection{4}{Transformations du plan}
+La matrice $R_\theta=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}$ agit sur la colonne des coordonnées et représente une rotation de centre $O$.
+$\begin{pmatrix}1&0\\0&-1\end{pmatrix}$ représente la symétrie par rapport à l'axe horizontal ; $kI_2$ représente l'homothétie de centre $O$ et de rapport $k$.
+\figurelivre{e09-transformation.pdf}{La rotation d'angle $\pi/2$ envoie le point $(2,1)$ sur $(-1,2)$. Les vecteurs colonnes et le calcul complexe par multiplication par $\mathrm i$ décrivent la même transformation.}
+Une translation non nulle ne se représente pas par une matrice $2\times2$ appliquée seule à la colonne $(x,y)$, car une telle matrice envoie toujours l'origine sur l'origine. Elle s'écrit sous forme affine $X\mapsto AX+C$.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Dimensions}
+$A$ est $2\times3$ et $B$ est $3\times4$.
+\begin{questions}
+\item Quelle est la taille de $AB$ ?
+\item Le produit $BA$ est-il défini ?
+\item Peut-on additionner $A$ et $B$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Addition et scalaire}
+$A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$.
+\begin{questions}
+\item Calculer $2A$.
+\item Calculer $A+I_2$.
+\item Donner $A^0$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Produit ligne-colonne}
+$A=\begin{pmatrix}2&1\\0&3\end{pmatrix}$ et $X=\binom45$.
+\begin{questions}
+\item Calculer $AX$.
+\item Quelle taille a le résultat ?
+\item Que représente le premier coefficient ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Inverser en ordre $2$}
+$A=\begin{pmatrix}2&1\\1&1\end{pmatrix}$.
+\begin{questions}
+\item Calculer $ad-bc$.
+\item Donner $A^{-1}$.
+\item Vérifier le produit.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Non-commutativité}
+$A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$ et $B=\begin{pmatrix}0&1\\1&0\end{pmatrix}$.
+\begin{questions}
+\item Calculer $AB$.
+\item Calculer $BA$.
+\item Peut-on utiliser $(A+B)^2=A^2+2AB+B^2$ sans condition ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Résoudre un système}
+$2x+y=5$, $x+y=3$.
+\begin{questions}
+\item Écrire $AX=Y$.
+\item Résoudre à l’aide de l’inverse.
+\item Vérifier dans les deux équations.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un ordre $3$}
+$T=\begin{pmatrix}1&1&0\\0&1&1\\0&0&1\end{pmatrix}$.
+\begin{questions}
+\item Résoudre $TX=\begin{pmatrix}3\\5\\2\end{pmatrix}$.
+\item Donner $T^{-1}$.
+\item Contrôler un coefficient hors diagonale de $TT^{-1}$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Rotation}
+$R=\begin{pmatrix}0&-1\\1&0\end{pmatrix}$.
+\begin{questions}
+\item Calculer l’image de $(2,1)$.
+\item Calculer $R^2$.
+\item Interpréter les deux transformations.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Matrice singulière}
+$A=\begin{pmatrix}1&2\\2&4\end{pmatrix}$.
+\begin{questions}
+\item Pourquoi n’est-elle pas inversible ?
+\item Étudier $AX=\binom36$.
+\item Étudier $AX=\binom37$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Ordre d’une composition}
+$S=\begin{pmatrix}1&0\\0&-1\end{pmatrix}$ et $R=\begin{pmatrix}0&-1\\1&0\end{pmatrix}$.
+\begin{questions}
+\item Calculer $RS$ et $SR$.
+\item Quelle matrice correspond à « appliquer $S$, puis $R$ » sur une colonne ?
+\item Comparer les images de $(1,1)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Un inverse de produit}
+$A,B$ sont inversibles de même ordre.
+\begin{questions}
+\item Verifier $(AB)(B^{-1}A^{-1})=I$.
+\item Vérifier le produit dans l’autre sens.
+\item Conclure et signaler le piège d’ordre.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Translation et matrice}
+
+\begin{questions}
+\item Montrer que toute matrice $2\times2$ envoie la colonne nulle sur zéro.
+\item Pourquoi une translation non nulle ne peut-elle être représentée ainsi ?
+\item Écrire la translation de vecteur $(3,-1)$ sous forme affine.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

@@ -1,0 +1,17 @@
+% Saponification : test de l'ordre 1 (ln c) et de l'ordre 2 (1/c) (corrigé du défi D04)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,name=g,width=76mm,height=52mm,xmin=0,xmax=1900,ymin=-5.8,ymax=-4.5,
+  xtick={0,600,1200,1800},ytick={-5.8,-5.4,-5,-4.6},yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$t$ (s)},ylabel={$\ln(c/c^\circ)$}]
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,-4.605) -- (axis cs:1800,-5.696);
+\addplot[otNavy,line width=0.7pt,mark=*,mark size=1.6pt] table[x index=0,y expr=ln(\thisrowno{1}/1000)] {figures/donnees/04-saponification.dat};
+\node[pcLegende,anchor=south west,text=otNavy] at (axis cs:700,-4.82) {points non alignés :\\pas d'ordre 1};
+\end{axis}
+\begin{axis}[otMesures,otAxesBout,at={(g.east)},anchor=west,xshift=17mm,width=76mm,height=52mm,xmin=0,xmax=1900,ymin=0,ymax=330,
+  xtick={0,600,1200,1800},ytick={0,100,200,300},xlabel={$t$ (s)},ylabel={$1/c$ (L$\cdot$mol$^{-1}$)}]
+\addplot[otGreenDark,line width=0.7pt,domain=0:1850] {100.08+0.10981*x};
+\addplot[only marks,mark=*,mark size=1.6pt,otNavy] table[x index=0,y expr=1000/\thisrowno{1}] {figures/donnees/04-saponification.dat};
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:80,315) {points alignés :\\$1/c=100+0{,}11\,t$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La linéarisation en $\ln c$ échoue (les points s'écartent de la corde en pointillés) ; celle en $1/c$ réussit.}

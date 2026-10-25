@@ -1,0 +1,223 @@
+\clearpage
+\gdef\otChapNum{0}
+\pagestyle{otFront}
+\phantomsection\label{demonstrations-debut}
+\pdfbookmark[0]{Démonstrations de référence}{bm-demonstrations}
+\otPageTitre{Démonstrations}{Des preuves à comprendre et à savoir expliquer}
+\phantomsection\label{dem-second-degre}
+\essSection{1}{Résoudre une équation du second degré}
+\begin{demonstration}[Faire apparaître le discriminant]
+Soit $f(x)=ax^2+bx+c$, avec $a\neq0$, et $\Delta=b^2-4ac$.
+En développant, on vérifie l'identité
+\[4af(x)=(2ax+b)^2-\Delta.\]
+Ainsi $f(x)=0$ équivaut à $(2ax+b)^2=\Delta$.
+Si $\Delta<0$, aucun carré réel ne convient. Si $\Delta=0$, on obtient
+la seule solution $x=-b/(2a)$. Si $\Delta>0$, les deux possibilités
+$2ax+b=\pm\sqrt\Delta$ donnent
+\[x=\frac{-b-\sqrt\Delta}{2a}\quad\text{ou}\quad x=\frac{-b+\sqrt\Delta}{2a}.\]
+\end{demonstration}
+\begin{propriete}[Forme canonique et sommet]
+L'identité précédente donne aussi
+\[f(x)=a\left(x+\frac b{2a}\right)^2-\frac\Delta{4a}.
+\]
+Le sommet a donc pour abscisse $\alpha=-b/(2a)$ et pour ordonnée $f(\alpha)$.
+Pour une détermination effective dans un cas simple, on complète le carré :
+$x^2-6x+5=(x-3)^2-4$.
+\end{propriete}
+\begin{demonstration}[Somme et produit des racines]
+Si les racines sont $r_1$ et $r_2$, la forme factorisée est
+$f(x)=a(x-r_1)(x-r_2)$, y compris en cas de racine double.
+En développant, $f(x)=ax^2-a(r_1+r_2)x+ar_1r_2$.
+L'identification avec $ax^2+bx+c$ donne
+$r_1+r_2=-b/a$ et $r_1r_2=c/a$.
+\end{demonstration}
+\begin{savoirfaire}[Expliquer une preuve]
+Repérer l'hypothèse $a\neq0$, l'identité de départ et les trois cas possibles
+pour le discriminant. La formule des solutions est une conséquence du calcul
+sur un carré, pas une règle isolée à appliquer sans conditions.
+\end{savoirfaire}
+\clearpage
+\otPageTitre{Démonstrations}{Suites arithmétiques, géométriques et sommes}
+\phantomsection\label{dem-suites}
+\essSection{2}{Termes généraux et sommes}
+\begin{demonstration}[Suite arithmétique]
+Passer de $u_0$ à $u_n$ nécessite $n$ ajouts de la raison $r$ :
+$u_n=u_0+nr$. Entre deux indices $p$ et $n$, il y a $n-p$ ajouts,
+donc $u_n=u_p+(n-p)r$.
+Pour additionner $N$ termes consécutifs d'une suite arithmétique, on écrit
+la somme dans les deux sens. Chaque paire « premier plus dernier »,
+« deuxième plus avant-dernier », etc. a la même somme.
+On obtient $2S=N(\text{premier}+\text{dernier})$.
+\end{demonstration}
+\begin{demonstration}[Les entiers de 1 à $n$]
+Pour $n\geq1$, écrivons $S=1+2+\cdots+n$, puis $S=n+(n-1)+\cdots+1$.
+En additionnant terme à terme, les $n$ colonnes valent toutes $n+1$ :
+$2S=n(n+1)$, donc $S=n(n+1)/2$.
+Pour $n=0$, la somme vide vaut 0 et la même formule reste valable.
+\end{demonstration}
+\begin{demonstration}[Suite géométrique]
+Passer de $v_0$ à $v_n$ revient à multiplier $n$ fois par $q$, donc
+$v_n=v_0q^n$. Pour $q=0$, cette formule donne les termes de rang $n\geq1$,
+tous nuls ; le terme de rang 0 reste le terme initial donné.
+Plus généralement $v_n=v_pq^{n-p}$ pour $n>p$ ; si l'on veut remonter
+vers un indice inférieur, il faut $q\neq0$.
+\end{demonstration}
+\begin{demonstration}[Une somme géométrique]
+Soit $G=1+q+\cdots+q^n$. Alors $qG=q+q^2+\cdots+q^{n+1}$.
+En soustrayant, $(1-q)G=1-q^{n+1}$.
+Si $q\neq1$, $G=(1-q^{n+1})/(1-q)$. Si $q=1$, il y a $n+1$ termes
+égaux à 1, donc $G=n+1$. La séparation de ces deux cas évite de diviser par 0.
+\end{demonstration}
+\clearpage
+\otPageTitre{Démonstrations}{Nombre dérivé et tangente}
+\phantomsection\label{dem-derivation}
+\essSection{3}{Dériver à partir d'un taux de variation}
+\begin{demonstration}[La fonction carré]
+Pour $f(x)=x^2$, $h\neq0$ et $a\in\R$,
+\[\frac{f(a+h)-f(a)}h=\frac{2ah+h^2}h=2a+h.\]
+Quand $h$ se rapproche de 0, ce taux se rapproche de $2a$.
+Ainsi $f'(a)=2a$, pour tout réel $a$.
+\end{demonstration}
+\begin{demonstration}[La fonction inverse]
+Pour $a\neq0$, $h\neq0$ et $a+h\neq0$,
+\[\frac{1/(a+h)-1/a}{h}=-\frac1{a(a+h)}.\]
+Quand $h$ se rapproche de 0, ce taux se rapproche de $-1/a^2$.
+Ainsi la dérivée de $x\mapsto1/x$ est $-1/x^2$ sur $\R\setminus\{0\}$.
+\end{demonstration}
+\begin{demonstration}[Équation de la tangente]
+La tangente en $A(a;f(a))$ a pour pente $f'(a)$.
+Une droite de pente $m$ passant par $(a;b)$ s'écrit $y-b=m(x-a)$.
+En remplaçant $m$ par $f'(a)$ et $b$ par $f(a)$, on obtient
+$y=f(a)+f'(a)(x-a)$.
+\end{demonstration}
+\begin{exemple}
+La tangente à $y=x^2$ en $a=2$ a pour équation $y=4+4(x-2)=4x-4$.
+L'approximation affine associée donne $(2+h)^2\approx4+4h$ pour un petit $h$.
+Le terme exact oublié est $h^2$, ce qui permet ici de mesurer l'erreur.
+\end{exemple}
+\clearpage
+\otPageTitre{Démonstrations}{Produit et absence de dérivabilité}
+\essSection{4}{Ce que signifie un nombre dérivé}
+\begin{demonstration}[La fonction racine carrée en 0]
+La fonction est définie pour $x\geq0$ et vaut 0 en 0. Pour $h>0$,
+le taux de variation entre 0 et $h$ vaut
+\[\frac{\sqrt h-0}{h}=\frac1{\sqrt h}.\]
+Ces taux grandissent sans borne lorsque $h$ positif devient très petit.
+Ils ne se rapprochent pas d'un nombre réel fini : la fonction racine carrée
+n'est pas dérivable en 0.
+\end{demonstration}
+\begin{demonstration}[Dérivée d'un produit]
+Soient $u$ et $v$ dérivables en $a$. Pour $h\neq0$, ajouter puis retrancher
+$u(a+h)v(a)$ dans le numérateur donne
+\begin{align*}
+&\frac{u(a+h)v(a+h)-u(a)v(a)}h\\
+&=u(a+h)\frac{v(a+h)-v(a)}h
++v(a)\frac{u(a+h)-u(a)}h.
+\end{align*}
+Quand $h$ se rapproche de 0, les deux taux se rapprochent de $v'(a)$ et
+$u'(a)$. La dérivabilité de $u$ implique aussi que $u(a+h)$ se rapproche
+de $u(a)$ : en effet $u(a+h)-u(a)$ est $h$ multiplié par un taux qui reste
+proche du nombre fini $u'(a)$.
+On obtient $(uv)'(a)=u(a)v'(a)+u'(a)v(a)$.
+\end{demonstration}
+\begin{attention}
+Le raisonnement utilise la dérivabilité des deux fonctions. Il ne suffit
+pas qu'elles soient définies. L'écriture de la dérivée d'un produit doit
+conserver les deux contributions : l'une provenant de la variation de $u$,
+l'autre de celle de $v$.
+\end{attention}
+\clearpage
+\otPageTitre{Démonstrations}{Valeurs trigonométriques remarquables}
+\phantomsection\label{dem-trigonometrie}
+\essSection{5}{Construire les valeurs à partir de triangles}
+\begin{demonstration}[L'angle $\pi/4$]
+Dans un triangle rectangle isocèle dont les deux petits côtés mesurent 1,
+Pythagore donne une hypoténuse $\sqrt2$. Les angles aigus mesurent $\pi/4$.
+Le rapport « adjacent sur hypoténuse » et le rapport « opposé sur hypoténuse »
+valent tous deux $1/\sqrt2=\sqrt2/2$.
+Donc $\cos(\pi/4)=\sin(\pi/4)=\sqrt2/2$.
+\end{demonstration}
+\figureGeo[corrige]{preuve-pi4}
+\begin{demonstration}[Les angles $\pi/3$ et $\pi/6$]
+Partons d'un triangle équilatéral de côté 2. Une hauteur le partage en deux
+triangles rectangles. La demi-base mesure 1, l'hypoténuse 2 et la hauteur
+$\sqrt{2^2-1^2}=\sqrt3$.
+Pour l'angle $\pi/3$, le côté adjacent mesure 1 et le côté opposé $\sqrt3$,
+donc $\cos(\pi/3)=1/2$ et $\sin(\pi/3)=\sqrt3/2$.
+Pour l'autre angle, $\pi/6$, les deux rôles s'échangent :
+$\cos(\pi/6)=\sqrt3/2$ et $\sin(\pi/6)=1/2$.
+\end{demonstration}
+\begin{center}\begin{tikzpicture}[x=18mm,y=18mm]
+\draw[otNavy,thick](0,0)--(2,0)--(1,1.73205)--cycle;
+\draw[otGreenDark,dashed](1,1.73205)--(1,0);
+\node[below]at(.5,0){$1$};\node[below]at(1.5,0){$1$};
+\node[left]at(.4,.85){$2$};\node[right]at(1.6,.85){$2$};
+\node[right,font=\small]at(1,.8){$\sqrt3$};
+\draw[otMuted](1,.15)--(1.15,.15)--(1.15,0);
+\end{tikzpicture}\end{center}
+\begin{propriete}[Relier le triangle au cercle unité]
+Diviser toutes les longueurs par l'hypoténuse place le point correspondant
+sur le cercle unité. Ses coordonnées sont les rapports définissant cosinus
+et sinus. Les symétries du cercle donnent ensuite les angles associés.
+\end{propriete}
+\clearpage
+\otPageTitre{Démonstrations}{Produit scalaire et géométrie}
+\phantomsection\label{dem-geometrie}
+\essSection{6}{Deux preuves à partir des vecteurs}
+\begin{demonstration}[La formule d'Al-Kashi]
+Par Chasles, $\vect{BC}=\vect{AC}-\vect{AB}$.
+Développer le carré de la norme donne
+\[BC^2=AC^2+AB^2-2\vect{AB}\cdot\vect{AC}.
+\]
+Comme $\vect{AB}\cdot\vect{AC}=AB\,AC\cos\widehat{BAC}$,
+on obtient $BC^2=AB^2+AC^2-2AB\,AC\cos\widehat{BAC}$.
+Pour un angle droit en $A$, le cosinus est nul : on retrouve Pythagore.
+\end{demonstration}
+\begin{demonstration}[Le cercle de diamètre $[AB]$]
+Soit $I$ le milieu de $[AB]$, avec $A\neq B$.
+On a $\vect{MA}=\vect{MI}+\vect{IA}$ et
+$\vect{MB}=\vect{MI}-\vect{IA}$.
+Par bilinéarité et symétrie,
+\[\vect{MA}\cdot\vect{MB}=MI^2-IA^2=MI^2-\frac{AB^2}{4}.
+\]
+Le produit est nul si et seulement si $MI=AB/2$, puisque les distances sont
+positives ou nulles. C'est précisément le cercle de centre $I$ et de rayon
+$AB/2$, donc de diamètre $[AB]$.
+Les points $A$ et $B$ sont inclus : l'un des vecteurs du produit y est nul.
+\end{demonstration}
+\begin{center}\legende{Les deux configurations sont illustrées dans les repères visuels du chapitre 7.}\end{center}
+\begin{savoirfaire}[Choisir un point intermédiaire]
+Le milieu rend deux vecteurs opposés, ce qui supprime les termes croisés.
+Le choix d'un point intermédiaire dans Chasles constitue souvent la première
+étape utile d'une preuve géométrique sans coordonnées.
+\end{savoirfaire}
+\clearpage
+\otPageTitre{Démonstrations}{Probabilités et moments d'une variable}
+\phantomsection\label{dem-probabilites}
+\essSection{7}{De sommes finies aux formules usuelles}
+\begin{demonstration}[Probabilités totales]
+Pour une partition $A_1,\ldots,A_k$, les évènements $A_i\cap B$ sont deux à deux
+incompatibles et leur réunion est $B$. Ainsi $P(B)=\sum_i P(A_i\cap B)$.
+Lorsque les $P(A_i)$ sont positifs, chaque terme s'écrit $P(A_i)P_{A_i}(B)$,
+ce qui donne la formule des probabilités totales.
+\end{demonstration}
+\begin{demonstration}[Linéarité de l'espérance]
+Sur un univers fini, on peut calculer $E(X)$ comme
+$\sum_{\omega\in\Omega}X(\omega)P(\{\omega\})$, en regroupant ou non les issues
+qui donnent la même valeur. Distribuer une somme finie donne alors
+\[E(aX+bY)=\sum_{\omega\in\Omega}(aX(\omega)+bY(\omega))P(\{\omega\})
+=aE(X)+bE(Y).\]
+Aucune hypothèse d'indépendance n'intervient dans ce calcul.
+\end{demonstration}
+\begin{demonstration}[König-Huygens et transformation affine]
+Avec $\mu=E(X)$, développer le carré donne
+$V(X)=E(X^2-2\mu X+\mu^2)=E(X^2)-2\mu^2+\mu^2=E(X^2)-\mu^2$.
+Pour $Y=aX+c$, $Y-E(Y)=a(X-E(X))$, donc
+$V(Y)=a^2V(X)$ et $\sigma(Y)=|a|\sigma(X)$.
+\end{demonstration}
+\begin{exemple}[Une variable de Bernoulli]
+Si $I$ vaut 0 ou 1 et $P(I=1)=p$, on a $I^2=I$.
+Donc $E(I)=p$, $E(I^2)=p$ et $V(I)=p-p^2=p(1-p)$.
+\end{exemple}
+\clearpage
+\pagestyle{otMain}

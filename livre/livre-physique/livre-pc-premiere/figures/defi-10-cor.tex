@@ -1,0 +1,16 @@
+% Énergie par kilogramme et par litre de quatre carburants (corrigé du défi D10)
+\begin{tikzpicture}
+\begin{axis}[ybar,width=110mm,height=55mm,bar width=6mm,ymin=0,ymax=135,xmin=0.4,xmax=4.6,
+  xtick={1,2,3,4},xticklabels={{dihydrogène\\liquide},{méthane\\liquide},kérosène,éthanol},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  ticklabel style={font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk,align=center},
+  ylabel={énergie libérée},label style={font=\small,text=otInk},
+  /pgf/number format/use comma,nodes near coords,nodes near coords style={font=\otLight\fontsize{7}{8}\selectfont,text=otInk},
+  legend style={at={(0.98,0.97)},anchor=north east,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont},
+  legend cell align=left,area legend,clip=false]
+\addplot[fill=otNavy!70,draw=none] coordinates {(1,121) (2,50.1) (3,43.0) (4,26.8)};
+\addplot[fill=otGreen!80,draw=none] coordinates {(1,8.6) (2,21.0) (3,34.4) (4,21.1)};
+\legend{par kilogramme ($\unit{MJ.kg^{-1}}$),par litre ($\unit{MJ.L^{-1}}$)}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Le dihydrogène est imbattable par kilogramme, mais le moins bon par litre : son réservoir est très volumineux.}

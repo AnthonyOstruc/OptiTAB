@@ -1,0 +1,83 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 11 — vérifié par verifications/defis_11_15.py.
+
+\begin{blocLivre}{cor-11-25a}
+\begin{corrige}{25}{La fonction W de Lambert}
+\demarche{La réciproque d'une bijection se dérive par la formule
+$1/g'(W)$ ; son DL s'obtient par identification dans l'équation qui la
+définit ; son comportement à l'infini, en réinjectant l'estimation dans
+$W+\ln W=\ln y$.}
+\partieExo{A}{Définition et dérivée}
+\begin{questions}
+  \item $g'(x)=(1+x)\,\mathrm{e}^{x}>0$ sur $\intOO{-1}{+\infty}$ : $g$ est
+    continue, strictement croissante, $g(-1)=-\frac1{\mathrm{e}}$ et
+    $g(x)\to+\infty$. Par le théorème de la bijection,
+    $g:\intFO{-1}{+\infty}\to\intFO{-\frac1{\mathrm{e}}}{+\infty}$ est
+    bijective. $g(0)=0$, $g(1)=\mathrm{e}$, $g(-1)=-\frac1{\mathrm{e}}$
+    donnent $\res{W(0)=0}$, $\res{W(\mathrm{e})=1}$,
+    $\res{W\bigl(-\tfrac1{\mathrm{e}}\bigr)=-1}$.
+  \item $W$ est continue et strictement croissante (réciproque d'une
+    bijection continue strictement croissante). Comme $g'$ ne s'annule pas
+    sur $\intOO{-1}{+\infty}$, $W$ est dérivable sur
+    $\intOO{-\frac1{\mathrm{e}}}{+\infty}$ et
+    $W'=\dfrac{1}{g'(W)}=\dfrac{1}{(1+W)\mathrm{e}^{W}}$. Pour $y\neq0$,
+    $\mathrm{e}^{W}=\frac yW$ d'où la seconde forme. $\res{W'(0)=1}$. En
+    $-\frac1{\mathrm{e}}$, $g'(-1)=0$ : $W'(y)\to+\infty$, \emph{tangente
+    verticale}.
+\end{questions}
+\partieExo{B}{Développement limité en $0$}
+\begin{questions}[resume]
+  \item Écrivons $W=y+a_2y^{2}+a_3y^{3}+o\bigl(y^{3}\bigr)$ ($W(0)=0$,
+    $W'(0)=1$). Comme $W=O(y)$,
+    $W\mathrm{e}^{W}=W+W^{2}+\frac{W^{3}}{2}+o\bigl(y^{3}\bigr)$, avec
+    $W^{2}=y^{2}+2a_2y^{3}+o\bigl(y^{3}\bigr)$ et $W^{3}=y^{3}+o\bigl(y^{3}\bigr)$ :
+    \[
+    W\mathrm{e}^{W}=y+(a_2+1)y^{2}+\Bigl(a_3+2a_2+\frac12\Bigr)y^{3}+o\bigl(y^{3}\bigr)=y .
+    \]
+    D'où $a_2=-1$, $a_3=\frac32$ :
+    $\res{W(y)=y-y^{2}+\tfrac32y^{3}+o\bigl(y^{3}\bigr)}$.
+  \item À l'ordre $4$, avec $W=y-y^{2}+\frac32y^{3}+a_4y^{4}$ :
+    $W^{2}=y^{2}-2y^{3}+4y^{4}$, $W^{3}=y^{3}-3y^{4}$, $W^{4}=y^{4}$
+    (modulo $o(y^{4})$), et le coefficient de $y^{4}$ dans
+    $W+W^{2}+\frac{W^{3}}2+\frac{W^{4}}6$ est
+    $a_4+4-\frac32+\frac16=0$, soit $\res{a_4=-\tfrac83}$. Contrôle :
+    $\frac{(-n)^{n-1}}{n!}$ vaut $1,-1,\frac32,-\frac83$ pour
+    $n=1,2,3,4$.
+  \item $x=W(0{,}01)\approx0{,}01-0{,}0001+0{,}0000015=\res{0{,}0099015}$ ;
+    le terme suivant, $-\frac83\cdot10^{-8}$, donne l'ordre de grandeur de
+    l'erreur ($3\cdot10^{-8}$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-11-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Comportement en $+\infty$}
+\begin{questions}[start=6]
+  \item $W$ est croissante ; si elle était majorée par $M$, on aurait
+    $y=g(W(y))\leqslant g(M)$ pour tout $y$ : absurde. Donc
+    $W(y)\to+\infty$. Pour $y>0$, $W(y)>0$ et $\ln$ de $W\mathrm{e}^{W}=y$
+    donne $\res{W+\ln W=\ln y}$. Comme $\ln W=o(W)$ :
+    $W(1+o(1))=\ln y$, soit $\res{W(y)\sim\ln y}$.
+  \item $\ln W=\ln\bigl(\ln y\,(1+o(1))\bigr)=\ln\ln y+o(1)$, donc
+    $W=\ln y-\ln W=\ln y-\ln\ln y+o(1)$. Réinjectons :
+    $W=\ln y\Bigl(1-\frac{\ln\ln y}{\ln y}+o\bigl(\tfrac{1}{\ln y}\bigr)\Bigr)$,
+    donc
+    \[
+    \ln W=\ln\ln y-\frac{\ln\ln y}{\ln y}+o\Bigl(\frac{\ln\ln y}{\ln y}\Bigr),
+    \]
+    et $W=\ln y-\ln W$ donne
+    $\res{W(y)=\ln y-\ln\ln y+\frac{\ln\ln y}{\ln y}+o\Bigl(\frac{\ln\ln y}{\ln y}\Bigr)}$.
+  \item $x^{x}=y\iff x\ln x=\ln y$. La fonction $x\mapsto x\ln x$ est
+    strictement croissante de $\intOO{1}{+\infty}$ sur $\intOO{0}{+\infty}$ :
+    unique solution $x_y>1$. Avec $u=\ln x>0$ : $u\,\mathrm{e}^{u}=\ln y$,
+    donc $u=W(\ln y)$ et
+    $x_y=\mathrm{e}^{W(\ln y)}=\dfrac{\ln y}{W(\ln y)}$ (car
+    $\mathrm{e}^{W(t)}=\frac{t}{W(t)}$). Avec la question 6 :
+    $\res{x_y\sim\dfrac{\ln y}{\ln\ln y}}$. Pour $y=10^{20}$ :
+    $W(\ln y)\approx2{,}800$ et $x_y\approx16{,}45$, alors que
+    l'équivalent donne seulement $12{,}0$ : la convergence est très lente,
+    d'où l'intérêt du développement plus fin de la question 7.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

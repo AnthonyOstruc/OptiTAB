@@ -1,0 +1,340 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[redox]{3}{Réactions d'oxydoréduction}{Partie 1 · Constitution et transformations de la matière}
+{Oxydant\enspace·\enspace Réducteur\enspace·\enspace Couple\enspace·\enspace Demi-équation\enspace·\enspace Transfert d'électrons}
+\objectif{Identifier, à partir de données expérimentales, un transfert d'électrons entre deux réactifs.}
+\objectif{Définir oxydant, réducteur, oxydation, réduction et couple oxydant-réducteur.}
+\objectif{Écrire la demi-équation électronique d'un couple, y compris en milieu acide.}
+\objectif{Établir l'équation d'une réaction d'oxydoréduction, les couples étant donnés.}
+\objectif{Vérifier la conservation des éléments et des charges dans une équation, y compris avec Python.}
+\prerequis{Ions monoatomiques et polyatomiques, formules chimiques (classe de seconde).}
+\prerequis{Modélisation d'une transformation par une équation de réaction ajustée (classe de seconde).}
+\prerequis{Quantité de matière et volume molaire (chapitre~1).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Des transformations par transfert d'électrons}
+\begin{definition}[Oxydant, réducteur, couple]
+Un \textbf{oxydant} est une espèce capable de capter un ou plusieurs électrons ; un \textbf{réducteur}, une espèce capable d'en
+céder. Un oxydant et un réducteur qui se transforment l'un en l'autre par transfert d'électrons forment un \textbf{couple
+oxydant-réducteur}, noté Ox/Red. On le décrit par une \textbf{demi-équation électronique} :
+\[\mathrm{Ox}+n\,\mathrm{e}^-=\mathrm{Red}\qquad\text{par exemple}\qquad\ce{Cu^{2+} + 2e- = Cu}.\]
+Le signe $=$ indique que l'échange peut se faire dans les deux sens.
+\end{definition}
+\schema{03-zinc}
+\begin{definition}[Oxydation et réduction]
+Une \textbf{oxydation} est une perte d'électrons, une \textbf{réduction} un gain d'électrons. Au cours d'une réaction
+d'oxydoréduction, le réducteur d'un couple est oxydé, et l'oxydant d'un autre couple est réduit : les électrons cédés
+par l'un sont captés par l'autre, et n'apparaissent jamais libres en solution.
+\end{definition}
+\essSection{2}{Écrire une demi-équation électronique}
+\begin{savoirfaire}[Ajuster une demi-équation en milieu acide]
+Exemple du couple $\ce{MnO4-}/\ce{Mn^{2+}}$ :
+\begin{questions}
+\item Écrire l'oxydant et le réducteur de part et d'autre du signe $=$ et ajuster les éléments autres que O et H :
+$\ce{MnO4- = Mn^{2+}}$.
+\item Ajuster les atomes d'oxygène avec des molécules d'eau : $\ce{MnO4- = Mn^{2+} + 4H2O}$.
+\item Ajuster les atomes d'hydrogène avec des ions $\ce{H+}$ : $\ce{MnO4- + 8H+ = Mn^{2+} + 4H2O}$.
+\item Ajuster les charges avec des électrons, du côté de l'oxydant : $\ce{MnO4- + 8H+ + 5e- = Mn^{2+} + 4H2O}$.
+\end{questions}
+\end{savoirfaire}
+\essSection{3}{Établir l'équation d'une réaction d'oxydoréduction}
+\begin{propriete}[Combiner deux demi-équations]
+On écrit la demi-équation de l'oxydant qui réagit, dans le sens de sa réduction, et celle du réducteur, dans le sens de
+son oxydation. On multiplie l'une ou l'autre pour que le nombre d'électrons cédés soit égal au nombre d'électrons captés,
+puis on additionne : les électrons disparaissent de l'équation.
+\end{propriete}
+\begin{exemple}
+Les ions permanganate oxydent les ions fer(II) : $\ce{MnO4- + 8H+ + 5e- -> Mn^{2+} + 4H2O}$ et $\ce{Fe^{2+} -> Fe^{3+} + e-}$, à
+multiplier par 5. En additionnant :
+\[\ce{MnO4- + 8H+ + 5Fe^{2+} -> Mn^{2+} + 5Fe^{3+} + 4H2O}.\]
+On vérifie la conservation des éléments (1 Mn, 4 O, 8 H, 5 Fe) et des charges ($+17$ de chaque côté).
+\end{exemple}
+\begin{python}
+especes = {'MnO4-': ({'Mn': 1, 'O': 4}, -1), 'H+': ({'H': 1}, 1),
+           'Fe2+': ({'Fe': 1}, 2), 'Mn2+': ({'Mn': 1}, 2),
+           'Fe3+': ({'Fe': 1}, 3), 'H2O': ({'H': 2, 'O': 1}, 0)}
+reactifs = {'MnO4-': 1, 'H+': 8, 'Fe2+': 5}
+produits = {'Mn2+': 1, 'Fe3+': 5, 'H2O': 4}
+
+def bilan(cote):
+    atomes, charge = {}, 0
+    for nom, coef in cote.items():
+        composition, z = especes[nom]
+        charge = charge + coef * z
+        for el, nb in composition.items():
+            atomes[el] = atomes.get(el, 0) + coef * nb
+    return atomes, charge
+
+print(bilan(reactifs))
+print(bilan(produits))
+\end{python}
+\begin{console}
+({'Mn': 1, 'O': 4, 'H': 8, 'Fe': 5}, 17)
+({'Mn': 1, 'Fe': 5, 'H': 8, 'O': 4}, 17)
+\end{console}
+\noindent\capacite{Capacité numérique} Chaque espèce est décrite par sa composition et sa charge. La fonction \code{bilan} compte les atomes de
+chaque élément et la charge totale d'un côté de l'équation, en tenant compte des coefficients. Les deux lignes affichées
+contiennent les mêmes nombres d'atomes et la même charge : l'équation est bien ajustée.
+\essSection{4}{Identifier un transfert d'électrons}
+\begin{propriete}[Indices expérimentaux]
+Un transfert d'électrons se repère par l'apparition ou la disparition d'espèces : dépôt métallique, dégagement gazeux,
+changement de couleur d'une solution. On identifie les produits par des tests : les ions métalliques donnent avec la soude
+des précipités colorés, le diiode bleuit l'empois d'amidon, le dihydrogène produit une petite détonation au contact d'une
+flamme.
+\end{propriete}
+\schema{03-tests}
+\begin{attention}
+Une demi-équation n'est pas une réaction : elle décrit un couple, et les électrons n'existent jamais seuls en solution. Les
+ions $\ce{H+}$ et les molécules d'eau d'une demi-équation servent à ajuster O et H en milieu acide. Dans l'équation finale, il ne
+doit rester aucun électron.
+\end{attention}
+\begin{experience}[Le zinc et les ions cuivre(II)]
+On plonge une lame de zinc décapée dans une solution bleue de sulfate de cuivre. Après quelques minutes, la lame se
+couvre d'un dépôt rouge et la solution se décolore. Un prélèvement de solution, additionné de soude, donne un précipité
+blanc : des ions zinc(II) sont apparus. On en déduit que le zinc a cédé des électrons aux ions cuivre(II).
+\end{experience}
+\begin{rediger}
+Nommer l'oxydant et le réducteur qui réagissent et leurs couples. Écrire les deux demi-équations dans le sens où elles se
+produisent, les multiplier pour égaliser les électrons, additionner, puis vérifier la conservation des éléments et des
+charges.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-3-1}
+\begin{exercice}[1]{Oxydants, réducteurs et couples}
+\begin{questions}
+\item Dans les couples $\ce{Ag+}/\ce{Ag}$, $\ce{Fe^{3+}}/\ce{Fe^{2+}}$ et $\ce{Al^{3+}}/\ce{Al}$, identifier l'oxydant et le réducteur.
+\item Écrire les demi-équations électroniques de ces trois couples.
+\item Écrire les demi-équations des couples $\ce{I2}/\ce{I-}$ et $\ce{Cl2}/\ce{Cl-}$.
+\item L'ion fer(II) appartient à deux couples, $\ce{Fe^{3+}}/\ce{Fe^{2+}}$ et $\ce{Fe^{2+}}/\ce{Fe}$. Quel est son rôle dans chacun ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-2}
+\begin{exercice}[1]{Des demi-équations en milieu acide}
+Écrire les demi-équations électroniques des couples suivants, en milieu acide.
+\begin{questions}
+\item $\ce{Cr2O7^{2-}}/\ce{Cr^{3+}}$ (ion dichromate et ion chrome(III)).
+\item $\ce{O2}/\ce{H2O}$ et $\ce{H2O2}/\ce{H2O}$.
+\item $\ce{NO3-}/\ce{NO}$ (ion nitrate et monoxyde d'azote).
+\item $\ce{O2}/\ce{H2O2}$. Quel double rôle le peroxyde d'hydrogène $\ce{H2O2}$ peut-il jouer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-3}
+\begin{exercice}[1]{L'arbre de Diane}
+On plonge un fil de cuivre dans une solution incolore de nitrate d'argent, $\ce{Ag+}+\ce{NO3-}$.
+\schema{03-diane}
+\begin{questions}
+\item Quelles observations montrent qu'une transformation chimique a lieu ?
+\item Identifier les deux couples mis en jeu et écrire leurs demi-équations.
+\item Établir l'équation de la réaction. Quelle espèce est oxydée ? Laquelle est réduite ?
+\item Pourquoi la solution bleuit-elle ? Proposer un test pour le confirmer.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-4}
+\begin{exercice}[1]{Un métal attaqué par un acide}
+On verse de l'acide chlorhydrique, $\ce{H+}+\ce{Cl-}$, en excès sur \qty{0,654}{g} de zinc en poudre : un gaz se dégage, et le zinc
+disparaît.
+\begin{donnees}
+$M(\ce{Zn})=\qty{65,4}{g.mol^{-1}}$ ; $V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ à \qty{20}{\degreeCelsius}. Couples : $\ce{H+}/\ce{H2}$ et $\ce{Zn^{2+}}/\ce{Zn}$.
+\end{donnees}
+\begin{questions}
+\item Comment identifier le gaz dégagé ?
+\item Établir l'équation de la réaction.
+\item Calculer la quantité de matière de zinc, puis celle de dihydrogène formé.
+\item Calculer le volume de dihydrogène obtenu à \qty{20}{\degreeCelsius}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-5}
+\begin{exercice}[1]{Un clou dans une solution bleue}
+Un clou en fer est plongé dans une solution de sulfate de cuivre. Une heure plus tard, il est couvert d'un dépôt rouge et
+la solution a verdi ; un prélèvement de solution donne, avec la soude, un précipité vert.
+\begin{questions}
+\item Identifier le dépôt rouge et l'ion responsable du précipité vert.
+\item En déduire les deux couples mis en jeu.
+\item Établir l'équation de la réaction.
+\item Pourquoi la solution, d'abord bleue, a-t-elle verdi ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-3-6}
+\begin{exercice}[2]{Établir des équations}
+Établir l'équation de chaque réaction, en milieu acide si nécessaire.
+\begin{questions}
+\item Les ions permanganate $\ce{MnO4-}$ oxydent les ions fer(II) ; couples $\ce{MnO4-}/\ce{Mn^{2+}}$ et $\ce{Fe^{3+}}/\ce{Fe^{2+}}$.
+\item Le diiode oxyde les ions thiosulfate $\ce{S2O3^{2-}}$ ; couples $\ce{I2}/\ce{I-}$ et $\ce{S4O6^{2-}}/\ce{S2O3^{2-}}$.
+\item Le peroxyde d'hydrogène oxyde les ions iodure ; couples $\ce{H2O2}/\ce{H2O}$ et $\ce{I2}/\ce{I-}$.
+\item Pour chaque réaction, vérifier la conservation des charges.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-7}
+\begin{exercice}[2]{L'alcootest chimique}
+Dans un ancien alcootest, l'air expiré traverse un tube contenant des cristaux orange de dichromate de potassium en milieu
+acide. L'éthanol de l'haleine est oxydé en acide éthanoïque, tandis que les ions dichromate, orange, sont réduits en ions
+chrome(III), verts.
+\begin{donnees}
+Couples : $\ce{Cr2O7^{2-}}/\ce{Cr^{3+}}$ et $\ce{CH3COOH}/\ce{CH3CH2OH}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation du couple $\ce{Cr2O7^{2-}}/\ce{Cr^{3+}}$.
+\item Écrire la demi-équation du couple $\ce{CH3COOH}/\ce{CH3CH2OH}$.
+\item Établir l'équation de la réaction et vérifier qu'elle est ajustée.
+\item Comment le test signale-t-il la présence d'alcool ? Pourquoi la longueur de tube devenue verte renseigne-t-elle sur la
+quantité d'alcool ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-8}
+\begin{exercice}[2]{Nettoyer l'argenterie}
+Le noircissement de l'argenterie est dû à une fine couche de sulfure d'argent, $\ce{Ag2S}$. Pour la nettoyer, on la pose sur
+une feuille d'aluminium au fond d'une bassine d'eau chaude salée : l'argent redevient brillant.
+\begin{donnees}
+Couples : $\ce{Ag2S}/\ce{Ag}$, de demi-équation $\ce{Ag2S + 2e- = 2Ag + S^{2-}}$, et $\ce{Al^{3+}}/\ce{Al}$. Masses molaires (\unit{g.mol^{-1}}) :
+Al 27,0 ; S 32,1 ; Ag 107,9.
+\end{donnees}
+\begin{questions}
+\item Quel est l'oxydant ? Quel est le réducteur ?
+\item Établir l'équation de la réaction.
+\item Une cuillère porte \qty{0,100}{g} de sulfure d'argent. Calculer la masse d'argent régénérée.
+\item Calculer la masse minimale d'aluminium consommée. Pourquoi ce procédé ne fait-il pas perdre d'argent, contrairement
+à un polissage ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-9}
+\begin{exercice}[2]{Vérifier une équation en Python}
+On reprend le programme de l'essentiel, qui vérifie l'équation de la réaction entre les ions permanganate et fer(II).
+\begin{questions}
+\item \capacite{Capacité numérique}Que contient le dictionnaire \code{especes} ? Que renvoie la fonction \code{bilan} ?
+\item Un élève remplace \code{'H+': 8} par \code{'H+': 4} dans \code{reactifs}. Que devient la première ligne affichée ? Que peut-on en
+conclure ?
+\item Quelles lignes faut-il modifier pour vérifier l'équation $\ce{Zn + Cu^{2+} -> Zn^{2+} + Cu}$ ? Écrire les dictionnaires obtenus.
+\item Pourquoi faut-il comparer à la fois les atomes et les charges ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-10}
+\begin{exercice}[2]{La vitamine C, un antioxydant}
+La vitamine C, ou acide ascorbique $\ce{C6H8O6}$, est le réducteur du couple $\ce{C6H6O6}/\ce{C6H8O6}$. On l'ajoute à certains aliments
+comme antioxydant (E300).
+\begin{questions}
+\item Écrire la demi-équation du couple de l'acide ascorbique.
+\item L'acide ascorbique réduit le diiode : établir l'équation de la réaction, avec le couple $\ce{I2}/\ce{I-}$.
+\item Il réagit aussi avec le dioxygène de l'air, couple $\ce{O2}/\ce{H2O}$. Établir l'équation de cette réaction.
+\item Expliquer pourquoi on parle d'antioxydant, et pourquoi un jus d'orange perd sa vitamine C s'il reste ouvert à l'air.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-11}
+\begin{exercice}[2]{Ne jamais mélanger eau de Javel et détartrant}
+L'eau de Javel contient des ions hypochlorite $\ce{ClO-}$ et des ions chlorure $\ce{Cl-}$. Mélangée à un détartrant acide, elle libère du
+dichlore, un gaz toxique.
+\begin{donnees}
+Couples : $\ce{ClO-}/\ce{Cl2}$ et $\ce{Cl2}/\ce{Cl-}$. Une eau de Javel à 2,6~\% de chlore actif contient environ \qty{0,37}{mol.L^{-1}} d'ions hypochlorite.
+$V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ ; $M(\ce{Cl})=\qty{35,5}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire les demi-équations des deux couples, en milieu acide.
+\item Montrer que l'équation de la réaction s'écrit $\ce{ClO- + Cl- + 2H+ -> Cl2 + H2O}$. Quelle particularité présente-t-elle ?
+\item On verse par erreur \qty{100}{mL} d'eau de Javel dans un détartrant acide en excès. Calculer la quantité, le volume à \qty{20}{\degreeCelsius} et la
+masse de dichlore qui peuvent se former.
+\item Pourquoi le pictogramme « Ne pas mélanger avec d'autres produits » figure-t-il sur les flacons ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-3-12}
+\begin{exercice}[3]{Protéger une coque de bateau}
+\begin{docu}{1}{La corrosion}
+Au contact de l'eau de mer, l'acier d'une coque, principalement constitué de fer, est oxydé par le dioxygène dissous :
+le fer se transforme en ions fer(II), puis en rouille.
+\end{docu}
+\begin{docu}{2}{Les anodes sacrificielles}
+On fixe sur la coque des blocs de zinc, en contact électrique avec l'acier. Le zinc, plus réducteur que le fer, est oxydé à
+sa place : il se dissout lentement en ions zinc(II), et le fer est protégé. Un bateau consomme ainsi environ \qty{2,0}{kg} de
+zinc par an.
+\end{docu}
+\begin{donnees}
+Couples : $\ce{Fe^{2+}}/\ce{Fe}$, $\ce{Zn^{2+}}/\ce{Zn}$, $\ce{O2}/\ce{H2O}$ ; on raisonne en milieu acide. Masses molaires : Fe 55,8 ; Zn 65,4 (\unit{g.mol^{-1}}).
+\end{donnees}
+\begin{questions}
+\item Établir l'équation de l'oxydation du fer par le dioxygène.
+\item Établir l'équation de l'oxydation du zinc par le dioxygène.
+\item Calculer la quantité de zinc consommée en un an, puis la quantité d'électrons qu'il cède.
+\item \initiative Quelle masse de fer la coque aurait-elle perdue en un an sans les anodes, si les mêmes électrons avaient
+été cédés par le fer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-13}
+\begin{exercice}[3]{L'eau oxygénée « à 10 volumes »}
+\begin{docu}{1}{Une eau oxygénée qui mousse}
+Versée sur une plaie, l'eau oxygénée (solution de peroxyde d'hydrogène $\ce{H2O2}$) mousse : une enzyme du sang accélère sa
+transformation en eau et en dioxygène. Le peroxyde d'hydrogène appartient aux couples $\ce{H2O2}/\ce{H2O}$ et $\ce{O2}/\ce{H2O2}$.
+\end{docu}
+\begin{docu}{2}{Le titre en volumes}
+Une eau oxygénée à 10 volumes libère, en se décomposant entièrement, \qty{10}{L} de dioxygène par litre de solution,
+volume mesuré à \qty{0}{\degreeCelsius} et \qty{1013}{hPa}, conditions où le volume molaire vaut \qty{22,4}{L.mol^{-1}}.
+\end{docu}
+\begin{questions}
+\item Écrire les demi-équations des deux couples du peroxyde d'hydrogène.
+\item Montrer que l'équation de la décomposition s'écrit $\ce{2H2O2 -> 2H2O + O2}$. Quel double rôle joue le peroxyde d'hydrogène ?
+\item \initiative Montrer que la concentration en peroxyde d'hydrogène d'une eau oxygénée à 10 volumes vaut environ
+\qty{0,89}{mol.L^{-1}}.
+\item Quel volume de dioxygène un flacon de \qty{250}{mL} peut-il libérer à \qty{0}{\degreeCelsius}, puis à \qty{20}{\degreeCelsius} ($V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$) ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-14}
+\begin{exercice}[3]{Récupérer l'argent d'un bain photographique}
+\begin{docu}{1}{Un déchet précieux}
+Les bains de fixateur des laboratoires photographiques contiennent des ions argent. On les récupère en plongeant dans le
+bain de la poudre ou de la laine de zinc : l'argent se dépose, et le zinc passe en solution.
+\end{docu}
+\begin{docu}{2}{Le bain}
+Un bain usagé de \qty{5,0}{L} contient \qty{2,0}{g} d'argent par litre, sous forme d'ions $\ce{Ag+}$.
+\end{docu}
+\begin{donnees}
+Couples : $\ce{Ag+}/\ce{Ag}$ et $\ce{Zn^{2+}}/\ce{Zn}$ ; Ag 107,9 ; Zn 65,4 (\unit{g.mol^{-1}}).
+\end{donnees}
+\begin{questions}
+\item Établir l'équation de la réaction. Quel est le rôle du zinc ?
+\item Calculer la masse et la quantité d'ions argent contenus dans le bain.
+\item \initiative Quelle masse minimale de zinc faut-il utiliser pour récupérer tout l'argent ?
+\item Proposer un test pour vérifier que le bain traité contient des ions zinc(II).
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-15}
+\begin{exercice}[3]{Identifier un métal}
+\begin{docu}{1}{L'expérience}
+Un échantillon de \qty{0,262}{g} d'un métal inconnu est attaqué par de l'acide chlorhydrique en excès. On recueille, par
+déplacement d'eau, \qty{96}{mL} de dihydrogène à \qty{20}{\degreeCelsius} et \qty{1013}{hPa}. Le métal est entièrement transformé en ions M$^{2+}$.
+\end{docu}
+\begin{docu}{2}{Quelques métaux}
+\par\smallskip\noindent\hfill\begin{tabular}{lcccc}
+\toprule
+Métal & magnésium & fer & zinc & cuivre \\
+\midrule
+$M$ (\unit{g.mol^{-1}}) & 24,3 & 55,8 & 65,4 & 63,5 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+Le cuivre n'est pas attaqué par l'acide chlorhydrique.
+\end{docu}
+\begin{donnees}
+$V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$ ; couple $\ce{H+}/\ce{H2}$.
+\end{donnees}
+\begin{questions}
+\item Établir l'équation de la réaction en notant M le métal.
+\item Calculer la quantité de dihydrogène recueillie.
+\item \initiative Identifier le métal.
+\item Pourquoi le cuivre, de masse molaire proche, peut-il être écarté sans calcul ? Proposer un test qui confirmerait
+l'identification.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

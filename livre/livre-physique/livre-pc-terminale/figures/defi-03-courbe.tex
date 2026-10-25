@@ -1,0 +1,12 @@
+% Titrage de l'acide inconnu par la soude (défi D03)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=96mm,height=40mm,xmin=0,xmax=40,ymin=0,ymax=13,
+  xtick={0,5,...,40},ytick={0,4,...,12},xlabel={$V_\mathrm{B}$ (mL)},ylabel={pH},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/03-succinique-ph.dat};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:25.4,0) -- (axis cs:25.4,8.86);
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:25.8,1.6) {$V_\mathrm{E}=25{,}4$ mL};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Un seul saut de pH est observé.}

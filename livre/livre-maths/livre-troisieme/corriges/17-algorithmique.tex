@@ -1,0 +1,61 @@
+\clearpage\pagestyle{otMain}\fontsize{11}{15}\selectfont\corrigesChapitre{17}{Algorithmique, blocs et tableur}
+\begin{blocLivre}{cor-17-1}\begin{corrige}{1}{Suivre trois opérations}\demarche{Écrire chaque valeur dans l’ordre.}
+x prend successivement 3, 8 et 16. Le bloc dire affiche $\res{16}$. Ajouter puis multiplier ne donne pas le même résultat que multiplier puis ajouter.
+\label{fig-cor-17-1}\figureGeo[corrige]{script-01}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-2}\begin{corrige}{2}{Un nombre demandé}\demarche{Traduire les modifications successives.}
+Après ajout, on a $x+4$ ; après multiplication, $3(x+4)$. Les résultats sont $\res{18}$ et $\res0$. Les parenthèses traduisent l’ordre des blocs.
+\label{fig-cor-17-2}\figureGeo[corrige]{script-02}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-3}\begin{corrige}{3}{Une boucle bornée}\demarche{Repérer les limites de la boucle.}
+Le bloc ajouter s’exécute quatre fois. Les valeurs sont 3, 6, 9, 12. La sortie est $\res{12}$. Le bloc dire placé après la boucle s’exécute une seule fois.
+\label{fig-cor-17-3}\figureGeo[corrige]{script-03}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-4}\begin{corrige}{4}{Un test et deux branches}\demarche{Tester la valeur située à la frontière.}
+Le test est $x\ge10$, donc il est faux pour 9 et vrai pour 10 et 14. Les sorties sont respectivement $\res{\text{petit, grand, grand}}$. La borne 10 appartient bien à la première branche du test vrai.
+\label{fig-cor-17-4}\figureGeo[corrige]{script-04}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-5}\begin{corrige}{5}{Doubler plusieurs fois}\demarche{Distinguer additions et multiplications répétées.}
+Les trois tours donnent 4, 8, 16. La sortie est $\res{16=2\times2^3}$. Le script multiplie à chaque tour ; il n’ajoute pas 2 trois fois.
+\label{fig-cor-17-5}\figureGeo[corrige]{script-05}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-6}\begin{corrige}{6}{Une somme cumulée}\demarche{Faire un tableau des deux variables.}
+Au départ $(s;n)=(0;1)$. Après les cinq tours : $(1;2),(3;3),(6;4),(10;5),(15;6)$. La sortie est $\res{15}$. L’ajout à s précède l’augmentation de n.
+\label{fig-cor-17-6}\figureGeo[corrige]{script-06}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-7}\begin{corrige}{7}{Répéter jusqu’à}\demarche{Vérifier le test avant chaque nouveau tour.}
+En partant de 0, on obtient 6, 12, 18 puis 24. Le test $x\ge20$ devient vrai à 24 : $\res{4\text{ tours}}$ et sortie $\res{24}$. La boucle ne s’arrête pas à 20, qui n’est jamais atteint.
+\label{fig-cor-17-7}\figureGeo[corrige]{script-07}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-8}\begin{corrige}{8}{Un carré}\demarche{Suivre position et orientation.}
+Quatre segments de 40 unités et quatre quarts de tour forment un carré. Les sommets sont $(0;0),(40;0),(40;40),(0;40)$ puis retour au départ. Le périmètre est $\res{160}$ unités.
+\label{fig-cor-17-8}\figureGeo[corrige]{script-08}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-9}\begin{corrige}{9}{Tester un multiple}\demarche{Relier reste nul et divisibilité.}
+$18\bmod3=0$ : sortie $\res1$. $19\bmod3=1$ : sortie $\res0$. Pour une entrée entière, il reconnaît les multiples de 3. Le compteur y est initialisé avant le test.
+\label{fig-cor-17-9}\figureGeo[corrige]{script-09}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-10}\begin{corrige}{10}{Énumérer des diviseurs}\demarche{Comprendre l’intervalle parcouru par la boucle.}
+Le script teste d de 1 à 12 et affiche $\res{1,2,3,4,6,12}$. Ce sont tous les diviseurs positifs de 12. Commencer par 0 rendrait le calcul du reste impossible, car on ne divise pas par zéro.
+\label{fig-cor-17-10}\figureGeo[corrige]{script-10}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-11}\begin{corrige}{11}{Une boucle qui dépasse}\demarche{Prouver que la variable progresse vers la condition d’arrêt.}
+Les valeurs sont 1, 2, 4, 8, 16, 32, 64. Il faut $\res6$ tours avant $x>50$. Avec « ajouter 0 », x reste 1 ; le test ne devient jamais vrai et la boucle ne termine pas.
+\label{fig-cor-17-11}\figureGeo[corrige]{script-11}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-12}\begin{corrige}{12}{Un bloc personnalisé}\demarche{Séparer le motif et le déplacement entre motifs.}
+Répéter trois fois : carré(30), relever le stylo, avancer de 40, baisser le stylo. Le déplacement n’est pas dans le bloc carré, sinon il déplacerait aussi les coins. Les départs sont 0, 40, 80 ; le dernier déplacement porte le lutin à 120 sans tracer.
+\label{fig-cor-17-12}\figureGeo[corrige]{script-carres}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-13}\begin{corrige}{13}{Simuler un dé}\demarche{Initialiser une fois, compter à chaque tour, diviser à la fin.}
+Mettre succès à 0 avant la boucle. Répéter 600 fois : choisir un entier aléatoire de 1 à 6 ; si le résultat vaut 6, ajouter 1 à succès. Après la boucle, afficher succès/600. La probabilité théorique est $1/6$ ; on ne promet pas exactement 100 succès.
+\label{fig-cor-17-13}\figureGeo[corrige]{script-simulation}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-14}\begin{corrige}{14}{Deux lutins coordonnés}\demarche{Identifier l’événement et la synchronisation.}
+Le compteur atteint $\res{10}$. L’attente garantit que le script déclenché chez Joueur est terminé avant l’affichage. Sans attente, les deux scripts continueraient en parallèle et l’affichage pourrait survenir avant la fin du comptage. Les blocs de deux lutins ne forment pas une seule pile.
+\label{fig-cor-17-14}\figureGeo[corrige]{script-parallele}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-17-15}\begin{corrige}{15}{Un tableur recopié}\demarche{Suivre séparément références relatives et absolues.}
+Les résultats sont $\res{5,8,11,14,17}$. La dernière formule est =3*A6+\$B\$1. La référence de la ligne A se déplace ; la cellule du terme constant reste fixée. Sans les dollars, B1 se déplacerait à tort.
+\label{fig-cor-17-15}\figureGeo[corrige]{script-tableur}
+\end{corrige}\end{blocLivre}

@@ -1,0 +1,135 @@
+{
+  "chapitre": 5,
+  "titre": "Oscillations libres amorties",
+  "rubrique": "1.4 / régimes transitoires du deuxième ordre",
+  "scope": "les régimes libres et les réponses à un échelon des oscillateurs amortis, électriques et mécaniques, ainsi que leur identification expérimentale.",
+  "cours": 12,
+  "exercices": 24,
+  "defis": 3,
+  "dm": 1,
+  "ds": 1,
+  "sources": [
+    {
+      "titre": "DS réel / Oscillations amorties",
+      "url": "https://cahier-de-prepa.fr/mp*-condorcet/download?id=98&v=66f32",
+      "cible": "Archive de révision SUP, site MP* Condorcet ; DS5 du 7 janvier 2023 ; problème I, partie II, questions 1, 2, 4 et 5, page PDF 2.",
+      "travail": "Prévoir 40 minutes. Mesurer les amplitudes par rapport à l’équilibre, voisin de 10 cm, sur la figure originale. Les valeurs ci-dessous sont des lectures approximatives à affiner avec le graphe.",
+      "corrige": "On lit Td ≈ 0,72 s et des premiers pics à environ 15 puis 13,5 cm : les écarts sont 5 et 3,5 cm, d’où δ ≈ ln(5/3,5) = 0,357. Avec m = 0,10 kg et k = 7,78 N/m, $\\omega_0\\simeq8{,}82$ rad/s, Q ≈ 8,8 et h ≈ 0,10 kg/s. La perte entre ces pics vaut environ $k(0{,}05^2-0{,}035^2)/2\\simeq5$ mJ. Pour v0 = 0, conserver le terme sinus de coefficient αX0/ωd dans la solution. La précision est celle d’une lecture graphique, pas d’un ajustement instrumenté."
+    },
+    {
+      "titre": "TD réel / Énergie et qualité",
+      "url": "https://mpsi.schleck.ovh/fichiers/td/td5_oscillateurs.pdf",
+      "cible": "MPSI, schleck.ovh ; TD5 Oscillateurs, année indiquée 2026-2027 ; exercice 4, questions 1 à 7, pages 1/2 et 2/2.",
+      "travail": "Prévoir 35 minutes. Le support donne R = 100 Ω, L = 1,00 H, C = 1,00 $\\mathrm{\\mu F}$. Traiter d’abord la solution exacte puis la simplification de faible amortissement demandée par l’énoncé.",
+      "corrige": "$\\omega_0=1000$ rad/s et Q = 10 ; α = 50 s$^{-1}$, τA = 0,020 s et $\\omega_d=998{,}75$ rad/s. Pour uC(0) = E et i(0) = 0 : A = E et B = αE/ωd dans la forme exacte. Dans l’approximation faible perte, $\\mathcal E\\simeq CE^2e^{-2t/\\tau_A}/2$. La perte relative sur une période vaut alors environ $1-e^{-2\\pi/Q}\\simeq2\\pi/Q$ seulement si $2\\pi/Q\\ll1$ ; à Q = 10 la dernière linéarisation reste grossière. Entre états exacts de même phase, utiliser $1-e^{-2\\alpha T_d}$."
+    }
+  ],
+  "controles": [
+    {
+      "nom": "E02-Td",
+      "valeur": 0.6489245881557779,
+      "attendu": 0.648924588155778,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "E03-Rcrit",
+      "valeur": 572.4555320336759,
+      "attendu": 572.455532033676,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "E06-Td",
+      "valeur": 1.1547005383792517,
+      "attendu": 1.1547005383792517,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E10-x",
+      "valeur": 0.014715177646857694,
+      "attendu": 0.014715177646857694,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E13-Mp",
+      "valeur": 0.4443442250884888,
+      "attendu": 0.4443442250884889,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "E16-perte",
+      "valeur": 0.016000000000000004,
+      "attendu": 0.016,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E17-Q",
+      "valeur": 4.559856187998019,
+      "attendu": 4.559856187998019,
+      "tolerance": 1e-08
+    },
+    {
+      "nom": "E19-C",
+      "valeur": 2.0243725546130907e-06,
+      "attendu": 2.02437255e-06,
+      "tolerance": 1e-13
+    },
+    {
+      "nom": "E20-durée",
+      "valeur": 0.9210340371976184,
+      "attendu": 0.9210340371976184,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "D1-Qmax",
+      "valeur": 0.8458018140975397,
+      "attendu": 0.846,
+      "tolerance": 0.001
+    },
+    {
+      "nom": "D2-alpha",
+      "valeur": 0.8026485362172907,
+      "attendu": 0.8026485362172907,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "D2-k",
+      "valeur": 31.7115830180243,
+      "attendu": 31.71158,
+      "tolerance": 0.0001
+    },
+    {
+      "nom": "DM-L",
+      "valeur": 0.0504504982815672,
+      "attendu": 0.0504505,
+      "tolerance": 1e-06
+    },
+    {
+      "nom": "DS-Mp",
+      "valeur": 0.350919807178411,
+      "attendu": 0.350919807178411,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "R2-Q",
+      "valeur": 10.0,
+      "attendu": 10.0,
+      "tolerance": 1e-12
+    }
+  ],
+  "figures": [
+    "conventions",
+    "thevenin",
+    "diviseur",
+    "noeud",
+    "rc",
+    "rl",
+    "lc",
+    "rlc",
+    "rc-parallele",
+    "ressort",
+    "regimes",
+    "amorti",
+    "echelon",
+    "spirale"
+  ]
+}

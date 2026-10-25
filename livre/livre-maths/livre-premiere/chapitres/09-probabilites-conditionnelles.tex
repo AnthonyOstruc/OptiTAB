@@ -1,0 +1,248 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[conditionnelles]{9}{Probabilités conditionnelles}{Partie 4 · Probabilités et statistiques}
+{Arbres\enspace·\enspace Conditionnement\enspace·\enspace Indépendance\enspace·\enspace Épreuves répétées}
+\objectif{Calculer une probabilité conditionnelle dans un tableau ou un arbre.}
+\objectif{Utiliser une partition et les probabilités totales.}
+\objectif{Distinguer indépendance et incompatibilité.}
+\objectif{Calculer des probabilités sur deux, trois ou quatre épreuves.}
+\prerequis{Probabilités sur un univers fini et évènement contraire.}
+\prerequis{Fractions, proportions et lecture de tableaux.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Conditionner une probabilité}
+\begin{definition}
+Si $P(A)>0$, la probabilité de $B$ sachant $A$ est
+$P_A(B)=P(A\cap B)/P(A)$. On se restreint à la sous-population $A$.
+Ainsi $P(A\cap B)=P(A)P_A(B)$ et $P_A(\overline B)=1-P_A(B)$.
+\end{definition}
+\begin{attention}
+$P_A(B)$ et $P_B(A)$ ne sont pas interchangeables : le groupe de référence
+change. Une probabilité conditionnelle n'est pas une probabilité d'intersection.
+\end{attention}
+\essSection{2}{Arbres et probabilités totales}
+\begin{theoreme}
+Si $A_1,\ldots,A_k$ forment une partition de l'univers et ont des probabilités
+strictement positives, alors
+$P(B)=\sum_iP(A_i)P_{A_i}(B)$.
+Pour $A$ et son contraire, on obtient
+$P(B)=P(A)P_A(B)+P(\overline A)P_{\overline A}(B)$.
+\end{theoreme}
+\begin{center}
+\begin{tikzpicture}[otArbre]
+\node {} child {node {$A$} child {node {$B$} edge from parent node[otPoids] {$0{,}2$}}
+child {node {$\overline B$} edge from parent node[otPoids] {$0{,}8$}}
+edge from parent node[otPoids] {$0{,}6$}}
+child {node {$\overline A$} child {node {$B$} edge from parent node[otPoids] {$0{,}5$}}
+child {node {$\overline B$} edge from parent node[otPoids] {$0{,}5$}}
+edge from parent node[otPoids] {$0{,}4$}};
+\end{tikzpicture}
+\par\legende{Les poids issus d’un même nœud ont pour somme 1.}
+\end{center}
+
+\begin{savoirfaire}
+Multiplier les poids le long d'un chemin pour calculer une intersection.
+Additionner les probabilités des chemins incompatibles qui réalisent l'évènement.
+Pour inverser le conditionnement, revenir à la définition avec l'intersection.
+\end{savoirfaire}
+
+\clearpage
+\essSection{3}{Indépendance et incompatibilité}
+\begin{definition}
+Deux évènements $A$ et $B$ sont indépendants si $P(A\cap B)=P(A)P(B)$.
+Lorsque $P(A)>0$, cela équivaut à $P_A(B)=P(B)$.
+Ils sont incompatibles si $A\cap B=\varnothing$.
+\end{definition}
+\begin{propriete}
+Si $A$ et $B$ sont indépendants, $A$ et $\overline B$ le sont aussi.
+En effet $P(A\cap\overline B)=P(A)-P(A\cap B)=P(A)(1-P(B))$.
+Deux évènements incompatibles de probabilités non nulles ne sont pas indépendants.
+\end{propriete}
+\essSection{4}{Répéter des épreuves indépendantes}
+\begin{definition}
+Une épreuve de Bernoulli a deux issues : succès de probabilité $p$ et échec
+de probabilité $1-p$. Pour des répétitions indépendantes, le poids d'un chemin
+est le produit des poids de ses branches. Dans ce livre, les arbres de
+répétition sont étudiés jusqu'à quatre épreuves, comme dans le programme.
+\end{definition}
+\begin{exemple}
+Sur trois épreuves, le chemin succès, échec, succès a pour probabilité
+$p(1-p)p=p^2(1-p)$. Il y a trois chemins avec exactement deux succès :
+$SSE$, $SES$, $ESS$. Leur probabilité totale est $3p^2(1-p)$.
+\end{exemple}
+\begin{attention}
+L'indépendance doit être donnée ou justifiée dans le modèle. Un tirage sans
+remise modifie en général les probabilités de l'épreuve suivante.
+Les fréquences observées dans un tableau ne démontrent pas une relation de cause à effet.
+\end{attention}
+
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-9-1}
+\begin{exercice}[1]{Appliquer la définition}
+On sait $P(A)=0{,}4$ et $P(A\cap B)=0{,}1$.\begin{questions}
+\item Calculer $P_A(B)$ et $P_A(\overline B)$.
+\item Calculer $P(A\cap\overline B)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-2}
+\begin{exercice}[1]{Lire un tableau d'effectifs}
+Parmi 200 élèves, on compte 120 filles. Une option est suivie par 50 filles et 30 garçons. On note $F$ : « être une fille » et $A$ : « suivre l’option ».\begin{questions}
+\item Compléter un tableau croisant le sexe et l’option.
+\item Calculer $P(F)$, $P_F(A)$ et $P_A(F)$.
+\end{questions}
+\label{figlivre-r09-02-ex}
+\figureLivre{r09-02}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-3}
+\begin{exercice}[1]{Deux évènements indépendants}
+Les évènements $A$ et $B$ sont indépendants, avec $P(A)=0{,}3$ et $P(B)=0{,}5$.\begin{questions}
+\item Calculer $P(A\cap B)$ et $P(A\cup B)$.
+\item Calculer $P_A(B)$ et $P(A\cap\overline B)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-4}
+\begin{exercice}[1]{Incompatibles ne signifie pas indépendants}
+Les évènements $A$ et $B$ sont incompatibles, avec $P(A)=0{,}2$ et $P(B)=0{,}3$.\begin{questions}
+\item Calculer $P(A\cap B)$ et $P_A(B)$.
+\item Sont-ils indépendants ? Justifier avec le critère du produit.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-5}
+\begin{exercice}[1]{Exploiter un arbre}
+On donne $P(A)=0{,}6$, $P_A(B)=0{,}2$ et $P_{\overline A}(B)=0{,}5$.\begin{questions}
+\item Reproduire l’arbre pondéré et compléter les poids manquants.
+\item Calculer $P(A\cap B)$, $P(B)$ et $P_B(A)$.
+\end{questions}
+\label{figlivre-r09-05-ex}
+\figureLivre{r09-05}
+
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-9-6}
+\begin{exercice}[2]{Deux ateliers de fabrication}
+Un atelier A produit 70\,\% des pièces, un atelier B les autres. Les taux de défaut sont respectivement 2\,\% et 5\,\%. Une pièce est choisie au hasard.\begin{questions}
+\item Calculer la probabilité $P(D)$ qu’elle soit défectueuse.
+\item Sachant qu’elle est défectueuse, calculer la probabilité qu’elle provienne de B.
+\end{questions}
+\label{figlivre-r09-06-ex}
+\figureLivre{r09-06}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-7}
+\begin{exercice}[2]{Une partition en trois groupes}
+Trois machines A, B et C produisent respectivement 50\,\%, 30\,\% et 20\,\% des pièces. Les taux de défaut sont 1\,\%, 2\,\% et 4\,\%.\begin{questions}
+\item Calculer la probabilité de défaut.
+\item Parmi les pièces défectueuses, quelle proportion provient de C ?
+\item Quelle machine contribue le plus au nombre total de défauts ?
+\end{questions}
+\label{figlivre-r09-07-ex}
+\figureLivre{r09-07}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-8}
+\begin{exercice}[2]{Inverser un conditionnement}
+Dans un modèle fictif, un caractère concerne 1\,\% d’une population. Un test est positif pour 95\,\% des personnes ayant ce caractère et pour 4\,\% des autres.On note $C$ : « avoir le caractère », et $T$ : « avoir un test positif ».\begin{questions}
+\item Pour une population théorique de 10000 personnes, calculer les effectifs positifs dans les deux groupes.
+\item Calculer la probabilité qu’un individu positif ait le caractère.
+\item Expliquer pourquoi cette probabilité ne vaut pas 95\,\%.
+\end{questions}
+\label{figlivre-r09-08-ex}
+\figureLivre{r09-08}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-9}
+\begin{exercice}[2]{Deux épreuves de Bernoulli}
+On répète deux fois indépendamment une épreuve de succès de probabilité $0{,}4$.\begin{questions}
+\item Dessiner l’arbre et donner les probabilités des quatre chemins.
+\item Calculer la probabilité d’exactement un succès, puis d’au moins un succès.
+\end{questions}
+\label{figlivre-r09-09-ex}
+\figureLivre{r09-09}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-10}
+\begin{exercice}[2]{Tirer sans remise}
+Une urne contient 3 boules rouges et 2 bleues. On tire successivement deux boules sans remise.\begin{questions}
+\item Donner les probabilités des chemins $RR$, $RB$, $BR$ et $BB$.
+\item Calculer la probabilité de deux couleurs différentes.
+\item Les évènements « première rouge » et « deuxième rouge » sont-ils indépendants ?
+\end{questions}
+\label{figlivre-r09-10-ex}
+\figureLivre{r09-10}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-11}
+\begin{exercice}[2]{Tirer avec remise}
+On reprend l’urne de 3 rouges et 2 bleues, mais la première boule est remise avant le deuxième tirage.\begin{questions}
+\item Justifier l’indépendance dans ce modèle.
+\item Calculer la probabilité de deux rouges, puis de deux couleurs différentes.
+\item Comparer ces résultats au tirage sans remise.
+\end{questions}
+\label{figlivre-r09-11-ex}
+\figureLivre{r09-11}
+
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-9-12}
+\begin{exercice}[3]{Trois tentatives indépendantes}
+Une tentative réussit avec probabilité $0{,}7$. Les trois tentatives sont indépendantes.\begin{questions}
+\item Construire l’arbre à trois niveaux et lister les trois chemins avec exactement deux succès.
+\item Calculer la probabilité d’exactement deux succès.
+\item Calculer la probabilité d’au moins un succès.
+\item Calculer la probabilité que le premier succès ait lieu à la troisième tentative.
+\end{questions}
+\label{figlivre-r09-12-ex}
+\figureLivre{r09-12}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-13}
+\begin{exercice}[3]{Quatre essais et six chemins}
+On effectue quatre épreuves de Bernoulli indépendantes, de probabilité de succès $1/4$.\begin{questions}
+\item Lister les six chemins ayant exactement deux succès.
+\item Calculer leur probabilité totale.
+\item Calculer la probabilité d’au moins un succès.
+\item Calculer la probabilité d’au plus un succès en comptant les chemins.
+\end{questions}
+\label{figlivre-r09-13-ex}
+\figureLivre{r09-13}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-14}
+\begin{exercice}[3]{Retrouver une proportion inconnue}
+Un groupe A représente une proportion $x\in]0;1[$ d’une population. Un évènement B concerne 10\,\% du groupe A et 40\,\% du reste de la population. On sait $P(B)=0{,}22$.\begin{questions}
+\item Écrire une équation sur $x$ et la résoudre.
+\item Calculer $P_B(A)$.
+\item Les évènements A et B sont-ils indépendants ? Justifier de deux façons.
+\end{questions}
+\label{figlivre-r09-14-ex}
+\figureLivre{r09-14}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-15}
+\begin{exercice}[3]{Comparer des taux sans se tromper}
+Deux centres proposent une formation. Dans A, 90 personnes sur 100 réussissent le parcours facile et 20 sur 100 le parcours difficile. Dans B, 19 sur 20 réussissent le parcours facile et 18 sur 60 le parcours difficile.\begin{questions}
+\item Comparer les taux de réussite dans chaque parcours.
+\item Calculer le taux global dans chaque centre.
+\item Calculer la proportion de parcours faciles dans chaque centre.
+\item Expliquer le renversement de la comparaison globale. Peut-on en déduire à lui seul un effet causal du centre ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

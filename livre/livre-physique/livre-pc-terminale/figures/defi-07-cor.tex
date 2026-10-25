@@ -1,0 +1,19 @@
+% Évolution dans le sens inverse : quantités de matière et quotient de réaction (corrigé du défi D07)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,name=g,width=76mm,height=52mm,xmin=0,xmax=160,ymin=0,ymax=1.8,
+  xtick={0,50,100,150},ytick={0,0.5,...,1.5},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$t$ (min)},ylabel={$n$ (mol)}]
+\addplot[otGreenDark,line width=1pt] table[x index=0,y index=2] {figures/donnees/defi-07.dat};
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/defi-07.dat};
+\node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:60,1.36) {$n_\mathrm{C}=n_\mathrm{D}$};
+\node[pcLegende,anchor=north west,text=otNavy] at (axis cs:60,0.62) {$n_\mathrm{A}=n_\mathrm{B}$};
+\end{axis}
+\begin{axis}[otMesures,otAxesBout,at={(g.east)},anchor=west,xshift=17mm,width=76mm,height=52mm,xmin=0,xmax=160,ymin=0,ymax=10,
+  xtick={0,50,100,150},ytick={0,2,...,10},xlabel={$t$ (min)},ylabel={$Q_\mathrm{r}$}]
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,4) -- (axis cs:155,4);
+\addplot[otNavy,line width=1pt] table[x index=0,y index=3] {figures/donnees/defi-07.dat};
+\node[pcLegende,anchor=south east,text=otOrange!75!black] at (axis cs:155,4.2) {$K=4{,}0$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Partant de $Q_\mathrm{r}=9{,}0>K$, le système évolue dans le sens inverse ; le quotient de réaction décroît jusqu'à $K$.}

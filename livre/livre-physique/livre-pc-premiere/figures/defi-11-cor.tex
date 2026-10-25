@@ -1,0 +1,16 @@
+% Comparaison, sur une échelle logarithmique, des forces subies par un proton du noyau (corrigé du défi D11)
+\begin{tikzpicture}
+\begin{axis}[xbar,xmode=log,log basis x=10,width=110mm,height=46mm,bar width=5mm,xmin=1e-36,xmax=1e3,ymin=0.4,ymax=3.6,
+  ytick={1,2,3},yticklabels={{gravitation entre\\les deux protons},{poids\\d'un proton},{répulsion\\électrostatique}},
+  yticklabel style={align=right,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  xtick={1e-35,1e-25,1e-15,1e-5,1e5},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  xticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  xlabel={valeur de la force (N), échelle logarithmique},label style={font=\small,text=otInk},clip=false]
+\addplot[fill=otNavy!70,draw=none] coordinates {(4.65e-35,1) (1.64e-26,2) (57.6,3)};
+\node[pcLegende,anchor=west] at (axis cs:4.65e-35,1) {\,\num{4.7e-35}};
+\node[pcLegende,anchor=west] at (axis cs:1.64e-26,2) {\,\num{1.6e-26}};
+\node[pcLegende,anchor=west] at (axis cs:57.6,3) {\,\num{58}};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque graduation multiplie la force par $10^{10}$ : la répulsion électrostatique dépasse la gravitation d'un facteur $10^{36}$.}

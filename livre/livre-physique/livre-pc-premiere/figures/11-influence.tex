@@ -1,0 +1,27 @@
+% Électrisation par frottement et influence électrostatique sur un pendule (L'essentiel, chapitre 11)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  plus/.style={font=\otSemi\fontsize{7}{8}\selectfont,text=otRed!80!black,inner sep=0pt},
+  moins/.style={font=\otSemi\fontsize{7}{8}\selectfont,text=otNavy,inner sep=0pt}]
+% 1. Frottement
+\begin{scope}
+  \filldraw[fill=otOrange!25,draw=otOrange!80!black,line width=0.5pt,rounded corners=0.6mm,rotate around={20:(0,1)}] (-1.2,0.88) rectangle (1.2,1.12);
+  \foreach \x in {-0.8,-0.4,0,0.4,0.8}{\node[moins] at ({\x*cos(20)},{1+\x*sin(20)+0.25}) {$-$};}
+  \fill[otMuted!35,rounded corners=1mm] (0.2,1.0) rectangle (0.9,1.75);
+  \foreach \x in {0.35,0.55,0.75}{\node[plus] at (\x,1.55) {$+$};}
+  \node[pcLegendeG,anchor=north] at (0,0.1) {frottement};
+  \node[pcLegende,anchor=north,align=center] at (0,-0.3) {des électrons passent\\du tissu à la règle};
+\end{scope}
+% 2. Influence
+\begin{scope}[shift={(4.6,0)}]
+  \draw[otInk!70,line width=0.8pt] (-0.6,2.6) -- (0.4,2.6);
+  \draw[otInk!60,line width=0.5pt] (0,2.6) -- (0.25,1.15);
+  \shade[ball color=otMuted!25] (0.27,0.95) circle (0.27);
+  \node[plus] at (0.12,0.95) {$+$}; \node[plus] at (0.17,1.12) {$+$};
+  \node[moins] at (0.46,0.95) {$-$}; \node[moins] at (0.4,1.12) {$-$};
+  \filldraw[fill=otOrange!25,draw=otOrange!80!black,line width=0.5pt,rounded corners=0.6mm] (0.95,0.0) rectangle (1.2,2.0);
+  \foreach \y in {0.4,0.8,1.2,1.6}{\node[moins] at (1.075,\y) {$-$};}
+  \node[pcLegendeG,anchor=north] at (0.6,-0.3) {influence};
+  \node[pcLegende,anchor=north,align=center] at (0.6,-0.7) {les charges de la boule\\se séparent : attraction};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Une règle frottée se charge ; approchée d'une boule neutre, elle repousse ses électrons : la face proche, positive, est attirée.}

@@ -1,0 +1,387 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[thermo]{19}{Premier principe de la thermodynamique}{Partie 3 · L'énergie : conversions et transferts}
+{Énergie interne\enspace·\enspace Travail et transfert thermique\enspace·\enspace Bilan d'énergie\enspace·\enspace Capacité thermique}
+\objectif{Citer les différentes contributions microscopiques à l'énergie interne d'un système.}
+\objectif{Prévoir le sens d'un transfert thermique.}
+\objectif{Écrire un bilan d'énergie en distinguant la variation de l'énergie du système des transferts avec l'extérieur.}
+\objectif{Exploiter la relation $\Delta U=C\,\Delta T$ pour un système incompressible.}
+\objectif{Effectuer l'étude énergétique d'un système thermodynamique : chauffage, calorimétrie, changement d'état.}
+\prerequis{Énergies cinétique et potentielle, travail d'une force (chapitre~15).}
+\prerequis{Énergie et puissance électriques, effet Joule, rendement (classe de première).}
+\prerequis{Énergie massique de changement d'état (classes de seconde et de première) ; modèle du gaz parfait
+(chapitre~18).}
+\end{ouverture}
+\essentiel
+\essSection{1}{L'énergie d'un système}
+\begin{definition}[Énergie totale et énergie interne]
+Un système thermodynamique est constitué d'un très grand nombre d'entités. Son énergie totale est la somme de son
+énergie mécanique macroscopique $E_\mathrm{m}$ (énergie cinétique et énergie potentielle de l'ensemble du système) et de son
+\textbf{énergie interne} $U$, liée à ses constituants microscopiques : $E=E_\mathrm{m}+U$.
+\end{definition}
+\begin{propriete}[Contributions microscopiques à l'énergie interne]
+L'énergie interne regroupe :
+\begin{itemize}
+\item l'énergie cinétique d'agitation des entités, qui augmente avec la température ;
+\item les énergies potentielles d'interaction entre entités, qui changent lors d'un changement d'état ;
+\item les énergies de liaison au sein des molécules et des noyaux, mises en jeu dans les transformations chimiques et
+nucléaires.
+\end{itemize}
+On ne sait pas calculer $U$ ; seules ses variations $\Delta U$ interviennent dans les bilans.
+\end{propriete}
+\essSection{2}{Le premier principe}
+\begin{definition}[Deux modes de transfert d'énergie]
+Un système échange de l'énergie avec l'extérieur :
+\begin{itemize}
+\item par \textbf{travail} $W$, transfert lié à une action macroscopique : force dont le point d'application se déplace,
+courant électrique ($W=U_\mathrm{él}\,I\,\Delta t$) ;
+\item par \textbf{transfert thermique} $Q$, transfert désordonné à l'échelle microscopique, dû à une différence de
+température.
+\end{itemize}
+Par convention, $W$ et $Q$ sont \textbf{positifs} lorsque le système reçoit de l'énergie, négatifs lorsqu'il en cède.
+\end{definition}
+\begin{propriete}[Sens d'un transfert thermique]
+Spontanément, un transfert thermique s'effectue toujours du corps le plus chaud vers le corps le plus froid. Il cesse
+lorsque les températures sont égales : c'est l'\textbf{équilibre thermique}.
+\end{propriete}
+\begin{loi}[Premier principe de la thermodynamique]
+Pour un système fermé évoluant d'un état initial à un état final, la variation de son énergie totale est égale à la
+somme des énergies échangées avec l'extérieur : $\Delta E_\mathrm{m}+\Delta U=W+Q$. Pour un système macroscopiquement au
+repos,
+\[\Delta U=W+Q.\]
+\end{loi}
+\schema{19-bilan}
+\begin{savoirfaire}[Effectuer un bilan d'énergie]
+Définir le système, son état initial et son état final. Recenser les transferts d'énergie avec l'extérieur, travail et
+transfert thermique, et préciser leur signe. Écrire le premier principe, puis exprimer chaque terme. Dans un bilan, le
+membre de gauche décrit le \textbf{système} ($\Delta U$, $\Delta E_\mathrm{m}$), le membre de droite les \textbf{échanges} avec
+l'extérieur ($W$, $Q$).
+\end{savoirfaire}
+\essSection{3}{Système incompressible et calorimétrie}
+\begin{definition}[Capacité thermique]
+Pour un système incompressible (solide ou liquide) qui ne change pas d'état, la variation d'énergie interne est
+proportionnelle à la variation de température :
+\[\Delta U=C\,\Delta T=m\,c\,\Delta T,\]
+où $C$ est la capacité thermique du système (en \unit{J.K^{-1}}) et $c$ sa capacité thermique massique (en
+\unit{J.kg^{-1}.K^{-1}}). L'eau a une capacité thermique massique particulièrement élevée :
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$. Un écart de température a la même valeur en kelvins et en degrés Celsius.
+\end{definition}
+\begin{exemple}
+Au pied d'une chute d'eau de \qty{51}{m}, comme celles du Niagara, l'énergie potentielle perdue par l'eau, une fois
+l'écoulement freiné, se retrouve en énergie interne : $m\,g\,h=m\,c\,\Delta T$, d'où $\Delta T=\dfrac{g\,h}{c}=\qty{0,12}{K}$.
+Joule avait imaginé mesurer cet échauffement lors de son voyage de noces.
+\end{exemple}
+\begin{propriete}[Changement d'état]
+Lors d'un changement d'état à température constante, le système reçoit ou cède le transfert thermique
+$Q=m\,L$, où $L$ est l'énergie massique de changement d'état. Pour la fusion de la glace, $L_\mathrm{f}=\qty{3,34e5}{J.kg^{-1}}$ :
+faire fondre un glaçon demande autant d'énergie que chauffer la même masse d'eau liquide de \qty{80}{\degreeCelsius}.
+\end{propriete}
+\begin{savoirfaire}[Exploiter une mesure calorimétrique]
+Dans un calorimètre, les échanges avec l'extérieur sont négligeables ($W=0$, $Q=0$) : $\Delta U_\mathrm{total}=0$. La somme des
+variations d'énergie interne de tous les corps, calorimètre compris, est nulle :
+\[\sum m_i\,c_i\,(T_\mathrm{f}-T_i)+C_\mathrm{cal}\,(T_\mathrm{f}-T_\mathrm{cal})=0.\]
+Ainsi, \qty{200}{g} d'eau à \qty{20}{\degreeCelsius} mélangés à \qty{100}{g} d'eau à \qty{80}{\degreeCelsius} atteignent
+\qty{40}{\degreeCelsius}, si l'on néglige la capacité thermique du calorimètre.
+\end{savoirfaire}
+\schema{19-calorimetre}
+\begin{codecote}[0.64]
+\begin{pythoncol}
+corps = [("eau", 0.200, 4180, 20.0),
+         ("eau chaude", 0.100, 4180, 80.0),
+         ("cuivre", 0.150, 385, 100.0)]
+C = sum(m * c for (nom, m, c, T) in corps)
+Tf = sum(m*c*T for (nom, m, c, T) in corps) / C
+print(round(Tf, 1))
+for (nom, m, c, T) in corps:
+    print(nom, round(m * c * (Tf - T)))
+\end{pythoncol}
+\begin{consolecol}
+42.6
+eau 18928
+eau chaude -15616
+cuivre -3312
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Chaque corps est décrit par son nom, sa masse (kg), sa capacité thermique massique (\unit{J.kg^{-1}.K^{-1}}) et sa
+température initiale (\unit{\degreeCelsius}). La condition $\sum m_i\,c_i\,(T_\mathrm{f}-T_i)=0$ donne
+$T_\mathrm{f}=\dfrac{\sum m_i\,c_i\,T_i}{\sum m_i\,c_i}$. Le programme affiche aussi l'énergie reçue par chaque corps, en
+joules : leur somme est nulle, aux arrondis près.
+\end{codecote}
+\begin{attention}
+Ne pas confondre température et transfert thermique. Un système peut recevoir un transfert thermique sans que sa
+température varie (fusion de la glace), et sa température peut augmenter sans transfert thermique, par travail
+(frottements, compression rapide d'un gaz).
+\end{attention}
+\begin{experience}[Mesurer une capacité thermique massique]
+Dans un calorimètre contenant une masse d'eau connue, on plonge une résistance chauffante parcourue par un courant
+$I$ sous une tension $U$ : pendant la durée $\Delta t$, l'eau et le calorimètre reçoivent le travail électrique
+$W=U\,I\,\Delta t$. En mesurant l'élévation de température, on en déduit la capacité thermique de l'ensemble, puis celle de
+l'eau. La méthode des mélanges permet de même de mesurer la capacité thermique massique d'un métal chauffé au
+préalable dans de l'eau bouillante.
+\end{experience}
+\begin{rediger}
+Commencer tout bilan par « Système : \dots ; état initial : \dots ; état final : \dots ». Écrire $\Delta U=W+Q$, puis
+justifier le signe de chaque terme : « le système reçoit le travail électrique, $W>0$ » ; « il cède de l'énergie à l'air,
+$Q<0$ ».
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-19-1}
+\begin{exercice}[1]{L'énergie interne}
+\begin{questions}
+\item Citer les contributions microscopiques à l'énergie interne d'un système.
+\item Une balle de tennis est lancée à \qty{50}{m.s^{-1}}. Son énergie interne est-elle modifiée par ce lancer ? Quelle
+forme d'énergie a augmenté ?
+\item Pour chaque situation, indiquer quelle contribution à l'énergie interne varie : de l'eau qu'on chauffe de 20 à
+\qty{60}{\degreeCelsius} ; un glaçon qui fond à \qty{0}{\degreeCelsius} ; du méthane qui brûle.
+\item Pourquoi ne calcule-t-on jamais la valeur de l'énergie interne, mais seulement ses variations ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-2}
+\begin{exercice}[1]{Dans quel sens ?}
+\begin{questions}
+\item On tient dans la main une canette à \qty{5}{\degreeCelsius}. Dans quel sens s'effectue le transfert thermique ? Préciser
+son signe pour le système \{canette\}, puis pour le système \{main\}.
+\item Une tasse de thé à \qty{80}{\degreeCelsius} est posée dans une pièce à \qty{20}{\degreeCelsius}. Quel est le signe du
+transfert thermique reçu par le thé ? Quand cesse-t-il ?
+\item On se frotte les mains : elles se réchauffent. S'agit-il d'un travail ou d'un transfert thermique ?
+\item Dire « le froid entre par la fenêtre » est-il correct du point de vue de la physique ? Reformuler.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-3}
+\begin{exercice}[1]{Chauffer de l'eau ou de l'aluminium}
+On veut porter \qty{2,0}{kg} d'eau de \qty{15}{\degreeCelsius} à \qty{60}{\degreeCelsius}.
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; $c_\mathrm{Al}=\qty{897}{J.kg^{-1}.K^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la variation d'énergie interne de l'eau.
+\item Un chauffage de \qty{1500}{W} transmet toute son énergie à l'eau. Combien de temps faut-il ?
+\item Calculer l'énergie nécessaire pour porter \qty{2,0}{kg} d'aluminium de \qty{15}{\degreeCelsius} à \qty{60}{\degreeCelsius}.
+\item Pourquoi utilise-t-on de l'eau dans les bouillottes et les circuits de chauffage central ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-4}
+\begin{exercice}[1]{La bouilloire}
+Une bouilloire électrique de puissance \qty{2200}{W} porte \qty{1,0}{L} d'eau de \qty{20}{\degreeCelsius} à \qty{100}{\degreeCelsius}
+en \qty{3}{min}.
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; masse volumique de l'eau : \qty{1,0}{kg.L^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Le système est l'eau. Calculer sa variation d'énergie interne.
+\item Calculer le travail électrique reçu par la bouilloire, que l'on suppose entièrement transmis à l'eau.
+\item Appliquer le premier principe pour calculer le transfert thermique $Q$ reçu par l'eau. Interpréter son signe.
+\item Calculer le rendement du chauffage.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-5}
+\begin{exercice}[1]{Faire fondre un glaçon}
+Un glaçon de \qty{30}{g} à \qty{0}{\degreeCelsius} est posé sur une table.
+\begin{donnees}
+$L_\mathrm{f}=\qty{3,34e5}{J.kg^{-1}}$ ; $c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quelle énergie le glaçon doit-il recevoir pour fondre entièrement ? Sa température change-t-elle pendant la
+fusion ?
+\item Quelle énergie faut-il ensuite fournir pour porter l'eau de fonte de \qty{0}{\degreeCelsius} à \qty{20}{\degreeCelsius} ?
+\item Comparer les deux résultats.
+\item L'air de la pièce et la table cèdent au glaçon une puissance moyenne de \qty{5,0}{W}. Estimer la durée de la fusion.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-19-6}
+\begin{exercice}[2]{Le freinage d'une voiture}
+Une voiture de \qty{1200}{kg} roulant à \qty{90}{km.h^{-1}} freine jusqu'à l'arrêt sur une route horizontale. Ses quatre
+disques de frein en acier ont chacun une masse de \qty{6,0}{kg}.
+\begin{donnees}
+$c_\mathrm{acier}=\qty{460}{J.kg^{-1}.K^{-1}}$ ; $g=\qty{9,81}{N.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie cinétique perdue par la voiture.
+\item On suppose que toute cette énergie est convertie en énergie interne des disques, pendant un freinage trop bref
+pour qu'ils cèdent de l'énergie à l'air. Calculer l'élévation de leur température.
+\item La voiture descend ensuite un col de \qty{1000}{m} de dénivelé à vitesse constante, en utilisant seulement les freins.
+Quelle énergie les freins doivent-ils dissiper ?
+\item Quelle serait l'élévation de température des disques sans transfert thermique vers l'air ? Pourquoi conseille-t-on
+d'utiliser le frein moteur en descente ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-7}
+\begin{exercice}[2]{Identifier un métal}
+Un calorimètre de capacité thermique $C_\mathrm{cal}=\qty{40}{J.K^{-1}}$ contient \qty{200}{g} d'eau à \qty{18,0}{\degreeCelsius}. On y
+plonge un bloc de métal de \qty{100}{g}, sorti d'un bain d'eau à \qty{98,0}{\degreeCelsius}. La température finale vaut
+\qty{21,4}{\degreeCelsius}.
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; capacités thermiques massiques, en \unit{J.kg^{-1}.K^{-1}} : aluminium 897 ; fer 449 ;
+cuivre 385 ; plomb 129.
+\end{donnees}
+\begin{questions}
+\item Pourquoi peut-on considérer que l'énergie interne de l'ensemble \{eau, calorimètre, métal\} ne varie pas ?
+\item Écrire le bilan d'énergie et en déduire la capacité thermique massique du métal.
+\item Identifier le métal et calculer l'écart relatif avec la valeur tabulée.
+\item Quelle valeur aurait-on obtenue en oubliant le calorimètre ? Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-8}
+\begin{exercice}[2]{Calculer une température d'équilibre en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Que contient la liste \code{corps} ? Que calculent les variables \code{C} et \code{Tf} ?
+\item Justifier l'expression de $T_\mathrm{f}$ à partir du bilan d'énergie. Pourquoi la somme des trois énergies affichées
+est-elle nulle ?
+\item Le mélange est réalisé dans un calorimètre de capacité thermique \qty{40}{J.K^{-1}}, initialement à \qty{20}{\degreeCelsius}.
+Quelle ligne faut-il ajouter à la liste ? Calculer la nouvelle température finale.
+\item On ajoute un glaçon à \qty{0}{\degreeCelsius}. Pourquoi le programme ne convient-il plus ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-9}
+\begin{exercice}[2]{Le chauffe-eau électrique}
+Un chauffe-eau électrique de \qty{200}{L} chauffe l'eau de \qty{15}{\degreeCelsius} à \qty{60}{\degreeCelsius} pendant les heures
+creuses, grâce à une résistance de \qty{2200}{W}.
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; $\qty{1}{kWh}=\qty{3,6e6}{J}$ ; prix de l'électricité en heures creuses :
+0,20~€ par kilowattheure.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie que doit recevoir l'eau, en joules puis en kilowattheures.
+\item Calculer la durée du chauffage, en supposant les pertes négligeables. Est-elle compatible avec une période de
+huit heures creuses ?
+\item Calculer le coût de ce chauffage.
+\item Le ballon cède à la pièce \qty{1,5}{kWh} par jour lorsqu'on ne puise pas d'eau. De combien la température de l'eau
+baisse-t-elle en 24~heures ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-10}
+\begin{exercice}[2]{Rafraîchir une boisson}
+On veut refroidir \qty{330}{mL} de soda, assimilé à de l'eau, de \qty{25}{\degreeCelsius} à \qty{5}{\degreeCelsius}, avec des glaçons de
+\qty{25}{g} à \qty{0}{\degreeCelsius}. Le verre est isolé ; on néglige sa capacité thermique.
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; $L_\mathrm{f}=\qty{3,34e5}{J.kg^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quelles transformations subit la glace jusqu'à l'équilibre ?
+\item Écrire le bilan d'énergie et calculer la masse de glace nécessaire. Combien de glaçons faut-il ?
+\item On met trois glaçons. Calculer la température finale.
+\item Avec \qty{75}{g} d'eau liquide à \qty{0}{\degreeCelsius} au lieu des glaçons, quelle serait la température finale ? Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-11}
+\begin{exercice}[2]{La balle qui s'écrase}
+Une balle de plomb de \qty{10}{g}, à \qty{20}{\degreeCelsius}, frappe une plaque d'acier à \qty{350}{m.s^{-1}} et s'y immobilise.
+\begin{donnees}
+$c_\mathrm{Pb}=\qty{129}{J.kg^{-1}.K^{-1}}$ ; température de fusion du plomb : \qty{327}{\degreeCelsius} ; énergie massique de fusion :
+\qty{2,30e4}{J.kg^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie cinétique de la balle, puis son énergie cinétique par kilogramme.
+\item On admet que la moitié de cette énergie se retrouve en énergie interne de la balle. Calculer sa température finale.
+\item Si toute l'énergie cinétique allait à la balle, montrer que celle-ci atteindrait sa température de fusion.
+\item Dans ce cas, quelle fraction du plomb fondrait ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-19-12}
+\begin{exercice}[3]{Induction ou gaz ?}
+\begin{docu}{1}{Deux façons de chauffer}
+On porte \qty{2,0}{L} d'eau de \qty{20}{\degreeCelsius} à \qty{100}{\degreeCelsius}. Une plaque à induction de \qty{2800}{W} y parvient
+en 4~min~40~s. Un brûleur à gaz transmet à l'eau seulement 40~\% de l'énergie libérée par la combustion du méthane.
+\end{docu}
+\begin{docu}{2}{Données énergétiques}
+Pouvoir calorifique du méthane : \qty{50}{MJ.kg^{-1}} ; combustion : $\ce{CH4 + 2 O2 -> CO2 + 2 H2O}$. En France, produire
+\qty{1}{kWh} d'électricité émet en moyenne de l'ordre de \qty{50}{g} de \ce{CO2}.
+\end{docu}
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; $M(\ce{CH4})=\qty{16}{g.mol^{-1}}$ ; $M(\ce{CO2})=\qty{44}{g.mol^{-1}}$ ;
+$\qty{1}{kWh}=\qty{3,6e6}{J}$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie que doit recevoir l'eau.
+\item Calculer le rendement de la plaque à induction.
+\item \initiative Calculer la masse de méthane brûlée par le brûleur, puis la masse de dioxyde de carbone rejetée.
+\item Comparer avec les émissions liées à la plaque à induction et conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-13}
+\begin{exercice}[3]{Stocker la chaleur du Soleil}
+\begin{docu}{1}{Une centrale solaire à sels fondus}
+Dans une centrale solaire thermodynamique, des miroirs concentrent le rayonnement solaire sur des tubes où circule un
+fluide. Le jour, une partie de l'énergie récoltée chauffe un réservoir de sels fondus, qui la restitue la nuit pour
+produire de la vapeur et faire tourner une turbine.
+\end{docu}
+\begin{docu}{2}{Caractéristiques, inspirées de la centrale d'Andasol (Espagne)}
+Masse de sels : \num{28500} tonnes ; température des sels : \qty{291}{\degreeCelsius} (réservoir froid) et \qty{384}{\degreeCelsius}
+(réservoir chaud) ; capacité thermique massique des sels : \qty{1500}{J.kg^{-1}.K^{-1}} ; rendement de la conversion en
+électricité : 37,5~\% ; puissance électrique : \qty{50}{MW}, pendant 7,5~heures sans soleil selon l'exploitant.
+\end{docu}
+\begin{donnees}
+$\qty{1}{MWh}=\qty{3,6e9}{J}$.
+\end{donnees}
+\begin{questions}
+\item Les sels restent liquides. Justifier l'utilisation de la relation $\Delta U=m\,c\,\Delta T$.
+\item Calculer l'énergie stockée lorsque tous les sels passent de \qty{291}{\degreeCelsius} à \qty{384}{\degreeCelsius}, en joules puis en
+mégawattheures.
+\item \initiative Pendant combien de temps la centrale peut-elle produire \qty{50}{MW} grâce à cette réserve ? Comparer à la
+valeur annoncée et proposer une explication à l'écart.
+\item Quel intérêt présente ce stockage pour le réseau électrique ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-14}
+\begin{exercice}[3]{Pourquoi transpire-t-on ?}
+\begin{docu}{1}{Un moteur qui chauffe}
+Pendant une course, les muscles d'un coureur de \qty{70}{kg} convertissent l'énergie chimique des nutriments en travail
+mécanique avec un rendement d'environ 25~\%. Le reste est libéré sous forme d'énergie interne : environ \qty{900}{W} doivent
+être évacués pour que la température du corps reste proche de \qty{37}{\degreeCelsius}.
+\end{docu}
+\begin{docu}{2}{La sueur}
+L'évaporation de la sueur à la surface de la peau prélève au corps \qty{2,4e6}{J} par kilogramme évaporé. Au-delà de
+\qty{39}{\degreeCelsius}, le risque de coup de chaleur devient important.
+\end{docu}
+\begin{donnees}
+Capacité thermique massique moyenne du corps humain : \qty{3500}{J.kg^{-1}.K^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Quelle énergie le corps doit-il évacuer en une heure de course ?
+\item Si cette énergie n'était pas évacuée, de combien la température du corps augmenterait-elle en une heure ?
+\item \initiative Au bout de combien de minutes le coureur atteindrait-il \qty{39}{\degreeCelsius} ?
+\item On suppose que toute l'énergie est évacuée par évaporation de la sueur. Quelle masse d'eau le coureur perd-il par
+heure ? Pourquoi doit-il boire régulièrement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-19-15}
+\begin{exercice}[3]{La canette auto-chauffante}
+\begin{docu}{1}{Un café chaud sans réchaud}
+Une canette auto-chauffante contient un compartiment d'oxyde de calcium \ce{CaO}. En appuyant sur le fond, on y libère de
+l'eau ; la réaction $\ce{CaO(s) + H2O(l) -> Ca(OH)2(s)}$ libère \qty{65,2}{kJ} par mole d'oxyde de calcium consommé.
+\end{docu}
+\begin{docu}{2}{Cahier des charges}
+Porter \qty{250}{mL} de café, assimilé à de l'eau, de \qty{20}{\degreeCelsius} à \qty{60}{\degreeCelsius} ; 40~\% de l'énergie libérée
+est perdue (canette, air).
+\end{docu}
+\begin{donnees}
+$c_\mathrm{eau}=\qty{4180}{J.kg^{-1}.K^{-1}}$ ; $M(\ce{CaO})=\qty{56,1}{g.mol^{-1}}$ ; $M(\ce{H2O})=\qty{18,0}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quelle contribution à l'énergie interne du système chimique diminue au cours de la réaction ?
+\item Calculer l'énergie que doit recevoir le café.
+\item \initiative Calculer la masse d'oxyde de calcium à prévoir.
+\item Quelle masse d'eau doit réagir au minimum ? Pourquoi en met-on davantage ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

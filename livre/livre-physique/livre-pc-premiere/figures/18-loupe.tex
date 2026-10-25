@@ -1,0 +1,21 @@
+% Objet entre le foyer et la lentille : image virtuelle, droite et agrandie (L'essentiel, chapitre 18)
+% f' = 1,5 ; OA = -0,9 ; AB = 0,6 ; OA' = -2,25 ; A'B' = 1,5
+\begin{tikzpicture}[x=1.5cm,y=1.5cm,
+  rayon/.style={otOrange!85!black,line width=0.8pt,postaction={decorate},
+    decoration={markings,mark=at position 0.5 with {\arrow{Stealth[length=1.6mm]}}}},
+  virtuel/.style={otOrange!85!black,line width=0.5pt,dash pattern=on 2.5pt off 1.5pt}]
+\draw[otInk!60,line width=0.5pt] (-2.8,0) -- (3.4,0);
+\draw[otNavy,line width=1.2pt,{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]}] (0,-0.7) -- (0,1.2);
+\foreach \x/\n in {-1.5/F,1.5/F'}{\draw[otInk,line width=0.6pt] (\x,-0.06) -- (\x,0.06); \node[pcLegende,anchor=north] at (\x,-0.05) {$\n$};}
+\node[pcLegende,anchor=north east] at (0,-0.02) {O};
+\draw[otNavy,line width=1.2pt,-{Stealth[length=2.2mm]}] (-0.9,0) -- (-0.9,0.6) node[pcLegende,anchor=south east,text=otNavy] {B};
+\node[pcLegende,anchor=north] at (-0.9,-0.03) {A};
+\draw[otGreenDark,line width=1.2pt,dash pattern=on 3pt off 1.5pt,-{Stealth[length=2.2mm]}] (-2.25,0) -- (-2.25,1.5) node[pcLegende,anchor=south,text=otGreenDark] {B'};
+\node[pcLegende,anchor=north] at (-2.25,-0.03) {A'};
+\draw[rayon] (-0.9,0.6) -- (0,0.6) -- (2.4,-0.36);
+\draw[rayon] (-0.9,0.6) -- (0.95,-0.633);
+\draw[virtuel] (0,0.6) -- (-2.25,1.5);
+\draw[virtuel] (-0.9,0.6) -- (-2.25,1.5);
+\node[pcLegende,anchor=west,align=left] at (2.5,0.7) {l'œil, placé derrière\\la lentille, voit les rayons\\venir de B'};
+\end{tikzpicture}
+\par\smallskip\legende{C'est le principe de la loupe : l'image, du même côté que l'objet, est virtuelle (on ne peut pas la recueillir sur un écran), droite et agrandie.}

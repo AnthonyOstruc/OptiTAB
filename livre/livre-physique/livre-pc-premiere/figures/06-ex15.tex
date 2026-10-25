@@ -1,0 +1,35 @@
+% Trois modèles moléculaires éclatés à identifier (exercice 15, chapitre 6)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  aC/.style={circle,fill=otInk!85,minimum size=5.8mm,inner sep=0pt},
+  aH/.style={circle,fill=white,draw=otInk!55,line width=0.5pt,minimum size=4.2mm,inner sep=0pt},
+  aCl/.style={circle,fill=otGreen,draw=otGreenDark,line width=0.5pt,minimum size=7.2mm,inner sep=0pt},
+  tige/.style={otMuted!80,line width=2.2pt},
+  nomG/.style={pcLegendeG,anchor=north}]
+% Modèle A : linéaire, quatre atomes
+\begin{scope}[shift={(0,0)}]
+  \draw[tige] (-1.6,0) -- (1.6,0);
+  \draw[otMuted!80,line width=1pt] (-0.5,0.12) -- (0.5,0.12) (-0.5,-0.12) -- (0.5,-0.12);
+  \node[aH] at (-1.6,0) {}; \node[aC] at (-0.5,0) {}; \node[aC] at (0.5,0) {}; \node[aH] at (1.6,0) {};
+  \node[nomG] at (0,-1.15) {modèle A};
+\end{scope}
+% Modèle B : tétraédrique, un gros atome vert
+\begin{scope}[shift={(4.4,0)}]
+  \draw[tige] (0,0) -- (0,1.1) (0,0) -- (-1.0,-0.48) (0,0) -- (0.7,-0.75) (0,0) -- (1.0,-0.12);
+  \node[aH] at (1.0,-0.12) {}; \node[aC] at (0,0) {}; \node[aCl] at (0,1.1) {}; \node[aH] at (-1.0,-0.48) {};
+  \node[aH] at (0.7,-0.75) {};
+  \node[nomG] at (0,-1.15) {modèle B};
+\end{scope}
+% Modèle C : plan, deux atomes de carbone
+\begin{scope}[shift={(8.6,0)}]
+  \draw[tige] (-0.5,0) -- (-1.15,0.62) (-0.5,0) -- (-1.15,-0.62) (0.5,0) -- (1.15,0.62) (0.5,0) -- (1.15,-0.62);
+  \draw[otMuted!80,line width=1.2pt] (-0.5,0.08) -- (0.5,0.08) (-0.5,-0.08) -- (0.5,-0.08);
+  \node[aC] at (-0.5,0) {}; \node[aC] at (0.5,0) {};
+  \foreach \p in {(-1.15,0.62),(-1.15,-0.62),(1.15,0.62),(1.15,-0.62)}{\node[aH] at \p {};}
+  \node[nomG] at (0,-1.15) {modèle C};
+\end{scope}
+% Code couleur
+\node[aC,minimum size=3.6mm] at (2.2,-1.95) {}; \node[pcLegende,anchor=west] at (2.4,-1.95) {carbone};
+\node[aH,minimum size=3.2mm] at (4.0,-1.95) {}; \node[pcLegende,anchor=west] at (4.2,-1.95) {hydrogène};
+\node[aCl,minimum size=4mm] at (5.95,-1.95) {}; \node[pcLegende,anchor=west] at (6.2,-1.95) {chlore};
+\end{tikzpicture}
+\par\smallskip\legende{Les tiges représentent les liaisons ; une tige double ou triple, une liaison double ou triple.}

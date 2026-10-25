@@ -1,0 +1,11 @@
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=100mm,height=59mm,
+axis lines=left,xmin=-2.8,xmax=2.8,ymin=-8,ymax=10,
+xtick={-2,-1,0,1,2},ytick={-6,-2,2,6,10},xlabel={$x$},ylabel={$y$},
+every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-4mm,font=\small,text=otMuted},
+every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,yshift=1mm,font=\small,text=otMuted}]
+\addplot[otNavy,thick,domain=-2.7:2.7,samples=90]{x^3-3*x+1};
+\addplot[otGreenDark,thick,domain=1:2.7,samples=90]{9*x-15};
+\addplot[otGreenDark,dashed,domain=-2.7:-.8,samples=90]{9*x+17};
+\addplot[only marks,otNavy]coordinates{(-2,-1)(2,3)};\node[left,font=\small]at(axis cs:-2,-1){$B$};\node[right,font=\small]at(axis cs:2,3){$A$};
+\end{axis}\end{tikzpicture}
+\par\smallskip\legende{Les deux tangentes ont la même pente 9, mais des points de contact et des ordonnées à l’origine distincts.}

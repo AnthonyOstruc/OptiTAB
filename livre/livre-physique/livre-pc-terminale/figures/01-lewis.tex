@@ -1,0 +1,27 @@
+% Schémas de Lewis : acide carboxylique, ion carboxylate, ion ammonium, amine (L'essentiel, chapitre 1)
+{\renewcommand{\arraystretch}{1}%
+\newcommand{\legendeLewis}[2]{{\fontsize{8}{9.4}\selectfont\begin{tabular}[t]{@{}c@{}}{\otMedium\fontsize{8.5}{10}\selectfont\color{otInk}#1}\\
+  {\otLight\fontsize{7.5}{9.5}\selectfont\color{otGreenDark}#2}\end{tabular}}}%
+\newcommand{\flecheCouple}{\begin{tikzpicture}[baseline=-0.6ex]
+  \draw[otNavy,line width=0.7pt,-{Stealth[length=1.8mm]}] (0,0.9mm) -- (13mm,0.9mm);
+  \draw[otNavy,line width=0.7pt,-{Stealth[length=1.8mm]}] (13mm,-0.9mm) -- (0,-0.9mm);
+  \node[above,pcLegende] at (6.5mm,1.2mm) {$-\,$\ce{H+}};
+  \node[below,pcLegende] at (6.5mm,-1.2mm) {$+\,$\ce{H+}};
+\end{tikzpicture}}%
+\begin{tabular}{@{}c@{\hspace{6mm}}c@{\hspace{6mm}}c@{}}
+\chemfig{H-C(-[2]H)(-[6]H)-@{e1c1}C(=[1]@{e1o1}\charge{0=\|,90=\|}{O})-[7]@{e1o2}\charge{180=\|,270=\|}{O}-@{e1h1}H}%
+\chemmove{\node[pcGroupe,fit=(e1c1)(e1o1)(e1o2)(e1h1),inner sep=3.4pt]{};}
+& \flecheCouple &
+\chemfig{H-C(-[2]H)(-[6]H)-@{e1c2}C(=[1]@{e1o3}\charge{0=\|,90=\|}{O})-[7]@{e1o4}\charge{0=\|,180=\|,270=\|,60:3.6pt=\cmoins}{O}}%
+\chemmove{\node[pcGroupe,fit=(e1c2)(e1o3)(e1o4),inner sep=4.6pt]{};}\\[2mm]
+\legendeLewis{acide éthanoïque \ce{CH3-COOH}}{groupe carboxyle} & &
+\legendeLewis{ion éthanoate \ce{CH3-COO-}}{groupe carboxylate}\\[7mm]
+\chemfig{H-C(-[2]H)(-[6]H)-@{e1n1}\charge{45:4.2pt=\cplus}{N}(-[2]@{e1h2}H)(-[6]@{e1h3}H)-@{e1h4}H}%
+\chemmove{\node[pcGroupe,fit=(e1n1)(e1h2)(e1h3)(e1h4),inner sep=3pt]{};}
+& \flecheCouple &
+\chemfig{H-C(-[2]H)(-[6]H)-@{e1n2}\charge{90=\|}{N}(-[6]@{e1h5}H)-@{e1h6}H}%
+\chemmove{\node[pcGroupe,fit=(e1n2)(e1h5)(e1h6),inner sep=3.6pt]{};}\\[2mm]
+\legendeLewis{ion méthylammonium \ce{CH3-NH3+}}{groupe ammonium} & &
+\legendeLewis{méthylamine \ce{CH3-NH2}}{groupe amino}
+\end{tabular}}
+\par\smallskip\legende{Chaque trait figure une liaison ou un doublet non liant ; les charges sont entourées.}

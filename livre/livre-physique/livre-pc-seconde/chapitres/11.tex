@@ -1,0 +1,127 @@
+\begin{ouverture}[mouvement]{11}{Décrire un mouvement}{Mouvement et interactions}{Observer · Modéliser · Expérimenter · Expliquer}
+\objectif{Choisir un système, un point et un référentiel.}
+\objectif{Déterminer un déplacement et un vecteur vitesse.}
+\objectif{Exploiter une chronophotographie et représenter des données en Python.}
+\prerequis{Proportionnalité, conversions et lecture de graphiques.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Choisir ce que l’on décrit}
+Le système est l'objet étudié. Le référentiel associe un solide de référence, un repère d'espace et une horloge. Un voyageur assis est immobile dans le référentiel du train, mais se déplace dans celui du quai si le train roule. Le mouvement est relatif au référentiel choisi.
+Modéliser un objet par un point simplifie la description, mais fait perdre sa forme, son orientation et sa rotation propre. Pour décrire une roue, le mouvement du centre ne suffit pas à décrire tous les points de la jante.
+\begin{definition}[Trajectoire]C'est l'ensemble des positions successives du point dans le référentiel choisi : droite, cercle ou autre courbe. Une trajectoire ne donne pas à elle seule la rapidité du mouvement.\end{definition}
+\essSection{2}{Déplacement et vitesse}
+Le vecteur déplacement $\vect{M_iM_{i+1}}$ va de la position initiale à la suivante. Le vecteur vitesse moyenne sur cet intervalle est $\vect{v}_{\mathrm{moy}}=\vect{M_iM_{i+1}}/\Delta t$. Pour des instants voisins, il approche le vecteur vitesse en $M_i$. La qualité de l'approximation dépend de la durée et du mouvement.
+\schema[corrige]{chronophoto}
+\begin{savoirfaire}[Représenter une vitesse]Au point étudié, placer l'origine du vecteur ; choisir la direction et le sens du mouvement ; calculer la valeur en \unit{m.s^{-1}} ; convertir cette valeur en longueur grâce à l'échelle des vecteurs, distincte de celle des positions.\end{savoirfaire}
+Sur une droite orientée, une vitesse algébrique négative signifie que le mouvement a lieu dans le sens négatif de l'axe ; la valeur de la vitesse reste positive.
+\essSection{3}{Reconnaître l’évolution et coder}
+Sur des images séparées par la même durée, des distances successives constantes indiquent une valeur de vitesse constante. Un mouvement rectiligne uniforme a un vecteur vitesse constant. Sur un cercle, même à valeur constante, la direction du vecteur change.
+\begin{savoirfaire}[Positions et vecteurs avec Python]Stocker les instants et coordonnées dans des listes. Tracer les points avec \texttt{plot} ou \texttt{scatter}, nommer les axes, et utiliser une même échelle sur les deux axes spatiaux. Pour chaque intervalle, calculer $(x_{i+1}-x_i)/\Delta t$ et $(y_{i+1}-y_i)/\Delta t$, puis tracer les vecteurs avec \texttt{quiver}.\end{savoirfaire}
+Les coordonnées doivent être étalonnées en mètres. Des pixels sans longueur de référence ne donnent pas une vitesse en mètres par seconde.
+\essSection{4}{Expérimenter et modéliser}
+\begin{experience}[Exploiter une vidéo]Placer une règle dans le plan du mouvement, fixer la caméra et filmer. Choisir l'origine et le sens des axes, relever la cadence, pointer le même point à chaque image et convertir les pixels. Vérifier la perspective et l'incertitude de pointage avant de comparer les vecteurs vitesse.\end{experience}
+\begin{docu}{1}{Un script court à interpréter}
+\begin{verbatim}
+import matplotlib.pyplot as plt
+x = [0, .2, .8, 1.8, 3.2]
+t = [0, .2, .4, .6, .8]
+v = [(x[i+1]-x[i])/(t[i+1]-t[i])
+     for i in range(len(x)-1)]
+plt.plot(t[:-1], v, 'o')
+plt.xlabel('t (s)'); plt.ylabel('v approchee (m/s)')
+plt.show()
+\end{verbatim}
+Les vitesses sont ici celles des intervalles successifs ; on ne confond pas ces points avec une mesure instantanée exacte.
+\end{docu}
+\exercices
+\rubrique{Prendre confiance}
+\begin{blocLivre}{ex-11-1}\begin{exercice}[1]{Un voyageur assis}
+Un train roule en ligne droite. Une voyageuse reste assise.
+\begin{questions}
+\item Décrire son mouvement dans le référentiel du train.
+\item Décrire son mouvement par rapport au quai.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-2}\begin{exercice}[1]{Choisir un point}
+On remplace un ballon lancé par le point correspondant à son centre.
+\begin{questions}
+\item Quelle information conserve ce modèle ?
+\item Citer deux informations perdues.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-3}\begin{exercice}[1]{Une vitesse moyenne}
+Un point parcourt une droite orientée de $x=2,0$ m à $x=8,0$ m en 3,0 s.
+\begin{questions}
+\item Calculer son déplacement algébrique.
+\item Calculer sa vitesse moyenne algébrique.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-4}\begin{exercice}[1]{Changer d’unité}
+Un véhicule se déplace à \qty{72}{km.h^{-1}}.
+\begin{questions}
+\item Exprimer cette vitesse en \unit{m.s^{-1}}.
+\item Quelle distance parcourt-il en 0,50 s si la vitesse reste constante ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\rubrique{S’entraîner}
+\begin{blocLivre}{ex-11-5}\begin{exercice}[2]{Lire une chronophotographie}
+Les positions sont séparées de 0,20 s ; leurs abscisses valent 0 ; 0,20 ; 0,80 ; 1,80 ; 3,20 m.
+\schema{chronophoto}
+\begin{questions}
+\item Décrire la trajectoire et l’évolution de la rapidité.
+\item Approcher la vitesse en $M_1$ par le déplacement vers $M_2$.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-6}\begin{exercice}[2]{Une vitesse négative}
+Un point passe de $x=5,0$ m à $x=2,0$ m en 1,5 s.
+\begin{questions}
+\item Calculer sa vitesse moyenne algébrique.
+\item Donner sa valeur et son sens.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-7}\begin{exercice}[2]{Échelle d’un vecteur}
+Un vecteur vitesse de valeur \qty{6,0}{m.s^{-1}} doit être tracé à l’échelle 1 cm pour \qty{2,0}{m.s^{-1}}.
+\begin{questions}
+\item Déterminer sa longueur sur le dessin.
+\item Cette échelle est-elle une échelle de distances parcourues ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-8}\begin{exercice}[2]{À valeur constante sur un cercle}
+Un point tourne à valeur de vitesse constante sur un cercle.
+\schema{mouvement-circulaire}
+\begin{questions}
+\item Son vecteur vitesse est-il constant ?
+\item Quelle est la direction de ce vecteur à chaque point ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\clearpage
+\rubrique{Raisonner et approfondir}
+\begin{blocLivre}{ex-11-9}\begin{exercice}[3]{Un aller-retour}
+Un point parcourt 20 m vers l’est puis revient à sa position initiale. La durée totale vaut 10 s.
+\begin{questions}
+\item Calculer la valeur du vecteur vitesse moyenne sur l’ensemble du trajet.
+\item Calculer distance totale divisée par durée et expliquer la différence.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-10}\begin{exercice}[3]{Boucle de calcul}
+Pour $x=[0;0,2;0,8;1,8;3,2]$ m et un pas de 0,2 s, un script calcule $(x[i+1]-x[i])/0,2$.
+\begin{questions}
+\item Donner les quatre valeurs calculées.
+\item Pourquoi la boucle s’arrête-t-elle à l’avant-dernier indice de position ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-11}\begin{exercice}[3]{Une erreur de cadence}
+Une vidéo réelle est enregistrée à 50 images par seconde. Le logiciel est paramétré à 25 images par seconde.
+\begin{questions}
+\item Comparer durée réelle et durée utilisée entre deux images.
+\item Quel effet cela a-t-il sur la vitesse calculée ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-11-12}\begin{exercice}[3]{Deux dimensions}
+Un déplacement en 0,50 s a pour composantes $\Delta x=0,30$ m et $\Delta y=0,40$ m.
+\begin{questions}
+\item Calculer les composantes du vecteur vitesse moyenne.
+\item Calculer sa valeur.
+\end{questions}
+\end{exercice}\end{blocLivre}
+

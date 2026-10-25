@@ -1,0 +1,80 @@
+\clearpage\corrigesChapitre{20}{Capteurs et outils numériques}
+\corrigesSouples
+\begin{blocLivre}{cor-20-1}\begin{corrige}{1}{Reconnaître un capteur}
+\begin{questions}
+\item Un capteur peut détecter l’éclairement ; un autre la température.
+\item Non : sa réponse physique est convertie, acquise et traitée avant affichage.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-2}\begin{corrige}{2}{Lire une courbe}
+\schema[corrige]{capteur-courbe}
+\begin{questions}
+\item $R=20,0-0,400\times20=\qty{12,0}{k\ohm}$.
+\item La résistance diminue lorsque la température augmente sur le domaine étudié.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-3}\begin{corrige}{3}{Une température inconnue}
+\begin{questions}
+\item $\theta=(20,0-10,0)/0,400=25,0\,^{\circ}\mathrm C$.
+\item 25 °C est entre 0 et 40 °C : on reste dans le domaine d’étalonnage.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-4}\begin{corrige}{4}{Une conversion numérique}
+\begin{questions}
+\item $U=5,00\times600/1000=\qty{3,00}{V}$.
+\item $k=1000\times1,25/5,00=250$.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-5}\begin{corrige}{5}{Un pont simple}
+\schema[corrige]{pont-capteur}
+\begin{questions}
+\item $I=5,00/20000=\qty{0,250}{mA}$.
+\item $U=R_cI=10000\times0,000250=\qty{2,50}{V}$.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-6}\begin{corrige}{6}{La grandeur utile}
+\begin{questions}
+\item L’éclairement reçu par le capteur.
+\item Il faut connaître la correspondance entre réponse électrique et grandeur recherchée, dans les conditions d’utilisation.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-7}\begin{corrige}{7}{Une résistance retrouvée}
+\schema[corrige]{pont-capteur}
+\begin{questions}
+\item $R_c=10,0\times2,00/(5,00-2,00)=\qty{6,67}{k\ohm}$.
+\item $\theta=(20,0-6,67)/0,400\simeq33,3\,^{\circ}\mathrm C$.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-8}\begin{corrige}{8}{Hors domaine}
+\begin{questions}
+\item Le modèle a seulement été testé de 0 à 40 °C ; le prolongement est une extrapolation.
+\item Vérifier les limites du composant et effectuer un étalonnage adapté sur le nouveau domaine avec une référence.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-9}\begin{corrige}{9}{Un seuil à programmer}
+\begin{questions}
+\item $R_s=20,0-0,400\times30,0=\qty{8,00}{k\ohm}$.
+\item Pour $R<8,00$ kΩ, puisque la résistance diminue quand la température augmente.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-10}\begin{corrige}{10}{Choisir les axes en Python}
+\begin{questions}
+\item La température en abscisse, la résistance en ordonnée.
+\item Les noms des grandeurs, les unités, les points mesurés, la légende du modèle et le domaine de validité.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-11}\begin{corrige}{11}{Une division impossible}
+\begin{questions}
+\item Le dénominateur est nul : la formule ne donne aucune résistance finie.
+\item Signaler une mesure hors domaine ou un défaut possible, vérifier le circuit et éviter la division. Il ne faut pas afficher une température arbitraire.
+\end{questions}
+\end{corrige}\end{blocLivre}
+\begin{blocLivre}{cor-20-12}\begin{corrige}{12}{Deux sources d’erreur}
+\demarche{Vérifier successivement le capteur, les connexions et l’acquisition.}
+\begin{questions}
+\item Mauvais contact, fluctuations de l’alimentation, bruit électrique ou stabilisation thermique insuffisante.
+\item Vérifier les connexions et la référence de tension, attendre l’équilibre puis répéter avec un thermomètre de référence.
+\end{questions}
+\retiens{Une valeur instable peut venir de la chaîne de mesure et pas seulement de la grandeur étudiée.}
+\end{corrige}\end{blocLivre}
+

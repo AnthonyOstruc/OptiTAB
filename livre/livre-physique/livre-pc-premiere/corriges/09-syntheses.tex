@@ -1,0 +1,198 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{9}{Synthèses organiques}
+\corrigesSouples
+
+\begin{blocLivre}{cor-9-1}
+\begin{corrige}{1}{Les étapes d'un protocole}
+\demarche{Transformer, isoler le produit brut, le purifier, puis l'analyser.}
+\begin{questions}
+\item Transformation : \res{\text{b}} ; isolement : \res{\text{f, c}} ; purification : \res{\text{d, g}} ; analyse : \res{\text{a, e}}.
+\item \res{\text{b, f, c, d, g, a, e}} (les analyses a et e peuvent être échangées).
+\item L'aspirine est \res{\text{peu soluble dans l'eau froide}} : elle précipite, et l'on en perd moins lors de la filtration.
+\item La \res{\text{température de fusion}} et la \res{\text{CCM}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-2}
+\begin{corrige}{2}{Le montage à reflux}
+\demarche{Chaque élément a un rôle : contenir, chauffer, condenser, agiter.}
+\begin{questions}
+\item A : \res{\text{ballon}} (mélange réactionnel) ; B : \res{\text{réfrigérant à eau}} ; C : \res{\text{entrée d'eau}} ; D : \res{\text{sortie d'eau}} ;
+E : \res{\text{chauffe-ballon}}.
+\item L'eau entre en bas (C) et sort en haut (D) : ainsi le réfrigérant reste \res{\text{entièrement rempli}} d'eau froide.
+\item Chauffer \res{\text{accélère}} la transformation ; le reflux \res{\text{évite les pertes}} de réactifs et de produits par évaporation.
+\item Le chauffage produit des vapeurs : un montage fermé subirait une \res{\text{surpression}} et pourrait exploser.
+\end{questions}
+\schema[corrige]{09-ex02}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-3}
+\begin{corrige}{3}{Choisir une technique}
+\demarche{État physique, solubilité, densité et température d'ébullition guident le choix.}
+\begin{questions}
+\item \res{\text{Filtration sous pression réduite}} : le solide, peu soluble à froid, reste sur le filtre.
+\item \res{\text{Décantation}} dans une ampoule : les deux liquides non miscibles forment deux phases.
+\item \res{\text{Séchage}} avec un desséchant (sulfate de magnésium anhydre), puis filtration.
+\item \res{\text{Distillation}} : l'impureté, plus volatile, distille la première.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-4}
+\begin{corrige}{4}{Exploiter une chromatographie}
+\demarche{$R_\mathrm{f}$ : distance parcourue par la tache divisée par celle de l'éluant, depuis la ligne de dépôt.}
+\begin{questions}
+\item L'éluant a parcouru \qty{6,0}{cm}. Produit : $\dfrac{3{,}0}{6{,}0}=\res{0{,}50}$ ; autre espèce : $\dfrac{4{,}8}{6{,}0}=\res{0{,}80}$.
+\item \res{\text{Non}} : il donne deux taches ; la seconde est à la hauteur du dépôt 3, c'est du \res{\text{réactif}} qui n'a pas réagi.
+\item Il ne donne qu'une tache, à la hauteur de la référence : il est \res{\text{pur}} (pour cette technique) et \res{\text{identifié}}.
+\item La recristallisation a \res{\text{éliminé le réactif}} resté dans le produit brut.
+\end{questions}
+\schema[corrige]{09-ex04}
+\retiens{Les distances se mesurent toujours depuis la ligne de dépôt : jusqu'au centre de la tache pour l'espèce, jusqu'au
+front pour l'éluant. Une espèce pure ne donne qu'une tache ; deux taches à la même hauteur indiquent la même espèce.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-5}
+\begin{corrige}{5}{Un premier rendement}
+\demarche{Les nombres stœchiométriques valent 1 : le réactif limitant est le moins abondant.}
+\begin{questions}
+\item L'\res{\text{alcool}} (\qty{0,100}{mol} contre \qty{0,200}{mol}).
+\item $n_\text{max}=\res{\qty{0,100}{mol}}$.
+\item $n=\dfrac{9{,}1}{130{,}0}=\qty{0,0700}{mol}$, $\eta=\dfrac{0{,}0700}{0{,}100}=\res{\qty{70}{\percent}}$.
+\item La transformation \res{\text{n'est pas totale}} (chapitre~4) ; une partie du produit est \res{\text{perdue}} lors des transferts et de la
+purification.
+\end{questions}
+\retiens{Le rendement se calcule à partir du réactif limitant : c'est lui qui fixe la quantité maximale de produit.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-6}
+\begin{corrige}{6}{Calculer un rendement en Python}
+\demarche{\code{m / M / a} est l'avancement qui épuiserait le réactif ; le plus petit est l'avancement maximal.}
+\begin{questions}
+\item La quantité du réactif divisée par son nombre stœchiométrique : l'avancement qui l'épuiserait. Le \res{\text{minimum}} est
+$x_\text{max}$, fixé par le réactif limitant.
+\item \code{xmax = 0.01449 mol ; m\_max = 2.61 g} puis \code{rendement = 92.0 \%}.
+\item On écrit \code{reactifs = \{'acide': [1, 21.0, 60.0], 'alcool': [1, 12.15, 88.0]\}} et
+\code{M\_produit, m\_obtenue = 130.0, 10.9}.\newline
+Affichage : \code{xmax = 0.13807 mol ; m\_max = 17.95 g} puis \code{rendement = 60.7 \%}.
+\item \code{if m\_obtenue > m\_max: print('erreur : rendement impossible')}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-7}
+\begin{corrige}{7}{L'aspirine et son banc Kofler}
+\demarche{Une impureté abaisse la température de fusion d'un solide.}
+\begin{questions}
+\item \qty{128}{\degreeCelsius} est inférieur à \qty{135}{\degreeCelsius} : le produit brut est \res{\text{impur}}.
+\item On dépose quelques cristaux sur le banc, chaud d'un côté et plus froid de l'autre, et l'on repère la limite entre
+solide et liquide. L'étalonnage avec une substance connue \res{\text{corrige}} les écarts de l'appareil.
+\item Les impuretés et l'eau \res{\text{alourdissent}} le produit brut : on surestimerait le rendement.
+\item $\dfrac{2{,}15}{0{,}500}=4{,}3$ : \res{4 \text{ comprimés}} complets.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-8}
+\begin{corrige}{8}{La recristallisation}
+\demarche{Le produit est très soluble à chaud et peu soluble à froid ; les impuretés restent dissoutes.}
+\begin{questions}
+\item $V=\dfrac{5{,}0}{60}\approx\res{\qty{83}{mL}}$.
+\item $3{,}0\times0{,}100=\res{\qty{0,30}{g}}$.
+\item $5{,}0-0{,}30=\res{\qty{4,7}{g}}$ au maximum (si le produit brut était uniquement de l'acide benzoïque).
+\item Plus il y a de solvant, plus il reste de produit dissous à froid : on en \res{\text{perdrait davantage}}. Les impuretés, très
+solubles, \res{\text{restent dans le filtrat}}.
+\end{questions}
+\retiens{Une recristallisation exploite la différence de solubilité du produit à chaud et à froid : il recristallise en
+refroidissant, tandis que les impuretés, peu abondantes ou très solubles, restent dissoutes.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-9}
+\begin{corrige}{9}{Synthétiser l'acide benzoïque}
+\demarche{Une mole d'alcool donne une mole d'acide : $n_\text{max}=n_0(\text{alcool})$, l'oxydant étant en excès.}
+\begin{questions}
+\item Réactif : \res{\text{alcool}} ; produit : \res{\text{acide carboxylique}}.
+\item De chaque côté : 7 C, 10 H, 2 O et une charge nulle. L'alcool est le réducteur du couple : il est \res{\text{oxydé}}.
+\item $m=2{,}0\times1{,}04=\qty{2,08}{g}$, $n=\qty{1,93e-2}{mol}$ ; $m_\text{max}=\num{1.93e-2}\times122{,}0=\res{\qty{2,35}{g}}$ et $\eta=\dfrac{1{,}80}{2{,}35}\approx\res{\qty{77}{\percent}}$.
+\item Par \res{\text{filtration sous pression réduite}} : l'acide benzoïque, peu soluble dans l'eau froide, est solide.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-10}
+\begin{corrige}{10}{Purifier par distillation}
+\demarche{L'espèce de plus basse température d'ébullition se vaporise la première.}
+\begin{questions}
+\item La \res{\text{propanone}}, la plus volatile (\qty{56}{\degreeCelsius}).
+\item Il mesure la température des \res{\text{vapeurs}} qui passent dans le réfrigérant, donc identifie l'espèce qui distille.
+\item Palier vers \qty{56}{\degreeCelsius} pendant que la propanone distille, montée, palier vers \qty{78}{\degreeCelsius} (éthanol), puis vers
+\qty{100}{\degreeCelsius}.
+\item Les vapeurs condensées doivent \res{\text{s'écouler vers l'erlenmeyer}}, et non retomber dans le ballon.
+\end{questions}
+\schema[corrige]{09-ex10-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-11}
+\begin{corrige}{11}{Le paracétamol}
+\demarche{L'anhydride étant en excès, le 4-aminophénol est limitant : $n_\text{max}=n_0(\text{4-aminophénol})$.}
+\begin{questions}
+\item De chaque côté : 10 C, 13 H, 1 N et 4 O : l'équation est \res{\text{ajustée}}.
+\item $n=\dfrac{3{,}00}{109{,}0}=\qty{2,75e-2}{mol}$ et $m_\text{max}=\num{2.75e-2}\times151{,}0\approx\res{\qty{4,16}{g}}$.
+\item $\eta=\dfrac{3{,}20}{4{,}16}\approx\res{\qty{77}{\percent}}$.
+\item Elle est égale à celle des tables : le produit est \res{\text{pur}} et probablement du paracétamol. Une \res{\text{CCM}} avec une
+référence, ou un spectre infrarouge, confirmerait l'identification.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-12}
+\begin{corrige}{12}{L'arôme de banane}
+\demarche{Calculer les deux quantités initiales ; l'alcool, en défaut, fixe $n_\text{max}$.}
+\begin{questions}
+\item Étape 1 : \res{\text{transformation}} ; étape 2 : \res{\text{isolement}} ; étape 3 : \res{\text{purification}}. L'acide sulfurique est un
+\res{\text{catalyseur}}.
+\item La phase organique ($\rho=\qty{0,87}{g.mL^{-1}}$) est \res{\text{au-dessus}} de l'eau salée ($\qty{1,2}{g.mL^{-1}}$). L'ester est encore moins
+soluble dans l'eau salée que dans l'eau : on en \res{\text{perd moins}}.
+\item Il élimine l'\res{\text{acide éthanoïque}} restant, qui réagit en dégageant du \res{\text{dioxyde de carbone}}.
+\item $n(\text{alcool})=\dfrac{15{,}0\times0{,}81}{88{,}0}=\qty{0,138}{mol}$ ; $n(\text{acide})=\dfrac{20{,}0\times1{,}05}{60{,}0}=\qty{0,350}{mol}$ : l'alcool est limitant.
+$m_\text{max}=0{,}138\times130{,}0=\qty{17,9}{g}$ ; $m=12{,}5\times0{,}87=\qty{10,9}{g}$ ; $\eta\approx\res{\qty{61}{\percent}}$.
+\end{questions}
+\piege{Calculer le rendement avec le volume de liquide obtenu : il faut d'abord le convertir en masse, $m=\rho\times V$, puis
+comparer cette masse à $m_\text{max}$, calculée à partir du réactif limitant.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-13}
+\begin{corrige}{13}{Le savon à froid}
+\demarche{Trois moles de soude par mole d'oléine ; le surgras rend la soude limitante.}
+\begin{questions}
+\item De chaque côté : 57 C, 107 H, 9 O et 3 Na : l'équation est \res{\text{ajustée}}.
+\item $n(\text{oléine})=\dfrac{500}{884{,}0}=\qty{0,566}{mol}$, d'où $m(\ce{NaOH})=3\times0{,}566\times40{,}0\approx\res{\qty{67,9}{g}}$ ; avec le surgras :
+$0{,}95\times67{,}9\approx\res{\qty{64,5}{g}}$.
+\item La \res{\text{soude}} est limitante : elle est entièrement consommée. Il ne reste pas de soude corrosive dans le savon, mais un
+peu d'huile, qui \res{\text{nourrit la peau}}.
+\item $m(\text{savon})=3\times0{,}566\times304{,}0\approx\res{\qty{516}{g}}$ et $m(\text{glycérol})=0{,}566\times92{,}0\approx\res{\qty{52,0}{g}}$. Avec le surgras, on obtient
+\qty{5}{\percent} de savon en moins.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-14}
+\begin{corrige}{14}{Améliorer un rendement}
+\demarche{Un catalyseur accélère sans changer l'état final ; un excès de réactif ou l'élimination d'un produit déplace l'état final.}
+\begin{questions}
+\item $\res{\ce{C2H4O2 + C2H6O -> C4H8O2 + H2O}}$.
+\item \res{\text{Non}} : il permet d'atteindre plus vite l'état final, mais le même état final.
+\item Le rendement \res{\text{augmente}} avec l'excès d'acide : $\qty{67}{\percent}$, puis $\qty{85}{\percent}$ et $\qty{90}{\percent}$. On met en excès le réactif
+\res{\text{le moins coûteux}}, pour transformer au mieux le plus cher.
+\item Sans l'eau, la réaction inverse, de l'ester avec l'eau, ne peut plus se produire : la transformation devient
+\res{\text{quasi totale}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-15}
+\begin{corrige}{15}{Préparer vingt comprimés}
+\demarche{On part du produit voulu et l'on remonte : $n_\text{max}=\dfrac{n_\text{obtenue}}{\eta}$, puis $n_0(\text{acide salicylique})=n_\text{max}$.}
+\begin{questions}
+\item $m=20\times0{,}500=\res{\qty{10,0}{g}}$ et $n=\dfrac{10{,}0}{180{,}0}=\res{\qty{5,56e-2}{mol}}$.
+\item $n_\text{max}=\dfrac{\num{5.56e-2}}{0{,}80}=\res{\qty{6,94e-2}{mol}}$.
+\item L'acide salicylique est limitant et réagit mole à mole : $m=\num{6.94e-2}\times138{,}0\approx\res{\qty{9,58}{g}}$.
+\item Un meilleur rendement consomme \res{\text{moins de réactifs}} et produit moins de déchets pour la même quantité de médicament.
+\end{questions}
+\retiens{Quand on connaît le rendement, on remonte de la quantité de produit voulue à la quantité de réactif à utiliser :
+$n_\text{max}=\dfrac{n_\text{voulue}}{\eta}$.}
+\end{corrige}
+\end{blocLivre}

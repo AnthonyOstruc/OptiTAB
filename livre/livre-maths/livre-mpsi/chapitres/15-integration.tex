@@ -1,0 +1,543 @@
+% !TEX root = ../main.tex
+%% Chapitre 15 — Intégration
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre,
+%% section « Intégration » : a) continuité uniforme, théorème de Heine ;
+%% b) fonctions en escalier, continues par morceaux ; c) intégrale sur un segment
+%% (valeurs dans K), propriétés ; d) sommes de Riemann (démonstration exigible
+%% pour f lipschitzienne) ; e) lien intégrale-primitive ; f) formules de Taylor
+%% globales (reste intégral, inégalité de Taylor-Lagrange).
+%% Résultats vérifiés par verifications/chapitre_15.py.
+
+\begin{ouverture}[integrale]{15}{Intégration}{Partie 2 · Deuxième semestre}
+  {Continuité uniforme\enspace·\enspace Intégrale sur un segment\enspace·\enspace
+   Sommes de Riemann\enspace·\enspace Primitives\enspace·\enspace Formules de Taylor}
+  \objectif{Comprendre la continuité uniforme et le théorème de Heine.}
+  \objectif{Construire l'intégrale des fonctions continues par morceaux sur un segment.}
+  \objectif{Manier linéarité, positivité, croissance, Chasles et l'inégalité triangulaire.}
+  \objectif{Reconnaître et calculer des limites de sommes de Riemann.}
+  \objectif{Relier intégrale et primitives : le théorème fondamental de l'analyse.}
+  \objectif{Appliquer Taylor reste intégral et l'inégalité de Taylor-Lagrange.}
+  \prerequis{Techniques de calcul intégral : primitives, IPP, changement de variable (chapitre 4).}
+  \prerequis{Suites et séries d'encadrements ; Bolzano-Weierstrass, Cesàro (chapitre 5).}
+  \prerequis{Analyse asymptotique : équivalents, développements (chapitre 11).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Continuité uniforme}
+
+\begin{definition}[Continuité uniforme]
+$f$ est \textbf{uniformément continue} sur $I$ si
+\[
+\forall\varepsilon>0,\ \exists\delta>0,\ \forall x,y\in I,\qquad
+|x-y|\leqslant\delta\implies|f(x)-f(y)|\leqslant\varepsilon :
+\]
+le même $\delta$ sert \emph{partout} — alors que la continuité autorise un
+$\delta$ différent en chaque point. Toute fonction lipschitzienne est
+uniformément continue ($\delta=\varepsilon/K$), toute fonction uniformément
+continue est continue.
+\end{definition}
+
+\begin{theoreme}[Heine]
+Toute fonction continue sur un \emph{segment} $\intFF{a}{b}$ y est
+uniformément continue (démonstration non exigible — l'exercice 21 la
+reconstruit avec Bolzano-Weierstrass). C'est la clé de la construction de
+l'intégrale : sur un segment, une fonction continue se laisse approcher
+\emph{uniformément} par des fonctions en escalier.
+\end{theoreme}
+
+\begin{exemple}
+$\sqrt{\phantom{x}}$ est uniformément continue sur $\R_{+}$
+($|\sqrt x-\sqrt y|\leqslant\sqrt{|x-y|}$) sans être lipschitzienne près de
+$0$ ; $x\mapsto x^{2}$ est continue mais pas uniformément continue sur
+$\R$ : les points $n$ et $n+\frac1n$ se rapprochent, leurs images s'écartent
+(exercice 9).
+\end{exemple}
+
+\essSection{2}{Fonctions en escalier, continues par morceaux}
+
+\begin{definition}[Subdivisions, escalier, morceaux]
+Une \textbf{subdivision} de $\intFF{a}{b}$ est une suite finie
+$a=x_0<x_1<\dots<x_n=b$ ; son \emph{pas} est le plus grand des
+$x_{k+1}-x_k$. Une fonction est \textbf{en escalier} si elle est constante
+sur chaque $\intOO{x_k}{x_{k+1}}$ d'une subdivision adaptée ;
+\textbf{continue par morceaux} si sur chaque $\intOO{x_k}{x_{k+1}}$ elle
+est continue et prolongeable par continuité aux bornes. Les fonctions
+considérées sont définies sur un segment, à valeurs dans $\K=\R$ ou $\Cx$ ;
+les fonctions continues par morceaux forment un sous-espace vectoriel et un
+sous-anneau de $\K^{\intFF{a}{b}}$.
+\end{definition}
+
+\essSection{3}{L'intégrale sur un segment et ses propriétés}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{definition}[Intégrale d'une fonction continue par morceaux]
+L'intégrale d'une fonction en escalier est la somme des aires algébriques
+de ses rectangles ; celle d'une fonction continue par morceaux $f$ est la
+valeur commune vers laquelle se resserrent les intégrales des fonctions en
+escalier qui encadrent $f$ (le programme n'impose pas de construction
+particulière). Notations :
+$\displaystyle\int_{\intFF{a}{b}}f$, $\displaystyle\int_{a}^{b}f$,
+$\displaystyle\int_{a}^{b}f(t)\,\mathrm{d}t$ — et, si $b\leqslant a$,
+$\displaystyle\int_{a}^{b}f=-\int_{b}^{a}f$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62,line cap=round]
+  \fill[otGreen,opacity=0.3]
+    plot[domain=0.5:4.4,samples=60] ({\x},{1.3+0.7*sin(deg(1.5*\x-1))+0.12*\x})
+    -- (4.4,0) -- (0.5,0) -- cycle;
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.3,0) -- (5.2,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,3.1);
+  \draw[otNavy,line width=1.2pt]
+    plot[domain=0.15:4.9,samples=80] ({\x},{1.3+0.7*sin(deg(1.5*\x-1))+0.12*\x});
+  \draw[otGreenDark,line width=1pt] (0.5,-0.12) -- (0.5,0.12);
+  \draw[otGreenDark,line width=1pt] (4.4,-0.12) -- (4.4,0.12);
+  \node[below,font=\scriptsize,text=otGreenDark] at (0.5,-0.12) {$a$};
+  \node[below,font=\scriptsize,text=otGreenDark] at (4.4,-0.12) {$b$};
+  \node[font=\scriptsize,text=otGreenDark!80!black] at (2.45,0.85) {$\displaystyle\int_a^b f$};
+\end{tikzpicture}\\[0.5mm]
+\legende{L'intégrale est l'aire \emph{algébrique} entre la courbe et
+l'axe : comptée négativement sous l'axe.}
+\end{minipage}
+
+\begin{theoreme}[Les propriétés fondamentales]
+Pour $f,g$ continues par morceaux sur $\intFF{a}{b}$ ($a\leqslant b$) :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \emph{linéarité} :
+    $\int(\lambda f+\mu g)=\lambda\int f+\mu\int g$ ;
+  \item \emph{positivité et croissance} : si $f\geqslant0$ alors
+    $\int f\geqslant0$ ; si $f\leqslant g$ alors
+    $\int f\leqslant\int g$ ;
+  \item \emph{inégalité triangulaire} :
+    $\Bigl|\displaystyle\int_{a}^{b}f\Bigr|\leqslant\displaystyle\int_{a}^{b}|f|$ ;
+  \item \emph{relation de Chasles} :
+    $\displaystyle\int_{a}^{c}f=\int_{a}^{b}f+\int_{b}^{c}f$ (valable pour
+    toutes positions de $a,b,c$ avec la convention d'orientation) ;
+  \item si $f$ est \emph{continue}, positive et d'intégrale nulle, alors
+    $f=0$ (faux pour une fonction continue par morceaux : un point isolé
+    ne pèse rien).
+\end{itemize}
+La \textbf{valeur moyenne} de $f$ est
+$\dfrac{1}{b-a}\displaystyle\int_{a}^{b}f$. Enfin l'intégrale d'une
+fonction impaire sur un segment centré en $0$ est nulle, celle d'une paire
+vaut deux fois l'intégrale sur la moitié, et l'intégrale d'une fonction
+périodique sur un intervalle de période ne dépend pas de l'intervalle.
+\end{theoreme}
+
+\essSection{4}{Sommes de Riemann}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{theoreme}[Sommes de Riemann]
+Si $f$ est continue par morceaux sur $\intFF{a}{b}$ :
+\[
+\frac{b-a}{n}\sum_{k=0}^{n-1}f\Bigl(a+k\,\frac{b-a}{n}\Bigr)
+\xrightarrow[n\to+\infty]{}\int_{a}^{b}f(t)\,\mathrm{d}t .
+\]
+(On peut aussi évaluer aux points droits ou en tout point de chaque
+maille.) La démonstration est \emph{exigible} pour $f$ lipschitzienne —
+la voici.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62,line cap=round]
+  \foreach \k in {0,...,7}{%
+    \pgfmathsetmacro{\xa}{0.5+0.4875*\k}%
+    \pgfmathsetmacro{\hh}{1.3+0.7*sin(deg(1.5*\xa-1))+0.12*\xa}%
+    \fill[otGreen,opacity=0.28] ({\xa},0) rectangle ({\xa+0.4875},{\hh});
+    \draw[otGreenDark,line width=0.5pt] ({\xa},0) rectangle ({\xa+0.4875},{\hh});}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.3,0) -- (5.2,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,3.1);
+  \draw[otNavy,line width=1.2pt]
+    plot[domain=0.15:4.9,samples=80] ({\x},{1.3+0.7*sin(deg(1.5*\x-1))+0.12*\x});
+  \node[below,font=\scriptsize,text=otGreenDark] at (0.5,-0.12) {$a$};
+  \node[below,font=\scriptsize,text=otGreenDark] at (4.4,-0.12) {$b$};
+\end{tikzpicture}\\[0.5mm]
+\legende{La méthode des rectangles : quand le pas tend vers $0$, l'aire
+des rectangles tend vers l'intégrale.}
+\end{minipage}
+
+\begin{demonstration}[Cas lipschitzien — démonstration exigible]
+Soit $K$ une constante de Lipschitz de $f$, $h=\frac{b-a}{n}$ et
+$x_k=a+kh$. Sur chaque maille,
+\[
+\Bigl|\int_{x_k}^{x_{k+1}}f(t)\,\mathrm{d}t-h\,f(x_k)\Bigr|
+=\Bigl|\int_{x_k}^{x_{k+1}}\bigl(f(t)-f(x_k)\bigr)\mathrm{d}t\Bigr|
+\leqslant\int_{x_k}^{x_{k+1}}K\,(t-x_k)\,\mathrm{d}t=\frac{K h^{2}}{2}.
+\]
+En sommant les $n$ mailles (Chasles) :
+$\Bigl|\int_{a}^{b}f-S_n\Bigr|\leqslant n\cdot\frac{Kh^{2}}{2}
+=\frac{K(b-a)^{2}}{2n}\xrightarrow[n\to+\infty]{}0$.
+\end{demonstration}
+
+\begin{savoirfaire}[Reconnaître une somme de Riemann]
+Mettre $\dfrac1n$ en facteur et faire apparaître $f\bigl(\tfrac kn\bigr)$ :
+\[
+\sum_{k=1}^{n}\frac{1}{n+k}
+=\frac1n\sum_{k=1}^{n}\frac{1}{1+\frac kn}
+\xrightarrow[n\to+\infty]{}\int_{0}^{1}\frac{\mathrm{d}t}{1+t}=\ln2 .
+\]
+Les produits se traitent en passant au logarithme (exercice 11).
+\end{savoirfaire}
+
+\essSection{5}{Intégrale et primitives}
+
+\begin{theoreme}[Théorème fondamental de l'analyse]
+Soit $f$ \emph{continue} sur un intervalle $I$ et $a\in I$. La fonction
+$F:x\mapsto\displaystyle\int_{a}^{x}f(t)\,\mathrm{d}t$ est de classe
+$\mathcal{C}^{1}$ sur $I$, avec $F'=f$ : \emph{toute fonction continue sur
+un intervalle possède des primitives}. En conséquence, pour toute primitive
+$G$ de $f$ :
+\[
+\int_{a}^{b}f(t)\,\mathrm{d}t=G(b)-G(a) ,
+\]
+et les théorèmes d'intégration par parties et de changement de variable du
+chapitre 4 reposent sur cette égalité. Si la borne est composée,
+$x\mapsto\int_{a}^{u(x)}f$ se dérive en $u'(x)\,f\bigl(u(x)\bigr)$.
+\end{theoreme}
+
+\begin{attention}
+L'hypothèse de continuité est essentielle pour $F'=f$ : pour $f$ seulement
+continue par morceaux, $F$ est continue et dérivable sauf aux points de
+discontinuité. Et une intégrale à valeurs complexes s'intègre par parties
+réelle et imaginaire : $\int\mathrm{e}^{\mathrm{i}t}\mathrm{d}t$ se calcule
+comme en réel, ce qui unifie bien des calculs trigonométriques
+(exercice 18).
+\end{attention}
+
+\essSection{6}{Formules de Taylor globales}
+
+\begin{theoreme}[Taylor avec reste intégral ; inégalité de Taylor-Lagrange]
+Soit $f$ de classe $\mathcal{C}^{n+1}$ sur $I$, et $a,b\in I$ :
+\[
+f(b)=\sum_{k=0}^{n}\frac{f^{(k)}(a)}{k!}(b-a)^{k}
++\int_{a}^{b}\frac{(b-t)^{n}}{n!}\,f^{(n+1)}(t)\,\mathrm{d}t .
+\]
+En majorant le reste : si $\bigl|f^{(n+1)}\bigr|\leqslant M$ entre $a$ et
+$b$,
+\[
+\Bigl|f(b)-\sum_{k=0}^{n}\frac{f^{(k)}(a)}{k!}(b-a)^{k}\Bigr|
+\leqslant M\,\frac{|b-a|^{n+1}}{(n+1)!}
+\qquad\text{(inégalité de Taylor-Lagrange).}
+\]
+\end{theoreme}
+
+\begin{attention}
+Taylor-Young (chapitre 11) est un énoncé \emph{local} : il décrit $f$ près
+de $a$, sans contrôle de l'erreur. Les formules globales ci-dessus donnent
+une \emph{majoration effective} valable sur tout l'intervalle : ce sont
+elles qui prouvent $\mathrm{e}=\sum1/k!$, encadrent les restes et
+justifient les calculs approchés (exercices 7, 8, 15). L'égalité de
+Taylor-Lagrange est hors programme.
+\end{attention}
+
+\begin{savoirfaire}[Comparer les méthodes d'approximation]
+Pour approcher $\int_a^b f$ avec $n$ mailles : les \emph{rectangles} font
+une erreur en $O\bigl(\frac1n\bigr)$ (la borne lipschitzienne ci-dessus
+est optimale en général), les \emph{trapèzes} — moyenne des deux rectangles
+— une erreur en $O\bigl(\frac{1}{n^{2}}\bigr)$ pour $f$ assez régulière :
+à coût égal, les trapèzes gagnent largement (exercice 16).
+\end{savoirfaire}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Fonctions en escalier}
+\begin{questions}
+  \item Calculer $\displaystyle\int_{0}^{3}\lfloor t\rfloor\,\mathrm{d}t$
+    et $\displaystyle\int_{0}^{3}\bigl(t-\lfloor t\rfloor\bigr)\mathrm{d}t$.
+  \item Les fonctions suivantes sont-elles continues par morceaux sur
+    $\intFF{0}{1}$ : $x\mapsto|2x-1|$ ; $x\mapsto\lfloor3x\rfloor$ ;
+    $x\mapsto\dfrac1x$ prolongée par $0$ en $0$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Les propriétés de base}
+\begin{questions}
+  \item Sans calculer l'intégrale, encadrer
+    $\displaystyle\int_{0}^{1}\frac{\mathrm{d}x}{1+x}$ entre $\dfrac12$ et
+    $1$ ; comparer à sa valeur exacte.
+  \item Justifier
+    $\Bigl|\displaystyle\int_{0}^{1}\sin\bigl(x^{2}\bigr)\mathrm{d}x\Bigr|\leqslant1$.
+  \item Calculer $\displaystyle\int_{-1}^{2}|x|\,\mathrm{d}x$ avec la
+    relation de Chasles.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Parité et périodicité}
+\begin{questions}
+  \item Que vaut $\displaystyle\int_{-1}^{1}x^{3}\cos x\,\mathrm{d}x$ ?
+  \item Calculer $\displaystyle\int_{0}^{2\pi}\cos^{2}t\,\mathrm{d}t$.
+  \item Montrer que $\displaystyle\int_{a}^{a+2\pi}\sin t\,\mathrm{d}t$ ne
+    dépend pas de $a$ — et donner sa valeur.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Valeur moyenne}
+\begin{questions}
+  \item Calculer la valeur moyenne de $\sin$ sur $\intFF{0}{\pi}$, puis
+    celle de $x\mapsto x^{2}$ sur $\intFF{0}{1}$.
+  \item Interpréter géométriquement : quel rectangle a la même aire que la
+    région sous la courbe ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Sommes de Riemann : premiers calculs}
+Déterminer les limites des suites :
+\begin{tasks}(3)
+  \task $\displaystyle\sum_{k=1}^{n}\frac{1}{n+k}$
+  \task $\displaystyle\sum_{k=1}^{n}\frac{k}{n^{2}}$
+  \task $\displaystyle\sum_{k=1}^{n}\frac{n}{n^{2}+k^{2}}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Dériver une intégrale}
+\begin{questions}
+  \item Soit $F(x)=\displaystyle\int_{0}^{x}\mathrm{e}^{-t^{2}}\mathrm{d}t$.
+    Justifier que $F$ est de classe $\mathcal{C}^{1}$, donner $F'$ et les
+    variations de $F$.
+  \item Soit $G(x)=\displaystyle\int_{0}^{x^{2}}\sin t\,\mathrm{d}t$.
+    Calculer $G'(x)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Taylor avec reste intégral}
+\begin{questions}
+  \item Écrire la formule de Taylor avec reste intégral pour $\exp$ entre
+    $0$ et $1$ à l'ordre $n$.
+  \item En déduire
+    $0<\mathrm{e}-\displaystyle\sum_{k=0}^{n}\frac{1}{k!}
+    \leqslant\frac{\mathrm{e}}{(n+1)!}$, et le nombre de termes assurant
+    une précision de $10^{-3}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{L'inégalité de Taylor-Lagrange}
+\begin{questions}
+  \item Montrer que $|\sin x-x|\leqslant\dfrac{|x|^{3}}{6}$ pour tout
+    $x\in\R$, et que
+    $\Bigl|\cos x-1+\dfrac{x^{2}}{2}\Bigr|\leqslant\dfrac{x^{4}}{24}$.
+  \item En déduire une valeur approchée de $\sin(0{,}1)$ et la précision
+    garantie.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Continuité uniforme : exemples et contre-exemples}
+\begin{questions}
+  \item Montrer que $|\sqrt x-\sqrt y|\leqslant\sqrt{|x-y|}$ pour
+    $x,y\geqslant0$, et en déduire que la racine carrée est uniformément
+    continue sur $\R_{+}$. Est-elle lipschitzienne sur $\intFF{0}{1}$ ?
+  \item Montrer que $x\mapsto x^{2}$ n'est pas uniformément continue sur
+    $\R$. \emph{Considérer $x_n=n$ et $y_n=n+\frac1n$.}
+  \item Montrer que $x\mapsto\sin\dfrac1x$ n'est pas uniformément continue
+    sur $\intOF{0}{1}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Intégrale nulle}
+\begin{questions}
+  \item Soit $f$ continue et positive sur $\intFF{a}{b}$ avec
+    $\displaystyle\int_{a}^{b}f=0$. Montrer que $f=0$.
+    \emph{Si $f(c)>0$, minorer $f$ sur un petit segment autour de $c$.}
+  \item En déduire : si $f$ est continue et
+    $\displaystyle\int_{a}^{b}f^{2}=0$, alors $f=0$.
+  \item Donner une fonction continue par morceaux, positive, non nulle,
+    d'intégrale nulle.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Sommes de Riemann corsées}
+Déterminer les limites :
+\begin{questions}
+  \item $\displaystyle\frac{1}{n\sqrt n}\sum_{k=1}^{n}\sqrt{k}$ ;
+  \item $\displaystyle\Bigl(\prod_{k=1}^{n}\Bigl(1+\frac kn\Bigr)\Bigr)^{1/n}$
+    \emph{(passer au logarithme)} ;
+  \item $\displaystyle\frac1n\sum_{k=1}^{n}\sin\frac{k\pi}{n}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La démonstration lipschitzienne, en pratique}
+Soit $f$ lipschitzienne de constante $K$ sur $\intFF{a}{b}$ et $S_n$ la
+somme de Riemann aux points gauches.
+\begin{questions}
+  \item Redémontrer l'estimation
+    $\Bigl|\displaystyle\int_{a}^{b}f-S_n\Bigr|
+    \leqslant\dfrac{K(b-a)^{2}}{2n}$.
+  \item L'appliquer à $\displaystyle\int_{0}^{1}\mathrm{e}^{x}\mathrm{d}x$ :
+    quelle valeur de $n$ garantit une erreur inférieure à $10^{-2}$ ?
+    Comparer à l'erreur réellement observée.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La suite $I_n=\int_0^1 x^{n}\mathrm{e}^{x}\,\mathrm{d}x$}
+\begin{questions}
+  \item Établir la relation $I_n=\mathrm{e}-n\,I_{n-1}$ pour
+    $n\geqslant1$.
+  \item Encadrer $I_n$ entre $\dfrac{1}{n+1}$ et $\dfrac{\mathrm{e}}{n+1}$,
+    et en déduire sa limite.
+  \item Montrer que $n\,I_{n-1}\to\mathrm{e}$, puis que
+    $I_n\sim\dfrac{\mathrm{e}}{n}$ (chapitre 11).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Autour de $\int_0^1\frac{\mathrm{d}x}{1+x^{n}}$}
+On pose $K_n=\displaystyle\int_{0}^{1}\frac{\mathrm{d}x}{1+x^{n}}$ et
+$J_n=1-K_n=\displaystyle\int_{0}^{1}\frac{x^{n}}{1+x^{n}}\,\mathrm{d}x$.
+\begin{questions}
+  \item Montrer que $K_n\to1$. \emph{Encadrer $J_n$.}
+  \item Par le changement de variable $u=x^{n}$, montrer que
+    $0\leqslant\ln2-nJ_n\leqslant\dfrac{1}{n+1}$.
+  \item En déduire le développement
+    $K_n=1-\dfrac{\ln2}{n}+o\Bigl(\dfrac1n\Bigr)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{$\mathrm{e}$ et $\ln2$ : restes et irrationalité}
+\begin{questions}
+  \item Avec l'exercice 7, montrer que
+    $A_n=n!\,\displaystyle\sum_{k=0}^{n}\frac{1}{k!}$ est un entier
+    vérifiant $0<n!\,\mathrm{e}-A_n<1$ pour $n\geqslant2$, et en déduire
+    que $\mathrm{e}$ est irrationnel (chapitre 5, revisité).
+  \item Montrer que le reste de la série alternée de $\ln2$ est exactement
+    l'intégrale $\displaystyle\int_{0}^{1}\frac{x^{n}}{1+x}\,\mathrm{d}x$
+    du chapitre 11 — Taylor reste intégral appliqué à $\ln(1+x)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Rectangles contre trapèzes}
+Pour $\displaystyle\int_{0}^{1}\mathrm{e}^{x}\mathrm{d}x=\mathrm{e}-1$, on
+note $R_n$ la méthode des rectangles (points gauches) et
+$T_n$ celle des trapèzes.
+\begin{questions}
+  \item Exprimer $T_n$ à partir des sommes aux points gauches et droits.
+  \item Calculer numériquement les erreurs pour $n=10$ puis $n=100$, et
+    vérifier qu'elles se divisent par environ $10$ pour $R_n$, par environ
+    $100$ pour $T_n$ : ordres $1$ et $2$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'inégalité de Cauchy-Schwarz intégrale}
+Pour $f,g$ continues sur $\intFF{a}{b}$ :
+\begin{questions}
+  \item En étudiant le trinôme
+    $t\mapsto\displaystyle\int_{a}^{b}(f+tg)^{2}$, montrer que
+    $\Bigl(\displaystyle\int_{a}^{b}fg\Bigr)^{2}
+    \leqslant\displaystyle\int_{a}^{b}f^{2}\int_{a}^{b}g^{2}$.
+  \item En déduire
+    $\Bigl(\displaystyle\int_{0}^{1}f\Bigr)^{2}
+    \leqslant\displaystyle\int_{0}^{1}f^{2}$ et interpréter en termes de
+    moyennes.
+  \item Quand y a-t-il égalité ? (On y reviendra au chapitre 18.)
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Fonctions à valeurs complexes}
+\begin{questions}
+  \item Calculer $\displaystyle\int_{0}^{\pi}\mathrm{e}^{\mathrm{i}t}\,\mathrm{d}t$
+    et vérifier l'inégalité
+    $\bigl|\int\bigr|\leqslant\int|\cdot|$ sur cet exemple.
+  \item Retrouver une primitive de $x\mapsto\mathrm{e}^{x}\cos x$ en
+    intégrant $x\mapsto\mathrm{e}^{(1+\mathrm{i})x}$ (chapitres 3 et 4).
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{La constante d'Euler, enfin}
+On pose $u_n=H_n-\ln n$, où $H_n=1+\frac12+\dots+\frac1n$.
+\begin{questions}
+  \item Par comparaison de $\dfrac1k$ aux intégrales
+    $\displaystyle\int_{k}^{k+1}\frac{\mathrm{d}t}{t}$, montrer que
+    $(u_n)$ est décroissante et minorée par $0$.
+  \item En déduire la convergence de $(u_n)$ : sa limite est la constante
+    d'Euler $\gamma$, admise au chapitre 5 — désormais construite.
+  \item Montrer l'encadrement $\gamma<u_n<\gamma+\dfrac1n$ et commenter la
+    vitesse de convergence (chapitre 11).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le lemme de Riemann-Lebesgue, version $\mathcal{C}^{1}$}
+Soit $f$ de classe $\mathcal{C}^{1}$ sur $\intFF{a}{b}$.
+\begin{questions}
+  \item Par intégration par parties, majorer
+    $\Bigl|\displaystyle\int_{a}^{b}f(t)\sin(nt)\,\mathrm{d}t\Bigr|$ par
+    une constante divisée par $n$, et conclure que l'intégrale tend vers
+    $0$.
+  \item Calculer exactement
+    $\displaystyle\int_{0}^{2\pi}t^{2}\sin(nt)\,\mathrm{d}t$ et vérifier.
+  \item Pourquoi le résultat vaut-il aussi pour les fonctions en escalier,
+    puis continues par morceaux ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le théorème de Heine, démonstration guidée}
+Soit $f$ continue sur $\intFF{a}{b}$, supposée \emph{non} uniformément
+continue.
+\begin{questions}
+  \item Montrer qu'il existe $\varepsilon>0$ et deux suites $(x_n)$,
+    $(y_n)$ de $\intFF{a}{b}$ telles que $|x_n-y_n|\leqslant\frac1n$ et
+    $|f(x_n)-f(y_n)|>\varepsilon$.
+  \item Avec Bolzano-Weierstrass (chapitre 5), extraire une sous-suite
+    convergente et aboutir à une contradiction.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Orthogonale aux polynômes}
+Soit $f$ continue sur $\intFF{0}{1}$ telle que
+$\displaystyle\int_{0}^{1}f(t)\,t^{k}\,\mathrm{d}t=0$ pour
+$k=0,1,\dots,n$.
+\begin{questions}
+  \item Montrer que $\displaystyle\int_{0}^{1}fP=0$ pour tout
+    $P\in\R_n[X]$.
+  \item Montrer que $f$ s'annule en au moins $n+1$ points distincts de
+    $\intOO{0}{1}$. \emph{Sinon, construire un polynôme de degré
+    $\leqslant n$ ayant partout le signe de $f$, et contredire
+    l'exercice 10.}
+  \item Vérifier sur $f(x)=6x^{2}-6x+1$ (orthogonale à $1$ et $x$) :
+    combien de racines dans $\intOO{0}{1}$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{L'aire de l'ellipse}
+\begin{questions}
+  \item Paramétrer l'ellipse $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}=1$
+    par $x=a\cos t$, $y=b\sin t$, et exprimer son aire comme l'intégrale
+    $\displaystyle\int_{0}^{2\pi}ab\sin^{2}t\,\mathrm{d}t$.
+  \item Conclure : aire $=\pi ab$, et retrouver le point de vue
+    « déterminant » du chapitre 14.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La formule de Stirling, enfin démontrée}
+On pose $u_n=\dfrac{n!}{\sqrt n\,(n/\mathrm{e})^{n}}$ et
+$d_n=\ln u_n-\ln u_{n+1}$.
+\begin{questions}
+  \item Montrer que $d_n=\Bigl(n+\dfrac12\Bigr)\ln\Bigl(1+\dfrac1n\Bigr)-1$.
+  \item Montrer que $\ln(1+t)\geqslant\dfrac{2t}{2+t}$ pour $t\geqslant0$,
+    et en déduire $d_n\geqslant0$ ; montrer par ailleurs
+    $d_n\leqslant\dfrac{1}{6n^{2}}$ pour $n \geqslant 2$
+    \emph{(série alternée de $\ln(1+x)$)}.
+  \item En déduire que $(\ln u_n)$ converge
+    \emph{(comparer $\sum d_n$ à $\sum\frac{1}{n^{2}}$, chapitre 5)}, puis
+    que $u_n\to\ell>0$ : il existe une constante $\ell$ telle que
+    $n!\sim\ell\,\sqrt n\,\bigl(n/\mathrm{e}\bigr)^{n}$.
+  \item À l'aide de l'équivalent de Wallis
+    $\binom{2n}{n}\sim\dfrac{4^{n}}{\sqrt{\pi n}}$ (chapitre 11, obtenu
+    sans Stirling), montrer que $\ell=\sqrt{2\pi}$ : la formule de
+    Stirling, admise au chapitre 11, est démontrée.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-15}

@@ -1,0 +1,525 @@
+\editionPage[\pdfbookmark[0]{Corrigés des défis}{bm-corriges-defis}]{defi-cor-1-1}{D01 · Corrigé}{Deux racines dans un intervalle}{\hyperref[defi-ex-1]{Énoncé p.~\pageref*{defi-ex-1}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-1-1}
+\editionEtape{1. Traduire la position des racines}
+On calcule $\Delta=4m(m-1)$. Il y a deux racines distinctes si et seulement si
+$m<0$ ou $m>1$. Le coefficient de $x^2$ est positif : la parabole est tournée vers le haut.
+Si les deux racines $r_1<r_2$ sont dans $]0;2[$, les bornes 0 et 2 sont à l'extérieur
+de l'intervalle entre les racines. On a donc
+\[P_m(0)=m>0,\qquad P_m(2)=4-3m>0.\]
+Le sommet a pour abscisse $(r_1+r_2)/2=m$, donc $0<m<2$.
+\editionEtape{2. Justifier la réciproque}
+Supposons $\Delta>0$, $P_m(0)>0$, $P_m(2)>0$ et $0<m<2$.
+L'ordonnée du sommet vaut $m-m^2=-\Delta/4<0$. Sur $[0;m]$, la fonction
+décroît d'une valeur positive à une valeur négative ; la première racine se trouve
+donc entre 0 et $m$. De même, la seconde se trouve entre $m$ et 2.
+On peut aussi utiliser les racines explicites $m\pm\sqrt{m(m-1)}$.
+\editionEtape{3. Réunir les conditions}
+Les conditions de signe donnent $0<m<4/3$, et $\Delta>0$ impose alors $m>1$.
+La condition sur le sommet est automatiquement satisfaite. Ainsi
+\[\res{m\in\left]1;\frac43\right[}.\]
+Pour $m=1$, la racine 1 est double. Pour $m=4/3$, les racines sont $2/3$ et 2 :
+la seconde est exclue du domaine demandé. Aucun des deux paramètres frontières ne convient.
+\editionEtape{4. Repérer une condition insuffisante}
+Pour $m=1/2$, $P_m(0)=1/2$ et $P_m(2)=5/2$ sont positifs, mais $\Delta=-1<0$ :
+il n'existe aucune racine réelle.
+\editionRetenir{Une liste de conditions nécessaires n'est pas encore une équivalence.
+La réciproque doit être justifiée, puis les bornes du domaine doivent être contrôlées.}
+\end{blocEdition}
+
+\editionPage{defi-cor-2-1}{D02 · Corrigé}{Le seuil d’une moyenne}{\hyperref[defi-ex-2]{Énoncé p.~\pageref*{defi-ex-2}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-2-1}
+\editionEtape{1. Déplacer le point fixe}
+Le nombre 300 vérifie $300=(4/5)300+60$. En posant $v_n=u_n-300$,
+on obtient $v_{n+1}=(4/5)v_n$ et $v_0=-300$.
+Ainsi $u_n=300-300(4/5)^n$. La puissance $(4/5)^n$ décroît strictement :
+$u_n$ croît strictement, reste inférieur à 300 et commence à 0.
+\editionEtape{2. Additionner le bon nombre de termes}
+Il y a $n$ termes, des indices 0 à $n-1$. La somme géométrique donne
+\[S_n=300n-300\frac{1-(4/5)^n}{1-4/5}
+=300n-1500\bigl(1-(4/5)^n\bigr).\]
+En divisant par $n>0$, on obtient l'expression demandée de $A_n$.
+\editionEtape{3. Comparer une moyenne au terme suivant}
+Chacun des $n$ termes $u_0,\ldots,u_{n-1}$ est strictement inférieur à $u_n$.
+Leur moyenne vérifie donc $A_n<u_n$.
+Comme $S_{n+1}=S_n+u_n=nA_n+u_n$,
+\[A_{n+1}-A_n=\frac{nA_n+u_n}{n+1}-A_n
+=\frac{u_n-A_n}{n+1}>0.\]
+La suite des moyennes est strictement croissante.
+\editionRetenir{Pour étudier une moyenne de termes successifs, ajouter le nouveau terme
+à la somme est souvent plus simple que soustraire deux formules compliquées.}
+\end{blocEdition}
+
+\editionPage{defi-cor-2-2}{D02 · Corrigé (suite)}{Le seuil d’une moyenne}{\hyperref[defi-ex-2]{Énoncé p.~\pageref*{defi-ex-2}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-2-2}
+\editionEtape{4. Programmer sans décaler les indices}
+\begin{python}
+def seuil_moyenne():
+    n = 1
+    u = 60.0
+    total = 0.0
+    while total / n < 240:
+        total = total + u
+        u = 0.8 * u + 60
+        n = n + 1
+    return n
+\end{python}
+Au test de boucle, \code{total} est $S_n$ et \code{u} est $u_n$.
+Au départ, $S_1=u_0=0$ et $u_1=60$. On ajoute $u_n$ à la somme,
+puis on prépare $u_{n+1}$ et on augmente $n$ : les trois variables restent cohérentes.
+La fonction renvoie \res{25}.
+\editionEtape{5. Valider le premier franchissement}
+Avec la formule exacte de la première page,
+\[A_{24}\approx237{,}795\quad\text{et}\quad A_{25}\approx240{,}227.\]
+Ainsi $A_{24}<240\leq A_{25}$. La croissance stricte prouve que tous les rangs
+antérieurs à 25 échouent : il ne suffit pas d'obtenir une valeur qui dépasse le seuil,
+il faut aussi justifier qu'elle est la première.
+\editionRetenir{Le programme repère le rang candidat. La formule et la monotonie
+expliquent pourquoi ce candidat répond exactement à la question.}
+\end{blocEdition}
+
+\editionPage{defi-cor-3-1}{D03 · Corrigé}{Trois tangentes par un point}{\hyperref[defi-ex-3]{Énoncé p.~\pageref*{defi-ex-3}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-3-1}
+\editionEtape{1. Remplacer une question géométrique par une équation}
+Comme $f'(t)=3t^2-3$, la formule de la tangente donne
+\[y=f'(t)(x-t)+f(t)=(3t^2-3)x-2t^3.\]
+En prenant $x=1$, son ordonnée vaut $g(t)=-2t^3+3t^2-3$.
+Chercher les tangentes passant par $P_b$ revient donc à compter les solutions de $g(t)=b$.
+\editionEtape{2. Compter les intersections avec une horizontale}
+On a $g'(t)=6t(1-t)$. Ainsi $g$ décroît sur $[-1;0]$, croît sur $[0;1]$
+et décroît sur $[1;2]$, avec
+\[g(-1)=2,\quad g(0)=-3,\quad g(1)=-2,\quad g(2)=-7.\]
+\begin{center}\begin{tabular}{@{}lc@{}}\toprule
+Valeur de $b$ & Nombre de tangentes\\\midrule
+$b<-7$ ou $b>2$ & $0$\\
+$-7\leq b<-3$ ou $-2<b\leq2$ & $1$\\
+$b=-3$ ou $b=-2$ & $2$\\
+$-3<b<-2$ & $3$\\\bottomrule\end{tabular}\end{center}
+À une valeur critique, deux branches du tableau aboutissent au \emph{même} point :
+ce point ne doit être compté qu'une fois.
+Des paramètres distincts donnent ici des droites distinctes : si deux tangentes avaient
+le même terme constant $-2t^3$, leurs paramètres seraient égaux.
+\end{blocEdition}
+
+\editionPage{defi-cor-3-2}{D03 · Corrigé (suite)}{Trois tangentes par un point}{\hyperref[defi-ex-3]{Énoncé p.~\pageref*{defi-ex-3}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-3-2}
+\editionEtape{3. Trouver exactement les trois tangentes}
+Pour $b=-5/2$, l'équation devient $4t^3-6t^2+1=0$.
+Le nombre $1/2$ est racine et
+\[4t^3-6t^2+1=(2t-1)(2t^2-2t-1).\]
+Les trois abscisses de contact sont
+\[\res{\frac{1-\sqrt3}{2},\quad\frac12,\quad\frac{1+\sqrt3}{2}}.\]
+Elles appartiennent bien à $[-1;2]$. Pour $t=1/2$, la pente vaut $-9/4$.
+Pour les deux autres valeurs, $t^2=t+1/2$, donc la pente vaut $3t-3/2=\pm3\sqrt3/2$.
+Toutes les droites passent par $(1;-5/2)$ ; leurs équations sont donc
+\[\res{y=-\frac94x-\frac14},\qquad
+y=\frac{3\sqrt3}{2}(x-1)-\frac52,\qquad
+y=-\frac{3\sqrt3}{2}(x-1)-\frac52.\]
+\editionRetenir{Le paramètre de la tangente est une abscisse de contact.
+Une droite horizontale dans le graphique de $g$ permet de compter les tangentes dans le graphique de $f$.}
+\label{figedition-defi-cor-3-2-1}\figureGeo[corrige]{fr-d03}
+\end{blocEdition}
+
+\editionPage{defi-cor-4-1}{D04 · Corrigé}{La fenêtre la plus lumineuse}{\hyperref[defi-ex-4]{Énoncé p.~\pageref*{defi-ex-4}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-4-1}
+\editionEtape{1. Modéliser le contour avant de calculer}
+Le contour comprend la base $2r$, deux côtés $h$ et le demi-cercle $\pi r$.
+Le segment séparant les deux parties est intérieur. Ainsi
+\[2h+(2+\pi)r=20,\qquad h=10-\frac{2+\pi}{2}r.\]
+Les contraintes donnent $0<r<20/(2+\pi)$.
+\editionEtape{2. Réduire à une seule variable}
+L'aire est celle du rectangle plus celle du demi-disque :
+\[A(r)=2rh+\frac{\pi r^2}{2}=20r-\frac{4+\pi}{2}r^2.\]
+C'est un trinôme de coefficient dominant négatif. Sa dérivée vaut
+$A'(r)=20-(4+\pi)r$ : elle est positive avant $r_*=20/(4+\pi)$ et négative après.
+\editionEtape{3. Contrôler et interpréter l'optimum}
+Le rayon $r_*$ appartient au domaine, puisque $4+\pi>2+\pi$.
+En remplaçant dans la formule de $h$,
+\[\res{r_*=h_*=\frac{20}{4+\pi}\ \mathrm{m}},\qquad
+\res{A_{\max}=\frac{200}{4+\pi}\ \mathrm{m}^2}.\]
+La largeur vaut $40/(4+\pi)$ m. Les deux dimensions sont strictement positives :
+le maximum est atteint à l'intérieur du domaine géométrique.
+\editionRetenir{Un bon modèle distingue le contour extérieur des segments intérieurs.
+Après l'optimisation, revenir aux dimensions et aux unités donne son sens au résultat.}
+\label{figedition-defi-cor-4-1-1}\figureGeo[corrige]{fr-d04}
+\end{blocEdition}
+
+\editionPage{defi-cor-5-1}{D05 · Corrigé}{Encadrer sans logarithme}{\hyperref[defi-ex-5]{Énoncé p.~\pageref*{defi-ex-5}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-5-1}
+\editionEtape{1. Établir une inégalité valable sur tout le domaine}
+La dérivée $F'(x)=e^x-1$ est négative pour $x<0$, nulle en 0 et positive pour $x>0$.
+Ainsi $F$ admet son minimum $F(0)=0$. Il vient $e^x\geq1+x$, et l'égalité
+n'est possible qu'en 0.
+\editionEtape{2. Inverser sans changer le sens à tort}
+Pour $0<t<1$, l'inégalité stricte donne $e^t>1+t$ et $e^{-t}>1-t>0$.
+Sur les nombres strictement positifs, prendre les inverses renverse l'ordre :
+$e^t<1/(1-t)$. La positivité de $1-t$ est indispensable.
+\editionEtape{3. Passer aux puissances entières}
+On prend $t=1/(2n)$, qui est dans $]0;1[$. Les trois quantités sont positives ;
+la puissance entière $n$ conserve donc les inégalités. Comme $(e^{1/(2n)})^n=e^{1/2}$,
+on obtient $L_n<e^{1/2}<U_n$.
+\editionRetenir{Pour produire un encadrement, combiner une inégalité générale
+avec des opérations dont le sens et le domaine sont explicitement contrôlés.}
+\end{blocEdition}
+
+\editionPage{defi-cor-5-2}{D05 · Corrigé (suite)}{Encadrer sans logarithme}{\hyperref[defi-ex-5]{Énoncé p.~\pageref*{defi-ex-5}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-5-2}
+\editionEtape{4. Calculer et arrondir dans le bon sens}
+\begin{python}
+def bornes_exponentielle(n):
+    bas = (1 + 1 / (2 * n)) ** n
+    haut = (1 - 1 / (2 * n)) ** (-n)
+    return bas, haut
+\end{python}
+Des arrondis extérieurs à cinq décimales donnent :
+\begin{center}\begin{tabular}{@{}ccc@{}}\toprule
+$n$ & Borne inférieure & Borne supérieure\\\midrule
+10 & $1{,}62889$ & $1{,}67019$\\
+100 & $1{,}64666$ & $1{,}65080$\\
+1000 & $1{,}64851$ & $1{,}64893$\\\bottomrule\end{tabular}\end{center}
+Chaque ligne enferme $e^{1/2}$. Un arrondi usuel au plus proche pourrait
+déplacer une borne vers l'intérieur ; c'est pourquoi on arrondit ici volontairement vers l'extérieur.
+\editionEtape{5. Distinguer preuve et observation}
+La preuve garantit l'encadrement \emph{pour chaque entier} $n\geq1$.
+Les calculs suggèrent qu'il se resserre. À eux seuls, quelques essais ne démontrent
+ni une propriété pour tous les rangs, ni une convergence.
+La fonction Python travaille en nombres approchés : pour certifier une précision arbitraire,
+on utiliserait des calculs rationnels ou des bornes d'erreur adaptées.
+\editionRetenir{Le calcul numérique illustre une preuve ; il ne remplace pas
+le contrôle du sens des inégalités et des arrondis.}
+\end{blocEdition}
+
+\editionPage{defi-cor-6-1}{D06 · Corrigé}{Additionner sinus et cosinus}{\hyperref[defi-ex-6]{Énoncé p.~\pageref*{defi-ex-6}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-6-1}
+\editionEtape{1. Changer de représentation}
+Les coordonnées vérifient $x^2+y^2=1$ ; l'autre condition est la droite $x+y=k$.
+De $(x-y)^2\geq0$, on déduit $2xy\leq1$, puis
+$(x+y)^2=1+2xy\leq2$. Il faut donc $|k|\leq\sqrt2$.
+\editionEtape{2. Reconstruire les coordonnées}
+En développant $k^2=(x+y)^2$, on trouve $xy=(k^2-1)/2$.
+Le trinôme dont les racines sont $x$ et $y$ a pour discriminant $2-k^2$.
+Pour $|k|\leq\sqrt2$, les points cherchés ont pour coordonnées
+\[\left(\frac{k+\sqrt{2-k^2}}2;\frac{k-\sqrt{2-k^2}}2\right)
+\quad\text{et}\quad
+\left(\frac{k-\sqrt{2-k^2}}2;\frac{k+\sqrt{2-k^2}}2\right).\]
+Ces couples vérifient bien les deux équations ; la condition est donc suffisante.
+Si $|k|<\sqrt2$, les deux points sont distincts : il existe deux solutions $t$.
+Si $k=\pm\sqrt2$, les deux couples coïncident : une solution.
+Si $|k|>\sqrt2$, aucune solution.
+\editionRetenir{Une condition nécessaire devient une caractérisation seulement
+après avoir vérifié que les coordonnées construites satisfont les équations de départ.}
+\end{blocEdition}
+
+\editionPage{defi-cor-6-2}{D06 · Corrigé (suite)}{Additionner sinus et cosinus}{\hyperref[defi-ex-6]{Énoncé p.~\pageref*{defi-ex-6}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-6-2}
+\editionEtape{3. Revenir aux angles remarquables}
+Pour $k=0$, on a $y=-x$ et les points
+$(-\sqrt2/2;\sqrt2/2)$ et $(\sqrt2/2;-\sqrt2/2)$ :
+\[\res{t\in\{3\pi/4;7\pi/4\}}.\]
+Pour $k=1$, les coordonnées sont $(1;0)$ et $(0;1)$, donc
+\[\res{t\in\{0;\pi/2\}}.\]
+Pour $k=\sqrt2$, il n'y a qu'un point, $(\sqrt2/2;\sqrt2/2)$, donc
+\[\res{t=\pi/4}.\]
+Pour une valeur générale de $k$, les coordonnées exactes suffisent à décrire les points :
+on ne suppose pas que leurs angles soient des angles remarquables.
+\editionRetenir{Les points du cercle et les angles ne sont pas des réponses interchangeables :
+préciser le domaine de l'angle permet de compter correctement les solutions.}
+\label{figedition-defi-cor-6-2-1}\figureGeo[corrige]{fr-d06}
+\end{blocEdition}
+
+\editionPage{defi-cor-7-1}{D07 · Corrigé}{Un triangle sous deux contraintes}{\hyperref[defi-ex-7]{Énoncé p.~\pageref*{defi-ex-7}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-7-1}
+\editionEtape{1. Reconnaître le lieu d'orthogonalité}
+Les vecteurs sont $(-2-x;-y)$ et $(2-x;-y)$ ; leur produit scalaire vaut
+$x^2+y^2-4$. Le lieu est le cercle de centre $O$ et de rayon 2, de diamètre $[AB]$.
+Sur ce cercle, $MA^2=(x+2)^2+y^2=8+4x$ et $MB^2=8-4x$.
+\editionEtape{2. Réduire le second lieu à une droite}
+La seconde condition devient $24-4x=k$, donc $x=6-k/4$.
+Il reste
+\[y^2=4-\left(6-\frac k4\right)^2.\]
+Cette quantité est positive si $16<k<32$, nulle si $k=16$ ou $32$, négative sinon.
+Il existe donc deux points pour $16<k<32$ :
+\[\res{M\left(6-\frac k4;\ \pm\sqrt{4-(6-k/4)^2}\right)}.\]
+Aux bornes, un seul point subsiste : $B$ pour $k=16$, $A$ pour $k=32$.
+Hors de $[16;32]$, aucun point ne convient.
+
+\end{blocEdition}
+
+\editionPage{defi-cor-7-2}{D07 · Corrigé (suite)}{Un triangle sous deux contraintes}{\hyperref[defi-ex-7]{Énoncé p.~\pageref*{defi-ex-7}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-7-2}
+\editionEtape{3. Séparer orthogonalité et angle d'un triangle}
+En $A$ ou en $B$, l'un des vecteurs est nul. Son produit scalaire avec l'autre est nul,
+mais le triangle est dégénéré : l'angle demandé n'existe pas.
+Les vrais triangles correspondent exactement à \res{16<k<32}.
+Enfin $MA=MB$ équivaut à $x=0$, d'où \res{k=24} et \res{M(0;2)\text{ ou }M(0;-2)}.
+\editionRetenir{Un produit scalaire nul autorise un vecteur nul. Pour conclure sur
+un angle droit, vérifier que les trois sommets forment effectivement un triangle.}
+\label{figedition-defi-cor-7-2-1}\figureGeo[corrige]{fr-d07}
+\end{blocEdition}
+
+\editionPage{defi-cor-8-1}{D08 · Corrigé}{Une famille de cercles tangents}{\hyperref[defi-ex-8]{Énoncé p.~\pageref*{defi-ex-8}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-8-1}
+\editionEtape{1. Identifier les cercles sans oublier le rayon}
+On complète les carrés :
+\[(x-2)^2+(y-m)^2=4+m^2.\]
+Le centre est $\Omega_m(2;m)$ et le rayon $\sqrt{4+m^2}$, strictement positif pour tout $m$.
+Les points $(0;0)$ et $(4;0)$ vérifient l'équation initiale, quel que soit $m$.
+\editionEtape{2. Compter les intersections par le discriminant}
+Après substitution,
+\[2x^2+(2m-16)x+36-12m=0.\]
+Son discriminant vaut
+\[(2m-16)^2-8(36-12m)=4\bigl((m+4)^2-24\bigr).\]
+Posons $m_-=-4-2\sqrt6$ et $m_+=-4+2\sqrt6$.
+Il existe deux intersections si $m<m_-$ ou $m>m_+$, aucune si $m_-<m<m_+$,
+et une seule si $m=m_-$ ou $m=m_+$.
+Les deux paramètres de tangence sont donc \res{m=-4\pm2\sqrt6}.
+\editionEtape{3. Trouver le point de contact par projection}
+Un vecteur normal à $d$ est $(1;1)$. Le projeté est de la forme
+$H_m=(2-\lambda;m-\lambda)$. La condition $x_H+y_H=6$ donne
+$\lambda=(m-4)/2$, donc
+\[\res{H_m\left(4-\frac m2;2+\frac m2\right)}.\]
+\end{blocEdition}
+
+\editionPage{defi-cor-8-2}{D08 · Corrigé (suite)}{Une famille de cercles tangents}{\hyperref[defi-ex-8]{Énoncé p.~\pageref*{defi-ex-8}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-8-2}
+\editionEtape{4. Vérifier les deux constructions}
+La distance au carré entre le centre et son projeté est
+\[\Omega_mH_m^2=\frac{(m-4)^2}{2}.\]
+Pour $m=m_-$ ou $m=m_+$, l'identité $m^2+8m-8=0$ entraîne
+$(m-4)^2/2=m^2+4$. La distance au centre est donc égale au rayon : le projeté
+appartient bien au cercle. Ses coordonnées explicites sont
+\[H_-\bigl(6+\sqrt6;-\sqrt6\bigr),\qquad
+H_+\bigl(6-\sqrt6;\sqrt6\bigr).\]
+Le vecteur $\vect{\Omega_mH_m}$ est un multiple de $(1;1)$ : il est normal à $d$.
+C'est donc le rayon perpendiculaire à la tangente au point de contact.
+\editionRetenir{Le discriminant compte les intersections ; la projection construit
+le point de contact. Faire concorder les deux démarches fournit une vérification indépendante.}
+\label{figedition-defi-cor-8-2-1}\figureGeo[corrige]{fr-d08-cor}
+\end{blocEdition}
+
+\editionPage{defi-cor-9-1}{D09 · Corrigé}{Choisir une règle de contrôle}{\hyperref[defi-ex-9]{Énoncé p.~\pageref*{defi-ex-9}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-9-1}
+\editionEtape{1. Respecter la population conditionnante}
+Dans le groupe $D$, le chemin $++$ a pour poids $0{,}9^2=0{,}81$ ; dans le groupe
+$\overline D$, son poids est $0{,}2^2=0{,}04$.
+En ajoutant les deux origines, $P(T_1^+\cap T_2^+)=0{,}1(0{,}81)+0{,}9(0{,}04)=0{,}117$.
+Chaque test a une probabilité marginale $0{,}1(0{,}9)+0{,}9(0{,}2)=0{,}27$ d'être positif.
+Or $0{,}27^2=0{,}0729\ne0{,}117$ : les tests ne sont pas indépendants dans la population entière.
+\editionEtape{2. Inverser le conditionnement}
+Pour un seul test positif, la part de défauts est
+\[\frac{P(D\cap T_1^+)}{P(T_1^+)}=\frac{0{,}09}{0{,}27}=\res{\frac13}.\]
+Pour deux tests positifs, elle devient
+\[\frac{P(D\cap T_1^+\cap T_2^+)}{P(T_1^+\cap T_2^+)}
+=\frac{0{,}081}{0{,}117}=\res{\frac9{13}}.\]
+\editionRetenir{Des poids identiques au second test dans chaque groupe ne donnent
+pas automatiquement l'indépendance dans le mélange des groupes.}
+\label{figedition-defi-cor-9-1-1}\figureGeo[corrige]{fr-d09}
+\end{blocEdition}
+
+\editionPage{defi-cor-9-2}{D09 · Corrigé (suite)}{Choisir une règle de contrôle}{\hyperref[defi-ex-9]{Énoncé p.~\pageref*{defi-ex-9}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-9-2}
+\editionEtape{3. Compter les deux erreurs séparément}
+Pour U, on rejette un article sans défaut sauf si les deux tests sont négatifs :
+$P(\overline D\text{ et rejet})=0{,}9(1-0{,}8^2)=0{,}324$.
+Un défaut passe seulement par le chemin $D--$, de poids $0{,}1(0{,}1^2)=0{,}001$.
+Pour B, les erreurs ont les probabilités $0{,}9(0{,}2^2)=0{,}036$ et
+$0{,}1(1-0{,}9^2)=0{,}019$.
+\editionEtape{4. Comparer des espérances, pas seulement des pourcentages}
+Les coûts moyens valent
+\[C_U=0{,}324+0{,}001\lambda,\qquad C_B=0{,}036+0{,}019\lambda.\]
+Leur différence est $C_U-C_B=0{,}288-0{,}018\lambda$.
+Pour $0\leq\lambda<16$, B coûte moins ; pour $\lambda>16$, U coûte moins ;
+pour $\lambda=16$, les coûts sont égaux.
+Par exemple, pour $\lambda=5$, on obtient $C_U=0{,}329$ et $C_B=0{,}131$.
+\editionRetenir{La règle qui détecte le plus de défauts n'est pas nécessairement
+celle qui minimise un coût donné. Le choix dépend du modèle et des conséquences des deux erreurs.}
+\end{blocEdition}
+
+\editionPage{defi-cor-10-1}{D10 · Corrigé}{Même moyenne, objectifs différents}{\hyperref[defi-ex-10]{Énoncé p.~\pageref*{defi-ex-10}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-10-1}
+\editionEtape{1. Séparer les issues et les valeurs}
+Les trois issues ont pour lots $2a$, $2-a$ et 6. Les deux premiers coïncident
+pour $a=2/3$ ; on regroupe alors leurs probabilités en $3/4$.
+Dans tous les cas,
+\[E(L_a)=\frac14(2a)+\frac12(2-a)+\frac14(6)=\frac52,\qquad \res{E(G_a)=0}.\]
+\editionEtape{2. Optimiser la dispersion}
+On calcule $E(L_a^2)=a^2+(2-a)^2/2+9=3a^2/2-2a+11$.
+Soustraire le carré $25/4$ de la moyenne donne
+\[V(G_a)=V(L_a)=\frac32\left(a-\frac23\right)^2+\frac{49}{12}.\]
+Le minimum est donc \res{49/12}, atteint uniquement en \res{a=2/3}.
+
+\end{blocEdition}
+
+\editionPage{defi-cor-10-2}{D10 · Corrigé (suite)}{Même moyenne, objectifs différents}{\hyperref[defi-ex-10]{Énoncé p.~\pageref*{defi-ex-10}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-10-2}
+\editionEtape{3. Changer d'objectif peut changer la réponse}
+Le deuxième gain net vaut $-a-1/2<0$ ; le troisième vaut $7/2>0$.
+Le premier, $2a-5/2$, est strictement positif seulement si $a>5/4$.
+Ainsi $P(G_a>0)=1/4$ sur $[0;5/4]$ et $1/2$ sur $]5/4;2]$.
+Le choix $a=2/3$ ne maximise donc pas cette probabilité.
+\editionEtape{4. Choisir aussi la prévision}
+En développant et en utilisant $E(L_a)=5/2$,
+\[E((L_a-r)^2)=V(L_a)+(r-5/2)^2.
+\]
+Les deux carrés sont minimaux pour \res{a=2/3\text{ et }r=5/2}.
+\editionRetenir{Espérance, variance, chance de gain et erreur de prévision répondent
+à des questions différentes. Une moyenne identique ne suffit pas à départager deux choix.}
+\label{figedition-defi-cor-10-2-1}\figureGeo[corrige]{fr-d10}
+\end{blocEdition}
+
+\editionPage{defi-cor-11-1}{D11 · Corrigé}{La dispersion d’un groupe réuni}{\hyperref[defi-ex-11]{Énoncé p.~\pageref*{defi-ex-11}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-11-1}
+\editionEtape{1. Calculer un exemple qui oblige à changer d'idée}
+Dans A, $\mu_A=1$ et $V_A=1$ ; dans B, $\mu_B=9$ et $V_B=1$.
+La réunion est $0,2,8,10$, de moyenne 5. Sa variance vaut
+\[V=\frac{25+9+9+25}{4}=\res{17}.\]
+La moyenne des variances internes vaut seulement 1. Elle ignore l'écart entre les centres des deux groupes.
+\editionEtape{2. Décomposer les écarts à la moyenne totale}
+La moyenne totale est $\mu=p\mu_A+(1-p)\mu_B$.
+Dans A, la moyenne de $x-\mu_A$ est nulle. Le terme croisé du développement
+s'annule donc après la moyenne :
+\[\text{moyenne dans A de }(x-\mu)^2=V_A+(\mu_A-\mu)^2.\]
+Dans B, on obtient $V_B+(\mu_B-\mu)^2$.
+Les écarts des moyennes au centre total sont
+\[\mu_A-\mu=(1-p)(\mu_A-\mu_B),\qquad
+\mu_B-\mu=-p(\mu_A-\mu_B).\]
+\end{blocEdition}
+
+\editionPage{defi-cor-11-2}{D11 · Corrigé (suite)}{La dispersion d’un groupe réuni}{\hyperref[defi-ex-11]{Énoncé p.~\pageref*{defi-ex-11}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-11-2}
+\editionEtape{3. Réunir en pondérant par les effectifs}
+Une proportion $p$ des observations vient de A ; l'autre vient de B. Ainsi
+\begin{align*}
+V&=pV_A+(1-p)V_B+p(\mu_A-\mu)^2+(1-p)(\mu_B-\mu)^2\\
+ &=pV_A+(1-p)V_B+p(1-p)\bigl((1-p)+p\bigr)(\mu_A-\mu_B)^2.
+\end{align*}
+On retrouve la formule demandée. Le dernier terme est positif ou nul et s'annule
+quand les deux moyennes sont égales.
+Pour l'exemple, $p=1/2$ et l'écart des moyennes vaut 8 : $V=1+8^2/4=17$.
+\editionEtape{4. Construire une famille de contre-exemples}
+Prenons A $=\{-1;1\}$ et B $=\{M-1;M+1\}$, avec $M>0$.
+Chaque groupe a une variance égale à 1 ; leurs moyennes sont 0 et $M$.
+La réunion a donc pour variance
+\[\res{V=1+\frac{M^2}{4}}.\]
+En choisissant $M$ suffisamment grand, cette variance dépasse n'importe quelle borne fixée.
+\editionRetenir{Une dispersion totale associe la dispersion à l'intérieur des groupes
+et la séparation de leurs moyennes. Les effectifs déterminent les pondérations.}
+\label{figedition-defi-cor-11-2-1}\figureGeo[corrige]{fr-d11}
+\end{blocEdition}
+
+\editionPage{defi-cor-12-1}{D12 · Corrigé}{Un algorithme qui encadre une racine}{\hyperref[defi-ex-12]{Énoncé p.~\pageref*{defi-ex-12}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-12-1}
+\editionEtape{1. Dire précisément ce qui est admis et ce qui est démontré}
+On a $f'(x)=3x^2+1>0$ : $f$ est strictement croissante, donc elle s'annule au plus une fois.
+L'existence est donnée dans l'énoncé ; on en déduit l'unicité.
+\editionEtape{2. Conserver un invariant}
+Si $f(m)<0=f(\alpha)$, la croissance donne $m<\alpha$ : on peut avancer la borne gauche.
+Si $f(m)\geq0$, on a $m\geq\alpha$ : on peut reculer la borne droite.
+Dans les deux cas, le nouvel intervalle contient toujours $\alpha$.
+\begin{python}
+def encadrer_racine(N):
+    a, b = 0.0, 1.0
+    for k in range(N):
+        m = (a + b) / 2
+        if m ** 3 + m - 1 < 0:
+            a = m
+        else:
+            b = m
+    return a, b
+\end{python}
+L'entrée $N$ est un entier naturel, y compris 0. À chaque passage,
+$a\leq\alpha\leq b$ est conservé et la largeur est divisée par 2.
+\end{blocEdition}
+
+\editionPage{defi-cor-12-2}{D12 · Corrigé (suite)}{Un algorithme qui encadre une racine}{\hyperref[defi-ex-12]{Énoncé p.~\pageref*{defi-ex-12}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-12-2}
+\editionEtape{3. Garantir une précision avant de lancer le calcul}
+La largeur initiale vaut 1. Après $N$ divisions par 2, elle vaut $2^{-N}$.
+Comme $2^9=512<1000$ et $2^{10}=1024\geq1000$, le premier nombre d'étapes
+garantissant une largeur au plus $10^{-3}$ est \res{N=10}.
+\editionEtape{4. Vérifier en arithmétique exacte}
+On trouve
+\[f\left(\frac{698}{1024}\right)=\frac{-1767384}{1073741824}<0,
+\qquad f\left(\frac{699}{1024}\right)=\frac{744899}{1073741824}>0.\]
+La croissance confirme que $\alpha$ est dans cet intervalle.
+Son milieu est $1397/2048$. La distance d'un point de l'intervalle au milieu
+ne dépasse pas la demi-largeur, d'où
+\[\res{\left|\alpha-\frac{1397}{2048}\right|\leq\frac1{2048}<5\times10^{-4}}.\]
+\editionRetenir{Un algorithme d'encadrement associe un invariant, une règle de réduction
+et une précision garantie. L'affichage de nombreuses décimales ne suffit pas à garantir leur justesse.}
+\label{figedition-defi-cor-12-2-1}\figureGeo[corrige]{fr-d12}
+\end{blocEdition}
+
+\editionPage{defi-cor-13-1}{D13 · Corrigé}{Une garantie pour tous les x}{\hyperref[defi-ex-13]{Énoncé p.~\pageref*{defi-ex-13}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-13-1}
+\editionEtape{1. Respecter la portée des quantificateurs}
+La négation est : « Il existe $x\in[0;1]$ tel que $P_m(x)<0$. »
+La positivité partout impose $P_m(0)=m\geq0$ et $P_m(1)=1-m\geq0$.
+Réciproquement, pour $m\in[0;1]$,
+$P_m(x)=(x-m)^2+m(1-m)\geq0$. Les paramètres sont donc exactement \res{m\in[0;1]}.
+\editionEtape{2. Trouver le minimum avec la position du sommet}
+Pour $m<0$, $P'_m(x)=2(x-m)>0$ sur $[0;1]$, donc $q(m)=P_m(0)=m$.
+Pour $0\leq m\leq1$, le sommet est dans le segment : $q(m)=m(1-m)$.
+Pour $m>1$, la fonction décroît sur le segment : $q(m)=P_m(1)=1-m$.
+Sur $[0;1]$, $m(1-m)=1/4-(m-1/2)^2$ ; à l'extérieur, $q(m)<0$.
+La meilleure garantie est donc \res{q(1/2)=1/4}, atteinte uniquement pour \res{m=1/2}.
+\editionEtape{3. Vérifier la garantie et distinguer deux énoncés}
+Pour chaque $m\in\R$, $P_m(1/2)=1/4$, donc le minimum ne peut dépasser $1/4$.
+Le choix $m=1/2$ donne $P_{1/2}(x)=(x-1/2)^2+1/4\geq1/4$ pour tout $x\in[0;1]$ :
+la première affirmation est vraie.
+La seconde est vraie aussi : pour \emph{tout} $m\in\R$, choisir $x=1/2$ suffit.
+Mais elle autorise une seule valeur de $x$, et ne garantit aucune borne sur les autres valeurs.
+Par exemple, pour $m=2$, $P_2(1)=-1<1/4$.
+\editionRetenir{« Une borne valable partout » et « un point où la borne est dépassée »
+expriment deux exigences différentes, même lorsque les deux affirmations sont vraies.}
+\end{blocEdition}
+
+\editionPage{defi-cor-14-1}{D14 · Corrigé}{Qualité, coût et risque}{\hyperref[defi-ex-14]{Énoncé p.~\pageref*{defi-ex-14}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-14-1}
+\editionEtape{1. Passer de la loi au gain moyen}
+Les deux gains sont $12-2x$, de probabilité $1-p$, et $-8-2x$, de probabilité $p$.
+Ainsi $E(G_x)=(12-2x)(1-p)+(-8-2x)p=12-2x-20p=12-2x-4e^{-x}$.
+\editionEtape{2. Étudier le signe sans logarithme}
+On a $g'(x)=-2+4e^{-x}$ ; son signe est positif si $e^x<2$ et négatif si $e^x>2$.
+La stricte croissance de l'exponentielle donne l'unicité de $\alpha$.
+Comme $e^0=1<2<e^1$, on a $0<\alpha<1$, et $g$ croît jusqu'à $\alpha$, puis décroît.
+\[\res{g(\alpha)=10-2\alpha}\qquad\text{car }e^{-\alpha}=1/2.\]
+\editionEtape{3. Encadrer le paramètre de réglage}
+\begin{python}
+from math import exp
+def encadrer_reglage(N=10):
+    a, b = 0.0, 1.0
+    for k in range(N):
+        m = (a + b) / 2
+        if exp(m) < 2:
+            a = m
+        else:
+            b = m
+    return a, b
+\end{python}
+Pour $N=10$, la largeur est $1/1024<10^{-3}$ ; on obtient
+$709/1024<\alpha<710/1024$. En poursuivant les calculs, $\alpha\approx0{,}693147$
+et le gain moyen maximal vaut environ $8{,}614$ unités.
+\end{blocEdition}
+
+\editionPage{defi-cor-14-2}{D14 · Corrigé (suite)}{Qualité, coût et risque}{\hyperref[defi-ex-14]{Énoncé p.~\pageref*{defi-ex-14}} · Démarche et vérifications}
+\begin{blocEdition}{defi-cor-14-2}
+\editionEtape{4. Distinguer gain moyen et dispersion}
+Les deux gains diffèrent de 20. En calculant les deux écarts à la moyenne,
+ou en développant le deuxième moment,
+\[V(G_x)=400p(1-p)=80e^{-x}-16e^{-2x}.\]
+La dépense $2x$, constante pour un réglage fixé, ne change pas la variance.
+La dérivée vaut
+\[V'(x)=16e^{-x}(2e^{-x}-5)<0\quad\text{sur }[0;4],\]
+car $e^{-x}\leq1$. La dispersion décroît donc sur tout le segment.
+Pour $x=\alpha$, on a \res{p(\alpha)=1/10} et \res{V(G_\alpha)=36}.
+\editionEtape{5. Répéter deux contrôles indépendants}
+L'arbre donne la probabilité de deux articles sans défaut : $(9/10)^2=81/100$.
+Par complément,
+\[\res{P(\text{au moins un défaut})=1-81/100=19/100}.\]
+L'intensité 4 minimise ici la variance et le défaut, mais elle ne maximise pas l'espérance,
+puisque $4>\alpha$ et $g$ décroît strictement sur $[\alpha;4]$.
+\editionRetenir{Le meilleur réglage dépend du critère choisi. Un modèle doit
+préciser les coûts, les probabilités et l'indépendance avant que l'on optimise quoi que ce soit.}
+\label{figedition-defi-cor-14-2-1}\figureGeo[corrige]{fr-d14}
+\end{blocEdition}
+

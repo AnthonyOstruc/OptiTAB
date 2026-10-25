@@ -1,0 +1,10 @@
+# business_card.py - displays my business card
+print("+--------------------------------+")
+print("|                                |")
+print("|   ADA LOVELACE                 |")
+print("|   Programmer in training       |")
+print("|                                |")
+print("|   ada@example.com              |")
+print("|   Learning Python since today  |")
+print("|                                |")
+print("+--------------------------------+")

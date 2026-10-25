@@ -1,0 +1,26 @@
+% Préparation d'une solution fille par dilution (L'essentiel, chapitre 1 ; exercice 7)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  etape/.style={font=\otLight\fontsize{7.5}{9.2}\selectfont,text=otInk,align=center,text width=33mm,anchor=north}]
+% 1. Prélèvement
+\pic at (0,0) {becher={largeur=1.5,hauteur=1.8,niveau=1.0,liquide=cyan!35}};
+\pic at (0.05,0.25) {pipette={hauteur=4.1,niveau=1,liquide=cyan!35}};
+\node[pcLegendeG] at (-0.45,0.55) {S$_0$};
+\node[etape] at (0,-0.35) {\otRond{1}\enspace Prélever le volume $V_0$ de solution mère S$_0$ avec une pipette jaugée munie d'une propipette.};
+% 2. Transfert
+\pic at (3.7,0) {fiole={hauteur=3.1,niveau=0.18,liquide=cyan!35}};
+\pic at (3.7,2.55) {pipette={hauteur=2.9,niveau=0.35,liquide=cyan!35}};
+\node[etape] at (3.7,-0.35) {\otRond{2}\enspace Verser dans une fiole jaugée de volume $V_1$.};
+% 3. Complément et homogénéisation
+\pic at (7.3,0) {fiole={hauteur=3.1,niveau=1,liquide=cyan!15}};
+\pic at (6.05,1.25) {pissette};
+\draw[pcRepere] (7.54,2.35) -- (8.05,2.75) node[pcLegende,anchor=west]{trait de jauge};
+\node[pcLegendeG] at (7.3,0.55) {S$_1$};
+\node[etape] at (7.15,-0.35) {\otRond{3}\enspace Compléter avec de l'eau distillée jusqu'au trait de jauge, boucher, homogénéiser.};
+% Bilan
+\node[draw=otGreenDark,line width=0.7pt,rounded corners=2mm,fill=otGreenTint,align=center,
+  font=\fontsize{9}{12}\selectfont,inner sep=2.5mm] at (12.1,1.6)
+  {Le soluté prélevé se retrouve\\dans la fiole : $n_0=n_1$\\[1mm]
+   $c_0\,V_0=c_1\,V_1$\\[1mm]
+   $F=\dfrac{c_0}{c_1}=\dfrac{V_1}{V_0}$};
+\end{tikzpicture}
+\par\smallskip\legende{Une dilution conserve la quantité de soluté : seul le volume de solution augmente. Schéma sans échelle.}

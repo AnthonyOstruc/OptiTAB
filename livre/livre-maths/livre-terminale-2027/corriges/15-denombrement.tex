@@ -1,0 +1,192 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 15 — Combinatoire et dénombrement
+%% Tous les résultats ont été vérifiés par programme (calcul exact et dénombrement exhaustif).
+
+\corrigesChapitre{15}{Combinatoire et dénombrement}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Principes additif et multiplicatif}
+\methode{choix successifs : on multiplie}
+\begin{questions}
+  \item $3\times5\times4=\res{60\text{ menus}}$
+  \item $6\times6=\res{36\text{ résultats}}$
+  \item $10^{4}=\res{10\,000\text{ codes}}$
+  \item Ensembles disjoints : $12+8=\res{20\text{ élèves}}$
+  \item $26^{6}=\res{308\,915\,776}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Permutations et factorielles}
+\begin{questions}
+  \item $5!=\res{120}$
+  \item $8!=\res{40\,320}$
+  \item $6!=\res{720}$, $7!=\res{5\,040}$ et $\frac{8!}{6!}=8\times7=\res{56}$.
+  \item On fixe la place d'une personne : les $3$ autres se rangent de $3!=\res{6}$ façons.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Arrangements}
+\methode{l'ordre compte, sans répétition}
+\begin{questions}
+  \item $10\times9\times8=\res{720}$
+  \item $12\times11\times10=\res{1\,320}$
+  \item $10\times9\times8\times7=\res{5\,040}$
+  \item $\dfrac{n!/(n-p)!}{n!/(n-p+1)!}=\dfrac{(n-p+1)!}{(n-p)!}$\\ $=\res{n-p+1}$
+  \item $15\times14\times13=\res{2\,730}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Combinaisons}
+\methode{l'ordre ne compte pas}
+\begin{questions}
+  \item $\binom83=\frac{8\times7\times6}{3!}=\res{56}$
+  \item $\binom{10}{3}=\binom{10}{7}=\res{120}$ : c'est la symétrie (choisir $3$ éléments revient à en écarter $7$).
+  \item $\binom{52}{5}=\res{2\,598\,960}$
+  \item $\binom73=\binom74=35$, et $\res{\binom n2=\frac{n(n-1)}{2}}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Problèmes mixtes}
+\begin{questions}
+  \item $\binom{12}{4}=\res{495}$
+  \item Permutations de $5$ lettres distinctes : $5!=\res{120}$
+  \item $5\times8\times4=\res{160}$
+  \item $\binom{10}{5}=252$ choix de la première équipe, mais chaque répartition est comptée deux fois : $\res{126}$.
+  \item $\binom n2$ segments joignent deux sommets, dont $n$ côtés :\\ $\binom n2-n=\res{\frac{n(n-3)}{2}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Applications}
+\begin{questions}
+  \item $\binom52\times\binom32=10\times3=\res{30}$
+  \item $5^{4}=\res{625}$
+  \item $\binom83\times\binom62=56\times15=\res{840}$
+  \item $n(n-1)=90$, soit $\res{n=10}$ ($n\geq2$).
+  \item Positions des lettres : $\binom63=20$ ;\\ puis $26^{3}\times10^{3}$ :\\ $\res{351\,520\,000}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{Dénombrer avec des contraintes}
+\begin{questions}
+  \item $\res{2^{n}}$ parties. Pour $\ens{a\pv b\pv c}$ : $\varnothing$, $\ens{a}$, $\ens{b}$, $\ens{c}$, $\ens{a\pv b}$, $\ens{a\pv c}$,
+    $\ens{b\pv c}$, $\ens{a\pv b\pv c}$ : $8=2^{3}$.
+  \item Complémentaire : $\binom{12}5-\binom75-5\binom74$\\ $=792-21-175=\res{596}$
+  \item $20\times19\times18=\res{6\,840}$
+  \item Positions des rouges, puis des bleues :\\ $\binom83\times\binom52=56\times10=\res{560}$
+  \item $\binom{n-1}{k-1}+\binom{n-1}{k}=\frac{(n-1)!}{(k-1)!(n-k)!}+\frac{(n-1)!}{k!(n-k-1)!}$\\
+    $=\frac{(n-1)!}{k!(n-k)!}\big(k+(n-k)\big)=\frac{n!}{k!(n-k)!}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Applications multiples}
+\begin{questions}
+  \item On retire les comités d'hommes seuls et de femmes seules :\\ $\binom{25}5-\binom{15}5-\binom{10}5$\\ $=53\,130-3\,003-252=\res{49\,875}$
+  \item $\binom{10}4\times\binom63=210\times20=\res{4\,200}$
+  \item $26\times25\times24\times10^{3}=\res{15\,600\,000}$
+  \item $\binom{16}4=\res{1\,820}$
+  \item Chaque partie de $E$ a un nombre $k$ d'éléments compris entre $0$ et $n$ : en regroupant les parties selon $k$, on compte
+    toutes les parties, au nombre de $2^{n}$.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{9}{Problèmes combinés}
+\begin{questions}
+  \item Positions des lettres : $\binom84=70$ ; lettres distinctes : $26\times25\times24\times23=358\,800$ ; chiffres : $10^{4}$.
+    Total : $\res{251\,160\,000\,000}$.
+  \item $30\times29\times28\times27=\res{657\,720}$.
+  \item On cherche les triplets $(r\pv b\pv v)$ avec $r+b+v=6$, $r\leq5$, $b\leq4$, $v\leq3$. Pour $v=0,1,2,3$, on trouve
+    respectivement $4$, $5$, $5$ et $4$ couples $(r\pv b)$ possibles : $\res{18\text{ façons}}$.
+  \item Il suffit de choisir l'équipe A : $\binom{20}{10}=\res{184\,756}$.
+  \item L'application qui à une partie $X$ à $k$ éléments associe son complémentaire $\overline X$, à $n-k$ éléments, est une
+    bijection (elle est sa propre réciproque) : les deux ensembles ont le même cardinal, d'où $\res{\binom nk=\binom n{n-k}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{10}{Devoir de synthèse}
+\begin{questions}
+  \item $4\times6\times5=\res{120}$ menus et $7!=\res{5\,040}$ rangements.
+  \item $12\times11\times10=\res{1\,320}$ podiums et $\binom{15}{5}=\res{3\,003}$ groupes.
+  \item $26\times25\times10^{3}=\res{650\,000}$ codes.
+  \item $\binom94\times\binom53=126\times10=\res{1\,260}$ rangements.
+  \item Exactement $2$, $3$ ou $4$ femmes : $\binom82\binom{12}2+\binom83\binom{12}1+\binom84=1\,848+672+70=\res{2\,590}$.
+  \item $\binom73\times(26\times25\times24)\times10^{4}=35\times15\,600\times10\,000=\res{5\,460\,000\,000}$.
+  \item $\binom{16}{8}=\res{12\,870}$.
+  \item La première équipe (dans l'ordre alphabétique) a $7$ adversaires possibles, la suivante non appariée $5$, puis $3$, puis $1$ :
+    $7\times5\times3\times1=\res{105}$.
+  \item $\binom84=\res{70}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{Chemins sur un quadrillage}
+\begin{questions}
+  \item Un chemin compte $7$ pas ; une fois placées les $3$ lettres H, les $4$ autres sont des D. Il y a donc autant de chemins que
+    de parties à $3$ éléments de l'ensemble des $7$ positions : $\binom73=\res{35}$.
+  \item De $O$ à $B$ : $\binom31=3$ chemins ; de $B$ à $A$ ($2$ D et $2$ H) : $\binom42=6$. Par le principe multiplicatif, $\res{18}$
+    chemins passent par $B$, et $35-18=\res{17}$ l'évitent.
+  \item $2n$ pas dont $n$ vers le haut : $\res{\binom{2n}{n}}$ ; pour $n=10$, $\binom{20}{10}=\res{184\,756}$.
+  \item De $O$ à $(k\pv n-k)$ : $\binom nk$ chemins ; de $(k\pv n-k)$ à $(n\pv n)$ ($n-k$ pas D et $k$ pas H) : $\binom nk$ chemins.
+    Les chemins passant par des points différents de la droite étant distincts, on additionne :
+    $\res{\displaystyle\sum_{k=0}^{n}\binom nk^{2}=\binom{2n}{n}}$.
+  \item La fonction renvoie $\res{[1,\,5,\,10,\,10,\,5,\,1]}$. Chaque terme intérieur est la somme des deux termes de la ligne
+    précédente situés au-dessus de lui : c'est la relation de Pascal.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Le paradoxe des anniversaires}
+\noindent
+\begin{minipage}[t]{0.56\linewidth}\vspace{0pt}\raggedright
+\begin{questions}
+  \item Une liste est un $n$-uplet de jours : $\res{365^{n}}$ listes. Avec des dates distinctes : $\res{365\times364\times\cdots\times(365-n+1)}$.
+  \item Les listes sont équiprobables. L'événement « au moins deux dates communes » est le contraire de « dates toutes distinctes »,
+    d'où la formule.
+  \item $p_{10}\approx\res{0{,}117}$, $p_{23}\approx\res{0{,}507}$ et $p_{30}\approx\res{0{,}706}$.
+  \item La variable \texttt{q} contient la probabilité que les $n$ dates soient distinctes ; la boucle s'arrête dès que $p_n>\frac12$ :
+    elle renvoie $\res{23}$. Avec seulement $23$ personnes, il y a plus d'une chance sur deux que deux d'entre elles fêtent leur
+    anniversaire le même jour.
+  \item $1-\left(\frac{364}{365}\right)^{22}\approx\res{0{,}059}$. Ici, on compare les $22$ autres à \emph{une} date fixée, alors
+    que $p_{23}$ porte sur les $\binom{23}{2}=253$ paires de personnes possibles.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.4\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=64mm, height=50mm, xmin=0, xmax=62, ymin=0, ymax=1.08,
+  xtick={10,23,40,60}, ytick={0.5,1}, yticklabels={$0{,}5$,$1$}, xlabel={$n$},
+  xlabel style={at={(1,0)},anchor=west}, grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otNavy,line width=1.2pt,mark=none] coordinates {
+    (1,0) (5,0.0271) (10,0.1169) (15,0.2529) (20,0.4114) (23,0.5073) (25,0.5687) (30,0.7063)
+    (35,0.8144) (40,0.8912) (45,0.9410) (50,0.9704) (55,0.9863) (60,0.9941)};
+  \draw[otGreen,dashed,line width=0.6pt] (axis cs:0,0.5) -- (axis cs:62,0.5);
+  \fill[otGreen] (axis cs:23,0.5073) circle (1.6pt);
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$p_n$ en fonction de $n$ : le seuil $\frac12$ est franchi pour $n=23$.}
+\end{minipage}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{13}{Jeux de hasard : loto et poker}
+\partieExo{A}{Le loto}
+\begin{questions}
+  \item $\binom{49}{5}\times10=1\,906\,884\times10=\res{19\,068\,840}$ grilles ; probabilité du gros lot : $\res{\frac{1}{19\,068\,840}\approx5{,}2\times10^{-8}}$.
+  \item On choisit $3$ des $5$ bons numéros et $2$ des $44$ autres : $\binom53\binom{44}2=10\times946=\res{9\,460}$, soit une
+    probabilité $\frac{9\,460}{1\,906\,884}\approx\res{0{,}005}$.
+  \item Contraire de « aucun bon numéro » : $1-\frac{\binom{44}{5}}{\binom{49}{5}}=1-\frac{1\,086\,008}{1\,906\,884}\approx\res{0{,}431}$.
+\end{questions}
+\partieExo{B}{Le poker}
+\begin{questions}[resume]
+  \item On choisit la hauteur du carré ($13$ choix), puis la cinquième carte parmi les $48$ restantes : $\res{624}$ mains.
+  \item Hauteur du brelan ($13$), ses $3$ couleurs ($\binom43=4$), hauteur de la paire ($12$), ses $2$ couleurs ($\binom42=6$) :
+    $13\times4\times12\times6=\res{3\,744}$ fulls.
+  \item Hauteur de la paire ($13$) et ses couleurs ($6$), puis $3$ hauteurs distinctes parmi les $12$ autres ($\binom{12}3=220$),
+    chacune dans l'une des $4$ couleurs ($4^{3}$) : $13\times6\times220\times64=\res{1\,098\,240}$ mains, soit une probabilité
+    $\frac{1\,098\,240}{2\,598\,960}\approx\res{0{,}423}$.
+\end{questions}
+\end{corrige}

@@ -1,0 +1,79 @@
+% !TEX root = ../main.tex
+%% Sujet type Mines-Ponts — Polynômes de Legendre et méthode de Gauss.
+%% Résultats vérifiés par verifications/eval_cc.py.
+
+\sujetEval{C2}{Sujet type Mines-Ponts · Mathématiques}{Sujet type Mines-Ponts}
+  {Durée : \textbf{3 heures}\\Calculatrice interdite\\Polynômes de Legendre}{4}
+  {Partie A/Les polynômes de Legendre/Q1 à Q5,Partie B/Les racines de $L_n$/Q6,%
+   Partie C/La méthode de Gauss/Q7 à Q11,Partie D/Une relation de récurrence/Q12}
+\enParties
+\consigne{Sujet inédit, conçu dans l'esprit des épreuves de la banque
+Mines-Ponts : un problème long, dont les parties s'enchaînent ; un résultat
+non démontré peut être admis pour la suite, à condition de le signaler.}
+
+On munit $\R[X]$ de l'application $(P,Q)\mapsto\langle P,Q\rangle$
+définie par
+\[\langle P,Q\rangle=\int_{-1}^{1}P(t)\,Q(t)\,\mathrm{d}t.\]
+Pour $n\in\N$, on pose
+\[U_n=(X^{2}-1)^{n}\qquad\text{et}\qquad L_n=\frac{1}{2^{n}\,n!}\,U_n^{(n)}
+  \qquad(\text{formule de Rodrigues}),\]
+et l'on admet que
+$\displaystyle\int_{-1}^{1}(1-t^{2})^{n}\,\mathrm{d}t=\frac{2^{2n+1}(n!)^{2}}{(2n+1)!}$.
+
+\begin{exoEval}[Les polynômes de Legendre]{7 points}{}
+\begin{questions}
+  \item Montrer que $\langle\cdot,\cdot\rangle$ est un produit scalaire sur
+    $\R[X]$.
+  \item Calculer $L_0$, $L_1$, $L_2$ et $L_3$. Montrer que $L_n$ est de degré
+    $n$, de coefficient dominant $c_n=\dfrac{(2n)!}{2^{n}(n!)^{2}}$, et qu'il a
+    la parité de $n$.
+  \item En appliquant la formule de Leibniz à $U_n=(X-1)^{n}(X+1)^{n}$,
+    montrer que $L_n(1)=1$ et $L_n(-1)=(-1)^{n}$.
+  \item Montrer que $U_n^{(k)}(1)=U_n^{(k)}(-1)=0$ pour $0\leqslant k\leqslant n-1$.
+    En déduire, par $n$ intégrations par parties, que
+    $\langle L_n,Q\rangle=0$ pour tout $Q\in\R_{n-1}[X]$, puis que
+    $(L_0,\dots,L_n)$ est une base orthogonale de $\R_n[X]$.
+  \item Montrer que $\lVert L_n\rVert^{2}=\langle L_n,c_nX^{n}\rangle$, puis
+    que $\lVert L_n\rVert^{2}=\dfrac{2}{2n+1}$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Les racines de $L_n$]{3 points}{}
+\begin{questions}[start=6]
+  \item Soit $n\geqslant1$. On note $x_1<\dots<x_p$ les racines de $L_n$
+    situées dans $\intOO{-1}{1}$ et de multiplicité impaire ($p\geqslant0$),
+    et $Q=\prod_{i=1}^{p}(X-x_i)$ (avec $Q=1$ si $p=0$). Montrer que $L_nQ$
+    garde un signe constant sur $\intFF{-1}{1}$, puis que $p=n$. En déduire
+    que $L_n$ possède $n$ racines simples, toutes dans $\intOO{-1}{1}$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[La méthode de Gauss]{7 points}{}
+On fixe $n\geqslant1$ ; on note $x_1<\dots<x_n$ les racines de $L_n$,
+$\ell_1,\dots,\ell_n$ les polynômes de Lagrange associés
+($\ell_i(x_j)=\delta_{ij}$, $\deg\ell_i=n-1$) et $w_i=\int_{-1}^{1}\ell_i$.
+\begin{questions}[start=7]
+  \item Montrer que $\displaystyle\int_{-1}^{1}P=\sum_{i=1}^{n}w_iP(x_i)$ pour
+    tout $P\in\R_{n-1}[X]$.
+  \item En divisant $P$ par $L_n$, montrer que cette formule reste exacte
+    pour tout $P\in\R_{2n-1}[X]$.
+  \item Montrer qu'elle est fausse pour $P=\prod_{i=1}^{n}(X-x_i)^{2}$. Montrer
+    que les poids $w_i$ sont strictement positifs, de somme $2$.
+  \item Déterminer les nœuds et les poids pour $n=2$ et pour $n=3$.
+  \item On donne $2\operatorname{sh}1\approx2{,}3504$,
+    $\mathrm{e}^{1/\sqrt3}+\mathrm{e}^{-1/\sqrt3}\approx2{,}3427$ et
+    $\mathrm{e}^{\sqrt{0{,}6}}+\mathrm{e}^{-\sqrt{0{,}6}}\approx2{,}6306$.
+    Comparer à $\int_{-1}^{1}\mathrm{e}^{t}\,\mathrm{d}t$ les approximations
+    fournies par la méthode de Gauss pour $n=2$ et $n=3$, et par la méthode
+    des trapèzes à trois points $-1,0,1$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Une relation de récurrence]{3 points}{}
+\begin{questions}[start=12]
+  \item Soit $n\geqslant1$. Montrer que $XL_n$ est combinaison linéaire de
+    $L_{n+1}$, $L_n$ et $L_{n-1}$, puis que
+    \[(n+1)\,L_{n+1}=(2n+1)\,X\,L_n-n\,L_{n-1}.\]
+    Retrouver ainsi $L_4$.
+\end{questions}
+\end{exoEval}

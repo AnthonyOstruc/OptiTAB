@@ -1,0 +1,23 @@
+% La quantité de matière au centre des conversions (L'essentiel, chapitre 1)
+\begin{tikzpicture}[x=1mm,y=1mm,
+  boite/.style={draw=otNavy,line width=0.7pt,rounded corners=2mm,fill=otNavyTint,minimum width=36mm,minimum height=13mm,
+    align=center,font=\otMedium\fontsize{8.5}{10.5}\selectfont,text=otInk},
+  centre/.style={draw=otGreenDark,line width=1pt,rounded corners=2.5mm,fill=otGreenTint,minimum width=40mm,minimum height=15mm,
+    align=center,font=\otSemi\fontsize{9.5}{11.5}\selectfont,text=otInk},
+  lien/.style={otNavy,line width=0.8pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}},
+  rel/.style={font=\fontsize{9}{11}\selectfont,fill=white,inner sep=1.2pt}]
+\node[centre] (n) at (0,0) {Quantité de matière\\$n$ (mol)};
+\node[boite] (N) at (-58,0) {Nombre d'entités\\$N$ (sans unité)};
+\node[boite] (m) at (0,27) {Masse d'un corps pur\\$m$ (g)};
+\node[boite] (V) at (58,0) {Volume d'un gaz\\$V$ (L)};
+\node[boite] (c) at (0,-27) {Soluté dans une solution\\de volume $V_\text{sol}$ (L)};
+\draw[lien] (N) -- (n) node[midway,rel,above=1.5mm] {$N=n\times N_\mathrm{A}$};
+\draw[lien] (m) -- (n) node[midway,rel,right=2mm] {$m=n\times M$};
+\draw[lien] (V) -- (n) node[midway,rel,above=1.5mm] {$V=n\times V_\mathrm{m}$};
+\draw[lien] (c) -- (n) node[midway,rel,right=2mm] {$n=c\times V_\text{sol}$};
+\node[pcLegende,anchor=north,text=otMuted,align=center] at (58,-8.5) {$V_\mathrm{m}=\qty{24,0}{L.mol^{-1}}$\\à \qty{20}{\degreeCelsius} et \qty{1013}{hPa}};
+\node[pcLegende,anchor=north,text=otMuted,align=center] at (-58,-8.5) {$N_\mathrm{A}=\qty{6,02e23}{mol^{-1}}$};
+\node[pcLegende,anchor=west,text=otMuted,align=left] at (21,27) {$M$ : masse molaire\\(\unit{g.mol^{-1}})};
+\node[pcLegende,anchor=west,text=otMuted,align=left] at (21,-27) {$c$ : concentration en quantité\\de matière (\unit{mol.L^{-1}})};
+\end{tikzpicture}
+\par\smallskip\legende{Toutes les conversions passent par la quantité de matière : on calcule d'abord $n$, puis la grandeur demandée.}

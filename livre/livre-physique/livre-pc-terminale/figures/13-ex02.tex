@@ -1,0 +1,13 @@
+% Trois chronophotographies de mouvements rectilignes (exercice 2, chapitre 13)
+\begin{tikzpicture}[x=3.6cm,y=1cm]
+\foreach \lig/\nom/\liste in {2/A/{0,0.6,1.2,1.8,2.4,3.0},1/B/{0,0.2,0.6,1.2,2.0,3.0},0/C/{0,1.0,1.8,2.4,2.8,3.0}}{%
+  \draw[otRule,line width=0.5pt] (-0.05,\lig) -- (3.1,\lig);
+  \node[pcLegendeG,anchor=east] at (-0.1,\lig) {\nom};
+  \foreach \p [count=\k from 0] in \liste {\fill[otInk] (\p,\lig) circle (0.065);}}
+\foreach \p [count=\k from 0] in {0,0.2,0.6,1.2,2.0,3.0}{\node[pcLegende,anchor=north] at (\p,0.92) {$M_{\k}$};}
+\draw[otInk,line width=0.7pt] (2.0,-0.6) -- (3.0,-0.6);
+\draw[otInk,line width=0.7pt] (2.0,-0.68) -- (2.0,-0.52) (3.0,-0.68) -- (3.0,-0.52);
+\node[pcLegende,anchor=north] at (2.5,-0.65) {1,0~m};
+\draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-0.6) -- (0.5,-0.6) node[pcLegende,anchor=west] {sens du mouvement};
+\end{tikzpicture}
+\par\smallskip\legende{Les positions sont enregistrées toutes les 0,20 s ; l'échelle est la même pour les trois mobiles.}

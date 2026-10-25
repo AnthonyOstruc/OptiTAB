@@ -1,0 +1,19 @@
+% Ion carboxylate d'un savon et micelle autour d'une gouttelette de graisse (L'essentiel, chapitre 7)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  queue/.style={otInk!75,line width=0.9pt,line cap=round,decorate,decoration={zigzag,amplitude=0.07cm,segment length=0.16cm}},
+  tete/.style={circle,fill=otGreen,draw=otGreenDark,line width=0.5pt,minimum size=3.2mm,inner sep=0pt}]
+% Un ion carboxylate
+\draw[queue] (0,0) -- (3.2,0);
+\node[tete] at (3.35,0) {};
+\node[pcLegende,anchor=south,align=center] at (1.6,0.25) {chaîne carbonée : lipophile\\(hydrophobe)};
+\node[pcLegende,anchor=north,align=center] at (3.35,-0.25) {$\ce{-COO-}$ : hydrophile};
+% Micelle
+\begin{scope}[shift={(7.2,0)}]
+  \fill[otOrange!35] (0,0) circle (0.72);
+  \node[pcLegende,align=center] at (0,0) {graisse};
+  \foreach \a in {0,30,...,330}{\draw[queue] (\a:1.55) -- (\a:0.78); \node[tete] at (\a:1.67) {};}
+  \node[pcLegende,anchor=west] at (2.0,0.9) {eau};
+  \node[pcLegendeG,anchor=north] at (0,-2.0) {une micelle};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Les chaînes lipophiles se dissolvent dans la graisse ; les têtes hydrophiles, tournées vers l'eau, entraînent la gouttelette au rinçage.}

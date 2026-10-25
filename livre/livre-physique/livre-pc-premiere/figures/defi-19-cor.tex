@@ -1,0 +1,18 @@
+% Intensité relative de la lumière diffusée par l'air selon la longueur d'onde (corrigé du défi D19)
+\begin{tikzpicture}
+\begin{axis}[ybar,bar shift=0pt,bar width=7mm,width=100mm,height=56mm,ymin=0,ymax=10.5,
+  xtick={400,450,...,700},xmin=370,xmax=730,
+  xticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  yticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  axis lines=left,axis line style={otMuted,line width=0.5pt},tick style={otMuted},
+  xlabel={$\lambda$ (nm)},ylabel={diffusion relative (\qty{700}{nm} : 1)},label style={font=\small,text=otInk},clip=false]
+\addplot[fill=violet!70,draw=none] coordinates {(400,9.38)};
+\addplot[fill=blue!70,draw=none] coordinates {(450,5.86)};
+\addplot[fill=cyan!70!blue,draw=none] coordinates {(500,3.84)};
+\addplot[fill=green!65!black,draw=none] coordinates {(550,2.62)};
+\addplot[fill=yellow!80!orange,draw=none] coordinates {(600,1.85)};
+\addplot[fill=orange,draw=none] coordinates {(650,1.35)};
+\addplot[fill=red!80,draw=none] coordinates {(700,1.0)};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La diffusion varie comme $\dfrac{1}{\lambda^4}$ : le bleu est diffusé près de six fois plus que le rouge.}

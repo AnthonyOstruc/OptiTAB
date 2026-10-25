@@ -1,0 +1,20 @@
+% Skieur descendant une piste rectiligne de 100 m avec un dénivelé de 30 m (exercice 8, chapitre 15)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  force/.style={line width=1.2pt,-{Stealth[length=2.4mm]}}]
+\fill[white!92!otNavy] (0,0) -- (7.0,0) -- (0,2.2) -- cycle;
+\draw[otInk!70,line width=0.6pt] (0,2.2) -- (7.0,0) -- (0,0) -- cycle;
+\fill[otInk] (0.3,2.106) circle (0.06); \node[pcLegendeG,anchor=south west] at (0.3,2.106) {A};
+\fill[otInk] (6.7,0.094) circle (0.06); \node[pcLegendeG,anchor=south west] at (6.7,0.094) {B};
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (-0.35,0.094) -- (-0.35,2.106) node[pos=0.5,pcLegende,anchor=east] {\qty{30}{m}};
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (-0.4,2.106) -- (0.3,2.106) (-0.4,0.094) -- (6.7,0.094);
+\node[pcLegende,anchor=south,rotate=-17.4] at (5.3,0.6) {AB = \qty{100}{m}};
+\node[pcLegende,anchor=west] at (0.45,2.45) {départ arrêté};
+\node[pcLegende,anchor=west] at (6.8,0.55) {$v_\mathrm{B}=\qty{18}{m.s^{-1}}$};
+\solution{
+  \coordinate (G) at (3.4,1.33);
+  \fill[otInk] (G) circle (0.05);
+  \draw[force,otRed!80!black] (G) -- ++(0,-1.0) node[pcLegende,anchor=north,text=otRed!80!black] {$\vec{P}$};
+  \draw[force,otNavy] (G) -- ++(72.5:0.95) node[pcLegende,anchor=south,text=otNavy] {$\vec{R}$};
+  \draw[force,otOrange!85!black] (G) -- ++(162.5:0.7) node[pcLegende,anchor=south,text=otOrange!85!black] {$\vec{f}$};}
+\end{tikzpicture}
+\par\smallskip\legende{Un skieur de \qty{80}{kg} (équipement compris) descend la piste ; il part de A sans vitesse.\solution{ $\vec{P}$ moteur, $\vec{R}$ perpendiculaire au déplacement, $\vec{f}$ résistante.}}

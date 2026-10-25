@@ -1,0 +1,21 @@
+% Mesure d'une conductivité et droite d'étalonnage (L'essentiel, chapitre 2)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\pic at (0,0) {agitateur={largeur=2.3}};
+\pic at (-0.2,0.5) {becher={largeur=1.5,hauteur=1.8,niveau=1.2}};
+\pic at (-0.35,0.58) {barreau};
+\pic (ce) at (0.05,0.62) {cellule={hauteur=2.6}};
+\pic (co) at (2.55,1.6) {afficheur={largeur=1.8,hauteur=1.15,texte={1,25}}};
+\draw[pcFil] (ce-haut) to[out=90,in=180] (co-prise);
+\node[pcLegende,anchor=north] at (2.55,1.55) {mS$\cdot$cm$^{-1}$};
+\draw[pcRepere] (0.22,0.95) -- (1.0,0.35) node[pcLegende,anchor=west]{deux plaques d'aire $S$,\\distantes de $L$};
+\node[pcLegende,anchor=north] at (2.55,-0.05) {conductimètre étalonné};
+\begin{axis}[otMesures,at={(56mm,1mm)},anchor=south west,width=66mm,height=46mm,
+  xmin=0,xmax=11,ymin=0,ymax=1.4,xtick={0,2,...,10},ytick={0,0.4,0.8,1.2},
+  xlabel={$c$ (mmol$\cdot$L$^{-1}$)},ylabel={$\sigma$ (mS$\cdot$cm$^{-1}$)},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\addplot[otGreenDark,line width=0.9pt,domain=0:10.6] {0.1202*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] coordinates {(2,0.246)(4,0.488)(6,0.727)(8,0.962)(10,1.195)};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Pour une solution diluée d'un seul soluté ionique, la conductivité est proportionnelle à la concentration.}

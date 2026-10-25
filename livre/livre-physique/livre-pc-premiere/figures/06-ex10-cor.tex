@@ -1,0 +1,25 @@
+% Tétrachlorométhane apolaire et trichlorométhane polaire (corrigé de l'exercice 10, chapitre 6)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  aC/.style={circle,fill=otInk!85,text=white,minimum size=6mm,inner sep=0pt,font=\otSemi\fontsize{7.5}{9}\selectfont},
+  aCl/.style={circle,fill=otGreen,draw=otGreenDark,line width=0.4pt,minimum size=6.5mm,inner sep=0pt,font=\otSemi\fontsize{7}{8}\selectfont},
+  aH/.style={circle,fill=white,draw=otInk!55,line width=0.4pt,minimum size=4.6mm,inner sep=0pt,font=\otSemi\fontsize{7}{8}\selectfont},
+  lien/.style={otInk!80,line width=1.1pt}]
+\newcommand{\coin}[2]{\fill[otInk!80] #1 -- ($#2!0.11cm!90:#1$) -- ($#2!0.11cm!-90:#1$) -- cycle;}
+\newcommand{\hachure}[2]{\foreach \t in {0.18,0.3,...,0.95}{%
+  \draw[otInk!80,line width=0.6pt] ($#1!\t!#2!{\t*0.11cm}!90:#2$) -- ($#1!\t!#2!{\t*0.11cm}!-90:#2$);}}
+\foreach \bx/\estH/\nom/\concl in {0/0/{tétrachlorométhane $\ce{CCl4}$}/{G$^{+}$ = G$^{-}$ : apolaire},
+  5.2/1/{trichlorométhane $\ce{CHCl3}$}/{G$^{+}$ $\neq$ G$^{-}$ : polaire}}{
+  \begin{scope}[shift={(\bx,0)}]
+    \draw[lien] (0,0) -- (0,1.25) (0,0) -- (-1.1,-0.52);
+    \coin{(0,0)}{(0.75,-0.82)} \hachure{(0,0)}{(1.12,-0.12)}
+    \node[aC] at (0,0) {C};
+    \ifnum\estH=1 \node[aH] at (0,1.25) {H};\node[pcDelta,text=otRed!80!black] at (0.38,1.42) {$\delta^{+}$};
+    \else\node[aCl] at (0,1.25) {Cl};\node[pcDelta,text=otNavy] at (0.42,1.45) {$\delta^{-}$};\fi
+    \node[aCl] at (-1.1,-0.52) {Cl}; \node[aCl] at (0.75,-0.82) {Cl}; \node[aCl] at (1.12,-0.12) {Cl};
+    \node[pcDelta,text=otNavy] at (-1.45,-0.2) {$\delta^{-}$}; \node[pcDelta,text=otNavy] at (1.05,-1.12) {$\delta^{-}$};
+    \node[pcDelta,text=otNavy] at (1.5,0.12) {$\delta^{-}$}; \node[pcDelta,text=otRed!80!black] at (-0.36,0.3) {$\delta^{+}$};
+    \node[pcLegendeG,anchor=north] at (0,-1.4) {\nom};
+    \node[pcLegende,anchor=north] at (0,-1.8) {\concl};
+  \end{scope}}
+\end{tikzpicture}
+\par\smallskip\legende{Dans $\ce{CCl4}$, les quatre liaisons polarisées identiques se compensent ; dans $\ce{CHCl3}$, la liaison C--H, non polarisée, rompt la symétrie.}

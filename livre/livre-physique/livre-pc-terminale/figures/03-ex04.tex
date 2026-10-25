@@ -1,0 +1,13 @@
+% Titrage conductimétrique de la soude par l'acide chlorhydrique (exercice 4, chapitre 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=104mm,height=56mm,xmin=0,xmax=16.5,ymin=0,ymax=1.1,
+  xtick={0,2,...,16},ytick={0,0.2,...,1},xlabel={$V_\mathrm{A}$ (mL)},ylabel={$\sigma$ (mS$\cdot$cm$^{-1}$)},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\solution{\addplot[otGreenDark,line width=0.7pt,domain=0:10] {-0.03204*x+0.49708};
+\addplot[otGreenDark,line width=0.7pt,domain=6.5:16.3] {0.09708*x-0.52653};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:7.93,0.243) -- (axis cs:7.93,0);
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:8.1,0.12) {$V_\mathrm{E}\approx7{,}9$ mL};}
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] table[x index=0,y index=1] {figures/donnees/03-naoh-hcl-sigma.dat};
+\end{axis}
+\end{tikzpicture}

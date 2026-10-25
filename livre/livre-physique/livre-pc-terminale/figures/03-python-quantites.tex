@@ -1,0 +1,20 @@
+% Évolution des quantités de matière au cours du titrage de l'acide chlorhydrique par la soude (L'essentiel, chapitre 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=100mm,height=56mm,xmin=0,xmax=4.2,ymin=0,ymax=0.45,
+  xtick={0,1,2,3,4},ytick={0,0.1,...,0.4},xlabel={$V_\mathrm{B}$ (mL)},ylabel={$n$ (mmol)},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk},
+  legend style={at={(1.04,0.98)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\addplot[otRed!80!black,line width=1.1pt,domain=0:4,samples=81] {max(0.2-0.1*x,0)};
+\addlegendentry{\ce{H3O+}}
+\addplot[otNavy,line width=1.1pt,domain=0:4,samples=81] {max(0.1*x-0.2,0)};
+\addlegendentry{\ce{HO-}}
+\addplot[otGreenDark,line width=1.1pt,domain=0:4] {0.1*x};
+\addlegendentry{\ce{Na+}}
+\addplot[otOrange,line width=1.1pt,dashed,domain=0:4] {0.2};
+\addlegendentry{\ce{Cl-}}
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:2,0) -- (axis cs:2,0.42);
+\node[pcLegende,anchor=south] at (axis cs:2,0.42) {équivalence};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{$n_0(\ce{H3O+})=\qty{0,20}{mmol}$, soude à \qty{0,100}{mol.L^{-1}} : avant l'équivalence, les ions \ce{H3O+} sont consommés ; après, les ions \ce{HO-} s'accumulent.}

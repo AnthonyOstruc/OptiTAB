@@ -1,0 +1,15 @@
+% Orbite elliptique d'une comète et aires balayées (exercice 3, chapitre 16)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% ellipse a = 3,4 ; b = 1,6 ; foyer en c = 3,0
+\fill[otRule!70] (3.0,0) -- plot[domain=-38:38,samples=40] ({3.4*cos(\x)},{1.6*sin(\x)}) -- cycle;
+\fill[otRule!70] (3.0,0) -- plot[domain=176.34:183.66,samples=20] ({3.4*cos(\x)},{1.6*sin(\x)}) -- cycle;
+\draw[otNavy,line width=0.9pt] (0,0) ellipse (3.4 and 1.6);
+\fill[otOrange] (3.0,0) circle (0.13);
+\node[pcLegende,anchor=north] at (3.0,-0.17) {Soleil};
+\foreach \ang/\nom/\anc in {38/M_1/south west,-38/M_2/north west,176.34/M_3/south east,183.66/M_4/north east}{%
+  \fill[otInk] ({3.4*cos(\ang)},{1.6*sin(\ang)}) circle (0.05);
+  \node[pcLegende,anchor=\anc] at ({3.4*cos(\ang)},{1.6*sin(\ang)}) {$\nom$};}
+\fill[otInk] (3.4,0) circle (0.05) node[pcLegende,anchor=west] {P};
+\fill[otInk] (-3.4,0) circle (0.05) node[pcLegende,anchor=east] {A};
+\end{tikzpicture}
+\par\smallskip\legende{La comète va de $M_1$ à $M_2$, puis de $M_3$ à $M_4$, pendant des durées égales (schéma exagéré).}

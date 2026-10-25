@@ -1,0 +1,13 @@
+% Absorbance de solutions concentrées : limite de la loi de Beer-Lambert (exercice 10, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=110mm,height=55mm,xmin=0,xmax=33,ymin=0,ymax=3.0,
+  xtick={0,5,...,30},ytick={0,0.5,...,3.0},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$c$ (\unit{\micro mol.L^{-1}})},ylabel={$A$ à \qty{638}{nm}}]
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] coordinates {(5,0.53) (10,1.06) (15,1.58) (20,2.02) (25,2.31) (30,2.48)};
+\solution{\addplot[otGreenDark,line width=0.8pt,domain=0:28,samples=2] {0.106*x};
+  \node[pcLegende,anchor=west,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:21,2.75) {droite $A=0{,}106\,c$};
+  \node[pcLegende,anchor=north west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:22,1.95) {écart à la droite};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Absorbance de solutions de bleu patenté de plus en plus concentrées (cuve de \qty{1,00}{cm}).}

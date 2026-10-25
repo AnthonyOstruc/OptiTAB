@@ -1,0 +1,27 @@
+% Cellule d'une pile à combustible à membrane échangeuse de protons (exercice 13, chapitre 8)
+\begin{tikzpicture}
+\filldraw[fill=white,draw=otInk!70,line width=0.6pt] (0,0) rectangle (2.4,3.2);
+\filldraw[fill=white,draw=otInk!70,line width=0.6pt] (4.8,0) rectangle (7.2,3.2);
+\fill[otInk!55] (2.4,0) rectangle (2.75,3.2);
+\fill[pcJaune] (2.75,0) rectangle (4.45,3.2);
+\fill[otInk!55] (4.45,0) rectangle (4.8,3.2);
+\draw[otInk!70,line width=0.6pt] (2.4,0) rectangle (4.8,3.2);
+\draw[pcFlecheN] (-1.0,2.4) -- (0.7,2.4);
+\node[pcLegende,anchor=east] at (-1.05,2.4) {\ce{H2}};
+\draw[pcFlecheN] (8.2,2.4) -- (6.5,2.4);
+\node[pcLegende,anchor=west] at (8.25,2.4) {\ce{O2} de l'air};
+\draw[pcFlecheN] (6.5,0.7) -- (8.2,0.7);
+\node[pcLegende,anchor=west] at (8.25,0.7) {\ce{H2O}};
+\draw[pcFil] (2.58,3.2) -- (2.58,4.4) -- (4.62,4.4) -- (4.62,3.2);
+\pcAppareilRond{(3.6,4.4)}{M}
+\node[pcLegende,anchor=south west] at (3.95,4.45) {moteur};
+\pcNote[north]{(2.58,0)}{(1.8,-0.45)}{électrode A}
+\node[pcLegende,anchor=north] at (3.6,-0.12) {membrane};
+\pcNote[north]{(4.62,0)}{(5.4,-0.45)}{électrode B}
+\solution{%
+  \draw[pcElectron] (2.85,4.8) -- (4.35,4.8) node[pos=0.5,above=-1pt,font=\small,text=otNavy] {$\mathrm{e}^-$};
+  \draw[pcIon] (2.95,1.6) -- (4.25,1.6) node[pos=0.5,above,font=\small,text=otGreenDark] {\ce{H+}};
+  \node[pcLegendeG,anchor=east] at (2.3,3.6) {anode, pôle $-$};
+  \node[pcLegendeG,anchor=west] at (4.9,3.6) {cathode, pôle $+$};}
+\end{tikzpicture}
+\par\smallskip\legende{Le dihydrogène et le dioxygène alimentent en continu les deux électrodes, séparées par une membrane conductrice des ions \ce{H+}.}

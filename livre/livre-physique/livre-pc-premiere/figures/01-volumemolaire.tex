@@ -1,0 +1,18 @@
+% Loi d'Avogadro-Ampère : même volume, même nombre de molécules (L'essentiel, chapitre 1 ; exercice 4)
+\begin{tikzpicture}[x=1mm,y=1mm]
+\foreach \x/\nom/\M in {0/{hélium}/{4,0},44/{dioxygène}/{32,0},88/{dioxyde de carbone}/{44,0}}{
+  \filldraw[fill=otNavyTint,draw=otNavy,line width=0.7pt,rounded corners=1.5mm] (\x,0) rectangle ++(34,26);
+  \node[pcLegendeG,anchor=north] at (\x+17,-1.5) {\nom};
+  \node[pcLegende,anchor=north,text=otMuted] at (\x+17,-5.5) {$M=\qty{\M}{g.mol^{-1}}$};}
+% hélium : atomes isolés
+\foreach \px/\py in {6/6,15/18,26/9,9/20,22/21,28/18,18/8,5/13}{\fill[otOrange] (\px,\py) circle (1.3);}
+% dioxygène : molécules diatomiques
+\foreach \px/\py/\a in {6/6/20,15/18/-30,26/9/60,9/20/0,22/21/45,28/18/-60,18/8/90,5/13/30}{
+  \begin{scope}[shift={(44+\px,\py)},rotate=\a]\fill[otRed!75] (-1.1,0) circle (1.25); \fill[otRed!75] (1.1,0) circle (1.25);\end{scope}}
+% dioxyde de carbone : molécules triatomiques linéaires
+\foreach \px/\py/\a in {6/6/20,15/18/-30,26/9/60,9/20/0,22/21/45,28/17/-60,18/8/90,5/13/30}{
+  \begin{scope}[shift={(88+\px,\py)},rotate=\a]\fill[otRed!75] (-1.9,0) circle (1.1); \fill[otRed!75] (1.9,0) circle (1.1);
+  \fill[otInk!70] (0,0) circle (1.2);\end{scope}}
+\node[pcLegende,anchor=west,align=left] at (125,13) {même volume $V$,\\même température,\\même pression :\\même nombre\\de molécules};
+\end{tikzpicture}
+\par\smallskip\legende{Dans les mêmes conditions de température et de pression, des volumes égaux de gaz contiennent le même nombre de molécules : la quantité de matière ne dépend que du volume, pas de la nature du gaz.}

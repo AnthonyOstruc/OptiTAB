@@ -1,0 +1,20 @@
+% Loi de vitesse d'ordre 1 : demi-vies successives et linéarisation (L'essentiel, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,name=g,width=76mm,height=54mm,xmin=0,xmax=105,ymin=0,ymax=11,
+  xtick={0,25,50,75,100},ytick={0,2.5,5,7.5,10},xlabel={$t$ (min)},ylabel={$[\mathrm{R}]$ (mmol$\cdot$L$^{-1}$)}]
+\addplot[otNavy,line width=1pt,domain=0:100,samples=100] {10*exp(-ln(2)*x/25)};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:25,5) -- (axis cs:25,0) (axis cs:25,5) -- (axis cs:0,5);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:50,2.5) -- (axis cs:50,0) (axis cs:50,2.5) -- (axis cs:0,2.5);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:75,1.25) -- (axis cs:75,0);
+\node[pcLegende,anchor=north east,text=otNavy] at (axis cs:103,10.6) {$[\mathrm{R}]=[\mathrm{R}]_0\,\mathrm{e}^{-kt}$};
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:50,8.4) {à chaque durée $t_{1/2}$,\\la concentration\\est divisée par 2};
+\end{axis}
+\begin{axis}[otMesures,otAxesBout,at={(g.east)},anchor=west,xshift=17mm,width=76mm,height=54mm,xmin=0,xmax=105,ymin=-3,ymax=0.4,
+  xtick={0,25,50,75,100},ytick={-3,-2,-1,0},xlabel={$t$ (min)},ylabel={$\ln\left([\mathrm{R}]/[\mathrm{R}]_0\right)$}]
+\addplot[otGreenDark,line width=1pt,domain=0:100] {-ln(2)*x/25};
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] coordinates {(0,0)(25,-0.693)(50,-1.386)(75,-2.079)(100,-2.773)};
+\node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:50,-0.9) {droite de coefficient\\directeur $-k$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Pour une loi d'ordre 1, le temps de demi-réaction ne dépend pas de la concentration et
+$\ln([\mathrm{R}]/[\mathrm{R}]_0)$ est une fonction affine du temps (ici $k=\ln2/t_{1/2}\approx\qty{0,028}{min^{-1}}$).}

@@ -1,0 +1,156 @@
+from modele import C,E
+
+C('Additionner avec une stratégie','Calcul','P1 puis P2',
+ 'Je choisis une méthode de calcul mental.','Matériel de numération et ardoise.',
+ 'Représente 246. Ajoute 80 avec des barres de dix. Observe l’échange qui crée une centaine. Essaie ensuite d’ajouter 19 à 246.',
+ ['Je peux décomposer pour ajouter des dizaines ou des centaines.','Pour ajouter 9, 19 ou 29, je peux ajouter 10, 20 ou 30 puis enlever 1.','Je garde une trace des étapes si j’en ai besoin.'],
+ '246 + 19 : 246 + 20 = 266 ; 266 - 1 = 265.',('compensation',[246,20,-1]),
+ 'Calcule 358 + 29 en passant par + 30.', '358 + 30 = 388 ; 388 - 1 = 387.',[
+ E('Explique les deux étapes de ce calcul.','On ajoute 20 puis on enlève 1 : 175 + 19 = 194.',('compensation',[175,20,-1]),'175+19==194'),
+ E('Calcule : 234 + 60 ; 407 + 200 ; 650 + 70.','294 ; 607 ; 720.',None,'234+60==294 and 407+200==607 and 650+70==720'),
+ E('Calcule : 168 + 9 ; 472 + 19 ; 351 + 29.','177 ; 491 ; 380.',None,'168+9==177 and 472+19==491 and 351+29==380'),
+ E('Trouve ce qui manque : 68 + … = 70 ; 275 + … = 300.','2 ; 25.',None,'68+2==70 and 275+25==300'),
+ E('Calcule en décomposant : 246 + 132 ; 378 + 45.','378 ; 423. Pour le second : 378 + 40 = 418, puis + 5 = 423.',None,'246+132==378 and 378+45==423'),
+ E('Calcule : 60 + 29 ; 401 + 9. Choisis une méthode courte.','89 ; 410. On peut agir directement sur les dizaines et unités.',None,'60+29==89 and 401+9==410'),
+ E('Une école a 287 cahiers et en reçoit 80. Combien en a-t-elle ?','287 + 80 = 367 cahiers.',None,'287+80==367'),
+ E('La bibliothèque reçoit 19 livres de plus. Elle en avait 456. Combien en a-t-elle ?','456 + 20 = 476 ; 476 - 1 = 475 livres.',None,'456+19==475'),
+ E('Pour calculer 327 + 29, Lina ajoute 30 puis encore 1. Explique et corrige.','Elle a ajouté un de trop en prenant 30. Il faut enlever 1 : 327 + 30 = 357 ; 357 - 1 = 356.',None,'327+29==356')],
+ 'Faire vérifier la compensation par une manipulation et autoriser l’ardoise.', 'Les nombres et résultats du calcul mental restent au plus égaux à 1 000.')
+
+C('Additionner en colonnes','Calcul','Dès P1',
+ 'J’aligne les rangs et je comprends les retenues.','Papier quadrillé et matériel de numération.',
+ 'Construis 386 et 257. Réunis les unités, les dizaines puis les centaines. Fais les échanges nécessaires et note-les en colonnes.',
+ ['Les unités sont sous les unités, les dizaines sous les dizaines et les centaines sous les centaines.','Je calcule d’abord les unités, puis les dizaines, puis les centaines.','Une retenue représente un échange vers le rang suivant.'],
+ '386 + 257 : 6 + 7 = 13 unités ; 8 + 5 + 1 = 14 dizaines ; 3 + 2 + 1 = 6 centaines. Résultat : 643.',('addition3',[386,257]),
+ 'Pose 245 + 138. Vérifie ensuite mentalement.', '5 + 8 = 13 ; 4 + 3 + 1 = 8 dizaines ; 2 + 1 = 3 centaines. Résultat : 383.',[
+ E('Pose et calcule 234 + 125.','359.',('column3blank',2),'234+125==359'),
+ E('Pose et calcule 368 + 247.','615 : retenue des unités vers les dizaines et des dizaines vers les centaines.',None,'368+247==615'),
+ E('Pose et calcule 405 + 78.','483. Le 8 est sous le 5 et le 7 sous le 0.',None,'405+78==483'),
+ E('Pose et calcule 186 + 47 + 238.','471.',('column3blank',3),'186+47+238==471'),
+ E('Pose et calcule 579 + 321.','900.',None,'579+321==900'),
+ E('Pose et calcule 642 + 358.','1 000 : 10 centaines.',None,'642+358==1000'),
+ E('La classe a 278 feuilles blanches et 146 feuilles de couleur. Combien de feuilles ?','278 + 146 = 424 feuilles.',None,'278+146==424'),
+ E('Trois écoles inscrivent 185, 76 et 239 élèves à une rencontre. Combien d’élèves au total ?','185 + 76 + 239 = 500 élèves.',None,'185+76+239==500'),
+ E('Noé place le 7 de 234 + 7 sous le 2. Explique comment poser correctement.','7 est un nombre d’unités : le 7 doit être sous le 4. Le résultat est 241.',None,'234+7==241')],
+ 'Représenter chaque retenue par un échange réel, puis refaire sans matériel.', 'Privilégier le calcul mental quand il est simple ; ne pas poser automatiquement tous les calculs.')
+
+C('Soustraire de tête','Calcul','P1 puis P2',
+ 'Je décompose un retrait pour calculer.','Ardoise et bande de nombres.',
+ 'Pars de 523. Enlève 7 en allant d’abord à 520. Que faut-il encore enlever ? Vérifie avec des cubes.',
+ ['Je peux retirer les centaines ou les dizaines séparément.','Pour enlever un petit nombre, je peux passer par la dizaine inférieure.','Pour soustraire 9, je peux enlever 10 puis ajouter 1.'],
+ '523 - 7 : 523 - 3 = 520 ; 520 - 4 = 516.',('backjumps',[523,520,516]),
+ 'Calcule 246 - 9 avec deux étapes.', '246 - 10 = 236 ; 236 + 1 = 237.',[
+ E('Explique les deux retraits du schéma.','On retire 2 puis encore 5 : 432 - 7 = 425.',('backjumps',[432,430,425]),'432-7==425'),
+ E('Calcule : 541 - 20 ; 765 - 200 ; 380 - 60.','521 ; 565 ; 320.',None,'541-20==521 and 765-200==565 and 380-60==320'),
+ E('Calcule : 157 - 5 ; 302 - 6 ; 600 - 4.','152 ; 296 ; 596.',None,'157-5==152 and 302-6==296 and 600-4==596'),
+ E('Calcule en enlevant 10 puis en ajoutant 1 : 375 - 9 ; 821 - 9.','366 ; 812.',None,'375-9==366 and 821-9==812'),
+ E('Calcule : 450 - 30 ; 708 - 400 ; 510 - 2.','420 ; 308 ; 508.',None,'450-30==420 and 708-400==308 and 510-2==508'),
+ E('Complète : 346 + … = 350 ; 700 - … = 695.','4 ; 5.',None,'346+4==350 and 700-5==695'),
+ E('Un stock a 624 vis. On en prend 8. Combien en reste-t-il ?','624 - 4 = 620 ; 620 - 4 = 616 vis.',None,'624-8==616'),
+ E('Un carton contient 389 feuilles. On prend 9 feuilles. Combien restent ?','389 - 10 = 379 ; 379 + 1 = 380 feuilles.',None,'389-9==380'),
+ E('Lina trouve 402 - 7 = 405. Vérifie avec le sens du retrait.','Après un retrait positif, le résultat doit être plus petit que 402. 402 - 2 = 400 ; 400 - 5 = 395.',None,'402-7==395')],
+ 'Faire raconter le nombre déjà retiré et celui qui reste à retirer.', 'Ne pas utiliser une fausse chaîne d’égalités pour juxtaposer des étapes différentes.')
+
+C('Soustraire en colonnes','Calcul','P3 au plus tard',
+ 'Je calcule une différence en échangeant les unités de numération.','Matériel de numération et papier quadrillé.',
+ 'Construis 402 pour enlever 168. Échange une centaine contre dix dizaines, puis une dizaine contre dix unités. Garde la quantité totale.',
+ ['Dans ce livre, on utilise la soustraction par échanges.','Si les unités ne suffisent pas, j’échange une dizaine contre dix unités.','Je vérifie la différence par une addition.'],
+ '402 = 300 + 90 + 12. Je retire 100, 60 et 8. Il reste 200 + 30 + 4 = 234. Vérification : 234 + 168 = 402.',('subtraction3',[402,168]),
+ 'Pose 352 - 126. Échange une dizaine si nécessaire.', '352 = 300 + 40 + 12. Il reste 2 centaines, 2 dizaines et 6 unités : 226.',[
+ E('Pose et calcule 468 - 235.','233.',('column3blank',-2),'468-235==233'),
+ E('Pose et calcule 325 - 147.','178. Vérification : 178 + 147 = 325.',None,'325-147==178'),
+ E('Pose et calcule 602 - 278.','324. 602 se réorganise en 5 centaines, 9 dizaines et 12 unités.',None,'602-278==324'),
+ E('Pose et calcule 500 - 186.','314. Après les échanges : 4 centaines, 9 dizaines et 10 unités avant le retrait.',None,'500-186==314'),
+ E('Pose et calcule 741 - 68.','673. Le 8 est sous le 1 et le 6 sous le 4.',None,'741-68==673'),
+ E('Pose et calcule 1 000 - 375.','625. On peut transformer 1 000 en 9 centaines, 9 dizaines et 10 unités.',None,'1000-375==625'),
+ E('Un album a 420 places. 287 images sont collées. Combien de places sont libres ?','420 - 287 = 133 places libres.',None,'420-287==133'),
+ E('Le stock contient 603 crayons. On en distribue 258. Combien en reste-t-il ?','603 - 258 = 345 crayons.',None,'603-258==345'),
+ E('Noé annonce 402 - 168 = 366. Comment vérifier et corriger ?','366 + 168 = 534, donc la réponse est fausse. La différence correcte est 234.',None,'402-168==234 and 366+168==534')],
+ 'Revenir aux échanges avec le matériel, notamment quand le chiffre des dizaines est zéro.', 'Se coordonner avec l’algorithme choisi dans l’école ; ne pas mélanger échanges et compensation dans une même opération.')
+
+C('Multiplier et former des paires','Calcul','P1 puis P2',
+ 'Je comprends le signe × et je reconnais un nombre pair.','Jetons et quadrillage.',
+ 'Construis 3 rangées de 4 jetons. Observe le même rectangle dans l’autre sens. Regroupe ensuite 9, puis 10 jetons par paires.',
+ ['3 × 4 se lit « trois fois quatre » : 4 + 4 + 4.','L’ordre des facteurs ne change pas le résultat.','Un nombre pair se partage en deux groupes égaux ; un nombre impair laisse une unité quand on fait des paires.'],
+ '3 × 4 = 12 et 4 × 3 = 12. Douze est pair : il forme 6 paires.',('array',[3,4]),
+ 'Fais 2 rangées de 5 jetons. Écris le produit.', '2 × 5 = 10. On peut aussi voir 5 colonnes de 2.',[
+ E('Écris deux multiplications pour cette collection.','4 × 6 = 24 et 6 × 4 = 24.',('array',[4,6]),'4*6==6*4==24'),
+ E('Écris 7 + 7 + 7 + 7 avec le signe ×.','4 × 7 = 28.',None,'4*7==28'),
+ E('Dessine 5 groupes de 3 points. Combien de points ?','5 × 3 = 15 points.',None,'5*3==15'),
+ E('Classe : 124 ; 305 ; 678 ; 911. Lesquels sont pairs ?','124 et 678 sont pairs. 305 et 911 sont impairs.'),
+ E('Écris les nombres pairs compris entre 768 et 778, bornes incluses.','768 ; 770 ; 772 ; 774 ; 776 ; 778.'),
+ E('Calcule : 1 × 8 ; 0 × 6 ; 5 × 0.','8 ; 0 ; 0.',None,'1*8==8 and 0*6==0 and 5*0==0'),
+ E('Il y a 6 tables de 4 enfants. Combien de places ?','6 × 4 = 24 places.',None,'6*4==24'),
+ E('On place 17 cubes en paires. Combien de paires complètes et de cubes isolés ?','8 paires et 1 cube isolé. 17 est impair.',None,'17//2==8 and 17%2==1'),
+ E('Aya dit que 3 × 8 et 8 × 3 sont différents parce que les groupes ne sont pas les mêmes. Explique.','Les groupes sont organisés autrement, mais le total est identique : 24.')],
+ 'Utiliser des rectangles de jetons que l’enfant fait tourner.', 'Le nombre de groupes et leur taille changent de rôle ; leur produit reste le même.')
+
+C('Construire les premières tables','Calcul','P1 à P3, reprises régulières',
+ 'Je construis les tables de 2, 3, 4, 5 et 10.','Jetons et cartes de calcul.',
+ 'Fais cinq groupes de trois jetons, puis ajoute un groupe de trois. Relie le nouveau total au précédent.',
+ ['Dans la table de 3, chaque résultat augmente de 3.','Je peux utiliser un résultat connu pour en trouver un autre.','La table de 4 se retrouve en doublant deux fois.'],
+ '5 × 3 = 15. Un groupe de trois en plus donne 6 × 3 = 18.',('array',[6,3]),
+ 'Trouve 7 × 4 à partir de 5 × 4 et de 2 × 4.', '20 + 8 = 28. Donc 7 × 4 = 28.',[
+ E('Compte les points puis écris le produit.','5 × 4 = 20.',('array',[5,4]),'5*4==20'),
+ E('Calcule : 2 × 8 ; 3 × 6 ; 4 × 7.','16 ; 18 ; 28.',None,'2*8==16 and 3*6==18 and 4*7==28'),
+ E('Calcule : 5 × 9 ; 10 × 6 ; 3 × 10.','45 ; 60 ; 30.',None,'5*9==45 and 10*6==60 and 3*10==30'),
+ E('Complète : 4 × … = 24 ; … × 5 = 35 ; 18 = 3 × …','6 ; 7 ; 6.',None,'4*6==24 and 7*5==35 and 3*6==18'),
+ E('Construis la table de 3, de 0 × 3 à 10 × 3.','0 ; 3 ; 6 ; 9 ; 12 ; 15 ; 18 ; 21 ; 24 ; 27 ; 30.'),
+ E('Explique comment retrouver 4 × 9 avec deux doubles.','Le double de 9 est 18 ; le double de 18 est 36. Donc 4 × 9 = 36.',None,'4*9==36'),
+ E('Il y a 8 boîtes de 5 feutres. Combien de feutres ?','8 × 5 = 40 feutres.',None,'8*5==40'),
+ E('On range 30 cartes en 3 paquets égaux. Combien de cartes par paquet ?','10 cartes, car 3 × 10 = 30.',None,'3*10==30'),
+ E('Prépare cinq cartes de calcul qui te semblent difficiles. Explique une méthode pour chacune.','Réponses variables ; contrôler chaque résultat avec une table, un dessin ou un calcul connu.')],
+ 'Construire la table avec des objets, puis interroger les résultats dans un ordre varié.', 'Apprendre aussi à trouver un facteur manquant ; ne pas se limiter à réciter la suite des produits.')
+
+C('Construire les autres tables','Calcul','Étaler sur l’année ; consolidation P4-P5',
+ 'Je retrouve les tables de 6, 7, 8 et 9.','Cartes de tables et jetons.',
+ 'Construis 7 groupes de 7. Sépare-les en 5 groupes et 2 groupes. Retrouve le total avec des produits déjà connus.',
+ ['Je m’appuie sur les tables que je connais déjà.','7 × 7, c’est 5 × 7 et encore 2 × 7.','Je revois les résultats à plusieurs moments pour les mémoriser.'],
+ '7 × 7 = 35 + 14 = 49. Pour 8 × 7, j’ajoute encore 7 : 56.',('array',[7,7]),
+ 'Trouve 6 × 8 en séparant 5 × 8 et 1 × 8.', '40 + 8 = 48.',[
+ E('Écris le produit représenté.','6 × 7 = 42.',('array',[6,7]),'6*7==42'),
+ E('Calcule : 6 × 6 ; 7 × 8 ; 9 × 4.','36 ; 56 ; 36.',None,'6*6==36 and 7*8==56 and 9*4==36'),
+ E('Complète : 8 × … = 48 ; 7 × … = 63 ; … × 9 = 72.','6 ; 9 ; 8.',None,'8*6==48 and 7*9==63 and 8*9==72'),
+ E('Retrouve 9 × 7 avec 10 × 7 moins un groupe de 7.','70 - 7 = 63.',None,'9*7==63'),
+ E('Retrouve 8 × 6 en doublant 4 × 6.','4 × 6 = 24 ; le double de 24 est 48.',None,'8*6==48'),
+ E('Calcule : 8 × 8 ; 9 × 9 ; 7 × 7.','64 ; 81 ; 49.',None,'8*8==64 and 9*9==81 and 7*7==49'),
+ E('7 sacs contiennent chacun 9 balles. Combien de balles en tout ?','7 × 9 = 63 balles.',None,'7*9==63'),
+ E('On fait des équipes de 8 avec 56 enfants. Combien d’équipes ?','7 équipes, car 7 × 8 = 56.',None,'7*8==56'),
+ E('Lina sait 7 × 8 = 56 mais hésite sur 8 × 7. Comment l’aider ?','Le produit ne change pas quand on échange les facteurs : 8 × 7 = 56.')],
+ 'Reprendre les résultats dans les deux sens, avec des rappels espacés.', 'Les tables se construisent progressivement sur l’année ; leur mémorisation se poursuivra au CE2.')
+
+C('Multiplier par 10 et décomposer','Calcul','P2 puis P3',
+ 'Je calcule un produit avec la numération et les tables.','Tableau centaines-dizaines-unités et jetons.',
+ 'Représente 34. Imagine dix collections identiques. Suis la nouvelle valeur de chaque chiffre. Puis coupe un rectangle de 14 rangées en 10 et 4 rangées.',
+ ['Multiplier par 10 donne à chaque chiffre une valeur dix fois plus grande.','Pour un facteur de 11 à 19, je sépare 10 et ce qui reste.','Je réunis ensuite les deux produits calculés.'],
+ '14 × 6 : 10 × 6 = 60 ; 4 × 6 = 24 ; 60 + 24 = 84.',('productsplit',[14,6]),
+ 'Calcule 12 × 7 en séparant 10 et 2.', '10 × 7 = 70 ; 2 × 7 = 14 ; 70 + 14 = 84.',[
+ E('Observe 37 × 10. Explique ce que deviennent les dizaines et les unités.','37 × 10 = 370. Les 3 dizaines deviennent 3 centaines et les 7 unités deviennent 7 dizaines.',('times10',37),'37*10==370'),
+ E('Calcule : 24 × 10 ; 60 × 10 ; 99 × 10.','240 ; 600 ; 990.',None,'24*10==240 and 60*10==600 and 99*10==990'),
+ E('Calcule en décomposant : 13 × 4 ; 16 × 3.','40 + 12 = 52 ; 30 + 18 = 48.',None,'13*4==52 and 16*3==48'),
+ E('Calcule : 18 × 5 ; 17 × 4 ; 19 × 6.','90 ; 68 ; 114.',None,'18*5==90 and 17*4==68 and 19*6==114'),
+ E('Calcule 7 × 15 en séparant 15 en 10 et 5.','7 × 10 = 70 ; 7 × 5 = 35 ; 70 + 35 = 105.',None,'7*15==105'),
+ E('Complète : … × 10 = 450 ; 28 × 10 = …','45 ; 280.',None,'45*10==450 and 28*10==280'),
+ E('Il y a 10 paquets de 25 cartes. Combien de cartes ?','10 × 25 = 250 cartes.',None,'10*25==250'),
+ E('Une boîte contient 14 crayons. On prend 8 boîtes. Combien de crayons ?','14 × 8 = 80 + 32 = 112 crayons.',None,'14*8==112'),
+ E('Noé écrit 17 × 3 = 10 × 3 + 7. Quelle partie du calcul manque ?','Il faut multiplier aussi les 7 unités par 3 : 30 + 21 = 51.',None,'17*3==51')],
+ 'Relier la décomposition à deux rectangles de points, puis à deux produits.', 'La multiplication posée n’est pas exigée ici ; travailler la valeur des rangs et les décompositions.')
+
+C('Doubles, moitiés et faits utiles','Calcul','P1 puis approfondir',
+ 'Je décompose pour trouver un double ou une moitié.','Matériel de numération et deux plateaux.',
+ 'Partage 470 en 400 et 70. Trouve la moitié de chaque morceau. Essaie ensuite 350 en le séparant en 300 et 50.',
+ ['Le double réunit deux quantités égales.','Pour une moitié, je décompose en nombres dont je connais les moitiés.','25, 50, 75 et 100 sont les quatre premiers multiples de 25.'],
+ '470 = 400 + 70. Sa moitié est 200 + 35 = 235.',('halftree',[470,400,70]),
+ 'Trouve la moitié de 350.', '350 = 300 + 50 ; sa moitié est 150 + 25 = 175.',[
+ E('Explique avec le schéma comment on trouve la moitié de 560.','La moitié de 560 est 280 : 200 + 80.',('halftree',[560,400,160]),'560//2==280'),
+ E('Donne les doubles de 12, 15, 25 et 45.','24 ; 30 ; 50 ; 90.',None,'2*12==24 and 2*15==30 and 2*25==50 and 2*45==90'),
+ E('Donne les moitiés de 26, 50, 70 et 90.','13 ; 25 ; 35 ; 45.'),
+ E('Donne les doubles de 150, 250, 300 et 500.','300 ; 500 ; 600 ; 1 000.',None,'2*150==300 and 2*250==500 and 2*300==600 and 2*500==1000'),
+ E('Donne les moitiés de 300, 500, 600 et 1 000.','150 ; 250 ; 300 ; 500.'),
+ E('Calcule : 2 × 25 ; 3 × 25 ; 4 × 25.','50 ; 75 ; 100.',None,'2*25==50 and 3*25==75 and 4*25==100'),
+ E('Deux classes ont chacune 135 cartes. Combien de cartes ensemble ?','135 + 135 = 270 cartes.',None,'135+135==270'),
+ E('On partage 486 perles en deux parts égales. Combien de perles dans chaque part ?','486 = 400 + 80 + 6. Une moitié vaut 200 + 40 + 3 = 243 perles.',None,'486//2==243'),
+ E('Trouve la moitié de 738 en séparant 600, 120 et 18.','300 + 60 + 9 = 369.',None,'738//2==369 and 600+120+18==738')],
+ 'Choisir des morceaux dont les moitiés sont connues ; garder une trace sur l’ardoise.', 'Pour 350, on peut utiliser 300 + 50 : décomposer uniquement chiffre par chiffre n’est pas toujours le plus simple.')
+
+import contenu_problemes

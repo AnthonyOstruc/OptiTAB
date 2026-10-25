@@ -1,0 +1,41 @@
+% Quatre forces et un déplacement : travail moteur, résistant ou nul ? (exercice 4, chapitre 15)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  dep/.style={otInk!70,line width=0.9pt,-{Stealth[length=2mm]}},
+  force/.style={line width=1.2pt,-{Stealth[length=2.4mm]}}]
+% a) poids d'une pomme qui tombe
+\begin{scope}
+  \shade[ball color=otRed!60] (0,2.2) circle (0.18);
+  \draw[dep] (-0.5,2.0) -- (-0.5,0.3) node[pos=0.5,pcLegende,anchor=east] {déplacement};
+  \draw[force,otRed!80!black] (0,2.0) -- (0,1.1) node[pcLegende,anchor=west,text=otRed!80!black] {$\vec{P}$};
+  \node[pcLegendeG,anchor=north,align=center] at (0,0.0) {a) pomme qui tombe};
+\end{scope}
+% b) réaction du sol sur un palet qui glisse
+\begin{scope}[shift={(3.2,0)}]
+  \draw[otInk!60,line width=0.6pt] (-1.0,1.0) -- (1.2,1.0);
+  \filldraw[fill=otNavy!40,draw=otNavy,line width=0.5pt] (-0.25,1.0) rectangle (0.25,1.25);
+  \draw[force,otNavy] (0,1.25) -- (0,2.15) node[pcLegende,anchor=south,text=otNavy] {$\vec{R}$};
+  \draw[dep] (-0.9,0.65) -- (1.1,0.65) node[pos=0.5,pcLegende,anchor=north] {déplacement};
+  \node[pcLegendeG,anchor=north,align=center] at (0.1,0.0) {b) palet qui glisse};
+\end{scope}
+% c) frottement de l'air sur un cycliste
+\begin{scope}[shift={(6.6,0)}]
+  \fill[otInk] (0,1.5) circle (0.06);
+  \draw[force,otOrange!85!black] (0,1.5) -- (-1.0,1.5) node[pcLegende,anchor=south,text=otOrange!85!black] {$\vec{f}$};
+  \draw[dep] (-0.8,0.9) -- (1.2,0.9) node[pos=0.5,pcLegende,anchor=north] {déplacement};
+  \node[pcLegendeG,anchor=north,align=center] at (0.2,0.0) {c) cycliste};
+\end{scope}
+% d) poids d'un randonneur qui monte
+\begin{scope}[shift={(10.0,0)}]
+  \draw[otInk!60,line width=0.6pt] (-1.0,0.3) -- (1.2,1.9);
+  \fill[otInk] (0.1,1.1) circle (0.06);
+  \draw[force,otRed!80!black] (0.1,1.1) -- (0.1,0.2) node[pcLegende,anchor=north,text=otRed!80!black] {$\vec{P}$};
+  \draw[dep] (-0.4,1.25) -- (0.8,2.12) node[pcLegende,anchor=south east] {déplacement};
+  \node[pcLegendeG,anchor=north,align=center] at (0.1,-0.35) {d) randonneur qui monte};
+\end{scope}
+\solution{
+  \node[pcLegende,text=otGreenDark] at (0.6,0.45) {$\alpha=0$ : moteur};
+  \node[pcLegende,text=otMuted,anchor=west] at (3.3,1.75) {$\alpha=\ang{90}$ : nul};
+  \node[pcLegende,text=otRed!80!black] at (6.8,0.4) {$\alpha=\ang{180}$ : résistant};
+  \node[pcLegende,text=otRed!80!black,anchor=west] at (10.25,0.6) {$\alpha>\ang{90}$ : résistant};}
+\end{tikzpicture}
+\par\smallskip\legende{Pour chaque situation, une force et le déplacement de son point d'application.}

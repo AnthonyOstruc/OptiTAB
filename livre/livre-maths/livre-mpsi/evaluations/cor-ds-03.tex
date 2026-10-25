@@ -1,0 +1,112 @@
+% !TEX root = ../main.tex
+%% Corrigé du devoir surveillé n° 3 — vérifié par verifications/eval_ds.py.
+
+\corrigeSujetEval{DS3}{Devoir surveillé \numero3}
+
+\begin{corrigeEval}{5 points}{Arithmétique}
+\begin{questions}
+  \item $21\wedge15=3$ divise $9$ : l'équation équivaut à $7x+5y=3$, dont
+    $(-1,2)$ est solution. Si $7x+5y=3=7\cdot(-1)+5\cdot2$, alors
+    \[7(x+1)=5(2-y),\]
+    et le lemme de Gauss ($7\wedge5=1$) donne $5\mid x+1$ : $x=-1+5k$, puis
+    $y=2-7k$. Réciproquement ces couples conviennent :
+    $\res{\mathcal{S}=\ens{(-1+5k,\ 2-7k)\mid k\in\Z}}$. \pts{1,5 pt}
+  \item $7^{2}=49$ et $7^{4}=2401\equiv1\pmod{100}$. Comme
+    $2026=4\times506+2$ :
+    $7^{2026}=\bigl(7^{4}\bigr)^{506}\cdot7^{2}\equiv49\pmod{100}$. Les deux
+    derniers chiffres sont $\res{4\text{ et }9}$. \pts{1 pt}
+  \item Par le petit théorème de Fermat, $n^{5}\equiv n\pmod5$ ; modulo $3$,
+    $n^{5}=n^{3}\cdot n^{2}\equiv n\cdot n^{2}=n^{3}\equiv n$ ; modulo $2$,
+    $n^{2}\equiv n$ donc $n^{5}\equiv n$. Les nombres premiers distincts
+    $2$, $3$, $5$ divisent $n^{5}-n$, donc leur produit aussi :
+    $\res{30\mid n^{5}-n}$. \pts{1,5 pt}
+  \item La division $n^{2}+1=(n+1)(n-1)+2$ et l'algorithme d'Euclide
+    donnent $(n^{2}+1)\wedge(n+1)=(n+1)\wedge2\in\ens{1,2}$ : il vaut
+    $\res{2\text{ si et seulement si }n\text{ est impair}}$. \pts{1 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Groupes}
+\begin{questions}
+  \item $1\in\mathbb{U}_n$ ; si $z^{n}=w^{n}=1$, alors
+    $(zw^{-1})^{n}=z^{n}(w^{n})^{-1}=1$ : $\mathbb{U}_n$ est un sous-groupe.
+    $\varphi(k+l)=\omega^{k+l}=\varphi(k)\,\varphi(l)$ : c'est un morphisme,
+    surjectif car $\mathbb{U}_n=\ens{\omega^{k}\mid0\leqslant k\leqslant n-1}$,
+    et $\omega^{k}=1\iff n\mid k$ : $\res{\operatorname{Ker}\varphi=n\Z}$.
+    \pts{2 pts}
+  \item Les $m\Z$ sont des sous-groupes. Soit $H\neq\ens0$ un sous-groupe :
+    il contient un élément strictement positif ($h$ ou $-h$) ; soit $m$ le
+    plus petit. Alors $m\Z\subseteq H$. Si $h\in H$, on écrit $h=qm+r$ avec
+    $0\leqslant r<m$ : $r=h-qm\in H$, donc $r=0$ par minimalité de $m$ :
+    $\res{H=m\Z}$. \pts{1,5 pt}
+  \item Avec $g=n\wedge k$, et comme $\frac ng\wedge\frac kg=1$ (Gauss) :
+    \[\omega^{kd}=1\iff n\mid kd\iff\frac ng\ \Big|\ \frac kg\,d\iff\frac ng\ \Big|\ d.\]
+    L'ordre de $\omega^{k}$ est donc $\res{\dfrac{n}{n\wedge k}}$, et
+    $\omega^{k}$ engendre $\mathbb{U}_{12}$ si et seulement si son ordre est
+    $12$, c'est-à-dire $k\wedge12=1$ : $\res{k\in\ens{1,5,7,11}}$.
+    \pts{1,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[scale=1.25,line cap=round,line join=round]
+  \draw[otRule,line width=0.6pt] (0,0) circle (1);
+  \draw[otGreenDark,line width=0.8pt]
+    (0:1) \foreach \k in {1,...,12}{ -- ({150*\k}:1)};
+  \foreach \k in {0,...,11}{
+    \pgfmathtruncatemacro{\g}{gcd(\k,12)}
+    \ifnum\g=1 \fill[otGreenDark] ({30*\k}:1) circle (2.1pt);
+    \else \fill[otNavy] ({30*\k}:1) circle (1.5pt); \fi}
+  \node[font=\scriptsize,anchor=west] at (0:1.06) {$1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south west] at (30:1.04) {$\omega$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south east] at (150:1.04) {$\omega^{5}$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=north east] at (210:1.04) {$\omega^{7}$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=north west] at (330:1.04) {$\omega^{11}$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{$\mathbb{U}_{12}$ : les quatre générateurs en vert. L'étoile relie
+$1,\omega^{5},\omega^{10},\dots$ : les puissances de $\omega^{5}$ visitent les
+douze points.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Calcul matriciel}
+\begin{questions}
+  \item $N=\begin{pmatrix}0&1&1\\0&0&1\\0&0&0\end{pmatrix}$,
+    $N^{2}=\begin{pmatrix}0&0&1\\0&0&0\\0&0&0\end{pmatrix}$ et $N^{3}=0$.
+    Comme $I_3$ et $N$ commutent, la formule du binôme (qui s'arrête au
+    terme en $N^{2}$) donne
+    \[A^{n}=I_3+nN+\frac{n(n-1)}{2}N^{2}
+      =\res{\begin{pmatrix}1&n&\frac{n(n+1)}2\\0&1&n\\0&0&1\end{pmatrix}}.\]
+    \pts{2 pts}
+  \item $A$ est triangulaire à coefficients diagonaux non nuls, donc
+    inversible. Pour $n=-1$, la formule donne
+    $B=\begin{pmatrix}1&-1&0\\0&1&-1\\0&0&1\end{pmatrix}=I_3-N+N^{2}$, et
+    $(I_3+N)(I_3-N+N^{2})=I_3+N^{3}=I_3$ : $\res{A^{-1}=B}$. \pts{1 pt}
+  \item En sommant les trois équations : $(m+2)(x+y+z)=3$ ; en soustrayant
+    la deuxième à la première, puis la troisième à la deuxième :
+    \[(1-m)(y-z)=0,\qquad(1-m)(x-y)=0.\]
+    Si $m\notin\ens{1,-2}$ : $x=y=z$ et $(m+2)x=1$, d'où l'unique solution
+    $\res{x=y=z=\dfrac{1}{m+2}}$. Si $m=1$ : les trois équations se
+    réduisent à $x+y+z=1$, un \res{\text{plan de solutions}}. Si $m=-2$ :
+    la somme donne $0=3$, \res{\text{aucune solution}}. \pts{2 pts}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}{5 points}{Polynômes et fractions}
+\begin{questions}
+  \item $(X^{2}+X+1)^{2}=X^{4}+2X^{3}+3X^{2}+2X+1=P$. Comme
+    $X^{2}+X+1=(X-j)(X-j^{2})$, irréductible dans $\R[X]$ ($\Delta=-3<0$) :
+    \[\res{P=(X-j)^{2}(X-j^{2})^{2}\ \text{dans }\Cx[X]},\qquad
+      \res{P=(X^{2}+X+1)^{2}\ \text{dans }\R[X]}.\]
+    Contrôle : avec $Q=X^{2}+X+1$, $P'=2QQ'$ et $P''=2Q'^{2}+2QQ''$, d'où
+    $P(j)=P'(j)=0$ et $P''(j)=2(2j+1)^{2}\neq0$ : $j$ est racine double.
+    \pts{1,5 pt}
+  \item On écrit $X^{n}=(X-1)^{2}Q+aX+b$. En évaluant en $1$ : $1=a+b$ ; en
+    dérivant puis en évaluant en $1$ (où $(X-1)^{2}Q$ et sa dérivée
+    s'annulent) : $n=a$. Reste : $\res{nX-(n-1)}$. \pts{1,5 pt}
+  \item Les pôles $0$, $1$, $-1$ sont simples : on multiplie par chaque
+    facteur et on évalue au pôle.
+    \[F=\frac{1}{X(X-1)(X+1)}=\res{-\frac1X+\frac{1/2}{X-1}+\frac{1/2}{X+1}}.\]
+    Sur $\intOO1{+\infty}$, une primitive est
+    $-\ln x+\frac12\ln(x-1)+\frac12\ln(x+1)=\res{\dfrac12\ln\dfrac{x^{2}-1}{x^{2}}}$.
+    \pts{2 pts}
+\end{questions}
+\end{corrigeEval}

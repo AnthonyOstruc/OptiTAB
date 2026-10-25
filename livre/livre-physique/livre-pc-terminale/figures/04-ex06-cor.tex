@@ -1,0 +1,13 @@
+% Concentration en diiode déduite de l'absorbance, tangente à l'origine (corrigé de l'exercice 6, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=54mm,xmin=0,xmax=52,ymin=0,ymax=2.4,
+  xtick={0,10,...,50},ytick={0,0.5,...,2},xlabel={$t$ (min)},ylabel={$[\mathrm{I_2}]$ (mmol$\cdot$L$^{-1}$)}]
+\addplot[otNavy,line width=0.9pt,smooth,mark=*,mark size=1.5pt] table[x index=0,y expr=4*\thisrowno{1}] {figures/donnees/04-iodure-absorbance.dat};
+\draw[otMuted,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:0,2) -- (axis cs:50,2);
+\addplot[otRed!80!black,line width=0.7pt,domain=0:14.4] {2.0/14.4*x};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,1) -- (axis cs:10,1) -- (axis cs:10,0);
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:10.4,0.42) {$t_{1/2}=10$ min};
+\node[pcLegende,anchor=south east,text=otRed!80!black,fill=white] at (axis cs:14,2.06) {tangente en $t=0$};
+\node[pcLegende,anchor=south east,text=otMuted] at (axis cs:50,2.05) {$[\mathrm{I_2}]_\mathrm{f}=2{,}0$ mmol$\cdot$L$^{-1}$};
+\end{axis}
+\end{tikzpicture}

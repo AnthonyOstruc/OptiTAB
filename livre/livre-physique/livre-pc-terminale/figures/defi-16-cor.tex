@@ -1,0 +1,12 @@
+% Masses déduites des orbites de trois étoiles autour de Sagittarius A* (corrigé du défi D16)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=46mm,xmin=0.4,xmax=3.6,ymin=3.5,ymax=5.0,
+  xtick={1,2,3},xticklabels={S55,S2,S38},ytick={3.5,4.0,4.5,5.0},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={étoile},ylabel={masse centrale ($10^{6}\,M_\odot$)}]
+\addplot[otOrange,line width=0.6pt,dash pattern=on 3pt off 1.6pt,domain=0.4:3.6,samples=2] {4.29};
+\addplot[only marks,mark=*,mark size=2.2pt,otNavy] coordinates {(1,4.29)(2,4.25)(3,4.33)};
+\node[pcLegende,text=otOrange!80!black,anchor=south] at (axis cs:2,4.55) {moyenne : $4{,}3\times10^{6}\,M_\odot$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les trois orbites donnent la même masse : un seul objet central, invisible, de quatre millions de masses solaires.}

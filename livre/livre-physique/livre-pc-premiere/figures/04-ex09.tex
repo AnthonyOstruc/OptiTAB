@@ -1,0 +1,19 @@
+% Vinaigre et hydrogénocarbonate de sodium sur une balance : avant et après (exercice 9, chapitre 4)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \bx/\aff/\titre in {0/{152,48}/avant le mélange,6.6/{151,41}/fin de l'effervescence}{
+  \filldraw[pcAppareil,rounded corners=1mm] (\bx-1.6,0) rectangle (\bx+1.6,0.45);
+  \filldraw[fill=otMuted!25,draw=otInk!60,line width=0.5pt] (\bx-1.3,0.45) rectangle (\bx+1.3,0.55);
+  \filldraw[fill=otNavyDark,draw=otInk,line width=0.4pt,rounded corners=0.4mm] (\bx-0.65,0.1) rectangle (\bx+0.65,0.38);
+  \node[text=white,font=\otMono\fontsize{8}{9}\selectfont] at (\bx,0.24) {\aff\,g};
+  \node[pcLegendeG,anchor=north] at (\bx,-0.1) {\titre};}
+\pic at (-0.45,0.55) {erlen={niveau=0.75,liquide=yellow!10}};
+\filldraw[fill=white,draw=otInk!60,line width=0.5pt] (0.75,0.55) -- (0.75,1.0) -- (1.25,1.0) -- (1.25,0.55) -- cycle;
+\fill[otMuted!20] (0.79,0.59) rectangle (1.21,0.8);
+\pic at (6.6,0.55) {erlen={niveau=0.75,liquide=yellow!10}};
+\pic at (6.55,0.8) {bulles};
+\foreach \y in {2.75,3.05,3.35}{\draw[otMuted,line width=0.5pt,-{Stealth[length=1.4mm]}] (6.6,\y) -- ++(0,0.22);}
+\pcNote[west]{(-0.1,0.95)}{(1.6,2.3)}{\qty{50,0}{mL} de vinaigre}
+\pcNote[west]{(1.05,0.95)}{(1.7,1.55)}{\qty{2,10}{g} d'hydrogéno-\\carbonate de sodium}
+\pcNote[west]{(6.65,3.4)}{(7.3,3.3)}{dioxyde de carbone qui s'échappe}
+\end{tikzpicture}
+\par\smallskip\legende{La masse du système diminue au cours de la transformation : le dioxyde de carbone formé quitte l'erlenmeyer.}

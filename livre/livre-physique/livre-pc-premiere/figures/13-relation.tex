@@ -1,0 +1,40 @@
+% Variation du vecteur vitesse et somme des forces : trois situations (L'essentiel, chapitre 13)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  vit/.style={otNavy,line width=1pt,-{Stealth[length=2mm]}},
+  dv/.style={otGreenDark,line width=1.2pt,-{Stealth[length=2.2mm]}},
+  sf/.style={otOrange!85!black,line width=1.3pt,-{Stealth[length=2.4mm]}}]
+% 1. Accélération en ligne droite
+\begin{scope}
+  \draw[otMuted,line width=0.4pt] (-0.2,0) -- (3.4,0);
+  \fill[otInk] (0,0) circle (0.05); \fill[otInk] (1.3,0) circle (0.05);
+  \draw[vit] (0,0.25) -- ++(1.0,0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_i$};
+  \draw[vit] (1.3,0.25) -- ++(1.6,0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_{i+1}$};
+  \draw[dv] (1.0,-0.3) -- ++(0.6,0) node[pcLegende,anchor=west,text=otGreenDark] {$\Delta\vec{v}$};
+  \draw[sf] (0.6,-0.75) -- ++(1.0,0) node[pcLegende,anchor=west,text=otOrange!85!black] {$\sum\vec{F}$};
+  \node[pcLegendeG,anchor=north] at (1.6,-1.05) {la vitesse augmente};
+\end{scope}
+% 2. Freinage en ligne droite
+\begin{scope}[shift={(4.6,0)}]
+  \draw[otMuted,line width=0.4pt] (-0.2,0) -- (3.4,0);
+  \fill[otInk] (0,0) circle (0.05); \fill[otInk] (1.5,0) circle (0.05);
+  \draw[vit] (0,0.25) -- ++(1.6,0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_i$};
+  \draw[vit] (1.5,0.25) -- ++(1.0,0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_{i+1}$};
+  \draw[dv] (2.2,-0.3) -- ++(-0.6,0) node[pcLegende,anchor=east,text=otGreenDark] {$\Delta\vec{v}$};
+  \draw[sf] (2.6,-0.75) -- ++(-1.0,0) node[pcLegende,anchor=east,text=otOrange!85!black] {$\sum\vec{F}$};
+  \node[pcLegendeG,anchor=north] at (1.6,-1.05) {la vitesse diminue};
+\end{scope}
+% 3. Virage à vitesse constante
+\begin{scope}[shift={(10.4,-0.9)}]
+  \draw[otMuted,line width=0.4pt] (150:1.6) arc (150:30:1.6);
+  \fill[otInk] (0,0) circle (0.04); \node[pcLegende,anchor=north] at (0,-0.05) {centre};
+  \fill[otInk] (115:1.6) circle (0.05); \fill[otInk] (65:1.6) circle (0.05);
+  \draw[vit] (115:1.6) -- ++(25:1.0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_i$};
+  \draw[vit] (65:1.6) -- ++(-25:1.0) node[pcLegende,anchor=south west,text=otNavy] {$\vec{v}_{i+1}$};
+  \draw[dv] (-0.15,1.5) -- (-0.15,0.9);
+  \node[pcLegende,anchor=east,text=otGreenDark] at (-0.2,1.15) {$\Delta\vec{v}$};
+  \draw[sf] (0.15,1.45) -- (0.15,0.45);
+  \node[pcLegende,anchor=west,text=otOrange!85!black] at (0.2,0.85) {$\sum\vec{F}$};
+  \node[pcLegendeG,anchor=north] at (0,-0.45) {la direction change};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{La variation du vecteur vitesse a toujours la direction et le sens de la somme des forces.}

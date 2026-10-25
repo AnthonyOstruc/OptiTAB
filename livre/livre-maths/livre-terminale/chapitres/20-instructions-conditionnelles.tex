@@ -1,0 +1,456 @@
+% !TEX root = ../main.tex
+%% Chapitre 20 — Instructions conditionnelles
+%% Sources : frontend/cours/resume/terminal/resume_algorithme_conditions_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_algorithme_conditions.txt
+%% Tous les programmes ont été exécutés : les affichages indiqués sont exacts.
+%% Exercices 6 à 9 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[conditions]{20}{Instructions conditionnelles}{Partie 4 · Algorithmique et programmation}
+  {Variables et types\enspace·\enspace Comparaisons\enspace·\enspace Opérateurs logiques\enspace·\enspace
+   if, elif, else\enspace·\enspace Fonctions}
+  \objectif{Utiliser des variables de différents types et l'affectation.}
+  \objectif{Écrire une condition à l'aide des opérateurs de comparaison et des opérateurs logiques.}
+  \objectif{Utiliser les structures \code{if}, \code{if … else} et \code{if … elif … else}, y compris imbriquées.}
+  \objectif{Définir une fonction avec \code{def} et \code{return}, et l'appeler.}
+  \objectif{Tester un programme sur plusieurs valeurs, en particulier sur les cas limites.}
+  \prerequis{Premiers programmes en Python (Seconde et Première).}
+  \prerequis{Logique : « et », « ou », négation d'une proposition.}
+\end{ouverture}
+\miseEnPageSouple
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Variables, types et opérations}
+
+\begin{definition}[Variable et affectation]
+Une \textbf{variable} associe un nom à une valeur stockée en mémoire. L'instruction \code{x = 5} est une \textbf{affectation} : elle
+se lit « $x$ reçoit $5$ ». L'instruction \code{x = x + 1} remplace la valeur de $x$ par cette valeur augmentée de $1$.
+\end{definition}
+
+\noindent
+\begin{minipage}[t]{0.41\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.45}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}llY@{}}
+\toprule
+\otTete{Type} & \otTete{Python} & \otTete{Exemples} \\
+\midrule
+\otNom{Entier} & \code{int} & \code{7}, \code{-3} \\
+\otNom{Flottant} & \code{float} & \code{3.14}, \code{2.0} \\
+\otNom{Chaîne} & \code{str} & \code{"Bonjour"} \\
+\otNom{Booléen} & \code{bool} & \code{True}, \code{False} \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.54\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.45}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYl@{}}
+\toprule
+\otTete{Opérateur} & \otTete{Opération} & \otTete{Exemple} \\
+\midrule
+\code{+}\enspace\code{-}\enspace\code{*} & opérations usuelles & \code{2 * 3} $\to$ \code{6} \\
+\code{/} & quotient décimal & \code{7 / 2} $\to$ \code{3.5} \\
+\code{//} & quotient entier & \code{7 // 2} $\to$ \code{3} \\
+\code{\%} & reste de la division & \code{7 \% 2} $\to$ \code{1} \\
+\code{**} & puissance & \code{2 ** 10} $\to$ \code{1024} \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}
+
+\essSection{2}{Conditions}
+
+\noindent
+\begin{minipage}[t]{0.53\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYl@{}}
+\toprule
+\otTete{Opérateur} & \otTete{Signification} & \otTete{Exemple} \\
+\midrule
+\code{==} & égal à & \code{5 == 5} $\to$ \code{True} \\
+\code{!=} & différent de & \code{5 != 3} $\to$ \code{True} \\
+\code{<} & inférieur strict & \code{4 < 4} $\to$ \code{False} \\
+\code{<=} & inférieur ou égal & \code{4 <= 4} $\to$ \code{True} \\
+\code{>} & supérieur strict & \code{8 > 10} $\to$ \code{False} \\
+\code{>=} & supérieur ou égal & \code{8 >= 8} $\to$ \code{True} \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.43\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lllll@{}}
+\toprule
+\code{A} & \code{B} & \code{A and B} & \code{A or B} & \code{not A} \\
+\midrule
+\code{True} & \code{True} & \code{True} & \code{True} & \code{False} \\
+\code{True} & \code{False} & \code{False} & \code{True} & \code{False} \\
+\code{False} & \code{True} & \code{False} & \code{True} & \code{True} \\
+\code{False} & \code{False} & \code{False} & \code{False} & \code{True} \\
+\bottomrule
+\end{tabular*}}\\[1mm]
+\legende{Table de vérité des opérateurs logiques.}
+\end{minipage}
+
+\begin{propriete}[Combiner des conditions]
+\code{and} : \emph{toutes} les conditions doivent être vraies ; \code{or} : \emph{au moins une} est vraie ; \code{not} : inverse la
+valeur de vérité. Python accepte les encadrements : \code{18 <= age <= 65} équivaut à \code{age >= 18 and age <= 65}.
+\end{propriete}
+
+\essSection{3}{Les structures conditionnelles}
+
+\noindent
+\begin{minipage}[c]{0.44\linewidth}
+\begin{python}
+if condition1:
+    bloc1
+elif condition2:
+    bloc2
+else:
+    bloc3
+suite du programme
+\end{python}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\centering
+\begin{tikzpicture}[node distance=5mm and 9mm]
+  \node[otTest] (t1) {condition1 ?};
+  \node[otBloc, right=of t1] (b1) {bloc1};
+  \node[otTest, below=6mm of t1] (t2) {condition2 ?};
+  \node[otBloc, right=of t2] (b2) {bloc2};
+  \node[otBloc, below=5mm of t2] (b3) {bloc3};
+  \node[otBorne, below=5mm of b3] (s) {suite};
+  \draw[otFleche] (t1) -- node[otEtiqF,above] {oui} (b1);
+  \draw[otFleche] (t1) -- node[otEtiqF,right] {non} (t2);
+  \draw[otFleche] (t2) -- node[otEtiqF,above] {oui} (b2);
+  \draw[otFleche] (t2) -- node[otEtiqF,right] {non} (b3);
+  \draw[otFleche] (b3) -- (s);
+  \draw[otFleche] (b1.east) -- ++(5mm,0) |- (s.east);
+  \draw[otMuted,line width=0.6pt] (b2.east) -- ++(5mm,0);
+\end{tikzpicture}\\[0.5mm]
+\legende{Les conditions sont testées dans l'ordre ; un seul bloc est exécuté.}
+\end{minipage}
+
+\begin{propriete}[Règles d'écriture]
+Les deux-points \code{:} sont obligatoires après \code{if}, \code{elif} et \code{else}, et chaque bloc est \textbf{indenté} de quatre
+espaces. Dès qu'une condition est vraie, son bloc est exécuté et les suivantes ne sont pas examinées ; le bloc \code{else}, facultatif,
+traite tous les cas restants. Une structure peut être placée à l'intérieur d'une autre (conditions \emph{imbriquées}).
+\end{propriete}
+
+\essSection{4}{Fonctions}
+
+\noindent
+\begin{minipage}[c]{0.48\linewidth}
+\begin{python}
+def valeur_absolue(x):
+    if x >= 0:
+        return x
+    else:
+        return -x
+
+print(valeur_absolue(-3))
+\end{python}
+\begin{console}
+3
+\end{console}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.48\linewidth}
+\begin{definition}[Fonction]
+\raggedright
+\code{def nom(paramètres):} définit une fonction ; l'instruction \code{return} \textbf{renvoie} une valeur et termine l'exécution de la
+fonction. L'appel \code{valeur\_absolue(-3)} vaut \code{3} : on peut l'utiliser dans un calcul, l'affecter à une variable ou l'afficher.
+\end{definition}
+\end{minipage}
+
+\begin{savoirfaire}[Tester un programme]
+On exécute le programme pour plusieurs valeurs bien choisies : un cas de chaque branche et les \textbf{cas limites} (une valeur égale
+à un seuil, zéro, une valeur négative). On prévoit le résultat \emph{avant} l'exécution, puis on compare.
+\end{savoirfaire}
+
+\begin{exemple}[Le plus grand de trois nombres]
+\begin{codecote}[0.42]
+\begin{pythoncol}
+def maximum(a, b, c):
+    if a >= b and a >= c:
+        return a
+    elif b >= c:
+        return b
+    else:
+        return c
+\end{pythoncol}
+\cote
+{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYl@{}}
+\toprule
+\otTete{Appel} & \otTete{Cas testé} & \otTete{Renvoie} \\
+\midrule
+\code{maximum(5, 2, 1)} & \code{a} maximal & \code{5} \\
+\code{maximum(1, 5, 2)} & \code{b} maximal & \code{5} \\
+\code{maximum(1, 2, 5)} & \code{c} maximal & \code{5} \\
+\code{maximum(5, 5, 1)} & égalité & \code{5} \\
+\code{maximum(3, 3, 3)} & tous égaux & \code{3} \\
+\bottomrule
+\end{tabularx}}
+\end{codecote}
+On arrive au test \code{b >= c} seulement si \code{a} n'est pas le plus grand : il suffit alors de comparer \code{b} et \code{c}. Les
+comparaisons larges \code{>=} garantissent un résultat correct en cas d'égalité.
+\end{exemple}
+
+\begin{exemple}[Programmer une fonction définie par morceaux]
+\begin{codecote}[0.44]
+\begin{pythoncol}
+def f(x):
+    if x < 0:
+        return -x
+    elif x <= 1:
+        return x**2
+    else:
+        return 2*x - 1
+\end{pythoncol}
+
+\medskip
+La fonction $f$ est définie par $f(x)=-x$ si $x<0$, $f(x)=x^{2}$ si $0\leq x\leq1$ et $f(x)=2x-1$ si $x>1$. Chaque intervalle devient une
+branche ; les bornes se traduisent par des comparaisons strictes ou larges.\\[1mm]
+\code{f(-2)} $\to$ \code{2},\enspace \code{f(0.5)} $\to$ \code{0.25},\enspace \code{f(3)} $\to$ \code{5}.
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=58mm, xmin=-2.4, xmax=3.4, ymin=-0.5, ymax=5.4,
+  xtick={-2,-1,1,2,3}, ytick={1,2,3,4,5}]
+  \addplot[otNavy,line width=1pt,domain=-2:0] {-x};
+  \addplot[otNavy,line width=1pt,domain=0:1,samples=40] {x^2};
+  \addplot[otNavy,line width=1pt,domain=1:3] {2*x-1};
+  \addplot[only marks,mark=*,mark size=1.3pt,otGreenDark] coordinates {(0,0) (1,1)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Les trois morceaux se raccordent en $0$ et en $1$ : $f$ est continue.}
+\end{codecote}
+\end{exemple}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item \code{=} affecte une valeur, \code{==} compare deux valeurs. \code{True} et \code{False} prennent une majuscule.
+  \item Oublier les deux-points ou mal indenter provoque une erreur (\code{SyntaxError}, \code{IndentationError}).
+  \item Avec \code{elif}, l'ordre des tests compte : tester \code{age < 65} avant \code{age < 18} rendrait la seconde branche inaccessible.
+  \item \code{print} affiche une valeur, \code{return} la renvoie : une fonction sans \code{return} renvoie \code{None}.
+  \item Les nombres décimaux sont stockés de façon approchée : \code{0.1 + 0.2 == 0.3} vaut \code{False}. On compare des flottants
+    avec une tolérance : \code{abs(a - b) < 1e-9}.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Tests simples et comparaisons}
+\begin{questions}
+  \item Écrire un programme qui, pour \code{n = 15}, affiche « Positif » si \code{n} est strictement positif, « Négatif » s'il est
+    strictement négatif et « Zéro » sinon. Qu'affiche-t-il pour \code{n = -4} ? pour \code{n = 0} ?
+  \item Écrire un programme qui, pour \code{age = 20}, affiche « Accès autorisé » si l'âge est au moins égal à $18$, et
+    « Accès refusé » sinon.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Opérateurs logiques}
+\begin{questions}
+  \item Un service est accessible aux personnes de $18$ à $65$ ans inclus. Écrire la condition correspondante, puis déterminer
+    l'affichage du programme pour \code{age = 25}.
+  \item Une remise est accordée le samedi, le dimanche, ou si le client a une carte de fidélité. Écrire le programme pour
+    \code{jour = "Samedi"} et \code{carte = False}, et donner son affichage.
+  \item On pose \code{x = 7}. Donner la valeur, \code{True} ou \code{False}, de chacune des expressions suivantes.
+\begin{tasks}[label=\alph*)](2)
+  \task \code{x > 5 and x < 10}
+  \task \code{x < 0 or x \% 2 == 1}
+  \task \code{not (x == 7)}
+  \task \code{x > 10 or not (x < 3)}
+\end{tasks}
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Structures \code{if}, \code{elif}, \code{else}}
+\begin{questions}
+  \item Un site indique à un spectateur la restriction qui le concerne : « Accord parental » s'il a moins de $13$ ans,
+    « Interdit -16 » s'il a moins de $16$ ans, « Interdit -18 » s'il a moins de $18$ ans, et « Adulte » sinon. Écrire le programme,
+    puis donner son affichage pour \code{age = 14}.
+  \item Écrire une fonction \code{prix\_billet(age)} qui renvoie le prix d'un billet de train : gratuit avant $4$ ans, $8$\,€ de $4$
+    à $17$ ans, $15$\,€ de $18$ à $64$ ans et $10$\,€ à partir de $65$ ans. Que renvoie \code{prix\_billet(67)} ?
+  \item Pour quels âges cette fonction renvoie-t-elle $8$ ? Pourquoi l'ordre des tests est-il important ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Conditions imbriquées}
+\begin{questions}
+  \item Un cinéma pratique les tarifs suivants : $7$\,€ avant $18$ ans ; de $18$ à $64$ ans, $12$\,€, ou $9$\,€ le lundi ; $8$\,€ à
+    partir de $65$ ans. Écrire un programme utilisant des conditions imbriquées, puis donner le tarif pour \code{age = 25} et
+    \code{jour = "Lundi"}.
+  \item Qu'affiche le programme suivant ?
+\begin{python}
+membre_premium = False
+points = 1200
+email_valide = True
+if membre_premium:
+    print("Accès VIP accordé")
+else:
+    if points > 1000 and email_valide:
+        print("Accès VIP accordé")
+    else:
+        print("Accès VIP refusé")
+\end{python}
+  \item Réécrire ce programme avec une seule structure \code{if … else}.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Problèmes de synthèse}
+\partieExo{A}{Le prix d'un billet d'avion}
+Le prix de base dépend de la destination : $100$\,€ pour Paris, $150$\,€ pour Londres, $500$\,€ pour New York. On applique ensuite,
+dans cet ordre : une réduction de 20\,\% si l'on réserve plus de $30$ jours à l'avance, un supplément de $50$\,€ en classe affaires,
+puis une réduction de 10\,\% pour les membres du club.
+\begin{questions}
+  \item Écrire le programme, puis calculer le prix pour \code{destination = "Londres"}, \code{jours\_avance = 45},
+    \code{classe = "Economique"} et \code{membre\_club = True}.
+\end{questions}
+\partieExo{B}{Un contrôle d'accès}
+\begin{python}
+def acces(badge_valide, heure, niveau):
+    if not badge_valide:
+        message = "Accès refusé - badge invalide"
+    elif heure < 8 or heure > 18:
+        message = "Accès refusé - hors horaires"
+    elif niveau == "Admin":
+        message = "Accès total accordé"
+    elif niveau == "Employé":
+        message = "Accès limité accordé"
+    elif niveau == "Stagiaire":
+        if heure > 17:
+            message = "Accès refusé - stagiaire après 17 h"
+        else:
+            message = "Accès limité accordé"
+    return message
+\end{python}
+\begin{questions}[resume]
+  \item Que renvoient \code{acces(True, 15, "Employé")} et \code{acces(True, 17.5, "Stagiaire")} ?
+  \item Que se passe-t-il lors de l'appel \code{acces(True, 15, "Visiteur")} ? Corriger la fonction.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Années bissextiles}
+Une année est bissextile si elle est divisible par $4$ sans être divisible par $100$, ou si elle est divisible par $400$.
+\begin{questions}
+  \item Écrire une fonction \code{bissextile(a)} qui renvoie \code{True} si l'année \code{a} est bissextile, et \code{False} sinon.
+    La tester pour $1900$, $2000$, $2024$, $2025$ et $2100$.
+  \item En déduire une fonction \code{jours\_fevrier(a)} qui renvoie le nombre de jours du mois de février de l'année \code{a}.
+  \item Combien y a-t-il d'années bissextiles de $2001$ à $2100$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'équation du second degré}
+\begin{questions}
+  \item Écrire une fonction \code{resoudre(a, b, c)}, avec $a\neq0$, qui affiche les solutions réelles de l'équation $ax^{2}+bx+c=0$
+    (on importera la fonction \code{sqrt} du module \code{math}).
+  \item Qu'affichent les appels suivants ?
+\begin{tasks}[label=\alph*)](2)
+  \task \code{resoudre(1, -3, 2)}
+  \task \code{resoudre(1, 2, 1)}
+  \task \code{resoudre(1, 0, 1)}
+  \task \code{resoudre(2, -1, -1)}
+\end{tasks}
+  \item L'équation $0{,}1x^{2}+0{,}6x+0{,}9=0$ s'écrit $0{,}1(x+3)^{2}=0$. Pourtant, \code{resoudre(0.1, 0.6, 0.9)} affiche « Aucune
+    solution réelle ». Expliquer.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Un impôt par tranches}
+Un barème (fictif) taxe un revenu $r$ par tranches : 0\,\% jusqu'à $10\,000$\,€, 10\,\% sur la part comprise entre $10\,000$\,€ et
+$25\,000$\,€, 30\,\% sur la part comprise entre $25\,000$\,€ et $75\,000$\,€, et 45\,\% sur la part qui dépasse $75\,000$\,€.
+\begin{questions}
+  \item Calculer à la main l'impôt pour un revenu de $20\,000$\,€, puis de $50\,000$\,€.
+  \item Écrire une fonction \code{impot(r)} qui renvoie l'impôt dû pour un revenu \code{r}.
+  \item Calculer le taux moyen d'imposition $\frac{\text{impot}(r)}{r}$ pour $r=25\,000$, $50\,000$ et $100\,000$. Commenter.
+  \item Vérifier qu'aux seuils de $25\,000$\,€ et $75\,000$\,€, les formules de deux tranches voisines donnent le même impôt.
+    Que peut-on en déduire pour la fonction $r\mapsto\text{impot}(r)$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le piège des nombres flottants}
+\begin{questions}
+  \item Qu'affichent les instructions \code{print(0.1 + 0.2 == 0.3)} et \code{print(0.1 + 0.2)} ? Expliquer.
+  \item On considère la fonction \code{est\_rectangle} ci-contre, où \code{c} est le plus grand côté d'un triangle.
+\begin{codecote}[0.48]
+\raggedright
+Que renvoient \code{est\_rectangle(5, 12, 13)} et \code{est\_rectangle(0.5, 1.2, 1.3)} ? Le triangle de côtés $0{,}5$ ; $1{,}2$ ;
+$1{,}3$ est-il rectangle ?
+\cote
+\begin{pythoncol}
+def est_rectangle(a, b, c):
+    return c**2 == a**2 + b**2
+\end{pythoncol}
+\end{codecote}
+  \item Corriger la fonction en comparant les deux quantités avec une tolérance de $10^{-9}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La nature d'un triangle}
+\partieExo{A}{Ranger trois nombres dans l'ordre croissant}
+\begin{codecote}[0.36]
+\begin{pythoncol}
+def ranger(a, b, c):
+    if a > b:
+        a, b = b, a
+    if b > c:
+        b, c = c, b
+    if a > b:
+        a, b = b, a
+    return a, b, c
+\end{pythoncol}
+\cote
+L'instruction \code{a, b = b, a} échange les valeurs de \code{a} et de \code{b} ; la fonction renvoie les trois valeurs obtenues.
+\begin{questions}
+  \item Donner les valeurs de \code{a}, \code{b} et \code{c} après chacun des trois tests lors de l'appel \code{ranger(5, 3, 4)}.
+  \item Expliquer pourquoi les trois valeurs renvoyées sont toujours rangées dans l'ordre croissant.
+\end{questions}
+\end{codecote}
+\partieExo{B}{La nature du triangle}
+\begin{codecote}[0.58]
+\begin{pythoncol}
+def nature(a, b, c):
+    a, b, c = ranger(a, b, c)
+    if c >= a + b:
+        return "pas un triangle"
+    elif a == c:
+        return "équilatéral"
+    rect = abs(c**2 - (a**2 + b**2)) < 1e-9
+    iso = a == b or b == c
+    if iso and rect:
+        return "isocèle rectangle"
+    elif iso:
+        return "isocèle"
+    elif rect:
+        return "rectangle"
+    else:
+        return "quelconque"
+\end{pythoncol}
+\cote
+On admet que trois longueurs $a\leq b\leq c$ sont les côtés d'un triangle non aplati si et seulement si $c<a+b$.
+\begin{questions}[start=3]
+  \item Pourquoi le test \code{a == c} suffit-il à reconnaître un triangle équilatéral ?
+  \item Pourquoi le test \code{iso and rect} doit-il être placé avant les tests \code{iso} et \code{rect} ?
+\end{questions}
+\end{codecote}
+\begin{questions}[start=5]
+  \item Que renvoient les appels suivants ? Pourquoi la tolérance est-elle indispensable pour le dernier ?
+\begin{tasks}[label=\alph*)](3)
+  \task \code{nature(5, 3, 4)}
+  \task \code{nature(3, 2, 2)}
+  \task \code{nature(1, 4, 2)}
+  \task \code{nature(1, 2, 3)}
+  \task \code{nature(4, 5, 6)}
+  \task \code{nature(1, 1, sqrt(2))}
+\end{tasks}
+\end{questions}
+\end{exercice}

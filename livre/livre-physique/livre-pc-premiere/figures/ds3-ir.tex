@@ -1,0 +1,17 @@
+% Spectres infrarouges schématiques de l'alcool réactif et du produit de la synthèse ; au corrigé, bandes identifiées (devoir n° 3, exercice 1)
+\begin{tikzpicture}
+\begin{axis}[otIR,width=70mm,name=a,title={Spectre A}]
+\addplot[otSpectre] {100 \bandeIR{3340}{160}{55} \bandeIR{2960}{30}{60} \bandeIR{2875}{25}{35} \bandeIR{1465}{20}{25}
+  \bandeIR{1380}{15}{20} \bandeIR{1055}{25}{55}};
+\solution{\node[pcLegende,text=otGreenDark] at (axis cs:3420,30) {O--H lié};
+  \node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:2840,40) {C--H};}
+\end{axis}
+\begin{axis}[otIR,width=70mm,name=b,at={(a.east)},anchor=west,xshift=12mm,title={Spectre B},ylabel={}]
+\addplot[otSpectre] {100 \bandeIR{2960}{30}{50} \bandeIR{2875}{25}{25} \bandeIR{1740}{18}{85} \bandeIR{1465}{18}{25}
+  \bandeIR{1370}{15}{30} \bandeIR{1240}{25}{75} \bandeIR{1050}{20}{40}};
+\solution{\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:1715,17) {C=O};
+  \node[pcLegende,text=otGreenDark,anchor=north] at (axis cs:2920,40) {C--H};
+  \node[pcLegende,text=otRed!85!black] at (axis cs:3530,70) {pas de O--H};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Spectres infrarouges de l'alcool utilisé et du liquide obtenu après purification (ordre non précisé).}\solution{B est le spectre de l'ester : bande C=O vers \qty{1740}{cm^{-1}} et aucune bande O--H.}}

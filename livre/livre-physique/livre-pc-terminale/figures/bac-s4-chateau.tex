@@ -1,0 +1,22 @@
+% Château d'eau alimentant les robinets d'un village (sujet type bac 4, exercice 3)
+\begin{tikzpicture}[x=1mm,y=1mm]
+\fill[otMuted!15] (-8,-3) rectangle (128,0);
+\draw[otMuted,line width=0.5pt] (-8,0) -- (128,0);
+% Tour et réservoir
+\fill[otMuted!35] (8,0) -- (11,30) -- (21,30) -- (24,0) -- cycle;
+\fill[pcEau] (2,30) rectangle (30,41);
+\draw[otInk!70,line width=0.6pt] (2,44) -- (2,30) -- (30,30) -- (30,44);
+\draw[pcSurface] (2,41) -- (30,41);
+\node[pcLegende,anchor=south] at (16,44.3) {surface libre, à l'air libre};
+% Conduite jusqu'à la maison
+\draw[otNavy!70,line width=1.6pt] (16,30) -- (16,-1.5) -- (96,-1.5) -- (96,5) -- (101,5);
+\fill[otInk!70] (101,3.6) rectangle (104,6.4);
+\node[pcLegende,anchor=west] at (105,5) {robinet};
+% Maison
+\draw[otInk!60,line width=0.6pt] (86,0) -- (86,16) -- (100,25) -- (114,16) -- (114,0);
+% Hauteur
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (30,41) -- (122,41);
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (104,5) -- (122,5);
+\draw[otMuted,line width=0.5pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (120,5) -- (120,41) node[pos=0.5,pcLegende,anchor=west] {$h=\qty{35}{m}$};
+\end{tikzpicture}
+\par\smallskip\legende{La surface libre de l'eau du château d'eau est à $h=\qty{35}{m}$ au-dessus du robinet (échelle non respectée).}

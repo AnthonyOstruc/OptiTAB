@@ -1,0 +1,320 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[synthese]{9}{Synthèses organiques}{Partie 1 · Constitution et transformations de la matière}
+{Protocole\enspace·\enspace Montage à reflux\enspace·\enspace Isolement\enspace·\enspace Purification\enspace·\enspace Analyse\enspace·\enspace Rendement}
+\objectif{Identifier, dans un protocole, les étapes de transformation, d'isolement, de purification et d'analyse.}
+\objectif{Justifier le choix des méthodes à partir des propriétés physico-chimiques des espèces.}
+\objectif{Schématiser et légender les dispositifs expérimentaux d'une synthèse.}
+\objectif{Déterminer le rendement d'une synthèse à partir d'un protocole et de données expérimentales.}
+\objectif{Mettre en œuvre un montage à reflux, isoler, purifier et analyser un produit.}
+\prerequis{Montage à reflux, chromatographie sur couche mince (classe de seconde).}
+\prerequis{Avancement maximal et réactif limitant (chapitre~4) ; solubilité et extraction (chapitre~7).}
+\prerequis{Familles de molécules et spectroscopie infrarouge (chapitre~8).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Les étapes d'une synthèse}
+\begin{definition}[Protocole de synthèse]
+Un protocole de synthèse enchaîne quatre étapes : la \textbf{transformation} des réactifs, l'\textbf{isolement} du produit brut,
+sa \textbf{purification}, puis son \textbf{analyse}, qui vérifie son identité et sa pureté. Le choix des méthodes repose sur les
+propriétés physico-chimiques des espèces : état physique, températures de fusion et d'ébullition, solubilités, densité.
+\end{definition}
+\schema{09-etapes}
+\essSection{2}{La transformation}
+\begin{propriete}[Chauffage à reflux]
+Chauffer accélère la transformation. Dans un montage à \textbf{reflux}, les vapeurs se condensent dans le réfrigérant et
+retombent dans le ballon : on chauffe longtemps sans perte de matière. Un \textbf{catalyseur}, souvent un acide, accélère la
+transformation sans être consommé ; l'agitation ou la pierre ponce régularise l'ébullition.
+\end{propriete}
+\schema{09-reflux}
+\essSection{3}{Isoler et purifier le produit}
+\begin{savoirfaire}[Choisir une méthode]
+\begin{questions}
+\item Produit \textbf{solide}, peu soluble dans le mélange : on l'isole par \textbf{filtration sous pression réduite}, on le lave à
+l'eau glacée, puis on le purifie par \textbf{recristallisation} : on le dissout dans un minimum de solvant chaud, où il est très
+soluble, et on laisse refroidir ; il recristallise, tandis que les impuretés restent dissoutes.
+\item Produit \textbf{liquide}, non miscible avec la phase aqueuse : on le sépare par \textbf{décantation} dans une ampoule, on le lave,
+on le sèche avec un desséchant (sulfate de magnésium anhydre), puis on le purifie par \textbf{distillation}.
+\end{questions}
+\end{savoirfaire}
+\schema{09-buchner}
+\essSection{4}{Analyser le produit}
+\begin{propriete}[Identité et pureté]
+Une \textbf{chromatographie sur couche mince} (CCM) compare le produit à une référence : même hauteur de migration, même
+espèce ; une seule tache, produit pur pour cette technique. Le rapport frontal $R_\mathrm{f}=\dfrac{\text{distance parcourue par l'espèce}}{\text{distance parcourue par l'éluant}}$
+caractérise une espèce dans des conditions données. La \textbf{température de fusion}, mesurée au banc Kofler, doit être
+égale à la valeur des tables ; une impureté l'abaisse. Le \textbf{spectre infrarouge} confirme les groupes caractéristiques.
+\end{propriete}
+\schema{09-ccm}
+\essSection{5}{Le rendement}
+\begin{definition}[Rendement d'une synthèse]
+Le \textbf{rendement} $\eta$ est le quotient de la quantité de produit obtenue par la quantité maximale que l'on pourrait obtenir :
+\[\eta=\frac{n_\text{obtenue}}{n_\text{max}}=\frac{m_\text{obtenue}}{m_\text{max}},\qquad\text{avec } n_\text{max}\text{ déduit de l'avancement maximal, donc du réactif limitant.}\]
+\end{definition}
+\begin{exemple}
+Synthèse de l'aspirine : $\ce{C7H6O3}$ (acide salicylique) $+$ $\ce{C4H6O3}$ (anhydride éthanoïque) $\longrightarrow$ $\ce{C9H8O4}$ (aspirine) $+$ $\ce{C2H4O2}$.
+Avec \qty{2,00}{g} d'acide salicylique ($M=\qty{138,0}{g.mol^{-1}}$, \qty{1,45e-2}{mol}) et \qty{5,40}{g} d'anhydride ($M=\qty{102,0}{g.mol^{-1}}$, \qty{5,29e-2}{mol}),
+l'acide salicylique est limitant : $m_\text{max}=\num{1.449e-2}\times180{,}0=\qty{2,61}{g}$. On obtient \qty{2,15}{g} d'aspirine pure : $\eta\approx\qty{82}{\percent}$.
+\end{exemple}
+\begin{python}
+reactifs = {'acide salicylique': [1, 2.00, 138.0],      # [a, masse (g), M (g/mol)]
+            'anhydride ethanoique': [1, 5.40, 102.0]}
+M_produit, m_obtenue = 180.0, 2.15
+
+xmax = min(m / M / a for a, m, M in reactifs.values())
+m_max = xmax * M_produit
+print('xmax =', round(xmax, 5), 'mol ; m_max =', round(m_max, 2), 'g')
+print('rendement =', round(100 * m_obtenue / m_max, 1), '%')
+\end{python}
+\begin{console}
+xmax = 0.01449 mol ; m_max = 2.61 g
+rendement = 82.4 %
+\end{console}
+\noindent\capacite{Capacité numérique} Le programme calcule l'avancement maximal à partir des masses des réactifs, comme au chapitre~4,
+puis la masse maximale de produit et le rendement.
+\begin{attention}
+La masse maximale se calcule à partir du réactif limitant, jamais à partir du réactif en excès. Le rendement est toujours
+inférieur à \qty{100}{\percent} : transformation parfois non totale, pertes lors des transferts, de la filtration, de la
+recristallisation. Il se calcule avec la masse du produit \emph{pur} et sec.
+\end{attention}
+\begin{experience}[Synthétiser l'aspirine]
+Dans un erlenmeyer, on mélange \qty{2,00}{g} d'acide salicylique et \qty{5,0}{mL} d'anhydride éthanoïque, avec quelques gouttes d'acide
+sulfurique. On chauffe à \qty{60}{\degreeCelsius} pendant vingt minutes, puis on ajoute de l'eau glacée : l'aspirine précipite. On la
+filtre sur Büchner, on la recristallise dans un mélange eau-éthanol, on la sèche, on la pèse, puis on mesure sa
+température de fusion et on réalise une CCM.
+\end{experience}
+\begin{rediger}
+Pour un rendement : écrire l'équation, calculer les quantités initiales, identifier le réactif limitant, en déduire $n_\text{max}$
+puis $m_\text{max}$, et enfin $\eta$. Pour justifier une étape, citer la propriété physico-chimique utilisée.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-9-1}
+\begin{exercice}[1]{Les étapes d'un protocole}
+Voici, dans le désordre, les étapes d'une synthèse de l'aspirine :
+a. mesurer la température de fusion ; b. chauffer le mélange réactionnel à \qty{60}{\degreeCelsius} ; c. filtrer sur Büchner ;
+d. recristalliser dans un mélange eau-éthanol ; e. réaliser une CCM ; f. ajouter de l'eau glacée pour faire précipiter
+l'aspirine ; g. sécher les cristaux à l'étuve.
+\begin{questions}
+\item Classer ces étapes en transformation, isolement, purification et analyse.
+\item Remettre les étapes dans l'ordre.
+\item Pourquoi ajoute-t-on de l'eau \emph{glacée} ?
+\item Quelles étapes renseignent sur la pureté du produit ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-2}
+\begin{exercice}[1]{Le montage à reflux}
+\schema{09-ex02}
+\begin{questions}
+\item Nommer les éléments A à E.
+\item Indiquer le sens de circulation de l'eau. Pourquoi l'eau entre-t-elle par le bas ?
+\item Quel est l'intérêt de chauffer ? Quel est l'intérêt du reflux ?
+\item Pourquoi ne faut-il jamais boucher le haut du réfrigérant ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-3}
+\begin{exercice}[1]{Choisir une technique}
+Proposer une technique pour chaque situation, en justifiant par une propriété physico-chimique.
+\begin{questions}
+\item Un produit solide, peu soluble dans l'eau froide, est en suspension dans un mélange aqueux.
+\item Un produit liquide, non miscible avec l'eau, forme une phase au-dessus de la phase aqueuse.
+\item Une phase organique contient encore quelques gouttes d'eau.
+\item Un produit liquide bout à \qty{142}{\degreeCelsius} ; l'impureté principale bout à \qty{118}{\degreeCelsius}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-4}
+\begin{exercice}[1]{Exploiter une chromatographie}
+\schema{09-ex04}
+\begin{questions}
+\item Mesurer les distances et calculer le rapport frontal du produit et celui de l'autre espèce présente.
+\item Le produit brut est-il pur ? Quelle espèce contient-il en plus du produit ?
+\item Le produit recristallisé est-il pur ? Est-il identifié ?
+\item Quel est l'intérêt de la recristallisation, d'après cette plaque ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-5}
+\begin{exercice}[1]{Un premier rendement}
+L'acétate d'isoamyle, qui sent la banane, se synthétise à partir d'acide éthanoïque et de 3-méthylbutan-1-ol :
+$\ce{C2H4O2 + C5H12O -> C7H14O2 + H2O}$. On fait réagir \qty{0,100}{mol} d'alcool avec \qty{0,200}{mol} d'acide et l'on obtient \qty{9,1}{g} d'ester
+($M=\qty{130,0}{g.mol^{-1}}$).
+\begin{questions}
+\item Quel est le réactif limitant ?
+\item Quelle quantité maximale d'ester peut-on obtenir ?
+\item Calculer la quantité d'ester obtenue, puis le rendement.
+\item Citer deux raisons pour lesquelles le rendement n'atteint pas \qty{100}{\percent}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-9-6}
+\begin{exercice}[2]{Calculer un rendement en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Que calcule l'expression \code{m / M / a} pour chaque réactif ? Pourquoi garde-t-on le minimum ?
+\item Prévoir l'affichage si l'on obtient \qty{2,40}{g} d'aspirine.
+\item Adapter le programme à la synthèse de l'acétate d'isoamyle de l'exercice~12 : \qty{21,0}{g} d'acide ($M=\qty{60,0}{g.mol^{-1}}$), \qty{12,15}{g}
+d'alcool ($M=\qty{88,0}{g.mol^{-1}}$), \qty{10,9}{g} d'ester obtenu ($M=\qty{130,0}{g.mol^{-1}}$). Prévoir l'affichage.
+\item Quel test ajouter pour signaler une erreur de saisie donnant un rendement supérieur à \qty{100}{\percent} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-7}
+\begin{exercice}[2]{L'aspirine et son banc Kofler}
+On reprend la synthèse de l'essentiel. Le produit brut fond à \qty{128}{\degreeCelsius} ; après recristallisation et séchage, il fond
+à \qty{135}{\degreeCelsius}, valeur des tables pour l'aspirine.
+\begin{questions}
+\item Que révèle la température de fusion du produit brut ?
+\item Comment utilise-t-on un banc Kofler ? Pourquoi l'étalonne-t-on avec une substance de température de fusion connue ?
+\item Pourquoi mesure-t-on la masse \emph{après} recristallisation et séchage pour calculer le rendement ?
+\item Combien de comprimés dosés à \qty{500}{mg} cette synthèse permettrait-elle de préparer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-8}
+\begin{exercice}[2]{La recristallisation}
+On veut purifier \qty{5,0}{g} d'acide benzoïque brut. Sa solubilité dans l'eau vaut \qty{3,0}{g.L^{-1}} à \qty{20}{\degreeCelsius} et \qty{60}{g.L^{-1}} à
+\qty{95}{\degreeCelsius}. Les impuretés sont très solubles dans l'eau, même froide.
+\begin{questions}
+\item Quel volume minimal d'eau à \qty{95}{\degreeCelsius} faut-il pour dissoudre tout l'acide benzoïque ?
+\item On utilise \qty{100}{mL} d'eau. Quelle masse d'acide benzoïque reste dissoute après refroidissement à \qty{20}{\degreeCelsius} ?
+\item En déduire la masse maximale d'acide pur récupérée.
+\item Pourquoi faut-il utiliser le minimum de solvant chaud ? Que deviennent les impuretés ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-9}
+\begin{exercice}[2]{Synthétiser l'acide benzoïque}
+On oxyde \qty{2,0}{mL} d'alcool benzylique $\ce{C7H8O}$ (masse volumique \qty{1,04}{g.mL^{-1}}, $M=\qty{108,0}{g.mol^{-1}}$) par un excès d'ions
+permanganate. Après acidification, l'acide benzoïque $\ce{C7H6O2}$ ($M=\qty{122,0}{g.mol^{-1}}$), peu soluble dans l'eau froide, précipite.
+On obtient \qty{1,80}{g} de produit pur et sec.
+\begin{questions}
+\item À quelles familles appartiennent le réactif et le produit ?
+\item Vérifier que la demi-équation $\ce{C7H6O2 + 4H+ + 4e- = C7H8O + H2O}$ est ajustée. L'alcool est-il oxydé ou réduit ?
+\item Calculer la masse maximale d'acide benzoïque et le rendement.
+\item Comment isole-t-on le produit ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-10}
+\begin{exercice}[2]{Purifier par distillation}
+On distille un mélange de propanone ($\theta_\text{éb}=\qty{56}{\degreeCelsius}$), d'éthanol (\qty{78}{\degreeCelsius}) et d'eau (\qty{100}{\degreeCelsius}).
+\schema{09-distillation}
+\begin{questions}
+\item Quelle espèce est recueillie la première ? Justifier.
+\item Pourquoi le réservoir du thermomètre est-il placé au niveau de la sortie des vapeurs ?
+\item Décrire l'évolution de la température lue pendant la distillation.
+\item Pourquoi le réfrigérant est-il ici incliné, et non vertical comme dans un montage à reflux ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-11}
+\begin{exercice}[2]{Le paracétamol}
+Le paracétamol se synthétise à partir de 4-aminophénol : $\ce{C6H7NO + C4H6O3 -> C8H9NO2 + C2H4O2}$. On utilise \qty{3,00}{g} de 4-aminophénol
+($M=\qty{109,0}{g.mol^{-1}}$) et un excès d'anhydride éthanoïque. On obtient \qty{3,20}{g} de paracétamol pur ($M=\qty{151,0}{g.mol^{-1}}$), qui fond à
+\qty{169}{\degreeCelsius}.
+\begin{questions}
+\item Vérifier que l'équation est ajustée.
+\item Calculer la masse maximale de paracétamol.
+\item Calculer le rendement.
+\item Quelle information la température de fusion apporte-t-elle ? Proposer une autre méthode d'analyse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-9-12}
+\begin{exercice}[3]{L'arôme de banane}
+\begin{docu}{1}{Le protocole}
+Étape 1 : dans un ballon, verser \qty{15,0}{mL} de 3-méthylbutan-1-ol, \qty{20,0}{mL} d'acide éthanoïque et quelques gouttes d'acide
+sulfurique ; chauffer à reflux pendant 30 minutes. Étape 2 : refroidir, verser dans une ampoule à décanter contenant de
+l'eau salée, agiter, décanter et éliminer la phase aqueuse. Étape 3 : laver la phase organique avec une solution
+d'hydrogénocarbonate de sodium (un gaz se dégage), puis la sécher sur sulfate de magnésium anhydre et filtrer. On
+recueille \qty{12,5}{mL} d'ester.
+\end{docu}
+\begin{docu}{2}{Données}
+\par\smallskip\noindent\hfill\begin{tabular}{lcccc}
+\toprule
+Espèce & alcool & acide éthanoïque & acétate d'isoamyle & eau salée \\
+\midrule
+$M$ (\unit{g.mol^{-1}}) & 88,0 & 60,0 & 130,0 & -- \\
+Masse volumique (\unit{g.mL^{-1}}) & 0,81 & 1,05 & 0,87 & 1,2 \\
+Solubilité dans l'eau salée & faible & très grande & très faible & -- \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{docu}
+\begin{questions}
+\item Associer chaque étape du protocole à une étape de synthèse. Quel est le rôle de l'acide sulfurique ?
+\item Dans l'ampoule, la phase organique est-elle au-dessus ou au-dessous ? Pourquoi utilise-t-on de l'eau salée ?
+\item Quel est le rôle du lavage à l'hydrogénocarbonate de sodium ? Quel est le gaz dégagé ?
+\item \initiative Calculer le rendement de la synthèse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-13}
+\begin{exercice}[3]{Le savon à froid}
+\begin{docu}{1}{La saponification}
+Un savon se fabrique en faisant réagir une huile avec de la soude. On assimile l'huile d'olive à l'oléine, de formule
+$\ce{C57H104O6}$ : $\ce{C57H104O6 + 3NaOH -> 3C18H33O2Na + C3H8O3}$. Les produits sont l'oléate de sodium, le savon, et le glycérol.
+\end{docu}
+\begin{docu}{2}{Le surgras}
+Les savonniers utilisent un peu moins de soude que la quantité stœchiométrique, par exemple \qty{5}{\percent} de moins : c'est le
+« surgras ». La soude est très corrosive : gants et lunettes sont obligatoires.
+\end{docu}
+\begin{donnees}
+Masses molaires (\unit{g.mol^{-1}}) : oléine 884,0 ; $\ce{NaOH}$ 40,0 ; oléate de sodium 304,0 ; glycérol 92,0.
+\end{donnees}
+\begin{questions}
+\item Vérifier que l'équation est ajustée.
+\item Quelle masse de soude réagit exactement avec \qty{500}{g} d'huile ? Quelle masse le savonnier utilise-t-il avec un surgras de \qty{5}{\percent} ?
+\item Quel est alors le réactif limitant ? Pourquoi ce choix rend-il le savon plus doux pour la peau ?
+\item \initiative Calculer la masse maximale de savon et la masse de glycérol formées, en supposant que la soude ne limite pas.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-14}
+\begin{exercice}[3]{Améliorer un rendement}
+\begin{docu}{1}{Une transformation non totale}
+L'acide éthanoïque et l'éthanol réagissent pour former de l'éthanoate d'éthyle et de l'eau ; la transformation n'est pas
+totale (chapitre~4). Avec un catalyseur, l'état final est atteint en une heure au lieu de plusieurs jours.
+\end{docu}
+\begin{docu}{2}{Des mesures}
+\par\smallskip\noindent\hfill\begin{tabular}{lccc}
+\toprule
+Quantités initiales acide : alcool & 1 : 1 & 2 : 1 & 3 : 1 \\
+\midrule
+Rendement par rapport à l'alcool & \qty{67}{\percent} & \qty{85}{\percent} & \qty{90}{\percent} \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{docu}
+\begin{questions}
+\item Écrire l'équation de la réaction, sachant que l'ester a pour formule $\ce{C4H8O2}$.
+\item Le catalyseur modifie-t-il le rendement ? Justifier à partir du document~1.
+\item Comment évolue le rendement quand on augmente l'excès d'acide ? Pourquoi choisit-on de mettre l'acide en excès plutôt
+que l'alcool, sachant que l'acide est moins coûteux ?
+\item \initiative Un dispositif élimine l'eau au fur et à mesure qu'elle se forme. Proposer une explication à la forte hausse du
+rendement observée.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-15}
+\begin{exercice}[3]{Préparer vingt comprimés}
+\begin{docu}{1}{Une commande}
+Un laboratoire pédagogique doit préparer vingt comprimés d'aspirine dosés à \qty{500}{mg}.
+\end{docu}
+\begin{docu}{2}{La synthèse}
+On utilise la synthèse de l'essentiel, dont le rendement, une fois le produit purifié, vaut \qty{80}{\percent}. L'anhydride éthanoïque
+est en excès.
+\end{docu}
+\begin{donnees}
+$M(\text{acide salicylique})=\qty{138,0}{g.mol^{-1}}$ ; $M(\text{aspirine})=\qty{180,0}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quelle masse d'aspirine pure faut-il obtenir ? Quelle quantité de matière cela représente-t-il ?
+\item Compte tenu du rendement, quelle quantité maximale d'aspirine $n_\text{max}$ la synthèse doit-elle pouvoir produire ?
+\item \initiative Quelle masse d'acide salicylique faut-il peser ?
+\item Pourquoi un pharmacien industriel cherche-t-il à augmenter le rendement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

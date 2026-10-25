@@ -1,0 +1,391 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[electrolyse]{10}{Électrolyse et stockage de l'énergie}{Partie 1 · Constitution et transformations de la matière}
+{Transformation forcée\enspace·\enspace Électrolyseur\enspace·\enspace Quantités de matière et courant\enspace·\enspace Accumulateurs et dihydrogène}
+\objectif{Distinguer transformation spontanée et transformation forcée par un apport d'énergie électrique.}
+\objectif{Modéliser et schématiser un électrolyseur ; identifier l'anode et la cathode.}
+\objectif{Relier la durée et l'intensité du courant aux quantités de matière formées aux électrodes.}
+\objectif{Décrire le fonctionnement d'un accumulateur, en décharge et en charge.}
+\objectif{Discuter des enjeux du stockage de l'énergie sous forme chimique.}
+\prerequis{Oxydants, réducteurs, demi-équations électroniques, piles (chapitre~8).}
+\prerequis{Critère d'évolution spontanée, quotient de réaction (chapitre~7).}
+\prerequis{Charge électrique $Q=I\,\Delta t$ ; énergie électrique $E=U\,Q$.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Transformations spontanées et forcées}
+\begin{definition}[Transformation forcée]
+Un système chimique évolue spontanément dans le sens qui rapproche $Q_\mathrm{r}$ de $K$. Un générateur électrique peut
+imposer un courant qui fait évoluer le système \textbf{en sens inverse} : $Q_\mathrm{r}$ s'éloigne alors de $K$. Une telle
+transformation, impossible sans apport d'énergie, est dite \textbf{forcée} : c'est une \textbf{électrolyse}. L'énergie
+électrique fournie est convertie en énergie chimique, stockée par les produits formés.
+\end{definition}
+\begin{exemple}
+Dans une solution de bromure de cuivre(II), la transformation \ce{Cu^2+(aq) + 2 Br^-(aq) -> Cu(s) + Br2(aq)} a une
+constante d'équilibre très petite ($K\approx\num{e-26}$) : elle ne se produit pas spontanément. Dès qu'un générateur
+impose un courant suffisant, du cuivre se dépose sur une électrode et du dibrome orangé apparaît autour de l'autre.
+\end{exemple}
+\essSection{2}{L'électrolyseur}
+\begin{definition}[Électrolyseur, anode et cathode]
+Un électrolyseur comporte deux électrodes plongées dans un électrolyte et reliées à un générateur. Comme dans une
+pile, l'\textbf{anode} est l'électrode où se produit l'oxydation et la \textbf{cathode} celle où se produit la
+réduction. Mais les polarités sont inversées :
+\begin{itemize}[leftmargin=1.4em,itemsep=0.1em]
+\item l'anode est reliée à la \textbf{borne +} du générateur, qui lui arrache des électrons ;
+\item la cathode est reliée à la \textbf{borne $-$}, qui lui fournit des électrons.
+\end{itemize}
+\end{definition}
+\schema{10-electrolyseur}
+\begin{savoirfaire}[Analyser une électrolyse]
+Repérer les bornes du générateur pour identifier l'anode et la cathode. Écrire l'oxydation à l'anode et la réduction à
+la cathode, parmi les couples des espèces présentes (ions, solvant, électrodes). En déduire l'équation de
+l'électrolyse et les observations attendues.
+\end{savoirfaire}
+\begin{attention}
+Dans une pile, l'anode est le pôle $-$ ; dans un électrolyseur, elle est reliée au pôle $+$ du générateur. Dans les deux
+cas, retenir : \textbf{anode = oxydation}, \textbf{cathode = réduction}, et le courant entre dans l'électrolyseur par
+l'anode.
+\end{attention}
+\essSection{3}{Quantités de matière et quantité d'électricité}
+\begin{propriete}[Relier courant et quantités de matière]
+Pendant une durée $\Delta t$, un courant d'intensité constante $I$ fait circuler la charge $Q=I\,\Delta t$, soit une
+quantité d'électrons
+\[n(\mathrm{e}^-)=\frac{Q}{F}=\frac{I\,\Delta t}{F},\qquad F=\qty{96500}{C.mol^{-1}}.\]
+Les demi-équations relient ensuite $n(\mathrm{e}^-)$ aux quantités de matière transformées à chaque électrode.
+\end{propriete}
+\begin{exemple}
+Pour cuivrer une pièce, on la place à la cathode d'un électrolyseur contenant des ions \ce{Cu^2+}, avec $I=\qty{1,2}{A}$
+pendant 30~min : $n(\mathrm{e}^-)=\frac{1{,}2\times1800}{\num{96500}}=\qty{2,24e-2}{mol}$. La réduction
+\ce{Cu^2+ + 2 e- -> Cu} consomme deux électrons par atome : $n(\ce{Cu})=\qty{1,12e-2}{mol}$, soit une masse déposée
+$m=\num{1.12e-2}\times63{,}5=\qty{0,71}{g}$.
+\end{exemple}
+\begin{codecote}[0.58]
+\begin{pythoncol}
+F, M = 96500, 63.5     # C/mol, g/mol
+I = 1.2                # A
+def masse(t):          # t en secondes
+    n_e = I * t / F
+    return M * n_e / 2
+for t in (600, 1800, 3600):
+    print(t, round(masse(t), 2))
+\end{pythoncol}
+\begin{consolecol}
+600 0.24
+1800 0.71
+3600 1.42
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+La fonction calcule la masse de cuivre déposée après une durée $t$ : la quantité d'électrons $I\,t/F$, puis la masse
+$M\,n(\mathrm{e}^-)/2$, deux électrons étant échangés par atome. À intensité constante, la masse déposée est
+proportionnelle à la durée : on retrouve les 0,71~g de l'exemple.
+\end{codecote}
+\essSection{4}{Stocker l'énergie sous forme chimique}
+\begin{definition}[Accumulateur]
+Un \textbf{accumulateur} est une pile rechargeable : en \textbf{décharge}, il fonctionne en pile et convertit son
+énergie chimique en énergie électrique ; en \textbf{charge}, un générateur force la transformation inverse et
+reconstitue les réactifs. À chaque électrode, la demi-équation s'inverse entre les deux modes : l'électrode qui était la
+cathode en décharge devient l'anode en charge.
+\end{definition}
+\schema{10-accumulateur}
+\begin{propriete}[Le stockage chimique de l'énergie]
+L'électricité se stocke mal directement : on la convertit en énergie chimique, dans des accumulateurs (téléphones,
+véhicules électriques) ou dans du dihydrogène produit par électrolyse de l'eau, converti ensuite par une pile à
+combustible. Chaque conversion s'accompagne de pertes : le rendement global d'une chaîne de stockage est le produit des
+rendements de chaque étape.
+\end{propriete}
+\begin{experience}[Électrolyser l'eau au laboratoire]
+Deux électrodes inertes plongent dans de l'eau rendue conductrice par un peu d'hydroxyde de sodium ; deux éprouvettes
+retournées, remplies de solution, coiffent les électrodes. Dès que le générateur débite, des bulles apparaissent : le
+volume de gaz recueilli à la cathode est double de celui recueilli à l'anode. Le premier gaz aboie à la flamme
+(dihydrogène), le second rallume une bûchette incandescente (dioxygène) : on a réalisé
+\ce{2 H2O(l) -> 2 H2(g) + O2(g)}, transformation forcée.
+\end{experience}
+\begin{rediger}
+Toujours justifier l'anode et la cathode par la borne du générateur à laquelle l'électrode est reliée, puis par la
+nature de la réaction. Dans un calcul de quantité d'électricité, convertir la durée en secondes et conclure avec les
+unités : « $n(\mathrm{e}^-)=I\,\Delta t/F$, avec $I$ en ampères et $\Delta t$ en secondes ».
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-10-1}
+\begin{exercice}[1]{Pile ou électrolyseur ?}
+Deux béchers contiennent le même système chimique : une lame de cuivre dans une solution de sulfate de cuivre(II) et
+une lame de zinc dans une solution de sulfate de zinc, reliées par un pont salin. Dans le montage A, les lames sont
+reliées à un conducteur ohmique ; dans le montage B, à un générateur dont la borne $+$ est connectée à la lame de
+cuivre et qui impose un courant inverse de celui du montage A.
+\begin{questions}
+\item Dans quel montage le système évolue-t-il spontanément ? Écrire l'équation de la transformation correspondante.
+\item Comment le quotient de réaction évolue-t-il par rapport à $K$ dans chaque montage ?
+\item Écrire l'équation de la transformation du montage B. Pourquoi la qualifie-t-on de forcée ?
+\item Identifier l'anode dans chaque montage.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-2}
+\begin{exercice}[1]{Les électrodes d'un électrolyseur}
+On électrolyse une solution de bromure de cuivre(II), $(\ce{Cu^2+}+2\,\ce{Br-})$, entre deux électrodes de graphite.
+Au bout de quelques minutes, un dépôt rougeâtre couvre l'électrode 1 et une coloration orangée se développe autour de
+l'électrode 2.
+\schema{10-ex02}
+\begin{questions}
+\item Interpréter les deux observations : quelles espèces se forment ?
+\item Écrire la demi-équation de la réaction à chaque électrode, à partir des couples \ce{Cu^2+}/\ce{Cu} et
+\ce{Br2}/\ce{Br-}.
+\item Identifier l'anode et la cathode, puis les bornes du générateur.
+\item Écrire l'équation de l'électrolyse. Que se passerait-il si l'on débranchait le générateur pour le remplacer par
+un conducteur ohmique ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-3}
+\begin{exercice}[1]{Quantité d'électricité et quantité de matière}
+Un électrolyseur est parcouru par un courant d'intensité constante $I=\qty{0,50}{A}$ pendant 20~min.
+\begin{donnees}
+$F=\qty{96500}{C.mol^{-1}}$ ; $N_\mathrm{A}=\qty{6,02e23}{mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la charge électrique qui a traversé l'électrolyseur.
+\item En déduire la quantité d'électrons échangés, puis leur nombre.
+\item À la cathode se produit la réduction \ce{Ag+ + e- -> Ag}. Quelle quantité d'argent s'est déposée ?
+\item Quelle durée faudrait-il, à la même intensité, pour déposer le double ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-4}
+\begin{exercice}[1]{Cuivrer une médaille}
+Pour cuivrer une médaille de surface totale $S=\qty{60}{cm^2}$, on la place à la cathode d'un bain contenant des ions
+\ce{Cu^2+}, et l'on fait circuler un courant d'intensité $I=\qty{0,60}{A}$ pendant 40~min.
+\begin{donnees}
+$M(\ce{Cu})=\qty{63,5}{g.mol^{-1}}$ ; masse volumique du cuivre : $\rho=\qty{8,96}{g.cm^{-3}}$ ;
+$F=\qty{96500}{C.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation de la réaction sur la médaille. Justifier qu'elle se produit à la cathode.
+\item Calculer la quantité d'électrons échangés, puis la masse de cuivre déposée.
+\item En déduire l'épaisseur moyenne du dépôt, en micromètres.
+\item Comment doubler cette épaisseur sans changer l'intensité ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-5}
+\begin{exercice}[1]{Recharger un accumulateur}
+Une pile Daniell usée est branchée sur un générateur : la borne $+$ du générateur est reliée à l'électrode de cuivre,
+et le courant imposé est inverse de celui que la pile débitait.
+\begin{questions}
+\item Écrire la réaction qui se produisait à chaque électrode pendant la décharge.
+\item Écrire les réactions aux électrodes pendant la charge. Que devient le dépôt de cuivre ?
+\item Pendant la charge, quelle électrode est l'anode ? Comparer à la décharge.
+\item Pourquoi la charge est-elle une transformation forcée ? D'où provient l'énergie stockée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-10-6}
+\begin{exercice}[2]{L'électrolyse de l'eau}
+Deux électrodes inertes plongent dans de l'eau rendue conductrice ; deux éprouvettes graduées, retournées et remplies
+de solution, recueillent les gaz. Le générateur débite $I=\qty{0,25}{A}$ pendant 15,0~min.
+\schema{10-ex06}
+\begin{donnees}
+Couples : \ce{O2}/\ce{H2O} et \ce{H2O}/\ce{H2} (\ce{2 H2O + 2 e- <=> H2 + 2 HO-}) ; volume molaire :
+$V_\mathrm{m}=\qty{24}{L.mol^{-1}}$ ; $F=\qty{96500}{C.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation de la réaction à chaque électrode, puis l'équation de l'électrolyse.
+\item Calculer la quantité d'électrons échangés pendant l'expérience.
+\item En déduire les volumes de dihydrogène et de dioxygène recueillis. Dans quel rapport sont-ils ?
+\item Comment identifier chacun des deux gaz ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-7}
+\begin{exercice}[2]{Argenter des couverts}
+Un orfèvre argente des couverts : les pièces, placées à la cathode d'un bain d'ions \ce{Ag+}, doivent recevoir 2,0~g
+d'argent au total. L'anode est une lame d'argent pur. L'intensité vaut $I=\qty{0,50}{A}$.
+\begin{donnees}
+$M(\ce{Ag})=\qty{107,9}{g.mol^{-1}}$ ; $F=\qty{96500}{C.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation de la réaction sur les couverts.
+\item Calculer la quantité d'électrons nécessaire, puis la durée de l'opération.
+\item À l'anode, l'argent de la lame est oxydé. Écrire la demi-équation correspondante.
+\item Montrer que la concentration en ions \ce{Ag+} du bain reste constante. Quel est l'intérêt de cette « anode
+soluble » ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-8}
+\begin{exercice}[2]{L'affinage du cuivre}
+Pour purifier le cuivre issu des minerais (pureté 99~\%), on en fait l'anode d'un électrolyseur ; la cathode est une
+fine feuille de cuivre pur. L'anode se dissout, le cuivre se dépose pur sur la cathode et les impuretés tombent au
+fond de la cuve. Une cuve industrielle fonctionne sous 0,30~V avec $I=\qty{250}{A}$.
+\begin{donnees}
+$M(\ce{Cu})=\qty{63,5}{g.mol^{-1}}$ ; $F=\qty{96500}{C.mol^{-1}}$ ; $\qty{1}{kW.h}=\qty{3,6e6}{J}$.
+\end{donnees}
+\begin{questions}
+\item Écrire les demi-équations aux deux électrodes. Pourquoi la concentration en ions \ce{Cu^2+} ne varie-t-elle
+pas ?
+\item Calculer la masse de cuivre pur déposée en 24~h de fonctionnement.
+\item Calculer l'énergie électrique consommée en 24~h, en kilowattheures, puis par kilogramme de cuivre affiné.
+\item Pourquoi ce procédé serait-il inutilisable pour purifier un métal plus réducteur que l'eau, comme le sodium ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-9}
+\begin{exercice}[2]{L'accumulateur au plomb}
+La batterie de démarrage d'une voiture est un accumulateur au plomb. En décharge, les réactions aux électrodes sont :
+\[\ce{Pb + SO4^2- -> PbSO4 + 2 e-}\qquad\text{et}\qquad\ce{PbO2 + 4 H+ + SO4^2- + 2 e- -> PbSO4 + 2 H2O}.\]
+La batterie a une tension de 12~V et une capacité de \qty{60}{A.h}.
+\begin{donnees}
+$M(\ce{Pb})=\qty{207,2}{g.mol^{-1}}$ ; $F=\qty{96500}{C.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Identifier l'anode et la cathode pendant la décharge, puis écrire l'équation de fonctionnement.
+\item Convertir la capacité en coulombs et calculer la quantité d'électrons correspondante.
+\item Quelle masse de plomb l'anode perd-elle au cours d'une décharge complète ?
+\item Le démarreur consomme 150~A pendant 2,0~s. Quelle fraction de la capacité un démarrage utilise-t-il ?
+\item Écrire les réactions aux électrodes pendant la charge par l'alternateur.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-10}
+\begin{exercice}[2]{Produire du dihydrogène}
+Un électrolyseur de laboratoire industriel, parcouru par un courant de 1500~A, produit du dihydrogène à la cathode :
+\ce{2 H2O + 2 e- -> H2 + 2 HO-}. Le programme suivant calcule la masse produite, heure par heure, jusqu'à atteindre
+1,0~kg.
+\begin{python}
+F, I = 96500, 1500           # C/mol, A
+M_H2 = 2.0                   # g/mol
+t, m = 0, 0
+while m < 1000:              # masse en g
+    t = t + 3600             # pas d'une heure
+    m = M_H2 * I * t / (2 * F)
+print(t, round(t / 3600), round(m))
+\end{python}
+\begin{console}
+64800 18 1007
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Justifier l'expression de \code{m} utilisée par le programme.
+\item Interpréter les trois nombres affichés.
+\item Retrouver par un calcul direct la durée nécessaire pour produire exactement 1,0~kg de dihydrogène.
+\item Quel volume ce kilogramme occuperait-il à 25~°C sous 1,0~bar ($V_\mathrm{m}=\qty{24,8}{L.mol^{-1}}$) ? Comment le
+stocke-t-on en pratique ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-11}
+\begin{exercice}[2]{Protéger l'acier par électrozingage}
+Pour protéger une plaque d'acier de la corrosion, on la recouvre de zinc par électrolyse : la plaque, de surface
+$S=\qty{0,96}{m^2}$ pour la face traitée, constitue la cathode d'un bain d'ions \ce{Zn^2+}. On vise un dépôt
+d'épaisseur $e=\qty{10}{\micro m}$, avec $I=\qty{200}{A}$.
+\begin{donnees}
+$M(\ce{Zn})=\qty{65,4}{g.mol^{-1}}$ ; $\rho(\ce{Zn})=\qty{7,14}{g.cm^{-3}}$ ; $F=\qty{96500}{C.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation de la réaction sur la plaque.
+\item Calculer le volume, puis la masse de zinc à déposer.
+\item En déduire la quantité d'électrons nécessaire et la durée de l'électrolyse.
+\item Le zinc est plus réducteur que le fer. Expliquer pourquoi le revêtement protège l'acier même lorsqu'il est
+localement rayé.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-10-12}
+\begin{exercice}[3]{Recharger une voiture électrique}
+\begin{docu}{1}{La batterie d'une citadine}
+La batterie d'une citadine électrique stocke une énergie de 60~kWh. Elle regroupe des cellules lithium-ion de tension
+3,7~V et de capacité \qty{5,0}{A.h}. Une prise domestique renforcée délivre une puissance de 11~kW.
+\end{docu}
+\begin{docu}{2}{La charge d'une cellule lithium-ion}
+Pendant la charge, les ions lithium \ce{Li+} quittent l'électrode d'oxyde métallique, traversent l'électrolyte et
+s'insèrent dans l'électrode de graphite, où se produit la réaction \ce{Li+ + e- + 6 C -> LiC6}. À la décharge, la
+réaction s'inverse.
+\end{docu}
+\begin{donnees}
+$M(\ce{Li})=\qty{6,94}{g.mol^{-1}}$ ; $F=\qty{96500}{C.mol^{-1}}$ ; énergie d'une cellule : $E=U\,Q$.
+\end{donnees}
+\begin{questions}
+\item Calculer l'énergie stockée par une cellule, en wattheures, puis le nombre de cellules de la batterie.
+\item Estimer la durée d'une charge complète sur la prise renforcée.
+\item Pendant la charge, l'électrode de graphite est-elle l'anode ou la cathode ? À quelle borne du chargeur est-elle
+reliée ?
+\item \initiative Calculer la masse de lithium qui s'insère dans le graphite d'une cellule au cours d'une charge
+complète.
+\item La réaction d'insertion s'inverse à la décharge. En quoi cette réversibilité est-elle la propriété essentielle
+d'un accumulateur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-13}
+\begin{exercice}[3]{Le dihydrogène vert}
+\begin{docu}{1}{Un électrolyseur industriel}
+Un électrolyseur alcalin industriel regroupe 160 cellules en série, chacune sous une tension de 2,0~V, parcourues par
+un courant de 25~kA : sa puissance électrique atteint 8,0~MW. Chaque cellule produit du dihydrogène à sa cathode et du
+dioxygène à son anode. Alimenté par de l'électricité renouvelable, il produit un dihydrogène dit « vert ».
+\end{docu}
+\begin{donnees}
+Cathode : \ce{2 H2O + 2 e- -> H2 + 2 HO-} ; anode : \ce{4 HO- -> O2 + 2 H2O + 4 e-} ;
+$M(\ce{H2})=\qty{2,0}{g.mol^{-1}}$ ; $F=\qty{96500}{C.mol^{-1}}$ ; énergie libérée par la combustion du dihydrogène :
+\qty{33,3}{kW.h} par kilogramme ; $\qty{1}{kW.h}=\qty{3,6e6}{J}$.
+\end{donnees}
+\begin{questions}
+\item Vérifier l'équation de l'électrolyse, \ce{2 H2O -> 2 H2 + O2}, et la valeur de la puissance électrique.
+\item Calculer la quantité de dihydrogène produite chaque seconde par une cellule, puis par l'électrolyseur entier.
+\item En déduire la masse de dihydrogène produite par jour.
+\item \initiative Calculer l'énergie électrique consommée par jour, puis par kilogramme de dihydrogène. Comparer à
+l'énergie restituée par sa combustion et conclure sur le rendement du stockage.
+\item À quelle condition ce dihydrogène mérite-t-il le qualificatif de « vert » ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-14}
+\begin{exercice}[3]{De l'aluminium par électrolyse}
+\begin{docu}{1}{Le procédé Hall-Héroult}
+L'aluminium est produit par électrolyse de l'alumine \ce{Al2O3}, dissoute à 960~°C dans la cryolithe fondue. Les ions
+\ce{Al^3+} sont réduits à la cathode ; les anodes, en carbone, sont consommées par la réaction
+\ce{C + 2 O^2- -> CO2 + 4 e-}. Une cuve moderne fonctionne sous 4,2~V avec un courant de 350~kA.
+\end{docu}
+\begin{docu}{2}{Recycler plutôt que produire}
+Refondre de l'aluminium recyclé ne demande qu'environ 5~\% de l'énergie nécessaire à sa production par électrolyse.
+\end{docu}
+\begin{donnees}
+$M(\ce{Al})=\qty{27,0}{g.mol^{-1}}$ ; $M(\ce{C})=\qty{12,0}{g.mol^{-1}}$ ; $M(\ce{CO2})=\qty{44,0}{g.mol^{-1}}$ ;
+$F=\qty{96500}{C.mol^{-1}}$ ; $\qty{1}{MW.h}=\qty{3,6e9}{J}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation de la réaction à la cathode.
+\item Calculer la quantité d'électrons échangés par jour, puis la masse d'aluminium produite par une cuve en 24~h.
+\item Calculer la masse de carbone consommée et la masse de dioxyde de carbone dégagée chaque jour.
+\item \initiative Calculer l'énergie électrique consommée par tonne d'aluminium produite.
+\item À l'aide du document~2, expliquer l'intérêt énergétique et climatique du recyclage de l'aluminium.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-15}
+\begin{exercice}[3]{Stocker l'énergie d'une maison autonome}
+\begin{docu}{1}{Un surplus d'été à retrouver l'hiver}
+Une maison autonome produit, de juin à août, un surplus solaire de 8,0~kWh par jour pendant 90~jours, soit 720~kWh à
+stocker pour l'hiver. Deux solutions sont étudiées : des batteries lithium-ion, ou la conversion en dihydrogène.
+\end{docu}
+\begin{docu}{2}{Deux chaînes de stockage}
+Batteries lithium-ion : énergie massique de 150~Wh par kilogramme, rendement charge-décharge de 90~\%, mais
+autodécharge et vieillissement sur plusieurs mois. Chaîne dihydrogène : électrolyseur de rendement 70~\%, stockage du
+gaz comprimé à 300~bar, pile à combustible de rendement 50~\%.
+\end{docu}
+\begin{donnees}
+Énergie de combustion du dihydrogène : \qty{33,3}{kW.h.kg^{-1}} ; $M(\ce{H2})=\qty{2,0}{g.mol^{-1}}$ ;
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $T=\qty{298}{K}$.
+\end{donnees}
+\begin{questions}
+\item Quelle énergie la solution « batteries » restituerait-elle l'hiver ? Calculer la masse de batteries nécessaire
+pour stocker les 720~kWh.
+\item Calculer le rendement global de la chaîne dihydrogène, puis l'énergie qu'elle restituerait.
+\item Calculer la masse de dihydrogène produite à partir des 720~kWh, puis la quantité de matière correspondante.
+\item Quel volume ce gaz occupe-t-il à 300~bar et 298~K, en supposant le modèle du gaz parfait applicable ?
+\item \initiative Comparer les deux solutions pour un stockage saisonnier. Quel critère, absent des calculs
+précédents, favorise le dihydrogène ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

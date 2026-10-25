@@ -1,0 +1,17 @@
+% Horloge à iode : inverse de la durée d'apparition de la couleur en fonction d'une concentration (corrigé du défi D05)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=46mm,xmin=0,xmax=0.045,ymin=0,ymax=0.045,
+  xtick={0,0.01,...,0.04},ytick={0,0.01,...,0.04},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=2},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=2},
+  scaled ticks=false,
+  xlabel={concentration initiale du réactif dont on fait varier la valeur (mol$\cdot$L$^{-1}$)},ylabel={$1/t_\mathrm{c}$ (s$^{-1}$)},
+  legend style={at={(0.03,0.97)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,cells={anchor=west}}]
+\addplot[otMuted,line width=0.6pt,domain=0:0.043,forget plot] {0.96*x};
+\addplot[only marks,mark=*,mark size=2pt,otNavy] coordinates {(0.010,0.009524)(0.020,0.019231)(0.040,0.038462)};
+\addlegendentry{on fait varier $[\ce{I-}]_0$, avec $[\ce{H2O2}]_0=\qty{0,020}{mol.L^{-1}}$}
+\addplot[only marks,mark=square*,mark size=1.8pt,otGreenDark] coordinates {(0.010,0.009709)(0.020,0.019231)(0.040,0.037037)};
+\addlegendentry{on fait varier $[\ce{H2O2}]_0$, avec $[\ce{I-}]_0=\qty{0,020}{mol.L^{-1}}$}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les deux séries s'alignent sur une même droite passant par l'origine.}

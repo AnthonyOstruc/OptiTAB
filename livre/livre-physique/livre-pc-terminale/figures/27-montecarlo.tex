@@ -1,0 +1,14 @@
+% Histogramme de 20 000 valeurs simulées de la célérité v = d/Δt (L'essentiel, chapitre 27)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=118mm,height=52mm,xmin=328,xmax=360,ymin=0,ymax=3000,
+  xtick={330,335,...,355},ytick={0,500,...,2500},grid=none,ymajorgrids=true,
+  xlabel={$v$ (\unit{m.s^{-1}})},ylabel={effectif}]
+\addplot[ybar interval,fill=otNavy!22,draw=otNavy,line width=0.4pt] table[x index=0,y index=1] {figures/donnees/27-mc-vitesse-histo.dat};
+\draw[otRed!80!black,line width=0.9pt] (axis cs:344.15,0) -- (axis cs:344.15,2780);
+\node[pcLegende,anchor=south,text=otRed!80!black] at (axis cs:344.15,2780) {moyenne : \qty{344,2}{m.s^{-1}}};
+\draw[otGreenDark,line width=0.6pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (axis cs:341.1,1500) -- (axis cs:347.2,1500);
+\node[pcLegende,anchor=west,text=otGreenDark,align=left] at (axis cs:348.6,1750) {écart-type des valeurs :\\ $u(v)=\qty{3,0}{m.s^{-1}}$};
+\draw[otGreenDark,line width=0.4pt] (axis cs:347.3,1520) -- (axis cs:348.5,1700);
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque tirage associe une distance et une durée choisies au hasard selon leurs incertitudes-types ; l'écart-type des \num{20000} valeurs de $v$ obtenues est l'incertitude-type composée.}

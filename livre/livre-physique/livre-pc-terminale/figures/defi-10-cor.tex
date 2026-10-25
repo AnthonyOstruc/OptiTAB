@@ -1,0 +1,16 @@
+% Rendement énergétique d'un électrolyseur en fonction de sa tension (corrigé du défi D10)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=102mm,height=50mm,xmin=1.1,xmax=2.7,ymin=0,ymax=1.1,
+  xtick={1.2,1.4,...,2.6},ytick={0,0.2,...,1},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={tension $U$ d'une cellule (V)},ylabel={rendement $U_0/U$}]
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:1.23,0) -- (axis cs:1.23,1.0);
+\node[pcLegende,text=otOrange!80!black,anchor=south west,align=left] at (axis cs:1.26,0.08)
+  {$U_0=1{,}23$~V :\\aucune électrolyse en dessous};
+\addplot[otNavy,line width=1pt,domain=1.23:2.65,samples=160] {1.23/x};
+\addplot[only marks,mark=*,mark size=1.7pt,otGreenDark] coordinates {(1.3,0.946)(1.6,0.769)(2.0,0.615)(2.4,0.513)};
+\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:2.02,0.68) {cellule réelle : 2,0~V};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Plus la tension imposée dépasse 1,23 V, plus la part d'énergie électrique dissipée en chaleur augmente.}

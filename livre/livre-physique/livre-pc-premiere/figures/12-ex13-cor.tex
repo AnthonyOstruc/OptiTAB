@@ -1,0 +1,17 @@
+% Ballon-sonde à trois altitudes, dessiné à l'échelle (corrigé de l'exercice 13, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Échelle : 0,42 cm pour 1 m
+\shade[ball color=otOrange!25] (0,0.6) circle (0.298);
+\shade[ball color=otOrange!25] (2.6,0.97) circle (0.964);
+\shade[ball color=otOrange!25] (6.4,1.26) circle (1.26);
+\draw[otMuted,line width=0.5pt] (-1.2,0) -- (8.2,0);
+% Silhouette de 1,8 m
+\begin{scope}[shift={(-0.8,0)},otInk!70,line width=0.6pt,scale=0.84]
+  \draw (0,0) -- (0.1,0.45) -- (0.2,0); \draw (0.1,0.45) -- (0.1,0.75); \draw (-0.02,0.55) -- (0.1,0.7) -- (0.22,0.55);
+  \draw (0.1,0.83) circle (0.07);
+\end{scope}
+\node[pcLegende,anchor=north,align=center] at (0,-0.1) {au sol : \qty{1013}{hPa}\\\qty{1,5}{m^3} ; $\varnothing\,\qty{1,4}{m}$};
+\node[pcLegende,anchor=north,align=center] at (2.6,-0.1) {vers \qty{24}{km} : \qty{30}{hPa}\\\qty{51}{m^3} ; $\varnothing\,\qty{4,6}{m}$};
+\node[pcLegende,anchor=north,align=center] at (6.4,-0.1) {éclatement : \qty{13}{hPa}\\\qty{113}{m^3} ; $\varnothing\,\qty{6,0}{m}$};
+\end{tikzpicture}
+\par\smallskip\legende{Dessin à l'échelle (silhouette de \qty{1,8}{m}) : le ballon gonfle à mesure que la pression extérieure diminue.}

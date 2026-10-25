@@ -1,0 +1,169 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 17 — Loi binomiale
+%% Tous les résultats ont été vérifiés par programme (calcul exact des probabilités binomiales).
+
+\corrigesChapitre{17}{Loi binomiale}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Un jeu de cartes}
+\begin{questions}
+  \item On répète $5$ fois, de façon identique et indépendante (avec remise), une épreuve à deux issues ; le succès « carte bleue »
+    a pour probabilité $\frac{12}{20}=0{,}6$. Donc $\res{X\sim\mathcal{B}(5\pv0{,}6)}$.
+  \item $P(X=3)=\binom53\times0{,}6^{3}\times0{,}4^{2}$\\ $=\res{0{,}345\,6}$ ;\\
+    $P(X\leq2)\approx\res{0{,}317}$ et\\ $P(X\geq4)\approx\res{0{,}337}$.
+  \item $E(X)=\res{3}$, $V(X)=\res{1{,}2}$ et\\ $\sigma(X)\approx\res{1{,}095}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Tests de logiciels}
+\begin{questions}
+  \item $\res{X\sim\mathcal{B}(14\pv0{,}6)}$
+  \item $P(X=9)\approx\res{0{,}207}$ et\\ $P(X\geq7)\approx\res{0{,}850}$.
+  \item $E(X)=\res{8{,}4}$ et $\sigma(X)\approx\res{1{,}833}$.
+  \item $100\times E(X)=\res{840\text{ €}}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Un sondage}
+\begin{questions}
+  \item $25$ tirages identiques et indépendants, succès de probabilité $0{,}35$ : $\res{X\sim\mathcal{B}(25\pv0{,}35)}$.
+  \item $P(X\geq10)=1-P(X\leq9)\approx\res{0{,}370}$ et $P(X=8)\approx\res{0{,}161}$.
+  \item $E(X)=25\times0{,}35=\res{8{,}75}$.
+  \item $P(X\leq12)\approx0{,}940$ et $P(X\leq13)\approx0{,}975$ : $\res{k=13}$. Dans 95\,\% des échantillons au moins, il y a
+    au plus $13$ réponses favorables.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Efficacité d'un traitement}
+\begin{questions}
+  \item $X\sim\mathcal{B}(12\pv0{,}75)$ ;\\ $P(X=10)\approx\res{0{,}232}$ et\\ $P(X\geq8)\approx\res{0{,}842}$.
+  \item $E(X)=\res{9}$.
+  \item $12\times150=1\,800$\,€ pour $9$ guérisons en moyenne : environ $\res{200\text{ €}}$ par patient guéri.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Génétique des pois}
+\begin{questions}
+  \item $X\sim\mathcal{B}(16\pv0{,}5)$ ;\\ $P(X=9)\approx\res{0{,}175}$ et\\ $P(X>10)=P(X\geq11)\approx\res{0{,}105}$.
+  \item $E(X)=\res{8}$, $V(X)=\res{4}$, $\sigma(X)=\res{2}$ : en moyenne, la moitié des descendants ont une gousse lisse,
+    conformément aux lois de Mendel.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Satisfaction de la clientèle}
+\begin{questions}
+  \item $X\sim\mathcal{B}(20\pv0{,}82)$ ;\\ $P(X=16)\approx\res{0{,}213}$ et\\ $P(X\geq18)\approx\res{0{,}275}$.
+  \item $\sigma(X)=\sqrt{20\times0{,}82\times0{,}18}\approx\res{1{,}718}$.
+  \item $200\times E(X)=200\times16{,}4=\res{3\,280\text{ €}}$.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{7}{Contrôle de qualité}
+\begin{questions}
+  \item $X\sim\mathcal{B}(15\pv0{,}1)$ : $P(X=2)=\binom{15}2\times0{,}1^{2}\times0{,}9^{13}\approx\res{0{,}267}$ ; $P(X\leq1)=0{,}9^{15}+15\times0{,}1\times0{,}9^{14}\approx\res{0{,}549}$ ;
+    $P(X\geq3)=1-P(X\leq2)\approx\res{0{,}184}$.
+  \item $E(X)=\res{1{,}5}$ et $\sigma(X)=\sqrt{1{,}35}\approx\res{1{,}162}$.
+  \item $50\times E(X)=\res{75\text{ €}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{8}{Tests de résistance}
+\begin{questions}
+  \item $X\sim\mathcal{B}(30\pv0{,}08)$ : $P(X\leq2)\approx\res{0{,}565}$ et $P(3\leq X\leq5)=P(X\leq5)-P(X\leq2)\approx\res{0{,}405}$.
+  \item $\sigma(X)=\sqrt{30\times0{,}08\times0{,}92}\approx\res{1{,}486}$.
+  \item $E(X)=2{,}4$, d'où un coût moyen de $25\times2{,}4=\res{60\text{ €}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{9}{Contrôle d'alcoolémie}
+\begin{questions}
+  \item $X\sim\mathcal{B}(40\pv0{,}15)$ : $P(X=6)\approx\res{0{,}174}$ et $P(X\leq4)\approx\res{0{,}263}$.
+  \item $V(X)=40\times0{,}15\times0{,}85=\res{5{,}1}$ et $\sigma(X)\approx\res{2{,}258}$.
+  \item $E(X)=6$, d'où $135\times6=\res{810\text{ €}}$ d'amendes en moyenne.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{10}{Recyclage des déchets}
+\begin{questions}
+  \item $X\sim\mathcal{B}(35\pv0{,}25)$ : $P(X=10)\approx\res{0{,}132}$ et $P(6\leq X\leq12)=P(X\leq12)-P(X\leq5)\approx\res{0{,}827}$.
+  \item $V(X)=35\times0{,}25\times0{,}75=\res{6{,}562\,5}$ et $\sigma(X)\approx\res{2{,}562}$.
+  \item Le nombre moyen de ménages qui trient passe de $35\times0{,}25=8{,}75$ à $35\times0{,}3=10{,}5$ : $1{,}75$ ménage de plus, soit
+    $1{,}75\times200=350$\,€ d'économie. Bénéfice : $350-5\,000=\res{-4\,650\text{ €}}$ : la campagne n'est pas rentable sur $35$ ménages
+    (il faudrait l'étendre à une population beaucoup plus grande).
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{Une campagne téléphonique}
+\begin{questions}
+  \item On répète $30$ appels identiques et indépendants ; le succès « rendez-vous » a pour probabilité $0{,}15$, donc
+    $\res{X\sim\mathcal{B}(30\pv0{,}15)}$.
+  \item $P(X=5)\approx\res{0{,}186}$ et $P(X\geq1)=1-0{,}85^{30}\approx\res{0{,}992}$.
+  \item $E(X)=\res{4{,}5}$ et $\sigma(X)=\sqrt{3{,}825}\approx\res{1{,}956}$.
+  \item $1-0{,}85^{n}>0{,}95\iff0{,}85^{n}<0{,}05\iff n>\frac{\ln0{,}05}{\ln0{,}85}\approx18{,}4$ (car $\ln0{,}85<0$) : $\res{n=19}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Répondre au hasard à un QCM}
+\begin{questions}
+  \item $20$ questions indépendantes, succès de probabilité $\frac14$ : $\res{X\sim\mathcal{B}(20\pv0{,}25)}$ et $E(X)=\res{5}$.
+  \item $P(X=5)\approx\res{0{,}202}$ et $P(X\geq10)\approx\res{0{,}014}$ : c'est la probabilité d'obtenir la moyenne en répondant au
+    hasard, sans pénalité.
+  \item $N=X-\frac13(20-X)=\res{\frac{4X-20}{3}}$, donc $E(N)=\frac{4\times5-20}{3}=\res{0}$ : en moyenne, répondre au hasard ne
+    rapporte rien ; le barème décourage les réponses au hasard.
+  \item $N\geq5\iff4X-20\geq15\iff X\geq8{,}75\iff X\geq9$ : $P(X\geq9)\approx\res{0{,}041}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{13}{La surréservation des vols}
+\begin{questions}
+  \item $X\sim\mathcal{B}(200\pv0{,}95)$, $E(X)=\res{190}$ et $P(X=200)=0{,}95^{200}\approx\res{3{,}5\times10^{-5}}$ : l'avion n'est
+    presque jamais plein ; en moyenne, $10$ places restent vides, d'où l'intérêt de vendre plus de billets.
+  \item $X\sim\mathcal{B}(205\pv0{,}95)$ et $P(X>200)=P(X\geq201)\approx\res{0{,}022}$.
+  \item \texttt{risque(N)} calcule $P(X>200)$ pour $N$ billets vendus ; la boucle augmente $N$ tant que le risque pour $N+1$
+    billets reste inférieur à 5\,\%. On obtient $\res{N=205}$ : c'est le nombre maximal de billets à vendre (pour $206$ billets,
+    le risque dépasse 5\,\% : environ $0{,}052$).
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{14}{Une pièce est-elle équilibrée ?}
+\noindent
+\begin{minipage}[t]{0.54\linewidth}\vspace{0pt}\raggedright
+\begin{questions}
+  \item $E(X)=\res{50}$ et $\sigma(X)=\sqrt{25}=\res{5}$.
+  \item $P(X\leq39)\leq0{,}025<P(X\leq40)$ : $\res{a=40}$ ; $P(X\leq59)<0{,}975\leq P(X\leq60)$ : $\res{b=60}$. Puis
+    $P(40\leq X\leq60)=P(X\leq60)-P(X\leq39)\approx\res{0{,}965}$.
+  \item $1-0{,}965=\res{0{,}035}$ environ : moins de 5\,\%.
+  \item $65\notin\intFF{40}{60}$ : on rejette l'hypothèse ; la pièce est $\res{\text{considérée comme truquée}}$, avec un risque
+    d'erreur inférieur à 5\,\%. Avec $58$ piles, rien ne permet de mettre en doute l'équilibre de la pièce.
+  \item Fréquences : $\intFF{0{,}40}{0{,}60}$ pour $100$ lancers, $\intFF{0{,}45}{0{,}55}$ pour $400$. En multipliant le nombre de lancers
+    par $4$, on divise l'amplitude par $2$ : la fréquence fluctue moins (chapitre 19).
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=67mm, height=48mm, ybar, bar width=0.85mm, bar shift=0pt, xmin=29, xmax=71, ymin=0, ymax=0.088,
+  xtick={30,40,50,60,70}, ytick={0.04,0.08}, yticklabels={$0{,}04$,$0{,}08$}, scaled y ticks=false, xlabel={$k$},
+  xlabel style={at={(1,0)},anchor=west}]
+  \addplot[fill=otNavySoft,draw=otNavy!60,line width=0.3pt] coordinates {(30,0.0000) (31,0.0001) (32,0.0001) (33,0.0002)
+    (34,0.0005) (35,0.0009) (36,0.0016) (37,0.0027) (38,0.0045) (39,0.0071) (61,0.0071) (62,0.0045) (63,0.0027) (64,0.0016)
+    (65,0.0009) (66,0.0005) (67,0.0002) (68,0.0001) (69,0.0001) (70,0.0000)};
+  \addplot[fill=otGreen!55,draw=otGreenDark,line width=0.3pt] coordinates {(40,0.0108) (41,0.0159) (42,0.0223) (43,0.0301)
+    (44,0.0390) (45,0.0485) (46,0.0580) (47,0.0666) (48,0.0735) (49,0.0780) (50,0.0796) (51,0.0780) (52,0.0735) (53,0.0666)
+    (54,0.0580) (55,0.0485) (56,0.0390) (57,0.0301) (58,0.0223) (59,0.0159) (60,0.0108)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Loi $\mathcal{B}(100\pv0{,}5)$ : en vert, l'intervalle $\intFF{40}{60}$.}
+\end{minipage}
+\end{corrige}

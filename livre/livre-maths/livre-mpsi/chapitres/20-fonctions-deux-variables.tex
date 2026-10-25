@@ -1,0 +1,428 @@
+% !TEX root = ../main.tex
+%% Chapitre 20 — Fonctions de deux variables
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre :
+%% a) boules et ouverts de R², continuité (en vue du calcul différentiel) ;
+%% b) dérivées partielles, classe C¹, DL d'ordre 1, plan tangent, gradient ;
+%% c) dérivée selon un vecteur, règle de la chaîne, gradient orthogonal aux
+%% lignes de niveau ; d) extremums, points critiques. Point de vue pratique ;
+%% la différentiabilité et tout développement théorique sont hors programme.
+%% Résultats vérifiés par verifications/chapitre_20.py.
+
+\begin{ouverture}[niveaux]{20}{Fonctions de deux variables}{Partie 2 · Deuxième semestre}
+  {Ouverts de $\R^{2}$\enspace·\enspace Dérivées partielles\enspace·\enspace Gradient\enspace·\enspace
+   Plan tangent\enspace·\enspace Règle de la chaîne\enspace·\enspace Extremums}
+  \objectif{Se repérer dans $\R^{2}$ : boules, ouverts, continuité, surfaces.}
+  \objectif{Calculer des dérivées partielles et reconnaître une fonction de classe $\mathcal{C}^{1}$.}
+  \objectif{Écrire le développement limité d'ordre 1 : plan tangent et gradient.}
+  \objectif{Dériver le long d'un chemin : la règle de la chaîne.}
+  \objectif{Lire la géométrie du gradient : plus grande pente, orthogonalité aux lignes de niveau.}
+  \objectif{Chercher des extremums : points critiques et études locales.}
+  \prerequis{Dérivation et développements limités à une variable (chapitres 4, 6 et 11).}
+  \prerequis{Produit scalaire, norme, orthogonalité (chapitre 18).}
+  \prerequis{Droites et plans, systèmes linéaires (chapitres 12 et 13).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Boules, ouverts, continuité}
+
+\begin{definition}[La géométrie ambiante]
+$\R^{2}$ est muni de la norme euclidienne (chapitre 18). La \textbf{boule
+ouverte} de centre $a$ et de rayon $r>0$ est
+$B(a,r)=\ens{x\mid\norme{x-a}<r}$. Une partie $U$ est \textbf{ouverte} si
+chacun de ses points est centre d'une boule incluse dans $U$ : un ouvert
+laisse « de la place » autour de chaque point — l'espace naturel pour
+dériver. Une fonction $f:U\to\R$ est \emph{continue} en $a$ si
+$f(x)\to f(a)$ quand $\norme{x-a}\to0$ (notion introduite ici en vue du
+calcul différentiel ; son étude systématique n'est pas un objectif du
+programme). Le graphe $z=f(x,y)$ est une \emph{surface} ; les
+\textbf{lignes de niveau} $f(x,y)=c$ en sont la carte topographique.
+\end{definition}
+
+\begin{attention}
+À deux variables, « tendre vers $a$ » se fait par \emph{tous} les
+chemins : la fonction $\dfrac{xy}{x^{2}+y^{2}}$ (prolongée par $0$) tend
+vers $0$ le long des axes mais vers $\dfrac12$ le long de la diagonale —
+elle n'est pas continue en $(0,0)$, bien que ses deux dérivées partielles
+y existent (exercice 9). Les dérivées partielles ne voient que deux
+directions : elles ne suffisent pas.
+\end{attention}
+
+\essSection{2}{Dérivées partielles et classe $\mathcal{C}^{1}$}
+
+\begin{definition}[Dérivées partielles]
+La \textbf{dérivée partielle} de $f$ par rapport à $x$ en $(x_0,y_0)$ est
+la dérivée de la fonction partielle $x\mapsto f(x,y_0)$ :
+\[
+\frac{\partial f}{\partial x}(x_0,y_0)
+=\lim_{h\to0}\frac{f(x_0+h,y_0)-f(x_0,y_0)}{h} ,
+\]
+et de même $\dfrac{\partial f}{\partial y}$ : on dérive par rapport à une
+variable \emph{en gelant l'autre} — aucune technique nouvelle. $f$ est de
+\textbf{classe $\mathcal{C}^{1}$} sur l'ouvert $U$ si ses deux dérivées
+partielles existent et sont \emph{continues} sur $U$.
+\end{definition}
+
+\essSection{3}{Développement limité d'ordre 1, plan tangent, gradient}
+
+\begin{theoreme}[DL d'ordre 1 (admis)]
+Si $f$ est de classe $\mathcal{C}^{1}$ au voisinage de $(x_0,y_0)$ :
+\[
+f(x_0+h,\,y_0+k)=f(x_0,y_0)
++\frac{\partial f}{\partial x}(x_0,y_0)\,h
++\frac{\partial f}{\partial y}(x_0,y_0)\,k
++o\bigl(\norme{(h,k)}\bigr) :
+\]
+localement, $f$ est affine. Le plan d'équation
+\[
+z-z_0=\frac{\partial f}{\partial x}(x_0,y_0)\,(x-x_0)
++\frac{\partial f}{\partial y}(x_0,y_0)\,(y-y_0)
+\]
+est le \textbf{plan tangent} à la surface $z=f(x,y)$ en $(x_0,y_0)$ — la
+meilleure approximation affine, comme la tangente à une variable.
+\end{theoreme}
+
+\begin{definition}[Gradient]
+Le \textbf{gradient} de $f$ en $(x_0,y_0)$ est le vecteur
+\[
+\nabla f(x_0,y_0)=\Bigl(\frac{\partial f}{\partial x}(x_0,y_0),\
+\frac{\partial f}{\partial y}(x_0,y_0)\Bigr),
+\]
+et le DL s'écrit
+$f(a+u)=f(a)+\langle\nabla f(a),u\rangle+o\bigl(\norme{u}\bigr)$ : le
+produit scalaire du chapitre 18 pilote le calcul différentiel. Le
+gradient pointe dans la direction où $f$ \emph{croît le plus vite}, et sa
+norme mesure cette pente maximale.
+\end{definition}
+
+\essSection{4}{La règle de la chaîne}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{theoreme}[Dériver le long d'un chemin]
+La \emph{dérivée selon un vecteur} $u$ est
+$D_uf(a)=\langle\nabla f(a),u\rangle$. Pour un arc
+$\gamma(t)=\bigl(x(t),y(t)\bigr)$ de classe $\mathcal{C}^{1}$ :
+\begin{align*}
+\bigl(f\circ\gamma\bigr)'(t)
+&=\frac{\partial f}{\partial x}\bigl(\gamma(t)\bigr)\,x'(t)
++\frac{\partial f}{\partial y}\bigl(\gamma(t)\bigr)\,y'(t)\\
+&=\bigl\langle\nabla f\bigl(\gamma(t)\bigr),\gamma'(t)\bigr\rangle .
+\end{align*}
+Pour une composée $(u,v)\mapsto f\bigl(\varphi(u,v),\psi(u,v)\bigr)$, la
+même règle s'applique variable par variable. Conséquence géométrique :
+le long d'une ligne de niveau, $f\circ\gamma$ est constante, donc
+\emph{le gradient est orthogonal aux lignes de niveau}.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8,line cap=round]
+  \foreach \k/\op in {0.55/0.9,1.1/0.7,1.65/0.5,2.2/0.35}{%
+    \draw[otNavy,opacity=\op,line width=0.8pt]
+      (0,0) ellipse ({1.55*\k} and {0.95*\k});}
+  \fill[otNavy] (0,0) circle (1.5pt);
+  \fill[otInk] (1.32,0.95) circle (1.6pt);
+  \draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.2mm]}]
+    (1.32,0.95) -- (2.25,1.98);
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (2.3,2.02) {$\nabla f$};
+  \node[font=\scriptsize,text=otNavy,anchor=north] at (-1.7,-1.35) {$f=c$};
+\end{tikzpicture}\\[0.5mm]
+\legende{La carte topographique : le gradient, perpendiculaire aux
+lignes de niveau, indique la plus grande pente.}
+\end{minipage}
+
+\essSection{5}{Extremums et points critiques}
+
+\begin{definition}[Extremums ; points critiques]
+$f$ admet un \textbf{maximum local} en $a$ si $f\leqslant f(a)$ au
+voisinage de $a$ (global : sur toute la partie étudiée) ; de même pour un
+minimum. Un \textbf{point critique} est un point où le gradient s'annule :
+$\nabla f(a)=0$, c'est-à-dire les deux dérivées partielles nulles.
+\end{definition}
+
+\begin{theoreme}[Condition nécessaire]
+Si $f$, de classe $\mathcal{C}^{1}$ sur un \emph{ouvert}, admet un
+extremum local en $a$, alors $a$ est un point critique (chaque fonction
+partielle a un extremum intérieur : sa dérivée s'annule, chapitre 6). La
+réciproque est fausse : $(0,0)$ est critique pour $x^{2}-y^{2}$ sans être
+un extremum — un \emph{col}, ou point-selle : montée dans une direction,
+descente dans l'autre.
+\end{theoreme}
+
+\begin{savoirfaire}[Étudier les extremums en pratique]
+1. Résoudre $\nabla f=0$ : les candidats. 2. Étudier \emph{localement}
+chaque candidat : signe de $f(a+u)-f(a)$ le long de directions bien
+choisies (droites, paraboles), ou factorisation. 3. Sur une partie avec
+bord (un carré, un disque), comparer les candidats intérieurs aux valeurs
+du \emph{bord}, étudié comme un problème à une variable. Un point
+critique n'est une conclusion qu'après l'étude locale — le col guette
+(exercices 14, 15, 21).
+\end{savoirfaire}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Dérivées partielles : premiers calculs}
+Calculer les dérivées partielles de :
+\begin{tasks}(3)
+  \task $f(x,y)=x^{2}y+y^{3}$
+  \task $g(x,y)=\mathrm{e}^{xy}$
+  \task $h(x,y)=\ln\bigl(x^{2}+y^{2}\bigr)$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Le développement limité d'ordre 1}
+Soit $f(x,y)=x^{2}+y^{2}$.
+\begin{questions}
+  \item Écrire le DL d'ordre 1 de $f$ en $(1,2)$.
+  \item En déduire une valeur approchée de $f(1{,}02\,;\,1{,}99)$, et la
+    comparer à la valeur exacte.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Plans tangents}
+Donner l'équation du plan tangent à la surface :
+\begin{questions}
+  \item $z=x^{2}+y^{2}$ au point $(1,2,5)$ ;
+  \item $z=xy$ au point $(2,3,6)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Le gradient et la plus grande pente}
+Soit $f(x,y)=x^{2}+y^{2}$.
+\begin{questions}
+  \item Calculer $\nabla f(3,4)$ et sa norme.
+  \item Dans quelle direction $f$ croît-elle le plus vite en $(3,4)$ ?
+    Interpréter géométriquement (lignes de niveau circulaires).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Lignes de niveau}
+Décrire les lignes de niveau de $f(x,y)=x^{2}+y^{2}$, de
+$g(x,y)=xy$ et de $h(x,y)=x^{2}-y^{2}$. Lesquelles passent par $(1,2)$ ?
+\end{exercice}
+
+\begin{exercice}[1]{Dérivée selon un vecteur}
+Soit $f(x,y)=x^{2}y$, $a=(1,1)$ et $u=\bigl(\tfrac35,\tfrac45\bigr)$
+(unitaire).
+\begin{questions}
+  \item Calculer $\nabla f(a)$, puis $D_uf(a)=\langle\nabla f(a),u\rangle$.
+  \item Pour quel vecteur unitaire $u$ cette dérivée est-elle maximale,
+    et que vaut-elle ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{La règle de la chaîne}
+Soit $\gamma(t)=(\cos t,\sin t)$.
+\begin{questions}
+  \item Pour $f(x,y)=x^{2}+y^{2}$, calculer
+    $\bigl(f\circ\gamma\bigr)'$ par la règle de la chaîne. Pourquoi le
+    résultat était-il prévisible ?
+  \item Pour $g(x,y)=xy$, calculer $\bigl(g\circ\gamma\bigr)'(t)$ des
+    deux façons et vérifier la cohérence.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Premiers points critiques}
+Déterminer les points critiques de $x^{2}+y^{2}$, de $x^{2}-y^{2}$ et de
+$xy$, et dire dans chaque cas s'il s'agit d'un extremum.
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Dérivées partielles sans continuité}
+Soit $f(x,y)=\dfrac{xy}{x^{2}+y^{2}}$ pour $(x,y)\neq(0,0)$ et
+$f(0,0)=0$.
+\begin{questions}
+  \item Calculer la limite de $f$ le long de l'axe $y=0$, puis le long de
+    la diagonale $y=x$ : $f$ est-elle continue en $(0,0)$ ?
+  \item Montrer que les deux dérivées partielles de $f$ en $(0,0)$
+    existent et valent $0$. Conclure : que manque-t-il aux dérivées
+    partielles ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Composées et dérivées partielles}
+Soit $f$ de classe $\mathcal{C}^{1}$ et
+$F(u,v)=f(u+v,\,uv)$.
+\begin{questions}
+  \item Exprimer $\dfrac{\partial F}{\partial u}$ et
+    $\dfrac{\partial F}{\partial v}$ à l'aide des dérivées partielles de
+    $f$.
+  \item Vérifier sur $f(x,y)=x^{2}y+y^{3}$ en développant complètement.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le gradient orthogonal aux lignes de niveau}
+Soit $f(x,y)=x^{2}+2y^{2}$.
+\begin{questions}
+  \item Vérifier que
+    $\gamma(t)=\bigl(\sqrt3\cos t,\sqrt{3/2}\,\sin t\bigr)$ paramètre la
+    ligne de niveau $f=3$.
+  \item Montrer par le calcul que
+    $\bigl\langle\nabla f(\gamma(t)),\gamma'(t)\bigr\rangle=0$ pour tout
+    $t$, et retrouver ce résultat sans calcul.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Dériver le long d'un arc}
+Soit $f(x,y)=x^{2}y$ et $\gamma(t)=(t,t^{2})$.
+\begin{questions}
+  \item Calculer $\bigl(f\circ\gamma\bigr)'(t)$ directement.
+  \item Retrouver le résultat par la règle de la chaîne.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Des équations aux dérivées partielles}
+On travaille sur l'ouvert $\R^{2}$ tout entier.
+\begin{questions}
+  \item Déterminer les fonctions $\mathcal{C}^{1}$ vérifiant
+    $\dfrac{\partial f}{\partial x}=0$.
+  \item Déterminer celles vérifiant
+    $\dfrac{\partial f}{\partial x}=y$, puis celles vérifiant à la fois
+    $\dfrac{\partial f}{\partial x}=y$ et
+    $\dfrac{\partial f}{\partial y}=x$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le col et le sommet}
+Soit $f(x,y)=x^{3}+y^{3}-3xy$.
+\begin{questions}
+  \item Déterminer les points critiques de $f$.
+  \item Montrer que $(0,0)$ n'est pas un extremum, mais que $(1,1)$ est
+    un minimum local, de valeur $-1$. \emph{Étudier $f$ le long de
+    droites bien choisies, puis au voisinage de $(1,1)$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Extremums sur un carré}
+Soit $f(x,y)=x^{2}+y^{2}-x-y$ sur le carré
+$K=\intFF{0}{1}\times\intFF{0}{1}$.
+\begin{questions}
+  \item Déterminer le point critique intérieur et la valeur de $f$ en ce
+    point.
+  \item Étudier $f$ sur le bord (quatre segments, une variable chacun),
+    et conclure : minimum et maximum \emph{globaux} de $f$ sur $K$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le plan tangent comme calculette}
+Soit $f(x,y)=\sqrt{x^{2}+y^{2}}$.
+\begin{questions}
+  \item Calculer $\nabla f(3,4)$.
+  \item En déduire une valeur approchée de
+    $\sqrt{3{,}03^{2}+3{,}96^{2}}$, et contrôler la précision.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'identité d'Euler}
+Une fonction est \emph{homogène de degré} $d$ si
+$f(\lambda x,\lambda y)=\lambda^{d}f(x,y)$ pour tout $\lambda>0$.
+\begin{questions}
+  \item Vérifier que $x^{2}y$ et $x^{3}-2xy^{2}$ sont homogènes de degré
+    $3$.
+  \item Montrer l'identité d'Euler :
+    $x\dfrac{\partial f}{\partial x}+y\dfrac{\partial f}{\partial y}=d\,f$.
+    \emph{Dériver $t\mapsto f(tx,ty)$ en $t=1$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La droite des moindres carrés}
+On cherche la droite $y=ax+b$ approchant au mieux les points
+$(0,0)$, $(1,1)$, $(2,1)$, au sens du minimum de
+$E(a,b)=\sum\bigl(ax_i+b-y_i\bigr)^{2}$.
+\begin{questions}
+  \item Écrire $\nabla E=0$ et résoudre.
+  \item Donner la droite obtenue et l'erreur minimale. Pourquoi ce point
+    critique est-il bien un minimum ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Le théorème de Schwarz, et sa limite}
+\begin{questions}
+  \item Pour $f(x,y)=\mathrm{e}^{xy}\sin(x+y)$, vérifier que
+    $\dfrac{\partial^{2}f}{\partial x\partial y}
+    =\dfrac{\partial^{2}f}{\partial y\partial x}$ (théorème de Schwarz,
+    hors programme mais vrai pour toute fonction $\mathcal{C}^{2}$).
+  \item Pour $g(x,y)=\dfrac{xy(x^{2}-y^{2})}{x^{2}+y^{2}}$ (prolongée par
+    $0$), admettre — ou vérifier numériquement — que les deux dérivées
+    croisées en $(0,0)$ valent $-1$ et $+1$ : sans régularité, l'ordre
+    de dérivation compte.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Fonctions harmoniques}
+Le \emph{laplacien} de $f$ est
+$\Delta f=\dfrac{\partial^{2}f}{\partial x^{2}}
++\dfrac{\partial^{2}f}{\partial y^{2}}$ ; $f$ est \emph{harmonique} si
+$\Delta f=0$.
+\begin{questions}
+  \item Vérifier que $x^{2}-y^{2}$, $xy$, $\mathrm{e}^{x}\cos y$ et
+    $\ln\bigl(x^{2}+y^{2}\bigr)$ (hors de l'origine) sont harmoniques.
+  \item Que remarque-t-on sur les deux premières ? \emph{Penser à
+    $z^{2}=(x+\mathrm{i}y)^{2}$ (chapitre 3) : parties réelle et
+    imaginaire.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une étude complète}
+Soit $f(x,y)=x^{4}+y^{4}-2(x-y)^{2}$.
+\begin{questions}
+  \item Déterminer les trois points critiques réels de $f$.
+  \item Montrer que $(0,0)$ n'est pas un extremum, et que
+    $\pm\bigl(\sqrt2,-\sqrt2\bigr)$ réalisent le minimum \emph{global}
+    $-8$. \emph{Pour le caractère global, minorer $f$ par une fonction
+    d'une variable bien choisie.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Distance d'un point à une parabole}
+Déterminer la distance du point $(0,1)$ à la parabole $y=x^{2}$ :
+\begin{questions}
+  \item ramener le problème à minimiser
+    $d(x)=x^{2}+\bigl(x^{2}-1\bigr)^{2}$, et conclure ;
+  \item vérifier que le segment réalisant la distance est orthogonal à la
+    tangente de la parabole au point le plus proche — le gradient encore.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Passage en coordonnées polaires}
+Pour $f$ de classe $\mathcal{C}^{1}$, on pose
+$g(r,\theta)=f(r\cos\theta,\,r\sin\theta)$.
+\begin{questions}
+  \item Exprimer $\dfrac{\partial g}{\partial r}$ et
+    $\dfrac{\partial g}{\partial\theta}$ par la règle de la chaîne.
+  \item Vérifier sur $f(x,y)=x^{2}+y^{2}$ : que deviennent les deux
+    dérivées, et pourquoi était-ce prévisible ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Moindres carrés, version matricielle}
+On reprend l'exercice 18 : minimiser
+$\norme{AX-B}^{2}$ avec
+$A=\begin{pmatrix}0&1\\1&1\\2&1\end{pmatrix}$,
+$B=\begin{pmatrix}0\\1\\1\end{pmatrix}$,
+$X=\begin{pmatrix}a\\b\end{pmatrix}$.
+\begin{questions}
+  \item Montrer que le gradient de $X\mapsto\norme{AX-B}^{2}$ s'annule
+    exactement quand $A^{\mathsf T}AX=A^{\mathsf T}B$ (équations
+    normales), et résoudre.
+  \item Vérifier que le résidu $AX-B$ est orthogonal aux colonnes de
+    $A$ : le minimum est la \emph{projection orthogonale} de $B$ sur
+    l'image de $A$ (chapitre 18).
+  \item Conclure : matrices (chapitre 13), produit scalaire
+    (chapitre 18) et gradient (chapitre 20) résolvent ensemble le même
+    problème — la boucle du cours est bouclée.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-20}

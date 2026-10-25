@@ -1,0 +1,13 @@
+% Hauteur d'eau en fonction du temps lors de la vidange (corrigé de l'exercice 9, chapitre 17)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=92mm,height=44mm,xmin=0,xmax=140,ymin=0,ymax=22,
+  xtick={0,20,...,140},ytick={0,5,...,20},
+  xlabel={$t$ (s)},ylabel={$h$ (cm)}]
+\addplot[otNavy,line width=1pt,domain=0:126.2,samples=120] {100*(sqrt(0.20)-0.0016*sqrt(9.81/2)*x)^2};
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:63,samples=2] {20-0.317*x};
+\fill[otRed!80!black] (axis cs:126.2,0) circle (1.4pt);
+\node[pcLegende,anchor=south] at (axis cs:122,2.2) {vidange : \qty{126}{s}};
+\path (axis cs:0,20) -- (axis cs:63.1,0) node[pos=0.6,sloped,below,pcLegende,text=otMuted] {tangente à l'origine};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La surface libre descend de plus en plus lentement : la vitesse de sortie diminue avec la hauteur d'eau.}

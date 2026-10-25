@@ -1,0 +1,86 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 18 — Séries de Fourier et inégalité de Bessel
+%% Résultats vérifiés par verifications/defis_16_20.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Séries de Fourier et inégalité de Bessel}{2 h}
+On munit $E=\mathcal{C}\bigl(\intFF{-\pi}{\pi},\R\bigr)$ de
+$\langle f,g\rangle=\dfrac1\pi\displaystyle\int_{-\pi}^{\pi}f(x)g(x)\,\mathrm{d}x$.
+Approcher une fonction par des sommes de sinus et cosinus — l'idée de
+Joseph Fourier (1807) — revient à la projeter orthogonalement sur des
+espaces de \emph{polynômes trigonométriques}.
+
+\partieExo{A}{Une famille orthonormée}
+\begin{questions}
+  \item Montrer que $\langle\cdot,\cdot\rangle$ est un produit scalaire sur
+    $E$.
+  \item Pour $k\geqslant1$, on note $c_k:x\mapsto\cos kx$ et
+    $s_k:x\mapsto\sin kx$, et $c_0$ la fonction constante
+    $\frac{1}{\sqrt2}$. Montrer, en linéarisant les produits, que la
+    famille $(c_0,c_1,s_1,\dots,c_n,s_n)$ est orthonormée.
+  \item On note $T_n$ l'espace qu'elle engendre. Montrer que la projection
+    orthogonale de $f$ sur $T_n$ est
+    \[
+    S_n(f)=\frac{a_0}{2}+\sum_{k=1}^{n}\bigl(a_k\cos kx+b_k\sin kx\bigr),
+    \]
+    où
+    $a_k=\frac1\pi\int_{-\pi}^{\pi}f(x)\cos kx\,\mathrm{d}x$ et
+    $b_k=\frac1\pi\int_{-\pi}^{\pi}f(x)\sin kx\,\mathrm{d}x$.
+\end{questions}
+
+\partieExo{B}{Le cas de $f(x)=x$}
+\begin{questions}[resume]
+  \item Montrer que $a_k=0$ pour tout $k$ et que
+    $b_k=\dfrac{2(-1)^{k+1}}{k}$.
+  \item Calculer $\norme{f}^{2}$, puis déduire de l'inégalité de Bessel
+    (chapitre 18) que
+    $\displaystyle\sum_{k=1}^{n}\frac{1}{k^{2}}\leqslant\frac{\pi^{2}}{6}$
+    pour tout $n$. Qu'en déduit-on pour
+    $\zeta(2)=\sum_{k\geqslant1}\frac{1}{k^{2}}$ ?
+  \item Montrer que
+    $d(f,T_n)^{2}=\dfrac{2\pi^{2}}{3}-4\displaystyle\sum_{k=1}^{n}\frac{1}{k^{2}}$.
+    On admet que $d(f,T_n)\to0$ (égalité de Parseval, programme de deuxième
+    année) : en déduire $\zeta(2)=\dfrac{\pi^{2}}{6}$. (Le défi du
+    chapitre 19 en donne une preuve complète.)
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[x=1.05cm,y=0.62cm,line cap=round]
+  \draw[otRule,line width=0.3pt] (-3.1416,-3.1416) -- (-3.1416,3.1416) (3.1416,-3.1416) -- (3.1416,3.1416);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-3.5,0) -- (3.6,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-4) -- (0,4.1);
+  \draw[otInk,line width=1.4pt] (-3.1416,-3.1416) -- (3.1416,3.1416);
+  \draw[otNavy!45,line width=0.8pt] plot[domain=-3.1416:3.1416,samples=90] ({\x},{2*sin(deg(\x))});
+  \draw[otNavy!75,line width=0.9pt] plot[domain=-3.1416:3.1416,samples=150]
+    ({\x},{2*(sin(deg(\x))-sin(deg(2*\x))/2+sin(deg(3*\x))/3)});
+  \draw[otGreenDark,line width=1.1pt] plot[domain=-3.1416:3.1416,samples=300]
+    ({\x},{2*(sin(deg(\x))-sin(deg(2*\x))/2+sin(deg(3*\x))/3-sin(deg(4*\x))/4
+      +sin(deg(5*\x))/5-sin(deg(6*\x))/6+sin(deg(7*\x))/7)});
+  \node[font=\tiny,text=otMuted,below] at (3.1416,-0.05) {$\pi$};
+  \node[font=\tiny,text=otMuted,below] at (-3.1416,-0.05) {$-\pi$};
+  \node[font=\scriptsize,text=otInk,anchor=west] at (3.2,3.2) {$f(x)=x$};
+  \node[font=\scriptsize,text=otNavy!60,anchor=south] at (1.57,2.05) {$S_1$};
+  \node[font=\scriptsize,text=otNavy!80,anchor=north] at (2.3,1.2) {$S_3$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (2.85,3.7) {$S_7$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Les projections $S_1$, $S_3$, $S_7$ de $f(x)=x$ : elles épousent
+$f$ de mieux en mieux à l'intérieur, mais retombent à $0$ en $\pm\pi$, avec
+un dépassement persistant près des bords.}
+\end{center}
+
+\partieExo{C}{Convergence ponctuelle et phénomène de Gibbs}
+\begin{questions}[resume]
+  \item Montrer que
+    $S_n(f)\bigl(\frac\pi2\bigr)=2\sum_{j}\frac{(-1)^{j}}{2j+1}$, la somme
+    portant sur les $j$ tels que $2j+1\leqslant n$. En admettant que
+    $S_n(f)\bigl(\frac\pi2\bigr)\to f\bigl(\frac\pi2\bigr)$, retrouver la
+    formule de Leibniz
+    $1-\frac13+\frac15-\frac17+\cdots=\frac\pi4$ (chapitre 19).
+  \item Calculer $S_n(f)(\pi)$ pour tout $n$ et commenter la figure : le
+    maximum de $S_n(f)$ près de $\pi$ ne tend pas vers $\pi$ mais vers
+    environ $3{,}70$ (on l'admet). Pourquoi cela n'est-il pas en
+    contradiction avec $d(f,T_n)\to0$ ?
+\end{questions}
+\end{defi}

@@ -1,0 +1,165 @@
+\begin{ouverture}[trigo]{3}{Exponentielle imaginaire et trigonométrie}{Nombres complexes}{Addition · Euler · Moivre · Puissances}
+\objectif{Passer entre les trois formes d’un complexe.}
+\objectif{Utiliser la relation fonctionnelle de l’exponentielle imaginaire.}
+\objectif{Démontrer une formule d’addition.}
+\objectif{Transformer des expressions avec Euler et Moivre.}
+\prerequis{Cercle trigonométrique, module et arguments.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Les formules d'addition}
+Pour tous réels $a,b$,
+\[\cos(a-b)=\cos a\cos b+\sin a\sin b,\quad
+\cos(a+b)=\cos a\cos b-\sin a\sin b,\]
+\[\sin(a+b)=\sin a\cos b+\cos a\sin b.\]
+\begin{demonstration}[Une formule issue du produit scalaire]
+Les vecteurs unitaires $u=(\cos a,\sin a)$ et $v=(\cos b,\sin b)$ ont un produit scalaire égal à $\cos(a-b)$ par la formule géométrique, et à $\cos a\cos b+\sin a\sin b$ par les coordonnées. L'égalité des expressions prouve la première identité ; remplacer $b$ par $-b$ donne celle du cosinus d'une somme. L'identité du sinus s'obtient en utilisant $\sin t=\cos(\pi/2-t)$.
+\end{demonstration}
+En prenant $a=b$, on retrouve $\cos2a=\cos^2a-\sin^2a=2\cos^2a-1$ et $\sin2a=2\sin a\cos a$.
+\essSection{2}{La notation exponentielle}
+\begin{definition}
+Pour $\theta\in\R$, on note $\mathrm e^{\mathrm i\theta}=\cos\theta+\mathrm i\sin\theta$.
+Si $z\ne0$, sa forme exponentielle est $z=r\mathrm e^{\mathrm i\theta}$ avec $r=|z|>0$.
+\end{definition}
+Les formules d'addition donnent
+$\mathrm e^{\mathrm ia}\mathrm e^{\mathrm ib}=\mathrm e^{\mathrm i(a+b)}$.
+Ainsi le produit multiplie les modules et additionne les arguments ; le quotient divise les modules et soustrait les arguments.
+\figurelivre{e03-produit.pdf}{Multiplier deux complexes non nuls additionne leurs angles et multiplie leurs longueurs. Exemple : arguments $\pi/6$ et $\pi/3$, argument du produit $\pi/2$.}
+\begin{savoirfaire}[Choisir la forme adaptée]
+La forme algébrique convient aux sommes et à l'identification des parties réelle et imaginaire. La forme exponentielle convient aux produits, quotients et puissances.
+Par exemple $(1+\mathrm i)^8=(\sqrt2)^8\mathrm e^{2\mathrm i\pi}=16$.
+Le module s'impose positif ; un signe négatif peut être absorbé en ajoutant $\pi$ à l'argument.
+\end{savoirfaire}
+\essSection{3}{Moivre et Euler}
+\begin{theoreme}[Moivre]
+Pour tout entier $n$ et tout réel $\theta$,
+$(\cos\theta+\mathrm i\sin\theta)^n=\cos(n\theta)+\mathrm i\sin(n\theta)$.
+\end{theoreme}
+La relation fonctionnelle prouve l'identité pour les entiers naturels ; l'inverse donne les entiers négatifs.
+\begin{propriete}[Euler]
+\[\cos\theta=\frac{\mathrm e^{\mathrm i\theta}+\mathrm e^{-\mathrm i\theta}}2,
+\qquad \sin\theta=\frac{\mathrm e^{\mathrm i\theta}-\mathrm e^{-\mathrm i\theta}}{2\mathrm i}.\]
+\end{propriete}
+Ces formules suivent de l'addition et de la soustraction des écritures de $\mathrm e^{\mathrm i\theta}$ et de son conjugué.
+\essSection{4}{Linéariser ou développer}
+\begin{exemple}[Une puissance de cosinus]
+Avec Euler, $\cos^2x=(\mathrm e^{2\mathrm ix}+2+\mathrm e^{-2\mathrm ix})/4=(1+\cos2x)/2$.
+Donc $\int_0^{\pi/2}\cos^2x\,\mathrm dx=\pi/4$.
+Avec Moivre au cube, identifier les parties réelles donne $\cos3x=4\cos^3x-3\cos x$.
+\end{exemple}
+La linéarisation remplace une puissance trigonométrique par une somme d'expressions d'angles multiples. Elle sert à intégrer ou à étudier une suite trigonométrique. À l'inverse, Moivre exprime certains angles multiples comme des polynômes en sinus et cosinus.
+\essSection{5}{Conserver la périodicité}
+Les angles représentent une classe modulo $2\pi$ : $\mathrm e^{\mathrm ia}=\mathrm e^{\mathrm ib}$ si et seulement si $a-b\in2\pi\Z$.
+Pour résoudre une équation d'arguments, ne garder qu'une égalité d'angles ordinaires peut faire perdre des solutions. On précise ensuite l'intervalle d'angles ou les points distincts demandés.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Passages de formes}
+
+\begin{questions}
+\item Mettre $2\mathrm e^{\mathrm i\pi/3}$ sous forme algébrique.
+\item Mettre $-2\mathrm i$ sous forme exponentielle.
+\item Donner une forme exponentielle de $1-\mathrm i$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Produits et quotients}
+$z=2\mathrm e^{\mathrm i\pi/6}$, $w=3\mathrm e^{\mathrm i\pi/3}$.
+\begin{questions}
+\item Calculer $zw$.
+\item Calculer $z/w$.
+\item Donner le module de $w/z$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Puissances}
+
+\begin{questions}
+\item Calculer $(\mathrm e^{\mathrm i\pi/3})^6$.
+\item Calculer $(1+\mathrm i)^8$.
+\item Calculer $(\sqrt3+\mathrm i)^3$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Duplication}
+
+\begin{questions}
+\item Exprimer $\cos2x$ à l’aide de $\cos x$.
+\item Exprimer $\sin2x$.
+\item Calculer $\cos(\pi/6+\pi/3)$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Angle $\pi/12$}
+
+\begin{questions}
+\item Écrire $\pi/12$ comme différence de deux angles remarquables.
+\item Calculer son cosinus.
+\item Calculer son sinus.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Euler au carré}
+
+\begin{questions}
+\item Retrouver $\cos^2x=(1+\cos2x)/2$.
+\item En déduire une primitive de $\cos^2x$.
+\item Calculer son intégrale sur $[0,\pi]$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Moivre au cube}
+
+\begin{questions}
+\item Développer $(\cos x+\mathrm i\sin x)^3$.
+\item Identifier la partie réelle pour retrouver $\cos3x$.
+\item En déduire $\cos^3x$ comme somme de cosinus.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une équation exponentielle}
+
+\begin{questions}
+\item Résoudre $\mathrm e^{2\mathrm ix}=1$ pour $x\in\R$.
+\item Résoudre $\mathrm e^{2\mathrm ix}=-1$.
+\item Donner les solutions de la seconde équation dans $[0,2\pi[$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Linéariser une puissance quatre}
+
+\begin{questions}
+\item À partir de la duplication, linéariser $\cos^4x$.
+\item Donner une primitive.
+\item Calculer $\int_0^{2\pi}\cos^4x\,\mathrm dx$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une suite complexe}
+$z_n=(1+\mathrm i)^n$.
+\begin{questions}
+\item Donner son module et un argument.
+\item Pour quels $n\in\N$ est-il réel ?
+\item Pour quels $n$ est-il imaginaire pur ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une preuve par le produit scalaire}
+
+\begin{questions}
+\item Choisir deux vecteurs unitaires d’angles $a,b$.
+\item Calculer leur produit scalaire de deux façons.
+\item Retrouver le cosinus d’une somme.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une somme oscillante}
+$q=\mathrm e^{\mathrm i\pi/3}$.
+\begin{questions}
+\item Calculer $q^6$ et vérifier $q\ne1$.
+\item Calculer $1+q+\cdots+q^5$.
+\item En déduire les sommes des cosinus et des sinus des six angles $k\pi/3$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

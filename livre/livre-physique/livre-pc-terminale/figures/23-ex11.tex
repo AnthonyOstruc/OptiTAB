@@ -1,0 +1,9 @@
+% Fréquence du son d'une moto qui passe devant un micro (exercice 11, chapitre 23)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=48mm,xmin=0,xmax=6,ymin=250,ymax=345,
+  xtick={0,1,...,6},ytick={250,270,...,350},
+  xlabel={$t$ (s)},ylabel={$f$ (Hz)}]
+\addplot[otNavy,line width=1pt,domain=0:6,samples=150] {300+30*(-(x-3)/sqrt((x-3)^2+0.06))-3*(1-((x-3)^2/((x-3)^2+0.06)))};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Fréquence du son reçu par le micro, mesurée à l'aide d'un logiciel d'analyse spectrale.}

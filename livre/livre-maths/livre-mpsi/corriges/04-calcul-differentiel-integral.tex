@@ -1,0 +1,488 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 4 — Techniques de calcul différentiel et intégral
+%% Résultats vérifiés par verifications/chapitre_04.py.
+
+\corrigesChapitre{4}{Techniques de calcul différentiel et intégral}
+\corrigesSouples
+
+\begin{blocLivre}{cor-4-1}
+\begin{corrige}{1}{Ensembles de définition et transformations}
+\demarche{Lister les contraintes : dénominateurs non nuls, arguments de $\sqrt{\ }$ positifs, de $\ln$ strictement positifs.}
+\begin{questions}
+  \item $\sqrt{x-2}$ : $\res{\intFO{2}{+\infty}}$ ;\quad
+    $\dfrac{1}{x^{2}-1}$ : $\res{\R\setminus\ens{-1,1}}$ ;\quad
+    $\ln(3-x)$ : $\res{\intOO{-\infty}{3}}$ ;\quad
+    $\sqrt{x^{2}-4}$ : $\res{\intOF{-\infty}{-2}\cup\intFO{2}{+\infty}}$.
+  \item Translation verticale de $+1$ ; translation horizontale de $-1$
+    (la courbe « recule ») ; compression horizontale de facteur $\frac12$ ;
+    symétrie par rapport à l'axe des abscisses.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-2}
+\begin{corrige}{2}{Parité, périodicité}
+\demarche{Calculer $f(-x)$ et le comparer à $\pm f(x)$ ; pour une somme, prendre un multiple commun des périodes.}
+\begin{questions}
+  \item $x^{3}-x$ : impaire ; $x^{2}+\cos x$ : paire ; $x+1$ : ni paire ni
+    impaire ($f(1)=2$, $f(-1)=0$) ; $x|x|$ : impaire ; $\mathrm{e}^{-x^{2}}$ : paire.
+  \item $\cos(3x)$ : période $\dfrac{2\pi}{3}$ ; $\sin\bigl(\frac{x}{2}\bigr)$ :
+    période $4\pi$ ; la somme est $\res{4\pi}$-périodique ($4\pi$ est
+    multiple commun : $4\pi=6\times\frac{2\pi}{3}$).
+  \item Par périodicité, on se ramène à $\intFF{-1}{1}$ ; par parité, à
+    $\res{\intFF{0}{1}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-3}
+\begin{corrige}{3}{Calculs de dérivées}
+\demarche{Identifier la structure (produit, quotient, composée) avant de dériver.}
+\begin{questions}
+  \item $3x^{2}-2$ (sur $\R$).
+  \item $(x^{2}+2x)\,\mathrm{e}^{x}$ (produit).
+  \item $\dfrac{\mathrm{e}^{x}(x+1)-\mathrm{e}^{x}}{(x+1)^{2}}=\dfrac{x\,\mathrm{e}^{x}}{(x+1)^{2}}$
+    (sur $\R\setminus\ens{-1}$).
+  \item $\dfrac{2x}{1+x^{2}}$ (composée $\ln u$).
+  \item $-3\sin x\cos^{2}x$ (composée $u^{3}$).
+  \item $\dfrac{x}{\sqrt{x^{2}+1}}$ (composée $\sqrt{u}$).
+  \item $2\bigl(1+\tan^{2}(2x)\bigr)$ (sur les intervalles où $\cos(2x)\neq0$).
+  \item $\ln x+1-1=\ln x$ (sur $\intOO{0}{+\infty}$) — d'où la primitive
+    classique de $\ln$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-4}
+\begin{corrige}{4}{Variations et extremums}
+\demarche{Signe de la dérivée sur chaque intervalle, puis lecture du tableau.}
+\begin{questions}
+  \item $f'(x)=3x^{2}-3=3(x-1)(x+1)$ :
+\begin{center}
+\begin{tableau}
+  \otTab[2.2]{$x$/0.7, $f'(x)$/0.7, $f$/1.3}{$-\infty$,$-1$,$1$,$+\infty$}
+  \tkzTabLine{,+,z,-,z,+,}
+  \tkzTabVar{-/$-\infty$, +/$3$, -/$-1$, +/$+\infty$}
+\end{tableau}
+\end{center}
+    Maximum local $f(-1)=\res{3}$, minimum local $f(1)=\res{-1}$.
+  \item $g'(x)=(1-x)\,\mathrm{e}^{-x}$ : $g$ croît sur $\intOF{-\infty}{1}$,
+    décroît ensuite ; maximum $g(1)=\res{\mathrm{e}^{-1}}$ ; en $+\infty$,
+    croissances comparées : $\lim g=0$.
+  \item Pour $h(x)=x+\dfrac1x$ : $h'(x)=1-\dfrac{1}{x^{2}}$, négative sur
+    $\intOO{0}{1}$, positive ensuite : minimum $h(1)=2$. Donc
+    $x+\dfrac1x\geq2$ pour $x>0$, avec égalité uniquement en $\res{x=1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-5}
+\begin{corrige}{5}{Croissances comparées : limites}
+\demarche{Reconnaître un rapport de croissances comparées, quitte à poser une variable auxiliaire.}
+\begin{questions}
+  \item $\res{0}$ (croissance comparée en $0^{+}$).
+  \item $\res{0}$ : l'exponentielle l'emporte sur $x^{2}$.
+  \item $\res{0}$ : $\ln$ est négligeable devant toute puissance.
+  \item $x^{x}=\mathrm{e}^{x\ln x}$ et $x\ln x\to0$ : la limite vaut $\res{1}$.
+  \item $\res{+\infty}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-6}
+\begin{corrige}{6}{Arcsin, Arccos, Arctan : premiers calculs}
+\demarche{Chercher l'angle dans l'intervalle image : $[-\frac{\pi}{2},\frac{\pi}{2}]$, $[0,\pi]$ ou $]-\frac{\pi}{2},\frac{\pi}{2}[$.}
+\begin{questions}
+  \item $\arcsin\dfrac12=\res{\dfrac{\pi}{6}}$ ;\quad
+    $\arccos\Bigl(-\dfrac{\sqrt2}{2}\Bigr)=\res{\dfrac{3\pi}{4}}$ ;\quad
+    $\arctan1=\res{\dfrac{\pi}{4}}$ ;\quad $\arctan\sqrt3=\res{\dfrac{\pi}{3}}$.
+  \item $\sin\dfrac{5\pi}{6}=\dfrac12$, donc
+    $\arcsin\Bigl(\sin\dfrac{5\pi}{6}\Bigr)=\res{\dfrac{\pi}{6}}$
+    (et non $\frac{5\pi}{6}$ !) ; de même
+    $\arccos\Bigl(\cos\Bigl(-\dfrac{\pi}{3}\Bigr)\Bigr)=\arccos\dfrac12=\res{\dfrac{\pi}{3}}$.
+  \item $\bigl(\arctan(2x)\bigr)'=\dfrac{2}{1+4x^{2}}$ sur $\R$ ;
+    $\bigl(\arcsin(x^{2})\bigr)'=\dfrac{2x}{\sqrt{1-x^{4}}}$ sur $\intOO{-1}{1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-7}
+\begin{corrige}{7}{Primitives usuelles}
+\demarche{Chaque réponse se contrôle en dérivant.}
+\begin{questions}
+  \item $\dfrac{x^{4}}{4}-\dfrac1x$ (sur $\intOO{0}{+\infty}$ ou $\intOO{-\infty}{0}$).
+  \item $\dfrac{\mathrm{e}^{2x}}{2}$ (sur $\R$).
+  \item $\dfrac{\sin(3x)}{3}$ (sur $\R$).
+  \item $\dfrac12\ln|2x+1|$ (sur un intervalle évitant $-\frac12$).
+  \item $\dfrac12\ln(x^{2}+1)$ — forme $\dfrac{u'}{u}$ (sur $\R$).
+  \item $\dfrac{\sin^{2}x}{2}$ — forme $u'u$ (sur $\R$).
+  \item $\dfrac12\arctan(2x)$ (sur $\R$).
+  \item $\arcsin x$ (sur $\intOO{-1}{1}$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-8}
+\begin{corrige}{8}{Équations homogènes du premier ordre}
+\demarche{Les solutions de $y'+ay=0$ sont les $C\,\mathrm{e}^{-ax}$ ; la condition initiale fixe $C$.}
+\begin{questions}
+  \item Solutions : $y=C\,\mathrm{e}^{-3x}$, $C\in\R$ ; la condition $y(0)=2$
+    donne $\res{y=2\,\mathrm{e}^{-3x}}$.
+  \item Solutions de $y'-2y=0$ : $C\,\mathrm{e}^{2x}$ ; d'où $\res{y=-\mathrm{e}^{2x}}$.
+  \item Si $y(x_0)=0$, alors $C\,\mathrm{e}^{-ax_0}=0$ donc $C=0$ : la solution
+    est la fonction nulle (c'est l'unicité du problème de Cauchy).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-9}
+\begin{corrige}{9}{Deux études de fonctions}
+\demarche{Tableau de variations, puis lecture des bornes atteintes.}
+\begin{questions}
+  \item $f$ est impaire, et $f'(x)=\dfrac{1-x^{2}}{(1+x^{2})^{2}}$ :
+\begin{center}
+\begin{tableau}
+  \otTab[2.2]{$x$/0.7, $f'(x)$/0.7, $f$/1.3}{$-\infty$,$-1$,$1$,$+\infty$}
+  \tkzTabLine{,-,z,+,z,-,}
+  \tkzTabVar{+/$0$, -/$-\frac12$, +/$\frac12$, -/$0$}
+\end{tableau}
+\end{center}
+    Donc $f$ est bornée : $\res{\max f=f(1)=\tfrac12}$ et
+    $\res{\min f=f(-1)=-\tfrac12}$.
+  \item $g'(x)=\dfrac{1-\ln x}{x^{2}}$ : $g$ croît sur $\intOF{0}{\mathrm{e}}$,
+    décroît ensuite ; maximum $g(\mathrm{e})=\dfrac{1}{\mathrm{e}}$ ;
+    $\lim_{0^{+}}g=-\infty$, $\lim_{+\infty}g=0$. Comme le maximum est
+    atteint \emph{uniquement} en $\mathrm{e}$ : $g(\mathrm{e})>g(\pi)$, soit
+    $\dfrac{1}{\mathrm{e}}>\dfrac{\ln\pi}{\pi}$, d'où $\pi>\mathrm{e}\ln\pi=\ln(\pi^{\mathrm{e}})$,
+    et en composant par l'exponentielle (croissante) :
+    $\res{\mathrm{e}^{\pi}>\pi^{\mathrm{e}}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-10}
+\begin{corrige}{10}{Des inégalités par étude de fonctions}
+\demarche{Étudier la différence des deux membres : son minimum donne l'inégalité.}
+\begin{questions}
+  \item Pour $h(x)=\mathrm{e}^{x}-1-x$ : $h'(x)=\mathrm{e}^{x}-1$, du signe de $x$ ;
+    $h$ décroît puis croît, avec $h(0)=0$ : $h\geq0$ partout, nulle
+    seulement en $0$.
+  \item Pour $x>-1$, posons $u=\ln(1+x)$ : la question 1 donne
+    $\mathrm{e}^{u}\geq1+u$, c'est-à-dire $1+x\geq1+\ln(1+x)$, d'où
+    $\ln(1+x)\leq x$. (Ou : étude directe de $x\mapsto x-\ln(1+x)$.)
+  \item Pour $k(x)=\ln(1+x)-x+\dfrac{x^{2}}{2}$ :
+    $k'(x)=\dfrac{1}{1+x}-1+x=\dfrac{x^{2}}{1+x}\geq0$ sur $\intFO{0}{+\infty}$,
+    et $k(0)=0$ : donc $k\geq0$, ce qui est l'inégalité voulue.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-11}
+\begin{corrige}{11}{Dérivée d'une fonction réciproque}
+\demarche{La pente de la réciproque est l'inverse de la pente, lue au point symétrique.}
+\begin{questions}
+  \item $f'(x)=1+\mathrm{e}^{x}>0$ : $f$ est strictement croissante et continue,
+    avec $\lim_{-\infty}f=-\infty$ et $\lim_{+\infty}f=+\infty$ : $f$ est
+    une bijection de $\R$ sur $\R$.
+  \item $f'$ ne s'annule pas, donc $f^{-1}$ est dérivable. Comme $f(0)=1$ :
+    \[
+      \bigl(f^{-1}\bigr)'(1)=\frac{1}{f'(0)}=\frac{1}{1+\mathrm{e}^{0}}=\res{\frac12}.
+    \]
+  \item $f^{-1}(1)=0$, donc la tangente est
+    $\res{y=\dfrac{x-1}{2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-12}
+\begin{corrige}{12}{Identités avec Arcsin, Arccos, Arctan}
+\demarche{Soit on compose des formules de trigonométrie, soit on dérive : une fonction de dérivée nulle sur un intervalle est constante.}
+\begin{questions}
+  \item Posons $t=\arcsin x\in\bigl[-\frac{\pi}{2},\frac{\pi}{2}\bigr]$ :
+    $\cos t\geq0$, donc $\cos t=\sqrt{1-\sin^{2}t}=\sqrt{1-x^{2}}$.
+  \item La fonction $x\mapsto\arcsin x+\arccos x$ est continue sur
+    $\intFF{-1}{1}$, dérivable sur $\intOO{-1}{1}$ de dérivée
+    $\dfrac{1}{\sqrt{1-x^{2}}}-\dfrac{1}{\sqrt{1-x^{2}}}=0$ : elle est
+    constante, égale à sa valeur en $0$ :
+    $\arcsin0+\arccos0=\dfrac{\pi}{2}$.
+  \item Sur $\intOO{0}{+\infty}$, la dérivée de
+    $x\mapsto\arctan x+\arctan\dfrac1x$ vaut
+    $\dfrac{1}{1+x^{2}}+\dfrac{-1/x^{2}}{1+1/x^{2}}=\dfrac{1}{1+x^{2}}-\dfrac{1}{x^{2}+1}=0$ :
+    la fonction est constante, égale à sa valeur en $1$, soit
+    $2\arctan1=\dfrac{\pi}{2}$. Par imparité, elle vaut $-\dfrac{\pi}{2}$
+    pour $x<0$.
+  \item Posons $t=\arctan x$ : $\sin(2t)=2\sin t\cos t=2\tan t\cos^{2}t
+    =\dfrac{2\tan t}{1+\tan^{2}t}=\dfrac{2x}{1+x^{2}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-13}
+\begin{corrige}{13}{Fonctions hyperboliques}
+\demarche{Revenir aux exponentielles : toutes les identités s'y ramènent.}
+\begin{questions}
+  \item $\operatorname{ch}^{2}x-\operatorname{sh}^{2}x
+    =\dfrac{(\mathrm{e}^{x}+\mathrm{e}^{-x})^{2}-(\mathrm{e}^{x}-\mathrm{e}^{-x})^{2}}{4}
+    =\dfrac{4\,\mathrm{e}^{x}\mathrm{e}^{-x}}{4}=1$.
+  \item En développant
+    $\operatorname{sh}a\operatorname{ch}b+\operatorname{ch}a\operatorname{sh}b
+    =\dfrac{(\mathrm{e}^{a}-\mathrm{e}^{-a})(\mathrm{e}^{b}+\mathrm{e}^{-b})
+    +(\mathrm{e}^{a}+\mathrm{e}^{-a})(\mathrm{e}^{b}-\mathrm{e}^{-b})}{4}
+    =\dfrac{2\,\mathrm{e}^{a+b}-2\,\mathrm{e}^{-(a+b)}}{4}=\operatorname{sh}(a+b)$.
+  \item $\operatorname{th}'=\dfrac{\operatorname{ch}^{2}-\operatorname{sh}^{2}}{\operatorname{ch}^{2}}
+    =1-\operatorname{th}^{2}=\dfrac{1}{\operatorname{ch}^{2}}>0$ :
+    $\operatorname{th}$ est strictement croissante, impaire, avec
+    $\lim_{\pm\infty}\operatorname{th}=\pm1$.
+  \item $\operatorname{ch}x=2$ équivaut à $\mathrm{e}^{x}+\mathrm{e}^{-x}=4$, soit, en
+    posant $X=\mathrm{e}^{x}>0$ : $X^{2}-4X+1=0$, d'où $X=2\pm\sqrt3$. Les deux
+    valeurs sont positives et inverses l'une de l'autre :
+    $\res{x=\pm\ln\bigl(2+\sqrt3\bigr)}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-14}
+\begin{corrige}{14}{Primitives : formes composées}
+\demarche{Repérer $u$ et $u'$ ; vérifier ensuite en dérivant.}
+\begin{questions}
+  \item $\dfrac{\mathrm{e}^{x^{2}}}{2}$ — forme $u'\mathrm{e}^{u}$ (sur $\R$).
+  \item $\tan x=\dfrac{\sin x}{\cos x}=-\dfrac{u'}{u}$ avec $u=\cos$ :
+    primitive $-\ln|\cos x|$ (sur un intervalle où $\cos\neq0$).
+  \item $\dfrac{1/x}{\ln x}$ : primitive $\ln|\ln x|$ (sur $\intOO{1}{+\infty}$
+    par exemple).
+  \item $\dfrac{\sin^{4}x}{4}$ — forme $u'u^{3}$.
+  \item $\sqrt{1+x^{2}}$ — forme $\dfrac{u'}{2\sqrt{u}}$ (sur $\R$).
+  \item $\dfrac{\mathrm{e}^{x}}{1+(\mathrm{e}^{x})^{2}}$ — forme $\dfrac{u'}{1+u^{2}}$ :
+    primitive $\arctan(\mathrm{e}^{x})$ (sur $\R$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-15}
+\begin{corrige}{15}{Intégration par parties}
+\demarche{Dériver le polynôme, primitiver l'exponentielle ou le sinus ; pour $\ln$, dériver $\ln$.}
+\begin{questions}
+  \item $\displaystyle\int_{0}^{1}x\,\mathrm{e}^{x}\mathrm{d}x
+    =\bigl[x\,\mathrm{e}^{x}\bigr]_{0}^{1}-\int_{0}^{1}\mathrm{e}^{x}\mathrm{d}x
+    =\mathrm{e}-(\mathrm{e}-1)=\res{1}$.
+  \item $\displaystyle\int_{1}^{\mathrm{e}}\ln t\,\mathrm{d}t
+    =\bigl[t\ln t\bigr]_{1}^{\mathrm{e}}-\int_{1}^{\mathrm{e}}1\,\mathrm{d}t
+    =\mathrm{e}-(\mathrm{e}-1)=\res{1}$.
+  \item $\displaystyle\int_{0}^{\pi/2}t\sin t\,\mathrm{d}t
+    =\bigl[-t\cos t\bigr]_{0}^{\pi/2}+\int_{0}^{\pi/2}\cos t\,\mathrm{d}t
+    =0+1=\res{1}$.
+  \item Deux intégrations par parties successives :
+    $\displaystyle\int_{0}^{1}x^{2}\mathrm{e}^{x}\mathrm{d}x
+    =\bigl[x^{2}\mathrm{e}^{x}\bigr]_{0}^{1}-2\int_{0}^{1}x\,\mathrm{e}^{x}\mathrm{d}x
+    =\mathrm{e}-2=\res{\mathrm{e}-2}$ (avec la question 1).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-16}
+\begin{corrige}{16}{Changements de variable}
+\demarche{Changer la variable, la différentielle et les bornes — les trois en même temps.}
+\begin{questions}
+  \item Avec $u=\sqrt{x}$, $x=u^{2}$, $\mathrm{d}x=2u\,\mathrm{d}u$ :
+    \[
+      \int_{0}^{1}\frac{\mathrm{d}x}{1+\sqrt{x}}
+      =\int_{0}^{1}\frac{2u}{1+u}\,\mathrm{d}u
+      =2\int_{0}^{1}\Bigl(1-\frac{1}{1+u}\Bigr)\mathrm{d}u
+      =\res{2-2\ln2}.
+    \]
+  \item Avec $u=\mathrm{e}^{t}$, $\mathrm{d}u=u\,\mathrm{d}t$ :
+    \[
+      \int_{0}^{1}\frac{\mathrm{d}t}{\mathrm{e}^{t}+1}
+      =\int_{1}^{\mathrm{e}}\frac{\mathrm{d}u}{u(u+1)}
+      =\int_{1}^{\mathrm{e}}\Bigl(\frac1u-\frac{1}{u+1}\Bigr)\mathrm{d}u
+      =\Bigl[\ln\frac{u}{u+1}\Bigr]_{1}^{\mathrm{e}}
+      =\res{1+\ln2-\ln(\mathrm{e}+1)}.
+    \]
+  \item Avec $u=\sin t$, $\mathrm{d}u=\cos t\,\mathrm{d}t$ et
+    $\cos^{2}t=1-u^{2}$ :
+    \[
+      \int_{0}^{\pi/2}\cos^{3}t\,\mathrm{d}t=\int_{0}^{1}(1-u^{2})\,\mathrm{d}u
+      =1-\frac13=\res{\frac23}.
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-17}
+\begin{corrige}{17}{Premier ordre avec second membre}
+\demarche{Solution particulière + solutions de l'homogène ; la condition initiale vient en dernier.}
+\begin{questions}
+  \item Homogène : $C\,\mathrm{e}^{-2x}$. On cherche $y_p=\mu\,\mathrm{e}^{3x}$ :
+    $3\mu+2\mu=1$ donne $\mu=\dfrac15$. Solutions :
+    $y=\dfrac{\mathrm{e}^{3x}}{5}+C\,\mathrm{e}^{-2x}$ ; la condition $y(0)=0$ donne
+    $C=-\dfrac15$ :
+    $\res{y=\dfrac{\mathrm{e}^{3x}-\mathrm{e}^{-2x}}{5}}$.
+  \item $y_p'=-\alpha\sin x+\beta\cos x$, et
+    $y_p'-y_p=(\beta-\alpha)\cos x-(\alpha+\beta)\sin x=\cos x$ impose
+    $\beta-\alpha=1$ et $\alpha+\beta=0$ : $\alpha=-\dfrac12$,
+    $\beta=\dfrac12$, d'où $y_p=\dfrac{\sin x-\cos x}{2}$ et les solutions
+    $\res{y=\dfrac{\sin x-\cos x}{2}+C\,\mathrm{e}^{x}}$.
+  \item Pour le second membre $1$ : $y_{p_1}=1$. Pour $\mathrm{e}^{-x}$, qui
+    résout l'homogène, on cherche $y_{p_2}=\mu x\,\mathrm{e}^{-x}$ :
+    $y_{p_2}'+y_{p_2}=\mu\,\mathrm{e}^{-x}$, donc $\mu=1$. Par superposition :
+    $\res{y=1+x\,\mathrm{e}^{-x}+C\,\mathrm{e}^{-x}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-18}
+\begin{corrige}{18}{Variation de la constante}
+\demarche{Faire varier la constante de l'homogène : il ne reste qu'une primitive à calculer.}
+\begin{questions}
+  \item Homogène : $y'=-\dfrac{y}{x}$, de solutions $\dfrac{C}{x}$. On pose
+    $y=\dfrac{C(x)}{x}$ : l'équation donne $\dfrac{C'(x)}{x}=3x$, soit
+    $C'(x)=3x^{2}$, d'où $C(x)=x^{3}$ et $y_p=x^{2}$. Solutions sur
+    $\intOO{0}{+\infty}$ : $y=x^{2}+\dfrac{C}{x}$ ; la condition $y(1)=2$
+    donne $C=1$ : $\res{y=x^{2}+\dfrac1x}$.
+  \item Homogène : $C\,\mathrm{e}^{x^{2}}$ (car $-\!\int(-2x)\,\mathrm{d}x=x^{2}$). En posant
+    $y=C(x)\,\mathrm{e}^{x^{2}}$ : $C'(x)\,\mathrm{e}^{x^{2}}=\mathrm{e}^{x^{2}}$, donc
+    $C'(x)=1$ et $C(x)=x$. Solutions :
+    $\res{y=(x+C)\,\mathrm{e}^{x^{2}},\ C\in\R}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-19}
+\begin{corrige}{19}{Second ordre à coefficients constants}
+\demarche{Équation caractéristique, forme des solutions selon le discriminant, second membre à la fin.}
+\begin{questions}
+  \item $y''+\omega^{2}y=0$ : racines $\pm\mathrm{i}\omega$, solutions
+    $A\cos(\omega x)+B\sin(\omega x)$.\\
+    $y''-3y'+2y=0$ : racines $1$ et $2$, solutions $A\,\mathrm{e}^{x}+B\,\mathrm{e}^{2x}$.\\
+    $y''+4y'+4y=0$ : racine double $-2$, solutions $(A+Bx)\,\mathrm{e}^{-2x}$.\\
+    $y''+2y'+5y=0$ : racines $-1\pm2\mathrm{i}$, solutions
+    $\mathrm{e}^{-x}\bigl(A\cos(2x)+B\sin(2x)\bigr)$.
+  \item On cherche $y_p=\mu\cos(2x)$ (par parité du second membre) :
+    $-4\mu+\mu=1$ donne $\mu=-\dfrac13$. Solutions :
+    $\res{y=-\dfrac{\cos(2x)}{3}+A\cos x+B\sin x}$.
+  \item $\lambda=1$ est racine simple de $r^{2}-3r+2$ : on pose
+    $y_p=\mu x\,\mathrm{e}^{x}$. Alors
+    $y_p''-3y_p'+2y_p=\mu\,\mathrm{e}^{x}\bigl((2+x)-3(1+x)+2x\bigr)=-\mu\,\mathrm{e}^{x}$,
+    d'où $\mu=-1$ : $\res{y=-x\,\mathrm{e}^{x}+A\,\mathrm{e}^{x}+B\,\mathrm{e}^{2x}}$.
+  \item $y=A\cos(\omega x)+B\sin(\omega x)$ avec $y(0)=A=y_0$ et
+    $y'(0)=B\omega=v_0$ :
+    $y=y_0\cos(\omega x)+\dfrac{v_0}{\omega}\sin(\omega x)$, c'est-à-dire
+    $A\cos(\omega x-\varphi)$ avec $A=\sqrt{y_0^{2}+(v_0/\omega)^{2}}$ —
+    l'oscillateur harmonique, d'amplitude $A$ et de phase $\varphi$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-20}
+\begin{corrige}{20}{La formule de Machin}
+\demarche{Comparer des tangentes ne suffit pas : il faut aussi encadrer les angles.}
+\begin{questions}
+  \item Posons $S=\arctan\dfrac12+\arctan\dfrac13$. Chaque terme est dans
+    $\bigl]0,\frac{\pi}{4}\bigr]$, donc $S\in\bigl]0,\frac{\pi}{2}\bigr[$, et
+    \[
+      \tan S=\frac{\frac12+\frac13}{1-\frac12\cdot\frac13}=\frac{5/6}{5/6}=1 :
+    \]
+    le seul angle de $\bigl]0,\frac{\pi}{2}\bigr[$ de tangente $1$ est
+    $\res{\dfrac{\pi}{4}}$.
+  \item $\tan(2a)=\dfrac{2/5}{1-1/25}=\res{\dfrac{5}{12}}$, puis
+    $\tan(4a)=\dfrac{2\cdot5/12}{1-25/144}=\res{\dfrac{120}{119}}$.
+  \item Comme $\tan a=\dfrac15<\tan\dfrac{\pi}{8}$, on a $a<\dfrac{\pi}{8}$
+    et $4a\in\bigl]0,\frac{\pi}{2}\bigr[$, donc
+    $4a-\dfrac{\pi}{4}\in\bigl]-\frac{\pi}{4},\frac{\pi}{4}\bigr[$. Sa tangente vaut
+    \[
+      \frac{\frac{120}{119}-1}{1+\frac{120}{119}}=\frac{1/119}{239/119}=\frac{1}{239},
+    \]
+    donc $4a-\dfrac{\pi}{4}=\arctan\dfrac{1}{239}$, ce qui est la formule de
+    Machin.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-21}
+\begin{corrige}{21}{Un encadrement de Arctan}
+\demarche{Encore des différences à étudier : leurs dérivées sont des fractions rationnelles simples.}
+\begin{questions}
+  \item Pour $u(x)=x-\arctan x$ : $u'(x)=1-\dfrac{1}{1+x^{2}}
+    =\dfrac{x^{2}}{1+x^{2}}\geq0$ et $u(0)=0$ : $u\geq0$ sur $\intFO{0}{+\infty}$.
+  \item Pour $v(x)=\arctan x-x+\dfrac{x^{3}}{3}$ :
+    $v'(x)=\dfrac{1}{1+x^{2}}-1+x^{2}=\dfrac{x^{4}}{1+x^{2}}\geq0$ et
+    $v(0)=0$ : $v\geq0$ sur $\intFO{0}{+\infty}$.
+  \item Pour $x>0$ : $1-\dfrac{x^{2}}{3}\leq\dfrac{\arctan x}{x}\leq1$, et le
+    théorème d'encadrement donne
+    $\res{\displaystyle\lim_{x\to0}\frac{\arctan x}{x}=1}$ (les deux membres
+    étant pairs, la limite vaut aussi à gauche).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-22}
+\begin{corrige}{22}{Les intégrales de Wallis}
+\demarche{Une intégration par parties bien choisie produit une relation de récurrence.}
+\begin{questions}
+  \item $I_0=\dfrac{\pi}{2}$ et $I_1=\bigl[-\cos t\bigr]_0^{\pi/2}=1$.
+  \item Sur $\bigl[0,\frac{\pi}{2}\bigr]$ : $0\leq\sin t\leq1$, donc
+    $\sin^{n+1}t\leq\sin^{n}t$, d'où $I_{n+1}\leq I_n$ ; et $\sin^{n}t>0$
+    sur $\bigl]0,\frac{\pi}{2}\bigr[$ donne $I_n>0$.
+  \item On intègre par parties $I_{n+2}=\displaystyle\int_0^{\pi/2}\sin t\cdot\sin^{n+1}t\,\mathrm{d}t$,
+    en primitivant $\sin t$ :
+    \[
+      I_{n+2}=\bigl[-\cos t\sin^{n+1}t\bigr]_0^{\pi/2}
+      +(n+1)\int_0^{\pi/2}\cos^{2}t\,\sin^{n}t\,\mathrm{d}t
+      =(n+1)\,(I_n-I_{n+2}),
+    \]
+    car $\cos^{2}t=1-\sin^{2}t$. D'où $(n+2)\,I_{n+2}=(n+1)\,I_n$.
+  \item $I_2=\dfrac12\cdot\dfrac{\pi}{2}=\res{\dfrac{\pi}{4}}$ ;\quad
+    $I_3=\dfrac23\,I_1=\res{\dfrac23}$ ;\quad
+    $I_4=\dfrac34\,I_2=\res{\dfrac{3\pi}{16}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-23}
+\begin{corrige}{23}{Refroidissement de Newton}
+\demarche{Une équation du premier ordre à coefficients constants, pilotée par l'écart à la température ambiante.}
+\begin{questions}
+  \item L'équation s'écrit $T'+kT=20k$ ; la constante $T=20$ est solution
+    particulière, donc $T(t)=20+C\,\mathrm{e}^{-kt}$ ; avec $T(0)=90$ :
+    $\res{T(t)=20+70\,\mathrm{e}^{-kt}}$.
+  \item $T(10)=60$ donne $\mathrm{e}^{-10k}=\dfrac{40}{70}=\dfrac47$, d'où
+    $\res{k=\dfrac{1}{10}\ln\dfrac74}$.
+  \item $T(t)=30$ équivaut à $\mathrm{e}^{-kt}=\dfrac{10}{70}=\dfrac17$, d'où
+    $t=\dfrac{\ln7}{k}=\res{\dfrac{10\ln7}{\ln(7/4)}\approx35\ \text{min}}$
+    (précisément $34{,}8$ min).
+  \item $T(t)-20=70\,\mathrm{e}^{-kt}>0$ pour tout $t$ : la température reste
+    strictement supérieure à l'ambiante, dont elle s'approche
+    asymptotiquement.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-4-24}
+\begin{corrige}{24}{Équations fonctionnelles et équations différentielles}
+\demarche{Transformer l'équation fonctionnelle en équation différentielle, puis invoquer l'unicité de Cauchy.}
+\begin{questions}
+  \item Avec $x=y=0$ : $f(0)=f(0)^{2}$, donc $f(0)\in\ens{0,1}$. Si
+    $f(0)=0$, alors $f(x)=f(x)f(0)=0$ pour tout $x$ : exclu. Donc $f(0)=1$.
+    Si $f(a)=0$ pour un $a$, alors $f(x)=f(x-a)f(a)=0$ pour tout $x$ :
+    exclu, donc $f$ ne s'annule pas. Enfin
+    $f(x)=f\bigl(\frac{x}{2}\bigr)^{2}>0$.
+  \item À $x$ fixé, dérivons $y\mapsto f(x+y)=f(x)f(y)$ :
+    $f'(x+y)=f(x)f'(y)$ ; en $y=0$ : $f'(x)=f'(0)\,f(x)$.
+  \item En posant $c=f'(0)$ : $f$ résout $y'=cy$ avec $y(0)=1$, donc
+    $f(x)=\mathrm{e}^{cx}$. Réciproquement, toute fonction
+    $x\mapsto\mathrm{e}^{cx}$ convient : les solutions sont exactement les
+    $\res{f:x\mapsto\mathrm{e}^{cx},\ c\in\R}$.
+  \item Équation caractéristique $r^{2}-1=0$ : solutions
+    $y=A\,\mathrm{e}^{x}+B\,\mathrm{e}^{-x}$.
+  \item $y(0)=A+B=1$ et $y'(0)=A-B=0$ donnent $A=B=\dfrac12$ :
+    l'unique solution est
+    $\res{y=\dfrac{\mathrm{e}^{x}+\mathrm{e}^{-x}}{2}=\operatorname{ch}x}$.
+  \item De même, $A+B=0$ et $A-B=1$ donnent $A=-B=\dfrac12$ :
+    $\res{y=\operatorname{sh}x}$. Les fonctions $\operatorname{ch}$ et
+    $\operatorname{sh}$ sont ainsi \emph{caractérisées} par l'équation
+    $y''=y$ et leurs conditions initiales.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-04}

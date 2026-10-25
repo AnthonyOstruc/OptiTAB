@@ -1,0 +1,83 @@
+\editionPage[\pdfbookmark[0]{Démonstrations}{bm-preuves-debut-parent}]{preuves-debut}{Comprendre les preuves}{Une identité et une parité}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-debut}
+
+\begin{demonstration}[Différence de deux carrés]
+Par double distributivité, $(a-b)(a+b)=a^2+ab-ab-b^2=a^2-b^2$.
+Les deux termes opposés s’annulent. L’égalité permet aussi bien de
+développer le produit que de factoriser la différence.
+\end{demonstration}
+\begin{demonstration}[Le carré d’un entier impair est impair]
+Un entier impair s’écrit $2n+1$ avec n entier. Son carré vaut
+$(2n+1)^2=4n^2+4n+1=2(2n^2+2n)+1$. Le nombre entre parenthèses est entier :
+on obtient bien un multiple de 2 augmenté de 1.
+\end{demonstration}
+\editionRetenir{Une écriture générale prouve ce que quelques essais ne font que suggérer.}
+
+\end{blocEdition}
+\editionPage{preuves-2}{Comprendre les preuves}{Pythagore par les aires}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-2}
+
+Considérons quatre copies d’un triangle rectangle de côtés perpendiculaires
+a et b et d’hypoténuse c, disposées dans un carré de côté $a+b$.
+\begin{center}\begin{tikzpicture}[scale=.65,font=\small]
+\draw[geoTrait](0,0)rectangle(5,5);
+\fill[otGreenTint](2,0)--(5,2)--(3,5)--(0,3)--cycle;
+\draw[geoTrait](2,0)--(5,2)--(3,5)--(0,3)--cycle;
+\node[below]at(1,0){$a$};\node[below]at(3.5,0){$b$};
+\node[right]at(5,1){$a$};\node[right]at(5,3.5){$b$};
+\node at(2.5,2.5){aire $c^2$};
+\end{tikzpicture}\end{center}
+Chaque côté du quadrilatère central est une hypoténuse de longueur c.
+Ses angles sont droits : les deux angles aigus voisins des triangles
+ont une somme de 90 degrés, et complètent un angle plat avec l’angle central.
+Le quadrilatère est donc un carré.\par\medskip
+L’aire du grand carré vaut $(a+b)^2$. Elle est aussi la somme de l’aire
+du carré central et de celles des quatre triangles :
+\[
+(a+b)^2=c^2+4\times\frac{ab}{2}=c^2+2ab.
+\]
+En développant puis en soustrayant $2ab$, on obtient
+$\res{a^2+b^2=c^2}$.
+
+\end{blocEdition}
+\editionPage{preuves-3}{Comprendre les preuves}{Angles et triangles semblables}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-3}
+
+\begin{demonstration}[La somme des angles d’un triangle]
+Par le sommet C du triangle ABC, tracer la parallèle à AB.
+Les angles alternes-internes y reproduisent les angles A et B,
+de part et d’autre de l’angle C. Les trois forment un angle plat :
+leur somme vaut $180^\circ$.
+\end{demonstration}
+\begin{center}\begin{tikzpicture}[scale=.75,font=\small]
+\draw[geoTrait](0,0)node[below]{$A$}--(5,0)node[below]{$B$}--(2,3)node[above]{$C$}--cycle;
+\draw[geoAide](-1,3)--(6,3);
+\node at(1.1,2.7){$\alpha$};\node at(2,2.3){$\gamma$};\node at(3.1,2.7){$\beta$};
+\end{tikzpicture}\end{center}
+\begin{demonstration}[Deux angles égaux suffisent]
+Dans deux triangles, si deux angles sont égaux deux à deux,
+le troisième est chaque fois $180^\circ$ moins la même somme.
+Il est donc égal aussi : les triangles sont semblables.
+\end{demonstration}
+
+\end{blocEdition}
+\editionPage{preuves-4}{Comprendre les preuves}{Facteurs d’aire et de volume}{Les arguments ci-dessous éclairent des propriétés utilisées dans le livre.}
+\begin{blocEdition}{preuves-4}
+
+\begin{demonstration}[Agrandir un rectangle]
+Un rectangle de côtés L et $\ell$ devient un rectangle de côtés
+$kL$ et $k\ell$ lorsque $k>0$. Son aire devient
+$(kL)(k\ell)=k^2L\ell$. Une figure découpée en triangles suit le même
+principe, en multipliant base et hauteur par k. Pour une homothétie
+de rapport négatif, la longueur est multipliée par $|k|$, et
+$|k|^2=k^2$.
+\end{demonstration}
+\begin{demonstration}[Agrandir un pavé]
+Le volume $L\ell h$ devient $(|k|L)(|k|\ell)(|k|h)=|k|^3L\ell h$.
+Ce calcul explique pourquoi une maquette au dixième n’a qu’un millième
+du volume initial. Les formules des autres solides usuels vérifient
+le même facteur lorsque toutes leurs longueurs subissent le même changement.
+\end{demonstration}
+\editionRetenir{Le nombre de facteurs de longueur explique la puissance : 1 pour une longueur, 2 pour une aire, 3 pour un volume.}
+
+\end{blocEdition}

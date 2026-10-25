@@ -1,0 +1,23 @@
+% Quantités de matière au cours du titrage d'une solution de diiode par le thiosulfate (exercice 15, chapitre 5)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=95mm,height=58mm,xmin=0,xmax=22,ymin=0,ymax=0.45,
+  xtick={0,2,...,22},ytick={0,0.05,...,0.45},minor x tick num=1,minor y tick num=0,
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=2},
+  scaled y ticks=false,xlabel={$V$ versé (mL)},ylabel={$n$ (mmol)}]
+\addplot[otNavy,line width=1.1pt,domain=0:22,samples=45] {max(0.4-0.025*x,0)};
+\addplot[otGreenDark,line width=1.1pt,domain=0:22,samples=45] {min(0.025*x,0.4)};
+\addplot[otOrange!85!black,line width=1.1pt,domain=0:22,samples=45] {max(0.05*(x-16),0)};
+\node[pcLegendeG,text=otNavy,fill=white,inner sep=1pt] at (axis cs:3,0.37) {a};
+\node[pcLegendeG,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:3,0.035) {b};
+\node[pcLegendeG,text=otOrange!75!black,fill=white,inner sep=1pt] at (axis cs:20.6,0.18) {c};
+\solution{
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:16,0) -- (axis cs:16,0.44);
+  \node[pcLegende,anchor=south,text=otInk] at (axis cs:16,0.44) {$V_\mathrm{E}=\qty{16,0}{mL}$};
+  \node[pcLegende,anchor=west,text=otNavy,fill=white,inner sep=1pt] at (axis cs:4.2,0.33) {a : $\ce{I2}$, consommé};
+  \node[pcLegende,anchor=west,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:8.5,0.16) {b : $\ce{S4O6^{2-}}$, formé};
+  \node[pcLegende,anchor=east,text=otOrange!75!black,fill=white,inner sep=1pt] at (axis cs:19.6,0.27) {c : $\ce{S2O3^{2-}}$ en excès};
+  \fill[otNavy] (axis cs:0,0.4) circle (1.8pt);
+  \node[pcLegende,anchor=west,text=otNavy] at (axis cs:0.3,0.415) {$n_0(\ce{I2})=\qty{0,400}{mmol}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Quantités de trois espèces du système en fonction du volume de solution de thiosulfate versé.}

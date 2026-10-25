@@ -1,0 +1,104 @@
+\clearpage\pagestyle{otMain}\fontsize{11}{15}\selectfont
+\corrigesChapitre{14}{Probabilités et arbres}
+\begin{blocLivre}{cor-14-1}
+\begin{corrige}{1}{Un dé équilibré}
+\demarche{Décrire les issues favorables dans le modèle équiprobable.}
+L’univers est $\{1,2,3,4,5,6\}$ et chaque issue a une probabilité $1/6$. Les pairs sont 2, 4 et 6 : $P(\text{pair})=3/6=\res{1/2}$. Les issues au moins égales à 5 sont 5 et 6 : la probabilité vaut $2/6=\res{1/3}$. L’équiprobabilité vient de l’hypothèse du dé équilibré.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-2}
+\begin{corrige}{2}{L’événement contraire}
+\demarche{Utiliser le complémentaire dans le même univers.}
+Les deux événements sont contraires, donc leurs probabilités somment à 1. La réponse est $1-0{,}96=\res{0{,}04=4\,\%}$. Cette opération ne demande pas de supposer deux expériences indépendantes : elle concerne les deux possibilités d’une même pièce.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-3}
+\begin{corrige}{3}{Une loi non uniforme}
+\demarche{Additionner les probabilités des issues plutôt que les compter sans hypothèse.}
+Les probabilités sont positives et leur somme vaut $0{,}1+0{,}2+0{,}3+0{,}4=1$ : la loi est valide. L’événement $X\ge3$ contient les issues 3 et 4, donc sa probabilité vaut $0{,}3+0{,}4=\res{0{,}7}$. Le rapport $2/4$ serait faux car les quatre issues ne sont pas équiprobables.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-4}
+\begin{corrige}{4}{Une union}
+\demarche{Lister les ensembles ou appliquer l’inclusion-exclusion.}
+$A=\{2,4,6\}$ et $B=\{4,5,6\}$. Leur intersection est $\{4,6\}$ et leur union $\{2,4,5,6\}$. Ainsi $P(A\cup B)=\res{4/6=2/3}$. La formule donne aussi $3/6+3/6-2/6=4/6$, en retirant les issues comptées deux fois.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-5}
+\begin{corrige}{5}{Conditionner dans un tableau}
+\demarche{Identifier si le tirage est restreint ou non à un groupe.}
+Le conditionnement à $A$ restreint le choix aux 60 personnes de la ligne : $P_A(C)=36/60=\res{3/5}$. Pour l’intersection sans conditionnement, la référence reste les 120 personnes : $P(A\cap C)=36/120=\res{3/10}$. Les deux numérateurs sont les mêmes, mais pas les univers de référence.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-6}
+\begin{corrige}{6}{Deux conditionnements différents}
+\demarche{Garder l’intersection et choisir le bon groupe conditionnant.}
+$P_A(B)=30/80=\res{3/8}$ tandis que $P_B(A)=30/50=\res{3/5}$. L’intersection est identique, mais on choisit respectivement parmi 80 et 50 personnes. Leur différence montre que l’ordre des lettres dans un conditionnement a un sens et ne peut être permuté librement.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-7}
+\begin{corrige}{7}{Lire un chemin d’arbre}
+\demarche{Multiplier les branches du même chemin.}
+Le chemin $A$ puis $B$ a une probabilité $0{,}4\times0{,}7=\res{0{,}28}$. Au nœud $A$, la branche contraire pèse $1-0{,}7=0{,}3$, donc le chemin $A$ puis non $B$ vaut $0{,}4\times0{,}3=\res{0{,}12}$. Leur somme vaut 0,4, cohérente avec la probabilité du premier événement $A$.
+\label{fig-cor-14-7}
+\figureGeo[corrige]{proba-arbre-01}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-8}
+\begin{corrige}{8}{Compléter des branches}
+\demarche{Compléter chaque embranchement séparément.}
+Les branches contraires sont $P(\overline A)=0{,}7$, $P_A(\overline B)=0{,}2$ et $P_{\overline A}(\overline B)=0{,}6$. Le chemin demandé vaut $0{,}7\times0{,}6=\res{0{,}42}$. Chaque complément est calculé au bon nœud ; les six branches ne doivent pas être additionnées toutes ensemble.
+\label{fig-cor-14-8}
+\figureGeo[corrige]{proba-arbre-02}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-9}
+\begin{corrige}{9}{Deux tirages avec remise}
+\demarche{Représenter deux épreuves et conserver la composition après remise.}
+La remise conserve les proportions et le modèle suppose les tirages indépendants. Les branches du second tirage restent $3/5$ et $2/5$. Deux rouges ont pour probabilité $(3/5)^2=\res{9/25}$. Le chemin rouge puis bleu vaut $(3/5)(2/5)=\res{6/25}$. L’ordre est imposé dans la deuxième question.
+\label{fig-cor-14-9}
+\figureGeo[corrige]{proba-remise}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-10}
+\begin{corrige}{10}{Deux tirages sans remise}
+\demarche{Actualiser les effectifs après le premier tirage.}
+Après une rouge, il reste 2 rouges et 2 bleues parmi 4 boules. La probabilité de deux rouges vaut $(3/5)(2/4)=\res{3/10}$. Celle de rouge puis bleu vaut aussi $(3/5)(2/4)=\res{3/10}$. Les secondes branches dépendent du premier résultat : on ne reprend pas les proportions de l’urne initiale.
+\label{fig-cor-14-10}
+\figureGeo[corrige]{proba-sans-remise}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-11}
+\begin{corrige}{11}{Un contrôle et ses erreurs}
+\demarche{Interpréter chaque terme du contrôle par son dénominateur.}
+La sensibilité vaut $18/20=\res{90\,\%}$ ; la spécificité vaut $931/980=\res{95\,\%}$. Parmi les 67 signaux positifs, 18 correspondent à des défauts : la probabilité inversée est $\res{18/67\approx26{,}9\,\%}$. Les 49 faux positifs expliquent pourquoi cette probabilité n’est pas 90\,\%. Ces données sont construites pour l’exercice.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-12}
+\begin{corrige}{12}{Deux dés et une somme}
+\demarche{Compter les couples élémentaires, pas les valeurs de somme.}
+Les 36 couples ordonnés sont équiprobables. La somme 8 est obtenue avec $(2;6),(3;5),(4;4),(5;3),(6;2)$, soit cinq couples. La probabilité vaut $\res{5/36}$. Les couples $(2;6)$ et $(6;2)$ sont distincts car les deux dés occupent des positions différentes dans l’expérience.
+\label{fig-cor-14-12}
+\figureGeo[corrige]{proba-des}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-13}
+\begin{corrige}{13}{Un conditionnement reconstitué}
+\demarche{Appliquer la définition puis vérifier les quatre intersections.}
+La définition donne $P_A(B)=0{,}24/0{,}6=\res{0{,}4}$ et $P_B(A)=0{,}24/0{,}3=\res{0{,}8}$. Les quatre cases d’un tableau de probabilités sont 0,24 ; 0,36 ; 0,06 ; 0,34. Elles sont positives et somment à 1 : les données sont cohérentes. Ce contrôle évite d’accepter des probabilités incompatibles.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-14}
+\begin{corrige}{14}{Fréquence et probabilité}
+\demarche{Distinguer modèle, observation et conclusion statistique.}
+La fréquence observée est $\res{0{,}62}$. Une fluctuation reste possible pour une pièce équilibrée : ce seul constat ne prouve pas un trucage. La loi des grands nombres décrit une proximité fréquente pour de grands effectifs, pas une convergence monotone. Un lancer supplémentaire peut rapprocher ou éloigner la fréquence de $1/2$. Une décision statistique demanderait un protocole dépassant cette simple observation.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-14-15}
+\begin{corrige}{15}{Choisir le bon arbre}
+\demarche{Multiplier un chemin puis diviser par la probabilité donnée du nouvel événement conditionnant.}
+Le chemin $A$ puis défaut vaut $0{,}4\times0{,}02=\res{0{,}008}$. Pour inverser, on utilise la probabilité globale du défaut qui est donnée : $0{,}008/0{,}03=\res{4/15\approx26{,}7\,\%}$. La donnée $P(D)=3\,\%$ est nécessaire à ce calcul ; elle n’est pas remplacée par le 2\,\% conditionnel.
+\label{fig-cor-14-15}
+\figureGeo[corrige]{proba-usine}
+\end{corrige}
+\end{blocLivre}

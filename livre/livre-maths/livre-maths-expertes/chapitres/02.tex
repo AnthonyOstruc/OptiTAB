@@ -1,0 +1,161 @@
+\begin{ouverture}[trigo]{2}{Module, arguments et plan complexe}{Nombres complexes}{Affixes · Distances · Cercle unité · Forme trigonométrique}
+\objectif{Passer d’un point à son affixe et inversement.}
+\objectif{Calculer modules et arguments.}
+\objectif{Utiliser les propriétés multiplicatives du module.}
+\objectif{Reconnaître des ensembles de points simples.}
+\prerequis{Coordonnées, distance euclidienne et cercle trigonométrique.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{L'affixe encode un point ou un vecteur}
+Dans un repère orthonormé direct, le point $M(x,y)$ a pour affixe $z=x+\mathrm iy$.
+Si $A,B$ ont pour affixes $a,b$, le vecteur $\vect{AB}$ a pour affixe $b-a$ et le milieu de $[AB]$ a pour affixe $(a+b)/2$.
+Le conjugué correspond à la symétrie par rapport à l'axe réel ; l'opposé à la symétrie de centre $O$.
+\begin{definition}[Module]
+$|z|=\sqrt{x^2+y^2}$ est la distance $OM$.
+En particulier $AB=|b-a|$ et $|z|=0$ si et seulement si $z=0$.
+\end{definition}
+\figurelivre{e02-module.pdf}{Pour $z=3+2\mathrm i$, le module est la longueur $OM=\sqrt{13}$. Un argument est l'angle orienté du demi-axe réel positif vers $\vect{OM}$.}
+\essSection{2}{Les identités du module}
+\begin{propriete}
+$|z|^2=z\bar z$, $|zw|=|z||w|$, $|z^n|=|z|^n$.
+Pour $z\ne0$, $|1/z|=1/|z|$ ; pour $w\ne0$, $|z/w|=|z|/|w|$.
+\end{propriete}
+\begin{demonstration}
+$z\bar z=(x+\mathrm iy)(x-\mathrm iy)=x^2+y^2=|z|^2$.
+Donc $|zw|^2=zw\bar z\bar w=(z\bar z)(w\bar w)=|z|^2|w|^2$. Les modules étant positifs ou nuls, prendre la racine donne la règle du produit.
+Une récurrence donne la puissance ; le produit $z(1/z)=1$ donne la règle de l'inverse.
+\end{demonstration}
+\essSection{3}{L'argument est défini modulo $2\pi$}
+\begin{definition}
+Si $z\ne0$, un argument $\theta$ vérifie $z=|z|(\cos\theta+\mathrm i\sin\theta)$.
+Tous les arguments sont $\theta+2k\pi$, $k\in\Z$.
+Le nombre $0$ n'a pas d'argument.
+\end{definition}
+Pour identifier un angle, utiliser simultanément $\cos\theta=x/|z|$ et $\sin\theta=y/|z|$. La tangente seule perd l'information sur le quadrant.
+\begin{exemple}
+$z=-1+\mathrm i\sqrt3$ a pour module $2$, avec cosinus $-1/2$ et sinus $\sqrt3/2$ : un argument est $2\pi/3$.
+Ainsi $z=2(\cos(2\pi/3)+\mathrm i\sin(2\pi/3))$.
+\end{exemple}
+\essSection{4}{Le cercle unité et les lieux}
+L'ensemble $\mathbb U=\{z\in\C:|z|=1\}$ est stable par produit et par inverse, car les modules restent $1$.
+Sur $\mathbb U$, $1/z=\bar z$.
+$|z-a|=R$ décrit un cercle de centre d'affixe $a$ et de rayon $R>0$ ; $|z-a|\leq R$ décrit le disque fermé.
+L'égalité $|z-a|=|z-b|$, pour $a\ne b$, décrit la médiatrice de $[AB]$.
+\figurelivre{e02-lieux.pdf}{À gauche : $|z-(1+\mathrm i)|=2$. À droite : $|z+1|=|z-1|$, médiatrice de $[-1,1]$ sur l'axe réel.}
+\essSection{5}{Une inégalité géométrique, en approfondissement}
+L'inégalité triangulaire $|z+w|\leq|z|+|w|$ traduit que la distance directe ne dépasse pas la longueur d'un trajet brisé.
+Algébriquement, $|z+w|^2=|z|^2+|w|^2+2\Re(z\bar w)$ et $\Re(z\bar w)\leq|z\bar w|=|z||w|$.
+L'égalité correspond à des vecteurs de même direction et de même sens, avec les cas où l'un est nul.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Affixes}
+
+\begin{questions}
+\item Donner l’affixe de $M(-2,3)$.
+\item Donner les coordonnées du point d’affixe $4-\mathrm i$.
+\item Si $a=1+\mathrm i$, $b=3+4\mathrm i$, donner l’affixe de $\vect{AB}$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Modules}
+
+\begin{questions}
+\item Calculer $|3-4\mathrm i|$.
+\item Calculer $|2\mathrm i|$ et $|-5|$.
+\item Calculer $|(1+\mathrm i)^5|$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Arguments remarquables}
+
+\begin{questions}
+\item Donner les arguments de $1$, puis de $\mathrm i$.
+\item Donner ceux de $-1$.
+\item Pourquoi zéro n’en a-t-il pas ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Forme trigonométrique}
+
+\begin{questions}
+\item Mettre $1+\mathrm i$ sous forme trigonométrique.
+\item Faire de même pour $-\sqrt3+\mathrm i$.
+\item Revenir à la forme algébrique de $2(\cos(\pi/6)+\mathrm i\sin(\pi/6))$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Distances et milieu}
+$a=1+2\mathrm i$ et $b=5-\mathrm i$.
+\begin{questions}
+\item Calculer $AB$.
+\item Donner l’affixe du milieu.
+\item Donner l’affixe du symétrique de $A$ par rapport à ce milieu.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Le cercle unité}
+$z=(3+4\mathrm i)/5$.
+\begin{questions}
+\item Vérifier $z\in\mathbb U$.
+\item Calculer $1/z$.
+\item Justifier que $z^{10}\in\mathbb U$ sans développer.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Décrire des lieux}
+
+\begin{questions}
+\item Décrire $|z-2+\mathrm i|=3$.
+\item Décrire $|z|\leq2$.
+\item Décrire $|z-1|=|z+1|$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un argument mal choisi}
+Un élève dit que $-1-\mathrm i$ a pour argument $\pi/4$ car le quotient des coordonnées vaut $1$.
+\begin{questions}
+\item Calculer le module.
+\item Donner un argument correct.
+\item Expliquer l’erreur.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Démontrer le produit}
+
+\begin{questions}
+\item Écrire $|zw|^2$ à l’aide des conjugués.
+\item Regrouper les facteurs.
+\item Pourquoi peut-on prendre la racine sans ambiguïté de signe ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Médiatrice par le calcul}
+$a=-1$, $b=3$ et $z=x+\mathrm iy$.
+\begin{questions}
+\item Écrire l’égalité $|z-a|=|z-b|$ avec $x,y$.
+\item La simplifier.
+\item Relier la réponse à la géométrie.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Triangle et égalité}
+$z=1+\mathrm i$ et $w=2+2\mathrm i$.
+\begin{questions}
+\item Comparer $|z+w|$ et $|z|+|w|$.
+\item Expliquer géométriquement l’égalité.
+\item Que se passe-t-il si l’on remplace $w$ par $-z$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Module constant ?}
+$z=(x-\mathrm i)/(x+\mathrm i)$ avec $x\in\R$.
+\begin{questions}
+\item Vérifier que le dénominateur est non nul.
+\item Prouver $|z|=1$.
+\item Le point d’affixe $1$ peut-il être obtenu pour un réel $x$ ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

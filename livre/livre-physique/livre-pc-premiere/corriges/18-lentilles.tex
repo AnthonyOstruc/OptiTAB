@@ -1,0 +1,176 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{18}{Lentilles minces et images}
+\corrigesSouples
+
+\begin{blocLivre}{cor-18-1}
+\begin{corrige}{1}{Distance focale et vergence}
+\demarche{$C=\dfrac{1}{f'}$ avec $f'$ en mètres et $C$ en dioptries.}
+\begin{questions}
+\item Le point où convergent, après la lentille, les rayons \res{\text{parallèles à l'axe optique}}.
+\item $C=\dfrac{1}{0{,}20}=\res{\num{5,0}\,\delta}$.
+\item $f'=\dfrac{1}{8{,}0}=\qty{0,125}{m}=\res{\qty{12,5}{cm}}$ ; $f'=\dfrac{1}{50}=\res{\qty{2,0}{cm}}$.
+\item La lentille de \res{\num{50}\,\delta} : plus la vergence est grande, plus la focale est courte et les rayons fortement déviés.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-2}
+\begin{corrige}{2}{Construire une image}
+\demarche{Tracer depuis B le rayon parallèle à l'axe (ressort par $F'$), le rayon passant par O et le rayon passant par $F$ : ils se coupent en B'.}
+\begin{questions}
+\item $f'=\res{\qty{2,0}{cm}}$ et $\alg{OA}=\res{\qty{-6,0}{cm}}$.
+\item Construction ci-dessous.
+\item $\alg{OA'}=\res{\qty{3,0}{cm}}$, $\alg{A'B'}=\res{\qty{-0,75}{cm}}$ : $\gamma=\dfrac{-0{,}75}{1{,}5}=\res{-0{,}50}$.
+\item Image \res{\text{réelle}}, \res{\text{renversée}} et \res{\text{réduite}} (deux fois plus petite).
+\end{questions}
+\schema[corrige]{18-ex02}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-3}
+\begin{corrige}{3}{Calculer une position et une taille d'image}
+\demarche{$\dfrac{1}{\alg{OA'}}=\dfrac{1}{f'}+\dfrac{1}{\alg{OA}}$, puis $\gamma=\dfrac{\alg{OA'}}{\alg{OA}}$ et $\alg{A'B'}=\gamma\,\alg{AB}$.}
+\begin{questions}
+\item $\alg{OA}=\res{\qty{-30}{cm}}$ : l'objet est avant la lentille, à l'opposé du sens de la lumière.
+\item $\dfrac{1}{\alg{OA'}}=\dfrac{1}{10}-\dfrac{1}{30}=\dfrac{2}{30}$ : $\alg{OA'}=\res{\qty{15}{cm}}$.
+\item $\gamma=\dfrac{15}{-30}=\res{-0{,}50}$ ; $\alg{A'B'}=-0{,}50\times2{,}0=\res{\qty{-1,0}{cm}}$.
+\item $\dfrac{1}{\alg{OA'}}=\dfrac{1}{10}-\dfrac{1}{15}=\dfrac{1}{30}$ : $\alg{OA'}=\res{\qty{30}{cm}}$.
+\end{questions}
+\piege{Oublier le signe de $\alg{OA}$ : avec $+30$, on trouverait une image impossible. Un objet réel a toujours $\alg{OA}<0$.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-4}
+\begin{corrige}{4}{La loupe}
+\demarche{Objet entre le foyer et la lentille : la relation de conjugaison donne $\alg{OA'}<0$, image virtuelle.}
+\begin{questions}
+\item $\dfrac{1}{\alg{OA'}}=\dfrac{1}{5{,}0}-\dfrac{1}{3{,}0}=-\dfrac{2}{15}$ : $\alg{OA'}=\res{\qty{-7,5}{cm}}$.
+\item $\alg{OA'}<0$ : image \res{\text{virtuelle}}, du côté de l'objet ; on ne peut \res{\text{pas}} la recueillir sur un écran.
+\item $\gamma=\dfrac{-7{,}5}{-3{,}0}=\res{2{,}5}$ ; la lettre paraît mesurer $2{,}5\times2{,}0=\res{\qty{5,0}{mm}}$.
+\item Construction ci-dessous.
+\end{questions}
+\schema[corrige]{18-ex04-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-5}
+\begin{corrige}{5}{Projeter une image}
+\demarche{L'image est sur l'écran, après la lentille : $\alg{OA'}>0$ ; l'objet est avant : $\alg{OA}<0$.}
+\begin{questions}
+\item $\alg{OA}=\res{\qty{-0,25}{m}}$ et $\alg{OA'}=\res{\qty{1,00}{m}}$.
+\item $C=\dfrac{1}{1{,}00}-\dfrac{1}{-0{,}25}=1+4=\res{\num{5,0}\,\delta}$, d'où $f'=\res{\qty{20}{cm}}$.
+\item $\gamma=\dfrac{1{,}00}{-0{,}25}=\res{-4}$ : image \res{\text{renversée}}, quatre fois plus grande.
+\item Pour que l'image, renversée par la lentille, apparaisse \res{\text{à l'endroit}} sur l'écran.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-6}
+\begin{corrige}{6}{La relation de conjugaison en Python}
+\demarche{On isole $\alg{OA'}$ dans la relation de conjugaison, puis on lit les lignes affichées.}
+\begin{questions}
+\item $\dfrac{1}{\alg{OA'}}=\dfrac{1}{f'}+\dfrac{1}{\alg{OA}}$ donc $\alg{OA'}=\dfrac{1}{\frac{1}{f'}+\frac{1}{\alg{OA}}}$, ce que code la ligne.
+\item $\gamma=-1$ pour $\alg{OA}=\res{\qty{-20}{cm}}=-2f'$ ; l'image est alors à \res{\qty{20}{cm}} après la lentille.
+\item L'image s'\res{\text{éloigne}} et devient de plus en plus grande ; au foyer, elle est rejetée à l'infini.
+\item Objet entre $F$ et O : image \res{\text{virtuelle}} ($\alg{OA'}=\qty{-10}{cm}$), droite et deux fois plus grande : c'est une loupe.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-7}
+\begin{corrige}{7}{L'appareil photo}
+\demarche{Mise au point : on place le capteur là où se forme l'image, $\alg{OA'}=\dfrac{1}{\frac{1}{f'}+\frac{1}{\alg{OA}}}$.}
+\begin{questions}
+\item Dans le \res{\text{plan focal}} : le capteur est à \res{\qty{50}{mm}} de l'objectif.
+\item $\alg{OA'}=\dfrac{1}{\frac{1}{50}-\frac{1}{3000}}\approx\res{\qty{50,85}{mm}}$ : on a éloigné l'objectif du capteur de \res{\qty{0,85}{mm}}.
+\item $|\gamma|=\dfrac{50{,}85}{3000}\approx\num{0,0170}$ : image de $\num{0,0170}\times1800\approx\res{\qty{30,5}{mm}}$. Trop grande pour les \qty{24}{mm} de hauteur ; il faut tenir
+l'appareil verticalement pour utiliser les \qty{36}{mm}.
+\item $\alg{OA'}=\dfrac{1}{\frac{1}{50}-\frac{1}{1000}}\approx\res{\qty{52,6}{mm}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-8}
+\begin{corrige}{8}{L'accommodation de l'œil}
+\demarche{La rétine est fixe : $\alg{OA'}=\qty{17}{mm}$ ; c'est $f'$ qui s'adapte, $\dfrac{1}{f'}=\dfrac{1}{\alg{OA'}}-\dfrac{1}{\alg{OA}}$.}
+\begin{questions}
+\item Objet à l'infini : $f'=\res{\qty{17}{mm}}$, $C=\dfrac{1}{\num{0,017}}\approx\res{\num{58,8}\,\delta}$.
+\item $\dfrac{1}{f'}=\dfrac{1}{17}+\dfrac{1}{250}$ : $f'\approx\res{\qty{15,9}{mm}}$ et $C\approx\res{\num{62,8}\,\delta}$.
+\item $62{,}8-58{,}8=\res{\num{4,0}\,\delta}$.
+\item $|\gamma|=\dfrac{17}{250}\approx\num{0,068}$ : image de $\num{0,068}\times5\approx\res{\qty{0,34}{mm}}$ sur la rétine.
+\end{questions}
+\retiens{Appareil photo : $f'$ fixe, on déplace l'objectif. Œil : distance fixe, on change $f'$ (accommodation).}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-9}
+\begin{corrige}{9}{Estimer une distance focale}
+\demarche{Pour un objet très éloigné, $\dfrac{1}{\alg{OA}}\approx0$ : l'image se forme pratiquement au foyer image.}
+\begin{questions}
+\item $\dfrac{1}{\alg{OA'}}\approx\dfrac{1}{f'}$ : la feuille est au foyer, $\res{f'\approx\qty{15}{cm}}$.
+\item $\alg{OA'}=\dfrac{1}{\frac{1}{15}-\frac{1}{50}}\approx\res{\qty{21,4}{cm}}$ après la lentille.
+\item $\alg{OA'}=\dfrac{1}{\frac{1}{15}-\frac{1}{500}}\approx\qty{15,46}{cm}$ : un décalage de \res{\qty{0,46}{cm}}, environ \qty{3}{\percent}.
+\item Méthode \res{\text{approximative}} ; mieux vaut mesurer plusieurs couples ($\alg{OA}$ ; $\alg{OA'}$) et exploiter la relation de conjugaison.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-10}
+\begin{corrige}{10}{Tester la relation de conjugaison}
+\demarche{Si la relation est vérifiée, $\dfrac{1}{\alg{OA'}}-\dfrac{1}{\alg{OA}}$ est constant et vaut $\dfrac{1}{f'}$.}
+\begin{questions}
+\item \res{\text{0,0998 ; 0,1005 ; 0,1002 ; 0,0996 ; 0,0996 ; 0,1006}} (en \unit{cm^{-1}}) : pratiquement \res{\text{constant}}.
+\item Une \res{\text{droite de pente 1}} (graphique ci-dessous).
+\item $\dfrac{1}{f'}\approx\qty{0,100}{cm^{-1}}$ : $\res{f'\approx\qty{10,0}{cm}}$ et $\res{C\approx\num{10}\,\delta}$.
+\item La position exacte de l'image nette est difficile à repérer (l'image reste nette sur quelques millimètres).
+\end{questions}
+\schema[corrige]{18-ex10-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-11}
+\begin{corrige}{11}{Démontrer la relation de grandissement}
+\demarche{Le rayon BB' passe par O ; les triangles OAB et OA'B' sont en configuration de Thalès.}
+\begin{questions}
+\item Elles sont toutes deux \res{\text{perpendiculaires à l'axe}} optique.
+\item $\dfrac{\mathrm{A'B'}}{\mathrm{AB}}=\dfrac{\mathrm{OA'}}{\mathrm{OA}}=\dfrac{\mathrm{OB'}}{\mathrm{OB}}$ (longueurs).
+\item $\alg{OA'}$ et $\alg{OA}$ sont de signes contraires, de même que $\alg{A'B'}$ et $\alg{AB}$ : les rapports algébriques ont le même signe, d'où $\res{\gamma=\dfrac{\alg{OA'}}{\alg{OA}}}$.
+\item Image réelle : $\alg{OA'}>0$ ; objet réel : $\alg{OA}<0$. Donc $\gamma<0$ : l'image est \res{\text{renversée}}.
+\end{questions}
+\schema[corrige]{18-ex11}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-12}
+\begin{corrige}{12}{Le vidéoprojecteur}
+\demarche{L'écran reçoit l'image : $\alg{OA'}=\qty{5000}{mm}$ ; on cherche $\alg{OA}$ avec $\dfrac{1}{\alg{OA}}=\dfrac{1}{\alg{OA'}}-\dfrac{1}{f'}$.}
+\begin{questions}
+\item $\dfrac{1}{\alg{OA}}=\dfrac{1}{5000}-\dfrac{1}{20}$ : $\alg{OA}\approx\res{\qty{-20,08}{mm}}$, juste au-delà du foyer objet.
+\item $\gamma=\dfrac{5000}{-20{,}08}\approx\res{-249}$ : largeur $249\times\qty{14}{mm}\approx\res{\qty{3,49}{m}}$.
+\item On déplace l'objectif : $\alg{OA}\approx\qty{-20,13}{mm}$, il faut l'éloigner de la matrice d'environ \res{\qty{0,05}{mm}}.
+\item $\dfrac{3000}{20{,}13}\times14\approx\res{\qty{2,09}{m}}$. Pour une grande image de près, il faut un objectif de \res{\text{plus courte focale}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-13}
+\begin{corrige}{13}{L'appareil photo d'un smartphone}
+\demarche{À l'infini, le capteur est au foyer ; pour un objet proche, l'image recule : $\alg{OA'}=\dfrac{1}{\frac{1}{f'}+\frac{1}{\alg{OA}}}$.}
+\begin{questions}
+\item Au foyer image, à \res{\qty{4,0}{mm}} de l'objectif.
+\item $\alg{OA'}=\dfrac{1}{\frac{1}{4}-\frac{1}{100}}\approx\qty{4,167}{mm}$ : déplacement de \res{\qty{0,167}{mm}}.
+\item $\alg{OA'}_\mathrm{max}=\qty{4,2}{mm}$ : $\dfrac{1}{\alg{OA}}=\dfrac{1}{4{,}2}-\dfrac{1}{4{,}0}$, d'où $\alg{OA}\approx\qty{-84}{mm}$ : mise au point possible au-delà de \res{\qty{8,4}{cm}}.
+\item $\gamma=\dfrac{4{,}2}{-84}=\res{-0{,}05}$ : un objet de \qty{1}{cm} ne fait que \qty{0,5}{mm} ; l'objectif « macro » permet de photographier de plus près.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-14}
+\begin{corrige}{14}{Observer un timbre à la loupe}
+\demarche{Timbre entre le foyer et la loupe : image virtuelle, droite et agrandie, à comparer à la distance minimale de vision confortable.}
+\begin{questions}
+\item $\dfrac{1}{\alg{OA'}}=\dfrac{1}{8{,}0}-\dfrac{1}{6{,}0}=-\dfrac{1}{24}$ : $\alg{OA'}=\res{\qty{-24}{cm}}$.
+\item $\gamma=\dfrac{-24}{-6{,}0}=\res{4{,}0}$ : image de $4{,}0\times2{,}5=\res{\qty{10}{cm}}$, droite.
+\item L'image est à \qty{24}{cm} de l'œil, environ la distance de vision confortable : \res{\text{oui}}.
+\item Au-delà du foyer, l'image deviendrait \res{\text{réelle et renversée}}, formée derrière la loupe : on ne verrait plus le timbre agrandi à l'endroit.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-18-15}
+\begin{corrige}{15}{La lentille liquide}
+\demarche{Distance lentille-capteur fixe $\alg{OA'}=\qty{5,0}{mm}$ : $\dfrac{1}{f'}=\dfrac{1}{\alg{OA'}}-\dfrac{1}{\alg{OA}}$ ; $C$ en dioptries avec $f'$ en m.}
+\begin{questions}
+\item $f'=\res{\qty{5,0}{mm}}$ ; $C=\dfrac{1}{\num{5,0e-3}}=\res{\num{200}\,\delta}$.
+\item $\dfrac{1}{f'}=\dfrac{1}{5{,}0}+\dfrac{1}{200}$ : $f'\approx\res{\qty{4,878}{mm}}$ et $C=\res{\num{205}\,\delta}$.
+\item À \qty{10}{cm} : $C=200+10=\num{210}\,\delta$, soit $\res{+\num{10}\,\delta}$.
+\item Comme l'\res{\text{œil}}, la caméra modifie la vergence sans rien déplacer ; l'appareil classique, lui, déplace l'objectif.
+\end{questions}
+\end{corrige}
+\end{blocLivre}

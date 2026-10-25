@@ -1,0 +1,642 @@
+% !TEX root = ../main.tex
+%% Chapitre 5 — Nombres réels et suites numériques
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Nombres réels et suites numériques » : a) ensembles de nombres usuels ;
+%% b) borne supérieure ; c) généralités sur les suites ; d) limites ; e) suites
+%% monotones ; f) suites extraites et Bolzano-Weierstrass ; g) traduction
+%% séquentielle ; h) suites complexes ; i) suites particulières.
+%% Résultats vérifiés par verifications/chapitre_05.py.
+
+\begin{ouverture}[suites]{5}{Nombres réels et suites numériques}{Partie 1 · Premier semestre}
+  {Borne supérieure\enspace·\enspace Limites\enspace·\enspace Suites monotones\enspace·\enspace
+   Suites adjacentes\enspace·\enspace Suites extraites\enspace·\enspace Suites récurrentes}
+  \objectif{Manipuler les ensembles de nombres, la densité et les bornes supérieures et inférieures.}
+  \objectif{Maîtriser la définition de la limite d'une suite et les théorèmes d'opérations.}
+  \objectif{Utiliser encadrements, comparaisons, limite monotone et suites adjacentes.}
+  \objectif{Raisonner avec les suites extraites, jusqu'au théorème de Bolzano-Weierstrass.}
+  \objectif{Résoudre les récurrences linéaires d'ordre 2 et les récurrences arithmético-géométriques.}
+  \objectif{Étudier une suite définie par $u_{n+1}=f(u_n)$ : intervalle stable, monotonie, limite.}
+  \prerequis{Logique et récurrences (chapitre 1) ; inégalités, valeur absolue, partie entière (chapitre 2).}
+  \prerequis{Suites arithmétiques et géométriques du lycée.}
+  \prerequis{Fonctions usuelles et inégalités de convexité élémentaires (chapitre 4).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Nombres réels, décimaux, densité}
+
+\begin{definition}[Les ensembles de nombres]
+$\N\subset\Z\subset\mathbb{D}\subset\Q\subset\R$, où $\mathbb{D}$ désigne
+l'ensemble des \textbf{décimaux} (les $\frac{a}{10^{n}}$, $a\in\Z$,
+$n\in\N$) et $\Q$ celui des \textbf{rationnels}. Un réel non rationnel est
+dit \textbf{irrationnel} ($\sqrt2$, $\mathrm{e}$, $\pi$\dots). Les
+constructions de ces ensembles sont hors programme. Pour tout réel $x$ et
+tout $n\in\N$, l'encadrement
+\[
+  \frac{\lfloor10^{n}x\rfloor}{10^{n}}\;\leq\;x\;<\;\frac{\lfloor10^{n}x\rfloor+1}{10^{n}}
+\]
+fournit les \textbf{approximations décimales} de $x$ à $10^{-n}$ près, par
+défaut et par excès.
+\end{definition}
+
+\begin{theoreme}[Densité]
+Tout intervalle ouvert non vide de $\R$ contient au moins un rationnel et un
+irrationnel : on dit que $\Q$ et $\R\setminus\Q$ sont \textbf{denses} dans
+$\R$. Plus généralement, une partie de $\R$ est dense dans $\R$ si elle
+rencontre tout intervalle ouvert non vide ; c'est le cas de $\mathbb{D}$.
+\end{theoreme}
+
+\begin{definition}[Droite achevée]
+$\overline{\R}=\R\cup\ens{-\infty,+\infty}$, avec les conventions d'ordre et
+de calcul usuelles ; elle permet d'énoncer uniformément les résultats sur les
+limites.
+\end{definition}
+
+\essSection{2}{La propriété de la borne supérieure}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{definition}[Borne supérieure]
+Soit $X$ une partie non vide de $\R$. La \textbf{borne supérieure}
+$\sup X$ est, lorsqu'elle existe, \emph{le plus petit des majorants} de $X$ ;
+la borne inférieure $\inf X$ est le plus grand des minorants.
+Si $X$ possède un plus grand élément, alors $\sup X=\max X$ ; mais la borne
+supérieure peut très bien ne pas être atteinte :
+$\sup\intFO{0}{1}=1\notin\intFO{0}{1}$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[line cap=round,xscale=1.35]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-0.3,0) -- (4.3,0);
+  \draw[otNavy,line width=2.4pt] (0.4,0) -- (1.3,0);
+  \draw[otNavy,line width=2.4pt] (1.7,0) -- (2.6,0);
+  \node[below,font=\scriptsize,text=otNavy] at (1.5,-0.12) {$X$};
+  \draw[otGreenDark,line width=1.1pt] (2.6,-0.09) -- (2.6,0.09);
+  \node[above,font=\scriptsize,text=otGreenDark] at (2.6,0.12) {$\sup X$};
+  \foreach \x in {3.0,3.4,3.8}{\draw[otMuted,line width=0.7pt] (\x,-0.07) -- (\x,0.07);}
+  \node[above,font=\scriptsize,text=otMuted] at (3.45,0.12) {majorants};
+\end{tikzpicture}\\[0.5mm]
+\legende{$\sup X$ : le plus petit des majorants de $X$.}
+\end{minipage}
+
+\begin{theoreme}[Propriété fondamentale de $\R$]
+Toute partie de $\R$ \emph{non vide et majorée} admet une borne supérieure ;
+toute partie non vide et minorée admet une borne inférieure. C'est cette
+propriété qui distingue $\R$ de $\Q$ : l'ensemble
+$\ens{x\in\Q \mid x^{2}<2}$ n'a pas de borne supérieure \emph{dans} $\Q$.
+\end{theoreme}
+
+\begin{savoirfaire}[Caractériser une borne supérieure]
+$M=\sup X$ si et seulement si :
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $M$ majore $X$ : pour tout $x\in X$, $x\leq M$ ;
+  \item rien de plus petit ne majore : pour tout $\varepsilon>0$, il existe
+    $x\in X$ tel que $x>M-\varepsilon$.
+\end{itemize}
+\emph{Traduction séquentielle} : si $X$ est non vide et majorée, il existe une
+suite d'éléments de $X$ qui converge vers $\sup X$ (et une suite tendant vers
+$+\infty$ si $X$ n'est pas majorée).
+\end{savoirfaire}
+
+\begin{propriete}[Caractérisation des intervalles]
+Une partie $X$ de $\R$ est un intervalle si et seulement si, pour tous
+$a,b\in X$ avec $a\leq b$, on a $\intFF{a}{b}\subset X$ (partie
+\emph{convexe} de $\R$).
+\end{propriete}
+
+\essSection{3}{Suites réelles : vocabulaire}
+
+\begin{definition}
+Une suite réelle $(u_n)_{n\in\N}$ est \textbf{majorée} (resp. minorée,
+bornée) si l'ensemble de ses termes l'est ; elle est bornée si et seulement
+si $(|u_n|)$ est majorée. Elle est \textbf{croissante} si
+$u_{n+1}\geq u_n$ pour tout $n$, \textbf{stationnaire} si elle est constante
+à partir d'un certain rang. Une suite peut être définie de façon
+\emph{explicite} ($u_n=f(n)$), \emph{implicite} ($u_n$ unique solution d'une
+équation dépendant de $n$) ou \emph{par récurrence}.
+\end{definition}
+
+\essSection{4}{Limite d'une suite}
+
+\begin{definition}[Limite, avec des inégalités larges]
+$(u_n)$ \textbf{converge} vers $\ell\in\R$ si :
+\[
+  \forall\varepsilon>0,\ \exists N\in\N,\ \forall n\geq N,\quad|u_n-\ell|\leq\varepsilon.
+\]
+On note $u_n\longrightarrow\ell$ ou $\lim u_n=\ell$ ; la limite, si elle
+existe, est \emph{unique}. De même, $u_n\to+\infty$ si tout
+$\intFO{A}{+\infty}$ contient les $u_n$ à partir d'un certain rang. Une
+suite qui ne converge pas (vers un réel) est dite \textbf{divergente}.
+\end{definition}
+
+\begin{theoreme}[Premiers résultats]
+Toute suite convergente est bornée. Les limites se combinent : combinaison
+linéaire, produit, quotient (dénominateur de limite non nulle). Le produit
+d'une suite \emph{bornée} par une suite de limite \emph{nulle} tend vers $0$.
+Par passage à la limite, les inégalités \emph{larges} se conservent ; et si
+$u_n\to\ell>0$, alors $u_n>0$ à partir d'un certain rang.
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.52\linewidth}
+\begin{theoreme}[Existence de limites par comparaison]
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Encadrement} si $a_n\leq u_n\leq b_n$ à partir d'un certain
+    rang et si $a_n\to\ell$ et $b_n\to\ell$, alors $u_n\to\ell$.
+  \item \etape{Minoration} si $a_n\leq u_n$ et $a_n\to+\infty$, alors
+    $u_n\to+\infty$ (et l'analogue en $-\infty$).
+  \item \etape{Majoration de l'écart} si $|u_n-\ell|\leq v_n$ avec
+    $v_n\to0$, alors $u_n\to\ell$.
+\end{itemize}
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.2,0) -- (4.6,0) node[below,font=\scriptsize] {$n$};
+  \draw[otNavy,dashed,line width=0.5pt] (-0.1,1.1) -- (4.5,1.1);
+  \node[left,font=\scriptsize,text=otNavy] at (-0.1,1.1) {$\ell$};
+  \foreach \n in {1,...,13}{
+    \fill[otRule!70!otMuted] ({0.32*\n},{1.1+0.9/\n}) circle (0.85pt);
+    \fill[otRule!70!otMuted] ({0.32*\n},{1.1-0.9/\n}) circle (0.85pt);
+    \fill[otGreenDark] ({0.32*\n},{1.1+0.82*sin(137*\n)/\n}) circle (1.1pt);}
+  \node[right,font=\scriptsize,text=otMuted] at (4.3,1.45) {$b_n$};
+  \node[right,font=\scriptsize,text=otMuted] at (4.3,0.78) {$a_n$};
+  \node[right,font=\scriptsize,text=otGreenDark] at (4.3,1.12) {$u_n$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Encadrement : $(u_n)$, prise en étau, converge vers $\ell$.}
+\end{minipage}
+
+\essSection{5}{Suites monotones, suites adjacentes}
+
+\begin{theoreme}[Limite monotone]
+Toute suite croissante et majorée converge, vers la borne supérieure de ses
+termes ; toute suite croissante non majorée tend vers $+\infty$. Une suite
+croissante possède donc toujours une limite dans $\overline{\R}$ (énoncés
+analogues en décroissant).
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.52\linewidth}
+\begin{theoreme}[Suites adjacentes]
+Deux suites $(a_n)$ et $(b_n)$ sont \textbf{adjacentes} si $(a_n)$ est
+croissante, $(b_n)$ décroissante, et $b_n-a_n\to0$. Deux suites adjacentes
+convergent, vers une \emph{même} limite $\ell$, et pour tout $n$ :
+\[
+  a_n\leq\ell\leq b_n :
+\]
+chaque couple $(a_n,b_n)$ fournit un encadrement de $\ell$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.2,0) -- (4.6,0) node[below,font=\scriptsize] {$n$};
+  \draw[otNavy,dashed,line width=0.5pt] (-0.1,1.1) -- (4.5,1.1);
+  \node[left,font=\scriptsize,text=otNavy] at (-0.1,1.1) {$\ell$};
+  \foreach \n in {1,...,12}{
+    \fill[otGreenDark] ({0.35*\n},{1.1-1.05/\n}) circle (1.1pt);
+    \fill[otOrange] ({0.35*\n},{1.1+0.8/\n}) circle (1.1pt);}
+  \node[right,font=\scriptsize,text=otOrange!80!black] at (4.3,1.32) {$b_n$};
+  \node[right,font=\scriptsize,text=otGreenDark] at (4.3,0.85) {$a_n$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Adjacentes : $(a_n)$ monte, $(b_n)$ descend, l'écart fond — la limite est coincée.}
+\end{minipage}
+
+\essSection{6}{Suites extraites, théorème de Bolzano-Weierstrass}
+
+\begin{definition}[Suite extraite]
+Une \textbf{suite extraite} (ou sous-suite) de $(u_n)$ est une suite
+$(u_{\varphi(n)})$, où $\varphi:\N\to\N$ est strictement croissante.
+Si $(u_n)$ possède une limite (finie ou infinie), toutes ses suites
+extraites possèdent la même limite.
+\end{definition}
+
+\begin{propriete}[Deux usages essentiels]
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Divergence} si deux suites extraites ont des limites
+    différentes, la suite diverge : ainsi $\bigl((-1)^{n}\bigr)$ n'a pas de
+    limite.
+  \item \etape{Recollement} si $(u_{2n})$ et $(u_{2n+1})$ convergent vers la
+    \emph{même} limite $\ell$, alors $(u_n)$ converge vers $\ell$.
+\end{itemize}
+\end{propriete}
+
+\begin{theoreme}[Bolzano-Weierstrass]
+De toute suite réelle \emph{bornée}, on peut extraire une suite convergente.
+Le principe de la démonstration est la \emph{dichotomie} : on coupe en deux
+un segment contenant une infinité de termes, on garde une moitié qui en
+contient encore une infinité, et on recommence.
+\end{theoreme}
+
+\begin{definition}[Suites complexes]
+Les définitions (suite bornée, convergence avec $|z_n-\ell|$) s'étendent aux
+suites complexes : $(z_n)$ converge vers $\ell$ si et seulement si
+$\bigl(\operatorname{Re}z_n\bigr)$ et $\bigl(\operatorname{Im}z_n\bigr)$
+convergent vers $\operatorname{Re}\ell$ et $\operatorname{Im}\ell$.
+Le théorème de Bolzano-Weierstrass subsiste pour les suites complexes
+bornées.
+\end{definition}
+
+\essSection{7}{Suites particulières}
+
+\begin{propriete}[Arithmético-géométriques]
+Pour $u_{n+1}=a\,u_n+b$ avec $a\in\Cx\setminus\ens{1}$ : on cherche la
+\emph{constante} $\omega=a\omega+b$, soit $\omega=\dfrac{b}{1-a}$ ; alors
+$(u_n-\omega)$ est géométrique de raison $a$, d'où
+$u_n=\omega+(u_0-\omega)\,a^{n}$. La suite converge (vers $\omega$) si
+$|a|<1$ ou si $u_0=\omega$.
+\end{propriete}
+
+\begin{theoreme}[Récurrences linéaires d'ordre 2]
+Pour $u_{n+2}=a\,u_{n+1}+b\,u_n$ ($a,b$ réels, $b\neq0$), on introduit
+l'\textbf{équation caractéristique} $r^{2}=ar+b$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item Deux racines réelles $r_1\neq r_2$ : $u_n=A\,r_1^{n}+B\,r_2^{n}$ ;
+  \item racine double $r_0\neq0$ : $u_n=(A+Bn)\,r_0^{n}$ ;
+  \item racines complexes conjuguées $r\,\mathrm{e}^{\pm\mathrm{i}\theta}$ :
+    $u_n=r^{n}\bigl(A\cos(n\theta)+B\sin(n\theta)\bigr)$ (suites réelles).
+\end{itemize}
+Les constantes $A$, $B$ se déterminent avec $u_0$ et $u_1$.
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.52\linewidth}
+\begin{savoirfaire}[Étudier $u_{n+1}=f(u_n)$]
+\begin{enumerate}[label=\otLabel{\arabic*.},leftmargin=1.6em,itemsep=0.6mm,topsep=0.5mm]
+  \item Trouver un \emph{intervalle stable} $I$ ($f(I)\subset I$) contenant
+    $u_0$ : alors tous les $u_n$ restent dans $I$ (récurrence).
+  \item Étudier la monotonie, souvent via le \emph{signe de} $f(x)-x$ sur
+    $I$ (ou la croissance de $f$).
+  \item Conclure par limite monotone, puis identifier la limite : si
+    $u_n\to\ell$ et $f$ continue en $\ell$, alors $f(\ell)=\ell$.
+\end{enumerate}
+\end{savoirfaire}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.5,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.15,0) -- (2.35,0) node[below,font=\scriptsize] {$x$};
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.15) -- (0,2.3);
+  \draw[otRule!80!otMuted,line width=0.6pt] (0,0) -- (2.2,2.2);
+  \draw[otNavy,line width=1pt] plot[domain=0:2.2,samples=50] ({\x},{sqrt(2+\x)});
+  \draw[otGreen,line width=0.8pt]
+    (0,0) -- (0,1.414) -- (1.414,1.414) -- (1.414,1.848) -- (1.848,1.848)
+    -- (1.848,1.962) -- (1.962,1.962);
+  \fill[otNavy] (2,2) circle (1.1pt);
+  \foreach \x in {0,1.414,1.848}{\fill[otGreenDark] (\x,0) circle (0.9pt);}
+  \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (1.414,1.414) -- (1.414,0);
+  \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (1.848,1.848) -- (1.848,0);
+  \node[below,font=\tiny,text=otGreenDark] at (0,-0.04) {$u_0$};
+  \node[below,font=\tiny,text=otGreenDark] at (1.414,-0.04) {$u_1$};
+  \node[below,font=\tiny,text=otGreenDark] at (1.9,-0.04) {$u_2$};
+  \node[font=\scriptsize,text=otNavy] at (0.55,1.62) {$y=f(x)$};
+  \node[font=\scriptsize,text=otMuted,rotate=45] at (1.05,0.88) {$y=x$};
+\end{tikzpicture}\\[0.5mm]
+\legende{La « toile d'araignée » : les termes montent vers le point fixe.}
+\end{minipage}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $\sup X$ n'est pas toujours un élément de $X$ : ne pas confondre borne
+    supérieure et plus grand élément.
+  \item Une suite croissante ne converge que si elle est \emph{majorée} ; une
+    suite bornée peut diverger ($(-1)^{n}$).
+  \item Le passage à la limite transforme les inégalités \emph{strictes} en
+    inégalités \emph{larges} : $\frac1n>0$ mais $\lim\frac1n=0$.
+  \item $f(\ell)=\ell$ ne prouve pas la convergence : il faut \emph{d'abord}
+    établir que la suite converge.
+  \item Pour les suites adjacentes, vérifier les \emph{trois} hypothèses —
+    l'écart qui tend vers $0$ ne suffit pas.
+  \item Une suite extraite qui converge ne dit rien de la suite entière :
+    $(-1)^{n}$ a des sous-suites convergentes.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Rationnels et irrationnels}
+\begin{questions}
+  \item Vrai ou faux (justifier ou donner un contre-exemple) : la somme de
+    deux irrationnels est irrationnelle ; le produit de deux irrationnels
+    est irrationnel.
+  \item Montrer que $\sqrt2+\sqrt3$ est irrationnel.
+    \emph{On pourra élever au carré et utiliser l'irrationalité de
+    $\sqrt6$, que l'on admettra.}
+  \item Donner les approximations décimales de $\sqrt2$ à $10^{-3}$ près,
+    par défaut et par excès.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Bornes supérieures et inférieures}
+Pour chacun des ensembles suivants, déterminer, s'ils existent, la borne
+supérieure, la borne inférieure, le plus grand et le plus petit élément :
+\[
+  A=\intFO{0}{1},\qquad
+  B=\Bigl\{\frac1n \mid n\in\N^{*}\Bigr\},\qquad
+  C=\Bigl\{(-1)^{n}+\frac1n \mid n\in\N^{*}\Bigr\},\qquad
+  D=\ens{x\in\Q \mid x^{2}<2}.
+\]
+\end{exercice}
+
+\begin{exercice}[1]{Majorée, minorée, bornée ?}
+Étudier si les suites suivantes sont majorées, minorées, bornées :
+\begin{questions}
+  \item $u_n=2-\dfrac{1}{n+1}$ ;
+  \item $v_n=(-1)^{n}\,n$ ;
+  \item $w_n=\sin n+\dfrac1n$\quad($n\geq1$) ;
+  \item $t_n=n^{2}-n$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Monotonie}
+Étudier la monotonie des suites suivantes (définies pour $n\geq1$) :
+\begin{questions}
+  \item $u_n=n^{2}-n$ ;
+  \item $v_n=\dfrac{2^{n}}{n!}$\quad\emph{(étudier le quotient $v_{n+1}/v_n$)} ;
+  \item $w_n=n+(-1)^{n}$ ;
+  \item $t_n=\displaystyle\sum_{k=1}^{n}\frac1k$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Limites : opérations}
+Déterminer les limites des suites suivantes :
+\begin{tasks}(2)
+  \task $\dfrac{3n^{2}+1}{n^{2}+2}$
+  \task $\dfrac{2n+(-1)^{n}}{n}$
+  \task $\sqrt{n+1}-\sqrt{n}$
+  \task $\Bigl(1+\dfrac1n\Bigr)\Bigl(2-\dfrac{3}{n^{2}}\Bigr)$
+  \task $n-n^{2}$
+  \task $\dfrac{2^{n}}{n!}$\ \emph{(encadrer pour $n\geq2$)}
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Théorème d'encadrement}
+Déterminer les limites suivantes, à l'aide d'un encadrement :
+\begin{questions}
+  \item $\dfrac{n+\cos n}{n}$ ;
+  \item $\dfrac{\sin n}{n^{2}}$ ;
+  \item $\displaystyle\sum_{k=1}^{n}\frac{n}{n^{2}+k}$\quad
+    \emph{(encadrer chaque terme de la somme)}.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Arithmético-géométrique}
+On définit $(u_n)$ par $u_0=0$ et, pour tout $n$,
+$u_{n+1}=\dfrac{u_n}{2}+3$.
+\begin{questions}
+  \item Déterminer le réel $\omega$ tel que la suite constante égale à
+    $\omega$ vérifie la récurrence.
+  \item Montrer que $(u_n-\omega)$ est géométrique, puis exprimer $u_n$ en
+    fonction de $n$.
+  \item En déduire la limite de $(u_n)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Avec la définition de la limite}
+Revenir à la définition (avec $\varepsilon$ ou $A$) pour montrer :
+\begin{questions}
+  \item $\dfrac1n\longrightarrow0$ ;
+  \item $\dfrac{n+1}{n}\longrightarrow1$ ;
+  \item $n^{2}\longrightarrow+\infty$.
+\end{questions}
+\emph{Dans chaque cas, pour $\varepsilon>0$ (ou $A>0$) donné, on exhibera un
+rang $N$ qui convient.}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Opérations sur les bornes supérieures}
+Soient $A$ et $B$ deux parties non vides et majorées de $\R$. On note
+$A+B=\ens{a+b \mid a\in A,\ b\in B}$.
+\begin{questions}
+  \item Montrer que si $A\subset B$, alors $\sup A\leq\sup B$.
+  \item Montrer que $\sup(A\cup B)=\max\bigl(\sup A,\sup B\bigr)$.
+  \item Montrer que $\sup(A+B)=\sup A+\sup B$.
+    \emph{Pour l'inégalité difficile, utiliser la caractérisation par
+    $\varepsilon$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Traduction séquentielle}
+\begin{questions}
+  \item Soit $X$ une partie non vide et majorée de $\R$, et $M=\sup X$.
+    Montrer qu'il existe une suite $(x_n)$ d'éléments de $X$ telle que
+    $x_n\to M$.
+    \emph{Appliquer la caractérisation de la borne supérieure avec
+    $\varepsilon=\frac{1}{n+1}$.}
+  \item Pour $x\in\R$, on pose $d_n=\dfrac{\lfloor10^{n}x\rfloor}{10^{n}}$.
+    Montrer que $(d_n)$ est une suite de décimaux qui converge vers $x$.
+    Qu'en déduit-on pour $\mathbb{D}$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Premiers théorèmes, à la main}
+\begin{questions}
+  \item Montrer que si $u_n\to\ell>0$, alors $u_n>\dfrac{\ell}{2}$ à partir
+    d'un certain rang.
+  \item Montrer que si $(u_n)$ est bornée et $v_n\to0$, alors
+    $u_n v_n\to0$.
+  \item Montrer que si $u_n\to\ell$, alors $|u_n|\to|\ell|$. La réciproque
+    est-elle vraie ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le théorème de la limite monotone en action}
+\begin{questions}
+  \item On pose $u_n=\displaystyle\sum_{k=1}^{n}\frac{1}{k^{2}}$. Montrer que $(u_n)$
+    est croissante et majorée \emph{(on rappelle l'inégalité
+    $u_n\leq2-\frac1n$, démontrée au chapitre 1)}, et conclure.
+  \item On pose $v_n=\displaystyle\sum_{k=0}^{n}\frac{1}{k!}$. Montrer que, pour
+    $k\geq1$ : $\dfrac{1}{k!}\leq\dfrac{1}{2^{k-1}}$, en déduire que $(v_n)$
+    est majorée par $3$, et conclure.
+  \item Démontrer soigneusement : une suite croissante non majorée tend vers
+    $+\infty$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Suites adjacentes}
+\begin{questions}
+  \item Vérifier que $a_n=1-\dfrac1n$ et $b_n=1+\dfrac1n$ ($n\geq1$) sont
+    adjacentes. Quelle est leur limite commune ?
+  \item On pose, pour $n\geq1$ :
+    \[
+      a_n=\sum_{k=0}^{n}\frac{1}{k!}
+      \qquad\text{et}\qquad
+      b_n=a_n+\frac{1}{n\cdot n!}.
+    \]
+    Montrer que $(a_n)$ et $(b_n)$ sont adjacentes. On note $\mathrm{e}$
+    leur limite commune (c'est bien le nombre d'Euler) : donner
+    l'encadrement de $\mathrm{e}$ fourni par $n=3$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Suites extraites}
+\begin{questions}
+  \item Montrer que $\bigl((-1)^{n}\bigr)$ diverge, à l'aide de deux suites
+    extraites.
+  \item La suite $\Bigl(\cos\dfrac{n\pi}{3}\Bigr)$ converge-t-elle ?
+  \item Démontrer : si $u_{2n}\to\ell$ et $u_{2n+1}\to\ell$, alors
+    $u_n\to\ell$.
+  \item La suite définie par $u_n=(-1)^{n}+\dfrac1n$ converge-t-elle ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Récurrences linéaires d'ordre 2}
+Déterminer le terme général de chacune des suites suivantes :
+\begin{questions}
+  \item $u_0=2$, $u_1=3$ et $u_{n+2}=3u_{n+1}-2u_n$ ;
+  \item la suite de Fibonacci : $F_0=0$, $F_1=1$ et $F_{n+2}=F_{n+1}+F_n$
+    \emph{(on fera apparaître le nombre d'or $\varphi=\frac{1+\sqrt5}{2}$)} ;
+  \item $w_0=0$, $w_1=1$ et $w_{n+2}=w_{n+1}-w_n$. Que remarque-t-on ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Une suite récurrente complète}
+On définit $(u_n)$ par $u_0=0$ et, pour tout $n\in\N$,
+$u_{n+1}=\sqrt{2+u_n}$.
+\begin{questions}
+  \item Montrer que l'intervalle $\intFF{0}{2}$ est stable par
+    $f:x\mapsto\sqrt{2+x}$, et en déduire que $0\leq u_n\leq2$ pour tout $n$.
+  \item Étudier le signe de $f(x)-x$ sur $\intFF{0}{2}$, et en déduire que
+    $(u_n)$ est croissante.
+  \item Montrer que $(u_n)$ converge et déterminer sa limite.
+  \item Illustrer la convergence par une construction en toile d'araignée.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Une récurrence à deux visages}
+On considère la récurrence $u_{n+1}=u_n^{2}$.
+\begin{questions}
+  \item Exprimer $u_n$ en fonction de $u_0$ et $n$.
+  \item Étudier la convergence de $(u_n)$ selon la valeur de $u_0\geq0$
+    (on distinguera $u_0<1$, $u_0=1$, $u_0>1$).
+  \item Retrouver ces comportements par l'étude de $f:x\mapsto x^{2}$ :
+    intervalles stables, signe de $f(x)-x$, points fixes.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Suites complexes}
+\begin{questions}
+  \item Montrer que $z_n=\Bigl(\dfrac{1+\mathrm{i}}{2}\Bigr)^{n}$ converge
+    vers $0$.
+  \item On définit $(z_n)$ par $z_0=0$ et
+    $z_{n+1}=\dfrac{\mathrm{i}}{2}\,z_n+1$. Déterminer le point fixe
+    $\omega$, montrer que $|z_n-\omega|=|\omega|\cdot\Bigl(\dfrac12\Bigr)^{n}$,
+    et en déduire la limite de $(z_n)$.
+  \item Retrouver cette limite en séparant parties réelle et imaginaire pour
+    les premiers termes : que valent $\operatorname{Re}\omega$ et
+    $\operatorname{Im}\omega$ ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Le théorème de Cesàro}
+Soit $(u_n)_{n\geq1}$ une suite convergeant vers $\ell$. On pose
+$c_n=\dfrac{u_1+u_2+\dots+u_n}{n}$.
+\begin{questions}
+  \item Soit $\varepsilon>0$ et $N$ tel que $|u_k-\ell|\leq\varepsilon$ pour
+    $k\geq N$. Montrer que, pour $n\geq N$ :
+    \[
+      |c_n-\ell|\leq\frac{1}{n}\sum_{k=1}^{N-1}|u_k-\ell|+\varepsilon.
+    \]
+  \item En déduire que $c_n\to\ell$ (théorème de Cesàro).
+  \item Montrer, à l'aide de $u_n=(-1)^{n}$, que la réciproque est fausse.
+  \item Application : montrer que si $u_{n+1}-u_n\to\ell$, alors
+    $\dfrac{u_n}{n}\to\ell$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La série harmonique et la constante d'Euler}
+Pour $n\geq1$, on pose $H_n=\displaystyle\sum_{k=1}^{n}\frac1k$.
+\begin{questions}
+  \item Montrer que, pour tout $k\geq1$ :
+    $\dfrac{1}{k+1}\leq\ln(k+1)-\ln k\leq\dfrac1k$
+    \emph{(utiliser l'encadrement $\frac{x}{1+x}\leq\ln(1+x)\leq x$ du
+    chapitre 4)}.
+  \item En sommant, montrer que $H_n\geq\ln(n+1)$, et en déduire que
+    $H_n\to+\infty$.
+  \item On pose $\gamma_n=H_n-\ln n$. Montrer que $(\gamma_n)$ est
+    décroissante et minorée par $0$.
+  \item Conclure : $(\gamma_n)$ converge. Sa limite $\gamma\approx0{,}577$
+    est la \emph{constante d'Euler}.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{L'irrationalité de e}
+On reprend les suites adjacentes de l'exercice 13 :
+$a_n=\displaystyle\sum_{k=0}^{n}\frac{1}{k!}$ et $b_n=a_n+\dfrac{1}{n\cdot n!}$, de
+limite commune $\mathrm{e}$, avec $a_n<\mathrm{e}<b_n$ pour tout $n\geq1$.
+On suppose, par l'absurde, que $\mathrm{e}=\dfrac{p}{q}$ avec
+$p,q\in\N^{*}$.
+\begin{questions}
+  \item Justifier que $q!\,a_q$ est un entier, puis que $q!\,\mathrm{e}$ est
+    un entier.
+  \item Montrer que $0<q!\,(\mathrm{e}-a_q)<\dfrac1q\leq1$.
+  \item Conclure.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La moyenne arithmético-géométrique}
+Soient $0<b<a$. On définit deux suites par $a_0=a$, $b_0=b$ et :
+\[
+  a_{n+1}=\frac{a_n+b_n}{2},\qquad b_{n+1}=\sqrt{a_n\,b_n}.
+\]
+\begin{questions}
+  \item Montrer que, pour tout $n$ : $0<b_n\leq a_n$
+    \emph{(inégalité arithmético-géométrique, chapitre 2)}.
+  \item Montrer que $(a_n)$ est décroissante et $(b_n)$ croissante.
+  \item Montrer que $0\leq a_{n+1}-b_{n+1}\leq\dfrac{a_n-b_n}{2}$, puis que
+    $a_n-b_n\to0$.
+  \item Conclure que $(a_n)$ et $(b_n)$ convergent vers une même limite
+    $M(a,b)$, la \emph{moyenne arithmético-géométrique} de $a$ et $b$, et
+    donner l'encadrement obtenu pour $M(4,1)$ avec $n=2$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Bolzano-Weierstrass par dichotomie}
+Soit $(u_n)$ une suite à valeurs dans un segment $\intFF{a}{b}$. On
+construit deux suites $(a_n)$ et $(b_n)$ ainsi : $a_0=a$, $b_0=b$ ; si
+l'intervalle $\Bigl[a_n,\frac{a_n+b_n}{2}\Bigr]$ contient $u_k$ pour une
+infinité d'indices $k$, on le choisit comme $\intFF{a_{n+1}}{b_{n+1}}$ ;
+sinon on choisit l'autre moitié.
+\begin{questions}
+  \item Justifier que, pour tout $n$, l'intervalle $\intFF{a_n}{b_n}$
+    contient $u_k$ pour une infinité d'indices $k$.
+  \item Montrer que $(a_n)$ et $(b_n)$ sont adjacentes ; on note $\ell$ leur
+    limite commune.
+  \item Construire une extraction $\varphi$ strictement croissante telle que
+    $u_{\varphi(n)}\in\intFF{a_n}{b_n}$ pour tout $n$.
+  \item Conclure : $u_{\varphi(n)}\to\ell$. Quel théorème vient-on de
+    démontrer ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Fibonacci et le nombre d'or}
+On reprend la suite de Fibonacci ($F_0=0$, $F_1=1$,
+$F_{n+2}=F_{n+1}+F_n$) et son terme général obtenu à l'exercice 15 :
+$F_n=\dfrac{\varphi^{n}-\psi^{n}}{\sqrt5}$, avec
+$\varphi=\dfrac{1+\sqrt5}{2}$ et $\psi=\dfrac{1-\sqrt5}{2}$.
+\begin{questions}
+  \item Justifier que $|\psi|<1$, puis déterminer la limite de
+    $\dfrac{F_{n+1}}{F_n}$.
+  \item Démontrer l'identité de Cassini : pour tout $n\geq1$,
+    $F_{n+1}F_{n-1}-F_n^{2}=(-1)^{n}$.
+  \item On pose $r_n=\dfrac{F_{n+1}}{F_n}$ ($n\geq1$). Vérifier que
+    $r_{n+1}=1+\dfrac{1}{r_n}$, et retrouver la limite de $(r_n)$ à l'aide
+    de l'équation du point fixe.
+  \item Expliquer pourquoi on peut écrire
+    $\varphi=1+\cfrac{1}{1+\cfrac{1}{1+\cdots}}$ (fraction continuée).
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-05}

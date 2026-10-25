@@ -1,0 +1,16 @@
+% Cycloïde décrite par un point de la roue et vecteurs accélération dirigés vers le centre (corrigé du défi D13)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otMuted,line width=0.5pt] (-0.3,0) -- (13.2,0);
+\draw[otNavy,line width=0.9pt,domain=0:12.566,samples=200,smooth,variable=\t] plot ({\t-sin(\t r)},{1-cos(\t r)});
+\draw[otRule,line width=0.6pt] (5.0,1) circle (1);
+\fill[otMuted] (5.0,1) circle (0.04) node[pcLegende,anchor=south west] {C};
+\foreach \t in {1.571,3.1416,4.712,7.854,9.425,11.0}{%
+  \pgfmathsetmacro\xm{\t-sin(\t r)}\pgfmathsetmacro\ym{1-cos(\t r)}%
+  \pgfmathsetmacro\xc{\t}%
+  \fill[otInk] (\xm,\ym) circle (0.05);
+  \draw[pcAcc] (\xm,\ym) -- ($(\xm,\ym)!0.75!(\xc,1)$);}
+\fill[otGreenDark] (0,0) circle (0.06) node[pcLegende,anchor=north,text=otGreenDark] {$v=0$};
+\fill[otGreenDark] (6.283,0) circle (0.06) node[pcLegende,anchor=north,text=otGreenDark] {$v=0$};
+\node[pcLegende,text=otNavy,anchor=south] at (3.1416,2.05) {$v=2R\omega$};
+\end{tikzpicture}
+\par\smallskip\legende{Le point de la roue décrit une cycloïde. Son accélération, de norme constante $R\omega^2$, est toujours dirigée vers le centre C de la roue.}

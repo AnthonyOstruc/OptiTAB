@@ -1,0 +1,123 @@
+\begin{ouverture}[mesure]{20}{Capteurs et outils numériques}{Ondes et signaux}{Observer · Modéliser · Expérimenter · Expliquer}
+\objectif{Relier une grandeur physique à la réponse d’un capteur.}
+\objectif{Construire et utiliser une courbe d’étalonnage.}
+\objectif{Exploiter un capteur avec un microcontrôleur.}
+\prerequis{Proportionnalité, conversions et lecture de graphiques.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Une grandeur devient un signal}
+Un capteur répond à une grandeur d'intérêt : température, éclairement, pression. Un capteur résistif fait varier sa résistance ; le circuit associé transforme cette variation en tension mesurable. Une thermistance peut voir sa résistance diminuer quand la température augmente ; une photorésistance dépend de l'éclairement. Le comportement exact doit être étalonné.
+\schema[corrige]{capteur-courbe}
+La chaîne de mesure comprend la grandeur, le capteur, le conditionnement électrique, l'acquisition puis l'affichage ou le traitement. Une tension lue ne donne pas seule une température sans relation d'étalonnage.
+\essSection{2}{Étalonner et interpoler}
+Mesurer simultanément la grandeur avec une référence et la résistance du capteur. Tracer les couples et choisir un modèle sur le domaine testé. Sur l'exemple construit de ce chapitre, entre 0 et 40 °C, $R(\mathrm{k}\Omega)=20,0-0,400\theta(^{\circ}\mathrm C)$. Cette relation est une donnée de modèle locale, pas une loi universelle des thermistances.
+\begin{savoirfaire}[Interpolation]Pour $R=\qty{10,0}{k\ohm}$, $\theta=(20,0-10,0)/0,400=25,0\,^{\circ}\mathrm C$. Toujours vérifier que la valeur se situe dans le domaine d'étalonnage. Une courbe non linéaire exige une lecture ou un modèle adaptés.\end{savoirfaire}
+\essSection{3}{Du circuit au programme}
+On peut alimenter deux résistances en série et mesurer la tension aux bornes de l'une d'elles. Le courant dans les deux est le même, et la loi des mailles relie leurs tensions à la tension d'alimentation. L'entrée de mesure est supposée ici ne pas prélever de courant significatif.
+\schema[corrige]{pont-capteur}
+Pour le montage, $U=U_0R_c/(R_0+R_c)$. Cette relation se retrouve par les lois du chapitre précédent. Un convertisseur analogique-numérique renvoie un entier associé à la tension ; le programme convertit cet entier puis applique l'étalonnage. Les limites d'entrée et la référence de tension dépendent du matériel.
+\essSection{4}{Expérimenter et modéliser}
+\begin{experience}[Un capteur résistif]Sous encadrement, relever la résistance d'une thermistance à plusieurs températures mesurées par un thermomètre de référence ; attendre la stabilisation. Construire la courbe puis déterminer une température inconnue. Associer ensuite le capteur à une carte selon sa documentation et vérifier que la tension admissible n'est jamais dépassée.\end{experience}
+\begin{docu}{1}{Traitement d'une acquisition simulée}
+Le convertisseur fictif de l'exemple renvoie 0 pour 0 V et 1000 pour 5,00 V. Il ne décrit pas une carte commerciale particulière.
+\begin{verbatim}
+code = 400
+u = 5.00 * code / 1000
+r0 = 10000
+rc = r0 * u / (5.00 - u)
+print(rc)  # resistance en ohms
+\end{verbatim}
+Tester les bornes et les dénominateurs avant d'utiliser un programme sur des mesures réelles.
+\end{docu}
+\exercices
+\rubrique{Prendre confiance}
+\begin{blocLivre}{ex-20-1}\begin{exercice}[1]{Reconnaître un capteur}
+Un téléphone ajuste sa luminosité et affiche sa température interne.
+\begin{questions}
+\item Quelles grandeurs des capteurs peuvent-ils détecter ?
+\item Un capteur résistif fournit-il directement une phrase à l’écran ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-2}\begin{exercice}[1]{Lire une courbe}
+Le capteur du modèle a $R=20,0-0,400\theta$, en kΩ et °C, entre 0 et 40 °C.
+\schema{capteur-courbe}
+\begin{questions}
+\item Lire R à 20 °C.
+\item Décrire le sens de variation.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-3}\begin{exercice}[1]{Une température inconnue}
+On mesure $R=\qty{10,0}{k\ohm}$ pour le capteur du modèle local.
+\begin{questions}
+\item Déterminer la température.
+\item Vérifier qu’elle appartient à la gamme.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-4}\begin{exercice}[1]{Une conversion numérique}
+Un convertisseur fictif donne 0 pour 0 V et 1000 pour 5,00 V, de façon linéaire.
+\begin{questions}
+\item Quelle tension correspond au code 600 ?
+\item Quel code correspond à 1,25 V ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\rubrique{S’entraîner}
+\begin{blocLivre}{ex-20-5}\begin{exercice}[2]{Un pont simple}
+$U_0=5,00$ V, $R_0=10,0$ kΩ et $R_c=10,0$ kΩ.
+\schema{pont-capteur}
+\begin{questions}
+\item Calculer le courant dans les résistances en série.
+\item Calculer la tension mesurée aux bornes de $R_c$.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-6}\begin{exercice}[2]{La grandeur utile}
+Une courbe fournit R en fonction de l’éclairement.
+\begin{questions}
+\item Quelle grandeur veut-on déduire d’une résistance mesurée ?
+\item Pourquoi faut-il un étalonnage avant la mesure inconnue ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-7}\begin{exercice}[2]{Une résistance retrouvée}
+Dans le pont, $R_0=10,0$ kΩ, $U_0=5,00$ V et $U=2,00$ V. On fournit $R_c=R_0U/(U_0-U)$.
+\schema{pont-capteur}
+\begin{questions}
+\item Calculer $R_c$.
+\item En déduire la température avec le modèle local.
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-8}\begin{exercice}[2]{Hors domaine}
+Un capteur a été étalonné entre 0 et 40 °C. Un calcul par prolongement de la droite donne 75 °C.
+\begin{questions}
+\item Pourquoi cette valeur n’est-elle pas validée ?
+\item Comment étendre l’usage du capteur ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\rubrique{Raisonner et approfondir}
+\begin{blocLivre}{ex-20-9}\begin{exercice}[3]{Un seuil à programmer}
+Une alerte est souhaitée au-dessus de 30,0 °C. Pour le capteur, $R=20,0-0,400\theta$ en kΩ.
+\begin{questions}
+\item Calculer la résistance au seuil.
+\item Faut-il déclencher pour une résistance supérieure ou inférieure à ce seuil ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-10}\begin{exercice}[3]{Choisir les axes en Python}
+On veut tracer une caractéristique d’étalonnage R=f($\theta$).
+\begin{questions}
+\item Quel tableau placer en abscisse et en ordonnée ?
+\item Quelles informations ajouter au graphique ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-11}\begin{exercice}[3]{Une division impossible}
+Le programme calcule $R_c=R_0U/(U_0-U)$. La mesure renvoie $U=U_0$.
+\begin{questions}
+\item Que se passe-t-il dans le calcul ?
+\item Comment le programme doit-il réagir ?
+\end{questions}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-20-12}\begin{exercice}[3]{Deux sources d’erreur}
+Un capteur étalonné correctement donne une température instable alors que le bain semble stable.
+\begin{questions}
+\item Citer deux causes possibles liées à la mesure.
+\item Proposer une vérification expérimentale.
+\end{questions}
+\end{exercice}\end{blocLivre}
+

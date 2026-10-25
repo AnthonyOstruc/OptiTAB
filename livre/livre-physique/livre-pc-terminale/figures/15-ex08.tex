@@ -1,0 +1,18 @@
+% Déviation d'un faisceau d'électrons entre deux plaques (exercice 8, chapitre 15)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otRed!55] (0,1.0) rectangle (5,1.15);
+\fill[otNavy!60] (0,-1.15) rectangle (5,-1.0);
+\node[font=\otSemi\fontsize{10}{11}\selectfont,text=otRed!80!black] at (-0.3,1.08) {$+$};
+\node[font=\otSemi\fontsize{10}{11}\selectfont,text=otNavy] at (-0.3,-1.08) {$-$};
+\draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-1.6,0) -- (6.6,0) node[pcLegende,anchor=north east] {$x$};
+\draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-1.5) -- (0,1.6) node[pcLegende,anchor=north west] {$y$};
+\node[pcLegende,anchor=north east] at (0,0) {O};
+\draw[otNavy,line width=0.9pt] (-1.5,0) -- (0,0);
+\fill[otNavy] (-1.5,0) circle (0.06);
+\draw[pcVitesse] (-1.5,0) -- (-0.7,0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_0$};
+\solution{\draw[otNavy,line width=0.9pt,domain=0:5,samples=40] plot (\x,{0.0219*\x*\x});
+  \draw[otNavy,line width=0.9pt,dash pattern=on 3pt off 2pt] (5,0.549) -- (6.4,0.857);}
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (0,-1.45) -- (5,-1.45) node[pos=0.5,pcLegende,anchor=north] {$L$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (5.35,-1.0) -- (5.35,1.0) node[pos=0.25,pcLegende,anchor=west] {$d$};
+\end{tikzpicture}
+\par\smallskip\legende{Les électrons entrent en O entre les plaques ; l'axe $(Ox)$ est à égale distance des deux plaques.}

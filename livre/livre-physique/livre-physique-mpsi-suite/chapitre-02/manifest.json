@@ -1,0 +1,161 @@
+{
+  "chapitre": 2,
+  "titre": "Signaux électriques dans l’ARQS",
+  "rubrique": "1.2",
+  "scope": "les grandeurs électriques, les dipôles linéaires, les lois de circuit et l’influence des appareils de mesure.",
+  "cours": 11,
+  "exercices": 24,
+  "defis": 3,
+  "dm": 1,
+  "ds": 1,
+  "sources": [
+    {
+      "titre": "DM réel / Réseau de résistances",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/dm2_optique_elec.pdf",
+      "cible": "MPSI, schleck.ovh ; DM2 à rendre le 29 septembre 2026 ; exercice 2, questions 1 à 6, page 2/2.",
+      "travail": "Prévoir 35 minutes. Résoudre d’abord la cellule isolée, puis construire la récurrence du réseau. Garder le dessin original : chaque cellule comporte deux résistances R sur les rails et une branche transversale 2R.",
+      "corrige": "La cellule isolée est une série $R+2R+R=4R$. La résistance du bas reçoit $u_R=E/4=1{,}5$ V. Sa puissance vaut $E^2/(16R)=2{,}25$ mW ; la source fournit $E^2/(4R)=9$ mW, d’où $\\eta=1/4$. La récurrence est $X_n=2R+2RX_{n-1}/(2R+X_{n-1})$ ; $X_1=4R$ et $X_2=10R/3$. La limite positive vérifie $X^2-2RX-4R^2=0$, soit $X=(1+\\sqrt5)R=3{,}236$ k$\\Omega$. Ces résultats concernent le schéma du DM, différent de E23."
+    },
+    {
+      "titre": "DS réel / Panneau solaire",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/ds02_enonce.pdf",
+      "cible": "MPSI, schleck.ovh ; DS2 du 8 octobre 2026 ; partie III, questions 1 et 4 à 6, pages 5/7 et 6/7.",
+      "travail": "Prévoir 30 minutes. Lire la caractéristique réelle avant de travailler le modèle local de Thévenin. Pour les questions 4 à 6, prendre x branches en parallèle et y cellules par branche, avec xy=N.",
+      "corrige": "Une courbe d’iso-puissance vérifie $I=P/U$. Les branches donnent $E_{\\rm eq}=yE=NE/x$ et $r_{\\rm eq}=yr/x=Nr/x^2$, donc $U=NExR/(Rx^2+Nr)$. Dans l’optimisation continue, $x=\\sqrt{Nr/R}$ et $y=\\sqrt{NR/r}$ : l’adaptation donne $P_{\\max}=NE^2/(4r)$ et $P_J=P_{\\max}$. Le câblage réel impose des entiers et des diviseurs de N : comparer les configurations réalisables."
+    }
+  ],
+  "controles": [
+    {
+      "nom": "E01-q",
+      "valeur": 0.096,
+      "attendu": 0.096,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E02-q",
+      "valeur": 8.0,
+      "attendu": 8.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E06-i",
+      "valeur": 1.0,
+      "attendu": 1.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E08-U",
+      "valeur": 7.416198487095663,
+      "attendu": 7.416198487095663,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E09-énergie",
+      "valeur": 2.4e-05,
+      "attendu": 2.4e-05,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E10-Req",
+      "valeur": 300.0,
+      "attendu": 300.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E13-u",
+      "valeur": 4.5,
+      "attendu": 4.5,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E15-seuil",
+      "valeur": 9900000.0,
+      "attendu": 9900000.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E16-r",
+      "valeur": 50.0,
+      "attendu": 50.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E18-max",
+      "valeur": 18.0,
+      "attendu": 18.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E19-énergie",
+      "valeur": -0.00030000000000000003,
+      "attendu": -0.0003,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E20-stock",
+      "valeur": 0.0010000000000000002,
+      "attendu": 0.001,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E22-apparent",
+      "valeur": 90909.09090909091,
+      "attendu": 90909.09090909091,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E23-limite",
+      "valeur": 1.618033988749895,
+      "attendu": 1.618033988749895,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "E24-incertitude",
+      "valeur": 0.45069390943299864,
+      "attendu": 0.45069390943299864,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "D2-Rplus",
+      "valeur": 10.0,
+      "attendu": 10.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "DS-énergieC",
+      "valeur": 0.00011999999999999999,
+      "attendu": 0.00012,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "DS-surtension",
+      "valeur": -2000.0,
+      "attendu": -2000.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "R1-cellule",
+      "valeur": 4.0,
+      "attendu": 4.0,
+      "tolerance": 1e-07
+    },
+    {
+      "nom": "R1-eta",
+      "valeur": 0.25,
+      "attendu": 0.25,
+      "tolerance": 1e-07
+    }
+  ],
+  "figures": [
+    "conventions",
+    "thevenin",
+    "diviseur",
+    "noeud",
+    "rc",
+    "rl",
+    "lc",
+    "rlc",
+    "rc-parallele",
+    "ressort"
+  ]
+}

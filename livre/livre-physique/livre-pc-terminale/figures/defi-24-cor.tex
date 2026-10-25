@@ -1,0 +1,19 @@
+% Cercle oculaire d'une lunette afocale : tous les faisceaux émergents y passent (corrigé du défi D24)
+% f'1 = 7 ; f'2 = 1 ; faisceau axial et faisceau incliné (tan theta = 0,05)
+\begin{tikzpicture}[x=1.15cm,y=1.15cm]
+\draw[otMuted,line width=0.4pt] (-1.4,0) -- (10.6,0);
+\draw[otNavy,line width=1pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}] (0,-1.6) -- (0,1.6) node[pcLegende,anchor=south,text=otNavy] {objectif};
+\draw[otNavy,line width=1pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}] (8,-0.85) -- (8,0.85) node[pcLegende,anchor=south,text=otNavy] {oculaire};
+\fill[otInk] (7,0) circle (0.035) node[pcLegende,anchor=south] {$F'_1=F_2$};
+% faisceau parallèle à l'axe
+\foreach \y in {1.5,-1.5}{
+  \draw[otNavy!70,line width=0.6pt] (-1.2,\y) -- (0,\y) -- (8,{-\y/7}) -- (10.4,{-\y/7});}
+% faisceau incliné
+\foreach \y/\yo in {1.5/-0.614,0/-0.4,-1.5/-0.186}{
+  \draw[otRed!80!black,line width=0.6pt] (-1.2,{\y+0.06}) -- (0,\y) -- (7,-0.35) -- (8,\yo) -- (10.4,{\yo+0.84});}
+% cercle oculaire
+\draw[otGreenDark,line width=1.6pt] (9.143,-0.214) -- (9.143,0.214);
+\node[pcLegende,anchor=north,text=otGreenDark,align=center] at (9.143,-0.3) {cercle\\ oculaire};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.2mm]}-{Stealth[length=1.2mm]}] (8,-1.2) -- (9.143,-1.2) node[pos=0.5,pcLegende,anchor=north] {$x$};
+\end{tikzpicture}
+\par\smallskip\legende{Le faisceau parallèle à l'axe (en bleu) et le faisceau incliné (en rouge) traversent tous deux le cercle oculaire, image de l'objectif par l'oculaire : c'est là qu'il faut placer la pupille de l'œil.}

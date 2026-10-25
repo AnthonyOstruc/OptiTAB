@@ -1,0 +1,115 @@
+% !TEX program = lualatex
+\documentclass[11pt,twoside,openany]{book}
+\usepackage{optitab-livre}
+\usepackage{figures-geometrie}
+\usepackage{relecture-livre}
+\usepackage{edition-france}
+\newcommand{\ligneSommaire}[2]{\par\vspace{3.5mm}\hyperref[#2]{#1}\hfill{\small p.\,\pageref*{#2}}\par}
+\providecommand{\square}{\mdlgwhtsquare}
+\newcommand{\otDecocalcul}{\otDecoensembles}
+\newcommand{\otDecostatistiques}{\otDecoGrille}
+\newcommand{\otDecoalgorithmique}{\otDecoboucles}
+\newcommand{\otDecoprobabilites}{\otDecoconditionnelles}
+\newcommand{\otDecogeometrie}{\otDecoGrille
+\draw[white,opacity=.25,line width=1pt](113mm,24mm)--(194mm,24mm)--(194mm,100mm)--cycle;
+\draw[white,opacity=.25,line width=.8pt](186mm,24mm)--(186mm,32mm)--(194mm,32mm);}
+\newcommand{\otDecograndeurs}{\otDecoGrille
+\draw[white,opacity=.3,line width=1pt](116mm,30mm)--(192mm,30mm);
+\foreach \k in {0,...,8}{\draw[white,opacity=.3,line width=.8pt]({116mm+\k*9.5mm},30mm)--({116mm+\k*9.5mm},34mm);}
+\draw[white,opacity=.3,line width=.8pt](116mm,70mm)rectangle(192mm,84mm);
+\draw[white,opacity=.3,line width=.8pt](135mm,70mm)--(135mm,84mm)(154mm,70mm)--(154mm,84mm)(173mm,70mm)--(173mm,84mm);}
+\hypersetup{pdftitle={Mathématiques - CM2 - Livre complet},
+pdfsubject={France 2026-2027 : 21 chapitres, 336 exercices corrigés, deux bilans originaux},pdfauthor={OptiTAB}}
+\newcommand{\otDecoseconddegre}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (132mm,47mm)--(210mm,47mm);
+  \draw[white,opacity=.25] (171mm,18mm)--(171mm,118mm);
+  \draw[otGreen,line width=1.8pt] plot[domain=-1.8:1.8,samples=75]
+    ({(171+20*\x)*1mm},{(47+16*\x*\x)*1mm});
+  \fill[white] (171mm,47mm) circle (1.5mm);}
+\newcommand{\otDecovecteursplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.7,line width=1.5pt,-{Stealth[length=3mm]}] (130mm,47mm)--(199mm,61mm);
+  \draw[otGreen,line width=1.8pt,-{Stealth[length=3mm]}] (130mm,47mm)--(157mm,105mm);
+  \draw[white,opacity=.35,dashed] (157mm,105mm)--(168mm,55mm);
+  \fill[white] (130mm,47mm) circle (1.5mm);}
+\newcommand{\otDecocercleplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (130mm,73mm)--(210mm,73mm) (170mm,36mm)--(170mm,116mm);
+  \draw[otGreen,line width=1.8pt] (170mm,73mm) circle (30mm);
+  \draw[white,opacity=.75,line width=1.2pt] (162mm,116.5mm)--(210mm,80.5mm);
+  \draw[white,opacity=.45,dashed] (170mm,73mm)--(188mm,97mm);
+  \fill[white] (188mm,97mm) circle (1.6mm);}
+\newcommand{\otDecoensembles}{%
+  \otDecoGrille
+  \fill[white,opacity=.10] (155mm,76mm) circle (22mm);
+  \fill[otGreen,opacity=.2] (181mm,76mm) circle (22mm);
+  \draw[white,opacity=.8,line width=1.3pt] (155mm,76mm) circle (22mm);
+  \draw[otGreen,line width=1.7pt] (181mm,76mm) circle (22mm);}
+
+\begin{document}
+\pagenumbering{alph}
+\input{couverture/premiere}
+\pagenumbering{arabic}
+\input{liminaires/titre}
+\input{liminaires/copyright}
+\input{liminaires/avant-propos}
+\input{liminaires/mode-emploi}
+\input{liminaires/parcours}
+\input{liminaires/sommaire}
+\input{liminaires/tableau-de-bord}
+\pagestyle{otMain}
+\input{chapitres/01-grands-nombres}
+\input{chapitres/02-operations-entiers}
+\input{chapitres/03-multiples-diviseurs}
+\input{chapitres/04-division}
+\input{chapitres/05-regularites}
+\input{chapitres/06-fractions}
+\input{chapitres/07-comparer-fractions}
+\input{chapitres/08-fraction-quantite}
+\input{chapitres/09-decimaux}
+\input{chapitres/10-calculs-decimaux}
+\input{chapitres/11-mesures}
+\input{chapitres/12-aires}
+\input{chapitres/13-angles}
+\input{chapitres/14-durees}
+\input{chapitres/15-constructions}
+\input{chapitres/16-polygones}
+\input{chapitres/17-symetrie}
+\input{chapitres/18-solides}
+\input{chapitres/19-proportionnalite}
+\input{chapitres/20-donnees}
+\input{chapitres/21-probabilites}
+\input{annexes/defis-enonces}
+\input{annexes/indices-defis}
+\input{annexes/bilans-enonces}
+\input{annexes/demonstrations}
+\partieCorriges
+\input{corriges/01-grands-nombres}
+\input{corriges/02-operations-entiers}
+\input{corriges/03-multiples-diviseurs}
+\input{corriges/04-division}
+\input{corriges/05-regularites}
+\input{corriges/06-fractions}
+\input{corriges/07-comparer-fractions}
+\input{corriges/08-fraction-quantite}
+\input{corriges/09-decimaux}
+\input{corriges/10-calculs-decimaux}
+\input{corriges/11-mesures}
+\input{corriges/12-aires}
+\input{corriges/13-angles}
+\input{corriges/14-durees}
+\input{corriges/15-constructions}
+\input{corriges/16-polygones}
+\input{corriges/17-symetrie}
+\input{corriges/18-solides}
+\input{corriges/19-proportionnalite}
+\input{corriges/20-donnees}
+\input{corriges/21-probabilites}
+\input{annexes/defis-corriges}
+\input{annexes/bilans-corriges}
+\input{annexes/outils}
+\input{annexes/couverture-programme}
+\input{liminaires/references}
+\input{couverture/dos}
+\end{document}

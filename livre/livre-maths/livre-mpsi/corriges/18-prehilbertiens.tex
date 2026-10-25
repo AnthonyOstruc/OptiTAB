@@ -1,0 +1,409 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 18 — Espaces préhilbertiens réels
+%% Résultats vérifiés par verifications/chapitre_18.py.
+
+\corrigesChapitre{18}{Espaces préhilbertiens réels}
+\corrigesSouples
+
+\begin{blocLivre}{cor-18-1}
+\begin{corrige}{1}{Produit scalaire ou pas ?}
+\demarche{Bilinéaire et symétrique se voient ; tout se joue sur « défini
+positif ».}
+\begin{questions}
+  \item $\varphi$ : \res{\text{non}} — $\varphi(u,u)=x^{2}-y^{2}$ peut
+    être négatif ($u=(1,2)$ donne $-3$). $\psi$ : \res{\text{oui}} —
+    bilinéaire symétrique, et $\psi(u,u)=2x^{2}+3y^{2}>0$ pour $u\neq0$.
+  \item $\int_0^1fg$ : \res{\text{oui}} — le caractère défini vient de
+    l'exercice « intégrale nulle » du chapitre 15. $f(0)g(0)$ :
+    \res{\text{non}} — $f(x)=x$ est non nulle avec
+    $\langle f,f\rangle=0$ : positive mais pas \emph{définie}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-2}
+\begin{corrige}{2}{Calculs dans $\R^{3}$}
+\demarche{Produit scalaire canonique : sommes de produits, racines pour
+les normes.}
+\begin{questions}
+  \item $\norme{u}=\sqrt{1+4+4}=\res{3}$, $\norme{v}=3$ ;
+    $\langle u,v\rangle=2-2+4=\res{4}$, d'où
+    $\cos\theta=\dfrac{4}{3\times3}=\res{\dfrac49}$.
+  \item $u-v=(-1,3,0)$ : $\norme{u-v}=\res{\sqrt{10}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-3}
+\begin{corrige}{3}{Cauchy-Schwarz en pratique}
+\demarche{Choisir le bon second vecteur : ici (1, 1, ..., 1).}
+\begin{questions}
+  \item C'est Cauchy-Schwarz pour $a=(a_1,\dots,a_n)$ et
+    $y=(1,\dots,1)$ :
+    $\langle a,y\rangle^{2}\leqslant\norme{a}^{2}\norme{y}^{2}
+    =n\sum a_i^{2}$. Égalité si et seulement si $a$ est colinéaire à
+    $y$ : \res{\text{tous les }a_i\text{ égaux}}.
+  \item $(1+2+3+4)^{2}=100\leqslant4\times30=120$ ; et pour $(2,2,2)$ :
+    $36=3\times12$ — égalité, comme prévu.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-4}
+\begin{corrige}{4}{Polarisation et parallélogramme}
+\demarche{Développer les carrés de normes : tout est identité remarquable.}
+\begin{questions}
+  \item $\langle u,v\rangle=2+3-2=3$ ; $u+v=(3,4,1)$ :
+    $\norme{u+v}^{2}=26=6+14+2\times3$ : conforme.
+  \item $u-v=(1,-2,-3)$, $\norme{u-v}^{2}=14$ :
+    $\dfrac{26-14}{4}=\res{3}=\langle u,v\rangle$ (polarisation), et
+    $26+14=40=2\times6+2\times14$ (parallélogramme).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-5}
+\begin{corrige}{5}{Orthogonalité et Pythagore}
+\demarche{Pour la liberté : prendre le produit scalaire de la relation avec
+chaque vecteur.}
+\begin{questions}
+  \item $\langle u,v\rangle=-2+2=0$ ; et
+    $\norme{u+v}^{2}=\norme{(-1,3)}^{2}=10=5+5$ : Pythagore.
+  \item Si $\sum\lambda_ix_i=0$, le produit scalaire avec $x_j$ donne
+    $\lambda_j\norme{x_j}^{2}=0$ (les autres termes s'annulent par
+    orthogonalité), donc $\lambda_j=0$ : la famille est
+    \res{\text{libre}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-6}
+\begin{corrige}{6}{Gram-Schmidt dans $\R^{3}$}
+\demarche{Retrancher les ombres, normer à la fin.}
+$e_1=\dfrac{1}{\sqrt2}(1,1,0)$. Puis
+$w_2=(1,0,1)-\dfrac12(1,1,0)=\bigl(\tfrac12,-\tfrac12,1\bigr)$, de norme
+$\sqrt{3/2}$ : $e_2=\dfrac{1}{\sqrt6}(1,-1,2)$. Enfin
+\[
+w_3=(0,1,1)-\frac12(1,1,0)-\frac16(1,-1,2)
+=\Bigl(-\frac23,\frac23,\frac23\Bigr),
+\qquad
+e_3=\res{\frac{1}{\sqrt3}(-1,1,1)} .
+\]
+On vérifie : les trois produits scalaires croisés sont nuls, les trois
+normes valent $1$.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-7}
+\begin{corrige}{7}{Coordonnées en base orthonormée}
+\demarche{En BON, les coordonnées sont des produits scalaires.}
+\begin{questions}
+  \item $\langle x,e_1\rangle=\dfrac{3+8}{5}=\res{\dfrac{11}{5}}$ et
+    $\langle x,e_2\rangle=\dfrac{-4+6}{5}=\res{\dfrac25}$, et l'on
+    vérifie $\frac{11}{5}e_1+\frac25e_2=(1,2)$.
+  \item $\Bigl(\dfrac{11}{5}\Bigr)^{2}+\Bigl(\dfrac25\Bigr)^{2}
+    =\dfrac{125}{25}=5=\norme{x}^{2}$ : la norme se lit dans n'importe
+    quelle BON.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-8}
+\begin{corrige}{8}{Projection sur une droite}
+\demarche{Projeter sur une droite : un seul produit scalaire.}
+\begin{questions}
+  \item $p(x)=\dfrac{\langle x,u\rangle}{\norme{u}^{2}}\,u
+    =\dfrac39(1,2,2)=\res{\Bigl(\dfrac13,\dfrac23,\dfrac23\Bigr)}$.
+  \item $d(x,D)^{2}=\norme{x}^{2}-\norme{p(x)}^{2}=9-1=8$ :
+    $d(x,D)=\res{2\sqrt2}$, et $9=1+8$ : Pythagore au rendez-vous.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-9}
+\begin{corrige}{9}{Le produit scalaire des matrices}
+\demarche{$\operatorname{tr}\bigl(A^{\mathsf T}B\bigr)$ additionne les
+produits coefficient par coefficient : la géométrie de $\R^{4}$ en
+déguisement.}
+\begin{questions}
+  \item $\bigl(A^{\mathsf T}B\bigr)_{jj}=\sum_ia_{ij}b_{ij}$ : en
+    sommant, $\langle A,B\rangle=\sum_{i,j}a_{ij}b_{ij}$ ; ici
+    $0+2+3-2=\res{3}$.
+  \item $\langle E_{ij},E_{kl}\rangle=1$ si $(i,j)=(k,l)$, $0$ sinon :
+    les quatre matrices élémentaires forment une \res{\text{BON}} de
+    $\mathcal{M}_2(\R)$.
+  \item Le trinôme du chapitre 13 était la démonstration de
+    Cauchy-Schwarz pour ce produit scalaire — énoncée alors « avant
+    l'heure », désormais un cas particulier du cours.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-10}
+\begin{corrige}{10}{Le produit scalaire intégral}
+\demarche{Les fonctions deviennent des vecteurs ; les angles ont un sens.}
+\begin{questions}
+  \item Bilinéarité et symétrie sont claires ; si
+    $\int_0^1f^{2}=0$ avec $f$ continue, alors $f=0$ (chapitre 15,
+    exercice 10) : défini positif.
+  \item $\norme{x}^{2}=\int_0^1t^{2}=\dfrac13$,
+    $\langle1,x\rangle=\dfrac12$, et
+    $\cos\theta=\dfrac{1/2}{1\times1/\sqrt3}=\res{\dfrac{\sqrt3}{2}}$ :
+    les fonctions $1$ et $t\mapsto t$ font un angle de $\dfrac\pi6$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-11}
+\begin{corrige}{11}{Gram-Schmidt sur les polynômes}
+\demarche{Le même algorithme, avec des intégrales pour produits scalaires.}
+\begin{questions}
+  \item $P_1=X-\dfrac{\langle X,1\rangle}{\langle1,1\rangle}
+    =X-\dfrac12$ ; puis
+    $P_2=X^{2}-\dfrac{\langle X^{2},1\rangle}{1}
+    -\dfrac{\langle X^{2},P_1\rangle}{\norme{P_1}^{2}}P_1
+    =\res{X^{2}-X+\dfrac16}$.
+  \item $\norme{P_1}^{2}=\dfrac{1}{12}$ et
+    $\norme{P_2}^{2}=\dfrac{1}{180}$ ; et
+    $6P_2=6X^{2}-6X+1$ : le polynôme orthogonal à $1$ et $X$ de
+    l'exercice 22 du chapitre 15 — c'était un Gram-Schmidt qui
+    s'ignorait.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-12}
+\begin{corrige}{12}{L'orthogonal d'un sous-espace}
+\demarche{Une équation = un vecteur normal : l'orthogonal se lit
+directement.}
+\begin{questions}
+  \item $x\perp(1,1,1)$ signifie $x+y+z=0$ : $F^{\perp}$ est le plan
+    d'équation $x+y+z=0$, de dimension $\res{2}$, de base
+    $\bigl((1,-1,0),(1,0,-1)\bigr)$.
+  \item $F\cap F^{\perp}=\ens{0}$ (un vecteur orthogonal à lui-même est
+    nul) et $1+2=3$ : somme directe. Enfin
+    $F\subseteq(F^{\perp})^{\perp}$ et les dimensions ($1=3-2$)
+    forcent l'égalité : $\res{(F^{\perp})^{\perp}=F}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-13}
+\begin{corrige}{13}{Projection sur un plan}
+\demarche{Retirer la composante normale : un produit scalaire suffit.}
+\begin{questions}
+  \item $n=(1,1,1)$ et
+    $p_H(a)=a-\dfrac{\langle a,n\rangle}{\norme{n}^{2}}\,n
+    =(1,2,3)-2(1,1,1)=\res{(-1,0,1)}$.
+  \item $d(a,H)=\norme{(2,2,2)}=\res{2\sqrt3}$. La décomposition
+    $(1,2,3)=(-1,0,1)+(2,2,2)$ du chapitre 12 était donc
+    \emph{orthogonale} : on sait désormais que $(-1,0,1)$ n'est pas un
+    supplémentaire parmi d'autres, mais le point du plan \emph{le plus
+    proche} de $a$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-14}
+\begin{corrige}{14}{Distance à un hyperplan}
+\demarche{Décomposer x le long du vecteur normal.}
+\begin{questions}
+  \item Écrire $x=p+\lambda u$ avec $p\in H$ : le produit scalaire par
+    $u$ donne $\lambda=\dfrac{\langle x,u\rangle}{\norme{u}^{2}}$, et
+    $d(x,H)=\norme{\lambda u}
+    =\res{\dfrac{|\langle x,u\rangle|}{\norme{u}}}$.
+  \item $u=(1,2,-2)$, $\norme{u}=3$ :
+    $d=\dfrac{|3+2-2|}{3}=\res{1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-15}
+\begin{corrige}{15}{Le projeté en base orthonormée}
+\demarche{Deux produits scalaires, deux coordonnées : le projeté tombe.}
+\begin{questions}
+  \item Avec la BON $e_1=\frac{1}{\sqrt2}(1,1,0)$,
+    $e_2=\frac{1}{\sqrt6}(1,-1,2)$ de $F$ (exercice 6) :
+    $\langle x,e_1\rangle=\frac{3}{\sqrt2}$,
+    $\langle x,e_2\rangle=\frac{3}{\sqrt6}$, d'où
+    \[
+    p_F(x)=\frac32(1,1,0)+\frac12(1,-1,2)=\res{(2,1,1)} .
+    \]
+  \item $x-p_F(x)=(1,-1,-1)$ : $d(x,F)=\res{\sqrt3}$, et l'on vérifie
+    $\langle(1,-1,-1),e_1\rangle=\langle(1,-1,-1),e_2\rangle=0$ — le
+    reste est bien orthogonal au plan, et $9=6+3$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-16}
+\begin{corrige}{16}{La constante la plus proche}
+\demarche{Minimiser une distance quadratique, c'est projeter.}
+\begin{questions}
+  \item Le problème demande le point de
+    $F=\operatorname{Vect}(1)$ le plus proche de $f$ : c'est
+    $p_F(f)=\dfrac{\langle f,1\rangle}{\langle1,1\rangle}
+    =\displaystyle\int_0^1f$ — la \res{\text{valeur moyenne}}
+    (chapitre 15), revisitée en géomètre.
+  \item Pour $f(t)=t^{2}$ : $c=\dfrac13$ et le minimum vaut
+    $\displaystyle\int_0^1\Bigl(t^{2}-\frac13\Bigr)^{2}\mathrm{d}t
+    =\res{\dfrac{4}{45}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-17}
+\begin{corrige}{17}{Moindres carrés polynomiaux}
+\demarche{Le reste doit être orthogonal à 1 et à t : deux équations
+linéaires.}
+L'orthogonalité de $t^{2}-a-bt$ à $1$ puis à $t$ s'écrit
+$\dfrac13=a+\dfrac b2$ et $\dfrac14=\dfrac a2+\dfrac b3$, d'où
+$\res{a=-\dfrac16,\quad b=1}$ : le projeté de $X^{2}$ sur $\R_1[X]$ est
+$X-\dfrac16$, et le minimum vaut
+$\norme{X^{2}-X+\tfrac16}^{2}=\norme{P_2}^{2}=\res{\dfrac{1}{180}}$
+(exercice 11) : la meilleure droite approchant la parabole sur
+$\intFF{0}{1}$.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-18}
+\begin{corrige}{18}{Pythagore généralisé et inégalité de Bessel}
+\demarche{Le projeté et le reste sont orthogonaux : Pythagore fait tout.}
+\begin{questions}
+  \item Développer $\norme{\sum x_i}^{2}$ : les doubles produits
+    $\langle x_i,x_j\rangle$ sont nuls, il reste
+    $\sum\norme{x_i}^{2}$.
+  \item Posons $p=\sum_i\langle x,e_i\rangle e_i$ : alors $x-p$ est
+    orthogonal à chaque $e_i$, donc à $p$, et Pythagore donne
+    $\norme{x}^{2}=\norme{p}^{2}+\norme{x-p}^{2}
+    \geqslant\norme{p}^{2}=\sum_i\langle x,e_i\rangle^{2}$ : c'est
+    \res{\text{Bessel}}, avec égalité si et seulement si $x=p$,
+    c'est-à-dire $x\in\operatorname{Vect}(e_1,\dots,e_p)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-19}
+\begin{corrige}{19}{La meilleure approximation cubique}
+\demarche{Trois conditions d'orthogonalité, un système linéaire — ou la
+famille orthogonale toute prête.}
+L'orthogonalité de $t^{3}-at^{2}-bt-c$ à $1$, $t$, $t^{2}$ donne un
+système linéaire de solution
+$a=\dfrac32$, $b=-\dfrac35$, $c=\dfrac{1}{20}$ : le projeté est
+$\dfrac32X^{2}-\dfrac35X+\dfrac1{20}$, et
+\[
+\min=\int_0^1\Bigl(t^{3}-\frac32t^{2}+\frac35t-\frac1{20}\Bigr)^{2}
+\mathrm{d}t=\res{\frac{1}{2800}} .
+\]
+Le polynôme d'erreur est le quatrième membre de la famille orthogonale —
+exactement le $P_3$ de l'exercice 24.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-20}
+\begin{corrige}{20}{Les polynômes de Legendre}
+\demarche{Sur un segment symétrique, la parité offre la moitié des
+orthogonalités.}
+\begin{questions}
+  \item Les produits pair-impair sont nuls par imparité ; restent
+    $\langle1,X^{2}-\tfrac13\rangle=\tfrac23-\tfrac23=0$ et
+    $\langle X,X^{3}-\tfrac35X\rangle=\tfrac25-\tfrac35\cdot\tfrac23=0$.
+  \item $\dfrac{\mathrm{d}^{2}}{\mathrm{d}x^{2}}(x^{2}-1)^{2}
+    =12x^{2}-4=12\bigl(x^{2}-\tfrac13\bigr)$ et
+    $\dfrac{\mathrm{d}^{3}}{\mathrm{d}x^{3}}(x^{2}-1)^{3}
+    =120\bigl(x^{3}-\tfrac35x\bigr)$ : Rodrigues confirmé pour $n=2,3$.
+  \item Une famille orthogonale avec $\deg P_n=n$ est déterminée à
+    scalaires près : chaque $P_n$ est orthogonal à $\R_{n-1}[X]$ et de
+    degré $n$, ce qui ne laisse qu'une direction — celle que
+    Gram-Schmidt construit.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-21}
+\begin{corrige}{21}{Le déterminant de Gram}
+\demarche{Développer : Gram = Cauchy-Schwarz au carré, et c'est une aire.}
+\begin{questions}
+  \item $G(u,v)=\norme{u}^{2}\norme{v}^{2}-\langle u,v\rangle^{2}
+    \geqslant0$ : c'est exactement \res{\text{Cauchy-Schwarz}}, et la
+    nullité est son cas d'égalité : famille liée.
+  \item $u=(3,1)$, $v=(1,2)$ :
+    $G=10\times5-5^{2}=\res{25}=5^{2}$ — le carré de l'aire du
+    parallélogramme du chapitre 14. En général,
+    $G(u,v)=\norme{u}^{2}\norme{v}^{2}\sin^{2}\theta
+    =(\text{base}\times\text{hauteur})^{2}$ : le déterminant de Gram
+    mesure les aires \emph{sans coordonnées}, dans tout préhilbertien.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-22}
+\begin{corrige}{22}{Familles obtusangles}
+\demarche{Séparer les coefficients positifs et négatifs d'une relation :
+les produits croisés travaillent tous dans le même sens.}
+\begin{questions}
+  \item Trois vecteurs du plan à $120$ degrés deux à deux :
+    $\langle x_i,x_j\rangle=-\dfrac12<0$.
+  \item Supposons $\sum_{i<p}\lambda_ix_i=0$ non triviale, et notons
+    $y=\sum_{\lambda_i>0}\lambda_ix_i=\sum_{\lambda_j<0}(-\lambda_j)x_j$.
+    Alors $\norme{y}^{2}$ est une somme de termes
+    $\lambda_i(-\lambda_j)\langle x_i,x_j\rangle\leqslant0$ : $y=0$.
+    L'un des deux camps est non vide, disons
+    $\sum_{\lambda_i>0}\lambda_ix_i=0$ ; son produit scalaire avec
+    $x_p$ est strictement négatif (termes $\lambda_i\langle
+    x_i,x_p\rangle<0$) et nul à la fois : contradiction. La sous-famille
+    est \res{\text{libre}}.
+  \item $p$ vecteurs obtusangles donnent $p-1$ vecteurs libres :
+    $p-1\leqslant n$, soit $\res{p\leqslant n+1}$ — borne atteinte par le
+    « triangle » de a) et ses analogues en toute dimension.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-23}
+\begin{corrige}{23}{L'inégalité de Hadamard}
+\demarche{Gram-Schmidt rend les colonnes orthonormées sans changer le
+déterminant de plus qu'un produit de longueurs.}
+\begin{questions}
+  \item Gram-Schmidt sur les colonnes écrit $C_j=w_j+(\text{combinaison
+    des précédentes})$ avec $(w_j)$ orthogonaux : les opérations sur
+    colonnes laissent $\det A=\det(w_1,\dots,w_n)$, et pour des colonnes
+    orthogonales le déterminant vaut (au signe près) le produit des
+    normes. Comme $\norme{w_j}\leqslant\norme{C_j}$ (le $w_j$ est une
+    projection orthogonale de $C_j$) :
+    $\res{|\det A|\leqslant\norme{C_1}\cdots\norme{C_n}}$.
+  \item Égalité si et seulement si les colonnes sont deux à deux
+    \res{\text{orthogonales}} (ou l'une nulle). Diagonale :
+    $|{\det}|=|2\times3\times1|$, égalité. Pour l'exemple :
+    $|\det|=3\leqslant\sqrt2\,\sqrt5\,\sqrt2=2\sqrt5\approx4{,}47$ :
+    inégalité stricte, colonnes non orthogonales.
+  \item Le volume d'un parallélépipède penché est au plus le produit des
+    longueurs de ses arêtes — atteint quand elles sont perpendiculaires
+    (chapitre 14).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-18-24}
+\begin{corrige}{24}{Les racines des polynômes orthogonaux}
+\demarche{Orthogonal à tous les petits degrés : l'argument de signes du
+chapitre 15 s'applique mot pour mot.}
+\begin{questions}
+  \item $\R_{n-1}[X]=\operatorname{Vect}(P_0,\dots,P_{n-1})$ (degrés
+    échelonnés), et $P_n$ est orthogonal à chacun : par linéarité,
+    $\displaystyle\int_0^1P_n\,Q=0$ pour tout $Q\in\R_{n-1}[X]$.
+  \item L'exercice 22 du chapitre 15 (avec $n-1$ au lieu de $n$) donne
+    au moins $n$ changements de signe de $P_n$ dans $\intOO{0}{1}$,
+    donc au moins $n$ racines distinctes ; le degré $n$ en interdit
+    davantage : \res{\text{exactement }n\text{ racines réelles simples,
+    toutes dans }\intOO{0}{1}}.
+  \item $P_2$ : racines $\dfrac{3\pm\sqrt3}{6}\approx0{,}21$ et
+    $0{,}79$ ; $P_3$ : trois racines réelles
+    $\approx0{,}11$, $0{,}50$, $0{,}89$ — toutes dans l'intervalle,
+    comme promis. Ces racines servent de nœuds optimaux d'intégration
+    numérique : la boucle est bouclée avec les chapitres 10, 15 et 16.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-18}

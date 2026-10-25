@@ -1,0 +1,23 @@
+% Vases communicants remplis d'eau : points A, B, C, D, E (exercice 5, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=0.85cm]
+\fill[otNavy!14] (0,0) rectangle (5.0,0.6);
+\fill[otNavy!14] (0,0.6) rectangle (2.4,3.0);
+\fill[otNavy!14] (4.6,0.6) rectangle (5.0,3.0);
+\draw[pcSurface] (0,3.0) -- (2.4,3.0) (4.6,3.0) -- (5.0,3.0);
+\draw[pcVerre] (0,3.5) -- (0,0) -- (5.0,0) -- (5.0,3.5);
+\draw[pcVerre] (2.4,3.5) -- (2.4,0.6) -- (4.6,0.6) -- (4.6,3.5);
+\node[pcLegende,anchor=south] at (1.2,3.5) {air : $P_\mathrm{atm}$};
+% Axe vertical gradué en mètres
+\draw[otInk,line width=0.6pt,-{Stealth[length=2mm]}] (-0.8,-0.1) -- (-0.8,3.7) node[pcLegende,anchor=south] {$z$ (m)};
+\foreach \z in {0,1,2,3}{\draw[otInk,line width=0.5pt] (-0.88,\z) -- (-0.72,\z); \node[pcLegende,anchor=east] at (-0.9,\z) {\z};}
+% Points
+\foreach \x/\y/\n/\a in {0.8/2.0/A/south,4.8/2.0/B/south east,3.4/0.3/C/south,1.6/3.0/D/south,1.6/1.2/E/south}{%
+  \fill[otInk] (\x,\y) circle (0.05); \node[pcLegendeG,anchor=\a] at (\x,{\y+0.02}) {\n};}
+\solution{
+  \draw[otGreenDark,line width=0.6pt,dash pattern=on 3pt off 1.5pt] (0,2.0) -- (5.0,2.0);
+  \node[pcLegende,anchor=south,text=otGreenDark,fill=otNavy!14,inner sep=1pt] at (3.5,2.02) {$P_\mathrm{A}=P_\mathrm{B}$};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (5.1,3.0) {$P_\mathrm{D}=P_\mathrm{atm}$};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (5.1,2.0) {$\qty{1,11e5}{Pa}$};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (5.1,0.3) {$P_\mathrm{C}=\qty{1,28e5}{Pa}$};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Deux récipients reliés par le fond contiennent de l'eau au repos.}\solution{Même niveau, même pression ; plus un point est profond, plus la pression y est grande.}}

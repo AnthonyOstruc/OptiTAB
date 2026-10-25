@@ -1,0 +1,15 @@
+% Courbe de titrage de l'acide chlorhydrique par la soude (exercice 3, chapitre 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=104mm,height=58mm,xmin=0,xmax=40,ymin=0,ymax=13,
+  xtick={0,5,...,40},ytick={0,2,...,12},xlabel={$V_\mathrm{B}$ (mL)},ylabel={pH},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/03-hcl-naoh-ph.dat};
+\solution{\addplot[otMuted,line width=0.6pt,domain=10:24] {0.20*x-0.324};
+\addplot[otMuted,line width=0.6pt,domain=16:31] {0.20*x+6.276};
+\addplot[otGreenDark,line width=0.7pt,dashed,domain=13:27] {0.20*x+2.976};
+\addplot[only marks,mark=*,mark size=2pt,otGreenDark] coordinates {(20.0,6.98)};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:20,6.98) -- (axis cs:20,0);
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:20.4,1.6) {$V_\mathrm{E}=20{,}0$ mL ; pH$_\mathrm{E}=7{,}0$};}
+\end{axis}
+\end{tikzpicture}

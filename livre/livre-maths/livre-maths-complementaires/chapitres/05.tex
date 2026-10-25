@@ -1,0 +1,157 @@
+\begin{ouverture}[derivation]{5}{Convexité et inégalités}{Analyse et répartition}{Sécantes · Tangentes · Inflexion · Lorenz}
+\objectif{Reconnaître convexité et concavité sur un graphique.}
+\objectif{Utiliser le signe de la dérivée seconde.}
+\objectif{Justifier une inégalité par une tangente.}
+\objectif{Lire une courbe de Lorenz et comparer des répartitions.}
+\prerequis{Dérivation, variations et pourcentages cumulés.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{La position des cordes}
+\begin{definition}
+Une fonction est \textbf{convexe} sur un intervalle si sa courbe est située sous chaque segment reliant deux de ses points. Elle est \textbf{concave} si sa courbe est au-dessus de ces segments.
+\end{definition}
+Une fonction peut être croissante et concave : les valeurs augmentent alors que les pentes diminuent. La convexité décrit la variation des pentes, pas le signe de la fonction ni son sens de variation.
+\figurelivre{c05-convexite.pdf}{La parabole est sous la corde et au-dessus de ses tangentes. Pour le logarithme, les positions sont inversées : il est concave sur $]0,+\infty[$.}
+\essSection{2}{Deux critères admis}
+\begin{propriete}
+Pour $f$ dérivable, $f$ est convexe si et seulement si $f\,\!^{\prime}$ est croissante ; sa courbe est alors au-dessus de toutes ses tangentes.
+Si $f$ est deux fois dérivable, $f\,\!^{\prime\prime}\geq0$ assure la convexité et $f\,\!^{\prime\prime}\leq0$ la concavité.
+\end{propriete}
+\begin{definition}[Inflexion]
+Un point d'inflexion est un point de la courbe où la convexité change. Dans les cas étudiés ici, un changement de signe de $f\,\!^{\prime\prime}$ permet de le reconnaître.
+Une dérivée seconde nulle ne suffit pas : $x^4$ reste convexe de part et d'autre de $0$.
+\end{definition}
+\begin{exemple}[Une courbe en S]
+Pour $f(x)=x^3$, $f\,\!^{\prime\prime}(x)=6x$ : concavité sur $]-\infty,0]$, convexité sur $[0,+\infty[$ et inflexion en $(0,0)$.
+\end{exemple}
+\essSection{3}{Obtenir une inégalité}
+L'exponentielle est convexe et sa tangente en $0$ est $y=1+x$. On obtient, pour tout réel $x$, $\mathrm e^x\geq1+x$.
+Le logarithme est concave et sa tangente en $1$ est $y=x-1$. Pour $x>0$, $\ln x\leq x-1$.
+\begin{savoirfaire}[Étudier une convexité]
+Calculer $f\,\!^{\prime}$ puis $f\,\!^{\prime\prime}$ ; factoriser et étudier le signe sur le domaine ; annoncer les intervalles ; vérifier un changement effectif de signe avant de conclure à une inflexion ; calculer les coordonnées du point.
+\end{savoirfaire}
+\essSection{4}{Classer une population pour lire une répartition}
+On classe les personnes par richesse croissante. Une courbe de Lorenz associe à une proportion cumulée $x$ de population la proportion cumulée $L(x)$ de richesse possédée.
+Dans les modèles usuels du thème, $L(0)=0$, $L(1)=1$, $L$ est croissante et convexe sur $[0,1]$, et $L(x)\leq x$.
+La diagonale $L(x)=x$ correspond à l'égalité parfaite.
+\figurelivre{c05-lorenz.pdf}{Les courbes $L(x)=x^2$ et $L(x)=x^3$ sont des modèles fictifs. À $x=0{,}5$, la première attribue $25\,\%$ de la richesse à la moitié la moins riche ; la seconde, $12{,}5\,\%$.}
+\begin{exemple}[Ne pas inverser les axes]
+Si $L(0{,}8)=0{,}6$, les $80\,\%$ les moins riches possèdent $60\,\%$ de la richesse. Les $20\,\%$ les plus riches en possèdent donc $40\,\%$. Cela ne signifie pas que $60\,\%$ de la population possède $80\,\%$ de la richesse.
+\end{exemple}
+\essSection{5}{Quantiles et dispersion}
+La médiane partage la série ordonnée en deux groupes. $Q_1$ et $Q_3$ délimitent les quartiles ; $D_1$ et $D_9$ les déciles.
+Le rapport interdécile $D_9/D_1$, lorsque $D_1>0$, compare deux seuils ; il ne donne pas le rapport des richesses totales de deux groupes.
+Pour une petite série discrète, on annonce la convention de quantile employée. Au chapitre 7, le calcul intégral donnera un autre indicateur, l'indice de Gini.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Signe de la dérivée seconde}
+
+\begin{questions}
+\item Étudier la convexité de $x^2+3x$.
+\item Étudier celle de $-x^2$.
+\item Étudier celle de $\mathrm e^x$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Logarithme et racine}
+
+\begin{questions}
+\item Calculer la dérivée seconde de $\ln x$.
+\item Quelle est sa convexité ?
+\item Calculer la dérivée seconde de $\sqrt x$ pour $x>0$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Inflexion}
+$f(x)=x^3-3x$.
+\begin{questions}
+\item Calculer $f\,\!^{\prime\prime}$.
+\item Donner les intervalles de convexité et concavité.
+\item Donner le point d’inflexion.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Lire Lorenz}
+Une courbe fictive vérifie $L(0{,}4)=0{,}1$ et $L(0{,}9)=0{,}7$.
+\begin{questions}
+\item Interpréter la première valeur.
+\item Quelle richesse possèdent les $10\,\%$ les plus riches ?
+\item Quelle richesse possède le groupe compris entre les proportions $0{,}4$ et $0{,}9$ ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Une exponentielle amortie}
+$f(x)=x\mathrm e^{-x}$ sur $[0,+\infty[$.
+\begin{questions}
+\item Calculer $f\,\!^{\prime\prime}$.
+\item Étudier la convexité.
+\item Donner le point d’inflexion.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une tangente utile}
+
+\begin{questions}
+\item Donner la tangente à $\mathrm e^x$ en zéro.
+\item En déduire une minoration de $\mathrm e^{0{,}2}$.
+\item Donner une majoration de $\ln(1{,}2)$ par la tangente du logarithme en $1$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Comparer deux répartitions}
+$L_A(x)=x^2$ et $L_B(x)=x^3$ sur $[0,1]$.
+\begin{questions}
+\item Vérifier les extrémités et la croissance.
+\item Comparer les deux courbes.
+\item Quel modèle est le plus éloigné de l’égalité au sens de Lorenz ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Déciles}
+Dans une série fictive de revenus, $D_1=900$, la médiane vaut $1\,800$ et $D_9=3\,600$ euros.
+\begin{questions}
+\item Calculer le rapport interdécile.
+\item Peut-on affirmer que les $10\,\%$ les plus riches possèdent quatre fois la richesse des $10\,\%$ les moins riches ?
+\item Quel renseignement manque pour construire une courbe de Lorenz ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Zéro sans inflexion}
+$f(x)=x^4$.
+\begin{questions}
+\item Calculer la dérivée seconde.
+\item Que se passe-t-il en zéro ?
+\item Formuler une règle correcte pour repérer un point d’inflexion dans les exemples deux fois dérivables.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Un modèle admissible ?}
+On propose $L(x)=2x-x^2$ pour une courbe de Lorenz.
+\begin{questions}
+\item Vérifier les extrémités et la croissance.
+\item Comparer $L(x)$ à $x$.
+\item Expliquer pourquoi ce modèle ne convient pas avec un classement par richesse croissante.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Convexité sans croissance}
+$f(x)=\mathrm e^{-x}$ sur $\R$.
+\begin{questions}
+\item Calculer les deux premières dérivées.
+\item Donner le sens de variation et la convexité.
+\item Réfuter « toute fonction convexe est croissante ».
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une courbe logistique}
+$f(x)=1/(1+\mathrm e^{-x})$. On donne $f\,\!^{\prime\prime}(x)=\mathrm e^{-x}(\mathrm e^{-x}-1)/(1+\mathrm e^{-x})^3$.
+\begin{questions}
+\item Étudier le signe de la dérivée seconde.
+\item Déterminer l’inflexion.
+\item Interpréter le changement de convexité pour une croissance avec saturation.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

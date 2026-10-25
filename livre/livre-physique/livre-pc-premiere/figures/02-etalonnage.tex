@@ -1,0 +1,27 @@
+% Gamme étalon de bleu patenté et droite d'étalonnage à 638 nm (L'essentiel, chapitre 2)
+\begin{tikzpicture}
+% Gamme de tubes
+\begin{scope}[x=1cm,y=1cm,shift={(0,0.6)}]
+\foreach \k/\c/\t in {0/8/{1,0},1/16/{2,0},2/30/{4,0},3/44/{6,0},4/58/{8,0}}{
+  \pic at (\k*0.9,0) {tube={hauteur=2.0,niveau=1.4,liquide=blue!\c!cyan!60}};
+  \node[pcLegende,anchor=north] at (\k*0.9,-0.08) {\t};}
+\pic at (5.0,0) {tube={hauteur=2.0,niveau=1.4,liquide=blue!32!cyan!60}};
+\node[pcLegende,anchor=north] at (5.0,-0.08) {S};
+\node[pcLegende,anchor=north,align=center] at (1.8,-0.45) {gamme étalon ($c$ en \unit{\micro mol.L^{-1}})};
+\node[pcLegende,anchor=north,align=center] at (5.0,-0.45) {solution\\à doser};
+\end{scope}
+\begin{axis}[otMesures,at={(68mm,0)},anchor=south west,width=88mm,height=52mm,
+  xmin=0,xmax=9,ymin=0,ymax=1.0,xtick={0,1,...,8},ytick={0,0.2,...,0.8},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$c$ (\unit{\micro mol.L^{-1}})},ylabel={$A$ à \qty{638}{nm}},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\addplot[otGreenDark,line width=0.9pt,domain=0:8.8,samples=2] {0.106*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] coordinates {(1,0.106) (2,0.212) (4,0.424) (6,0.636) (8,0.848)};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.45) -- (axis cs:4.25,0.45) -- (axis cs:4.25,0);
+\fill[otOrange] (axis cs:4.25,0.45) circle (1.6pt);
+\node[pcLegende,anchor=south west,text=otOrange!75!black] at (axis cs:0.1,0.46) {$A_\mathrm{S}=0{,}45$};
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:4.35,0.12) {$c_\mathrm{S}=\qty{4,25}{\micro mol.L^{-1}}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les points de la gamme étalon sont alignés sur une droite passant par l'origine : $A=k\,c$. L'absorbance de la solution S donne sa concentration.}

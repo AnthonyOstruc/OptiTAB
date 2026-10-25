@@ -1,0 +1,26 @@
+\begin{tikzpicture}[baseline=(current bounding box.center)]\begin{axis}[otLivreGraphe,width=74mm,height=47mm,
+xmin=-2.5,xmax=4.5,ymin=-1.5,ymax=4,xtick={-2,-1,0,1,2,3,4},ytick={-1,0,1,2,3,4},scaled ticks=false,
+tick label style={/pgf/number format/use comma},clip=true,
+title={Figure 1},title style={at={(0.5,0)},anchor=north,yshift=-1.5mm,font=\otMedium\fontsize{8}{10}\selectfont,text=otMuted}]
+
+\addplot[otNavy,thick,domain=-2:4,samples=90]{(x^2-2*x-1)/2};
+\node[otEtiquette,text=otNavy]at(axis cs:-0.75,3.3){$\mathcal C_f$};
+\geoSolution{\addplot[otGreenDark,dashed,domain=-2.5:4.5]{1};
+\addplot[otGreenDark,line width=1.6pt]coordinates{(-1,0)(3,0)};
+\draw[otGreenDark,dotted](axis cs:-1,1)--(axis cs:-1,0) (axis cs:3,1)--(axis cs:3,0);
+\addplot[only marks,otGreenDark]coordinates{(-1,1)(3,1)};}
+
+\end{axis}\end{tikzpicture}\hspace{6mm}\begin{tikzpicture}[baseline=(current bounding box.center)]\begin{axis}[otLivreGraphe,width=74mm,height=47mm,
+xmin=-1.5,xmax=7.5,ymin=-1.5,ymax=4.5,xtick={-1,0,1,2,3,4,5,6,7},ytick={-1,0,1,2,3,4},scaled ticks=false,
+tick label style={/pgf/number format/use comma},clip=true,
+title={Figure 2},title style={at={(0.5,0)},anchor=north,yshift=-1.5mm,font=\otMedium\fontsize{8}{10}\selectfont,text=otMuted}]
+
+\addplot[otNavy,thick,domain=-1.5:7.5]{-x/2+3};
+\node[otEtiquette,text=otNavy]at(axis cs:5.6,1.25){$d$};
+\geoSolution{\draw[otGreenDark,thick](axis cs:0,3)--(axis cs:2,3)--(axis cs:2,2);
+\node[above,font=\small,text=otGreenDark]at(axis cs:1,3){$+2$};
+\node[right,font=\small,text=otGreenDark]at(axis cs:2,2.5){$-1$};
+\addplot[only marks,otGreenDark]coordinates{(0,3)(2,2)};}
+
+\end{axis}\end{tikzpicture}
+\par\smallskip\legende{\geoEnonce{Repères quadrillés : les points utiles sont situés sur des nœuds du quadrillage.}\geoSolution{Figure 1 : la courbe est sous la droite $y=1$ entre $-1$ et 3. Figure 2 : ordonnée à l’origine 3 et pente $-1/2$.}}

@@ -1,0 +1,25 @@
+% Chronophotographie d'une balle lancée, Delta t = 0,10 s (exercice 11, chapitre 13)
+% Positions (m) : (0;0) (0,2;0,301) (0,4;0,504) (0,6;0,609) (0,8;0,615) (1,0;0,524) (1,2;0,334) (1,4;0,047)
+% Échelle des longueurs : 1 cm pour 0,15 m ; vitesses : 1 cm pour 1 m/s
+\begin{tikzpicture}[x=6.667cm,y=6.667cm,
+  vit/.style={otNavy,line width=1pt,-{Stealth[length=2mm]}},
+  dv/.style={otGreenDark,line width=1.2pt,-{Stealth[length=2mm]}}]
+\draw[otRule!80,line width=0.3pt,step=0.1] (-0.02,-0.02) grid (1.5,0.8);
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,0) -- (1.55,0) node[pcLegende,anchor=north west] {$x$};
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,0) -- (0,0.85) node[pcLegende,anchor=south east] {$y$};
+\foreach \t in {0.2,0.4,...,1.4}{\node[pcLegende,anchor=north,font=\otLight\fontsize{6.5}{8}\selectfont] at (\t,-0.01) {\pgfmathprintnumber[fixed,precision=1,use comma]{\t}};}
+\foreach \t in {0.2,0.4,0.6}{\node[pcLegende,anchor=east,font=\otLight\fontsize{6.5}{8}\selectfont] at (-0.01,\t) {\pgfmathprintnumber[fixed,precision=1,use comma]{\t}};}
+\node[pcLegende,anchor=north east,font=\otLight\fontsize{6.5}{8}\selectfont] at (-0.01,-0.01) {0};
+\node[pcLegende,anchor=north west] at (1.32,0.79) {en m};
+\foreach \xx/\yy/\n in {0/0/0,0.2/0.301/1,0.4/0.504/2,0.6/0.609/3,0.8/0.615/4,1.0/0.524/5,1.2/0.334/6,1.4/0.047/7}{%
+  \shade[ball color=otOrange!60] (\xx,\yy) circle (0.012);
+  \node[pcLegende,anchor=south east,fill=white,inner sep=0.6pt] at ({\xx-0.008},{\yy+0.012}) {$M_{\n}$};}
+\solution{
+  \draw[vit] (0.4,0.504) -- ++(0.15,0.07875) node[pcLegende,anchor=south east,text=otNavy] {$\vec{v}_2$};
+  \draw[vit] (0.6,0.609) -- ++(0.15,0.0045);
+  \node[pcLegende,anchor=north,text=otNavy] at (0.7,0.6) {$\vec{v}_3$};
+  \draw[otNavy,line width=0.8pt,dash pattern=on 2pt off 1.2pt,-{Stealth[length=1.8mm]}] (0.6,0.609) -- ++(0.15,0.07875);
+  \draw[dv] (0.75,0.68775) -- (0.75,0.6155);
+  \node[pcLegende,anchor=west,text=otGreenDark,fill=white,inner sep=0.8pt] at (0.765,0.665) {$\Delta\vec{v}_2$};}
+\end{tikzpicture}
+\par\smallskip\legende{Positions d'une balle de \qty{60}{g} toutes les \qty{0,10}{s} (\qty{1}{cm} pour \qty{0,15}{m}).\solution{ Vitesses : \qty{1}{cm} pour \qty{2}{m.s^{-1}} ; $\vec{v}_2$ est recopié en pointillés en $M_3$.}}

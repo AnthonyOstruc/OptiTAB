@@ -1,0 +1,64 @@
+%% =====================================================================
+%%  1re de couverture
+%% =====================================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  % Fond
+  \fill[otNavy] (0,0) rectangle (210mm,297mm);
+  \shade[bottom color=otNavyDark,top color=otNavy] (0,0) rectangle (210mm,160mm);
+  \draw[white,opacity=0.06,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+  % Repère, tangente et courbe de la fonction exponentielle (unité : 16 mm)
+  \draw[white,opacity=0.22,line width=0.6pt] (0,42mm) -- (210mm,42mm);
+  \draw[white,opacity=0.22,line width=0.6pt] (150mm,0) -- (150mm,297mm);
+  \draw[white,opacity=0.45,line width=0.8pt]
+    ({150mm-4*16mm},{42mm-3*16mm}) -- ({150mm+3.2*16mm},{42mm+4.2*16mm});
+  \draw[otGreen,line width=3pt,line cap=round]
+    plot[domain=-9.4:2.85,samples=240] ({150mm+\x*16mm},{42mm+exp(\x)*16mm});
+  \fill[white] (150mm,58mm) circle (2.1mm);
+  \fill[otGreen] (150mm,58mm) circle (1.1mm);
+
+  % Logo
+  \node[anchor=north west,inner sep=0pt] at (22mm,279mm)
+    {\includegraphics[width=60mm]{logo-blanc}};
+
+  % Édition
+  \node[anchor=north east,fill=otGreen,rounded corners=2.2mm,inner xsep=4.2mm,inner ysep=2.6mm,align=center,
+    text=white] at (188mm,279mm)
+    {{\otSemi\fontsize{8.5}{10}\selectfont\otCaps[16]{Édition 2027-2028}}\\[1.2mm]
+     {\otMedium\fontsize{10.5}{12}\selectfont Nouveau programme}};
+
+  % Titre
+  \node[anchor=base west,inner sep=0pt,text=otGreen,
+    font=\otSemi\fontsize{11}{13}\selectfont] at (24mm,236mm) {\otCaps[22]{\otNiveau}};
+  \node[anchor=base west,inner sep=0pt,text=white,
+    font=\otBold\fontsize{50}{54}\selectfont] at (21.5mm,212mm) {\otTitreLivre};
+  \node[anchor=base west,inner sep=0pt,text=white,
+    font=\otLight\fontsize{32}{36}\selectfont] at (23mm,194mm) {\otSousTitre};
+  \fill[otGreen] (24mm,181mm) rectangle (54mm,182.4mm);
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.85,
+    font=\otRegular\fontsize{11}{14}\selectfont] at (24mm,168mm)
+    {Exercices progressifs\enspace·\enspace Sujets type bac\enspace·\enspace Corrigés détaillés};
+
+  % Points forts
+  \node[anchor=north west,inner sep=0pt,text width=100mm,text=white,
+    font=\otRegular\fontsize{10.5}{14}\selectfont] at (24mm,146mm)
+    {\otCheck\hspace{3mm}Conforme au programme de la rentrée 2027\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}Exercices classés par difficulté\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}10 sujets type bac au format 2027, avec barème\par\vspace{3.2mm}
+     \otCheck\hspace{3mm}La méthode expliquée à chaque étape};
+
+  % Pastille
+  \fill[otGreen] (146mm,116mm) circle (18mm);
+  \node[text=white,align=center,inner sep=0pt] at (146mm,116mm)
+    {{\otMedium\fontsize{9}{10}\selectfont + de}\\[0.6mm]
+     {\otBold\fontsize{30}{30}\selectfont 280}\\[1.4mm]
+     {\otSemi\fontsize{7.5}{9}\selectfont\otCaps[10]{exercices}}\\
+     {\otSemi\fontsize{7.5}{9}\selectfont\otCaps[10]{corrigés}}};
+
+  % Pied
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,
+    font=\otMedium\fontsize{10}{12}\selectfont] at (24mm,16mm) {\otSite};
+\end{scope}
+\end{tikzpicture}
+\clearpage

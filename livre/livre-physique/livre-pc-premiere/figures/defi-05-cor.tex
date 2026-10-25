@@ -1,0 +1,15 @@
+% Chaîne des quantités de matière d'un titrage indirect (corrigé du défi D05)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  boite/.style={draw=otNavy!55,fill=otNavy!5,line width=0.6pt,rounded corners=1.5mm,minimum height=1.45cm,text width=3.1cm,
+    align=center,font=\otLight\fontsize{8.5}{10.5}\selectfont,text=otInk},
+  fleche/.style={otGreenDark,line width=1.1pt,-{Stealth[length=2.6mm]}},
+  rapport/.style={pcLegende,text=otGreenDark,anchor=south,yshift=1pt}]
+\node[boite] (a) at (0,0) {ions $\ce{ClO-}$ contenus\\dans \qty{10,0}{mL}\\de Javel diluée};
+\node[boite] (b) at (5.2,0) {diiode formé\\$n(\ce{I2})=n(\ce{ClO-})$};
+\node[boite] (c) at (10.4,0) {thiosulfate versé\\$n=c\,V_\mathrm{E}=\qty{7,30e-4}{mol}$};
+\draw[fleche] (a) -- (b) node[midway,rapport] {1 pour 1};
+\draw[fleche] (b) -- (c) node[midway,rapport] {1 pour 2};
+\draw[otMuted,line width=0.6pt,-{Stealth[length=2.2mm]},dash pattern=on 2pt off 1.5pt] (c.south) to[out=-150,in=-30]
+  node[midway,below,pcLegende,text=otMuted] {on remonte la chaîne : $n(\ce{ClO-})=\dfrac{c\,V_\mathrm{E}}{2}=\qty{3,65e-4}{mol}$} (a.south);
+\end{tikzpicture}
+\par\smallskip\legende{Dans un titrage indirect, l'espèce dosée réagit d'abord avec un réactif en excès ; on titre ensuite le produit formé.}

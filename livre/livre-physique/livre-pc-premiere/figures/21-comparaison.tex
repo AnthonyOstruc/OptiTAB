@@ -1,0 +1,15 @@
+% Comparaison qualitative d'un résultat de mesure (avec son incertitude-type) à deux valeurs de référence (L'essentiel, chapitre 21)
+\begin{tikzpicture}[x=200mm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (12.0,0) -- (12.62,0) node[pcLegende,anchor=north west] {$V$ (mL)};
+\foreach \v/\t in {12.0/{12,0},12.1/{12,1},12.2/{12,2},12.3/{12,3},12.4/{12,4},12.5/{12,5},12.6/{12,6}}{%
+  \draw[otInk!70,line width=0.4pt] (\v,0) -- (\v,-0.08) node[pcLegende,anchor=north] {\t};}
+\fill[otNavy!15] (12.21,0.3) rectangle (12.25,0.7);
+\draw[otNavy,line width=1pt] (12.21,0.5) -- (12.25,0.5) (12.21,0.38) -- (12.21,0.62) (12.25,0.38) -- (12.25,0.62);
+\fill[otNavy] (12.23,0.5) circle (1.6pt);
+\node[pcLegende,anchor=east,text=otNavy,align=right] at (12.2,0.5) {résultat : \qty{12,23}{mL}\\$u=\qty{0,02}{mL}$};
+\draw[otGreenDark,line width=0.9pt] (12.25,0) -- (12.25,1.1);
+\node[pcLegende,anchor=south,text=otGreenDark,align=center] at (12.25,1.1) {référence 1 : \qty{12,25}{mL}\\écart $\approx u$ : compatible};
+\draw[otRed!85!black,line width=0.9pt] (12.50,0) -- (12.50,1.1);
+\node[pcLegende,anchor=south,text=otRed!85!black,align=center] at (12.50,1.1) {référence 2 : \qty{12,50}{mL}\\écart $\approx 13\,u$ : à expliquer};
+\end{tikzpicture}
+\par\smallskip\legende{On compare l'écart entre le résultat et la valeur de référence à l'incertitude-type.}

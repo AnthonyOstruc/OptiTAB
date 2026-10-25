@@ -1,0 +1,26 @@
+% Seringue bouchée : air comprimé de 60 mL à 20 mL ; forces sur le piston au corrigé (exercice 3, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  force/.style={line width=1.3pt,-{Stealth[length=2.6mm]}}]
+% Corps de la seringue : 0,1 cm par mL
+\fill[otNavy!7] (0,0) rectangle (2.0,1.0);
+\draw[pcVerre] (6.2,0) -- (0,0) -- (0,1.0) -- (6.2,1.0);
+\draw[pcVerre] (6.2,-0.25) -- (6.2,1.25);
+\draw[pcVerre] (0,0.4) -- (-0.45,0.4) -- (-0.45,0.6) -- (0,0.6);
+\fill[otInk!75] (-0.75,0.32) rectangle (-0.45,0.68);
+\node[pcLegende,anchor=north east] at (-0.45,0.28) {bouchon};
+\foreach \v in {0,10,...,60}{\draw[otMuted,line width=0.4pt] ({\v/10},1.0) -- ({\v/10},1.18); \node[pcLegende,anchor=south,font=\otLight\fontsize{6.5}{8}\selectfont] at ({\v/10},1.16) {\v};}
+\node[pcLegende,anchor=south west] at (6.3,1.13) {mL};
+% Piston et tige
+\fill[otInk!60] (2.0,0.04) rectangle (2.2,0.96);
+\fill[otMuted!40] (2.2,0.4) rectangle (7.0,0.6);
+\fill[otInk!60] (7.0,0.05) rectangle (7.15,0.95);
+\node[pcLegende,align=center] at (1.0,0.5) {air\\enfermé};
+\draw[otMuted,line width=0.4pt] (2.1,0.04) -- (2.6,-0.45) node[pcLegende,anchor=north west] {piston d'aire $S=\qty{6,0}{cm^2}$};
+\draw[otInk!80,line width=1.1pt,-{Stealth[length=2.4mm]}] (8.3,0.5) -- (7.25,0.5) node[pcLegende,anchor=south west,xshift=1mm] {on pousse};
+\solution{
+  \draw[force,otGreenDark] (2.2,0.78) -- ++(1.5,0) node[pcLegende,anchor=west,text=otGreenDark] {$\vec{F}_\mathrm{air}$};
+  \draw[force,otOrange!85!black] (3.55,0.22) -- (2.25,0.22);
+  \node[pcLegende,anchor=west,text=otOrange!85!black] at (3.6,0.22) {$\vec{F}_\mathrm{atm}$};
+  \node[pcLegende,anchor=north] at (7.85,0.42) {$\vec{F}_\mathrm{op}$};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{L'air enfermé, initialement à \qty{1013}{hPa} sous \qty{60}{mL}, est comprimé lentement jusqu'à \qty{20}{mL}.}\solution{Forces sur le piston : air enfermé, air extérieur et opérateur.}}

@@ -1,0 +1,167 @@
+\begin{ouverture}[courbe]{1}{Calculer dans les complexes}{Nombres complexes}{Forme algébrique · Conjugaison · Binôme}
+\objectif{Calculer avec $\mathrm i^2=-1$.}
+\objectif{Utiliser la conjugaison et l’inverse.}
+\objectif{Résoudre des équations avec $z$ et son conjugué.}
+\objectif{Appliquer et démontrer la formule du binôme.}
+\prerequis{Calcul littéral, coefficients binomiaux et systèmes de deux équations.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Un nombre à deux coordonnées}
+\begin{definition}
+Tout nombre complexe s'écrit de manière unique $z=x+\mathrm iy$, avec $x,y\in\R$ et $\mathrm i^2=-1$.
+$x=\Re(z)$ est la partie réelle et $y=\Im(z)$ la partie imaginaire : toutes deux sont des nombres réels.
+Deux complexes sont égaux si leurs parties réelles et imaginaires sont égales.
+\end{definition}
+Les réels s'identifient aux complexes de partie imaginaire nulle. Les imaginaires purs ont une partie réelle nulle, y compris zéro.
+L'addition et le produit suivent les règles usuelles de distributivité avec $\mathrm i^2=-1$.
+\begin{exemple}
+$(2+3\mathrm i)(1-2\mathrm i)=2-4\mathrm i+3\mathrm i-6\mathrm i^2=8-\mathrm i$.
+Les puissances de $\mathrm i$ se répètent par période $4$ : $1,\mathrm i,-1,-\mathrm i$.
+\end{exemple}
+\essSection{2}{La conjugaison}
+\begin{definition}
+Le conjugué de $z=x+\mathrm iy$ est $\bar z=x-\mathrm iy$.
+On a $\overline{\bar z}=z$, $z+\bar z=2\Re(z)$ et $z-\bar z=2\mathrm i\Im(z)$.
+\end{definition}
+\begin{propriete}
+$\overline{z+w}=\bar z+\bar w$, $\overline{zw}=\bar z\bar w$ et $\overline{z^n}=\bar z^{\,n}$ pour $n\in\N$.
+Un complexe est réel si et seulement si $z=\bar z$ ; il est imaginaire pur si et seulement si $z=-\bar z$.
+\end{propriete}
+\begin{demonstration}
+Pour $z=x+\mathrm iy$, $w=u+\mathrm iv$, le produit vaut $(xu-yv)+\mathrm i(xv+yu)$. Son conjugué est précisément $(x-\mathrm iy)(u-\mathrm iv)$. La règle des puissances suit par récurrence sur $n$, à partir de $n=0$.
+\end{demonstration}
+\figurelivre{e01-conjugaison.pdf}{Dans le plan complexe, $z=2+3\mathrm i$ et $\bar z=2-3\mathrm i$ sont symétriques par rapport à l'axe réel. L'ordonnée représente $\Im(z)$, pas $\mathrm i\Im(z)$.}
+\essSection{3}{Diviser et résoudre une équation}
+Pour $z=x+\mathrm iy\ne0$, $z\bar z=x^2+y^2>0$, donc
+$1/z=\bar z/(x^2+y^2)$.
+Pour mettre un quotient sous forme algébrique, multiplier le numérateur et le dénominateur par le conjugué du dénominateur.
+\begin{exemple}
+$\dfrac{1+\mathrm i}{2-\mathrm i}=\dfrac{(1+\mathrm i)(2+\mathrm i)}5=\dfrac15+\dfrac35\mathrm i$.
+Pour résoudre $z+2\bar z=3+4\mathrm i$, poser $z=x+\mathrm iy$ : $3x-\mathrm iy=3+4\mathrm i$, donc $x=1,y=-4$.
+\end{exemple}
+L'équation $az=b$ a une unique solution $b/a$ si $a\ne0$. Si $a=0$, elle a toutes les solutions lorsque $b=0$, et aucune sinon.
+Conjuguer $z(1/z)=1$ donne $\bar z\,\overline{1/z}=1$, donc $\overline{1/z}=1/\bar z$.
+\essSection{4}{Le binôme reste valable}
+\begin{theoreme}
+Pour $a,b\in\C$ et $n\in\N$,
+$\displaystyle(a+b)^n=\sum_{k=0}^n\binom nk a^{n-k}b^k$.
+\end{theoreme}
+\begin{demonstration}
+L'identité vaut pour $n=0$. Supposer l'identité au rang $n$, multiplier par $a+b$ et regrouper les coefficients d'une même puissance de $b$. L'identité de Pascal $\binom nk+\binom n{k-1}=\binom{n+1}k$ donne la formule au rang $n+1$. Les facteurs complexes commutent, donc le regroupement est valide.
+\end{demonstration}
+\begin{attention}
+Il n'existe pas d'ordre sur $\C$ permettant de comparer tous les complexes comme des réels tout en conservant les règles usuelles des inégalités. On ne résout pas « $z>0$ » pour un complexe arbitraire. Les conditions de réalité se traduisent en revanche par des équations sur $x,y$.
+\end{attention}
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Parties réelle et imaginaire}
+
+\begin{questions}
+\item Donner les parties réelle et imaginaire de $3-5\mathrm i$.
+\item Calculer $(2+\mathrm i)+(4-3\mathrm i)$.
+\item Résoudre $x+2\mathrm iy=3-4\mathrm i$ avec $x,y$ réels.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Produits}
+
+\begin{questions}
+\item Calculer $(1+\mathrm i)^2$.
+\item Calculer $(2+3\mathrm i)(1-2\mathrm i)$.
+\item Calculer $\mathrm i^{2026}$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Conjuguer}
+
+\begin{questions}
+\item Conjuguer $-2+7\mathrm i$.
+\item Calculer $z+\bar z$ pour $z=4-3\mathrm i$.
+\item Calculer $z\bar z$ pour ce même $z$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Inverses}
+
+\begin{questions}
+\item Mettre $1/(1+\mathrm i)$ sous forme algébrique.
+\item Faire de même pour $1/(3-4\mathrm i)$.
+\item Vérifier l’un des résultats par multiplication.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Équation linéaire}
+
+\begin{questions}
+\item Résoudre $(1+\mathrm i)z=2$.
+\item Résoudre $2z-3=\mathrm i$.
+\item Discuter $0z=b$ suivant $b$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un quotient}
+
+\begin{questions}
+\item Calculer $(3+\mathrm i)/(1-\mathrm i)$.
+\item Vérifier en remultipliant par $1-\mathrm i$.
+\item En déduire le conjugué du quotient.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Avec le conjugué}
+
+\begin{questions}
+\item Résoudre $z+2\bar z=3+4\mathrm i$.
+\item Résoudre $z-\bar z=6\mathrm i$.
+\item Pourquoi la seconde équation a-t-elle une infinité de solutions ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Binôme}
+
+\begin{questions}
+\item Développer $(1+\mathrm i)^3$ par le binôme.
+\item Calculer $(1+\mathrm i)^4$.
+\item En déduire $(1+\mathrm i)^8$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Réalité d’un quotient}
+$z=(x+\mathrm i)/(1+\mathrm i)$ avec $x\in\R$.
+\begin{questions}
+\item Mettre $z$ sous forme algébrique.
+\item Pour quelle valeur de $x$ est-il réel ?
+\item Pour quelle valeur est-il imaginaire pur ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Conjugaison et puissance}
+
+\begin{questions}
+\item Prouver $\overline{z^2}=\bar z^2$.
+\item Étendre la propriété par récurrence à tout entier naturel.
+\item L’étendre aux puissances entières négatives lorsque $z\ne0$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une équation à analyser}
+$z\bar z=2z$.
+\begin{questions}
+\item Poser $z=x+\mathrm iy$ et comparer les parties.
+\item Résoudre.
+\item Vérifier les solutions dans l’équation initiale.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une somme binomiale}
+
+\begin{questions}
+\item Exprimer $(1+\mathrm i)^6$ avec les coefficients binomiaux.
+\item Calculer sa forme algébrique par une méthode plus courte.
+\item En déduire la somme des termes réels du développement.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

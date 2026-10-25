@@ -1,0 +1,153 @@
+\begin{ouverture}[trigo]{5}{Géométrie et racines de l’unité}{Nombres complexes}{Quotient · Angles · Alignement · Polygones}
+\objectif{Interpréter module et argument d’un quotient.}
+\objectif{Prouver un alignement ou une orthogonalité.}
+\objectif{Déterminer les racines $n$-ièmes de l’unité.}
+\objectif{Utiliser les complexes dans une configuration géométrique.}
+\prerequis{Affixes, distances, forme exponentielle et équations.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Le bon quotient pour le bon angle}
+Pour des points $A,B,C$ d'affixes $a,b,c$, avec $A\ne B$ et $A\ne C$, poser $q=(c-a)/(b-a)$.
+\[|q|=AC/AB,\qquad \arg(q)=(\vect{AB},\vect{AC})\pmod{2\pi}.\]
+Le numérateur correspond au vecteur d'arrivée et le dénominateur au vecteur de départ de l'angle. Inverser le quotient change le signe de l'angle.
+\begin{propriete}
+$A,B,C$ sont alignés si et seulement si $q\in\R$.
+Les droites $(AB)$ et $(AC)$ sont perpendiculaires si et seulement si $q$ est imaginaire pur, les vecteurs étant non nuls.
+\end{propriete}
+\figurelivre{e05-quotient.pdf}{Avec $a=1$, $b=3$ et $c=1+2\mathrm i$, le quotient $(c-a)/(b-a)=\mathrm i$ a module $1$ et argument $\pi/2$ : triangle rectangle isocèle en $A$.}
+\begin{savoirfaire}[Une preuve géométrique courte]
+Écrire les affixes des vecteurs ; vérifier les dénominateurs non nuls ; calculer le quotient ; interpréter réalité, caractère imaginaire pur, module ou argument ; conclure avec les points de la figure.
+\end{savoirfaire}
+\essSection{2}{Les racines de l'unité}
+\begin{theoreme}
+Pour $n\geq1$, les solutions de $z^n=1$ sont les $n$ nombres distincts
+$\omega_k=\mathrm e^{2\mathrm ik\pi/n}$, pour $k=0,\ldots,n-1$.
+Ils forment un polygone régulier sur le cercle unité lorsque $n\geq3$.
+\end{theoreme}
+\begin{demonstration}
+Si $z^n=1$, $|z|^n=1$ impose $|z|=1$. Écrire $z=\mathrm e^{\mathrm i\theta}$ ; alors $n\theta\in2\pi\Z$, soit $\theta=2k\pi/n$.
+Les indices se ramènent modulo $n$ à $0,\ldots,n-1$ ; ces angles donnent des points distincts car leurs différences sont strictement inférieures à $2\pi$ en valeur absolue. La réciproque se vérifie en élevant à la puissance $n$.
+\end{demonstration}
+\figurelivre{e05-unite.pdf}{Racines de l'unité pour $n=3,4,6$. Les points sont espacés d'un angle $2\pi/n$ ; le premier est toujours le point d'affixe $1$.}
+Pour $n=2$, on obtient $1,-1$. Pour $n=3$, on note souvent $j=\mathrm e^{2\mathrm i\pi/3}$ : $1+j+j^2=0$ et $\bar j=j^2$.
+\essSection{3}{Des longueurs et des sommes}
+Pour $n\geq2$, la somme des racines $n$-ièmes de l'unité vaut zéro : avec $q=\mathrm e^{2\mathrm i\pi/n}\ne1$, la somme géométrique donne $(1-q^n)/(1-q)=0$.
+La longueur d'un côté d'un polygone régulier inscrit dans un cercle de rayon $R$ vaut $2R\sin(\pi/n)$ : le triangle formé par le centre et deux sommets voisins se partage en deux triangles rectangles.
+\essSection{4}{Transformations et suites, en problème guidé}
+Une application $z\mapsto az+b$ avec $a\ne0$ multiplie les longueurs par $|a|$ et ajoute $\arg a$ aux directions. Si $a\ne1$, son point fixe a pour affixe $\ell=b/(1-a)$.
+La suite $z_{n+1}=az_n+b$ vérifie $z_n-\ell=a^n(z_0-\ell)$.
+Pour $|a|<1$, les points s'approchent de $\ell$ ; leur trajectoire peut tourner si $a$ n'est pas réel positif.
+Ce prolongement fait travailler ensemble récurrence, modules et arguments ; la démonstration reprend le décalage de l'équilibre des suites réelles.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Un quotient géométrique}
+$a=0,b=2,c=2\mathrm i$.
+\begin{questions}
+\item Calculer $(c-a)/(b-a)$.
+\item Donner son module et un argument.
+\item Décrire le triangle.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Alignement}
+$a=1+\mathrm i,b=3+2\mathrm i,c=5+3\mathrm i$.
+\begin{questions}
+\item Calculer $b-a$ et $c-a$.
+\item Calculer leur quotient.
+\item Conclure et préciser l’ordre des points.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Racines quatrièmes}
+
+\begin{questions}
+\item Résoudre $z^4=1$.
+\item Placer les solutions.
+\item Calculer leur somme.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Racines cubiques}
+
+\begin{questions}
+\item Écrire $j=\mathrm e^{2\mathrm i\pi/3}$ sous forme algébrique.
+\item Donner $j^2$ et $j^3$.
+\item Vérifier $1+j+j^2=0$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Perpendicularité}
+$a=1+\mathrm i,b=3+2\mathrm i,c=-1+5\mathrm i$.
+\begin{questions}
+\item Calculer le quotient $(c-a)/(b-a)$.
+\item En déduire la perpendicularité.
+\item Comparer les longueurs $AC$ et $AB$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un angle orienté}
+$a=0,b=1+\mathrm i,c=\sqrt3+\mathrm i$.
+\begin{questions}
+\item Donner les arguments de $b$ et $c$.
+\item Calculer l’angle orienté $(\vect{AB},\vect{AC})$.
+\item Donner le rapport des longueurs.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un hexagone}
+
+\begin{questions}
+\item Donner les racines sixièmes de l’unité sous forme exponentielle.
+\item Donner la longueur de ses côtés.
+\item Calculer la somme de ses sommets sous forme complexe.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un lieu d’angle}
+$a=0,b=2$, et l’on cherche les $c$ tels que $(c-a)/(b-a)$ soit imaginaire pur.
+\begin{questions}
+\item Traduire avec $c=x+\mathrm iy$.
+\item Décrire le lieu si $c\ne a$.
+\item Que signifie l’absence de condition sur le module ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Racines d’un autre complexe}
+On cherche $z^3=8\mathrm i$.
+\begin{questions}
+\item Déterminer le module des solutions.
+\item Déterminer leurs arguments.
+\item Donner les trois solutions sous forme exponentielle.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Spirale convergente}
+$z_0=1$, $z_{n+1}=(\mathrm i/2)z_n$.
+\begin{questions}
+\item Exprimer $z_n$.
+\item Donner son module et un argument.
+\item Décrire le comportement géométrique.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Avec un point fixe}
+$z_{n+1}=(\mathrm i/2)z_n+1$ et $z_0=0$.
+\begin{questions}
+\item Trouver le point fixe $\ell$.
+\item Exprimer $z_n-\ell$.
+\item En déduire la limite.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{La somme et le polygone}
+$n\geq3$ et $\omega=\mathrm e^{2\mathrm i\pi/n}$.
+\begin{questions}
+\item Prouver $1+\omega+\cdots+\omega^{n-1}=0$.
+\item Interpréter le point moyen des sommets.
+\item Cette preuve fonctionne-t-elle pour $n=1$ ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

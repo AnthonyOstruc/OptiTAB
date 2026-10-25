@@ -1,0 +1,16 @@
+% Masse du fil de cuivre en fonction de l'avancement (corrigé du défi D03)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=110mm,height=55mm,xmin=0,xmax=5.6,ymin=4.9,ymax=5.9,
+  xtick={0,1,...,5},ytick={4.9,5.0,...,5.9},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=2},
+  xlabel={$x$ (mmol)},ylabel={masse du fil (g)}]
+\addplot[otNavy,line width=1pt,domain=0:5,samples=2] {5.00+0.1523*x};
+\addplot[otNavy,line width=1pt,dash pattern=on 3pt off 2pt,domain=5:5.5,samples=2] {5.7615};
+\fill[otGreenDark] (axis cs:5,5.7615) circle (1.8pt);
+\node[pcLegende,anchor=south east,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:4.9,5.78) {ions argent épuisés : \qty{5,76}{g}};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,5.38) -- (axis cs:2.5,5.38) -- (axis cs:2.5,4.9);
+\node[pcLegende,anchor=north west,text=otOrange!75!black,fill=white,inner sep=1pt] at (axis cs:2.6,5.3) {\qty{5,38}{g} : $x=\qty{2,5}{mmol}$};
+\node[pcLegende,anchor=north west,text=otNavy] at (axis cs:2.9,5.13) {pente : $2\times107{,}9-63{,}5=\qty{152,3}{g.mol^{-1}}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque mole d'avancement remplace une mole de cuivre (\qty{63,5}{g}) par deux moles d'argent (\qty{215,8}{g}) : le fil s'alourdit.}

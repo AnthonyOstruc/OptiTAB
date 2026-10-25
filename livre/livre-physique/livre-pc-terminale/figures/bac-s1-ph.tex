@@ -1,0 +1,19 @@
+% Titrage pH-métrique de la solution S de détartrant par la soude (sujet type bac 1, exercice 1)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=128mm,height=72mm,xmin=0,xmax=20.5,ymin=0,ymax=14,
+  xtick={0,2,...,20},ytick={0,2,...,14},
+  xlabel={$V_B$ (mL)},ylabel={pH}]
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/bac-s1-ph.dat};
+\solution{\addplot[otRed!80!black,line width=0.6pt,domain=6:12.5,samples=2] {2.285+0.25*x};
+  \addplot[otRed!80!black,line width=0.6pt,domain=9:16,samples=2] {8.567+0.25*x};
+  \addplot[otRed!80!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=8:14,samples=2] {5.426+0.25*x};
+  \draw[otRed!80!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:10.9,0) -- (axis cs:10.9,8.2);
+  \fill[otRed!80!black] (axis cs:10.9,8.2) circle (1.6pt);
+  \node[pcLegende,anchor=north west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:11.1,1.5) {$V_\mathrm{E}=\qty{10,9}{mL}$};
+  \draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:5.45,0) -- (axis cs:5.45,3.86) -- (axis cs:0,3.86);
+  \fill[otGreenDark] (axis cs:5.45,3.86) circle (1.6pt);
+  \node[pcLegende,anchor=south west,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:0.3,4.3) {$\pKa\approx3{,}9$};
+  \node[pcLegende,anchor=north,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:5.45,1.5) {$V_\mathrm{E}/2$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Évolution du pH au cours de l'ajout de la solution d'hydroxyde de sodium dans $V_A=\qty{20,0}{mL}$ de solution S.}

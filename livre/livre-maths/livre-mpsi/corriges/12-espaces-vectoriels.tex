@@ -1,0 +1,542 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 12 — Espaces vectoriels et applications linéaires
+%% Résultats vérifiés par verifications/chapitre_12.py.
+
+\corrigesChapitre{12}{Espaces vectoriels et applications linéaires}
+\corrigesSouples
+
+\begin{blocLivre}{cor-12-1}
+\begin{corrige}{1}{Sous-espace ou pas ?}
+\demarche{Trois réflexes : le vecteur nul est-il dedans ? la somme reste-t-elle
+dedans ? un multiple reste-t-il dedans ?}
+\begin{questions}
+  \item $\ens{x+2y=0}$ : \res{\text{oui}} (contient $(0,0)$, stable par
+    combinaison : c'est le noyau de la forme linéaire $(x,y)\mapsto x+2y$).
+    $\ens{x+y=1}$ : \res{\text{non}}, $(0,0)$ n'y est pas.
+  \item \res{\text{Non}} : $(1,0)$ et $(0,1)$ y sont, mais leur somme
+    $(1,1)$ non — la réunion des deux axes n'est pas stable.
+  \item $\ens{f(1)=0}$ : \res{\text{oui}} (noyau de l'évaluation en $1$).
+    $\ens{f(1)=1}$ : \res{\text{non}} (la fonction nulle n'y est pas).
+  \item \res{\text{Non}} : le polynôme nul manque ($\deg0=-\infty$), et
+    $X^{3}$ et $-X^{3}+X$ sont de degré $3$ alors que leur somme $X$ est de
+    degré $1$.
+  \item \res{\text{Oui}} : $0$ est bornée, et si $|u_n|\leqslant M$,
+    $|v_n|\leqslant M'$, alors $|u_n+\lambda v_n|\leqslant M+|\lambda|M'$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-2}
+\begin{corrige}{2}{Dans un Vect, ou pas ?}
+\demarche{Appartenir à un Vect, c'est être solution d'un système.}
+\begin{questions}
+  \item $(1,2,3)=au+bv$ donne $a=1$, $a+b=2$, $a+2b=3$ : solution
+    $(a,b)=(1,1)$, donc $(1,2,3)=u+v$ : \res{\text{oui}}. Pour $(1,0,0)$ :
+    $a=1$, $a+b=0$ donc $b=-1$, mais $a+2b=-1\neq0$ : \res{\text{non}}.
+  \item $(x,y,z)=au+bv$ impose $a=x$, $b=y-x$, puis
+    $z=a+2b=2y-x$ : le plan a pour équation
+    $\res{x-2y+z=0}$ (vérification : $u$ et $v$ la satisfont).
+  \item $(1,2,c)$ : $1-4+c=0$, soit $\res{c=3}$ — cohérent avec a).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-3}
+\begin{corrige}{3}{Libres ou liées ?}
+\demarche{Une combinaison nulle, un système — et pour les fonctions, des
+évaluations bien choisies.}
+\begin{questions}
+  \item $a(1,0,1)+b(1,1,0)+c(0,1,1)=0$ donne $a+b=0$, $b+c=0$, $a+c=0$,
+    d'où $a=-b=c=-a$ : $a=b=c=0$, famille \res{\text{libre}}.
+  \item $(2,4,6)=2\,(1,2,3)$ : famille \res{\text{liée}} (colinéarité).
+  \item $(1,1,0)-(0,1,1)-(1,0,-1)=(0,0,0)$ : famille \res{\text{liée}},
+    avec la relation $v_1-v_2-v_3=0$.
+  \item $(1,X,\dots,X^{n})$ : degrés échelonnés, donc libre (un polynôme
+    nul a tous ses coefficients nuls). Pour $a\cos+b\sin=0$ : en $0$,
+    $a=0$ ; en $\frac{\pi}{2}$, $b=0$ : famille \res{\text{libre}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-4}
+\begin{corrige}{4}{Une base échelonnée de $\R_3[X]$}
+\demarche{Degrés échelonnés = liberté gratuite ; le bon compte de vecteurs
+fait le reste.}
+\begin{questions}
+  \item Degrés $0,1,2,3$ deux à deux distincts : famille libre de $4$
+    vecteurs dans $\R_3[X]$, qui est de dimension $4$ : c'est une
+    \res{\text{base}}.
+  \item $X^{3}=\bigl((X-1)+1\bigr)^{3}
+    =(X-1)^{3}+3(X-1)^{2}+3(X-1)+1$ (binôme) : coordonnées
+    $\res{(1,3,3,1)}$ dans $\mathcal{B}$.
+  \item La formule de Taylor $P=\sum_{k=0}^{3}\dfrac{P^{(k)}(1)}{k!}(X-1)^{k}$
+    (chapitre 10) : les coordonnées dans $\mathcal{B}$ sont les
+    $\dfrac{P^{(k)}(1)}{k!}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-5}
+\begin{corrige}{5}{Noyau et image d'une application linéaire}
+\demarche{Le noyau se calcule par un système, l'image par les colonnes —
+et le théorème du rang recolle tout.}
+\begin{questions}
+  \item Chaque composante est une combinaison linéaire des coordonnées :
+    $u(X+\lambda Y)=u(X)+\lambda u(Y)$ s'ensuit coordonnée par coordonnée.
+  \item $x+y-z=0$ et $2x-y=0$ donnent $y=2x$ puis $z=3x$ :
+    $\operatorname{Ker}u=\res{\operatorname{Vect}\bigl((1,2,3)\bigr)}$,
+    de dimension $1$.
+  \item $\operatorname{Im}u=\operatorname{Vect}\bigl(u(e_1),u(e_2),u(e_3)\bigr)
+    =\operatorname{Vect}\bigl((1,2),(1,-1),(-1,0)\bigr)$ : les deux premiers
+    vecteurs ne sont pas colinéaires, donc
+    $\operatorname{Im}u=\R^{2}$ et $\operatorname{rg}u=\res{2}$. Et
+    $\dim\R^{3}=3=1+2$ : le théorème du rang est confirmé.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-6}
+\begin{corrige}{6}{Linéaire ou pas ?}
+\demarche{Un seul contre-exemple suffit pour le non ; pour le oui, la
+définition en une ligne.}
+\begin{questions}
+  \item $f$ : \res{\text{oui}} (composantes linéaires en $(x,y)$).
+    $g$ : \res{\text{non}}, $g(0,0)=(1,0)\neq(0,0)$ — une application
+    linéaire envoie toujours $0$ sur $0$.
+  \item $h$ : \res{\text{non}} : $h(2,2)=4\neq2=2\,h(1,1)$.
+  \item $(P+\lambda Q)'=P'+\lambda Q'$ : \res{\text{oui}} ; de même
+    $(P+\lambda Q)(X+1)=P(X+1)+\lambda Q(X+1)$ : \res{\text{oui}}.
+  \item $(f+\lambda g)(2)=f(2)+\lambda g(2)$ : \res{\text{oui}}, c'est une
+    forme linéaire sur $\R^{\R}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-7}
+\begin{corrige}{7}{Un projecteur à la loupe}
+\demarche{Un projecteur se lit sur son image (les points fixes) et son noyau
+(la direction de projection).}
+\begin{questions}
+  \item Linéarité claire ; en posant $m=\dfrac{x+y}{2}$,
+    $p(p(x,y))=p(m,m)=\Bigl(\dfrac{m+m}{2},\dfrac{m+m}{2}\Bigr)=(m,m)$ :
+    $p\circ p=p$.
+  \item $\operatorname{Im}p=\operatorname{Vect}\bigl((1,1)\bigr)$ (la
+    diagonale $\Delta$, dont les points sont fixes) et
+    $\operatorname{Ker}p=\operatorname{Vect}\bigl((1,-1)\bigr)$
+    ($x+y=0$) : $p$ est la \res{\text{projection sur }\Delta\text{
+    parallèlement à l'antidiagonale}}.
+  \item $s(x,y)=2p(x,y)-(x,y)=\res{(y,\,x)}$ : l'échange des coordonnées !
+    $s(s(x,y))=s(y,x)=(x,y)$ : $s^{2}=\mathrm{id}$, et $s$ est la symétrie
+    par rapport à $\Delta$ parallèlement à l'antidiagonale.
+\end{questions}
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=0.9,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-1.9,0) -- (2.3,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-1.5) -- (0,2.1);
+  \draw[otNavy,line width=1pt] (-1.5,-1.5) -- (2.0,2.0);
+  \draw[otGreenDark,line width=0.9pt] (1.4,-1.4) -- (-1.4,1.4);
+  \draw[otInk,line width=1pt,-{Stealth[length=2mm]}] (0,0) -- (1.8,0.6);
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (1.8,0.6) -- (1.2,1.2);
+  \draw[otNavy,line width=0.9pt,-{Stealth[length=2mm]}] (0,0) -- (1.2,1.2);
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (1.8,0.6) -- (0.6,1.8);
+  \draw[otGreenDark,line width=0.9pt,-{Stealth[length=2mm]}] (0,0) -- (0.6,1.8);
+  \node[font=\scriptsize,text=otInk,anchor=west] at (1.85,0.6) {$(x,y)$};
+  \node[font=\scriptsize,text=otNavy,anchor=north west] at (1.25,1.1) {$p(x,y)$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south west] at (0.62,1.8) {$s(x,y)=(y,x)$};
+  \node[font=\scriptsize,text=otNavy,anchor=south] at (2.0,2.02) {$\Delta$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Projection sur la diagonale $\Delta$ et symétrie associée :
+$s$ échange les coordonnées.}
+\end{center}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-8}
+\begin{corrige}{8}{Rangs et dimensions}
+\demarche{Le rang, c'est le nombre de vecteurs réellement utiles.}
+\begin{questions}
+  \item D'après l'exercice 3 c), la famille est liée mais
+    $\bigl((1,1,0),(0,1,1)\bigr)$ est libre : rang $\res{2}$. Les trois
+    vecteurs $(1,2),(2,4),(3,6)$ sont colinéaires à $(1,2)$ : rang
+    $\res{1}$.
+  \item Hyperplan de $\R^{3}$ (noyau de $(x,y,z)\mapsto x+y+z$) :
+    dimension $\res{2}$, base $\bigl((1,-1,0),(1,0,-1)\bigr)$ (deux
+    vecteurs non colinéaires de somme des coordonnées nulle).
+  \item $a(1+X)+b(1-X)+cX^{2}=0$ donne $c=0$, $a+b=0$ et $a-b=0$, d'où
+    $a=b=c=0$ : famille libre de $3$ vecteurs dans $\R_2[X]$ de dimension
+    $3$ : une \res{\text{base}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-9}
+\begin{corrige}{9}{Des espaces de solutions}
+\demarche{Dimension 2 = deux conditions initiales : une base à deux éléments
+décrit toutes les solutions.}
+\begin{questions}
+  \item C'est le noyau de l'application linéaire $y\mapsto y''+y$ : un
+    sous-espace vectoriel. Si $a\cos+b\sin=0$, évaluer en $0$ et
+    $\frac{\pi}{2}$ donne $a=b=0$ : famille libre. En dimension $2$, elle
+    est donc une base : \emph{toute} solution s'écrit
+    $\res{a\cos+b\sin}$.
+  \item $\Phi:u\mapsto(u_0,u_1)$ est linéaire ; injective, car $u_0=u_1=0$
+    propage $u_n=0$ par récurrence ; surjective, car tout couple de
+    conditions initiales définit une suite de $E$ par la récurrence. Donc
+    $\Phi$ est un isomorphisme et $\dim E=\res{2}$.
+  \item $(r^{n})\in E$ pour $r\neq0$ si et seulement si $r^{2}=r+1$, dont
+    les racines sont $\varphi$ et $\psi$. Si
+    $a\varphi^{n}+b\psi^{n}=0$ pour tout $n$, les rangs $n=0,1$ donnent
+    $a+b=0$ et $a\varphi+b\psi=0$, système de déterminant
+    $\psi-\varphi=-\sqrt5\neq0$ : $a=b=0$. Famille libre de deux vecteurs
+    en dimension $2$ : une base. Pour Fibonacci ($F_0=0$, $F_1=1$) :
+    $a+b=0$ et $a\varphi+b\psi=1$ donnent $a=\dfrac{1}{\sqrt5}=-b$, d'où
+    \[
+    \res{F_n=\frac{\varphi^{n}-\psi^{n}}{\sqrt5}}
+    \]
+    — la formule de Binet (chapitre 5), retrouvée par pure algèbre
+    linéaire.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-10}
+\begin{corrige}{10}{Supplémentaires : deux grands classiques}
+\demarche{En dimension finie : intersection nulle + compte des dimensions.
+En dimension infinie : analyse-synthèse.}
+\begin{questions}
+  \item $F\cap G$ : $(t,t,t)$ avec $3t=0$, donc $\ens{0}$ ; et
+    $\dim F+\dim G=2+1=3=\dim\R^{3}$ : $\R^{3}=F\oplus G$. Pour $(1,2,3)$ :
+    chercher $g=\lambda(1,1,1)$ ; la somme des coordonnées de $f$ étant
+    nulle, $6=3\lambda$, donc $\lambda=2$ :
+    \[
+    (1,2,3)=\res{(-1,0,1)+(2,2,2)}.
+    \]
+  \item \emph{Analyse} : si $f=p+i$ avec $p$ paire, $i$ impaire, alors
+    $f(-x)=p(x)-i(x)$, d'où $p(x)=\dfrac{f(x)+f(-x)}{2}$ et
+    $i(x)=\dfrac{f(x)-f(-x)}{2}$ : unicité. \emph{Synthèse} : ces formules
+    définissent bien une paire et une impaire de somme $f$. Pour
+    l'exponentielle : $p=\operatorname{ch}$ et $i=\operatorname{sh}$ —
+    $\res{\mathrm{e}^{x}=\operatorname{ch}x+\operatorname{sh}x}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-11}
+\begin{corrige}{11}{La formule de Grassmann en action}
+\demarche{Grassmann transforme une question géométrique en arithmétique des
+dimensions.}
+\begin{questions}
+  \item $F+G$ contient strictement $F$ (sinon $G\subseteq F$ et, par
+    égalité des dimensions, $G=F$), donc $\dim(F+G)=3$ et
+    \[
+    \dim(F\cap G)=2+2-3=1 :
+    \]
+    l'intersection est une \res{\text{droite vectorielle}}.
+  \item Un vecteur de $G$ s'écrit $a(0,0,1)+b(1,1,1)=(b,b,a+b)$ ; il est
+    dans $F$ (troisième coordonnée nulle) si et seulement si $a+b=0$, et
+    vaut alors $b\,(1,1,0)$ :
+    $F\cap G=\res{\operatorname{Vect}\bigl((1,1,0)\bigr)}$.
+  \item Non : $\dim(F\cap G)=3+3-\dim(F+G)\geqslant6-5=1$ : dans $\R^{5}$,
+    deux sous-espaces de dimension $3$ se coupent \emph{toujours} hors de
+    l'origine.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-12}
+\begin{corrige}{12}{Base incomplète, base extraite}
+\demarche{Compléter : ajouter un vecteur hors du Vect. Extraire : jeter les
+vecteurs superflus.}
+\begin{questions}
+  \item $(1,0,0)\notin\operatorname{Vect}\bigl((1,1,0),(0,1,1)\bigr)$ :
+    sinon $(1,0,0)=a(1,1,0)+b(0,1,1)$ avec $a=1$, $a+b=0$, $b=0$ :
+    impossible. La famille $\res{\bigl((1,1,0),(0,1,1),(1,0,0)\bigr)}$ est
+    libre, donc base de $\R^{3}$.
+  \item $(2,0)=2(1,0)$ et $(1,1)=(1,0)+(0,1)$ sont superflus :
+    $\res{\bigl((1,0),(0,1)\bigr)}$ est extraite et génératrice, donc base.
+  \item La famille $\bigl(1+X+X^{2},\,X,\,1\bigr)$ est libre (ses
+    coordonnées dans $(1,X,X^{2})$ forment un système triangulaire
+    inversible), donc $\R_2[X]=\operatorname{Vect}(1+X+X^{2},X)\oplus
+    \res{\operatorname{Vect}(1)}$ — tout autre choix hors du plan convient
+    aussi : un supplémentaire n'est jamais unique.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-13}
+\begin{corrige}{13}{Détermination d'une application linéaire}
+\demarche{Prescrire l'image d'une base détermine tout : il n'y a plus qu'à
+décomposer.}
+\begin{questions}
+  \item $\bigl((1,1),(1,-1)\bigr)$ est une base de $\R^{2}$ (vecteurs non
+    colinéaires) : le théorème de détermination donne l'existence et
+    l'unicité de $u$.
+  \item $(x,y)=\dfrac{x+y}{2}(1,1)+\dfrac{x-y}{2}(1,-1)$, donc
+    \[
+    u(x,y)=\frac{x+y}{2}(2,0)+\frac{x-y}{2}(0,4)
+    =\res{(x+y,\ 2x-2y)},
+    \]
+    et $u(1,0)=\res{(1,2)}$.
+  \item $u(x,y)=0$ impose $x+y=0$ et $x-y=0$, donc $x=y=0$ :
+    $\operatorname{Ker}u=\ens{0}$, $u$ injective, donc bijective
+    (endomorphisme en dimension finie) : un automorphisme.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-14}
+\begin{corrige}{14}{Le théorème du rang en pratique}
+\demarche{Chercher les relations entre lignes ou colonnes, puis compter.}
+\begin{questions}
+  \item $L_3=L_1+L_2$ : le rang est au plus $2$ ; les deux premières
+    colonnes $(1,0,1)$ et $(2,1,3)$ sont indépendantes :
+    $\operatorname{rg}u=\res{2}$.
+  \item Le système se réduit à $x+2y+t=0$, $y+z+t=0$ :
+    $x=-2y-t$, $z=-y-t$, d'où la base de $\operatorname{Ker}u$ :
+    \[
+    \res{\bigl((-2,1,-1,0),\ (-1,0,-1,1)\bigr)},
+    \]
+    et $\operatorname{Im}u=\operatorname{Vect}\bigl((1,0,1),(2,1,3)\bigr)$.
+    Vérification : $\dim\R^{4}=4=2+2$.
+  \item Ni injective ($\operatorname{Ker}u\neq\ens{0}$), ni surjective
+    ($\operatorname{rg}u=2<3$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-15}
+\begin{corrige}{15}{Projecteurs et symétries : les caractérisations}
+\demarche{Tout découle de l'identité $x=(x-p(x))+p(x)$.}
+\begin{questions}
+  \item $(\mathrm{id}-p)^{2}=\mathrm{id}-2p+p^{2}=\mathrm{id}-p$. Si
+    $x=p(x)$ alors $x\in\operatorname{Im}p$ ; réciproquement si $y=p(z)$,
+    $p(y)=p^{2}(z)=p(z)=y$ : ainsi
+    $\operatorname{Ker}(\mathrm{id}-p)=\ens{x\mid p(x)=x}=\operatorname{Im}p$.
+  \item $x=\bigl(x-p(x)\bigr)+p(x)$ avec $p\bigl(x-p(x)\bigr)=0$ :
+    $E=\operatorname{Ker}p+\operatorname{Im}p$. Et si
+    $x\in\operatorname{Ker}p\cap\operatorname{Im}p$ : $x=p(x)=0$. Donc
+    $E=\operatorname{Ker}p\oplus\operatorname{Im}p$.
+  \item $s^{2}(x,y)=s(y,x)=(x,y)$ ;
+    $\operatorname{Ker}(s-\mathrm{id})=\ens{(x,x)}$ est la diagonale,
+    $\operatorname{Ker}(s+\mathrm{id})=\ens{(x,-x)}$ l'antidiagonale : $s$
+    est la \res{\text{symétrie par rapport à la diagonale}} parallèlement à
+    l'antidiagonale — et $p=\frac12(s+\mathrm{id})$ est le projecteur de
+    l'exercice 7.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-16}
+\begin{corrige}{16}{Hyperplans de $\R^{3}$}
+\demarche{Un hyperplan, une forme linéaire : l'équation est unique à un
+facteur près.}
+\begin{questions}
+  \item $\varphi$ est une forme linéaire non nulle : $H$ est un hyperplan,
+    de dimension $2$. Les vecteurs $(2,1,0)$ et $(-1,0,1)$ vérifient
+    $\varphi=0$ et ne sont pas colinéaires :
+    $\res{\bigl((2,1,0),(-1,0,1)\bigr)}$ est une base de $H$.
+  \item $\varphi(1,0,0)=1\neq0$ : la droite
+    $D=\operatorname{Vect}\bigl((1,0,0)\bigr)$ n'est pas dans $H$, donc
+    $\R^{3}=H\oplus D$. (Attention : $(1,1,1)$ serait un mauvais choix,
+    car $\varphi(1,1,1)=0$.)
+  \item $-2x+4y-2z=-2\,\varphi(x,y,z)$ : même noyau. En général, si
+    $\operatorname{Ker}\varphi=\operatorname{Ker}\psi=H$, on choisit
+    $v\notin H$ ; tout $x$ s'écrit $h+\lambda v$ et
+    $\psi(x)=\lambda\psi(v)=\dfrac{\psi(v)}{\varphi(v)}\varphi(x)$ : deux
+    équations d'un même hyperplan sont \res{\text{proportionnelles}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-17}
+\begin{corrige}{17}{L'interpolation, vue par l'algèbre linéaire}
+\demarche{Injectivité + égalité des dimensions : l'isomorphisme fait tout le
+travail, sans résoudre le moindre système.}
+\begin{questions}
+  \item Linéarité claire. Si $\Phi(P)=0$, le polynôme $P$, de degré au plus
+    $2$, possède trois racines $0,1,2$ : $P=0$ (chapitre 10). $\Phi$ est
+    donc injective entre espaces de même dimension $3$ : c'est un
+    isomorphisme.
+  \item Pour tout $(y_0,y_1,y_2)$, il existe un unique $P\in\R_2[X]$ avec
+    $\Phi(P)=(y_0,y_1,y_2)$ : existence et unicité du polynôme
+    interpolateur, sans calcul.
+  \item $\Phi(L_i)=e_i$ impose $L_i(a_j)=1$ si $i=j$, $0$ sinon :
+    \[
+    L_0=\frac{(X-1)(X-2)}{2},\qquad L_1=-X(X-2),\qquad
+    L_2=\frac{X(X-1)}{2}.
+    \]
+    Enfin $\Phi(L_0+L_1+L_2)=(1,1,1)=\Phi(1)$ et $\Phi$ injective :
+    $\res{L_0+L_1+L_2=1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-18}
+\begin{corrige}{18}{Solution particulière + solution homogène}
+\demarche{Trois habits du même théorème : solutions = point particulier +
+noyau.}
+\begin{questions}
+  \item Solution particulière $(1,0,2)$ ; système homogène : $x=y$,
+    $z=-2x$, direction $\operatorname{Vect}\bigl((1,1,-2)\bigr)$ :
+    \[
+    \mathcal{S}=\res{(1,0,2)+\R\,(1,1,-2)},
+    \]
+    une droite affine de $\R^{3}$.
+  \item Suite constante : $c=2c+3$ donne $c=-3$ ; solutions homogènes
+    $\lambda\,2^{n}$ ; avec $u_0=1$ : $\lambda=4$, soit
+    $\res{u_n=4\cdot2^{n}-3}$.
+  \item Particulière $y=-1$ ; homogène $C\mathrm{e}^{x}$ :
+    $\res{y=C\mathrm{e}^{x}-1}$, $C\in\R$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-19}
+\begin{corrige}{19}{Familles libres de fonctions}
+\demarche{Faire parler l'infini : la croissance ou la non-dérivabilité
+distingue les fonctions mieux que tout calcul.}
+\begin{questions}
+  \item Récurrence sur $n$ (cas $n=1$ clair). Soit
+    $\lambda_1\mathrm{e}^{a_1x}+\dots+\lambda_n\mathrm{e}^{a_nx}=0$ pour
+    tout $x$. En divisant par $\mathrm{e}^{a_nx}$ :
+    \[
+    \lambda_n=-\sum_{i<n}\lambda_i\,\mathrm{e}^{(a_i-a_n)x}
+    \xrightarrow[x\to+\infty]{}0
+    \]
+    car $a_i-a_n<0$ : donc $\lambda_n=0$, et l'hypothèse de récurrence
+    achève. La famille est \res{\text{libre}}.
+  \item Soit $\sum_{j}\lambda_j\,|x-a_j|=0$ (somme finie, $a_j$ distincts).
+    Si un $\lambda_j$ était non nul, la fonction nulle serait somme de
+    fonctions toutes dérivables en $a_j$ \emph{sauf}
+    $\lambda_j|x-a_j|$ : elle ne serait pas dérivable en $a_j$, absurde.
+    Donc tous les $\lambda_j$ sont nuls : famille \res{\text{libre}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-20}
+\begin{corrige}{20}{Endomorphismes nilpotents : premiers pas}
+\demarche{Appliquer $u^{p-1}$, puis $u^{p-2}$… : chaque étape tue un
+coefficient.}
+\begin{questions}
+  \item Soit $\lambda_0x+\lambda_1u(x)+\dots+\lambda_{p-1}u^{p-1}(x)=0$.
+    En appliquant $u^{p-1}$ : $\lambda_0u^{p-1}(x)=0$ (tous les autres
+    termes contiennent $u^{p}=0$), donc $\lambda_0=0$. En appliquant
+    $u^{p-2}$ : $\lambda_1=0$, et ainsi de suite : la famille est libre.
+    Elle compte $p$ vecteurs en dimension $n$ : $\res{p\leqslant n}$.
+  \item Dériver baisse le degré de $1$ : $D^{n+1}=0$ sur $\R_n[X]$, et
+    $D^{n}(X^{n})=n!\neq0$ : l'indice vaut exactement $\res{n+1}$ —
+    cohérent avec a), puisque $\dim\R_n[X]=n+1$.
+  \item $(\mathrm{id}-u)\bigl(\mathrm{id}+u+\dots+u^{p-1}\bigr)
+    =\mathrm{id}-u^{p}=\mathrm{id}$, et les deux facteurs commutent :
+    $\mathrm{id}-u$ est inversible, d'inverse la somme géométrique
+    tronquée — exactement comme $\frac{1}{1-x}$ (chapitres 8 et 9).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-21}
+\begin{corrige}{21}{Noyaux itérés}
+\demarche{Une suite croissante de sous-espaces d'un espace de dimension
+finie n'a pas le choix : elle stationne.}
+\begin{questions}
+  \item Si $u^{k}(x)=0$, alors $u^{k+1}(x)=u\bigl(u^{k}(x)\bigr)=0$ :
+    l'inclusion est immédiate.
+  \item Soit $x\in\operatorname{Ker}u^{k+2}$ : $u(x)\in\operatorname{Ker}u^{k+1}
+    =\operatorname{Ker}u^{k}$, donc $u^{k+1}(x)=0$, c'est-à-dire
+    $x\in\operatorname{Ker}u^{k+1}$ : l'égalité se propage de proche en
+    proche à tous les rangs suivants.
+  \item Tant que la suite ne stationne pas, les dimensions croissent
+    strictement ; partant de $0$ et majorées par $n$, elles ne peuvent
+    croître strictement plus de $n$ fois : la suite stationne au plus tard
+    au rang $\res{n}$.
+  \item Pour la dérivation sur $\R_3[X]$ :
+    $\operatorname{Ker}D^{k}=\R_{k-1}[X]$ (les polynômes de degré
+    $<k$), de dimensions $\res{0,1,2,3,4}$ pour $k=0,\dots,4$, puis
+    stationnaire — la croissance est ici la plus lente possible.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-22}
+\begin{corrige}{22}{Deux projecteurs qui commutent}
+\demarche{La commutation permet de faire passer p au travers de q — chaque
+inclusion s'écrit en une ligne.}
+\begin{questions}
+  \item $(pq)^{2}=p\,qp\,q=p\,pq\,q=p^{2}q^{2}=pq$ : $p\circ q$ est un
+    projecteur.
+  \item $\subseteq$ : $pq(x)=p\bigl(q(x)\bigr)\in\operatorname{Im}p$ et
+    $pq(x)=qp(x)\in\operatorname{Im}q$. $\supseteq$ : si
+    $y\in\operatorname{Im}p\cap\operatorname{Im}q$, alors $p(y)=y$ et
+    $q(y)=y$ (exercice 15), donc $pq(y)=p(y)=y$ et
+    $y\in\operatorname{Im}(pq)$. D'où
+    $\res{\operatorname{Im}(pq)=\operatorname{Im}p\cap\operatorname{Im}q}$.
+  \item $\supseteq$ : si $p(x)=0$, $pq(x)=qp(x)=0$ ; de même pour
+    $\operatorname{Ker}q$, et une somme d'éléments des deux noyaux est
+    encore dans $\operatorname{Ker}(pq)$. $\subseteq$ : si $pq(x)=0$,
+    écrire $x=\bigl(x-q(x)\bigr)+q(x)$ : le premier terme vérifie
+    $q\bigl(x-q(x)\bigr)=q(x)-q^{2}(x)=0$, le second
+    $p\bigl(q(x)\bigr)=0$. D'où
+    $\res{\operatorname{Ker}(pq)=\operatorname{Ker}p+\operatorname{Ker}q}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-23}
+\begin{corrige}{23}{Les hyperplans de polynômes}
+\demarche{« Racine » égale « facteur » : chaque condition d'annulation coûte
+exactement une dimension.}
+\begin{questions}
+  \item $H_a$ est le noyau de la forme linéaire non nulle $P\mapsto P(a)$
+    (elle vaut $1$ sur le polynôme constant $1$) : un hyperplan, de
+    dimension $3$. Et $P(a)=0$ équivaut à $(X-a)\mid P$ (chapitre 10) :
+    $H_a=(X-a)\,\R_2[X]$.
+  \item $P\in H_0\cap H_1\cap H_2$ signifie que $X$, $X-1$, $X-2$ divisent
+    $P$, de degré au plus $3$ : $P=\lambda\,X(X-1)(X-2)$. C'est la droite
+    $\res{\operatorname{Vect}\bigl(X(X-1)(X-2)\bigr)}$.
+  \item Le même argument donne $P=\prod_{i}(X-a_i)\,Q$ avec
+    $\deg Q\leqslant3-(m+1)$ :
+    \[
+    \dim\bigl(H_{a_0}\cap\dots\cap H_{a_m}\bigr)=\res{3-m}.
+    \]
+    L'intersection de $m+1$ hyperplans atteint donc ici exactement la
+    borne $n-(m+1)=3-m$ du cours : des conditions d'interpolation en des
+    points distincts sont toujours « indépendantes ».
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-24}
+\begin{corrige}{24}{Quand $E=\operatorname{Ker}u\oplus\operatorname{Im}u$}
+\demarche{Les inclusions sont toujours vraies ; le théorème du rang
+transforme chaque égalité d'espaces en égalité de dimensions.}
+\etape{b) équivaut à c) et d)}
+On a toujours $\operatorname{Ker}u\subseteq\operatorname{Ker}u^{2}$ et
+$\operatorname{Im}u^{2}\subseteq\operatorname{Im}u$. Le théorème du rang
+appliqué à $u$ et à $u^{2}$ donne
+$\dim\operatorname{Ker}u+\operatorname{rg}u=n
+=\dim\operatorname{Ker}u^{2}+\operatorname{rg}u^{2}$ : l'égalité des noyaux
+équivaut à celle des rangs, qui équivaut (par inclusion et égalité des
+dimensions) à celle des images : (b) $\iff$ (d) $\iff$ (c).
+\etape{a) implique b)}
+Si $x\in\operatorname{Ker}u^{2}$, alors
+$u(x)\in\operatorname{Ker}u\cap\operatorname{Im}u=\ens{0}$ : donc
+$x\in\operatorname{Ker}u$.
+\etape{b) implique a)}
+Si $x\in\operatorname{Ker}u\cap\operatorname{Im}u$ : $x=u(y)$ et
+$u(x)=0$, donc $y\in\operatorname{Ker}u^{2}=\operatorname{Ker}u$ et
+$x=u(y)=0$ : l'intersection est nulle. Comme
+$\dim\operatorname{Ker}u+\operatorname{rg}u=n$ (théorème du rang), la somme
+est directe et vaut $E$.
+\etape{Exemples}
+Un projecteur vérifie $u^{2}=u$, donc (b) trivialement — et on retrouve
+$E=\operatorname{Ker}p\oplus\operatorname{Im}p$ (exercice 15). Pour la
+dérivation sur $\R_2[X]$ : $\operatorname{rg}D=2$ mais
+$\operatorname{rg}D^{2}=1$, et
+$\operatorname{Ker}D=\R_0[X]\subseteq\operatorname{Im}D=\R_1[X]$ : aucune
+des quatre assertions n'est vérifiée.
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-12}

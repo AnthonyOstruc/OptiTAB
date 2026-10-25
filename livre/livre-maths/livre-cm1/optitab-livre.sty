@@ -1,0 +1,1188 @@
+%% =====================================================================
+%%  optitab-livre.sty - Template du livre d'exercices OptiTAB
+%%  Compilation : LuaLaTeX (deux passes)
+%% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{optitab-livre}[2026/10/18 v0.2 Template livre OptiTAB]
+
+\RequirePackage{iftex}
+\RequireLuaTeX
+
+%% ---------------------------------------------------------------------
+%%  Format de page (A4, impression recto verso)
+%% ---------------------------------------------------------------------
+\RequirePackage[a4paper,inner=24mm,outer=22mm,top=28mm,bottom=28mm,
+  headheight=14pt,headsep=9mm,footskip=14mm]{geometry}
+
+%% ---------------------------------------------------------------------
+%%  Langue
+%% ---------------------------------------------------------------------
+\RequirePackage[french]{babel}
+\frenchsetup{StandardItemizeEnv=true,StandardEnumerateEnv=true}
+
+%% ---------------------------------------------------------------------
+%%  Polices : Libertinus (texte et maths) + Montserrat (titres, repères)
+%% ---------------------------------------------------------------------
+\RequirePackage{amsmath,mathtools}
+\RequirePackage{unicode-math}
+\setmainfont{LibertinusSerif}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Semibold, BoldItalicFont=*-SemiboldItalic]
+\setmathfont{LibertinusMath-Regular.otf}
+\setsansfont{Montserrat}[
+  Extension=.otf, UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-SemiBold, BoldItalicFont=*-SemiBoldItalic]
+\newfontfamily\otThin{Montserrat}[Extension=.otf,
+  UprightFont=*-ExtraLight, BoldFont=*-Light]
+\newfontfamily\otLight{Montserrat}[Extension=.otf,
+  UprightFont=*-Light, ItalicFont=*-LightItalic, BoldFont=*-Medium]
+\newfontfamily\otRegular{Montserrat}[Extension=.otf,
+  UprightFont=*-Regular, ItalicFont=*-Italic, BoldFont=*-SemiBold]
+\newfontfamily\otMedium{Montserrat}[Extension=.otf,
+  UprightFont=*-Medium, ItalicFont=*-MediumItalic, BoldFont=*-SemiBold]
+\newfontfamily\otSemi{Montserrat}[Extension=.otf,
+  UprightFont=*-SemiBold, ItalicFont=*-SemiBoldItalic, BoldFont=*-Bold]
+\newfontfamily\otBold{Montserrat}[Extension=.otf,
+  UprightFont=*-Bold, ItalicFont=*-BoldItalic, BoldFont=*-ExtraBold]
+
+\RequirePackage[protrusion=true,expansion=true]{microtype}
+\linespread{1.06}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% Capitales espacées : \otCaps[espacement]{texte}
+\newcommand{\otCaps}[2][8]{{\addfontfeature{LetterSpace=#1}\MakeUppercase{#2}}}
+
+%% ---------------------------------------------------------------------
+%%  Couleurs (relevées sur le logo OptiTAB)
+%% ---------------------------------------------------------------------
+\RequirePackage{xcolor}
+\definecolor{otNavy}{HTML}{1B3C8E}
+\definecolor{otNavyDark}{HTML}{122A66}
+\definecolor{otGreen}{HTML}{5FAC60}
+\definecolor{otGreenDark}{HTML}{3B8544}
+\definecolor{otInk}{HTML}{1C2130}
+\definecolor{otMuted}{HTML}{6B7385}
+\definecolor{otRule}{HTML}{D5DAE3}
+\definecolor{otOrange}{HTML}{F0A23B}
+\definecolor{otRed}{HTML}{E0574C}
+\colorlet{otGreenTint}{otGreen!13}
+\colorlet{otNavyTint}{otNavy!6}
+\colorlet{otNavySoft}{otNavy!12}
+\AtBeginDocument{\color{otInk}}
+\newcommand{\otAccent}{otNavy}
+
+%% ---------------------------------------------------------------------
+%%  Outils
+%% ---------------------------------------------------------------------
+\RequirePackage{graphicx}
+\graphicspath{{images/}}
+\RequirePackage{needspace}
+\RequirePackage{multicol}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,calc,shapes.geometric,positioning}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{fillbetween}
+\RequirePackage{tkz-tab}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{tasks}
+\RequirePackage{ragged2e}
+\RequirePackage{qrcode}
+
+%% ---------------------------------------------------------------------
+%%  Notations françaises
+%% ---------------------------------------------------------------------
+\AtBeginDocument{%
+  \let\leq\leqslant  \let\le\leqslant
+  \let\geq\geqslant  \let\ge\geqslant}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Cf}{\mathcal{C}_f}
+\newcommand{\intFF}[2]{\mathopen{[}#1\,{;}\,#2\mathclose{]}}
+\newcommand{\intOO}[2]{\mathopen{]}#1\,{;}\,#2\mathclose{[}}
+\newcommand{\intOF}[2]{\mathopen{]}#1\,{;}\,#2\mathclose{]}}
+\newcommand{\intFO}[2]{\mathopen{[}#1\,{;}\,#2\mathclose{[}}
+\newcommand{\ens}[1]{\left\{#1\right\}}
+\newcommand{\pv}{\,{;}\,}
+% Géométrie dans l'espace
+\newcommand{\vect}[1]{\overrightarrow{#1}}
+\newcommand{\colv}[3]{\begin{pmatrix}#1\\#2\\#3\end{pmatrix}}
+\newcommand{\norme}[1]{\left\lVert#1\right\rVert}
+
+%% ---------------------------------------------------------------------
+%%  Informations du livre
+%% ---------------------------------------------------------------------
+\newcommand{\otTitreLivre}{Mathématiques}
+\newcommand{\otSousTitre}{Cours et exercices corrigés}
+\newcommand{\otNiveau}{CM1 · France}
+\newcommand{\otSite}{optitab.net}
+\newcommand{\otURL}{https://www.optitab.net}
+
+%% ---------------------------------------------------------------------
+%%  État courant (chapitre, partie corrigés)
+%% ---------------------------------------------------------------------
+\newcommand{\otChapNum}{0}
+\newcommand{\otChapTitle}{}
+\newif\ifotCorriges
+\newcommand{\otTwoDigits}[1]{\ifnum#1<10 0\fi\number#1}
+
+%% Données écrites dans le fichier .aux (sommaire de chapitre automatique)
+\newcommand{\otRubData}[4]{%
+  \expandafter\gdef\csname otRub@#1@#2\endcsname{#3}%
+  \expandafter\gdef\csname otRubFirst@#1@#2\endcsname{#4}}
+\newcommand{\otChapRubs}[2]{\expandafter\gdef\csname otNRub@#1\endcsname{#2}}
+\newcommand{\otChapExos}[2]{\expandafter\gdef\csname otNExo@#1\endcsname{#2}}
+
+%% Page de droite garantie : la page paire laissée libre devient une page « Notes »
+\newcommand{\otPageNotes}{%
+  \thispagestyle{empty}%
+  \noindent{\otLight\fontsize{22}{26}\selectfont\color{otInk}Notes}\par\vspace{2.5mm}%
+  \noindent{\color{otNavy}\rule{12mm}{0.6pt}}\par\vspace{9mm}%
+  \noindent\begin{tikzpicture}
+    \foreach \k in {0,...,24}{\draw[otRule,line width=0.4pt] (0.2pt,-\k*8mm) -- ({\linewidth-0.2pt},-\k*8mm);}
+  \end{tikzpicture}\par
+  \newpage}
+\newcommand{\otCleardoublepage}{%
+  \clearpage\ifodd\value{page}\else\otPageNotes\fi}
+
+%% ---------------------------------------------------------------------
+%%  Onglets de chapitre (bord extérieur de la page)
+%% ---------------------------------------------------------------------
+\newcommand{\otThumb}{%
+  \ifnum\otChapNum>0\relax
+  \begin{tikzpicture}[remember picture,overlay]
+    \pgfmathsetmacro{\otThumbY}{30+(\otChapNum-1)*11}
+    \ifodd\value{page}
+      \fill[\otAccent] ([yshift=-\otThumbY mm]current page.north east)
+        rectangle ++(-7.5mm,-10mm);
+      \node[text=white,font=\otSemi\fontsize{7.5}{8}\selectfont]
+        at ([xshift=-3.75mm,yshift=-\otThumbY mm-5mm]current page.north east)
+        {\otTwoDigits{\otChapNum}};
+    \else
+      \fill[\otAccent] ([yshift=-\otThumbY mm]current page.north west)
+        rectangle ++(7.5mm,-10mm);
+      \node[text=white,font=\otSemi\fontsize{7.5}{8}\selectfont]
+        at ([xshift=3.75mm,yshift=-\otThumbY mm-5mm]current page.north west)
+        {\otTwoDigits{\otChapNum}};
+    \fi
+  \end{tikzpicture}\fi}
+
+%% ---------------------------------------------------------------------
+%%  En-têtes et pieds de page
+%% ---------------------------------------------------------------------
+\RequirePackage{fancyhdr}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{{\color{otRule}%
+  \hrule\@height\headrulewidth\@width\headwidth\vskip-\headrulewidth}}
+\newcommand{\otHeadText}[1]{{\otMedium\fontsize{7}{9}\selectfont\color{otMuted}\otCaps[10]{#1}}}
+\newcommand{\otHeadNum}{{\otSemi\fontsize{8}{9}\selectfont\color{\otAccent}\otTwoDigits{\otChapNum}}}
+\newcommand{\otFootNum}{{\otSemi\fontsize{9}{10}\selectfont\color{\otAccent}\thepage}}
+\newcommand{\otFootText}[1]{{\otLight\fontsize{7}{9}\selectfont\color{otMuted}\otCaps[10]{#1}}}
+
+\fancypagestyle{otMain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \fancyhead[LE]{\otHeadNum\hspace{0.8em}\otHeadText{\leftmark}}%
+  \fancyhead[RO]{\otHeadText{\rightmark}\hspace{0.8em}\otHeadNum}%
+  \fancyfoot[LE]{\otThumb\otFootNum\hspace{1.2em}\otFootText{OptiTAB · \otNiveau}}%
+  \fancyfoot[RO]{\otThumb\otFootText{\otTitreLivre\ · \otSousTitre}\hspace{1.2em}\otFootNum}}
+\fancypagestyle{otFront}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[LE]{\otFootNum}%
+  \fancyfoot[RO]{\otFootNum}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{otMain}
+
+%% ---------------------------------------------------------------------
+%%  Petits éléments graphiques
+%% ---------------------------------------------------------------------
+% Pastille numérotée
+\newcommand{\otNumBox}[2][otNavy]{%
+  \tikz[baseline=(n.base)]\node[fill=#1,rounded corners=1.6pt,inner sep=0pt,
+    minimum width=7mm,minimum height=6.2mm,text=white,
+    font=\otBold\fontsize{10}{10}\selectfont](n){#2};}
+\newcommand{\otNumBoxPetit}[2][otNavy]{%
+  \tikz[baseline=(n.base)]\node[fill=#1,rounded corners=1.2pt,inner sep=0pt,
+    minimum width=6mm,minimum height=4.8mm,text=white,
+    font=\otSemi\fontsize{7.5}{8}\selectfont](n){#2};}
+
+% Difficulté : 1, 2 ou 3 points
+\newcommand{\otDots}[2][otNavy]{%
+  \begin{tikzpicture}[baseline=0pt]
+    \foreach \i in {1,2,3}{%
+      \ifnum\i>#2\relax
+        \fill[otRule] (\i*2.4mm,0.62ex) circle (0.9mm);
+      \else
+        \fill[#1] (\i*2.4mm,0.62ex) circle (0.9mm);
+      \fi}
+  \end{tikzpicture}}
+
+% Coche verte
+\newcommand{\otCheck}[1][otGreen]{%
+  \tikz[baseline=-0.62ex]{\fill[#1] (0,0) circle (1.95mm);
+    \draw[white,line width=0.95pt,line cap=round,line join=round]
+      (-0.9mm,0.05mm) -- (-0.25mm,-0.65mm) -- (0.95mm,0.75mm);}}
+
+% Pastille numérotée ronde (mode d'emploi, conseils)
+\newcommand{\otRond}[2][otGreen]{%
+  \tikz[baseline=(r.base)]\node[circle,fill=#1,inner sep=0pt,minimum size=4.6mm,
+    text=white,font=\otBold\fontsize{7.5}{8}\selectfont](r){#2};}
+
+% Filet horizontal fin (remplit la ligne)
+\newcommand{\otFilet}[1][otRule]{%
+  {\color{#1}\leaders\hrule height 2.75pt depth -2.35pt\hskip 0pt plus 1filll}}
+
+% Titre de page liminaire : \otPageTitre{titre}{sous-titre}
+\newcommand{\otPageTitre}[2]{%
+  \noindent{\otLight\fontsize{30}{34}\selectfont\color{otInk}#1}\par
+  \if\relax\detokenize{#2}\relax\else
+    \vspace{2mm}{\otLight\fontsize{10}{13}\selectfont\color{otMuted}#2\par}\fi
+  \vspace{4mm}%
+  \noindent{\color{\otAccent}\rule[0pt]{16mm}{1.3pt}}%
+  {\color{otRule}\rule[0.45pt]{\dimexpr\linewidth-16mm\relax}{0.4pt}}\par
+  \vspace{8mm}}
+
+% Petit intertitre en capitales
+\newcommand{\otIntertitre}[1]{%
+  \par\noindent{\otSemi\fontsize{8}{10}\selectfont\color{\otAccent}\otCaps[14]{#1}}\par
+  \vspace{2.5mm}}
+
+%% ---------------------------------------------------------------------
+%%  Décors des ouvertures (dessinés dans le bandeau)
+%%  Repère : origine en bas à gauche du bandeau (210 mm x 118 mm)
+%% ---------------------------------------------------------------------
+\newcommand{\otDecoGrille}{%
+  \draw[white,opacity=0.07,line width=0.3pt,step=8mm] (0,0) grid (210mm,118mm);}
+\newcommand{\otDecoexp}{%
+  \otDecoGrille
+  \draw[white,opacity=0.22,line width=0.5pt] (0,8mm) -- (210mm,8mm);
+  \draw[white,opacity=0.22,line width=0.5pt] (192mm,0) -- (192mm,118mm);
+  \draw[white,opacity=0.55,line width=1.6pt,line cap=round]
+    plot[domain=-13.7:1.6,samples=180] ({192mm+\x*14mm},{8mm+exp(\x)*14mm});
+  \draw[otGreen,line width=1.2pt,line cap=round]
+    (192mm,22mm) -- ({192mm+1.6*14mm},{8mm+2.6*14mm});
+  \fill[otGreen] (192mm,22mm) circle (1.6mm);
+  \fill[white] ({192mm+14mm},{8mm+2.71828*14mm}) circle (1.2mm);}
+\newcommand{\otDecocourbe}{%
+  \otDecoGrille
+  \draw[white,opacity=0.22,line width=0.5pt] (0,30mm) -- (210mm,30mm);
+  \draw[white,opacity=0.55,line width=1.6pt,line cap=round]
+    plot[domain=0:9,samples=160] ({118mm+\x*10mm},{30mm+sin(\x r)*14mm+\x*4mm});}
+
+%% ---------------------------------------------------------------------
+%%  Ouverture de chapitre (page entière)
+%%  \begin{ouverture}[décor]{numéro}{titre}{partie}{notions}
+%%    \objectif{...}  \objectif{...}
+%%  \end{ouverture}
+%% ---------------------------------------------------------------------
+\newcounter{exo}
+\newcounter{otRub}
+\newcounter{otTmp}
+
+\newcommand{\objectif}[1]{%
+  \par\noindent\otCheck\hspace{3mm}%
+  \parbox[t]{\dimexpr\linewidth-7mm\relax}{\raggedright#1}\par\vspace{2.6mm}}
+
+% Prérequis (dans le corps de l'ouverture, après les objectifs)
+\newif\ifotPrerequisTitre
+\newcommand{\prerequis}[1]{%
+  \ifotPrerequisTitre\else
+    \global\otPrerequisTitretrue
+    \par\vspace{7mm}\otIntertitre{Prérequis}%
+  \fi
+  \par\noindent\makebox[7mm][l]{\hspace{1.2mm}\tikz[baseline=-0.62ex]\fill[otNavy] (0,0) circle (0.8mm);}%
+  \parbox[t]{\dimexpr\linewidth-7mm\relax}{\raggedright#1}\par\vspace{2mm}}
+
+\newcommand{\otDansCeLigne}[1]{%
+  \edef\otFirst{\csname otRubFirst@\otChapNum @#1\endcsname}%
+  \ifnum#1<\csname otNRub@\otChapNum\endcsname\relax
+    \edef\otLast{\the\numexpr\csname otRubFirst@\otChapNum @\the\numexpr#1+1\relax\endcsname-1\relax}%
+  \else
+    \edef\otLast{\csname otNExo@\otChapNum\endcsname}%
+  \fi
+  \par\noindent{\otSemi\fontsize{9}{11}\selectfont\color{otNavy}%
+    \csname otRub@\otChapNum @#1\endcsname}%
+  \hfill{\otMedium\fontsize{8.5}{11}\selectfont\color{otInk}p.~\pageref*{rub-\otChapNum-#1}}\par
+  {\otLight\fontsize{7.5}{10}\selectfont\color{otMuted}%
+    \ifnum\otFirst=\otLast\relax Exercice~\otFirst\else Exercices~\otFirst~à~\otLast\fi}\par
+  \vspace{2.4mm}}
+
+\newcommand{\otDansCe}{%
+  \ifcsname r@ess-\otChapNum\endcsname
+    \par\noindent{\otSemi\fontsize{9}{11}\selectfont\color{otNavy}L'essentiel}%
+    \hfill{\otMedium\fontsize{8.5}{11}\selectfont\color{otInk}p.~\pageref*{ess-\otChapNum}}\par
+    {\otLight\fontsize{7.5}{10}\selectfont\color{otMuted}Synthèse du cours et méthodes}\par
+    \vspace{2.4mm}%
+  \fi
+  \ifcsname otNRub@\otChapNum\endcsname
+    \setcounter{otTmp}{0}%
+    \loop\ifnum\value{otTmp}<\csname otNRub@\otChapNum\endcsname\relax
+      \stepcounter{otTmp}%
+      \otDansCeLigne{\arabic{otTmp}}%
+    \repeat
+  \fi
+  \ifcsname r@cor-\otChapNum-1\endcsname
+    {\color{otRule}\rule{\linewidth}{0.4pt}}\par\vspace{2.4mm}%
+    \noindent{\otSemi\fontsize{9}{11}\selectfont\color{otGreenDark}Corrigés}%
+    \hfill{\otMedium\fontsize{8.5}{11}\selectfont\color{otInk}p.~\pageref*{corchap-\otChapNum}}\par
+  \fi}
+
+\newsavebox\otBoiteTitre
+\NewDocumentEnvironment{ouverture}{O{courbe} m m m m +b}{%
+  \otCleardoublepage
+  \setcounter{chapter}{#2}\setcounter{exo}{0}\setcounter{otRub}{0}%
+  \gdef\otChapNum{#2}\gdef\otChapTitle{#3}%
+  \global\otCorrigesfalse\gdef\otAccent{otNavy}\global\otSouplefalse
+  \global\otPrerequisTitrefalse
+  \markboth{#3}{#3}%
+  \thispagestyle{empty}%
+  \phantomsection\label{chap-#2}%
+  \pdfbookmark[0]{\otTwoDigits{#2} · #3}{bm-chap-#2}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={([yshift=-118mm]current page.north west)}]
+      \fill[otNavy] (0,0) rectangle (210mm,118mm);
+      \begin{scope}
+        \clip (0,0) rectangle (210mm,118mm);
+        \ifcsname otDeco#1\endcsname\csname otDeco#1\endcsname\else\otDecocourbe\fi
+      \end{scope}
+      % Partie
+      \node[anchor=north west,fill=otGreenDark,rounded corners=2.2mm,
+        inner xsep=3.2mm,inner ysep=1.9mm,text=white,
+        font=\otSemi\fontsize{7}{8}\selectfont] at (24mm,100mm) {\otCaps[16]{#4}};
+      % Numéro et titre
+      \node[anchor=base west,inner sep=0pt,text=white,
+        font=\otThin\fontsize{112}{112}\selectfont] at (21mm,46mm) {\otTwoDigits{#2}};
+      \node[anchor=base west,inner sep=0pt,text=white] at (24mm,27mm)
+        {\sbox\otBoiteTitre{\otSemi\fontsize{30}{34}\selectfont #3}%
+         \ifdim\wd\otBoiteTitre>166mm\resizebox{166mm}{!}{\usebox\otBoiteTitre}\else\usebox\otBoiteTitre\fi};
+      \node[anchor=base west,inner sep=0pt,text=white,opacity=0.78,
+        font=\otLight\fontsize{9.5}{12}\selectfont] at (24mm,15mm) {#5};
+    \end{scope}
+    % Objectifs
+    \node[anchor=north west,inner sep=0pt,text width=94mm]
+      at ([xshift=24mm,yshift=-138mm]current page.north west)
+      {\otIntertitre{Objectifs du chapitre}%
+       \fontsize{10.5}{13.5}\selectfont #6};
+    % Dans ce chapitre
+    \node[anchor=north west,fill=otNavyTint,rounded corners=2mm,
+      inner sep=5mm,text width=52mm]
+      at ([xshift=126mm,yshift=-136mm]current page.north west)
+      {\otIntertitre{Dans ce chapitre}\otDansCe};
+    % Légende des difficultés et cours en ligne
+    \node[anchor=south west,inner sep=0pt]
+      at ([xshift=24mm,yshift=30mm]current page.south west)
+      {\otLegende};
+    \node[anchor=south east,inner sep=0pt]
+      at ([xshift=-22mm,yshift=40mm]current page.south east)
+      {\otQRCours};
+  \end{tikzpicture}%
+  \clearpage}{}
+\RequirePackage{etoolbox}
+
+\newcommand{\otLegende}{%
+  {\otLight\fontsize{8}{10}\selectfont\color{otMuted}%
+   Niveau de difficulté\hspace{1.2em}%
+   \otDots{1}\hspace{0.45em}accessible\hspace{1.4em}%
+   \otDots{2}\hspace{0.45em}intermédiaire\hspace{1.4em}%
+   \otDots{3}\hspace{0.45em}approfondi}}
+
+%% ---------------------------------------------------------------------
+%%  Rubriques (Découverte, Entraînement, Problèmes)
+%% ---------------------------------------------------------------------
+\newcommand{\rubrique}[1]{%
+  \par\addvspace{8mm}\otBesoinPlace{10\baselineskip}%
+  \stepcounter{otRub}%
+  \immediate\write\@auxout{\string\otRubData{\otChapNum}{\theotRub}%
+    {\unexpanded{#1}}{\the\numexpr\value{exo}+1\relax}}%
+  \immediate\write\@auxout{\string\otChapRubs{\otChapNum}{\theotRub}}%
+  \markright{#1}%
+  \phantomsection\label{rub-\otChapNum-\theotRub}%
+  \noindent
+  \begin{tikzpicture}[baseline=(b.base)]
+    \fill[otNavyTint,rounded corners=1.6mm] (0,-2.6mm) rectangle (\linewidth,6.4mm);
+    \fill[otNavy] (0,-2.6mm) rectangle (1.3mm,6.4mm);
+    \node[anchor=base west,inner sep=0pt,text=otNavy,
+      font=\otSemi\fontsize{8.5}{10}\selectfont] (b) at (5mm,0) {\otCaps[18]{#1}};
+    \node[anchor=base east,inner sep=0pt,text=otMuted,
+      font=\otLight\fontsize{7.5}{10}\selectfont] at ([xshift=-4mm]\linewidth,0)
+      {\otPlageRubrique};
+  \end{tikzpicture}\par\nopagebreak
+  \vspace{1mm}\global\otApresRubriquetrue}
+
+\newcommand{\otPlageRubrique}{%
+  \ifcsname otRubFirst@\otChapNum @\theotRub\endcsname
+    \edef\otFirst{\csname otRubFirst@\otChapNum @\theotRub\endcsname}%
+    \ifnum\theotRub<\csname otNRub@\otChapNum\endcsname\relax
+      \edef\otLast{\the\numexpr\csname otRubFirst@\otChapNum @\the\numexpr\theotRub+1\relax\endcsname-1\relax}%
+    \else
+      \edef\otLast{\csname otNExo@\otChapNum\endcsname}%
+    \fi
+    \ifnum\otFirst=\otLast\relax Exercice~\otFirst\else Exercices~\otFirst~à~\otLast\fi
+  \fi}
+
+%% ---------------------------------------------------------------------
+%%  Exercices et corrigés
+%% ---------------------------------------------------------------------
+\newlength{\otIndent}
+\setlength{\otIndent}{10.5mm}
+
+% En-tête : pastille + titre + (difficulté) + renvoi
+\newsavebox{\otDroiteBox}
+% Place minimale avant un en-tête. Par défaut, \needspace garde les exercices d'un seul tenant ;
+% en mode « souple » (corrigés longs, pleine largeur), on ne change de page que si la place manque,
+% ce qui permet de couper un corrigé entre deux questions plutôt que de laisser un blanc.
+% Tolérance supplémentaire pour les paragraphes difficiles (code en ligne insécable)
+\setlength{\emergencystretch}{1.5em}
+\newif\ifotSouple
+\newif\ifotApresRubrique
+\newcommand{\otBesoinPlace}[1]{%
+  \ifotSouple
+    \par\if@nobreak\else\penalty\z@\fi
+    \begingroup\setlength{\dimen@}{#1}\dimen@ii\pagegoal\advance\dimen@ii-\pagetotal
+      \ifdim\dimen@>\dimen@ii\ifdim\dimen@ii>\z@\vfil\fi\break\fi
+    \endgroup
+  \else\needspace{#1}\fi}
+\newcommand{\miseEnPageSouple}{\global\otSoupletrue}
+\let\corrigesSouples\miseEnPageSouple
+\newcommand{\otEntete}[5]{% #1 couleur, #2 numéro, #3 titre, #4 difficulté, #5 renvoi
+  \ifotApresRubrique
+    \par\global\otApresRubriquefalse\addvspace{6.5mm}%
+  \else
+    \par\addvspace{6.5mm}\otBesoinPlace{9\baselineskip}%
+  \fi
+  \sbox{\otDroiteBox}{\ifnum#4>0\relax\otDots{#4}\hspace{3mm}\fi
+    {\otMedium\fontsize{7}{9}\selectfont\color{otMuted}#5}}%
+  \noindent\makebox[\otIndent][l]{\otNumBox[#1]{#2}}%
+  \parbox[t]{\dimexpr\linewidth-\otIndent-\wd\otDroiteBox-4mm\relax}%
+    {\raggedright\otSemi\fontsize{10.5}{13}\selectfont\leavevmode\color{otInk}#3}%
+  \hfill\usebox{\otDroiteBox}%
+  \par\nopagebreak\vspace{2mm}\@nobreaktrue}
+
+\newenvironment{otCorps}{%
+  \ifotSouple\@beginparpenalty\@M\fi
+  \begin{list}{}{\setlength{\leftmargin}{\otIndent}\setlength{\rightmargin}{0pt}%
+    \setlength{\itemindent}{0pt}\setlength{\listparindent}{0pt}%
+    \setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}%
+    \setlength{\parsep}{0.5em}\setlength{\itemsep}{0pt}}%
+  \item\relax}{\end{list}}
+
+\newcommand{\otRenvoi}[2]{% #1 libellé, #2 étiquette
+  \ifcsname r@#2\endcsname\hyperref[#2]{#1~p.~\pageref*{#2}}\fi}
+
+% \begin{exercice}[difficulté]{titre}
+\NewDocumentEnvironment{exercice}{O{1} m}{%
+  \refstepcounter{exo}%
+  \immediate\write\@auxout{\string\otChapExos{\otChapNum}{\theexo}}%
+  \otEntete{otNavy}{\theexo}{#2}{#1}{\otRenvoi{Corrigé}{cor-\otChapNum-\theexo}}%
+  \label{exo-\otChapNum-\theexo}%
+  \begin{otCorps}}{\end{otCorps}}
+
+% \begin{corrige}{numéro}{titre}
+\NewDocumentEnvironment{corrige}{m m}{%
+  \otEntete{otGreen}{#1}{#2}{0}{\otRenvoi{Énoncé}{exo-\otChapNum-#1}}%
+  \phantomsection\label{cor-\otChapNum-#1}%
+  \begin{otCorps}}{\end{otCorps}}
+
+%% Questions numérotées
+\newcommand{\otLabel}[1]{{\otSemi\fontsize{9.5}{11}\selectfont\color{otNavy}#1}}
+\newlist{questions}{enumerate}{2}
+\setlist[questions,1]{label=\otLabel{\arabic*.},leftmargin=1.7em,labelsep=0.45em,
+  itemsep=0.45em,topsep=0.4em,partopsep=0pt,parsep=0.3em}
+\setlist[questions,2]{label=\otLabel{\alph*)},leftmargin=1.5em,itemsep=0.25em}
+
+%% Questions courtes en colonnes : \begin{tasks}(2) ... \end{tasks}
+\settasks{label=\arabic*.,label-format=\otSemi\fontsize{9.5}{11}\selectfont\color{otNavy},
+  label-width=1.3em,label-offset=0.35em,item-indent=1.7em,
+  column-sep=1.2em,before-skip=0.5em,after-skip=0.1em,after-item-skip=0.6em}
+
+%% Corrigés : étiquette de méthode, résultat surligné
+\newcommand{\methode}[1]{{\otSemi\fontsize{6.8}{9}\selectfont\color{otMuted}%
+  \otCaps[10]{Méthode}}\enspace{\color{otMuted}#1}}
+\tcbset{otResultat/.style={enhanced,colback=otGreenTint,colframe=otGreenTint,
+  boxrule=0pt,arc=1.6pt,left=2.5pt,right=2.5pt,top=1pt,bottom=1pt,boxsep=0pt}}
+\newcommand{\res}[1]{\tcbhighmath[otResultat]{#1}}
+
+%% Légende de figure
+\newcommand{\legende}[1]{{\otLight\fontsize{7.5}{10}\selectfont\color{otMuted}#1}}
+
+%% Corrigés courts sur deux colonnes (fer à gauche, formules insécables)
+\setlength{\columnsep}{8mm}
+\setlength{\columnseprule}{0.4pt}
+\renewcommand{\columnseprulecolor}{\color{otRule}}
+\NewDocumentEnvironment{deuxcolonnes}{}{%
+  \begin{multicols}{2}\raggedright\relpenalty=10000\binoppenalty=10000}
+  {\end{multicols}}
+
+%% Tableaux de variations (tkz-tab)
+\NewDocumentEnvironment{tableau}{}{%
+  \begin{tikzpicture}[color=otMuted,text=otInk]}
+  {\end{tikzpicture}}
+\tkzTabSetup[arrowcolor=otNavy,arrowstyle=Stealth,arrowlinewidth=0.5pt,
+  tcolor=otMuted,lw=0.4pt]
+\newcommand{\otTab}[3][3]{%
+  \tkzTabInit[lgt=1.8,espcl=#1,deltacl=0.7,lw=0.4pt,color,
+    colorC=otNavyTint,colorL=otNavyTint,colorV=otNavyTint,colorT=white]{#2}{#3}}
+
+%% Graphiques (pgfplots), repère orthonormé
+\pgfplotsset{otGraphe/.style={
+  axis lines=middle,
+  axis line style={otMuted,line width=0.5pt,-{Stealth[length=2mm]}},
+  unit vector ratio=1 1,
+  tick style={otMuted,line width=0.4pt}, major tick length=2pt,
+  ticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  grid=major, grid style={otRule!70,line width=0.3pt},
+  xlabel={$x$}, ylabel={$y$},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west,
+    font=\small,text=otMuted},
+  every axis y label/.style={at={(current axis.above origin)},anchor=south,
+    font=\small,text=otMuted},
+  clip=false}}
+\tikzset{otEtiquette/.style={fill=white,inner sep=1.2pt,font=\small}}
+
+%% ---------------------------------------------------------------------
+%%  Partie « Corrigés »
+%% ---------------------------------------------------------------------
+\newcommand{\otGrandeCoche}{%
+  \begin{tikzpicture}
+    \draw[white,line width=2.4pt,rounded corners=5mm] (0,0) rectangle (19mm,19mm);
+    \draw[otGreen,line width=4pt,line cap=round,line join=round]
+      (5mm,9.8mm) -- (8.4mm,6.2mm) -- (14.4mm,12.8mm);
+  \end{tikzpicture}}
+
+\newcommand{\partieCorriges}{%
+  \clearpage
+  \gdef\otChapNum{0}\global\otCorrigestrue\gdef\otAccent{otGreenDark}%
+  \thispagestyle{empty}%
+  \phantomsection\label{corriges-debut}%
+  \pdfbookmark[0]{Corrigés}{bm-corriges}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={([yshift=-118mm]current page.north west)}]
+      \fill[otNavy] (0,0) rectangle (210mm,118mm);
+      \begin{scope}\clip (0,0) rectangle (210mm,118mm);\otDecoGrille\end{scope}
+      \node[anchor=south west,inner sep=0pt] at (24mm,52mm) {\otGrandeCoche};
+      \node[anchor=base west,inner sep=0pt,text=white,
+        font=\otSemi\fontsize{38}{40}\selectfont] at (24mm,30mm) {Corrigés};
+      \node[anchor=base west,inner sep=0pt,text=white,opacity=0.78,
+        font=\otLight\fontsize{10}{12}\selectfont] at (24mm,17mm)
+        {Toutes les solutions, détaillées étape par étape};
+    \end{scope}
+    \node[anchor=north west,inner sep=0pt,text width=94mm]
+      at ([xshift=24mm,yshift=-138mm]current page.north west)
+      {\otIntertitre{Bien utiliser les corrigés}%
+       \fontsize{10.5}{13.5}\selectfont
+       \otConseil{1}{Cherche d'abord seul, au moins quelques minutes, avant d'ouvrir le corrigé.}
+       \otConseil{2}{Compare ta démarche à la méthode indiquée, pas seulement le résultat final.}
+       \otConseil{3}{Si tu as eu besoin du corrigé, refais l'exercice quelques jours plus tard, sans aide.}
+       \otConseil{4}{Note ta réussite dans le tableau de bord pour repérer les chapitres à retravailler.}};
+    \node[anchor=north west,fill=otGreenTint,rounded corners=2mm,
+      inner sep=5mm,text width=52mm]
+      at ([xshift=126mm,yshift=-136mm]current page.north west)
+      {\otIntertitre{Parties}\otListeCorriges};
+  \end{tikzpicture}%
+  \clearpage}
+
+\newcommand{\otConseil}[2]{%
+  \par\noindent\otRond{#1}\hspace{3mm}%
+  \parbox[t]{\dimexpr\linewidth-7.6mm\relax}{\raggedright#2}\par\vspace{2.8mm}}
+
+% Bandeau de début des corrigés d'un chapitre : \corrigesChapitre{numéro}{titre}
+\newcommand{\corrigesChapitre}[2]{%
+  \par\addvspace{4mm}%
+  \gdef\otChapNum{#1}\gdef\otChapTitle{#2}%
+  \global\otCorrigestrue\gdef\otAccent{otGreenDark}%
+  \global\otSouplefalse
+  \markboth{Corrigés · #2}{Corrigés · #2}%
+  \phantomsection\label{corchap-#1}%
+  \pdfbookmark[1]{\otTwoDigits{#1} · #2}{bm-corchap-#1}%
+  \noindent
+  \begin{tikzpicture}
+    \fill[otGreenTint,rounded corners=2mm] (0,0) rectangle (\linewidth,15mm);
+    \node[anchor=west,fill=otGreenDark,rounded corners=1.6pt,minimum width=9mm,
+      minimum height=8mm,text=white,font=\otBold\fontsize{11}{12}\selectfont]
+      at (4mm,7.5mm) {\otTwoDigits{#1}};
+    \node[anchor=west,inner sep=0pt,text=otInk,font=\otSemi\fontsize{13}{15}\selectfont]
+      at (17mm,7.5mm) {#2};
+    \node[anchor=east,inner sep=0pt,text=otMuted,font=\otMedium\fontsize{7.5}{9}\selectfont]
+      at ([xshift=-5mm]\linewidth,7.5mm) {\otRenvoi{Énoncés}{chap-#1}};
+  \end{tikzpicture}\par
+  \vspace{2mm}}
+
+%% ---------------------------------------------------------------------
+%%  Plan du livre (sommaire, tableau de bord, liste des corrigés)
+%%  Le fichier plan.tex appelle \otPlanPartie et \otPlanChap.
+%% ---------------------------------------------------------------------
+\newcommand{\otPlanPartie}[2]{}
+\newcommand{\otPlanChap}[3]{}
+
+\newcommand{\otPoints}{\leaders\hbox to 2.4mm{\hss\textcolor{otRule}{.}\hss}\hfill}
+
+\newcommand{\sommaire}{%
+  \begingroup
+  \renewcommand{\otPlanPartie}[2]{%
+    \par\addvspace{4.5mm}\noindent
+    {\otSemi\fontsize{7}{9}\selectfont\color{otGreenDark}\otCaps[16]{Partie ##1}}%
+    \hspace{3mm}{\otSemi\fontsize{11.5}{14}\selectfont\color{otNavy}##2}\par
+    \vspace{1.6mm}}%
+  \renewcommand{\otPlanChap}[3]{%
+    \par\noindent
+    \ifcsname r@chap-##1\endcsname
+      \makebox[10mm][l]{\otSemi\fontsize{9}{11}\selectfont\color{otNavy}\otTwoDigits{##1}}%
+      \hyperref[chap-##1]{\otRegular\fontsize{9.5}{12}\selectfont\color{otInk}##2}%
+      \otPoints
+      {\otSemi\fontsize{9}{11}\selectfont\color{otNavy}\pageref*{chap-##1}}%
+    \else
+      \makebox[10mm][l]{\otSemi\fontsize{9}{11}\selectfont\color{otMuted!60}\otTwoDigits{##1}}%
+      {\otRegular\fontsize{9.5}{12}\selectfont\color{otMuted!80}##2}%
+      \otPoints
+      {\otLight\fontsize{9}{11}\selectfont\color{otMuted!60}-}%
+    \fi
+    \par\vspace{1.25mm}}%
+  \input{plan}%
+  \par\addvspace{5mm}%
+  {\color{otRule}\rule{\linewidth}{0.4pt}}\par\vspace{3mm}%
+  \noindent\makebox[10mm][l]{\otCheck}%
+  \hyperref[corriges-debut]{\otSemi\fontsize{10}{12}\selectfont\color{otGreenDark}Corrigés}%
+  \otPoints{\otSemi\fontsize{9}{11}\selectfont\color{otGreenDark}\pageref*{corriges-debut}}\par
+  \endgroup}
+
+% Liste des corrigés, partie par partie (seules les parties rédigées apparaissent)
+\newcommand{\otLCflush}{%
+  \ifx\otLCpremier\empty\else
+    \par\noindent{\otSemi\fontsize{7}{9}\selectfont\color{otGreenDark}\otCaps[12]{Partie \otLCpartnum}}%
+    \hfill{\otMedium\fontsize{8.5}{11}\selectfont p.~\pageref*{corchap-\otLCpremier}}\par\vspace{0.6mm}%
+    \noindent{\otRegular\fontsize{9}{11.5}\selectfont\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
+      \otLCparttitre\par}\vspace{0.4mm}%
+    \noindent{\otLight\fontsize{7.5}{10}\selectfont\color{otMuted}%
+      \ifx\otLCpremier\otLCdernier Chapitre~\otLCpremier\else Chapitres~\otLCpremier~à~\otLCdernier\fi}\par
+    \vspace{3.2mm}%
+  \fi
+  \gdef\otLCpremier{}}
+\newcommand{\otListeCorriges}{%
+  \begingroup
+  \gdef\otLCpremier{}\gdef\otLCdernier{}%
+  \renewcommand{\otPlanPartie}[2]{\otLCflush\gdef\otLCpartnum{##1}\gdef\otLCparttitre{##2}}%
+  \renewcommand{\otPlanChap}[3]{%
+    \ifcsname r@corchap-##1\endcsname
+      \ifx\otLCpremier\empty\gdef\otLCpremier{##1}\fi
+      \gdef\otLCdernier{##1}%
+    \fi}%
+  \input{plan}%
+  \otLCflush
+  \endgroup}
+
+% Pastilles à colorier du tableau de bord
+\newcommand{\otCercles}[1]{%
+  \begin{tikzpicture}[baseline=-0.6ex]
+    \foreach \i in {1,...,#1}{%
+      \draw[otMuted!70,line width=0.4pt] (\i*3.9mm-2mm,0) circle (1.6mm);
+      \node[text=otMuted,font=\otMedium\fontsize{4.4}{5}\selectfont] at (\i*3.9mm-2mm,0) {\i};}
+  \end{tikzpicture}}
+
+\newcommand{\tableauDeBord}{%
+  \begingroup
+  \renewcommand{\otPlanPartie}[2]{%
+    \par\addvspace{3.6mm}\noindent
+    {\otSemi\fontsize{7}{9}\selectfont\color{otGreenDark}\otCaps[16]{Partie ##1 · ##2}}\par
+    \vspace{1.4mm}{\color{otNavy}\hrule height 0.6pt}\vspace{1.6mm}}%
+  \renewcommand{\otPlanChap}[3]{%
+    \noindent\makebox[8mm][l]{\otNumBoxPetit{\otTwoDigits{##1}}}%
+    \makebox[61mm][l]{\otRegular\fontsize{7.8}{10}\selectfont ##2}%
+    \makebox[67mm][l]{\otCercles{##3}}%
+    \hfill{\otLight\fontsize{7}{9}\selectfont\color{otMuted}fini le \rule[-0.6mm]{7mm}{0.3pt}/\rule[-0.6mm]{7mm}{0.3pt}}%
+    \par\vspace{1.2mm}{\color{otRule}\hrule height 0.3pt}\vspace{1.25mm}}%
+  \input{plan}%
+  \endgroup}
+
+%% ---------------------------------------------------------------------
+%%  L'essentiel : synthèse de cours en début de chapitre
+%% ---------------------------------------------------------------------
+\RequirePackage{array,tabularx,booktabs,colortbl}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% Début de la synthèse (nouvelle page)
+\newcommand{\essentiel}{%
+  \clearpage
+  \markright{L'essentiel}%
+  \phantomsection\label{ess-\otChapNum}%
+  \noindent{\otLight\fontsize{28}{32}\selectfont\color{otInk}L'essentiel}%
+  \hfill{\otMedium\fontsize{7.5}{9}\selectfont\color{otMuted}%
+    \otCaps[10]{Chapitre \otTwoDigits{\otChapNum} · \otChapTitle}}\par
+  \vspace{3.5mm}%
+  \noindent{\color{otNavy}\rule[0pt]{16mm}{1.3pt}}%
+  {\color{otRule}\rule[0.45pt]{\dimexpr\linewidth-16mm\relax}{0.4pt}}\par
+  \vspace{4mm}}
+
+% Section numérotée de la synthèse : \essSection{numéro}{titre}
+\newcommand{\essSection}[2]{%
+  \par\addvspace{7mm}%
+  \noindent{\otBold\fontsize{12}{14}\selectfont\color{otNavy}#1}%
+  \hspace{3mm}{\otSemi\fontsize{12}{14}\selectfont\color{otInk}#2}\par\nopagebreak
+  \vspace{1.6mm}{\color{otRule}\hrule height 0.4pt}\nopagebreak\vspace{3.5mm}\nopagebreak}
+
+% Début des exercices (nouvelle page)
+\newcommand{\exercices}{\clearpage}
+
+% Encadrés de cours
+\newcommand{\otEtiq}[2]{{\otSemi\fontsize{7}{9}\selectfont\color{#1}\otCaps[12]{#2}}}
+\newcommand{\otNomEncadre}[1]{\IfValueT{#1}{\enspace{\otMedium\fontsize{9}{11}\selectfont\color{otInk}#1}}}
+\tcbset{otEncadre/.style={enhanced,sharp corners,boxrule=0pt,
+  left=5mm,right=5mm,top=3.4mm,bottom=3.4mm,before skip=4mm,after skip=4mm,
+  fontupper=\fontsize{10.5}{14}\selectfont,parbox=false}}
+\NewDocumentEnvironment{definition}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=otNavyTint,borderline west={1.3mm}{0pt}{otNavy}]
+  \otEtiq{otNavy}{Définition}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{theoreme}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=white,colframe=otNavy,boxrule=0.6pt,
+    arc=1.8mm,rounded corners,top=3.4mm]
+  \otEtiq{otNavy}{Théorème}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{propriete}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=white,colframe=otNavy!45,boxrule=0.5pt,
+    arc=1.8mm,rounded corners]
+  \otEtiq{otNavy}{Propriété}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{savoirfaire}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=otGreenTint,borderline west={1.3mm}{0pt}{otGreen}]
+  \otEtiq{otGreenDark}{Méthode}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{attention}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=otOrange!10,borderline west={1.3mm}{0pt}{otOrange}]
+  \otEtiq{otOrange!75!black}{Attention}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{exemple}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=white,borderline west={0.8pt}{0pt}{otRule},
+    top=1mm,bottom=1mm,left=4.5mm]
+  \otEtiq{otMuted}{Exemple}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\end{tcolorbox}}
+\NewDocumentEnvironment{demonstration}{o}{%
+  \begin{tcolorbox}[otEncadre,colback=white,colframe=otRule,boxrule=0.5pt,
+    arc=1.8mm,rounded corners]
+  \otEtiq{otMuted}{Démonstration}\otNomEncadre{#1}\par\vspace{1.4mm}}
+  {\hfill\tikz[baseline=0pt]\draw[otMuted,line width=0.5pt] (0,0) rectangle (1.8mm,1.8mm);\end{tcolorbox}}
+
+% Étapes d'un raisonnement : \etape{Initialisation}
+\newcommand{\etape}[1]{{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}#1\enspace}}
+
+% Parties d'un problème : \partieExo{A}{titre}
+\newcommand{\partieExo}[2]{%
+  \par\addvspace{3.5mm}\otBesoinPlace{4\baselineskip}\noindent
+  {\otSemi\fontsize{7.5}{9}\selectfont\color{otGreenDark}\otCaps[14]{Partie #1}}%
+  \hspace{2.5mm}{\otMedium\fontsize{9.5}{12}\selectfont\color{otInk}#2}\par\nopagebreak
+  \vspace{-1.2mm}}
+
+% Code Python
+\RequirePackage{listings}
+\newfontfamily\otMono{FiraMono}[Extension=.otf,UprightFont=*-Regular,BoldFont=*-Medium]
+\lstdefinestyle{otPython}{language=Python,
+  basicstyle=\NoAutoSpacing\otMono\fontsize{8.6}{12}\selectfont\color{otInk},
+  literate={*}{{\char42}}1 {-}{{\char45}}1,
+  keywordstyle=\color{otNavy}\bfseries,
+  commentstyle=\color{otMuted},
+  stringstyle=\color{otGreenDark},
+  columns=fullflexible,keepspaces=true,showstringspaces=false,upquote=true,
+  morekeywords={True,False,None}}
+\tcbset{otAvantColle/.style={before={%
+    \ifnum\lastnodetype=-1\relax\else
+      \par\ifotSouple\nopagebreak\fi
+      \ifvmode
+        \iftcb@minipage\ifdim\parskip>\z@\relax\addvspace{-\parskip}\fi
+        \else\addvspace{\glueexpr#1-\parskip}\fi
+        \nointerlineskip
+      \fi
+    \fi
+    \lineskip\z@skip\noindent}}}
+\tcbset{otBoitePython/.style={enhanced,listing only,listing options={style=otPython},
+  colback=otNavyTint,colframe=otNavyTint,boxrule=0pt,arc=1.8mm,
+  left=4.5mm,right=4mm,top=1.5mm,bottom=1.5mm,otAvantColle=3mm,after skip=3mm,
+  overlay={\node[anchor=north east,inner sep=1.6mm,text=otMuted,
+    font=\otSemi\fontsize{6}{7}\selectfont] at (frame.north east) {\otCaps[10]{Python}};}}}
+\newtcblisting{python}{otBoitePython}
+
+% Affichage produit par un programme (console)
+\tcbset{otBoiteConsole/.style={enhanced,listing only,
+  listing options={basicstyle=\NoAutoSpacing\otMono\fontsize{8.4}{11.6}\selectfont\color{otInk},
+    columns=fullflexible,keepspaces=true,showstringspaces=false,upquote=true,literate={*}{{\char42}}1 {-}{{\char45}}1},
+  colback=white,colframe=otRule,boxrule=0.5pt,arc=1.8mm,
+  left=4.5mm,right=4mm,top=1.5mm,bottom=1.5mm,otAvantColle=2mm,after skip=3mm,
+  overlay={\node[anchor=north east,inner sep=1.6mm,text=otMuted,
+    font=\otSemi\fontsize{6}{7}\selectfont] at (frame.north east) {\otCaps[10]{Affichage}};}}}
+\newtcblisting{console}{otBoiteConsole}
+
+% Programme et affichage côte à côte :
+%   \begin{codecote}[part de la largeur pour le code]
+%     \begin{pythoncol} ... \end{pythoncol}
+%   \cote
+%     \begin{consolecol} ... \end{consolecol}  (ou du texte)
+%   \end{codecote}
+\newtcblisting{pythoncol}{otBoitePython,before skip=0pt,after skip=0pt}
+\newtcblisting{consolecol}{otBoiteConsole,before skip=0pt,after skip=0pt}
+\NewDocumentEnvironment{codecote}{O{0.6}}{%
+  \par\ifotSouple\nopagebreak\fi\addvspace{2.5mm}\nointerlineskip\def\otCoteLarg{#1}%
+  \noindent\begin{minipage}[t]{#1\linewidth}\vspace{0pt}}
+  {\end{minipage}\par\addvspace{2.5mm}}
+\newcommand{\cote}{%
+  \end{minipage}\hfill
+  \begin{minipage}[t]{\dimexpr\linewidth-\otCoteLarg\linewidth-4mm\relax}\vspace{0pt}\raggedright}
+
+% Code en ligne
+\newcommand{\code}[1]{\leavevmode\mbox{\NoAutoSpacing\otMono\fontsize{8.8}{11}\selectfont\color{otNavyDark}#1}}
+% Cellules de tableau : en-tête de colonne, nom de ligne
+\newcommand{\otTete}[1]{\leavevmode{\otSemi\fontsize{8}{10}\selectfont #1}}
+\newcommand{\otNom}[1]{\leavevmode{\otSemi\fontsize{7.5}{10}\selectfont\color{otNavy}#1}}
+% Résultat surligné sous forme de code (corrigés)
+\newcommand{\resc}[1]{\res{\text{\code{#1}}}}
+
+% Organigrammes
+\tikzset{
+  otTest/.style={draw=otNavy,fill=otNavyTint,diamond,aspect=2.2,inner sep=1pt,align=center,font=\small},
+  otBloc/.style={draw=otGreenDark,fill=otGreenTint,rounded corners=1.2mm,inner sep=2mm,align=center,font=\small},
+  otBorne/.style={draw=otMuted,fill=white,rounded corners=3mm,inner sep=1.6mm,font=\small},
+  otFleche/.style={otMuted,line width=0.6pt,-{Stealth[length=1.8mm]}},
+  otEtiqF/.style={font=\scriptsize,text=otMuted,fill=white,inner sep=1pt}}
+
+% Repère pour les schémas de la synthèse
+\pgfplotsset{otSchema/.style={
+  axis lines=left,
+  axis line style={otMuted,line width=0.5pt,-{Stealth[length=2mm]}},
+  tick style={otMuted,line width=0.4pt}, major tick length=2pt,
+  ticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  label style={font=\small,text=otMuted},
+  clip=false}}
+
+%% Décor d'ouverture « suites » : termes qui se rapprochent d'une limite
+\newcommand{\otDecosuites}{%
+  \otDecoGrille
+  \fill[otGreen,opacity=0.16] (174mm,80mm) rectangle (210mm,96mm);
+  \draw[otGreen,line width=0.6pt,opacity=0.7] (174mm,80mm) -- (210mm,80mm);
+  \draw[otGreen,line width=0.6pt,opacity=0.7] (174mm,96mm) -- (210mm,96mm);
+  \draw[white,opacity=0.5,line width=0.6pt,dash pattern=on 3pt off 2pt] (128mm,88mm) -- (210mm,88mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (174mm,8mm) -- (174mm,112mm);
+  \foreach \k in {1,...,13}{%
+    \pgfmathsetmacro{\yy}{88-72*0.72^\k}
+    \pgfmathsetmacro{\xx}{140+5.2*\k}
+    \ifdim\yy pt<80pt
+      \fill[white] (\xx mm,\yy mm) circle (1.25mm);
+    \else
+      \fill[otGreen] (\xx mm,\yy mm) circle (1.25mm);
+    \fi}}
+
+%% Décor d'ouverture « fonctions » : une courbe et ses deux asymptotes
+\newcommand{\otDecofonctions}{%
+  \otDecoGrille
+  \draw[white,opacity=0.5,line width=0.6pt,dash pattern=on 3pt off 2pt] (110mm,60mm) -- (210mm,60mm);
+  \draw[white,opacity=0.5,line width=0.6pt,dash pattern=on 3pt off 2pt] (182mm,0) -- (182mm,118mm);
+  \draw[white,opacity=0.6,line width=1.6pt,line cap=round]
+    plot[domain=112:178.5,samples=120] ({\x*1mm},{(60-300/(182-\x))*1mm});
+  \draw[otGreen,line width=1.6pt,line cap=round]
+    plot[domain=184.6:210,samples=120] ({\x*1mm},{(60+300/(\x-182))*1mm});}
+
+%% Décor d'ouverture « dérivation » : une courbe et sa tangente au point d'inflexion
+\newcommand{\otDecoderivation}{%
+  \otDecoGrille
+  \draw[white,opacity=0.6,line width=1.6pt,line cap=round]
+    plot[domain=118:210,samples=160] ({\x*1mm},{(47+26*sin(deg((\x-130)/18)))*1mm});
+  \draw[otGreen,line width=1.2pt,line cap=round]
+    (162mm,{(47+26/18*(186.549-162))*1mm}) -- (210mm,{(47-26/18*(210-186.549))*1mm});
+  \fill[otGreen] (186.549mm,47mm) circle (1.6mm);
+  \fill[white] (158.27mm,73mm) circle (1.1mm);}
+
+%% Décor d'ouverture « continuité » : une courbe qui franchit le niveau k (TVI)
+\newcommand{\otDecocontinuite}{%
+  \otDecoGrille
+  \draw[white,opacity=0.5,line width=0.6pt,dash pattern=on 3pt off 2pt] (112mm,60mm) -- (210mm,60mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (128mm,8mm) -- (128mm,112mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (204mm,8mm) -- (204mm,112mm);
+  \draw[white,opacity=0.6,line width=1.6pt,line cap=round]
+    plot[domain=128:204,samples=160] ({\x*1mm},{(60+0.9*(\x-170)+12*sin(deg((\x-170)/9)))*1mm});
+  \fill[otGreen] (170mm,60mm) circle (1.7mm);
+  \draw[otGreen,line width=0.8pt,dash pattern=on 2pt off 1.5pt] (170mm,60mm) -- (170mm,24mm);}
+
+%% Décor d'ouverture « ln » : ln et exp, symétriques par rapport à y = x
+\newcommand{\otDecoln}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (150mm,0) -- (150mm,118mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (110mm,50mm) -- (210mm,50mm);
+  \draw[white,opacity=0.45,line width=0.6pt,dash pattern=on 3pt off 2pt] (144mm,44mm) -- (210mm,110mm);
+  \draw[white,opacity=0.4,line width=1.3pt,line cap=round]
+    plot[domain=-4:1.5,samples=100] ({(150+12*\x)*1mm},{(50+12*exp(\x))*1mm});
+  \draw[otGreen,line width=1.6pt,line cap=round]
+    plot[domain=0.016:5,samples=160] ({(150+12*\x)*1mm},{(50+12*ln(\x))*1mm});
+  \fill[otGreen] (162mm,50mm) circle (1.6mm);
+  \fill[white] ({(150+12*2.71828)*1mm},62mm) circle (1.2mm);}
+
+%% Décor d'ouverture « trigo » : le cercle trigonométrique qui se déroule en sinusoïde
+\newcommand{\otDecotrigo}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.5pt] (108mm,72mm) -- (210mm,72mm);
+  \draw[white,opacity=0.35,line width=0.5pt] (138mm,44mm) -- (138mm,100mm);
+  \draw[white,opacity=0.55,line width=1.3pt] (138mm,72mm) circle (22mm);
+  \draw[white,opacity=0.6,line width=1.6pt,line cap=round]
+    plot[domain=0:6.6,samples=160] ({(160+9*\x)*1mm},{(72+22*sin(\x r))*1mm});
+  \draw[otGreen,line width=0.8pt,dash pattern=on 2pt off 1.5pt] (150.62mm,90.02mm) -- (168.64mm,90.02mm);
+  \draw[otGreen,line width=0.8pt,dash pattern=on 2pt off 1.5pt] (150.62mm,90.02mm) -- (150.62mm,72mm);
+  \draw[otGreen,line width=1.2pt,line cap=round] (138mm,72mm) -- (150.62mm,90.02mm);
+  \fill[otGreen] (150.62mm,90.02mm) circle (1.6mm);
+  \fill[white] (168.64mm,90.02mm) circle (1.2mm);}
+
+%% Décor d'ouverture « primitives » : une famille de courbes translatées verticalement (F + C)
+\newcommand{\otDecoprimitives}{%
+  \otDecoGrille
+  \draw[white,opacity=0.35,line width=0.6pt,dash pattern=on 3pt off 2pt] (160mm,42mm) -- (160mm,108mm);
+  \foreach \b/\o in {52/0.3,76/0.45,88/0.3,100/0.2}{%
+    \draw[white,opacity=\o,line width=1.4pt,line cap=round]
+      plot[domain=112:210,samples=120] ({\x*1mm},{(\b+9*sin(deg((\x-112)/13)))*1mm});}
+  \draw[otGreen,line width=1.7pt,line cap=round]
+    plot[domain=112:210,samples=120] ({\x*1mm},{(64+9*sin(deg((\x-112)/13)))*1mm});
+  \fill[otGreen] (160mm,59.30mm) circle (1.7mm);
+  \fill[white] (160mm,83.30mm) circle (1.1mm);}
+
+%% Décor d'ouverture « équations différentielles » : champ de directions de y' = -(y - k)/25
+%% et solutions qui convergent vers l'équilibre
+\newcommand{\otDecoequadiff}{%
+  \otDecoGrille
+  \foreach \xx in {120,132,...,204}{%
+    \foreach \yy in {50,59,...,104}{%
+      \pgfmathsetmacro{\aa}{atan(-(\yy-72)/25)}%
+      \draw[white,opacity=0.4,line width=0.6pt,line cap=round]
+        ({(\xx-2*cos(\aa))*1mm},{(\yy-2*sin(\aa))*1mm}) -- ({(\xx+2*cos(\aa))*1mm},{(\yy+2*sin(\aa))*1mm});}}
+  \draw[white,opacity=0.55,line width=0.6pt,dash pattern=on 3pt off 2pt] (112mm,72mm) -- (210mm,72mm);
+  \foreach \A in {14,30}{%
+    \draw[white,opacity=0.6,line width=1.3pt,line cap=round]
+      plot[domain=112:210,samples=100] ({\x*1mm},{(72+\A*exp(-(\x-112)/25))*1mm});}
+  \draw[otGreen,line width=1.7pt,line cap=round]
+    plot[domain=112:210,samples=100] ({\x*1mm},{(72-24*exp(-(\x-112)/25))*1mm});
+  \fill[otGreen] (112mm,48mm) circle (1.7mm);}
+
+%% Décor d'ouverture « intégrale » : aire sous une courbe et rectangles d'approximation
+\newcommand{\otDecointegrale}{%
+  \otDecoGrille
+  \fill[otGreen,opacity=0.3] (128mm,48mm) --
+    plot[domain=128:200,samples=100] ({\x*1mm},{(48+34*exp(-((\x-165)/28)*((\x-165)/28)))*1mm}) -- (200mm,48mm) -- cycle;
+  \foreach \k in {0,...,8}{%
+    \pgfmathsetmacro{\xa}{128+8*\k}%
+    \pgfmathsetmacro{\hh}{48+34*exp(-((\xa+4-165)/28)*((\xa+4-165)/28))}%
+    \draw[white,opacity=0.45,line width=0.6pt] ({\xa*1mm},48mm) rectangle ({(\xa+8)*1mm},{\hh*1mm});}
+  \draw[white,opacity=0.45,line width=0.6pt] (112mm,48mm) -- (210mm,48mm);
+  \draw[white,opacity=0.7,line width=1.6pt,line cap=round]
+    plot[domain=112:210,samples=120] ({\x*1mm},{(48+34*exp(-((\x-165)/28)*((\x-165)/28)))*1mm});
+  \draw[otGreen,line width=1.4pt] (128mm,44mm) -- (128mm,53mm);
+  \draw[otGreen,line width=1.4pt] (200mm,44mm) -- (200mm,53mm);}
+
+%% Décor d'ouverture « dénombrement » : le triangle de Pascal et sa relation
+\newcommand{\otDecodenombrement}{%
+  \otDecoGrille
+  \draw[otGreen,line width=1.1pt,shorten <=3.4mm,shorten >=3.4mm] (160.5mm,76.5mm) -- (165mm,68mm);
+  \draw[otGreen,line width=1.1pt,shorten <=3.4mm,shorten >=3.4mm] (169.5mm,76.5mm) -- (165mm,68mm);
+  \foreach \rr in {0,...,6}{%
+    \foreach \kk in {0,...,\rr}{%
+      \pgfmathtruncatemacro{\cc}{factorial(\rr)/(factorial(\kk)*factorial(\rr-\kk))}%
+      \draw[white,opacity=0.42,line width=0.6pt] ({(165+(\kk-\rr/2)*9)*1mm},{(102-\rr*8.5)*1mm}) circle (3.2mm);
+      \node[text=white,opacity=0.8,font=\otMedium\fontsize{6.5}{7}\selectfont]
+        at ({(165+(\kk-\rr/2)*9)*1mm},{(102-\rr*8.5)*1mm}) {\cc};}}
+  \fill[otGreen] (165mm,68mm) circle (3.2mm);
+  \node[text=white,font=\otSemi\fontsize{6.5}{7}\selectfont] at (165mm,68mm) {6};}
+
+%% Décor d'ouverture « probabilités conditionnelles » : un arbre pondéré et un chemin
+\newcommand{\otDecoconditionnelles}{%
+  \otDecoGrille
+  \foreach \xa/\ya/\xb/\yb in {124/72/156/92, 124/72/156/52, 156/92/190/104, 156/92/190/80, 156/52/190/64, 156/52/190/44}{%
+    \draw[white,opacity=0.5,line width=1.1pt] (\xa mm,\ya mm) -- (\xb mm,\yb mm);}
+  \draw[otGreen,line width=1.8pt,line cap=round] (124mm,72mm) -- (156mm,92mm) -- (190mm,80mm);
+  \foreach \xx/\yy in {156/52, 190/104, 190/64, 190/44}{\fill[white,opacity=0.85] (\xx mm,\yy mm) circle (1.6mm);}
+  \foreach \xx/\yy in {124/72, 156/92, 190/80}{\fill[otGreen] (\xx mm,\yy mm) circle (2mm);}}
+
+%% Décor d'ouverture « binomiale » : diagramme en bâtons de B(12 ; 0,4), un intervalle en vert
+\newcommand{\otDecobinomiale}{%
+  \otDecoGrille
+  \draw[white,opacity=0.45,line width=0.6pt] (112mm,46mm) -- (210mm,46mm);
+  \foreach \kk/\hh in {0/0.4,1/3.06,2/11.25,3/24.97,4/37.45,5/39.95,6/31.08,7/17.76,8/7.39,9/2.2,10/0.44}{%
+    \ifnum\kk<3
+      \fill[white,opacity=0.35] ({(117.5+7*\kk)*1mm},46mm) rectangle ({(122.5+7*\kk)*1mm},{(46+\hh)*1mm});
+    \else\ifnum\kk>6
+      \fill[white,opacity=0.35] ({(117.5+7*\kk)*1mm},46mm) rectangle ({(122.5+7*\kk)*1mm},{(46+\hh)*1mm});
+    \else
+      \fill[otGreen] ({(117.5+7*\kk)*1mm},46mm) rectangle ({(122.5+7*\kk)*1mm},{(46+\hh)*1mm});
+    \fi\fi}
+  \draw[white,opacity=0.7,line width=0.8pt,dash pattern=on 2pt off 1.5pt] (153.6mm,44mm) -- (153.6mm,92mm);
+  \fill[white] (153.6mm,92mm) circle (1.2mm);}
+
+%% Décor d'ouverture « sommes » : la loi d'un dé, puis celle de la somme de deux dés
+\newcommand{\otDecosommes}{%
+  \otDecoGrille
+  \draw[white,opacity=0.45,line width=0.6pt] (112mm,50mm) -- (148mm,50mm);
+  \draw[white,opacity=0.45,line width=0.6pt] (156mm,50mm) -- (210mm,50mm);
+  \foreach \kk in {0,...,5}{\fill[white,opacity=0.45] ({(115+5.5*\kk)*1mm},50mm) rectangle ({(118.5+5.5*\kk)*1mm},62mm);}
+  \node[text=white,opacity=0.8,font=\otLight\fontsize{20}{20}\selectfont] at (131mm,76mm) {$+$};
+  \foreach \kk/\hh in {0/1,1/2,2/3,3/4,4/5,5/6,6/5,7/4,8/3,9/2,10/1}{%
+    \fill[otGreen] ({(158+4.6*\kk)*1mm},50mm) rectangle ({(161.2+4.6*\kk)*1mm},{(50+6*\hh)*1mm});}
+  \draw[white,opacity=0.7,line width=0.8pt,dash pattern=on 2pt off 1.5pt] (182.6mm,48mm) -- (182.6mm,92mm);}
+
+%% Décor d'ouverture « grands nombres » : une fréquence simulée qui se stabilise autour de p
+\newcommand{\otDecograndsnombres}{%
+  \otDecoGrille
+  \fill[otGreen,opacity=0.22] plot[domain=4:1000,samples=80] ({(112+96*sqrt(\x/1000))*1mm},{(70+60/sqrt(\x))*1mm})
+    -- plot[domain=1000:4,samples=80] ({(112+96*sqrt(\x/1000))*1mm},{(70-60/sqrt(\x))*1mm}) -- cycle;
+  \draw[white,opacity=0.55,line width=0.6pt,dash pattern=on 3pt off 2pt] (112mm,70mm) -- (210mm,70mm);
+  \draw[white,opacity=0.85,line width=1.2pt,line join=round]
+    (116.3mm,70.0mm) -- (117.3mm,88.4mm) -- (118.1mm,70.0mm) -- (118.8mm,59.0mm) -- (119.4mm,70.0mm) -- (120.0mm,62.2mm)
+    -- (120.6mm,70.0mm) -- (121.1mm,63.8mm) -- (121.6mm,70.0mm) -- (122.1mm,65.0mm) -- (122.5mm,60.9mm) -- (122.9mm,57.4mm)
+    -- (123.4mm,62.2mm) -- (123.8mm,66.4mm) -- (124.1mm,70.0mm) -- (124.5mm,73.2mm) -- (124.9mm,70.0mm) -- (125.2mm,72.9mm)
+    -- (125.6mm,70.0mm) -- (127.2mm,67.8mm) -- (128.6mm,66.4mm) -- (130.0mm,65.3mm) -- (131.2mm,61.8mm) -- (132.4mm,63.8mm)
+    -- (133.5mm,59.0mm) -- (134.5mm,59.0mm) -- (135.5mm,59.0mm) -- (136.5mm,62.4mm) -- (137.4mm,63.7mm) -- (138.3mm,66.4mm)
+    -- (139.2mm,70.0mm) -- (140.0mm,72.0mm) -- (140.8mm,71.2mm) -- (141.6mm,71.8mm) -- (142.4mm,71.1mm) -- (145.9mm,76.6mm)
+    -- (149.2mm,73.6mm) -- (152.2mm,72.9mm) -- (154.9mm,74.4mm) -- (157.5mm,73.2mm) -- (160.0mm,73.5mm) -- (162.3mm,74.6mm)
+    -- (164.6mm,73.3mm) -- (166.7mm,75.0mm) -- (168.8mm,73.7mm) -- (170.8mm,73.4mm) -- (172.7mm,72.2mm) -- (174.6mm,72.8mm)
+    -- (176.4mm,73.2mm) -- (178.2mm,73.1mm) -- (179.9mm,72.0mm) -- (181.6mm,71.8mm) -- (183.2mm,71.4mm) -- (184.8mm,71.7mm)
+    -- (186.4mm,70.8mm) -- (187.9mm,70.4mm) -- (189.4mm,70.7mm) -- (190.9mm,70.2mm) -- (192.3mm,70.3mm) -- (193.7mm,69.9mm)
+    -- (195.1mm,69.7mm) -- (196.5mm,70.2mm) -- (197.9mm,70.0mm) -- (199.2mm,69.9mm) -- (200.5mm,70.4mm) -- (201.8mm,69.9mm)
+    -- (203.1mm,69.7mm) -- (204.3mm,69.7mm) -- (205.6mm,69.6mm) -- (206.8mm,69.8mm) -- (208.0mm,69.7mm);
+  \fill[otGreen] (208mm,69.7mm) circle (1.6mm);}
+
+%% Décor d'ouverture « conditions » : un test et ses deux branches
+\newcommand{\otDecoconditions}{%
+  \otDecoGrille
+  \draw[white,opacity=0.75,line width=1.3pt,line join=round] (160mm,98mm) -- (176mm,86mm) -- (160mm,74mm) -- (144mm,86mm) -- cycle;
+  \node[text=white,font=\otSemi\fontsize{16}{16}\selectfont] at (160mm,86mm) {?};
+  \draw[white,opacity=0.5,line width=1pt] (160mm,110mm) -- (160mm,98mm);
+  \draw[otGreen,line width=1.6pt,-{Stealth[length=3mm]}] (176mm,86mm) -- (196mm,86mm) -- (196mm,66mm);
+  \draw[white,opacity=0.55,line width=1.2pt,-{Stealth[length=3mm]}] (144mm,86mm) -- (124mm,86mm) -- (124mm,66mm);
+  \fill[otGreen,rounded corners=1.5mm] (185mm,54mm) rectangle (207mm,66mm);
+  \draw[white,opacity=0.55,line width=1.2pt,rounded corners=1.5mm] (113mm,54mm) rectangle (135mm,66mm);
+  \node[text=white,opacity=0.85,font=\otMedium\fontsize{7}{8}\selectfont] at (186mm,90mm) {oui};
+  \node[text=white,opacity=0.6,font=\otMedium\fontsize{7}{8}\selectfont] at (134mm,90mm) {non};}
+
+%% Décor d'ouverture « boucles » : un bloc répété et sa flèche de retour
+\newcommand{\otDecoboucles}{%
+  \otDecoGrille
+  \draw[white,opacity=0.55,line width=1.2pt,rounded corners=2mm] (138mm,62mm) rectangle (178mm,80mm);
+  \foreach \yy in {66,71,76}{\draw[white,opacity=0.45,line width=0.9pt] (143mm,\yy mm) -- (170mm,\yy mm);}
+  \draw[otGreen,line width=1.8pt,-{Stealth[length=3.2mm]}] (178mm,71mm) -- (192mm,71mm) arc (-90:90:12mm) -- (158mm,95mm) -- (158mm,80.5mm);
+  \draw[white,opacity=0.5,line width=1.1pt,-{Stealth[length=2.6mm]}] (158mm,62mm) -- (158mm,48mm);
+  \foreach \kk/\xx in {1/196,2/201,3/206}{\fill[white,opacity=0.85] (\xx mm,52mm) circle (1.3mm);}}
+
+%% Décor d'ouverture « listes » : des cases et leurs indices
+\newcommand{\otDecolistes}{%
+  \otDecoGrille
+  \foreach \kk in {0,...,6}{%
+    \draw[white,opacity=0.6,line width=1pt] ({(126+11*\kk)*1mm},68mm) rectangle ({(136+11*\kk)*1mm},80mm);
+    \node[text=white,opacity=0.7,font=\otMedium\fontsize{7}{8}\selectfont] at ({(131+11*\kk)*1mm},62mm) {\kk};}
+  \fill[otGreen] (159mm,68mm) rectangle (169mm,80mm);
+  \draw[otGreen,line width=1.4pt,-{Stealth[length=2.6mm]}] (164mm,98mm) -- (164mm,83mm);
+  \node[text=white,font=\otMono\fontsize{8}{9}\selectfont] at (164mm,102mm) {L[3]};}
+
+%% ---------------------------------------------------------------------
+%%  Géométrie dans l'espace : perspective cavalière
+%%  \begin{tikzpicture}[otEspace,scale=2.4] \otCube \end{tikzpicture}
+%%  Repère (A ; AB, AD, AE) : x vers la droite, y en profondeur, z vers le haut.
+%% ---------------------------------------------------------------------
+\tikzset{
+  otEspace/.style={x={(1cm,0cm)},y={(0.42cm,0.34cm)},z={(0cm,1cm)},line join=round,line cap=round},
+  otVu/.style={draw=otNavy,line width=0.8pt},
+  otCache/.style={draw=otNavy!55,line width=0.6pt,dash pattern=on 2.2pt off 1.6pt},
+  otSommet/.style={font=\small,text=otInk,inner sep=1.6pt},
+  otPt/.style={circle,fill=otNavy,inner sep=0pt,minimum size=3pt},
+  otPtV/.style={circle,fill=otGreenDark,inner sep=0pt,minimum size=3.4pt},
+  otVec/.style={draw=otGreenDark,line width=1pt,-{Stealth[length=2.2mm]}},
+  otVecN/.style={draw=otNavy,line width=0.9pt,-{Stealth[length=2mm]}},
+  otSection/.style={fill=otGreen,fill opacity=0.22,draw=otGreenDark,line width=0.9pt},
+  otPlanF/.style={fill=otNavyTint,draw=otNavy!45,line width=0.5pt},
+  otConstr/.style={draw=otOrange,line width=0.6pt,dash pattern=on 3pt off 1.5pt}}
+% Coordonnées des sommets d'un cube (ou d'un pavé de dimensions #1 x #2 x #3)
+\newcommand{\otPaveCoord}[3]{%
+  \coordinate (A) at (0,0,0); \coordinate (B) at (#1,0,0); \coordinate (C) at (#1,#2,0);
+  \coordinate (D) at (0,#2,0); \coordinate (E) at (0,0,#3); \coordinate (F) at (#1,0,#3);
+  \coordinate (G) at (#1,#2,#3); \coordinate (H) at (0,#2,#3);}
+\newcommand{\otPaveAretes}{%
+  \draw[otVu] (A) -- (B) -- (C) -- (G) -- (H) -- (E) -- cycle;
+  \draw[otVu] (B) -- (F) -- (E); \draw[otVu] (F) -- (G);
+  \draw[otCache] (A) -- (D) -- (C); \draw[otCache] (D) -- (H);}
+\newcommand{\otPaveNoms}{%
+  \node[otSommet,anchor=north east] at (A) {$A$}; \node[otSommet,anchor=north west] at (B) {$B$};
+  \node[otSommet,anchor=west] at (C) {$C$}; \node[otSommet,anchor=south east] at (D) {$D$};
+  \node[otSommet,anchor=east] at (E) {$E$}; \node[otSommet,anchor=north west] at (F) {$F$};
+  \node[otSommet,anchor=south west] at (G) {$G$}; \node[otSommet,anchor=south east] at (H) {$H$};}
+\newcommand{\otCube}{\otPaveCoord{1}{1}{1}\otPaveAretes\otPaveNoms}
+\newcommand{\otPave}[3]{\otPaveCoord{#1}{#2}{#3}\otPaveAretes\otPaveNoms}
+
+%% Décor d'ouverture « espace » : un cube et une diagonale
+\newcommand{\otDecoespace}{%
+  \otDecoGrille
+  \begin{scope}[shift={(140mm,46mm)},x={(34mm,0mm)},y={(14mm,11mm)},z={(0mm,34mm)}]
+    \draw[white,opacity=0.6,line width=1.1pt,line join=round] (0,0,0) -- (1,0,0) -- (1,1,0) -- (1,1,1) -- (0,1,1) -- (0,0,1) -- cycle;
+    \draw[white,opacity=0.6,line width=1.1pt] (1,0,0) -- (1,0,1) -- (0,0,1) (1,0,1) -- (1,1,1);
+    \draw[white,opacity=0.35,line width=0.9pt,dash pattern=on 3pt off 2pt] (0,0,0) -- (0,1,0) -- (1,1,0) (0,1,0) -- (0,1,1);
+    \draw[otGreen,line width=1.8pt,-{Stealth[length=3.2mm]}] (0,0,0) -- (1,1,1);
+    \fill[otGreen] (0,0,0) circle (1.6mm);
+  \end{scope}}
+
+%% Décor d'ouverture « bases » : trois vecteurs de base et une combinaison
+\newcommand{\otDecobases}{%
+  \otDecoGrille
+  \begin{scope}[shift={(146mm,50mm)},x={(22mm,0mm)},y={(11mm,9mm)},z={(0mm,22mm)}]
+    \draw[white,opacity=0.3,line width=0.8pt,dash pattern=on 3pt off 2pt]
+      (2,0,0) -- (2,1,0) -- (0,1,0) (2,1,0) -- (2,1,1.5) (2,0,0) -- (2,0,1.5) -- (2,1,1.5) -- (0,1,1.5) -- (0,0,1.5) -- (2,0,1.5) (0,1,0) -- (0,1,1.5);
+    \foreach \v in {(1,0,0),(0,1,0),(0,0,1)}{\draw[white,opacity=0.8,line width=1.5pt,-{Stealth[length=3mm]}] (0,0,0) -- \v;}
+    \draw[otGreen,line width=1.9pt,-{Stealth[length=3.4mm]}] (0,0,0) -- (2,1,1.5);
+    \fill[white] (0,0,0) circle (1.3mm);
+  \end{scope}}
+
+%% Décor d'ouverture « orthogonalité » : un plan et un vecteur normal
+\newcommand{\otDecoorthogonalite}{%
+  \otDecoGrille
+  \fill[white,opacity=0.12] (116mm,44mm) -- (186mm,44mm) -- (206mm,70mm) -- (136mm,70mm) -- cycle;
+  \draw[white,opacity=0.55,line width=1.1pt,line join=round] (116mm,44mm) -- (186mm,44mm) -- (206mm,70mm) -- (136mm,70mm) -- cycle;
+  \draw[otGreen,line width=1.9pt,-{Stealth[length=3.4mm]}] (161mm,57mm) -- (161mm,100mm);
+  \draw[white,opacity=0.7,line width=0.9pt] (161mm,63mm) -- (166.5mm,63mm) -- (166.5mm,57.5mm);
+  \fill[otGreen] (161mm,57mm) circle (1.6mm);
+  \fill[white] (188mm,92mm) circle (1.3mm);
+  \draw[white,opacity=0.5,line width=0.9pt,dash pattern=on 3pt off 2pt] (188mm,92mm) -- (188mm,58mm);
+  \fill[white,opacity=0.8] (188mm,58mm) circle (1mm);}
+
+%% Décor d'ouverture « représentations paramétriques » : une droite qui traverse un plan
+\newcommand{\otDecoparametriques}{%
+  \otDecoGrille
+  \fill[white,opacity=0.12] (118mm,46mm) -- (184mm,46mm) -- (204mm,72mm) -- (138mm,72mm) -- cycle;
+  \draw[white,opacity=0.55,line width=1.1pt,line join=round] (118mm,46mm) -- (184mm,46mm) -- (204mm,72mm) -- (138mm,72mm) -- cycle;
+  \draw[white,opacity=0.75,line width=1.3pt] (150mm,20mm) -- (162mm,59mm);
+  \draw[white,opacity=0.75,line width=1.3pt] (162mm,59mm) -- (176mm,104mm);
+  \foreach \tt in {0,1,2,3}{\fill[white] ({(166+3.5*\tt)*1mm},{(72+11.25*\tt)*1mm}) circle (1.1mm);}
+  \fill[otGreen] (162mm,59mm) circle (1.9mm);}
+
+% Arbres pondérés : \begin{tikzpicture}[otArbre] \node {} child {...} ... ; \end{tikzpicture}
+\tikzset{
+  otArbre/.style={grow'=right, level distance=22mm, inner sep=1.6pt,
+    level 1/.style={sibling distance=20mm},
+    level 2/.style={sibling distance=10mm},
+    level 3/.style={sibling distance=5mm},
+    every node/.style={font=\small},
+    edge from parent/.style={draw=otNavy!65, line width=0.6pt},
+    edge from parent path={(\tikzparentnode.east) -- (\tikzchildnode.west)}},
+  otPoids/.style={font=\scriptsize, fill=white, inner sep=0.8pt, text=otGreenDark, pos=0.52},
+  otFeuille/.style={font=\scriptsize, text=otMuted, anchor=west, inner sep=1pt}}
+
+% QR code « cours complet » dans l'ouverture
+\newcommand{\otCoursURL}{\otURL}
+\newcommand{\otQRCours}{%
+  \begin{tikzpicture}
+    \node[fill=otNavyTint,rounded corners=2mm,inner sep=3.5mm] (b) {%
+      \begin{minipage}{17mm}{\color{otNavy}\qrcode[height=17mm,nolink]{\otCoursURL}}\end{minipage}%
+      \hspace{3.5mm}%
+      \begin{minipage}{30mm}\raggedright
+        {\otSemi\fontsize{8.5}{10.5}\selectfont\color{otNavy}La collection OptiTAB}\par\vspace{1mm}
+        {\otLight\fontsize{7.5}{9.5}\selectfont\color{otInk}Retrouver OptiTAB sur \otSite}
+      \end{minipage}};
+  \end{tikzpicture}}
+
+%% ---------------------------------------------------------------------
+%%  Liens et signets PDF
+%% ---------------------------------------------------------------------
+\RequirePackage[hidelinks,bookmarksnumbered=false,pdfusetitle]{hyperref}
+\providecommand*{\theHexo}{}
+\renewcommand*{\theHexo}{\otChapNum.\arabic{exo}}
+\hypersetup{pdftitle={\otTitreLivre\ - \otNiveau\ - \otSousTitre},pdfauthor={OptiTAB}}
+
+\endinput

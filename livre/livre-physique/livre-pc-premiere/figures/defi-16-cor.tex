@@ -1,0 +1,14 @@
+% Bilan énergétique d'un cycle pompage-turbinage (corrigé du défi D16)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  bloc/.style={draw=otNavy,fill=otNavy!8,line width=0.7pt,rounded corners=1.5mm,minimum width=2.2cm,minimum height=0.95cm,align=center,font=\otMedium\fontsize{8}{10}\selectfont,text=otInk}]
+\node[bloc] (p) at (0,0) {pompage\\($\eta=\num{0,85}$)};
+\node[bloc] (r) at (4.4,0) {eau en haut :\\$E_\mathrm{p}$ stockée};
+\node[bloc] (t) at (8.8,0) {turbinage\\($\eta=\num{0,90}$)};
+\draw[otOrange,line width=7pt,-{Triangle[length=3mm,width=9mm]}] (-3.0,0) -- (p.west) node[pos=0.4,pcLegende,anchor=south,text=otOrange!80!black,yshift=2.5mm] {\qty{288,5}{GWh}};
+\draw[otNavy!60,line width=6pt,-{Triangle[length=3mm,width=8mm]}] (p.east) -- (r.west) node[pos=0.5,pcLegende,anchor=south,text=otNavy,yshift=2.5mm] {\qty{245,3}{GWh}};
+\draw[otNavy!60,line width=6pt,-{Triangle[length=3mm,width=8mm]}] (r.east) -- (t.west);
+\draw[otGreen,line width=5.4pt,-{Triangle[length=3mm,width=7.5mm]}] (t.east) -- ++(2.0,0) node[pcLegende,anchor=north,text=otGreenDark,yshift=-2.5mm,pos=0.5] {\qty{220,7}{GWh}};
+\draw[otRed!70,line width=1.6pt,-{Triangle[length=2mm,width=4mm]}] (p.south) -- ++(0,-0.9) node[pcLegende,anchor=north,text=otRed!80!black] {pertes : \qty{43,3}{GWh}};
+\draw[otRed!70,line width=1.4pt,-{Triangle[length=2mm,width=4mm]}] (t.south) -- ++(0,-0.9) node[pcLegende,anchor=north,text=otRed!80!black] {pertes : \qty{24,5}{GWh}};
+\end{tikzpicture}
+\par\smallskip\legende{Rendement global : $\dfrac{220{,}7}{288{,}5}\approx\num{0,765}$. Un quart de l'énergie est perdu, mais elle est restituée au moment où l'on en a besoin.}

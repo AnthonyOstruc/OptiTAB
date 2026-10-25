@@ -1,0 +1,81 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 5 — La suite logistique, de la convergence au chaos
+%% Résultats vérifiés par verifications/defis_01_05.py.
+
+\rubrique{Défi}
+
+\begin{defi}{La suite logistique, de la convergence au chaos}{2 h}
+Pour $a\in\intOF{0}{4}$, on pose $f_a(x)=a\,x(1-x)$, et l'on considère la
+suite définie par $u_0\in\intFF{0}{1}$ et $u_{n+1}=f_a(u_n)$. Ce modèle de
+dynamique des populations, popularisé par le biologiste Robert May (1976),
+présente selon la valeur de $a$ des comportements d'une étonnante
+variété.
+
+\partieExo{A}{Premières propriétés}
+\begin{questions}
+  \item Montrer que $f_a\bigl(\intFF{0}{1}\bigr)\subseteq\intFF{0}{1}$ ;
+    en déduire que la suite est bien définie et à valeurs dans
+    $\intFF{0}{1}$.
+  \item Déterminer les points fixes de $f_a$ dans $\intFF{0}{1}$. On notera
+    $\ell_a=1-\dfrac1a$ lorsque $a>1$.
+  \item On suppose $a\in\intOF{0}{1}$. Montrer que $(u_n)$ est décroissante
+    et converge vers $0$.
+\end{questions}
+
+\partieExo{B}{Convergence vers l'équilibre ($1<a\leqslant3$)}
+\begin{questions}[resume]
+  \item Calculer $f_a'(\ell_a)$ et vérifier que $\bigl|f_a'(\ell_a)\bigr|<1$
+    pour $a\in\intOO{1}{3}$ (point fixe \emph{attractif}, chapitre 6).
+  \item \emph{Le cas $a=2$.} Montrer que $1-2u_{n+1}=(1-2u_n)^{2}$ et en
+    déduire une expression explicite de $u_n$. Pour $u_0\in\intOO{0}{1}$,
+    étudier la convergence et sa vitesse.
+  \item \emph{Le cas $1<a\leqslant2$.} Soit $u_0\in\intOO{0}{1}$. Montrer
+    que $u_n\in\intOF{0}{\frac12}$ pour $n\geqslant1$, que $f_a$ est
+    croissante sur cet intervalle, et en déduire que $(u_n)_{n\geqslant1}$
+    est monotone et converge vers $\ell_a$.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[scale=5.2,line cap=round,line join=round]
+  \draw[otRule,line width=0.3pt] (0,0) rectangle (1,1);
+  \draw[otMuted,line width=0.5pt] (0,0) -- (1,1);
+  \draw[otNavy,line width=1.1pt] plot[domain=0:1,samples=100] ({\x},{2.8*\x*(1-\x)});
+  \draw[otGreenDark,line width=0.6pt]
+    (0.0800,0.0000) -- (0.0800,0.2061) -- (0.2061,0.2061) -- (0.2061,0.4581) --
+    (0.4581,0.4581) -- (0.4581,0.6951) -- (0.6951,0.6951) -- (0.6951,0.5934) --
+    (0.5934,0.5934) -- (0.5934,0.6756) -- (0.6756,0.6756) -- (0.6756,0.6137) --
+    (0.6137,0.6137) -- (0.6137,0.6638) -- (0.6638,0.6638) -- (0.6638,0.6249) --
+    (0.6249,0.6249) -- (0.6249,0.6563) -- (0.6563,0.6563) -- (0.6563,0.6316) --
+    (0.6316,0.6316) -- (0.6316,0.6515) -- (0.6515,0.6515) -- (0.6515,0.6357) --
+    (0.6357,0.6357) -- (0.6357,0.6484) -- (0.6484,0.6484) -- (0.6484,0.6383);
+  \fill[otGreenDark] (0.6429,0.6429) circle (0.25pt);
+  \fill[otNavy] (0.08,0) circle (0.25pt);
+  \node[font=\scriptsize,text=otNavy,below] at (0.08,0) {$u_0$};
+  \node[font=\scriptsize,text=otMuted,below] at (1,0) {$1$};
+  \node[font=\scriptsize,text=otMuted,left] at (0,1) {$1$};
+  \node[font=\scriptsize,text=otNavy,anchor=west] at (0.88,0.42) {$y=f_a(x)$};
+  \node[font=\scriptsize,text=otMuted,anchor=west] at (0.86,0.82) {$y=x$};
+  \draw[otGreenDark,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (0.6429,0.6429) -- (0.6429,0);
+  \node[font=\scriptsize,text=otGreenDark,below] at (0.6429,0) {$\ell_a$};
+\end{tikzpicture}\\[0.5mm]
+\legende{La « toile d'araignée » pour $a=2{,}8$ : les itérés s'enroulent
+autour du point fixe $\ell_a=\frac{9}{14}$, car $f_a'(\ell_a)=-0{,}8$ est
+négatif.}
+\end{center}
+
+\partieExo{C}{Le chaos ($a=4$)}
+\begin{questions}[resume]
+  \item On écrit $u_0=\sin^{2}\theta$ avec $\theta\in\intFF{0}{\frac\pi2}$.
+    Montrer que $u_n=\sin^{2}\bigl(2^{n}\theta\bigr)$ pour tout $n$.
+  \item Montrer que pour $\theta=\dfrac{\pi}{5}$ la suite est périodique de
+    période $2$, et calculer les deux valeurs prises ; montrer que pour
+    $\theta=\dfrac{\pi}{7}$ elle est périodique de période $3$.
+  \item Deux conditions initiales $\theta$ et $\theta+\varepsilon$ très
+    proches donnent des angles $2^{n}\theta$ et $2^{n}(\theta+\varepsilon)$.
+    À partir de quel rang les deux suites deviennent-elles sans rapport
+    pour $\varepsilon=10^{-6}$ ? pour $\varepsilon=10^{-16}$ (précision
+    d'un ordinateur) ? Commenter : c'est la \emph{sensibilité aux
+    conditions initiales}, signature du chaos.
+\end{questions}
+\end{defi}

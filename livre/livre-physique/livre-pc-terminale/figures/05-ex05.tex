@@ -1,0 +1,30 @@
+% Orientation d'un choc entre l'ion hydroxyde et le chlorométhane (exercice 5, chapitre 5)
+\begin{tikzpicture}[x=1mm,y=1mm,
+  atC/.style={circle,ball color=otInk!45,inner sep=0pt,minimum size=6mm},
+  atCl/.style={circle,ball color=otGreen!70,inner sep=0pt,minimum size=7.4mm},
+  atH/.style={circle,ball color=white,draw=otRule,inner sep=0pt,minimum size=3.6mm},
+  atO/.style={circle,ball color=otRed!70,inner sep=0pt,minimum size=5.6mm},
+  appr/.style={otNavy,line width=0.9pt,-{Stealth[length=2.2mm]}}]
+% chlorométhane : C en (cx, 0), Cl à sa droite, trois H du côté opposé
+\newcommand{\chloromethane}[1]{%
+  \node[atH] at (#1-2.5,6.2) {}; \node[atH] at (#1-2.5,-6.2) {}; \node[atH] at (#1-4.8,1.6) {};
+  \node[atC] at (#1,0) {}; \node[atCl] at (#1+8.5,0) {};
+  \node[pcLegende] at (#1,-9.5) {C}; \node[pcLegende] at (#1+8.5,-9.5) {Cl};}
+% cadre 1 : l'ion hydroxyde arrive du côté opposé au chlore
+\draw[otRule,line width=0.6pt,rounded corners=1.5mm] (0,-12) rectangle (66,14);
+\node[pcLegendeG,anchor=south] at (33,14.6) {choc efficace};
+\chloromethane{40}
+\node[atH] at (9.5,4.2) {}; \node[atO] (o1) at (12,1.5) {};
+\node[pcLegende] at (12,-4.6) {\ce{HO-}};
+\draw[appr] (16,1.2) -- (29,0.4);
+% cadre 2 : l'ion hydroxyde heurte l'atome de chlore
+\begin{scope}[shift={(74,0)}]
+\draw[otRule,line width=0.6pt,rounded corners=1.5mm] (0,-12) rectangle (66,14);
+\node[pcLegendeG,anchor=south] at (33,14.6) {choc non efficace};
+\chloromethane{18}
+\node[atH] at (59,4.2) {}; \node[atO] (o2) at (56.5,1.5) {};
+\node[pcLegende] at (56.5,-4.6) {\ce{HO-}};
+\draw[appr] (52.5,1.2) -- (39.5,0.4);
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{L'ion hydroxyde doit heurter l'atome de carbone du côté opposé à l'atome de chlore, avec une énergie suffisante.}

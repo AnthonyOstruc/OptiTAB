@@ -1,0 +1,354 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[titrage]{3}{Titrages pH-métriques et conductimétriques}{Partie 1 · Constitution et transformations de la matière}
+{Titre massique\enspace·\enspace Équivalence\enspace·\enspace Suivi pH-métrique\enspace·\enspace Suivi conductimétrique}
+\objectif{Préparer une solution de concentration donnée à partir d'une solution commerciale.}
+\objectif{Établir la composition du système au cours d'un titrage, avant et après l'équivalence.}
+\objectif{Exploiter un titrage pour déterminer une quantité de matière, une concentration ou une masse.}
+\objectif{Justifier l'évolution de la pente d'une courbe de titrage conductimétrique.}
+\objectif{Représenter l'évolution des quantités de matière avec un programme Python.}
+\prerequis{Réactions acide-base et couples (chapitre 1).}
+\prerequis{Conductivité et loi de Kohlrausch (chapitre 2).}
+\prerequis{Titrage avec suivi colorimétrique, équivalence, tableau d'avancement.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Préparer une solution à partir d'une solution commerciale}
+\begin{definition}[Titre massique et densité]
+Le titre massique d'une solution est $t=\dfrac{m_\text{soluté}}{m_\text{solution}}$ (souvent exprimé en \%).
+Sa densité est $d=\dfrac{\rho}{\rho_\text{eau}}$, avec $\rho_\text{eau}=\qty{1,00}{kg.L^{-1}}$. La concentration en
+soluté apporté s'en déduit :
+\[c=\frac{t\times\rho}{M}=\frac{t\times d\times\rho_\text{eau}}{M}.\]
+\end{definition}
+\begin{exemple}
+Une solution commerciale d'acide chlorhydrique à 37 \% a une densité de 1,18. Un litre a une masse de 1\,180 g et
+contient $0{,}37\times1\,180\approx\qty{437}{g}$ de chlorure d'hydrogène, soit
+$c=\frac{437}{36{,}5}\approx\qty{12}{mol.L^{-1}}$.
+\end{exemple}
+\begin{attention}
+Les solutions commerciales sont souvent corrosives : lunettes, gants et blouse, manipulation sous hotte.
+Pour diluer un acide concentré, on verse l'acide dans l'eau, et jamais l'inverse.
+\end{attention}
+\essSection{2}{Principe d'un titrage}
+\begin{definition}[Titrage et équivalence]
+Titrer une espèce, c'est déterminer sa quantité de matière grâce à une réaction support \textbf{rapide},
+\textbf{totale} et \textbf{unique} avec une espèce titrante de concentration connue. L'\textbf{équivalence} est
+atteinte lorsque les réactifs ont été introduits dans les proportions stœchiométriques : le réactif limitant
+change. Pour la réaction $a\,\mathrm{A}+b\,\mathrm{B}\longrightarrow\dots$, avec A titré et B titrant :
+\[\frac{c_\mathrm{A}\,V_\mathrm{A}}{a}=\frac{c_\mathrm{B}\,V_\mathrm{E}}{b},\]
+où $V_\mathrm{E}$ est le volume de solution titrante versé à l'équivalence.
+\end{definition}
+\schema{03-montage-titrage}
+\begin{attention}
+Le volume à l'équivalence $V_\mathrm{E}$ n'a rien à voir avec un état d'équilibre : à l'équivalence, la réaction
+support, totale, a consommé entièrement les deux réactifs. L'eau distillée ajoutée dans le bécher, par exemple
+pour immerger la sonde, ne modifie pas la quantité d'espèce titrée, donc pas $V_\mathrm{E}$.
+\end{attention}
+\essSection{3}{Composition du système au cours du titrage}
+\begin{propriete}[Avant et après l'équivalence]
+Avant l'équivalence, l'espèce titrante versée est entièrement consommée : l'espèce titrée est en excès.
+Après l'équivalence, l'espèce titrée a disparu et l'espèce titrante versée s'accumule. Les ions spectateurs
+(\ce{Na+}, \ce{Cl-}…) ne réagissent pas : leur quantité ne dépend que de ce qui a été introduit.
+\end{propriete}
+\begin{codecote}[0.58]
+\begin{pythoncol}
+import matplotlib.pyplot as plt
+n0, cB = 0.20, 0.100  # n0 : mmol, cB : mol/L
+V = [k * 0.1 for k in range(41)]   # en mL
+nH, nHO, nNa = [], [], []
+for v in V:
+    nb = cB * v       # ions HO- versés (mmol)
+    nH.append(max(n0 - nb, 0))
+    nHO.append(max(nb - n0, 0))
+    nNa.append(nb)
+plt.plot(V, nH, label="H3O+")
+plt.plot(V, nHO, label="HO-")
+plt.plot(V, nNa, label="Na+")
+plt.legend()
+plt.show()
+\end{pythoncol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Titrage de \qty{0,20}{mmol} d'ions oxonium par la soude. La réaction support \ce{H3O+ + HO- -> 2 H2O} étant
+totale, \code{max(n0 - nb, 0)} donne la quantité d'ions oxonium restante et \code{max(nb - n0, 0)} celle
+des ions hydroxyde en excès. Le volume équivalent correspond au point où les deux courbes s'annulent ensemble.
+\end{codecote}
+\schema{03-python-quantites}
+\essSection{4}{Titrage avec suivi pH-métrique}
+\begin{propriete}[Courbe de titrage pH-métrique]
+Au voisinage de l'équivalence, le pH varie brutalement : c'est le saut de pH. On détermine $V_\mathrm{E}$ par la
+méthode des \textbf{tangentes parallèles} (le point d'équivalence E est sur la droite équidistante des deux
+tangentes) ou par la méthode de la \textbf{dérivée} ($V_\mathrm{E}$ correspond au maximum de
+$\left|\mathrm{dpH}/\mathrm{d}V\right|$). Le pH à l'équivalence vaut 7 pour un acide fort titré par une base forte ;
+il est supérieur à 7 pour un acide faible, comme l'acide éthanoïque, titré par une base forte.
+\end{propriete}
+\schema{03-courbes-ph}
+\begin{savoirfaire}[Choisir un indicateur coloré]
+Pour un titrage colorimétrique, on choisit un indicateur dont la zone de virage contient le pH à l'équivalence :
+hélianthine (3,1 -- 4,4), bleu de bromothymol (6,0 -- 7,6), phénolphtaléine (8,2 -- 10,0).
+Ainsi, la phénolphtaléine convient pour titrer l'acide éthanoïque par la soude ; ce point est approfondi au chapitre 9.
+\end{savoirfaire}
+\essSection{5}{Titrage avec suivi conductimétrique}
+\begin{propriete}[Courbe de titrage conductimétrique]
+Si l'on ajoute assez d'eau pour que la dilution soit négligeable, la conductivité varie de façon affine avec le
+volume versé, avec une pente différente avant et après l'équivalence : $V_\mathrm{E}$ est l'abscisse du point
+d'intersection des deux droites. Le signe et la valeur de chaque pente s'expliquent par les ions qui apparaissent
+et disparaissent, et par leurs conductivités molaires ioniques. Ce suivi convient aussi à des réactions qui ne sont
+pas acide-base, comme la précipitation \ce{Ag+ + Cl- -> AgCl(s)}.
+\end{propriete}
+\schema{03-courbe-sigma}
+\begin{savoirfaire}[Justifier l'évolution de la pente]
+Écrire l'équation de la réaction support, puis faire le bilan des ions : pour chaque ion titrant versé, quels ions
+sont ajoutés, lesquels sont retirés ? Comparer leurs conductivités molaires : le remplacement d'un ion par un ion
+moins conducteur fait diminuer $\sigma$ ; l'accumulation d'ions fait croître $\sigma$.
+\end{savoirfaire}
+\begin{rediger}
+Écrire « à l'équivalence, les réactifs ont été introduits dans les proportions stœchiométriques de la réaction
+support » et non « les réactifs sont en quantités égales ». Citer la relation à l'équivalence avec ses notations,
+puis la méthode utilisée pour déterminer $V_\mathrm{E}$ ; terminer par une phrase qui répond à la question posée.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-3-1}
+\begin{exercice}[1]{Une solution commerciale}
+Une solution commerciale d'acide chlorhydrique porte les indications : « 23 \% en masse ; densité 1,11 ».
+\begin{donnees}
+$M(\ce{HCl})=\qty{36,5}{g.mol^{-1}}$ ; $\rho_\text{eau}=\qty{1,00}{kg.L^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la masse d'un litre de solution, puis la masse de chlorure d'hydrogène qu'il contient.
+\item En déduire la concentration en acide apporté de la solution commerciale.
+\item Quel volume de solution commerciale faut-il prélever pour préparer 500,0 mL de solution à \qty{0,100}{mol.L^{-1}} ?
+\item Citer deux précautions de sécurité pour cette préparation.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-2}
+\begin{exercice}[1]{Exploiter l'équivalence}
+Pour chaque titrage, écrire l'équation de la réaction support, la relation à l'équivalence, puis calculer la
+concentration de l'espèce titrée.
+\begin{questions}
+\item 20,0 mL d'acide chlorhydrique sont titrés par la soude à \qty{0,100}{mol.L^{-1}} ; $V_\mathrm{E}=\qty{12,6}{mL}$.
+\item 10,0 mL d'une solution d'ammoniac \ce{NH3} sont titrés par l'acide chlorhydrique à \qty{0,0500}{mol.L^{-1}} ;
+$V_\mathrm{E}=\qty{14,2}{mL}$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-3}
+\begin{exercice}[1]{Lire une courbe de titrage pH-métrique}
+On titre $V_\mathrm{A}=\qty{20,0}{mL}$ d'acide chlorhydrique par la soude à $c_\mathrm{B}=\qty{1,00e-2}{mol.L^{-1}}$.
+\schema{03-ex03}
+\begin{questions}
+\item Déterminer le volume à l'équivalence par la méthode des tangentes parallèles. Relever le pH à l'équivalence.
+\item En déduire la concentration $c_\mathrm{A}$ de l'acide chlorhydrique.
+\item Le pH initial est-il cohérent avec cette concentration ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-4}
+\begin{exercice}[1]{Lire une courbe de titrage conductimétrique}
+On titre 20,0 mL de soude, additionnés de 180 mL d'eau, par l'acide chlorhydrique à \qty{0,0500}{mol.L^{-1}}.
+\schema{03-ex04}
+\begin{donnees}
+$\lambda$ (mS$\cdot$m$^2\cdot$mol$^{-1}$) : \ce{HO-} : 19,9 ; \ce{Cl-} : 7,63 ; \ce{H3O+} : 35,0 ; \ce{Na+} : 5,01.
+\end{donnees}
+\begin{questions}
+\item Déterminer le volume à l'équivalence, puis la concentration de la soude.
+\item Expliquer pourquoi la conductivité diminue avant l'équivalence, puis augmente plus vite après.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-5}
+\begin{exercice}[1]{Choisir la verrerie d'un titrage}
+On dispose de : bécher de 100 mL ; éprouvette graduée de 25 mL ; pipette jaugée de 20,0 mL ; burette graduée de
+25 mL ; fiole jaugée de 100,0 mL ; pissette d'eau distillée.
+\begin{questions}
+\item Quelle verrerie choisir pour prélever la solution titrée ? Pour verser la solution titrante ? Justifier.
+\item Pourquoi rince-t-on la burette avec la solution titrante avant de la remplir ?
+\item On ajoute de l'eau distillée dans le bécher pour immerger la sonde. Cela modifie-t-il le volume à l'équivalence ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-3-6}
+\begin{exercice}[2]{La composition du système au cours d'un titrage}
+On titre 20,0 mL d'acide chlorhydrique à \qty{1,0e-2}{mol.L^{-1}} par la soude à \qty{1,0e-2}{mol.L^{-1}}.
+\begin{questions}
+\item Écrire l'équation de la réaction support et calculer le volume à l'équivalence.
+\item Dresser un tableau donnant les quantités de matière des ions \ce{H3O+}, \ce{Cl-}, \ce{Na+} et \ce{HO-}
+pour $V_\mathrm{B}=\qty{10,0}{mL}$, $\qty{20,0}{mL}$ et $\qty{30,0}{mL}$.
+\item Calculer le pH du mélange pour $V_\mathrm{B}=\qty{10,0}{mL}$ et pour $V_\mathrm{B}=\qty{30,0}{mL}$
+(on admet que $[\ce{H3O+}]\,[\ce{HO-}]=10^{-14}$ en mol$^2\cdot$L$^{-2}$ à 25 °C).
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-7}
+\begin{exercice}[2]{Interpréter les pentes d'une courbe conductimétrique}
+On compare deux titrages par la soude : celui d'une solution d'acide chlorhydrique et celui d'une solution d'acide
+éthanoïque, de mêmes concentrations, additionnées d'un grand volume d'eau.
+\begin{donnees}
+$\lambda$ (mS$\cdot$m$^2\cdot$mol$^{-1}$) : \ce{H3O+} : 35,0 ; \ce{HO-} : 19,9 ; \ce{Na+} : 5,01 ; \ce{CH3COO-} : 4,09 ;
+l'acide éthanoïque est très peu dissocié dans l'eau.
+\end{donnees}
+\begin{questions}
+\item Pour chaque titrage, écrire l'équation de la réaction support.
+\item Pour l'acide chlorhydrique, faire le bilan des ions ajoutés et retirés pour une mole d'ions \ce{HO-} versée,
+avant puis après l'équivalence. En déduire le signe des pentes.
+\item Même question pour l'acide éthanoïque. Pourquoi la conductivité augmente-t-elle dès le début du titrage ?
+\item Prévoir le rapport des pentes après et avant l'équivalence dans le cas de l'acide éthanoïque. Esquisser la courbe.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-8}
+\begin{exercice}[2]{Titrer un vinaigre}
+Un vinaigre est annoncé à 6,0 \% d'acidité (6,0 g d'acide éthanoïque pour 100 g de vinaigre). On le dilue dix fois,
+puis on titre 10,0 mL de solution diluée par la soude à \qty{0,100}{mol.L^{-1}}.
+\schema{03-ex08}
+\begin{donnees}
+$M(\ce{CH3COOH})=\qty{60,05}{g.mol^{-1}}$ ; masse volumique du vinaigre : \qty{1,01}{g.mL^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la réaction support du titrage.
+\item Déterminer le volume à l'équivalence et le pH à l'équivalence. Pourquoi ce pH est-il supérieur à 7 ?
+\item En déduire la concentration en acide éthanoïque du vinaigre, puis son pourcentage d'acidité. Conclure.
+\item Quel indicateur coloré pourrait-on utiliser pour un titrage colorimétrique ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-9}
+\begin{exercice}[2]{Les ions chlorure d'un sérum physiologique}
+On dilue un sérum physiologique dix fois. On titre 20,0 mL de solution diluée, additionnés de 200 mL d'eau, par une
+solution de nitrate d'argent (\ce{Ag+}, \ce{NO3-}) à \qty{0,0500}{mol.L^{-1}}. Il se forme un précipité blanc de
+chlorure d'argent.
+\schema{03-ex09}
+\begin{donnees}
+$\lambda$ (mS$\cdot$m$^2\cdot$mol$^{-1}$) : \ce{Cl-} : 7,63 ; \ce{NO3-} : 7,14 ; \ce{Ag+} : 6,19 ; \ce{Na+} : 5,01 ;
+$M(\ce{NaCl})=\qty{58,44}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la réaction support. Pourquoi ce titrage ne peut-il pas être suivi par pH-métrie ?
+\item Justifier la faible diminution de la conductivité avant l'équivalence, puis son augmentation.
+\item Déterminer le volume à l'équivalence, puis la concentration en ions chlorure du sérum.
+\item Le sérum est annoncé à 9,0 g$\cdot$L$^{-1}$ de chlorure de sodium. Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-10}
+\begin{exercice}[2]{Programmer l'évolution des quantités de matière}
+On titre 10,0 mL d'acide éthanoïque à \qty{0,100}{mol.L^{-1}} par la soude à \qty{0,100}{mol.L^{-1}} ; la réaction
+support est considérée comme totale.
+\begin{python}
+n0, cB = ..., 0.100        # n0 en mmol
+V = [k * 0.5 for k in range(41)]
+nA, nAm, nHO = [], [], []
+for v in V:
+    nb = cB * v
+    nA.append(...)           # acide éthanoïque restant
+    nAm.append(min(nb, n0))  # ion éthanoate formé
+    nHO.append(...)          # ions hydroxyde en excès
+\end{python}
+\begin{questions}
+\item \capacite{Capacité numérique}Écrire l'équation de la réaction support et calculer $n_0$, en mmol.
+\item Compléter les deux lignes incomplètes du programme.
+\item Pourquoi la quantité d'ions éthanoate cesse-t-elle d'augmenter ? Pour quel volume ?
+\item Représenter l'allure des courbes obtenues, ainsi que celle de la quantité d'ions \ce{Na+}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-11}
+\begin{exercice}[2]{L'acidité d'un lait}
+L'acidité d'un lait s'exprime en degrés Dornic (°D) : 1 °D correspond à 0,1 g d'acide lactique par litre de lait.
+Un lait est considéré comme frais si son acidité ne dépasse pas 18 °D. On titre 10,0 mL de lait par une solution
+d'hydroxyde de sodium dite « soude Dornic », de concentration $c=\frac19$ mol$\cdot$L$^{-1}$, en présence de
+phénolphtaléine. Le virage est obtenu pour $V_\mathrm{E}=\qty{1,6}{mL}$.
+\begin{donnees}
+Acide lactique \ce{C3H6O3}, noté AH : $M=\qty{90,08}{g.mol^{-1}}$ ; \ce{AH + HO- -> A- + H2O}.
+\end{donnees}
+\begin{questions}
+\item Calculer la quantité, puis la masse d'acide lactique contenue dans 10,0 mL de lait.
+\item En déduire l'acidité du lait en degrés Dornic. Le lait est-il frais ?
+\item Montrer que, pour une prise d'essai de 10,0 mL, l'acidité en °D vaut dix fois le volume équivalent exprimé en mL.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-3-12}
+\begin{exercice}[3]{Contrôle d'un déboucheur}
+\begin{docu}{1}{Étiquette d'un déboucheur liquide}
+Hydroxyde de sodium : 10 \% en masse ; densité : 1,10. Danger : provoque de graves brûlures de la peau et des lésions
+oculaires.
+\end{docu}
+\begin{docu}{2}{Protocole et résultat}
+On dilue le déboucheur 25 fois. On titre 20,0 mL de solution diluée par l'acide chlorhydrique à
+\qty{0,100}{mol.L^{-1}}, avec suivi pH-métrique.
+\end{docu}
+\schema{03-ex12}
+\begin{donnees}
+$M(\ce{NaOH})=\qty{40,0}{g.mol^{-1}}$ ; matériel : pipettes jaugées de 5,0, 10,0 et 20,0 mL ; fioles jaugées de 100,0
+et 250,0 mL.
+\end{donnees}
+\begin{questions}
+\item Proposer un protocole de dilution et citer les précautions de sécurité nécessaires.
+\item Écrire l'équation de la réaction support du titrage et déterminer le volume à l'équivalence.
+\item \initiative L'indication de l'étiquette est-elle vérifiée ?
+\item Quel volume à l'équivalence aurait-on obtenu si le titre massique valait exactement 10 \% ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-13}
+\begin{exercice}[3]{Titrage d'un comprimé d'aspirine}
+\begin{docu}{1}{Protocole}
+On broie un comprimé d'aspirine « 500 » et on dissout la poudre dans un mélange d'eau et d'éthanol, complété à
+200,0 mL. On titre 50,0 mL de cette solution par la soude à \qty{0,0500}{mol.L^{-1}}, à froid. Un logiciel trace
+le pH et sa dérivée en fonction du volume versé.
+\end{docu}
+\schema{03-ex13}
+\begin{donnees}
+Acide acétylsalicylique \ce{C9H8O4}, noté AH (une seule fonction acide titrée) : $M=\qty{180,16}{g.mol^{-1}}$.
+À chaud, l'ion hydroxyde réagit aussi avec la fonction ester de la molécule.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la réaction support du titrage.
+\item Déterminer le volume à l'équivalence. Quelle méthode est la plus précise ici ? Justifier.
+\item \initiative Le comprimé contient-il bien 500 mg d'acide acétylsalicylique ?
+\item Pourquoi le titrage doit-il être réalisé à froid ? Dans quel sens un titrage à chaud fausserait-il le résultat ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-14}
+\begin{exercice}[3]{Un vinaigre frelaté ?}
+\begin{docu}{1}{Une fraude possible}
+Ajouter de l'acide chlorhydrique à un vinaigre trop faible augmente son acidité à moindre coût ; cette pratique est
+interdite. Pour contrôler un vinaigre suspect, on le dilue vingt fois : on obtient la solution S. On titre 20,0 mL de
+S, additionnés de 180 mL d'eau, par la soude à \qty{0,100}{mol.L^{-1}}, avec suivi conductimétrique.
+\end{docu}
+\schema{03-ex14}
+\begin{donnees}
+$\lambda$ (mS$\cdot$m$^2\cdot$mol$^{-1}$) : \ce{H3O+} : 35,0 ; \ce{HO-} : 19,9 ; \ce{Na+} : 5,01 ; \ce{CH3COO-} : 4,09 ;
+\ce{Cl-} : 7,63. Dans un mélange, l'acide fort réagit en premier avec les ions hydroxyde.
+\end{donnees}
+\begin{questions}
+\item Écrire les équations des deux réactions supports, dans l'ordre où elles se produisent.
+\item Interpréter l'allure de chacune des trois portions de la courbe.
+\item \initiative Déterminer les concentrations des deux acides dans le vinaigre. Le vinaigre est-il frelaté ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-3-15}
+\begin{exercice}[3]{Quand la dilution n'est plus négligeable}
+On titre 20,0 mL d'acide chlorhydrique de concentration inconnue par la soude à \qty{0,100}{mol.L^{-1}}, sans ajouter
+d'eau. Les points ne s'alignent plus sur deux droites.
+\schema{03-ex15}
+\begin{questions}
+\item À l'aide de la loi de Kohlrausch, montrer que $\sigma\,(V_0+V_\mathrm{B})$ est une fonction affine de $V_\mathrm{B}$
+de part et d'autre de l'équivalence, avec $V_0=\qty{20,0}{mL}$.
+\item \capacite{Capacité numérique}On calcule la conductivité corrigée $\sigma'=\sigma\,(V_0+V_\mathrm{B})/V_0$.
+Quelle valeur prend-elle pour $V_\mathrm{B}=\qty{10,0}{mL}$, où l'on mesure $\sigma=\qty{4,21}{mS.cm^{-1}}$ ?
+\item Avec la conductivité corrigée, on obtient deux droites qui se coupent pour $V_\mathrm{B}=\qty{10,0}{mL}$.
+En déduire la concentration de l'acide chlorhydrique.
+\item \initiative Un élève trace des droites passant au plus près des cinq premiers et des cinq derniers points mesurés,
+sans correction. Elles se coupent pour \qty{7,9}{mL}. Quelle erreur relative commet-il ? Comment éviter le problème
+sans calcul ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

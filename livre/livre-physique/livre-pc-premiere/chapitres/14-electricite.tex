@@ -1,0 +1,299 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[piles]{14}{Énergie et puissance électriques}{Partie 3 · L'énergie : conversions et transferts}
+{Intensité et charges\enspace·\enspace Source réelle\enspace·\enspace Puissance\enspace·\enspace Effet Joule\enspace·\enspace Rendement}
+\objectif{Relier l'intensité d'un courant continu au débit de charges électriques.}
+\objectif{Modéliser une source réelle de tension par une source idéale en série avec une résistance ; exploiter sa caractéristique.}
+\objectif{Établir un bilan de puissance dans un circuit ; calculer la puissance dissipée par effet Joule.}
+\objectif{Définir et évaluer le rendement d'un convertisseur ; citer des ordres de grandeur de puissances.}
+\prerequis{Tension, intensité, loi d'Ohm $U=R\,I$, caractéristique d'un dipôle (classe de seconde).}
+\prerequis{Énergie, puissance, relation $E=P\,\Delta t$, conversions d'énergie (collège).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Intensité et porteurs de charge}
+\begin{definition}[Intensité d'un courant continu]
+Un courant électrique est un déplacement d'ensemble de \textbf{porteurs de charge} : électrons libres dans les métaux, ions dans les
+solutions. L'intensité est le \textbf{débit de charges} à travers une section du circuit :
+\[I=\frac{Q}{\Delta t}\qquad\text{($I$ en A, $Q$ en C, $\Delta t$ en s).}\]
+Un courant de \qty{0,50}{A} fait passer \qty{30}{C} en une minute, soit $\dfrac{30}{\num{1,60e-19}}\approx\num{1,9e20}$ électrons.
+\end{definition}
+\schema{14-porteurs}
+\essSection{2}{Modèle d'une source réelle de tension}
+\begin{loi}[Source réelle de tension continue]
+Une source réelle (pile, batterie) se modélise par une source idéale de tension $E$ en série avec une résistance interne $r$. La
+tension entre ses bornes diminue quand l'intensité débitée augmente :
+\[U=E-r\,I.\]
+La caractéristique $U=f(I)$ est une droite d'ordonnée à l'origine $E$ et de pente $-r$. En court-circuit ($U=0$), l'intensité vaut $I_\mathrm{cc}=\dfrac{E}{r}$.
+Exemple : avec $E=\qty{4,5}{V}$ et $r=\qty{1,5}{\ohm}$, la tension tombe à \qty{3,9}{V} pour \qty{0,40}{A}.
+\end{loi}
+\par\penalty0
+\schema{14-modele}
+\begin{python}
+import numpy as np
+I = [0, 0.10, 0.20, 0.30, 0.40, 0.50]         # A
+U = [4.52, 4.36, 4.21, 4.07, 3.90, 3.76]      # V : pile mesuree
+a, b = np.polyfit(I, U, 1)                    # droite U = a I + b
+print('E =', round(b, 2), 'V ; r =', round(-a, 2), 'ohm')
+\end{python}
+\begin{console}
+E = 4.52 V ; r = 1.52 ohm
+\end{console}
+\noindent\capacite{Capacité numérique} Le programme modélise les mesures par une droite : l'ordonnée à l'origine donne $E$, l'opposé de la
+pente donne $r$.
+\essSection{3}{Puissance, énergie et effet Joule}
+\begin{definition}[Puissance et énergie électriques]
+Un dipôle soumis à la tension $U$ et traversé par l'intensité $I$ reçoit (ou fournit) la puissance $P=U\,I$ (en W). Pendant $\Delta t$, l'énergie
+transférée vaut $E=P\,\Delta t$ (en J ; $\qty{1}{kWh}=\qty{3,6e6}{J}$).
+\end{definition}
+\begin{loi}[Effet Joule et bilan de puissance]
+Un conducteur ohmique de résistance $R$ convertit toute l'énergie reçue en énergie thermique : $P_\mathrm{J}=R\,I^2=\dfrac{U^2}{R}$. Pour une source
+réelle, $E\,I=U\,I+r\,I^2$ : la puissance $E\,I$ issue de la conversion (chimique, par exemple) se partage entre la puissance $U\,I$
+fournie au circuit et la puissance $r\,I^2$ dissipée dans la source. Exemple : à \qty{0,40}{A}, $E\,I=\qty{1,80}{W}$, $U\,I=\qty{1,56}{W}$ et $r\,I^2=\qty{0,24}{W}$.
+\end{loi}
+\begin{definition}[Rendement d'un convertisseur]
+Un convertisseur (moteur, panneau solaire, lampe…) reçoit une puissance $P_\mathrm{reçue}$ et en restitue une partie utile :
+\[\eta=\frac{P_\mathrm{utile}}{P_\mathrm{reçue}}<1,\qquad\text{le reste étant dissipé, le plus souvent sous forme thermique.}\]
+\end{definition}
+\par\penalty0
+\schema{14-bilan}
+\begin{propriete}[Quelques ordres de grandeur de puissances]
+\par\smallskip\noindent\hfill\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Dispositif & Puissance & Dispositif & Puissance \\
+\midrule
+Lampe à LED & \qty{5}{W} à \qty{10}{W} & Bouilloire, four & \qty{2}{kW} à \qty{3}{kW} \\
+Chargeur de smartphone & \qty{5}{W} à \qty{30}{W} & Voiture électrique & \qty{100}{kW} \\
+Ordinateur portable & \qty{50}{W} & Rame de TGV & \qty{9}{MW} \\
+Réfrigérateur (en marche) & \qty{150}{W} & Réacteur nucléaire & \qty{1}{GW} \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{propriete}
+\begin{attention}
+Ne pas confondre $E$, la tension de la source idéale (en V), et l'énergie (en J). La tension aux bornes d'une pile n'est égale à $E$ que
+si elle ne débite pas. En court-circuit, toute la puissance est dissipée dans la pile : elle chauffe dangereusement.
+\end{attention}
+\begin{experience}[Caractéristique d'une pile et rendement d'un moteur]
+On fait varier l'intensité débitée par une pile grâce à une résistance réglable et l'on relève $U$ et $I$ : la droite obtenue donne $E$
+et $r$. Un petit moteur soulève une masse connue : on compare la puissance mécanique $\dfrac{m\,g\,h}{\Delta t}$ à la puissance électrique $U\,I$.
+\end{experience}
+\begin{rediger}
+Écrire la relation littérale, préciser le dipôle étudié, convertir en unités SI (mA en A, mAh en C, min en s, kW en W),
+et ne jamais confondre puissance (W) et énergie (J ou kWh).
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-14-1}
+\begin{exercice}[1]{Un débit d'électrons}
+Une lampe de poche est traversée par un courant d'intensité $I=\qty{0,20}{A}$ pendant une minute.
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$.
+\end{donnees}
+\begin{questions}
+\item Quels sont les porteurs de charge dans les fils métalliques ? Dans quel sens se déplacent-ils ?
+\item Calculer la charge qui traverse une section du fil en une minute.
+\item En déduire le nombre d'électrons correspondant.
+\item Pourquoi la lampe s'allume-t-elle dès que l'on ferme l'interrupteur, alors que les électrons avancent très lentement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-2}
+\begin{exercice}[1]{Lire une caractéristique}
+\schema{14-ex02}
+\begin{questions}
+\item Déterminer graphiquement la valeur de $E$.
+\item Déterminer la résistance interne $r$ de la pile et écrire la relation entre $U$ et $I$.
+\item Quelle tension la pile délivre-t-elle quand elle débite \qty{0,40}{A} ? Quelle puissance fournit-elle alors ?
+\item Que vaut l'intensité de court-circuit ? Pourquoi ne faut-il jamais court-circuiter une pile ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-3}
+\begin{exercice}[1]{Puissance et énergie}
+Une bouilloire de \qty{2,0}{kW} chauffe l'eau d'un thé en \qty{3}{min}. Le kilowattheure coûte 0,25~€.
+\begin{questions}
+\item Calculer l'énergie consommée, en joules puis en kilowattheures.
+\item Calculer le coût de l'opération.
+\item Une lampe à LED de \qty{7}{W} éclaire autant qu'une ancienne lampe à incandescence de \qty{60}{W}. Calculer l'énergie consommée par
+chacune en \qty{1000}{h}.
+\item Quelle économie la lampe à LED permet-elle sur cette durée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-4}
+\begin{exercice}[1]{Un conducteur ohmique qui chauffe}
+Un conducteur ohmique de résistance $R=\qty{47}{\ohm}$ est traversé par un courant d'intensité \qty{0,10}{A}. Le fabricant indique qu'il ne
+doit pas dissiper plus de \qty{0,25}{W}.
+\begin{questions}
+\item Calculer la tension à ses bornes.
+\item Calculer la puissance dissipée par effet Joule. Sous quelle forme l'énergie est-elle transférée ?
+\item Calculer l'énergie dissipée en \qty{10}{min}.
+\item Le conducteur risque-t-il d'être détérioré ? Quelle intensité maximale peut-il supporter ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-5}
+\begin{exercice}[1]{Le rendement d'un moteur}
+Un petit moteur alimenté sous \qty{12}{V} est traversé par un courant de \qty{2,5}{A}. Il soulève une charge et fournit une puissance
+mécanique de \qty{21}{W}.
+\begin{questions}
+\item Calculer la puissance électrique reçue par le moteur.
+\item Calculer son rendement.
+\item Représenter la chaîne de puissance du moteur et préciser la forme des pertes.
+\item Calculer l'énergie perdue en \qty{5}{min} de fonctionnement.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-14-6}
+\begin{exercice}[2]{La facture d'électricité, en Python}
+\begin{python}
+appareils = {'box internet': (12, 24), 'television': (90, 4),
+             'refrigerateur': (150, 8), 'four': (2500, 0.5)}
+total = 0
+for nom, (P, h) in appareils.items():
+    E = P * h * 365 / 1000            # kWh par an
+    total = total + E
+    print(nom, ':', round(E), 'kWh')
+print('total :', round(total), 'kWh, soit', round(total * 0.25), 'euros')
+\end{python}
+\begin{console}
+box internet : 105 kWh
+television : 131 kWh
+refrigerateur : 438 kWh
+four : 456 kWh
+total : 1131 kWh, soit 283 euros
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Que représentent les deux nombres associés à chaque appareil ? Quelle relation la ligne \code{E = ...} utilise-t-elle ?
+\item Pourquoi compte-t-on seulement 8 heures par jour pour le réfrigérateur, qui reste toujours branché ?
+\item La box, de faible puissance, coûte-t-elle peu ? Calculer son coût annuel.
+\item Une box mise en veille consomme encore \qty{6}{W}. Calculer l'énergie consommée en veille, 20 heures par jour, pendant un an.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-7}
+\begin{exercice}[2]{La batterie d'un smartphone}
+La batterie d'un smartphone porte les indications : \qty{3,85}{V} ; \qty{4000}{mAh}. On la recharge avec un chargeur de \qty{18}{W} ; le rendement
+de la charge est de \qty{85}{\percent}.
+\begin{donnees}
+$e=\qty{1,60e-19}{C}$ ; \qty{1}{mAh} est la charge transportée par un courant de \qty{1}{mA} pendant une heure.
+\end{donnees}
+\begin{questions}
+\item Que représente l'indication \qty{4000}{mAh} ? La convertir en coulombs.
+\item Calculer le nombre d'électrons correspondant.
+\item Calculer l'énergie stockée dans la batterie, en joules puis en wattheures.
+\item Estimer la durée d'une recharge complète.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-8}
+\begin{exercice}[2]{Ne jamais court-circuiter une pile}
+Une pile plate a pour caractéristiques $E=\qty{9,0}{V}$ et $r=\qty{2,0}{\ohm}$.
+\begin{questions}
+\item Calculer l'intensité de court-circuit et la puissance alors dissipée dans la pile. Conclure.
+\item On branche la pile aux bornes d'un conducteur ohmique de \qty{16}{\ohm}. Montrer que l'intensité vaut \qty{0,50}{A}.
+\item Calculer la tension aux bornes de la pile et la puissance reçue par le conducteur ohmique.
+\item Faire le bilan de puissance de la pile et calculer son rendement.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-9}
+\begin{exercice}[2]{Démarrer par grand froid}
+Une batterie de voiture a une tension à vide $E=\qty{12,6}{V}$ et une résistance interne $r=\qty{0,010}{\ohm}$. Au démarrage, le démarreur appelle
+un courant de \qty{200}{A}.
+\begin{questions}
+\item Calculer la tension aux bornes de la batterie pendant le démarrage.
+\item Calculer la puissance reçue par le démarreur et celle dissipée dans la batterie.
+\item Par grand froid, la résistance interne atteint \qty{0,030}{\ohm}. Calculer la nouvelle tension aux bornes.
+\item Le démarreur ne fonctionne plus en dessous d'environ \qty{9}{V}. Expliquer les pannes de démarrage en hiver.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-10}
+\begin{exercice}[2]{Le bilan de puissance d'un circuit}
+\schema{14-ex10}
+\begin{questions}
+\item En écrivant que la tension $U$ est la même pour le générateur et pour la lampe, montrer que $I=\dfrac{E}{r+R}$ et la calculer.
+\item Calculer $U$, puis la puissance reçue par la lampe.
+\item Calculer la puissance $E\,I$ et la puissance dissipée dans le générateur. Vérifier le bilan de puissance.
+\item Calculer le rendement du générateur.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-11}
+\begin{exercice}[2]{Un panneau photovoltaïque}
+Un panneau photovoltaïque de \qty{1,7}{m^2} reçoit, en plein soleil, une puissance lumineuse de \qty{1000}{W} par mètre carré. Il délivre alors
+une tension de \qty{34}{V} et un courant de \qty{10}{A}.
+\begin{questions}
+\item Calculer la puissance lumineuse reçue et la puissance électrique fournie.
+\item Calculer le rendement du panneau. Représenter sa chaîne de puissance.
+\item Sur une année, le panneau fournit autant d'énergie qu'en 1300 heures de plein soleil. Calculer l'énergie produite.
+\item Une famille consomme \qty{2500}{kWh} d'électricité par an. Combien de panneaux faudrait-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-14-12}
+\begin{exercice}[3]{Le chauffe-eau électrique}
+\begin{docu}{1}{L'appareil}
+Un chauffe-eau électrique de \qty{200}{L} contient une résistance chauffante de \qty{3,0}{kW}, alimentée sous \qty{230}{V}. Il fonctionne la nuit, en
+heures creuses, où le kilowattheure coûte 0,20~€.
+\end{docu}
+\begin{docu}{2}{Chauffer de l'eau}
+Pour élever de \qty{1}{\degreeCelsius} la température de \qty{1}{kg} d'eau, il faut \qty{4180}{J}. Un litre d'eau a une masse de \qty{1}{kg}. Le rendement
+du chauffe-eau, qui perd un peu de chaleur, vaut \qty{90}{\percent}.
+\end{docu}
+\begin{questions}
+\item Calculer l'énergie nécessaire pour chauffer l'eau de \qty{15}{\degreeCelsius} à \qty{65}{\degreeCelsius}, en joules puis en kilowattheures.
+\item Calculer l'intensité du courant et la valeur de la résistance chauffante.
+\item \initiative Calculer la durée de la chauffe, en tenant compte du rendement.
+\item Calculer le coût d'une chauffe complète.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-13}
+\begin{exercice}[3]{La voiture électrique}
+\begin{docu}{1}{Fiche technique}
+Batterie : \qty{52}{kWh} sous \qty{400}{V}. Puissance maximale du moteur : \qty{100}{kW}. Consommation moyenne : \qty{15}{kWh} pour \qty{100}{km}.
+\end{docu}
+\begin{docu}{2}{Les recharges}
+À domicile, une borne murale délivre \qty{7,4}{kW} avec un rendement de \qty{90}{\percent}. Sur autoroute, une borne rapide de \qty{100}{kW} recharge la
+batterie jusqu'à \qty{80}{\percent}.
+\end{docu}
+\begin{questions}
+\item Estimer l'autonomie de la voiture.
+\item Calculer l'intensité du courant débité par la batterie lorsque le moteur fournit sa puissance maximale.
+\item Calculer la durée d'une recharge complète à domicile.
+\item \initiative Estimer la durée d'une recharge rapide de 0 à \qty{80}{\percent}, en supposant la puissance constante.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-14}
+\begin{exercice}[3]{Pourquoi la haute tension ?}
+\begin{docu}{1}{Le transport de l'électricité}
+Une centrale envoie une puissance de \qty{1000}{MW} vers une ville située à \qty{100}{km}. Les câbles de la ligne ont une résistance de
+\qty{0,030}{\ohm} par kilomètre. Le réseau français transporte l'électricité sous \qty{400}{kV}, avant de l'abaisser près des consommateurs.
+\end{docu}
+\begin{questions}
+\item Calculer l'intensité du courant dans la ligne sous \qty{400}{kV}, puis la puissance perdue par effet Joule. Quelle fraction de la puissance
+transportée représente-t-elle ?
+\item Reprendre le calcul si la ligne fonctionnait sous \qty{20}{kV}. Conclure.
+\item \initiative Par quel facteur les pertes sont-elles divisées quand la tension est multipliée par 20 ?
+\item Proposer une autre façon de réduire les pertes, et en citer l'inconvénient.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-14-15}
+\begin{exercice}[3]{Le vrai prix de l'énergie d'une pile}
+\begin{docu}{1}{Deux sources pour une lampe torche}
+Une pile alcaline AA (\qty{1,5}{V} ; \qty{2,5}{Ah}) coûte 2~€ et ne sert qu'une fois. Un accumulateur rechargeable de même format (\qty{1,2}{V} ;
+\qty{2,0}{Ah}) coûte 5~€ et supporte 500 recharges. Le kilowattheure du réseau électrique coûte 0,25~€.
+\end{docu}
+\begin{questions}
+\item Calculer l'énergie stockée dans la pile alcaline, en wattheures puis en joules.
+\item Combien de temps peut-elle alimenter une lampe de \qty{0,50}{W} ?
+\item \initiative Calculer le prix du kilowattheure fourni par cette pile et le comparer à celui du réseau.
+\item Calculer le prix du kilowattheure fourni par l'accumulateur sur toute sa durée de vie (on néglige le coût des recharges). Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

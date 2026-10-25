@@ -1,0 +1,457 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 7 — Arithmétique des entiers relatifs
+%% Résultats vérifiés par verifications/chapitre_07.py.
+
+\corrigesChapitre{7}{Arithmétique des entiers relatifs}
+\corrigesSouples
+
+\begin{blocLivre}{cor-7-1}
+\begin{corrige}{1}{Divisibilité : premiers pas}
+\demarche{Revenir à la définition $b=ka$, et penser aux combinaisons linéaires.}
+\begin{questions}
+  \item $60=2^{2}\times3\times5$ :
+    $\res{1,2,3,4,5,6,10,12,15,20,30,60}$ ($12$ diviseurs).
+  \item $n$ divise $n+6$ et $n$, donc divise la différence $6$ :
+    $n\in\ens{1,2,3,6}$ ; réciproquement ces valeurs conviennent :
+    $\res{n\in\ens{1,2,3,6}}$.
+  \item Si $a=dk$ et $b=dl$, alors $au+bv=d(ku+lv)$ : $d$ divise $au+bv$.
+  \item Parmi trois entiers consécutifs figurent un multiple de $2$ et un
+    multiple de $3$ : leur produit est divisible par $2$ et par $3$, donc
+    par $6$ (car $2\wedge3=1$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-2}
+\begin{corrige}{2}{Division euclidienne}
+\demarche{Le reste appartient à $[0\,;b[$ — surtout pour un dividende négatif.}
+\begin{questions}
+  \item $1234=56\times22+2$ : quotient $\res{22}$, reste $\res{2}$.
+    Et $-37=5\times(-8)+3$ : quotient $\res{-8}$, reste $\res{3}$
+    (et non $-37=5\times(-7)-2$, dont le « reste » serait négatif).
+  \item $n^{2}=(n+1)(n-1)+1$ avec $0\leq1<n+1$ : quotient $\res{n-1}$,
+    reste $\res{1}$.
+  \item Si $n=2k$ : $n^{2}=4k^{2}\equiv0\ [4]$ ; si $n=2k+1$ :
+    $n^{2}=4(k^{2}+k)+1\equiv1\ [4]$. Les restes possibles sont
+    $\res{0\text{ et }1}$ — un entier congru à $2$ ou $3$ modulo $4$ n'est
+    jamais un carré.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-3}
+\begin{corrige}{3}{L'algorithme d'Euclide}
+\demarche{Divisions successives : le dernier reste non nul est le PGCD.}
+\begin{questions}
+  \item $252=1\times198+54$ ;\ $198=3\times54+36$ ;\ $54=1\times36+18$ ;\
+    $36=2\times18+0$ : $\res{252\wedge198=18}$.
+  \item $1071=2\times462+147$ ;\ $462=3\times147+21$ ;\ $147=7\times21+0$ :
+    $\res{1071\wedge462=21}$.
+  \item $2026=1\times2024+2$ ;\ $2024=1012\times2+0$ :
+    $\res{2024\wedge2026=2}$. En général, $2k\wedge(2k+2)=2\,(k\wedge(k+1))=2$ :
+    deux pairs consécutifs ont toujours $2$ pour PGCD.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-4}
+\begin{corrige}{4}{Couples de Bézout}
+\demarche{Remonter les divisions d'Euclide en exprimant chaque reste.}
+\begin{questions}
+  \item $18=54-36=54-(198-3\times54)=4\times54-198
+    =4\,(252-198)-198$, d'où
+    $\res{18=4\times252-5\times198}$ (contrôle : $1008-990=18$).
+  \item $17=3\times5+2$ ;\ $5=2\times2+1$ : en remontant,
+    $1=5-2\times2=5-2\,(17-3\times5)=7\times5-2\times17$ :
+    $\res{(u,v)=(-2,7)}$.
+  \item Non : si $(u,v)$ convient, $(u+5k,\,v-17k)$ convient aussi pour
+    tout $k\in\Z$. Par exemple $\res{(3,-10)}$ : $51-50=1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-5}
+\begin{corrige}{5}{PGCD et PPCM par les décompositions}
+\demarche{PGCD : les exposants minimaux ; PPCM : les exposants maximaux.}
+\begin{questions}
+  \item $180=2^{2}\times3^{2}\times5$ et $84=2^{2}\times3\times7$ :
+    $\res{180\wedge84=2^{2}\times3=12}$ et
+    $\res{180\vee84=2^{2}\times3^{2}\times5\times7=1260}$.
+  \item $12\times1260=15\,120=180\times84$ : la relation est vérifiée.
+  \item $15=3\times5$ et $28=2^{2}\times7$ : aucun facteur commun,
+    $\res{15\wedge28=1}$ et $15\vee28=15\times28=\res{420}$ — pour deux
+    entiers premiers entre eux, le PPCM est le produit.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-6}
+\begin{corrige}{6}{Congruences : calculs de restes}
+\demarche{Chercher une petite puissance congrue à $\pm1$, puis réduire l'exposant.}
+\begin{questions}
+  \item $2^{3}=8\equiv1\ [7]$ et $10=3\times3+1$ :
+    $2^{10}=(2^{3})^{3}\times2\equiv\res{2}\ [7]$.
+  \item $3^{2}=9\equiv1\ [8]$ : $3^{100}=(3^{2})^{50}\equiv\res{1}\ [8]$.
+  \item Modulo $10$, les puissances de $7$ cyclent : $7,9,3,1,7,\dots$
+    (période $4$) ; $2026\equiv2\ [4]$, donc le chiffre des unités est
+    $\res{9}$.
+  \item $10\equiv1\ [9]$ donc $10^{k}\equiv1\ [9]$ : tout entier est congru
+    à la somme de ses chiffres. Pour $1\,234\,567$ :
+    $1+2+3+4+5+6+7=28\equiv\res{1}\ [9]$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-7}
+\begin{corrige}{7}{Crible et tests de primalité}
+\demarche{Rayer les multiples de 2, 3, 5, 7 suffit jusqu'à 50, car $11^{2}>50$.}
+\begin{questions}
+  \item Les quinze nombres premiers jusqu'à $50$ (voir la figure du cours) :
+    $\res{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47}$.
+  \item Si $n=ab$ avec $1<a\leq b$, alors $a^{2}\leq ab=n$, donc
+    $a\leq\sqrt n$ : tout entier composé possède un diviseur premier
+    $\leq\sqrt n$.
+  \item $\sqrt{191}\approx13{,}8$ : on teste $2,3,5,7,11,13$ — aucun ne
+    divise $191$ : $\res{191\text{ est premier}}$. En revanche
+    $323=17\times19$ : \res{\text{composé}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-8}
+\begin{corrige}{8}{Décomposition en facteurs premiers}
+\demarche{Diviser par les premiers successifs ; les diviseurs se comptent sur les exposants.}
+\begin{questions}
+  \item $\res{360=2^{3}\times3^{2}\times5}$ ;\quad
+    $\res{1001=7\times11\times13}$ ;\quad
+    $\res{2024=2^{3}\times11\times23}$.
+  \item Facteurs communs de $360$ et $2024$ : seulement $2^{3}$ :
+    $\res{360\wedge2024=8}$.
+  \item $(3+1)(2+1)(1+1)=\res{24}$ diviseurs positifs.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-9}
+\begin{corrige}{9}{Des PGCD astucieux}
+\demarche{Combiner pour faire apparaître une constante : elle majore le PGCD.}
+\begin{questions}
+  \item Les diviseurs communs de $(a,b)$ et de $(b,a-qb)$ coïncident
+    (combinaisons linéaires dans les deux sens) : les deux couples ont le
+    même PGCD. C'est la justification de l'algorithme d'Euclide
+    ($a-qb$ : le reste).
+  \item $(n+1)-n=1$ : tout diviseur commun divise $1$.
+  \item $(2n+1)-2\times n=1$ : même conclusion.
+  \item Tout diviseur commun $d$ de $n^{2}+n$ et $2n+1$ divise
+    $4(n^{2}+n)=(2n+1)^{2}-1$ ainsi que $(2n+1)^{2}$ : il divise leur
+    différence $1$. Donc $\res{(n^{2}+n)\wedge(2n+1)=1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-10}
+\begin{corrige}{10}{Équations diophantiennes $ax+by=c$}
+\demarche{Une solution particulière par Bézout, toutes les autres par Gauss.}
+\begin{questions}
+  \item Comme $a\wedge b$ divise $ax+by$, une condition nécessaire est
+    $(a\wedge b)\mid c$ ; elle est suffisante : multiplier une relation de
+    Bézout par $c/(a\wedge b)$.
+  \item De $17\times(-2)+5\times7=1$, on tire la solution particulière
+    $(-2,7)$ ; si $(x,y)$ est solution, $17(x+2)=-5(y-7)$ et Gauss
+    ($17\wedge5=1$) donne $5\mid x+2$ :
+    $\res{\mathcal{S}=\ens{(-2+5k,\ 7-17k),\ k\in\Z}}$.
+    Pour $c=4$ : on multiplie par $4$ :
+    $\res{(-8+5k,\ 28-17k),\ k\in\Z}$.
+  \item $12x+18y=30\iff2x+3y=5$ (division par $6$, qui divise bien $30$).
+    Solution particulière $(1,1)$ ; puis $2(x-1)=3(1-y)$ et Gauss donne
+    $3\mid x-1$ :
+    $\res{\mathcal{S}=\ens{(1+3k,\ 1-2k),\ k\in\Z}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-11}
+\begin{corrige}{11}{Le lemme de Gauss en action}
+\demarche{Vérifier l'hypothèse de primalité relative avant d'invoquer Gauss.}
+\begin{questions}
+  \item $7\mid3n$ et $7\wedge3=1$ : Gauss donne $7\mid n$.
+  \item $9\mid6n\iff3\mid2n$ (simplification par $3$)
+    $\iff3\mid n$ (Gauss, $3\wedge2=1$) : les multiples de $3$.
+  \item Si $p\nmid a$, alors $p\wedge a=1$ et Gauss appliqué à
+    $p\mid a\times a$ donne $p\mid a$ : contradiction. Donc $p\mid a$.
+  \item $2024=2^{3}\times11\times23$ et $2576=2^{4}\times7\times23$ :
+    le PGCD vaut $2^{3}\times23=184$, d'où
+    $\dfrac{2024}{2576}=\res{\dfrac{11}{14}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-12}
+\begin{corrige}{12}{Premiers entre eux}
+\demarche{Une combinaison égale à $\pm1$ règle tout ; sinon, raisonner avec un diviseur premier.}
+\begin{questions}
+  \item $3(2n+1)-2(3n+2)=-1$ : tout diviseur commun de $2n+1$ et $3n+2$
+    divise $1$ — la fraction est \res{\text{irréductible pour tout }n}.
+  \item $6\wedge10=2$, $6\wedge15=3$, $10\wedge15=5$ : aucun couple n'est
+    premier entre eux ; mais un diviseur commun aux trois divise $2\wedge3=1$ :
+    ils sont premiers entre eux \emph{dans leur ensemble}.
+  \item Soit $p$ un diviseur premier commun à $a+b$ et $ab$. Comme
+    $p\mid ab$, $p$ divise $a$ ou $b$ — disons $a$ ; alors
+    $p\mid(a+b)-a=b$, donc $p$ divise $a\wedge b=1$ : absurde. Donc
+    $(a+b)\wedge ab=1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-13}
+\begin{corrige}{13}{Inverses modulo $n$}
+\demarche{Bézout fournit l'existence ; Euclide étendu fournit la valeur.}
+\begin{questions}
+  \item $au\equiv1\ [n]$ signifie $au+nv=1$ pour un certain $v$ : c'est
+    exactement la relation de Bézout, qui équivaut à $a\wedge n=1$.
+  \item $5\times3=15\equiv1\ [7]$ : l'inverse de $5$ est $\res{3}$.
+    Pour $17$ modulo $26$ : $26=17+9$, $17=9+8$, $9=8+1$, d'où
+    $1=9-8=2\times9-17=2\times26-3\times17$ : l'inverse de $17$ est
+    $-3\equiv\res{23}\ [26]$.
+  \item $5x\equiv3\ [7]\iff x\equiv3\times3=9\equiv\res{2}\ [7]$.
+  \item $17x\equiv4\ [26]\iff x\equiv23\times4=92\equiv\res{14}\ [26]$
+    (contrôle : $17\times14=238=9\times26+4$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-14}
+\begin{corrige}{14}{Critères de divisibilité}
+\demarche{Remplacer $10$ par $1$ (modulo 9) ou par $-1$ (modulo 11) dans l'écriture décimale.}
+\begin{questions}
+  \item Si $N=\sum c_k10^{k}$, alors, modulo $9$ :
+    $N\equiv\sum c_k$ (car $10^{k}\equiv1$) — et de même modulo $3$.
+  \item Modulo $11$ : $10^{k}\equiv(-1)^{k}$, donc
+    $N\equiv c_0-c_1+c_2-\cdots$ (somme alternée).
+  \item Somme des chiffres de $8\,791\,236$ : $36$, divisible par $9$ :
+    \res{\text{divisible par }9}. Somme alternée (en partant des unités) :
+    $6-3+2-1+9-7+8=14$, non divisible par $11$ :
+    \res{\text{non divisible par }11}.
+  \item $5+3+x+4=12+x\equiv0\ [9]$ impose $x\equiv6\ [9]$ :
+    $\res{x=6}$ (l'entier $5364=9\times596$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-15}
+\begin{corrige}{15}{Le petit théorème de Fermat}
+\demarche{Réduire l'exposant modulo $p-1$ (quand $p$ ne divise pas la base).}
+\begin{questions}
+  \item $2^{10}=1024=93\times11+1$ : $2^{10}\equiv1\ [11]$, conformément à
+    Fermat.
+  \item $2026=10\times202+6$ :
+    $2^{2026}=(2^{10})^{202}\times2^{6}\equiv2^{6}=64\equiv\res{9}\ [11]$.
+  \item Si $11\nmid n$ : $n^{10}\equiv1$ donne $n^{11}\equiv n\ [11]$ ; et si
+    $11\mid n$, les deux membres sont nuls modulo $11$. Dans tous les cas,
+    $11\mid n^{11}-n$.
+  \item $222=12\times18+6$ et $7^{12}\equiv1\ [13]$ :
+    $7^{222}\equiv7^{6}\ [13]$. Or $7^{2}=49\equiv-3$, donc
+    $7^{6}\equiv(-3)^{3}=-27\equiv-1\ [13]$ : le reste est $\res{12}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-16}
+\begin{corrige}{16}{Valuations $p$-adiques}
+\demarche{Tout exposant se lit facteur premier par facteur premier.}
+\begin{questions}
+  \item $96=2^{5}\times3$ : $v_2(96)=\res{5}$, $v_3(96)=\res{1}$ ;
+    $2024=2^{3}\times11\times23$ : $v_2(2024)=\res{3}$.
+  \item Écrivons $a=p^{\alpha}a'$ et $b=p^{\beta}b'$ avec $p\nmid a'b'$ :
+    alors $ab=p^{\alpha+\beta}a'b'$ avec $p\nmid a'b'$ (lemme d'Euclide),
+    donc $v_p(ab)=\alpha+\beta$.
+  \item Si $b=ac$ : $v_p(b)=v_p(a)+v_p(c)\geq v_p(a)$ pour tout $p$.
+    Réciproquement, si $v_p(a)\leq v_p(b)$ pour tout $p$, le quotient des
+    décompositions est un entier. Le PGCD, plus grand diviseur commun au
+    sens de la divisibilité, prend donc l'exposant
+    $\min\bigl(v_p(a),v_p(b)\bigr)$, et le PPCM l'exposant $\max$.
+  \item Si $\sqrt2=\frac pq$, alors $p^{2}=2q^{2}$ et
+    $v_2(p^{2})=2v_2(p)$ est \emph{pair}, tandis que
+    $v_2(2q^{2})=1+2v_2(q)$ est \emph{impair} : contradiction. Donc
+    $\sqrt2\notin\Q$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-17}
+\begin{corrige}{17}{Nombres de Mersenne}
+\demarche{La factorisation de $a^{k}-1$ transmet la divisibilité aux exposants.}
+\begin{questions}
+  \item $a^{k}-1=(a-1)(a^{k-1}+\dots+a+1)$. Si $n=dk$, on applique ceci à
+    $a=2^{d}$ : $2^{n}-1=(2^{d})^{k}-1$ est divisible par $2^{d}-1$.
+  \item Par contraposée : si $n=dk$ avec $1<d<n$, alors $2^{d}-1$ est un
+    diviseur strict de $M_n$, différent de $1$ : $M_n$ est composé. Donc
+    $M_n$ premier $\Rightarrow n$ premier.
+  \item Non : $M_{11}=2047=23\times89$ est composé alors que $11$ est
+    premier.
+  \item $M_2=3$, $M_3=7$, $M_5=31$, $M_7=127$, $M_{13}=8191$ sont
+    premiers : $\res{n\in\ens{2,3,5,7,13}}$ (et $M_{11}$ fait exception).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-18}
+\begin{corrige}{18}{Systèmes de congruences}
+\demarche{Paramétrer par la première congruence, résoudre la seconde avec un inverse.}
+\begin{questions}
+  \item $x=2+5k$ ; alors $2+5k\equiv3\ [7]$, soit $5k\equiv1\ [7]$ ;
+    l'inverse de $5$ modulo $7$ est $3$, donc $k\equiv3\ [7]$, c'est-à-dire
+    $k=3+7j$ : $x=17+35j$, soit $\res{x\equiv17\ [35]}$
+    (contrôle : $17=3\times5+2=2\times7+3$).
+  \item On cherche $x\equiv2\ [3]$, $x\equiv3\ [5]$, $x\equiv2\ [7]$.
+    Des deux premières : $x=2+3k$ avec $3k\equiv1\ [5]$, donc $k\equiv2\ [5]$
+    et $x\equiv8\ [15]$. Puis $8+15j\equiv2\ [7]$, soit $j\equiv1\ [7]$
+    (car $15\equiv1\ [7]$) : $x\equiv23\ [105]$. Le minimum est
+    $\res{23\text{ noix}}$ (contrôle : $23=7\times3+2=4\times5+3=3\times7+2$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-19}
+\begin{corrige}{19}{L'infinité des nombres premiers, et au-delà}
+\demarche{L'entier auxiliaire est construit pour échapper à tous les premiers supposés.}
+\begin{questions}
+  \item Voir la démonstration du cours : si $p_1,\dots,p_n$ étaient les
+    seuls premiers, $N=p_1\cdots p_n+1$ aurait un diviseur premier $p=p_i$,
+    qui diviserait $N-p_1\cdots p_n=1$ : absurde.
+  \item Supposons que $q_1,\dots,q_r$ soient les seuls premiers congrus à
+    $3$ modulo $4$, et posons $N=4q_1\cdots q_r-1\equiv3\ [4]$. $N$ est
+    impair, donc ses facteurs premiers sont congrus à $1$ ou $3$ modulo
+    $4$ ; s'ils étaient tous $\equiv1$, leur produit $N$ serait
+    $\equiv1\ [4]$ : il existe donc un facteur premier $q\equiv3\ [4]$.
+    Mais $q\neq q_i$ pour tout $i$ : sinon $q$ diviserait
+    $4q_1\cdots q_r-N=1$. Contradiction : il y a une infinité de premiers
+    de la forme $4k+3$.
+  \item Pour $2\leq k\leq n$ : $k$ divise $n!$ donc divise $n!+k$, qui est
+    $>k$ : tous ces entiers sont composés. On obtient ainsi $n-1$ entiers
+    consécutifs sans nombre premier : les « trous » entre premiers sont
+    \emph{arbitrairement longs}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-20}
+\begin{corrige}{20}{Les nombres de Fermat}
+\demarche{Une identité télescopique, et des entiers impairs qui ne partagent que le facteur 2.}
+\begin{questions}
+  \item $F_0=3$, $F_1=5$, $F_2=17$, $F_3=257$, $F_4=65\,537$ — tous
+    premiers. Euler montra que $641$ divise
+    $F_5=4\,294\,967\,297$.
+  \item \etape{Initialisation} $F_0=3=F_1-2$.
+    \etape{Hérédité} Si $F_0\cdots F_{n-1}=F_n-2=2^{2^{n}}-1$, alors
+    \[
+      F_0\cdots F_n=(2^{2^{n}}-1)(2^{2^{n}}+1)=2^{2^{n+1}}-1=F_{n+1}-2.
+    \]
+  \item Soit $d$ un diviseur commun à $F_m$ et $F_n$ ($m<n$). Comme $F_m$
+    divise le produit $F_0\cdots F_{n-1}=F_n-2$, $d$ divise $F_n$ et
+    $F_n-2$, donc $2$ ; or les $F_k$ sont impairs : $d=1$.
+  \item Chaque $F_n$ admet au moins un diviseur premier $p_n$, et les
+    $p_n$ sont deux à deux distincts (question 3) : il existe une infinité
+    de nombres premiers.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-21}
+\begin{corrige}{21}{La formule de Legendre}
+\demarche{Chaque multiple de $p^{k}$ apporte une unité de plus à la valuation.}
+\begin{questions}
+  \item Dans $n!=1\times2\times\cdots\times n$, les multiples de $p$
+    (au nombre de $\lfloor n/p\rfloor$) apportent chacun au moins un
+    facteur $p$ ; ceux de $p^{2}$ (au nombre de $\lfloor n/p^{2}\rfloor$)
+    en apportent un de plus, etc. En sommant ces contributions :
+    $v_p(n!)=\sum_{k\geq1}\lfloor n/p^{k}\rfloor$ (somme finie).
+  \item $v_2(10!)=5+2+1=\res{8}$ ;\quad $v_5(100!)=20+4=\res{24}$.
+  \item Le nombre de zéros terminaux est
+    $\min\bigl(v_2(100!),v_5(100!)\bigr)=v_5(100!)$ (les facteurs $2$
+    abondent) : $100!$ se termine par $\res{24}$ zéros.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-22}
+\begin{corrige}{22}{Le théorème de Wilson}
+\demarche{Apparier chaque facteur avec son inverse : il ne survit que $1$ et $p-1$.}
+\begin{questions}
+  \item $x^{2}\equiv1\ [p]\iff p\mid(x-1)(x+1)\iff p\mid x-1$ ou
+    $p\mid x+1$ (lemme d'Euclide), c'est-à-dire $x\equiv\pm1\ [p]$ : dans
+    $\ens{1,\dots,p-1}$, seuls $1$ et $p-1$.
+  \item Pour $p\geq5$ : dans le produit $(p-1)!$, les facteurs
+    $2,3,\dots,p-2$ se regroupent par paires $\ens{x,x^{-1}}$ distinctes,
+    chacune de produit $\equiv1\ [p]$. Il reste
+    $(p-1)!\equiv1\times(p-1)\equiv-1\ [p]$. (Pour $p=2$ et $p=3$,
+    vérification directe : $1\equiv-1\ [2]$ et $2\equiv-1\ [3]$.)
+  \item $4!=24=5\times5-1\equiv-1\ [5]$ ;\quad
+    $6!=720=103\times7-1\equiv-1\ [7]$.
+  \item Si $n$ est composé, il possède un diviseur $d$ avec $1<d<n$ ;
+    alors $d$ divise $(n-1)!$, donc $d$ divise aussi $(n-1)!+1-1$\dots{}
+    Précisément : si $(n-1)!\equiv-1\ [n]$, alors $d\mid n\mid(n-1)!+1$ et
+    $d\mid(n-1)!$, d'où $d\mid1$ : absurde. Donc
+    $(n-1)!\not\equiv-1\ [n]$ — Wilson caractérise les nombres premiers.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-23}
+\begin{corrige}{23}{Un menteur de Fermat : le nombre 561}
+\demarche{Fermat modulo chaque facteur premier, puis recollement par Gauss.}
+\begin{questions}
+  \item $560=2\times280=10\times56=16\times35$ : divisible par $2$, $10$
+    et $16$.
+  \item Soit $a$ premier avec $561$ (donc avec $3$, $11$ et $17$). Fermat
+    donne $a^{2}\equiv1\ [3]$, $a^{10}\equiv1\ [11]$ et
+    $a^{16}\equiv1\ [17]$ ; comme $2$, $10$ et $16$ divisent $560$ :
+    \[
+      a^{560}=(a^{2})^{280}\equiv1\ [3],\qquad
+      a^{560}=(a^{10})^{56}\equiv1\ [11],\qquad
+      a^{560}=(a^{16})^{35}\equiv1\ [17].
+    \]
+  \item Les entiers $3$, $11$, $17$, premiers entre eux deux à deux,
+    divisent tous $a^{560}-1$ : leur produit $561$ le divise aussi
+    (corollaire de Gauss). D'où $a^{561}\equiv a\ [561]$ pour $a$ premier
+    avec $561$ ; et si $p\in\ens{3,11,17}$ divise $a$, la congruence
+    $a^{561}\equiv a$ est triviale modulo $p$ — le recollement donne le
+    résultat pour \emph{tout} entier $a$.
+  \item $561$ vérifie la conclusion du test de Fermat sans être premier :
+    les nombres de Carmichael rendent le test de Fermat \emph{non
+    concluant} en cas de réussite — un test réussi ne prouve jamais la
+    primalité.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-7-24}
+\begin{corrige}{24}{Triplets pythagoriciens}
+\demarche{Factoriser $y^{2}=(z-x)(z+x)$, et exploiter : produit de nombres premiers entre eux égal à un carré.}
+\begin{questions}
+  \item Modulo $4$, un carré vaut $0$ ou $1$ (exercice 2). Si $x$ et $y$
+    étaient impairs : $x^{2}+y^{2}\equiv2\ [4]$, impossible pour $z^{2}$.
+    S'ils étaient pairs tous les deux, $z$ le serait aussi, contredisant la
+    primitivité. Donc exactement l'un des deux est pair — disons $y$, et
+    $x$, $z$ sont impairs.
+  \item $z-x$ et $z+x$ sont pairs. Posons
+    $d=\dfrac{z-x}{2}\wedge\dfrac{z+x}{2}$ : $d$ divise la somme $z$ et la
+    différence $x$ ; or un premier commun à $x$ et $z$ diviserait
+    $y^{2}=z^{2}-x^{2}$ donc $y$, contre la primitivité : $d=1$. Et
+    \[
+      \frac{z-x}{2}\cdot\frac{z+x}{2}=\frac{z^{2}-x^{2}}{4}
+      =\Bigl(\frac{y}{2}\Bigr)^{2}.
+    \]
+  \item Produit de deux entiers premiers entre eux égal à un carré :
+    chacun est un carré. Il existe donc $m>n\geq1$ avec
+    $\dfrac{z+x}{2}=m^{2}$ et $\dfrac{z-x}{2}=n^{2}$, premiers entre eux ;
+    d'où $\res{x=m^{2}-n^{2},\quad y=2mn,\quad z=m^{2}+n^{2}}$.
+  \item $(m^{2}-n^{2})^{2}+(2mn)^{2}=m^{4}+2m^{2}n^{2}+n^{4}
+    =(m^{2}+n^{2})^{2}$ : ce sont bien des triplets pythagoriciens.
+    $(m,n)=(2,1)$ donne $(3,4,5)$ ; $(3,2)$ donne $(5,12,13)$ ; $(5,2)$
+    donne $(21,20,29)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-07}

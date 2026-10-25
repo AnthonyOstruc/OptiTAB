@@ -1,0 +1,165 @@
+\begin{ouverture}[conditions]{13}{Algorithmique, logique et raisonnement}{Outils transversaux}{Fonctions Python · Listes · Ensembles · Preuve}
+\objectif{Décomposer une tâche en fonctions testables.}
+\objectif{Utiliser variables, boucles, conditions et listes.}
+\objectif{Manipuler ensembles et propositions.}
+\objectif{Distinguer implication, réciproque et équivalence.}
+\prerequis{Algorithmique de Seconde et Première ; notions rencontrées dans les chapitres.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Écrire un programme qui répond à une question}
+Une fonction informatique possède des paramètres, un traitement et une valeur renvoyée par \code{return}. Définir ce qui entre et ce qui sort aide à vérifier le programme.
+L'affectation \code{u = 2*u + 1} remplace la valeur de \code{u} ; ce n'est pas une équation à résoudre.
+Une boucle \code{for} convient à un nombre de répétitions connu ; une boucle \code{while} dépend d'une condition dont il faut justifier qu'elle finit par devenir fausse.
+\begin{python}
+def termes_affines(u0, a, b, n):
+    termes = [u0]
+    u = u0
+    for k in range(n):
+        u = a*u + b
+        termes.append(u)
+    return termes
+\end{python}
+Cette fonction rend $n+1$ valeurs, de $u_0$ à $u_n$. Les indices d'une liste Python commencent à zéro.
+La programmation modulaire évite de réécrire les mêmes calculs : une fonction pour une masse binomiale, une autre pour un cumul, une troisième pour chercher un seuil.
+\essSection{2}{Expérimenter, puis vérifier}
+Pour un calcul numérique, tester un cas connu, un cas limite et les hypothèses de domaine. Des nombres décimaux sont représentés approximativement : une égalité mathématique n'est pas toujours une égalité machine exacte.
+\begin{savoirfaire}[Un compte rendu d'algorithme]
+Préciser les entrées ; expliquer chaque variable ; donner la condition d'arrêt ; tester sur un exemple dont on connaît le résultat ; interpréter la sortie et sa précision.
+Pour une simulation, préciser le modèle et le nombre de répétitions. Pour un encadrement, vérifier que la racine reste dans l'intervalle.
+\end{savoirfaire}
+\figurelivre{c13-algorithme.pdf}{La boucle d'un algorithme de seuil : initialisation, test, mise à jour et sortie. Une condition d'arrêt doit être cohérente avec l'inégalité demandée.}
+\essSection{3}{Ensembles et événements}
+$x\in A$ signifie que $x$ est un élément de $A$ ; $A\subset B$ que chaque élément de $A$ appartient à $B$.
+$A\cap B$ signifie « dans $A$ et dans $B$ » ; $A\cup B$, « dans $A$ ou dans $B$, éventuellement les deux ».
+Le complémentaire de $A$ dans $E$ est $E\setminus A$, ou $\bar A$ en probabilités.
+Un couple $(x,y)$ est ordonné : en général $(x,y)\ne(y,x)$.
+\begin{exemple}
+Pour $A=[0,3]$ et $B=[2,5]$, $A\cap B=[2,3]$ et $A\cup B=[0,5]$.
+La négation de « $x>0$ et $x<3$ » est « $x\leq0$ ou $x\geq3$ ».
+\end{exemple}
+\essSection{4}{Choisir une forme de raisonnement}
+Une proposition est un énoncé auquel on peut attribuer vrai ou faux lorsque ses variables et son domaine sont précisés.
+L'implication « si $P$, alors $Q$ » ne dit pas que $Q$ entraîne $P$. Sa réciproque est « si $Q$, alors $P$ ».
+L'équivalence nécessite les deux implications.
+Un contre-exemple suffit à réfuter une affirmation universelle ; des exemples, même nombreux, ne suffisent pas à la prouver.
+\begin{exemple}[Une réciproque fausse]
+Si $x=2$, alors $x^2=4$. La réciproque est fausse sur $\R$ : $x=-2$ satisfait $x^2=4$.
+En revanche, sur $[0,+\infty[$, $x^2=4$ équivaut à $x=2$.
+\end{exemple}
+\essSection{5}{Quantifier et communiquer}
+« Pour tout $x>0$, $\ln x\leq x-1$ » est universel. « Il existe $x>0$ tel que $\ln x=0$ » est existentiel, vérifié par $x=1$.
+Le symbole $\sum$ abrège une addition : $\sum_{k=0}^{n}u_k$ contient $n+1$ termes.
+À l'oral, annoncer l'objectif, les hypothèses, la méthode, le résultat et sa limite de validité. Un graphique doit présenter ses axes et une légende ; un nombre doit garder son unité ou son statut de probabilité.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Affectation}
+On exécute \code{u = 3}, puis \code{u = 2*u + 1}.
+\begin{questions}
+\item Quelle est la valeur finale ?
+\item Pourquoi ne résout-on pas $u=2u+1$ ?
+\item Que donnerait une répétition supplémentaire ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Liste}
+On appelle \code{termes_affines(0, 2, 1, 3)}.
+\begin{questions}
+\item Donner la liste rendue.
+\item Quelle est sa longueur ?
+\item Quelle valeur occupe l’indice $2$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Ensembles}
+$A=\{1,2,3\}$ et $B=\{3,4\}$ dans $E=\{1,2,3,4,5\}$.
+\begin{questions}
+\item Donner $A\cap B$ et $A\cup B$.
+\item Donner $E\setminus A$.
+\item L’affirmation $A\subset B$ est-elle vraie ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Nier une proposition}
+
+\begin{questions}
+\item Nier « $x>2$ ».
+\item Nier « $x<0$ ou $x>4$ ».
+\item Nier « $x\geq1$ et $x\leq3$ ».
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Finir une boucle}
+On part de $u=1$ et l’on multiplie par $2$ tant que $u<100$.
+\begin{questions}
+\item Combien de mises à jour sont faites ?
+\item Quelle est la valeur finale ?
+\item Que changerait la condition $u\leq128$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une fonction de moyenne}
+
+\begin{questions}
+\item Écrire une fonction Python donnant la moyenne d’une liste non vide.
+\item Quelle hypothèse faut-il vérifier ?
+\item Tester sur $[2,4,9]$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Implication}
+
+\begin{questions}
+\item La proposition « $x>2$ entraîne $x^2>4$ » est-elle vraie sur $\R$ ?
+\item Écrire la réciproque et la tester.
+\item Quel domaine rend les deux propositions équivalentes ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Tester un programme de cumul}
+Une fonction est censée calculer $P(X\leq k)$ pour une binomiale de taille $n$.
+\begin{questions}
+\item Que doit-elle rendre pour $k=n$ ?
+\item Que doit-elle rendre pour $k=0$ ?
+\item Pourquoi un résultat légèrement différent de $1$ en machine peut-il apparaître ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Contre-exemple}
+
+\begin{questions}
+\item Réfuter « toute suite positive est croissante ».
+\item Réfuter « si $f\,\!^{\prime}(a)=0$, alors $f$ a un extremum en $a$ ».
+\item Pourquoi un seul exemple suffit-il dans chaque cas ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Raisonner sur un intervalle}
+On cherche les solutions de $\ln(x-1)=\ln(3-x)$.
+\begin{questions}
+\item Déterminer le domaine commun.
+\item Résoudre par équivalence.
+\item Comment présenter une preuve complète ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Somme : une erreur de borne}
+Un programme utilise \code{sum(k for k in range(n))}.
+\begin{questions}
+\item Quelle somme calcule-t-il ?
+\item Comment calculer $1+\cdots+n$ ?
+\item Comparer pour $n=5$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Un oral argumenté}
+Préparer une présentation de trois minutes sur la question « Un test très sensible donne-t-il toujours un résultat positif fiable ? ».
+\begin{questions}
+\item Choisir un modèle chiffré.
+\item Identifier le schéma et le calcul à présenter.
+\item Formuler une conclusion et une limite.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

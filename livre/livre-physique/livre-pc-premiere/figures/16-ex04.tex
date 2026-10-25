@@ -1,0 +1,17 @@
+% Pendule simple de longueur 1,0 m écarté de 30 degrés (exercice 4, chapitre 16)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otMuted!35] (-1.4,3.0) rectangle (1.0,3.18);
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (0,3.0) -- (0,0.0);
+\draw[otInk!70,line width=0.6pt] (0,3.0) -- ({-3.0*sin(30)},{3.0-3.0*cos(30)});
+\shade[ball color=otOrange!60] ({-3.0*sin(30)},{3.0-3.0*cos(30)}) circle (0.15);
+\draw[otMuted!80,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] ({-3.0*sin(30)},{3.0-3.0*cos(30)}) arc (240:270:3.0);
+\fill[otInk] (0,0) circle (0.05); \node[pcLegende,anchor=north] at (0,-0.05) {B (position basse)};
+\node[pcLegende,anchor=east] at ({-3.0*sin(30)-0.2},{3.0-3.0*cos(30)}) {A};
+\draw[otOrange!85!black,line width=0.5pt] (0,2.2) arc (270:240:0.8);
+\node[pcLegende,text=otOrange!85!black] at (-0.22,1.95) {\ang{30}};
+\node[pcLegende,anchor=west] at ({-1.5*sin(30)+0.08},{3.0-1.5*cos(30)}) {$L=\qty{1,0}{m}$};
+\solution{
+  \draw[otGreenDark,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] ({-3.0*sin(30)},{3.0-3.0*cos(30)}) -- (1.9,{3.0-3.0*cos(30)}) (0,0) -- (1.9,0);
+  \draw[otGreenDark,line width=0.5pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (1.8,0) -- (1.8,{3.0-3.0*cos(30)}) node[pos=0.5,pcLegende,anchor=west,text=otGreenDark,align=left] {$h=L\,(1-\cos\ang{30})$\\$=\qty{0,134}{m}$};}
+\end{tikzpicture}
+\par\smallskip\legende{On lâche la bille en A sans vitesse ; on néglige les frottements.\solution{ La hauteur perdue entre A et B fixe la vitesse au point bas.}}

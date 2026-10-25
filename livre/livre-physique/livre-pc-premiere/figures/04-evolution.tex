@@ -1,0 +1,18 @@
+% Évolution des quantités de matière en fonction de l'avancement : combustion du méthane (L'essentiel, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=60mm,xmin=0,xmax=40,ymin=0,ymax=105,
+  xtick={0,10,...,40},ytick={0,20,...,100},
+  xlabel={avancement $x$ (mmol)},ylabel={quantité de matière (mmol)}]
+\addplot[otNavy,line width=1.1pt,domain=0:40,samples=2] {40-x};
+\addplot[otOrange!85!black,line width=1.1pt,domain=0:40,samples=2] {100-2*x};
+\addplot[otGreen,line width=1.1pt,domain=0:40,samples=2] {x};
+\addplot[otGreenDark,line width=1.1pt,domain=0:40,samples=2] {2*x};
+\fill[otNavy] (axis cs:40,0) circle (1.8pt);
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:41,4) {$\ce{CH4}$ : épuisé, réactif limitant};
+\node[pcLegende,anchor=west,text=otOrange!75!black] at (axis cs:41,20) {$\ce{O2}$ : \qty{20}{mmol} en excès};
+\node[pcLegende,anchor=west,text=otGreenDark] at (axis cs:41,40) {$\ce{CO2}$ : \qty{40}{mmol}};
+\node[pcLegende,anchor=west,text=otGreenDark] at (axis cs:41,80) {$\ce{H2O}$ : \qty{80}{mmol}};
+\node[pcLegende,anchor=south,text=otNavy] at (axis cs:34,103) {$x_\mathrm{max}=\qty{40}{mmol}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les réactifs sont consommés, les produits se forment, chacun selon son nombre stœchiométrique ; la transformation s'arrête quand le méthane est épuisé.}

@@ -1,0 +1,588 @@
+% !TEX root = ../main.tex
+%% Chapitre 8 — Structures algébriques usuelles
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Structures algébriques usuelles » : a) loi de composition interne ;
+%% b) structure de groupe (sous-groupes, morphismes, noyau, image, isomorphisme) ;
+%% c) structures d'anneau et de corps.
+%% Résultats vérifiés par verifications/chapitre_08.py.
+
+\begin{ouverture}[structures]{8}{Structures algébriques usuelles}{Partie 1 · Premier semestre}
+  {Lois internes\enspace·\enspace Groupes\enspace·\enspace Sous-groupes\enspace·\enspace
+   Morphismes\enspace·\enspace Anneaux\enspace·\enspace Corps}
+  \objectif{Analyser une loi de composition interne : associativité, neutre, inversibles.}
+  \objectif{Reconnaître un groupe et calculer dans un groupe, y compris non commutatif.}
+  \objectif{Caractériser un sous-groupe et manipuler les exemples usuels.}
+  \objectif{Étudier un morphisme de groupes : noyau, image, injectivité, isomorphisme.}
+  \objectif{Calculer dans un anneau : binôme, factorisation, groupe des inversibles.}
+  \objectif{Reconnaître anneaux intègres, corps, sous-anneaux et morphismes d'anneaux.}
+  \prerequis{Applications : injectivité, surjectivité, bijectivité (chapitre 1).}
+  \prerequis{Nombres complexes, groupes $\mathbb{U}$ et $\mathbb{U}_n$ (chapitre 3).}
+  \prerequis{Arithmétique : division euclidienne, PGCD, PPCM (chapitre 7).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Lois de composition interne}
+
+\begin{definition}[Loi interne et propriétés]
+Une \textbf{loi de composition interne} sur un ensemble $E$ est une
+application $*:E\times E\to E$, notée $(x,y)\mapsto x*y$. Elle est
+\textbf{associative} si $(x*y)*z=x*(y*z)$, \textbf{commutative} si
+$x*y=y*x$. Un \textbf{élément neutre} est un $e\in E$ tel que
+$x*e=e*x=x$ pour tout $x$ ; s'il existe, il est \emph{unique}. Une partie
+$F\subset E$ est \textbf{stable} si $x*y\in F$ dès que $x,y\in F$. Enfin,
+une loi $\times$ est \emph{distributive} sur une loi $+$ si
+$x\times(y+z)=x\times y+x\times z$ et $(y+z)\times x=y\times x+z\times x$.
+\end{definition}
+
+\begin{propriete}[Inversibles]
+Si $*$ est associative, de neutre $e$ : un élément $x$ est
+\textbf{inversible} s'il existe $x'$ tel que $x*x'=x'*x=e$ ; cet inverse
+est alors \emph{unique}, noté $x^{-1}$. Si $x$ et $y$ sont inversibles,
+$x*y$ l'est aussi, avec
+\[
+  (x*y)^{-1}=y^{-1}*x^{-1}
+\]
+— attention à l'ordre, essentiel quand la loi n'est pas commutative.
+\end{propriete}
+
+\begin{exemple}[Contre-exemples à méditer]
+La soustraction sur $\Z$ est interne mais ni associative ni commutative
+($(5-3)-2\neq5-(3-2)$). Sur $\N$, la loi $\max$ est associative,
+commutative, de neutre $0$ — mais seul $0$ y est inversible.
+\end{exemple}
+
+\essSection{2}{Groupes}
+
+\begin{definition}[Groupe]
+Un \textbf{groupe} $(G,*)$ est un ensemble muni d'une loi interne
+\emph{associative}, possédant un \emph{neutre}, et dont \emph{tout élément
+est inversible}. Si la loi est commutative, le groupe est dit
+\emph{commutatif} (ou abélien). Dans un groupe noté multiplicativement, on
+pose $x^{n}$ ($n\in\Z$) ; en notation additive, $nx$.
+\end{definition}
+
+\begin{exemple}[Le paysage des groupes usuels]
+Groupes additifs : $(\Z,+)$, $(\Q,+)$, $(\R,+)$, $(\Cx,+)$.
+Groupes multiplicatifs : $(\Q^{*},\times)$, $(\Q_{+}^{*},\times)$,
+$(\R^{*},\times)$, $(\R_{+}^{*},\times)$, $(\Cx^{*},\times)$,
+$(\mathbb{U},\times)$, $(\mathbb{U}_n,\times)$.
+Pour tout ensemble $X$, les bijections de $X$ dans $X$ forment le
+\textbf{groupe des permutations} $(S_X,\circ)$ — non commutatif dès que $X$
+a au moins trois éléments. Enfin, si $G$ et $G'$ sont des groupes, le
+\textbf{groupe produit} $G\times G'$ est muni de la loi composante par
+composante.
+\end{exemple}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{propriete}[Règles de calcul]
+Dans un groupe, tout élément est \emph{simplifiable} :
+$a*x=a*y\Rightarrow x=y$. L'équation $a*x=b$ possède l'unique solution
+$x=a^{-1}*b$ : dans la table d'un groupe fini, chaque ligne et chaque
+colonne est une permutation des éléments (« propriété du sudoku »).
+\end{propriete}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}c|cccc@{}}
+$\times$ & $1$ & $\mathrm{i}$ & $-1$ & $-\mathrm{i}$\\
+\hline
+$1$ & $1$ & $\mathrm{i}$ & $-1$ & $-\mathrm{i}$\\
+$\mathrm{i}$ & $\mathrm{i}$ & $-1$ & $-\mathrm{i}$ & $1$\\
+$-1$ & $-1$ & $-\mathrm{i}$ & $1$ & $\mathrm{i}$\\
+$-\mathrm{i}$ & $-\mathrm{i}$ & $1$ & $\mathrm{i}$ & $-1$\\
+\end{tabular}}\\[1mm]
+\legende{La table du groupe $\mathbb{U}_4$ : chaque ligne permute les quatre éléments.}
+\end{minipage}
+
+\essSection{3}{Sous-groupes}
+
+\begin{definition}[Sous-groupe et caractérisation]
+Une partie $H$ d'un groupe $(G,*)$ est un \textbf{sous-groupe} si $H$,
+munie de la loi induite, est un groupe. Caractérisation pratique :
+\[
+  H\text{ sous-groupe de }G
+  \iff
+  H\neq\varnothing
+  \quad\text{et}\quad
+  \forall x,y\in H,\ x*y^{-1}\in H.
+\]
+En pratique, on vérifie : $e\in H$, stabilité par la loi, stabilité par
+passage à l'inverse.
+\end{definition}
+
+\begin{exemple}
+$2\Z$ est un sous-groupe de $(\Z,+)$ ; $\mathbb{U}$ est un sous-groupe de
+$(\Cx^{*},\times)$, et $\mathbb{U}_n$ un sous-groupe de $\mathbb{U}$ ;
+$\ens{-1,1}$ est un sous-groupe de $(\R^{*},\times)$. Une intersection de
+sous-groupes est un sous-groupe — mais une \emph{réunion} ne l'est presque
+jamais : $2\in2\Z$ et $3\in3\Z$, mais $2+3=5\notin2\Z\cup3\Z$.
+\end{exemple}
+
+\essSection{4}{Morphismes de groupes}
+
+\begin{definition}[Morphisme, noyau, image]
+Une application $f:(G,*)\to(G',\star)$ est un \textbf{morphisme de groupes}
+si
+\[
+  \forall x,y\in G,\qquad f(x*y)=f(x)\star f(y).
+\]
+Alors $f(e)=e'$ et $f(x^{-1})=f(x)^{-1}$. On pose
+\[
+  \operatorname{Ker}f=\ens{x\in G \mid f(x)=e'}
+  \qquad\text{et}\qquad
+  \operatorname{Im}f=f(G).
+\]
+Un morphisme bijectif est un \textbf{isomorphisme} ; sa réciproque est
+alors aussi un morphisme.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}
+Soit $f:G\to G'$ un morphisme de groupes.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item L'image directe d'un sous-groupe de $G$ est un sous-groupe de
+    $G'$ ; l'image réciproque d'un sous-groupe de $G'$ est un sous-groupe
+    de $G$. En particulier, $\operatorname{Ker}f$ et $\operatorname{Im}f$
+    sont des sous-groupes.
+  \item \etape{Injectivité} $f$ est injectif si et seulement si
+    $\operatorname{Ker}f=\ens{e}$.
+\end{itemize}
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.0,line cap=round]
+  \draw[otNavy,line width=0.7pt] (0,0) ellipse (1.05 and 1.35);
+  \draw[otGreenDark,line width=0.7pt] (3.6,0) ellipse (1.0 and 1.35);
+  \node[font=\scriptsize,text=otNavy] at (0,1.62) {$G$};
+  \node[font=\scriptsize,text=otGreenDark] at (3.6,1.62) {$G'$};
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=1.8mm]}] (1.2,1.15) .. controls (1.8,1.5) .. (2.5,1.15);
+  \node[font=\small,text=otInk] at (1.85,1.6) {$f$};
+  \fill[otNavySoft] (0,-0.45) ellipse (0.6 and 0.6);
+  \draw[otNavy,line width=0.6pt] (0,-0.45) ellipse (0.6 and 0.6);
+  \node[font=\scriptsize,text=otNavy] at (0,-0.45) {$\operatorname{Ker}f$};
+  \fill[otGreenTint] (3.6,0.1) ellipse (0.62 and 0.85);
+  \draw[otGreenDark,line width=0.6pt] (3.6,0.1) ellipse (0.62 and 0.85);
+  \node[font=\scriptsize,text=otGreenDark] at (3.6,0.42) {$\operatorname{Im}f$};
+  \fill[otGreenDark] (3.6,-0.45) circle (1.2pt);
+  \node[right,font=\scriptsize,text=otGreenDark,inner sep=2pt] at (3.65,-0.45) {$e'$};
+  \draw[otGreen,line width=0.7pt,-{Stealth[length=1.6mm]}] (0.62,-0.45) -- (3.42,-0.45);
+\end{tikzpicture}\\[0.5mm]
+\legende{Noyau et image d'un morphisme : tout $\operatorname{Ker}f$ s'écrase sur le neutre $e'$.}
+\end{minipage}
+
+\begin{exemple}[Trois morphismes à connaître]
+$\exp:(\R,+)\to(\R_{+}^{*},\times)$ est un \emph{isomorphisme}, de
+réciproque $\ln$. Le module $z\mapsto|z|$, de $(\Cx^{*},\times)$ dans
+$(\R_{+}^{*},\times)$, est un morphisme surjectif de noyau $\mathbb{U}$.
+Enfin $t\mapsto\mathrm{e}^{\mathrm{i}t}$, de $(\R,+)$ dans
+$(\mathbb{U},\times)$, est un morphisme surjectif de noyau $2\pi\Z$.
+\end{exemple}
+
+\essSection{5}{Anneaux et corps}
+
+\begin{definition}[Anneau]
+Un \textbf{anneau} $(A,+,\times)$ est un ensemble muni de deux lois telles
+que : $(A,+)$ est un groupe commutatif (neutre $0$) ; $\times$ est
+associative, distributive sur $+$, et possède un neutre $1$ (tout anneau
+est \emph{unitaire}). Si $\times$ est commutative, l'anneau est commutatif.
+Exemples : $\Z$, $\Q$, $\R$, $\Cx$.
+\end{definition}
+
+\begin{propriete}[Calcul dans un anneau]
+Pour tous $a,b\in A$ : $0\times a=0$ et $(-a)b=-(ab)$. Si $a$ et $b$
+\emph{commutent} ($ab=ba$), alors les identités usuelles restent valables :
+\[
+  (a+b)^{n}=\sum_{k=0}^{n}\binom{n}{k}a^{k}b^{\,n-k}
+  \qquad\text{et}\qquad
+  a^{n}-b^{n}=(a-b)\sum_{k=0}^{n-1}a^{\,n-1-k}b^{k}.
+\]
+Les éléments inversibles pour $\times$ forment un groupe, le \textbf{groupe
+des inversibles} $(A^{\times},\times)$ : ainsi $\Z^{\times}=\ens{-1,1}$.
+\end{propriete}
+
+\begin{definition}[Intégrité, corps]
+Un anneau commutatif non nul $A$ est \textbf{intègre} si un produit nul y
+impose un facteur nul : $ab=0\Rightarrow a=0$ ou $b=0$. Un \textbf{corps}
+est un anneau commutatif non nul dont tout élément \emph{non nul} est
+inversible ; tout corps est intègre. Ainsi $\Q$, $\R$, $\Cx$ sont des
+corps ; $\Z$ est intègre sans être un corps ; et l'anneau des fonctions de
+$\R$ dans $\R$ n'est pas intègre (deux fonctions non nulles à supports
+disjoints ont un produit nul).
+\end{definition}
+
+\begin{definition}[Sous-anneau, morphisme d'anneaux]
+Une partie $B\subset A$ est un \textbf{sous-anneau} si $1\in B$ et si $B$
+est stable par différence et par produit. Un \textbf{morphisme d'anneaux}
+$f:A\to A'$ vérifie $f(x+y)=f(x)+f(y)$, $f(xy)=f(x)f(y)$ et $f(1)=1$ ;
+un morphisme bijectif est un isomorphisme. Exemple : la conjugaison
+$z\mapsto\overline{z}$ est un automorphisme de l'anneau $\Cx$, et
+$\Z[\sqrt2]=\ens{a+b\sqrt2 \mid a,b\in\Z}$ est un sous-anneau de $\R$
+(voir l'exercice 16).
+\end{definition}
+
+\otIntertitre{La hiérarchie des structures}
+\begin{center}
+\begin{tikzpicture}[line cap=round,
+  boite/.style={draw=otNavy,fill=otNavyTint,rounded corners=1.6mm,inner xsep=4mm,inner ysep=2.4mm,
+    font=\otSemi\fontsize{8.5}{10}\selectfont,text=otNavy},
+  fl/.style={otMuted,line width=0.7pt,-{Stealth[length=2mm]}}]
+  \node[boite] (lci) at (0,0) {Loi interne};
+  \node[boite] (grp) at (3.6,0) {Groupe};
+  \node[boite] (ann) at (7.0,0) {Anneau};
+  \node[boite,draw=otGreenDark,fill=otGreenTint,text=otGreenDark] (cor) at (10.3,0) {Corps};
+  \draw[fl] (lci) -- (grp) node[midway,above,font=\tiny,text=otMuted,align=center] {associative, neutre,\\inverses};
+  \draw[fl] (grp) -- (ann) node[midway,above,font=\tiny,text=otMuted,align=center] {deux lois,\\distributivité};
+  \draw[fl] (ann) -- (cor) node[midway,above,font=\tiny,text=otMuted,align=center] {tout $x\neq0$\\inversible};
+\end{tikzpicture}
+\end{center}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Vérifier qu'une loi est \emph{interne} avant toute chose : la
+    stabilité n'est jamais gratuite.
+  \item $(xy)^{-1}=y^{-1}x^{-1}$ : l'ordre se renverse — sauf si le groupe
+    est commutatif.
+  \item Pour un sous-groupe, ne pas oublier $H\neq\varnothing$ (on vérifie
+    $e\in H$) ; une partie stable n'est pas toujours un sous-groupe
+    ($\N$ dans $\Z$).
+  \item Le binôme dans un anneau exige que $a$ et $b$ \emph{commutent}.
+  \item Dans un anneau non intègre, $ab=0$ n'impose rien : on ne simplifie
+    pas sans précaution.
+  \item Un morphisme d'anneaux doit envoyer $1$ sur $1$ : l'application
+    nulle n'en est pas un.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Lois de composition : premiers exemples}
+\begin{questions}
+  \item La soustraction sur $\Z$ est-elle associative ? commutative ?
+    Possède-t-elle un élément neutre ?
+  \item Étudier la loi $\max$ sur $\N$ : associativité, commutativité,
+    neutre, éléments inversibles.
+  \item Sur $\R$, on définit $x*y=x+y-xy$. Montrer que $*$ est commutative
+    et associative, déterminer son neutre, et caractériser les éléments
+    inversibles, avec leur inverse.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Tables et parties stables}
+\begin{questions}
+  \item Dresser la table du groupe
+    $\mathbb{U}_4=\ens{1,\mathrm{i},-1,-\mathrm{i}}$ pour la
+    multiplication, et vérifier la « propriété du sudoku ».
+  \item $\N$ est une partie stable de $(\Z,+)$ contenant $0$ : est-ce un
+    sous-groupe de $\Z$ ?
+  \item L'ensemble des entiers impairs est-il stable pour l'addition ?
+    pour la multiplication ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Groupe ou pas ?}
+Dire si chacun des ensembles suivants, muni de la loi indiquée, est un
+groupe ; sinon, préciser l'axiome qui manque :
+\[
+  (\Z,\times),\qquad(\Q^{*},\times),\qquad(\R_{+},+),\qquad
+  (\mathbb{U},\times),\qquad(\ens{-1,1},\times),\qquad
+  \bigl(\R\setminus\ens{1},*\bigr)\ \text{avec}\ x*y=x+y-xy.
+\]
+\end{exercice}
+
+\begin{exercice}[1]{Calculer dans un groupe}
+Soit $(G,\cdot)$ un groupe, d'éléments $a$, $b$, $c$.
+\begin{questions}
+  \item Montrer que tout élément est simplifiable : si $ax=ay$, alors
+    $x=y$.
+  \item Résoudre l'équation $axb=c$ d'inconnue $x$.
+  \item Démontrer que $(ab)^{-1}=b^{-1}a^{-1}$. Pourquoi
+    $a^{-1}b^{-1}$ ne convient-il pas en général ?
+  \item Montrer que $(x^{n})^{-1}=(x^{-1})^{n}$ pour tout $n\in\N$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Sous-groupes : vérifications}
+\begin{questions}
+  \item Montrer la caractérisation : $H$ est un sous-groupe de $G$ si et
+    seulement si $H\neq\varnothing$ et $xy^{-1}\in H$ pour tous $x,y\in H$.
+  \item Montrer que $\mathbb{U}$ est un sous-groupe de $(\Cx^{*},\times)$,
+    et que $2\Z$ est un sous-groupe de $(\Z,+)$.
+  \item Montrer que $2\Z\cup3\Z$ n'est pas un sous-groupe de $(\Z,+)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Premiers morphismes}
+Pour chacune des applications suivantes, vérifier que c'est un morphisme de
+groupes, puis déterminer son noyau et son image :
+\begin{questions}
+  \item $\exp:(\R,+)\to(\R_{+}^{*},\times)$ ;
+  \item $z\mapsto|z|$, de $(\Cx^{*},\times)$ dans $(\R_{+}^{*},\times)$ ;
+  \item $n\mapsto2n$, de $(\Z,+)$ dans $(\Z,+)$ ;
+  \item $x\mapsto x^{2}$, de $(\R^{*},\times)$ dans $(\R^{*},\times)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Noyau et injectivité}
+\begin{questions}
+  \item Démontrer qu'un morphisme de groupes $f$ est injectif si et
+    seulement si $\operatorname{Ker}f=\ens{e}$.
+  \item En déduire, pour chacun des morphismes de l'exercice précédent,
+    s'il est injectif, surjectif, bijectif.
+  \item Déterminer le noyau du morphisme
+    $t\mapsto\mathrm{e}^{\mathrm{i}t}$, de $(\R,+)$ dans
+    $(\mathbb{U},\times)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Anneaux et corps : reconnaître}
+\begin{questions}
+  \item Justifier que $\Z$ est un anneau intègre mais pas un corps.
+    Quel est son groupe des inversibles ?
+  \item Pourquoi $2\Z$, muni des lois usuelles, n'est-il pas un anneau au
+    sens du programme ?
+  \item Montrer que l'anneau $\mathscr{F}(\R,\R)$ des fonctions de $\R$
+    dans $\R$ n'est pas intègre.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Une loi exotique étudiée à fond}
+On reprend la loi $x*y=x+y-xy$ sur $E=\R\setminus\ens{1}$.
+\begin{questions}
+  \item Montrer que $*$ est une loi \emph{interne} sur $E$.
+    \emph{On vérifiera que $1-x*y=(1-x)(1-y)$.}
+  \item Montrer que $(E,*)$ est un groupe commutatif.
+  \item Montrer que l'application $\varphi:x\mapsto1-x$ est un isomorphisme
+    de $(E,*)$ sur $(\R^{*},\times)$.
+  \item En déduire, sans calcul supplémentaire, la valeur de
+    $x*x*\cdots*x$ ($n$ facteurs).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Les sous-groupes de $\Z$}
+Soit $H$ un sous-groupe de $(\Z,+)$, non réduit à $\ens{0}$.
+\begin{questions}
+  \item Justifier que $H$ contient un plus petit élément strictement
+    positif, que l'on note $n$.
+  \item Montrer que $n\Z\subset H$.
+  \item Soit $x\in H$ : en effectuant la division euclidienne de $x$ par
+    $n$, montrer que $x\in n\Z$.
+  \item Conclure : les sous-groupes de $(\Z,+)$ sont exactement les $n\Z$,
+    $n\in\N$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Autour de $\mathbb{U}$ et de $\mathbb{U}_n$}
+\begin{questions}
+  \item Vérifier que $\mathbb{U}_n$ est un sous-groupe de
+    $(\mathbb{U},\times)$.
+  \item Montrer que $t\mapsto\mathrm{e}^{\mathrm{i}t}$ est un morphisme
+    surjectif de $(\R,+)$ sur $(\mathbb{U},\times)$, de noyau $2\pi\Z$.
+  \item Montrer que $\mathbb{U}_m\subset\mathbb{U}_n$ si et seulement si
+    $m$ divise $n$.
+    \emph{Pour le sens direct, considérer $\mathrm{e}^{2\mathrm{i}\pi/m}$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Intersections, produits, réunions}
+\begin{questions}
+  \item Montrer qu'une intersection de deux sous-groupes de $G$ est un
+    sous-groupe de $G$.
+  \item Montrer que, pour $a,b\in\N^{*}$ :
+    $a\Z\cap b\Z=(a\vee b)\,\Z$.
+  \item Vérifier que le produit $G\times G'$ de deux groupes, muni de la
+    loi composante par composante, est un groupe.
+  \item Montrer que $H\cup K$ est un sous-groupe si et seulement si
+    $H\subset K$ ou $K\subset H$.
+    \emph{Si $h\in H\setminus K$ et $k\in K\setminus H$, où placer $hk$ ?}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Morphismes : images et images réciproques}
+Soit $f:G\to G'$ un morphisme de groupes.
+\begin{questions}
+  \item Montrer que l'image directe $f(H)$ d'un sous-groupe $H$ de $G$ est
+    un sous-groupe de $G'$.
+  \item Montrer que l'image réciproque $f^{-1}(H')$ d'un sous-groupe $H'$
+    de $G'$ est un sous-groupe de $G$.
+  \item En déduire que $\operatorname{Ker}f$ et $\operatorname{Im}f$ sont
+    des sous-groupes, et retrouver que $\mathbb{U}$ est un sous-groupe de
+    $\Cx^{*}$ à l'aide du morphisme module.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le groupe symétrique $S_3$, première rencontre}
+On note $S_3$ l'ensemble des bijections de $\ens{1,2,3}$ dans lui-même,
+muni de la composition.
+\begin{questions}
+  \item Dénombrer $S_3$ et dresser la liste de ses éléments : l'identité,
+    trois \emph{transpositions} (qui échangent deux éléments) et deux
+    \emph{3-cycles}.
+  \item Montrer par un exemple que $S_3$ n'est pas commutatif.
+  \item Déterminer l'inverse de chaque élément. Que dire des
+    transpositions ?
+  \item Calculer le carré et le cube d'un 3-cycle.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Calcul dans un anneau}
+Soit $A$ un anneau, et $a,b\in A$.
+\begin{questions}
+  \item Démontrer que $0\times a=0$, puis que $(-a)b=-(ab)$.
+  \item On suppose $ab=ba$. Développer $(a+b)^{3}$, et rappeler pourquoi
+    l'hypothèse de commutation est indispensable.
+  \item On suppose $ab=ba$. Vérifier que $a^{2}-b^{2}=(a-b)(a+b)$.
+  \item Soit $x\in A$ \emph{nilpotent} : $x^{n}=0$ pour un certain
+    $n\geq1$. Montrer que $1-x$ est inversible, d'inverse
+    $1+x+x^{2}+\dots+x^{n-1}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'anneau $\Z[\sqrt2]$}
+On pose $\Z[\sqrt2]=\ens{a+b\sqrt2 \mid a,b\in\Z}$ et, pour
+$z=a+b\sqrt2$, on définit sa \emph{norme} $N(z)=a^{2}-2b^{2}$.
+\begin{questions}
+  \item Montrer que $\Z[\sqrt2]$ est un sous-anneau de $\R$, et que
+    l'écriture $a+b\sqrt2$ est unique.
+  \item Montrer que $N(zz')=N(z)N(z')$ pour tous $z,z'\in\Z[\sqrt2]$.
+    \emph{On pourra poser $\overline{z}=a-b\sqrt2$ et remarquer que
+    $N(z)=z\overline{z}$.}
+  \item Montrer que $z$ est inversible dans $\Z[\sqrt2]$ si et seulement
+    si $N(z)=\pm1$.
+  \item Vérifier que $1+\sqrt2$ est inversible, de même que toutes ses
+    puissances : le groupe des inversibles de $\Z[\sqrt2]$ est infini.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le corps $\Q(\sqrt2)$}
+On pose $\Q(\sqrt2)=\ens{a+b\sqrt2 \mid a,b\in\Q}$.
+\begin{questions}
+  \item Montrer que $\Q(\sqrt2)$ est un sous-anneau de $\R$.
+  \item Soit $z=a+b\sqrt2$ non nul. Justifier que $a^{2}-2b^{2}\neq0$,
+    puis montrer que $z$ est inversible dans $\Q(\sqrt2)$, en explicitant
+    son inverse. Conclure.
+  \item Montrer que la \emph{conjugaison}
+    $\sigma:a+b\sqrt2\mapsto a-b\sqrt2$ est un automorphisme de l'anneau
+    $\Q(\sqrt2)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Morphismes d'anneaux}
+\begin{questions}
+  \item Montrer que l'identité est le seul morphisme d'anneaux de $\Z$
+    dans $\Z$. \emph{Que vaut nécessairement $f(1)$, puis $f(n)$ ?}
+  \item Vérifier que la conjugaison $z\mapsto\overline{z}$ est un
+    automorphisme de l'anneau $\Cx$.
+  \item Montrer que l'évaluation $\mathrm{ev}_0:f\mapsto f(0)$, de
+    $\mathscr{F}(\R,\R)$ dans $\R$, est un morphisme d'anneaux surjectif.
+    Son noyau est-il un sous-anneau ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{L'ordre d'un élément}
+Soit $(G,\cdot)$ un groupe de neutre $e$, et $x\in G$. S'il existe, le plus
+petit entier $n\geq1$ tel que $x^{n}=e$ est appelé \emph{ordre} de $x$.
+\begin{questions}
+  \item Montrer que, dans un groupe \emph{fini}, tout élément possède un
+    ordre. \emph{Les puissances $x,x^{2},x^{3},\dots$ ne peuvent être
+    toutes distinctes.}
+  \item Soit $x$ d'ordre $n$. Montrer que $x^{k}=e$ si et seulement si
+    $n$ divise $k$. \emph{Division euclidienne.}
+  \item Déterminer l'ordre de chaque élément de $\mathbb{U}_6$.
+  \item Montrer que $x$ et $x^{-1}$ ont le même ordre.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Les groupes d'ordre au plus 4}
+\begin{questions}
+  \item Montrer qu'un groupe à deux éléments $\ens{e,a}$ a une table
+    entièrement déterminée, et qu'il est commutatif.
+  \item Même question pour un groupe à trois éléments $\ens{e,a,b}$.
+    \emph{Utiliser la « propriété du sudoku ».}
+  \item On considère les deux groupes à quatre éléments suivants :
+    $\mathbb{U}_4$ et le \emph{groupe de Klein}
+    $K=\ens{-1,1}\times\ens{-1,1}$ (loi composante par composante).
+    Dresser leurs tables.
+  \item Montrer que $\mathbb{U}_4$ et $K$ ne sont \emph{pas} isomorphes.
+    \emph{Comparer les solutions de $x\cdot x=e$ dans chacun des deux
+    groupes.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Morphismes additifs de $\Q$}
+\begin{questions}
+  \item Déterminer tous les morphismes de groupes de $(\Z,+)$ dans
+    $(\Z,+)$.
+  \item Soit $f:(\Q,+)\to(\Q,+)$ un morphisme de groupes. Montrer que,
+    pour tout $n\in\N^{*}$ et tout $x\in\Q$ : $f(nx)=nf(x)$, puis que
+    $f\Bigl(\dfrac{p}{q}\Bigr)=\dfrac{p}{q}\,f(1)$ pour tous
+    $p\in\Z$, $q\in\N^{*}$.
+  \item Conclure : les morphismes de $(\Q,+)$ dans lui-même sont
+    exactement les $x\mapsto cx$, $c\in\Q$. Lesquels sont des
+    isomorphismes ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Les entiers de Gauss}
+On pose $\Z[\mathrm{i}]=\ens{a+\mathrm{i}b \mid a,b\in\Z}$, muni des lois
+de $\Cx$, et $N(z)=|z|^{2}=a^{2}+b^{2}$.
+\begin{questions}
+  \item Montrer que $\Z[\mathrm{i}]$ est un sous-anneau de $\Cx$, intègre.
+  \item Montrer que $N(zz')=N(z)N(z')$, et que $z$ est inversible dans
+    $\Z[\mathrm{i}]$ si et seulement si $N(z)=1$.
+  \item En déduire le groupe des inversibles :
+    $\Z[\mathrm{i}]^{\times}=\ens{1,-1,\mathrm{i},-\mathrm{i}}=\mathbb{U}_4$.
+  \item Vérifier que $(1+\mathrm{i})^{2}=2\mathrm{i}$ ; en déduire que $2$
+    n'est pas « premier » dans $\Z[\mathrm{i}]$, bien qu'il le soit dans
+    $\Z$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Isomorphe ou pas ?}
+\begin{questions}
+  \item Rappeler pourquoi $(\R,+)$ et $(\R_{+}^{*},\times)$ sont
+    isomorphes.
+  \item Montrer que $(\Z,+)$ et $(\Q,+)$ ne sont pas isomorphes.
+    \emph{Dans $\Q$, l'équation $x+x=y$ a toujours une solution.}
+  \item Montrer que $(\Q,+)$ et $(\Q_{+}^{*},\times)$ ne sont pas
+    isomorphes. \emph{Dans $(\Q_{+}^{*},\times)$, l'équation
+    $x\cdot x=2$ n'a pas de solution.}
+  \item Montrer que $(\R^{*},\times)$ et $(\Cx^{*},\times)$ ne sont pas
+    isomorphes. \emph{Compter les solutions de $x^{4}=1$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{L'équation de Pell-Fermat $x^{2}-2y^{2}=1$}
+On cherche les couples $(x,y)\in\N^{2}$ tels que $x^{2}-2y^{2}=1$, à
+l'aide de l'anneau $\Z[\sqrt2]$ et de sa norme (exercice 16).
+\begin{questions}
+  \item Vérifier que $(3,2)$ est solution, et traduire : les solutions
+    correspondent aux éléments $x+y\sqrt2$ de $\Z[\sqrt2]$ de norme $1$.
+  \item Montrer que si $(x,y)$ est solution, alors
+    $(3x+4y,\ 2x+3y)$ l'est aussi.
+    \emph{Calculer $(x+y\sqrt2)(3+2\sqrt2)$ et utiliser la
+    multiplicativité de la norme.}
+  \item En déduire une infinité de solutions, et dresser la liste des
+    quatre premières à partir de $(3,2)$.
+  \item Justifier que l'ensemble des $z\in\Z[\sqrt2]$ de norme $1$ est un
+    sous-groupe de $(\R^{*},\times)$ : l'équation de Pell-Fermat cache un
+    groupe.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-08}

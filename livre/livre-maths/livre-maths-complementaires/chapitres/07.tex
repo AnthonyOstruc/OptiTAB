@@ -1,0 +1,164 @@
+\begin{ouverture}[integrale]{7}{Intégrales, aires et valeur moyenne}{Analyse et mesure}{Primitives · Rectangles · Monte-Carlo · Gini}
+\objectif{Interpréter une intégrale et la calculer avec une primitive.}
+\objectif{Distinguer aire géométrique et aire algébrique.}
+\objectif{Calculer une valeur moyenne et l’interpréter.}
+\objectif{Approcher une aire et déterminer un indice de Gini.}
+\prerequis{Primitives, géométrie plane et convexité.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{De l'aire à l'intégrale}
+Pour $f$ continue et positive sur $[a,b]$ avec $a<b$, l'intégrale $\int_a^bf(x)\,\mathrm dx$ est l'aire comprise entre la courbe, l'axe horizontal et les droites $x=a,x=b$, exprimée en unités d'aire.
+Pour une fonction de signe quelconque, les zones au-dessus de l'axe contribuent positivement et celles au-dessous négativement.
+\figurelivre{c07-aires.pdf}{Pour $f(x)=x-1$ sur $[0,3]$, l'intégrale vaut $3/2$, mais l'aire géométrique totale vaut $5/2$. On sépare les deux zones en $x=1$.}
+\begin{propriete}[Calcul et relation de Chasles]
+Si $F$ est une primitive de $f$, alors $\int_a^bf(x)\,\mathrm dx=F(b)-F(a)$.
+La relation de Chasles donne $\int_a^cf=\int_a^bf+\int_b^cf$.
+L'intégrale est linéaire : $\int(\lambda f+\mu g)=\lambda\int f+\mu\int g$, avec les mêmes bornes.
+\end{propriete}
+\essSection{2}{Le lien fondamental avec la dérivée}
+\begin{theoreme}[Admis dans le cas général]
+Si $f$ est continue sur $[a,b]$, alors $H(x)=\int_a^xf(t)\,\mathrm dt$ est une primitive de $f$ sur l'intervalle. En particulier $H\,\!^{\prime}(x)=f(x)$ et $H(a)=0$.
+\end{theoreme}
+Pour $f$ croissante et positive, l'aire ajoutée entre $x$ et $x+h$ est comprise entre les rectangles de hauteurs $f(x)$ et $f(x+h)$ lorsque $h>0$.
+En divisant par $h$ puis en passant à la limite, la continuité donne $H\,\!^{\prime}(x)=f(x)$. Le même encadrement, avec les inégalités adaptées, vaut à gauche.
+Si $f\leq g$ sur $[a,b]$, l'aire entre les courbes vaut $\int_a^b(g-f)$.
+\essSection{3}{La valeur moyenne}
+\begin{definition}
+La valeur moyenne de $f$ sur $[a,b]$ est
+$m=\dfrac1{b-a}\int_a^bf(x)\,\mathrm dx$.
+Si $m_0\leq f\leq M_0$, alors $m_0\leq m\leq M_0$.
+\end{definition}
+\begin{exemple}[Débit]
+Un débit $d(t)=2t+3$ en litres par minute, pour $0\leq t\leq4$ minutes, fournit
+$\int_0^4(2t+3)\,\mathrm dt=[t^2+3t]_0^4=28$ litres.
+Le débit moyen vaut $28/4=7$ litres par minute. Ce n'est ni le volume total ni, en général, la moyenne des seules valeurs aux extrémités.
+\end{exemple}
+\essSection{4}{Approcher une aire}
+Avec $n$ intervalles de même largeur $h=(b-a)/n$, la méthode des rectangles à gauche utilise $h\sum_{k=0}^{n-1}f(a+kh)$.
+Les rectangles à droite utilisent $k=1,\ldots,n$. Si $f$ est croissante, la première somme minore l'intégrale et la seconde la majore.
+La méthode des trapèzes prend la moyenne de ces deux sommes.
+\figurelivre{c07-rectangles.pdf}{Rectangles à gauche sous $f(x)=x^2$ sur $[0,1]$, avec $n=6$. Le défaut d'aire diminue quand le pas est réduit.}
+\begin{python}
+def rectangles(f, a, b, n):
+    h = (b-a)/n
+    return h*sum(f(a+k*h) for k in range(n))
+\end{python}
+La méthode de Monte-Carlo tire uniformément des points dans un rectangle contenant la zone. La proportion de points sous la courbe, multipliée par l'aire du rectangle, estime l'aire recherchée. Elle produit une fluctuation aléatoire ; augmenter le nombre de tirages ne garantit pas que chaque nouvelle estimation soit meilleure.
+\essSection{5}{Quantifier les inégalités : Gini}
+Pour une courbe de Lorenz $L$, l'indice de Gini est le rapport entre l'aire séparant la diagonale de $L$ et l'aire sous la diagonale, égale à $1/2$ :
+\[G=1-2\int_0^1L(x)\,\mathrm dx.\]
+Pour $L(x)=x^2$, $G=1-2/3=1/3$.
+Sur des données groupées, on peut calculer l'aire sous la ligne polygonale par des trapèzes. L'indice décrit la répartition donnée ; il ne mesure pas son niveau moyen, et deux courbes qui se croisent exigent une comparaison prudente.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Calculer avec une primitive}
+
+\begin{questions}
+\item Calculer $\int_0^2 3x^2\,\mathrm dx$.
+\item Calculer $\int_1^{\mathrm e}1/x\,\mathrm dx$.
+\item Calculer $\int_0^1\mathrm e^{2x}\,\mathrm dx$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Chasles et linéarité}
+$\int_0^2f=3$ et $\int_2^5f=7$.
+\begin{questions}
+\item Calculer $\int_0^5f$.
+\item Calculer $\int_0^5(2f+1)$.
+\item Calculer $\int_5^0f$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Valeur moyenne}
+
+\begin{questions}
+\item Calculer la moyenne de $x^2$ sur $[0,3]$.
+\item Comparer à la moyenne des valeurs aux deux bornes.
+\item La valeur trouvée est-elle comprise entre le minimum et le maximum ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Une aire signée}
+$f(x)=x-2$ sur $[0,4]$.
+\begin{questions}
+\item Calculer l’intégrale.
+\item Calculer l’aire géométrique totale.
+\item Expliquer l’écart entre les résultats.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Entre deux courbes}
+$f(x)=x$ et $g(x)=x^2$ sur $[0,1]$.
+\begin{questions}
+\item Comparer les deux fonctions.
+\item Calculer l’aire entre leurs courbes.
+\item Donner les points d’intersection.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Production cumulée}
+Un débit vaut $d(t)=6\mathrm e^{-t/2}$ litres par minute pendant les quatre premières minutes.
+\begin{questions}
+\item Calculer le volume total.
+\item Calculer le débit moyen.
+\item Encadrer cette moyenne par les valeurs minimale et maximale du débit.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Rectangles}
+On approche $\int_0^1x^2\,\mathrm dx$ avec quatre intervalles.
+\begin{questions}
+\item Calculer la somme à gauche.
+\item Calculer celle à droite et la valeur par trapèzes.
+\item Comparer à l’intégrale exacte.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Lorenz et Gini}
+$L(x)=x^3$ sur $[0,1]$.
+\begin{questions}
+\item Calculer la part détenue par les $50\,\%$ les moins riches.
+\item Calculer l’indice de Gini.
+\item Comparer au modèle $L(x)=x^2$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Une estimation aléatoire}
+On tire $N=10\,000$ points uniformes dans $[0,1]^2$ ; $3\,340$ sont sous $y=x^2$.
+\begin{questions}
+\item Donner l’estimation de l’aire.
+\item Comparer à l’aire exacte.
+\item Le résultat prouve-t-il l’égalité avec $1/3$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Données groupées}
+Une ligne de Lorenz passe par $(0,0)$, $(0{,}5,0{,}2)$ et $(1,1)$.
+\begin{questions}
+\item Calculer l’aire sous la ligne polygonale.
+\item Calculer son indice de Gini.
+\item Pourquoi ne peut-on déduire tous les revenus individuels de ces trois points ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Primitive définie par une aire}
+$H(x)=\int_1^x(t^2+1)\,\mathrm dt$.
+\begin{questions}
+\item Donner $H(1)$ et $H\,\!^{\prime}(x)$.
+\item Déterminer une expression explicite de $H$.
+\item Étudier les variations de $H$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Encadrer sans primitive}
+On veut approcher $I=\int_0^1\mathrm e^{-x^2}\,\mathrm dx$, sans chercher de primitive usuelle.
+\begin{questions}
+\item Déterminer le sens de variation de l’intégrande.
+\item Dire quelle somme de rectangles minore et quelle somme majore $I$.
+\item Majorer la différence entre ces sommes avec $n$ subdivisions égales ; choisir $n$ pour une largeur au plus $0{,}001$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

@@ -1,0 +1,226 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[grandsnombres]{11}{Statistiques et simulations}{Partie 4 · Probabilités et statistiques}
+{Indicateurs\enspace·\enspace Échantillons\enspace·\enspace Moyennes observées\enspace·\enspace Monte-Carlo}
+\objectif{Lire des graphiques et calculer des indicateurs statistiques.}
+\objectif{Simuler une variable et la moyenne d’un échantillon.}
+\objectif{Comparer des moyennes observées à une espérance.}
+\objectif{Expérimenter un critère de dispersion et une estimation d’aire.}
+\prerequis{Moyennes pondérées, fréquences et variables aléatoires.}
+\prerequis{Listes et boucles Python ; le chapitre 12 sert de référence.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Décrire une série statistique}
+\begin{definition}
+Pour des valeurs $x_i$ d'effectifs $n_i$, l'effectif total est $N=\sum_i n_i$
+et la fréquence de $x_i$ vaut $f_i=n_i/N$.
+La moyenne est $\overline x=\sum_i f_ix_i$ et la variance descriptive est
+$v=\sum_i f_i(x_i-\overline x)^2=\sum_i f_ix_i^2-\overline x^2$.
+L'écart type descriptif vaut $\sqrt v$ ; on divise ici par $N$, pas par $N-1$.
+\end{definition}
+\begin{propriete}[Médiane et quartiles]
+Dans une série ordonnée, la médiane est la valeur centrale si $N$ est impair,
+et la moyenne des deux valeurs centrales si $N$ est pair.
+On prend $Q_1$ au rang $\lceil N/4\rceil$ et $Q_3$ au rang $\lceil3N/4\rceil$.
+L'étendue est le maximum moins le minimum ; l'écart interquartile vaut $Q_3-Q_1$.
+\end{propriete}
+\essSection{2}{Lire les bons graphiques}
+\begin{savoirfaire}
+Un diagramme en barres convient aux valeurs discrètes. Dans un histogramme,
+l'aire de chaque rectangle représente l'effectif ou la fréquence ; pour des
+classes de largeurs inégales, les hauteurs sont des densités.
+Un diagramme en boîte représente minimum, $Q_1$, médiane, $Q_3$, maximum.
+\end{savoirfaire}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otMuted,->](0,0)--(7.5,0);
+\foreach \x in {1,2,3,4,5,6,7}{\draw[otMuted](\x,.08)--(\x,-.08)node[below,font=\small]{\x};}
+\draw[otNavy,thick](1,.8)--(2,.8) (4,.8)--(7,.8);
+\draw[otNavy,fill=otNavyTint](2,.4)rectangle(4,1.2);
+\draw[otGreenDark,thick](3.5,.4)--(3.5,1.2);
+\draw[otNavy](1,.5)--(1,1.1) (7,.5)--(7,1.1);
+\end{tikzpicture}
+\par\legende{Boîte de minimum 1, quartiles 2 et 4, médiane 3,5, maximum 7.}
+\end{center}
+
+\clearpage
+\essSection{3}{Simuler une variable et une moyenne}
+\begin{propriete}
+En Python, \code{random()} renvoie un réel pseudo-aléatoire de $[0;1[$.
+L'expression \code{random() < p} simule un succès de probabilité $p$.
+Une fonction de simulation peut être répétée pour créer une liste de $n$ valeurs,
+puis une moyenne observée \code{sum(L)/len(L)}.
+\end{propriete}
+\begin{savoirfaire}[Distinguer théorie et observation]
+Calculer d'abord l'espérance $\mu$ et l'écart type $\sigma$ du modèle.
+Simuler plusieurs échantillons de même taille et comparer leurs moyennes à $\mu$.
+Une moyenne observée fluctue ; elle n'est pas obligatoirement égale à $\mu$.
+Fixer une graine permet de reproduire une expérience informatique.
+\end{savoirfaire}
+\essSection{4}{Expérimenter avec de nombreux échantillons}
+\begin{definition}[Un critère d'observation]
+Pour $N$ échantillons indépendants de taille $n$, on peut compter la proportion
+des moyennes $m$ vérifiant $|m-\mu|\leq2\sigma/\sqrt n$.
+Le programme demande d'expérimenter ce critère : il ne donne pas une proportion
+universelle exacte, et cette proportion n'est pas une probabilité de certitude.
+\end{definition}
+\begin{exemple}[Monte-Carlo]
+Pour estimer une aire dans le carré unité, tirer des points $(x;y)$ uniformes
+dans ce carré et compter la proportion de ceux qui appartiennent à la zone.
+Pour le quart de disque $x^2+y^2\leq1$, multiplier cette proportion par 4
+donne une estimation de $\pi$.
+\end{exemple}
+\begin{attention}
+Un résultat de simulation dépend du tirage et de la taille de l'échantillon.
+Une observation numérique, même répétée, ne démontre pas un théorème général.
+\end{attention}
+
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-11-1}
+\begin{exercice}[1]{D’un tableau aux indicateurs}
+Les valeurs 0, 1, 2 et 3 ont pour effectifs 2, 3, 4 et 1.\begin{questions}
+\item Calculer l’effectif total et les fréquences.
+\item Calculer la moyenne, la médiane et l’étendue.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-2}
+\begin{exercice}[1]{Lire un diagramme en barres}
+\begin{center}
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=96mm,height=40mm,xmin=8,xmax=18,ymin=0,ymax=5,xtick={10,12,14,16},ytick={1,2,3,4},xlabel={valeur},ylabel={effectif},axis lines=left,every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-4mm,font=\small,text=otMuted},every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,yshift=1mm,font=\small,text=otMuted}]
+\addplot[ycomb,very thick,otNavy,mark=*]coordinates{(10,2)(12,4)(14,3)(16,1)};
+\end{axis}\end{tikzpicture}
+\end{center}
+\begin{questions}
+\item Reconstituer les effectifs et calculer la moyenne.
+\item Donner la médiane et les quartiles selon la convention du cours.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-3}
+\begin{exercice}[1]{Tracer une boîte}
+On donne la série ordonnée $1,2,2,3,4,4,5,7$.\begin{questions}
+\item Déterminer la médiane et les deux quartiles.
+\item Tracer une boîte et calculer l’écart interquartile.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-4}
+\begin{exercice}[1]{Une fréquence observée}
+Une variable de Bernoulli de paramètre $0{,}3$ a fourni l’échantillon $[0,1,0,0,1,1,0,0,0,1]$.\begin{questions}
+\item Calculer sa moyenne observée.
+\item Calculer l’écart absolu à l’espérance. Cet écart invalide-t-il le modèle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-5}
+\begin{exercice}[1]{Comprendre un tirage simulé}
+Une fonction Python renvoie 1 si \code{random() < 0.25}, sinon 0.\begin{questions}
+\item Quelle loi cherche-t-elle à simuler ?
+\item Quelles valeurs peut prendre la moyenne de quatre appels ?
+\item La moyenne de quatre appels vaut-elle nécessairement $0{,}25$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-11-6}
+\begin{exercice}[2]{Un histogramme de largeurs inégales}
+Les classes $[0;10[$, $[10;30[$ et $[30;60]$ ont pour fréquences $0{,}2$, $0{,}5$ et $0{,}3$.\begin{questions}
+\item Calculer les hauteurs d’un histogramme dont les aires représentent les fréquences.
+\item Comparer les hauteurs et les fréquences. Pourquoi des hauteurs directement égales aux fréquences seraient-elles trompeuses ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-7}
+\begin{exercice}[2]{Transformer une série}
+Une série $X$ a pour moyenne 12 et pour écart type 3. On définit $Y=2X+5$ et $Z=X-12$.\begin{questions}
+\item Calculer les moyennes de $Y$ et de $Z$.
+\item Calculer leurs variances et écarts types.
+\item Interpréter le centrage $Z=X-12$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-8}
+\begin{exercice}[2]{Une aire sous une parabole}
+Dans 400 tirages de points uniformes dans le carré $[0;1]^2$, 137 vérifient $y\leq x^2$. L’aire théorique, fournie ici, vaut $1/3$.\begin{questions}
+\item Donner l’estimation de Monte-Carlo.
+\item Calculer l’erreur absolue exacte.
+\item Écrire le test Python qui reconnaît un point dans la zone.
+\end{questions}
+\label{figlivre-r11-08-zone-ex}
+\figureLivre{r11-08-zone}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-9}
+\begin{exercice}[2]{Estimer le nombre pi}
+Parmi 1000 points tirés uniformément dans le carré unité, 786 sont dans le quart de disque $x^2+y^2\leq1$.\begin{questions}
+\item Donner l’estimation de $\pi$ et son erreur absolue à $10^{-5}$ près.
+\item Expliquer le facteur 4.
+\item Un second essai de 1000 points doit-il donner exactement le même résultat ?
+\end{questions}
+\label{figlivre-r11-09-zone-ex}
+\figureLivre{r11-09-zone}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-10}
+\begin{exercice}[2]{Comparer des moyennes d'échantillons}
+$X$ vaut 0 ou 2 avec probabilités égales. Quatre échantillons de taille 5 donnent les listes $[0,0,2,0,2]$, $[2,2,2,0,2]$, $[0,0,0,0,0]$, $[2,0,2,2,0]$.\begin{questions}
+\item Calculer $\mu$ et $\sigma$ pour le modèle.
+\item Calculer les quatre moyennes.
+\item Quelle proportion satisfait $|m-\mu|\leq2\sigma/\sqrt5$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-11}
+\begin{exercice}[2]{Effet de la taille d'échantillon}
+On étudie un modèle d’espérance $\mu=1$ et d’écart type $\sigma=2$.\begin{questions}
+\item Calculer le seuil $2\sigma/\sqrt n$ pour $n=16$ puis $n=64$.
+\item Le critère est-il satisfait pour $m=2{,}2$, $n=16$ ? Et pour $m=1{,}4$, $n=64$ ?
+\item Par quel facteur faut-il multiplier $n$ pour diviser le seuil par 3 ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-11-12}
+\begin{exercice}[3]{Simuler une loi à trois valeurs}
+$X$ prend les valeurs $-1$, 2 et 5 avec probabilités $0{,}5$, $0{,}3$ et $0{,}2$.\begin{questions}
+\item Calculer $\mu$ et $\sigma$.
+\item Écrire une fonction de simulation avec un seul appel à \code{random()}.
+\item Écrire une fonction qui renvoie la moyenne d’un échantillon de taille $n\geq1$.
+\item Expliquer comment comparer les moyennes pour $n=10$, 100 et 1000 sans confondre résultat observé et preuve.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-13}
+\begin{exercice}[3]{Répéter cinq cents échantillons}
+Pour une variable de Bernoulli de paramètre $0{,}4$, on simule 500 échantillons de taille 25.\begin{questions}
+\item Calculer l’espérance, l’écart type et le seuil $2\sigma/\sqrt{25}$.
+\item Proposer un programme qui compte les moyennes satisfaisant le critère et renvoie leur proportion.
+\item Le résultat doit-il obligatoirement être 95\,\% ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-14}
+\begin{exercice}[3]{Comparer deux groupes et leur réunion}
+Le groupe A donne les valeurs $4,5,5,6$, le groupe B les valeurs $1,5,5,9$.\begin{questions}
+\item Comparer moyennes et variances descriptives.
+\item Calculer la moyenne et la variance de la série réunissant les huit valeurs.
+\item Donner la médiane et les quartiles de la série réunie.
+\item Expliquer ce que la moyenne seule masque ici.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-11-15}
+\begin{exercice}[3]{Fréquences des lettres d'un texte}
+On utilise les textes sans espaces ni accents \code{BANANE} et \code{ANANAS}.\begin{questions}
+\item Calculer les fréquences des lettres présentes dans chaque texte.
+\item Proposer une liste des fréquences pour les 26 lettres, avec \code{texte.count(c)} et \code{len(texte)}.
+\item On choisit uniformément une position de \code{BANANE} et on note $V$ l’indicatrice d’une voyelle. Donner sa loi, son espérance et sa variance.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

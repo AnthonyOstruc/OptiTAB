@@ -1,0 +1,15 @@
+% Titrage pH-métrique d'un déboucheur dilué par l'acide chlorhydrique (exercice 12, chapitre 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=104mm,height=58mm,xmin=0,xmax=35,ymin=0,ymax=14,
+  xtick={0,5,...,35},ytick={0,2,...,14},xlabel={$V_\mathrm{A}$ (mL)},ylabel={pH},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/03-deboucheur-ph.dat};
+\solution{\addplot[otMuted,line width=0.6pt,domain=13:25] {-0.25*x+16.605};
+\addplot[otMuted,line width=0.6pt,domain=18:31] {-0.25*x+8.231};
+\addplot[otGreenDark,line width=0.7pt,dashed,domain=15:28] {-0.25*x+12.418};
+\addplot[only marks,mark=*,mark size=2pt,otGreenDark] coordinates {(21.6,7.02)};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:21.6,7.02) -- (axis cs:21.6,0);
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:21.9,1.6) {$V_\mathrm{E}=21{,}6$ mL};}
+\end{axis}
+\end{tikzpicture}

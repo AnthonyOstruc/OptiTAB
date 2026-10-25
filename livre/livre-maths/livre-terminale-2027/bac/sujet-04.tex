@@ -1,0 +1,77 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 4 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s4.py)
+
+\sujetBac{4}{Dénombrement et probabilités/4,Exponentielle : une famille de fonctions/5,Géométrie : une pyramide/4,Suite d'intégrales/5}
+
+\begin{exoBac}{4}{Dénombrement et probabilités}
+Un code d'accès est formé de quatre chiffres, choisis chacun parmi $0$, $1$, …, $9$ ; par exemple $0\,7\,7\,2$.
+\begin{questions}
+  \item Combien existe-t-il de codes différents ?
+  \item Combien de codes sont formés de quatre chiffres deux à deux distincts ? On choisit un code au hasard : quelle est la
+    probabilité que ses chiffres soient deux à deux distincts ?
+  \item Combien de codes contiennent au moins une fois le chiffre $0$ ?
+  \item Combien de codes contiennent exactement deux fois le chiffre $7$ ?
+  \item Combien de codes ont des chiffres rangés dans l'ordre strictement croissant de gauche à droite, comme $1\,3\,4\,8$ ?
+  \item Un programme essaie des codes choisis au hasard, de façon indépendante, à raison d'un code par seconde. Combien d'essais
+    faut-il prévoir pour que la probabilité de trouver le bon code soit au moins égale à $0{,}5$ ? Quelle durée cela représente-t-il ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Exponentielle : une famille de fonctions}
+Pour tout réel $m>0$, on considère la fonction $f_m$ définie sur $\R$ par $f_m(x)=e^{x}-mx$. On cherche le nombre de solutions de
+l'équation $e^{x}=mx$ selon la valeur de $m$.
+\partieExo{A}{Le cas $m=e$}
+\begin{questions}
+  \item Étudier les variations de la fonction $f_e:x\mapsto e^{x}-ex$ et montrer que, pour tout réel $x$, $e^{x}\geq ex$.
+  \item Interpréter graphiquement ce résultat à l'aide de la tangente à la courbe de la fonction exponentielle au point d'abscisse $1$.
+\end{questions}
+\partieExo{B}{Le cas général}
+\begin{questions}[resume]
+  \item Déterminer les limites de $f_m$ en $-\infty$ et en $+\infty$.
+  \item Dresser le tableau de variations de $f_m$ et montrer que son minimum vaut $m(1-\ln m)$.
+  \item En déduire, selon les valeurs de $m$, le nombre de solutions de l'équation $e^{x}=mx$.
+  \item Pour $m=3$, donner une valeur approchée au centième de chacune des solutions.
+  \item Interpréter graphiquement les résultats de la question 5 à l'aide des droites passant par l'origine du repère.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Géométrie dans l'espace}
+\begin{codecote}[0.6]
+L'espace est muni d'un repère orthonormé d'origine $O$. On considère la pyramide $SABCD$ avec $A(1\pv-1\pv0)$, $B(1\pv1\pv0)$,
+$C(-1\pv1\pv0)$, $D(-1\pv-1\pv0)$ et $S(0\pv0\pv2)$.
+\begin{questions}
+  \item Montrer que $ABCD$ est un carré de centre $O$, calculer la longueur $SA$, puis le volume de la pyramide.
+  \item Montrer que le vecteur $\vec n\,(0\pv2\pv1)$ est normal au plan $(SBC)$, puis que ce plan a pour équation $2y+z-2=0$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,y={(0.5cm,0.38cm)},scale=1.25]
+  \coordinate (A) at (1,-1,0); \coordinate (B) at (1,1,0); \coordinate (C) at (-1,1,0); \coordinate (D) at (-1,-1,0);
+  \coordinate (S) at (0,0,2); \coordinate (O) at (0,0,0);
+  \draw[otVu] (D) -- (A) -- (B) -- (S) -- cycle; \draw[otVu] (S) -- (A);
+  \draw[otCache] (B) -- (C) -- (D) (C) -- (S) (A) -- (C) (B) -- (D);
+  \node[otPt] at (O) {};
+  \foreach \p/\a in {A/north,B/west,C/south east,D/east,S/south,O/north west}{\node[otSommet,anchor=\a] at (\p) {$\p$};}
+\end{tikzpicture}
+\end{codecote}
+\begin{questions}[start=3]
+  \item Déterminer les coordonnées du projeté orthogonal $H$ de $O$ sur le plan $(SBC)$, puis la distance du point $O$ à ce plan.
+  \item On note $I$ le milieu de l'arête $[SC]$. Montrer que le plan $(ABI)$ a pour équation $2x+3z-2=0$.
+  \item Montrer que le plan $(ABI)$ coupe l'arête $[SD]$ en son milieu $J$. Quelle est la nature de la section de la pyramide par le
+    plan $(ABI)$ ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Suite d'intégrales}
+Pour tout entier naturel $n$, on pose $I_n=\displaystyle\int_0^1x^{n}e^{-x}\,\mathrm{d}x$.
+\begin{questions}
+  \item Calculer $I_0$.
+  \item À l'aide d'une intégration par parties, démontrer que, pour tout entier naturel $n$, $I_{n+1}=(n+1)\,I_n-\dfrac1e$. En déduire
+    $I_1$ et $I_2$.
+  \item Démontrer que, pour tout entier naturel $n$, $0\leq I_n\leq\dfrac{1}{n+1}$. En déduire la limite de la suite $(I_n)$.
+  \item Étudier le sens de variation de la suite $(I_n)$.
+  \item Écrire une fonction Python \code{integrale(n)} qui renvoie la valeur de $I_n$ calculée à l'aide de la relation de la
+    question 2. Donner une valeur approchée de $I_5$ au millième.
+  \item À l'aide des questions 2 et 3, déterminer la limite de la suite $(n\,I_n)$.
+\end{questions}
+\end{exoBac}

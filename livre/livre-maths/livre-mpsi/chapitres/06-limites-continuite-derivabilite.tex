@@ -1,0 +1,657 @@
+% !TEX root = ../main.tex
+%% Chapitre 6 — Limites, continuité, dérivabilité, convexité
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Fonctions d'une variable réelle » : A. limites et continuité
+%% (limite en un point, continuité, TVI, bornes atteintes, bijection, fonctions
+%% complexes) ; B. dérivabilité (nombre dérivé, Rolle, accroissements finis,
+%% limite de la dérivée, classe C^k, fonctions complexes) ; C. convexité.
+%% Résultats vérifiés par verifications/chapitre_06.py.
+
+\begin{ouverture}[continuite]{6}{Limites, continuité, dérivabilité, convexité}{Partie 1 · Premier semestre}
+  {Limites\enspace·\enspace Continuité\enspace·\enspace TVI\enspace·\enspace Rolle\enspace·\enspace
+   Accroissements finis\enspace·\enspace Convexité}
+  \objectif{Manipuler la définition de la limite d'une fonction et sa caractérisation séquentielle.}
+  \objectif{Utiliser les grands théorèmes de la continuité : valeurs intermédiaires, bornes atteintes, bijection.}
+  \objectif{Maîtriser le nombre dérivé, le développement limité d'ordre 1 et la tangente.}
+  \objectif{Appliquer les théorèmes de Rolle et des accroissements finis, en égalité et en inégalité.}
+  \objectif{Exploiter la limite de la dérivée, les classes $\mathscr{C}^{k}$ et la formule de Leibniz.}
+  \objectif{Caractériser la convexité et en tirer des inégalités.}
+  \prerequis{Suites et théorèmes de convergence (chapitre 5).}
+  \prerequis{Dérivation pratique et fonctions usuelles (chapitre 4).}
+  \prerequis{Logique et quantificateurs (chapitre 1).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Limite d'une fonction}
+
+\begin{definition}[Limite en un point, avec des inégalités larges]
+Soit $f$ définie sur un intervalle $I$ et $a\in\overline{\R}$ appartenant à
+$I$ ou extrémité de $I$. Pour $\ell\in\R$ :
+$f(x)\xrightarrow[x\to a]{}\ell$ si
+\[
+  \forall\varepsilon>0,\ \exists\delta>0,\ \forall x\in I,\quad
+  |x-a|\leq\delta\;\Longrightarrow\;|f(x)-\ell|\leq\varepsilon
+\]
+(avec les adaptations usuelles si $a=\pm\infty$ ou $\ell=\pm\infty$). La
+limite, si elle existe, est \emph{unique}. Si $f$ est définie en $a$ et
+possède une limite en $a$, cette limite vaut $f(a)$. Si $f$ possède une
+limite finie en $a$, alors $f$ est bornée au voisinage de $a$. On définit de
+même les limites \emph{à gauche} et \emph{à droite}, notées
+$\lim_{x\to a^{-}}f$ et $\lim_{x\to a^{+}}f$.
+\end{definition}
+
+\begin{theoreme}[Outils de calcul]
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Séquentielle} $f(x)\to\ell$ quand $x\to a$ si et seulement
+    si, pour \emph{toute} suite $(x_n)$ de $I$ tendant vers $a$,
+    $f(x_n)\to\ell$. Très efficace pour montrer qu'une limite
+    \emph{n'existe pas} : deux suites, deux limites différentes.
+  \item \etape{Opérations} combinaisons linéaires, produits, quotients,
+    \emph{composition} de limites.
+  \item \etape{Comparaison} encadrement (limite finie), minoration
+    ($+\infty$), majoration ($-\infty$) ; passage à la limite des
+    inégalités larges.
+  \item \etape{Limite monotone} une fonction monotone sur un intervalle
+    possède en tout point des limites à gauche et à droite.
+\end{itemize}
+\end{theoreme}
+
+\essSection{2}{Continuité en un point}
+
+\begin{definition}
+$f$ est \textbf{continue en} $a\in I$ si $f(x)\xrightarrow[x\to a]{}f(a)$.
+Si $f$ n'est pas définie en $a$ mais possède une limite finie $\ell$ en $a$,
+la fonction prolongée par $\widetilde{f}(a)=\ell$ est continue en $a$ : c'est
+le \textbf{prolongement par continuité}. La continuité se caractérise aussi
+par les suites : $f$ continue en $a$ si et seulement si, pour toute suite
+$x_n\to a$, $f(x_n)\to f(a)$. Combinaisons linéaires, produits, quotients et
+composées de fonctions continues sont continues.
+\end{definition}
+
+\begin{exemple}
+$x\mapsto\dfrac{\sin x}{x}$ se prolonge par continuité en $0$ par la valeur
+$1$ (taux d'accroissement de $\sin$ en $0$). En revanche,
+$x\mapsto\sin\dfrac1x$ n'a pas de limite en $0$ : les suites
+$x_n=\dfrac{1}{2n\pi}$ et $y_n=\dfrac{1}{\pi/2+2n\pi}$ tendent vers $0$,
+avec $\sin\dfrac{1}{x_n}\to0$ et $\sin\dfrac{1}{y_n}\to1$.
+\end{exemple}
+
+\essSection{3}{Continuité sur un intervalle : les grands théorèmes}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Valeurs intermédiaires]
+Soit $f$ continue sur un intervalle $I$, et $a,b\in I$. Tout réel compris
+entre $f(a)$ et $f(b)$ est atteint par $f$ : l'équation $f(x)=k$ possède au
+moins une solution entre $a$ et $b$. En conséquence, \emph{l'image d'un
+intervalle par une fonction continue est un intervalle}. La démonstration
+repose sur le principe de \emph{dichotomie}, qui fournit de surcroît un
+algorithme d'approximation des solutions.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.08,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.3,0) -- (3.3,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,2.5);
+  \draw[otNavy,line width=1pt]
+    plot[domain=0.25:3.05,samples=60] ({\x},{1.15+0.75*sin(deg(1.8*\x-2.4))+0.14*\x});
+  \draw[otGreenDark,line width=0.5pt,dash pattern=on 1.8pt off 1.4pt] (-0.1,1.42) -- (3.2,1.42);
+  \node[left,font=\scriptsize,text=otGreenDark] at (-0.1,1.42) {$k$};
+  \foreach \x in {0.62,1.985,2.55}{\fill[otGreenDark] (\x,1.42) circle (1.1pt);
+    \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (\x,1.42) -- (\x,0);}
+  \node[below,font=\tiny,text=otMuted] at (0.25,-0.03) {$a$};
+  \node[below,font=\tiny,text=otMuted] at (3.05,-0.03) {$b$};
+\end{tikzpicture}\\[0.5mm]
+\legende{TVI : toute valeur $k$ entre $f(a)$ et $f(b)$ est atteinte.}
+\end{minipage}
+
+\begin{theoreme}[Bornes atteintes]
+Toute fonction continue sur un \emph{segment} $\intFF{a}{b}$ est bornée et
+atteint ses bornes : l'image d'un segment par une fonction continue est un
+segment $\intFF{m}{M}$, avec $m=\min f$ et $M=\max f$.
+\end{theoreme}
+
+\begin{theoreme}[Bijection et monotonie]
+Soit $f$ continue sur un intervalle $I$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item Si $f$ est \emph{strictement monotone}, elle réalise une bijection
+    de $I$ sur l'intervalle $J=f(I)$, et sa réciproque est continue sur
+    $J$, de même monotonie.
+  \item Réciproquement, si $f$ est continue et \emph{injective} sur $I$,
+    alors elle est strictement monotone (démonstrations non exigibles).
+\end{itemize}
+Pour les fonctions à valeurs complexes, limites et continuité s'étendent via
+parties réelle et imaginaire.
+\end{theoreme}
+
+\essSection{4}{Dérivabilité : nombre dérivé et développement limité}
+
+\begin{definition}[Nombre dérivé]
+$f$ est \textbf{dérivable en} $a$ si le taux d'accroissement
+$\dfrac{f(x)-f(a)}{x-a}$ possède une limite finie quand $x\to a$ ; cette
+limite est $f'(a)$. De façon équivalente, $f$ admet un
+\emph{développement limité d'ordre 1} en $a$ :
+\[
+  f(a+h)=f(a)+f'(a)\,h+h\,\varepsilon(h),
+  \qquad\text{où}\quad\varepsilon(h)\xrightarrow[h\to0]{}0.
+\]
+Géométriquement, la courbe admet en $a$ une \emph{tangente} de pente
+$f'(a)$ ; cinématiquement, $f'(a)$ est une \emph{vitesse instantanée}.
+La dérivabilité en $a$ entraîne la continuité en $a$ — la réciproque est
+fausse : $x\mapsto|x|$ est continue en $0$, avec des dérivées à gauche
+($-1$) et à droite ($1$) distinctes.
+\end{definition}
+
+\begin{propriete}[Opérations, réciproque, extremum]
+Les opérations du chapitre 4 (combinaison linéaire, produit, quotient,
+composition, réciproque) sont valides ; la tangente au graphe de $f^{-1}$
+en $f(a)$ est la symétrique de la tangente à $f$ en $a$ par rapport à
+$y=x$. \etape{Point critique} si $f$, dérivable, admet un \emph{extremum
+local} en un point $a$ \emph{intérieur} à $I$, alors $f'(a)=0$. La
+réciproque est fausse ($x^{3}$ en $0$), et la condition tombe aux bords de
+l'intervalle.
+\end{propriete}
+
+\essSection{5}{Les théorèmes de Rolle et des accroissements finis}
+
+\noindent
+\begin{minipage}[c]{0.47\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.02,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.3,0) -- (3.4,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,2.4);
+  \draw[otNavy,line width=1pt]
+    plot[domain=0.3:3.0,samples=60] ({\x},{0.9+1.05*sin(deg(2.17*\x-0.65))*sin(deg(1.1*\x))});
+  \fill[otInk] (0.3,0.9) circle (1.1pt); \fill[otInk] (3.0,0.9) circle (1.1pt);
+  \draw[otRule!90!otMuted,line width=0.5pt,dash pattern=on 1.8pt off 1.4pt] (0.3,0.9) -- (3.0,0.9);
+  \draw[otGreen,line width=1pt] (0.85,1.95) -- (2.05,1.95);
+  \fill[otGreenDark] (1.45,1.95) circle (1.2pt);
+  \node[above,font=\scriptsize,text=otGreenDark] at (1.45,2.0) {$f'(c)=0$};
+  \node[below,font=\tiny,text=otMuted] at (0.3,-0.03) {$a$};
+  \node[below,font=\tiny,text=otMuted] at (3.0,-0.03) {$b$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Rolle : $f(a)=f(b)$ impose une tangente horizontale.}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.47\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.02,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.3,0) -- (3.4,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,2.4);
+  \draw[otNavy,line width=1pt]
+    plot[domain=0.3:3.0,samples=60] ({\x},{0.42+0.3*\x+0.5*sin(deg(1.75*\x+0.6))});
+  \fill[otInk] (0.3,0.918) circle (1.1pt); \fill[otInk] (3.0,1.736) circle (1.1pt);
+  \draw[otRule!90!otMuted,line width=0.6pt] (0.3,0.918) -- (3.0,1.736);
+  \draw[otGreen,line width=1pt] (1.1,1.56) -- (2.5,1.98);
+  \fill[otGreenDark] (1.8,1.77) circle (1.2pt);
+  \node[above left,font=\scriptsize,text=otGreenDark,inner sep=1pt] at (1.9,1.84) {$c$};
+  \node[below,font=\tiny,text=otMuted] at (0.3,-0.03) {$a$};
+  \node[below,font=\tiny,text=otMuted] at (3.0,-0.03) {$b$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Accroissements finis : une tangente parallèle à la corde.}
+\end{minipage}
+
+\begin{theoreme}[Rolle, puis accroissements finis]
+Soit $f$ continue sur $\intFF{a}{b}$ et dérivable sur $\intOO{a}{b}$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Rolle} si $f(a)=f(b)$, il existe $c\in\intOO{a}{b}$ tel que
+    $f'(c)=0$.
+  \item \etape{Égalité des accroissements finis} il existe
+    $c\in\intOO{a}{b}$ tel que $f(b)-f(a)=f'(c)\,(b-a)$.
+  \item \etape{Inégalité des accroissements finis} si $|f'|\leq K$ sur
+    l'intervalle, alors, pour tous $x,y$ :
+    $|f(x)-f(y)|\leq K\,|x-y|$ — on dit que $f$ est
+    \textbf{$K$-lipschitzienne}.
+\end{itemize}
+\end{theoreme}
+
+\begin{savoirfaire}[L'inégalité des accroissements finis et les suites $u_{n+1}=f(u_n)$]
+Si $\ell$ est un point fixe de $f$ et si $|f'|\leq K<1$ sur un intervalle
+stable contenant la suite, alors
+$|u_{n+1}-\ell|=|f(u_n)-f(\ell)|\leq K\,|u_n-\ell|$, d'où par récurrence
+\[
+  |u_n-\ell|\leq K^{n}\,|u_0-\ell|\xrightarrow[n\to+\infty]{}0 :
+\]
+la convergence est \emph{géométrique}, à vitesse contrôlée par $K$.
+\end{savoirfaire}
+
+\begin{theoreme}[Conséquences de l'égalité des accroissements finis]
+Pour $f$ dérivable sur un intervalle : $f$ est constante si et seulement si
+$f'=0$ ; croissante si et seulement si $f'\geq0$ ; strictement croissante si
+$f'>0$ sauf en un nombre fini de points.
+\etape{Limite de la dérivée} si $f$ est continue sur $I$, dérivable sur
+$I\setminus\ens{a}$, et si $f'(x)\to\ell\in\R$ quand $x\to a$, alors $f$ est
+dérivable en $a$ avec $f'(a)=\ell$ — et $f'$ est alors continue en $a$
+(extension aux cas $\ell=\pm\infty$ : tangente verticale).
+\end{theoreme}
+
+\essSection{6}{Fonctions de classe $\mathscr{C}^{k}$, fonctions complexes}
+
+\begin{definition}
+$f$ est de classe $\mathscr{C}^{k}$ ($k\in\N\cup\ens{\infty}$) si elle est
+$k$ fois dérivable et si $f^{(k)}$ est continue. Combinaisons linéaires,
+produits, quotients, composées et réciproques préservent la classe
+$\mathscr{C}^{k}$ (démonstrations non exigibles pour les deux dernières).
+\etape{Formule de Leibniz} pour $f,g$ de classe $\mathscr{C}^{n}$ :
+\[
+  (fg)^{(n)}=\sum_{k=0}^{n}\binom{n}{k}\,f^{(k)}\,g^{(n-k)}.
+\]
+Pour les fonctions à valeurs complexes, la dérivabilité se lit sur les
+parties réelle et imaginaire ; l'inégalité des accroissements finis subsiste
+pour une fonction complexe de classe $\mathscr{C}^{1}$ (la version
+« égalité » tombe, elle, en défaut).
+\end{definition}
+
+\essSection{7}{Convexité}
+
+\begin{definition}
+$f$ est \textbf{convexe} sur $I$ si, pour tous $x,y\in I$ et tout
+$\lambda\in\intFF{0}{1}$ :
+\[
+  f\bigl((1-\lambda)x+\lambda y\bigr)\leq(1-\lambda)f(x)+\lambda f(y) :
+\]
+tout arc de la courbe est situé \emph{sous} la corde correspondante.
+$f$ est concave si $-f$ est convexe.
+\etape{Jensen} pour $x_1,\dots,x_n\in I$ et des réels positifs
+$\lambda_1,\dots,\lambda_n$ de somme $1$ :
+$f\Bigl(\sum\lambda_i x_i\Bigr)\leq\sum\lambda_i f(x_i)$.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.52\linewidth}
+\begin{theoreme}[Caractérisations]
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Pentes} $f$ est convexe si et seulement si, pour tout
+    $a\in I$, la fonction pente $x\mapsto\dfrac{f(x)-f(a)}{x-a}$ est
+    croissante.
+  \item \etape{Dérivable} $f$ dérivable est convexe si et seulement si $f'$
+    est croissante ; la courbe est alors \emph{au-dessus} de chacune de ses
+    tangentes.
+  \item \etape{Deux fois dérivable} $f$ est convexe si et seulement si
+    $f''\geq0$.
+\end{itemize}
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.12,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.4,0) -- (3.3,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,2.5);
+  \draw[otNavy,line width=1.05pt]
+    plot[domain=-0.25:2.95,samples=50] ({\x},{0.35*(\x-1.3)*(\x-1.3)+0.55});
+  \draw[otOrange,line width=0.7pt] (0.25,1.2) -- (2.75,1.4);
+  \draw[otGreen,line width=0.7pt] (0.55,1.06) -- (2.45,0.26);
+  \node[font=\tiny,text=otOrange!80!black] at (1.55,1.52) {corde};
+  \node[font=\tiny,text=otGreenDark] at (2.42,0.6) {tangente};
+\end{tikzpicture}\\[0.5mm]
+\legende{Fonction convexe : sous ses cordes, au-dessus de ses tangentes.}
+\end{minipage}
+
+\begin{exemple}[Deux inégalités retrouvées]
+$\exp$ est convexe ($\exp''=\exp>0$) : sa courbe domine sa tangente en $0$,
+d'où $\mathrm{e}^{x}\geq1+x$. $\ln$ est concave : sous sa tangente en $1$,
+d'où $\ln x\leq x-1$ ; et l'inégalité de Jensen appliquée à $\ln$ redonne
+l'inégalité arithmético-géométrique.
+\end{exemple}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Le TVI exige la \emph{continuité} et un \emph{intervalle} ; les
+    bornes atteintes exigent un \emph{segment}.
+  \item $f'(a)=0$ ne suffit pas pour un extremum, et un extremum au
+    \emph{bord} n'impose rien à la dérivée.
+  \item Rolle et les accroissements finis demandent la dérivabilité sur
+    l'intervalle \emph{ouvert} seulement — mais la continuité jusqu'aux bornes.
+  \item Continue et dérivable ne sont pas synonymes : $|x|$, et pire,
+    $x\mapsto x^{2}\sin\frac1x$ est dérivable partout avec $f'$ discontinue
+    en $0$.
+  \item La caractérisation $f''\geq0$ exige de pouvoir dériver deux fois :
+    la définition par les cordes, elle, n'exige rien.
+  \item Dans une étude de suite récurrente, l'inégalité $|f'|\leq K<1$ doit
+    valoir sur un intervalle \emph{stable} contenant tous les termes.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Calculs de limites}
+Déterminer les limites suivantes :
+\begin{tasks}(3)
+  \task $\displaystyle\lim_{x\to1}\frac{x^{2}-1}{x-1}$
+  \task $\displaystyle\lim_{x\to0}\frac{\sin x}{x}$
+  \task $\displaystyle\lim_{x\to0}\frac{\sqrt{x+1}-1}{x}$
+  \task $\displaystyle\lim_{x\to0^{+}}x\,\mathrm{e}^{1/x}$
+  \task $\displaystyle\lim_{x\to1}\frac{\ln x}{x-1}$
+\end{tasks}
+\emph{Pour b) et e), on reconnaîtra des taux d'accroissement.}
+\end{exercice}
+
+\begin{exercice}[1]{Limites à gauche, à droite}
+\begin{questions}
+  \item Déterminer les limites à gauche et à droite de
+    $x\mapsto\lfloor x\rfloor$ en $2$. La fonction a-t-elle une limite en
+    $2$ ?
+  \item Même question pour $x\mapsto\dfrac{|x|}{x}$ en $0$.
+  \item Montrer que $x\mapsto\mathrm{e}^{-1/x^{2}}$ (définie sur $\R^{*}$)
+    possède une limite en $0$, et la déterminer.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Prolongement par continuité}
+Les fonctions suivantes se prolongent-elles par continuité en $0$ ?
+\begin{questions}
+  \item $f(x)=\dfrac{\mathrm{e}^{x}-1}{x}$ ;
+  \item $g(x)=x\ln x$\quad(sur $\intOO{0}{+\infty}$) ;
+  \item $h(x)=x\sin\dfrac1x$ ;
+  \item $k(x)=\sin\dfrac1x$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Le TVI en action}
+\begin{questions}
+  \item Montrer que l'équation $x^{3}+x-1=0$ possède une unique solution
+    dans $\intFF{0}{1}$.
+  \item Montrer que tout polynôme de degré impair possède au moins une
+    racine réelle.
+  \item Montrer que l'équation $\cos x=x$ possède au moins une solution
+    dans $\intFF{0}{1}$.
+  \item Montrer que l'équation $x^{5}=x+1$ possède au moins une solution
+    réelle, et en donner un encadrement d'amplitude $1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Dérivabilité en un point}
+\begin{questions}
+  \item Étudier la dérivabilité de $x\mapsto|x|$ en $0$ (dérivées à gauche
+    et à droite).
+  \item Étudier la dérivabilité de $x\mapsto\sqrt{x}$ en $0$. Interpréter
+    géométriquement.
+  \item Montrer que $x\mapsto x|x|$ est dérivable sur $\R$, et donner sa
+    dérivée.
+  \item Déterminer $a$ et $b$ pour que la fonction définie par
+    $f(x)=x^{2}$ si $x\leq1$ et $f(x)=ax+b$ si $x>1$ soit dérivable en $1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Tangentes et développement limité d'ordre 1}
+\begin{questions}
+  \item Donner l'équation de la tangente à la courbe de
+    $f:x\mapsto x^{3}-2x$ au point d'abscisse $1$.
+  \item Écrire le développement limité d'ordre 1 en $0$ de
+    $h\mapsto\sqrt{1+h}$ et de $h\mapsto\mathrm{e}^{h}$.
+  \item En déduire des valeurs approchées de $\sqrt{1{,}02}$ et de
+    $\mathrm{e}^{0{,}05}$, et comparer aux valeurs exactes.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Rolle et accroissements finis : premiers pas}
+\begin{questions}
+  \item Vérifier les hypothèses du théorème de Rolle pour
+    $f:x\mapsto x^{3}-3x$ sur $\intFF{-\sqrt3}{\sqrt3}$, et déterminer
+    \emph{tous} les réels $c$ qui conviennent.
+  \item À l'aide de l'inégalité des accroissements finis, montrer que, pour
+    tous réels $a,b$ : $|\sin a-\sin b|\leq|a-b|$.
+  \item En appliquant l'égalité des accroissements finis à $\ln$ sur
+    $\intFF{1}{1{,}1}$, montrer que
+    $\dfrac{1}{11}\leq\ln(1{,}1)\leq\dfrac{1}{10}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Convexité : premiers exemples}
+\begin{questions}
+  \item Justifier que $x\mapsto x^{2}$ et $\exp$ sont convexes sur $\R$, que
+    $x\mapsto\dfrac1x$ est convexe sur $\intOO{0}{+\infty}$, et que $\ln$ et
+    $\sqrt{\phantom{x}}$ sont concaves.
+  \item Retrouver, par un argument de convexité, les inégalités
+    $\mathrm{e}^{x}\geq1+x$ (sur $\R$) et $\ln x\leq x-1$ (sur
+    $\intOO{0}{+\infty}$).
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Caractérisation séquentielle}
+\begin{questions}
+  \item Montrer, à l'aide de deux suites bien choisies, que
+    $x\mapsto\sin\dfrac1x$ n'a pas de limite en $0$.
+  \item Soit $f$ définie sur $\R$ par : $f(x)=x$ si $x\in\Q$, et $f(x)=0$
+    sinon. Montrer que $f$ est continue en $0$, puis que $f$ n'est continue
+    en aucun autre point. \emph{Utiliser la densité de $\Q$ et de
+    $\R\setminus\Q$ (chapitre 5).}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Autour des grands théorèmes}
+\begin{questions}
+  \item Déterminer l'image de $\intFF{0}{\pi}$ par $\cos$, puis l'image de
+    $\intOO{0}{1}$ par $x\mapsto\dfrac1x$. Commenter.
+  \item Soit $f$ continue sur $\intFF{0}{1}$ avec $f(0)=-1$ et $f(1)=3$.
+    Combien d'itérations de dichotomie garantissent une approximation d'une
+    solution de $f(x)=0$ à $10^{-3}$ près ?
+  \item Justifier que $f:x\mapsto x\,\mathrm{e}^{-x}$ atteint un maximum et
+    un minimum sur $\intFF{0}{2}$, et les déterminer.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Points fixes}
+\begin{questions}
+  \item Soit $f:\intFF{0}{1}\to\intFF{0}{1}$ continue. Montrer que $f$
+    possède au moins un point fixe.
+    \emph{Étudier $g(x)=f(x)-x$ aux deux bornes.}
+  \item Montrer que si, de plus, $f$ est décroissante, le point fixe est
+    unique.
+  \item Donner un exemple montrant que le résultat de la question 1 tombe
+    en défaut sur $\intOO{0}{1}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le théorème de la bijection}
+Soit $f:x\mapsto x+\ln x$, définie sur $\intOO{0}{+\infty}$.
+\begin{questions}
+  \item Montrer que $f$ réalise une bijection de $\intOO{0}{+\infty}$ sur
+    $\R$.
+  \item En déduire que l'équation $x+\ln x=2$ possède une unique solution
+    $\alpha$, et vérifier que $\alpha\in\intOO{1{,}55}{1{,}56}$.
+  \item Justifier que $f^{-1}$ est dérivable sur $\R$ et exprimer
+    $\bigl(f^{-1}\bigr)'(2)$ en fonction de $\alpha$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Rolle et les polynômes}
+\begin{questions}
+  \item Montrer que, entre deux racines réelles distinctes d'une fonction
+    polynomiale, il existe toujours une racine de sa dérivée.
+  \item On considère $P=X^{3}-3X+1$. Calculer $P(-2)$, $P(0)$, $P(1)$ et
+    $P(2)$, et en déduire que $P$ possède exactement trois racines réelles.
+  \item Vérifier la cohérence avec la question 1 : où se trouvent les
+    racines de $P'$ ?
+  \item Montrer plus généralement que si $f$, deux fois dérivable, s'annule
+    en trois points distincts, alors $f''$ s'annule au moins une fois.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Des inégalités par accroissements finis}
+\begin{questions}
+  \item Montrer que, pour tout $x>0$ :
+    $\dfrac{x}{1+x}\leq\ln(1+x)\leq x$
+    \emph{(appliquer l'égalité des accroissements finis à $\ln$ entre $1$
+    et $1+x$)}.
+  \item Montrer que, pour tous réels $a,b$ :
+    $|\arctan a-\arctan b|\leq|a-b|$.
+  \item Montrer que, pour tout $n\in\N^{*}$ :
+    $\dfrac{1}{n+1}\leq\ln(n+1)-\ln n\leq\dfrac1n$, et retrouver ainsi
+    l'encadrement clé de l'exercice 20 du chapitre 5.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Limite de la dérivée}
+\begin{questions}
+  \item On définit $f$ sur $\R$ par $f(x)=x^{2}\sin\dfrac1x$ si $x\neq0$ et
+    $f(0)=0$. Montrer que $f$ est dérivable en $0$ (revenir au taux
+    d'accroissement), puis que $f'$ n'a pas de limite en $0$. Que peut-on
+    en conclure sur la réciproque du théorème de la limite de la dérivée ?
+  \item On définit $g$ sur $\intFO{0}{+\infty}$ par
+    $g(x)=x^{3/2}\sin\dfrac1x$ si $x>0$ et $g(0)=0$. Montrer que $g$ est
+    dérivable en $0$.
+  \item Soit $h$ définie par $h(x)=\mathrm{e}^{-1/x}$ si $x>0$ et $h(x)=0$ si
+    $x\leq0$. Montrer, à l'aide du théorème de la limite de la dérivée, que
+    $h$ est de classe $\mathscr{C}^{1}$ sur $\R$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La formule de Leibniz}
+\begin{questions}
+  \item Montrer que, pour tout $n\geq1$, la dérivée $n$-ième de
+    $x\mapsto x^{2}\mathrm{e}^{x}$ est
+    $x\mapsto\bigl(x^{2}+2nx+n(n-1)\bigr)\mathrm{e}^{x}$.
+  \item En déduire la valeur de la dérivée dixième de $x^{2}\mathrm{e}^{x}$
+    en $0$.
+  \item Calculer la dérivée $n$-ième de $x\mapsto x\cos x$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Des inégalités par convexité}
+\begin{questions}
+  \item Par concavité de $\sin$ sur $\intFF{0}{\pi}$, montrer que, pour tout
+    $x\in\intFF{0}{\frac{\pi}{2}}$ :
+    $\sin x\geq\dfrac{2x}{\pi}$ (inégalité de la corde).
+  \item Par concavité de $\ln$, montrer que, pour tous $a,b>0$ et
+    $\theta\in\intFF{0}{1}$ :
+    $a^{\theta}b^{1-\theta}\leq\theta a+(1-\theta)b$.
+  \item En déduire, pour $\theta=\dfrac12$, l'inégalité
+    arithmético-géométrique, et comparer avec la démonstration du
+    chapitre 2.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Convexité et points d'inflexion}
+\begin{questions}
+  \item Étudier la convexité de $f:x\mapsto x^{3}-3x^{2}$ et préciser son
+    point d'inflexion.
+  \item Étudier la convexité de $g:x\mapsto\ln(1+x^{2})$ et préciser ses
+    points d'inflexion.
+  \item Pour $f$, écrire l'équation de la tangente au point d'inflexion et
+    décrire la position de la courbe de part et d'autre.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{La méthode de Newton pour $\sqrt2$}
+Pour résoudre $x^{2}-2=0$, la méthode de Newton remplace la courbe par sa
+tangente : partant de $x_0=2$, on définit $x_{n+1}$ comme l'abscisse du
+point où la tangente en $\bigl(x_n,f(x_n)\bigr)$ recoupe l'axe des
+abscisses, avec $f(x)=x^{2}-2$.
+\begin{questions}
+  \item Montrer que $x_{n+1}=\dfrac12\Bigl(x_n+\dfrac{2}{x_n}\Bigr)$
+    (c'est l'algorithme de Héron, vieux de deux millénaires).
+  \item Montrer que l'intervalle $\intFF{\sqrt2}{2}$ est stable et que la
+    suite $(x_n)$ est décroissante ; en déduire sa convergence vers
+    $\sqrt2$.
+  \item Établir l'identité
+    $x_{n+1}-\sqrt2=\dfrac{(x_n-\sqrt2)^{2}}{2x_n}$, et en déduire
+    $0\leq x_{n+1}-\sqrt2\leq\dfrac{(x_n-\sqrt2)^{2}}{2\sqrt2}$.
+  \item Calculer les erreurs pour $n=1,2,3$ et commenter : combien de
+    décimales exactes gagne-t-on à chaque itération ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Variations sur Rolle}
+\begin{questions}
+  \item Soit $f$ continue sur $\intFF{a}{b}$, dérivable sur
+    $\intOO{a}{b}$, avec $f(a)=f(b)=0$. Montrer qu'il existe
+    $c\in\intOO{a}{b}$ tel que $f'(c)=f(c)$.
+    \emph{Appliquer Rolle à $g:x\mapsto\mathrm{e}^{-x}f(x)$.}
+  \item Généraliser : pour tout réel $\lambda$, il existe $c$ tel que
+    $f'(c)=\lambda f(c)$.
+  \item Soit $f$ dérivable sur $\R$ telle que
+    $\lim_{x\to-\infty}f(x)=\lim_{x\to+\infty}f(x)=0$, $f$ non nulle.
+    Montrer que $f'$ s'annule au moins une fois.
+    \emph{On admettra qu'une telle fonction atteint un extremum global non
+    nul en un point de $\R$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Fonctions lipschitziennes et itération}
+\begin{questions}
+  \item Montrer qu'une fonction lipschitzienne est continue.
+  \item Montrer que $x\mapsto\sqrt{x}$ n'est pas lipschitzienne sur
+    $\intFF{0}{1}$ \emph{(examiner les pentes près de $0$)}.
+  \item Soit $f:\intFF{a}{b}\to\intFF{a}{b}$ de classe $\mathscr{C}^{1}$
+    avec $|f'|\leq k<1$ sur $\intFF{a}{b}$.
+    Montrer que $f$ possède un unique point fixe $\ell$, puis que, pour tout
+    $u_0\in\intFF{a}{b}$, la suite $u_{n+1}=f(u_n)$ vérifie
+    $|u_n-\ell|\leq k^{n}\,|u_0-\ell|$ et converge vers $\ell$.
+  \item Application : $f=\cos$ sur $\intFF{0}{1}$. Justifier que
+    $k=\sin1<1$ convient, et conclure sur la suite $u_0=0$,
+    $u_{n+1}=\cos(u_n)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le théorème de Darboux}
+Soit $f$ dérivable sur $\intFF{a}{b}$, avec $f'(a)<\lambda<f'(b)$. On pose
+$g(x)=f(x)-\lambda x$.
+\begin{questions}
+  \item Justifier que $g$ atteint son minimum sur $\intFF{a}{b}$ en un
+    point $c$.
+  \item Montrer que $c\neq a$ \emph{(utiliser $g'(a)<0$ et la définition du
+    nombre dérivé)}, puis que $c\neq b$.
+  \item Conclure : il existe $c\in\intOO{a}{b}$ tel que $f'(c)=\lambda$.
+    Ainsi, \emph{toute dérivée vérifie la propriété des valeurs
+    intermédiaires}, même si elle n'est pas continue (théorème de Darboux).
+  \item En déduire qu'aucune fonction dérivable sur $\R$ n'a pour dérivée
+    la fonction $x\mapsto\lfloor x\rfloor$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Jensen et la comparaison des moyennes}
+Soient $x_1,\dots,x_n$ des réels strictement positifs. On définit les
+moyennes harmonique, géométrique, arithmétique et quadratique :
+\[
+  H=\frac{n}{\frac{1}{x_1}+\dots+\frac{1}{x_n}},\qquad
+  G=\sqrt[n]{x_1\cdots x_n},\qquad
+  A=\frac{x_1+\dots+x_n}{n},\qquad
+  Q=\sqrt{\frac{x_1^{2}+\dots+x_n^{2}}{n}}.
+\]
+\begin{questions}
+  \item À l'aide de l'inégalité de Jensen appliquée à $\ln$ (concave),
+    montrer que $G\leq A$.
+  \item En appliquant cette inégalité aux inverses $\frac{1}{x_i}$, montrer
+    que $H\leq G$.
+  \item Par convexité de $x\mapsto x^{2}$, montrer que $A\leq Q$.
+  \item Application : parmi tous les rectangles de périmètre donné, montrer
+    que le carré est celui d'aire maximale.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Vitesses de convergence}
+On compare trois suites convergentes, issues des chapitres 5 et 6 :
+\[
+  \text{(a)}\ u_{n+1}=\frac{u_n}{2}+1,\ u_0=0 ;\qquad
+  \text{(b)}\ v_{n+1}=\sqrt{2+v_n},\ v_0=0 ;\qquad
+  \text{(c)}\ w_{n+1}=\frac12\Bigl(w_n+\frac{2}{w_n}\Bigr),\ w_0=2.
+\]
+\begin{questions}
+  \item Pour (a) : montrer que $|u_n-2|=2\cdot\Bigl(\dfrac12\Bigr)^{n}$ —
+    convergence \emph{géométrique} de raison exactement $\dfrac12$.
+  \item Pour (b) : à l'aide de l'inégalité des accroissements finis
+    appliquée à $f(x)=\sqrt{2+x}$ sur $\intFF{0}{2}$, montrer que
+    $|v_n-2|\leq2\cdot\Bigl(\dfrac{1}{2\sqrt2}\Bigr)^{n}$. Quel est le
+    rapport asymptotique des erreurs ? \emph{(Comparer à $|f'(2)|$.)}
+  \item Pour (c) : rappeler (exercice 19) que l'erreur est \emph{élevée au
+    carré} à chaque itération, à constante près.
+  \item Avec $10$ itérations, combien de décimales exactes obtient-on
+    approximativement dans chaque cas ? Conclure sur la hiérarchie des
+    vitesses : géométrique contre quadratique.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-06}

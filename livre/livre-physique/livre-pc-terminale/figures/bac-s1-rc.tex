@@ -1,0 +1,15 @@
+% Charge du condensateur du capteur d'humidité (sujet type bac 1, exercice 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=118mm,height=56mm,xmin=0,xmax=1000,ymin=0,ymax=3.8,
+  xtick={0,100,...,1000},ytick={0,0.5,...,3.5},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$t$ (\unit{\micro s})},ylabel={$u_C$ (V)}]
+\addplot[otNavy,line width=1pt,domain=0:1000,samples=150] {3.3*(1-exp(-x/186))};
+\solution{\addplot[otRed!80!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:186,samples=2] {3.3*x/186};
+  \addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:1000,samples=2] {3.3};
+  \draw[otRed!80!black,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:0,2.08) -- (axis cs:186,2.08) -- (axis cs:186,0);
+  \fill[otRed!80!black] (axis cs:186,2.08) circle (1.6pt);
+  \node[pcLegende,anchor=west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:200,1.75) {$0{,}63\,E=\qty{2,1}{V}$ : $\tau=\qty{186}{\micro s}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Tension aux bornes du capteur, initialement déchargé, après la fermeture de l'interrupteur à $t=0$.}

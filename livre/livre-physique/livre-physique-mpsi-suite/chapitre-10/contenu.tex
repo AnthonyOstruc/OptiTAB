@@ -1,0 +1,623 @@
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)},x=1mm,y=1mm]
+\fill[otNavy](0,0)rectangle(210,297);\fill[otNavyDark](0,0)rectangle(210,88);
+\draw[white,opacity=.055,step=7mm](0,0)grid(210,297);
+\node[anchor=north west,inner sep=0pt]at(23,278){\includegraphics[width=57mm]{images/logo-blanc.png}};
+\node[anchor=west,text=otGreen,font=\otSemi\fontsize{12}{15}\selectfont]at(24,235){MPSI\quad /\quad PHYSIQUE};
+\node[anchor=west,text=white,font=\sffamily\bfseries\fontsize{52}{56}\selectfont]at(22,211){Physique};
+\node[anchor=north west,text=white,text width=158mm,font=\otLight\fontsize{31}{38}\selectfont]at(24,191){Ondes stationnaires et corde vibrante};
+\fill[otGreen](24,149)rectangle(54,150.4);
+\node[anchor=north west,text=white,text width=153mm,font=\sffamily\fontsize{11}{16}\selectfont]at(24,139){Cours développé et schémas vectoriels\par 24 exercices et corrigés expliqués\par 3 défis, TP, activité numérique, DM et DS\par Parcours sur des supports authentiques};
+\draw[white,opacity=.6,-{Stealth}] (24,46)--(185,46);
+\draw[white,opacity=.6,-{Stealth}] (28,17)--(28,81);
+\draw[otGreen,line width=1.8pt] plot[domain=0:6,samples=180] ({30+24*\x},{46+27*cos(deg(3*\x))*exp(-.18*\x)});
+\node[anchor=west,text=white,font=\otSemi\fontsize{9}{12}\selectfont]at(24,8){CHAPITRE 10\quad /\quad COLLECTION OPTITAB\quad /\quad OCTOBRE 2026};
+\end{scope}\end{tikzpicture}\null
+
+\Page{Collection OptiTAB}{Physique MPSI}{titre}
+\thispagestyle{mpsiFront}
+\vspace{8mm}\begin{center}\includegraphics[width=63mm]{images/logo-couleur.png}\par\vspace{15mm}
+{\otSemi\color{otGreenDark}CLASSE PRÉPARATOIRE SCIENTIFIQUE}\par\vspace{5mm}
+{\otLight\fontsize{23}{29}\selectfont Cours et exercices corrigés}\par\vspace{12mm}
+{\fontsize{18}{24}\selectfont Ondes stationnaires et corde vibrante}\par\vspace{8mm}
+Chapitre 10\par 24 exercices progressifs ; 3 défis avancés\par TP, numérique, DM et DS avec barèmes\par\vspace{12mm}
+Collection OptiTAB\par\href{https://www.optitab.net}{optitab.net}\end{center}
+\vfill\source{Édition de travail du 25 octobre 2026. Énoncés OptiTAB originaux, figures vectorielles et corrigés indépendants. Les supports extérieurs sont identifiés à la fin du chapitre.}
+
+
+\Page{Pour ouvrir le chapitre}{Avant-propos et mode d’emploi}{avant}
+\thispagestyle{mpsiFront}
+Ce chapitre prolonge le manuel de physique MPSI dans la charte de la collection. Il traite un approfondissement sur les ondes stationnaires, les conditions aux limites et les modes propres d’une corde, à partir des outils de superposition. Le programme de référence est l’\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{arrêté du 5 janvier 2021}, annexe 2, rubrique approfondissement de 1.6.
+\Sub{Comprendre, chercher, vérifier}
+Lire un résultat ne suffit pas à se l’approprier. Redessiner le système, orienter les grandeurs, retrouver les équations puis expliquer leurs limites : ces gestes relient le cours aux problèmes. Une réponse numérique doit comporter une unité, un nombre raisonnable de chiffres et une interprétation.
+\begin{loi}{Un parcours en quatre étapes}
+1. Faire le diagnostic p.\,\pageref{diagnostic} et reprendre les prérequis fragiles.\par
+2. Travailler le cours p.\,\pageref{cours-1} et refaire les exemples.\par
+3. Chercher les exercices p.\,\pageref{td1}, puis les défis et évaluations.\par
+4. Corriger, expliquer l’erreur puis refaire une question sans solution.
+\end{loi}
+\Sub{Utiliser les corrigés}
+Les solutions commencent p.\,\pageref{corr-diag}. Avant de les lire, utiliser les indications p.\,\pageref{indices}. Le barème du DM et du DS sert à distinguer mise en équation, calcul et interprétation ; ce n’est pas un barème officiel de concours.
+\Sub{Travailler sur de vrais sujets}
+Les pages p.\,\pageref{sources-1} et suivantes donnent les liens, les questions ciblées et des repères de correction de supports réellement publiés. Conserver leurs données et figures d’origine. Les énoncés OptiTAB sont des créations pédagogiques, clairement distinguées de ces documents.
+\begin{methode}{Une fiche de progrès}
+Après chaque exercice, noter S (réussi seul), A (réussi avec aide) ou R (à reprendre). Choisir une question à refaire deux jours plus tard. Une solution comprise doit pouvoir être reconstruite, pas seulement reconnue.
+\end{methode}
+\source{© OptiTAB, 2026. Les séries de données créées pour le TP et le numérique sont signalées comme simulations. Les références des auteurs extérieurs restent attachées aux documents d’origine.}
+
+
+\Page{Collection OptiTAB}{Sommaire}{sommaire}
+\thispagestyle{mpsiFront}
+\begingroup\setlength{\parskip}{0pt}\fontsize{10}{13.5}\selectfont
+\source{MPSI · Physique · Plan de l’ouvrage}
+\input{plan}
+\endgroup
+\vspace{2mm}\hrule\vspace{2mm}
+\tocresource{Parcours et ressources du chapitre 10}{ressources}
+\source{La pagination concerne ce fascicule. Les autres chapitres sont des volumes séparés ou en préparation ; aucune page fictive n’est attribuée.}
+
+
+\Page{Collection OptiTAB}{Parcours et ressources}{ressources}
+\thispagestyle{mpsiFront}
+\tocresource{Diagnostic}{diagnostic}
+\tocresource{Cours et méthodes}{cours-1}
+\tocresource{Travaux pratiques}{tp}
+\tocresource{Activité numérique}{numerique}
+\tocresource{24 exercices progressifs}{td1}
+\tocresource{Trois défis avancés}{defi1}
+\tocresource{Devoir maison}{dm}
+\tocresource{Devoir surveillé de 2 heures}{ds1}
+\tocresource{Indications progressives}{indices}
+\tocresource{Corrigés du diagnostic}{corr-diag}
+\tocresource{Corrigés des exercices}{corr-td1}
+\tocresource{Corrigés des défis}{corr-defi1}
+\tocresource{Corrigé et barème du DM}{corr-dm}
+\tocresource{Corrigé et barème du DS}{corr-ds1}
+\tocresource{Supports authentiques et références}{sources-1}
+\begin{docu}{Mon objectif de travail}\checkline{Je refais une démonstration.}\checkline{Je réussis une application sans aide.}\checkline{Je justifie le choix d’un modèle.}\checkline{Je corrige une évaluation et repère la capacité à reprendre.}\end{docu}
+
+\Page{Chapitre 10 / Approfondissement}{Ondes stationnaires et corde vibrante}{chapitre-10}
+Ce chapitre est un approfondissement annoncé, et non une liste de capacités exigibles supplémentaires du programme français de MPSI. Il prolonge les interférences par deux ondes de sens contraires. Les résultats sur la corde sont obtenus par superposition et conditions aux limites, sans introduire d’équation d’onde.
+\begin{loi}{Notions et capacités travaillées}
+Réinvestir la propagation et la superposition de la rubrique 1.6. Approfondissements : nœuds et ventres, réflexion sur une extrémité fixe, modes de la corde fixée aux deux bouts, résonance et mesure de masse linéique. Les lois spécifiques nécessaires sont fournies et expliquées.
+\end{loi}
+
+\Sub{Prérequis}
+Chapitres 8 et 9 : onde progressive, phase, somme de deux sinus. Chapitres 4 à 6 : oscillateur, résonance et pertes. Trigonométrie et analyse dimensionnelle.
+
+\begin{methode}{La méthode du chapitre}
+Écrire les deux ondes avec leurs sens ; imposer les conditions aux extrémités pour tout instant ; séparer facteur spatial et temporel ; identifier les nœuds ; quantifier les fréquences ; confronter le modèle à l’expérience.
+\end{methode}
+
+\source{Concordance : annexe 2 de l’arrêté du 5 janvier 2021, rubrique approfondissement de 1.6. Les ondes stationnaires ne sont pas explicitement listées dans la rubrique 1.6 du programme MPSI de 2021. La loi c = √(T/\ensuremath{\mu}) est fournie comme modèle de corde idéale ; sa démonstration par équation d’onde est laissée hors de ce chapitre.}
+
+\Page{Diagnostic / 15 min}{Avant d’ouvrir le cours}{diagnostic}
+\begin{questions}
+\item Quelles directions décrivent $\cos(\omega t-kx)$ et $\cos(\omega t+kx)$ ?
+\item Rappeler cos(u-v)+cos(u+v).
+\item Quelle contrainte impose une extrémité fixe ?
+\item Une amplitude peut-elle être négative ?
+\item \ensuremath{\lambda} = 0,80 m et c = 40 m/s : donner f.
+\item Quelle est l’unité de la masse linéique ?
+\item Un maximum d’amplitude en régime forcé peut-il être infini dans un système réel ?
+\item Deux points dont les coefficients spatiaux sont de signes opposés oscillent comment ?
+\end{questions}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les unités sont maîtrisées.}\checkline{Je peux orienter un schéma et annoncer les hypothèses.}\checkline{Je sais expliquer une condition initiale.}Corrigé p.\,\pageref{corr-diag}.
+\end{docu}
+
+
+\Page{Cours / 1}{Construire une onde stationnaire}{cours-1}
+\begin{loi}{Deux ondes de même amplitude}
+\[y_+=a\cos(\omega t-kx),\quad y_-=a\cos(\omega t+kx).\]\[y=y_++y_-=2a\cos kx\cos\omega t.\]Les facteurs de position et de temps se séparent. Les lieux d’amplitude nulle restent fixes : cette structure est dite stationnaire.
+\end{loi}
+\Sub{Comparer à une onde progressive}
+Une onde progressive sinusoïdale garde une amplitude constante dans le modèle uniforme et présente une phase qui dépend de x. Une onde stationnaire idéale a une amplitude locale dépendant de x ; les points d’un même intervalle entre nœuds oscillent en phase, et ceux d’intervalles voisins en opposition.
+\Sub{Une somme qui ne translate pas}
+À différentes dates, le profil s’aplatit, change de signe puis retrouve sa forme. Il ne se déplace pas rigidement à une vitesse unique. Pourtant chacune des deux ondes constitutives se propage à c = \ensuremath{\omega}/k. Les appeler « immobiles » individuellement serait incorrect.
+\begin{methode}{Reconnaître la forme}
+Une expression $A(x)\cos(\omega t+\varphi)$ est une onde stationnaire harmonique si A dépend de x et la phase temporelle commune est indépendante de x à un signe près. Vérifier ensuite les conditions aux limites.
+\end{methode}
+
+
+\Page{Cours / 2}{Nœuds, ventres et phases}{cours-2}
+\begin{loi}{Pour $y=2a\cos kx\cos\omega t$}
+Amplitude locale : $A(x)=2a|\cos kx|$. Nœuds : $kx=\pi/2+m\pi$. Ventres : $kx=m\pi$. Deux nœuds voisins sont séparés de \ensuremath{\lambda}/2 ; un nœud et le ventre adjacent de \ensuremath{\lambda}/4.
+\end{loi}
+\Sub{Un déplacement nul à un instant ne suffit pas}
+Lorsque $\cos\omega t=0$, tous les points passent par l’équilibre, y compris les ventres. Un nœud reste immobile à tout instant. Pour le distinguer, observer plusieurs phases ou l’enveloppe des amplitudes.
+\Sub{La phase entre deux points}
+Les coefficients cos kx de même signe donnent des oscillations en phase. S’ils sont de signes opposés, les oscillations sont en opposition. À un nœud, l’amplitude est nulle et la phase de la vibration n’est pas définie. Il n’existe donc pas une phase continue unique donnant une translation de l’ensemble.
+\begin{piege}{Périodicité du profil et des amplitudes}
+Le facteur signé cos kx a une période \ensuremath{\lambda}. Son module a une période \ensuremath{\lambda}/2. L’écart entre nœuds vaut donc \ensuremath{\lambda}/2, et non \ensuremath{\lambda}. Préciser de quelle grandeur on parle.
+\end{piege}
+
+
+\Page{Cours / 3}{La réflexion sur un point fixe}{cours-3}
+\fig{reflexion}{Schéma de deux étapes successives : une impulsion réfléchie par une extrémité fixe change de signe. Les deux bosses ne représentent pas un profil unique au même instant.}\Sub{Imposer la condition}
+Pour une corde terminée en x = 0 et occupant x < 0, une onde incidente vers +x s’écrit f(t-x/c). Chercher une onde réfléchie vers -x sous la forme g(t+x/c). La condition $y(0,t)=0$ impose g(t) = -f(t), donc\[y=f(t-x/c)-f(t+x/c).\]La réflexion inverse le déplacement au point fixe.
+\begin{methode}{Ne pas généraliser au mauvais signal}
+Cette inversion concerne le déplacement transversal d’une corde fixée. Une surpression acoustique sur un mur rigide n’a pas automatiquement la même loi de réflexion. La condition physique appliquée à la grandeur étudiée détermine le signe.
+\end{methode}
+
+
+\Page{Cours / 4}{Deux extrémités fixes}{cours-4}
+\begin{loi}{Les conditions valent pour tout t}
+Pour une corde sur [0,L], chercher\[y=A\sin(kx)\cos(\omega t+\varphi).\]La condition en x = 0 est satisfaite. En x = L, une vibration non nulle exige $\sin(kL)=0$, donc\[k_n=\frac{n\pi}{L},\quad\lambda_n=\frac{2L}{n},\quad n=1,2,3,\ldots\]Le cas n = 0 donne le déplacement nul et n’est pas un mode vibrant.
+\end{loi}
+\fig{modes}{Les quatre premiers modes. Les deux courbes de chaque ligne représentent des instants en opposition de phase.}\Sub{Comptage}
+Le mode n possède n ventres et n + 1 nœuds en comptant les extrémités, donc n - 1 nœuds intérieurs. Les n intervalles de longueur \ensuremath{\lambda}n/2 sont souvent appelés fuseaux.
+
+
+\Page{Cours / 5}{Les fréquences propres de la corde}{cours-5}
+\begin{loi}{Quantification par la longueur}
+En utilisant la célérité c des ondes progressives constitutives :\[f_n=\frac c{\lambda_n}=\frac{nc}{2L}=nf_1.\]Chaque mode possède une fréquence propre. Le fondamental n = 1 a la plus basse fréquence non nulle ; les autres sont ses harmoniques dans ce modèle non dispersif.
+\end{loi}
+\Sub{Un exemple}
+Une corde de longueur 0,80 m avec c = 40 m/s possède f1 = 25 Hz, f2 = 50 Hz et f3 = 75 Hz. Au troisième mode, les nœuds sont en 0, L/3, 2L/3 et L ; les ventres en L/6, L/2 et 5L/6.
+\Sub{Pourquoi des fréquences discrètes ?}
+Une onde progressive peut avoir une fréquence quelconque dans le modèle illimité. Les deux extrémités fixes exigent qu’un nombre entier de demi-longueurs d’onde tienne dans L. Ce sont les conditions aux limites, combinées à c = \ensuremath{\lambda}f, qui sélectionnent les modes.
+\begin{piege}{Mode et réponse forcée}
+Les modes sont des mouvements libres admissibles du modèle. Une excitation forcée peut imposer une autre fréquence ; la réponse dépend alors des conditions d’entraînement et des pertes. Une forte amplitude apparaît près des modes lorsque le couplage les excite.
+\end{piege}
+
+
+\Page{Cours / 6}{Tension, masse linéique et célérité}{cours-6}
+\begin{loi}{Loi fournie du modèle idéal}
+Pour une corde souple, uniforme, faiblement déformée et sous tension constante T :\[c=\sqrt{\frac T\mu},\qquad\mu=\frac m\ell.\]\[f_n=\frac n{2L}\sqrt{\frac T\mu}.\]T est une force en N, \ensuremath{\mu} une masse par unité de longueur en kg/m. On distingue ici T de la période, notée $\mathcal T_n=1/f_n$ si nécessaire.
+\end{loi}
+\Sub{Contrôle dimensionnel}
+T/\ensuremath{\mu} a pour unité $(\mathrm{kg\,m\,s^{-2}})/(\mathrm{kg\,m^{-1}})=\mathrm{m^2s^{-2}}$ ; sa racine est bien une vitesse. La tension accroît la force de rappel et donc c ; une masse linéique plus grande accroît l’inertie et réduit c.
+\Sub{Modifier un son}
+À longueur et masse linéique fixes, doubler f impose de multiplier T par quatre. À tension et masse linéique fixes, diviser L par deux double toutes les fréquences. La variation de longueur dans un instrument agit donc différemment de la variation de tension.
+\begin{docu}{Domaine du modèle}
+Une corde raide, une tension variable ou de grandes amplitudes peuvent décaler les fréquences et briser l’harmonicité exacte. La relation fournie n’est pas universelle pour tout fil réel.
+\end{docu}
+
+
+\Page{Cours / 7}{Observer un mode sans se tromper}{cours-7}
+\fig{stationnaire}{Mode 3 : les nœuds restent aux mêmes positions, tandis que les trois fuseaux changent de signe au cours du temps.}\Sub{Ce qu’une photographie montre}
+Une corde instantanément rectiligne peut correspondre au passage collectif par l’équilibre, sans absence de vibration. Une pose longue révèle souvent les enveloppes, mais ne donne pas directement la phase. Un stroboscope proche de la fréquence du mouvement peut ralentir le mouvement apparent.
+\begin{methode}{Identifier n}
+Compter les ventres sur la longueur vibrante utile ; vérifier les extrémités effectivement fixes ; mesurer l’écart de plusieurs nœuds ; calculer \ensuremath{\lambda} = 2 fois cet écart. En déduire c = \ensuremath{\lambda}f et vérifier f/n à plusieurs résonances.
+\end{methode}
+\Sub{L’alias temporel}
+Un mouvement peut sembler immobile à plusieurs fréquences d’éclairage. Suivre la stabilisation en partant d’une fréquence élevée et utiliser un repère distinct permet de limiter les ambiguïtés. Une image stable ne donne donc pas automatiquement la fréquence fondamentale de la corde.
+
+
+\Page{Cours / 8}{L’expérience de Melde}{cours-8}
+\fig{melde}{Montage schématique. La longueur utile L est celle de la partie approximativement horizontale et vibrante.}\Sub{Un système forcé avec pertes}
+Un vibreur entretient la corde, et une masse suspendue règle approximativement la tension par T = Mg. Balayer la fréquence lentement : de grands fuseaux apparaissent près de certaines fréquences. Le point d’entraînement n’est pas rigoureusement fixe ; assimiler les deux extrémités à des nœuds est une approximation adaptée à de faibles déplacements d’entraînement et à un mode bien établi.
+\begin{piege}{Une amplitude divergente est un défaut du modèle idéal}
+Sans pertes et à une résonance exacte, une description forcée peut prédire une amplification non bornée. Une corde réelle dissipe de l’énergie et atteint une amplitude limitée. Les pertes, le vibreur et l’évolution de la tension interviennent dans cette limite.
+\end{piege}
+\Sub{Exploitation}
+Comparer f/n pour plusieurs modes à T fixe ; puis comparer $f_n^2$ à T pour un mode fixé. Une droite attendue dans ce second cas teste le modèle $f_n^2=n^2T/(4L^2\mu)$.
+
+
+\Page{Cours / 9}{Plusieurs modes à la fois}{cours-9}
+\begin{loi}{Superposition guidée}
+Une vibration libre peut être modélisée par une somme de modes :\[y(x,t)=\sum_n A_n\sin\left(\frac{n\pi x}{L}\right)\cos(2\pi f_nt+\varphi_n).\]Chaque terme satisfait les conditions aux deux bouts ; la somme les satisfait aussi. Les coefficients sont fournis ou déterminés à partir des données dans les exercices.
+\end{loi}
+\Sub{Interpréter le timbre}
+Deux cordes peuvent avoir le même fondamental mais des proportions d’harmoniques différentes. Le mouvement et le son résultants n’ont pas la même forme temporelle. Le fondamental fixe la période commune du modèle si les modes présents permettent cette période ; les amplitudes et phases des harmoniques contribuent au timbre.
+\Sub{Les nœuds ne sont plus tous communs}
+La somme des modes 1 et 2 garde les extrémités fixes, mais le milieu L/2 est un ventre du mode 1 et un nœud du mode 2. Il n’est donc pas un nœud de la somme si le mode 1 est présent. Une forme totale compliquée n’est pas nécessairement une onde stationnaire harmonique unique.
+\begin{methode}{Séparer le spectre et la forme spatiale}
+Un capteur placé sur un nœud d’un mode ne détecte pas cette composante même si elle existe ailleurs. La position de mesure peut supprimer certaines raies du spectre enregistré.
+\end{methode}
+
+
+\Page{Cours / 10}{Une réflexion partielle}{cours-10}
+\begin{loi}{Application guidée de la somme de deux ondes}
+Pour $y=A\cos(\omega t-kx)+rA\cos(\omega t+kx+\phi_r)$ avec $0\leq r\leq1$ :\[A_{\rm loc}^2=A^2[1+r^2+2r\cos(2kx+\phi_r)].\]Les extrema spatiaux valent $A(1+r)$ et $A(1-r)$. Une onde stationnaire parfaite exige r = 1 ; sinon les minima ne sont pas des nœuds immobiles.
+\end{loi}
+\fig{partielle}{Enveloppe locale pour r = 0,6 et phase de réflexion nulle : maximum 1,6 A et minimum 0,4 A.}\Sub{Une mesure possible}
+Le rapport des amplitudes extrêmes $\mathcal R=A_{\max}/A_{\min}=(1+r)/(1-r)$ donne $r=(\mathcal R-1)/(\mathcal R+1)$. Il faut vérifier que le détecteur mesure une amplitude, et non son carré : la formule de conversion serait alors différente.
+
+
+\Page{Cours / 11}{Valider une identification de mode}{cours-11}
+\Sub{Trois contrôles indépendants}
+La géométrie donne n et \ensuremath{\lambda}n = 2L/n. La fréquence mesurée et \ensuremath{\lambda}n donnent c. La tension et la masse linéique donnent une seconde prédiction $\sqrt{T/\mu}$. Comparer ces trois éléments rend l’identification plus robuste qu’un seul comptage de fuseaux.
+\begin{loi}{Incertitude de masse linéique}
+En identifiant un mode n :\[\mu=\frac{n^2T}{4L^2f_n^2}.\]Pour T, L et f indépendants et des incertitudes petites :\[\frac{u(\mu)}\mu=\sqrt{\left(\frac{u(T)}T\right)^2+4\left(\frac{u(L)}L\right)^2+4\left(\frac{u(f_n)}{f_n}\right)^2}.\]Le nombre n est ici identifié exactement ; une erreur de mode est une erreur de modèle, pas une petite incertitude.
+\end{loi}
+\Sub{Une conclusion expérimentale}
+Si les rapports f/n ne coïncident pas dans les incertitudes, rechercher une longueur utile mal définie, un entraînement trop fort, une tension non uniforme, une corde raide ou une mauvaise identification. Un ajustement numérique précis ne répare pas une condition aux limites incorrecte.
+\begin{docu}{Place de cet approfondissement}
+Ces outils prolongent les compétences de superposition et d’analyse expérimentale de MPSI. Les lois propres aux cordes ne sont pas présentées comme des exigences additionnelles du programme national.
+\end{docu}
+
+
+\Page{Pratique / TP}{Identifier la masse linéique d’une corde}{tp}
+\fig{melde}{Choisir une faible amplitude et mesurer la longueur vibrante, distincte de la longueur totale de la corde.}\Sub{Protocole}
+Fixer L = 0,80 m et une tension T = 4,00 N. Rechercher trois résonances et compter les ventres. Relever f, puis ajuster f en fonction de n ; la pente donne c/(2L). Déduire \ensuremath{\mu} et comparer à une pesée d’une longueur connue de corde.
+\Sub{Jeu simulé et correction}
+Pour n = 1 ; 2 ; 3, on donne f = 25,0 ; 50,0 ; 75,0 Hz. La pente vaut 25,0 Hz, c = 40,0 m/s et \ensuremath{\mu} = T/c² = 0,00250 kg/m = 2,50 g/m. Une corde de 2,00 m pèserait donc 5,00 g dans ce modèle.
+\begin{methode}{Contrôle complémentaire}
+À n fixé, faire varier T et tracer f² en fonction de T. Une pente conforme à $n^2/(4L^2\mu)$ valide une autre prédiction. Documenter les incertitudes, la condition d’entraînement et les écarts aux extrémités. Les données précédentes sont simulées.
+\end{methode}
+
+
+\Page{Pratique / Numérique}{Voir une superposition de modes}{numerique}
+La simulation ne résout pas d’équation d’onde : elle superpose des modes fournis satisfaisant les conditions aux extrémités.
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+L, c = 0.8, 40.
+x = np.linspace(0, L, 801)
+f1 = c/(2*L)
+amplitudes = {1: 0.01, 2: 0.004, 3: 0.002}
+def y(t):
+    return sum(A*np.sin(n*np.pi*x/L)*
+        np.cos(2*np.pi*n*f1*t)
+        for n,A in amplitudes.items())
+profiles = {}
+for t in (0., 0.005, 0.01, 0.02):
+    profiles[t] = y(t)
+    plt.plot(x, y(t)*1000, label=f"t={t}s")
+plt.xlabel("x (m)"); plt.ylabel("y (mm)")
+plt.grid(); plt.legend(); plt.tight_layout()
+\end{verbatim}
+Vérifier y(0,t) = y(L,t) = 0 à la précision numérique. La période commune est 1/f1 = 40 ms ; à 20 ms, les modes impairs changent de signe mais le mode 2 retrouve le sien. Le profil total n’est donc pas simplement l’opposé du profil initial. Placer un capteur en L/2 supprime le mode 2 de son enregistrement.
+
+
+\Page{Bilan de cours}{Les réflexes à conserver}{synthese}
+\begin{loi}{Les relations et leurs hypothèses}
+Deux ondes opposées de même amplitude produisent une structure stationnaire. Corde fixe-fixe : $\lambda_n=2L/n$, $f_n=nc/(2L)$, n ≥ 1. Loi fournie : $c=\sqrt{T/\mu}$. Mode n : n ventres et n + 1 nœuds en comptant les extrémités.
+\end{loi}
+\Sub{Une résolution rédigée}
+Écrire les deux ondes, appliquer les conditions pour tout instant, identifier les facteurs spatiaux et les phases, compter les fuseaux, puis comparer fréquences et célérité. Annoncer les approximations de la corde idéale.
+\begin{piege}{Erreurs à éviter}
+Confondre nœud et passage instantané par l’équilibre ; compter seulement les nœuds intérieurs ; prendre \ensuremath{\lambda} au lieu de \ensuremath{\lambda}/2 entre nœuds ; employer n = 0 comme fondamental ; identifier une fréquence sans vérifier le mode.
+\end{piege}
+\begin{docu}{S’autoévaluer}
+\checkline{Je retrouve les relations à partir du modèle.}\checkline{Je sais interpréter les limites d’une expression.}\checkline{Je peux dessiner et commenter les courbes.}\checkline{Je relie une mesure à la grandeur calculée.}
+\end{docu}
+
+
+\Page{Exercices / Applications}{Reconnaître une onde stationnaire}{td1}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E01}{Deux sens contraires}{Niveau 1}{10 à 15 min}
+Additionner $a\cos(\omega t-kx)$ et $a\cos(\omega t+kx)$. La somme translate-t-elle son profil ?
+\ex{E02}{Une amplitude locale}{Niveau 1}{10 à 15 min}
+$y=4\cos kx\cos\omega t$ mm. Donner l’amplitude en x = 0, \ensuremath{\lambda}/8 et \ensuremath{\lambda}/4.
+\ex{E03}{Un vrai nœud}{Niveau 1}{10 à 15 min}
+À un instant, toute une corde est droite. Peut-on affirmer que tous ses points sont des nœuds ?
+
+
+\Page{Exercices / Applications}{Nœuds et ventres}{td2}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E04}{Espacements}{Niveau 1}{10 à 15 min}
+Deux nœuds consécutifs sont séparés de 0,25 m. Donner \ensuremath{\lambda} et l’écart nœud-ventre adjacent.
+\ex{E05}{Opposition entre fuseaux}{Niveau 1}{10 à 15 min}
+Deux points sont dans deux fuseaux voisins d’un mode. Quelle est leur phase relative si aucun n’est un nœud ?
+\ex{E06}{Compter un mode}{Niveau 1}{10 à 15 min}
+Une corde fixe aux deux bouts présente quatre ventres. Donner n, les nœuds totaux et les nœuds intérieurs.
+
+
+\Page{Exercices / Applications}{Modes d’une corde}{td3}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E07}{Le fondamental}{Niveau 2}{10 à 15 min}
+L = 0,80 m, c = 40 m/s. Donner f1 et les trois harmoniques suivantes.
+\ex{E08}{Une longueur d’onde modale}{Niveau 2}{10 à 15 min}
+L = 1,20 m et n = 3. Donner \ensuremath{\lambda_3} et les positions des nœuds.
+\ex{E09}{Un mode observé}{Niveau 2}{10 à 15 min}
+Une corde de 1,00 m présente cinq fuseaux à 100 Hz. Déterminer c et f1.
+
+
+\Page{Exercices / Méthodes}{Tension et masse linéique}{td4}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E10}{Calculer la masse linéique}{Niveau 2}{10 à 15 min}
+Une corde de 2,00 m a une masse de 5,00 g. Donner \ensuremath{\mu} et c sous T = 4,00 N.
+\ex{E11}{Accorder à l’octave}{Niveau 2}{10 à 15 min}
+À L et \ensuremath{\mu} constants, par quel facteur multiplier T pour doubler f1 ?
+\ex{E12}{Raccourcir la corde}{Niveau 2}{10 à 15 min}
+À T et \ensuremath{\mu} constants, quelle longueur donne une fréquence fondamentale égale à 3/2 de l’ancienne ?
+
+
+\Page{Exercices / Méthodes}{Phases et superpositions}{td5}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E13}{Un mode écrit}{Niveau 2}{15 à 25 min}
+$y=A\sin(3\pi x/L)\cos\omega_3t$. Donner l’amplitude au milieu et à L/3.
+\ex{E14}{Deux modes au milieu}{Niveau 2}{15 à 25 min}
+$y=A\sin(\pi x/L)\cos\omega_1t+B\sin(2\pi x/L)\cos2\omega_1t$. Que mesure un capteur en L/2 ?
+\ex{E15}{Une période commune}{Niveau 2}{15 à 25 min}
+Une corde contient seulement les modes 2 et 3, de fréquences 2f1 et 3f1. Donner la période commune minimale.
+
+
+\Page{Exercices / Méthodes}{Mesures et incertitudes}{td6}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E16}{Identifier \ensuremath{\mu} sur un mode}{Niveau 2}{15 à 25 min}
+L = 0,80 m, T = 4,00 N, n = 2 et f2 = 50,0 Hz. Calculer \ensuremath{\mu}.
+\ex{E17}{Une incertitude relative}{Niveau 2}{15 à 25 min}
+Pour E16, les incertitudes relatives indépendantes sont u(T)/T = 1 \%, u(L)/L = 0,5 \%, u(f)/f = 0,2 \%. Donner u(\ensuremath{\mu})/\ensuremath{\mu}.
+\ex{E18}{Une droite de fréquences}{Niveau 2}{15 à 25 min}
+À longueur fixe, un ajustement donne f = 30,0 n en Hz. L = 1,00 m et T = 9,00 N. Donner c et \ensuremath{\mu}.
+
+
+\Page{Exercices / Approfondissement}{Réflexion et entraînement}{td7}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E19}{Un point fixe impose le signe}{Niveau 3}{15 à 25 min}
+Une corde x < 0 reçoit $f(t-x/c)$ vers x = 0. Trouver l’onde réfléchie imposant y(0,t) = 0.
+\ex{E20}{Une réflexion partielle}{Niveau 3}{15 à 25 min}
+Les amplitudes spatiales extrêmes mesurées sont 8 mm et 2 mm. Déduire r et A dans le modèle de réflexion partielle.
+\ex{E21}{Une tension par une masse}{Niveau 3}{15 à 25 min}
+Une masse M = 0,200 kg tend une corde de \ensuremath{\mu} = 1,00 g/m. Avec g = 9,81 m/s², calculer c et f1 pour L = 1 m.
+
+
+\Page{Exercices / Approfondissement}{Discuter le modèle}{td8}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E22}{Le mauvais mode}{Niveau 3}{15 à 25 min}
+On observe n = 3 mais on l’identifie par erreur comme n = 2 dans le calcul de \ensuremath{\mu}. Quel rapport obtient-on entre \ensuremath{\mu} estimée et vraie ?
+\ex{E23}{Un modèle mis en défaut}{Niveau 3}{15 à 25 min}
+Les fréquences mesurées sont 30,0 ; 61,0 ; 94,0 Hz pour les trois premiers modes, avec u(f) = 0,1 Hz. La corde idéale harmonique est-elle compatible ?
+\ex{E24}{Une résonance forcée}{Niveau 3}{15 à 25 min}
+Un calcul idéal prédit une amplitude infinie à une fréquence propre. Quelles hypothèses revoir avant de comparer à l’expérience ?
+
+
+\Page{Défi avancé / D1}{Identifier une corde avec plusieurs modes}{defi1}
+\label{ex-D1}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi1}.}
+Pour une longueur L = 0,900 m et une tension T = 8,00 N, on mesure les résonances 40,0 ; 80,0 ; 120,0 Hz, avec respectivement 1 ; 2 ; 3 ventres.\begin{questions}
+\item Identifier le fondamental, la célérité et \ensuremath{\mu}.
+\item On double la masse suspendue qui règle T, sans modifier L ni \ensuremath{\mu}. Prédire les trois nouvelles fréquences.
+\item On souhaite f1 = 60,0 Hz en conservant T initiale. Quelle longueur choisir ?
+\item Proposer deux méthodes indépendantes pour tester \ensuremath{\mu}.
+\item Pourquoi le seul rapport de deux fréquences ne suffit-il pas à identifier les rangs si l’on ne voit pas les fuseaux ?
+\end{questions}
+
+
+\Page{Défi avancé / D2}{Déterminer la phase d’une réflexion}{defi2}
+\label{ex-D2}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi2}.}
+Une corde semi-infinie porte $y=A\cos(\omega t-kx)+rA\cos(\omega t+kx+\phi_r)$, avec A > 0 et 0 < r < 1. On mesure Amax = 9 mm, Amin = 3 mm, et des maxima d’enveloppe en x = 0,10 m puis 0,40 m.\begin{questions}
+\item Déterminer A et r.
+\item Déterminer \ensuremath{\lambda}, k puis c si f = 50 Hz.
+\item Donner \ensuremath{\varphi}r modulo 2\ensuremath{\pi} en utilisant le maximum à 0,10 m.
+\item Pourquoi cette onde n’est-elle pas parfaitement stationnaire ? Peut-on parler de nœuds ?
+\item Si le détecteur mesurait le carré de l’amplitude, comment adapter l’exploitation ?
+\end{questions}
+
+
+\Page{Défi avancé / D3}{Un entraînement à une extrémité}{defi3}
+\label{ex-D3}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi3}.}
+Une corde sur [0,L] est fixée en x = L et entraînée en x = 0 par $y(0,t)=a\cos\omega t$. Dans un modèle sans pertes, on cherche une réponse $y=B\sin[k(L-x)]\cos\omega t$, avec k = \ensuremath{\omega}/c.\begin{questions}
+\item Vérifier la condition en L, puis déterminer B lorsque sin(kL) ≠ 0.
+\item Écrire l’amplitude locale et identifier les fréquences où le calcul échoue.
+\item Pourquoi l’extrémité entraînée n’est-elle pas un nœud exact ?
+\item Que faut-il comprendre physiquement quand sin(kL) tend vers zéro ?
+\item Comparer à l’approximation des deux extrémités fixes près d’une résonance de faible entraînement.
+\end{questions}
+
+
+\Page{Évaluation / DM}{DM — Accorder une corde}{dm}
+\source{Devoir maison OptiTAB original ; 1 h 30 à 2 h ; calculatrice autorisée. Barème pédagogique sur 20.}
+Une corde souple a une longueur vibrante L = 0,650 m et une masse linéique \ensuremath{\mu} = 1,20 g/m. On fournit c = √(T/\ensuremath{\mu}). Elle est assimilée à une corde fixée aux deux extrémités.\Sub{A. Fréquence cible — 8 points}
+\begin{questions}
+\item Établir \ensuremath{\lambda}n et fn avec les conditions aux limites. (4)
+\item On souhaite f1 = 200 Hz. Calculer c et T nécessaires. (4)
+\end{questions}
+
+\Sub{B. Modifier la note — 6 points}
+\begin{questions}
+\item À tension constante, quelle longueur donne f1 = 300 Hz ? (3)
+\item À longueur initiale constante, quelle tension donne 300 Hz ? (3)
+\end{questions}
+
+\Sub{C. Observation — 6 points}
+\begin{questions}
+\item À la fréquence du mode 3 pour les réglages initiaux, donner positions des nœuds et ventres. (4)
+\item Un capteur placé en L/2 détecte-t-il ce mode ? Et le mode 2 ? (2)
+\end{questions}
+
+
+
+\Page{Évaluation / DS / 1 sur 2}{DS — Étudier une corde de Melde}{ds1}
+\source{Devoir surveillé OptiTAB original ; durée 2 h ; calculatrice autorisée ; note sur 20. Les deux pages forment un seul sujet.}
+\Sub{A. Superposition — 6 points}
+On donne $y_1=a\cos(\omega t-kx)$ et $y_2=-a\cos(\omega t+kx)$.\begin{questions}
+\item Exprimer leur somme comme produit de deux sinus. (2)
+\item Identifier les nœuds et l’écart entre deux nœuds voisins. (2)
+\item Pourquoi x = 0 reste-t-il fixe ? (2)
+\end{questions}
+
+\Sub{B. Modes — 9 points}
+Une corde de L = 1,20 m et \ensuremath{\mu} = 2,00 g/m est soumise à T = 8,00 N. On fournit c = √(T/\ensuremath{\mu}).\begin{questions}
+\item Calculer c puis les fréquences des modes 1, 2 et 3. (3)
+\item Un régime à quatre ventres est observé : donner sa fréquence et ses nœuds intérieurs. (3)
+\item La tension est multipliée par 1,44. Que deviennent les fréquences et pourquoi ? (3)
+\end{questions}
+
+
+
+\Page{Évaluation / DS / 2 sur 2}{Approfondir et conclure}{ds2}
+\Sub{C. Réflexion partielle — 5 points}
+Un autre montage donne Amax = 10 mm et Amin = 2 mm. On fournit Amax = A(1+r), Amin = A(1-r).\begin{questions}
+\item Déterminer A et r. (2)
+\item Peut-on appeler les minima des nœuds ? (1)
+\item Les maxima voisins sont distants de 0,40 m à f = 80 Hz. Déterminer \ensuremath{\lambda} et c. (2)
+\end{questions}
+
+\begin{docu}{Gestion du temps}
+Lecture : 10 min ; parties A et B : 70 min ; partie C : 30 min ; vérification : 10 min. Une expression littérale, une unité et une interprétation accompagnent les résultats.
+\end{docu}
+
+
+\Page{Aides progressives}{Des indices pour repartir}{indices}
+\Sub{Défi D1}
+1. Exploiter la pente f(n). 2. Une fréquence varie comme √T et 1/L. 3. Des modes peuvent manquer dans un spectre.
+\Sub{Défi D2}
+1. Addition et différence des extrema. 2. Deux maxima d’enveloppe sont séparés de \ensuremath{\lambda}/2. 3. Le maximum vérifie 2kx+\ensuremath{\varphi}r = 2m\ensuremath{\pi}.
+\Sub{Défi D3}
+1. Évaluer y en x = 0. 2. Le dénominateur gouverne l’amplification. 3. Le modèle sans pertes n’a pas de régime borné à la résonance.
+\Sub{Exercices}
+E04 : l’amplitude locale a une période \ensuremath{\lambda}/2. E13 : prendre la valeur absolue du coefficient spatial. E16 : isoler \ensuremath{\mu} dans fn. E22 : n apparaît au carré.
+\Sub{Évaluations}
+DM : convertir la masse linéique en kg/m. DS : appliquer les conditions aux limites pour tout instant ; conserver assez de chiffres sur c avant de calculer les fréquences.
+
+
+\Page{Corrigés / Diagnostic}{Réactiver les bons réflexes}{corr-diag}
+\Sub{D1}
+Vers +x puis vers -x pour k et \ensuremath{\omega} positifs.
+
+\Sub{D2}
+$2\cos u\cos v$.
+
+\Sub{D3}
+Le déplacement de cette extrémité est nul à tout instant.
+
+\Sub{D4}
+Le coefficient algébrique d’un cosinus peut l’être ; l’amplitude physique est sa valeur absolue.
+
+\Sub{D5}
+f = c/\ensuremath{\lambda} = 50 Hz.
+
+\Sub{D6}
+kg/m : masse par unité de longueur.
+
+\Sub{D7}
+Non ; les pertes et les limites du modèle bornent la réponse.
+
+\Sub{D8}
+En opposition de phase s’ils partagent le même facteur temporel sinusoïdal.
+
+
+\Page{Corrigés / Exercices}{Reconnaître une onde stationnaire}{corr-td1}
+\sol{E01}{Deux sens contraires}
+$y=2a\cos kx\cos\omega t$. Les facteurs spatial et temporel se séparent ; les nœuds sont fixes. Le profil ne se translate pas rigidement.
+\sol{E02}{Une amplitude locale}
+Amplitudes : 4 mm ; $4|\cos(\pi/4)|=2\sqrt2$ mm ; 0. Le point \ensuremath{\lambda}/4 est un nœud.
+\sol{E03}{Un vrai nœud}
+Non. Les points d’un mode peuvent passer simultanément par l’équilibre. Un nœud est immobile à tout instant ; il faut observer l’évolution ou l’enveloppe.
+
+
+\Page{Corrigés / Exercices}{Nœuds et ventres}{corr-td2}
+\sol{E04}{Espacements}
+\ensuremath{\lambda} = 0,50 m ; l’écart nœud-ventre vaut \ensuremath{\lambda}/4 = 0,125 m. La période spatiale du module de l’amplitude est \ensuremath{\lambda}/2.
+\sol{E05}{Opposition entre fuseaux}
+Les facteurs spatiaux sont de signes opposés : les déplacements sont en opposition de phase, décalés de \ensuremath{\pi}. Leurs amplitudes peuvent être différentes.
+\sol{E06}{Compter un mode}
+n = 4 ; cinq nœuds au total, dont trois intérieurs. Les deux extrémités sont comptées comme nœuds.
+
+
+\Page{Corrigés / Exercices}{Modes d’une corde}{corr-td3}
+\sol{E07}{Le fondamental}
+f1 = c/(2L) = 25 Hz ; f2 = 50 Hz, f3 = 75 Hz, f4 = 100 Hz. Ces fréquences sont équidistantes dans le modèle non dispersif.
+\sol{E08}{Une longueur d’onde modale}
+\ensuremath{\lambda_3} = 2L/3 = 0,80 m. Les nœuds sont x = 0 ; 0,40 ; 0,80 ; 1,20 m. Il existe trois ventres, au milieu des intervalles.
+\sol{E09}{Un mode observé}
+n = 5 ; \ensuremath{\lambda_5} = 2L/5 = 0,40 m. c = \ensuremath{\lambda_5}f5 = 40 m/s et f1 = f5/5 = 20 Hz.
+
+
+\Page{Corrigés / Exercices}{Tension et masse linéique}{corr-td4}
+\sol{E10}{Calculer la masse linéique}
+\ensuremath{\mu} = 0,005/2 = 0,00250 kg/m. $c=\sqrt{4/0{,}0025}=40$ m/s. Convertir les grammes en kilogrammes avant la racine.
+\sol{E11}{Accorder à l’octave}
+f1 varie comme √T. Il faut T′/T = 4. Doubler la tension seule ne multiplie la fréquence que par √2.
+\sol{E12}{Raccourcir la corde}
+f1 est inversement proportionnel à L. Donc L′ = (2/3)L. Les conditions de fixation et la longueur utile doivent suivre ce nouveau modèle.
+
+
+\Page{Corrigés / Exercices}{Phases et superpositions}{corr-td5}
+\sol{E13}{Un mode écrit}
+Au milieu, sin(3\ensuremath{\pi}/2) = -1 : amplitude A, avec un coefficient signé -A. À L/3, sin \ensuremath{\pi} = 0 : nœud. Le milieu est un ventre, malgré le signe négatif.
+\sol{E14}{Deux modes au milieu}
+$y(L/2,t)=A\cos\omega_1t$ ; le mode 2 a un nœud au milieu. L’absence de sa raie à ce capteur ne signifie pas son absence sur toute la corde.
+\sol{E15}{Une période commune}
+Les rangs 2 et 3 sont premiers entre eux : la période est 1/f1, même si la fondamentale elle-même est absente du spectre. La forme ne retrouve pas généralement sa valeur après 1/(2f1).
+
+
+\Page{Corrigés / Exercices}{Mesures et incertitudes}{corr-td6}
+\sol{E16}{Identifier \ensuremath{\mu} sur un mode}
+$\mu=n^2T/(4L^2f_n^2)=16/(4\times0{,}64\times2500)=0{,}00250$ kg/m. Une erreur sur n serait amplifiée par son carré.
+\sol{E17}{Une incertitude relative}
+$\sqrt{0{,}01^2+4(0{,}005)^2+4(0{,}002)^2}=0{,}01470$, soit 1,47 \%. Donc u(\ensuremath{\mu}) ≈ 0,0367 g/m.
+\sol{E18}{Une droite de fréquences}
+La pente vaut c/(2L), donc c = 60 m/s. \ensuremath{\mu} = T/c² = 9/3600 = 0,00250 kg/m. Une ordonnée notable à n = 0 demanderait de discuter les conditions aux limites.
+
+
+\Page{Corrigés / Exercices}{Réflexion et entraînement}{corr-td7}
+\sol{E19}{Un point fixe impose le signe}
+Elle se propage vers -x et vaut $-f(t+x/c)$. La somme s’annule à x = 0 pour tout t. Le signe moins traduit l’inversion du déplacement.
+\sol{E20}{Une réflexion partielle}
+$r=(8/2-1)/(8/2+1)=3/5=0{,}60$. $A=(8+2)/2=5$ mm. L’onde réfléchie a l’amplitude rA = 3 mm ; les minima ne sont pas des nœuds parfaits.
+\sol{E21}{Une tension par une masse}
+T = Mg = 1,962 N. c = √1962 = 44,294 m/s. f1 = 22,147 Hz. Le calcul suppose une poulie idéale et une tension uniforme sur la partie vibrante.
+
+
+\Page{Corrigés / Exercices}{Discuter le modèle}{corr-td8}
+\sol{E22}{Le mauvais mode}
+À T, L et f fixés, \ensuremath{\mu} varie comme n². \ensuremath{\mu}estimée/\ensuremath{\mu}vraie = 4/9. Cette erreur ne se corrige pas en réduisant la seule incertitude de fréquence.
+\sol{E23}{Un modèle mis en défaut}
+Les rapports f/n sont 30,0 ; 30,5 ; 31,333 Hz et les écarts dépassent largement les incertitudes correspondantes. Rechercher une raideur, une tension variable, une longueur efficace dépendant du mode ou une erreur d’identification.
+\sol{E24}{Une résonance forcée}
+Inclure les pertes, la dynamique du vibreur, les conditions réelles aux extrémités et les limites des petites déformations. Une divergence du régime forcé sans pertes signale l’absence de solution permanente bornée, pas une amplitude physique infinie mesurée.
+
+
+\Page{Corrigé du défi D1}{Identifier une corde avec plusieurs modes}{corr-defi1}
+f1 = 40,0 Hz ; c = 2Lf1 = 72,0 m/s ; \ensuremath{\mu} = 8/72² = 0,00154321 kg/m = 1,543 g/m. Si T double, les fréquences sont multipliées par √2 : 56,57 ; 113,14 ; 169,71 Hz. Pour f1 = 60 Hz à c inchangée, L′ = c/(2f1) = 0,600 m. Une pesée de longueur connue donne \ensuremath{\mu} directement ; une variation de T à n fixé permet d’exploiter la pente de f²(T). Le rapport 2 entre deux fréquences pourrait correspondre aux rangs 1 et 2, ou 2 et 4, etc. Compter les fuseaux ou repérer plusieurs modes consécutifs lève cette ambiguïté. La cohérence de plusieurs prédictions est plus convaincante qu’un seul accord numérique.
+
+\Page{Corrigé du défi D2}{Déterminer la phase d’une réflexion}{corr-defi2}
+A = (9 + 3)/2 = 6 mm ; r = (9 - 3)/(9 + 3) = 0,50. L’écart 0,30 m vaut \ensuremath{\lambda}/2, donc \ensuremath{\lambda} = 0,60 m et k = 10\ensuremath{\pi}/3 rad/m. c = \ensuremath{\lambda}f = 30 m/s. Le maximum en 0,10 m donne $\phi_r=-2k(0{,}10)=-2\pi/3$ modulo 2\ensuremath{\pi}. Les amplitudes opposées ne sont pas égales ; les minima restent à 3 mm et ne sont donc pas des points immobiles. Une partie progressive subsiste dans cette superposition. Si les valeurs mesurées étaient proportionnelles à l’amplitude au carré, il faudrait prendre leurs racines avant de former le rapport $(A_{\max}-A_{\min})/(A_{\max}+A_{\min})$. Toujours identifier la réponse du détecteur.
+
+\Page{Corrigé du défi D3}{Un entraînement à une extrémité}{corr-defi3}
+La condition en L est automatiquement satisfaite. En 0, $B\sin(kL)=a$, donc $y=a\sin[k(L-x)]\cos\omega t/\sin(kL)$. L’amplitude locale est $a|\sin[k(L-x)]/\sin(kL)|$. Le calcul de réponse permanente bornée échoue à kL = n\ensuremath{\pi}, soit f = nc/(2L). L’extrémité entraînée a une amplitude a non nulle : elle n’est pas un nœud. Près d’une résonance, les amplitudes intérieures peuvent être grandes devant a ; l’extrémité paraît alors presque immobile à l’échelle de l’enveloppe, d’où l’approximation fixe-fixe. Les pertes et le vibreur limitent le maximum réel. La divergence ne doit jamais être présentée comme une amplitude expérimentale infinie.
+
+\Page{Corrigé / DM / Sur 20}{DM — Accorder une corde}{corr-dm}
+\Sub{A — 8 points}
+Une forme $A\sin(kx)\cos\omega t$ impose kL = n\ensuremath{\pi}, n ≥ 1, donc \ensuremath{\lambda}n = 2L/n et fn = nc/(2L) (4). c = 2Lf1 = 260 m/s. T = \ensuremath{\mu}c² = 0,00120 × 260² = 81,12 N (4).
+\Sub{B — 6 points}
+À c fixe : L′ = c/(2 × 300) = 0,4333 m (3). À L initial fixe, c′ = 390 m/s et T′ = \ensuremath{\mu}c′² = 182,52 N = 2,25T (3).
+\Sub{C — 6 points}
+f3 = 600 Hz. Nœuds x = 0 ; 0,2167 ; 0,4333 ; 0,650 m. Ventres x = 0,1083 ; 0,3250 ; 0,5417 m (4). Le milieu est un ventre du mode 3 et un nœud du mode 2 : il détecte le premier, mais pas le second dans le modèle idéal (2).
+
+
+\Page{Corrigé / DS / 1 sur 2}{Calculer et interpréter}{corr-ds1}
+\Sub{A — 6 points}
+$y=2a\sin\omega t\sin kx$ par l’identité cos(u-v) - cos(u+v) (2). Nœuds kx = m\ensuremath{\pi}, écart \ensuremath{\pi}/k = \ensuremath{\lambda}/2 (2). En x = 0, les deux ondes se compensent à tout instant ; la réflexion de déplacement a le signe imposé par le point fixe (2).
+\Sub{B — 9 points}
+c = √(8/0,002) = 63,2456 m/s. f1 = 26,3523 Hz, f2 = 52,7046 Hz, f3 = 79,0569 Hz (3). Quatre ventres : n = 4, f4 = 105,409 Hz ; nœuds intérieurs x = 0,30 ; 0,60 ; 0,90 m (3). c et tous les fn sont multipliés par √1,44 = 1,20 ; les modes conservent leurs positions relatives si L ne change pas (3).
+
+
+\Page{Corrigé / DS / 2 sur 2}{Calculer et interpréter}{corr-ds2}
+\Sub{C — 5 points}
+A = (10 + 2)/2 = 6 mm et r = (10 - 2)/(10 + 2) = 2/3 (2). Les minima d’amplitude 2 mm ne sont pas des points immobiles ; ce ne sont pas des nœuds parfaits (1). L’écart des maxima est \ensuremath{\lambda}/2 = 0,40 m ; \ensuremath{\lambda} = 0,80 m et c = \ensuremath{\lambda}f = 64,0 m/s (2).
+
+
+\Page{Support authentique / 1}{TD MPSI publié — Corde de Melde}{sources-1}
+\source{Source consultée le 25 octobre 2026. Étienne Thibierge, lycée Corneille, MPSI 2, TD O4, exercice 8, questions 1 à 3, p. 6–7.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://etienne-thibierge.fr/cours_mpsi/O4_ondes_td-enonce.pdf}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Traiter les questions à partir des deux ondes fournies. Conserver la convention de phase du document et imposer les extrémités fixes.
+\Sub{Repères de correction indépendants}
+La somme est $\xi=2a\cos(kz+\varphi)\cos\omega t$. Nœuds : $kz+\varphi=\pi/2+m\pi$ ; ventres : $kz+\varphi=m\pi$. Les nœuds sont espacés de $\lambda/2$. La valeur $\varphi=-\pi/2$ convient à z = 0 ; la condition en L impose $k_n=n\pi/L$, puis $f_n=nc/(2L)$. Au mode 3, il y a trois ventres et quatre nœuds, extrémités comprises. Ce parcours est un approfondissement identifié.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Support authentique / 2}{Support expérimental — Observer des modes}{sources-2}
+\source{Source consultée le 25 octobre 2026. Physagreg, montage de physique n°36. Sélection : corde de Melde uniquement ; niveau d’origine agrégation.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://www.physagreg.fr/agreg-montage-physique-36-ondes-stationnaires.php}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Identifier les mesures de longueur, tension et fréquence. Adapter seulement le protocole de corde à ce chapitre ; laisser les autres dispositifs hors du parcours.
+\Sub{Repères de correction indépendants}
+Le test f en fonction de 1/L à n fixé donne une pente $nc/2$. Le modèle fourni $c=\sqrt{Mg/\mu}$ permet ensuite d’identifier \ensuremath{\mu}. Distinguer une observation de structure stationnaire d’une forte amplitude de résonance.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Références et suivi}{Préparer la suite}{references}
+\Sub{Référence réglementaire}
+\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{Bulletin officiel spécial n° 1 du 11 février 2021, arrêté du 5 janvier 2021.}\par
+\href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexe officielle regroupée}, rubrique approfondissement de 1.6. Les ondes stationnaires ne sont pas explicitement listées dans la rubrique 1.6 du programme MPSI de 2021. La loi c = √(T/\ensuremath{\mu}) est fournie comme modèle de corde idéale ; sa démonstration par équation d’onde est laissée hors de ce chapitre.
+\Sub{Nature des contenus}
+Le cours, les 24 exercices, les trois défis et les évaluations OptiTAB sont rédigés pour cette collection. Les graphiques sont calculés avec les équations annoncées. Les supports authentiques sont identifiés sur les pages précédentes ; leurs énoncés et figures restent dans le document d’origine.
+\Sub{Compétences à confirmer}
+\checkline{Je peux retrouver l’équation sans mémoriser une suite de signes.}
+\checkline{Je vérifie les conditions initiales et les limites.}
+\checkline{Je peux confronter un calcul, un graphe et un bilan énergétique.}
+\checkline{Je sais corriger mon DS et refaire une question sans aide.}
+\begin{methode}{Prochaine étape}
+La suite de l’ouvrage commencera par la description et le paramétrage du mouvement d’un point, chapitre 11 du plan annuel.
+\end{methode}
+

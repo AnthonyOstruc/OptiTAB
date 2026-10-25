@@ -1,0 +1,22 @@
+% Looping circulaire : forces au sommet et au point bas (corrigé du défi D14)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otInk!70,line width=1.4pt] (-5.2,3.75) .. controls (-3.6,0.2) and (-2.2,0) .. (0,0);
+\draw[otInk!70,line width=1.4pt] (0,1.25) circle (1.25);
+\draw[otInk!70,line width=1.4pt] (0,0) -- (2.6,0);
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (-5.6,0) -- (-5.6,3.75) node[pos=0.5,pcLegende,anchor=east] {$h=\frac52R$};
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (-5.8,3.75) -- (-5.0,3.75);
+\draw[otMuted,line width=0.4pt] (-5.8,0) -- (-4.6,0);
+\fill[otMuted] (0,1.25) circle (0.04);
+\draw[pcTraj] (0,1.25) -- (1.25,1.25) node[pos=0.5,pcLegende,anchor=south] {$R$};
+% sommet
+\fill[otInk] (0,2.5) circle (0.06);
+\draw[pcForce] (0,2.5) -- (0,1.85) node[pcLegende,anchor=north,text=otGreenDark] {$\vec{P}$};
+\draw[otMuted,line width=0.4pt] (0.08,2.55) -- (1.6,2.95) node[pcLegende,anchor=west] {sommet : $N=0$ à la limite};
+% bas
+\fill[otInk] (0,0) circle (0.06);
+\draw[pcForce] (0,0) -- (0,1.5);
+\draw[otMuted,line width=0.4pt] (0.05,0.75) -- (1.9,0.75) node[pcLegende,anchor=west,text=otGreenDark] {$\vec{N}$ : six fois le poids};
+\draw[pcForce] (0.18,0) -- (0.18,-0.25);
+\draw[otMuted,line width=0.4pt] (0.25,-0.1) -- (1.9,-0.35) node[pcLegende,anchor=west,text=otGreenDark] {$\vec{P}$ : six fois plus petit};
+\end{tikzpicture}
+\par\smallskip\legende{Lâché de $h=5R/2$, le wagon passe tout juste au sommet ; au point bas, le rail le pousse avec une force égale à six fois son poids.}

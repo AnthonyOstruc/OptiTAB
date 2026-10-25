@@ -1,0 +1,23 @@
+% Famille radioactive de l'uranium 238 dans le diagramme (N,Z) (corrigé de l'exercice 13, chapitre 6)
+\begin{tikzpicture}[x=5.6mm,y=5.7mm,
+  noy/.style={circle,fill=otNavyTint,draw=otNavy!60,line width=0.5pt,inner sep=0pt,minimum size=5.3mm,
+    font=\otMedium\fontsize{5.4}{5.6}\selectfont,align=center,text=otNavy},
+  fin/.style={noy,fill=otInk,draw=otInk,text=white},
+  fa/.style={otGreenDark,line width=0.8pt,-{Stealth[length=1.5mm]},shorten <=0.4mm,shorten >=0.4mm},
+  fb/.style={otNavy,line width=0.8pt,-{Stealth[length=1.5mm]},shorten <=0.4mm,shorten >=0.4mm}]
+\foreach \n in {124,126,...,146}{\draw[otRule,line width=0.3pt] (\n,81.4) -- (\n,92.6);}
+\foreach \z in {82,...,92}{\draw[otRule,line width=0.3pt] (123.4,\z) -- (146.6,\z);}
+\foreach \n/\z/\e/\a in {146/92/U/238,144/90/Th/234,143/91/Pa/234,142/92/U/234,140/90/Th/230,138/88/Ra/226,
+  136/86/Rn/222,134/84/Po/218,132/82/Pb/214,131/83/Bi/214,130/84/Po/214,128/82/Pb/210,127/83/Bi/210,126/84/Po/210}{%
+  \node[noy] (\n) at (\n,\z) {\e\\\a};}
+\node[fin] (124) at (124,82) {Pb\\206};
+\foreach \a/\b in {146/144,142/140,140/138,138/136,136/134,134/132,130/128,126/124}{\draw[fa] (\a) -- (\b);}
+\foreach \a/\b in {144/143,143/142,132/131,131/130,128/127,127/126}{\draw[fb] (\a) -- (\b);}
+\draw[pcFlecheN] (123.4,80.9) -- (147.4,80.9) node[right,pcLegende] {$N$};
+\draw[pcFlecheN] (123,81.2) -- (123,93.2) node[above,pcLegende] {$Z$};
+\foreach \n in {124,128,...,144}{\node[pcLegende,text=otMuted,anchor=north] at (\n,80.85) {\n};}
+\foreach \z in {82,84,...,92}{\node[pcLegende,text=otMuted,anchor=east] at (122.95,\z) {\z};}
+\draw[otGreenDark,line width=0.8pt,-{Stealth[length=1.5mm]}] (138.6,83.1) -- (140.2,83.1) node[right,pcLegende,text=otGreenDark] {désintégration $\alpha$};
+\draw[otNavy,line width=0.8pt,-{Stealth[length=1.5mm]}] (138.6,82.3) -- (140.2,82.3) node[right,pcLegende,text=otNavy] {désintégration $\beta^-$};
+\end{tikzpicture}
+\par\smallskip\legende{Huit désintégrations $\alpha$ et six désintégrations $\beta^-$ conduisent de l'uranium 238 au plomb 206, stable.}

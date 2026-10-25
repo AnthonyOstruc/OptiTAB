@@ -1,0 +1,14 @@
+% Deux charges ponctuelles et leurs forces d'interaction (exercice 2, chapitre 11) ; échelle au corrigé
+\begin{tikzpicture}[x=1cm,y=1cm,
+  charge/.style={circle,minimum size=5mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont,text=white},
+  force/.style={otGreenDark,line width=1.2pt,-{Stealth[length=2.4mm]}}]
+\node[charge,fill=otRed!80] (a) at (0,0) {$+$}; \node[charge,fill=otNavy] (b) at (5,0) {$-$};
+\node[pcLegende,anchor=north] at (0,-0.3) {A : $q_\mathrm{A}=\qty{+2,0}{nC}$}; \node[pcLegende,anchor=north] at (5,-0.3) {B : $q_\mathrm{B}=\qty{-3,0}{nC}$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (0,-0.85) -- (5,-0.85) node[midway,below,pcLegende] {$d=\qty{5,0}{cm}$};
+\solution{
+  \draw[force] (0,0) -- (2.16,0) node[pcLegende,anchor=south,text=otGreenDark] {$\vec{F}_{\mathrm{B}/\mathrm{A}}$};
+  \draw[force] (5,0) -- (2.84,0) node[pcLegende,anchor=north,text=otGreenDark,yshift=-1mm] {$\vec{F}_{\mathrm{A}/\mathrm{B}}$};
+  \draw[otInk,line width=1pt] (6.0,0.9) -- (7.0,0.9);
+  \node[pcLegende,anchor=west] at (7.05,0.9) {$\qty{1,0e-5}{N}$};}
+\end{tikzpicture}
+\solution{\par\smallskip\legende{Attraction : chaque force, de valeur \qty{2,16e-5}{N}, est représentée par une flèche de \qty{2,16}{cm} dirigée vers l'autre charge.}}

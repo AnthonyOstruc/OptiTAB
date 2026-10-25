@@ -1,0 +1,24 @@
+% Évolution des concentrations, temps de demi-réaction et vitesse volumique (L'essentiel, chapitre 4)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,name=g,width=76mm,height=54mm,xmin=0,xmax=125,ymin=0,ymax=11,
+  xtick={0,30,60,90,120},ytick={0,2,...,10},xlabel={$t$ (min)},ylabel={$c$ (mmol$\cdot$L$^{-1}$)}]
+\addplot[otNavy,line width=1pt,domain=0:120,samples=100] {10*exp(-ln(2)*x/30)};
+\addplot[otGreenDark,line width=1pt,domain=0:120,samples=100] {10*(1-exp(-ln(2)*x/30))};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:30,5) -- (axis cs:30,0);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:30,5) -- (axis cs:0,5);
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:31,1.4) {$t_{1/2}$};
+\node[pcLegende,anchor=west,text=otNavy] at (axis cs:70,2.5) {réactif R};
+\node[pcLegende,anchor=west,text=otGreenDark] at (axis cs:56,9.7) {produit P};
+\end{axis}
+\begin{axis}[otMesures,otAxesBout,at={(g.east)},anchor=west,xshift=17mm,width=76mm,height=54mm,xmin=0,xmax=125,ymin=0,ymax=11,
+  xtick={0,30,60,90,120},ytick={0,2,...,10},xlabel={$t$ (min)},ylabel={$[\mathrm{R}]$ (mmol$\cdot$L$^{-1}$)}]
+\addplot[otNavy,line width=1pt,domain=0:120,samples=100] {10*exp(-ln(2)*x/30)};
+\addplot[otRed!80!black,line width=0.7pt,domain=0:43.3] {10-10*ln(2)/30*x};
+\addplot[otRed!80!black,line width=0.7pt,domain=10:73.3] {5-5*ln(2)/30*(x-30)};
+\addplot[only marks,mark=*,mark size=1.8pt,otRed!80!black] coordinates {(0,10)(30,5)};
+\node[pcLegende,anchor=south west,text=otRed!80!black] at (axis cs:40,1.6) {T$_0$};
+\node[pcLegende,anchor=south west,text=otRed!80!black] at (axis cs:70,0.7) {T$_{30}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{À gauche : à $t=t_{1/2}$, l'avancement atteint la moitié de sa valeur finale. À droite : tangentes T$_0$
+et T$_{30}$ aux dates 0 et 30 min ; la vitesse volumique de disparition, opposée de leur coefficient directeur, diminue.}

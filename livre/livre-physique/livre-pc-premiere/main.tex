@@ -1,0 +1,142 @@
+% !TEX program = lualatex
+%% OptiTAB - Physique-Chimie - Première spécialité - Livre complet.
+\documentclass[11pt,twoside,openany]{book}
+\usepackage{optitab-livre}
+\usepackage{pc-livre}
+\usetikzlibrary{fit,patterns,decorations.pathmorphing,decorations.markings}
+\pgfplotsset{otGraphe/.append style={clip=true}}
+% Repères lisibles : les graduations indiquent les échelles de chaque axe.
+\pgfplotsset{otLivreGraphe/.style={
+  axis lines=middle,
+  axis line style={otMuted,line width=0.5pt,-{Stealth[length=2mm]}},
+  tick style={otMuted,line width=0.4pt},major tick length=2pt,
+  ticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  grid=major,grid style={otRule!70,line width=0.3pt},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west,font=\small,text=otMuted},
+  every axis y label/.style={at={(current axis.above origin)},anchor=south,font=\small,text=otMuted},
+  clip=true}}
+% Graphique de mesures : axes au bord, graduations décimales à la française
+\pgfplotsset{otMesures/.style={
+  axis lines=left,
+  axis line style={otMuted,line width=0.5pt,-{Stealth[length=2mm]}},
+  tick style={otMuted,line width=0.4pt},major tick length=2pt,
+  ticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  label style={font=\small,text=otInk},
+  grid=major,grid style={otRule!70,line width=0.3pt},
+  /pgf/number format/use comma,/pgf/number format/1000 sep={\,},
+  clip=false}}
+% Quadrillage fin pour les courbes à exploiter (lectures graphiques, tangentes)
+\pgfplotsset{otLecture/.style={grid=both,minor tick num=1,
+  minor grid style={otRule!45,line width=0.2pt},minor tick length=0pt}}
+% Axes de mesure : étiquettes en bout d'axe
+\pgfplotsset{otAxesBout/.style={
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}}}
+\hypersetup{pdftitle={Physique-Chimie - Première spécialité - Livre complet},
+  pdfsubject={Cours, exercices corrigés, défis et devoirs surveillés},pdfauthor={OptiTAB}}
+\begin{document}
+\pagenumbering{alph}
+\input{couverture/premiere}
+\pagenumbering{arabic}
+\input{liminaires/titre}
+\input{liminaires/copyright}
+\input{liminaires/avant-propos}
+\input{liminaires/mode-emploi}
+\input{liminaires/parcours}
+\input{liminaires/sommaire}
+\input{liminaires/tableau-de-bord}
+\input{chapitres/01-composition}
+\input{chapitres/02-absorbance}
+\input{chapitres/03-oxydoreduction}
+\input{chapitres/04-avancement}
+\input{chapitres/05-titrages}
+\input{chapitres/06-lewis}
+\input{chapitres/07-cohesion}
+\input{chapitres/08-organique}
+\input{chapitres/09-syntheses}
+\input{chapitres/10-combustions}
+\input{chapitres/11-champs}
+\input{chapitres/12-fluides}
+\input{chapitres/13-mouvement}
+\input{chapitres/14-electricite}
+\input{chapitres/15-travail}
+\input{chapitres/16-energie-mecanique}
+\input{chapitres/17-ondes}
+\input{chapitres/18-lentilles}
+\input{chapitres/19-couleurs}
+\input{chapitres/20-photons}
+\input{chapitres/21-mesures}
+\input{annexes/defis-enonces}
+\input{annexes/indices-defis}
+%% Devoirs surveillés : méthode, fiches expérimentales et six devoirs
+\partieDevoirs
+\input{annexes/methodes-devoir}
+\input{devoirs/ds-01}
+\input{devoirs/ds-02}
+\input{devoirs/ds-03}
+\input{devoirs/ds-04}
+\input{devoirs/ds-05}
+\input{devoirs/ds-06}
+%% Corrigés
+\partieCorriges
+\input{corriges/01-composition}
+\clearpage
+\input{corriges/02-absorbance}
+\clearpage
+\input{corriges/03-oxydoreduction}
+\clearpage
+\input{corriges/04-avancement}
+\clearpage
+\input{corriges/05-titrages}
+\clearpage
+\input{corriges/06-lewis}
+\clearpage
+\input{corriges/07-cohesion}
+\clearpage
+\input{corriges/08-organique}
+\clearpage
+\input{corriges/09-syntheses}
+\clearpage
+\input{corriges/10-combustions}
+\clearpage
+\input{corriges/11-champs}
+\clearpage
+\input{corriges/12-fluides}
+\clearpage
+\input{corriges/13-mouvement}
+\clearpage
+\input{corriges/14-electricite}
+\clearpage
+\input{corriges/15-travail}
+\clearpage
+\input{corriges/16-energie-mecanique}
+\clearpage
+\input{corriges/17-ondes}
+\clearpage
+\input{corriges/18-lentilles}
+\clearpage
+\input{corriges/19-couleurs}
+\clearpage
+\input{corriges/20-photons}
+\clearpage
+\input{corriges/21-mesures}
+\input{annexes/defis-corriges}
+%% Corrigés des devoirs surveillés
+\corrigesDevoirsDebut
+\input{devoirs/corrige-01}
+\clearpage
+\input{devoirs/corrige-02}
+\clearpage
+\input{devoirs/corrige-03}
+\clearpage
+\input{devoirs/corrige-04}
+\clearpage
+\input{devoirs/corrige-05}
+\clearpage
+\input{devoirs/corrige-06}
+%% Annexes
+\input{annexes/donnees-programme}
+\clearpage
+\input{liminaires/references}
+\input{couverture/quatrieme}
+\end{document}

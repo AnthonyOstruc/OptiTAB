@@ -1,0 +1,17 @@
+% Spectre d'un sirop de menthe dilué : tartrazine et bleu patenté (exercice 11 et défi D02, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otUV,width=110mm,height=55mm,ymax=0.8,ytick={0,0.2,...,0.6},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xtick={400,450,...,750}]
+\addplot[otNavy,line width=1pt,domain=400:750] {0 \bandeUV{427}{48}{0.59} \bandeUV{638}{32}{0.53} \bandeUV{427}{40}{0.03}};
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:427,0) -- (axis cs:427,0.62);
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:638,0) -- (axis cs:638,0.53);
+\node[pcLegende,anchor=south] at (axis cs:427,0.63) {\qty{427}{nm}};
+\node[pcLegende,anchor=south] at (axis cs:638,0.54) {\qty{638}{nm}};
+\solution{\addplot[orange!85!black,line width=0.7pt,dash pattern=on 3pt off 1.5pt,domain=400:750] {0 \bandeUV{427}{48}{0.59}};
+  \addplot[blue!70,line width=0.7pt,dash pattern=on 3pt off 1.5pt,domain=400:750] {0 \bandeUV{638}{32}{0.53} \bandeUV{427}{40}{0.03}};
+  \node[pcLegende,anchor=west,text=orange!85!black] at (axis cs:470,0.45) {tartrazine (jaune)};
+  \node[pcLegende,anchor=west,text=blue!70] at (axis cs:670,0.35) {bleu patenté};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Spectre d'absorption d'un sirop de menthe dilué vingt fois, mesuré dans une cuve de \qty{1,00}{cm}.}

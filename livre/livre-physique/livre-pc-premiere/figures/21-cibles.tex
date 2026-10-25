@@ -1,0 +1,14 @@
+% Quatre séries de tirs sur une cible : dispersion (erreurs aléatoires) et décalage (erreur systématique) (L'essentiel, chapitre 21)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \cx/\dx/\dy/\k/\t in {0/0/0/0.3/{peu dispersées,\\centrées},3.9/0.42/0.32/0.3/{peu dispersées, décalées :\\erreur systématique},
+  7.8/0/0/1/{dispersées, centrées :\\erreurs aléatoires},11.7/0.3/0.28/0.85/{dispersées et décalées}}{%
+  \begin{scope}[shift={(\cx,0)}]
+    \foreach \r/\c in {1.1/otRule!40,0.75/otRule!70,0.4/otNavy!25}{\fill[\c] (0,0) circle (\r);}
+    \draw[otMuted,line width=0.4pt] (0,0) circle (1.1) (0,0) circle (0.75) (0,0) circle (0.4);
+    \fill[otNavy] (0,0) circle (0.05);
+    \foreach \px/\py in {0.5/0.3,-0.45/0.2,0.2/-0.55,-0.3/-0.4,0.1/0.6,-0.6/-0.1,0.45/-0.2,-0.15/0.35}{%
+      \fill[otRed!85!black] ({\dx+\k*\px},{\dy+\k*\py}) circle (0.065);}
+    \node[pcLegende,anchor=north,align=center] at (0,-1.2) {\t};
+  \end{scope}}
+\end{tikzpicture}
+\par\smallskip\legende{Le centre de la cible représente la valeur de la grandeur mesurée, chaque point un résultat de mesure.}

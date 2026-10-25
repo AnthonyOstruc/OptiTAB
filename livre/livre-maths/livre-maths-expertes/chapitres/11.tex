@@ -1,0 +1,157 @@
+\begin{ouverture}[denombrement]{11}{Graphes et matrices d’adjacence}{Graphes et matrices}{Degrés · Connexité · Chaînes · Puissances}
+\objectif{Modéliser une situation par un graphe.}
+\objectif{Calculer ordres, degrés et nombres d’arêtes.}
+\objectif{Passer du graphe à sa matrice d’adjacence.}
+\objectif{Compter des parcours de longueur fixée par une puissance.}
+\prerequis{Calcul matriciel et dénombrement élémentaire.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Des sommets reliés}
+Un graphe possède des sommets et des arêtes. Deux sommets reliés par une arête sont adjacents.
+Dans ce chapitre, les premiers graphes sont simples et non orientés : pas de boucle, ni d'arêtes multiples.
+L'ordre est le nombre de sommets ; le degré d'un sommet est le nombre d'arêtes qui lui sont incidentes.
+La somme des degrés vaut deux fois le nombre d'arêtes, car chaque arête possède deux extrémités.
+Le graphe complet $K_n$ relie toutes les paires de sommets : chacun a degré $n-1$ et il y a $n(n-1)/2$ arêtes.
+\figurelivre{e11-graphe.pdf}{Graphe d'ordre $4$, avec les arêtes $AB,AC,BC,CD$. Les degrés sont $2,2,3,1$ ; leur somme $8$ compte deux fois les quatre arêtes.}
+\essSection{2}{Chaînes et connexité}
+Une chaîne est une succession de sommets dont deux consécutifs sont adjacents. Sa longueur est le nombre d'arêtes parcourues.
+Un graphe est connexe si toute paire de sommets peut être reliée par une chaîne.
+Dans un graphe orienté, les arêtes deviennent des arcs et un chemin doit respecter leur sens. Un poids peut décrire une distance, un coût ou une probabilité, à préciser selon la situation.
+Pour les comptages matriciels, on autorise la répétition des sommets et des arêtes : on compte des parcours, et non uniquement des chemins simples sans répétition.
+\essSection{3}{La matrice d'adjacence}
+On fixe un ordre des sommets. La matrice $A$ possède un coefficient $a_{ij}=1$ si l'on peut aller directement du sommet $i$ au sommet $j$, et $0$ sinon.
+Pour un graphe simple non orienté, elle est symétrique, sa diagonale est nulle et la somme d'une ligne est le degré du sommet.
+\begin{exemple}
+Pour le graphe de la figure, dans l'ordre $A,B,C,D$,
+$A=\begin{pmatrix}0&1&1&0\\1&0&1&0\\1&1&0&1\\0&0&1&0\end{pmatrix}$.
+Une permutation de l'ordre des sommets change la présentation de la matrice ; il faut conserver les étiquettes pour interpréter les coefficients.
+\end{exemple}
+\essSection{4}{Compter avec les puissances}
+\begin{theoreme}
+Le coefficient $(i,j)$ de $A^n$ compte les parcours de longueur $n$ du sommet $i$ au sommet $j$.
+Pour $n=0$, $A^0=I$ correspond au parcours vide, possible seulement si le départ et l'arrivée coïncident.
+\end{theoreme}
+\begin{demonstration}
+Le résultat est la définition pour $n=1$. Supposer le comptage connu à la longueur $n$.
+Tout parcours de longueur $n+1$ se décompose en un parcours de longueur $n$ allant de $i$ à un sommet intermédiaire $k$, puis un arc ou une arête de $k$ à $j$.
+Pour chaque $k$, le nombre vaut $(A^n)_{ik}a_{kj}$ ; les cas sont disjoints. La somme sur $k$ est précisément $(A^{n+1})_{ij}$.
+\end{demonstration}
+\figurelivre{e11-parcours.pdf}{Le parcours de longueur $2$ de $A$ à $D$ passe par $C$. Il est compté par $(A^2)_{AD}=1$. Les parcours fermés de longueur $2$ de $A$ à lui-même sont $A,B,A$ et $A,C,A$.}
+\essSection{5}{Un prolongement : parcourir chaque arête}
+Une chaîne eulérienne utilise chaque arête exactement une fois. Un cycle eulérien revient au départ.
+Dans un graphe connexe non orienté avec au moins une arête, il existe une chaîne eulérienne si et seulement si le nombre de sommets de degré impair est $0$ ou $2$ (critère admis ici). Si ce nombre est $0$, un cycle existe.
+La nécessité s'explique : dans les sommets intermédiaires, chaque entrée s'associe à une sortie. Seuls le départ et l'arrivée peuvent avoir un degré impair.
+Dans le graphe du cours, $D,C,A,B,C$ utilise chaque arête une fois, de $D$ à $C$.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Vocabulaire}
+Un graphe possède cinq sommets et sept arêtes.
+\begin{questions}
+\item Quel est son ordre ?
+\item Quelle est la somme de ses degrés ?
+\item Peut-on déjà dire qu’il est complet ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Graphe du cours}
+
+\begin{questions}
+\item Donner les voisins de $C$.
+\item Donner le degré de $D$.
+\item Le graphe est-il connexe ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Matrice d’un triangle}
+
+\begin{questions}
+\item Écrire la matrice d’adjacence de $K_3$.
+\item Donner la somme de chaque ligne.
+\item Donner le nombre total d’arêtes.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Une longueur}
+On parcourt $A,C,B,A,C,D$ dans le graphe du cours.
+\begin{questions}
+\item Quelle est la longueur ?
+\item Le sommet $A$ est-il répété ?
+\item Ce parcours est-il eulérien ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Calculer $A^2$}
+$A$ est la matrice du graphe du cours.
+\begin{questions}
+\item Calculer $(A^2)_{AD}$.
+\item Calculer $(A^2)_{AA}$.
+\item Interpréter ces deux résultats.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un graphe orienté}
+Dans l’ordre $A,B,C$, $M=\begin{pmatrix}0&1&0\\0&0&1\\1&0&0\end{pmatrix}$.
+\begin{questions}
+\item Décrire les arcs.
+\item Calculer $M^3$.
+\item Donner le nombre de chemins de longueur $4$ de $A$ à $B$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Complet}
+
+\begin{questions}
+\item Calculer le nombre d’arêtes de $K_6$.
+\item Donner les degrés.
+\item Peut-on avoir un cycle eulérien dans $K_6$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une chaîne eulérienne}
+On utilise le graphe du cours.
+\begin{questions}
+\item Repérer les sommets impairs.
+\item Donner une chaîne eulérienne.
+\item Peut-elle être fermée ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Interpréter une puissance}
+Pour un graphe orienté, $(A^5)_{23}=17$.
+\begin{questions}
+\item Que signifie ce nombre ?
+\item Garantit-il $17$ parcours sans répétition ?
+\item Que compterait $(A^0)_{23}$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Connexité et information}
+Une matrice non orientée est composée de deux blocs diagonaux, sans coefficient non nul entre les blocs. Chaque bloc contient au moins un sommet.
+\begin{questions}
+\item Que révèle l’absence de coefficients croisés ?
+\item Le graphe est-il connexe ?
+\item Les puissances peuvent-elles créer un parcours entre les blocs ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Démontrer le comptage}
+
+\begin{questions}
+\item Expliquer le rôle du dernier sommet intermédiaire $k$.
+\item Pourquoi multiplie-t-on $(A^n)_{ik}$ par $a_{kj}$ ?
+\item Pourquoi additionne-t-on sur $k$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Poids et comptage}
+Une matrice contient des distances sur ses arcs plutôt que des $0$ et des $1$.
+\begin{questions}
+\item Les coefficients de ses puissances comptent-ils encore les parcours ?
+\item Que calcule le produit ordinaire dans ce cas ?
+\item Quelle précaution prendre avant de choisir une matrice ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

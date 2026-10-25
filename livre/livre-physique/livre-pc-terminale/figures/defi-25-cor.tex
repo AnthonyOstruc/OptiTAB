@@ -1,0 +1,17 @@
+% Tension de seuil de LED en fonction de l'inverse de la longueur d'onde (corrigé du défi D25)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=56mm,xmin=0.9,xmax=2.3,ymin=1.0,ymax=2.9,
+  xtick={1.0,1.2,...,2.2},ytick={1.0,1.5,...,2.5},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1,/pgf/number format/fixed zerofill},
+  xlabel={$1/\lambda$ (\unit{\micro m^{-1}})},ylabel={$U_\mathrm{s}$ (V)}]
+\addplot[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0.95:2.25,samples=2] {1.23984*x};
+\addplot[otNavy,line width=1pt,domain=0.95:2.25,samples=2] {1.2026*x+0.0009};
+\addplot[only marks,mark=*,mark size=1.8pt,otRed!80!black] coordinates {(1.0638,1.28) (1.5873,1.91) (1.6949,2.04) (1.9048,2.29) (2.1277,2.56)};
+\node[pcLegende,anchor=north west,text=otNavy] at (axis cs:1.55,1.75) {régression : pente \qty{1,203}{V.\micro m}};
+\node[pcLegende,anchor=south east,text=otMuted] at (axis cs:2.0,2.62) {$hc/(e\lambda)$ avec $h=\qty{6,63e-34}{J.s}$};
+\node[pcLegende,anchor=north,text=otRed!80!black] at (axis cs:1.0638,1.24) {IR};
+\node[pcLegende,anchor=south east,text=otRed!80!black] at (axis cs:2.11,2.58) {bleu};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les tensions de seuil des cinq LED s'alignent sur une droite passant presque par l'origine ; sa pente donne $h$ à 3~\% près.}

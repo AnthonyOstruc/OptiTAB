@@ -1,0 +1,16 @@
+% Refroidissement d'un liquide selon la loi de Newton : temps caractéristique (L'essentiel, chapitre 20)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=50mm,xmin=0,xmax=105,ymin=0,ymax=90,
+  xtick={0,25,...,100},ytick={0,20,...,80},
+  xlabel={$t$ (min)},ylabel={$T$ (\unit{\degreeCelsius})}]
+\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:105,samples=2] {20};
+\addplot[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:25,samples=2] {80-60*x/25};
+\addplot[otNavy,line width=1pt,domain=0:100,samples=120] {20+60*exp(-x/25)};
+\draw[otGreenDark,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:25,0) -- (axis cs:25,42.1);
+\fill[otGreenDark] (axis cs:25,42.1) circle (1.5pt);
+\node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:26,43) {à $t=\tau$, il reste 37~\% de l'écart initial};
+\node[pcLegende,anchor=south west,text=otMuted] at (axis cs:60,20.5) {$T_\mathrm{ext}=\qty{20}{\degreeCelsius}$};
+\node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:25.5,1) {$\tau$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La température tend exponentiellement vers celle du milieu extérieur ; la tangente à l'origine coupe l'asymptote à $t=\tau$.}

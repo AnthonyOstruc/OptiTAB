@@ -1,0 +1,642 @@
+% !TEX root = ../main.tex
+%% Chapitre 3 — Nombres complexes
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Nombres complexes » : a) forme algébrique ; b) conjugaison et module ;
+%% c) module 1 et trigonométrie ; d) forme trigonométrique ; e) équations algébriques ;
+%% f) racines n-ièmes ; g) exponentielle complexe ; h) interprétation géométrique.
+%% Résultats vérifiés par verifications/chapitre_03.py.
+
+\begin{ouverture}[complexes]{3}{Nombres complexes}{Partie 1 · Premier semestre}
+  {Forme algébrique\enspace·\enspace Module\enspace·\enspace Exponentielle $\mathrm{e}^{\mathrm{i}t}$\enspace·\enspace
+   Équations\enspace·\enspace Racines de l'unité\enspace·\enspace Géométrie}
+  \objectif{Calculer avec les formes algébrique et trigonométrique, le conjugué et le module.}
+  \objectif{Utiliser $\mathrm{e}^{\mathrm{i}t}$ : formules d'Euler, de Moivre, technique de l'angle moitié.}
+  \objectif{Linéariser, calculer des sommes trigonométriques, transformer $a\cos t+b\sin t$.}
+  \objectif{Résoudre les équations du second degré dans $\Cx$ et déterminer les racines $n$-ièmes.}
+  \objectif{Manipuler l'exponentielle complexe et résoudre $\exp(z)=a$.}
+  \objectif{Traduire alignement, orthogonalité et transformations géométriques avec les complexes.}
+  \prerequis{Trigonométrie : cercle, formules d'addition et de duplication (chapitre 2).}
+  \prerequis{Sommes géométriques, formule du binôme (chapitre 2).}
+  \prerequis{Second degré à coefficients réels (lycée).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Forme algébrique et plan complexe}
+
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+\begin{definition}[Forme algébrique]
+Tout nombre complexe s'écrit de manière unique $z=x+\mathrm{i}y$ avec
+$x,y\in\R$ : $x=\operatorname{Re}(z)$ est la \textbf{partie réelle},
+$y=\operatorname{Im}(z)$ la \textbf{partie imaginaire}. Les règles de calcul
+sont celles de $\R$, complétées par $\mathrm{i}^{2}=-1$. Le binôme, la
+factorisation de $a^{n}-b^{n}$ et la somme géométrique
+$\sum_{k=0}^{n}z^{k}=\frac{1-z^{n+1}}{1-z}$ ($z\neq1$) restent valables
+dans $\Cx$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.05,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-0.7,0) -- (3,0) node[below,font=\scriptsize] {Re};
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-0.7) -- (0,2.4) node[left,font=\scriptsize] {Im};
+  \draw[otGreen,line width=0.9pt,-{Stealth[length=2mm]}] (0,0) -- (2.2,1.6);
+  \fill[otNavy] (2.2,1.6) circle (1.4pt);
+  \node[above right,font=\scriptsize,text=otNavy,inner sep=1.5pt] at (2.2,1.6) {$M(z)$};
+  \draw[otRule!90!otMuted,line width=0.5pt,dash pattern=on 1.8pt off 1.4pt] (2.2,0) -- (2.2,1.6) -- (0,1.6);
+  \node[below,font=\scriptsize,text=otMuted] at (2.2,0) {$x$};
+  \node[left,font=\scriptsize,text=otMuted] at (0,1.6) {$y$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Le point $M$ d'affixe $z=x+\mathrm{i}y$, et le vecteur d'affixe $z$.}
+\end{minipage}
+
+\vspace{1mm}
+On identifie $\Cx$ au plan muni d'un repère orthonormé direct (\emph{plan
+complexe}) : le point $M(x\,;y)$ a pour \textbf{affixe} $z=x+\mathrm{i}y$, et
+tout vecteur du plan a de même une affixe. L'affixe de
+$\vect{AB}$ est $z_B-z_A$.
+
+\essSection{2}{Conjugué et module}
+
+\begin{definition}[Conjugué, module]
+Le \textbf{conjugué} de $z=x+\mathrm{i}y$ est $\overline{z}=x-\mathrm{i}y$ ;
+le \textbf{module} de $z$ est $|z|=\sqrt{x^{2}+y^{2}}$, et l'on a l'identité
+fondamentale $|z|^{2}=z\overline{z}$.
+\end{definition}
+
+\begin{propriete}[Règles de calcul]
+Conjugaison : $\overline{z+z'}=\overline{z}+\overline{z'}$,
+$\overline{zz'}=\overline{z}\,\overline{z'}$,
+$\overline{\bigl(\frac{z}{z'}\bigr)}=\frac{\overline{z}}{\overline{z'}}$ ;
+$z\in\R\iff z=\overline{z}$ ;
+$\operatorname{Re}(z)=\frac{z+\overline{z}}{2}$,
+$\operatorname{Im}(z)=\frac{z-\overline{z}}{2\mathrm{i}}$.
+Module : $|zz'|=|z|\,|z'|$,
+$\Bigl|\dfrac{z}{z'}\Bigr|=\dfrac{|z|}{|z'|}$, $|\overline{z}|=|z|$ ;
+pour mettre un quotient sous forme algébrique, on multiplie haut et bas par
+le conjugué du dénominateur.
+\end{propriete}
+
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+\begin{theoreme}[Inégalité triangulaire]
+Pour tous $z,z'\in\Cx$ :
+\[
+  \bigl||z|-|z'|\bigr|\leq|z+z'|\leq|z|+|z'|,
+\]
+avec égalité à droite si et seulement si $z'=0$ ou $z=\lambda z'$ avec
+$\lambda\geq0$ (même demi-droite issue de l'origine).
+Géométriquement, $|z-z'|$ est la distance entre les points d'affixes $z$ et
+$z'$ : l'ensemble des $z$ tels que $|z-a|=r$ est le \emph{cercle} de centre
+$a$ et de rayon $r$, et $|z-a|\leq r$ décrit le \emph{disque} correspondant.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.05,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-0.4,0) -- (3.1,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-0.4) -- (0,2.6);
+  \fill[otGreenTint] (1.7,1.3) circle (0.85);
+  \draw[otGreenDark,line width=0.9pt] (1.7,1.3) circle (0.85);
+  \fill[otNavy] (1.7,1.3) circle (1.3pt);
+  \node[below,font=\scriptsize,text=otNavy,inner sep=2pt] at (1.7,1.25) {$a$};
+  \draw[otGreenDark,line width=0.7pt,-{Stealth[length=1.6mm]}] (1.7,1.3) -- (2.44,1.72);
+  \node[above,font=\scriptsize,text=otGreenDark] at (2.1,1.56) {$r$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$|z-a|\leq r$ : le disque de centre $a$ et de rayon $r$.}
+\end{minipage}
+
+\essSection{3}{Nombres complexes de module 1 : l'exponentielle $\mathrm{e}^{\mathrm{i}t}$}
+
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+\begin{definition}
+L'ensemble $\mathbb{U}$ des nombres complexes de module $1$ s'identifie au
+cercle trigonométrique. Pour $t\in\R$, on pose
+\[
+  \mathrm{e}^{\mathrm{i}t}=\cos t+\mathrm{i}\sin t.
+\]
+Alors $\mathrm{e}^{\mathrm{i}(t+t')}=\mathrm{e}^{\mathrm{i}t}\,\mathrm{e}^{\mathrm{i}t'}$,
+$\overline{\mathrm{e}^{\mathrm{i}t}}=\mathrm{e}^{-\mathrm{i}t}=\dfrac{1}{\mathrm{e}^{\mathrm{i}t}}$,
+et $\mathrm{e}^{\mathrm{i}t}=\mathrm{e}^{\mathrm{i}t'}\iff t\equiv t'\ [2\pi]$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.25,line cap=round]
+  \draw[otRule,line width=0.3pt] (-1.25,0) -- (1.35,0);
+  \draw[otRule,line width=0.3pt] (0,-1.25) -- (0,1.3);
+  \draw[otNavy,line width=0.8pt] (0,0) circle (1);
+  \draw[otGreen,line width=0.9pt,-{Stealth[length=1.8mm]}] (0,0) -- (40:1);
+  \fill[otGreenDark] (40:1) circle (1.2pt);
+  \node[above right,font=\scriptsize,text=otGreenDark,inner sep=1pt] at (40:1) {$\mathrm{e}^{\mathrm{i}t}$};
+  \draw[otGreenDark,line width=0.5pt] (0.3,0) arc (0:40:0.3);
+  \node[font=\scriptsize,text=otGreenDark] at (20:0.47) {$t$};
+  \node[below right,font=\tiny,text=otMuted,inner sep=1pt] at (1,0) {$1$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$\mathbb{U}$ : le cercle unité, paramétré par $t\mapsto\mathrm{e}^{\mathrm{i}t}$.}
+\end{minipage}
+
+\begin{theoreme}[Formules d'Euler et de Moivre]
+Pour tout réel $t$ et tout entier $n\in\Z$ :
+\[
+  \cos t=\frac{\mathrm{e}^{\mathrm{i}t}+\mathrm{e}^{-\mathrm{i}t}}{2},\qquad
+  \sin t=\frac{\mathrm{e}^{\mathrm{i}t}-\mathrm{e}^{-\mathrm{i}t}}{2\mathrm{i}},\qquad
+  \bigl(\cos t+\mathrm{i}\sin t\bigr)^{n}=\cos(nt)+\mathrm{i}\sin(nt).
+\]
+\end{theoreme}
+
+\begin{savoirfaire}[La technique de l'angle moitié]
+Pour factoriser $1\pm\mathrm{e}^{\mathrm{i}t}$ ou
+$\mathrm{e}^{\mathrm{i}p}\pm\mathrm{e}^{\mathrm{i}q}$, on met en facteur
+l'exponentielle de l'angle moitié :
+\[
+  1+\mathrm{e}^{\mathrm{i}t}=2\cos\frac{t}{2}\,\mathrm{e}^{\mathrm{i}t/2},\qquad
+  1-\mathrm{e}^{\mathrm{i}t}=-2\mathrm{i}\sin\frac{t}{2}\,\mathrm{e}^{\mathrm{i}t/2},\qquad
+  \mathrm{e}^{\mathrm{i}p}+\mathrm{e}^{\mathrm{i}q}=2\cos\frac{p-q}{2}\,\mathrm{e}^{\mathrm{i}\frac{p+q}{2}}.
+\]
+On en déduit les formules du type
+$\cos p+\cos q=2\cos\frac{p+q}{2}\cos\frac{p-q}{2}$, à savoir retrouver.
+\end{savoirfaire}
+
+\begin{savoirfaire}[Linéariser, délinéariser]
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item \etape{Linéariser} écrire $\cos^{p}t\,\sin^{q}t$ avec les formules
+    d'Euler, développer par le binôme, regrouper les exponentielles
+    conjuguées. Exemple : $\sin^{3}t=\frac{3\sin t-\sin(3t)}{4}$.
+  \item \etape{Délinéariser} exprimer $\cos(nt)$, $\sin(nt)$ en fonction de
+    $\cos t$, $\sin t$ : développer $(\cos t+\mathrm{i}\sin t)^{n}$ par le
+    binôme (Moivre) et identifier parties réelle et imaginaire.
+  \item \etape{Sommes} les sommes $\sum\cos(kt)$, $\sum\sin(kt)$ sont les
+    parties réelle et imaginaire d'une somme géométrique $\sum\mathrm{e}^{\mathrm{i}kt}$.
+\end{itemize}
+\end{savoirfaire}
+
+\essSection{4}{Forme trigonométrique et arguments}
+
+\begin{definition}[Forme trigonométrique]
+Tout nombre complexe \emph{non nul} $z$ s'écrit
+$z=r\,\mathrm{e}^{\mathrm{i}\theta}$ avec $r=|z|>0$ ; le réel $\theta$,
+défini modulo $2\pi$, est \emph{un} \textbf{argument} de $z$, noté
+$\arg(z)$. Deux écritures $r\mathrm{e}^{\mathrm{i}\theta}=r'\mathrm{e}^{\mathrm{i}\theta'}$
+(avec $r,r'>0$) coïncident si et seulement si $r=r'$ et
+$\theta\equiv\theta'\ [2\pi]$.
+\end{definition}
+
+\begin{propriete}[Argument d'un produit, d'un quotient]
+Pour $z,z'$ non nuls :
+$\arg(zz')\equiv\arg z+\arg z'\ [2\pi]$,\quad
+$\arg\Bigl(\dfrac{z}{z'}\Bigr)\equiv\arg z-\arg z'\ [2\pi]$,\quad
+$\arg(\overline{z})\equiv-\arg z\ [2\pi]$ :
+multiplier des complexes, c'est multiplier les modules et ajouter les arguments.
+\end{propriete}
+
+\begin{savoirfaire}[Transformer $a\cos t+b\sin t$]
+Pour $(a,b)\neq(0,0)$, on factorise par $A=\sqrt{a^{2}+b^{2}}$ :
+$\dfrac{a}{A}$ et $\dfrac{b}{A}$ sont le cosinus et le sinus d'un réel
+$\varphi$, et
+\[
+  a\cos t+b\sin t=A\cos(t-\varphi).
+\]
+Exemple : $\cos t+\sin t=\sqrt2\cos\bigl(t-\frac{\pi}{4}\bigr)$. Utile pour
+résoudre $a\cos t+b\sin t=c$ et pour lire amplitude et déphasage.
+\end{savoirfaire}
+
+\essSection{5}{Équations du second degré dans $\Cx$}
+
+\begin{propriete}[Racines carrées d'un nombre complexe]
+Tout complexe non nul $w$ admet exactement deux racines carrées, opposées.
+Sous forme algébrique, on résout $(x+\mathrm{i}y)^{2}=w$ en identifiant :
+$x^{2}-y^{2}=\operatorname{Re}(w)$, $2xy=\operatorname{Im}(w)$, complétées
+par l'équation des modules $x^{2}+y^{2}=|w|$.
+\end{propriete}
+
+\begin{theoreme}[Second degré]
+Soient $a,b,c\in\Cx$, $a\neq0$. L'équation $az^{2}+bz+c=0$ a pour
+discriminant $\Delta=b^{2}-4ac$ ; si $\delta$ est une racine carrée de
+$\Delta$, les solutions sont
+\[
+  z_{1,2}=\frac{-b\pm\delta}{2a},
+  \qquad\text{avec}\qquad
+  z_1+z_2=-\frac{b}{a}\quad\text{et}\quad z_1z_2=\frac{c}{a}.
+\]
+Réciproquement, deux nombres de somme $s$ et de produit $p$ sont les racines
+de $z^{2}-sz+p=0$. Enfin, si une fonction polynomiale $P$ admet $a$ pour
+racine, alors $P(z)$ se factorise par $z-a$.
+\end{theoreme}
+
+\essSection{6}{Racines $n$-ièmes}
+
+\noindent
+\begin{minipage}[c]{0.58\linewidth}
+\begin{theoreme}[Racines $n$-ièmes de l'unité]
+Pour $n\geq1$, l'équation $z^{n}=1$ a exactement $n$ solutions, les
+\textbf{racines $n$-ièmes de l'unité} :
+\[
+  \mathbb{U}_n=\Bigl\{\mathrm{e}^{2\mathrm{i}k\pi/n},\ k=0,1,\dots,n-1\Bigr\}.
+\]
+Elles forment un polygone régulier à $n$ sommets inscrit dans le cercle
+unité, et leur somme vaut $0$ pour $n\geq2$.
+Plus généralement, pour $w=r\mathrm{e}^{\mathrm{i}\theta}\neq0$, l'équation
+$z^{n}=w$ a exactement $n$ solutions :
+\[
+  z_k=r^{1/n}\,\mathrm{e}^{\mathrm{i}(\theta+2k\pi)/n},\qquad k=0,\dots,n-1,
+\]
+obtenues à partir de l'une d'elles en multipliant par les éléments de $\mathbb{U}_n$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.35,line cap=round]
+  \draw[otRule,line width=0.3pt] (-1.25,0) -- (1.3,0);
+  \draw[otRule,line width=0.3pt] (0,-1.25) -- (0,1.3);
+  \draw[otNavy,line width=0.8pt] (0,0) circle (1);
+  \draw[otGreen!60,line width=0.6pt] (0:1) -- (72:1) -- (144:1) -- (216:1) -- (288:1) -- cycle;
+  \foreach \k in {0,1,2,3,4}{\fill[otGreenDark] (72*\k:1) circle (1.3pt);}
+  \node[right,font=\scriptsize,text=otGreenDark,inner sep=1.6pt] at (0:1) {$1$};
+  \node[above right,font=\scriptsize,text=otGreenDark,inner sep=1pt] at (72:1) {$\omega$};
+  \node[above left,font=\scriptsize,text=otGreenDark,inner sep=1pt] at (144:1) {$\omega^{2}$};
+  \node[below left,font=\scriptsize,text=otGreenDark,inner sep=1pt] at (216:1) {$\omega^{3}$};
+  \node[below right,font=\scriptsize,text=otGreenDark,inner sep=1pt] at (288:1) {$\omega^{4}$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$\mathbb{U}_5$ : un pentagone régulier, avec $\omega=\mathrm{e}^{2\mathrm{i}\pi/5}$.}
+\end{minipage}
+
+\begin{exemple}[Le nombre $j$]
+On note $j=\mathrm{e}^{2\mathrm{i}\pi/3}=-\dfrac12+\mathrm{i}\dfrac{\sqrt3}{2}$ :
+alors $\mathbb{U}_3=\ens{1,j,j^{2}}$, avec $j^{3}=1$, $j^{2}=\overline{j}=\dfrac1j$
+et la relation fondamentale $1+j+j^{2}=0$.
+\end{exemple}
+
+\essSection{7}{L'exponentielle complexe}
+
+\begin{definition}
+Pour $z=x+\mathrm{i}y\in\Cx$, on pose
+$\mathrm{e}^{z}=\mathrm{e}^{x}\,\mathrm{e}^{\mathrm{i}y}$ (notation
+$\exp(z)$). Alors $|\mathrm{e}^{z}|=\mathrm{e}^{\operatorname{Re}(z)}$,
+$\arg(\mathrm{e}^{z})\equiv\operatorname{Im}(z)\ [2\pi]$, et l'exponentielle
+transforme les sommes en produits :
+$\mathrm{e}^{z+z'}=\mathrm{e}^{z}\,\mathrm{e}^{z'}$.
+\end{definition}
+
+\begin{propriete}[Équation $\exp(z)=a$]
+Pour tous $z,z'\in\Cx$ :
+$\mathrm{e}^{z}=\mathrm{e}^{z'}\iff z-z'\in2\mathrm{i}\pi\Z$.
+Pour $a\neq0$ écrit $a=r\mathrm{e}^{\mathrm{i}\theta}$, les solutions de
+$\mathrm{e}^{z}=a$ sont
+\[
+  z=\ln r+\mathrm{i}\theta+2\mathrm{i}k\pi,\qquad k\in\Z ;
+\]
+l'équation $\mathrm{e}^{z}=0$ n'a pas de solution.
+\end{propriete}
+
+\essSection{8}{Nombres complexes et géométrie plane}
+
+\begin{theoreme}[Le quotient $\frac{c-a}{b-a}$]
+Soient $A$, $B$, $C$ trois points deux à deux distincts d'affixes $a$, $b$,
+$c$. Alors
+\[
+  \Bigl|\frac{c-a}{b-a}\Bigr|=\frac{AC}{AB}
+  \qquad\text{et}\qquad
+  \arg\Bigl(\frac{c-a}{b-a}\Bigr)\equiv\bigl(\vect{AB},\vect{AC}\bigr)\ [2\pi].
+\]
+En particulier : $A$, $B$, $C$ sont alignés si et seulement si
+$\dfrac{c-a}{b-a}\in\R$ ; les droites $(AB)$ et $(AC)$ sont perpendiculaires
+si et seulement si $\dfrac{c-a}{b-a}$ est imaginaire pur.
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+\begin{theoreme}[Les applications $z\mapsto az+b$]
+Pour $a\in\Cx^{*}$ et $b\in\Cx$, l'application $z\mapsto az+b$ est une
+\textbf{similitude directe} : elle multiplie les distances par $|a|$ et les
+angles orientés sont conservés, augmentés de $\arg a$. Cas particuliers :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item $a=1$ : translation de vecteur d'affixe $b$ ;
+  \item $a\in\R^{*}$, $a \neq 1$ : homothétie de rapport $a$ et de centre le point fixe ;
+  \item $|a|=1$, $a\neq1$ : rotation d'angle $\arg a$ autour du point fixe.
+\end{itemize}
+Si $a\neq1$, le point fixe (centre) est $\omega=\dfrac{b}{1-a}$, et
+$f(z)-\omega=a\,(z-\omega)$.
+Enfin, $z\mapsto\overline{z}$ est la réflexion d'axe $(Ox)$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.1,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-0.5,0) -- (3,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-0.5) -- (0,2.7);
+  \fill[otNavy] (0.6,0.5) circle (1.4pt);
+  \node[below,font=\scriptsize,text=otNavy] at (0.6,0.42) {$\omega$};
+  \fill[otInk] (2.5,0.9) circle (1.3pt);
+  \node[right,font=\scriptsize,text=otInk] at (2.55,0.9) {$M(z)$};
+  \fill[otGreenDark] (1.49,2.33) circle (1.3pt);
+  \node[above,font=\scriptsize,text=otGreenDark] at (1.52,2.4) {$M'(az+b)$};
+  \draw[otRule!90!otMuted,line width=0.5pt] (0.6,0.5) -- (2.5,0.9);
+  \draw[otRule!90!otMuted,line width=0.5pt] (0.6,0.5) -- (1.49,2.33);
+  \draw[otGreen,line width=0.6pt,-{Stealth[length=1.5mm]}] (1.55,0.7) arc (12:64:0.97);
+  \node[font=\scriptsize,text=otGreenDark] at (1.62,1.18) {$\arg a$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Similitude directe de centre $\omega$ : rotation d'angle $\arg a$ et rapport $|a|$.}
+\end{minipage}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Il n'y a pas d'inégalités dans $\Cx$ : écrire $z\leq z'$ n'a aucun sens.
+  \item Un argument n'est défini que pour $z\neq0$, et seulement \emph{modulo} $2\pi$.
+  \item $\sqrt{\ }$ est réservé aux réels positifs : on parle « d'une racine
+    carrée » de $w$, jamais de $\sqrt{w}$ pour $w$ complexe.
+  \item Dans la forme trigonométrique $r\mathrm{e}^{\mathrm{i}\theta}$, exiger $r>0$ :
+    $-2\mathrm{e}^{\mathrm{i}\pi/3}$ n'est pas une forme trigonométrique.
+  \item $|z+z'|\neq|z|+|z'|$ en général : l'égalité caractérise des vecteurs colinéaires de même sens.
+  \item Moivre s'applique à $\cos t+\mathrm{i}\sin t$, pas à $\cos t-\mathrm{i}\sin t$
+    (qui vaut $\mathrm{e}^{-\mathrm{i}t}$).
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Forme algébrique : calculs}
+Mettre sous forme algébrique :
+\begin{tasks}(3)
+  \task $(2+\mathrm{i})(3-2\mathrm{i})$
+  \task $(1+\mathrm{i})^{2}$
+  \task $\dfrac{1}{1+\mathrm{i}}$
+  \task $\dfrac{1+\mathrm{i}}{2-\mathrm{i}}$
+  \task $\mathrm{i}^{2026}$
+  \task $(2-3\mathrm{i})(2+3\mathrm{i})$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Dans le plan complexe}
+\begin{questions}
+  \item Placer les points d'affixes $2+\mathrm{i}$, $-1+2\mathrm{i}$,
+    $-2\mathrm{i}$, ainsi que leurs conjugués.
+  \item Décrire géométriquement les ensembles :
+    \[
+      \ens{z\in\Cx \mid \operatorname{Re}(z)=2},\qquad
+      \ens{z\in\Cx \mid |z-\mathrm{i}|=2},\qquad
+      \ens{z\in\Cx \mid |z|\leq3}.
+    \]
+  \item Quels sont les complexes égaux à leur conjugué ? opposés à leur
+    conjugué ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Conjugué et module : calculs}
+\begin{questions}
+  \item Calculer $|3+4\mathrm{i}|$, $|1-\mathrm{i}|$ et $|-2\mathrm{i}|$.
+  \item Vérifier sur $z=3+4\mathrm{i}$ l'identité $|z|^{2}=z\overline{z}$.
+  \item Calculer $|(3+4\mathrm{i})(1-\mathrm{i})|$ sans développer le produit.
+  \item Calculer $\Bigl|\dfrac{1}{2-\mathrm{i}}\Bigr|$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Mettre sous forme trigonométrique}
+Déterminer le module et un argument de chacun des nombres suivants, puis
+l'écrire sous la forme $r\mathrm{e}^{\mathrm{i}\theta}$ :
+\begin{tasks}(3)
+  \task $1+\mathrm{i}$
+  \task $\sqrt3-\mathrm{i}$
+  \task $-2$
+  \task $3\mathrm{i}$
+  \task $(1+\mathrm{i})(\sqrt3+\mathrm{i})$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Linéariser avec les formules d'Euler}
+Linéariser les expressions suivantes (les écrire comme combinaisons de
+$\cos(kt)$ et $\sin(kt)$) :
+\[
+  \cos^{2}t,\qquad \sin^{3}t,\qquad \cos t\,\sin^{2}t.
+\]
+\end{exercice}
+
+\begin{exercice}[1]{La formule de Moivre}
+En développant $(\cos t+\mathrm{i}\sin t)^{3}$ par la formule du binôme,
+exprimer $\cos(3t)$ et $\sin(3t)$ en fonction de $\cos t$ et $\sin t$.
+Retrouver le résultat de l'exercice 15 du chapitre 2.
+\end{exercice}
+
+\begin{exercice}[1]{Second degré à coefficients réels}
+Résoudre dans $\Cx$ :
+\begin{tasks}(3)
+  \task $z^{2}+z+1=0$
+  \task $z^{2}-2z+5=0$
+  \task $z^{2}+4=0$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Trois chemins vers $-64$}
+Calculer sous forme algébrique, en passant par la forme trigonométrique :
+\begin{questions}
+  \item $(1+\mathrm{i})^{12}$ ;
+  \item $(\sqrt3+\mathrm{i})^{6}$ ;
+  \item $\Bigl(\dfrac{1+\mathrm{i}\sqrt3}{1-\mathrm{i}}\Bigr)^{12}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Un quotient qui donne $\cos\frac{\pi}{12}$}
+On pose $Z=\dfrac{1+\mathrm{i}\sqrt3}{1+\mathrm{i}}$.
+\begin{questions}
+  \item Écrire $Z$ sous forme algébrique.
+  \item Écrire $1+\mathrm{i}\sqrt3$ et $1+\mathrm{i}$ sous forme
+    trigonométrique, et en déduire le module et un argument de $Z$.
+  \item En comparant les deux écritures, retrouver
+    $\cos\dfrac{\pi}{12}=\dfrac{\sqrt6+\sqrt2}{4}$ et
+    $\sin\dfrac{\pi}{12}=\dfrac{\sqrt6-\sqrt2}{4}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Autour de l'inégalité triangulaire}
+\begin{questions}
+  \item Déduire de l'inégalité triangulaire que, pour tous $z,z'\in\Cx$ :
+    $\bigl||z|-|z'|\bigr|\leq|z-z'|$.
+  \item Montrer que, pour tout $z$ de module au plus $1$ :
+    $|z^{2}+z|\leq2$ et $|1+z|\geq1-|z|$.
+  \item Dans quel cas a-t-on $|z+z'|=|z|+|z'|$ ? Interpréter géométriquement.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La technique de l'angle moitié}
+\begin{questions}
+  \item Démontrer les factorisations
+    $1+\mathrm{e}^{\mathrm{i}t}=2\cos\dfrac{t}{2}\,\mathrm{e}^{\mathrm{i}t/2}$ et
+    $1-\mathrm{e}^{\mathrm{i}t}=-2\mathrm{i}\sin\dfrac{t}{2}\,\mathrm{e}^{\mathrm{i}t/2}$.
+  \item Factoriser de même $\mathrm{e}^{\mathrm{i}p}+\mathrm{e}^{\mathrm{i}q}$, et en
+    déduire la formule $\cos p+\cos q=2\cos\dfrac{p+q}{2}\cos\dfrac{p-q}{2}$.
+  \item Pour $t\in\intOO{-\pi}{\pi}$, donner le module et un argument de
+    $1+\mathrm{e}^{\mathrm{i}t}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Sommes trigonométriques}
+Soit $n\in\N$ et $t\in\R$ avec $t\not\equiv0\ [2\pi]$.
+\begin{questions}
+  \item Calculer $\displaystyle\sum_{k=0}^{n}\mathrm{e}^{\mathrm{i}kt}$, et montrer que
+    cette somme vaut $\mathrm{e}^{\mathrm{i}nt/2}\,
+    \dfrac{\sin\bigl(\frac{(n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}$.
+  \item En déduire des expressions de
+    $\displaystyle\sum_{k=0}^{n}\cos(kt)$ et $\displaystyle\sum_{k=0}^{n}\sin(kt)$.
+  \item Que valent ces sommes lorsque $t\equiv0\ [2\pi]$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Racines carrées et second degré complexe}
+\begin{questions}
+  \item Déterminer, sous forme algébrique, les racines carrées de
+    $3+4\mathrm{i}$, puis celles de $-5+12\mathrm{i}$.
+  \item Résoudre dans $\Cx$ l'équation
+    $z^{2}-(3+2\mathrm{i})z+5+5\mathrm{i}=0$, et vérifier le résultat à
+    l'aide de la somme et du produit des racines.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Somme et produit imposés}
+\begin{questions}
+  \item Déterminer les couples de complexes dont la somme vaut $2$ et le
+    produit vaut $2$.
+  \item Même question avec une somme et un produit égaux à $1$. Écrire les
+    solutions sous forme trigonométrique.
+  \item Pour $az^{2}+bz+c=0$ ($a\neq0$) de racines $z_1$ et $z_2$, rappeler
+    les expressions de $z_1+z_2$ et $z_1z_2$, et les vérifier sur la
+    question 1.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La transformation $a\cos t+b\sin t$}
+\begin{questions}
+  \item Écrire $\cos t+\sin t$ sous la forme $A\cos(t-\varphi)$.
+  \item Écrire de même $\sqrt3\cos t-\sin t$.
+  \item Résoudre dans $\R$ l'équation $\cos t+\sin t=1$.
+  \item Déterminer le maximum et le minimum sur $\R$ de
+    $f(t)=3\cos t+4\sin t$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le nombre $j$ et les racines de l'unité}
+On rappelle que $j=\mathrm{e}^{2\mathrm{i}\pi/3}$.
+\begin{questions}
+  \item Vérifier : $j^{3}=1$, $1+j+j^{2}=0$ et $j^{2}=\overline{j}=\dfrac1j$.
+  \item Calculer $(1+j)^{3}$.
+  \item Décrire $\mathbb{U}_4$, puis montrer que, pour $n\geq2$, la somme des
+    éléments de $\mathbb{U}_n$ est nulle.
+  \item Montrer que, pour tous complexes $a$ et $b$ :
+    $(a+b)(a+jb)(a+j^{2}b)=a^{3}+b^{3}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Racines $n$-ièmes d'un nombre complexe}
+\begin{questions}
+  \item Déterminer les racines cubiques de $8\mathrm{i}$, sous forme
+    trigonométrique puis algébrique.
+  \item Montrer que les racines quatrièmes de $-4$ sont
+    $1+\mathrm{i}$, $1-\mathrm{i}$, $-1+\mathrm{i}$ et $-1-\mathrm{i}$.
+  \item Résoudre $z^{6}=1$ et représenter les solutions sur le cercle unité.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'exponentielle complexe}
+\begin{questions}
+  \item Écrire $\mathrm{e}^{2+\mathrm{i}\pi/3}$ sous forme algébrique.
+  \item Pour $z=x+\mathrm{i}y$, rappeler le module et un argument de $\mathrm{e}^{z}$.
+    L'exponentielle complexe peut-elle s'annuler ?
+  \item Résoudre dans $\Cx$ l'équation $\mathrm{e}^{z}=-2$.
+  \item Résoudre dans $\Cx$ l'équation $\mathrm{e}^{z}=1+\mathrm{i}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Alignement, angle droit, triangle équilatéral}
+\begin{questions}
+  \item Les points $A$, $B$, $C$ d'affixes $1+\mathrm{i}$, $3+2\mathrm{i}$,
+    $7+4\mathrm{i}$ sont-ils alignés ?
+  \item Soient $A$, $B$, $C$ d'affixes $1+\mathrm{i}$, $2+3\mathrm{i}$,
+    $-1+2\mathrm{i}$. Calculer $\dfrac{c-a}{b-a}$ et en déduire la nature du
+    triangle $ABC$.
+  \item Montrer qu'un triangle $ABC$ est équilatéral \emph{direct} si et
+    seulement si $c-a=\mathrm{e}^{\mathrm{i}\pi/3}(b-a)$, puis que cette
+    condition équivaut à $a+jb+j^{2}c=0$.
+    \emph{On remarquera que $\mathrm{e}^{\mathrm{i}\pi/3}=-j^{2}$.}
+  \item Vérifier ce critère pour les points d'affixes $0$, $2$ et $1+\mathrm{i}\sqrt3$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Transformations du plan}
+\begin{questions}
+  \item Décrire géométriquement les applications
+    $z\mapsto z+2-\mathrm{i}$,\quad $z\mapsto2z$,\quad
+    $z\mapsto\mathrm{e}^{\mathrm{i}\pi/4}z$,\quad $z\mapsto\overline{z}$.
+  \item Soit $f:z\mapsto(1+\mathrm{i})z+2-\mathrm{i}$. Déterminer le point
+    fixe $\omega$ de $f$, puis montrer que
+    $f(z)-\omega=(1+\mathrm{i})(z-\omega)$. En déduire la nature précise de
+    $f$ (centre, rapport, angle).
+  \item Quelle est l'image par $f$ du cercle de centre $\omega$ et de rayon $1$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Lignes de niveau}
+Déterminer et représenter les ensembles de points $M(z)$ définis par :
+\begin{questions}
+  \item $|z-1|=|z+\mathrm{i}|$ ;
+  \item $|z-2\mathrm{i}|=2$ ;
+  \item $\dfrac{z-1}{z-\mathrm{i}}\in\R$\quad($z\neq\mathrm{i}$) ;
+  \item $\dfrac{z-1}{z-\mathrm{i}}$ imaginaire pur\quad($z\neq\mathrm{i}$).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Sommes binomiales trigonométriques}
+Soit $n\geq1$ et $t\in\R$.
+\begin{questions}
+  \item À l'aide de l'angle moitié, montrer que
+    $(1+\mathrm{e}^{\mathrm{i}t})^{n}=2^{n}\cos^{n}\dfrac{t}{2}\,\mathrm{e}^{\mathrm{i}nt/2}$.
+  \item En déduire les valeurs de
+    $\displaystyle\sum_{k=0}^{n}\binom{n}{k}\cos(kt)$ et
+    $\displaystyle\sum_{k=0}^{n}\binom{n}{k}\sin(kt)$.
+  \item Application : calculer $\displaystyle\sum_{k=0}^{n}\binom{n}{k}\cos\frac{k\pi}{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le pentagone régulier et le nombre d'or}
+On pose $\omega=\mathrm{e}^{2\mathrm{i}\pi/5}$, et
+$u=\omega+\omega^{4}$, $v=\omega^{2}+\omega^{3}$.
+\begin{questions}
+  \item Justifier que $1+\omega+\omega^{2}+\omega^{3}+\omega^{4}=0$.
+  \item Montrer que $u=2\cos\dfrac{2\pi}{5}$, que $v=2\cos\dfrac{4\pi}{5}$,
+    puis que $u+v=-1$ et $uv=-1$.
+  \item En déduire que $u$ et $v$ sont les racines de $X^{2}+X-1=0$, puis
+    donner la valeur exacte de $\cos\dfrac{2\pi}{5}$.
+  \item Retrouver enfin $\cos\dfrac{\pi}{5}=\dfrac{1+\sqrt5}{4}$, déjà
+    obtenue au chapitre 2 par une méthode purement trigonométrique.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le noyau de Dirichlet}
+Pour $n\in\N^{*}$ et $t\not\equiv0\ [2\pi]$, on pose
+$D_n(t)=\displaystyle\sum_{k=-n}^{n}\mathrm{e}^{\mathrm{i}kt}$.
+\begin{questions}
+  \item Montrer que
+    $D_n(t)=\dfrac{\sin\bigl(\frac{(2n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}$.
+  \item En déduire :
+    $1+2\displaystyle\sum_{k=1}^{n}\cos(kt)=\dfrac{\sin\bigl(\frac{(2n+1)t}{2}\bigr)}{\sin\bigl(\frac{t}{2}\bigr)}$.
+  \item Application : en choisissant $t=\dfrac{2\pi}{2n+1}$, montrer que
+    \[
+      \sum_{k=1}^{n}\cos\frac{2k\pi}{2n+1}=-\frac12.
+    \]
+  \item Vérifier ce résultat pour $n=1$, puis pour $n=2$ à l'aide de
+    l'exercice 23.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-03}

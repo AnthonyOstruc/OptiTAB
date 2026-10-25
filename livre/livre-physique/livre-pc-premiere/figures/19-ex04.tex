@@ -1,0 +1,18 @@
+% Lumière blanche traversant deux filtres successifs (exercice 4, chapitre 19)
+\definecolor{pcR}{RGB}{230,30,30}\definecolor{pcV}{RGB}{20,170,50}\definecolor{pcB}{RGB}{30,70,230}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  ray/.style={line width=1.3pt,-{Stealth[length=2.2mm]}}]
+\foreach \y/\f/\g/\c/\d in {1.6/{jaune}/{cyan}/{yellow!80!orange}/{cyan!70},0/{rouge}/{cyan}/{pcR!80}/{cyan!70}}{%
+  \begin{scope}[shift={(0,\y)}]
+    \draw[ray,pcR] (0,0.3) -- (1.4,0.3); \draw[ray,pcV] (0,0) -- (1.4,0); \draw[ray,pcB] (0,-0.3) -- (1.4,-0.3);
+    \fill[\c,opacity=0.75] (1.5,-0.5) rectangle (1.8,0.5); \node[pcLegende,anchor=south] at (1.65,0.52) {\f};
+    \fill[\d,opacity=0.75] (3.4,-0.5) rectangle (3.7,0.5); \node[pcLegende,anchor=south] at (3.55,0.52) {\g};
+    \node[pcLegende,anchor=east] at (-0.05,0) {blanc};
+  \end{scope}}
+\solution{
+  \draw[ray,pcR] (1.85,1.9) -- (3.35,1.9); \draw[ray,pcV] (1.85,1.6) -- (3.35,1.6);
+  \draw[ray,pcV] (3.75,1.6) -- (5.2,1.6); \node[pcLegende,anchor=west,text=pcV] at (5.25,1.6) {vert};
+  \draw[ray,pcR] (1.85,0.3) -- (3.35,0.3);
+  \node[pcLegende,anchor=west] at (5.25,0) {rien : noir};}
+\end{tikzpicture}
+\par\smallskip\legende{Deux expériences : la lumière blanche traverse un premier filtre, puis un second.\solution{ Seule la lumière transmise par les deux filtres traverse le système.}}

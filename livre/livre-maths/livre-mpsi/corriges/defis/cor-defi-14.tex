@@ -1,0 +1,83 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 14 — vérifié par verifications/defis_11_15.py.
+
+\begin{blocLivre}{cor-14-25a}
+\begin{corrige}{25}{Le déterminant de Cauchy et les matrices de Hilbert}
+\demarche{Deux séries d'opérations élémentaires font apparaître des
+facteurs communs, puis une colonne de $0$ et un $1$ : on récupère $C_{n-1}$,
+d'où une récurrence.}
+\partieExo{A}{Petites tailles}
+\begin{questions}
+  \item $C_1=\dfrac{1}{a_1+b_1}$ et
+    $C_2=\dfrac{(a_1+b_2)(a_2+b_1)-(a_1+b_1)(a_2+b_2)}{(a_1+b_1)(a_1+b_2)(a_2+b_1)(a_2+b_2)}$ ;
+    le numérateur vaut $a_1b_1+a_2b_2-a_1b_2-a_2b_1=\res{(a_2-a_1)(b_2-b_1)}$.
+\end{questions}
+\partieExo{B}{La formule de Cauchy}
+\begin{questions}[resume]
+  \item $\dfrac{1}{a_i+b_j}-\dfrac{1}{a_i+b_n}
+    =\res{\dfrac{b_n-b_j}{(a_i+b_j)(a_i+b_n)}}$ (sans changer le
+    déterminant).
+  \item Après factorisation, le déterminant restant a pour coefficients
+    $\frac{1}{a_i+b_j}$ ($j<n$) et $1$ (dernière colonne). En retranchant la
+    ligne $n$ aux lignes $i<n$ : pour $j<n$,
+    $\frac{1}{a_i+b_j}-\frac{1}{a_n+b_j}=\frac{a_n-a_i}{(a_i+b_j)(a_n+b_j)}$,
+    et la dernière colonne devient $(0,\dots,0,1)$. On factorise $a_n-a_i$
+    dans chaque ligne $i<n$ et $\frac{1}{a_n+b_j}$ dans chaque colonne
+    $j<n$ ; le développement suivant la dernière colonne laisse le
+    déterminant $\bigl(\frac{1}{a_i+b_j}\bigr)_{i,j<n}=C_{n-1}$ : c'est la
+    relation annoncée.
+  \item Par récurrence : le facteur de passage de $C_{n-1}$ à $C_n$ apporte
+    au numérateur les couples $(k,n)$, $k<n$, et au dénominateur tous les
+    $a_i+b_j$ avec $\max(i,j)=n$. On obtient la \res{\text{formule de
+    Cauchy}}, et $C_n\neq0$ si et seulement si les $a_i$ sont deux à deux
+    distincts ainsi que les $b_j$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-14-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Les matrices de Hilbert}
+\begin{questions}[start=5]
+  \item Avec $a_i=i$ et $b_j=j-1$ : $a_i+b_j=i+j-1$. Le numérateur vaut
+    $\bigl(\prod_{i<j}(j-i)\bigr)^{2}=\bigl(\prod_{j=2}^{n}(j-1)!\bigr)^{2}=c_n^{2}$ ;
+    le dénominateur vaut
+    $\prod_{j=1}^{n}\frac{(n+j-1)!}{(j-1)!}=\frac{c_{2n}/c_n}{c_n}$. D'où
+    $\res{\det H_n=\dfrac{c_n^{4}}{c_{2n}}}$, et
+    \[
+    \det H_2=\frac{1}{12},\qquad\det H_3=\frac{1}{2160},\qquad
+    \det H_4=\frac{1}{6\,048\,000} .
+    \]
+    Jamais nul : $H_n$ est \res{\text{inversible}}.
+  \item $\displaystyle\int_0^1x^{i+j-2}\,\mathrm{d}x=\frac{1}{i+j-1}$ :
+    $H_n$ est la matrice de Gram de $(1,X,\dots,X^{n-1})$ pour
+    $\langle P,Q\rangle=\int_0^1PQ$ — ce qui explique au passage
+    $\det H_n>0$ (déterminant de Gram d'une famille libre).
+  \item Les cofacteurs de $H_3$ valent $\frac1{240},-\frac1{60},\frac1{72},
+    \frac4{45},-\frac1{12},\frac1{12}$\dots ; multipliés par $2160$ :
+    \[
+    H_3^{-1}=\res{\begin{pmatrix}9&-36&30\\-36&192&-180\\30&-180&180\end{pmatrix}} .
+    \]
+    Un déterminant minuscule signale des colonnes « presque liées » : une
+    infime perturbation de $B$ change beaucoup la solution. Pour $H_8$,
+    perturber $B$ de $10^{-8}$ modifie $X$ de plus de $0{,}1$ : la matrice
+    est \emph{mal conditionnée}.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[x=0.95cm,y=0.13cm,line cap=round]
+  \foreach \v in {0,-10,-20,-30}{%
+    \draw[otRule,line width=0.3pt] (0.6,\v) -- (8.4,\v);
+    \node[font=\tiny,text=otMuted,anchor=east] at (0.6,\v) {$10^{\v}$};}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0.6,0) -- (8.6,0);
+  \draw[otNavy,line width=1pt] (1,0) -- (2,-1.08) -- (3,-3.33) -- (4,-6.78) -- (5,-11.43)
+    -- (6,-17.27) -- (7,-24.32) -- (8,-32.56);
+  \foreach \n/\v in {1/0,2/-1.08,3/-3.33,4/-6.78,5/-11.43,6/-17.27,7/-24.32,8/-32.56}{%
+    \fill[otNavy] (\n,\v) circle (1.6pt);
+    \node[font=\tiny,text=otMuted,above] at (\n,0) {$\n$};}
+  \node[font=\scriptsize,text=otMuted,anchor=west] at (8.6,0) {$n$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$\det H_n$ en échelle logarithmique : environ $10^{-33}$ pour
+$n=8$, une décroissance plus rapide que toute exponentielle.}
+\end{center}
+\end{corrigeSuite}
+\end{blocLivre}

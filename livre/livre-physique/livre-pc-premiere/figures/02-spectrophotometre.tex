@@ -1,0 +1,20 @@
+% Principe d'un spectrophotomètre (L'essentiel, chapitre 2)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  boite/.style={draw=otInk!70,fill=otRule!35,line width=0.6pt,rounded corners=1.2mm,minimum height=11mm,
+    align=center,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  faisceau/.style={line width=2.2pt,-{Stealth[length=2.6mm,width=4mm]}}]
+\node[boite,minimum width=16mm] (s) at (0,0) {source\\de lumière};
+\node[boite,minimum width=20mm] (m) at (2.9,0) {monochromateur\\(choix de $\lambda$)};
+\pic at (5.9,-0.75) {cuve={hauteur=1.5,niveau=1.15,liquide=pcBleu!70}};
+\node[boite,minimum width=16mm] (d) at (8.9,0) {détecteur};
+\pic (af) at (11.3,-0.55) {afficheur={largeur=1.6,hauteur=1.1,texte={0,62}}};
+\draw[faisceau,otOrange!80] (s.east) -- (m.west);
+\draw[faisceau,otGreen] (m.east) -- (5.3,0) node[midway,above,pcLegende]{$I_0$};
+\draw[faisceau,otGreen!55] (6.5,0) -- (d.west) node[midway,above,pcLegende]{$I<I_0$};
+\draw[pcFil] (d.east) -- (10.5,0);
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (5.46,-0.95) -- (6.34,-0.95)
+  node[midway,below,pcLegende]{$\ell$};
+\node[pcLegende,anchor=north] at (5.9,-1.25) {cuve contenant la solution};
+\node[pcLegende,anchor=north] at (11.3,-0.65) {absorbance $A$};
+\end{tikzpicture}
+\par\smallskip\legende{La lumière monochromatique est en partie absorbée par la solution : $A=\log(I_0/I)$.}

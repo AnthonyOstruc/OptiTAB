@@ -1,0 +1,21 @@
+% Thermomètre à alcool gradué au degré et thermomètre électronique mesurant la température d'une salle (exercice 3, chapitre 21)
+\begin{tikzpicture}[x=1cm,y=3.4mm]
+\fill[otRule!35,rounded corners=1.5mm] (-0.25,13.6) rectangle (0.25,-0.2);
+\draw[otNavy,line width=0.6pt,rounded corners=1.5mm] (-0.25,13.6) rectangle (0.25,-0.2);
+\fill[otRed!80] (0,-1.4) circle[radius=4mm];
+\draw[otNavy,line width=0.6pt] (0,-1.4) circle[radius=4mm];
+\fill[otRed!80] (-0.09,-0.8) rectangle (0.09,8.0);
+\foreach \k in {0,...,13}{\draw[otInk!80,line width=0.4pt] (0.25,\k) -- ++(0.18,0);}
+\foreach \k in {2,7,12}{\draw[otInk!80,line width=0.6pt] (0.25,\k) -- ++(0.3,0);}
+\foreach \k/\t in {2/15,7/20,12/25}{\node[pcLegende,anchor=west] at (0.58,\k) {\t};}
+\node[pcLegende,anchor=west] at (0.58,13.6) {\unit{\degreeCelsius}};
+\draw[pcRepere] (0.1,8.0) -- (-0.9,8.0) node[pcLegende,anchor=east] {niveau de l'alcool};
+\begin{scope}[shift={(3.4,3)}]
+  \draw[otInk!75,line width=0.6pt,fill=otRule!35,rounded corners=1.5mm] (0,0) rectangle (2.6,6.2);
+  \fill[otGreenTint] (0.25,3.0) rectangle (2.35,5.4);
+  \node[font=\ttfamily\fontsize{11}{12}\selectfont,text=otInk] at (1.3,4.2) {21.4};
+  \node[pcLegende] at (1.3,2.0) {\unit{\degreeCelsius}};
+  \node[pcLegende,anchor=north] at (1.3,-0.2) {précision : $\pm\qty{0,2}{\degreeCelsius}$};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Deux thermomètres dans la même salle : lecture d'une graduation et affichage numérique.}

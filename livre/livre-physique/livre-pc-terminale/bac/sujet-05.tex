@@ -1,0 +1,101 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 5 — sujet inédit OptiTAB (valeurs vérifiées : verifications/sujets_bac.py)
+
+\sujetBac{5}{{La pile d'une aide auditive : piles, sens d'évolution, capacité}/8,{Le saut en parachute : deuxième loi de Newton, méthode d'Euler}/7,{Le diamètre d'un cheveu : diffraction, incertitudes}/5}
+
+\begin{exoBac}{8}{La pile d'une aide auditive}
+Les aides auditives fonctionnent avec de petites piles bouton « zinc-air ». Avant la première utilisation, on retire une
+pastille adhésive qui obture de minuscules trous : l'air entre alors dans la pile, qui commence à fonctionner.
+
+\partieExo{1}{Le fonctionnement d'une pile}
+\begin{docu}{1}{Une pile Daniell au laboratoire}
+Une lame de zinc plonge dans une solution de sulfate de zinc, $\ce{Zn^{2+}}+\ce{SO4^{2-}}$, à \qty{0,10}{mol.L^{-1}} ; une lame de cuivre
+plonge dans une solution de sulfate de cuivre, $\ce{Cu^{2+}}+\ce{SO4^{2-}}$, à \qty{0,10}{mol.L^{-1}}. Un pont salin relie les deux solutions.
+La réaction $\ce{Cu^{2+} + Zn <=> Cu + Zn^{2+}}$ a pour constante d'équilibre $K=\num{1.9e37}$ à \qty{25}{\degreeCelsius}.
+\end{docu}
+\begin{questions}
+\item Calculer le quotient de réaction initial et en déduire le sens d'évolution spontanée du système.
+\item Indiquer la polarité de la pile et le sens de circulation des électrons dans le circuit extérieur. Quel est le rôle
+du pont salin ?
+\item Pourquoi la tension de la pile diminue-t-elle au cours de son utilisation ? Que vaut-elle lorsque la pile est usée ?
+\end{questions}
+
+\partieExo{2}{La pile zinc-air}
+\begin{docu}{2}{Caractéristiques de la pile}
+Demi-équations, en milieu basique : $\ce{Zn + 2HO- -> ZnO + H2O + 2e-}$ et $\ce{O2 + 2H2O + 4e- -> 4HO-}$. Tension : \qty{1,4}{V} ;
+capacité : \qty{620}{mA.h} ; masse : \qty{1,9}{g}. L'aide auditive consomme un courant de \qty{1,2}{mA} et fonctionne 16 heures par jour.
+Une batterie lithium-ion stocke environ \qty{250}{W.h} par kilogramme.
+\end{docu}
+\begin{donnees}
+$F=\qty{96500}{C.mol^{-1}}$ ; $M(\ce{Zn})=\qty{65,4}{g.mol^{-1}}$ ; l'air contient 21~\% de dioxygène en volume ; volume molaire des gaz :
+\qty{24}{L.mol^{-1}}.
+\end{donnees}
+\begin{questions}[resume]
+\item Identifier l'anode et la cathode de la pile. Écrire l'équation de sa réaction de fonctionnement.
+\item Exprimer la capacité de la pile en coulombs, puis calculer la masse minimale de zinc qu'elle contient.
+\item Pendant combien de jours la pile peut-elle alimenter l'aide auditive ?
+\item Calculer l'énergie électrique stockée, puis l'énergie stockée par kilogramme de pile. Comparer à une batterie
+lithium-ion et conclure.
+\item \initiative Quel volume d'air la pile doit-elle absorber au cours de son fonctionnement ? Pourquoi les trous de la
+pile doivent-ils rester obturés jusqu'à la première utilisation ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{7}{Le saut en parachute}
+Un parachutiste, de masse $m=\qty{80}{kg}$ avec son équipement, saute d'un avion. Pendant la chute libre, avant l'ouverture du
+parachute, l'air exerce sur lui une force de frottement opposée à sa vitesse, de valeur $f=k\,v^2$, avec $k=\qty{0,25}{kg.m^{-1}}$.
+On étudie son mouvement dans le référentiel terrestre supposé galiléen, sur un axe vertical orienté vers le bas ; la
+poussée d'Archimède est négligée et $g=\qty{9,81}{m.s^{-2}}$.
+\begin{questions}
+\item Faire le bilan des forces qui s'exercent sur le parachutiste et les représenter sur un schéma.
+\item Montrer que la vitesse vérifie l'équation différentielle $\dfrac{\mathrm{d}v}{\mathrm{d}t}=g-\dfrac{k}{m}\,v^2$.
+\item Montrer que la vitesse tend vers une vitesse limite dont on donnera l'expression et la valeur, en \unit{m.s^{-1}} et en
+\unit{km.h^{-1}}.
+\item \capacite{Capacité numérique}Le programme suivant résout l'équation par la méthode d'Euler ; la figure représente la vitesse
+obtenue.
+\begin{codecote}[0.62]
+\begin{pythoncol}
+m, g, k = 80, 9.81, 0.25
+vlim = (m * g / k) ** 0.5
+t, v, z, dt = 0.0, 0.0, 0.0, 0.1
+while v < 0.95 * vlim:
+    v = v + (g - k / m * v**2) * dt
+    z = z + v * dt
+    t = t + dt
+print(round(t, 1), round(v, 1), round(z))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+10.4 53.3 373
+\end{consolecol}
+\end{codecote}
+\schema{bac-s5-parachute}
+Justifier la ligne \code{v = v + (g - k / m * v**2) * dt}. Que représentent les trois valeurs affichées ?
+\item Vérifier, sur la figure, que l'accélération initiale vaut $g$. Justifier ce résultat.
+\item Quelle distance le parachutiste aurait-il parcourue pendant la même durée s'il n'y avait pas de frottements ?
+\item Lorsque la vitesse limite est atteinte, l'énergie cinétique reste constante. Que devient l'énergie potentielle de
+pesanteur perdue ? Calculer la puissance correspondante.
+\item \initiative Une fois le parachute ouvert, $k$ vaut \qty{30}{kg.m^{-1}}. Calculer la nouvelle vitesse limite. De quelle hauteur
+faudrait-il sauter sans parachute pour toucher le sol à cette vitesse ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Le diamètre d'un cheveu}
+Pour mesurer le diamètre $a$ d'un cheveu, on l'éclaire avec un laser : le cheveu diffracte la lumière comme le ferait une
+fente de même largeur. On observe sur un écran une tache centrale de largeur $L$.
+\schema{bac-s5-cheveu}
+\begin{donnees}
+$\lambda=\qty{650}{nm}$, d'incertitude négligeable ; $D=\qty{2,00}{m}$ avec $u(D)=\qty{0,01}{m}$ ; $L=\qty{3,7}{cm}$ avec $u(L)=\qty{0,1}{cm}$. Demi-angle
+de la tache centrale : $\theta=\dfrac{\lambda}{a}$ ; pour les petits angles, $\tan\theta\approx\theta$. Incertitude :
+$\dfrac{u(a)}{a}=\sqrt{\left(\dfrac{u(L)}{L}\right)^2+\left(\dfrac{u(D)}{D}\right)^2}$.
+\end{donnees}
+\begin{questions}
+\item Pourquoi la diffraction par un cheveu est-elle facilement observable avec un laser ?
+\item Montrer que $a=\dfrac{2\,\lambda\,D}{L}$.
+\item Calculer le diamètre du cheveu.
+\item Calculer l'incertitude-type sur $a$ et écrire le résultat de la mesure.
+\item \initiative Un micromètre donne pour le même cheveu \qty{72}{\micro m}, avec une incertitude-type de \qty{1}{\micro m}. Les deux mesures
+sont-elles compatibles ? On admet que l'incertitude-type sur l'écart des deux mesures vaut $\sqrt{u_1^2+u_2^2}$.
+\item Proposer deux modifications du protocole qui réduiraient l'incertitude sur $a$.
+\end{questions}
+\end{exoBac}

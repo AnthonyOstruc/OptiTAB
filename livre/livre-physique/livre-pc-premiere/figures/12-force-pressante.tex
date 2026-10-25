@@ -1,0 +1,23 @@
+% Forces pressantes exercées par un liquide sur les parois d'un récipient, et sur une surface plane (L'essentiel, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  fp/.style={otGreenDark,line width=0.9pt,-{Stealth[length=1.8mm]}}]
+% Récipient ouvert rempli d'eau
+\fill[otNavy!14] (0,0) rectangle (3,2.2);
+\draw[pcSurface] (0,2.2) -- (3,2.2);
+\draw[pcVerre] (0,2.7) -- (0,0) -- (3,0) -- (3,2.7);
+\foreach \y/\l in {1.75/0.25,1.15/0.45,0.55/0.65}{%
+  \draw[fp] (0.05,\y) -- ++(-\l,0); \draw[fp] (2.95,\y) -- ++(\l,0);}
+\foreach \xx in {0.6,1.5,2.4}{\draw[fp] (\xx,0.05) -- ++(0,-0.75);}
+\node[pcLegende,align=center] at (1.5,1.15) {eau};
+\node[pcLegende,anchor=north,align=center] at (1.5,-0.85) {forces pressantes perpendiculaires\\aux parois, plus grandes en profondeur};
+% Surface plane d'aire S
+\begin{scope}[shift={(6.1,0.3)}]
+  \fill[otMuted!25] (0,0) -- (1.2,0.6) -- (1.2,2.3) -- (0,1.7) -- cycle;
+  \draw[otInk!70,line width=0.6pt] (0,0) -- (1.2,0.6) -- (1.2,2.3) -- (0,1.7) -- cycle;
+  \node[pcLegende] at (0.6,1.15) {$S$};
+  \foreach \y in {0.45,0.95,1.45}{\draw[otNavy!60,line width=0.5pt,-{Stealth[length=1.2mm]}] (-0.75,{\y+0.05}) -- (-0.05,{\y+0.05});}
+  \node[pcLegende,anchor=east,align=right] at (-0.8,1.0) {fluide à\\la pression $P$};
+  \draw[otGreenDark,line width=1.3pt,-{Stealth[length=2.6mm]}] (0.6,1.15) ++(0.12,0) -- ++(1.5,0) node[pcLegende,anchor=west,text=otGreenDark] {$F=P\times S$};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Une force pressante est perpendiculaire à la surface, orientée du fluide vers la surface ; sa valeur vaut $F=P\times S$.}

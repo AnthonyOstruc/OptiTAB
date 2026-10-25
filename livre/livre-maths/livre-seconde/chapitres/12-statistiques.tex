@@ -1,0 +1,131 @@
+\begin{ouverture}[statistique]{12}{Statistique descriptive}{Partie 4 · Statistiques et probabilités}
+{Moyenne · Médiane · Quartiles · Écart type · Classes}
+\objectif{Choisir des indicateurs de position et de dispersion.}
+\objectif{Lire barres, boîtes, histogrammes et cumuls.}
+\objectif{Distinguer calcul exact et estimation pour des données groupées.}
+\prerequis{Proportions et racines carrées.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Résumer sans tout confondre}
+\begin{definition}Pour des valeurs $x_i$ d’effectifs $n_i$, avec $N=\sum n_i>0$, la moyenne est $\bar x=\sum n_ix_i/N$. Une médiane partage la série ordonnée en deux groupes contenant chacun au moins la moitié des valeurs. Ici, pour un effectif pair, on utilise la moyenne des deux valeurs centrales.\end{definition}
+\begin{definition}Dans la série ordonnée, $Q_1$ est la valeur dont le rang est le plus petit entier supérieur ou égal à $N/4$ ; $Q_3$ est celle dont le rang est le plus petit entier supérieur ou égal à $3N/4$. Pour $N=10$ : rangs 3 et 8. L’écart interquartile est $Q_3-Q_1$ ; l’étendue est maximum moins minimum. Une boîte à moustaches repère minimum, $Q_1$, médiane, $Q_3$ et maximum.\end{definition}
+\begin{definition}L’écart type est
+\[\sigma=\sqrt{\frac{\sum n_i(x_i-\bar x)^2}{N}}.\]
+On divise par l’effectif total $N$, et non par $N-1$. Un grand écart type signale une plus forte dispersion autour de la moyenne ; il a la même unité que les données.
+\end{definition}
+\begin{propriete}Ajouter $b$ à toutes les données augmente la moyenne de $b$ et laisse l’écart type inchangé. Multiplier toutes les données par $a$ multiplie la moyenne par $a$ et l’écart type par $|a|$.\end{propriete}
+\clearpage
+\essSection{2}{Regrouper et interpréter}
+\begin{savoirfaire}[Classes de même amplitude]
+L’histogramme représente les effectifs ou fréquences par les aires de rectangles ; pour des classes de même largeur, les hauteurs peuvent être proportionnelles aux effectifs. Le polygone des fréquences cumulées place aux bornes supérieures les proportions accumulées.
+\end{savoirfaire}
+\begin{propriete}Si les moyennes de classe $m_j$ et les effectifs $n_j$ sont connus, la moyenne totale est exactement $\sum n_jm_j/\sum n_j$. Si seuls les intervalles sont connus, utiliser leurs centres fournit une estimation, exacte dans le modèle de répartition uniforme de chaque classe.\end{propriete}
+\begin{savoirfaire}[Médiane groupée]
+Localiser la classe qui contient le passage de 50\,\%. Sous l’hypothèse uniforme dans cette classe, interpoler linéairement : on parcourt la fraction de largeur correspondant à l’effectif nécessaire pour atteindre $N/2$.
+\end{savoirfaire}
+\begin{attention}Une moyenne ne décrit pas toute une distribution. Comparer aussi les dispersions et regarder les graphiques. Une valeur extrême peut beaucoup déplacer la moyenne et laisser la médiane inchangée.\end{attention}
+\otIntertitre{Avec un tableur}
+Contrôler la convention d’écart type utilisée par le logiciel. Conserver le tableau d’effectifs : la moyenne de moyennes de classe doit être pondérée par leurs effectifs.
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-12-1}
+\begin{exercice}[1]{Moyenne simple}
+Calculer la moyenne de $4,6,7,8,10$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-2}
+\begin{exercice}[1]{Médiane et quartiles}
+Pour la série ordonnée $1,2,3,4,5,6,7,8$, déterminer la médiane, $Q_1$, $Q_3$ et l’étendue avec les conventions du cours.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-3}
+\begin{exercice}[1]{Une moyenne pondérée}
+Calculer la moyenne de cette série.\begin{center}\renewcommand{\arraystretch}{1.35}\begin{tabular}{c|cccc}\toprule
+Valeur & $2$ & $4$ & $6$ & $8$\\\midrule
+Effectif & $1$ & $3$ & $4$ & $2$\\
+\bottomrule\end{tabular}\end{center}
+\label{fig-ex-12-3}
+\figureGeo{stats-barres}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-4}
+\begin{exercice}[1]{Lire un secteur}
+Un diagramme circulaire représente 60 élèves. Un secteur mesure $120^\circ$. Quelle proportion et quel effectif représente-t-il ? Dans un autre diagramme, un demi-cercle représente les 60 élèves : que représente alors un secteur de $120^\circ$ ?
+\label{fig-ex-12-4}
+\figureGeo{stats-secteur}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-5}
+\begin{exercice}[1]{Un écart type court}
+Calculer la moyenne et l’écart type de la série $2,2,6,6$.
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-12-6}
+\begin{exercice}[2]{Même moyenne, dispersion différente}
+Comparer les séries $A=(4,4,4,4)$ et $B=(1,3,5,7)$ par la moyenne et l’écart type.
+\label{fig-ex-12-6}
+\figureGeo{stats-dispersion}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-7}
+\begin{exercice}[2]{Transformer une série}
+Une série a pour moyenne 12 et écart type 3. On ajoute 5 à toutes ses valeurs. Quels deviennent ces deux indicateurs ? Justifier pour l’écart type. Dans la série initiale, on remplace maintenant chaque valeur $x_i$ par $-2x_i+1$ : donner les nouveaux indicateurs.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-8}
+\begin{exercice}[2]{Réunir deux groupes}
+Un groupe de 12 mesures a une moyenne de 8 ; un autre de 18 mesures une moyenne de 13. Calculer la moyenne des 30 mesures.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-9}
+\begin{exercice}[2]{Moyenne par classes}
+On donne les durées suivantes. Estimer la moyenne avec les centres de classes, en explicitant l’hypothèse.\begin{center}\renewcommand{\arraystretch}{1.35}\begin{tabular}{c|cccc}\toprule
+Classe (min) & $[0;10[$ & $[10;20[$ & $[20;30[$ & $[30;40]$\\\midrule
+Effectif & $4$ & $8$ & $6$ & $2$\\
+\bottomrule\end{tabular}\end{center}
+\label{fig-ex-12-9}
+\figureGeo{stats-histogramme}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-10}
+\begin{exercice}[2]{Classe médiane et interpolation}
+Pour les classes et effectifs ci-dessous, déterminer la classe médiane et estimer la médiane sous l’hypothèse uniforme dans cette classe.\begin{center}\renewcommand{\arraystretch}{1.35}\begin{tabular}{c|cccc}\toprule
+Classe (min) & $[0;10[$ & $[10;20[$ & $[20;30[$ & $[30;40]$\\\midrule
+Effectif & $4$ & $8$ & $6$ & $2$\\
+\bottomrule\end{tabular}\end{center}
+\label{fig-ex-12-10}
+\figureGeo{stats-cumuls}
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-12-11}
+\begin{exercice}[3]{Un point extrême}
+Comparer moyenne et médiane de $2,3,4,5,6$ avant et après remplacement de 6 par 100. Que deviennent-elles si l’on supprime ensuite la valeur 100 ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-12}
+\begin{exercice}[3]{Deux boîtes à moustaches}
+Une série $A$ a pour résumé $(0;4;6;8;12)$ et une série $B$ pour résumé $(2;5;6;7;10)$, dans l’ordre minimum, $Q_1$, médiane, $Q_3$, maximum. Comparer leur position centrale et leur dispersion.
+\label{fig-ex-12-12}
+\figureGeo{stats-boites}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-13}
+\begin{exercice}[3]{L’effet d’un ajout sur la moyenne}
+Une série de 10 valeurs a une moyenne de 14. On ajoute la valeur 25. Calculer la nouvelle moyenne et expliquer pourquoi elle augmente.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-14}
+\begin{exercice}[3]{Moyennes de classes connues}
+Deux classes de durées contiennent 8 et 12 mesures. Leurs moyennes réelles sont 7 et 16 minutes. Leurs centres sont 5 et 15 minutes. Calculer la moyenne exacte puis l’estimation par centres ; expliquer l’écart.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-15}
+\begin{exercice}[3]{Une série à construire}
+Construire deux séries de quatre réels ayant la même moyenne 5 et la même médiane 5, mais des écarts types différents. Calculer ces écarts types.
+\end{exercice}
+\end{blocLivre}
+
+\clearpage

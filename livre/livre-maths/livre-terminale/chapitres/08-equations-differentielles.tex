@@ -1,0 +1,325 @@
+% !TEX root = ../main.tex
+%% Chapitre 8 — Équations différentielles
+%% Sources : frontend/cours/resume/terminal/resume_equations_differentielles_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_equations_differentielles.txt
+%% La « séparation des variables » n'est pas au programme : les énoncés concernés sont reformulés.
+%% Les deux exercices de refroidissement de la source sont réunis (exercice 5).
+%% Exercices 2, 11 et 12 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[equadiff]{8}{Équations différentielles}{Partie 1 · Analyse}
+  {$y'=f$\enspace·\enspace $y'=ay$\enspace·\enspace $y'=ay+b$\enspace·\enspace Second membre\enspace·\enspace Modélisation}
+  \objectif{Vérifier qu'une fonction est solution d'une équation différentielle.}
+  \objectif{Résoudre les équations $y'=ay$ et $y'=ay+b$, puis trouver la solution qui vérifie une condition initiale.}
+  \objectif{Utiliser une solution particulière pour résoudre une équation $y'=ay+f$.}
+  \objectif{Modéliser une situation (croissance, refroidissement, mélange…) et interpréter la solution.}
+  \prerequis{Fonction exponentielle (Première) et fonction logarithme (chapitre 5).}
+  \prerequis{Primitives (chapitre 7).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Équations différentielles}
+
+\begin{definition}[Équation différentielle, solution]
+Une \textbf{équation différentielle} est une égalité qui relie une fonction inconnue $y$, notée sans variable, et ses
+dérivées. Une \textbf{solution} sur un intervalle $I$ est une fonction $f$ dérivable sur $I$ qui vérifie cette égalité pour tout
+$x\in I$.\\[1mm]
+\emph{Exemple :} $f(x)=3e^{2x}$ est une solution sur $\R$ de $y'=2y$, car $f'(x)=6e^{2x}=2f(x)$.
+\end{definition}
+
+\begin{propriete}[L'équation $y'=f$]
+Si $f$ est continue sur $I$, les solutions de l'équation $y'=f$ sont exactement les \textbf{primitives} de $f$ sur $I$ (chapitre 7).
+\end{propriete}
+
+\essSection{2}{L'équation $y'=ay$}
+
+\noindent
+\begin{minipage}[c]{0.54\linewidth}
+\begin{theoreme}[Solutions de $y'=ay$]
+\raggedright
+Soit $a$ un réel. Les solutions sur $\R$ de l'équation $y'=ay$ sont les fonctions
+\[ x\mapsto Ce^{ax},\quad C\in\R. \]
+Pour tous réels $x_0$ et $y_0$, il existe une \textbf{unique} solution qui vérifie la condition initiale $y(x_0)=y_0$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=64mm, xmin=-3, xmax=3.2, ymin=-2.6, ymax=3.6, clip=true, clip mode=individual,
+  xtick={-2,-1,1,2}, ytick={-2,-1,1,2,3}]
+  \addplot[otNavy!35,line width=0.8pt,domain=-3:3,samples=60] {2*exp(0.5*x)};
+  \addplot[otNavy!35,line width=0.8pt,domain=-3:3,samples=60] {0.5*exp(0.5*x)};
+  \addplot[otNavy!35,line width=0.8pt,domain=-3:3,samples=60] {-0.5*exp(0.5*x)};
+  \addplot[otNavy!35,line width=0.8pt,domain=-3:3,samples=60] {-exp(0.5*x)};
+  \addplot[otNavy!35,line width=0.8pt,domain=-3:3] {0};
+  \addplot[otNavy,line width=1.3pt,domain=-3:3,samples=60] {exp(0.5*x)};
+  \fill[otGreen] (axis cs:0,1) circle (1.8pt);
+  \node[anchor=south east,otEtiquette,font=\scriptsize,text=otGreenDark] at (axis cs:-0.05,1.05) {$(0\pv1)$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Solutions de $y'=0{,}5\,y$ ; une seule passe par $(0\pv1)$.}
+\end{minipage}
+
+\begin{demonstration}
+Les fonctions $x\mapsto Ce^{ax}$ conviennent, car leur dérivée est $aCe^{ax}$. Réciproquement, si $y$ est solution, la fonction
+$g(x)=y(x)e^{-ax}$ a pour dérivée $g'(x)=\big(y'(x)-ay(x)\big)e^{-ax}=0$ : elle est constante, égale à un réel $C$, et
+$y(x)=Ce^{ax}$. La condition $y(x_0)=y_0$ impose enfin $C=y_0e^{-ax_0}$.
+\end{demonstration}
+
+\essSection{3}{L'équation $y'=ay+b$}
+
+\noindent
+\begin{minipage}[c]{0.54\linewidth}
+\begin{theoreme}[Solutions de $y'=ay+b$]
+\raggedright
+Soit $a\neq0$ et $b$ deux réels. Les solutions sur $\R$ de $y'=ay+b$ sont les fonctions
+\[ x\mapsto Ce^{ax}-\frac ba,\quad C\in\R. \]
+La fonction constante $x\mapsto-\frac ba$ est la solution « d'équilibre ». Si $a<0$, toutes les solutions tendent vers
+$-\frac ba$ en $+\infty$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=66mm, height=50mm, xmin=0, xmax=8.4, ymin=-0.3, ymax=8.6,
+  xtick={2,4,6,8}, ytick={2,4,6,8}, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \draw[otGreen,dashed,line width=0.7pt] (axis cs:0,4) -- (axis cs:8.2,4);
+  \addplot[otNavy!35,line width=0.8pt,domain=0:8.2,samples=60] {4+4*exp(-0.5*x)};
+  \addplot[otNavy!35,line width=0.8pt,domain=0:8.2,samples=60] {4+2*exp(-0.5*x)};
+  \addplot[otNavy!35,line width=0.8pt,domain=0:8.2,samples=60] {4-2*exp(-0.5*x)};
+  \addplot[otNavy,line width=1.3pt,domain=0:8.2,samples=60] {4-4*exp(-0.5*x)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Solutions de $y'=-0{,}5\,y+2$ : elles tendent vers la solution d'équilibre $y=4$ (en pointillés).}
+\end{minipage}
+
+\begin{savoirfaire}[Résoudre avec une condition initiale]
+Pour $y'=-0{,}5\,y+2$ et $y(0)=0$ : ici $a=-0{,}5$ et $b=2$, donc $-\frac ba=4$ et les solutions sont $y(x)=Ce^{-0{,}5x}+4$.
+La condition $y(0)=C+4=0$ donne $C=-4$ : $y(x)=4-4e^{-0{,}5x}$ (courbe foncée ci-dessus). \emph{Si l'équation est écrite
+autrement, par exemple $2y'+y=1$, on commence par la mettre sous la forme $y'=ay+b$.}
+\end{savoirfaire}
+
+\begin{propriete}[Équation avec second membre $y'=ay+f$]
+Si $u$ est une solution particulière de $y'=ay+f$, alors les solutions de cette équation sont les fonctions $x\mapsto u(x)+Ce^{ax}$,
+$C\in\R$. En effet, $y$ est solution si et seulement si $y-u$ est solution de $y'=ay$.
+\end{propriete}
+
+\essSection{4}{Modéliser avec une équation différentielle}
+
+{\renewcommand{\arraystretch}{1.8}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\leavevmode\color{otNavy}}p{44mm}>{\raggedright\arraybackslash}p{36mm}Y@{}}
+\toprule
+{\otSemi\fontsize{8.5}{11}\selectfont\color{otInk}Situation} & {\otSemi\fontsize{8.5}{11}\selectfont Équation} &
+{\otSemi\fontsize{8.5}{11}\selectfont Solution} \\
+\midrule
+Croissance ou décroissance proportionnelle à la quantité & $N'=kN$ & $N(t)=N_0e^{kt}$ ; si $k=-\lambda<0$, demi-vie $\dfrac{\ln2}{\lambda}$ \\
+Refroidissement (loi de Newton) & $T'=-k\left(T-T_a\right)$ & $T(t)=T_a+\left(T_0-T_a\right)e^{-kt}$ \\
+Charge d'un condensateur & $RC\,u'+u=E$ & $u(t)=E\left(1-e^{-t/(RC)}\right)$ si $u(0)=0$ \\
+Apport constant $d$ et élimination proportionnelle & $Q'=-kQ+d$ & $Q(t)=\dfrac dk+\left(Q_0-\dfrac dk\right)e^{-kt}$ \\
+\bottomrule
+\end{tabularx}}
+
+\begin{savoirfaire}[Modéliser]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.4mm,topsep=0.5mm,label={\color{otNavy}\arabic*.}]
+  \item Identifier la fonction inconnue, sa variable et les unités.
+  \item Traduire l'énoncé : « la vitesse de variation est proportionnelle à… » se traduit par la dérivée.
+  \item Écrire l'équation sous la forme $y'=ay+b$, la résoudre et utiliser la condition initiale.
+  \item Interpréter : limite en $+\infty$ (état d'équilibre), seuils à l'aide du logarithme.
+\end{enumerate}
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item La solution constante de $y'=ay+b$ est $-\frac ba$, et non $\frac ba$ : on la retrouve en résolvant $0=ay+b$.
+  \item On applique la condition initiale à la solution \textbf{complète} $Ce^{ax}-\frac ba$, et non à $Ce^{ax}$ seul.
+  \item $y'=ay$ a pour solutions $Ce^{ax}$ : le coefficient $a$ se retrouve dans l'exponentielle, avec son signe.
+  \item Avant de résoudre, mettre l'équation sous la forme $y'=ay+b$ (diviser par le coefficient de $y'$).
+  \item Une solution se vérifie toujours en la dérivant et en la reportant dans l'équation.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Vérifier des solutions}
+Dans chaque cas, vérifier que la fonction proposée est solution de l'équation différentielle indiquée.
+\begin{questions}
+  \item $y(x)=3e^{2x}-2$ et l'équation $y'=2y+4$.
+  \item $T(t)=20+80e^{-0{,}1t}$ et l'équation $T'=-0{,}1\,(T-20)$.
+  \item $P(t)=100e^{0{,}05t}$ et l'équation $P'=0{,}05\,P$.
+  \item La fonction $y(x)=e^{2x}+1$ est-elle solution de l'équation $y'=2y+4$ ? Justifier.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Équations de référence}
+Résoudre sur $\R$ les équations différentielles suivantes, puis déterminer, le cas échéant, la solution qui vérifie la
+condition indiquée.
+\begin{tasks}(2)
+  \task $y'=3y$
+  \task $y'=-2y$,\enspace $y(0)=5$
+  \task $y'=2y-6$
+  \task $y'=-0{,}5\,y+4$,\enspace $y(0)=0$
+  \task $2y'+y=1$
+  \task $y'=x^{2}+1$,\enspace $y(0)=1$
+  \task $y'=-4y+2$,\enspace $y(0)=\dfrac72$
+\end{tasks}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Croissance d'une population}
+L'effectif $P(t)$ d'une population, $t$ étant exprimé en années, a une vitesse de croissance proportionnelle à l'effectif :
+$P'=0{,}03\,P$. Initialement, $P(0)=5\,000$ habitants.
+\begin{questions}
+  \item Résoudre l'équation différentielle, puis exprimer $P(t)$ en fonction de $t$.
+  \item Calculer l'effectif au bout de $10$ ans, arrondi à l'unité.
+  \item Au bout de combien d'années la population atteindra-t-elle $10\,000$ habitants ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Décroissance radioactive}
+Le nombre $N(t)$ de noyaux radioactifs d'un échantillon, $t$ étant exprimé en minutes, vérifie $N'=-\lambda N$, avec
+$\lambda=0{,}02$~min$^{-1}$ et $N(0)=1\,000$.
+\begin{questions}
+  \item Résoudre l'équation différentielle et déterminer $N(t)$.
+  \item La demi-vie est la durée $T$ au bout de laquelle la moitié des noyaux s'est désintégrée. Calculer $T$.
+  \item Au bout de combien de temps ne reste-t-il que $100$ noyaux ?
+  \item Montrer que la demi-vie ne dépend pas du nombre initial de noyaux.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Loi de refroidissement de Newton}
+D'après la loi de Newton, la température $T(t)$ (en °C) d'un objet placé dans une pièce à température constante $T_a$ vérifie
+$T'=-k\left(T-T_a\right)$, où $k>0$ et $t$ est exprimé en minutes.
+\partieExo{A}{Un corps chaud}
+On prend $T_a=20$, $k=0{,}1$ et $T(0)=80$.
+\begin{questions}
+  \item Résoudre l'équation différentielle et déterminer $T(t)$.
+  \item Calculer la température au bout de $10$ minutes.
+  \item Au bout de combien de temps la température atteint-elle $25$\,°C ?
+\end{questions}
+\partieExo{B}{Un objet à 100 °C}
+On prend $T_a=25$, $k=0{,}02$ et $T(0)=100$.
+\begin{questions}[resume]
+  \item Déterminer $T(t)$, puis la température au bout d'une heure.
+  \item Au bout de combien de temps la température atteint-elle $30$\,°C ?
+  \item Au bout de combien de temps l'écart avec la température ambiante est-il divisé par $2$ ? Ce résultat dépend-il de $T(0)$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Population avec apport constant}
+Une population suit la loi $P'=0{,}02\,P+50$, où $50$ représente un apport constant d'habitants par an (immigration), et $P(0)=1\,000$.
+\begin{questions}
+  \item Déterminer les solutions de l'équation différentielle.
+  \item En déduire $P(t)$, puis la population au bout de $5$ ans.
+  \item Au bout de combien d'années la population atteindra-t-elle $2\,000$ habitants ?
+  \item Étudier le comportement de la population à long terme.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Charge d'un condensateur}
+Un circuit comporte une résistance $R=1\,000$~$\Omega$ et un condensateur de capacité $10$~µF, initialement déchargé. On
+applique une tension $E=5$~V. La tension $u(t)$ aux bornes du condensateur, $t$ en secondes, vérifie $RC\,u'+u=E$, avec
+$RC=0{,}01$~s et $u(0)=0$.
+\begin{questions}
+  \item Montrer que l'équation s'écrit $u'=-100\,u+500$, puis déterminer $u(t)$.
+  \item Calculer la tension au bout de $0{,}02$~s.
+  \item La constante de temps du circuit est $\tau=RC$. Calculer $\dfrac{u(\tau)}{E}$ et interpréter.
+  \item Étudier le comportement à long terme. À partir de quel instant a-t-on $u(t)\geq0{,}99\,E$ ? Comparer à $5\tau$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Datation à l'uranium 238}
+Le nombre $N(t)$ de noyaux d'uranium 238 d'un échantillon vérifie $N'=-\lambda N$, avec $\lambda=4{,}9\times10^{-18}$~s$^{-1}$
+($t$ en secondes). On note $N_0$ le nombre initial de noyaux, et l'on prend $1$~an $\approx3{,}156\times10^{7}$~s.
+\begin{questions}
+  \item Exprimer $N(t)$ en fonction de $N_0$ et de $t$.
+  \item Quelle proportion des noyaux initiaux reste-t-il au bout d'un milliard d'années ?
+  \item Calculer la demi-vie de l'uranium 238, en milliards d'années.
+  \item La valeur mesurée est d'environ $4{,}5$ milliards d'années. Commenter.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Mélange dans un réservoir}
+Un réservoir contient $100$~L d'eau pure. On y verse une solution salée de concentration $0{,}5$~kg/L, au débit de
+$2$~L/min. Le mélange, agité en permanence, s'écoule au même débit. On note $Q(t)$ la masse de sel (en kg) dans le réservoir
+à l'instant $t$ (en min).
+\begin{questions}
+  \item Le volume restant égal à $100$~L, justifier que $Q'(t)=1-\dfrac{Q(t)}{50}$ (vitesse d'entrée du sel moins vitesse de sortie).
+  \item Résoudre cette équation avec la condition $Q(0)=0$.
+  \item Calculer la masse de sel au bout de $30$ minutes.
+  \item Étudier le comportement de $Q(t)$ à long terme. Quelle est la concentration limite dans le réservoir ?
+  \item Au bout de combien de temps la concentration atteint-elle $0{,}4$~kg/L ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Croissance logistique}
+Une population, d'effectif $P(t)>0$, suit le modèle de Verhulst : $P'=0{,}1\,P\left(1-\dfrac{P}{1\,000}\right)$, avec $P(0)=100$.
+\begin{questions}
+  \item Pourquoi cette équation n'est-elle pas de la forme $y'=ay+b$ ?
+  \item On pose $y=\dfrac1P$. Montrer que $y$ est solution de l'équation $y'=-0{,}1\,y+0{,}000\,1$.
+  \item Résoudre cette équation, puis en déduire que $P(t)=\dfrac{1\,000}{1+9e^{-0{,}1t}}$.
+  \item Calculer $P(20)$ et la limite de $P(t)$ en $+\infty$. Interpréter le nombre $1\,000$.
+  \item À quel instant la population atteint-elle la moitié de cette valeur limite ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une équation avec second membre}
+On considère l'équation différentielle $(E)$ : $y'+y=e^{-x}$ sur $\R$.
+\partieExo{A}{Résolution}
+\begin{questions}
+  \item Vérifier que la fonction $u$ définie par $u(x)=xe^{-x}$ est solution de $(E)$.
+  \item Montrer qu'une fonction $f$ est solution de $(E)$ si et seulement si $f-u$ est solution de $(E_0)$ : $y'+y=0$.
+  \item Résoudre $(E_0)$, puis en déduire les solutions de $(E)$.
+  \item Déterminer la solution $f$ de $(E)$ telle que $f(0)=1$.
+\end{questions}
+\partieExo{B}{Étude de la solution}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=(x+1)e^{-x}$, de courbe $\Cf$.
+\begin{questions}[resume]
+  \item Calculer les limites de $f$ en $-\infty$ et en $+\infty$.
+  \item Montrer que $f'(x)=-xe^{-x}$, puis dresser le tableau de variations de $f$.
+  \item Montrer que l'équation $f(x)=\frac12$ admet exactement deux solutions $\alpha<\beta$, et en donner des encadrements d'amplitude $10^{-2}$.
+  \item Étudier la convexité de $f$. Déterminer une équation de la tangente à $\Cf$ en son point d'inflexion.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Perfusion d'un médicament}
+Un patient reçoit un médicament par perfusion, au débit constant de $4$~mg/h, et son organisme en élimine 20\,\% par heure.
+On note $Q(t)$ la quantité de médicament (en mg) présente dans le sang à l'instant $t$ (en heures), avec $Q(0)=0$. On admet
+que, pendant la perfusion, $Q'=-0{,}2\,Q+4$.
+\partieExo{A}{Pendant la perfusion}
+\begin{questions}
+  \item Résoudre l'équation et montrer que $Q(t)=20\left(1-e^{-0{,}2t}\right)$.
+  \item Calculer la limite de $Q(t)$ en $+\infty$ et interpréter.
+  \item Le médicament est efficace lorsque $Q(t)\geq15$. Au bout de combien de temps l'est-il ?
+\end{questions}
+\partieExo{B}{Après la perfusion}
+On arrête la perfusion à l'instant $t=10$. Pour $t\geq10$, on a alors $Q'=-0{,}2\,Q$.
+\begin{questions}[resume]
+  \item Calculer $Q(10)$, puis montrer que $Q(t)=Q(10)\,e^{-0{,}2(t-10)}$ pour $t\geq10$.
+  \item À partir de quel instant la quantité devient-elle inférieure à $5$~mg ?
+\end{questions}
+\partieExo{C}{La méthode d'Euler}
+Pour approcher $Q$ sans résoudre l'équation, on choisit un pas $h>0$ et l'on pose $q_0=0$ et $q_{n+1}=q_n+h\left(-0{,}2\,q_n+4\right)$ :
+$q_n$ est une valeur approchée de $Q(nh)$.
+\begin{questions}[resume]
+  \item Pour $h=0{,}1$, montrer que $q_{n+1}=0{,}98\,q_n+0{,}4$, puis que $q_n=20\left(1-0{,}98^{n}\right)$. Comparer $q_{100}$ et $Q(10)$.
+  \item Que renvoie l'instruction \texttt{euler(0.01, 1000)} ? Que se passe-t-il lorsque le pas diminue ?
+\begin{python}
+def euler(h, n):
+    q = 0
+    for k in range(n):
+        q = q + h * (-0.2 * q + 4)
+    return q
+\end{python}
+\end{questions}
+\end{exercice}

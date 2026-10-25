@@ -1,0 +1,245 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 9 — Calcul intégral
+%% Tous les résultats ont été vérifiés par calcul formel (sympy) et numériquement.
+
+\corrigesChapitre{9}{Calcul intégral}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Intégrales de base}
+\begin{questions}
+  \item $\Big[x^{3}+x^{2}-x\Big]_0^2=8+4-2=\res{10}$
+  \item $\Big[x^{2}+5x\Big]_1^3=24-6=\res{18}$
+  \item $\left[\frac{x^{4}}{4}\right]_0^1=\res{\frac14}$
+  \item $\left[\frac{x^{3}}{3}-\frac{3x^{2}}{2}+2x\right]_{-1}^2$\\ $=\frac23-\left(-\frac{23}{6}\right)=\res{\frac92}$
+  \item $\left[\frac23x\sqrt x\right]_0^4=\frac23\times8=\res{\frac{16}{3}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Propriétés de l'intégrale}
+\begin{questions}
+  \item $3\int_0^2x^{2}\,\mathrm{d}x-2\int_0^2x\,\mathrm{d}x+\int_0^24\,\mathrm{d}x$\\ $=8-4+8=\res{12}$
+  \item $\frac13+\frac73=\res{\frac83}$, et $\int_0^2x^{2}\,\mathrm{d}x=\frac83$ : c'est la relation de Chasles.
+  \item $-\int_0^2(x+1)\,\mathrm{d}x=-\Big[\frac{x^{2}}{2}+x\Big]_0^2=\res{-4}$
+  \item $2\times5+3\times2=\res{16}$
+  \item Les bornes sont égales : $\res{0}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Exponentielles et fonctions trigonométriques}
+\begin{questions}
+  \item $\left[\frac12e^{2x}\right]_0^1=\res{\dfrac{e^{2}-1}{2}}$
+  \item $\Big[-\cos x\Big]_0^{\pi/2}=0+1=\res{1}$
+  \item $\Big[\sin x\Big]_0^{\pi}=\res{0}$
+  \item $\Big[e^{x}-\cos x\Big]_0^1=(e-\cos1)-(1-1)$\\ $=\res{e-\cos1}$
+  \item $\Big[-e^{-x}\Big]_{-1}^1=-e^{-1}+e=\res{e-\dfrac1e}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Reconnaître une forme $u'f(u)$}
+\begin{questions}
+  \item $\left[\frac{\left(x^{2}+1\right)^{4}}{4}\right]_0^2=\frac{625-1}{4}=\res{156}$
+  \item $\Big[\ln\left(x^{2}+1\right)\Big]_0^1=\res{\ln2}$
+  \item $\left[\frac12e^{x^{2}}\right]_0^1=\res{\dfrac{e-1}{2}}$
+  \item $\Big[\sqrt{2x+3}\Big]_0^2=\res{\sqrt7-\sqrt3}$
+  \item $\left[-\frac{1}{x+1}\right]_1^2=-\frac13+\frac12=\res{\frac16}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Intégrales trigonométriques}
+\begin{questions}
+  \item $\Big[-\cos x\Big]_0^{\pi}=1+1=\res{2}$
+  \item $\left[\frac x2+\frac{\sin(2x)}{4}\right]_0^{\pi/2}=\res{\frac{\pi}{4}}$
+  \item Avec $u=\sin$ : $\left[\frac{\sin^{2}x}{2}\right]_0^{\pi/2}=\res{\frac12}$
+  \item $\left[-\frac{\cos(2x)}{2}\right]_0^{\pi}=-\frac12+\frac12=\res{0}$
+  \item $\cos>0$ sur l'intervalle : $\Big[-\ln(\cos x)\Big]_0^{\pi/4}$\\ $=-\ln\frac{\sqrt2}{2}=\res{\frac12\ln2}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Aires sous une courbe}
+\begin{questions}
+  \item $\left[\frac{x^{3}}{3}\right]_0^3=\res{9\text{ u.a.}}$
+  \item $2x+1<0$ sur $\intFO{-1}{-\frac12}$ : l'aire est\\ $-\int_{-1}^{-1/2}(2x+1)\,\mathrm{d}x+\int_{-1/2}^2(2x+1)\,\mathrm{d}x$\\
+    $=\frac14+\frac{25}{4}=\res{\frac{13}{2}\text{ u.a.}}$\\ (alors que l'intégrale vaut $6$).
+  \item $\res{\frac{16}{3}\text{ u.a.}}$
+  \item $\res{2\text{ u.a.}}$
+  \item $\res{(e-1)\text{ u.a.}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{Fonctions de signe quelconque}
+\begin{questions}
+  \item Intégrale $\res{0}$ ; $x^{2}-1\leq0$ sur $\intFF{-1}{1}$ :\\ aire $=\frac43+\frac43=\res{\frac83}$.
+  \item Intégrale $\res{\frac94}$ ; signes : $+$, $-$, $+$ sur $\intFF{-1}{0}$, $\intFF{0}{1}$, $\intFF{1}{2}$ :\\
+    aire $=\frac14+\frac14+\frac94=\res{\frac{11}{4}}$.
+  \item Intégrale $\res{0}$ ; aire $=2+2=\res{4}$ : les deux arches se compensent.
+  \item Intégrale $\res{-\frac{32}{3}}$ ; la fonction est négative : aire $\res{\frac{32}{3}}$.
+  \item Intégrale $\res{0}$ ; signes $+$ puis $-$ (racines $1$ et $3$) :\\ aire $=\frac43+\frac43=\res{\frac83}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Aires entre deux courbes}
+\begin{questions}
+  \item $2x\geq x^{2}$ sur $\intFF{0}{2}$ :\\ $\int_0^2\left(2x-x^{2}\right)\mathrm{d}x=\res{\frac43\text{ u.a.}}$
+  \item $\int_0^1\left(x-x^{2}\right)\mathrm{d}x=\res{\frac16\text{ u.a.}}$
+  \item Les courbes se coupent en $\frac{\pi}{4}$ :\\ $\left(\sqrt2-1\right)+\left(\sqrt2-1\right)=\res{2\sqrt2-2\text{ u.a.}}$
+  \item $\int_0^1\left(e^{x}-1\right)\mathrm{d}x=\res{(e-2)\text{ u.a.}}$
+  \item Par symétrie : $2\int_0^1\left(x-x^{3}\right)\mathrm{d}x=\res{\frac12\text{ u.a.}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{9}{Valeur moyenne}
+\begin{questions}
+  \item $\frac13\times9=\res{3}$
+  \item $\frac{1}{\pi}\times2=\res{\frac{2}{\pi}}$
+  \item $\res{e-1}$
+  \item $\frac13\Big[x^{2}+x\Big]_1^4=\frac{20-2}{3}=\res{6}$
+  \item $\frac{2}{\pi}\Big[\sin x\Big]_0^{\pi/2}=\res{\frac{2}{\pi}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{10}{Intégration par parties}
+\methode{$u$ = le polynôme ou le logarithme}
+\begin{questions}
+  \item $\Big[xe^{x}\Big]_0^1-\int_0^1e^{x}\,\mathrm{d}x=e-(e-1)=\res{1}$
+  \item $\Big[x\sin x\Big]_0^{\pi/2}-\int_0^{\pi/2}\sin x\,\mathrm{d}x$\\ $=\frac{\pi}{2}-1$ : $\res{\frac{\pi}{2}-1}$
+  \item $u=\ln$, $v'=1$ : $\Big[x\ln x\Big]_1^e-\int_1^e1\,\mathrm{d}x$\\ $=e-(e-1)=\res{1}$
+  \item $\left[\frac x2e^{2x}\right]_0^1-\frac12\int_0^1e^{2x}\,\mathrm{d}x$\\ $=\frac{e^{2}}{2}-\frac{e^{2}-1}{4}=\res{\dfrac{e^{2}+1}{4}}$
+  \item $\Big[-x\cos x\Big]_0^{\pi}+\int_0^{\pi}\cos x\,\mathrm{d}x=\pi+0=\res{\pi}$
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{Intégrations par parties successives}
+\begin{questions}
+  \item Avec $u=x^{2}$ et $v'=e^{x}$ : $\int_0^1x^{2}e^{x}\,\mathrm{d}x=\Big[x^{2}e^{x}\Big]_0^1-2\int_0^1xe^{x}\,\mathrm{d}x=e-2\times1=\res{e-2}$
+    (on a utilisé l'exercice 10).
+  \item Avec $u=\ln x$ et $v'=x$ : $\left[\frac{x^{2}}{2}\ln x\right]_1^e-\int_1^e\frac x2\,\mathrm{d}x=\frac{e^{2}}{2}-\frac{e^{2}-1}{4}=\res{\dfrac{e^{2}+1}{4}}$.
+  \item Avec $u=x$ et $v'=\sin(2x)$, $v=-\frac{\cos(2x)}{2}$ : $\left[-\frac{x\cos(2x)}{2}\right]_0^{\pi/2}+\frac12\int_0^{\pi/2}\cos(2x)\,\mathrm{d}x=\frac{\pi}{4}+0=\res{\frac{\pi}{4}}$.
+  \item $\Big[-x^{2}\cos x\Big]_0^{\pi}+2\int_0^{\pi}x\cos x\,\mathrm{d}x=\pi^{2}+2\left(\Big[x\sin x\Big]_0^{\pi}-\int_0^{\pi}\sin x\,\mathrm{d}x\right)=\pi^{2}+2(0-2)=\res{\pi^{2}-4}$.
+  \item $\Big[x^{2}\sin x\Big]_0^{\pi/2}-2\int_0^{\pi/2}x\sin x\,\mathrm{d}x=\frac{\pi^{2}}{4}-2\left(\Big[-x\cos x\Big]_0^{\pi/2}+\int_0^{\pi/2}\cos x\,\mathrm{d}x\right)=\res{\frac{\pi^{2}}{4}-2}$.
+  \item Avec $u=(\ln x)^{2}$ et $v'=1$ : $\Big[x(\ln x)^{2}\Big]_1^e-2\int_1^e\ln x\,\mathrm{d}x=e-2\times1=\res{e-2}$ (exercice 10).
+\end{questions}
+Au chapitre 7, on a trouvé les primitives $(x^{2}-2x+2)e^{x}$ et $\frac{x^{2}}{2}\ln x-\frac{x^{2}}{4}$ : on retrouve
+$\Big[(x^{2}-2x+2)e^{x}\Big]_0^1=e-2$ et $\left[\frac{x^{2}}{2}\ln x-\frac{x^{2}}{4}\right]_1^e=\frac{e^{2}+1}{4}$.
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Aires de domaines plus complexes}
+\begin{questions}
+  \item $x^{3}\leq0$ sur $\intFF{-1}{0}$ : $\mathcal{A}=-\int_{-1}^0x^{3}\,\mathrm{d}x+\int_0^2x^{3}\,\mathrm{d}x=\frac14+4=\res{\frac{17}{4}\text{ u.a.}}$
+  \item $x^{2}=4x-x^{2}\iff2x(x-2)=0$ : les courbes se coupent en $0$ et $2$, et $4x-x^{2}\geq x^{2}$ entre les deux.
+    $\mathcal{A}=\int_0^2\left(4x-2x^{2}\right)\mathrm{d}x=8-\frac{16}{3}=\res{\frac83\text{ u.a.}}$
+  \item Les courbes se coupent en $\frac{\pi}{4}$ et $\frac{5\pi}{4}$. $\mathcal{A}=\int_0^{\pi/4}(\cos x-\sin x)\,\mathrm{d}x+\int_{\pi/4}^{5\pi/4}(\sin x-\cos x)\,\mathrm{d}x
+    +\int_{5\pi/4}^{2\pi}(\cos x-\sin x)\,\mathrm{d}x=\left(\sqrt2-1\right)+2\sqrt2+\left(1+\sqrt2\right)=\res{4\sqrt2\text{ u.a.}}$
+  \item $e^{x}\geq e^{-x}$ sur $\intFF{0}{1}$ : $\mathcal{A}=\Big[e^{x}+e^{-x}\Big]_0^1=\res{\left(e+\frac1e-2\right)\text{ u.a.}}$
+  \item $x^{4}-2x^{2}=2x^{2}\iff x^{2}\left(x^{2}-4\right)=0$ : intersections en $-2$, $0$ et $2$, et $2x^{2}\geq x^{4}-2x^{2}$ sur $\intFF{-2}{2}$.
+    Par parité, $\mathcal{A}=2\int_0^2\left(4x^{2}-x^{4}\right)\mathrm{d}x=2\left(\frac{32}{3}-\frac{32}{5}\right)=\res{\frac{128}{15}\text{ u.a.}}$
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{13}{Modélisation}
+\begin{questions}
+  \item $\mu=\frac{1}{10}\int_0^{10}1\,000\,e^{0{,}02t}\,\mathrm{d}t=\frac{1}{10}\Big[50\,000\,e^{0{,}02t}\Big]_0^{10}=5\,000\left(e^{0{,}2}-1\right)\approx\res{1\,107\text{ individus}}$.
+  \item $\int_0^3v(t)\,\mathrm{d}t=\Big[t^{3}-3t^{2}+2t\Big]_0^3=\res{6\text{ m}}$. $v$ s'annule en $t_1=1-\frac{1}{\sqrt3}$ et $t_2=1+\frac{1}{\sqrt3}$ et
+    change de signe : en notant $x(t)=t^{3}-3t^{2}+2t$, la distance parcourue est $|x(t_1)|+|x(t_2)-x(t_1)|+|x(3)-x(t_2)|
+    =\frac{2}{3\sqrt3}+\frac{4}{3\sqrt3}+6+\frac{2}{3\sqrt3}=6+\frac{8}{3\sqrt3}\approx\res{7{,}54\text{ m}}$.
+  \item $R(50)=\int_0^{50}(100-2x)\,\mathrm{d}x=\Big[100x-x^{2}\Big]_0^{50}=\res{2\,500}$.
+  \item $\mu=\frac{1}{10}\Big[20t-800e^{-0{,}1t}\Big]_0^{10}=\frac{1}{10}\left(200-800e^{-1}+800\right)=100-\frac{80}{e}\approx\res{70{,}6\text{ °C}}$.
+  \item Une primitive de $\left(1-\frac{t}{24}\right)^{2}$ est $-8\left(1-\frac{t}{24}\right)^{3}$ : $\mu=\frac{1\,000}{12}\times\left(-8\times\frac18+8\right)=\frac{7\,000}{12}\approx\res{583\text{ L}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{14}{Synthèse}
+\begin{questions}
+  \item $f(x)=(x-1)^{2}\geq0$ : $\int_0^3f(x)\,\mathrm{d}x=\left[\frac{(x-1)^{3}}{3}\right]_0^3=\frac83+\frac13=\res{3}$, et l'aire vaut aussi $\res{3\text{ u.a.}}$.
+  \item $\mu=\frac12\Big[e^{x}-x\Big]_0^2=\frac12\left(e^{2}-2-1\right)=\res{\dfrac{e^{2}-3}{2}}$.
+  \item Voir l'exercice 10 : $\res{\dfrac{e^{2}+1}{4}}$.
+  \item $2x-x^{2}\geq x^{2}$ sur $\intFF{0}{1}$ : $\int_0^1\left(2x-2x^{2}\right)\mathrm{d}x=1-\frac23=\res{\frac13\text{ u.a.}}$
+  \item $\Big[\ln(x+1)\Big]_0^2=\res{\ln3}$, et la valeur moyenne vaut $\res{\dfrac{\ln3}{2}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{15}{Une suite d'intégrales}
+\partieExo{A}{Calculs}
+\begin{questions}
+  \item $I_0=\Big[e^{x}\Big]_0^1=\res{e-1}$.
+  \item Avec $u(x)=x^{n+1}$, $u'(x)=(n+1)x^{n}$, $v'(x)=v(x)=e^{x}$ :
+    $I_{n+1}=\Big[x^{n+1}e^{x}\Big]_0^1-(n+1)\int_0^1x^{n}e^{x}\,\mathrm{d}x=\res{e-(n+1)I_n}$.
+  \item $I_1=e-(e-1)=\res{1}$ ; $I_2=e-2I_1=\res{e-2}$ ; $I_3=e-3I_2=\res{6-2e}\approx0{,}563$.
+\end{questions}
+\partieExo{B}{Limite de la suite}
+\begin{questions}[resume]
+  \item Sur $\intFF{0}{1}$, $x^{n}e^{x}\geq0$ : par positivité, $I_n\geq0$. Puis
+    $I_{n+1}-I_n=\int_0^1x^{n}(x-1)e^{x}\,\mathrm{d}x\leq0$ car $x-1\leq0$ : $\res{(I_n)\text{ est décroissante}}$.
+  \item Sur $\intFF{0}{1}$, $1\leq e^{x}\leq e$, donc $x^{n}\leq x^{n}e^{x}\leq ex^{n}$. Par croissance de l'intégrale, et comme
+    $\int_0^1x^{n}\,\mathrm{d}x=\frac{1}{n+1}$, on obtient $\res{\frac{1}{n+1}\leq I_n\leq\frac{e}{n+1}}$. Par encadrement, $\res{\lim I_n=0}$.
+\end{questions}
+\partieExo{C}{Un calcul qui tourne mal}
+\begin{questions}[resume]
+  \item D'après la question 5, $0<I_{20}\leq\frac{e}{21}\approx0{,}13$ : une valeur négative est absurde. L'ordinateur stocke $e-1$ avec
+    une erreur $\varepsilon$ d'environ $10^{-16}$. Si $J_n=I_n+\delta_n$ désigne la valeur calculée, alors
+    $\delta_{n+1}=-(n+1)\,\delta_n$, d'où $\res{\delta_n=(-1)^{n}\,n!\,\varepsilon}$ par récurrence. Or $20!\approx2{,}4\times10^{18}$ :
+    l'erreur initiale, minuscule, est multipliée par un nombre gigantesque et finit par dominer le résultat. La vraie valeur
+    est $I_{20}\approx0{,}124$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{16}{Méthode des rectangles}
+\partieExo{A}{Un premier encadrement}
+\begin{questions}
+  \item $\varphi(u)=e^{u}-1-u$ a pour dérivée $e^{u}-1$, négative sur $\intOF{-\infty}{0}$ et positive ensuite : son minimum est
+    $\varphi(0)=0$, donc $\res{e^{u}\geq1+u}$. Avec $u=-x^{2}\leq0$ : $1-x^{2}\leq e^{-x^{2}}\leq e^{0}=1$.
+  \item Par croissance de l'intégrale : $\int_0^1\left(1-x^{2}\right)\mathrm{d}x=\frac23\leq I\leq\int_0^11\,\mathrm{d}x=1$, soit $\res{\frac23\leq I\leq1}$.
+\end{questions}
+\partieExo{B}{Les rectangles}
+\begin{questions}[resume]
+  \item $f'(x)=-2xe^{-x^{2}}\leq0$ : $f$ est décroissante sur $\intFF{0}{1}$. Sur $\intFF{\frac kn}{\frac{k+1}{n}}$, on a donc
+    $f\left(\frac{k+1}{n}\right)\leq f(x)\leq f\left(\frac kn\right)$, et en intégrant sur cet intervalle de longueur $\frac1n$ :
+    $\frac1nf\left(\frac{k+1}{n}\right)\leq\int_{k/n}^{(k+1)/n}f(x)\,\mathrm{d}x\leq\frac1nf\left(\frac kn\right)$. En sommant pour $k$ de $0$
+    à $n-1$ (relation de Chasles) : $\res{s_n\leq I\leq S_n}$.
+  \item Les deux sommes ont les mêmes termes, sauf $f(0)$ dans $S_n$ et $f(1)$ dans $s_n$ :
+    $S_n-s_n=\frac1n\big(f(0)-f(1)\big)=\res{\dfrac{1-e^{-1}}{n}}$. Puis $\frac{1-e^{-1}}{n}\leq10^{-2}\iff n\geq100\left(1-e^{-1}\right)\approx63{,}2$ :
+    $\res{n=64}$.
+  \item $\res{0{,}741\,9\leq I\leq0{,}751\,8}$ ; en réalité, $I\approx0{,}746\,8$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{17}{Aire entre une courbe et son asymptote}
+\noindent
+\begin{minipage}[t]{0.54\linewidth}\vspace{0pt}\raggedright
+\begin{questions}
+  \item $f(x)-(x+1)=xe^{-x}=\frac{x}{e^{x}}\to0$ en $+\infty$ (croissances comparées) : $\res{\Delta\text{ est asymptote à }\Cf}$.
+    Comme $xe^{-x}\geq0$ sur $\intFO{0}{+\infty}$, $\res{\Cf\text{ est au-dessus de }\Delta}$ ; elles se touchent en $(0\pv1)$.
+  \item $f'(x)=1+e^{-x}-xe^{-x}$ et $f''(x)=-e^{-x}-(1-x)e^{-x}=(x-2)e^{-x}$. $f'$ décroît sur $\intFF{0}{2}$ puis croît : son
+    minimum est $f'(2)=1-e^{-2}>0$, donc $f'>0$ et $\res{f\text{ est strictement croissante}}$.
+  \item $\mathcal{A}(\lambda)=\int_0^{\lambda}xe^{-x}\,\mathrm{d}x$. Avec $u=x$ et $v'=e^{-x}$, $v=-e^{-x}$ :
+    $\mathcal{A}(\lambda)=\Big[-xe^{-x}\Big]_0^{\lambda}+\int_0^{\lambda}e^{-x}\,\mathrm{d}x=-\lambda e^{-\lambda}+1-e^{-\lambda}=\res{1-(\lambda+1)e^{-\lambda}}$.
+  \item $\lambda e^{-\lambda}\to0$ et $e^{-\lambda}\to0$ : $\res{\lim\mathcal{A}(\lambda)=1}$. Le domaine compris entre $\Cf$ et $\Delta$ sur
+    $\intFO{0}{+\infty}$ n'est pas borné, et pourtant son aire est finie : elle vaut $1$~u.a.
+  \item $\mathcal{A}(6)=1-7e^{-6}\approx0{,}983$ et $\mathcal{A}(7)=1-8e^{-7}\approx0{,}993$ : $\res{\lambda=7}$.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=68mm, height=46mm, xmin=-0.2, xmax=8.6, ymin=-0.03, ymax=0.46,
+  xtick={1,2,4,6,8}, xticklabels={$1$,$2$,$\lambda$,$6$,$8$}, ytick={0.1,0.2,0.3,0.4}, xlabel={$x$},
+  xlabel style={at={(1,0)},anchor=west}, yticklabel style={/pgf/number format/use comma},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[draw=none,fill=otGreen!30,domain=0:4,samples=80] {x*exp(-x)} \closedcycle;
+  \addplot[otNavy,line width=1.2pt,domain=0:8.4,samples=120] {x*exp(-x)};
+  \node[anchor=south west,font=\scriptsize,text=otNavy] at (axis cs:1.6,0.36) {$y=xe^{-x}$};
+  \node[font=\scriptsize,text=otGreenDark] at (axis cs:2.2,0.12) {$\mathcal{A}(\lambda)$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{L'écart entre $\Cf$ et $\Delta$ est $xe^{-x}$ : $\mathcal{A}(\lambda)$ est l'aire sous cette courbe, et tend vers $1$ u.a.}
+\end{minipage}
+\end{corrige}

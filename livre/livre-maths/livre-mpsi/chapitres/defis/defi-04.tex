@@ -1,0 +1,91 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 4 — Oscillateur amorti, régime forcé et résonance
+%% Résultats vérifiés par verifications/defis_01_05.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Oscillateur amorti, régime forcé et résonance}{1 h 30}
+Une masse accrochée à un ressort et freinée par frottement fluide, ou un
+circuit électrique RLC, obéissent à l'équation
+\[
+(E_f)\qquad y''+2\lambda\,y'+\omega_0^{2}\,y=f(t),
+\]
+où $\lambda>0$ mesure l'amortissement, $\omega_0>0$ est la pulsation propre
+et $f$ l'excitation extérieure. Les fonctions sont définies sur $\R$.
+
+\partieExo{A}{Le régime libre ($f=0$)}
+\begin{questions}
+  \item Résoudre $(E_0)$ en distinguant trois cas suivant la position de
+    $\lambda$ par rapport à $\omega_0$ (régimes \emph{apériodique},
+    \emph{critique}, \emph{pseudo-périodique}). Dans le dernier cas, on
+    notera $\Omega=\sqrt{\omega_0^{2}-\lambda^{2}}$ la pseudo-pulsation.
+  \item Avec $y(0)=1$ et $y'(0)=0$, déterminer explicitement la solution
+    pour $(\lambda,\omega_0)$ égal à $(2,\sqrt3)$, puis $(1,1)$, puis
+    $(1,2)$, et tracer l'allure des trois courbes.
+  \item Montrer que, dans tous les cas, toute solution de $(E_0)$ tend
+    vers $0$ en $+\infty$ : le régime libre s'éteint.
+\end{questions}
+
+\partieExo{B}{Le régime forcé ($f(t)=\cos\omega t$, $\omega>0$)}
+\begin{questions}[resume]
+  \item Montrer que $z''+2\lambda z'+\omega_0^{2}z=\mathrm{e}^{\mathrm{i}\omega t}$
+    admet une solution de la forme $z(t)=Z\,\mathrm{e}^{\mathrm{i}\omega t}$,
+    avec
+    \[
+    Z=\frac{1}{\omega_0^{2}-\omega^{2}+2\mathrm{i}\lambda\omega} .
+    \]
+  \item En déduire que $(E_f)$ admet la solution
+    $y_p(t)=A(\omega)\cos(\omega t-\varphi)$, où
+    \[
+    A(\omega)=\frac{1}{\sqrt{(\omega_0^{2}-\omega^{2})^{2}+4\lambda^{2}\omega^{2}}}
+    \]
+    et $\varphi\in\intFF{0}{\pi}$ est un déphasage que l'on caractérisera
+    par son cosinus et son sinus.
+  \item Montrer que toute solution $y$ de $(E_f)$ vérifie
+    $y(t)-y_p(t)\xrightarrow[t\to+\infty]{}0$ : après un régime
+    transitoire, le système oscille à la pulsation \emph{imposée}
+    $\omega$, avec l'amplitude $A(\omega)$.
+\end{questions}
+
+\partieExo{C}{La résonance}
+\begin{questions}[resume]
+  \item En étudiant $u\mapsto(\omega_0^{2}-u)^{2}+4\lambda^{2}u$ sur
+    $\R_{+}$, montrer que :
+    \begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.2em,itemsep=0.4mm,topsep=0.6mm]
+      \item si $\lambda<\omega_0/\sqrt2$, l'amplitude $A$ atteint un
+        maximum strict (c'est la \emph{résonance}) en
+        \[
+        \omega_r=\sqrt{\omega_0^{2}-2\lambda^{2}},
+        \qquad\text{égal à}\qquad
+        A_{\max}=\frac{1}{2\lambda\sqrt{\omega_0^{2}-\lambda^{2}}} ;
+        \]
+      \item si $\lambda\geqslant\omega_0/\sqrt2$, $A$ est décroissante sur
+        $\R_{+}$ : il n'y a pas de résonance.
+    \end{itemize}
+  \item Montrer que $\dfrac{A(\omega_0)}{A(0)}=\dfrac{\omega_0}{2\lambda}$
+    (le \emph{facteur de qualité}), puis étudier $\omega_r$ et
+    $A_{\max}$ quand $\lambda\to0$. Commenter la figure.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[x=3.1cm,y=0.82cm,line cap=round]
+  \draw[otRule,line width=0.3pt] (0,1) -- (2.25,1) (0,2) -- (2.25,2) (0,3) -- (2.25,3) (0,4) -- (2.25,4) (0,5) -- (2.25,5);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (2.35,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (0,5.6);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (1,0) -- (1,5.3);
+  \foreach \l/\c/\w in {0.1/otNavy/1.3,0.25/otGreenDark/1.1,0.5/otNavy!55/1,0.8/otMuted/0.9}{%
+    \draw[\c,line width=\w pt] plot[domain=0:2.25,samples=220]
+      ({\x},{1/sqrt((1-\x*\x)^2+4*\l*\l*\x*\x)});}
+  \foreach \l/\c/\w [count=\i] in {0{,}1/otNavy/1.3,0{,}25/otGreenDark/1.1,0{,}5/otNavy!55/1,0{,}8/otMuted/0.9}{%
+    \draw[\c,line width=\w pt] (1.55,{5.25-0.55*\i}) -- (1.72,{5.25-0.55*\i});
+    \node[font=\scriptsize,text=otInk,anchor=west] at (1.74,{5.25-0.55*\i}) {$\lambda=\l$};}
+  \foreach \v in {1,...,5}{\node[font=\tiny,text=otMuted,anchor=east] at (0,\v) {$\v$};}
+  \node[font=\scriptsize,text=otMuted,below] at (1,0) {$\omega_0=1$};
+  \node[font=\scriptsize,text=otMuted,below] at (2.3,0) {$\omega$};
+  \node[font=\scriptsize,text=otMuted,anchor=south west] at (0,5.55) {$A(\omega)$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Courbes de résonance pour $\omega_0=1$ : plus l'amortissement est
+faible, plus le pic est haut et proche de $\omega_0$.}
+\end{center}
+\end{defi}

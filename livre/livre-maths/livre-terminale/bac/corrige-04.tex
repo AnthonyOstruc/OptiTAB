@@ -1,0 +1,104 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 4 — résultats vérifiés par programme (bac_s4.py)
+
+\corrigeSujet{4}
+
+\begin{corrigeBac}{4}{Dénombrement et probabilités}
+\begin{questions}
+  \item Un code est un $4$-uplet de chiffres : $10^{4}=\res{10\,000}$ codes. \pts{0,5 pt}
+  \item Il y a $10\times9\times8\times7=\res{5\,040}$ arrangements de $4$ chiffres distincts ; tous les codes étant équiprobables, la
+    probabilité cherchée vaut $\dfrac{5\,040}{10\,000}=\res{0{,}504}$. \pts{0,75 pt}
+  \item On retire les codes sans $0$, au nombre de $9^{4}=6\,561$ : $10\,000-6\,561=\res{3\,439}$ codes. \pts{0,75 pt}
+  \item On choisit les deux positions du $7$ parmi quatre, puis un chiffre autre que $7$ pour chacune des deux autres positions :
+    $\binom42\times9^{2}=6\times81=\res{486}$ codes. \pts{0,75 pt}
+  \item Chaque ensemble de quatre chiffres distincts donne exactement un code croissant : $\binom{10}{4}=\res{210}$ codes. \pts{0,75 pt}
+  \item Sur $N$ essais, la probabilité de ne jamais trouver le code est $\left(1-10^{-4}\right)^{N}$. On veut
+    $1-0{,}9999^{N}\geq0{,}5$, soit $N\geq\dfrac{\ln0{,}5}{\ln0{,}9999}\approx6\,931{,}1$ : il faut $\res{6\,932}$ essais, soit environ
+    $1$ h $56$ min. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{6}{Exponentielle : une famille de fonctions}
+\partieExo{A}{Le cas $m=e$}
+\begin{questions}
+  \item $f_e'(x)=e^{x}-e$, négatif pour $x\leq1$ et positif pour $x\geq1$ : $f_e$ est décroissante sur $\intOF{-\infty}1$ et croissante
+    sur $\intFO1{+\infty}$. Son minimum est $f_e(1)=e-e=0$. Donc $f_e(x)\geq0$, c'est-à-dire $\res{e^{x}\geq ex}$ pour tout réel $x$. \pts{1 pt}
+  \item La tangente à la courbe de l'exponentielle au point d'abscisse $1$ a pour équation $y=e^{1}(x-1)+e^{1}$, soit $y=ex$ : elle passe
+    par l'origine et la courbe est au-dessus de cette tangente (la fonction exponentielle est convexe). \pts{0,5 pt}
+\end{questions}
+\partieExo{B}{Le cas général}
+\begin{questions}[resume]
+  \item En $-\infty$ : $e^{x}\to0$ et $-mx\to+\infty$ (car $m>0$), donc $\res{\lim\limits_{x\to-\infty}f_m(x)=+\infty}$. En $+\infty$ :
+    $f_m(x)=x\left(\frac{e^{x}}{x}-m\right)$ et $\frac{e^{x}}{x}\to+\infty$, donc $\res{\lim\limits_{x\to+\infty}f_m(x)=+\infty}$. \pts{1 pt}
+  \item $f_m'(x)=e^{x}-m$ s'annule pour $x=\ln m$, en passant du négatif au positif.
+\begin{center}
+\begin{tableau}
+  \otTab[2.4]{$x$/0.8,$f_m'(x)$/0.8,$f_m$/1.6}{$-\infty$,$\ln m$,$+\infty$}
+  \tkzTabLine{,-,z,+,}
+  \tkzTabVar{+/$+\infty$,-/$m(1-\ln m)$,+/$+\infty$}
+\end{tableau}
+\end{center}
+    Le minimum vaut $f_m(\ln m)=e^{\ln m}-m\ln m=\res{m(1-\ln m)}$. \pts{1,5 pt}
+  \item Le signe du minimum est celui de $1-\ln m$ :
+    \begin{itemize}[leftmargin=1.2em,itemsep=0.3mm,topsep=0.5mm]
+      \item si $0<m<e$, le minimum est strictement positif : $\res{\text{aucune solution}}$ ;
+      \item si $m=e$, le minimum est nul, atteint seulement en $1$ : $\res{\text{une solution}}$, $x=1$ ;
+      \item si $m>e$, le minimum est strictement négatif. Sur chacun des intervalles $\intOF{-\infty}{\ln m}$ et $\intFO{\ln m}{+\infty}$,
+        $f_m$ est continue, strictement monotone, et passe d'une valeur négative à $+\infty$ : d'après le corollaire du théorème des
+        valeurs intermédiaires, il y a $\res{\text{deux solutions}}$.
+    \end{itemize}
+    \pts{1,25 pt}
+  \item $3>e$ : la calculatrice donne les deux solutions $\res{x\approx0{,}62}$ et $\res{x\approx1{,}51}$. \pts{0,25 pt}
+  \item Les solutions de $e^{x}=mx$ sont les abscisses des points communs à la courbe de l'exponentielle et à la droite d'équation
+    $y=mx$, qui passe par l'origine. La tangente d'équation $y=ex$ sépare les droites qui coupent la courbe en deux points ($m>e$) de
+    celles qui ne la rencontrent pas ($0<m<e$). \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Géométrie dans l'espace}
+\begin{questions}
+  \item $\vect{AB}\,(0\pv2\pv0)=\vect{DC}$, donc $ABCD$ est un parallélogramme ; $AB=BC=2$ et $\vect{AB}\cdot\vect{AD}=0$ avec
+    $\vect{AD}\,(-2\pv0\pv0)$ : c'est un carré, dont le centre est le milieu de $[AC]$, soit $O$. Puis $SA=\sqrt{1+1+4}=\res{\sqrt6}$ et
+    $V=\frac13\times4\times2=\res{\tfrac83}$, la hauteur étant $SO=2$. \pts{1 pt}
+  \item $\vect{BC}\,(-2\pv0\pv0)$ et $\vect{BS}\,(-1\pv-1\pv2)$ ne sont pas colinéaires ; $\vec n\cdot\vect{BC}=0$ et
+    $\vec n\cdot\vect{BS}=0-2+2=0$ : $\vec n$ est normal à $(SBC)$. L'équation $2y+z+d=0$ est vérifiée par $B$ si $d=-2$ :
+    $\res{(SBC):\ 2y+z-2=0}$. \pts{1 pt}
+  \item La droite passant par $O$ et dirigée par $\vec n$ a pour points $(0\pv2t\pv t)$ ; $4t+t-2=0$ donne $t=\frac25$ :
+    $\res{H\left(0\pv\tfrac45\pv\tfrac25\right)}$ et $OH=\frac25\norme{\vec n}=\res{\tfrac{2\sqrt5}{5}}\approx0{,}89$. \pts{1 pt}
+  \item $I\left(-\frac12\pv\frac12\pv1\right)$. Les points $A$, $B$, $I$ ne sont pas alignés et vérifient l'équation : $2-2=0$, $2-2=0$ et
+    $-1+3-2=0$. C'est donc une équation du plan $(ABI)$. \pts{0,75 pt}
+  \item Les points de $(SD)$ s'écrivent $S+t\,\vect{SD}=(-t\pv-t\pv2-2t)$ ; en reportant : $-2t+6-6t-2=0$, soit $t=\frac12$ : c'est le
+    milieu $\res{J\left(-\tfrac12\pv-\tfrac12\pv1\right)}$ de $[SD]$. Comme $\vect{JI}\,(0\pv1\pv0)=\frac12\vect{AB}$, les droites $(IJ)$ et
+    $(AB)$ sont parallèles : la section $ABIJ$ est un $\res{\text{trapèze}}$. \pts{1,25 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Suite d'intégrales}
+\begin{questions}
+  \item $I_0=\Big[-e^{-x}\Big]_0^1=\res{1-\tfrac1e}$. \pts{0,5 pt}
+  \item Avec $u(x)=x^{n+1}$, $u'(x)=(n+1)x^{n}$, $v'(x)=e^{-x}$ et $v(x)=-e^{-x}$ :
+    $I_{n+1}=\Big[-x^{n+1}e^{-x}\Big]_0^1+(n+1)\displaystyle\int_0^1x^{n}e^{-x}\,\mathrm{d}x=-\frac1e+(n+1)I_n$. D'où
+    $I_1=I_0-\frac1e=\res{1-\tfrac2e}$ et $I_2=2I_1-\frac1e=\res{2-\tfrac5e}$. \pts{1,25 pt}
+  \item Pour $x\in\intFF01$ : $0\leq e^{-x}\leq1$, donc $0\leq x^{n}e^{-x}\leq x^{n}$. Par positivité de l'intégrale,
+    $0\leq I_n\leq\displaystyle\int_0^1x^{n}\,\mathrm{d}x=\frac{1}{n+1}$. Par le théorème des gendarmes, $\res{\lim I_n=0}$. \pts{1,25 pt}
+  \item $I_{n+1}-I_n=\displaystyle\int_0^1x^{n}(x-1)e^{-x}\,\mathrm{d}x\leq0$, car l'intégrande est négative sur $\intFF01$ : la suite est
+    $\res{\text{décroissante}}$. \pts{0,75 pt}
+  \item On part de $I_0$ et l'on applique $n$ fois la relation de récurrence.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+from math import exp
+
+def integrale(n):
+    I = 1 - exp(-1)
+    for k in range(n):
+        I = (k + 1) * I - exp(-1)
+    return I
+\end{pythoncol}
+\cote
+\code{integrale(5)} renvoie environ \code{0.0713} : $\res{I_5\approx0{,}071}$.
+\end{codecote}
+    \pts{0,5 pt}
+  \item D'après la question 2, $(n+1)I_n=I_{n+1}+\frac1e$, qui tend vers $\frac1e$. Or $nI_n=(n+1)I_n-I_n$ et $I_n\to0$ :
+    $\res{\lim nI_n=\tfrac1e}$. \pts{0,75 pt}
+\end{questions}
+\end{corrigeBac}

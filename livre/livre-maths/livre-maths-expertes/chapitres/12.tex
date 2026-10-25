@@ -1,0 +1,167 @@
+\begin{ouverture}[conditionnelles]{12}{Chaînes de Markov à deux ou trois états}{Graphes et matrices}{Transitions · Distributions lignes · Invariance · Limites}
+\objectif{Construire le graphe et la matrice de transition.}
+\objectif{Calculer une distribution après $n$ étapes.}
+\objectif{Déterminer une distribution invariante.}
+\objectif{Étudier une évolution asymptotique sur des exemples.}
+\prerequis{Probabilités conditionnelles, indépendance conditionnelle et puissances de matrices.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Décrire les transitions}
+Une chaîne de Markov modélise un système dont la loi de l'état suivant dépend de l'état actuel et non de toute l'histoire antérieure. Dans les exemples homogènes, les probabilités de transition restent les mêmes à chaque étape.
+La matrice $P$ porte en ligne l'état de départ, en colonne l'état d'arrivée ; $p_{ij}$ est la probabilité de passer de $i$ à $j$ en une transition.
+Les coefficients sont positifs ou nuls et chaque ligne totalise $1$.
+\begin{definition}[Convention du programme]
+Une distribution est une \textbf{matrice ligne} $\pi_n$ dont les coefficients sont les probabilités des états à l'instant $n$.
+On a $\pi_{n+1}=\pi_nP$ et $\pi_n=\pi_0P^n$.
+\end{definition}
+\figurelivre{e12-markov2.pdf}{Deux états $A,B$ : $P=\left(\begin{smallmatrix}0{,}8&0{,}2\\0{,}3&0{,}7\end{smallmatrix}\right)$. Les poids sortant de chacun des sommets totalisent $1$, boucles comprises.}
+\essSection{2}{Pourquoi les puissances donnent les probabilités}
+\begin{demonstration}
+Pour passer de $i$ à $j$ en $n+1$ étapes, on partitionne selon l'état $k$ après $n$ étapes.
+La propriété de Markov donne une probabilité $(P^n)_{ik}p_{kj}$ pour ce passage via $k$ ; sommer donne $(P^{n+1})_{ij}$.
+Ainsi $(P^n)_{ij}$ est la probabilité d'être en $j$ après $n$ transitions, sachant le départ en $i$.
+Si le départ est distribué selon $\pi_0$, les probabilités totales donnent pour chaque $j$ la somme $\sum_i(\pi_0)_i(P^n)_{ij}$ : c'est $\pi_0P^n$.
+\end{demonstration}
+Un coefficient de $P^n$ est une probabilité de transition conditionnelle ; il ne doit pas être confondu avec un coefficient d'une matrice d'adjacence comptant des parcours.
+\essSection{3}{Deux états : une récurrence réelle}
+Pour la matrice de la figure, si $a_n=P(X_n=A)$, alors $a_{n+1}=0{,}8a_n+0{,}3(1-a_n)=0{,}5a_n+0{,}3$.
+L'équilibre vaut $0{,}6$ ; donc $a_n=0{,}6+(a_0-0{,}6)(0{,}5)^n$.
+La distribution tend vers $(0{,}6;0{,}4)$, quelle que soit la distribution initiale.
+\begin{definition}[Distribution invariante]
+Une distribution ligne $\pi$ est invariante si $\pi P=\pi$.
+On résout les équations avec la contrainte que les coefficients sont positifs ou nuls et totalisent $1$.
+\end{definition}
+Une distribution invariante demeure identique à chaque étape si elle est choisie comme distribution initiale. Son existence ne prouve pas que toutes les distributions convergent vers elle.
+\essSection{4}{Un exemple à trois états}
+\[P=\begin{pmatrix}1/2&1/2&0\\1/4&1/2&1/4\\0&1/2&1/2\end{pmatrix}.
+\]
+\figurelivre{e12-markov3.pdf}{Trois états, avec les transitions données par la matrice. Les arcs absents correspondent à des probabilités nulles ; les boucles restent indispensables à la somme $1$ de chaque ligne.}
+Résoudre $\pi P=\pi$ avec $a+b+c=1$ donne $a=b/2$, $c=b/2$, donc $\pi=(1/4;1/2;1/4)$.
+Si $\pi_0=(1;0;0)$, dès $n=1$ on a $b_n=1/2$ ; de plus $a_{n+1}-c_{n+1}=(a_n-c_n)/2$.
+Pour $n\geq1$,
+$\pi_n=(1/4+2^{-(n+1)};1/2;1/4-2^{-(n+1)})$, qui tend vers $\pi$.
+\figurelivre{e12-convergence.pdf}{Depuis l'état $A$, les probabilités à trois états se rapprochent de $(1/4,1/2,1/4)$. La formule simplifiée vaut pour $n\geq1$ ; la distribution initiale est traitée séparément.}
+\essSection{5}{Calculer avec une liste Python}
+\begin{python}
+def distribution(pi, P, n):
+    pi = list(pi)
+    for k in range(n):
+        pi = [sum(pi[i]*P[i][j] for i in range(len(pi)))
+              for j in range(len(pi))]
+    return pi
+\end{python}
+On vérifie avant utilisation que $P$ est carrée, que les dimensions correspondent et que les sommes de lignes valent $1$.
+Pour $P=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$, la distribution $(1/2;1/2)$ est invariante, mais un départ certain en $A$ alterne entre les deux états sans converger.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Lire une transition}
+$P=\begin{pmatrix}0{,}8&0{,}2\\0{,}3&0{,}7\end{pmatrix}$.
+\begin{questions}
+\item Donner la probabilité de $A$ vers $B$.
+\item Donner celle de rester en $B$.
+\item Vérifier les sommes de lignes.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Une première distribution}
+$\pi_0=(1;0)$ et $P$ est la matrice à deux états du cours.
+\begin{questions}
+\item Calculer $\pi_1$.
+\item Calculer $\pi_2$.
+\item Vérifier les probabilités.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Invariant}
+$P$ est la matrice à deux états du cours.
+\begin{questions}
+\item Verifier $(0{,}6;0{,}4)P=(0{,}6;0{,}4)$.
+\item Que devient cette distribution après dix étapes ?
+\item Que signifie cette stabilité ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Une matrice admissible ?}
+$Q=\begin{pmatrix}0{,}5&0{,}6\\0{,}2&0{,}8\end{pmatrix}$.
+\begin{questions}
+\item Peut-elle être une matrice de transition selon la convention du livre ?
+\item Quelle ligne pose problème ?
+\item Corriger son second coefficient en gardant le premier.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Récurrence à deux états}
+Pour $P$ du cours, $a_0=1$.
+\begin{questions}
+\item Établir $a_{n+1}=0{,}5a_n+0{,}3$.
+\item Exprimer $a_n$.
+\item Donner la limite de la distribution.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une précision}
+On veut $|a_n-0{,}6|\leq0{,}001$ avec $a_0=1$.
+\begin{questions}
+\item Traduire en une inégalité géométrique.
+\item Trouver le premier rang.
+\item Vérifier les deux rangs voisins.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Trois états : invariant}
+$P$ est la matrice à trois états du cours.
+\begin{questions}
+\item Écrire les équations pour $(a;b;c)P=(a;b;c)$.
+\item Ajouter la normalisation et résoudre.
+\item Contrôler le résultat par multiplication.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Trois états : deux étapes}
+$\pi_0=(1;0;0)$ et $P$ est la matrice à trois états du cours.
+\begin{questions}
+\item Calculer $\pi_1$.
+\item Calculer $\pi_2$.
+\item Donner la probabilité d’être en $C$ après deux transitions.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Périodicité et invariant}
+$P=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ et $\pi_0=(1;0)$.
+\begin{questions}
+\item Donner les distributions paires et impaires.
+\item Trouver une distribution invariante.
+\item Pourquoi l’invariance n’implique-t-elle pas la convergence depuis tout départ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Prouver la formule à trois états}
+$\pi_0=(1;0;0)$ pour la matrice à trois états du cours.
+\begin{questions}
+\item Montrer que $b_{n+1}=1/2$ pour toute distribution.
+\item Établir $d_{n+1}=d_n/2$ pour $d_n=a_n-c_n$.
+\item Retrouver $\pi_n$ pour $n\geq1$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Sommes de lignes des puissances}
+$P$ est une matrice de transition.
+\begin{questions}
+\item Pourquoi ses coefficients sont-ils positifs ou nuls ?
+\item Montrer que la somme d’une ligne de $P^2$ vaut $1$.
+\item Étendre aux puissances par récurrence.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Colonnes ou lignes ?}
+Un élève utilise $\pi_{n+1}=P\pi_n$ tout en écrivant $\pi_n$ comme ligne.
+\begin{questions}
+\item Identifier le problème de dimensions.
+\item Écrire la relation correcte avec une ligne.
+\item Si l’on choisit plutôt une colonne $V_n$, quelle matrice doit-on utiliser ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

@@ -1,0 +1,552 @@
+% !TEX root = ../main.tex
+%% Chapitre 10 — Polynômes et fractions rationnelles
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Polynômes et fractions rationnelles » : a) anneau K[X] ; b) division
+%% euclidienne ; c) fonctions polynomiales et racines ; d) dérivation ;
+%% e) arithmétique dans K[X] ; f) irréductibles de C[X] et R[X] ;
+%% g) interpolation de Lagrange ; h) fractions rationnelles ; i) éléments simples.
+%% Résultats vérifiés par verifications/chapitre_10.py.
+
+\begin{ouverture}[polynomes]{10}{Polynômes et fractions rationnelles}{Partie 1 · Premier semestre}
+  {Degré\enspace·\enspace Racines\enspace·\enspace Arithmétique de $\K[X]$\enspace·\enspace
+   Factorisation\enspace·\enspace Lagrange\enspace·\enspace Éléments simples}
+  \objectif{Calculer dans l'anneau $\K[X]$ : degrés, division euclidienne, algorithme de Horner.}
+  \objectif{Relier racines, multiplicités, divisibilité et dérivées successives.}
+  \objectif{Utiliser les relations de Viète et la formule de Taylor polynomiale.}
+  \objectif{Transposer l'arithmétique de $\Z$ aux polynômes : PGCD, Bézout, Gauss.}
+  \objectif{Factoriser dans $\Cx[X]$ et dans $\R[X]$, interpoler par Lagrange.}
+  \objectif{Décomposer une fraction rationnelle en éléments simples et appliquer aux primitives.}
+  \prerequis{Arithmétique de $\Z$ : division euclidienne, PGCD, Bézout, Gauss (chapitre 7).}
+  \prerequis{Nombres complexes : racines de l'unité, second degré (chapitre 3).}
+  \prerequis{Anneaux et corps (chapitre 8) ; dérivation (chapitre 4).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{L'anneau $\K[X]$}
+
+\begin{definition}[Polynômes]
+Un \textbf{polynôme} à coefficients dans $\K$ ($=\R$ ou $\Cx$) s'écrit
+$P=a_nX^{n}+\dots+a_1X+a_0$ ; si $a_n\neq0$, $n$ est le \textbf{degré}
+$\deg P$, $a_n$ le \textbf{coefficient dominant} ($P$ est \textbf{unitaire}
+si $a_n=1$). Par convention, $\deg0=-\infty$. L'ensemble $\K[X]$ est un
+anneau commutatif \emph{intègre}, et $\K_n[X]$ désigne les polynômes de
+degré au plus $n$. Pour tous $P,Q$ :
+\[
+  \deg(P+Q)\leq\max(\deg P,\deg Q),\qquad
+  \deg(PQ)=\deg P+\deg Q,
+\]
+et pour la composée, $\deg(P\circ Q)=\deg P\times\deg Q$ (si $\deg Q\geq1$).
+\end{definition}
+
+\essSection{2}{Division euclidienne}
+
+\begin{theoreme}
+Pour tous $A,B\in\K[X]$ avec $B\neq0$, il existe un \emph{unique} couple
+$(Q,R)$ tel que
+\[
+  A=BQ+R\qquad\text{et}\qquad\deg R<\deg B.
+\]
+On dit que $B$ \textbf{divise} $A$ lorsque $R=0$ ; deux polynômes se
+divisant mutuellement sont \emph{associés} (proportionnels par un scalaire
+non nul). La division se \emph{pose} comme pour les entiers, en éliminant à
+chaque étape le terme de plus haut degré.
+\end{theoreme}
+
+\begin{savoirfaire}[L'algorithme de Horner]
+Pour évaluer $P=a_nX^{n}+\dots+a_0$ en $c$, on calcule de proche en proche
+$b_n=a_n$, puis $b_{k}=c\,b_{k+1}+a_{k}$ : le dernier terme est $P(c)$, et
+les $b_k$ sont les coefficients du quotient de $P$ par $X-c$ — une
+évaluation \emph{et} une division en $n$ multiplications.
+\end{savoirfaire}
+
+\essSection{3}{Racines, multiplicités, relations de Viète}
+
+\begin{theoreme}[Racines et divisibilité]
+$a$ est \textbf{racine} de $P$ si $P(a)=0$, ce qui équivaut à :
+$(X-a)$ divise $P$. Un polynôme non nul de degré $n$ possède \emph{au plus
+$n$ racines} (comptées avec multiplicité). Conséquences : un polynôme de
+$\K_n[X]$ qui s'annule en $n+1$ points est nul, et deux polynômes de
+$\K_n[X]$ qui coïncident en $n+1$ points sont égaux — un polynôme est
+entièrement déterminé par sa fonction polynomiale.
+\end{theoreme}
+
+\begin{definition}[Multiplicité, polynôme scindé]
+$a$ est racine de \textbf{multiplicité} $m$ de $P$ si $(X-a)^{m}$ divise
+$P$ et $(X-a)^{m+1}$ ne le divise pas. $P$ est \textbf{scindé} sur $\K$
+s'il s'écrit comme produit de facteurs de degré $1$ :
+$P=a_n\prod_{i}(X-x_i)$.
+\end{definition}
+
+\begin{theoreme}[Relations de Viète]
+Si $P=a_nX^{n}+\dots+a_0$ est scindé de racines $x_1,\dots,x_n$ :
+\[
+  x_1+x_2+\dots+x_n=-\frac{a_{n-1}}{a_n}
+  \qquad\text{et}\qquad
+  x_1x_2\cdots x_n=(-1)^{n}\,\frac{a_0}{a_n}.
+\]
+(Les relations intermédiaires se retrouvent en développant le produit.)
+\end{theoreme}
+
+\essSection{4}{Dérivation et formule de Taylor}
+
+\begin{definition}
+La \textbf{dérivée formelle} de $P=\sum a_kX^{k}$ est
+$P'=\sum ka_kX^{k-1}$ ; elle est linéaire, vérifie $(PQ)'=P'Q+PQ'$ et la
+formule de Leibniz. Pour $\K=\R$, elle coïncide avec la dérivée de la
+fonction polynomiale.
+\end{definition}
+
+\begin{theoreme}[Taylor et multiplicités]
+Pour tout $P\in\K_n[X]$ et tout $a\in\K$ :
+\[
+  P=\sum_{k=0}^{n}\frac{P^{(k)}(a)}{k!}\,(X-a)^{k}
+  \qquad\text{(formule de Taylor polynomiale).}
+\]
+En conséquence, $a$ est racine de multiplicité $m$ de $P$ si et seulement
+si
+\[
+  P(a)=P'(a)=\dots=P^{(m-1)}(a)=0
+  \qquad\text{et}\qquad P^{(m)}(a)\neq0.
+\]
+En particulier : racine double $\iff$ racine commune de $P$ et $P'$.
+\end{theoreme}
+
+\essSection{5}{L'arithmétique de $\K[X]$}
+
+Toute l'arithmétique du chapitre 7 se transpose, la division euclidienne
+jouant le même rôle — seule la notion de « taille » change : le degré
+remplace la valeur absolue.
+
+\otIntertitre{Le dictionnaire $\Z\ \leftrightarrow\ \K[X]$}
+{\renewcommand{\arraystretch}{1.45}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
+\toprule
+{\otTete{Dans $\Z$}} & {\otTete{Dans $\K[X]$}} \\
+\midrule
+valeur absolue & degré \\
+division euclidienne ($0\leq r<b$) & division euclidienne ($\deg R<\deg B$) \\
+PGCD, algorithme d'Euclide & PGCD \emph{unitaire} $A\wedge B$, Euclide \\
+Bézout, Gauss, PPCM & Bézout, Gauss, PPCM — à l'identique \\
+nombres premiers & polynômes \emph{irréductibles} \\
+décomposition en facteurs premiers & décomposition en facteurs irréductibles \\
+\bottomrule
+\end{tabularx}}
+
+\vspace{2mm}
+\begin{propriete}
+Le PGCD de deux polynômes (non tous deux nuls) est l'unique diviseur commun
+\emph{unitaire} de degré maximal, calculé par l'algorithme d'Euclide ; tout
+diviseur commun le divise. Théorème de Bézout, lemme de Gauss, couples de
+Bézout par l'algorithme étendu, PGCD d'une famille, polynômes premiers
+entre eux (dans leur ensemble, deux à deux) : tous les énoncés du
+chapitre 7 restent valables mot pour mot.
+\end{propriete}
+
+\essSection{6}{Factorisation dans $\Cx[X]$ et dans $\R[X]$}
+
+\begin{theoreme}[d'Alembert-Gauss]
+Tout polynôme non constant de $\Cx[X]$ possède au moins une racine
+complexe (démonstration hors programme). Conséquences :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item les irréductibles de $\Cx[X]$ sont les polynômes de degré $1$, et
+    tout polynôme de $\Cx[X]$ est \emph{scindé} ;
+  \item dans $\Cx[X]$, la divisibilité se lit sur les racines et les
+    multiplicités, et deux polynômes sont premiers entre eux si et
+    seulement s'ils n'ont \emph{aucune racine commune} ;
+  \item les irréductibles de $\R[X]$ sont les polynômes de degré $1$ et
+    les polynômes de degré $2$ à discriminant strictement négatif ; deux
+    racines complexes conjuguées d'un polynôme \emph{réel} ont la même
+    multiplicité, et la décomposition réelle s'obtient en regroupant les
+    racines conjuguées.
+\end{itemize}
+Exemple phare : $X^{n}-1=\displaystyle\prod_{\omega\in\mathbb{U}_n}(X-\omega)$
+(chapitre 3).
+\end{theoreme}
+
+\essSection{7}{Interpolation de Lagrange}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}
+Soient $x_1,\dots,x_n\in\K$ \emph{distincts} et $y_1,\dots,y_n\in\K$. Il
+existe un \emph{unique} $P\in\K_{n-1}[X]$ tel que $P(x_i)=y_i$ pour tout
+$i$ :
+\[
+  P=\sum_{i=1}^{n}y_i\,L_i,\qquad
+  L_i=\prod_{j\neq i}\frac{X-x_j}{x_i-x_j}.
+\]
+Les polynômes $Q$ (de degré quelconque) vérifiant $Q(x_i)=y_i$ pour tout
+$i$ sont exactement les
+\[
+  Q=P+\Bigl(\prod_{i=1}^{n}(X-x_i)\Bigr)R,\qquad R\in\K[X].
+\]
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.05,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.4,0) -- (2.9,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.3) -- (0,3.4);
+  \draw[otNavy,line width=1.05pt]
+    plot[domain=-0.18:2.52,samples=60] ({\x},{-1.5*\x*\x+3.5*\x+1});
+  \foreach \px/\py in {0/1,1/3,2/2}{
+    \fill[otGreenDark] (\px,\py) circle (1.6pt);
+    \draw[otGreen!70!otMuted,densely dotted,line width=0.5pt] (\px,\py) -- (\px,0);}
+  \node[below,font=\tiny,text=otMuted] at (0.06,-0.02) {$x_1$};
+  \node[below,font=\tiny,text=otMuted] at (1,-0.02) {$x_2$};
+  \node[below,font=\tiny,text=otMuted] at (2,-0.02) {$x_3$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Trois points, une unique parabole : l'interpolation de Lagrange.}
+\end{minipage}
+
+\essSection{8}{Fractions rationnelles et éléments simples}
+
+\begin{definition}
+Le corps $\K(X)$ des \textbf{fractions rationnelles} est formé des
+quotients $F=\dfrac{P}{Q}$ ($Q\neq0$), chacun admettant une \emph{forme
+irréductible} ($P\wedge Q=1$, $Q$ unitaire). On pose
+$\deg F=\deg P-\deg Q$ ; les racines de $P$ (resp. $Q$), dans la forme
+irréductible, sont les \textbf{zéros} (resp. les \textbf{pôles}) de $F$,
+avec leurs multiplicités. Si $\deg P\geq\deg Q$, la division euclidienne
+fournit la \textbf{partie entière} : $F=E+\dfrac{R}{Q}$ avec $E\in\K[X]$
+et $\deg R<\deg Q$.
+\end{definition}
+
+\begin{theoreme}[Décomposition en éléments simples]
+Toute fraction rationnelle se décompose de manière unique en sa partie
+entière plus une somme d'\emph{éléments simples} :
+sur $\Cx$, des termes $\dfrac{a}{(X-\lambda)^{k}}$ ; sur $\R$, des termes
+$\dfrac{a}{(X-\lambda)^{k}}$ et
+$\dfrac{aX+b}{(X^{2}+pX+q)^{k}}$ ($\Delta<0$). En pratique (toute
+technicité exclue) :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Pôle simple} le coefficient de $\dfrac{1}{X-\lambda}$
+    s'obtient en multipliant par $(X-\lambda)$ puis en évaluant en
+    $\lambda$.
+  \item \etape{Dérivée logarithmique} si
+    $P=c\prod(X-\lambda_i)^{m_i}$, alors
+    $\dfrac{P'}{P}=\displaystyle\sum_i\frac{m_i}{X-\lambda_i}$.
+  \item \etape{Applications} calcul de primitives et de dérivées
+    $k$-ièmes de fractions rationnelles.
+\end{itemize}
+\end{theoreme}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $\deg(P+Q)$ peut chuter : les termes dominants peuvent se
+    compenser.
+  \item Le PGCD de polynômes est \emph{unitaire} par convention : ne pas
+    oublier de normaliser.
+  \item « Irréductible » dépend du corps : $X^{2}+1$ est irréductible sur
+    $\R$, pas sur $\Cx$.
+  \item Une racine de multiplicité $m$ de $P$ est racine de multiplicité
+    $m-1$ de $P'$ — et non $m$.
+  \item Avant de décomposer en éléments simples : forme irréductible
+    \emph{puis} partie entière.
+  \item Viète donne somme et produit \emph{pour un polynôme scindé} ; sur
+    $\R$, vérifier d'abord que toutes les racines sont réelles — ou
+    travailler dans $\Cx$.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Degrés}
+\begin{questions}
+  \item Donner le degré et le coefficient dominant de
+    $(2X^{3}-X+1)(X^{2}+3)$, de $(X^{2}+X)^{3}$ et de
+    $(X^{3}+1)-(X^{3}-X)$.
+  \item Donner un exemple où $\deg(P+Q)<\max(\deg P,\deg Q)$.
+  \item Quel est le degré de $P\circ Q$ pour $\deg P=3$ et $\deg Q=2$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Division euclidienne}
+\begin{questions}
+  \item Poser la division euclidienne de $X^{3}+2X^{2}-X+1$ par
+    $X^{2}+1$.
+  \item Poser celle de $X^{4}-1$ par $X-2$.
+  \item Quel est, sans calcul, le reste de la division d'un polynôme $P$
+    par $X-a$ ? Vérifier sur la question 2.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Racines évidentes et factorisation}
+Soit $P=X^{3}-6X^{2}+11X-6$.
+\begin{questions}
+  \item Vérifier que $1$ est racine de $P$, et factoriser $P$ par $X-1$.
+  \item Terminer la factorisation de $P$ en produit de facteurs de degré
+    $1$.
+  \item Contrôler le résultat à l'aide des relations de Viète (somme et
+    produit des racines).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Multiplicité d'une racine}
+Soit $P=X^{4}-5X^{3}+9X^{2}-7X+2$.
+\begin{questions}
+  \item Calculer $P(1)$, $P'(1)$, $P''(1)$ et $P'''(1)$.
+  \item En déduire la multiplicité de la racine $1$, puis factoriser $P$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Relations de Viète}
+\begin{questions}
+  \item Déterminer deux nombres dont la somme vaut $7$ et le produit
+    $10$.
+  \item Soient $x_1,x_2,x_3$ les racines (complexes) de
+    $X^{3}-2X^{2}+3X-4$. Donner, sans les calculer, leur somme et leur
+    produit.
+  \item Calculer de même $x_1^{2}+x_2^{2}+x_3^{2}$.
+    \emph{Développer $(x_1+x_2+x_3)^{2}$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{L'algorithme de Horner}
+Soit $P=2X^{4}-3X^{3}+X-5$.
+\begin{questions}
+  \item Évaluer $P(2)$ par l'algorithme de Horner, en détaillant les
+    étapes.
+  \item En déduire, sans nouvelle division, le quotient et le reste de la
+    division de $P$ par $X-2$.
+  \item Combien de multiplications l'évaluation a-t-elle coûté ? Comparer
+    avec l'évaluation naïve.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Factoriser sur $\Cx$ puis sur $\R$}
+Décomposer en facteurs irréductibles, dans $\Cx[X]$ puis dans $\R[X]$ :
+\begin{questions}
+  \item $X^{4}-1$ ;
+  \item $X^{3}-1$ ;
+  \item $X^{4}+X^{2}+1$.
+    \emph{Écrire $X^{4}+X^{2}+1=(X^{2}+1)^{2}-X^{2}$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{PGCD de deux polynômes}
+Soient $A=X^{3}-3X+2$ et $B=X^{2}-1$.
+\begin{questions}
+  \item Calculer $A\wedge B$ par l'algorithme d'Euclide.
+  \item Retrouver le résultat en factorisant $A$ et $B$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{La formule de Taylor polynomiale}
+\begin{questions}
+  \item Écrire $X^{3}$ selon les puissances de $X-1$, à l'aide de la
+    formule de Taylor en $1$.
+  \item Vérifier le résultat en développant.
+  \item En déduire sans calcul la valeur de
+    $1+3h+3h^{2}+h^{3}$ pour tout $h$. Quel changement de variable
+    venons-nous d'effectuer ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Racines doubles et paramètre}
+Pour $\lambda\in\R$, on pose $P_\lambda=X^{3}-3X+\lambda$.
+\begin{questions}
+  \item Montrer que $P_\lambda$ admet une racine double si et seulement si
+    cette racine est aussi racine de $P_\lambda'$.
+  \item En déduire les valeurs de $\lambda$ pour lesquelles $P_\lambda$
+    admet une racine double, et factoriser $P_\lambda$ dans chaque cas.
+  \item Pour quelles valeurs de $\lambda$ le polynôme $P_\lambda$ a-t-il
+    trois racines réelles distinctes ? \emph{Étudier la fonction
+    $x\mapsto x^{3}-3x$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La rigidité des polynômes}
+\begin{questions}
+  \item Montrer qu'un polynôme de $\K_n[X]$ qui s'annule en $n+1$ points
+    distincts est le polynôme nul.
+  \item Soit $P\in\R_n[X]$ tel que $P(k)=k$ pour $k=0,1,\dots,n$.
+    Déterminer $P$.
+  \item Soit $P\in\R[X]$ tel que $P(x+1)=P(x)$ pour tout réel $x$.
+    Montrer que $P$ est constant.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Polynômes réels et racines conjuguées}
+\begin{questions}
+  \item Montrer que si $P\in\R[X]$ et $z\in\Cx$ est racine de $P$, alors
+    $\overline{z}$ est racine de $P$, avec la même multiplicité.
+  \item On cherche un polynôme \emph{réel} unitaire de degré $4$ admettant
+    $1+\mathrm{i}$ et $\sqrt2$ pour racines. Pourquoi $1-\mathrm{i}$ est-elle
+    automatiquement racine, alors que $-\sqrt2$ ne l'est pas ? Déterminer un
+    tel polynôme en choisissant $-\sqrt2$ comme quatrième racine.
+  \item Pourquoi un polynôme réel de degré impair a-t-il toujours une
+    racine réelle ? Donner deux arguments (chapitre 6 et chapitre 10).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{$X^{n}-1$ et les racines de l'unité}
+\begin{questions}
+  \item Rappeler la factorisation de $X^{n}-1$ dans $\Cx[X]$.
+  \item En regroupant les racines conjuguées, factoriser $X^{5}-1$ dans
+    $\R[X]$, en exprimant les coefficients à l'aide de
+    $\cos\dfrac{2\pi}{5}$ et $\cos\dfrac{4\pi}{5}$.
+  \item Donner les valeurs exactes de ces cosinus (chapitre 3), et écrire
+    la factorisation entièrement explicite.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Bézout chez les polynômes}
+\begin{questions}
+  \item Montrer que $A=X^{2}+1$ et $B=X-1$ sont premiers entre eux, de
+    deux façons : par les racines (dans $\Cx$), puis par l'algorithme
+    d'Euclide.
+  \item Déterminer un couple $(U,V)$ tel que $UA+VB=1$.
+  \item En déduire, pour tout $C\in\K[X]$, une solution de $UA+VB=C$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Interpolation de Lagrange}
+\begin{questions}
+  \item Déterminer l'unique polynôme $P\in\R_2[X]$ tel que $P(0)=1$,
+    $P(1)=3$ et $P(2)=2$ : par les polynômes de base $L_i$, puis par
+    identification.
+  \item Décrire \emph{tous} les polynômes $Q\in\R[X]$ vérifiant ces trois
+    conditions.
+  \item Quel polynôme obtient-on en interpolant les points
+    $(0,0)$, $(1,1)$, $(2,2)$, $(3,3)$ ? Commenter.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Fractions : forme irréductible et partie entière}
+Soit $F=\dfrac{X^{3}+1}{X^{2}-1}$.
+\begin{questions}
+  \item Mettre $F$ sous forme irréductible ; préciser zéros et pôles,
+    avec leurs multiplicités.
+  \item Déterminer la partie entière de $F$, et écrire $F$ sous la forme
+    $E+\dfrac{R}{Q}$.
+  \item En déduire que la courbe de la fonction associée admet une
+    asymptote oblique en $\pm\infty$, que l'on précisera.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Éléments simples : pôles simples}
+Décomposer en éléments simples, sur $\R$ :
+\begin{questions}
+  \item $\dfrac{1}{X^{2}-1}$ ;
+  \item $\dfrac{X+2}{X(X+1)}$ ;
+  \item $\dfrac{1}{X(X^{2}+1)}$ ;
+  \item En déduire une primitive de $x\mapsto\dfrac{1}{x^{2}-1}$ sur
+    $\intOO{1}{+\infty}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La dérivée logarithmique}
+\begin{questions}
+  \item Démontrer que si $P=c\,(X-\lambda_1)^{m_1}\cdots(X-\lambda_r)^{m_r}$,
+    alors
+    $\dfrac{P'}{P}=\displaystyle\sum_{i=1}^{r}\frac{m_i}{X-\lambda_i}$.
+  \item Vérifier la formule pour $P=(X-1)^{2}(X+2)$.
+  \item En déduire que les multiplicités se lisent sur $P'/P$ : comment
+    reconnaître une racine simple ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Tchebychev : racines et factorisation}
+On reprend les polynômes $T_n$ du chapitre 2
+($T_0=1$, $T_1=X$, $T_{n+2}=2XT_{n+1}-T_n$), qui vérifient
+$T_n(\cos t)=\cos(nt)$.
+\begin{questions}
+  \item Montrer que $\deg T_n=n$ et que le coefficient dominant de $T_n$
+    vaut $2^{n-1}$ (pour $n\geq1$).
+  \item Montrer que les $n$ réels
+    $x_k=\cos\dfrac{(2k+1)\pi}{2n}$, $k=0,\dots,n-1$, sont des racines de
+    $T_n$, deux à deux distinctes.
+  \item En déduire que $T_n$ est scindé sur $\R$, à racines simples,
+    toutes dans $\intOO{-1}{1}$, et écrire sa factorisation.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Sommes de Newton}
+Soient $x_1,x_2,x_3$ les racines complexes de $P=X^{3}-2X^{2}+3X-4$, et
+$s_k=x_1^{k}+x_2^{k}+x_3^{k}$.
+\begin{questions}
+  \item Rappeler $s_1$ (exercice 5), puis $s_2$.
+  \item En écrivant que chaque racine vérifie $x_i^{3}=2x_i^{2}-3x_i+4$,
+    établir : $s_3=2s_2-3s_1+12$, et en déduire $s_3$.
+  \item Généraliser : exprimer $s_{k+3}$ en fonction de $s_{k+2}$,
+    $s_{k+1}$, $s_k$, et calculer $s_4$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Racines rationnelles}
+\begin{questions}
+  \item Soit $P=a_nX^{n}+\dots+a_0\in\Z[X]$ et $\dfrac{p}{q}$ une racine
+    rationnelle de $P$, écrite sous forme irréductible. Montrer que
+    $p\mid a_0$ et $q\mid a_n$.
+    \emph{Multiplier $P\bigl(\frac pq\bigr)=0$ par $q^{n}$ et utiliser le
+    lemme de Gauss.}
+  \item Vérifier que $\sqrt2+\sqrt3$ est racine de $X^{4}-10X^{2}+1$.
+  \item En déduire que $\sqrt2+\sqrt3$ est irrationnel — et comparer avec
+    la démonstration du chapitre 5.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{L'erreur d'interpolation}
+Soit $f$ de classe $\mathscr{C}^{3}$ sur $\intFF{a}{b}$,
+$x_1<x_2<x_3$ dans $\intFF{a}{b}$, et $P\in\R_2[X]$ l'interpolant de $f$
+en ces points. Soit $x\in\intFF{a}{b}$ distinct des $x_i$.
+\begin{questions}
+  \item On pose $K$ tel que
+    $f(x)-P(x)=K\,(x-x_1)(x-x_2)(x-x_3)$, et
+    $g(t)=f(t)-P(t)-K\,(t-x_1)(t-x_2)(t-x_3)$. Combien $g$ a-t-elle de
+    zéros au moins ?
+  \item En appliquant trois fois le théorème de Rolle (chapitre 6),
+    montrer qu'il existe $\xi$ tel que $g'''(\xi)=0$, puis que
+    $K=\dfrac{f'''(\xi)}{6}$.
+  \item En déduire la majoration de l'erreur d'interpolation :
+    \[
+      |f(x)-P(x)|\leq\frac{M_3}{6}\,
+      \bigl|(x-x_1)(x-x_2)(x-x_3)\bigr|,
+      \qquad M_3=\max|f'''|.
+    \]
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une primitive par les éléments simples}
+\begin{questions}
+  \item Décomposer $\dfrac{1}{X^{3}+1}$ en éléments simples sur $\R$.
+  \item En déduire, sur $\intOO{-1}{+\infty}$, une primitive de
+    $x\mapsto\dfrac{1}{x^{3}+1}$ \emph{(il apparaîtra un logarithme et un
+    arctangente)}.
+  \item Contrôler le résultat en dérivant.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Polynômes positifs et sommes de deux carrés}
+On veut montrer que tout polynôme $P\in\R[X]$ vérifiant $P(x)\geq0$ pour
+tout réel $x$ s'écrit $P=A^{2}+B^{2}$ avec $A,B\in\R[X]$.
+\begin{questions}
+  \item Vérifier l'identité, pour tous polynômes réels :
+    \[
+      (A^{2}+B^{2})(C^{2}+D^{2})=(AC-BD)^{2}+(AD+BC)^{2}.
+    \]
+  \item Montrer que, dans la factorisation réelle de $P$, les racines
+    réelles ont une multiplicité \emph{paire}, et que le coefficient
+    dominant est positif.
+  \item En déduire que $P$ est un produit d'un carré $A_0^{2}$ et de
+    facteurs $X^{2}+pX+q$ avec $\Delta<0$, chacun somme de deux carrés
+    \emph{(forme canonique)}.
+  \item Conclure à l'aide de la question 1, et écrire explicitement
+    $X^{4}+3X^{2}+2$ comme somme de deux carrés de polynômes.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-10}

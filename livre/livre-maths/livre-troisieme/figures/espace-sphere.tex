@@ -1,0 +1,13 @@
+\begin{tikzpicture}[font=\small,line cap=round,line join=round]\draw[geoTrait](0,0)circle(2.2);
+\draw[otMuted](0,0)ellipse(2.2 and .75244);
+\draw[otGreenDark](0,1.18577)ellipse(1.80213 and .61635);
+\draw[otMuted,dashed](0,-2.06732)--(0,2.06732);
+\foreach\l in{20,-50}{
+\draw[otMuted,dashed]plot[domain=-90:90,samples=80]({2.2*cos(\x)*sin(\l)},{2.2*sin(\x)*cos(20)-2.2*cos(\x)*cos(\l)*sin(20)});
+}
+\fill[otNavy](-1.38052,.78959)circle(2pt)node[above left,geoLabel]{$B$};
+\fill[otNavy](.61635,.60662)circle(2pt)node[below right,geoLabel]{$A$};
+\fill[otNavy](0,2.06732)circle(1.5pt)node[above]{$N$};
+\node[right]at(2.2,0){équateur};\node[right]at(1.8,1.35){$35^\circ$ N};
+\end{tikzpicture}
+{\par\smallskip\fontsize{8}{10}\selectfont\color{otMuted}Projection de la sphère : A et B sont sur le parallèle de latitude 35 degrés nord, à des longitudes différentes.\par}

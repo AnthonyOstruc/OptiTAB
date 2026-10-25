@@ -1,0 +1,13 @@
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=105mm,height=57mm,
+xmin=-1.5,xmax=2.1,ymin=-5,ymax=3,xtick={-1,0,1,2},ytick={-4,-2,0,2},scaled ticks=false,
+tick label style={/pgf/number format/use comma},clip=true]
+
+\addplot[otNavy,thick,domain=-1.5:2,samples=100]{x^3-3*x};
+\addplot[only marks,otNavy]coordinates{(1,-2.5)};\node[below left,font=\small]at(axis cs:1,-2.5){$P_{-5/2}$};
+\geoSolution{\addplot[otGreenDark,thick,domain=-1.5:2]{-2.25*x-.25};
+\addplot[otGreenDark,dashed,domain=-1.5:2]{2.598076211*(x-1)-2.5};
+\addplot[otGreenDark,dotted,thick,domain=-1.5:2]{-2.598076211*(x-1)-2.5};
+\addplot[only marks,otGreenDark]coordinates{(-.3660254,1.0490381)(.5,-1.375)(1.3660254,-1.5490381)};}
+
+\end{axis}\end{tikzpicture}
+\par\smallskip\legende{Bleu : $f(x)=x^3-3x$. Au corrigé, les trois tangentes passant par $P_{-5/2}$ sont ajoutées en vert.}

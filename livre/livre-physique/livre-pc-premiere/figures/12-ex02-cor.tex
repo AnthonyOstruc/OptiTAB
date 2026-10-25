@@ -1,0 +1,17 @@
+% Forces pressantes sur une vitre, par temps calme et pendant une tempête (corrigé de l'exercice 2, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=0.8cm,
+  fp/.style={otNavy!60,line width=0.5pt,-{Stealth[length=1.2mm]}},
+  force/.style={otGreenDark,line width=1.3pt,-{Stealth[length=2.6mm]}}]
+\foreach \bx/\le/\titre in {0/1.2/{temps calme : forces compensées},5.6/0.85/{tempête : $P_\mathrm{ext}<P_\mathrm{int}$}}{%
+  \begin{scope}[shift={(\bx,0)}]
+    \fill[otNavy!12] (1.9,0) rectangle (2.1,2.4);
+    \draw[otNavy,line width=0.6pt] (1.9,0) rectangle (2.1,2.4);
+    \node[pcLegende,anchor=south] at (0.7,2.45) {intérieur}; \node[pcLegende,anchor=south] at (3.3,2.45) {extérieur};
+    \foreach \y in {0.4,0.9,1.5,2.0}{\draw[fp] (1.35,\y) -- (1.86,\y); \draw[fp] (2.65,\y) -- (2.14,\y);}
+    \draw[force] (2.0,1.2) -- ++(1.2,0) node[pcLegende,anchor=south,text=otGreenDark] {$\vec{F}_\mathrm{int}$};
+    \draw[force,otOrange!85!black] (2.0,1.2) -- ++(-\le,0) node[pcLegende,anchor=south,text=otOrange!85!black] {$\vec{F}_\mathrm{ext}$};
+    \node[pcLegendeG,anchor=north] at (2.0,-0.12) {\titre};
+  \end{scope}}
+\draw[otRed!80!black,line width=1.3pt,-{Stealth[length=2.6mm]}] (6.9,-0.75) -- ++(0.8,0) node[pcLegende,anchor=west,text=otRed!80!black] {force résultante vers l'extérieur};
+\end{tikzpicture}
+\par\smallskip\legende{Pressions égales : forces compensées ; sinon, la vitre est poussée vers le côté où la pression est la plus faible.}

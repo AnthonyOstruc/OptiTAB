@@ -1,0 +1,233 @@
+\begin{ouverture}[algorithmique]{15}{Algorithmique et programmation}{Partie 5 · Méthodes transversales}
+{Variables · Conditions · Boucles · Fonctions · Simulations}
+\objectif{Lire, écrire, modifier et tester un programme Python.}
+\objectif{Relier un algorithme à sa signification mathématique.}
+\objectif{Interpréter les résultats d’une simulation.}
+\prerequis{Calcul numérique ; les notions sont à utiliser toute l’année.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Variables et instructions}
+\begin{definition}Une variable associe un nom à une valeur. Les types rencontrés sont notamment entier (\code{int}), décimal approché (\code{float}), booléen (\code{bool}) et chaîne de caractères (\code{str}). L’affectation \code{x = x + 1} calcule d’abord le membre de droite, puis remplace la valeur de \code{x}.\end{definition}
+\begin{propriete}Le test d’égalité s’écrit \code{==}, la différence \code{!=}, le reste de division \code{\%}, la puissance \code{**}. Une condition utilise \code{if}, puis éventuellement \code{elif} et \code{else}. L’indentation délimite les blocs.\end{propriete}
+\begin{savoirfaire}[Choisir une boucle]
+Une boucle \code{for} convient si le nombre de répétitions est fixé. \code{range(n)} produit les entiers de 0 à $n-1$. Une boucle \code{while} répète tant qu’une condition est vraie : expliquer pourquoi elle finit et ce que signifie sa condition de sortie.
+\end{savoirfaire}
+\begin{savoirfaire}[Du langage naturel à Python]
+En langage naturel, l’affectation se note avec une flèche : $n\leftarrow n+1$ se lit « $n$ prend la valeur $n+1$ ». Les deux écritures ci-dessous décrivent le même algorithme ; il affiche 10.
+\begin{codecote}[0.42]
+\renewcommand{\arraystretch}{1.18}\begin{tabular}{@{}l@{}}
+$n\leftarrow0$\\
+$v\leftarrow1$\\
+Tant que $v\le1000$\\
+\quad $v\leftarrow2\times v$\\
+\quad $n\leftarrow n+1$\\
+Fin Tant que\\
+Afficher $n$
+\end{tabular}
+\cote
+\begin{pythoncol}
+n = 0
+v = 1
+while v <= 1000:
+    v = 2 * v
+    n = n + 1
+print(n)
+\end{pythoncol}
+\end{codecote}
+\end{savoirfaire}
+\begin{attention}Les flottants sont approchés : $0{,}1+0{,}2$ peut ne pas être exactement égal à $0{,}3$ en machine. Pour un encadrement garanti, préférer quand c’est possible une comparaison sur des entiers.\end{attention}
+\clearpage
+\essSection{2}{Fonctions, hasard et contrôle}
+\begin{definition}Une fonction est définie avec \code{def}, reçoit des arguments et peut renvoyer une valeur avec \code{return}. Définir la fonction ne l’exécute pas : il faut l’appeler.\end{definition}
+\begin{savoirfaire}[Tester une fonction]
+Choisir un exemple simple dont on connaît la réponse, un cas limite et un cas non trivial. Comparer le résultat numérique au raisonnement. Un programme qui s’exécute sans erreur peut encore calculer la mauvaise grandeur.
+\end{savoirfaire}
+\begin{propriete}Dans le module \code{random}, \code{randint(a,b)} tire uniformément un entier entre $a$ et $b$, bornes incluses. \code{random()} produit un flottant dans $[0;1[$. Répéter une expérience permet d’obtenir une série statistique et d’observer les fluctuations de fréquences.\end{propriete}
+\begin{attention}Une simulation ne démontre pas une probabilité exacte. Pour refaire un même essai sur une installation donnée, on peut fixer une graine avec \code{seed}. La proximité observée ne doit pas être présentée comme une garantie à chaque exécution.\end{attention}
+\otIntertitre{Parcours transversal}
+Reprendre les algorithmes de divisibilité, de seuil, d’alignement et de balayage des chapitres précédents. Les listes ne sont pas un prérequis du programme ; lorsqu’un fichier ou une collection apparaît, son format est expliqué.
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-15-1}
+\begin{exercice}[1]{Suivre les affectations}
+Donner les valeurs finales de \code{a} et \code{b}, en détaillant les étapes. Réécrire ensuite ces quatre lignes en langage naturel, avec le symbole $\leftarrow$.
+\begin{python}
+a = 3
+b = a + 2
+a = 2 * b
+b = a - b
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-2}
+\begin{exercice}[1]{Reconnaître les types}
+Identifier les types des valeurs \code{7}, \code{7.0}, \code{7 > 3} et \code{"7"}. Quel est le résultat de \code{7 / 2} et de \code{7 // 2} ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-3}
+\begin{exercice}[1]{Une fonction à appeler}
+Que renvoie \code{f(4)} ? Et \code{f(-1)} ?
+\begin{python}
+def f(x):
+    return 2 * x * x - 3
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-4}
+\begin{exercice}[1]{Une condition}
+Que renvoie la fonction pour $x=-5$, $x=0$ et $x=2$ ? Quelle fonction mathématique reconnaît-on ?
+\begin{python}
+def distancezero(x):
+    if x < 0:
+        return -x
+    return x
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-5}
+\begin{exercice}[1]{Une somme avec for}
+Que vaut \code{s} à la fin ? Pourquoi la valeur 5 est-elle incluse ?
+\begin{python}
+s = 0
+for k in range(1, 6):
+    s = s + k
+\end{python}
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-15-6}
+\begin{exercice}[2]{La première puissance au-dessus du seuil}
+Compléter mentalement l’exécution et expliquer le résultat renvoyé.
+\begin{python}
+def seuil():
+    n = 0
+    v = 1
+    while v <= 1000:
+        v = 2 * v
+        n = n + 1
+    return n, v
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-7}
+\begin{exercice}[2]{Un encadrement garanti}
+Pour $n\ge0$ entier, expliquer ce que renvoie la fonction, puis donner sa sortie pour $n=2$.
+\begin{python}
+def encadrement(n):
+    q = 10 ** n
+    k = 0
+    while (k + 1) ** 2 <= 2 * q ** 2:
+        k = k + 1
+    return k / q, (k + 1) / q
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-8}
+\begin{exercice}[2]{Tester un alignement}
+Expliquer la fonction et calculer son résultat pour $A(0;0)$, $B(2;3)$, $C(4;6)$, puis pour $C(4;7)$.
+\begin{python}
+def alignes(xa, ya, xb, yb, xc, yc):
+    d = (xb-xa)*(yc-ya) - (yb-ya)*(xc-xa)
+    return d == 0
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-9}
+\begin{exercice}[2]{Programmer une droite}
+Écrire une fonction qui, pour deux points d’abscisses distinctes, renvoie la pente et l’ordonnée à l’origine de leur droite. Tester avec $(0;1)$ et $(2;5)$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-10}
+\begin{exercice}[2]{Une expérience simulée}
+Quelle expérience la fonction simule-t-elle ? Donner sa probabilité exacte de renvoyer 1. Écrire ensuite une fonction \code{somme2()} qui renvoie la somme des résultats de deux dés équilibrés lancés indépendamment.
+\begin{python}
+from random import randint
+def succes():
+    d = randint(1, 6)
+    if d >= 5:
+        return 1
+    return 0
+\end{python}
+\end{exercice}
+\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-15-11}
+\begin{exercice}[3]{Fréquence simulée}
+Expliquer la sortie de la fonction ci-dessous pour $n>0$. Comparer son rôle à la probabilité théorique.
+\begin{python}
+from random import randint
+def frequence(n):
+    s = 0
+    for k in range(n):
+        if randint(1, 6) >= 5:
+            s = s + 1
+    return s / n
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-12}
+\begin{exercice}[3]{Moyenne et écart type sans liste}
+La fonction simule $n>0$ dés. Expliquer les accumulateurs et la formule renvoyée pour l’écart type.
+\begin{python}
+from random import randint
+from math import sqrt
+def resume(n):
+    s = 0
+    q = 0
+    for k in range(n):
+        d = randint(1, 6)
+        s = s + d
+        q = q + d*d
+    m = s / n
+    variance = max(0, q / n - m*m)
+    return m, sqrt(variance)
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-13}
+\begin{exercice}[3]{Corriger une boucle}
+Le programme suivant prétend chercher le premier rang où $3^n>100$, mais ne finit pas. Expliquer et corriger.
+\begin{python}
+n = 0
+v = 1
+while v <= 100:
+    n = n + 1
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-14}
+\begin{exercice}[3]{Approcher une longueur de courbe}
+Pour $f(x)=x^2$ sur $[0;1]$, expliquer la somme calculée. Donner le résultat exact pour $n=2$.
+\begin{python}
+from math import sqrt
+def longueur(n):
+    total = 0
+    for k in range(n):
+        a = k / n
+        b = (k + 1) / n
+        total += sqrt((b-a)**2 + (b*b-a*a)**2)
+    return total
+\end{python}
+\label{fig-ex-15-14}
+\figureGeo{courbe-longueur}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-15-15}
+\begin{exercice}[3]{Une dichotomie pour un maximum}
+On sait que $f(x)=4-(x-0{,}7)^2$ atteint son maximum en $c=0{,}7\in[0;2]$. Expliquer pourquoi comparer $f(a)$ et $f(b)$ localise $c$ de part et d’autre du milieu, puis interpréter le programme.
+\begin{python}
+def encadremaximum(n):
+    a, b = 0.0, 2.0
+    for k in range(n):
+        m = (a + b) / 2
+        if 4-(a-0.7)**2 < 4-(b-0.7)**2:
+            a = m
+        else:
+            b = m
+    return a, b
+\end{python}
+\end{exercice}
+\end{blocLivre}
+
+\clearpage

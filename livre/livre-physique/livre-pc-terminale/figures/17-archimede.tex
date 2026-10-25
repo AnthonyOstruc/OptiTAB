@@ -1,0 +1,26 @@
+% Origine de la poussée d'Archimède : forces pressantes sur un cube immergé (L'essentiel, chapitre 17)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \dx in {0,4.6}{
+  \begin{scope}[shift={(\dx,0)}]
+  \fill[pcEau] (0,0) rectangle (3.2,2.8);
+  \draw[otNavy!45,line width=0.5pt] (0,2.8) -- (3.2,2.8);
+  \draw[otInk!70,line width=0.8pt] (0,3.15) -- (0,0) -- (3.2,0) -- (3.2,3.15);
+  \fill[otMuted!45] (1.0,0.8) rectangle (2.2,2.0);
+  \draw[otInk!60,line width=0.4pt] (1.0,0.8) rectangle (2.2,2.0);
+  \end{scope}}
+% forces pressantes : plus intenses en profondeur
+\foreach \xx in {1.2,1.6,2.0}{
+  \draw[otOrange!90!black,line width=0.7pt,-{Stealth[length=1.6mm]}] (\xx,2.38) -- (\xx,2.02);
+  \draw[otOrange!90!black,line width=0.7pt,-{Stealth[length=1.6mm]}] (\xx,0.12) -- (\xx,0.78);}
+\foreach \yy/\ll in {1.75/0.38,1.4/0.5,1.05/0.62}{
+  \draw[otOrange!90!black,line width=0.7pt,-{Stealth[length=1.6mm]}] (0.98-\ll,\yy) -- (0.98,\yy);
+  \draw[otOrange!90!black,line width=0.7pt,-{Stealth[length=1.6mm]}] (2.22+\ll,\yy) -- (2.22,\yy);}
+\node[pcLegende,anchor=south] at (1.6,3.2) {forces pressantes};
+\node[pcLegende,anchor=south west,text=otNavy] at (0.05,2.82) {surface libre};
+% résultante
+\fill[otRed!80!black] (6.2,1.4) circle (0.05);
+\draw[pcForce] (6.2,1.4) -- (6.2,2.55) node[pcLegende,anchor=west,text=otGreenDark,fill=pcEau,inner sep=1pt] {$\vec{\Pi}$};
+\node[pcLegende,anchor=south] at (6.2,3.2) {résultante : poussée d'Archimède};
+\node[pcLegende,anchor=north,text=otNavy,align=center] at (6.2,0.72) {fluide de masse\\ volumique $\rho_\mathrm{f}$};
+\end{tikzpicture}
+\par\smallskip\legende{La pression croît avec la profondeur : les forces pressantes sur la face inférieure l'emportent sur celles de la face supérieure, les forces latérales se compensent.}

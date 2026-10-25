@@ -1,0 +1,466 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 8 — Structures algébriques usuelles
+%% Résultats vérifiés par verifications/chapitre_08.py.
+
+\corrigesChapitre{8}{Structures algébriques usuelles}
+\corrigesSouples
+
+\begin{blocLivre}{cor-8-1}
+\begin{corrige}{1}{Lois de composition : premiers exemples}
+\demarche{Tester chaque axiome, un contre-exemple numérique suffisant à réfuter.}
+\begin{questions}
+  \item $(5-3)-2=0\neq4=5-(3-2)$ : non associative ; $5-3\neq3-5$ : non
+    commutative. Un neutre $e$ vérifierait $x-e=x$ (donc $e=0$) \emph{et}
+    $e-x=x$ (impossible pour $x\neq0$) : pas de neutre.
+  \item $\max$ est associative et commutative, de neutre $0$ (sur $\N$).
+    Si $\max(x,y)=0$ alors $x=0$ : seul $0$ est inversible.
+  \item Commutativité : évidente. Associativité : les deux membres valent
+    $x+y+z-xy-yz-zx+xyz$. Neutre : $x*0=x$, donc $\res{e=0}$.
+    Inversibles : $x*x'=0$ équivaut à $x'(1-x)=-x$, possible si et
+    seulement si $x\neq1$, avec $\res{x'=\dfrac{x}{x-1}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-2}
+\begin{corrige}{2}{Tables et parties stables}
+\demarche{Une table de groupe se lit ligne par ligne : chaque élément apparaît une fois et une seule.}
+\begin{questions}
+  \item C'est la table du cours : chaque ligne (et chaque colonne) est une
+    permutation de $\ens{1,\mathrm{i},-1,-\mathrm{i}}$ — la propriété du
+    sudoku est vérifiée.
+  \item Non : $1\in\N$ mais son symétrique $-1\notin\N$. Une partie stable
+    contenant le neutre n'est pas forcément un sous-groupe.
+  \item Impair $+$ impair $=$ pair : non stable pour $+$ ; impair
+    $\times$ impair $=$ impair : stable pour $\times$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-3}
+\begin{corrige}{3}{Groupe ou pas ?}
+\demarche{Chercher d'abord l'axiome le plus fragile : l'existence des inverses.}
+$(\Z,\times)$ : associative, neutre $1$, mais $2$ n'a pas d'inverse entier :
+\res{\text{non}}. $(\Q^{*},\times)$ : \res{\text{groupe commutatif}}.
+$(\R_{+},+)$ : neutre $0$, mais $1$ n'a pas d'opposé dans $\R_{+}$ :
+\res{\text{non}}. $(\mathbb{U},\times)$ : stable
+($|zz'|=1$), $1\in\mathbb{U}$, inverse $\overline{z}\in\mathbb{U}$ :
+\res{\text{groupe}}. $(\ens{-1,1},\times)$ : \res{\text{groupe}} (table
+immédiate). $\bigl(\R\setminus\ens{1},*\bigr)$ : \res{\text{groupe}}
+(exercice 9).
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-4}
+\begin{corrige}{4}{Calculer dans un groupe}
+\demarche{Composer par les inverses, du bon côté et dans le bon ordre.}
+\begin{questions}
+  \item On compose à gauche par $a^{-1}$ :
+    $a^{-1}(ax)=a^{-1}(ay)$, et l'associativité donne $x=y$.
+  \item $x=\res{a^{-1}cb^{-1}}$ : on compose à gauche par $a^{-1}$, à
+    droite par $b^{-1}$ (et on vérifie que cette valeur convient).
+  \item $(ab)(b^{-1}a^{-1})=a(bb^{-1})a^{-1}=aa^{-1}=e$, et de même dans
+    l'autre sens : $(ab)^{-1}=b^{-1}a^{-1}$ par unicité de l'inverse.
+    Dans $S_3$ (exercice 14), on trouve des éléments où
+    $b^{-1}a^{-1}\neq a^{-1}b^{-1}$ : l'ordre est essentiel.
+  \item $x^{n}(x^{-1})^{n}=e$ en simplifiant de proche en proche (les
+    puissances de $x$ commutent entre elles) : $(x^{n})^{-1}=(x^{-1})^{n}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-5}
+\begin{corrige}{5}{Sous-groupes : vérifications}
+\demarche{Trois vérifications : le neutre, la stabilité, les inverses — ou la caractérisation en une seule.}
+\begin{questions}
+  \item Si $H$ est un sous-groupe, la condition est claire. Réciproquement,
+    soit $x\in H$ (non vide) : $e=xx^{-1}\in H$ ; puis, pour $y\in H$ :
+    $y^{-1}=ey^{-1}\in H$ ; enfin $xy=x(y^{-1})^{-1}\in H$ : $H$ est stable,
+    contient le neutre et les inverses.
+  \item Pour $z,w\in\mathbb{U}$ : $|zw^{-1}|=\dfrac{|z|}{|w|}=1$, et
+    $\mathbb{U}\neq\varnothing$ : sous-groupe de $(\Cx^{*},\times)$.
+    Pour $2a,2b\in2\Z$ : $2a-2b=2(a-b)\in2\Z$ : sous-groupe de $(\Z,+)$.
+  \item $2$ et $3$ appartiennent à la réunion, mais $2+3=5$ n'est ni pair
+    ni multiple de $3$ : la réunion n'est pas stable.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-6}
+\begin{corrige}{6}{Premiers morphismes}
+\demarche{Vérifier l'équation fonctionnelle, puis calculer noyau et image.}
+\begin{questions}
+  \item $\mathrm{e}^{x+y}=\mathrm{e}^{x}\mathrm{e}^{y}$ : morphisme ;
+    $\operatorname{Ker}=\ens{0}$, $\operatorname{Im}=\R_{+}^{*}$.
+  \item $|zw|=|z|\,|w|$ : morphisme ;
+    $\operatorname{Ker}=\mathbb{U}$,
+    $\operatorname{Im}=\R_{+}^{*}$ (tout $r>0$ est le module de $r$).
+  \item $2(m+n)=2m+2n$ : morphisme ; $\operatorname{Ker}=\ens{0}$,
+    $\operatorname{Im}=2\Z$.
+  \item $(xy)^{2}=x^{2}y^{2}$ : morphisme ;
+    $\operatorname{Ker}=\ens{-1,1}$, $\operatorname{Im}=\R_{+}^{*}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-7}
+\begin{corrige}{7}{Noyau et injectivité}
+\demarche{Tout repose sur $f(x)=f(y)\iff f(xy^{-1})=e'$.}
+\begin{questions}
+  \item Si $f$ est injectif et $x\in\operatorname{Ker}f$ : $f(x)=e'=f(e)$
+    donc $x=e$. Réciproquement, si $\operatorname{Ker}f=\ens{e}$ et
+    $f(x)=f(y)$ : $f(xy^{-1})=f(x)f(y)^{-1}=e'$, donc $xy^{-1}=e$, soit
+    $x=y$.
+  \item $\exp$ : noyau trivial et image pleine, \res{\text{isomorphisme}}.
+    Module : surjectif, non injectif (noyau $\mathbb{U}$).
+    $n\mapsto2n$ : injectif, non surjectif.
+    $x\mapsto x^{2}$ : ni injectif ($\pm1$) ni surjectif (les négatifs ne
+    sont pas atteints).
+  \item $\mathrm{e}^{\mathrm{i}t}=1\iff t\equiv0\ [2\pi]$ :
+    $\operatorname{Ker}=\res{2\pi\Z}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-8}
+\begin{corrige}{8}{Anneaux et corps : reconnaître}
+\demarche{Pour l'intégrité, traquer les produits nuls ; pour un corps, les inverses.}
+\begin{questions}
+  \item Dans $\Z$, $ab=0$ impose $a=0$ ou $b=0$ : intègre. Mais $2$ n'a pas
+    d'inverse : pas un corps. $\Z^{\times}=\res{\ens{-1,1}}$.
+  \item $1\notin2\Z$, et aucun élément de $2\Z$ ne peut servir de neutre
+    multiplicatif : $2\Z$ n'est pas un anneau (unitaire) au sens du
+    programme.
+  \item Soient $f=\max(x,0)$ et $g=\max(-x,0)$ : aucune n'est la fonction
+    nulle, mais $fg=0$ (supports disjoints) : l'anneau
+    $\mathscr{F}(\R,\R)$ n'est pas intègre.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-9}
+\begin{corrige}{9}{Une loi exotique étudiée à fond}
+\demarche{L'identité $1-x*y=(1-x)(1-y)$ révèle l'isomorphisme caché.}
+\begin{questions}
+  \item $1-x*y=1-x-y+xy=(1-x)(1-y)$. Si $x\neq1$ et $y\neq1$, ce produit
+    est non nul : $x*y\neq1$, la loi est interne sur $E$.
+  \item Commutativité et associativité : exercice 1 ; neutre $0\in E$ ;
+    inverse de $x$ : $\dfrac{x}{x-1}$, qui est bien $\neq1$. $(E,*)$ est
+    un groupe commutatif.
+  \item $\varphi(x*y)=1-x*y=(1-x)(1-y)=\varphi(x)\varphi(y)$ : morphisme de
+    $(E,*)$ vers $(\R^{*},\times)$ ; il est bijectif, de réciproque
+    $t\mapsto1-t$ : \res{\text{isomorphisme}}.
+  \item En transportant par $\varphi$ :
+    $\varphi(x*\cdots*x)=(1-x)^{n}$, d'où
+    $\res{x*\cdots*x=1-(1-x)^{n}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-10}
+\begin{corrige}{10}{Les sous-groupes de $\Z$}
+\demarche{Le plus petit élément positif engendre tout : division euclidienne.}
+\begin{questions}
+  \item $H$ contient un élément $x\neq0$, et $-x\in H$ : l'ensemble
+    $H\cap\N^{*}$ est non vide, donc possède un plus petit élément $n$
+    (propriété fondamentale de $\N$).
+  \item Par stabilité : $n+n\in H$, puis $kn\in H$ pour tout $k\in\N$ par
+    récurrence, et $-kn\in H$ : $n\Z\subset H$.
+  \item Écrivons $x=nq+r$ avec $0\leq r<n$ : alors $r=x-nq\in H$ (car
+    $x\in H$ et $nq\in H$). Par minimalité de $n$, $r=0$ : $x\in n\Z$.
+  \item Donc $H=n\Z$ ; et $\ens{0}=0\,\Z$. Réciproquement chaque $n\Z$ est
+    un sous-groupe : \res{\text{les sous-groupes de }(\Z,+)\text{ sont les }n\Z}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-11}
+\begin{corrige}{11}{Autour de $\mathbb{U}$ et de $\mathbb{U}_n$}
+\demarche{Les exposants se traitent avec l'arithmétique du chapitre 7.}
+\begin{questions}
+  \item Si $z^{n}=w^{n}=1$ : $(zw^{-1})^{n}=1$, et $1\in\mathbb{U}_n$ :
+    sous-groupe de $\mathbb{U}$.
+  \item $\mathrm{e}^{\mathrm{i}(s+t)}=\mathrm{e}^{\mathrm{i}s}\mathrm{e}^{\mathrm{i}t}$ :
+    morphisme ; surjectif car tout élément de $\mathbb{U}$ s'écrit
+    $\mathrm{e}^{\mathrm{i}t}$ ; noyau $2\pi\Z$ (exercice 7).
+  \item ($\Leftarrow$) Si $n=mk$ et $z^{m}=1$ : $z^{n}=(z^{m})^{k}=1$.
+    ($\Rightarrow$) $\mathrm{e}^{2\mathrm{i}\pi/m}\in\mathbb{U}_m\subset\mathbb{U}_n$
+    donne $\mathrm{e}^{2\mathrm{i}\pi n/m}=1$, donc $\dfrac{n}{m}\in\Z$ :
+    $m$ divise $n$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-12}
+\begin{corrige}{12}{Intersections, produits, réunions}
+\demarche{L'intersection hérite de tout ; la réunion de presque rien.}
+\begin{questions}
+  \item Si $x,y\in H\cap K$ : $xy^{-1}$ appartient à $H$ et à $K$ ; et
+    $e\in H\cap K$ : sous-groupe.
+  \item $x\in a\Z\cap b\Z$ signifie que $x$ est un multiple commun de $a$
+    et $b$, c'est-à-dire un multiple de $a\vee b$ (chapitre 7) :
+    $a\Z\cap b\Z=(a\vee b)\Z$.
+  \item Loi composante par composante : associativité, neutre $(e,e')$,
+    inverse $(x^{-1},y^{-1})$ — toutes les vérifications se font
+    coordonnée par coordonnée.
+  \item Si aucune inclusion n'a lieu, choisissons $h\in H\setminus K$ et
+    $k\in K\setminus H$. Si $hk\in H$, alors $k=h^{-1}(hk)\in H$ :
+    absurde ; si $hk\in K$, alors $h=(hk)k^{-1}\in K$ : absurde. Donc
+    $hk\notin H\cup K$, qui n'est pas stable. La réciproque est immédiate.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-13}
+\begin{corrige}{13}{Morphismes : images et images réciproques}
+\demarche{Transporter la caractérisation des sous-groupes à travers $f$.}
+\begin{questions}
+  \item $f(H)$ contient $f(e)=e'$ ; et pour $f(x),f(y)\in f(H)$ :
+    $f(x)f(y)^{-1}=f(xy^{-1})\in f(H)$ car $xy^{-1}\in H$ : sous-groupe
+    de $G'$.
+  \item $e\in f^{-1}(H')$ car $f(e)=e'\in H'$ ; et si
+    $f(x),f(y)\in H'$ : $f(xy^{-1})=f(x)f(y)^{-1}\in H'$, donc
+    $xy^{-1}\in f^{-1}(H')$.
+  \item $\operatorname{Ker}f=f^{-1}(\ens{e'})$ et
+    $\operatorname{Im}f=f(G)$ : cas particuliers des questions 1 et 2.
+    Pour le module $|\cdot|:(\Cx^{*},\times)\to(\R_{+}^{*},\times)$ :
+    $\mathbb{U}=\operatorname{Ker}|\cdot|$ est un sous-groupe de
+    $\Cx^{*}$ — sans aucune vérification supplémentaire.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-14}
+\begin{corrige}{14}{Le groupe symétrique $S_3$, première rencontre}
+\demarche{Six bijections, que l'on fait agir sur les trois éléments.}
+\begin{questions}
+  \item Une bijection de $\ens{1,2,3}$ est déterminée par les images
+    successives : $3\times2\times1=6$ éléments. Ce sont l'identité, les
+    transpositions $\tau_{12}$, $\tau_{13}$, $\tau_{23}$ et les 3-cycles
+    $c=(1\,2\,3)$ et $c^{2}=(1\,3\,2)$.
+  \item $(\tau_{12}\circ\tau_{13})(1)=\tau_{12}(3)=3$ tandis que
+    $(\tau_{13}\circ\tau_{12})(1)=\tau_{13}(2)=2$ :
+    $\tau_{12}\circ\tau_{13}\neq\tau_{13}\circ\tau_{12}$ — $S_3$ est
+    \res{\text{non commutatif}} (le plus petit groupe non commutatif).
+  \item Chaque transposition est \emph{involutive} :
+    $\tau\circ\tau=\mathrm{id}$, donc $\tau^{-1}=\tau$. Et
+    $c^{-1}=c^{2}$ : les deux 3-cycles sont inverses l'un de l'autre.
+  \item $c^{2}=(1\,3\,2)$ et $c^{3}=\mathrm{id}$ : $c$ est d'ordre $3$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-15}
+\begin{corrige}{15}{Calcul dans un anneau}
+\demarche{Tout vient de la distributivité — et le binôme exige la commutation.}
+\begin{questions}
+  \item $0a=(0+0)a=0a+0a$, et on simplifie dans le groupe $(A,+)$ :
+    $0a=0$. Puis $(-a)b+ab=(-a+a)b=0$, donc $(-a)b=-(ab)$.
+  \item Si $ab=ba$ :
+    $(a+b)^{3}=a^{3}+3a^{2}b+3ab^{2}+b^{3}$. Sans commutation, le
+    développement donne $a^{2}b+aba+ba^{2}$, trois termes qu'on ne peut
+    pas regrouper.
+  \item $(a-b)(a+b)=a^{2}+ab-ba-b^{2}=a^{2}-b^{2}$ grâce à $ab=ba$.
+  \item Comme $x$ commute avec ses puissances :
+    \[
+      (1-x)\bigl(1+x+\dots+x^{n-1}\bigr)=1-x^{n}=1,
+    \]
+    et de même dans l'autre sens : $1-x$ est inversible, d'inverse
+    $1+x+\dots+x^{n-1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-16}
+\begin{corrige}{16}{L'anneau $\Z[\sqrt2]$}
+\demarche{La norme transforme les questions d'inversibilité en équations sur les entiers.}
+\begin{questions}
+  \item $1=1+0\sqrt2\in\Z[\sqrt2]$ ; différence et produit :
+    $(a+b\sqrt2)(c+d\sqrt2)=ac+2bd+(ad+bc)\sqrt2$ : sous-anneau de $\R$.
+    Unicité : $a+b\sqrt2=a'+b'\sqrt2$ avec $b\neq b'$ donnerait
+    $\sqrt2\in\Q$ : absurde.
+  \item Avec $\overline{z}=a-b\sqrt2$ : $N(z)=z\overline{z}$, et
+    $\overline{zz'}=\overline{z}\,\overline{z'}$ (calcul direct), d'où
+    $N(zz')=zz'\,\overline{zz'}=N(z)N(z')$.
+  \item Si $zz'=1$ : $N(z)N(z')=N(1)=1$ avec $N(z),N(z')\in\Z$ :
+    $N(z)=\pm1$. Réciproquement, si $N(z)=\varepsilon=\pm1$ :
+    $z\cdot(\varepsilon\overline{z})=\varepsilon N(z)=1$, et
+    $\varepsilon\overline{z}\in\Z[\sqrt2]$.
+  \item $N(1+\sqrt2)=1-2=-1$ : inversible, d'inverse
+    $-(1-\sqrt2)=-1+\sqrt2$. Et
+    $N\bigl((1+\sqrt2)^{n}\bigr)=(-1)^{n}=\pm1$ : toutes les puissances
+    sont inversibles ; comme $1+\sqrt2>1$, elles sont deux à deux
+    distinctes : $\Z[\sqrt2]^{\times}$ est \res{\text{infini}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-17}
+\begin{corrige}{17}{Le corps $\Q(\sqrt2)$}
+\demarche{L'inverse s'obtient par la quantité conjuguée — l'irrationalité de $\sqrt2$ garantit le dénominateur.}
+\begin{questions}
+  \item Mêmes vérifications qu'à l'exercice 16, avec des coefficients
+    rationnels : sous-anneau de $\R$.
+  \item Si $a^{2}-2b^{2}=0$ avec $b\neq0$ : $\sqrt2=\bigl|\frac ab\bigr|\in\Q$,
+    absurde ; et si $b=0$, alors $a\neq0$ et $a^{2}\neq0$. Donc
+    $a^{2}-2b^{2}\neq0$ et
+    \[
+      \frac{1}{a+b\sqrt2}=\frac{a-b\sqrt2}{a^{2}-2b^{2}}
+      =\frac{a}{a^{2}-2b^{2}}-\frac{b}{a^{2}-2b^{2}}\sqrt2\in\Q(\sqrt2) :
+    \]
+    tout élément non nul est inversible : $\Q(\sqrt2)$ est un
+    \res{\text{corps}}.
+  \item $\sigma$ est additive, envoie $1$ sur $1$, et
+    $\sigma(zz')=\sigma(z)\sigma(z')$ (même calcul qu'en 16) ;
+    $\sigma\circ\sigma=\mathrm{id}$ : $\sigma$ est bijective — un
+    automorphisme du corps $\Q(\sqrt2)$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-18}
+\begin{corrige}{18}{Morphismes d'anneaux}
+\demarche{La contrainte $f(1)=1$ rigidifie tout.}
+\begin{questions}
+  \item $f(1)=1$, puis $f(n)=f(1+\dots+1)=n$ pour $n\in\N$, et
+    $f(-n)=-f(n)$ : $f=\mathrm{id}_{\Z}$, seul morphisme d'anneaux de
+    $\Z$ dans $\Z$.
+  \item $\overline{z+w}=\overline{z}+\overline{w}$,
+    $\overline{zw}=\overline{z}\,\overline{w}$, $\overline{1}=1$, et la
+    conjugaison est involutive donc bijective : automorphisme de $\Cx$.
+  \item $(f+g)(0)=f(0)+g(0)$, $(fg)(0)=f(0)g(0)$ et la fonction constante
+    $1$ s'évalue en $1$ : morphisme d'anneaux ; surjectif (fonctions
+    constantes). Son noyau $\ens{f \mid f(0)=0}$ ne contient pas la
+    fonction $1$ : ce n'est \res{\text{pas un sous-anneau}} (c'est un
+    « idéal », notion hors programme).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-19}
+\begin{corrige}{19}{L'ordre d'un élément}
+\demarche{Pigeonhole pour l'existence, division euclidienne pour la structure.}
+\begin{questions}
+  \item Dans un groupe fini, les puissances $x,x^{2},x^{3},\dots$ ne
+    peuvent être toutes distinctes : $x^{i}=x^{j}$ avec $i<j$, d'où
+    $x^{j-i}=e$ avec $j-i\geq1$. L'ensemble des exposants $k\geq1$ tels
+    que $x^{k}=e$ est une partie non vide de $\N^{*}$ : elle possède un
+    plus petit élément, l'ordre de $x$.
+  \item Si $k=nq+r$ avec $0\leq r<n$ :
+    $x^{k}=(x^{n})^{q}x^{r}=x^{r}$. Donc $x^{k}=e\iff x^{r}=e\iff r=0$
+    (minimalité de $n$) $\iff n\mid k$.
+  \item L'ordre de $\mathrm{e}^{2\mathrm{i}k\pi/6}$ est
+    $\dfrac{6}{k\wedge6}$ : pour $k=0,\dots,5$, on trouve les ordres
+    $\res{1,\ 6,\ 3,\ 2,\ 3,\ 6}$.
+  \item $(x^{-1})^{k}=(x^{k})^{-1}=e\iff x^{k}=e$ : les deux éléments ont
+    les mêmes « exposants annulateurs », donc le même ordre.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-20}
+\begin{corrige}{20}{Les groupes d'ordre au plus 4}
+\demarche{La propriété du sudoku force les tables — et les carrés distinguent les groupes.}
+\begin{questions}
+  \item $a\cdot a\in\ens{e,a}$ ; si $a\cdot a=a$, la simplification donne
+    $a=e$ : absurde. Donc $a^{2}=e$, et la table est entièrement forcée —
+    un unique groupe à deux éléments, commutatif (c'est
+    $\ens{-1,1}$).
+  \item Dans la ligne de $a$ : $a\cdot a\neq a$ (sinon $a=e$) et
+    $a\cdot a\neq a\cdot e=a$\dots{} Si $a^{2}=e$, alors $a\cdot b$
+    devrait valoir $b$ (seule valeur restante), d'où $a=e$ : absurde.
+    Donc $a^{2}=b$, puis $a\cdot b=e$, et toute la table s'en déduit : un
+    unique groupe à trois éléments, cyclique et commutatif.
+  \item Table de $\mathbb{U}_4$ : voir le cours. Table de $K$ : la loi
+    composante par composante donne $u\cdot u=(1,1)$ pour \emph{tout}
+    $u\in K$.
+  \item Dans $K$, l'équation $x\cdot x=e$ a \emph{quatre} solutions ; dans
+    $\mathbb{U}_4$, seulement \emph{deux} ($1$ et $-1$, car
+    $\mathrm{i}^{2}=-1\neq1$). Un isomorphisme transporte les solutions de
+    $x^{2}=e$ : les deux groupes ne sont \res{\text{pas isomorphes}} —
+    il existe donc (au moins) deux groupes à quatre éléments.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-21}
+\begin{corrige}{21}{Morphismes additifs de $\Q$}
+\demarche{Un morphisme additif est déterminé par $f(1)$ — les dénominateurs suivent.}
+\begin{questions}
+  \item $f(n)=nf(1)$ pour $n\in\Z$ (récurrence puis opposés) : les
+    morphismes de $(\Z,+)$ sont les $x\mapsto cx$, $c=f(1)\in\Z$.
+  \item $f(nx)=nf(x)$ par récurrence sur $n$. Alors
+    $qf\Bigl(\dfrac{p}{q}\Bigr)=f(p)=pf(1)$, d'où
+    $f\Bigl(\dfrac{p}{q}\Bigr)=\dfrac{p}{q}f(1)$.
+  \item Les morphismes sont les $x\mapsto cx$ avec $c=f(1)\in\Q$ ;
+    ce sont des isomorphismes si et seulement si $\res{c\neq0}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-22}
+\begin{corrige}{22}{Les entiers de Gauss}
+\demarche{La norme $|z|^{2}$ joue pour $\Z[\mathrm{i}]$ le rôle que $a^{2}-2b^{2}$ jouait pour $\Z[\sqrt2]$.}
+\begin{questions}
+  \item $1\in\Z[\mathrm{i}]$, stabilité par différence et produit
+    ($(a+\mathrm{i}b)(c+\mathrm{i}d)=ac-bd+\mathrm{i}(ad+bc)$) :
+    sous-anneau de $\Cx$ ; intègre, comme toute partie d'un corps (un
+    produit nul dans $\Cx$ a un facteur nul).
+  \item $N(z)=|z|^{2}$ et $|zz'|=|z||z'|$ donnent la multiplicativité.
+    Si $zz'=1$ : $N(z)N(z')=1$ dans $\N$, donc $N(z)=1$ ; réciproquement,
+    $N(z)=z\overline{z}=1$ avec $\overline{z}\in\Z[\mathrm{i}]$ : $z$ est
+    inversible.
+  \item $a^{2}+b^{2}=1$ dans $\Z$ : $(\pm1,0)$ ou $(0,\pm1)$, d'où
+    $\res{\Z[\mathrm{i}]^{\times}=\ens{1,-1,\mathrm{i},-\mathrm{i}}=\mathbb{U}_4}$.
+  \item $(1+\mathrm{i})^{2}=2\mathrm{i}$, donc
+    $2=-\mathrm{i}(1+\mathrm{i})^{2}=(1+\mathrm{i})(1-\mathrm{i})$ :
+    produit de deux éléments de norme $2$, donc non inversibles — $2$ se
+    factorise dans $\Z[\mathrm{i}]$, alors qu'il est premier dans $\Z$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-23}
+\begin{corrige}{23}{Isomorphe ou pas ?}
+\demarche{Pour distinguer deux groupes, exhiber une propriété structurelle que l'un vérifie et pas l'autre.}
+\begin{questions}
+  \item $\exp$ est un morphisme bijectif de $(\R,+)$ sur
+    $(\R_{+}^{*},\times)$ (exercice 6).
+  \item Supposons $\varphi:(\Q,+)\to(\Z,+)$ isomorphisme, et soit
+    $a=\varphi^{-1}(1)$. Alors
+    $2\,\varphi\bigl(\frac a2\bigr)=\varphi(a)=1$ dans $\Z$ : impossible,
+    $1$ est impair. Non isomorphes.
+  \item Supposons $\varphi:(\Q,+)\to(\Q_{+}^{*},\times)$ isomorphisme, et
+    $a=\varphi^{-1}(2)$. Alors
+    $\varphi\bigl(\frac a2\bigr)^{2}=\varphi(a)=2$ : un rationnel de carré
+    $2$, impossible. Non isomorphes.
+  \item L'équation $x^{4}=1$ possède $2$ solutions dans $\R^{*}$
+    ($\pm1$) et $4$ dans $\Cx^{*}$ ($\mathbb{U}_4$) ; un isomorphisme
+    met ces ensembles de solutions en bijection : non isomorphes.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-8-24}
+\begin{corrige}{24}{L'équation de Pell-Fermat $x^{2}-2y^{2}=1$}
+\demarche{Les solutions sont les éléments de norme 1 : la structure de groupe engendre l'infinité.}
+\begin{questions}
+  \item $9-8=1$ : $(3,2)$ est solution. Et $x^{2}-2y^{2}=N(x+y\sqrt2)$ :
+    résoudre Pell, c'est chercher les éléments de $\Z[\sqrt2]$ de norme
+    $1$ (à coefficients positifs).
+  \item $(x+y\sqrt2)(3+2\sqrt2)=3x+4y+(2x+3y)\sqrt2$, et par
+    multiplicativité : $N=1\times1=1$. Donc $(3x+4y,\,2x+3y)$ est
+    solution — à coefficients strictement plus grands.
+  \item En itérant à partir de $(3,2)$ :
+    $\res{(3,2)\to(17,12)\to(99,70)\to(577,408)}$, et ainsi de suite :
+    une infinité de solutions, données par les puissances
+    $(3+2\sqrt2)^{n}$.
+  \item L'ensemble des $z\in\Z[\sqrt2]$ avec $N(z)=1$ contient $1$, est
+    stable par produit ($N$ multiplicative) et par inverse
+    ($z^{-1}=\overline{z}$ quand $N(z)=1$) : c'est un sous-groupe de
+    $(\R^{*},\times)$ — le groupe des solutions de Pell-Fermat.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-08}

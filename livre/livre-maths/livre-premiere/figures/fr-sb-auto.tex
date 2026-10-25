@@ -1,0 +1,24 @@
+\begin{tikzpicture}[baseline=(current bounding box.center)]\begin{axis}[otLivreGraphe,width=74mm,height=47mm,
+xmin=-2.5,xmax=4.5,ymin=-3,ymax=2.5,xtick={-2,-1,0,1,2,3,4},ytick={-3,-2,-1,0,1,2},scaled ticks=false,
+tick label style={/pgf/number format/use comma},clip=true,
+title={Figure 1},title style={at={(0.5,0)},anchor=north,yshift=-1.5mm,font=\otMedium\fontsize{8}{10}\selectfont,text=otMuted}]
+
+\addplot[otNavy,thick,domain=-2:4,samples=90]{-(x+1)*(x-3)/2};
+\node[otEtiquette,text=otNavy]at(axis cs:3.2,1.6){$\mathcal C_g$};
+\geoSolution{\addplot[otGreenDark,line width=1.6pt,domain=-1:3,samples=60]{-(x+1)*(x-3)/2};
+\addplot[only marks,otGreenDark]coordinates{(-1,0)(3,0)};}
+
+\end{axis}\end{tikzpicture}\hspace{6mm}\begin{tikzpicture}[baseline=(current bounding box.center),x=3mm,y=1mm,font=\small]
+\node[font=\otMedium\fontsize{8}{10}\selectfont,text=otMuted,anchor=north]at(11.5,-6){Figure 2};
+\draw[otMuted,->](0,0)--(23,0);
+\foreach \t in {0,2,...,22}{\draw[otMuted](\t,1)--(\t,-1)node[below,font=\fontsize{7}{8}\selectfont,text=otMuted]{$\t$};}
+\foreach \t in {1,3,...,21}{\draw[otMuted](\t,.6)--(\t,-.6);}
+\draw[otNavy,thick](4,14)--(9,14) (15,14)--(20,14) (4,10)--(4,18) (20,10)--(20,18);
+\draw[otNavy,thick,fill=otNavyTint](9,8)rectangle(15,20);
+\draw[otNavy,thick](12,8)--(12,20);
+\geoSolution{\draw[otGreenDark,<->](9,23)--node[above,font=\small]{$6$}(15,23);
+\node[below,font=\small,text=otGreenDark]at(9,7.6){$Q_1$};
+\node[below,font=\small,text=otGreenDark]at(12,7.6){$\mathrm{Me}$};
+\node[below,font=\small,text=otGreenDark]at(15,7.6){$Q_3$};}
+\end{tikzpicture}
+\par\smallskip\legende{\geoEnonce{Les points utiles sont sur des nœuds du quadrillage ; les moustaches de la boîte vont du minimum au maximum.}\geoSolution{Figure 1 : $g$ est positive sur la partie verte, entre ses zéros $-1$ et 3. Figure 2 : $Q_1=9$, médiane 12, $Q_3=15$.}}

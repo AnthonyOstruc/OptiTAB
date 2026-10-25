@@ -1,0 +1,733 @@
+% !TEX root = ../main.tex
+%% Chapitre 2 — Calcul algébrique et trigonométrie
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Compléments de calcul algébrique et de trigonométrie » :
+%%   a) sommes et produits ; b) petits systèmes linéaires par le pivot ;
+%%   c) inégalités ; d) trigonométrie.
+%% Résultats vérifiés par verifications/chapitre_02.py.
+
+\begin{ouverture}[trigo]{2}{Calcul algébrique et trigonométrie}{Partie 1 · Premier semestre}
+  {Sommes et produits\enspace·\enspace Binôme\enspace·\enspace Pivot\enspace·\enspace
+   Inégalités\enspace·\enspace Cercle trigonométrique}
+  \objectif{Manipuler les symboles $\Sigma$ et $\Pi$ : changements d'indice, télescopages, sommes de référence.}
+  \objectif{Utiliser la factorielle, les coefficients binomiaux et la formule du binôme.}
+  \objectif{Résoudre un système linéaire de deux ou trois équations par l'algorithme du pivot.}
+  \objectif{Mener des majorations et des encadrements ; manipuler valeur absolue et partie entière.}
+  \objectif{Retrouver sur le cercle trigonométrique les valeurs usuelles et les formules.}
+  \objectif{Résoudre des équations et inéquations trigonométriques.}
+  \prerequis{Calcul littéral et identités remarquables du lycée.}
+  \prerequis{Raisonnement par récurrence (chapitre 1).}
+  \prerequis{Trigonométrie de Terminale : cercle, dérivées de $\cos$ et $\sin$.}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Sommes et produits}
+
+\begin{definition}[Symboles $\Sigma$ et $\Pi$]
+Pour une famille finie $(a_i)_{i\in I}$ de réels, on note
+$\displaystyle\sum_{i\in I}a_i$ la somme et $\displaystyle\prod_{i\in I}a_i$ le produit de ses
+éléments. Pour $I=\ens{p,p+1,\dots,n}$, on écrit
+$\displaystyle\sum_{k=p}^{n}a_k$ et $\displaystyle\prod_{k=p}^{n}a_k$.
+Par convention, une somme vide vaut $0$ et un produit vide vaut $1$.
+\end{definition}
+
+\begin{propriete}[Règles de calcul]
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Linéarité} $\displaystyle\sum_{k=p}^{n}(\lambda a_k+\mu b_k)
+    =\lambda\sum_{k=p}^{n}a_k+\mu\sum_{k=p}^{n}b_k$.
+  \item \etape{Changement d'indice} en posant $j=k+1$ :
+    $\displaystyle\sum_{k=p}^{n}a_{k+1}=\sum_{j=p+1}^{n+1}a_j$ — les bornes suivent l'indice.
+  \item \etape{Télescopage} $\displaystyle\sum_{k=p}^{n}\bigl(a_{k+1}-a_k\bigr)=a_{n+1}-a_p$ :
+    tous les termes intermédiaires se compensent.
+\end{itemize}
+\end{propriete}
+
+\otIntertitre{Sommes de référence}
+Pour tout entier $n\geq1$ et tout réel $x\neq1$ :
+\[
+  \sum_{k=1}^{n}k=\frac{n(n+1)}{2}\qquad
+  \sum_{k=1}^{n}k^{2}=\frac{n(n+1)(2n+1)}{6}\qquad
+  \sum_{k=0}^{n}x^{k}=\frac{1-x^{n+1}}{1-x}
+\]
+
+\begin{propriete}[Factorisation de $a^{n}-b^{n}$]
+Pour tous réels $a$, $b$ et tout entier $n\geq1$ :
+\[
+  a^{n}-b^{n}=(a-b)\sum_{k=0}^{n-1}a^{\,n-1-k}\,b^{k}
+  =(a-b)\bigl(a^{n-1}+a^{n-2}b+\dots+b^{n-1}\bigr).
+\]
+\end{propriete}
+
+\begin{definition}[Sommes doubles]
+Une somme double sur un rectangle se calcule ligne par ligne (ou colonne par
+colonne) :
+$\displaystyle\sum_{\substack{1\leq i\leq n\\ 1\leq j\leq p}}a_{i,j}=\sum_{i=1}^{n}\Bigl(\sum_{j=1}^{p}a_{i,j}\Bigr)$.
+En particulier, un produit de deux sommes se développe en somme double, et
+les sommes \emph{triangulaires} s'ordonnent au choix :
+\[
+  \Bigl(\sum_{i=1}^{n}a_i\Bigr)\Bigl(\sum_{j=1}^{p}b_j\Bigr)=\sum_{i=1}^{n}\sum_{j=1}^{p}a_i\,b_j,
+  \qquad
+  \sum_{1\leq i\leq j\leq n}a_{i,j}=\sum_{j=1}^{n}\sum_{i=1}^{j}a_{i,j}=\sum_{i=1}^{n}\sum_{j=i}^{n}a_{i,j}.
+\]
+\end{definition}
+
+\begin{savoirfaire}[Calculer une somme]
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item La ramener aux sommes de référence par linéarité ou changement d'indice.
+  \item Chercher une écriture télescopique $a_{k+1}-a_k$ (quitte à décomposer le terme général).
+  \item Pour une somme double, choisir l'ordre de sommation le plus commode.
+\end{itemize}
+\end{savoirfaire}
+
+\essSection{2}{Coefficients binomiaux et formule du binôme}
+
+\noindent
+\begin{minipage}[c]{0.58\linewidth}
+\begin{definition}[Factorielle, coefficients binomiaux]
+Pour $n\in\N$ : $n!=1\times2\times\dots\times n$, avec $0!=1$.
+Pour $0\leq k\leq n$ :
+\[
+  \binom{n}{k}=\frac{n!}{k!\,(n-k)!},
+\]
+et, par convention, $\binom{n}{k}=0$ si $k<0$ ou $k>n$.
+On a la symétrie $\binom{n}{k}=\binom{n}{n-k}$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+{\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}c@{\hspace{3mm}}ccccccc@{}}
+\otNom{$n=0$} & & & & $1$ & & & \\
+\otNom{$n=1$} & & & $1$ & & $1$ & & \\
+\otNom{$n=2$} & & $1$ & & $2$ & & $1$ & \\
+\otNom{$n=3$} & $1$ & & $3$ & & $3$ & & $1$ \\
+\end{tabular}}\\[1mm]
+\legende{Le triangle de Pascal : chaque terme est la somme des deux termes au-dessus.}
+\end{minipage}
+
+\begin{propriete}[Relation de Pascal, formule du pion]
+Pour $1\leq k\leq n$ :
+\[
+  \binom{n}{k}=\binom{n-1}{k-1}+\binom{n-1}{k}
+  \qquad\text{et}\qquad
+  k\binom{n}{k}=n\binom{n-1}{k-1}.
+\]
+La première engendre le triangle de Pascal ; la seconde sert dans de
+nombreux calculs de sommes.
+\end{propriete}
+
+\begin{theoreme}[Formule du binôme]
+Pour tous réels $a$, $b$ et tout entier $n\in\N$ :
+\[
+  (a+b)^{n}=\sum_{k=0}^{n}\binom{n}{k}a^{k}\,b^{\,n-k}.
+\]
+\end{theoreme}
+
+\begin{exemple}
+$(a+b)^{4}=a^{4}+4a^{3}b+6a^{2}b^{2}+4ab^{3}+b^{4}$ — les coefficients
+$1,4,6,4,1$ se lisent sur la ligne $n=4$ du triangle de Pascal.
+En particulier, $a=b=1$ donne $\sum_{k=0}^{n}\binom{n}{k}=2^{n}$.
+\end{exemple}
+
+\essSection{3}{Systèmes linéaires : l'algorithme du pivot}
+
+\begin{propriete}[Opérations élémentaires]
+Les opérations suivantes transforment un système linéaire en un système
+\emph{équivalent} (mêmes solutions) :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item échanger deux lignes : $L_i\leftrightarrow L_j$ ;
+  \item multiplier une ligne par un réel \emph{non nul} : $L_i\leftarrow\lambda L_i$ ($\lambda\neq0$) ;
+  \item ajouter à une ligne un multiple d'une autre : $L_i\leftarrow L_i+\lambda L_j$.
+\end{itemize}
+\end{propriete}
+
+\begin{savoirfaire}[L'algorithme du pivot de Gauss]
+\begin{enumerate}[label=\otLabel{\arabic*.},leftmargin=1.6em,itemsep=0.6mm,topsep=0.5mm]
+  \item Choisir une équation où le coefficient de $x$ (le \emph{pivot}) est non nul,
+    la placer en première ligne.
+  \item Éliminer $x$ des autres lignes par des opérations $L_i\leftarrow L_i+\lambda L_1$.
+  \item Recommencer avec $y$ sur les lignes restantes, jusqu'à un système \emph{échelonné}.
+  \item Conclure en remontant : la dernière équation donne la dernière inconnue, etc.
+\end{enumerate}
+\end{savoirfaire}
+
+\begin{exemple}[Un système échelonné en marche]
+\[
+  \begin{cases} x+y+z=6\\ x+2y+3z=14\\ 2x+y-z=1 \end{cases}
+  \;\underset{L_3\leftarrow L_3-2L_1}{\overset{L_2\leftarrow L_2-L_1}{\iff}}\;
+  \begin{cases} x+y+z=6\\ y+2z=8\\ -y-3z=-11 \end{cases}
+  \;\overset{L_3\leftarrow L_3+L_2}{\iff}\;
+  \begin{cases} x+y+z=6\\ y+2z=8\\ -z=-3 \end{cases}
+\]
+d'où $z=3$, puis $y=8-6=2$ et $x=6-2-3=1$ : l'unique solution est $(1,2,3)$.
+\end{exemple}
+
+\begin{propriete}[Interprétation géométrique]
+Chaque équation à deux (resp. trois) inconnues représente une droite du plan
+(resp. un plan de l'espace). Résoudre le système, c'est déterminer
+l'intersection : selon les cas, elle est vide (système \emph{incompatible}),
+réduite à un point (solution unique) ou infinie (droite ou plan de solutions).
+\end{propriete}
+
+\essSection{4}{Inégalités, valeur absolue, partie entière}
+
+\begin{propriete}[Ordre et opérations]
+Pour tous réels : on peut \emph{ajouter} membre à membre deux inégalités de
+même sens ; multiplier une inégalité par un réel \emph{positif} la conserve,
+par un réel \emph{négatif} la renverse. Si $0<a\leq b$, alors
+$\dfrac{1}{b}\leq\dfrac{1}{a}$, $a^{2}\leq b^{2}$ et $\sqrt{a}\leq\sqrt{b}$ :
+les fonctions croissantes conservent les inégalités, les décroissantes les
+renversent.
+\end{propriete}
+
+\begin{attention}
+On ne soustrait pas, on ne divise pas des inégalités membre à membre. Le
+passage à l'inverse exige des réels de \emph{même signe strict}. Et le carré
+ne conserve l'ordre que pour des réels positifs : $-3\leq2$ mais $9>4$.
+\end{attention}
+
+\begin{definition}[Valeur absolue]
+$|x|=x$ si $x\geq0$, $|x|=-x$ sinon ; c'est la distance de $x$ à $0$, et
+$|x-a|$ est la distance de $x$ à $a$. On a $|xy|=|x|\,|y|$ et, pour $b\geq0$ :
+$|x-a|\leq b\iff a-b\leq x\leq a+b$.
+\end{definition}
+
+\begin{theoreme}[Inégalité triangulaire]
+Pour tous réels $x$ et $y$ :
+\[
+  \bigl||x|-|y|\bigr|\;\leq\;|x+y|\;\leq\;|x|+|y|,
+\]
+avec égalité à droite si et seulement si $x$ et $y$ sont de même signe.
+\end{theoreme}
+
+\begin{definition}[Parties majorées, bornées]
+Une partie $X$ de $\R$ est \textbf{majorée} s'il existe $M\in\R$ tel que
+$x\leq M$ pour tout $x\in X$ ($M$ est un \emph{majorant}), \textbf{minorée}
+s'il existe un minorant, \textbf{bornée} si elle est les deux. Si un majorant
+de $X$ appartient à $X$, c'est le \textbf{plus grand élément} (ou maximum)
+$\max X$ ; de même pour $\min X$.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{definition}[Partie entière]
+Pour $x\in\R$, la \textbf{partie entière} $\lfloor x\rfloor$ est l'unique
+entier relatif vérifiant
+\[
+  \lfloor x\rfloor\leq x<\lfloor x\rfloor+1,
+\]
+c'est-à-dire le plus grand entier inférieur ou égal à $x$. Ainsi
+$\lfloor2{,}7\rfloor=2$ et $\lfloor-1{,}2\rfloor=-2$ (et non $-1$ !). On en
+déduit l'encadrement $x-1<\lfloor x\rfloor\leq x$, constamment utilisé.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.82,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-2.4,0) -- (3.4,0) node[below,font=\scriptsize] {$x$};
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-2.4) -- (0,3.4) node[left,font=\scriptsize] {$y$};
+  \foreach \x in {-2,-1,1,2,3}{\node[below,font=\scriptsize,text=otMuted] at (\x,-0.08) {$\x$};}
+  \foreach \y in {-2,-1,1,2}{\node[left,font=\scriptsize,text=otMuted] at (-0.06,\y) {$\y$};}
+  \foreach \k in {-2,-1,0,1,2}{%
+    \draw[otNavy,line width=1.2pt] (\k,\k) -- (\k+1,\k);
+    \fill[otNavy] (\k,\k) circle (1.3pt);
+    \draw[otNavy,fill=white,line width=0.7pt] (\k+1,\k) circle (1.3pt);}
+\end{tikzpicture}\\[0.5mm]
+\legende{La fonction partie entière : un escalier, continu à droite.}
+\end{minipage}
+
+\essSection{5}{Le cercle trigonométrique}
+
+\begin{definition}[Cercle trigonométrique, congruences]
+Dans le plan muni d'un repère orthonormé direct, le \textbf{cercle
+trigonométrique} est le cercle de centre $O$ et de rayon $1$. À tout réel
+$t$, on associe le point $M(t)$ obtenu en enroulant la droite réelle sur le
+cercle ; par définition, $M(t)$ a pour coordonnées
+$\bigl(\cos t,\ \sin t\bigr)$, et $\cos^{2}t+\sin^{2}t=1$.
+Deux réels $a$ et $b$ repèrent le même point si et seulement si
+$a\equiv b\ [2\pi]$, c'est-à-dire $a-b\in2\pi\Z$.
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=2.5,line cap=round]
+  \draw[otRule,line width=0.3pt] (-1.25,0) -- (1.25,0);
+  \draw[otRule,line width=0.3pt] (0,-1.25) -- (0,1.25);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-1.32,0) -- (1.38,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-1.32) -- (0,1.38);
+  \draw[otNavy,line width=0.9pt] (0,0) circle (1);
+  % rayons discrets
+  \foreach \a in {30,45,60,120,135,150,210,225,240,300,315,330}{%
+    \draw[otRule!90,line width=0.3pt] (0,0) -- (\a:1);}
+  % points et étiquettes d'angles
+  \foreach \a/\e/\p in {0/0/right, 30/{\frac{\pi}{6}}/above right, 45/{\frac{\pi}{4}}/above right,
+    60/{\frac{\pi}{3}}/above right, 90/{\frac{\pi}{2}}/above, 120/{\frac{2\pi}{3}}/above left,
+    135/{\frac{3\pi}{4}}/above left, 150/{\frac{5\pi}{6}}/above left, 180/{\pi}/left,
+    210/{-\frac{5\pi}{6}}/below left, 225/{-\frac{3\pi}{4}}/below left, 240/{-\frac{2\pi}{3}}/below left,
+    270/{-\frac{\pi}{2}}/below, 300/{-\frac{\pi}{3}}/below right, 315/{-\frac{\pi}{4}}/below right,
+    330/{-\frac{\pi}{6}}/below right}{%
+    \fill[otGreenDark] (\a:1) circle (0.5pt);
+    \node[font=\scriptsize,text=otInk,\p,inner sep=1.6pt] at (\a:1.04) {$\e$};}
+  % coordonnées des points du premier quadrant
+  \draw[otGreen,line width=0.7pt,dash pattern=on 1.6pt off 1.2pt] (60:1) -- (0.5,0);
+  \draw[otGreen,line width=0.7pt,dash pattern=on 1.6pt off 1.2pt] (60:1) -- (0,0.866);
+  \node[below,font=\tiny,text=otGreenDark,inner sep=1.2pt] at (0.5,0) {$\frac12$};
+  \node[below,font=\tiny,text=otGreenDark,inner sep=2.6pt] at (0.707,0) {$\frac{\sqrt2}{2}$};
+  \node[below,font=\tiny,text=otGreenDark,inner sep=1.2pt] at (0.9,0) {$\frac{\sqrt3}{2}$};
+  \node[left,font=\tiny,text=otGreenDark,inner sep=1.2pt] at (0,0.5) {$\frac12$};
+  \node[left,font=\tiny,text=otGreenDark,inner sep=1.2pt] at (0,0.707) {$\frac{\sqrt2}{2}$};
+  \node[left,font=\tiny,text=otGreenDark,inner sep=1.2pt] at (0,0.886) {$\frac{\sqrt3}{2}$};
+  \foreach \x in {0.5,0.707,0.866}{\draw[otMuted,line width=0.4pt] (\x,-0.015) -- (\x,0.015);}
+  \foreach \y in {0.5,0.707,0.866}{\draw[otMuted,line width=0.4pt] (-0.015,\y) -- (0.015,\y);}
+  \node[below right,font=\scriptsize,text=otMuted,inner sep=2pt] at (1.3,0) {$\cos$};
+  \node[above left,font=\scriptsize,text=otMuted,inner sep=2pt] at (0,1.3) {$\sin$};
+\end{tikzpicture}\\[1mm]
+\legende{Le cercle trigonométrique et les angles usuels, repérés dans $\intOF{-\pi}{\pi}$.}
+\end{center}
+
+\otIntertitre{Valeurs usuelles}
+{\renewcommand{\arraystretch}{1.5}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\otSemi\fontsize{8}{10}\selectfont\leavevmode\color{otNavy}}p{14mm}*{5}{>{\centering\arraybackslash}X}@{}}
+\toprule
+$t$ & $0$ & $\dfrac{\pi}{6}$ & $\dfrac{\pi}{4}$ & $\dfrac{\pi}{3}$ & $\dfrac{\pi}{2}$ \\
+\midrule
+$\cos t$ & $1$ & $\dfrac{\sqrt3}{2}$ & $\dfrac{\sqrt2}{2}$ & $\dfrac12$ & $0$ \\
+$\sin t$ & $0$ & $\dfrac12$ & $\dfrac{\sqrt2}{2}$ & $\dfrac{\sqrt3}{2}$ & $1$ \\
+$\tan t$ & $0$ & $\dfrac{1}{\sqrt3}$ & $1$ & $\sqrt3$ & — \\
+\bottomrule
+\end{tabularx}}
+
+\vspace{2mm}
+\noindent
+\begin{minipage}[c]{0.52\linewidth}
+\begin{propriete}[Angles associés]
+À retrouver sur le cercle, par symétrie :
+\begin{align*}
+  \cos(-t)&=\cos t & \sin(-t)&=-\sin t\\
+  \cos(\pi-t)&=-\cos t & \sin(\pi-t)&=\sin t\\
+  \cos(\pi+t)&=-\cos t & \sin(\pi+t)&=-\sin t\\
+  \cos\Bigl(\frac{\pi}{2}-t\Bigr)&=\sin t & \sin\Bigl(\frac{\pi}{2}-t\Bigr)&=\cos t\\
+  \cos\Bigl(\frac{\pi}{2}+t\Bigr)&=-\sin t & \sin\Bigl(\frac{\pi}{2}+t\Bigr)&=\cos t
+\end{align*}
+\end{propriete}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.55,line cap=round]
+  \draw[otRule,line width=0.3pt] (-1.2,0) -- (1.2,0);
+  \draw[otRule,line width=0.3pt] (0,-1.2) -- (0,1.2);
+  \draw[otNavy,line width=0.8pt] (0,0) circle (1);
+  \foreach \a/\e/\p/\c in {40/{t}/right/otGreenDark, 140/{\pi-t}/left/otInk,
+    220/{\pi+t}/left/otInk, 320/{-t}/right/otInk}{%
+    \draw[otRule!90,line width=0.35pt] (0,0) -- (\a:1);
+    \fill[\c] (\a:1) circle (1pt);
+    \node[font=\scriptsize,text=\c,\p,inner sep=1.6pt] at (\a:1.05) {$\e$};}
+  \draw[otGreen,line width=0.5pt,dash pattern=on 1.6pt off 1.2pt] (40:1) -- (320:1);
+  \draw[otGreen,line width=0.5pt,dash pattern=on 1.6pt off 1.2pt] (140:1) -- (220:1);
+  \draw[otGreen,line width=0.5pt,dash pattern=on 1.6pt off 1.2pt] (40:1) -- (140:1);
+\end{tikzpicture}\\[0.5mm]
+\legende{$-t$, $\pi-t$ et $\pi+t$ : trois symétries du point $M(t)$.}
+\end{minipage}
+
+\essSection{6}{Formules et équations trigonométriques}
+
+\begin{theoreme}[Formules d'addition]
+Pour tous réels $a$ et $b$ :
+\begin{align*}
+  \cos(a+b)&=\cos a\cos b-\sin a\sin b & \sin(a+b)&=\sin a\cos b+\cos a\sin b\\
+  \cos(a-b)&=\cos a\cos b+\sin a\sin b & \sin(a-b)&=\sin a\cos b-\cos a\sin b
+\end{align*}
+En particulier (\emph{duplication}) :
+$\cos(2a)=\cos^{2}a-\sin^{2}a=2\cos^{2}a-1=1-2\sin^{2}a$ et
+$\sin(2a)=2\sin a\cos a$.
+\end{theoreme}
+
+\begin{propriete}[Linéarisation, produits en sommes]
+De la duplication découlent
+$\cos^{2}a=\dfrac{1+\cos(2a)}{2}$ et $\sin^{2}a=\dfrac{1-\cos(2a)}{2}$.
+En combinant les formules d'addition, on retrouve rapidement :
+\[
+  \cos a\cos b=\tfrac12\bigl(\cos(a-b)+\cos(a+b)\bigr)\qquad
+  \sin a\sin b=\tfrac12\bigl(\cos(a-b)-\cos(a+b)\bigr)
+\]
+\[
+  \sin a\cos b=\tfrac12\bigl(\sin(a+b)+\sin(a-b)\bigr)
+\]
+\end{propriete}
+
+\begin{propriete}[Fonctions circulaires]
+Les fonctions $\cos$ et $\sin$ sont dérivables sur $\R$, avec
+$\cos'=-\sin$ et $\sin'=\cos$ ; elles sont $2\pi$-périodiques, $\cos$ est
+paire et $\sin$ est impaire. Pour tout réel $x$ : $|\sin x|\leq|x|$.
+\end{propriete}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\begin{definition}[Fonction tangente]
+Pour $x\neq\dfrac{\pi}{2}+k\pi$ ($k\in\Z$), on pose
+$\tan x=\dfrac{\sin x}{\cos x}$. La fonction $\tan$ est impaire,
+$\pi$-périodique, dérivable avec
+\[
+  \tan'x=1+\tan^{2}x=\frac{1}{\cos^{2}x}>0 :
+\]
+elle est strictement croissante sur chaque intervalle
+$\intOO{-\frac{\pi}{2}+k\pi}{\frac{\pi}{2}+k\pi}$.
+Formule d'addition :
+$\tan(a+b)=\dfrac{\tan a+\tan b}{1-\tan a\tan b}$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (-3.25,0) -- (3.45,0) node[below,font=\scriptsize] {$x$};
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (0,-2.2) -- (0,2.4) node[left,font=\scriptsize] {$y$};
+  \foreach \x/\e in {-1.5708/{-\frac{\pi}{2}}, 1.5708/{\frac{\pi}{2}}}{%
+    \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.6pt] (\x,-2.1) -- (\x,2.3);
+    \node[below,font=\scriptsize,text=otMuted] at (\x+0.38,-0.02) {$\e$};}
+  \draw[otNavy,line width=1pt]
+    plot[domain=-1.13:1.13,samples=60] ({\x},{tan(deg(\x))});
+  \draw[otNavy,line width=1pt]
+    plot[domain=-0.04:1.13,samples=40] ({-3.1416+\x},{tan(deg(\x))});
+  \draw[otNavy,line width=1pt]
+    plot[domain=-1.13:0.12,samples=40] ({3.1416+\x},{tan(deg(\x))});
+  \node[font=\scriptsize,text=otNavy] at (2.4,1.92) {$y=\tan x$};
+\end{tikzpicture}\\[0.5mm]
+\legende{La tangente : période $\pi$, asymptotes en $\frac{\pi}{2}+k\pi$.}
+\end{minipage}
+
+\begin{propriete}[Avec $u=\tan\frac{t}{2}$]
+Pour $t\neq\pi+2k\pi$, en posant $u=\tan\dfrac{t}{2}$ :
+\[
+  \cos t=\frac{1-u^{2}}{1+u^{2}},\qquad
+  \sin t=\frac{2u}{1+u^{2}},\qquad
+  \tan t=\frac{2u}{1-u^{2}}\ \ (u^2\neq1).
+\]
+\end{propriete}
+
+\begin{savoirfaire}[Équations et inéquations trigonométriques]
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $\cos x=\cos a\iff x\equiv a\ [2\pi]$ ou $x\equiv-a\ [2\pi]$.
+  \item $\sin x=\sin a\iff x\equiv a\ [2\pi]$ ou $x\equiv\pi-a\ [2\pi]$.
+  \item $\tan x=\tan a\iff x\equiv a\ [\pi]$.
+  \item Pour une inéquation : lire l'arc solution sur le cercle trigonométrique,
+    puis le traduire en intervalles.
+\end{itemize}
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Dans un changement d'indice, ne pas oublier de changer \emph{les bornes}.
+  \item $\bigl(\sum a_k\bigr)^{2}\neq\sum a_k^{2}$ : un carré de somme fait apparaître les doubles produits.
+  \item Multiplier une inégalité par un réel de signe inconnu impose une disjonction de cas.
+  \item $\lfloor-1{,}2\rfloor=-2$ : la partie entière n'est pas la « troncature » pour les négatifs.
+  \item Les solutions d'une équation trigonométrique forment des familles « à $2\pi$ près »
+    (à $\pi$ près pour $\tan$) : ne pas oublier le $+2k\pi$.
+  \item Avant de diviser par $\cos x$, vérifier qu'il ne s'annule pas sur l'ensemble étudié.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Calculer des sommes}
+Calculer les sommes suivantes ($n$ désigne un entier naturel non nul).
+\begin{tasks}(3)
+  \task $\displaystyle\sum_{k=1}^{100}k$
+  \task $\displaystyle\sum_{k=0}^{10}2^{k}$
+  \task $\displaystyle\sum_{k=5}^{20}1$
+  \task $\displaystyle\sum_{k=1}^{n}(2k-1)$
+  \task $\displaystyle\sum_{k=0}^{n}(3k+2)$
+  \task $\displaystyle\sum_{k=1}^{50}k^{2}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Manipuler les symboles $\Sigma$ et $\Pi$}
+\begin{questions}
+  \item Écrire avec le symbole $\Sigma$ : $\dfrac12+\dfrac14+\dfrac18+\dots+\dfrac{1}{2^{n}}$.
+  \item À l'aide du changement d'indice $j=k+1$, transformer
+    $\displaystyle\sum_{k=1}^{n}\frac{1}{k+1}$, puis l'écrire en fonction de
+    $\displaystyle\sum_{j=1}^{n}\frac{1}{j}$.
+  \item Exprimer $\displaystyle\sum_{k=0}^{n}x^{k+2}$ à l'aide d'une somme géométrique ($x\neq1$).
+  \item Calculer $\displaystyle\prod_{k=1}^{n}\Bigl(1+\frac{1}{k}\Bigr)$.
+  \item Calculer $\displaystyle\prod_{k=1}^{n}2$ et $\displaystyle\prod_{k=1}^{n}k$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Coefficients binomiaux et triangle de Pascal}
+\begin{questions}
+  \item Calculer $\dbinom{7}{2}$, $\dbinom{10}{3}$, $\dbinom{n}{1}$ et $\dbinom{n}{n-1}$.
+  \item Écrire les lignes $n=4$ et $n=5$ du triangle de Pascal.
+  \item Développer $(a+b)^{4}$.
+  \item Déterminer le coefficient de $x^{3}$ dans le développement de $(x-2)^{5}$.
+  \item Développer $(2x+1)^{4}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Systèmes de deux équations}
+Résoudre les systèmes suivants par l'algorithme du pivot, et interpréter
+géométriquement chaque résultat.
+\[
+  \text{a)}\ \begin{cases} x+2y=5\\ 3x-y=1 \end{cases}
+  \qquad
+  \text{b)}\ \begin{cases} 2x-4y=6\\ -x+2y=-3 \end{cases}
+  \qquad
+  \text{c)}\ \begin{cases} x+y=2\\ 2x+2y=5 \end{cases}
+\]
+\end{exercice}
+
+\begin{exercice}[1]{Inéquations et tableaux de signes}
+Résoudre dans $\R$ les inéquations suivantes.
+\begin{tasks}(2)
+  \task $(x-1)(x+2)>0$
+  \task $x^{2}\leq4$
+  \task $\dfrac{2x-3}{x+1}\leq0$
+  \task $x^{3}\geq x$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Valeur absolue}
+\begin{questions}
+  \item Résoudre $|x-3|=2$, puis $|x+1|<4$, puis $|2x-1|\geq3$.
+  \item Écrire sans valeur absolue l'expression $f(x)=|x-1|+|x+2|$, selon les valeurs de $x$.
+  \item Traduire la question 1 en termes de distances sur la droite réelle.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Valeurs usuelles sur le cercle}
+Placer sur le cercle trigonométrique les points repérés par les réels
+suivants, puis donner leur cosinus et leur sinus :
+\[
+  \frac{2\pi}{3},\qquad -\frac{\pi}{4},\qquad \frac{7\pi}{6},\qquad
+  \frac{5\pi}{3},\qquad \frac{3\pi}{4},\qquad -\frac{\pi}{6}.
+\]
+\end{exercice}
+
+\begin{exercice}[1]{Angles associés}
+\begin{questions}
+  \item Simplifier $\cos(\pi-x)+\cos(\pi+x)$.
+  \item Simplifier $A(x)=\sin(\pi+x)+\sin(-x)+2\sin\Bigl(\dfrac{\pi}{2}+x\Bigr)+2\cos(\pi-x)$.
+  \item Exprimer $\cos\Bigl(x+\dfrac{3\pi}{2}\Bigr)$ en fonction de $\sin x$.
+  \item Sachant que $\cos\dfrac{\pi}{5}=\dfrac{1+\sqrt5}{4}$, en déduire
+    $\cos\dfrac{4\pi}{5}$ et $\sin\dfrac{7\pi}{10}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Sommes télescopiques}
+Calculer les sommes suivantes, pour $n\geq1$, en faisant apparaître un
+télescopage.
+\begin{questions}
+  \item $\displaystyle\sum_{k=1}^{n}\frac{1}{k(k+1)}$
+    \emph{(on décomposera $\frac{1}{k(k+1)}$)}. Quelle est la limite quand
+    $n\to+\infty$ ?
+  \item $\displaystyle\sum_{k=1}^{n}\ln\Bigl(\frac{k+1}{k}\Bigr)$.
+  \item $\displaystyle\sum_{k=1}^{n}\bigl(\sqrt{k+1}-\sqrt{k}\bigr)$.
+  \item $\displaystyle\sum_{k=1}^{n}k\cdot k!$\quad
+    \emph{(écrire $k\cdot k!=(k+1)!-k!$)}.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Autour de la formule du binôme}
+Soit $n\geq1$. Démontrer les identités suivantes.
+\begin{questions}
+  \item $\displaystyle\sum_{k=0}^{n}\binom{n}{k}=2^{n}$ et
+    $\displaystyle\sum_{k=0}^{n}(-1)^{k}\binom{n}{k}=0$.
+  \item En déduire $\displaystyle\sum_{\substack{0\leq k\leq n\\ k\text{ pair}}}\binom{n}{k}=2^{n-1}$.
+  \item À l'aide de la formule du pion :
+    $\displaystyle\sum_{k=0}^{n}k\binom{n}{k}=n\,2^{n-1}$.
+  \item Montrer que $\dfrac{1}{k+1}\dbinom{n}{k}=\dfrac{1}{n+1}\dbinom{n+1}{k+1}$, puis calculer
+    $\displaystyle\sum_{k=0}^{n}\frac{1}{k+1}\binom{n}{k}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Sommes doubles}
+Soit $n\geq1$. Calculer les sommes suivantes.
+\begin{questions}
+  \item $\displaystyle\sum_{i=1}^{n}\sum_{j=1}^{n}(i+j)$.
+  \item $\displaystyle\sum_{1\leq i,j\leq n}ij$\quad
+    \emph{(faire apparaître un produit de deux sommes)}.
+  \item $\displaystyle\sum_{1\leq i\leq j\leq n}1$.
+  \item $\displaystyle\sum_{1\leq i<j\leq n}(j-i)$\quad
+    \emph{(on pourra sommer selon la valeur de $d=j-i$)}.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Systèmes de trois équations}
+Résoudre par l'algorithme du pivot, puis interpréter géométriquement.
+\[
+  \text{a)}\ \begin{cases} x-y+2z=5\\ 2x+y-z=2\\ x+3y+z=0 \end{cases}
+  \qquad\qquad
+  \text{b)}\ \begin{cases} x+y-z=2\\ 2x-y+z=1\\ 3x=3 \end{cases}
+\]
+\end{exercice}
+
+\begin{exercice}[2]{Majorer, minorer, encadrer}
+\begin{questions}
+  \item Montrer que, pour tout $x\in\intFF{1}{3}$ :
+    $1\leq\dfrac{2x+1}{x+2}\leq\dfrac{7}{5}$\quad
+    \emph{(on pourra écrire $\frac{2x+1}{x+2}=2-\frac{3}{x+2}$)}.
+  \item Montrer que, pour tout entier $n\geq1$ :
+    $\dfrac12\leq\displaystyle\sum_{k=n+1}^{2n}\frac{1}{k}<1$.
+  \item Montrer que, pour tout entier $n\geq1$ :
+    $\sqrt{n+1}-\sqrt{n}\leq\dfrac{1}{2\sqrt{n}}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La partie entière}
+\begin{questions}
+  \item Donner $\lfloor2{,}7\rfloor$, $\lfloor-1{,}2\rfloor$, $\lfloor5\rfloor$ et $\lfloor-0{,}5\rfloor$.
+  \item Montrer que, pour tout $x\in\R$ et tout $n\in\Z$ :
+    $\lfloor x+n\rfloor=\lfloor x\rfloor+n$.
+  \item Résoudre dans $\R$ l'équation $\lfloor2x+1\rfloor=5$.
+  \item Montrer que, pour tous réels $x$ et $y$ :
+    $\lfloor x\rfloor+\lfloor y\rfloor\leq\lfloor x+y\rfloor\leq\lfloor x\rfloor+\lfloor y\rfloor+1$.
+  \item Montrer que, pour tout $x\in\R$ :
+    $\lfloor2x\rfloor-2\lfloor x\rfloor\in\ens{0,1}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Formules d'addition et de duplication}
+\begin{questions}
+  \item En écrivant $\dfrac{\pi}{12}=\dfrac{\pi}{3}-\dfrac{\pi}{4}$, calculer
+    $\cos\dfrac{\pi}{12}$ et $\sin\dfrac{\pi}{12}$.
+  \item En déduire $\sin\dfrac{7\pi}{12}$ sans nouveau calcul.
+  \item Démontrer que, pour tout réel $a$ : $\cos(3a)=4\cos^{3}a-3\cos a$.
+  \item Calculer $\tan\dfrac{\pi}{12}$ à l'aide de la formule d'addition de la tangente.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Équations trigonométriques}
+Résoudre dans $\R$ les équations suivantes.
+\begin{questions}
+  \item $\cos x=\dfrac12$.
+  \item $\sin x=-\dfrac{\sqrt2}{2}$.
+  \item $\sin(2x)=\sin x$.
+  \item $2\cos^{2}x-3\cos x+1=0$.
+  \item $\tan x=\sqrt3$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Inéquations trigonométriques}
+Résoudre, en s'aidant du cercle trigonométrique :
+\begin{questions}
+  \item $\cos x\leq\dfrac12$, pour $x\in\intFO{0}{2\pi}$ ;
+  \item $\sin x>\dfrac{\sqrt2}{2}$, pour $x\in\intOF{-\pi}{\pi}$ ;
+  \item $2\sin^{2}x-1\geq0$, pour $x\in\intFO{0}{2\pi}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Autour de $\tan\frac{t}{2}$}
+On pose $u=\tan\dfrac{t}{2}$, pour $t\neq\pi\ [2\pi]$.
+\begin{questions}
+  \item À l'aide des formules de duplication, établir :
+    $\cos t=\dfrac{1-u^{2}}{1+u^{2}}$ et $\sin t=\dfrac{2u}{1+u^{2}}$.
+  \item En utilisant $\tan\dfrac{\pi}{4}=1$ et la formule de duplication de la
+    tangente, montrer que $u_0=\tan\dfrac{\pi}{8}$ vérifie $u_0^{2}+2u_0-1=0$,
+    et en déduire la valeur exacte de $\tan\dfrac{\pi}{8}$.
+  \item Vérifier la cohérence : retrouver $\sin\dfrac{\pi}{4}=\dfrac{\sqrt2}{2}$
+    à partir de la question 1 et de la valeur de $u_0$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Deux inégalités célèbres}
+\begin{questions}
+  \item \etape{Arithmético-géométrique} Montrer que, pour tous réels $a,b\geq0$ :
+    $\sqrt{ab}\leq\dfrac{a+b}{2}$, avec égalité si et seulement si $a=b$.
+  \item En déduire que, pour tous réels $a,b>0$ :
+    $(a+b)\Bigl(\dfrac1a+\dfrac1b\Bigr)\geq4$.
+  \item \etape{Cauchy-Schwarz} Soient $a_1,\dots,a_n$ et $b_1,\dots,b_n$ des réels.
+    En remarquant que le trinôme
+    $T(t)=\displaystyle\sum_{k=1}^{n}(a_k t+b_k)^{2}$
+    est positif ou nul pour tout réel $t$, démontrer :
+    \[
+      \Bigl(\sum_{k=1}^{n}a_k b_k\Bigr)^{2}\leq
+      \Bigl(\sum_{k=1}^{n}a_k^{2}\Bigr)\Bigl(\sum_{k=1}^{n}b_k^{2}\Bigr).
+    \]
+  \item En déduire que, pour tous réels $a,b,c>0$ :
+    $(a+b+c)\Bigl(\dfrac1a+\dfrac1b+\dfrac1c\Bigr)\geq9$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Identités binomiales}
+\begin{questions}
+  \item \etape{Formule de la crosse de hockey} Montrer que, pour $0\leq p\leq n$ :
+    \[
+      \sum_{k=p}^{n}\binom{k}{p}=\binom{n+1}{p+1}.
+    \]
+    \emph{On pourra télescoper à l'aide de la relation de Pascal, écrite sous la forme
+    $\binom{k}{p}=\binom{k+1}{p+1}-\binom{k}{p+1}$.}
+  \item \etape{Identité de Vandermonde} En identifiant le coefficient de $x^{n}$
+    dans l'égalité $(1+x)^{n}(1+x)^{n}=(1+x)^{2n}$, montrer que :
+    \[
+      \sum_{k=0}^{n}\binom{n}{k}^{2}=\binom{2n}{n}.
+    \]
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Un système avec paramètre}
+Soit $m$ un réel. Résoudre, selon les valeurs de $m$, le système
+\[
+  \begin{cases} x+y+mz=1\\ x+my+z=1\\ mx+y+z=1 \end{cases}
+\]
+puis interpréter géométriquement chaque cas.
+\emph{On pourra commencer par additionner les trois équations.}
+\end{exercice}
+
+\begin{exercice}[3]{Produits et télescopages}
+\begin{questions}
+  \item Calculer $\displaystyle\prod_{k=2}^{n}\Bigl(1-\frac{1}{k}\Bigr)$ pour $n\geq2$.
+  \item Calculer $\displaystyle\prod_{k=2}^{n}\Bigl(1-\frac{1}{k^{2}}\Bigr)$ pour $n\geq2$,
+    et déterminer la limite de ce produit quand $n\to+\infty$.
+  \item Vérifier que $\dfrac{1}{k(k+1)(k+2)}=\dfrac12\Bigl(\dfrac{1}{k(k+1)}-\dfrac{1}{(k+1)(k+2)}\Bigr)$,
+    puis calculer $\displaystyle\sum_{k=1}^{n}\frac{1}{k(k+1)(k+2)}$ et sa limite.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La valeur exacte de $\cos\frac{\pi}{5}$}
+On pose $\theta=\dfrac{\pi}{5}$.
+\begin{questions}
+  \item Justifier que $\sin(3\theta)=\sin(2\theta)$.
+  \item En développant les deux membres et en simplifiant par $\sin\theta$,
+    montrer que $c=\cos\theta$ vérifie $4c^{2}-2c-1=0$.
+  \item En déduire la valeur exacte de $\cos\dfrac{\pi}{5}$, puis celle de
+    $\cos\dfrac{2\pi}{5}$.
+  \item Vérifier que $\cos\dfrac{\pi}{5}=\dfrac{\varphi}{2}$, où
+    $\varphi=\dfrac{1+\sqrt5}{2}$ est le nombre d'or.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Vers les polynômes de Tchebychev}
+On définit une suite de polynômes par $T_0=1$, $T_1=X$ et, pour tout $n\in\N$ :
+\[
+  T_{n+2}=2X\,T_{n+1}-T_n.
+\]
+\partieExo{A}{Premiers polynômes et propriété fondamentale}
+\begin{questions}
+  \item Calculer $T_2$, $T_3$ et $T_4$.
+  \item Montrer que, pour tous réels $t$ et tout $n\in\N$ :
+    $\cos\bigl((n+2)t\bigr)+\cos(nt)=2\cos t\,\cos\bigl((n+1)t\bigr)$.
+  \item En déduire, par récurrence double, que pour tout $n\in\N$ et tout réel $t$ :
+    \[
+      \cos(nt)=T_n(\cos t).
+    \]
+  \item Retrouver ainsi la formule $\cos(3a)=4\cos^{3}a-3\cos a$ de l'exercice 15.
+\end{questions}
+\partieExo{B}{Applications}
+\begin{questions}[resume]
+  \item Justifier que, pour tout $x\in\intFF{-1}{1}$ : $|T_n(x)|\leq1$.
+  \item En écrivant $T_4\Bigl(\cos\dfrac{\pi}{8}\Bigr)=\cos\dfrac{\pi}{2}=0$,
+    montrer que $\cos\dfrac{\pi}{8}$ est solution de $8x^{4}-8x^{2}+1=0$, et en
+    déduire que $\cos\dfrac{\pi}{8}=\dfrac{\sqrt{2+\sqrt2}}{2}$.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-02}

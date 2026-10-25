@@ -1,0 +1,16 @@
+% Méthode des ajouts dosés : droite et extrapolation (corrigé du défi D02)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=108mm,height=56mm,xmin=-5,xmax=9,ymin=0,ymax=0.7,
+  xtick={-4,-2,0,2,4,6,8},ytick={0,0.2,0.4,0.6},axis lines=middle,
+  xlabel={$V_\mathrm{s}$ (mL)},ylabel={$A$},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-1mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0.357,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\addplot[otGreenDark,line width=0.9pt,domain=0:8.6] {0.05185*x+0.2086};
+\addplot[otGreenDark,line width=0.8pt,dashed,domain=-4.02:0] {0.05185*x+0.2086};
+\addplot[only marks,mark=*,mark size=1.8pt,otInk] coordinates {(0,0.209)(2,0.311)(4,0.417)(6,0.520)(8,0.623)};
+\addplot[only marks,mark=*,mark size=2pt,otOrange] coordinates {(-4.02,0)};
+\node[pcLegende,anchor=south,text=otOrange!75!black] at (axis cs:-4.02,0.03) {$-4{,}0$ mL};
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:4.6,0.36) {$A=0{,}0519\,V_\mathrm{s}+0{,}209$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{L'abscisse du point d'intersection avec l'axe vaut $-c_0V_0/c_\mathrm{s}$.}

@@ -1,0 +1,16 @@
+% Sensibilité relative des trois types de cônes de la rétine (L'essentiel et exercice 10, chapitre 19)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=50mm,xmin=380,xmax=720,ymin=0,ymax=1.15,
+  xtick={400,450,...,700},ytick={0,0.5,1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$\lambda$ (nm)},ylabel={sensibilité relative}]
+\addplot[blue!80!black,line width=1.2pt,domain=380:720,samples=120] {exp(-((x-420)/32)^2)};
+\addplot[green!55!black,line width=1.2pt,domain=380:720,samples=120] {exp(-((x-534)/48)^2)};
+\addplot[red!80!black,line width=1.2pt,domain=380:720,samples=120] {exp(-((x-564)/52)^2)};
+\node[pcLegende,anchor=south,text=blue!80!black] at (axis cs:420,1.0) {S (bleu)};
+\node[pcLegende,anchor=south east,text=green!55!black] at (axis cs:530,1.0) {M (vert)};
+\node[pcLegende,anchor=south west,text=red!80!black] at (axis cs:568,1.0) {L (rouge)};
+\solution{\node[pcLegende,anchor=north,align=center,fill=white,inner sep=1pt] at (axis cs:640,0.55) {sans cônes L,\\on confond\\rouge et vert};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{La rétine contient trois types de cônes, sensibles surtout au bleu, au vert ou au rouge : le cerveau reconstitue la couleur à partir de leurs trois signaux (trichromie).}

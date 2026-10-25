@@ -1,0 +1,17 @@
+% Rendement global d'une synthèse en fonction du nombre d'étapes (corrigé du défi D09)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=100mm,height=55mm,xmin=0,xmax=10.5,ymin=0,ymax=105,
+  xtick={0,1,...,10},ytick={0,20,...,100},
+  xlabel={nombre d'étapes},ylabel={rendement global (\%)}]
+\addplot[otGreenDark,line width=1pt,mark=*,mark size=1.5pt,samples at={1,2,...,10}] {100*0.95^x};
+\addplot[otNavy,line width=1pt,mark=*,mark size=1.5pt,samples at={1,2,...,10}] {100*0.90^x};
+\addplot[otOrange!85!black,line width=1pt,mark=*,mark size=1.5pt,samples at={1,2,...,10}] {100*0.80^x};
+\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:10.1,60) {95~\% par étape};
+\node[pcLegende,text=otNavy,anchor=west] at (axis cs:10.1,35) {90~\%};
+\node[pcLegende,text=otOrange!75!black,anchor=west] at (axis cs:10.1,11) {80~\%};
+\draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (axis cs:3,0) -- (axis cs:3,72.9) (axis cs:6,0) -- (axis cs:6,53.1);
+\node[pcLegende,anchor=south] at (axis cs:3,74) {BHC};
+\node[pcLegende,anchor=south] at (axis cs:6,55) {Boots};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Le rendement global est le produit des rendements des étapes : il chute vite quand le nombre d'étapes augmente.}

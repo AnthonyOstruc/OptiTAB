@@ -1,0 +1,27 @@
+% Effet photoélectrique : un photon cède toute son énergie à un électron du métal (L'essentiel, chapitre 25)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% plaque métallique
+\fill[otMuted!35] (3.0,-1.3) rectangle (3.6,1.3);
+\draw[otInk!60,line width=0.5pt] (3.0,-1.3) rectangle (3.6,1.3);
+\node[pcLegende,anchor=north] at (3.3,-1.35) {métal};
+\foreach \y in {0.7,0,-0.7}{
+  \draw[otOrange!90!black,line width=1pt,-{Stealth[length=2mm]},decorate,
+    decoration={snake,amplitude=0.7mm,segment length=3mm,post length=2mm}] (0,{\y+0.5}) -- (2.9,\y);}
+\node[pcLegende,anchor=south,text=otOrange!80!black] at (1.2,1.25) {photons d'énergie $h\nu$};
+\foreach \y/\dy in {0.7/0.5,0/0.1,-0.7/-0.4}{
+  \fill[otNavy] (3.75,\y) circle (0.07);
+  \draw[otNavy,line width=0.8pt,-{Stealth[length=1.6mm]}] (3.85,\y) -- ++(1.1,\dy);}
+\node[pcLegende,anchor=west,text=otNavy] at (5.0,0.05) {électrons émis};
+% bilan d'énergie
+\begin{scope}[shift={(7.6,-1.2)}]
+\draw[otInk!60,line width=0.5pt] (0,0) -- (1.6,0);
+\node[pcLegende,anchor=west] at (1.65,0) {électron dans le métal};
+\draw[otInk!60,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (0,1.0) -- (1.6,1.0);
+\node[pcLegende,anchor=west] at (1.65,1.0) {électron libéré, au repos};
+\draw[otOrange!90!black,line width=1pt,-{Stealth[length=1.8mm]}] (0.35,0) -- (0.35,2.2) node[pcLegende,anchor=south,text=otOrange!80!black] {$h\nu$};
+\draw[otMuted,line width=0.5pt,{Stealth[length=1.2mm]}-{Stealth[length=1.2mm]}] (1.05,0) -- (1.05,1.0) node[pos=0.5,pcLegende,anchor=east] {$W_\mathrm{ext}$};
+\draw[otNavy,line width=0.5pt,{Stealth[length=1.2mm]}-{Stealth[length=1.2mm]}] (1.05,1.0) -- (1.05,2.2) node[pos=0.5,pcLegende,anchor=east,text=otNavy] {$E_\mathrm{c}$};
+\draw[otInk!60,line width=0.4pt,dash pattern=on 1pt off 1pt] (0.35,2.2) -- (1.3,2.2);
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque photon absorbé cède toute son énergie à un seul électron : une partie sert à l'extraire du métal, le reste devient énergie cinétique.}

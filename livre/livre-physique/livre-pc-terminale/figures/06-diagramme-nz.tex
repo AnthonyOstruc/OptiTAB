@@ -1,0 +1,17 @@
+% Diagramme (N,Z) : vallée de stabilité et domaines des différents types de radioactivité (L'essentiel, chapitre 6)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=112mm,height=78mm,xmin=0,xmax=186,ymin=0,ymax=104,
+  xtick={0,20,...,180},ytick={0,20,...,100},xlabel={nombre de neutrons $N$},ylabel={nombre de protons $Z$},
+  legend style={at={(0.03,0.97)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont},
+  legend cell align=left]
+\addplot[scatter,only marks,scatter src=explicit symbolic,mark size=0.75pt,
+  scatter/classes={0={mark=square*,otInk},1={mark=square*,otNavy!60},2={mark=square*,otOrange!85},3={mark=square*,otGreen}}]
+  table[x index=1,y index=0,meta index=2] {figures/donnees/06-diagramme-nz.dat};
+\legend{noyaux stables,émetteurs $\beta^-$,émetteurs $\beta^+$,émetteurs $\alpha$}
+\addplot[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:100,forget plot] {x};
+\node[pcLegende,anchor=south,text=otMuted,rotate=45] at (axis cs:62,64) {$N=Z$};
+\draw[pcRepere] (axis cs:84.4,60) -- (axis cs:110,40) node[pcLegende,anchor=north west] {vallée de stabilité};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les noyaux situés à droite de la vallée de stabilité ont trop de neutrons (émetteurs $\beta^-$), ceux situés à gauche ont
+trop de protons (émetteurs $\beta^+$) ; les noyaux les plus lourds sont souvent émetteurs $\alpha$. Représentation schématique.}

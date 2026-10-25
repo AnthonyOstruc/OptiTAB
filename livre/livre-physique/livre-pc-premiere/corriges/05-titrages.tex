@@ -1,0 +1,210 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{5}{Titrages colorimétriques}
+\corrigesSouples
+
+\begin{blocLivre}{cor-5-1}
+\begin{corrige}{1}{Le vocabulaire du titrage}
+\demarche{Le réactif titrant, de concentration connue, est dans la burette ; l'espèce titrée est dans l'erlenmeyer.}
+\begin{questions}
+\item 1 : \res{\text{burette graduée}} ; 2 : \res{\text{robinet}} ; 3 : \res{\text{erlenmeyer}} contenant la solution titrée ; 4 : \res{\text{barreau aimanté}} ;
+5 : \res{\text{agitateur magnétique}}.
+\item La burette contient la \res{\text{solution de thiosulfate}}, réactif titrant ; l'erlenmeyer contient la \res{\text{solution de diiode}},
+prélevée à la \res{\text{pipette jaugée}}.
+\item L'agitation \res{\text{homogénéise}} le mélange pour que chaque goutte réagisse aussitôt ; la feuille blanche fait mieux
+voir le \res{\text{changement de teinte}}.
+\item L'équivalence est atteinte quand les réactifs ont été introduits dans les \res{\text{proportions stœchiométriques}}.
+\end{questions}
+\schema[corrige]{05-ex01}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-2}
+\begin{corrige}{2}{Titrer une solution de diiode}
+\demarche{À l'équivalence, $n_0(\ce{I2})=\dfrac{n_\mathrm{E}(\ce{S2O3^{2-}})}{2}$, car une molécule de diiode réagit avec deux ions thiosulfate.}
+\begin{questions}
+\item Réactif titrant : les ions \res{\text{thiosulfate}} ; espèce titrée : le \res{\text{diiode}}.
+\item $\res{n_0(\ce{I2})=\dfrac{c_2\,V_\mathrm{E}}{2}}$.
+\item $n_0(\ce{I2})=\dfrac{0{,}100\times\num{12.4e-3}}{2}=\res{\qty{6,20e-4}{mol}}$ et $c_1=\dfrac{\num{6.20e-4}}{\num{20.0e-3}}=\res{\qty{3,10e-2}{mol.L^{-1}}}$.
+\item La teinte jaune du diiode \res{\text{disparaît}} à l'équivalence : le mélange devient incolore.
+\end{questions}
+\retiens{À l'équivalence, les quantités apportées sont dans les proportions de l'équation : on divise chaque quantité par
+son nombre stœchiométrique. Ici, $n_0(\ce{I2})=\dfrac{n_\mathrm{E}(\ce{S2O3^{2-}})}{2}$, et non $n_0(\ce{I2})=n_\mathrm{E}(\ce{S2O3^{2-}})$.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-3}
+\begin{corrige}{3}{Avant, à et après l'équivalence}
+\demarche{L'équivalence est le moment où le réactif limitant change.}
+\begin{questions}
+\item Les ions \res{\text{permanganate}} versés sont limitants : ils réagissent aussitôt. Il reste des ions \res{\ce{Fe^{2+}}}, avec
+les produits $\ce{Fe^{3+}}$ et $\ce{Mn^{2+}}$.
+\item Les deux réactifs ont été apportés dans les \res{\text{proportions stœchiométriques}} : ils sont entièrement consommés.
+\item Les ions fer(II) ont disparu, ils sont \res{\text{limitants}} ; les ions \res{\ce{MnO4-}} versés s'accumulent.
+\item Avant : \res{\text{presque incolore}} ; à l'équivalence : la première goutte en excès donne une \res{\text{teinte rose pâle persistante}} ;
+après : \res{\text{violet}} de plus en plus intense.
+\end{questions}
+\schema[corrige]{05-couleurs}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-4}
+\begin{corrige}{4}{Prévoir le changement de teinte}
+\demarche{Repérer l'espèce colorée : elle apparaît à l'équivalence si c'est le réactif titrant, elle disparaît si c'est l'espèce titrée.}
+\begin{questions}
+\item Le mélange passe de \res{\text{presque incolore}} à \res{\text{rose violacé persistant}}.
+\item Il passe du \res{\text{jaune pâle}} à l'\res{\text{incolore}}. Le jaune pâle est difficile à voir disparaître : on ajoute de l'empois
+d'amidon peu avant l'équivalence, et l'on guette la disparition de la teinte \res{\text{bleue}}.
+\item Le diiode versé est réduit tant qu'il reste de la vitamine C : le mélange passe d'\res{\text{incolore}} à \res{\text{bleu}} persistant.
+\item La teinte \res{\text{violette disparaît}} : le mélange devient presque incolore.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-5}
+\begin{corrige}{5}{Lire une burette et conclure}
+\demarche{Les graduations croissent vers le bas ; une division vaut \qty{0,1}{mL}.}
+\begin{questions}
+\item Le bas du ménisque est six divisions sous la graduation 13 : $\res{V_\mathrm{E}=\qty{13,6}{mL}}$.
+\item La surface du liquide est incurvée : la graduation est faite pour le bas du ménisque. L'œil à sa hauteur évite
+l'\res{\text{erreur de parallaxe}}.
+\item $\res{\dfrac{n_0(\ce{Fe^{2+}})}{5}=c_2\,V_\mathrm{E}}$.
+\item $n_0=5\times\num{2.00e-2}\times\num{13.6e-3}=\qty{1,36e-3}{mol}$ et $c_1=\dfrac{\num{1.36e-3}}{\num{20.0e-3}}=\res{\qty{6,80e-2}{mol.L^{-1}}}$.
+\end{questions}
+\schema[corrige]{05-ex05}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-6}
+\begin{corrige}{6}{Simuler un titrage en Python}
+\demarche{Chaque volume versé définit un nouveau système, pour lequel on calcule l'avancement maximal comme au chapitre~4.}
+\begin{questions}
+\item \code{x} est l'\res{\text{avancement maximal}} pour le volume \code{V} versé. La transformation s'arrête dès qu'un réactif est épuisé :
+c'est la plus petite des valeurs $\dfrac{n_2}{1}$ et $\dfrac{n_1}{5}$.
+\item Pour \qty{6}{mL}, la ligne affiche \code{Fe2+ 0.60 mmol} et \code{MnO4- 0.00 mmol} ; pour \qty{20}{mL}, elle affiche
+\code{Fe2+ 0.00 mmol} et \code{MnO4- 0.16 mmol}.
+\item La ligne \res{V=\qty{12}{mL}} : les deux réactifs sont épuisés. Pour mieux localiser l'équivalence, on resserre les volumes,
+par exemple avec \code{range(0, 17)}, ou avec un pas de \qty{0,1}{mL}.
+\item \code{c2 = 5.00e-2}, \code{n1 = 4.00e-4}, \code{x = min(n2 / 2, n1 / 1)}, puis \code{n1 - x} pour le diiode et \code{n2 - 2 * x}
+pour le thiosulfate. L'équivalence apparaît alors à \res{\qty{16}{mL}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-7}
+\begin{corrige}{7}{Un médicament contre l'anémie}
+\demarche{Le volume titré est le dixième de la solution du comprimé : on multiplie la quantité titrée par 10.}
+\begin{questions}
+\item On associe la réduction des ions permanganate à cinq fois l'oxydation des ions fer(II) :
+\[\res{\ce{MnO4- + 8H+ + 5Fe^{2+} -> Mn^{2+} + 5Fe^{3+} + 4H2O}}.\]
+Les ions $\ce{H+}$ sont des \res{\text{réactifs}} : sans eux, la réaction support n'aurait pas lieu ainsi.
+\item $n=5\times\num{2.00e-3}\times\num{14.3e-3}=\res{\qty{1,43e-4}{mol}}$.
+\item Le comprimé en contient $10\times\num{1.43e-4}=\qty{1,43e-3}{mol}$, soit $m=\num{1.43e-3}\times55{,}8=\res{\qty{79,8}{mg}}$ : l'écart relatif à
+\qty{80}{mg} est d'environ \qty{0,25}{\percent}, l'indication est \res{\text{vérifiée}}.
+\item $V_\mathrm{E}=\dfrac{0{,}080}{55{,}8\times10\times5\times\num{2.00e-3}}=\res{\qty{14,3}{mL}}$ : c'est la valeur mesurée.
+\end{questions}
+\piege{Oublier le facteur de prélèvement : on ne titre que \qty{10,0}{mL} des \qty{100,0}{mL} préparés avec le comprimé. La quantité titrée
+doit être multipliée par 10 pour revenir au comprimé entier.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-8}
+\begin{corrige}{8}{Un antiseptique iodé}
+\demarche{On titre la solution diluée ; la concentration de l'antiseptique est dix fois plus grande.}
+\begin{questions}
+\item Prélever \qty{10,0}{mL} d'antiseptique à la \res{\text{pipette jaugée}}, les verser dans une \res{\text{fiole jaugée de 100,0 mL}}, compléter
+avec de l'eau distillée jusqu'au trait de jauge et homogénéiser.
+\item Par la \res{\text{disparition de la teinte jaune}} du diiode ; on peut ajouter de l'empois d'amidon pour suivre la disparition
+d'une teinte bleue, plus visible.
+\item $n(\ce{I2})=\dfrac{\num{1.00e-2}\times\num{7.90e-3}}{2}=\qty{3,95e-5}{mol}$ ; $c_\text{diluée}=\res{\qty{3,95e-3}{mol.L^{-1}}}$ et $c=\res{\qty{3,95e-2}{mol.L^{-1}}}$.
+\item $t=\num{3.95e-2}\times253{,}8=\res{\qty{10,0}{g.L^{-1}}}$, soit \qty{1}{g} pour \qty{100}{mL} : l'indication est \res{\text{exacte}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-9}
+\begin{corrige}{9}{Contrôler un détachant}
+\demarche{Deux ions permanganate réagissent avec cinq molécules d'acide oxalique : $\dfrac{n_0(\ce{H2C2O4})}{5}=\dfrac{c_2\,V_\mathrm{E}}{2}$.}
+\begin{questions}
+\item $\ce{2CO2 + 2H+ + 2e- = H2C2O4}$. On associe deux fois la réduction du permanganate à cinq fois l'oxydation de l'acide :
+\[\res{\ce{2MnO4- + 5H2C2O4 + 6H+ -> 2Mn^{2+} + 10CO2 + 8H2O}}.\]
+\item Le mélange, \res{\text{incolore}}, prend une \res{\text{teinte rose violacé persistante}} à l'équivalence.
+\item $n=\dfrac{5}{2}\times\num{2.00e-2}\times\num{15.6e-3}=\qty{7,80e-4}{mol}$ dans \qty{10,0}{mL}, soit \qty{7,80e-3}{mol} dans la fiole ;
+$m=\num{7.80e-3}\times126{,}0=\res{\qty{0,983}{g}}$ et la pureté vaut $\res{\qty{98,3}{\percent}}$.
+\item $V_\mathrm{E}=\dfrac{2}{5}\times\dfrac{1{,}00}{126{,}0\times10}\times\dfrac{1}{\num{2.00e-2}}\approx\res{\qty{15,9}{mL}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-10}
+\begin{corrige}{10}{Bien choisir la solution titrante}
+\demarche{Un volume équivalent trop petit est lu avec une grande incertitude relative ; il doit aussi rester inférieur à \qty{25}{mL}.}
+\begin{questions}
+\item $\dfrac{c_1V_1}{5}=c_2V_\mathrm{E}$, donc $\res{V_\mathrm{E}=\dfrac{c_1V_1}{5c_2}}$ avec $c_1V_1=\qty{5,0e-4}{mol}$.
+\item $V_\mathrm{E}=\qty{1,0}{mL}$, \qty{10,0}{mL} et \qty{20,0}{mL} respectivement.
+\item $\dfrac{0{,}1}{1{,}0}=\qty{10}{\percent}$ ; $\dfrac{0{,}1}{10{,}0}=\qty{1}{\percent}$ ; $\dfrac{0{,}1}{20{,}0}=\qty{0,5}{\percent}$.
+\item On choisit la solution à \res{\qty{5,00e-3}{mol.L^{-1}}} : son volume équivalent tient dans la burette et donne la plus faible
+incertitude relative.
+\end{questions}
+\retiens{On choisit la concentration du réactif titrant pour que le volume équivalent soit compris entre la moitié et la
+totalité du volume de la burette : la lecture est alors à la fois possible et précise.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-11}
+\begin{corrige}{11}{Une eau oxygénée a-t-elle vieilli ?}
+\demarche{À l'équivalence, $\dfrac{n_0(\ce{H2O2})}{5}=\dfrac{c_2\,V_\mathrm{E}}{2}$ ; une mole de dioxygène provient de deux moles de peroxyde d'hydrogène.}
+\begin{questions}
+\item Avec $\ce{O2 + 2H+ + 2e- = H2O2}$ :
+\[\res{\ce{2MnO4- + 5H2O2 + 6H+ -> 2Mn^{2+} + 5O2 + 8H2O}}.\]
+\item $n=\dfrac{5}{2}\times\num{2.00e-2}\times\num{17.6e-3}=\qty{8,80e-4}{mol}$, $c_\text{diluée}=\qty{8,80e-2}{mol.L^{-1}}$ et $\res{c=\qty{0,880}{mol.L^{-1}}}$.
+\item Un litre libérerait $\dfrac{0{,}880}{2}=\qty{0,440}{mol}$ de dioxygène, soit $0{,}440\times22{,}4\approx\qty{9,9}{L}$ : \res{\text{9,9 volumes}}.
+\item Pour \qty{0,893}{mol.L^{-1}}, on attendait $V_\mathrm{E}\approx\res{\qty{17,9}{mL}}$. L'eau oxygénée se \res{\text{décompose lentement}} en eau et
+dioxygène, surtout à la lumière et à la chaleur : le flacon a un peu vieilli.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-12}
+\begin{corrige}{12}{La vitamine C d'un jus de citron}
+\demarche{Une mole de diiode réagit avec une mole de vitamine C : $n(\ce{C6H8O6})=c_2\,V_\mathrm{E}$.}
+\begin{questions}
+\item Le diiode versé est réduit tant qu'il reste de la vitamine C ; dès qu'il est en excès, il colore l'empois d'amidon : le
+mélange devient \res{\text{bleu}} et le reste.
+\item $n=\num{2.00e-3}\times\num{14.2e-3}=\qty{2,84e-5}{mol}$, $c=\qty{2,84e-3}{mol.L^{-1}}$ et $t=\num{2.84e-3}\times176{,}0=\res{\qty{0,500}{g.L^{-1}}}$.
+\item La concentration est proportionnelle à $V_\mathrm{E}$ : perte $=1-\dfrac{11{,}4}{14{,}2}\approx\res{\qty{20}{\percent}}$.
+\item $\dfrac{\qty{110}{mg}}{\qty{0,500}{g.L^{-1}}}=\res{\qty{220}{mL}}$ de jus frais, plus d'un verre ; il en faudrait davantage avec le jus de la veille.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-13}
+\begin{corrige}{13}{Le dioxyde de soufre du vin}
+\demarche{Une mole de diiode réagit avec une mole de dioxyde de soufre : $n(\ce{SO2})=c_2\,V_\mathrm{E}$.}
+\begin{questions}
+\item $\ce{SO4^{2-} + 4H+ + 2e- = SO2 + 2H2O}$ ; avec $\ce{I2 + 2e- -> 2I-}$ :
+\[\res{\ce{SO2 + I2 + 2H2O -> SO4^{2-} + 4H+ + 2I-}}.\]
+\item $n=\num{5.00e-3}\times\num{11.8e-3}=\qty{5,90e-5}{mol}$, $c=\qty{2,36e-3}{mol.L^{-1}}$ et $t=\num{2.36e-3}\times64{,}1\approx\res{\qty{151}{mg.L^{-1}}}$.
+\item $\qty{151}{mg.L^{-1}}<\qty{200}{mg.L^{-1}}$ : ce vin blanc est \res{\text{conforme}}.
+\item $t$ est proportionnelle à $V_\mathrm{E}$ : la limite correspond à $11{,}8\times\dfrac{200}{151}\approx\res{\qty{15,6}{mL}}$. Pour un vin rouge sec,
+\qty{151}{mg.L^{-1}} dépasserait de peu la limite de \qty{150}{mg.L^{-1}} : ce serait \res{\text{non conforme}}, même si l'écart est de l'ordre de
+l'incertitude de la mesure.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-14}
+\begin{corrige}{14}{Un bain antiseptique au permanganate}
+\demarche{Les rôles sont inversés : l'ion permanganate est titré. À l'équivalence, $n_0(\ce{MnO4-})=\dfrac{c_2\,V_\mathrm{E}}{5}$.}
+\begin{questions}
+\item Espèce titrée : \res{\ce{MnO4-}} ; réactif titrant : les ions \res{\ce{Fe^{2+}}}. Tant qu'il reste des ions permanganate, le mélange
+est violet ; à l'équivalence, ils ont disparu et la teinte \res{\text{violette disparaît}}.
+\item $n_0=\dfrac{\num{5.00e-3}\times\num{15.4e-3}}{5}=\qty{1,54e-5}{mol}$ et $c=\dfrac{\num{1.54e-5}}{\num{20.0e-3}}=\res{\qty{7,70e-4}{mol.L^{-1}}}$.
+\item $t=\num{7.70e-4}\times158{,}0\approx\res{\qty{0,122}{g.L^{-1}}}$.
+\item On attendait $\dfrac{0{,}500}{4{,}0}=\qty{0,125}{g.L^{-1}}$, soit $V_\mathrm{E}\approx\res{\qty{15,8}{mL}}$. L'écart, d'environ \qty{3}{\percent}, est faible : le bain est
+\res{\text{correctement préparé}} ; un comprimé pas tout à fait dissous ou un volume d'eau approximatif suffit à l'expliquer.
+\end{questions}
+\retiens{Le réactif titrant et l'espèce titrée peuvent échanger leurs rôles ; la relation à l'équivalence s'écrit toujours en
+divisant chaque quantité par son nombre stœchiométrique.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-5-15}
+\begin{corrige}{15}{Lire un titrage sur un graphique}
+\demarche{Un réactif titré décroît jusqu'à l'équivalence ; le réactif titrant n'apparaît qu'après ; un produit croît puis reste constant.}
+\begin{questions}
+\item a décroît jusqu'à zéro : \res{\ce{I2}} ; b croît puis se stabilise : le produit \res{\ce{S4O6^{2-}}} ; c n'apparaît qu'après
+\qty{16}{mL} : le titrant \res{\ce{S2O3^{2-}}} en excès.
+\item $\res{V_\mathrm{E}=\qty{16,0}{mL}}$ : le diiode s'y annule, le produit cesse de se former et le thiosulfate commence à s'accumuler.
+\item Lecture directe : $n_0(\ce{I2})=\qty{0,400}{mmol}$. Calcul : $n_0(\ce{I2})=\dfrac{\num{5.00e-2}\times\num{16.0e-3}}{2}=\qty{4,00e-4}{mol}$. Dans les deux
+cas, $c=\dfrac{\num{4.00e-4}}{\num{20.0e-3}}=\res{\qty{2,00e-2}{mol.L^{-1}}}$.
+\item Avant l'équivalence, le mélange est \res{\text{jaune}}, de plus en plus pâle ; après, il est \res{\text{incolore}}.
+\end{questions}
+\schema[corrige]{05-ex15}
+\end{corrige}
+\end{blocLivre}

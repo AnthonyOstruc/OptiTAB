@@ -1,0 +1,454 @@
+% !TEX root = ../main.tex
+%% Chapitre 21 — Boucles
+%% Sources : frontend/cours/resume/terminal/resume_algorithme_boucles_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_algorithme_boucles.txt
+%% Tous les programmes ont été exécutés : les affichages indiqués sont exacts.
+%% Exercices 6 à 10 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[boucles]{21}{Boucles}{Partie 4 · Algorithmique et programmation}
+  {range\enspace·\enspace Boucle for\enspace·\enspace Boucle while\enspace·\enspace Accumulateurs\enspace·\enspace
+   Algorithmes de seuil}
+  \objectif{Produire des suites d'entiers avec la fonction \code{range}.}
+  \objectif{Répéter des instructions un nombre connu de fois avec une boucle \code{for}.}
+  \objectif{Répéter des instructions tant qu'une condition est vraie avec une boucle \code{while}.}
+  \objectif{Utiliser un accumulateur et suivre l'exécution d'un programme dans un tableau d'état.}
+  \objectif{Programmer un algorithme de seuil, une dichotomie et une simulation.}
+  \prerequis{Variables, conditions et fonctions (chapitre 20).}
+  \prerequis{Suites numériques, théorème des valeurs intermédiaires.}
+\end{ouverture}
+\miseEnPageSouple
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{La fonction \code{range}}
+
+\noindent
+\begin{minipage}[t]{0.55\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.35}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYc@{}}
+\toprule
+\otTete{Instruction} & \otTete{Valeurs produites} & \otTete{Nombre} \\
+\midrule
+\code{range(5)} & $0$, $1$, $2$, $3$, $4$ & $5$ \\
+\code{range(2, 6)} & $2$, $3$, $4$, $5$ & $4$ \\
+\code{range(1, 10, 3)} & $1$, $4$, $7$ & $3$ \\
+\code{range(10, 0, -2)} & $10$, $8$, $6$, $4$, $2$ & $5$ \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.41\linewidth}\vspace{0pt}
+\begin{propriete}[Bornes de \code{range}]
+\raggedright
+\code{range(a, b)} produit les entiers de $a$ à $b-1$ : la borne $b$ est \textbf{exclue} et il y a $b-a$ valeurs. Un troisième argument
+fixe le pas, qui peut être négatif.
+\end{propriete}
+\end{minipage}
+
+\essSection{2}{La boucle \code{for}}
+
+\begin{definition}[Boucle bornée]
+La boucle \code{for i in range(…):} répète le bloc indenté qui la suit pour chaque valeur produite par \code{range}, dans l'ordre :
+la variable \code{i} prend successivement chacune de ces valeurs. Le nombre de répétitions est connu à l'avance.
+\end{definition}
+
+\begin{codecote}[0.5]
+\begin{pythoncol}
+for i in range(1, 6):
+    print(i, i**2)
+print("Fin")
+\end{pythoncol}
+\cote
+\begin{consolecol}
+1 1
+2 4
+3 9
+4 16
+5 25
+Fin
+\end{consolecol}
+\end{codecote}
+
+\begin{savoirfaire}[Calculer un terme d'une suite définie par récurrence]
+\begin{codecote}[0.42]
+\begin{pythoncol}
+def terme(n):
+    u = 3
+    for k in range(n):
+        u = 2 * u - 1
+    return u
+\end{pythoncol}
+\cote
+Pour $u_0=3$ et $u_{n+1}=2u_n-1$, on part de $u_0$ et on applique $n$ fois la relation de récurrence : la boucle compte $n$ tours.\\[1mm]
+\code{terme(1)} $\to$ \code{5},\enspace \code{terme(5)} $\to$ \code{65},\enspace \code{terme(10)} $\to$ \code{2049}.\\[1mm]
+On peut vérifier par récurrence que $u_n=2^{n+1}+1$.
+\end{codecote}
+\end{savoirfaire}
+
+\essSection{3}{Accumulateurs et tableau d'état}
+
+\begin{savoirfaire}[Calculer une somme avec un accumulateur]
+\begin{codecote}[0.42]
+\begin{pythoncol}
+s = 0
+for k in range(1, 5):
+    s = s + k
+print(s)
+\end{pythoncol}
+
+\medskip
+On \textbf{initialise} l'accumulateur \emph{avant} la boucle ($0$ pour une somme, $1$ pour un produit), on le \textbf{met à jour} à chaque
+tour, puis on l'\textbf{utilise} après la boucle.
+\cote
+{\renewcommand{\arraystretch}{1.25}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}YYY@{}}
+\toprule
+\otTete{Étape} & \code{k} & \code{s} \\
+\midrule
+avant la boucle & — & $0$ \\
+tour 1 & $1$ & $1$ \\
+tour 2 & $2$ & $3$ \\
+tour 3 & $3$ & $6$ \\
+tour 4 & $4$ & $10$ \\
+\bottomrule
+\end{tabularx}}\\[1mm]
+\legende{Tableau d'état : valeurs des variables à la fin de chaque tour. Le programme affiche \code{10}.}
+\end{codecote}
+\end{savoirfaire}
+
+\essSection{4}{La boucle \code{while}}
+
+\begin{codecote}[0.5]
+\begin{definition}[Boucle non bornée]
+\raggedright
+\code{while condition:} répète le bloc indenté \textbf{tant que} la condition est vraie. La condition est testée \emph{avant} chaque
+tour : si elle est fausse dès le départ, le bloc n'est jamais exécuté. Le bloc doit modifier une variable de la condition, sinon la
+boucle ne s'arrête jamais.
+\end{definition}
+\cote
+\centering
+\begin{tikzpicture}[node distance=6mm and 9mm]
+  \node[otBorne] (d) {début};
+  \node[otTest, below=5mm of d] (t) {condition ?};
+  \node[otBloc, right=of t] (b) {bloc};
+  \node[otBorne, below=7mm of t] (s) {suite};
+  \draw[otFleche] (d) -- (t);
+  \draw[otFleche] (t) -- node[otEtiqF,above] {oui} (b);
+  \draw[otFleche] (b.north) -- ++(0,5mm) -| ([xshift=4mm]t.north) ;
+  \draw[otFleche] (t) -- node[otEtiqF,right] {non} (s);
+\end{tikzpicture}\\[0.5mm]
+\legende{Après chaque exécution du bloc, on revient au test.}
+\end{codecote}
+
+\begin{savoirfaire}[Algorithme de seuil]
+\begin{codecote}[0.42]
+\begin{pythoncol}
+u = 1
+n = 0
+while u <= 100:
+    u = 1.5 * u
+    n = n + 1
+print(n)
+\end{pythoncol}
+\cote
+On cherche le plus petit entier $n$ tel que $1{,}5^{n}>100$. On répète la multiplication \textbf{tant que} le seuil n'est pas dépassé,
+en comptant les tours : le programme affiche \code{12}.\\[1mm]
+Vérification : $1{,}5^{n}>100\iff n>\dfrac{\ln100}{\ln1{,}5}\approx11{,}36$, donc $n=\res{12}$.
+\end{codecote}
+\end{savoirfaire}
+
+\essSection{5}{Choisir et combiner les boucles}
+
+\noindent
+\begin{minipage}[t]{0.5\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.35}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}YY@{}}
+\toprule
+\otTete{Situation} & \otTete{Boucle} \\
+\midrule
+nombre de tours connu & \code{for i in range(n):} \\
+arrêt quand une condition change & \code{while condition:} \\
+sortir immédiatement & \code{break} \\
+passer au tour suivant & \code{continue} \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.46\linewidth}\vspace{0pt}
+\begin{propriete}[Boucles imbriquées]
+\raggedright
+Une boucle placée dans une autre est exécutée \emph{entièrement} à chaque tour de la boucle extérieure : avec $3$ tours à l'extérieur
+et $5$ à l'intérieur, le bloc intérieur est exécuté $3\times5=15$ fois.
+\end{propriete}
+\end{minipage}
+
+\begin{exemple}[Dénombrer avec deux boucles imbriquées]
+\begin{codecote}[0.46]
+\begin{pythoncol}
+compte = 0
+for d1 in range(1, 7):
+    for d2 in range(1, 7):
+        if d1 + d2 == 7:
+            compte = compte + 1
+print(compte, compte / 36)
+\end{pythoncol}
+\cote
+On lance deux dés équilibrés. Les deux boucles parcourent les $6\times6=36$ issues $(d_1\pv d_2)$ et le compteur retient celles dont
+la somme vaut $7$.
+\begin{consolecol}
+6 0.16666666666666666
+\end{consolecol}
+
+\smallskip
+La probabilité d'obtenir une somme égale à $7$ est $\frac{6}{36}=\frac16$.
+\end{codecote}
+\end{exemple}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item \code{range(1, n)} s'arrête à $n-1$ : pour aller jusqu'à $n$, on écrit \code{range(1, n + 1)}.
+  \item L'accumulateur s'initialise \emph{avant} la boucle : placé dans la boucle, il serait remis à zéro à chaque tour.
+  \item L'indentation décide de ce qui est répété : un \code{print} indenté s'exécute à chaque tour, sinon une seule fois après la boucle.
+  \item Une boucle \code{while} dont la condition reste toujours vraie ne s'arrête jamais (boucle infinie).
+  \item Les écritures \code{s += k} et \code{n += 1} sont des raccourcis de \code{s = s + k} et \code{n = n + 1}.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Boucle \code{for} et \code{range}}
+\begin{questions}
+  \item Écrire un programme qui affiche les nombres pairs de $2$ à $20$ sur une même ligne (on utilisera \code{print(i, end=" ")}).
+  \item Écrire un programme qui calcule et affiche la somme $1+2+\dots+15$.
+  \item Donner les valeurs produites par \code{range(3, 12, 4)} et par \code{range(5, 0, -1)}.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Accumulateurs}
+\begin{questions}
+  \item Calculer la somme des carrés $1^{2}+2^{2}+3^{2}+4^{2}+5^{2}$ à l'aide d'une boucle.
+  \item Écrire un programme qui affiche la table de multiplication de $7$, de « 7 × 1 = 7 » à « 7 × 10 = 70 ».
+  \item Calculer le produit $1\times3\times5\times7\times9$ avec un accumulateur. Quelle doit être sa valeur initiale ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Boucle \code{while}}
+\begin{questions}
+  \item Écrire un programme qui affiche les entiers de $1$ à $5$ à l'aide d'une boucle \code{while}.
+  \item Calculer $4!=1\times2\times3\times4$ à l'aide d'une boucle \code{while}.
+  \item Qu'affiche le programme suivant ? Interpréter le résultat.
+\begin{python}
+n = 0
+s = 0
+while s < 100:
+    n = n + 1
+    s = s + n
+print(n, s)
+\end{python}
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Les instructions \code{break} et \code{continue}}
+\begin{questions}
+  \item Qu'affichent les deux programmes suivants ?
+\begin{codecote}[0.58]
+\begin{pythoncol}
+for i in range(1, 21):
+    if i > 10:
+        print("Premier nombre > 10 :", i)
+        break
+\end{pythoncol}
+\cote
+\begin{pythoncol}
+for i in range(1, 11):
+    if i % 3 == 0:
+        continue
+    print(i, end=" ")
+\end{pythoncol}
+\end{codecote}
+  \item Réécrire le premier programme avec une boucle \code{while}, sans utiliser \code{break}.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Boucles imbriquées}
+\begin{questions}
+  \item Écrire un programme qui affiche, sur $3$ lignes et $5$ colonnes, les produits \code{i * j} pour $i$ de $1$ à $3$ et $j$ de $1$
+    à $5$.
+  \item Qu'affiche le programme ci-contre ?
+\begin{codecote}[0.57]
+\begin{pythoncol}
+for ligne in range(3, 0, -1):
+    for nombre in range(1, ligne + 1):
+        print(nombre, end=" ")
+    print()
+\end{pythoncol}
+\cote
+\code{print()} sans argument passe à la ligne suivante.
+\end{codecote}
+  \item Combien de fois l'instruction \code{print(i * j, end=" ")} de la question 1 est-elle exécutée ? Et si la boucle extérieure
+    compte $n$ tours et la boucle intérieure $p$ tours ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Suivre un programme : tableau d'état}
+\begin{questions}
+  \item On considère le programme ci-contre. Compléter un tableau donnant les valeurs de \code{a} et \code{b} à la fin de chaque tour.
+    Quelle suite célèbre reconnaît-on ?
+\begin{codecote}[0.42]
+\begin{pythoncol}
+a, b = 1, 1
+for k in range(5):
+    a, b = b, a + b
+print(a, b)
+\end{pythoncol}
+\cote
+L'affectation \code{a, b = b, a + b} calcule d'abord les deux valeurs de droite, puis les affecte \emph{simultanément} à
+\code{a} et à \code{b}.
+\end{codecote}
+  \item La fonction suivante applique l'algorithme d'Euclide. Dresser le tableau d'état de l'appel \code{pgcd(84, 36)}, puis de
+    l'appel \code{pgcd(1071, 462)}. Que renvoie la fonction ?
+\begin{python}
+def pgcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+\end{python}
+  \item Pourquoi la boucle de la fonction \code{pgcd} s'arrête-t-elle toujours lorsque $a$ et $b$ sont des entiers naturels ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Algorithmes de seuil et suites}
+\partieExo{A}{Une suite arithmético-géométrique}
+On considère la suite définie par $u_0=2$ et $u_{n+1}=0{,}8\,u_n+3$ pour tout entier naturel $n$.
+\begin{questions}
+  \item Calculer $u_1$ et $u_2$.
+  \item On admet que, pour tout $n$, $u_n=15-13\times0{,}8^{n}$. En déduire que la suite est croissante et converge vers $15$.
+  \item Écrire un programme qui détermine le plus petit entier $n$ tel que $u_n>14{,}9$.
+  \item Retrouver ce résultat par le calcul, à l'aide de la fonction logarithme.
+\end{questions}
+\partieExo{B}{Une somme célèbre}
+\begin{questions}[resume]
+  \item Écrire un programme qui détermine le plus petit entier $k$ tel que $1+\frac1{2^{2}}+\frac1{3^{2}}+\dots+\frac1{k^{2}}>1{,}64$.
+  \item On peut démontrer que cette somme tend vers $\frac{\pi^{2}}{6}\approx1{,}644\,9$. Pourquoi le seuil $1{,}65$ ne serait-il jamais
+    atteint ? Que se passerait-il en exécutant le programme avec ce seuil ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La méthode de dichotomie}
+On cherche une valeur approchée de la solution $\alpha$ de l'équation $x^{3}+x-1=0$ sur $\intFF{0}{1}$.
+\begin{codecote}[0.52]
+\begin{pythoncol}
+def f(x):
+    return x**3 + x - 1
+
+def dichotomie(a, b, e):
+    etapes = 0
+    while b - a > e:
+        m = (a + b) / 2
+        if f(a) * f(m) <= 0:
+            b = m
+        else:
+            a = m
+        etapes = etapes + 1
+    return a, b, etapes
+\end{pythoncol}
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=62mm, unit vector ratio=, height=58mm, xmin=-0.05, xmax=1.15, ymin=-1.8, ymax=1.3,
+  xtick={0.5,1}, xticklabels={$0{,}5$,$1$}, ytick={-1,1}]
+  \addplot[otNavy,line width=1pt,domain=0:1.05,samples=60] {x^3+x-1};
+  \draw[otGreenDark,line width=1.6pt] (axis cs:0,-1.22) -- (axis cs:1,-1.22);
+  \draw[otGreenDark,line width=1.6pt] (axis cs:0.5,-1.36) -- (axis cs:1,-1.36);
+  \draw[otGreenDark,line width=1.6pt] (axis cs:0.5,-1.5) -- (axis cs:0.75,-1.5);
+  \draw[otGreenDark,line width=1.6pt] (axis cs:0.625,-1.64) -- (axis cs:0.75,-1.64);
+  \draw[otMuted,dashed] (axis cs:0.6823,0) -- (axis cs:0.6823,-1.72);
+  \node[font=\scriptsize,text=otMuted,anchor=south] at (axis cs:0.6823,0.05) {$\alpha$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{À chaque étape, l'intervalle qui contient $\alpha$ est coupé en deux.}
+\end{codecote}
+\begin{questions}
+  \item Justifier que l'équation $f(x)=0$ admet une unique solution $\alpha$ dans $\intFF{0}{1}$.
+  \item Dresser le tableau d'état des trois premières étapes de \code{dichotomie(0, 1, 0.001)} : valeurs de \code{m}, signe de
+    \code{f(a) * f(m)} et nouvel intervalle.
+  \item Expliquer pourquoi, à chaque étape, l'intervalle $\intFF{a}{b}$ contient $\alpha$, et donner sa longueur après $n$ étapes.
+  \item En déduire le nombre d'étapes effectuées lorsque $e=0{,}001$, puis lorsque $e=10^{-6}$.
+  \item L'appel \code{dichotomie(0, 1, 0.001)} renvoie \code{(0.681640625, 0.6826171875, 10)}. En déduire un encadrement de $\alpha$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Estimer $\pi$ par la méthode de Monte-Carlo}
+On choisit au hasard un point $M(x\pv y)$ dans le carré $\intFF{0}{1}^{2}$. La probabilité qu'il tombe dans le quart de disque de centre
+$O$ et de rayon $1$ est égale au rapport des aires : $p=\frac{\pi/4}{1}=\frac{\pi}{4}$.
+\begin{codecote}[0.5]
+\begin{pythoncol}
+from random import random
+
+def monte_carlo(n):
+    k = 0
+    for i in range(n):
+        x = random()
+        y = random()
+        if x**2 + y**2 <= 1:
+            k = k + 1
+    return 4 * k / n
+\end{pythoncol}
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=52mm, height=52mm, xmin=0, xmax=1, ymin=0, ymax=1, xtick={0,1}, ytick={1},
+  axis lines=box, axis line style={otMuted,line width=0.5pt,-}]
+  \addplot[only marks,mark=*,mark size=0.55pt,otGreenDark] coordinates {(0.324,0.151) (0.651,0.072) (0.536,0.366) (0.058,0.507) (0.037,0.434) (0.07,0.091) (0.425,0.827) (0.124,0.223) (0.577,0.397) (0.976,0.047) (0.858,0.29) (0.144,0.118) (0.308,0.816) (0.181,0.582) (0.639,0.372) (0.548,0.063) (0.06,0.206) (0.68,0.428) (0.314,0.586) (0.453,0.3) (0.244,0.574) (0.729,0.288) (0.98,0.118) (0.418,0.757) (0.152,0.489) (0.039,0.668) (0.765,0.573) (0.875,0.314) (0.695,0.594) (0.58,0.456) (0.474,0.664) (0.061,0.701) (0.822,0.285) (0.386,0.669) (0.023,0.462) (0.168,0.117) (0.059,0.768) (0.129,0.248) (0.391,0.871) (0.081,0.449) (0.278,0.415) (0.359,0.884) (0.958,0.151) (0.176,0.232) (0.233,0.485) (0.589,0.263) (0.004,0.419) (0.369,0.566) (0.515,0.618) (0.676,0.054) (0.392,0.399) (0.104,0.634) (0.062,0.067) (0.209,0.162) (0.34,0.053) (0.0,0.151) (0.101,0.364) (0.026,0.874) (0.614,0.149) (0.252,0.347) (0.364,0.123) (0.466,0.484) (0.086,0.102) (0.343,0.265) (0.829,0.161) (0.023,0.951) (0.528,0.147) (0.543,0.027) (0.261,0.367) (0.167,0.772) (0.533,0.779) (0.33,0.223) (0.227,0.518) (0.356,0.029) (0.028,0.279) (0.259,0.693) (0.22,0.227) (0.197,0.204) (0.84,0.479) (0.085,0.661) (0.75,0.478) (0.179,0.789) (0.333,0.801) (0.725,0.17) (0.127,0.151) (0.146,0.827) (0.35,0.549) (0.131,0.014) (0.434,0.872) (0.826,0.211) (0.252,0.293) (0.241,0.586) (0.259,0.419) (0.131,0.91) (0.354,0.458) (0.502,0.532) (0.524,0.019) (0.44,0.183) (0.004,0.799) (0.172,0.473) (0.725,0.556) (0.326,0.518) (0.555,0.784) (0.106,0.56) (0.248,0.277) (0.772,0.508) (0.562,0.76) (0.613,0.506) (0.512,0.693) (0.452,0.533) (0.942,0.26) (0.84,0.137) (0.122,0.442) (0.073,0.241) (0.073,0.669) (0.154,0.716) (0.66,0.143) (0.22,0.953) (0.398,0.487) (0.161,0.432) (0.516,0.339) (0.196,0.319) (0.722,0.019) (0.554,0.44) (0.018,0.331) (0.624,0.512) (0.064,0.985) (0.105,0.266) (0.04,0.779) (0.27,0.13) (0.819,0.259) (0.149,0.919) (0.571,0.7) (0.089,0.058) (0.688,0.425) (0.072,0.938) (0.084,0.856) (0.067,0.863) (0.454,0.339) (0.268,0.129) (0.527,0.238) (0.109,0.161) (0.05,0.202) (0.312,0.305) (0.759,0.29) (0.5,0.178) (0.347,0.018) (0.25,0.015) (0.733,0.551) (0.189,0.475) (0.935,0.106) (0.819,0.432) (0.495,0.835) (0.393,0.507) (0.343,0.832) (0.707,0.636) (0.405,0.348) (0.054,0.13) (0.071,0.741) (0.256,0.163) (0.084,0.841) (0.282,0.242) (0.293,0.459) (0.158,0.446) (0.263,0.962) (0.244,0.966) (0.31,0.357) (0.001,0.382) (0.475,0.503) (0.201,0.505) (0.005,0.264) (0.09,0.4) (0.042,0.022) (0.304,0.233) (0.586,0.529) (0.751,0.658) (0.39,0.326) (0.985,0.149) (0.724,0.643) (0.044,0.835) (0.139,0.524) (0.504,0.835) (0.683,0.693) (0.23,0.031) (0.133,0.361) (0.105,0.836) (0.559,0.628) (0.626,0.681) (0.489,0.003) (0.503,0.535) (0.659,0.066) (0.737,0.252) (0.074,0.266) (0.729,0.205) (0.494,0.383) (0.479,0.684) (0.767,0.617) (0.643,0.077) (0.147,0.254) (0.743,0.304) (0.568,0.012) (0.061,0.269) (0.672,0.692) (0.676,0.291) (0.517,0.465) (0.466,0.119) (0.894,0.199) (0.018,0.459) (0.449,0.269) (0.21,0.946) (0.211,0.581) (0.142,0.524) (0.953,0.133) (0.82,0.509) (0.231,0.898) (0.486,0.025) (0.004,0.492) (0.451,0.302) (0.141,0.344) (0.316,0.84) (0.002,0.751) (0.839,0.12) (0.902,0.29) (0.372,0.393) (0.361,0.428) (0.275,0.048) (0.102,0.835) (0.286,0.936) (0.249,0.266) (0.511,0.19) (0.72,0.049) (0.732,0.451) (0.753,0.644) (0.286,0.049) (0.927,0.127) (0.472,0.344) (0.298,0.739) (0.656,0.301) (0.557,0.394) (0.167,0.162) (0.208,0.906) (0.497,0.22) (0.45,0.14) (0.192,0.091) (0.342,0.091) (0.239,0.258) (0.75,0.413) (0.414,0.524) (0.377,0.338) (0.062,0.278) (0.968,0.126) (0.503,0.63) (0.863,0.216) (0.271,0.248) (0.4,0.446) (0.873,0.022) (0.032,0.71) (0.587,0.0) (0.109,0.154) (0.522,0.682) (0.457,0.552) (0.04,0.782) (0.233,0.92) (0.646,0.304) (0.128,0.252) (0.636,0.699) (0.112,0.07) (0.524,0.583) (0.388,0.224) (0.601,0.01) (0.302,0.461) (0.235,0.247) (0.307,0.022) (0.498,0.674) (0.42,0.257) (0.227,0.034) (0.338,0.421) (0.683,0.198) (0.505,0.205) (0.82,0.231) (0.221,0.76) (0.295,0.952) (0.496,0.187) (0.223,0.417) (0.146,0.393) (0.213,0.974) (0.142,0.052) (0.06,0.393) (0.932,0.329) (0.186,0.936) (0.746,0.032) (0.664,0.379) (0.374,0.332) (0.169,0.003) (0.28,0.351) (0.956,0.124) (0.964,0.207) (0.357,0.822) (0.822,0.432) (0.049,0.473) (0.373,0.92) (0.193,0.364) (0.897,0.03) (0.411,0.812) (0.767,0.041) (0.035,0.063) (0.92,0.257) (0.339,0.272) (0.262,0.717) (0.316,0.276) (0.004,0.756) (0.943,0.024) (0.234,0.475) (0.387,0.251) (0.43,0.493) (0.928,0.183)};
+  \addplot[only marks,mark=*,mark size=0.55pt,otOrange] coordinates {(0.627,0.948) (0.794,0.699) (0.525,0.875) (0.84,0.945) (0.647,0.993) (0.549,0.883) (0.819,0.864) (0.953,0.69) (0.9,0.78) (0.875,0.798) (0.849,0.993) (0.528,0.979) (0.863,0.696) (0.812,0.985) (0.853,0.806) (0.818,0.74) (0.957,0.447) (0.937,0.988) (0.955,0.365) (0.624,0.9) (0.653,0.8) (0.91,0.782) (0.972,0.396) (0.401,0.947) (0.905,0.807) (0.98,0.657) (0.971,0.65) (0.527,0.934) (0.583,0.904) (0.421,0.918) (0.912,0.443) (0.478,0.942) (0.699,0.877) (0.56,0.943) (0.784,0.897) (0.883,0.968) (0.99,0.832) (0.788,0.972) (0.422,0.911) (0.634,0.802) (0.553,0.927) (0.688,0.982) (0.871,0.671) (0.973,0.547) (0.716,0.879) (0.892,0.627) (0.734,0.812) (0.805,0.826) (0.584,0.893) (0.798,0.748) (0.74,0.976) (0.978,0.936) (0.82,0.968) (0.887,0.703) (0.926,0.713) (0.999,0.589) (0.373,0.956) (0.884,0.812) (0.631,0.913) (0.941,0.549) (0.976,0.26) (0.906,0.996) (0.57,0.887) (0.954,0.849) (0.896,0.473) (0.392,0.927) (0.826,0.855) (0.972,0.248) (0.941,0.722) (0.647,0.765) (0.959,0.645) (0.884,0.475) (0.961,0.705) (0.667,0.925) (0.797,0.739) (0.97,0.312) (0.665,0.949) (0.898,0.884) (0.733,0.998) (0.747,0.899) (0.958,0.617) (0.916,0.634) (0.957,0.954) (0.803,0.738)};
+  \addplot[otNavy,line width=0.9pt,domain=0:90,samples=60] ({cos(x)},{sin(x)});
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$400$ points tirés : $316$ dans le quart de disque, d'où $4\times\frac{316}{400}=3{,}16$.}
+\end{codecote}
+\begin{questions}
+  \item Expliquer le rôle de la variable \code{k} et justifier que \code{monte\_carlo(n)} renvoie une estimation de $\pi$.
+  \item Une exécution a donné \code{monte\_carlo(1000)} $\to$ \code{3.136}, puis \code{monte\_carlo(100000)} $\to$ \code{3.15476}.
+    Pourquoi obtient-on un résultat différent à chaque exécution ? Quelle loi suit la variable aléatoire $K$ comptant les points
+    dans le quart de disque ?
+  \item On note $F=\frac{K}{n}$. À l'aide de l'inégalité de Bienaymé-Tchebychev et de $p(1-p)\leq\frac14$, déterminer une valeur
+    de $n$ qui garantit $P\big(|4F-\pi|<0{,}01\big)\geq0{,}95$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Nombres premiers et conjecture de Goldbach}
+\begin{codecote}[0.42]
+\begin{pythoncol}
+def est_premier(n):
+    if n < 2:
+        return False
+    d = 2
+    while d * d <= n:
+        if n % d == 0:
+            return False
+        d = d + 1
+    return True
+\end{pythoncol}
+\cote
+Un entier $n\geq2$ est \textbf{premier} s'il n'a pas d'autre diviseur positif que $1$ et lui-même.\\[1mm]
+La \textbf{conjecture de Goldbach} (1742) affirme que tout nombre pair supérieur ou égal à $4$ est la somme de deux nombres premiers.
+Elle a été vérifiée par ordinateur jusqu'à $4\times10^{18}$, mais n'est toujours pas démontrée.
+\end{codecote}
+\begin{questions}
+  \item Que renvoient \code{est\_premier(1)}, \code{est\_premier(2)}, \code{est\_premier(9)}, \code{est\_premier(91)} et
+    \code{est\_premier(97)} ? Combien de divisions sont testées pour $97$ ?
+  \item Justifier que si $n$ n'est pas premier, il admet un diviseur $d$ tel que $2\leq d$ et $d^{2}\leq n$. Pourquoi est-ce utile ?
+  \item Écrire un programme qui compte les nombres premiers inférieurs ou égaux à $100$.
+  \item Écrire un programme qui vérifie la conjecture de Goldbach pour tous les nombres pairs de $4$ à $100$, puis qui affiche toutes
+    les décompositions de $100$ en somme de deux nombres premiers $p+q$ avec $p\leq q$.
+\end{questions}
+\end{exercice}

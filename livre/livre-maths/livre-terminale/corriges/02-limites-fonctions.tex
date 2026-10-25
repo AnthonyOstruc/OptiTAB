@@ -1,0 +1,293 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 2 — Limites de fonctions
+%% Tous les résultats ont été vérifiés par calcul formel (sympy).
+
+\corrigesChapitre{2}{Limites de fonctions}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Limites usuelles}
+\begin{questions}
+  \item Fonction polynôme : on remplace $x$ par $2$ : $3\times4-4+1=\res{9}$
+  \item $\res{0}$\quad (limite de référence)
+  \item $\res{+\infty}$
+  \item $\lim_{x\to+\infty}(x+1)=+\infty$ et $\lim_{X\to+\infty}\sqrt{X}=+\infty$ : $\res{+\infty}$ (composition)
+  \item $\res{0}$\quad (limite de référence)
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Opérations sur les limites}
+\begin{questions}
+  \item $\frac1x\to0$, donc la limite vaut $\res{3}$
+  \item $5\times2^{2}=\res{20}$
+  \item $\dfrac{x\left(2+\frac1x\right)}{x\left(3-\frac2x\right)}=\dfrac{2+\frac1x}{3-\frac2x}$ tend vers $\res{\dfrac23}$
+  \item $\dfrac{9+1}{3-1}=\res{5}$\quad (pas d'indétermination)
+  \item $x\times\frac{1}{x^{2}}=\frac1x$ : $\res{0}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Formes indéterminées}
+\begin{questions}
+  \item \methode{factoriser par $(x-1)$}\\
+    $\dfrac{(x-1)(x+1)}{x-1}=x+1$ pour $x\neq1$ : $\res{2}$
+  \item $\dfrac{(x-1)(x^{2}+x+1)}{(x-1)(x+1)}=\dfrac{x^{2}+x+1}{x+1}$ tend vers $\res{\dfrac32}$
+  \item Quotient des termes dominants : $\dfrac{x^{2}}{2x^{2}}=\dfrac12$ : $\res{\dfrac12}$
+  \item $x^{2}-x=x^{2}\left(1-\frac1x\right)$ : $\res{+\infty}$
+  \item $\dfrac{x^{2}\left(1+\frac{1}{x^{2}}\right)}{x^{3}\left(1-\frac{2}{x^{2}}\right)}=\dfrac1x\times\dfrac{1+\frac{1}{x^{2}}}{1-\frac{2}{x^{2}}}$ : $\res{0}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Racines carrées et quantité conjuguée}
+\methode{$(\sqrt{A}-B)(\sqrt{A}+B)=A-B^{2}$}
+\begin{questions}
+  \item $\dfrac{\sqrt{1+x}-1}{x}=\dfrac{x}{x\left(\sqrt{1+x}+1\right)}$\\[1mm]
+    $\phantom{\dfrac{\sqrt{1+x}-1}{x}}=\dfrac{1}{\sqrt{1+x}+1}$ : $\res{\dfrac12}$
+  \item $\dfrac{\sqrt{x}-1}{x-1}=\dfrac{1}{\sqrt{x}+1}$ : $\res{\dfrac12}$
+  \item $\sqrt{x^{2}+x}-x=\dfrac{x}{\sqrt{x^{2}+x}+x}$\\[1mm]
+    $\phantom{\sqrt{x^{2}+x}-x}=\dfrac{1}{\sqrt{1+\frac1x}+1}$ : $\res{\dfrac12}$
+  \item Pour $x>-1$, $\sqrt{x^{2}+2x+1}=\sqrt{(x+1)^{2}}=x+1$, donc l'expression vaut $1$ : $\res{1}$
+  \item $\dfrac{\sqrt{x^{2}+1}-x}{x}=\dfrac{1}{x\left(\sqrt{x^{2}+1}+x\right)}$ : $\res{0}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Limites à gauche et à droite}
+\begin{questions}
+  \item $\res{\lim_{0^{+}}\frac1x=+\infty}$ et $\res{\lim_{0^{-}}\frac1x=-\infty}$ : pas de limite en $0$.
+  \item $\res{\lim_{0^{+}}\sqrt{x}=0}$. La racine carrée n'est pas définie pour $x<0$ : on ne peut pas parler de limite à gauche.
+  \item Pour $x\neq2$, $\dfrac{x^{2}-4}{x-2}=x+2$ : les deux limites valent $4$, donc $\res{\lim_{x\to2}=4}$.
+  \item Pour $x>0$, $f(x)=1$ ; pour $x<0$, $f(x)=-1$. Les limites à droite ($1$) et à gauche ($-1$) diffèrent : $\res{\text{pas de limite en }0}$.
+  \item Pour $x\neq1$, $\dfrac{x^{2}-1}{x-1}=x+1$ : $\res{\lim_{x\to1}=2}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Théorème de comparaison}
+\methode{minorer par une fonction qui tend vers $+\infty$}
+\begin{questions}
+  \item Pour $x\geq0$, $x^{2}+3x+1\geq x^{2}$ et $\lim x^{2}=+\infty$.
+  \item Pour $x\geq\sqrt6$, $x^{2}-5\geq1$, donc $x^{3}-5x=x\left(x^{2}-5\right)\geq x$.
+  \item Pour $x\geq0$, $\sqrt{x^{2}+x}\geq\sqrt{x^{2}}=x$.
+  \item $2x^{2}-x+10-x^{2}=x^{2}-x+10>0$ (discriminant négatif), donc $2x^{2}-x+10\geq x^{2}$.
+  \item $x^{4}\geq0$, donc $x^{4}+x^{2}-100\geq x^{2}-100$, qui tend vers $+\infty$.
+\end{questions}
+Dans chaque cas, le théorème de comparaison donne $\res{+\infty}$.
+\end{corrige}
+
+\begin{corrige}{7}{Théorème des gendarmes}
+\begin{questions}
+  \item $-x^{2}\leq x^{2}\sin\frac1x\leq x^{2}$ : $\res{0}$
+  \item Pour $x>0$, $-\frac1x\leq\frac{\sin x}{x}\leq\frac1x$ : $\res{0}$
+  \item $\left|x\cos\frac1x\right|\leq|x|$, donc $-|x|\leq x\cos\frac1x\leq|x|$ : $\res{0}$
+  \item Pour $x>1$ :\\ $\dfrac{x-1}{x+1}\leq\dfrac{x+\sin x}{x+\cos x}\leq\dfrac{x+1}{x-1}$\\
+    les deux bornes tendent vers $1$ : $\res{1}$
+  \item $\dfrac{x^{2}-1}{x^{2}+1}\leq\dfrac{x^{2}+\cos x}{x^{2}+1}\leq1$ : $\res{1}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Exponentielle et croissances comparées}
+\begin{questions}
+  \item Taux d'accroissement de $\exp$ en $0$ : $\exp'(0)=\res{1}$
+  \item $\dfrac{e^{3x}-1}{x}=3\times\dfrac{e^{3x}-1}{3x}$ ; avec $X=3x\to0$ : $\res{3}$
+  \item Croissances comparées : $\res{+\infty}$
+  \item Croissances comparées : $\res{0}$
+  \item $\dfrac{e^{2x}-1}{x}-\dfrac{e^{x}-1}{x}$ tend vers $2-1=\res{1}$
+  \item $x^{3}-e^{x}=e^{x}\left(\dfrac{x^{3}}{e^{x}}-1\right)$ ; la parenthèse tend vers $-1$ : $\res{-\infty}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{9}{Limites trigonométriques}
+\methode{se ramener à $\frac{\sin X}{X}$ avec $X\to0$}
+\begin{questions}
+  \item $\dfrac{\sin(2x)}{x}=2\times\dfrac{\sin(2x)}{2x}$ : $\res{2}$
+  \item $\dfrac{\sin(3x)}{3x}\times\dfrac{5x}{\sin(5x)}\times\dfrac35$ : $\res{\dfrac35}$
+  \item $\dfrac{2\sin^{2}x}{x^{2}}=2\left(\dfrac{\sin x}{x}\right)^{2}$ : $\res{2}$
+  \item $\dfrac{\tan x}{x}=\dfrac{\sin x}{x}\times\dfrac{1}{\cos x}$ : $\res{1}$
+  \item Avec $X=x^{2}\to0$ : $\res{1}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{10}{Asymptotes}
+\begin{questions}
+  \item $f(x)=x+2+\dfrac{3}{x-2}$ sur $\R\setminus\{2\}$.\\
+    $\res{x=2}$ (limites $\pm\infty$) et $\res{y=x+2}$ en $\pm\infty$.
+  \item Sur $\R\setminus\{-3\}$ : $\res{x=-3}$ et $\res{y=2}$ (quotient des termes dominants).
+  \item Sur $\R\setminus\{-1;1\}$, $h(x)=\dfrac{x^{2}-x+1}{x-1}=x+\dfrac{1}{x-1}$.\\
+    $\res{x=1}$ et $\res{y=x}$. En $-1$, $h(x)\to-\frac32$ : pas d'asymptote, la courbe a un « trou » au point $\left(-1\pv-\frac32\right)$.
+  \item $k(x)=x+1-\dfrac{1}{x+1}$ sur $\R\setminus\{-1\}$ :\\ $\res{x=-1}$ et $\res{y=x+1}$.
+  \item Définie sur $\R$ ($x^{2}+1>0$) : seulement $\res{y=1}$ en $\pm\infty$.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{Devoir de synthèse}
+\begin{deuxcolonnes}
+\partieExo{A}{Limites usuelles et opérations}
+\begin{questions}
+  \item $2\times9-15+1=\res{4}$ et $\dfrac{3+\frac2x-\frac{1}{x^{2}}}{1+\frac{5}{x^{2}}}\to\res{3}$
+  \item $x^{3}\left(1-\frac2x\right)$ : $\res{+\infty}$
+\end{questions}
+\partieExo{B}{Formes indéterminées}
+\begin{questions}[resume]
+  \item $x+2\to\res{4}$ et $\res{\dfrac23}$
+  \item $\sqrt{x^{2}+1}-x=\dfrac{1}{\sqrt{x^{2}+1}+x}$ : $\res{0}$
+\end{questions}
+\partieExo{C}{Théorème des gendarmes}
+\begin{questions}[resume]
+  \item $\dfrac{2x-1}{x+1}\leq\dfrac{2x+\sin x}{x+1}\leq\dfrac{2x+1}{x+1}$ : $\res{2}$\\
+    $-x^{2}\leq x^{2}\cos\frac1x\leq x^{2}$ : $\res{0}$
+\end{questions}
+\columnbreak
+\partieExo{D}{Asymptotes}
+\begin{questions}[resume]
+  \item En $1$ : numérateur $\to5$, d'où $\pm\infty$ : $\res{x=1}$. En $\pm\infty$ : $\res{y=3}$.
+  \item $g(x)=x-2+\dfrac{3}{x+2}$ : $\res{x=-2}$ et l'asymptote oblique $\res{y=x-2}$.
+\end{questions}
+\partieExo{E}{Trigonométrie et exponentielle}
+\begin{questions}[resume]
+  \item $4\times\dfrac{\sin(4x)}{4x}\to\res{4}$ ;\enspace croissances comparées : $\res{+\infty}$ et $\res{0}$.
+\end{questions}
+\end{deuxcolonnes}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Une fonction rationnelle et ses asymptotes}
+\partieExo{A}{Limites et asymptotes}
+\begin{questions}
+  \item $(x-2)(x-1)+4=x^{2}-3x+6$, donc $\res{f(x)=x-2+\dfrac{4}{x-1}}$ : $a=1$, $b=-2$, $c=4$.
+  \item Le numérateur tend vers $4>0$. Si $x\to1^{+}$, $x-1\to0^{+}$ : $\res{\lim_{1^{+}}f=+\infty}$ ;
+    si $x\to1^{-}$, $x-1\to0^{-}$ : $\res{\lim_{1^{-}}f=-\infty}$. La droite d'équation $x=1$ est asymptote verticale.
+  \item $\dfrac{4}{x-1}\to0$ et $x-2\to\pm\infty$ : $\res{\lim_{-\infty}f=-\infty}$ et $\res{\lim_{+\infty}f=+\infty}$.
+  \item $f(x)-(x-2)=\dfrac{4}{x-1}$ tend vers $0$ en $\pm\infty$ : $\res{\Delta\text{ est asymptote oblique}}$.
+  \item $\dfrac{4}{x-1}>0$ si $x>1$ : $\Cf$ est \textbf{au-dessus} de $\Delta$ sur $\intOO{1}{+\infty}$, et
+    \textbf{en dessous} sur $\intOO{-\infty}{1}$.
+\end{questions}
+\partieExo{B}{Variations}
+\begin{questions}[resume]
+  \item $f'(x)=1-\dfrac{4}{(x-1)^{2}}=\dfrac{(x-1)^{2}-4}{(x-1)^{2}}=\dfrac{(x-1-2)(x-1+2)}{(x-1)^{2}}=\dfrac{(x-3)(x+1)}{(x-1)^{2}}$.
+  \item $f(-1)=-3+\frac{4}{-2}=-5$ et $f(3)=1+2=3$.
+\end{questions}
+\begin{center}
+\begin{tableau}
+  \otTab[2.2]{$x$/0.9,$f'(x)$/0.9,$f$/1.9}{$-\infty$,$-1$,$1$,$3$,$+\infty$}
+  \tkzTabLine{,+,z,-,d,-,z,+,}
+  \tkzTabVar{-/$-\infty$,+/$-5$,-D+/$-\infty$/$+\infty$,-/$3$,+/$+\infty$}
+\end{tableau}
+\end{center}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=128mm, height=76mm,
+  xmin=-6, xmax=8, ymin=-12, ymax=12, xtick={-4,-2,2,4,6}, ytick={-10,-5,5,10},
+  xlabel={$x$}, ylabel={$y$}, xlabel style={at={(1,0.5)},anchor=west},
+  ylabel style={at={(0.43,1)},anchor=south},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otGreen,dashed,line width=0.7pt,domain=-6:8] {x-2};
+  \draw[otGreen,dashed,line width=0.7pt] (axis cs:1,-12) -- (axis cs:1,12);
+  \addplot[otNavy,line width=1.2pt,domain=-6:0.62,samples=150] {x-2+4/(x-1)};
+  \addplot[otNavy,line width=1.2pt,domain=1.32:8,samples=150] {x-2+4/(x-1)};
+  \addplot[only marks,mark=*,mark size=1.6pt,otNavy] coordinates {(-1,-5) (3,3)};
+  \node[anchor=north,otEtiquette,font=\scriptsize] at (axis cs:-1,-5.6) {$(-1\pv-5)$};
+  \node[anchor=north,otEtiquette,font=\scriptsize] at (axis cs:3,2.4) {$(3\pv3)$};
+  \node[anchor=west,font=\scriptsize,text=otGreenDark] at (axis cs:6.4,4.0) {$\Delta$};
+  \node[anchor=west,font=\scriptsize,text=otGreenDark] at (axis cs:1.15,-10.5) {$x=1$};
+  \node[anchor=east,font=\scriptsize,text=otNavy] at (axis cs:7.5,8.6) {$\Cf$};
+\end{axis}
+\end{tikzpicture}\\[1mm]
+\legende{$\Cf$ est au-dessus de $\Delta$ pour $x>1$ et en dessous pour $x<1$.}
+\end{center}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{13}{Croissances comparées : démonstration et application}
+\partieExo{A}{Démonstration}
+\begin{questions}
+  \item $k'(x)=e^{x}-1\geq0$ pour $x\geq0$ : $k$ est croissante sur $\intFO{0}{+\infty}$ et $k(0)=0$, donc
+    $k(x)\geq0$, c'est-à-dire $\res{e^{x}\geq1+x}$.
+  \item $h'(x)=e^{x}-x=k(x)+1>0$ : $h$ est croissante, et $h(0)=1>0$, donc $h(x)>0$ : $\res{e^{x}>\dfrac{x^{2}}{2}}$.
+  \item Pour $x>0$, on divise par $x$ : $\dfrac{e^{x}}{x}>\dfrac{x}{2}$. Comme $\lim\dfrac x2=+\infty$, le théorème de
+    comparaison donne $\res{\lim_{x\to+\infty}\dfrac{e^{x}}{x}=+\infty}$.
+  \item $xe^{-x}=\dfrac{1}{e^{x}/x}$, donc $\res{\lim_{x\to+\infty}xe^{-x}=0}$. Avec $X=-x$ :
+    $xe^{x}=-Xe^{-X}$ et $X\to+\infty$ quand $x\to-\infty$, donc $\res{\lim_{x\to-\infty}xe^{x}=0}$.
+\end{questions}
+\partieExo{B}{Application}
+\begin{questions}[resume]
+  \item \begin{questions}
+      \item $x^{2}\to+\infty$ et $e^{-x}\to+\infty$ : $\res{\lim_{-\infty}f=+\infty}$.
+      \item $\dfrac14\left(\dfrac{e^{x/2}}{x/2}\right)^{2}=\dfrac14\times\dfrac{e^{x}}{x^{2}/4}=\dfrac{e^{x}}{x^{2}}$.\\[1mm]
+        Avec $X=\frac x2$, qui tend vers $+\infty$, $\dfrac{e^{X}}{X}\to+\infty$ ; donc $\dfrac{e^{x}}{x^{2}}\to+\infty$.\\[1mm]
+        Ainsi $f(x)=\dfrac{1}{e^{x}/x^{2}}$ tend vers $\res{0}$ : l'axe des abscisses est asymptote à $\Cf$ en $+\infty$.
+    \end{questions}
+  \item $f'(x)=2xe^{-x}-x^{2}e^{-x}=\res{x(2-x)e^{-x}}$, du signe de $x(2-x)$ car $e^{-x}>0$.
+    $f(0)=0$ et $f(2)=\dfrac{4}{e^{2}}\approx0{,}54$.
+\end{questions}
+\noindent
+\begin{minipage}[c]{0.53\linewidth}
+\centering
+\begin{tableau}
+  \otTab[1.45]{$x$/0.9,$f'(x)$/0.9,$f$/1.9}{$-\infty$,$0$,$2$,$+\infty$}
+  \tkzTabLine{,-,z,+,z,-,}
+  \tkzTabVar{+/$+\infty$,-/$0$,+/$\frac{4}{e^{2}}$,-/$0$}
+\end{tableau}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=66mm, height=46mm,
+  xmin=-1.6, xmax=8.5, ymin=-0.1, ymax=1.5, xtick={2,4,6,8}, ytick={0.5,1},
+  yticklabels={$0{,}5$,$1$}, xlabel={$x$}, xlabel style={at={(1,0.06)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otNavy,line width=1.2pt,domain=-0.8:8.3,samples=150] {x^2*exp(-x)};
+  \fill[otNavy] (axis cs:2,0.5413) circle (1.5pt);
+  \node[anchor=south west,font=\scriptsize,text=otNavy] at (axis cs:2.1,0.56) {$\left(2\pv\frac{4}{e^{2}}\right)$};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\begin{questions}[start=7]
+  \item D'après le tableau, sur $\intFO{0}{+\infty}$, $f$ admet un minimum $0$ (en $0$) et un maximum $\frac{4}{e^{2}}$
+    (en $2$) : $\res{0\leq x^{2}e^{-x}\leq\dfrac{4}{e^{2}}}$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{14}{La vitesse limite d'un parachutiste}
+\noindent
+\begin{minipage}[t]{0.52\linewidth}\vspace{0pt}\raggedright
+\begin{questions}
+  \item $v(0)=50\,(1-e^{0})=\res{0}$.
+  \item $-\frac t5\to-\infty$, donc $e^{-t/5}\to0$ (composition) et $\res{\lim v(t)=50}$.
+    La droite d'équation $y=50$ est asymptote horizontale : le parachutiste atteint une
+    \textbf{vitesse limite} de $50$~m/s, soit $180$~km/h.
+  \item $v'(t)=50\times\frac15\,e^{-t/5}=10\,e^{-t/5}>0$ : $\res{v\text{ est croissante}}$.
+    De plus $50-v(t)=50\,e^{-t/5}>0$, donc $v(t)<50$.
+  \item \begin{questions}
+      \item $v'(0)=10$ et $v(0)=0$ : $\res{T : y=10\,t}$.
+      \item $10\,\tau=50$ donne $\res{\tau=5\text{ s}}$, puis $v(5)=50\left(1-e^{-1}\right)\approx31{,}6$ m/s,
+        soit environ $63\,\%$ de la vitesse limite.
+    \end{questions}
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.44\linewidth}\vspace{0pt}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=72mm, height=56mm, xmin=0, xmax=32, ymin=0, ymax=58,
+  xtick={5,10,20,30}, ytick={10,20,30,40,50}, xlabel={$t$}, xlabel style={at={(1,0)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \draw[otGreen,dashed,line width=0.7pt] (axis cs:0,50) -- (axis cs:32,50);
+  \addplot[otMuted,line width=0.7pt,domain=0:5.6] {10*x};
+  \addplot[otNavy,line width=1.2pt,domain=0:31,samples=120] {50*(1-exp(-x/5))};
+  \draw[otMuted,densely dotted,line width=0.5pt] (axis cs:5,0) -- (axis cs:5,50);
+  \fill[otNavy] (axis cs:5,31.6) circle (1.5pt);
+  \node[anchor=north west,font=\scriptsize,text=otMuted] at (axis cs:1.4,49) {$T$};
+  \node[anchor=south east,font=\scriptsize,text=otGreenDark] at (axis cs:31.5,50.5) {$y=50$};
+  \node[anchor=north west,font=\scriptsize,text=otNavy] at (axis cs:5.4,31) {$v(\tau)\approx31{,}6$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{La tangente à l'origine coupe l'asymptote en $t=\tau=5$ s.}
+\end{minipage}
+
+\begin{questions}[start=5]
+  \item On complète avec \lstinline[style=otPython]!while v < 49.5:! et \lstinline[style=otPython]!v = 50 * (1 - exp(-t / 5))!.
+    Comme $v(23)\approx49{,}497$ et $v(24)\approx49{,}589$, la fonction renvoie $\res{24}$ : après $24$ secondes,
+    la vitesse dépasse $99\,\%$ de la vitesse limite.
+\end{questions}
+\end{corrige}

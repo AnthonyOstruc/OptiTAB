@@ -1,0 +1,348 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[colorimetrie]{5}{Titrages colorimétriques}{Partie 1 · Constitution et transformations de la matière}
+{Titrage\enspace·\enspace Réaction support\enspace·\enspace Équivalence\enspace·\enspace Volume équivalent\enspace·\enspace Changement de teinte}
+\objectif{Décrire le principe d'un titrage direct et les qualités de sa réaction support.}
+\objectif{Relier l'équivalence au changement de réactif limitant et aux proportions stœchiométriques.}
+\objectif{Établir la relation entre les quantités de matière de réactifs à l'équivalence et en déduire une concentration.}
+\objectif{Expliquer ou prévoir le changement de teinte observé à l'équivalence.}
+\objectif{Réaliser un titrage avec repérage colorimétrique et exploiter le volume équivalent.}
+\prerequis{Couples oxydant-réducteur et équations d'oxydoréduction (chapitre~3).}
+\prerequis{Avancement, réactif limitant, mélange stœchiométrique (chapitre~4).}
+\prerequis{Relation $n=c\times V$ et dilution (chapitre~1).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Le principe d'un titrage}
+\begin{definition}[Titrage direct]
+\textbf{Titrer} une espèce chimique dans une solution, c'est déterminer sa quantité de matière, ou sa concentration, à
+l'aide d'une réaction chimique avec une autre espèce de concentration connue, le \textbf{réactif titrant}. Cette
+\textbf{réaction support du titrage} doit être \textbf{totale}, \textbf{rapide} et \textbf{unique} : le réactif titrant ne doit réagir
+qu'avec l'espèce titrée. En classe de première, les réactions support sont des réactions d'oxydoréduction.
+\end{definition}
+\schema{05-montage}
+\essSection{2}{L'équivalence}
+\begin{definition}[Équivalence d'un titrage]
+L'\textbf{équivalence} est atteinte lorsque les réactifs ont été introduits dans les \textbf{proportions stœchiométriques}. Elle
+correspond à un \textbf{changement de réactif limitant} :
+\begin{questions}
+\item avant l'équivalence, le réactif titrant versé est limitant : il est entièrement consommé dès son ajout ;
+\item après l'équivalence, l'espèce titrée a disparu : le réactif titrant versé s'accumule dans le mélange.
+\end{questions}
+Le volume de solution titrante versé à l'équivalence est le \textbf{volume équivalent} $V_\mathrm{E}$.
+\end{definition}
+\schema{05-evolution}
+\essSection{3}{Exploiter l'équivalence}
+\begin{propriete}[Relation à l'équivalence]
+Pour la réaction support $a\,\mathrm{A}+b\,\mathrm{B}\longrightarrow\dots$, où A est l'espèce titrée et B le réactif titrant de concentration $c_\mathrm{B}$,
+les proportions sont stœchiométriques à l'équivalence :
+\[\frac{n_0(\mathrm{A})}{a}=\frac{n_\mathrm{E}(\mathrm{B})}{b}=\frac{c_\mathrm{B}\,V_\mathrm{E}}{b}.\]
+\end{propriete}
+\begin{savoirfaire}[Exploiter un titrage]
+\begin{questions}
+\item Écrire l'équation de la réaction support, à partir des couples si nécessaire.
+\item Calculer la quantité de réactif titrant versé à l'équivalence : $n_\mathrm{E}(\mathrm{B})=c_\mathrm{B}\times V_\mathrm{E}$.
+\item Écrire la relation à l'équivalence et en déduire $n_0(\mathrm{A})$, puis la concentration $c_\mathrm{A}=\dfrac{n_0(\mathrm{A})}{V_\mathrm{A}}$.
+\item Tenir compte, s'il y a lieu, de la dilution ou du prélèvement effectués avant le titrage.
+\end{questions}
+\end{savoirfaire}
+\begin{exemple}
+On titre $V_1=\qty{10,0}{mL}$ d'une solution d'ions fer(II) par une solution de permanganate de potassium à
+$c_2=\qty{2,00e-2}{mol.L^{-1}}$ ; $V_\mathrm{E}=\qty{12,0}{mL}$. Avec $\ce{MnO4- + 8H+ + 5Fe^{2+} -> Mn^{2+} + 5Fe^{3+} + 4H2O}$ :
+\[\frac{n_0(\ce{Fe^{2+}})}{5}=c_2\,V_\mathrm{E}\qquad\text{donc}\qquad n_0(\ce{Fe^{2+}})=5\times\num{2.00e-2}\times\num{12.0e-3}=\qty{1,20e-3}{mol}\]
+et $c_1=\dfrac{\num{1.20e-3}}{\num{10.0e-3}}=\qty{0,120}{mol.L^{-1}}$.
+\end{exemple}
+\essSection{4}{Repérer l'équivalence par un changement de teinte}
+\begin{propriete}[Repérage colorimétrique]
+Si une espèce colorée intervient, la teinte du mélange change à l'équivalence :
+\begin{questions}
+\item si le réactif titrant est coloré, comme l'ion permanganate violet, sa teinte \textbf{persiste} à partir de l'équivalence ;
+\item si l'espèce titrée est colorée, comme le diiode jaune-brun, sa teinte \textbf{disparaît} à l'équivalence ;
+\item sinon, on ajoute un indicateur coloré : l'empois d'amidon colore en bleu intense une solution contenant du diiode.
+\end{questions}
+\end{propriete}
+\schema{05-couleurs}
+\begin{python}
+c2 = 2.00e-2      # mol/L : ions permanganate
+n1 = 1.20e-3      # mol : ions fer(II)
+for V in [0, 4, 8, 12, 16]:          # mL
+    n2 = c2 * V * 1e-3
+    x = min(n2 / 1, n1 / 5)
+    nFe = n1 - 5 * x
+    nMn = n2 - x
+    print(f"V = {V:2d} mL : Fe2+ {nFe * 1e3:.2f} mmol ; MnO4- {nMn * 1e3:.2f} mmol")
+\end{python}
+\begin{console}
+V =  0 mL : Fe2+ 1.20 mmol ; MnO4- 0.00 mmol
+V =  4 mL : Fe2+ 0.80 mmol ; MnO4- 0.00 mmol
+V =  8 mL : Fe2+ 0.40 mmol ; MnO4- 0.00 mmol
+V = 12 mL : Fe2+ 0.00 mmol ; MnO4- 0.00 mmol
+V = 16 mL : Fe2+ 0.00 mmol ; MnO4- 0.08 mmol
+\end{console}
+\noindent\capacite{Capacité numérique} Pour chaque volume versé, le programme calcule l'avancement maximal \code{x} comme au chapitre~4, puis
+les quantités restantes d'ions fer(II) et permanganate. Avant \qty{12}{mL}, il ne reste jamais d'ions permanganate : ils sont
+limitants. Après, il ne reste plus d'ions fer(II) et les ions permanganate s'accumulent : la teinte violette apparaît.
+\begin{attention}
+L'équivalence n'est pas la fin de la réaction : c'est l'instant où les réactifs ont été apportés dans les proportions
+stœchiométriques. L'eau distillée ajoutée dans l'erlenmeyer pour rincer ses parois ne change pas $n_0(\mathrm{A})$, donc ne
+change pas $V_\mathrm{E}$. Près de l'équivalence, on verse la solution titrante goutte à goutte.
+\end{attention}
+\begin{experience}[Titrer la vitamine C d'un comprimé]
+Un comprimé « vitamine C 500 » est dissous dans une fiole jaugée de \qty{200,0}{mL}. On prélève \qty{10,0}{mL} de cette solution, on
+ajoute quelques gouttes d'empois d'amidon, puis on verse une solution de diiode à \qty{1,00e-2}{mol.L^{-1}}. Le diiode est réduit
+dès son ajout, tant qu'il reste de la vitamine C ; la teinte bleue persiste à partir de $V_\mathrm{E}=\qty{14,2}{mL}$. On en déduit
+\qty{2,84e-3}{mol} de vitamine C dans le comprimé, soit \qty{500}{mg} : l'indication est vérifiée.
+\end{experience}
+\begin{rediger}
+Écrire l'équation de la réaction support, définir l'équivalence, écrire la relation à l'équivalence avec les nombres
+stœchiométriques, puis calculer en gardant les unités. Ne pas oublier le facteur de dilution ou de prélèvement, et
+comparer le résultat à la valeur attendue.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-5-1}
+\begin{exercice}[1]{Le vocabulaire du titrage}
+On titre une solution jaune-orangé de diiode par une solution incolore de thiosulfate de sodium.
+\schema{05-ex01}
+\begin{questions}
+\item Nommer les éléments numérotés de 1 à 5.
+\item Quelle solution est placée dans la burette ? dans l'erlenmeyer ? Avec quelle verrerie prélève-t-on la solution titrée ?
+\item Pourquoi agite-t-on le mélange ? Pourquoi place-t-on une feuille blanche sous l'erlenmeyer ?
+\item Définir l'équivalence du titrage.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-2}
+\begin{exercice}[1]{Titrer une solution de diiode}
+On titre $V_1=\qty{20,0}{mL}$ d'une solution de diiode par une solution de thiosulfate de sodium à $c_2=\qty{0,100}{mol.L^{-1}}$. La
+réaction support a pour équation $\ce{I2 + 2S2O3^{2-} -> 2I- + S4O6^{2-}}$. L'équivalence est obtenue pour $V_\mathrm{E}=\qty{12,4}{mL}$.
+\begin{questions}
+\item Quel est le réactif titrant ? Quelle est l'espèce titrée ?
+\item Écrire la relation entre les quantités de matière à l'équivalence.
+\item Calculer la quantité de diiode titrée, puis sa concentration $c_1$.
+\item Seul le diiode est coloré. Comment l'équivalence est-elle repérée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-3}
+\begin{exercice}[1]{Avant, à et après l'équivalence}
+On titre une solution d'ions fer(II), presque incolore, par une solution violette d'ions permanganate, en milieu acide.
+On s'intéresse au contenu de l'erlenmeyer pour trois volumes versés : $V<V_\mathrm{E}$, $V=V_\mathrm{E}$ et $V>V_\mathrm{E}$.
+\begin{questions}
+\item Pour $V<V_\mathrm{E}$, quel est le réactif limitant ? Quelles espèces réactives restent dans l'erlenmeyer ?
+\item Que peut-on dire des quantités de réactifs à l'équivalence ?
+\item Pour $V>V_\mathrm{E}$, quel est le réactif limitant ? Quelle espèce s'accumule ?
+\item Décrire la teinte du mélange dans chacun des trois cas.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-4}
+\begin{exercice}[1]{Prévoir le changement de teinte}
+Le tableau décrit quatre titrages. Prévoir, pour chacun, le changement de teinte observé à l'équivalence.
+\par\smallskip\noindent\hfill\begin{tabular}{clll}
+\toprule
+ & Espèce titrée & Réactif titrant & Remarque \\
+\midrule
+a & $\ce{Fe^{2+}}$, vert très pâle & $\ce{MnO4-}$, violet & produits presque incolores \\
+b & $\ce{I2}$, jaune-brun & $\ce{S2O3^{2-}}$, incolore & produits incolores \\
+c & vitamine C, incolore & $\ce{I2}$, jaune-brun & empois d'amidon ajouté \\
+d & $\ce{MnO4-}$, violet & $\ce{Fe^{2+}}$, vert très pâle & produits presque incolores \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\begin{questions}
+\item Titrage a.
+\item Titrage b ; comment rendre le repérage plus précis ?
+\item Titrage c.
+\item Titrage d.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-5}
+\begin{exercice}[1]{Lire une burette et conclure}
+On titre $V_1=\qty{20,0}{mL}$ d'une solution d'ions fer(II) par une solution de permanganate de potassium à \qty{2,00e-2}{mol.L^{-1}}.
+Le schéma montre la burette à l'équivalence.
+\schema{05-ex05}
+\begin{questions}
+\item Lire le volume équivalent.
+\item Pourquoi lit-on le bas du ménisque, l'œil à sa hauteur ?
+\item Écrire la relation à l'équivalence ; l'équation est celle de l'essentiel.
+\item Calculer la concentration $c_1$ des ions fer(II).
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-5-6}
+\begin{exercice}[2]{Simuler un titrage en Python}
+On reprend le programme de l'essentiel.
+\begin{questions}
+\item \capacite{Capacité numérique}Que représente \code{x} ? Pourquoi est-il calculé avec la fonction \code{min} ?
+\item Prévoir la ligne affichée pour $V=\qty{6}{mL}$, puis pour $V=\qty{20}{mL}$.
+\item Quelle ligne correspond à l'équivalence ? Comment modifier la liste des volumes pour mieux la localiser ?
+\item On veut simuler le titrage de \qty{0,400}{mmol} de diiode par du thiosulfate à \qty{5,00e-2}{mol.L^{-1}}. Écrire les lignes à modifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-7}
+\begin{exercice}[2]{Un médicament contre l'anémie}
+Un médicament contre l'anémie annonce \qty{80}{mg} de fer par comprimé, sous forme d'ions fer(II). On dissout un comprimé dans
+de l'acide sulfurique dilué, dans une fiole jaugée de \qty{100,0}{mL}. On titre $V_1=\qty{10,0}{mL}$ de cette solution par du
+permanganate de potassium à \qty{2,00e-3}{mol.L^{-1}} : $V_\mathrm{E}=\qty{14,3}{mL}$.
+\begin{donnees}
+Couples $\ce{MnO4-}/\ce{Mn^{2+}}$ et $\ce{Fe^{3+}}/\ce{Fe^{2+}}$ ; $M(\ce{Fe})=\qty{55,8}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Établir l'équation de la réaction support. Pourquoi faut-il opérer en milieu acide ?
+\item Calculer la quantité d'ions fer(II) dans le volume titré.
+\item En déduire la masse de fer d'un comprimé et la comparer à l'indication.
+\item Quel volume équivalent aurait-on obtenu pour exactement \qty{80}{mg} de fer ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-8}
+\begin{exercice}[2]{Un antiseptique iodé}
+Un antiseptique annonce « 1~\% d'iode disponible », c'est-à-dire \qty{1}{g} de diiode pour \qty{100}{mL}. On le dilue dix fois, puis on
+titre $V_1=\qty{10,0}{mL}$ de la solution diluée par du thiosulfate de sodium à \qty{1,00e-2}{mol.L^{-1}} : $V_\mathrm{E}=\qty{7,90}{mL}$.
+\begin{donnees}
+$\ce{I2 + 2S2O3^{2-} -> 2I- + S4O6^{2-}}$ ; $M(\ce{I})=\qty{126,9}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Décrire le protocole de la dilution, en précisant la verrerie.
+\item Comment repère-t-on l'équivalence ?
+\item Calculer la concentration en diiode de la solution diluée, puis de l'antiseptique.
+\item Calculer la concentration en masse de diiode de l'antiseptique et conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-9}
+\begin{exercice}[2]{Contrôler un détachant}
+Un détachant pour le bois est vendu comme de l'acide oxalique pur, $\ce{H2C2O4}$, cristallisé avec deux molécules d'eau
+($M=\qty{126,0}{g.mol^{-1}}$). On dissout \qty{1,00}{g} de poudre dans une fiole jaugée de \qty{100,0}{mL}. On titre, à chaud et en milieu
+acide, $V_1=\qty{10,0}{mL}$ de cette solution par du permanganate de potassium à \qty{2,00e-2}{mol.L^{-1}} : $V_\mathrm{E}=\qty{15,6}{mL}$.
+\begin{donnees}
+Couples $\ce{MnO4-}/\ce{Mn^{2+}}$ et $\ce{CO2}/\ce{H2C2O4}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation du couple $\ce{CO2}/\ce{H2C2O4}$ et établir l'équation de la réaction support.
+\item Décrire le changement de teinte à l'équivalence.
+\item Calculer la masse d'acide oxalique cristallisé dans l'échantillon et la pureté du produit.
+\item Quel volume équivalent aurait donné un produit pur ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-10}
+\begin{exercice}[2]{Bien choisir la solution titrante}
+On veut titrer $V_1=\qty{10,0}{mL}$ d'une solution d'ions fer(II) de concentration voisine de \qty{0,050}{mol.L^{-1}} avec une burette de
+\qty{25}{mL}. On dispose de trois solutions de permanganate : \qty{1,00e-1}{mol.L^{-1}}, \qty{1,00e-2}{mol.L^{-1}} et \qty{5,00e-3}{mol.L^{-1}}.
+\begin{questions}
+\item Exprimer le volume équivalent en fonction de la concentration $c_2$ du permanganate.
+\item Calculer le volume équivalent attendu avec chaque solution.
+\item La lecture d'un volume sur la burette est entachée d'une incertitude d'environ \qty{0,1}{mL}. Calculer l'incertitude relative
+dans chaque cas.
+\item Quelle solution choisir ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-11}
+\begin{exercice}[2]{Une eau oxygénée a-t-elle vieilli ?}
+Une eau oxygénée « à 10 volumes » contient en principe \qty{0,89}{mol.L^{-1}} de peroxyde d'hydrogène (chapitre~3). On la dilue dix fois,
+puis on titre $V_1=\qty{10,0}{mL}$ de la solution diluée par du permanganate de potassium à \qty{2,00e-2}{mol.L^{-1}}, en milieu acide :
+$V_\mathrm{E}=\qty{17,6}{mL}$.
+\begin{donnees}
+Couples $\ce{MnO4-}/\ce{Mn^{2+}}$ et $\ce{O2}/\ce{H2O2}$ ; volume molaire à \qty{0}{\degreeCelsius} : \qty{22,4}{L.mol^{-1}} ; $\ce{2H2O2 -> 2H2O + O2}$.
+\end{donnees}
+\begin{questions}
+\item Établir l'équation de la réaction support.
+\item Calculer la concentration en peroxyde d'hydrogène de l'eau oxygénée.
+\item En déduire son titre en volumes.
+\item Quel volume équivalent attendait-on pour une eau oxygénée à exactement 10 volumes ? Proposer une explication à l'écart.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif DS}
+\begin{blocLivre}{ex-5-12}
+\begin{exercice}[3]{La vitamine C d'un jus de citron}
+\begin{docu}{1}{Un besoin quotidien}
+L'Agence nationale de sécurité sanitaire (Anses) fixe à \qty{110}{mg} par jour la référence nutritionnelle en vitamine C d'un adulte.
+Cette vitamine est fragile : elle est oxydée par le dioxygène de l'air.
+\end{docu}
+\begin{docu}{2}{Le protocole}
+On prélève \qty{10,0}{mL} de jus de citron fraîchement pressé et filtré, on ajoute de l'empois d'amidon, puis on titre par une
+solution de diiode à \qty{2,00e-3}{mol.L^{-1}}. On recommence avec le même jus, conservé deux jours au réfrigérateur dans un
+verre non couvert.
+\par\smallskip\noindent\hfill\begin{tabular}{lcc}
+\toprule
+Jus & frais & après deux jours \\
+\midrule
+$V_\mathrm{E}$ (mL) & 14,2 & 11,4 \\
+\bottomrule
+\end{tabular}\hfill\null\par\smallskip
+\end{docu}
+\begin{donnees}
+$\ce{C6H8O6 + I2 -> C6H6O6 + 2I- + 2H+}$ ; $M(\ce{C6H8O6})=\qty{176,0}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Décrire le changement de teinte observé à l'équivalence et l'expliquer.
+\item Calculer la concentration en masse de vitamine C du jus frais.
+\item Quel pourcentage de vitamine C le jus a-t-il perdu en deux jours ?
+\item \initiative Quel volume de jus frais couvre la référence nutritionnelle quotidienne ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-13}
+\begin{exercice}[3]{Le dioxyde de soufre du vin}
+\begin{docu}{1}{Un additif réglementé}
+Le dioxyde de soufre $\ce{SO2}$ protège le vin de l'oxydation et des micro-organismes. Il peut provoquer des réactions chez
+les personnes sensibles : les étiquettes portent la mention « contient des sulfites ». La réglementation européenne limite
+sa concentration à \qty{150}{mg.L^{-1}} dans un vin rouge sec et à \qty{200}{mg.L^{-1}} dans un vin blanc ou rosé sec.
+\end{docu}
+\begin{docu}{2}{Le titrage}
+On titre $V_1=\qty{25,0}{mL}$ d'un vin blanc sec, acidifié et additionné d'empois d'amidon, par une solution de diiode à
+\qty{5,00e-3}{mol.L^{-1}}. La teinte bleue persiste à partir de $V_\mathrm{E}=\qty{11,8}{mL}$.
+\end{docu}
+\begin{donnees}
+Couples $\ce{I2}/\ce{I-}$ et $\ce{SO4^{2-}}/\ce{SO2}$ ; $M(\ce{SO2})=\qty{64,1}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire la demi-équation du couple $\ce{SO4^{2-}}/\ce{SO2}$ et établir l'équation de la réaction support.
+\item Calculer la concentration en masse de dioxyde de soufre du vin.
+\item Ce vin respecte-t-il la réglementation ?
+\item \initiative Au-delà de quel volume équivalent un vin blanc sec serait-il non conforme ? Le même résultat serait-il
+acceptable pour un vin rouge sec ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-14}
+\begin{exercice}[3]{Un bain antiseptique au permanganate}
+\begin{docu}{1}{La préparation}
+Pour un bain antiseptique, on dissout un comprimé de \qty{500}{mg} de permanganate de potassium $\ce{KMnO4}$ dans \qty{4,0}{L}
+d'eau tiède : c'est une dilution « au 1/8000 », soit \qty{1}{g} pour \qty{8}{L}.
+\end{docu}
+\begin{docu}{2}{Un contrôle}
+On titre $V_1=\qty{20,0}{mL}$ du bain par une solution d'ions fer(II) à \qty{5,00e-3}{mol.L^{-1}}, en milieu acide. La teinte violette
+disparaît pour $V_\mathrm{E}=\qty{15,4}{mL}$.
+\end{docu}
+\begin{donnees}
+$\ce{MnO4- + 8H+ + 5Fe^{2+} -> Mn^{2+} + 5Fe^{3+} + 4H2O}$ ; $M(\ce{KMnO4})=\qty{158,0}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Quelle est ici l'espèce titrée ? le réactif titrant ? Expliquer le changement de teinte observé.
+\item Écrire la relation à l'équivalence et calculer la concentration en ions permanganate du bain.
+\item Calculer la concentration en masse de permanganate de potassium du bain.
+\item \initiative Le bain a-t-il été correctement préparé ? Quel volume équivalent attendait-on ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-15}
+\begin{exercice}[3]{Lire un titrage sur un graphique}
+\begin{docu}{1}{Le titrage}
+On titre $V_1=\qty{20,0}{mL}$ d'une solution de diiode par du thiosulfate de sodium à \qty{5,00e-2}{mol.L^{-1}}, selon la réaction
+$\ce{I2 + 2S2O3^{2-} -> 2I- + S4O6^{2-}}$. Une simulation donne l'évolution de trois espèces.
+\schema{05-ex15}
+\end{docu}
+\begin{questions}
+\item Associer chaque courbe à l'une des espèces $\ce{I2}$, $\ce{S2O3^{2-}}$ et $\ce{S4O6^{2-}}$, en justifiant.
+\item Lire le volume équivalent et justifier ce choix.
+\item \initiative Déterminer la concentration de la solution de diiode, de deux façons.
+\item Décrire la teinte du mélange avant et après l'équivalence.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

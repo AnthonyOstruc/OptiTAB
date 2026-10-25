@@ -1,0 +1,23 @@
+% Station de transfert d'énergie par pompage (STEP) : deux réservoirs, une conduite, une machine réversible (énoncé du défi D16)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Relief
+\fill[otMuted!22] (-0.5,0) -- (-0.5,3.6) -- (1.6,3.6) -- (2.6,3.2) -- (8.0,0.6) -- (10.5,0.6) -- (10.5,0) -- cycle;
+% Réservoir supérieur
+\fill[otNavy!25] (-0.3,3.1) rectangle (1.4,3.6);
+\draw[otInk!70,line width=0.6pt] (-0.3,3.75) -- (-0.3,3.1) -- (1.4,3.1) -- (1.4,3.75);
+\node[pcLegende,anchor=south,align=center] at (0.55,3.8) {réservoir supérieur\\\qty{1,0e8}{m^3}};
+% Réservoir inférieur
+\fill[otNavy!25] (8.2,0.6) rectangle (10.2,1.05);
+\draw[otInk!70,line width=0.6pt] (8.2,1.25) -- (8.2,0.6) -- (10.2,0.6) -- (10.2,1.25);
+\node[pcLegende,anchor=south] at (9.2,1.3) {réservoir inférieur};
+% Conduite forcée et machine
+\draw[otNavy!70,line width=2.2pt] (1.4,3.2) -- (2.6,3.0) -- (7.2,0.9);
+\filldraw[pcAppareil,rounded corners=1mm] (7.1,0.55) rectangle (8.1,1.25);
+\node[pcLegende,align=center,font=\otLight\fontsize{6.5}{8}\selectfont] at (7.6,0.9) {turbine\\pompe};
+\draw[otNavy!70,line width=2.2pt] (8.1,0.8) -- (8.3,0.8);
+\draw[otGreenDark,line width=0.9pt,-{Stealth[length=2mm]}] (4.2,2.7) -- (5.4,2.15) node[pcLegende,anchor=south west,text=otGreenDark] {jour : turbinage};
+\draw[otOrange!85!black,line width=0.9pt,-{Stealth[length=2mm]}] (5.4,1.45) -- (4.2,2.0) node[pcLegende,anchor=north east,text=otOrange!85!black] {nuit : pompage};
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (11.0,0.8) -- (11.0,3.35) node[pos=0.5,pcLegende,anchor=west] {$h=\qty{900}{m}$};
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (1.4,3.35) -- (11.1,3.35) (10.2,0.8) -- (11.1,0.8);
+\end{tikzpicture}
+\par\smallskip\legende{Quand l'électricité abonde, on pompe l'eau vers le haut ; aux heures de forte demande, on la turbine.}

@@ -1,0 +1,271 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{9}{Probabilités conditionnelles}
+\corrigesSouples
+
+\begin{blocLivre}{cor-9-1}
+\begin{corrige}{1}{Appliquer la définition}
+\demarche{Identifier la population conditionnante avant de choisir le dénominateur.}
+\begin{questions}
+\item Comme $P(A)=0{,}4>0$, on peut conditionner par $A$ :
+$P_A(B)=P(A\cap B)/P(A)=0{,}1/0{,}4=\res{0{,}25}$.
+Dans le même groupe $A$, les évènements $B$ et $\overline B$ sont complémentaires,
+donc $P_A(\overline B)=1-0{,}25=\res{0{,}75}$.
+\item Les évènements $A\cap B$ et $A\cap\overline B$ se partagent $A$.
+Ainsi $P(A\cap\overline B)=0{,}4-0{,}1=\res{0{,}3}$.
+Le produit $0{,}4\times0{,}75$ donne le même résultat.
+\end{questions}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-2}
+\begin{corrige}{2}{Lire un tableau d'effectifs}
+\demarche{Compléter les effectifs et garder les totaux de lignes et de colonnes.}
+\begin{questions}
+\item Il y a $200-120=80$ garçons.
+Parmi les filles, $120-50=70$ ne suivent pas l’option ; parmi les garçons, $80-30=50$ ne la suivent pas.
+On en déduit les totaux 80 avec option et 120 sans option, indiqués dans le tableau.
+\item Le choix parmi les 200 élèves donne $P(F)=120/200=\res{3/5}$.
+Sachant $F$, la population de référence comporte 120 filles : $P_F(A)=50/120=\res{5/12}$.
+Sachant $A$, elle comporte 80 élèves avec option : $P_A(F)=50/80=\res{5/8}$.
+Les numérateurs sont les mêmes, mais les dénominateurs correspondent à deux groupes différents.
+\end{questions}
+
+\label{figlivre-r09-02-cor}
+\figureLivre[corrige]{r09-02}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-3}
+\begin{corrige}{3}{Deux évènements indépendants}
+\demarche{Employer l’indépendance pour l’intersection, puis la formule de la réunion.}
+\begin{questions}
+\item $P(A\cap B)=0{,}3\times0{,}5=\res{0{,}15}$. La réunion vaut $0{,}3+0{,}5-0{,}15=\res{0{,}65}$.
+\item $P_A(B)=P(B)=\res{0{,}5}$ et $P(A\cap\overline B)=0{,}3\times0{,}5=\res{0{,}15}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-4}
+\begin{corrige}{4}{Incompatibles ne signifie pas indépendants}
+\demarche{Comparer la probabilité de l’intersection au produit des probabilités.}
+\begin{questions}
+\item L’intersection est vide : $P(A\cap B)=\res{0}$, donc $P_A(B)=\res{0}$.
+\item $P(A)P(B)=0{,}06\neq0=P(A\cap B)$ : ils ne sont pas indépendants.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-5}
+\begin{corrige}{5}{Exploiter un arbre}
+\demarche{Multiplier sur un chemin, additionner entre chemins incompatibles, puis conditionner.}
+\begin{questions}
+\item Les poids sortant d’un même nœud ont une somme égale à 1.
+On complète donc $P(\overline A)=1-0{,}6=0{,}4$,
+$P_A(\overline B)=1-0{,}2=0{,}8$ et $P_{\overline A}(\overline B)=1-0{,}5=0{,}5$.
+\item Sur le chemin $A$ puis $B$, on multiplie : $P(A\cap B)=0{,}6\times0{,}2=0{,}12$.
+Sur l’autre chemin qui arrive à $B$, $P(\overline A\cap B)=0{,}4\times0{,}5=0{,}20$.
+Ces chemins sont incompatibles et couvrent $B$, donc $P(B)=0{,}12+0{,}20=\res{0{,}32}$.
+Enfin, parmi les issues de $B$, la part issue de $A$ vaut
+$P_B(A)=P(A\cap B)/P(B)=0{,}12/0{,}32=\res{3/8}$.
+\end{questions}
+
+\label{figlivre-r09-05-cor}
+\figureLivre[corrige]{r09-05}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-6}
+\begin{corrige}{6}{Deux ateliers de fabrication}
+\demarche{Séparer les deux origines des pièces avant de regrouper les défauts.}
+\begin{questions}
+\item Les ateliers A et B forment une partition. Les deux contributions au défaut sont
+$P(A\cap D)=0{,}7\times0{,}02=0{,}014$ et $P(B\cap D)=0{,}3\times0{,}05=0{,}015$.
+Par probabilités totales, $P(D)=0{,}014+0{,}015=\res{0{,}029}$, soit 2,9\,\%.
+\item Le groupe conditionnant est celui des pièces défectueuses.
+On divise la contribution de B par la probabilité totale de défaut :
+$P_D(B)=0{,}015/0{,}029=\res{15/29\approx0{,}5172}$.
+Environ 51,72\,\% des pièces défectueuses proviennent donc de B dans ce modèle.
+\end{questions}
+
+\label{figlivre-r09-06-cor}
+\figureLivre[corrige]{r09-06}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-7}
+\begin{corrige}{7}{Une partition en trois groupes}
+\demarche{Additionner les trois contributions des machines à l’évènement défaut.}
+\begin{questions}
+\item Chaque contribution est une probabilité de chemin :
+$P(A\cap D)=0{,}5\times0{,}01=0{,}005$,
+$P(B\cap D)=0{,}3\times0{,}02=0{,}006$,
+$P(C\cap D)=0{,}2\times0{,}04=0{,}008$.
+Le total vaut $P(D)=0{,}005+0{,}006+0{,}008=\res{0{,}019}$.
+\item Parmi les pièces défectueuses, la proportion venant de C est
+$P_D(C)=0{,}008/0{,}019=\res{8/19\approx0{,}4211}$.
+\item Les trois contributions se comparent sur la même population totale :
+$0{,}008>0{,}006>0{,}005$. C contribue le plus aux défauts ; son petit volume de production ne suffit pas à compenser son taux de défaut élevé.
+\end{questions}
+
+\label{figlivre-r09-07-cor}
+\figureLivre[corrige]{r09-07}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-8}
+\begin{corrige}{8}{Inverser un conditionnement}
+\demarche{Compter d’abord les positifs dans chaque groupe pour inverser le conditionnement.}
+On note $C$ la présence du caractère et $T$ un résultat positif.
+\begin{questions}
+\item Sur 10000 personnes, le groupe $C$ compte $10000\times0{,}01=100$ personnes,
+dont $100\times0{,}95=95$ positives.
+Le groupe $\overline C$ compte 9900 personnes, dont $9900\times0{,}04=396$ positives.
+\item Le nombre total de positifs est $95+396=491$.
+Parmi eux, seuls 95 ont le caractère : $P_T(C)=\res{95/491\approx19{,}35\,\%}$.
+Avec l’arbre, on retrouve $P(C\cap T)=0{,}0095$ et $P(T)=0{,}0095+0{,}0396=0{,}0491$.
+\item Le taux 95\,\% est $P_C(T)$ : on connaît le caractère et on cherche la fréquence de positifs.
+La question demande $P_T(C)$ : on connaît le résultat positif.
+La rareté du caractère et les positifs dans l’autre groupe modifient fortement cette proportion.
+\end{questions}
+
+\label{figlivre-r09-08-cor}
+\figureLivre[corrige]{r09-08}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-9}
+\begin{corrige}{9}{Deux épreuves de Bernoulli}
+\demarche{Lister les quatre chemins et identifier ceux qui réalisent chaque évènement.}
+\begin{questions}
+\item À chaque nœud, $P(S)=0{,}4$ et $P(E)=0{,}6$ par indépendance.
+Les quatre produits sont $P(SS)=0{,}4^2=\res{0{,}16}$,
+$P(SE)=P(ES)=0{,}4\times0{,}6=\res{0{,}24}$ et $P(EE)=0{,}6^2=\res{0{,}36}$.
+Leur somme $0{,}16+0{,}24+0{,}24+0{,}36=1$ contrôle l’arbre.
+\item Exactement un succès correspond à deux chemins incompatibles, $SE$ et $ES$ :
+$P=0{,}24+0{,}24=\res{0{,}48}$.
+Au moins un succès est le contraire de $EE$, donc $P=1-0{,}36=\res{0{,}64}$.
+\end{questions}
+
+\label{figlivre-r09-09-cor}
+\figureLivre[corrige]{r09-09}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-10}
+\begin{corrige}{10}{Tirer sans remise}
+\demarche{Après un tirage sans remise, actualiser les deux effectifs et le total.}
+\begin{questions}
+\item Après une rouge, il reste 2 rouges et 2 bleues ; après une bleue, 3 rouges et 1 bleue.
+Les probabilités du deuxième niveau ont donc pour dénominateur 4.
+\[P(RR)=\frac35\frac24=\frac3{10},\qquad P(RB)=\frac35\frac24=\frac3{10},\]
+\[P(BR)=\frac25\frac34=\frac3{10},\qquad P(BB)=\frac25\frac14=\frac1{10}.\]
+\item Deux couleurs différentes correspondent à $RB$ ou $BR$ : $P=3/10+3/10=\res{3/5}$.
+\item Si $R_1$ et $R_2$ sont les évènements rouge au premier et au deuxième tirage,
+$P(R_2)=P(RR)+P(BR)=3/5$, mais $P_{R_1}(R_2)=2/4=1/2$.
+Ces probabilités sont différentes : $R_1$ et $R_2$ ne sont pas indépendants.
+\end{questions}
+
+\label{figlivre-r09-10-cor}
+\figureLivre[corrige]{r09-10}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-11}
+\begin{corrige}{11}{Tirer avec remise}
+\demarche{La remise rétablit la composition de l’urne avant le second tirage.}
+\begin{questions}
+\item La remise rétablit les 3 rouges et les 2 bleues. Le modèle donne à nouveau $3/5$ pour rouge et $2/5$ pour bleue, quel que soit le premier résultat : les tirages sont indépendants.
+\item Pour deux rouges, $P(RR)=(3/5)^2=\res{9/25}$.
+Pour deux couleurs différentes, les deux chemins sont incompatibles et ont le même poids :
+$P(RB)+P(BR)=(3/5)(2/5)+(2/5)(3/5)=\res{12/25}$.
+\item Avec remise, $9/25=0{,}36>0{,}30$ pour deux rouges.
+Pour deux couleurs différentes, $12/25=0{,}48<0{,}60$.
+La comparaison doit conserver l’évènement étudié ; la remise modifie les poids du deuxième niveau.
+\end{questions}
+
+\label{figlivre-r09-11-cor}
+\figureLivre[corrige]{r09-11}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-12}
+\begin{corrige}{12}{Trois tentatives indépendantes}
+\demarche{Distinguer exactement deux succès, au moins un succès et premier succès tardif.}
+\begin{questions}
+\item L’arbre a trois niveaux et huit chemins. Exactement deux succès correspond à $SSE$, $SES$ et $ESS$.
+Chaque chemin a deux facteurs $0{,}7$ et un facteur $0{,}3$ : son poids est $0{,}7^2\times0{,}3=0{,}147$.
+\item Ces trois chemins sont incompatibles : leur probabilité totale est $3\times0{,}147=\res{0{,}441}$.
+\item L’évènement contraire d’au moins un succès est aucun succès, soit $EEE$.
+Ainsi $P=1-0{,}3^3=1-0{,}027=\res{0{,}973}$.
+\item Pour que le premier succès arrive au troisième essai, il faut deux échecs puis un succès :
+seul $EES$ convient, de poids $0{,}3^2\times0{,}7=\res{0{,}063}$.
+\end{questions}
+
+\label{figlivre-r09-12-cor}
+\figureLivre[corrige]{r09-12}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-13}
+\begin{corrige}{13}{Quatre essais et six chemins}
+\demarche{Compter les chemins au lieu d’utiliser une formule de dénombrement hors de ce chapitre.}
+\begin{questions}
+\item Les six chemins sont $SSEE$, $SESE$, $SEES$, $ESSE$, $ESES$ et $EESS$.
+Ils sont repérés en vert à droite de l’arbre.
+\item Chacun comporte deux succès et deux échecs, donc a pour poids
+$(1/4)^2(3/4)^2=9/256$.
+En les additionnant, on obtient $6\times9/256=\res{27/128}$.
+\item Aucun succès correspond au seul chemin $EEEE$, de poids $(3/4)^4=81/256$.
+Le contraire donne $P(\text{au moins un succès})=1-81/256=\res{175/256}$.
+\item Au plus un succès réunit zéro succès et exactement un succès.
+Il y a quatre chemins avec un succès, selon sa position ; chacun a pour poids
+$(1/4)(3/4)^3=27/256$.
+Le total vaut $81/256+4\times27/256=\res{189/256}$.
+\end{questions}
+
+\label{figlivre-r09-13-cor}
+\figureLivre[corrige]{r09-13}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-14}
+\begin{corrige}{14}{Retrouver une proportion inconnue}
+\demarche{Utiliser les probabilités totales pour déterminer la proportion inconnue.}
+\begin{questions}
+\item Les groupes $A$ et $\overline A$ forment une partition.
+Les probabilités totales donnent $P(B)=0{,}1x+0{,}4(1-x)$.
+Ainsi $0{,}4-0{,}3x=0{,}22$, donc $-0{,}3x=-0{,}18$ et $\res{x=0{,}6}$,
+valeur bien dans $]0;1[$.
+\item $P(A\cap B)=P(A)P_A(B)=0{,}6\times0{,}1=0{,}06$.
+En conditionnant par $B$, $P_B(A)=0{,}06/0{,}22=\res{3/11}$.
+\item Première méthode : $P_A(B)=0{,}1\neq0{,}22=P(B)$.
+Deuxième méthode : $P(A\cap B)=0{,}06$, alors que $P(A)P(B)=0{,}6\times0{,}22=0{,}132$.
+Les deux critères montrent l’absence d’indépendance.
+\end{questions}
+
+\label{figlivre-r09-14-cor}
+\figureLivre[corrige]{r09-14}
+
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-9-15}
+\begin{corrige}{15}{Comparer des taux sans se tromper}
+\demarche{Comparer les taux dans chaque parcours, puis tenir compte des effectifs pour le total.}
+\begin{questions}
+\item Dans le parcours facile, A obtient $90/100=90\,\%$ et B $19/20=95\,\%$.
+Dans le parcours difficile, A obtient $20/100=20\,\%$ et B $18/60=30\,\%$.
+B a le meilleur taux dans chacun des deux parcours.
+\item A compte $90+20=110$ réussites sur 200 personnes : $\res{55\,\%}$.
+B compte $19+18=37$ réussites sur 80 personnes : $\res{46{,}25\,\%}$.
+La comparaison globale favorise donc A.
+\item La part du parcours facile est $100/200=\res{50\,\%}$ chez A et $20/80=\res{25\,\%}$ chez B.
+\item Les taux globaux sont des moyennes pondérées :
+$0{,}5(0{,}90)+0{,}5(0{,}20)=0{,}55$ chez A,
+et $0{,}25(0{,}95)+0{,}75(0{,}30)=0{,}4625$ chez B.
+B accueille davantage de parcours difficiles en proportion.
+Le renversement est expliqué par ces poids ; ces seuls taux ne prouvent pas un effet causal du centre.
+\end{questions}
+
+\label{figlivre-r09-15-cor}
+\figureLivre[corrige]{r09-15}
+
+\end{corrige}
+\end{blocLivre}

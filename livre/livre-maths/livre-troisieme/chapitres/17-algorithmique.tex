@@ -1,0 +1,86 @@
+\begin{ouverture}[algorithmique]{17}{Algorithmique, blocs et tableur}{Partie 5 · Algorithmique et raisonnement}
+{Variables · Conditions · Boucles · Blocs personnalisés · Projets}
+\objectif{Lire, compléter et construire un script par blocs.}
+\objectif{Utiliser variables, tests et boucles.}
+\objectif{Organiser un projet avec des événements et plusieurs lutins.}
+\prerequis{Calcul numérique et repérage.}
+\end{ouverture}
+\pagestyle{otMain}\essentiel\fontsize{11}{15}\selectfont
+\essSection{1}{Lire et écrire un algorithme}
+\begin{definition}Un algorithme est une suite d’instructions précises. Une variable mémorise une valeur que l’on peut modifier. « Mettre x à 3 » remplace son contenu ; « ajouter 3 à x » augmente sa valeur actuelle. Une entrée peut provenir d’une réponse de l’utilisateur.\end{definition}
+\begin{definition}Une condition choisit un traitement selon un test vrai ou faux. Une boucle « répéter n fois » exécute son contenu n fois. Une boucle « répéter jusqu’à » s’arrête quand son test devient vrai ; elle peut ne jamais finir si le contenu ne permet pas de l’atteindre.\end{definition}
+\begin{savoirfaire}[Exécuter à la main]Préparer un tableau avec une colonne par variable et une ligne par étape ou tour. Exécuter dans l’ordre, en utilisant les valeurs déjà modifiées. Distinguer les instructions dans la boucle de celles placées après.\end{savoirfaire}
+\begin{attention}Les blocs du livre représentent les opérations de type Scratch. Les lignes indentées sont à l’intérieur du bloc ; une ligne « fin » le ferme. Les multiplications sont explicites. Un test n’est pas une affectation.\end{attention}
+\clearpage
+\essSection{2}{Décomposer, simuler et interagir}
+\begin{definition}Un bloc personnalisé regroupe des instructions réutilisables ; un paramètre lui fournit une valeur. Pour dessiner un carré de côté c, répéter quatre fois « avancer de c ; tourner de 90 degrés ».\end{definition}
+\begin{savoirfaire}[Simuler]Choisir un entier aléatoire de 1 à 6 modélise un dé équilibré si chaque entier est équiprobable. Répéter les tirages, compter les succès et diviser par le nombre d’essais. Initialiser le compteur à zéro avant la boucle.\end{savoirfaire}
+\begin{definition}Plusieurs scripts peuvent fonctionner en parallèle sur plusieurs lutins. Un événement, comme un clic, une touche ou un message, démarre un script. Un message peut coordonner les lutins ; son envoi avec attente permet d’attendre la fin des traitements qu’il déclenche.\end{definition}
+\begin{savoirfaire}[Tableur]Une formule commence par =. Dans =A2*3+1, la référence A2 devient A3 lors d’une recopie vers le bas. Une référence absolue comme \$B\$1 reste fixe. Contrôler les premières et dernières lignes après recopie.\end{savoirfaire}
+\clearpage\rubrique{Découverte}
+\begin{blocLivre}{ex-17-1}\begin{exercice}[1]{Suivre trois opérations}
+Exécuter le script et donner la valeur affichée.
+\label{fig-ex-17-1}\figureGeo{script-01}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-2}\begin{exercice}[1]{Un nombre demandé}
+Le script lit un nombre x. Donner le résultat pour 2 et pour $-4$, puis l’expression obtenue à partir de x.
+\label{fig-ex-17-2}\figureGeo{script-02}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-3}\begin{exercice}[1]{Une boucle bornée}
+Quelle valeur affiche le script ? Combien de fois le bloc ajouter est-il exécuté ?
+\label{fig-ex-17-3}\figureGeo{script-03}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-4}\begin{exercice}[1]{Un test et deux branches}
+Exécuter le script pour les entrées 9, 10 et 14.
+\label{fig-ex-17-4}\figureGeo{script-04}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-5}\begin{exercice}[1]{Doubler plusieurs fois}
+Quelle est la valeur finale de x ? Un élève propose $2+3\times2$. Expliquer son erreur.
+\label{fig-ex-17-5}\figureGeo{script-05}
+\end{exercice}\end{blocLivre}
+
+\clearpage\rubrique{Entraînement}
+\begin{blocLivre}{ex-17-6}\begin{exercice}[2]{Une somme cumulée}
+Suivre les variables s et n à chaque tour puis donner le résultat.
+\label{fig-ex-17-6}\figureGeo{script-06}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-7}\begin{exercice}[2]{Répéter jusqu’à}
+Donner les valeurs successives de x et le nombre de tours.
+\label{fig-ex-17-7}\figureGeo{script-07}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-8}\begin{exercice}[2]{Un carré}
+Le stylo est baissé, le lutin part de (0;0), dirigé vers la droite. Décrire le tracé ; les rotations se font dans le sens inverse des aiguilles d’une montre.
+\label{fig-ex-17-8}\figureGeo{script-08}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-9}\begin{exercice}[2]{Tester un multiple}
+Le symbole « mod » désigne le reste de la division entière. Que renvoie le script pour 18 et 19 ? Que reconnaît-il ?
+\label{fig-ex-17-9}\figureGeo{script-09}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-10}\begin{exercice}[2]{Énumérer des diviseurs}
+Quelles valeurs sont affichées ? Pourquoi commence-t-on d à 1 et non à 0 ?
+\label{fig-ex-17-10}\figureGeo{script-10}
+\end{exercice}\end{blocLivre}
+
+\clearpage\rubrique{Problèmes}
+\begin{blocLivre}{ex-17-11}\begin{exercice}[3]{Une boucle qui dépasse}
+Combien de tours effectue le script ? Remplacer « multiplier par 2 » par « ajouter 0 » permettrait-il encore de terminer ?
+\label{fig-ex-17-11}\figureGeo{script-11}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-12}\begin{exercice}[3]{Un bloc personnalisé}
+Le bloc carré(c) trace un carré et revient au même point avec la même orientation. Compléter le projet pour dessiner trois carrés de côté 30, dont les sommets de départ sont espacés de 40 unités horizontalement.
+\label{fig-ex-17-12}\figureGeo{script-carres}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-13}\begin{exercice}[3]{Simuler un dé}
+Compléter le projet pour compter les six sur 600 lancers. Où placer l’initialisation et le calcul de fréquence ?
+\label{fig-ex-17-13}\figureGeo{script-simulation}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-14}\begin{exercice}[3]{Deux lutins coordonnés}
+Le lutin Guide, au clic sur le drapeau, met score à 0 puis envoie « départ » et attend. Le lutin Joueur, à réception de « départ », ajoute 1 au score dix fois. Guide affiche ensuite score. Quel résultat ? Pourquoi utiliser l’envoi avec attente ?
+\label{fig-ex-17-14}\figureGeo{script-parallele}
+\end{exercice}\end{blocLivre}
+\begin{blocLivre}{ex-17-15}\begin{exercice}[3]{Un tableur recopié}
+En A2:A6 figurent 0, 1, 2, 3, 4. B1 contient 5. On saisit en B2 =3*A2+\$B\$1, puis recopie jusqu’à B6. Donner les résultats et la dernière formule.
+\label{fig-ex-17-15}\figureGeo{script-tableur}
+\end{exercice}\end{blocLivre}
+
+\clearpage

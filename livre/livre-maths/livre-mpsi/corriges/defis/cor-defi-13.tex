@@ -1,0 +1,65 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 13 — vérifié par verifications/defis_11_15.py.
+
+\begin{blocLivre}{cor-13-25a}
+\begin{corrige}{25}{Les matrices $2\times2$ à similitude près}
+\demarche{Un vecteur $x$ non propre fournit la base $(x,Ax)$ ; l'identité
+$A^{2}=\operatorname{tr}(A)A-\det(A)I_2$ y donne la matrice, qui ne dépend
+que de la trace et du déterminant.}
+\partieExo{A}{La forme compagnon}
+\begin{questions}
+  \item Avec $A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ :
+    $A^{2}=\begin{pmatrix}a^{2}+bc&b(a+d)\\c(a+d)&bc+d^{2}\end{pmatrix}$ et
+    $(a+d)A=\begin{pmatrix}a^{2}+ad&b(a+d)\\c(a+d)&ad+d^{2}\end{pmatrix}$,
+    d'où $A^{2}-\operatorname{tr}(A)A=(bc-ad)I_2$ :
+    $\res{A^{2}-\operatorname{tr}(A)A+\det(A)I_2=0}$.
+  \item $(e_1,Ae_1)$ liée avec $e_1\neq0$ donne $Ae_1=\alpha e_1$ ; de même
+    $Ae_2=\beta e_2$ et $A(e_1+e_2)=\gamma(e_1+e_2)$. Par linéarité
+    $\alpha e_1+\beta e_2=\gamma e_1+\gamma e_2$, d'où
+    $\alpha=\gamma=\beta$ et $\res{A=\alpha I_2}$.
+  \item Par contraposée de la question 2, il existe $x$ avec $(x,Ax)$
+    libre, donc base de $\K^{2}$ (dimension $2$). L'endomorphisme $u$
+    associé envoie $x$ sur $Ax=0\cdot x+1\cdot Ax$ et $Ax$ sur
+    $A^{2}x=-\det(A)\,x+\operatorname{tr}(A)\,Ax$ (question 1) : sa matrice
+    dans $(x,Ax)$ est $\res{C_A}$.
+\end{questions}
+\partieExo{B}{La classification}
+\begin{questions}[resume]
+  \item Deux matrices semblables ont même trace et même déterminant. Si
+    $A$ et $B$ non scalaires ont mêmes trace et déterminant, elles sont
+    toutes deux semblables à la même matrice $C_A=C_B$, donc
+    \res{\text{semblables entre elles}} (transitivité). Une matrice scalaire
+    n'est semblable qu'à elle-même : $P^{-1}(\lambda I_2)P=\lambda I_2$.
+  \item $T$ et $\begin{pmatrix}2&1\\-1&0\end{pmatrix}$ : trace $2$,
+    déterminant $1$, non scalaires : \res{\text{semblables}}. $R$ et $S$ :
+    trace $0$, déterminant $1$ : semblables ; et comme $R=C_R=C_S$, la
+    question 3 fournit directement la matrice de passage : avec $x=e_1$,
+    $P=\begin{pmatrix}1&1\\0&1\end{pmatrix}$ (colonnes $e_1$ et $Se_1$)
+    vérifie $P^{-1}SP=R$. Enfin $T$ et $I_2$ ont même trace et même
+    déterminant mais \res{\text{ne sont pas semblables}} : $I_2$ est
+    scalaire.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-13-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Puissances et suites récurrentes}
+\begin{questions}[start=6]
+  \item La question 1 donne $A^{2}-2A+I_2=0$, soit $(A-I_2)^{2}=0$. Avec
+    $N=A-I_2$ ($N^{2}=0$, $N$ commute avec $I_2$), le binôme s'arrête au
+    deuxième terme : $\res{A^{n}=I_2+nN=I_2+n(A-I_2)}$.
+  \item Avec $X_n=\begin{pmatrix}u_n\\u_{n+1}\end{pmatrix}$ :
+    $X_{n+1}=MX_n$, où $M=\begin{pmatrix}0&1\\-1&2\end{pmatrix}$ est non
+    scalaire, de trace $2$ et de déterminant $1$. Donc
+    $X_n=M^{n}X_0=X_0+n(M-I_2)X_0$, dont la première coordonnée vaut
+    $\res{u_n=u_0+n(u_1-u_0)}$ : une suite arithmétique.
+  \item $\operatorname{tr}S=0$ et $\det S=1$ donnent $S^{2}+I_2=0$, d'où
+    $S^{4}=I_2$ : $X_{n+4}=X_n$. Dans la base $(e_1,Se_1)$, $S$ a pour
+    matrice $C_S=R$ : elle agit comme le quart de tour, mais vu dans une
+    base non orthonormée. L'orbite $x,Sx,-x,-Sx$ décrit donc les sommets
+    d'un parallélogramme, image d'un carré par le changement de base :
+    c'est la figure de l'énoncé.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

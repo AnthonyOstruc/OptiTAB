@@ -1,0 +1,20 @@
+% Skieur sur une pente : bilan des forces (exercice 6, chapitre 14)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otRule!45] (0,0) -- (7,0) -- (0,2.548) -- cycle;
+\draw[otInk!70,line width=0.8pt] (7,0) -- (0,2.548);
+\draw[otInk!70,line width=0.6pt] (0,0) -- (7.4,0);
+\draw[otMuted,line width=0.5pt] (5.8,0) arc[start angle=180,end angle=160,radius=1.2];
+\node[pcLegende,anchor=east] at (5.75,0.22) {$\alpha$};
+\begin{scope}[shift={(3.4,1.311)},rotate=-20]
+  \fill[otNavy!35,rounded corners=1pt] (-0.35,0.05) rectangle (0.35,1.0);
+  \fill[otInk!70] (-0.7,0) rectangle (0.7,0.05);
+  \coordinate (G) at (0,0.52);
+  \fill[otRed!80!black] (G) circle (0.05);
+  \solution{%
+    \draw[pcForce] (G) -- ++(0,1.15) node[pcLegende,anchor=south,text=otGreenDark] {$\vec{N}$};
+    \draw[pcForce] (G) -- ++(-0.95,0) node[pcLegende,anchor=south,text=otGreenDark] {$\vec{f}$};}
+\end{scope}
+\solution{\draw[pcForce] ($(3.4,1.311)+(-20:0)+(70:0.52)$) -- ++(0,-1.25) node[pcLegende,anchor=north,text=otGreenDark] {$\vec{P}$};}
+\draw[otMuted,line width=0.5pt,-{Stealth[length=1.8mm]}] (4.6,1.85) -- (5.6,1.486) node[pcLegende,anchor=south west] {sens du mouvement};
+\end{tikzpicture}
+\par\smallskip\legende{Le skieur descend la ligne de plus grande pente.}

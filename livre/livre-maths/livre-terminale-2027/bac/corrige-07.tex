@@ -1,0 +1,100 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 7 — résultats vérifiés par programme (bac_s7.py)
+
+\corrigeSujet{7}
+
+\begin{corrigeBac}{4}{Probabilités conditionnelles}
+\begin{questions}
+  \item $P(U)=\frac26=\frac13$, $P_U(R)=\frac35$ et $P_{\overline U}(R)=\frac15$.
+\begin{center}
+\begin{tikzpicture}[otArbre, level distance=20mm, level 1/.style={sibling distance=16mm}, level 2/.style={sibling distance=8mm}]
+  \node {}
+    child {node {$U$}
+      child {node {$R$} edge from parent node[otPoids] {$\frac35$}}
+      child {node {$\overline R$} edge from parent node[otPoids] {$\frac25$}}
+      edge from parent node[otPoids] {$\frac13$}}
+    child {node {$\overline U$}
+      child {node {$R$} edge from parent node[otPoids] {$\frac15$}}
+      child {node {$\overline R$} edge from parent node[otPoids] {$\frac45$}}
+      edge from parent node[otPoids] {$\frac23$}};
+\end{tikzpicture}
+\end{center}
+    \pts{0,5 pt}
+  \item $P(R)=\frac13\times\frac35+\frac23\times\frac15=\frac15+\frac2{15}=\frac5{15}=\res{\tfrac13}$. \pts{0,75 pt}
+  \item $P_R(U)=\dfrac{P(U\cap R)}{P(R)}=\dfrac{1/5}{1/3}=\res{\tfrac35}$. \pts{0,75 pt}
+  \item $P(U\cap R)=\frac15$ et $P(U)\times P(R)=\frac19$ : $U$ et $R$ ne sont $\res{\text{pas indépendants}}$. \pts{0,5 pt}
+  \item Les cinq expériences sont identiques et indépendantes, de succès « rouge » de probabilité $\frac13$ :
+    $Y\sim\mathcal{B}\left(5\pv\frac13\right)$. Alors $P(Y\geq1)=1-\left(\frac23\right)^{5}=\res{\tfrac{211}{243}}\approx0{,}868$ et
+    $P(Y=2)=\binom52\left(\frac13\right)^{2}\left(\frac23\right)^{3}=\res{\tfrac{80}{243}}\approx0{,}329$. \pts{1 pt}
+  \item On veut $1-\left(\frac23\right)^{n}>0{,}999$, soit $\left(\frac23\right)^{n}<0{,}001$, c'est-à-dire
+    $n>\dfrac{\ln0{,}001}{\ln(2/3)}\approx17{,}04$ (car $\ln\frac23<0$) : au minimum $\res{18}$ répétitions. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Fonction logarithme et suite}
+\partieExo{A}{Étude d'une fonction}
+\begin{questions}
+  \item En $0$ : $-\ln x\to+\infty$, donc $\res{\lim\limits_{x\to0}f(x)=+\infty}$. En $+\infty$ : $f(x)=x\left(1-\frac{\ln x}{x}\right)$ et
+    $\frac{\ln x}{x}\to0$, donc $\res{\lim\limits_{x\to+\infty}f(x)=+\infty}$. \pts{0,75 pt}
+  \item $f'(x)=1-\frac1x=\frac{x-1}{x}$, du signe de $x-1$ : $f$ est décroissante sur $\intOF01$, croissante sur $\intFO1{+\infty}$, de
+    minimum $f(1)=1$.
+\begin{center}
+\begin{tableau}
+  \otTab[2]{$x$/0.8,$f'(x)$/0.8,$f$/1.6}{$0$,$1$,$+\infty$}
+  \tkzTabLine{d,-,z,+,}
+  \tkzTabVar{D+/$+\infty$,-/$1$,+/$+\infty$}
+\end{tableau}
+\end{center}
+    \pts{0,75 pt}
+  \item Pour tout $x>0$, $f(x)\geq1$, soit $x-\ln x\geq1$, c'est-à-dire $\res{\ln x\leq x-1}$. \pts{0,5 pt}
+\end{questions}
+\partieExo{B}{Une suite récurrente}
+\begin{questions}[resume]
+  \item $u_1=2-\ln2\approx\res{1{,}307}$ et $u_2=u_1-\ln u_1\approx\res{1{,}039}$. \pts{0,5 pt}
+  \item Soit $\mathcal{P}(n)$ : « $1\leq u_{n+1}\leq u_n$ ».\\
+    \etape{Initialisation} $u_1\approx1{,}307$ et $u_0=2$ : $1\leq u_1\leq u_0$.\\
+    \etape{Hérédité} Si $1\leq u_{n+1}\leq u_n$, la fonction $f$ étant croissante sur $\intFO1{+\infty}$,
+    $f(1)\leq f(u_{n+1})\leq f(u_n)$, soit $1\leq u_{n+2}\leq u_{n+1}$.\\
+    \etape{Conclusion} La propriété est vraie pour tout entier naturel $n$. \pts{1 pt}
+  \item La suite est décroissante et minorée par $1$ : elle converge vers un réel $\ell\geq1$. La fonction $f$ étant continue,
+    $\ell=\ell-\ln\ell$, soit $\ln\ell=0$ : $\res{\ell=1}$. \pts{0,75 pt}
+  \item a) \code{rang(e)} renvoie le plus petit entier $n$ tel que $u_n-1<e$, c'est-à-dire le rang à partir duquel $u_n$ approche la
+    limite $1$ à moins de $e$ près (la suite décroît vers $1$).\\
+    b) $u_3-1\approx7{,}5\times10^{-4}$ et $u_4-1\approx2{,}8\times10^{-7}$ : \code{rang(1e-6)} renvoie $\res{4}$.\\
+    c) La convergence est très rapide : l'écart à la limite est environ élevé au carré à chaque étape ($0{,}3$, puis $0{,}04$, puis
+    $0{,}000\,75$…). \pts{0,75 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Géométrie : distance et volume}
+\begin{questions}
+  \item $\vect{AB}\,(-2\pv4\pv0)$ et $\vect{AC}\,(-2\pv0\pv4)$ ne sont pas colinéaires : $A$, $B$, $C$ définissent un plan. Les trois points
+    vérifient l'équation : $4-4=0$, $4-4=0$ et $4-4=0$. C'est donc une équation de $(ABC)$. \pts{1 pt}
+  \item $\Delta$ est dirigée par $\vec n\,(2\pv1\pv1)$ : $\res{\Delta:\ (1+2t\pv3+t\pv3+t)}$, $t\in\R$. \pts{0,75 pt}
+  \item $2(1+2t)+(3+t)+(3+t)-4=4+6t=0$, d'où $t=-\frac23$ et $\res{H\left(-\tfrac13\pv\tfrac73\pv\tfrac73\right)}$. La distance vaut
+    $DH=\frac23\norme{\vec n}=\res{\tfrac{2\sqrt6}{3}}$. \pts{1 pt}
+  \item $\vect{AB}\cdot\vect{AC}=4$, $AB=AC=\sqrt{20}$, donc $\cos\widehat{BAC}=\frac4{20}=\frac15$ et
+    $\sin\widehat{BAC}=\sqrt{1-\frac1{25}}=\frac{2\sqrt6}{5}$. L'aire vaut $\frac12\times AB\times AC\times\sin\widehat{BAC}
+    =\frac12\times20\times\frac{2\sqrt6}{5}=\res{4\sqrt6}$. \pts{1,25 pt}
+  \item $V=\frac13\times4\sqrt6\times\frac{2\sqrt6}{3}=\res{\tfrac{16}{3}}$. \pts{0,5 pt}
+  \item En $O$, on trouve de même $t=\frac23$ : la distance de $O$ au plan vaut aussi $\frac{2\sqrt6}{3}$. Avec la base $OAB$ (rectangle
+    en $O$) et la hauteur $OC$ : $V_{OABC}=\frac13\times\frac{2\times4}{2}\times4=\frac{16}{3}$. Les deux tétraèdres ont la même base
+    $ABC$ et des hauteurs égales : ils ont le même volume. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{4}{Intégration : aire et valeur moyenne}
+\begin{questions}
+  \item $T:\ y=e^{0}(x-0)+e^{0}$, soit $\res{y=x+1}$. La fonction $g:x\mapsto e^{x}-x-1$ a pour dérivée $e^{x}-1$, négative sur
+    $\intOF{-\infty}0$ et positive sur $\intFO0{+\infty}$ : son minimum est $g(0)=0$, donc $e^{x}\geq x+1$. \pts{1 pt}
+  \item La courbe étant au-dessus de $T$, l'aire vaut $\displaystyle\int_0^1\left(e^{x}-x-1\right)\mathrm{d}x
+    =\left[e^{x}-\frac{x^{2}}{2}-x\right]_0^1=e-\frac12-1-1=\res{e-\tfrac52}\approx\res{0{,}22}$ u.a. \pts{0,75 pt}
+  \item $A(a)=\left[e^{x}-\frac{x^{2}}{2}-x\right]_0^{a}=\res{e^{a}-\tfrac{a^{2}}{2}-a-1}$. Pour $a>0$, on écrit
+    $A(a)=e^{a}\left(1-\frac{a^{2}}{2e^{a}}-\frac{a+1}{e^{a}}\right)$ ; par croissances comparées, les deux quotients tendent vers $0$,
+    donc $\lim\limits_{a\to+\infty}A(a)=\res{+\infty}$. \pts{0,75 pt}
+  \item $A'(a)=e^{a}-a-1>0$ pour $a>0$ (question 1) : $A$ est continue et strictement croissante sur $\intOO0{+\infty}$, avec
+    $\lim\limits_{a\to0}A(a)=0$ et $\lim\limits_{a\to+\infty}A(a)=+\infty$. L'équation $A(a)=1$ a donc une unique solution, et
+    $A(1{,}56)\approx0{,}982$, $A(1{,}57)\approx1{,}004$ : $\res{1{,}56<a<1{,}57}$. \pts{1 pt}
+  \item $\dfrac{1}{\ln4}\displaystyle\int_0^{\ln4}e^{x}\,\mathrm{d}x=\dfrac{e^{\ln4}-1}{\ln4}=\res{\tfrac{3}{\ln4}}\approx2{,}16$. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}

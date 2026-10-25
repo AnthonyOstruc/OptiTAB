@@ -1,0 +1,290 @@
+\clearpage
+\gdef\otChapNum{0}\pagestyle{otFront}
+\phantomsection\label{defis-debut}\pdfbookmark[0]{Défis d'approfondissement}{bm-defis}
+\otPageTitre{Défis d'approfondissement}{Chercher plus loin avec les outils de Première}
+\fontsize{11}{16}\selectfont
+Les 210 exercices des chapitres installent les bases et les méthodes. Les
+14 défis suivants portent le total à \textbf{224 exercices corrigés}.
+Ils prolongent chaque thème par une question qui demande de prendre du recul,
+de choisir une représentation ou de relier plusieurs notions.\par\vspace{4mm}
+\textbf{Avancé} désigne une modélisation ou une synthèse soutenue.
+\textbf{Très exigeant} ajoute une discussion, une preuve ou plusieurs changements de point de vue.
+Ces indications sont des repères pédagogiques, pas un classement officiel.\par\vspace{4mm}
+Les défis sont facultatifs pour un premier passage. Ils utilisent les notions
+de Première ; les étapes qui dépasseraient les outils du cours sont explicitement admises.
+Les durées proposées sont indicatives.\par\vspace{5mm}
+\editionEtape{Chercher avant de lire la solution}
+Faire un dessin ou un tableau, tester un cas simple, puis écrire ce qui manque
+pour conclure. En cas de blocage, lire seulement le premier indice, puis reprendre
+la recherche. Les indications sont séparées des énoncés et des corrigés.
+\begin{center}\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}lll@{}}\toprule
+Défis & Thèmes & Préparation conseillée\\\midrule
+D01 à D02 & Algèbre et suites & Chapitres 1, 2, 12, 13\\
+D03 à D06 & Analyse et trigonométrie & Chapitres 1 à 6, 8, 12\\
+D07 à D08 & Géométrie & Chapitres 1, 7, 8\\
+D09 à D11 & Probabilités et statistiques & Chapitres 1, 9 à 11\\
+D12 à D14 & Algorithmes et synthèses & Plusieurs chapitres, selon le défi\\\bottomrule
+\end{tabular}\end{center}
+\editionRetenir{Une solution incomplète mais justifiée est un progrès.
+Après la correction, refaire la question clé sans regarder, puis expliquer pourquoi la méthode fonctionne.}
+
+\editionPage{defi-ex-1}{D01 · Deux racines dans un intervalle}{Recherche et rédaction}{Avancé · 35 à 50 min · Chapitres 1 et 13\hfill\hyperref[defi-cor-1-1]{Corrigé p.~\pageref*{defi-cor-1-1}}}
+\begin{blocEdition}{defi-ex-1}
+Pour $m\in\R$, on pose $P_m(x)=x^2-2mx+m$. On cherche les paramètres pour
+lesquels $P_m$ possède \textbf{deux racines distinctes, toutes deux dans $]0;2[$}.
+\begin{questions}
+\item Calculer le discriminant. Pour quels $m$ existe-t-il deux racines distinctes ?
+\item Montrer que deux racines dans $]0;2[$ imposent $P_m(0)>0$, $P_m(2)>0$
+et que l'abscisse du sommet appartient à $]0;2[$.
+\item Réciproquement, expliquer pourquoi ces trois conditions, ajoutées à un
+discriminant strictement positif, suffisent. On peut s'aider de la parabole.
+\item Déterminer tous les paramètres recherchés. Étudier les deux valeurs frontières.
+\item Les seules conditions $P_m(0)>0$ et $P_m(2)>0$ suffisent-elles ? Donner un contre-exemple.
+\end{questions}
+La figure fournit des exemples pour conjecturer ; la réponse doit être démontrée.
+\label{figedition-defi-ex-1-1}\figureGeo{fr-d01}
+\end{blocEdition}
+
+\editionPage{defi-ex-2}{D02 · Le seuil d’une moyenne}{Recherche et rédaction}{Très exigeant · 45 à 65 min · Chapitres 2 et 12\hfill\hyperref[defi-cor-2-1]{Corrigé p.~\pageref*{defi-cor-2-1}}}
+\begin{blocEdition}{defi-ex-2}
+On définit $u_0=0$ et $u_{n+1}=\frac45u_n+60$ pour $n\geq0$.
+Pour $n\geq1$, on note $S_n=\sum_{k=0}^{n-1}u_k$ et $A_n=S_n/n$.
+\begin{questions}
+\item À l'aide d'une suite auxiliaire géométrique, montrer que
+$u_n=300\bigl(1-(4/5)^n\bigr)$. Étudier ses variations.
+\item Calculer $S_n$, puis montrer que
+$A_n=300-\frac{1500}{n}\bigl(1-(4/5)^n\bigr)$.
+\item Expliquer pourquoi $A_n<u_n$, puis établir
+$A_{n+1}-A_n=(u_n-A_n)/(n+1)$. En déduire les variations de $A_n$.
+\item Écrire une fonction Python qui renvoie le premier $n\geq1$ tel que $A_n\geq240$.
+Préciser ce que représentent les variables à chaque passage de la boucle.
+\item Le programme conduit à $n=25$. Vérifier le seuil en calculant $A_{24}$ et $A_{25}$.
+Pourquoi ces deux seuls contrôles suffisent-ils après la question 3 ?
+\end{questions}
+La moyenne porte sur les termes $u_0$ à $u_{n-1}$ : elle ne comprend pas $u_n$.
+\end{blocEdition}
+
+\editionPage{defi-ex-3}{D03 · Trois tangentes par un point}{Recherche et rédaction}{Très exigeant · 55 à 75 min · Chapitres 3, 4 et 1\hfill\hyperref[defi-cor-3-1]{Corrigé p.~\pageref*{defi-cor-3-1}}}
+\begin{blocEdition}{defi-ex-3}
+On considère $f(x)=x^3-3x$. Pour $t\in[-1;2]$, on note $T_t$ la tangente
+à sa courbe au point d'abscisse $t$. Pour $b\in\R$, on pose $P_b(1;b)$.
+\begin{questions}
+\item Montrer que $T_t$ a pour équation $y=(3t^2-3)x-2t^3$.
+\item Montrer que $T_t$ passe par $P_b$ si et seulement si $g(t)=b$,
+où $g(t)=-2t^3+3t^2-3$.
+\item Étudier $g$ sur $[-1;2]$ et calculer ses valeurs aux bornes et aux points critiques.
+\item Selon $b$, déterminer le nombre de tangentes $T_t$ qui passent par $P_b$.
+Soigner les cas où $b$ est une valeur extrême ou une valeur frontière.
+\item Pour $b=-5/2$, factoriser $4t^3-6t^2+1$ et déterminer les trois
+abscisses de contact, puis les équations des trois tangentes.
+\end{questions}
+Seules les tangentes dont l'abscisse de contact est dans $[-1;2]$ sont comptées.
+\label{figedition-defi-ex-3-1}\figureGeo{fr-d03}
+\end{blocEdition}
+
+\editionPage{defi-ex-4}{D04 · La fenêtre la plus lumineuse}{Recherche et rédaction}{Avancé · 35 à 50 min · Chapitres 1 et 4\hfill\hyperref[defi-cor-4-1]{Corrigé p.~\pageref*{defi-cor-4-1}}}
+\begin{blocEdition}{defi-ex-4}
+Une fenêtre est formée d'un rectangle de largeur $2r$ et de hauteur $h$, surmonté
+d'un demi-disque de rayon $r$. La longueur totale de son \textbf{contour extérieur} est de 20 m.
+On suppose $r>0$ et $h>0$ et on veut maximiser l'aire vitrée.
+\begin{questions}
+\item Exprimer le périmètre. Pourquoi le diamètre commun au rectangle et au demi-disque
+ne doit-il pas être ajouté au contour extérieur ?
+\item Exprimer $h$ en fonction de $r$ et préciser exactement le domaine admissible.
+\item Montrer que l'aire est $A(r)=20r-(2+\pi/2)r^2$.
+\item Déterminer les dimensions optimales et l'aire maximale, sous forme exacte.
+Quelle relation simple lie $h$ et $r$ à l'optimum ?
+\item Expliquer pourquoi le maximum calculé correspond à une vraie fenêtre et non à une forme dégénérée.
+\end{questions}
+\label{figedition-defi-ex-4-1}\figureGeo{fr-d04}
+\end{blocEdition}
+
+\editionPage{defi-ex-5}{D05 · Encadrer sans logarithme}{Recherche et rédaction}{Très exigeant · 45 à 60 min · Chapitres 5, 2 et 12\hfill\hyperref[defi-cor-5-1]{Corrigé p.~\pageref*{defi-cor-5-1}}}
+\begin{blocEdition}{defi-ex-5}
+On veut encadrer $e^{1/2}$ avec des puissances de nombres rationnels.
+\begin{questions}
+\item Étudier $F(x)=e^x-1-x$ sur $\R$ et montrer que $e^x\geq1+x$,
+avec égalité seulement pour $x=0$.
+\item Pour $0<t<1$, appliquer ce résultat à $-t$, puis justifier
+$1+t<e^t<1/(1-t)$.
+\item Pour tout entier $n\geq1$, en déduire
+\[L_n=\left(1+\frac1{2n}\right)^n<e^{1/2}<
+U_n=\left(1-\frac1{2n}\right)^{-n}.\]
+\item Programmer le calcul de $L_n$ et $U_n$, puis donner des encadrements
+pour $n=10$, $100$ et $1000$. Arrondir la borne inférieure vers le bas et la borne supérieure vers le haut.
+\item Que prouve l'encadrement théorique ? Que ne suffit pas à prouver la seule observation des décimales calculées ?
+\end{questions}
+On utilise uniquement les propriétés de l'exponentielle ; le logarithme n'est pas nécessaire.
+\end{blocEdition}
+
+\editionPage{defi-ex-6}{D06 · Additionner sinus et cosinus}{Recherche et rédaction}{Très exigeant · 45 à 65 min · Chapitres 6, 1 et 8\hfill\hyperref[defi-cor-6-1]{Corrigé p.~\pageref*{defi-cor-6-1}}}
+\begin{blocEdition}{defi-ex-6}
+Pour $t\in[0;2\pi[$, on pose $x=\cos t$, $y=\sin t$. On cherche à résoudre
+$\cos t+\sin t=k$, où $k$ est un paramètre réel.
+\begin{questions}
+\item Traduire le problème comme une intersection entre un cercle et une droite.
+\item En utilisant $(x-y)^2\geq0$, montrer que $-\sqrt2\leq x+y\leq\sqrt2$.
+\item Lorsque $x+y=k$, montrer que $xy=(k^2-1)/2$, puis que $x$ et $y$
+sont les racines de $X^2-kX+(k^2-1)/2=0$.
+\item Classer le nombre de solutions $t$ selon $k$. Donner les coordonnées des points correspondants.
+\item Résoudre explicitement pour $k=0$, $k=1$ et $k=\sqrt2$.
+\end{questions}
+L'intervalle est ouvert en $2\pi$ pour ne pas compter deux fois le même point du cercle.
+\label{figedition-defi-ex-6-1}\figureGeo{fr-d06}
+\end{blocEdition}
+
+\editionPage{defi-ex-7}{D07 · Un triangle sous deux contraintes}{Recherche et rédaction}{Très exigeant · 40 à 60 min · Chapitres 7 et 8\hfill\hyperref[defi-cor-7-1]{Corrigé p.~\pageref*{defi-cor-7-1}}}
+\begin{blocEdition}{defi-ex-7}
+Dans un repère orthonormé, $A(-2;0)$, $B(2;0)$ et $M(x;y)$ vérifient
+\[\vect{MA}\cdot\vect{MB}=0,\qquad MA^2+2MB^2=k.\]
+Le paramètre $k$ est réel.
+\begin{questions}
+\item Montrer que la première condition équivaut à $x^2+y^2=4$.
+\item Sous cette condition, établir $MA^2=8+4x$ et $MB^2=8-4x$.
+\item En déduire les coordonnées possibles de $M$ en fonction de $k$ et discuter leur nombre.
+\item Pour quels $k$ obtient-on un \textbf{vrai triangle} $AMB$ rectangle en $M$ ?
+Pourquoi les valeurs frontières doivent-elles être exclues ?
+\item Pour quel $k$ le triangle est-il aussi isocèle en $M$ ? Donner ses deux sommets possibles.
+\end{questions}
+\label{figedition-defi-ex-7-1}\figureGeo{fr-d07}
+\end{blocEdition}
+
+\editionPage{defi-ex-8}{D08 · Une famille de cercles tangents}{Recherche et rédaction}{Très exigeant · 55 à 75 min · Chapitres 8, 7 et 1\hfill\hyperref[defi-cor-8-1]{Corrigé p.~\pageref*{defi-cor-8-1}}}
+\begin{blocEdition}{defi-ex-8}
+Pour $m\in\R$, on considère $\mathcal C_m$ d'équation
+$x^2+y^2-4x-2my=0$ et la droite $d:x+y=6$.
+\begin{questions}
+\item Déterminer le centre et le rayon de $\mathcal C_m$. Montrer que tous
+ces cercles passent par $A(0;0)$ et $B(4;0)$.
+\item Substituer $y=6-x$ dans l'équation du cercle. Montrer que le discriminant
+de l'équation obtenue est $4(m^2+8m-8)$.
+\item Classer, selon $m$, le nombre de points communs à $d$ et $\mathcal C_m$.
+Pour quels paramètres y a-t-il tangence ?
+\item On note $\Omega_m(2;m)$. Calculer son projeté orthogonal $H_m$ sur $d$.
+Vérifier, pour chacun des paramètres de tangence, que $H_m$ appartient au cercle.
+\item Expliquer pourquoi la droite $d$ est alors perpendiculaire au rayon au point de contact.
+\end{questions}
+La figure de l'énoncé représente seulement les points fixes et la droite ; les cercles restent à déterminer.
+\label{figedition-defi-ex-8-1}\figureGeo{fr-d08-ex}
+\end{blocEdition}
+
+\editionPage{defi-ex-9}{D09 · Choisir une règle de contrôle}{Recherche et rédaction}{Très exigeant · 55 à 75 min · Chapitres 9 et 10\hfill\hyperref[defi-cor-9-1]{Corrigé p.~\pageref*{defi-cor-9-1}}}
+\begin{blocEdition}{defi-ex-9}
+Dans un modèle fictif, $10\,\%$ des articles présentent un défaut $D$.
+On applique deux tests $T_1$ et $T_2$, de résultat positif $+$ ou négatif $-$.
+Sur les articles défectueux, chaque test est positif avec probabilité $0{,}9$ ;
+sur les autres, avec probabilité $0{,}2$.
+\textbf{Dans chacun de ces deux groupes}, le résultat du second test a les mêmes
+probabilités quel que soit le résultat du premier.
+\begin{questions}
+\item Compléter l'arbre à trois niveaux. Les deux tests sont-ils pour autant
+indépendants dans la population entière ? Comparer $P(T_1^+\cap T_2^+)$ à $P(T_1^+)P(T_2^+)$.
+\item Calculer la probabilité du défaut sachant qu'un test est positif,
+puis sachant que les deux sont positifs.
+\item La règle U écarte un article dès qu'au moins un test est positif.
+La règle B ne l'écarte que si les deux sont positifs. Pour un article choisi dans toute la production,
+calculer, pour chaque règle, $P(\overline D\text{ et rejet})$ et $P(D\text{ et acceptation})$.
+\item Le premier type d'erreur coûte 1 unité, le second $\lambda$ unités, avec $\lambda\geq0$.
+Comparer les coûts moyens des deux règles selon $\lambda$.
+\end{questions}
+\label{figedition-defi-ex-9-1}\figureGeo{fr-d09}
+\end{blocEdition}
+
+\editionPage{defi-ex-10}{D10 · Même moyenne, objectifs différents}{Recherche et rédaction}{Très exigeant · 40 à 60 min · Chapitres 10 et 1\hfill\hyperref[defi-cor-10-1]{Corrigé p.~\pageref*{defi-cor-10-1}}}
+\begin{blocEdition}{defi-ex-10}
+Un jeu présente trois issues $I_1,I_2,I_3$ de probabilités $1/4,1/2,1/4$.
+Pour un paramètre $a\in[0;2]$, le lot brut $L_a$ vaut respectivement
+$2a$, $2-a$ et $6$ unités. Le prix d'entrée est $5/2$ ; le gain net est $G_a=L_a-5/2$.
+\begin{questions}
+\item Donner la loi issue par issue de $L_a$ et calculer son espérance.
+À quelle valeur de $a$ deux lots coïncident-ils ? Comment regrouper alors les probabilités ?
+\item Calculer $E(G_a)$ et montrer que
+$V(G_a)=\frac32a^2-2a+\frac{19}{4}$.
+\item Déterminer le paramètre qui minimise cette variance et la valeur minimale.
+\item Calculer la probabilité $P(G_a>0)$ selon $a$, en traitant le seuil d'égalité.
+Le choix de variance minimale maximise-t-il la probabilité de gagner strictement ?
+\item Pour une prévision réelle $r$, développer $E((L_a-r)^2)$.
+Déterminer simultanément les valeurs de $a$ et $r$ qui minimisent cette erreur quadratique moyenne.
+\end{questions}
+\label{figedition-defi-ex-10-1}\figureGeo{fr-d10}
+\end{blocEdition}
+
+\editionPage{defi-ex-11}{D11 · La dispersion d’un groupe réuni}{Recherche et rédaction}{Très exigeant · 45 à 65 min · Chapitres 11 et 1\hfill\hyperref[defi-cor-11-1]{Corrigé p.~\pageref*{defi-cor-11-1}}}
+\begin{blocEdition}{defi-ex-11}
+Le groupe A contient les valeurs 0 et 2 ; le groupe B contient 8 et 10.
+La variance d'une série est la moyenne des carrés des écarts à sa moyenne.
+\begin{questions}
+\item Calculer les moyennes et variances des deux groupes, puis de leur réunion.
+Pourquoi la variance de la réunion n'est-elle pas la moyenne des deux variances ?
+\item Plus généralement, deux groupes ont des tailles $n_A,n_B>0$, des moyennes
+$\mu_A,\mu_B$ et des variances $V_A,V_B$. Poser $p=n_A/(n_A+n_B)$ et exprimer
+la moyenne $\mu$ de leur réunion.
+\item Dans le groupe A, développer
+$(x-\mu)^2=((x-\mu_A)+(\mu_A-\mu))^2$ puis moyenner.
+Que devient le terme croisé ? Faire de même dans B.
+\item En déduire la formule
+\[V=pV_A+(1-p)V_B+p(1-p)(\mu_A-\mu_B)^2.\]
+\item Deux groupes ont chacun une variance égale à 1. La variance de leur réunion
+peut-elle être aussi grande que l'on veut ? Construire un exemple avec deux groupes de même taille.
+\end{questions}
+\label{figedition-defi-ex-11-1}\figureGeo{fr-d11}
+\end{blocEdition}
+
+\editionPage{defi-ex-12}{D12 · Un algorithme qui encadre une racine}{Recherche et rédaction}{Très exigeant · 45 à 60 min · Chapitres 12, 3 et 4\hfill\hyperref[defi-cor-12-1]{Corrigé p.~\pageref*{defi-cor-12-1}}}
+\begin{blocEdition}{defi-ex-12}
+On pose $f(x)=x^3+x-1$. \textbf{On admet l'existence} d'une solution $\alpha$ de
+$f(x)=0$ dans $[0;1]$ ; il ne s'agit pas ici de démontrer un théorème de continuité.
+\begin{questions}
+\item Justifier que cette solution est unique.
+\item On part de $a=0$, $b=1$, puis on calcule $m=(a+b)/2$.
+Si $f(m)<0$, on remplace $a$ par $m$ ; sinon, on remplace $b$ par $m$.
+Expliquer pourquoi $a\leq\alpha\leq b$ reste vrai après cette étape.
+\item Écrire une fonction qui réalise exactement $N$ étapes et renvoie les deux bornes.
+Préciser les entrées autorisées.
+\item Montrer que la largeur finale vaut $2^{-N}$.
+Quel est le plus petit $N$ qui garantit une largeur au plus $10^{-3}$ ?
+\item Pour $N=10$, vérifier l'encadrement exact
+$698/1024\leq\alpha\leq699/1024$ en étudiant les signes aux deux bornes.
+Quelle erreur maximale garantit le milieu de cet intervalle ?
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-13}{D13 · Une garantie pour tous les x}{Recherche et rédaction}{Très exigeant · 45 à 65 min · Chapitres 13, 1 et 4\hfill\hyperref[defi-cor-13-1]{Corrigé p.~\pageref*{defi-cor-13-1}}}
+\begin{blocEdition}{defi-ex-13}
+Pour $m\in\R$, on définit $P_m(x)=x^2-2mx+m$, et l'on s'intéresse à $x\in[0;1]$.
+\begin{questions}
+\item Formuler la négation de : « Pour tout $x\in[0;1]$, $P_m(x)\geq0$. »
+\item Montrer que cette propriété impose $0\leq m\leq1$ en regardant les bornes.
+Prouver la réciproque avec la forme canonique.
+\item On note $q(m)$ le minimum de $P_m$ sur $[0;1]$. Déterminer $q(m)$
+pour $m<0$, $0\leq m\leq1$ et $m>1$.
+\item Quel paramètre fournit la plus grande garantie $q(m)$ ?
+Donner une seconde preuve en utilisant la valeur commune $P_m(1/2)$.
+\item Comparer les deux affirmations : « Il existe un $m$ tel que, pour tout $x$,
+$P_m(x)\geq1/4$ » et « Pour tout $m$, il existe un $x$ tel que $P_m(x)\geq1/4$ ».
+Préciser les domaines et justifier chacune des réponses.
+\end{questions}
+\end{blocEdition}
+
+\editionPage{defi-ex-14}{D14 · Qualité, coût et risque}{Recherche et rédaction}{Très exigeant · 60 à 80 min · Chapitres 5, 9, 10 et 12\hfill\hyperref[defi-cor-14-1]{Corrigé p.~\pageref*{defi-cor-14-1}}}
+\begin{blocEdition}{defi-ex-14}
+Dans un atelier fictif, une intensité de contrôle $x\in[0;4]$ entraîne un coût
+de $2x$ unités par article et une probabilité de défaut $p(x)=\frac15e^{-x}$.
+Avant ce coût, un article rapporte 12 unités s'il est sans défaut et $-8$ sinon.
+Le gain net après contrôle est noté $G_x$.
+\begin{questions}
+\item Donner les deux valeurs de $G_x$, leurs probabilités, puis montrer que
+$E(G_x)=g(x)=12-2x-4e^{-x}$.
+\item Montrer que le maximum est atteint pour l'unique $\alpha\in]0;1[$ tel que $e^\alpha=2$.
+On admet l'existence de ce réel. Aucun logarithme n'est demandé.
+\item Écrire un algorithme de dichotomie sur $[0;1]$ pour encadrer $\alpha$ à $10^{-3}$ près.
+En déduire une approximation du gain moyen maximal.
+\item Montrer que $V(G_x)=80e^{-x}-16e^{-2x}$ et étudier ses variations sur $[0;4]$.
+Au point optimal pour l'espérance, calculer la probabilité de défaut et la variance exacte.
+\item Deux articles sont contrôlés avec la même intensité $\alpha$ ; leurs défauts sont indépendants.
+Dessiner l'arbre, puis calculer la probabilité d'au moins un défaut.
+La plus grande intensité maximise-t-elle aussi le gain moyen ?
+\end{questions}
+\end{blocEdition}
+

@@ -1,0 +1,26 @@
+% Pont hydrogène entre une molécule de méthanol et une molécule d'eau (corrigé de l'exercice 3, chapitre 7)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  atome/.style={font=\otSemi\fontsize{10}{11}\selectfont,text=otInk,inner sep=1.5pt},
+  lien/.style={otInk!80,line width=0.9pt},
+  dnl/.style={otInk!80,line width=0.9pt}]
+% méthanol
+\node[atome] (c) at (0,0) {H$_3$C};
+\node[atome] (o1) at (1.3,0) {O};
+\node[atome] (h1) at (2.35,0) {H};
+\draw[lien] (c) -- (o1) (o1) -- (h1);
+\draw[dnl] (1.18,0.3) -- (1.42,0.3) (1.18,-0.3) -- (1.42,-0.3);
+\node[pcDelta,text=otRed!80!black] at (2.35,0.36) {$\delta^{+}$};
+% eau
+\node[atome] (o2) at (3.75,0) {O};
+\node[atome] (h2) at (4.45,0.72) {H};
+\node[atome] (h3) at (4.45,-0.72) {H};
+\draw[lien] (o2) -- (h2) (o2) -- (h3);
+\draw[dnl] (3.48,0.12) -- (3.48,-0.12);
+\draw[dnl] (3.62,0.36) -- (3.84,0.4);
+\node[pcDelta,text=otNavy] at (3.6,-0.42) {$\delta^{-}$};
+% pont hydrogène
+\draw[otGreenDark,line width=1.1pt,dash pattern=on 1.5pt off 1.5pt] (2.55,0) -- (3.4,0);
+\node[pcLegende,anchor=north,text=otGreenDark] at (2.95,-0.55) {pont hydrogène};
+\draw[pcRepere] (2.95,-0.1) -- (2.95,-0.55);
+\end{tikzpicture}
+\par\smallskip\legende{L'hydrogène du groupe O--H du méthanol, chargé $\delta^{+}$, interagit avec un doublet non liant de l'oxygène de l'eau.}

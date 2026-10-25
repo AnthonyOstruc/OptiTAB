@@ -1,0 +1,424 @@
+% !TEX root = ../main.tex
+%% Chapitre 3 — Dérivation
+%% Sources : frontend/cours/resume/terminal/resume_derivation_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_derivation.txt
+%%           frontend/exercices/terminal_spé_Maths/exercices_complement_derive.txt
+%% Exercices 10 à 12 : problèmes inédits rédigés pour le livre.
+%% L'exercice sur ln((x²+1)/(x²-4)) et les questions avec ln sont réservés au chapitre 5.
+
+\begin{ouverture}[derivation]{3}{Dérivation}{Partie 1 · Analyse}
+  {Nombre dérivé\enspace·\enspace Composition\enspace·\enspace Variations\enspace·\enspace Convexité}
+  \objectif{Calculer une dérivée : opérations, fonctions composées.}
+  \objectif{Déterminer une équation de tangente et étudier une position relative.}
+  \objectif{Étudier les variations et les extremums d'une fonction.}
+  \objectif{Calculer une dérivée seconde, étudier la convexité et déterminer les points d'inflexion.}
+  \objectif{Utiliser la convexité pour démontrer une inégalité.}
+  \prerequis{Nombre dérivé, tangente et dérivées usuelles (Première).}
+  \prerequis{Limites de fonctions et croissances comparées (chapitre 2).}
+  \prerequis{Second degré : racines et signe d'un trinôme.}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Nombre dérivé et tangente}
+
+\begin{definition}[Nombre dérivé]
+Une fonction $f$ est dérivable en $a$ si le taux d'accroissement $\dfrac{f(a+h)-f(a)}{h}$ admet une limite
+finie quand $h$ tend vers $0$. Cette limite est le nombre dérivé $f'(a)$ :
+\[ f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}. \]
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+Le nombre $f'(a)$ est le coefficient directeur de la tangente à $\Cf$ au point $A$ d'abscisse $a$ :
+\begin{propriete}[Équation de la tangente en $a$]
+\[ y=f'(a)\,(x-a)+f(a) \]
+\end{propriete}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=70mm, height=50mm, xmin=0, xmax=4.3, ymin=0, ymax=4.2,
+  xtick={1,3}, xticklabels={$a$,$a+h$}, ytick=\empty,
+  xlabel={$x$}, xlabel style={at={(1,0)},anchor=west}]
+  \addplot[otNavy,line width=1.1pt,domain=0:3.6,samples=60] {0.3*x^2+0.6};
+  \addplot[otMuted,dashed,line width=0.6pt,domain=0.2:4.2] {0.9+1.2*(x-1)};
+  \addplot[otMuted!60,dashed,line width=0.5pt,domain=0.2:4.2] {0.9+0.9*(x-1)};
+  \addplot[otGreen,line width=1pt,domain=0:4.2] {0.9+0.6*(x-1)};
+  \draw[otMuted,densely dotted,line width=0.5pt] (axis cs:1,0) -- (axis cs:1,0.9);
+  \draw[otMuted,densely dotted,line width=0.5pt] (axis cs:3,0) -- (axis cs:3,3.3);
+  \fill[otNavy] (axis cs:1,0.9) circle (1.5pt);
+  \fill[otNavy] (axis cs:3,3.3) circle (1.5pt);
+  \node[anchor=south east,font=\scriptsize] at (axis cs:1,0.95) {$A$};
+  \node[anchor=south east,font=\scriptsize] at (axis cs:3,3.35) {$M$};
+  \node[anchor=west,font=\scriptsize,text=otGreenDark] at (axis cs:4.2,2.85) {tangente};
+  \node[anchor=west,font=\scriptsize,text=otMuted] at (axis cs:3.6,4.15) {sécante $(AM)$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Quand $h\to0$, $M$ se rapproche de $A$ et les sécantes\\se rapprochent de la tangente en $A$.}
+\end{minipage}
+
+\essSection{2}{Dérivées usuelles et opérations}
+
+\noindent
+\begin{minipage}[t]{0.5\linewidth}
+\otIntertitre{Dérivées usuelles}
+{\renewcommand{\arraystretch}{1.8}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{}}
+\toprule
+$f(x)$ & $f'(x)$ & dérivable sur \\
+\midrule
+$k$ (constante) & $0$ & $\R$ \\
+$x^{n}$\enspace($n\geq1$) & $nx^{n-1}$ & $\R$ \\
+$\dfrac{1}{x}$ & $-\dfrac{1}{x^{2}}$ & $\intOO{-\infty}{0}$ ou $\intOO{0}{+\infty}$ \\
+$\sqrt{x}$ & $\dfrac{1}{2\sqrt{x}}$ & $\intOO{0}{+\infty}$ \\
+$e^{x}$ & $e^{x}$ & $\R$ \\
+\bottomrule
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.44\linewidth}
+\otIntertitre{Opérations}
+{\renewcommand{\arraystretch}{1.8}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}l@{\hspace{8mm}}l@{}}
+\toprule
+Fonction & Dérivée \\
+\midrule
+$ku$ & $ku'$ \\
+$u+v$ & $u'+v'$ \\
+$uv$ & $u'v+uv'$ \\
+$\dfrac{1}{v}$ & $-\dfrac{v'}{v^{2}}$ \\
+$\dfrac{u}{v}$ & $\dfrac{u'v-uv'}{v^{2}}$ \\
+\bottomrule
+\end{tabular}}
+\end{minipage}
+
+\vspace{2mm}
+\legende{Les dérivées de $\ln$, $\sin$ et $\cos$ sont étudiées aux chapitres 5 et 6.}
+
+\essSection{3}{Fonctions composées}
+
+\begin{definition}[Composée de deux fonctions]
+Soit $u$ une fonction définie sur $I$ à valeurs dans $J$, et $g$ une fonction définie sur $J$.
+La composée $g\circ u$ est la fonction définie sur $I$ par $(g\circ u)(x)=g\big(u(x)\big)$ : on applique
+d'abord $u$, puis $g$.
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[box/.style={draw=otNavy,line width=0.6pt,rounded corners=2mm,minimum height=8mm,
+  minimum width=18mm,font=\small,fill=otNavyTint}]
+  \node[box] (a) at (0,0) {$x$};
+  \node[box] (b) at (42mm,0) {$u(x)$};
+  \node[box] (c) at (84mm,0) {$g\big(u(x)\big)$};
+  \draw[-{Stealth[length=2.2mm]},otNavy,line width=0.7pt] (a) -- node[above,font=\small] {$u$} (b);
+  \draw[-{Stealth[length=2.2mm]},otNavy,line width=0.7pt] (b) -- node[above,font=\small] {$g$} (c);
+  \draw[-{Stealth[length=2.2mm]},otGreen,line width=0.7pt,rounded corners=3mm]
+    (a.south) -- ++(0,-6mm) -| node[pos=0.25,below,font=\small,text=otGreenDark] {$g\circ u$} (c.south);
+\end{tikzpicture}
+\end{center}
+
+\begin{theoreme}[Dérivée d'une fonction composée]
+Si $u$ est dérivable sur $I$ et $g$ dérivable sur $J$, alors $g\circ u$ est dérivable sur $I$ et
+\[ (g\circ u)'=u'\times\left(g'\circ u\right),\qquad\text{c'est-à-dire}\qquad \Big(g\big(u(x)\big)\Big)'=u'(x)\times g'\big(u(x)\big). \]
+\end{theoreme}
+
+{\renewcommand{\arraystretch}{1.5}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\otSemi\fontsize{7.5}{10}\selectfont\leavevmode\color{otNavy}}p{30mm}YYY@{}}
+\toprule
+ & {\otSemi\fontsize{8.5}{11}\selectfont Fonction} & {\otSemi\fontsize{8.5}{11}\selectfont Dérivée}
+ & {\otSemi\fontsize{8.5}{11}\selectfont Condition} \\
+\midrule
+\otCaps[8]{Affine} & $g(ax+b)$ & $a\,g'(ax+b)$ & \\
+\otCaps[8]{Puissance} & $u^{n}$\enspace($n\geq1$) & $n\,u'\,u^{n-1}$ & \\
+\otCaps[8]{Inverse} & $\dfrac{1}{u}$ & $-\dfrac{u'}{u^{2}}$ & $u$ ne s'annule pas \\
+\otCaps[8]{Racine} & $\sqrt{u}$ & $\dfrac{u'}{2\sqrt{u}}$ & $u>0$ \\
+\otCaps[8]{Exponentielle} & $e^{u}$ & $u'\,e^{u}$ & \\
+\bottomrule
+\end{tabularx}}
+
+\essSection{4}{Dérivée et variations}
+
+\begin{theoreme}[Signe de la dérivée et variations]
+Soit $f$ dérivable sur un intervalle $I$. Si $f'>0$ sur $I$ (sauf en un nombre fini de points où elle s'annule),
+alors $f$ est strictement croissante sur $I$ ; si $f'<0$, strictement décroissante ; si $f'=0$, constante.
+\end{theoreme}
+
+\begin{savoirfaire}[Étudier les variations et les extremums]
+\begin{enumerate}[label=\otLabel{\arabic*.},leftmargin=1.6em,itemsep=0.6mm,topsep=0.5mm]
+  \item Calculer $f'(x)$, puis la factoriser autant que possible.
+  \item Étudier le signe de $f'(x)$ (tableau de signes si nécessaire).
+  \item Dresser le tableau de variations, avec les limites aux bornes.
+  \item Si $f'$ s'annule en $a$ \emph{en changeant de signe}, $f$ admet un extremum local en $a$.
+\end{enumerate}
+\end{savoirfaire}
+
+\essSection{5}{Dérivée seconde et convexité}
+
+\begin{definition}[Fonction convexe, fonction concave]
+Une fonction $f$ est \textbf{convexe} sur un intervalle $I$ si, pour tous points $A$ et $B$ de $\Cf$ d'abscisses dans
+$I$, la courbe est située \emph{en dessous} de la corde $[AB]$. Elle est \textbf{concave} si elle est située au-dessus.
+La dérivée seconde $f''$ est la dérivée de $f'$.
+\end{definition}
+
+\begin{theoreme}[Caractérisation de la convexité]
+Pour une fonction $f$ deux fois dérivable sur $I$, les propositions suivantes sont équivalentes :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.4mm,topsep=0.8mm]
+  \item $f$ est convexe sur $I$ ;
+  \item $\Cf$ est au-dessus de chacune de ses tangentes sur $I$ ;
+  \item $f'$ est croissante sur $I$ ;
+  \item $f''(x)\geq0$ pour tout $x$ de $I$.
+\end{itemize}
+\end{theoreme}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=74mm, height=44mm, xmin=-3, xmax=3.2, ymin=0, ymax=2.4,
+  xtick=\empty, ytick=\empty, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west}]
+  \addplot[otNavy,line width=1.1pt,domain=-3:3,samples=60] {0.5+0.18*x^2};
+  \addplot[otGreen,line width=0.9pt,domain=-3:1.1] {0.68-0.36*(x+1)};
+  \addplot[otNavy,dashed,line width=0.7pt,domain=0.5:2.5] {0.545+0.54*(x-0.5)};
+  \fill[otNavy] (axis cs:0.5,0.545) circle (1.4pt);
+  \fill[otNavy] (axis cs:2.5,1.625) circle (1.4pt);
+  \fill[otGreen] (axis cs:-1,0.68) circle (1.4pt);
+  \node[anchor=south east,font=\scriptsize] at (axis cs:0.5,0.6) {$A$};
+  \node[anchor=south east,font=\scriptsize] at (axis cs:2.5,1.65) {$B$};
+  \node[anchor=north,font=\scriptsize,text=otGreenDark] at (axis cs:-2.3,0.6) {tangente};
+  \node[anchor=south,font=\scriptsize,text=otNavy] at (axis cs:2.1,1.85) {corde};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Convexe : sous ses cordes, au-dessus de ses tangentes.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=74mm, height=44mm, xmin=-3, xmax=3.2, ymin=0, ymax=3,
+  xtick=\empty, ytick=\empty, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west}]
+  \fill[otNavyTint] (axis cs:-3,0) rectangle (axis cs:0,3);
+  \addplot[otNavy,line width=1.1pt,domain=-3:3,samples=60] {0.1*x^3-0.6*x+1.6};
+  \addplot[otGreen,line width=0.9pt,domain=-2.4:2.4] {1.6-0.6*x};
+  \fill[otGreen] (axis cs:0,1.6) circle (1.6pt);
+  \node[anchor=south west,font=\scriptsize] at (axis cs:0.05,1.65) {$I$};
+  \node[anchor=south,font=\scriptsize,text=otMuted] at (axis cs:-2.2,0.15) {concave};
+  \node[anchor=north,font=\scriptsize,text=otMuted] at (axis cs:2.3,2.95) {convexe};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Point d'inflexion $I$ : la courbe traverse sa tangente.}
+\end{minipage}
+
+\begin{definition}[Point d'inflexion]
+Un point d'inflexion est un point où la courbe traverse sa tangente : la fonction change de convexité.
+Si $f''$ s'annule en $a$ \emph{en changeant de signe}, le point de $\Cf$ d'abscisse $a$ est un point d'inflexion.
+\end{definition}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item $(uv)'\neq u'v'$ : la dérivée d'un produit est $u'v+uv'$.
+  \item Ne pas oublier le facteur $u'$ : $\left(e^{u}\right)'=u'e^{u}$, et $(2x+1)^{3}$ a pour dérivée $6(2x+1)^{2}$.
+  \item $f''(a)=0$ ne suffit pas pour un point d'inflexion : il faut que $f''$ \emph{change de signe} en $a$.
+  \item Un tableau de variations se lit sur un intervalle : ne pas « traverser » une valeur interdite.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Polynômes, produits et quotients}
+Calculer la dérivée de chacune des fonctions suivantes, sur son ensemble de dérivabilité.
+\begin{tasks}(2)
+  \task $f(x)=3x^{4}-5x^{3}+2x^{2}-7x+1$
+  \task $g(x)=(2x+1)\left(x^{2}-3\right)$
+  \task $h(x)=\dfrac{x^{2}+1}{x-2}$
+  \task $k(x)=x^{3}(2x-1)^{2}$
+  \task $p(x)=\dfrac{2x^{3}-x+1}{x^{2}+1}$
+  \task $q(x)=\left(x^{2}+3x\right)(x-1)(2x+1)$
+  \task $r(x)=\dfrac{x^{4}-2x^{2}+1}{x^{2}-1}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Composer des fonctions}
+On considère les fonctions $f$, $g$ et $h$ définies par $f(x)=\dfrac{1}{x+1}$, $g(x)=2x-3$ et $h(x)=x^{2}$.
+Déterminer l'expression de chacune des fonctions suivantes et son ensemble de définition.
+\begin{tasks}(3)
+  \task $f\circ g$
+  \task $g\circ f$
+  \task $h\circ g$
+  \task $f\circ h$
+  \task $g\circ h$
+  \task $f\circ g\circ h$
+\end{tasks}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Composées avec racines et valeurs absolues}
+On considère les fonctions $f$, $g$ et $h$ définies par $f(x)=\sqrt{x+2}$, $g(x)=|x-1|$ et $h(x)=\dfrac{x}{x-2}$.
+Déterminer l'expression de chacune des fonctions suivantes, en la simplifiant, et son ensemble de définition.
+\begin{tasks}(3)
+  \task $f\circ g$
+  \task $g\circ f$
+  \task $h\circ g$
+  \task $f\circ h$
+  \task $g\circ h$
+  \task $f\circ g\circ h$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Dériver des fonctions composées}
+\begin{questions}
+  \item Calculer la dérivée de chacune des fonctions suivantes, en précisant l'ensemble de dérivabilité
+    lorsque c'est nécessaire.
+    \begin{tasks}(3)
+      \task $f(x)=e^{x^{2}+1}$
+      \task $h(x)=\sqrt{2x-1}$
+      \task $k(x)=\dfrac{1}{x^{2}+3}$
+      \task $m(x)=e^{-2x^{2}+5x}$
+      \task $n(x)=\sqrt{x^{2}-4x+3}$
+      \task $p(x)=\left(3x^{2}-1\right)^{4}$
+    \end{tasks}
+  \item Étudier le signe de $k'(x)$ et en déduire les variations de $k$ sur $\R$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Produit, quotient et convexité}
+On considère les fonctions $h$ et $k$ définies par $h(x)=\left(x^{2}+3x\right)(2x-1)$ sur $\R$ et
+$k(x)=\dfrac{x^{2}+2}{x-3}$ sur $\R\setminus\{3\}$.
+\begin{questions}
+  \item Calculer $h'(x)$ et $k'(x)$.
+  \item Calculer les limites de $k$ à gauche et à droite en $3$. Interpréter graphiquement.
+  \item Étudier le sens de variation de $h$ sur $\R$.
+  \item Étudier la convexité de $h$ et déterminer les coordonnées de son point d'inflexion.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Une racine carrée composée}
+On considère la fonction $f$ définie sur $D=\intOF{-\infty}{-3}\cup\intFO{-1}{+\infty}$ par $f(x)=\sqrt{x^{2}+4x+3}$.
+\begin{questions}
+  \item Justifier l'ensemble de définition $D$.
+  \item Calculer $f'(x)$ sur $\intOO{-\infty}{-3}\cup\intOO{-1}{+\infty}$, puis étudier les variations de $f$.
+  \item Calculer les limites de $f$ en $-\infty$ et en $+\infty$.
+  \item Montrer que $f''(x)=-\dfrac{1}{\left(x^{2}+4x+3\right)\sqrt{x^{2}+4x+3}}$. En déduire la convexité de $f$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Étude complète d'un polynôme}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=x^{3}-6x^{2}+9x+1$.
+\begin{questions}
+  \item Calculer $f'(x)$ et la factoriser.
+  \item Étudier le signe de $f'(x)$, puis dresser le tableau de variations de $f$ (limites comprises).
+  \item Déterminer les extremums locaux de $f$.
+  \item Déterminer une équation de la tangente à $\Cf$ au point d'abscisse $1$.
+  \item Étudier la convexité de $f$ et déterminer son point d'inflexion.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Une composée exponentielle}
+On considère la fonction $g$ définie sur $\R$ par $g(x)=e^{-x^{2}+2x-1}$.
+\begin{questions}
+  \item Calculer $g'(x)$ et en déduire les variations et l'extremum de $g$.
+  \item Montrer que $g''(x)=\left((2-2x)^{2}-2\right)e^{-x^{2}+2x-1}$.
+  \item Étudier la convexité de $g$ et déterminer les abscisses de ses points d'inflexion.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Une fonction rationnelle simplifiable}
+On considère la fonction $f$ définie sur $\R\setminus\{-1;1\}$ par $f(x)=\dfrac{x^{2}+4x+3}{x^{2}-1}$.
+\begin{questions}
+  \item Montrer que, pour tout $x$ de $\R\setminus\{-1;1\}$, $f(x)=\dfrac{x+3}{x-1}$.
+  \item Calculer $f'(x)$ et étudier les variations de $f$.
+  \item Calculer les limites de $f$ aux bornes de son ensemble de définition. Déterminer les asymptotes.
+  \item Étudier la convexité de $f$. La courbe admet-elle un point d'inflexion ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Étude complète avec convexité}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=(2x+1)e^{-x}$, et on note $\Cf$ sa courbe.
+\partieExo{A}{Variations}
+\begin{questions}
+  \item Calculer les limites de $f$ en $-\infty$ et en $+\infty$. Interpréter graphiquement.
+  \item Montrer que $f'(x)=(1-2x)e^{-x}$, puis dresser le tableau de variations de $f$.
+\end{questions}
+\partieExo{B}{Convexité}
+\begin{questions}[resume]
+  \item Montrer que $f''(x)=(2x-3)e^{-x}$. Étudier la convexité de $f$ et déterminer son point d'inflexion $I$.
+  \item Déterminer une équation de la tangente à $\Cf$ en $I$.
+  \item Déterminer une équation de la tangente $T$ à $\Cf$ au point d'abscisse $0$.
+  \item En déduire que, pour tout $x\leq\dfrac32$, $(2x+1)e^{-x}\leq x+1$.
+  \item Tracer $T$, la tangente en $I$ et $\Cf$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La boîte de volume maximal}
+Dans une feuille carrée de $30$~cm de côté, on découpe aux quatre coins un carré de côté $x$ (en cm), puis on
+replie les bords pour former une boîte sans couvercle.
+
+\begin{center}
+\begin{tikzpicture}[scale=1]
+  % patron
+  \begin{scope}
+    \fill[otNavyTint] (0,0) rectangle (45mm,45mm);
+    \foreach \cx/\cy in {0/0,37/0,0/37,37/37}{\fill[white] (\cx mm,\cy mm) rectangle ++(8mm,8mm);
+      \draw[otMuted,line width=0.4pt] (\cx mm,\cy mm) rectangle ++(8mm,8mm);}
+    \draw[otNavy,line width=0.7pt] (8mm,0) -- (37mm,0) -- (37mm,8mm) -- (45mm,8mm) -- (45mm,37mm)
+      -- (37mm,37mm) -- (37mm,45mm) -- (8mm,45mm) -- (8mm,37mm) -- (0,37mm) -- (0,8mm) -- (8mm,8mm) -- cycle;
+    \draw[otNavy,dashed,line width=0.5pt] (8mm,8mm) rectangle (37mm,37mm);
+    \node[font=\scriptsize] at (4mm,4mm) {$x$};
+    \draw[otMuted,line width=0.4pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (0,-3mm) -- (45mm,-3mm);
+    \node[below,font=\scriptsize] at (22.5mm,-3mm) {$30$ cm};
+    \node[font=\scriptsize,text=otMuted] at (22.5mm,22.5mm) {fond};
+  \end{scope}
+  \draw[-{Stealth[length=2.5mm]},otGreen,line width=0.9pt] (55mm,22mm) -- node[above,font=\scriptsize,text=otGreenDark] {pliage} (75mm,22mm);
+  % boîte
+  \begin{scope}[shift={(85mm,8mm)}]
+    \fill[otNavyTint] (0,0) rectangle (38mm,14mm);
+    \fill[otNavy!12] (38mm,0) -- (50mm,8mm) -- (50mm,22mm) -- (38mm,14mm) -- cycle;
+    \draw[otNavy,line width=0.7pt] (0,0) rectangle (38mm,14mm);
+    \draw[otNavy,line width=0.7pt] (38mm,0) -- (50mm,8mm) -- (50mm,22mm) -- (38mm,14mm);
+    \draw[otNavy,line width=0.7pt] (0,14mm) -- (12mm,22mm) -- (50mm,22mm);
+    \draw[otNavy,dashed,line width=0.4pt] (0,0) -- (12mm,8mm) -- (50mm,8mm);
+    \draw[otNavy,dashed,line width=0.4pt] (12mm,8mm) -- (12mm,22mm);
+    \node[below,font=\scriptsize] at (19mm,0) {$30-2x$};
+    \node[left,font=\scriptsize] at (0,7mm) {$x$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{questions}
+  \item Justifier que $x\in\intOO{0}{15}$ et que le volume de la boîte, en cm$^{3}$, est $V(x)=x(30-2x)^{2}$.
+  \item Montrer que $V'(x)=12(15-x)(5-x)$, puis dresser le tableau de variations de $V$ sur $\intOO{0}{15}$.
+  \item Quelle valeur de $x$ donne une boîte de volume maximal ? Préciser ce volume, en litres.
+  \item Étudier la convexité de $V$ et déterminer son point d'inflexion.
+  \item \begin{questions}
+      \item Vérifier que, pour tout réel $x$, $V(x)-1000=4(x-10)\left(x^{2}-20x+25\right)$.
+      \item En déduire les valeurs de $x$ pour lesquelles la boîte a un volume d'au moins un litre.
+    \end{questions}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Inégalités de convexité}
+\partieExo{A}{La fonction exponentielle}
+\begin{questions}
+  \item Justifier que la fonction $\exp$ est convexe sur $\R$.
+  \item Déterminer une équation de la tangente à la courbe de $\exp$ en $0$. En déduire que, pour tout réel $x$,
+    $e^{x}\geq1+x$.
+  \item On note $A$ et $B$ les points de la courbe d'abscisses $0$ et $1$. Déterminer une équation de la droite $(AB)$,
+    puis en déduire que, pour tout $x\in\intFF{0}{1}$, $e^{x}\leq1+(e-1)x$.
+  \item En déduire un encadrement de $e^{0,1}$, et comparer avec la valeur donnée par la calculatrice.
+  \item En utilisant la question 2 avec $x=\dfrac1n$, montrer que, pour tout entier $n\geq1$,
+    $\left(1+\dfrac1n\right)^{n}\leq e$.
+\end{questions}
+\partieExo{B}{La fonction racine carrée}
+\begin{questions}[resume]
+  \item Calculer la dérivée seconde de la fonction racine carrée sur $\intOO{0}{+\infty}$. En déduire qu'elle est concave.
+  \item Déterminer une équation de sa tangente au point d'abscisse $1$, puis en déduire que, pour tout $x>0$,
+    $\sqrt{x}\leq\dfrac{x+1}{2}$.
+  \item Montrer que, pour tout $x\in\intFF{1}{4}$, $\sqrt{x}\geq\dfrac{x+2}{3}$.
+  \item En déduire un encadrement de $\sqrt2$.
+\end{questions}
+\end{exercice}

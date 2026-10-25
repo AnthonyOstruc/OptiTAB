@@ -1,0 +1,126 @@
+% !TEX program = lualatex
+\documentclass[11pt,twoside,openany]{book}
+\usepackage{optitab-livre}
+\usepackage{figures-geometrie}
+\usepackage{relecture-livre}
+\usepackage{edition-france}
+\newcommand{\ligneSommaire}[2]{\par\vspace{3.5mm}\hyperref[#2]{#1}\hfill{\small p.\,\pageref*{#2}}\par}
+\newcommand{\otDecocalcul}{\otDecoensembles}
+\newcommand{\otDecostatistiques}{\otDecoGrille}
+\newcommand{\otDecoalgorithmique}{\otDecoboucles}
+\newcommand{\otDecoprobabilites}{\otDecoconditionnelles}
+\newcommand{\otDecogeometrie}{\otDecoGrille
+\draw[white,opacity=.25,line width=1pt](113mm,24mm)--(194mm,24mm)--(194mm,100mm)--cycle;
+\draw[white,opacity=.25,line width=.8pt](186mm,24mm)--(186mm,32mm)--(194mm,32mm);}
+\newcommand{\otDecoraisonner}{\otDecoGrille
+\draw[white,opacity=.28,line width=1pt](120mm,24mm)--(196mm,24mm)--(146mm,100mm)--cycle;
+\draw[white,opacity=.45,line width=.8pt,dashed](158mm,12mm)--(158mm,108mm);
+\draw[white,opacity=.45,line width=.8pt](158mm,24mm)--(158mm,31mm)--(165mm,31mm);
+\draw[otGreen,line width=1.8pt](146mm,100mm)--(146mm,24mm);
+\draw[otGreen,line width=1pt](146mm,31mm)--(139mm,31mm)--(139mm,24mm);
+\fill[white](146mm,100mm)circle(1.5mm);}
+\newcommand{\otDecotranslation}{\otDecoGrille
+\draw[white,opacity=.35,line width=1.2pt](116mm,26mm)--(150mm,26mm)--(128mm,60mm)--cycle;
+\draw[otGreen,line width=1.8pt](156mm,58mm)--(190mm,58mm)--(168mm,92mm)--cycle;
+\draw[white,opacity=.7,line width=1.2pt,-{Stealth[length=3mm]}](118mm,30mm)--(154mm,56mm);
+\fill[white](116mm,26mm)circle(1.4mm);\fill[otGreen](156mm,58mm)circle(1.4mm);}
+\newcommand{\otDecomilieux}{\otDecoGrille
+\draw[white,opacity=.3,line width=1.2pt](120mm,22mm)--(196mm,22mm)--(150mm,104mm)--cycle;
+\draw[otGreen,line width=1.8pt](135mm,63mm)--(173mm,63mm);
+\draw[white,opacity=.45,line width=.8pt,dashed](135mm,63mm)--(120mm,22mm);
+\fill[white](135mm,63mm)circle(1.5mm);\fill[white](173mm,63mm)circle(1.5mm);}
+\newcommand{\otDecocercle}{\otDecoGrille
+\draw[white,opacity=.3,line width=1.2pt](158mm,58mm)circle(40mm);
+\draw[otGreen,line width=1.8pt](118mm,58mm)--(198mm,58mm)--(178mm,92.64mm)--cycle;
+\draw[white,opacity=.6,line width=.9pt](158mm,58mm)--(178mm,92.64mm);
+\fill[white](158mm,58mm)circle(1.5mm);}
+\hypersetup{pdftitle={Mathématiques - Quatrième - Édition 2027-2028 - Nouveau programme},
+pdfsubject={France 2027-2028, programme du cycle 4 de 2026 : 18 chapitres, 288 exercices corrigés, deux bilans annuels},pdfauthor={OptiTAB}}
+\newcommand{\otDecoseconddegre}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (132mm,47mm)--(210mm,47mm);
+  \draw[white,opacity=.25] (171mm,18mm)--(171mm,118mm);
+  \draw[otGreen,line width=1.8pt] plot[domain=-1.8:1.8,samples=75]
+    ({(171+20*\x)*1mm},{(47+16*\x*\x)*1mm});
+  \fill[white] (171mm,47mm) circle (1.5mm);}
+\newcommand{\otDecovecteursplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.7,line width=1.5pt,-{Stealth[length=3mm]}] (130mm,47mm)--(199mm,61mm);
+  \draw[otGreen,line width=1.8pt,-{Stealth[length=3mm]}] (130mm,47mm)--(157mm,105mm);
+  \draw[white,opacity=.35,dashed] (157mm,105mm)--(168mm,55mm);
+  \fill[white] (130mm,47mm) circle (1.5mm);}
+\newcommand{\otDecocercleplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (130mm,73mm)--(210mm,73mm) (170mm,36mm)--(170mm,116mm);
+  \draw[otGreen,line width=1.8pt] (170mm,73mm) circle (30mm);
+  \draw[white,opacity=.75,line width=1.2pt] (162mm,116.5mm)--(210mm,80.5mm);
+  \draw[white,opacity=.45,dashed] (170mm,73mm)--(188mm,97mm);
+  \fill[white] (188mm,97mm) circle (1.6mm);}
+\newcommand{\otDecoensembles}{%
+  \otDecoGrille
+  \fill[white,opacity=.10] (155mm,76mm) circle (22mm);
+  \fill[otGreen,opacity=.2] (181mm,76mm) circle (22mm);
+  \draw[white,opacity=.8,line width=1.3pt] (155mm,76mm) circle (22mm);
+  \draw[otGreen,line width=1.7pt] (181mm,76mm) circle (22mm);}
+
+\begin{document}
+\pagenumbering{alph}
+\input{couverture/premiere}
+\pagenumbering{arabic}
+\input{liminaires/titre}
+\input{liminaires/copyright}
+\input{liminaires/avant-propos}
+\input{liminaires/mode-emploi}
+\input{liminaires/parcours}
+\input{liminaires/nouveautes}
+\input{liminaires/sommaire}
+\input{liminaires/tableau-de-bord}
+\pagestyle{otMain}
+\input{chapitres/01-relatifs}
+\input{chapitres/02-rationnels}
+\input{chapitres/03-puissances}
+\input{chapitres/04-racines}
+\input{chapitres/05-litteral}
+\input{chapitres/06-equations}
+\input{chapitres/07-proportionnalite}
+\input{chapitres/08-grandeurs}
+\input{chapitres/09-fonctions}
+\input{chapitres/10-statistiques}
+\input{chapitres/11-probabilites}
+\input{chapitres/12-raisonnement}
+\input{chapitres/13-translations}
+\input{chapitres/14-milieux}
+\input{chapitres/15-pythagore}
+\input{chapitres/16-cercle}
+\input{chapitres/17-solides}
+\input{chapitres/18-programmation}
+\input{annexes/defis-enonces}
+\input{annexes/indices-defis}
+\input{annexes/bilans-enonces}
+\input{annexes/demonstrations}
+\partieCorriges
+\input{corriges/01-relatifs}
+\input{corriges/02-rationnels}
+\input{corriges/03-puissances}
+\input{corriges/04-racines}
+\input{corriges/05-litteral}
+\input{corriges/06-equations}
+\input{corriges/07-proportionnalite}
+\input{corriges/08-grandeurs}
+\input{corriges/09-fonctions}
+\input{corriges/10-statistiques}
+\input{corriges/11-probabilites}
+\input{corriges/12-raisonnement}
+\input{corriges/13-translations}
+\input{corriges/14-milieux}
+\input{corriges/15-pythagore}
+\input{corriges/16-cercle}
+\input{corriges/17-solides}
+\input{corriges/18-programmation}
+\input{annexes/defis-corriges}
+\input{annexes/bilans-corriges}
+\input{annexes/outils}
+\input{annexes/couverture-programme}
+\input{liminaires/references}
+\input{couverture/quatrieme}
+\end{document}

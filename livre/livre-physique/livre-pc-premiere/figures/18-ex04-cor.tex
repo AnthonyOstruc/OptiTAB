@@ -1,0 +1,19 @@
+% Construction de l'image donnée par une loupe : f' = 5,0 cm, OA = -3,0 cm (corrigé de l'exercice 4, chapitre 18) ; échelle 1/2
+\begin{tikzpicture}[x=1cm,y=1cm,
+  rayon/.style={otOrange!85!black,line width=0.8pt,postaction={decorate},
+    decoration={markings,mark=at position 0.5 with {\arrow{Stealth[length=1.6mm]}}}},
+  virtuel/.style={otOrange!85!black,line width=0.5pt,dash pattern=on 2.5pt off 1.5pt}]
+\draw[otInk!60,line width=0.5pt] (-4.4,0) -- (5.2,0);
+\draw[otNavy,line width=1.2pt,{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]}] (0,-1.0) -- (0,1.5);
+\foreach \x/\n in {-2.5/F,2.5/F'}{\draw[otInk,line width=0.6pt] (\x,-0.08) -- (\x,0.08); \node[pcLegende,anchor=north] at (\x,-0.08) {$\n$};}
+\node[pcLegende,anchor=north east] at (0,-0.02) {O};
+\draw[otNavy,line width=1.2pt,-{Stealth[length=2.2mm]}] (-1.5,0) -- (-1.5,0.8) node[pcLegende,anchor=south east,text=otNavy] {B};
+\node[pcLegende,anchor=north] at (-1.5,-0.03) {A};
+\draw[otGreenDark,line width=1.2pt,dash pattern=on 3pt off 1.5pt,-{Stealth[length=2.2mm]}] (-3.75,0) -- (-3.75,2.0) node[pcLegende,anchor=south,text=otGreenDark] {B'};
+\node[pcLegende,anchor=north] at (-3.75,-0.03) {A'};
+\draw[rayon] (-1.5,0.8) -- (0,0.8) -- (4.5,-0.64);
+\draw[rayon] (-1.5,0.8) -- (1.3,-0.693);
+\draw[virtuel] (0,0.8) -- (-3.75,2.0);
+\draw[virtuel] (-1.5,0.8) -- (-3.75,2.0);
+\end{tikzpicture}
+\par\smallskip\legende{Les rayons issus de B divergent après la lentille ; leurs prolongements (pointillés) se coupent en B'. Échelle 1/2.}

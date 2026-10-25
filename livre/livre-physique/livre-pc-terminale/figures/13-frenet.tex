@@ -1,0 +1,26 @@
+% Repère de Frenet, vecteurs vitesse et accélération d'un mouvement circulaire (L'essentiel, chapitre 13)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otMuted,line width=0.6pt] (0,0) circle (2.4);
+\fill[otInk] (0,0) circle (0.05) node[pcLegende,anchor=north] {$O$};
+\coordinate (M) at (50:2.4);
+\draw[pcTraj] (0,0) -- (M);
+\node[pcLegende,anchor=north west] at (50:0.55) {$R$};
+\draw[otMuted,line width=0.4pt,-{Stealth[length=1.5mm]}] (-40:2.85) arc[start angle=-40,end angle=0,radius=2.85];
+\node[pcLegende,text=otMuted,anchor=west] at (-22:2.95) {sens du mouvement};
+% vitesse (le long de u_t, direction 140°)
+\draw[pcVitesse] (M) -- ++(140:2.1) node[pcLegende,anchor=south east,text=otNavy] {$\vec{v}=v\,\ut$};
+% vecteurs unitaires
+\draw[otInk,line width=0.8pt,-{Stealth[length=1.8mm]}] (M) -- ++(140:0.62);
+\node[pcLegende,anchor=north east] at ($(M)+(140:0.45)+(230:0.08)$) {$\ut$};
+\draw[otInk,line width=0.8pt,-{Stealth[length=1.8mm]}] (M) -- ++(230:0.62);
+\node[pcLegende,anchor=west] at ($(M)+(230:0.5)+(320:0.06)$) {$\un$};
+% accélération : a_t = 0,92 cm le long de u_t, a_n = 1,31 cm vers O
+\draw[otRed!60,line width=0.5pt,dash pattern=on 1.5pt off 1.2pt] ($(M)+(195:1.6)$) -- ($(M)+(230:1.31)$);
+\draw[otRed!60,line width=0.5pt,dash pattern=on 1.5pt off 1.2pt] ($(M)+(195:1.6)$) -- ($(M)+(140:0.92)$);
+\draw[pcAcc] (M) -- ++(195:1.6) node[pcLegende,anchor=north east,text=otRed!80!black] {$\vec{a}$};
+\node[pcLegende,text=otRed!80!black,anchor=west] at ($(M)+(230:1.31)+(320:0.08)$) {$a_\mathrm{n}=\dfrac{v^2}{R}$};
+\node[pcLegende,text=otRed!80!black,anchor=north east] at ($(M)+(140:0.92)+(230:0.06)$) {$a_\mathrm{t}=\dfrac{\mathrm{d}v}{\mathrm{d}t}$};
+\fill[otInk] (M) circle (0.06);
+\node[pcLegende,anchor=south west] at (M) {M};
+\end{tikzpicture}
+\par\smallskip\legende{Le repère de Frenet accompagne le point M. Ici la vitesse augmente : $a_\mathrm{t}>0$ et $\vec{a}$ penche vers l'avant.}

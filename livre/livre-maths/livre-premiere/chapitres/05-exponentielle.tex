@@ -1,0 +1,222 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[exp]{5}{Fonction exponentielle}{Partie 2 · Analyse}
+{Propriétés algébriques\enspace·\enspace Dérivées\enspace·\enspace Équations\enspace·\enspace Modélisation}
+\objectif{Transformer une expression contenant des exponentielles.}
+\objectif{Résoudre des équations et inéquations par comparaison.}
+\objectif{Dériver et étudier des fonctions avec une exponentielle.}
+\objectif{Relier les modèles continus et les suites géométriques.}
+\prerequis{Calcul des puissances, dérivation et variations.}
+\prerequis{Second degré et suites géométriques.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Définition et règles de calcul}
+\begin{definition}
+La fonction exponentielle, notée $\exp$ ou $x\mapsto e^x$, est l'unique
+fonction dérivable sur $\R$ vérifiant $\exp'=\exp$ et $\exp(0)=1$.
+Son existence et son unicité sont admises. Le nombre $e=\exp(1)$ vaut environ $2{,}71828$.
+\end{definition}
+\begin{propriete}
+Pour tous réels $a$ et $b$,
+\[e^{a+b}=e^ae^b,\quad e^{-a}=\frac1{e^a},\quad
+e^{a-b}=\frac{e^a}{e^b},\quad (e^a)^n=e^{na}\ (n\in\mathbb Z).\]
+On a $e^x>0$ pour tout réel $x$ : une exponentielle ne s'annule jamais.
+\end{propriete}
+\begin{attention}
+$e^{a+b}$ est un produit, pas une somme : en général $e^{a+b}\neq e^a+e^b$.
+Ne pas confondre $e^{2x}$ et $2e^x$.
+\end{attention}
+\essSection{2}{Une fonction strictement croissante}
+\begin{theoreme}
+La dérivée de $e^x$ est $e^x>0$, donc l'exponentielle est strictement croissante
+sur $\R$. Ainsi $e^a=e^b\iff a=b$ et $e^a<e^b\iff a<b$.
+En particulier, $e^x=1\iff x=0$.
+\end{theoreme}
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=102mm,height=59mm,xmin=-2.5,xmax=2,ymin=-0.5,ymax=6,xtick={-2,-1,1},ytick={1,2,3,4,5,6}]
+\addplot[otNavy,thick,domain=-2.5:1.75,samples=90]{exp(x)};
+\addplot[otGreen,domain=-1.4:2]{x+1};
+\addplot[only marks,otNavy]coordinates{(0,1)(1,2.718281828)};
+\node[above left,font=\small]at(axis cs:0,1){$(0;1)$};
+\end{axis}\end{tikzpicture}\par\legende{La courbe de l'exponentielle et sa tangente $y=x+1$ en 0.}\end{center}
+\clearpage
+\essSection{3}{Dériver une exponentielle dans un produit}
+\begin{propriete}
+Pour une constante réelle $a$, la dérivée de $t\mapsto e^{at}$ est $t\mapsto ae^{at}$.
+Comme $e^{ax+b}=e^be^{ax}$, on en déduit $\big(e^{ax+b}\big)'=a e^{ax+b}$.
+Dans un produit, on conserve les deux termes de la dérivée :
+\[\big((x+1)e^{-x}\big)'=e^{-x}-(x+1)e^{-x}=-xe^{-x}.\]
+\end{propriete}
+\begin{savoirfaire}[Étudier un signe]
+Factoriser la dérivée par l'exponentielle. Comme celle-ci est strictement
+positive, le signe dépend du facteur restant. Pour l'exemple précédent,
+le signe est celui de $-x$.
+\end{savoirfaire}
+\essSection{4}{Modéliser une évolution continue}
+\begin{definition}
+Un modèle $Q(t)=Q_0e^{kt}$, avec $Q_0>0$, décrit une croissance lorsque
+$k>0$ et une décroissance lorsque $k<0$. Pour des instants entiers,
+$Q(n)=Q_0(e^k)^n$ : les valeurs forment une suite géométrique de raison $e^k$.
+\end{definition}
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=110mm,height=51mm,xmin=-0.2,xmax=4.4,ymin=-0.1,ymax=4.1,xtick={0,1,2,3,4},ytick={1,2,3,4},xlabel={$t$},ylabel={$Q(t)$}]
+\addplot[otNavy,thick,domain=0:4,samples=75]{exp(0.3*x)};
+\addplot[only marks,otGreenDark,mark=*,mark size=2.1pt]coordinates{(0,1)(1,1.349859)(2,1.822119)(3,2.459603)(4,3.320117)};
+\end{axis}\end{tikzpicture}\par\legende{Modèle continu $Q(t)=e^{0{,}3t}$ et valeurs aux instants entiers.}\end{center}
+\begin{attention}
+Le taux entre deux instants séparés d'une unité vaut $e^k-1$, et non $k$.
+Pour chercher un seuil qui ne se résout pas par comparaison d'exposants,
+on utilise des essais, un tableau ou Python. Aucun logarithme n'est nécessaire ici.
+\end{attention}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-5-1}
+\begin{exercice}[1]{Simplifier une expression}
+Écrire sous la forme d'une seule exponentielle :
+\begin{tasks}(3)
+\task $e^{2x}e^{3-x}$.
+\task $e^{5x}/e^{2x-1}$.
+\task $(e^{-x})^3e^{2x}$.
+\end{tasks}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-2}
+\begin{exercice}[1]{Des équations immédiates}
+Résoudre dans $\R$ : $e^{2x-1}=e^3$, puis $e^{x+2}=1$ et $e^x=-2$.
+Justifier chaque réponse à l'aide d'une propriété de l'exponentielle.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-3}
+\begin{exercice}[1]{Comparer des exponentielles}
+Résoudre $e^{3x+1}\leq e^{x+5}$ et $e^{-2x}>1$.
+Ranger aussi $e^{-1}$, $1$ et $e^{1/2}$ dans l'ordre croissant.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-4}
+\begin{exercice}[1]{Dériver et donner le signe}
+Calculer les dérivées de $f(x)=e^{2x}$, $g(x)=3e^{-x}$ et $h(x)=e^{x+1}-4$.
+Donner le sens de variation de chacune sur $\R$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-5}
+\begin{exercice}[1]{La tangente en zéro}
+Pour $f(x)=e^x$, calculer $f(0)$ et $f'(0)$, puis écrire la tangente en 0.
+Utiliser cette droite pour approcher $e^{0{,}03}$.
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-5-6}
+\begin{exercice}[2]{Factoriser avant de résoudre}
+Résoudre dans $\R$ :
+\begin{questions}\item $e^{2x}-e^x=0$.
+\item $(x-2)e^x=0$.
+\item $(x^2-3x+2)e^{-x}\leq0$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-7}
+\begin{exercice}[2]{Étudier un produit}
+On pose $f(x)=(x+1)e^{-x}$ sur $[-2;4]$.
+\begin{questions}\item Montrer que $f'(x)=-xe^{-x}$.
+\item Dresser le tableau de variations et déterminer les extremums sur ce segment.
+\item Écrire la tangente en 1 et déterminer où $f$ est positive ou nulle.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-8}
+\begin{exercice}[2]{Une différence d'exponentielles}
+On considère $g(x)=e^{2x}-2e^x$ sur $\R$.
+\begin{questions}\item Factoriser $g'(x)$ et étudier son signe.
+\item En déduire le minimum de $g$.
+\item Retrouver ce résultat avec $g(x)=(e^x-1)^2-1$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-9}
+\begin{exercice}[2]{Un quotient toujours défini}
+Soit $f(x)=\dfrac{e^x}{1+e^x}$.
+\begin{questions}\item Justifier que $f$ est définie et dérivable sur $\R$.
+\item Montrer que $f'(x)=\dfrac{e^x}{(1+e^x)^2}$ et en déduire les variations.
+\item Montrer $0<f(x)<1$, puis résoudre $f(x)=\frac12$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-10}
+\begin{exercice}[2]{Passer du continu au discret}
+Une population est modélisée par $N(t)=500e^{0{,}2t}$, $t$ en années.
+\begin{questions}\item Calculer $N(0)$ et $N(5)$ (valeur exacte, puis arrondie à l'unité).
+\item Pour $u_n=N(n)$, donner la nature, le premier terme et la raison de $(u_n)$.
+\item Déterminer le pourcentage d'augmentation annuel à $0{,}1$ point de pourcentage près.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-11}
+\begin{exercice}[2]{Construire une approximation d'Euler}
+Pour approcher $e^1$, on part de $y_0=1$ et on effectue $N$ étapes de longueur
+$h=1/N$ en posant $y_{k+1}=y_k+hy_k$.
+\begin{questions}\item Donner la nature de $(y_k)$ et exprimer $y_N$ en fonction de $N$.
+\item Calculer les approximations pour $N=2$ et $N=10$, puis comparer à $e$.
+\item Écrire une fonction Python qui calcule l'approximation par une boucle de $N$ étapes.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-5-12}
+\begin{exercice}[3]{Le refroidissement d'une boisson}
+La température d'une boisson est modélisée par $T(t)=20+70e^{-0{,}1t}$,
+où $t\geq0$ est exprimé en minutes et $T$ en degrés Celsius.
+\begin{center}\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=107mm,height=51mm,xmin=-1,xmax=31,ymin=-3,ymax=100,xtick={0,5,10,15,20,25,30},ytick={20,40,60,80,100},xlabel={$t$},ylabel={$T$}]
+\addplot[otNavy,thick,domain=0:30,samples=100]{20+70*exp(-0.1*x)};
+\addplot[otOrange,dashed,domain=0:30]{40};
+\end{axis}\end{tikzpicture}\end{center}
+\begin{questions}\item Calculer la température initiale et justifier la décroissance.
+\item Montrer que la température reste strictement supérieure à $20\,{}^\circ$C.
+\item Trouver la première minute entière où $T(t)\leq40$, en vérifiant la minute précédente.
+\item Programmer ce seuil avec une boucle \code{while}.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-13}
+\begin{exercice}[3]{Une concentration après injection}
+Pour $t\in[0;8]$ heures, la concentration est $C(t)=8te^{-0{,}5t}$ mg/L.
+\begin{questions}\item Calculer $C'(t)$ et dresser le tableau de variations.
+\item Déterminer l'instant et la valeur de la concentration maximale.
+\item Écrire la tangente en $t=0$ et interpréter sa pente.
+\item Entre $t=2$ et $t=3$, quel est le taux de variation moyen ? Donner une valeur approchée à $10^{-2}$ et son unité.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-14}
+\begin{exercice}[3]{Prouver une inégalité sans convexité}
+On pose $F(x)=e^x-1-x$ sur $\R$.
+\partieExo{A}{Une inégalité fondamentale}
+\begin{questions}\item Calculer $F'(x)$ et étudier son signe.
+\item Déterminer le minimum de $F$. En déduire $e^x\geq1+x$ pour tout réel $x$,
+et préciser le cas d'égalité.
+\end{questions}
+\partieExo{B}{Une application numérique}
+\begin{questions}[resume]\item Appliquer cette inégalité à $x=0{,}1$ puis $x=-0{,}1$.
+\item En utilisant $e^{-0{,}1}=1/e^{0{,}1}$, en déduire
+$1{,}1\leq e^{0{,}1}\leq10/9$.
+\item Comparer cet encadrement à l'approximation affine de $e^{0{,}1}$ en 0.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-5-15}
+\begin{exercice}[3]{Choisir une durée de campagne}
+Le gain d'une campagne, pour $t\in[0;6]$ semaines, est modélisé par
+$G(t)=100(t+1)e^{-0{,}5t}$, en centaines d'euros.
+On pourra utiliser l'encadrement $2<e<3$.
+\partieExo{A}{Optimiser le gain}
+\begin{questions}\item Montrer que $G'(t)=50(1-t)e^{-0{,}5t}$.
+\item Dresser le tableau de variations et déterminer la durée optimale et le gain maximal en euros.
+\end{questions}
+\partieExo{B}{Comparer deux modèles}
+\begin{questions}[resume]\item Un autre prestataire propose un gain constant $H(t)=100$ dans la même unité.
+Comparer exactement $G(0)$ et $G(1)$ à 100.
+\item Calculer $G(2)$ et $G(3)$ à $10^{-2}$ près. En utilisant les variations,
+expliquer pourquoi la campagne rapporte davantage que $H$ pour toute durée $0<t\leq2$.
+\item Pour des durées entières de 1 à 6 semaines, lesquelles donnent un gain strictement supérieur à $H$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

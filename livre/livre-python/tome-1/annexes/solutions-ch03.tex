@@ -1,0 +1,328 @@
+%% =====================================================================
+%%  Solutions du chapitre 3 — Variables
+%% =====================================================================
+\corrigesChapitre{3}{Variables}
+
+\begin{corrigeatoi}{1}
+\begin{suivi}{2}
+\otTH{Line} & \otTH{Instruction} & \otTH{x} & \otTH{y}\\\midrule
+1 & \py{x = 3} & \nv{3} & \\
+2 & \py{y = x + 4} & \av{3} & \nv{7}\\
+3 & \py{x = y * 2} & \nv{14} & \av{7}\\
+4 & \py{y = x - y} & \av{14} & \nv{7}\\
+\end{suivi}
+\begin{code}{file=trace2.py}
+x = 3
+y = x + 4
+x = y * 2
+y = x - y
+print(x, y)
+\end{code}
+\begin{sortie}
+14 7
+\end{sortie}
+At line~4, \py{y} keeps the value 7, but it is a coincidence: it is calculated again from the values
+of that moment, $14 - 7$.
+\end{corrigeatoi}
+
+\begin{corrigeatoi}{2}
+\begin{code}{file=points_game.py}
+points = 0
+points += 50
+points -= 20
+points *= 3
+print("Final score:", points)
+\end{code}
+\begin{sortie}
+Final score: 90
+\end{sortie}
+\end{corrigeatoi}
+
+\begin{corrigeatoi}{3}
+One more night also means one more day of meals: change \py{nights} \emph{and} \py{days}
+(lines~5 and~6).
+\begin{code}{file=holiday_planner.py, marks={4-6}}
+# holiday_planner.py - the Lisbon budget, now with variables
+
+# Data
+travellers = 3
+nights = 7
+days = 8
+flight_price = 89.5      # return ticket, per person
+room_price = 74          # per night, for the room
+food_per_day = 25        # per person
+museum_pass = 21.5       # per person
+months = 6               # months left to save
+
+# Calculations
+flights = travellers * flight_price
+hotel = nights * room_price
+food = travellers * days * food_per_day
+museums = travellers * museum_pass
+total = flights + hotel + food + museums
+
+# Display
+print("=== HOLIDAY IN LISBON ===")
+print("Travellers:", travellers)
+print("Flights:", flights)
+print("Hotel:", hotel)
+print("Food:", food)
+print("Museums:", museums)
+print("Total:", total)
+print("Per person:", round(total / travellers, 2))
+print("To save each month:", round(total / months, 2))
+\end{code}
+\begin{sortie}
+=== HOLIDAY IN LISBON ===
+Travellers: 3
+Flights: 268.5
+Hotel: 518
+Food: 600
+Museums: 64.5
+Total: 1451.0
+Per person: 483.67
+To save each month: 241.83
+\end{sortie}
+\piege{changing only \py{nights}: the hotel would be right, but the food would still be counted for
+7 days.}
+\end{corrigeatoi}
+
+\begin{corrige}{1}
+\begin{suivi}{2}
+\otTH{Line} & \otTH{Instruction} & \otTH{a} & \otTH{b}\\\midrule
+1 & \py{a = 4} & \nv{4} & \\
+2 & \py{b = a * 3} & \av{4} & \nv{12}\\
+3 & \py{a = b - a} & \nv{8} & \av{12}\\
+4 & \py{b = b // a} & \av{8} & \nv{1}\\
+\end{suivi}
+\begin{code}{file=trace3.py}
+a = 4
+b = a * 3
+a = b - a
+b = b // a
+print(a, b)
+\end{code}
+\begin{sortie}
+8 1
+\end{sortie}
+\retiens{at each line, use the values of the line \emph{above} in the trace table: they are the values
+the variables have at that moment.}
+\end{corrige}
+
+\begin{corrige}{2}
+\begin{code}{file=follow.py}
+x = 10
+y = x
+x = x + 5
+print(x, y)
+\end{code}
+\begin{sortie}
+15 10
+\end{sortie}
+\pourquoi{at line~2, \py{y} is attached to the object \py{10}. At line~3, \py{x} is attached to a new
+object, \py{15}; this does not move the label \py{y}, which still refers to \py{10}.}
+\end{corrige}
+
+\begin{corrige}{3}
+\begin{reponses}
+\item \py{age}: valid and well chosen.
+\item \py{2fast}: \rep{invalid}, a name cannot start with a digit.
+\item \py{first\_name}: valid, perfect snake\_case.
+\item \py{first-name}: \rep{invalid}, Python reads a subtraction.
+\item \py{\_count}: valid. By convention, a name that starts with an underscore is for internal use;
+  you will meet this in volume~3.
+\item \py{class}: \rep{invalid}, it is a keyword.
+\item \py{Class}: valid, since Python is case-sensitive, but names with a capital letter are reserved
+  by convention for \emph{classes} (volume~3).
+\item \py{my score}: \rep{invalid}, spaces are forbidden.
+\item \py{totalPrice}: valid, but not the Python style: write \py{total\_price}.
+\item \py{MAX\_SPEED}: valid, the convention for a constant.
+\end{reponses}
+\end{corrige}
+
+\begin{corrige}{4}
+\begin{code}{file=rectangle.py, cible=rectangle}
+width = 7.5
+height = 4
+area = width * height
+perimeter = 2 * (width + height)
+print("Area:", area, "square metres")
+print("Perimeter:", perimeter, "metres")
+\end{code}
+\pourquoi{the results are floats (\py{30.0}, \py{23.0}) because \py{width} is a float.}
+\piege{writing \py{2 * width + height}: without parentheses, only the width is doubled.}
+\end{corrige}
+
+\begin{corrige}{5}
+\begin{code}{file=shopping.py, cible=courses}
+bread_price = 1.25
+milk_price = 0.75
+milk_bottles = 3
+total = bread_price + milk_price * milk_bottles
+print("Total:", total)
+\end{code}
+\pourquoi{the multiplication comes first: $1.25 + 0.75 \times 3 = 1.25 + 2.25 = 3.5$. In the last
+line, \py{total} is written without quotes: we want its value, not the word \enquote{total}.}
+\end{corrige}
+
+\begin{corrige}{6}
+\demarche{read the message: \py{hour} does not exist, Python suggests \py{hours}. Correct it and run
+again: a second \py{NameError} appears on line~4, because of the capital letter of
+\py{Weekly\_pay}.}
+\begin{code}{file=weekly_pay.py, cible=salaire}
+hourly_rate = 12.5
+hours = 35
+weekly_pay = hourly_rate * hours
+print("Weekly pay:", weekly_pay)
+\end{code}
+\retiens{a name must be written exactly the same way, letter for letter and with the same case,
+every time you use it.}
+\end{corrige}
+
+\begin{corrige}{7}
+\begin{code}{file=swap.py, cible=echange}
+left = "red"
+right = "blue"
+print("Before:", left, right)
+
+# first method: with a temporary variable
+temp = left
+left = right
+right = temp
+print("After the first swap:", left, right)
+
+# second method: Python's multiple assignment
+left, right = right, left
+print("After the second swap:", left, right)
+\end{code}
+\pourquoi{\py{temp} keeps the old value of \py{left} before it is replaced. The second method swaps
+again, which brings back the initial order.}
+\piege{writing \py{left = right} then \py{right = left}: after the first line, both names refer to
+\py{"blue"}, and \py{"red"} is lost.}
+\end{corrige}
+
+\begin{corrige}{8}
+\begin{code}{file=speed.py, cible=vitesse}
+distance = 150     # in km
+duration = 2.5     # in hours
+speed = distance / duration
+print("Average speed:", speed, "km/h")
+print("That is", round(speed / 3.6, 2), "m/s")
+\end{code}
+\end{corrige}
+
+\begin{corrige}{9}
+\begin{suivi}{1}
+\otTH{Line} & \otTH{Instruction} & \otTH{points}\\\midrule
+1 & \py{points = 10} & \nv{10}\\
+2 & \py{points += 5} & \nv{15}\\
+3 & \py{points *= 2} & \nv{30}\\
+4 & \py{points -= 4} & \nv{26}\\
+5 & \py{points //= 3} & \nv{8}\\
+\end{suivi}
+\begin{code}{file=points.py}
+points = 10
+points += 5
+points *= 2
+points -= 4
+points //= 3
+print(points)
+\end{code}
+\begin{sortie}
+8
+\end{sortie}
+\end{corrige}
+
+\begin{corrige}{10}
+\demarche{the recipe is for 4 people; for \py{guests} people, every quantity is multiplied by
+\py{guests / 4}.}
+\begin{code}{file=pancakes.py, cible=crepes}
+guests = 6
+factor = guests / 4
+print("Pancakes for", guests, "people:")
+print("Flour:", 250 * factor, "g")
+print("Milk:", 500 * factor, "ml")
+print("Eggs:", 2 * factor)
+\end{code}
+For 2 guests, only the first line changes:
+\begin{code}{file=pancakes.py, variante, first=1, marks={1}}
+guests = 2
+\end{code}
+\begin{sortie}
+Pancakes for 2 people:
+Flour: 125.0 g
+Milk: 250.0 ml
+Eggs: 1.0
+\end{sortie}
+\retiens{thanks to the variable \py{guests}, one single change adapts the whole recipe.}
+\end{corrige}
+
+\begin{corrige}{11}
+\begin{memoire}[after each line]
+\node[font=\otSemi\fontsize{8}{9}\selectfont,text=otViolet] at (1.6,1.5) {after line 1};
+\nomvar{a}{(0,0.5)}{a1}
+\objet{int}{3}{(3,0.5)}{o1}
+\lien{a1}{o1}
+\node[font=\otSemi\fontsize{8}{9}\selectfont,text=otViolet] at (6.9,1.5) {after line 2};
+\nomvar{a}{(5.3,0.5)}{a2}
+\nomvar{b}{(5.3,-0.8)}{b2}
+\objet{int}{3}{(8.3,-0.15)}{o2}
+\lien{a2}{o2}
+\lien{b2}{o2}
+\node[font=\otSemi\fontsize{8}{9}\selectfont,text=otViolet] at (12.2,1.5) {after line 3};
+\nomvar{a}{(10.6,0.5)}{a3}
+\nomvar{b}{(10.6,-0.8)}{b3}
+\objet{int}{7}{(13.6,0.5)}{o3}
+\objet{int}{3}{(13.6,-0.8)}{o4}
+\lien{a3}{o3}
+\lien{b3}{o4}
+\end{memoire}
+\begin{code}{file=memory.py}
+a = 3
+b = a
+a = 7
+print(a, b)
+\end{code}
+\begin{sortie}
+7 3
+\end{sortie}
+\pourquoi{line~2 attaches a second name, \py{b}, to the object \py{3}. Line~3 moves the label \py{a}
+onto a new object, \py{7}; \py{b} still refers to \py{3}.}
+\end{corrige}
+
+\begin{corrige}{12}
+\demarche{\py{n \% 10} gives the last digit; \py{n // 10} removes it. Combine them to reach each
+digit: \py{n // 10 \% 10} is the tens digit, \py{n // 100 \% 10} the hundreds digit.}
+\begin{code}{file=digits.py, cible=chiffres}
+n = 4728
+thousands = n // 1000
+hundreds = n // 100 % 10
+tens = n // 10 % 10
+units = n % 10
+print("Sum of the digits:", thousands + hundreds + tens + units)
+print("Backwards:", units * 1000 + tens * 100 + hundreds * 10 + thousands)
+\end{code}
+\pourquoi{for 4728: \py{thousands} is 4, \py{hundreds} is 7, \py{tens} is 2 and \py{units} is 8.
+The sum is $4 + 7 + 2 + 8 = 21$. To write the number backwards, the units become the thousands, and
+so on.}
+\retiens{name your intermediate results: the last two lines read almost like the statement of the
+exercise.}
+\end{corrige}
+
+\begin{corrigequiz}
+\begin{reponses}[5]
+\item b
+\item a
+\item c
+\item b
+\item b
+\item b
+\item c
+\item b
+\item b
+\item c
+\end{reponses}
+\pourquoi{2: an assignment displays nothing in the Shell. 5: \py{b} keeps the value 5 when \py{a}
+changes. 8: the quotes make \py{"42"} a piece of text, not a number. 9: a variable only exists once
+its line has run.}
+\end{corrigequiz}

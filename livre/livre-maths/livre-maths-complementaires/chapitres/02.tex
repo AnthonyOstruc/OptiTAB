@@ -1,0 +1,165 @@
+\begin{ouverture}[ln]{2}{Exponentielle et logarithme}{Analyse et calcul}{Fonctions réciproques · Équations · Échelles}
+\objectif{Définir le logarithme à partir de l’exponentielle.}
+\objectif{Transformer des expressions et résoudre des équations.}
+\objectif{Calculer un seuil et une durée de demi-vie.}
+\objectif{Relier les propriétés du logarithme aux tables de calcul.}
+\prerequis{Puissances, exponentielle et fonctions croissantes.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Deux fonctions qui se répondent}
+La fonction exponentielle est strictement croissante de $\R$ vers $]0,+\infty[$. Chaque réel strictement positif possède un unique antécédent.
+\begin{definition}[Logarithme népérien]
+Pour $x>0$, $\ln x$ est l'unique réel $y$ tel que $\mathrm e^y=x$.
+Ainsi $\ln(\mathrm e^y)=y$ et $\mathrm e^{\ln x}=x$ ; $\ln1=0$ et $\ln\mathrm e=1$.
+\end{definition}
+Les courbes de deux fonctions réciproques sont symétriques par rapport à $y=x$ lorsque le repère est orthonormé. Le logarithme transforme un facteur multiplicatif en une différence additive.
+\figurelivre{c02-reciproques.pdf}{L'exponentielle et le logarithme dans un repère orthonormé. Les points $(0,1)$ et $(1,0)$ se correspondent par symétrie.}
+\essSection{2}{Les règles, avec leurs domaines}
+\begin{propriete}[Pour $a>0$, $b>0$ et $n\in\Z$]
+\[\ln(ab)=\ln a+\ln b,\quad \ln(a/b)=\ln a-\ln b,\quad \ln(a^n)=n\ln a.\]
+En particulier $\ln(1/a)=-\ln a$ et $\ln\sqrt a=\tfrac12\ln a$.
+\end{propriete}
+\begin{demonstration}[Du produit à la somme]
+Poser $u=\ln a$ et $v=\ln b$. Alors $ab=\mathrm e^u\mathrm e^v=\mathrm e^{u+v}$ ; prendre le logarithme donne la première identité. Appliquer celle-ci à $a(1/a)=1$ donne la règle de l'inverse.
+\end{demonstration}
+\begin{attention}
+$\ln(a+b)$ ne vaut pas $\ln a+\ln b$. On ne prend pas le logarithme d'un nombre négatif ou nul dans $\R$. L'écriture $\ln(x^2)=2\ln x$ exige $x>0$ ; pour $x\ne0$, la formule générale est $2\ln|x|$.
+\end{attention}
+\essSection{3}{Résoudre une équation ou une inéquation}
+\begin{savoirfaire}[Toujours commencer par le domaine]
+Pour $\ln(x-1)+\ln(x+1)=\ln8$, imposer $x>1$.
+Puis $\ln(x^2-1)=\ln8$ équivaut à $x^2=9$ ; seule la solution $x=3$ appartient au domaine.
+Le logarithme étant strictement croissant, $\ln u\leq\ln v$ équivaut à $u\leq v$ lorsque $u$ et $v$ sont positifs.
+\end{savoirfaire}
+Pour $q>0$, $q^n=\mathrm e^{n\ln q}$. Si $0<q<1$, alors $\ln q<0$ : diviser une inégalité par $\ln q$ inverse son sens.
+La réserve du chapitre 1 dépasse $145$ litres lorsque
+$n>\ln(0{,}1)/\ln(0{,}8)\simeq10{,}319$ : le premier entier est $11$.
+\essSection{4}{Dérivées et limites de référence}
+\begin{propriete}
+Sur $]0,+\infty[$, $(\ln x)'=1/x$. Si $u$ est dérivable et strictement positive, $(\ln u)'=u'/u$.
+Pour toute fonction dérivable $u$, $(\mathrm e^u)'=u'\mathrm e^u$.
+\[\lim_{x\to0^+}\ln x=-\infty,\quad \lim_{x\to+\infty}\ln x=+\infty,
+\quad \lim_{x\to-\infty}\mathrm e^x=0,\quad \lim_{x\to+\infty}\mathrm e^x=+\infty.\]
+\end{propriete}
+En admettant la dérivabilité de $\ln$, dériver $\mathrm e^{\ln x}=x$ donne $\mathrm e^{\ln x}(\ln x)'=1$, soit $(\ln x)'=1/x$.
+La règle de composition donne ensuite les dérivées de $\ln u$ et $\mathrm e^u$.
+\essSection{5}{Pourquoi des tables de logarithmes ?}
+Le programme propose d'étudier l'histoire du logarithme, notamment le passage de progressions géométriques à des progressions arithmétiques. Une table de logarithmes permet de remplacer une multiplication par une addition, puis d'effectuer l'opération inverse par lecture de table.
+Pour une même base $a>0$, $a\ne1$, $\log_a x=\ln x/\ln a$. Ainsi $\log_{10}(10^n)=n$.
+Les logarithmes décimaux servent à repérer des ordres de grandeur. Les valeurs affichées dans les tables sont approchées : l'erreur de lecture se propage au résultat.
+\begin{exemple}[Demi-vie d'un modèle]
+Si $N(t)=N_0\mathrm e^{-kt}$ avec $k>0$, la durée $T$ telle que $N(T)=N_0/2$ vérifie $\mathrm e^{-kT}=1/2$, donc $T=\ln2/k$. L'unité de $k$ doit correspondre à celle du temps.
+\end{exemple}
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Identités immédiates}
+
+\begin{questions}
+\item Calculer $\ln1$, $\ln(\mathrm e^3)$, $\mathrm e^{\ln5}$.
+\item Simplifier $\ln8-\ln2$.
+\item Exprimer $\ln(9\sqrt3)$ à l’aide de $\ln3$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Domaine avant calcul}
+
+\begin{questions}
+\item Déterminer le domaine de $\ln(2x-6)$.
+\item Déterminer celui de $\ln(x^2-1)$.
+\item Les expressions $2\ln x$ et $\ln(x^2)$ ont-elles le même domaine ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Équations simples}
+
+\begin{questions}
+\item Résoudre $\mathrm e^{2x}=7$.
+\item Résoudre $\ln(x+2)=0$.
+\item Résoudre $\ln x\leq2$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Dériver}
+
+\begin{questions}
+\item Dériver $f(x)=\ln(3x+1)$ sur son domaine.
+\item Dériver $g(x)=\mathrm e^{-2x}$.
+\item Dériver $h(x)=\ln(x^2+1)$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Un seuil de croissance}
+$u_n=250(1{,}03)^n$.
+\begin{questions}
+\item Résoudre $u_n>400$.
+\item Donner le premier rang entier et vérifier ses deux voisins.
+\item Que changerait une condition $u_n\geq400$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une décroissance}
+$C(t)=80\mathrm e^{-0{,}2t}$, où $t$ est en heures.
+\begin{questions}
+\item Calculer la demi-vie.
+\item Quand $C(t)<10$ ?
+\item Donner une limite et interpréter le fait que $C(t)$ ne s’annule pas.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Somme de logarithmes}
+
+\begin{questions}
+\item Résoudre $\ln(x-2)+\ln x=\ln3$.
+\item Pourquoi faut-il écarter une des racines algébriques ?
+\item Résoudre $\ln(x-2)+\ln x\leq\ln3$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Changer de base}
+
+\begin{questions}
+\item Calculer $\log_{10}(1\,000)$ et $\log_2(32)$.
+\item Exprimer $\log_2 x$ avec $\ln x$.
+\item Combien de chiffres possède $2^{20}$ en écriture décimale ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Une propriété à prouver}
+
+\begin{questions}
+\item Prouver $\ln(1/a)=-\ln a$ pour $a>0$.
+\item En déduire la règle du quotient.
+\item Un élève écrit $\ln(a-b)=\ln a-\ln b$ : donner un contre-exemple où les deux membres existent.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Tables de calcul}
+Une table donne $\ln2\simeq0{,}693147$ et $\ln3\simeq1{,}098612$.
+\begin{questions}
+\item Approcher $\ln6$ puis $\ln(3/2)$.
+\item Si chaque valeur tabulée a une erreur absolue au plus $5\times10^{-7}$, majorer l’erreur sur la somme et la différence.
+\item Expliquer l’intérêt historique d’une table et sa limite pratique.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Comparer deux modèles}
+$A(t)=100+20t$ et $B(t)=100\mathrm e^{0{,}1t}$ pour $t\geq0$.
+\begin{questions}
+\item Comparer leurs taux d’accroissement à $t=0$.
+\item Montrer que l’égalité des deux modèles équivaut à $\ln(1+0{,}2t)=0{,}1t$.
+\item Le logarithme donne-t-il directement une formule explicite pour une seconde date de rencontre ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Le piège des inégalités}
+$v_n=40(0{,}9)^n$.
+\begin{questions}
+\item Déterminer le premier rang tel que $v_n\leq1$.
+\item Expliquer le changement de sens lors du calcul.
+\item Écrire une condition équivalente sans logarithme, adaptée à une boucle.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

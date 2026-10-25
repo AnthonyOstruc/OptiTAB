@@ -1,0 +1,468 @@
+% !TEX root = ../main.tex
+%% Chapitre 14 — Groupe symétrique et déterminants
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre :
+%% A) groupe symétrique (cycles, transpositions, décomposition, signature) ;
+%% B) déterminants (formes n-linéaires alternées, déterminant dans une base,
+%% d'un endomorphisme, d'une matrice ; calculs : opérations, cofacteurs,
+%% triangulaires, Vandermonde ; comatrice).
+%% Résultats vérifiés par verifications/chapitre_14.py.
+
+\begin{ouverture}[determinants]{14}{Groupe symétrique et déterminants}{Partie 2 · Deuxième semestre}
+  {Permutations\enspace·\enspace Cycles\enspace·\enspace Signature\enspace·\enspace
+   Formes alternées\enspace·\enspace Déterminants\enspace·\enspace Comatrice}
+  \objectif{Décomposer une permutation en cycles à supports disjoints, puis en transpositions.}
+  \objectif{Calculer une signature et utiliser le morphisme $\varepsilon$.}
+  \objectif{Comprendre le déterminant comme forme $n$-linéaire alternée — une aire, un volume.}
+  \objectif{Calculer un déterminant : opérations élémentaires, développement, triangulaires.}
+  \objectif{Caractériser bases, automorphismes et matrices inversibles par le déterminant.}
+  \objectif{Connaître Vandermonde et la comatrice, et savoir s'en servir.}
+  \prerequis{Groupes et morphismes (chapitre 8) ; le groupe symétrique prolonge les bijections (chapitre 1).}
+  \prerequis{Matrices : produit, inversibilité, rang, similitude (chapitres 9 et 13).}
+  \prerequis{Espaces vectoriels : bases, dimension (chapitre 12).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Le groupe symétrique $S_n$}
+
+\begin{definition}[Permutations, cycles, transpositions]
+$S_n$ est le groupe des bijections de $\ens{1,\dots,n}$, pour la
+composition ; son cardinal est $n!$ et il n'est pas commutatif dès que
+$n\geqslant3$. Un \textbf{cycle} $(a_1\ a_2\ \dots\ a_p)$ envoie
+$a_1\mapsto a_2\mapsto\dots\mapsto a_p\mapsto a_1$ et fixe le reste ; son
+\emph{support} est $\ens{a_1,\dots,a_p}$. Une \textbf{transposition} est un
+cycle de longueur $2$ : un simple échange.
+\end{definition}
+
+\begin{theoreme}[Décomposition en cycles]
+Toute permutation se décompose en produit de cycles à supports
+\emph{disjoints}, de façon unique à l'ordre près — et des cycles à supports
+disjoints commutent (démonstration non exigible, mais la décomposition doit
+être un réflexe : suivre les orbites de chaque élément). Toute permutation
+est aussi un produit de transpositions : il suffit de décomposer chaque
+cycle, $(a_1\ \dots\ a_p)=(a_1\ a_p)\cdots(a_1\ a_3)(a_1\ a_2)$.
+\end{theoreme}
+
+\begin{exemple}
+Dans $S_6$, $\sigma=\begin{pmatrix}1&2&3&4&5&6\\3&5&4&1&2&6\end{pmatrix}$ :
+l'orbite de $1$ est $1\to3\to4\to1$, celle de $2$ est $2\to5\to2$, et $6$
+est fixe : $\sigma=(1\ 3\ 4)(2\ 5)$. Son ordre est
+$\operatorname{ppcm}(3,2)=6$ (chapitres 7 et 8).
+\end{exemple}
+
+\essSection{2}{La signature}
+
+\begin{theoreme}[Signature]
+Il existe un \emph{unique} morphisme de groupes
+$\varepsilon:S_n\to\ens{-1,1}$ envoyant toute transposition sur $-1$
+(démonstration non exigible) : la \textbf{signature}. Pour un cycle de
+longueur $p$ : $\varepsilon=(-1)^{p-1}$ ; pour un produit, on multiplie.
+Une permutation est \emph{paire} si $\varepsilon(\sigma)=1$ : le nombre de
+transpositions d'une décomposition a toujours la même parité.
+\end{theoreme}
+
+\begin{exemple}
+$\varepsilon\bigl((1\ 3\ 4)(2\ 5)\bigr)=(+1)\times(-1)=-1$ ;
+$\varepsilon\bigl((1\ 2\ 3\ 4\ 5)(6\ 7)\bigr)=(+1)(-1)=-1$. On peut aussi
+compter les \emph{inversions} : $\varepsilon(\sigma)=(-1)^{N(\sigma)}$ où
+$N(\sigma)$ est le nombre de paires $i<j$ avec $\sigma(i)>\sigma(j)$
+(exercice 17).
+\end{exemple}
+
+\essSection{3}{Formes $n$-linéaires alternées}
+
+\begin{definition}[Forme $n$-linéaire alternée]
+Sur un $\K$-espace $E$ de dimension $n$, une forme $n$-linéaire
+$f(x_1,\dots,x_n)$ est \textbf{alternée} si elle s'annule dès que deux
+arguments sont égaux. Elle est alors \emph{antisymétrique} (échanger deux
+arguments change le signe), et pour toute permutation :
+$f(x_{\sigma(1)},\dots,x_{\sigma(n)})=\varepsilon(\sigma)\,f(x_1,\dots,x_n)$.
+Si la famille $(x_1,\dots,x_n)$ est \emph{liée}, alors
+$f(x_1,\dots,x_n)=0$.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{theoreme}[Déterminant dans une base]
+Soit $e$ une base de $E$. Il existe une \emph{unique} forme $n$-linéaire
+alternée $\det_e$ telle que $\det_e(e)=1$ (existence non exigible), et
+toute forme $n$-linéaire alternée lui est proportionnelle. En
+coordonnées :
+\[
+\det_e(x_1,\dots,x_n)
+=\sum_{\sigma\in S_n}\varepsilon(\sigma)\prod_{i=1}^{n}a_{\sigma(i),i},
+\]
+où $a_{ij}$ est la $i$-ième coordonnée de $x_j$. Pour deux bases :
+$\det_{e'}=\det_{e'}(e)\det_e$, et
+\[
+(x_1,\dots,x_n)\ \text{base}\iff\det_e(x_1,\dots,x_n)\neq0 .
+\]
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (-0.4,0) -- (3.9,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,-0.4) -- (0,3.3);
+  \fill[otGreen,opacity=0.3] (0,0) -- (3,1) -- (4,3) -- (1,2) -- cycle;
+  \draw[otGreenDark,line width=0.8pt,line join=round] (0,0) -- (3,1) -- (4,3) -- (1,2) -- cycle;
+  \draw[otNavy,line width=1.1pt,-{Stealth[length=2mm]}] (0,0) -- (3,1);
+  \draw[otNavy,line width=1.1pt,-{Stealth[length=2mm]}] (0,0) -- (1,2);
+  \node[font=\scriptsize,text=otNavy] at (3.15,0.7) {$u$};
+  \node[font=\scriptsize,text=otNavy] at (0.68,2.05) {$v$};
+  \node[font=\scriptsize,text=otGreenDark] at (2,1.5) {$\det(u,v)$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Dans $\R^{2}$ : $\det(u,v)$ est l'\emph{aire orientée} du
+parallélogramme ; dans $\R^{3}$, le volume orienté du parallélépipède.}
+\end{minipage}
+
+\essSection{4}{Déterminant d'un endomorphisme, d'une matrice}
+
+\begin{theoreme}[Déterminant d'un endomorphisme]
+Pour $u\in\mathcal{L}(E)$, le scalaire
+$\det u=\det_e\bigl(u(e_1),\dots,u(e_n)\bigr)$ ne dépend pas de la base
+$e$ : c'est le facteur par lequel $u$ multiplie les volumes orientés. On a
+$\det(v\circ u)=\det v\cdot\det u$, $\det(\mathrm{id})=1$, et
+\[
+u\ \text{automorphisme}\iff\det u\neq0 ,
+\qquad\text{avec alors}\quad\det\bigl(u^{-1}\bigr)=\frac{1}{\det u} .
+\]
+\end{theoreme}
+
+\begin{theoreme}[Déterminant d'une matrice carrée]
+$\det A$ est le déterminant des colonnes de $A$ dans la base canonique de
+$\K^{n}$ : il est $n$-linéaire alterné en les \emph{colonnes}, et aussi en
+les \emph{lignes} car $\det\bigl(A^{\mathsf T}\bigr)=\det A$. Propriétés :
+\[
+\det(AB)=\det A\det B,\qquad
+\det(\lambda A)=\lambda^{n}\det A,\qquad
+A\in\operatorname{GL}_n(\K)\iff\det A\neq0 ,
+\]
+et $\det:\operatorname{GL}_n(\K)\to\K^{*}$ est un morphisme de groupes.
+Deux matrices semblables ont le même déterminant : avec le rang et la
+trace, c'est le troisième invariant de similitude (chapitre 13).
+\end{theoreme}
+
+\essSection{5}{Les calculs en pratique}
+
+\begin{propriete}[Opérations élémentaires et développement]
+Échanger deux colonnes (ou lignes) multiplie le déterminant par $-1$ ;
+multiplier une colonne par $\lambda$ le multiplie par $\lambda$ ; ajouter à
+une colonne un multiple d'une autre \emph{ne change rien} — l'arme
+principale. Le \textbf{cofacteur} d'indice $(i,j)$ est
+$A_{ij}=(-1)^{i+j}\Delta_{ij}$, où $\Delta_{ij}$ est le déterminant extrait
+en rayant ligne $i$ et colonne $j$, et l'on peut \emph{développer} par
+rapport à toute ligne ou colonne :
+$\det A=\sum_{i}a_{ij}A_{ij}$ (colonne $j$ fixée). Enfin, le déterminant
+d'une matrice \emph{triangulaire} est le produit de ses coefficients
+diagonaux.
+\end{propriete}
+
+\begin{theoreme}[Déterminant de Vandermonde]
+Pour $a_1,\dots,a_n\in\K$ :
+\[
+\begin{vmatrix}
+1&1&\cdots&1\\
+a_1&a_2&\cdots&a_n\\
+\vdots&\vdots&&\vdots\\
+a_1^{\,n-1}&a_2^{\,n-1}&\cdots&a_n^{\,n-1}
+\end{vmatrix}
+=\prod_{1\leqslant i<j\leqslant n}(a_j-a_i) :
+\]
+non nul si et seulement si les $a_i$ sont deux à deux distincts. C'est
+l'inversibilité du système d'interpolation : l'existence et l'unicité du
+polynôme interpolateur de Lagrange (chapitres 10 et 12) en découlent une
+troisième fois.
+\end{theoreme}
+
+\begin{savoirfaire}[Calculer un déterminant sans souffrir]
+D'abord \emph{simplifier} : factoriser une ligne, créer des zéros par
+opérations élémentaires (souvent $C_j\leftarrow C_j-C_1$ ou sommer toutes
+les colonnes quand la somme est constante), viser une forme triangulaire.
+Ne développer par rapport à une ligne ou colonne que lorsqu'elle est déjà
+presque vide. Pour un déterminant à paramètre, factoriser le résultat
+avant de discuter.
+\end{savoirfaire}
+
+\essSection{6}{La comatrice}
+
+\begin{theoreme}[Comatrice et inverse]
+La \textbf{comatrice} $\operatorname{Com}A$ est la matrice des cofacteurs
+$\bigl(A_{ij}\bigr)$. Pour toute $A\in\mathcal{M}_n(\K)$ :
+\[
+A\,(\operatorname{Com}A)^{\mathsf T}
+=(\operatorname{Com}A)^{\mathsf T}A=\det(A)\,I_n ,
+\qquad\text{d'où, si }\det A\neq0 :\quad
+A^{-1}=\frac{1}{\det A}\,(\operatorname{Com}A)^{\mathsf T}.
+\]
+En taille $2$ : $\begin{pmatrix}a&b\\c&d\end{pmatrix}^{-1}
+=\dfrac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$ — à connaître par
+cœur. Au-delà de $n=3$, la formule sert surtout à la théorie (exercice 22) ;
+pour le calcul effectif, le pivot reste roi.
+\end{theoreme}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Composer des permutations}
+Dans $S_4$, soient
+$\sigma=\begin{pmatrix}1&2&3&4\\2&3&1&4\end{pmatrix}$ et
+$\tau=\begin{pmatrix}1&2&3&4\\2&1&4&3\end{pmatrix}$.
+\begin{questions}
+  \item Calculer $\sigma\circ\tau$ et $\tau\circ\sigma$. Commutent-elles ?
+  \item Déterminer $\sigma^{-1}$.
+  \item Écrire $\sigma$ et $\tau$ comme produits de cycles.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Décomposer en cycles}
+Décomposer en cycles à supports disjoints, puis donner l'ordre :
+\begin{questions}
+  \item $\sigma_1=\begin{pmatrix}1&2&3&4&5&6\\3&5&4&1&2&6\end{pmatrix}$ ;
+  \item $\sigma_2=\begin{pmatrix}1&2&3&4&5&6&7\\2&3&4&5&1&7&6\end{pmatrix}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Signatures}
+\begin{questions}
+  \item Rappeler la signature d'un cycle de longueur $p$, et la retrouver
+    en le décomposant en transpositions.
+  \item Calculer $\varepsilon(\sigma_1)$ et $\varepsilon(\sigma_2)$
+    (exercice 2).
+  \item Vérifier sur $\sigma$ et $\tau$ de l'exercice 1 que
+    $\varepsilon(\sigma\tau)=\varepsilon(\sigma)\varepsilon(\tau)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Déterminants 2 × 2 et 3 × 3}
+\begin{questions}
+  \item Calculer $\begin{vmatrix}2&3\\1&4\end{vmatrix}$ et
+    $\begin{vmatrix}1&2&3\\4&5&6\\7&8&10\end{vmatrix}$.
+  \item Vérifier sur $A=\begin{pmatrix}1&2&3\\4&5&6\\7&8&10\end{pmatrix}$
+    et $B=\begin{pmatrix}1&0&2\\0&1&1\\1&1&0\end{pmatrix}$ que
+    $\det(AB)=\det A\det B$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Créer des zéros}
+Calculer par opérations élémentaires :
+\begin{questions}
+  \item $\begin{vmatrix}1&1&1\\1&2&3\\1&3&6\end{vmatrix}$ ;
+  \item $\begin{vmatrix}0&1&2\\1&2&3\\2&3&4\end{vmatrix}$. Pourquoi ce
+    résultat était-il prévisible ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Triangulaires, transposée, inverse}
+Soit $T=\begin{pmatrix}2&1&5\\0&3&-1\\0&0&4\end{pmatrix}$.
+\begin{questions}
+  \item Donner $\det T$, puis $\det\bigl(T^{\mathsf T}\bigr)$ et
+    $\det\bigl(T^{-1}\bigr)$.
+  \item Que vaut $\det(2T)$ ? (Attention au piège.)
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Développer intelligemment}
+Calculer
+$\begin{vmatrix}2&0&0&1\\0&3&0&0\\0&0&1&4\\1&0&0&1\end{vmatrix}$
+en développant par rapport à une ligne ou colonne bien choisie.
+\end{exercice}
+
+\begin{exercice}[1]{Aires et volumes orientés}
+\begin{questions}
+  \item Calculer l'aire du parallélogramme construit sur $u=(3,1)$ et
+    $v=(1,2)$, puis celle du triangle $(0,u,u+v)$.
+  \item Calculer le volume du parallélépipède construit sur
+    $(1,0,0)$, $(1,1,0)$ et $(1,1,1)$.
+  \item Que signifie le signe de $\det(u,v)$ ? Donner un exemple de base
+    indirecte de $\R^{2}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{La formule de Leibniz à la main}
+\begin{questions}
+  \item Écrire la formule de Leibniz pour $n=2$ et retrouver $ad-bc$.
+  \item Pour $n=3$, expliciter les $6$ termes et retrouver la règle de
+    Sarrus ; vérifier sur le déterminant $3\times3$ de l'exercice 4.
+  \item Combien la formule compte-t-elle de termes pour $n=10$ ?
+    Commenter l'intérêt pratique.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Base ou pas ? Le critère du déterminant}
+\begin{questions}
+  \item La famille $\bigl((1,0,1),(1,1,0),(0,1,1)\bigr)$ est-elle une base
+    de $\R^{3}$ ? Comparer avec la méthode du chapitre 12.
+  \item Même question pour $(1+X,\,1-X,\,X^{2})$ dans $\R_2[X]$, en
+    passant par les coordonnées.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Déterminants à paramètre}
+Pour $t\in\R$, calculer et factoriser :
+\begin{questions}
+  \item $\begin{vmatrix}1&t\\t&1\end{vmatrix}$ ;
+  \item $\begin{vmatrix}1&1&t\\1&t&1\\t&1&1\end{vmatrix}$ — retrouver la
+    discussion de rang du chapitre 13.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le déterminant de Vandermonde en taille 3}
+\begin{questions}
+  \item Montrer par opérations élémentaires que
+    $\begin{vmatrix}1&1&1\\a&b&c\\a^{2}&b^{2}&c^{2}\end{vmatrix}
+    =(b-a)(c-a)(c-b)$.
+  \item En déduire que trois réels distincts donnent toujours un système
+    d'interpolation inversible, et faire le lien avec Lagrange
+    (chapitres 10 et 12).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Matrices de permutation}
+Pour $\sigma\in S_n$, soit $P_\sigma$ la matrice dont la colonne $j$ est
+$e_{\sigma(j)}$.
+\begin{questions}
+  \item Vérifier que $P_\sigma P_\tau=P_{\sigma\tau}$ et que
+    $P_\sigma^{-1}=P_\sigma^{\mathsf T}$.
+  \item Montrer que $\det P_\sigma=\varepsilon(\sigma)$ : la signature
+    est un déterminant.
+  \item Que compte $\operatorname{tr}P_\sigma$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Comatrice et inversion}
+Soit $A=\begin{pmatrix}1&2&0\\0&1&1\\1&0&1\end{pmatrix}$.
+\begin{questions}
+  \item Calculer $\det A$, puis $\operatorname{Com}A$.
+  \item Vérifier $A\,(\operatorname{Com}A)^{\mathsf T}=\det(A)\,I_3$ et en
+    déduire $A^{-1}$.
+  \item Retrouver la formule d'inversion des matrices $2\times2$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Déterminants d'endomorphismes}
+Calculer le déterminant des endomorphismes suivants de $\R_2[X]$, et dire
+lesquels sont des automorphismes :
+\begin{questions}
+  \item $u:P\mapsto P+P'$ ;
+  \item $v:P\mapsto P(X+1)$ ;
+  \item $w:P\mapsto XP'$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Un déterminant circulant}
+Soit $j=\mathrm{e}^{2\mathrm{i}\pi/3}$ et $a,b,c\in\Cx$.
+\begin{questions}
+  \item Montrer que
+    $\begin{vmatrix}a&b&c\\c&a&b\\b&c&a\end{vmatrix}
+    =a^{3}+b^{3}+c^{3}-3abc$.
+  \item En remarquant que les colonnes $(1,1,1)$, $(1,j,j^{2})$ et
+    $(1,j^{2},j)$ sont des vecteurs « propres » de la permutation
+    circulaire, établir la factorisation
+    $a^{3}+b^{3}+c^{3}-3abc=(a+b+c)(a+jb+j^{2}c)(a+j^{2}b+jc)$
+    (chapitre 3).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La signature par les inversions}
+Pour $\sigma\in S_n$, on note $N(\sigma)$ le nombre d'\emph{inversions} :
+les paires $i<j$ telles que $\sigma(i)>\sigma(j)$.
+\begin{questions}
+  \item Calculer $N(\sigma)$ pour
+    $\sigma=\begin{pmatrix}1&2&3\\3&1&2\end{pmatrix}$, puis pour une
+    transposition de $S_2$.
+  \item Montrer que composer $\sigma$ par une transposition de voisins
+    $(k\ k{+}1)$ change $N$ de $\pm1$.
+  \item En déduire $\varepsilon(\sigma)=(-1)^{N(\sigma)}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Un déterminant tridiagonal}
+Pour $n\geqslant1$, soit $D_n$ le déterminant de la matrice $n\times n$
+portant des $2$ sur la diagonale et des $1$ sur les deux sous-diagonales
+adjacentes.
+\begin{questions}
+  \item Calculer $D_1$ et $D_2$, puis montrer en développant que
+    $D_n=2D_{n-1}-D_{n-2}$.
+  \item En déduire $D_n=n+1$ (chapitre 5 : récurrences linéaires d'ordre
+    2).
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Générateurs de $S_n$}
+\begin{questions}
+  \item Montrer que les transpositions $(1\ 2),(1\ 3),\dots,(1\ n)$
+    engendrent $S_n$.
+  \item Montrer que $(1\ 2)$ et le cycle $c=(1\ 2\ \dots\ n)$ suffisent.
+    \emph{Calculer $c^{k}(1\ 2)c^{-k}$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{L'ordre maximal dans $S_n$}
+\begin{questions}
+  \item Montrer que l'ordre d'une permutation est le ppcm des longueurs de
+    ses cycles (chapitres 7 et 8).
+  \item Déterminer l'ordre maximal d'un élément de $S_5$, puis de $S_7$,
+    en passant en revue les partitions de $5$ et de $7$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{$\det\bigl(A^{\mathsf T}\bigr)=\det A$, par Leibniz}
+\begin{questions}
+  \item Dans la formule de Leibniz appliquée à $A^{\mathsf T}$, effectuer
+    le changement d'indice $\sigma\mapsto\sigma^{-1}$ et conclure.
+    \emph{On utilisera $\varepsilon(\sigma^{-1})=\varepsilon(\sigma)$.}
+  \item En déduire que le déterminant est aussi alterné en les lignes, et
+    que toute propriété « colonnes » se transpose aux lignes.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Inversibles dans $\mathcal{M}_n(\Z)$}
+Soit $A$ une matrice carrée à coefficients \emph{entiers}.
+\begin{questions}
+  \item Montrer que $A$ possède une inverse à coefficients entiers si et
+    seulement si $\det A=\pm1$. \emph{Penser à la comatrice.}
+  \item Vérifier sur $\begin{pmatrix}2&1\\1&1\end{pmatrix}$, puis trouver
+    une matrice entière inversible dans $\mathcal{M}_2(\R)$ mais pas dans
+    $\mathcal{M}_2(\Z)$.
+  \item Quel lien avec le théorème de Bézout (chapitre 7) en taille 1 ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le déterminant transforme les aires}
+On admet qu'une application linéaire $u$ de $\R^{2}$ multiplie les aires
+par $|\det u|$ (c'est la définition géométrique du déterminant).
+\begin{questions}
+  \item Retrouver ainsi l'aire du parallélogramme de l'exercice 8.
+  \item L'ellipse $\dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}\leqslant1$ est
+    l'image du disque unité par $\operatorname{diag}(a,b)$ : en déduire que
+    son aire vaut $\pi ab$.
+  \item Pourquoi $\det(AB)=\det A\det B$ devient-il évident de ce point de
+    vue ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Vandermonde en toute taille}
+On note $V(a_1,\dots,a_n)$ le déterminant de Vandermonde.
+\begin{questions}
+  \item Fixant $a_1,\dots,a_{n-1}$ distincts, montrer que
+    $x\mapsto V(a_1,\dots,a_{n-1},x)$ est une fonction polynomiale de degré
+    $n-1$, de racines $a_1,\dots,a_{n-1}$, et de coefficient dominant
+    $V(a_1,\dots,a_{n-1})$.
+  \item En déduire par récurrence la formule
+    $V(a_1,\dots,a_n)=\prod_{i<j}(a_j-a_i)$.
+  \item Vérifier la formule pour $(0,1,2,3)$.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-14}

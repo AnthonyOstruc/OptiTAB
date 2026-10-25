@@ -1,0 +1,19 @@
+% Photons proposés à un atome d'hydrogène dans l'état fondamental : absorbés ou non, ionisation (corrigé de l'exercice 10, chapitre 20)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (0,-4.3) -- (0,0.5) node[pcLegende,anchor=south] {$E$ (eV)};
+\fill[white] (-0.12,-3.05) rectangle (0.12,-2.9);
+\draw[otInk!70,line width=0.5pt] (-0.12,-3.08) -- (0.12,-2.98) (-0.12,-2.97) -- (0.12,-2.87);
+\foreach \y/\v/\n in {0/{0}/{$n=\infty$},-0.55/{-0{,}85}/{$n=4$},-1.05/{-1{,}51}/{$n=3$},-2.0/{-3{,}40}/{$n=2$},-4.0/{-13{,}6}/{$n=1$}}{%
+  \draw[otNavy,line width=0.9pt] (0.25,\y) -- (4.6,\y);
+  \node[pcLegende,anchor=east] at (-0.05,\y) {$\v$};
+  \node[pcLegende,anchor=west] at (4.65,\y) {\n};}
+\foreach \x/\yy/\t in {0.6/-2.04/{\qty{10,2}{eV}},3.0/-1.09/{\qty{12,1}{eV}},4.2/-0.04/{\qty{13,6}{eV}}}{%
+  \draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.2mm]}] (\x,-4.0) -- (\x,\yy);
+  \node[pcLegende,anchor=north,text=otGreenDark,fill=white,inner sep=0.8pt] at (\x,-4.05) {\t};}
+\draw[otRed!85!black,line width=1.1pt,dash pattern=on 3pt off 2pt,-{Stealth[length=2.2mm]}] (1.8,-4.0) -- (1.8,-1.6);
+\draw[otRed!85!black,line width=1pt] (1.65,-1.45) -- (1.95,-1.75) (1.65,-1.75) -- (1.95,-1.45);
+\node[pcLegende,anchor=north,text=otRed!85!black] at (1.8,-4.05) {\qty{11,0}{eV}};
+\node[pcLegende,anchor=east,text=otRed!85!black,align=right] at (1.62,-1.6) {aucun\\niveau};
+\node[pcLegende,anchor=north east,text=otGreenDark] at (4.12,-0.1) {ionisation};
+\end{tikzpicture}
+\par\smallskip\legende{Seuls les photons dont l'énergie correspond exactement à un écart entre niveaux sont absorbés ; au-delà de \qty{13,6}{eV}, l'atome est ionisé.}

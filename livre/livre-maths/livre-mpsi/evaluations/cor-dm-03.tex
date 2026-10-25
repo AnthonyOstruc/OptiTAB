@@ -1,0 +1,146 @@
+% !TEX root = ../main.tex
+%% Corrigé du devoir maison n° 3 — vérifié par verifications/eval_dm.py.
+
+\corrigeSujetEval{DM3}{Devoir maison \numero3}
+\enParties
+
+\begin{corrigeEval}[L'erreur de la méthode des trapèzes]{}{}
+\begin{questions}
+  \item \begin{enumerate}[label=\alph*)]
+      \item $\varphi(a)=\varphi(b)=0$ et $\varphi'(t)=a+b-2t$. Deux
+        intégrations par parties donnent
+        \[\int_a^{b}\varphi f''=\bigl[\varphi f'\bigr]_a^{b}-\int_a^{b}\varphi'f'
+          =-\bigl[\varphi'f\bigr]_a^{b}+\int_a^{b}\varphi''f
+          =(b-a)\bigl(f(a)+f(b)\bigr)-2\int_a^{b}f,\]
+        car $\varphi'(b)=a-b$, $\varphi'(a)=b-a$ et $\varphi''=-2$. En
+        divisant par $-2$ : $\res{\displaystyle\int_a^{b}f-T(f)=-\frac12\int_a^{b}\varphi f''}$.
+      \item $\int_0^{1}t^{2}\,\mathrm{d}t-\frac{0+1}{2}=\frac13-\frac12=-\frac16$,
+        et $-\frac12\int_0^{1}t(1-t)\cdot2\,\mathrm{d}t=-\bigl(\frac12-\frac13\bigr)=-\frac16$ :
+        \res{\text{la formule est vérifiée}}.
+    \end{enumerate}
+  \item Avec $u=t-a$ :
+    $\int_a^{b}\varphi=\int_0^{b-a}u\,(b-a-u)\,\mathrm{d}u=\frac{(b-a)^{3}}{2}-\frac{(b-a)^{3}}{3}=\frac{(b-a)^{3}}{6}$.
+    Comme $\varphi\geqslant0$ :
+    \[\Bigl|\int_a^{b}f-T(f)\Bigr|\leqslant\frac12\int_a^{b}\varphi\,|f''|
+      \leqslant\frac M2\cdot\frac{(b-a)^{3}}{6}=\res{\frac{M(b-a)^{3}}{12}}.\]
+  \item Pour $g(t)=\frac{1}{1+t^{2}}$, on trouve
+    $g''(t)=\dfrac{6t^{2}-2}{(1+t^{2})^{3}}$. Sur $\bigl[0,\frac{1}{\sqrt3}\bigr]$,
+    $|g''(t)|=\frac{2-6t^{2}}{(1+t^{2})^{3}}\leqslant2$ ; sur
+    $\bigl[\frac1{\sqrt3},1\bigr]$,
+    $|g''(t)|\leqslant\frac{4}{(4/3)^{3}}=\frac{27}{16}\leqslant2$. Sur chacun
+    des $n$ segments, de longueur $\frac1n$, l'erreur est au plus
+    $\frac{2}{12n^{3}}$ ; en sommant, l'erreur totale est au plus
+    $\res{\dfrac{1}{6n^{2}}}$. Enfin
+    $\frac{1}{6n^{2}}\leqslant10^{-6}\iff n^{2}\geqslant\frac{10^{6}}{6}\approx166\,667$ :
+    \res{n=409\text{ segments suffisent}}. (Pour $n=10$, la méthode donne
+    $0{,}784\,981$, à $4{,}2\cdot10^{-4}$ de $\frac\pi4$, sous la borne
+    $\frac1{600}$.)
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Un développement de $\ln n!$]{}{}
+\begin{questions}[start=4]
+  \item On applique la question 1 à $\ln$ sur $\intFF k{k+1}$, avec
+    $\ln''(t)=-\frac{1}{t^{2}}$ :
+    \[e_k=\frac12\int_k^{k+1}\frac{(t-k)(k+1-t)}{t^{2}}\,\mathrm{d}t\in
+      \Bigl[0,\ \frac{1}{2k^{2}}\int_k^{k+1}(t-k)(k+1-t)\,\mathrm{d}t\Bigr]
+      =\Bigl[0,\ \frac{1}{12k^{2}}\Bigr].\]
+    Ainsi $\res{0\leqslant e_k\leqslant\dfrac{1}{12k^{2}}}$ ; $e_k$ est l'aire
+    comprise entre la courbe de $\ln$ (concave) et sa corde sur
+    $\intFF k{k+1}$ (figure).
+  \item On somme pour $k$ de $1$ à $n-1$ : d'une part
+    $\int_1^{n}\ln t\,\mathrm{d}t=\bigl[t\ln t-t\bigr]_1^{n}=n\ln n-n+1$ ;
+    d'autre part, chaque $\ln k$ ($2\leqslant k\leqslant n-1$) apparaît deux
+    fois avec le coefficient $\frac12$ :
+    \[\sum_{k=1}^{n-1}\frac{\ln k+\ln(k+1)}{2}=\ln n!-\frac12\ln n.\]
+    D'où $\sum_{k=1}^{n-1}e_k=n\ln n-n+1-\ln n!+\frac12\ln n$, c'est la
+    \res{\text{formule demandée}}.
+  \item $0\leqslant e_k\leqslant\frac{1}{12k^{2}}$ et la série de Riemann
+    $\sum\frac{1}{k^{2}}$ converge : \res{\sum e_k\text{ converge}}. En notant
+    $S$ sa somme, $\sum_{k=1}^{n-1}e_k=S+o(1)$, donc
+    \[\ln n!=n\ln n-n+\frac12\ln n+C+o(1)\qquad\text{avec}\qquad C=1-S.\]
+    En passant à l'exponentielle (continue) :
+    $n!=\sqrt n\,\bigl(\frac n{\mathrm{e}}\bigr)^{n}\mathrm{e}^{C+o(1)}$, soit
+    $\res{n!\sim K\sqrt n\,\bigl(\tfrac n{\mathrm{e}}\bigr)^{n}}$ avec
+    $K=\mathrm{e}^{C}$.
+  \item Par décroissance de $t\mapsto\frac1{t^{2}}$,
+    $\frac{1}{k^{2}}\leqslant\int_{k-1}^{k}\frac{\mathrm{d}t}{t^{2}}$, donc
+    \[0\leqslant\sum_{k=n}^{+\infty}e_k\leqslant\frac{1}{12}\sum_{k=n}^{+\infty}\frac{1}{k^{2}}
+      \leqslant\frac1{12}\int_{n-1}^{+\infty}\frac{\mathrm{d}t}{t^{2}}=\frac{1}{12(n-1)}.\]
+    Comme $C+\sum_{k\geqslant n}e_k=1-\sum_{k<n}e_k$, la question 5 donne
+    exactement
+    $\ln n!=n\ln n-n+\frac12\ln n+C+r_n$ avec
+    $\res{0\leqslant r_n\leqslant\dfrac{1}{12(n-1)}}$.
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=1.75cm,y=3.3cm,line cap=round,line join=round]
+  \foreach \k in {1,...,4}{
+    \fill[otGreenDark!9] (\k,0) -- (\k,{ln(\k)}) -- ({\k+1},{ln(\k+1)}) -- ({\k+1},0) -- cycle;
+    \fill[otOrange!70] plot[domain=\k:\k+1,samples=30] (\x,{ln(\x)}) -- cycle;
+    \draw[otGreenDark,line width=0.6pt] (\k,{ln(\k)}) -- ({\k+1},{ln(\k+1)});
+    \draw[otGreenDark!50,line width=0.4pt] ({\k+1},0) -- ({\k+1},{ln(\k+1)});}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0) -- (5.6,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-0.08) -- (0,1.78);
+  \draw[otNavy,line width=1.1pt] plot[domain=0.95:5.4,samples=100] (\x,{ln(\x)});
+  \foreach \k in {1,...,5} \node[font=\scriptsize,anchor=north] at (\k,-0.02) {$\k$};
+  \node[font=\scriptsize,anchor=north east] at (0,-0.02) {$0$};
+  \node[font=\scriptsize,text=otNavy,anchor=south] at (5.3,1.69) {$y=\ln t$};
+  \draw[otOrange!85!black,line width=0.4pt] (1.45,0.34) -- (1.15,0.8)
+    node[anchor=south,font=\footnotesize,text=otOrange!85!black,inner sep=1pt] {$e_1$};
+  \draw[otOrange!85!black,line width=0.4pt] (2.5,0.9) -- (2.3,1.25)
+    node[anchor=south,font=\footnotesize,text=otOrange!85!black,inner sep=1pt] {$e_2$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Les trapèzes (en vert) sous la courbe concave de $\ln$ : l'aire
+$e_k$ de chaque lunule orange est au plus $\frac{1}{12k^{2}}$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}[La constante de Stirling]{}{}
+\begin{questions}[start=8]
+  \item \begin{enumerate}[label=\alph*)]
+      \item En écrivant $\sin^{n+2}=\sin^{n+1}\cdot\sin$ et en intégrant par
+        parties ($\cos$ s'annule en $\frac\pi2$) :
+        \[W_{n+2}=(n+1)\int_0^{\pi/2}\sin^{n}t\cos^{2}t\,\mathrm{d}t=(n+1)(W_n-W_{n+2}),\]
+        d'où $\res{W_{n+2}=\frac{n+1}{n+2}W_n}$. Avec $W_0=\frac\pi2$, une
+        récurrence donne
+        $W_{2p}=\frac{(2p-1)(2p-3)\cdots1}{2p(2p-2)\cdots2}\cdot\frac\pi2$ ;
+        en multipliant numérateur et dénominateur par
+        $2p(2p-2)\cdots2=2^{p}p!$ :
+        $\res{W_{2p}=\dfrac{(2p)!}{4^{p}(p!)^{2}}\cdot\dfrac\pi2}$.
+      \item Sur $\bigl[0,\frac\pi2\bigr]$, $0\leqslant\sin^{n+1}\leqslant\sin^{n}$,
+        avec $\sin^{n}$ continue, positive et non nulle : $(W_n)$ décroît et
+        $W_n>0$. La suite $u_n=(n+1)W_{n+1}W_n$ vérifie
+        $u_{n+1}=(n+2)W_{n+2}W_{n+1}=(n+1)W_nW_{n+1}=u_n$, donc
+        $u_n=u_0=W_1W_0=\res{\frac\pi2}$. Par décroissance,
+        $\frac{n+1}{n+2}=\frac{W_{n+2}}{W_n}\leqslant\frac{W_{n+1}}{W_n}\leqslant1$,
+        donc $W_{n+1}\sim W_n$, puis $(n+1)W_n^{2}\sim\frac\pi2$ :
+        $\res{W_n\sim\sqrt{\tfrac{\pi}{2n}}}$.
+    \end{enumerate}
+  \item D'une part $W_{2p}\sim\sqrt{\frac{\pi}{4p}}=\frac{\sqrt\pi}{2\sqrt p}$.
+    D'autre part, avec $n!\sim K\sqrt n\,(n/\mathrm{e})^{n}$ :
+    \[W_{2p}=\frac{(2p)!}{4^{p}(p!)^{2}}\cdot\frac\pi2
+      \sim\frac{K\sqrt{2p}\,(2p)^{2p}\mathrm{e}^{-2p}}{4^{p}\,K^{2}p\,p^{2p}\mathrm{e}^{-2p}}\cdot\frac\pi2
+      =\frac{\sqrt2\,\pi}{2K\sqrt p}.\]
+    Par unicité de la limite de $\sqrt p\,W_{2p}$ :
+    $\frac{\sqrt\pi}{2}=\frac{\sqrt2\,\pi}{2K}$, soit $\res{K=\sqrt{2\pi}}$,
+    d'où la formule de Stirling
+    $\res{n!\sim\sqrt{2\pi n}\,\bigl(\tfrac n{\mathrm{e}}\bigr)^{n}}$. Enfin
+    $C=\ln\sqrt{2\pi}\approx0{,}918\,94$, et $\sum_{k\geqslant1}e_k=1-C\approx0{,}081\,06$.
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=0.85cm,y=50cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0.91) -- (10.8,0.91);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,0.91) -- (0,1.006);
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 3pt off 2pt] (0,0.91894) -- (10.5,0.91894);
+  \node[font=\scriptsize,text=otGreenDark,anchor=north east] at (10.5,0.9186) {$C=\ln\sqrt{2\pi}\approx0{,}9189$};
+  \foreach \n/\d in {1/1.0,2/0.9603,3/0.9466,4/0.9397,5/0.9356,6/0.9328,7/0.9308,8/0.9293,9/0.9282,10/0.9273}{
+    \fill[otNavy] (\n,\d) circle (1.9pt);
+    \node[font=\scriptsize,text=otMuted,anchor=north] at (\n,0.9095) {$\n$};}
+  \foreach \yy/\lab in {0.92/{0{,}92},0.94/{0{,}94},0.96/{0{,}96},0.98/{0{,}98},1.00/{1}}{
+    \draw[otMuted,line width=0.4pt] (-0.08,\yy) -- (0.08,\yy);
+    \node[font=\scriptsize,anchor=east] at (-0.08,\yy) {$\lab$};}
+\end{tikzpicture}\\*[0.5mm]
+\legende{$\ln n!-\bigl(n\ln n-n+\frac12\ln n\bigr)$ pour $n=1,\dots,10$ : la suite
+décroît vers $C$, avec un écart au plus $\frac{1}{12(n-1)}$.}
+\end{minipage}\end{center}
+\end{corrigeEval}

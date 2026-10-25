@@ -1,0 +1,14 @@
+% Droite d'étalonnage du paracétamol à 243 nm (sujet type bac 6, exercice 1)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=112mm,height=54mm,xmin=0,xmax=13.5,ymin=0,ymax=0.9,
+  xtick={0,2,...,12},ytick={0,0.1,...,0.8},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xlabel={$c$ (\unit{mg.L^{-1}})},ylabel={$A$}]
+\addplot[otNavy,line width=0.8pt,domain=0:13,samples=2] {0.0648*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] coordinates {(2,0.131) (4,0.258) (6,0.390) (8,0.517) (10,0.649) (12,0.777)};
+\solution{\draw[otRed!80!black,line width=0.5pt,dash pattern=on 1.5pt off 1pt] (axis cs:0,0.640) -- (axis cs:9.88,0.640) -- (axis cs:9.88,0);
+  \fill[otRed!80!black] (axis cs:9.88,0.640) circle (1.6pt);
+  \node[pcLegende,anchor=north west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:10.1,0.36) {$c=\qty{9,88}{mg.L^{-1}}$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Absorbance à \qty{243}{nm} de solutions étalons de paracétamol (cuve de \qty{1,00}{cm}).}

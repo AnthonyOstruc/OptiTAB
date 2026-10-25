@@ -1,0 +1,22 @@
+
+% Bandeau des corrigés : trois zones distinctes, titre susceptible de revenir à la ligne.
+\newcommand{\caseSuivi}{\tikz[baseline=-.2ex]\draw[otMuted,line width=.4pt](0,0)rectangle(2.4mm,2.4mm);}
+\renewcommand{\corrigesChapitre}[2]{%
+ \gdef\otChapNum{#1}\gdef\otChapTitle{#2}\gdef\otHeadTag{\otTwoDigits{#1}}%
+ \global\otCorrigestrue\gdef\otAccent{otGreenDark}\global\otSouplefalse
+ \markboth{Corrigés · #2}{Corrigés · #2}\phantomsection\label{corchap-#1}%
+ \pdfbookmark[1]{\otTwoDigits{#1} · #2}{bm-corchap-#1}%
+ \begin{tikzpicture}
+ \fill[otGreenTint,rounded corners=2mm] (0,0) rectangle (\linewidth,18mm);
+ \node[fill=otGreenDark,rounded corners=1mm,text=white,minimum height=8mm,
+ font=\otBold\fontsize{11}{12}\selectfont]at(8mm,9mm){\otTwoDigits{#1}};
+ \node[anchor=west,text width=102mm,align=left,font=\otSemi\fontsize{12}{14}\selectfont]
+ at(17mm,9mm){#2};
+ \node[anchor=east,font=\otMedium\fontsize{7}{9}\selectfont,text=otMuted]
+ at([xshift=-4mm]\linewidth,9mm){\otRenvoi{Énoncés}{chap-#1}};
+ \end{tikzpicture}\par\vspace{3mm}}
+% Les liens pointent vers le site de la collection, sans promettre une ressource particulière.
+\renewcommand{\otQRCours}{\begin{minipage}{30mm}\centering
+ {\color{otNavy}\qrcode[height=18mm,nolink]{\otURL}}\par\smallskip
+ {\otLight\fontsize{7}{9}\selectfont\otSite}\end{minipage}}
+

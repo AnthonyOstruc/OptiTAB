@@ -1,0 +1,407 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[forceacide]{9}{Force des acides et des bases}{Partie 1 · Constitution et transformations de la matière}
+{Produit ionique de l'eau\enspace·\enspace Constante d'acidité\enspace·\enspace Diagrammes de prédominance\enspace·\enspace Solutions tampons}
+\objectif{Utiliser le produit ionique de l'eau pour relier pH et concentration en ions hydroxyde.}
+\objectif{Calculer le pH d'une solution d'acide fort ou de base forte.}
+\objectif{Associer la constante d'acidité d'un couple à la force de l'acide et au taux d'avancement final.}
+\objectif{Exploiter un diagramme de prédominance ou de distribution ; comprendre un indicateur coloré.}
+\objectif{Décrire le comportement d'une solution tampon.}
+\prerequis{Transformations acide-base, couples acide-base (chapitre~1).}
+\prerequis{Quotient de réaction, constante d'équilibre, taux d'avancement final (chapitre~7).}
+\prerequis{Fonction logarithme décimal ; équation du second degré.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Le produit ionique de l'eau}
+\begin{definition}[Autoprotolyse et produit ionique]
+L'eau réagit avec elle-même selon l'équilibre d'\textbf{autoprotolyse}
+\[\ce{2 H2O(l) <=> H3O^+(aq) + HO^-(aq)}.\]
+La constante d'équilibre de cette réaction est le \textbf{produit ionique de l'eau} :
+\[K_\mathrm{e}=\frac{[\ce{H3O+}]_\text{éq}\,[\ce{HO-}]_\text{éq}}{(\cst)^2},\qquad K_\mathrm{e}=\num{1.0e-14}\ \text{à 25~°C},\qquad
+\mathrm{p}K_\mathrm{e}=-\log K_\mathrm{e}=14{,}0.\]
+$K_\mathrm{e}$ ne dépend que de la température. Dans toute solution aqueuse, $\pH+\mathrm{pOH}=\mathrm{p}K_\mathrm{e}$, avec
+$\mathrm{pOH}=-\log\left([\ce{HO-}]/\cst\right)$.
+\end{definition}
+\begin{propriete}[Solutions acides, neutres, basiques]
+Une solution est \textbf{neutre} si $[\ce{H3O+}]=[\ce{HO-}]$, c'est-à-dire si $\pH=\frac12\,\mathrm{p}K_\mathrm{e}$, soit 7,0
+à 25~°C. Elle est \textbf{acide} si $\pH<7{,}0$ et \textbf{basique} si $\pH>7{,}0$, toujours à 25~°C : à une autre
+température, la frontière se déplace avec $K_\mathrm{e}$.
+\end{propriete}
+\begin{savoirfaire}[Passer du pH à la concentration en ions hydroxyde]
+Calculer $[\ce{H3O+}]=\cst\times10^{-\pH}$, puis utiliser le produit ionique :
+$[\ce{HO-}]=\dfrac{K_\mathrm{e}\,(\cst)^2}{[\ce{H3O+}]}$. Par exemple, à $\pH=11{,}0$ et à 25~°C :
+$[\ce{H3O+}]=\qty{1,0e-11}{mol.L^{-1}}$ et $[\ce{HO-}]=\qty{1,0e-3}{mol.L^{-1}}$.
+\end{savoirfaire}
+\essSection{2}{Acides forts et bases fortes}
+\begin{definition}[Acide fort, base forte]
+Un \textbf{acide fort} réagit totalement avec l'eau : $\ce{AH + H2O -> A- + H3O+}$. Une \textbf{base forte} réagit
+totalement : $\ce{B + H2O -> BH+ + HO-}$. Le chlorure d'hydrogène \ce{HCl} (acide chlorhydrique) est un acide fort ;
+l'ion hydroxyde apporté par la soude \ce{NaOH} est une base forte.
+\end{definition}
+\begin{propriete}[pH des solutions d'acide fort et de base forte]
+Pour une concentration apportée $c$ ni trop grande ni trop faible (entre \qty{1e-6}{mol.L^{-1}} et \qty{5e-2}{mol.L^{-1}}
+environ), à 25~°C :
+\[\text{acide fort : }\pH=-\log\frac{c}{\cst}\qquad\text{et}\qquad\text{base forte : }\pH=14{,}0+\log\frac{c}{\cst}.\]
+\end{propriete}
+\begin{exemple}
+Une solution d'acide chlorhydrique à $c=\qty{2,0e-3}{mol.L^{-1}}$ a pour pH $-\log(\num{2.0e-3})=2{,}70$. Une solution
+de soude à $c=\qty{1,0e-3}{mol.L^{-1}}$ a pour pH $14{,}0+\log(\num{1.0e-3})=11{,}0$.
+\end{exemple}
+\begin{attention}
+Ces relations supposent que l'acide ou la base apporté impose le pH. Pour une solution très diluée
+($c\lesssim\qty{1e-6}{mol.L^{-1}}$), l'autoprotolyse de l'eau n'est plus négligeable : le pH tend vers 7,0, il ne suit
+plus $-\log(c/\cst)$ (défi D09).
+\end{attention}
+\essSection{3}{La constante d'acidité}
+\begin{definition}[Constante d'acidité]
+La réaction d'un acide AH avec l'eau, $\ce{AH(aq) + H2O(l) <=> A^-(aq) + H3O^+(aq)}$, a pour constante d'équilibre la
+\textbf{constante d'acidité} du couple $\mathrm{AH}/\mathrm{A}^-$ :
+\[K_\mathrm{A}=\frac{[\ce{A-}]_\text{éq}\,[\ce{H3O+}]_\text{éq}}{[\ce{AH}]_\text{éq}\,\cst},\qquad \pKa=-\log K_\mathrm{A}.\]
+Un acide est d'autant plus \textbf{fort} (dissocié) que $K_\mathrm{A}$ est grand, c'est-à-dire que son $\pKa$ est petit ;
+à concentration égale, son taux d'avancement final est alors plus élevé et le pH plus faible.
+\end{definition}
+\begin{propriete}[Quelques pKa à 25 °C]
+\par\smallskip
+{\small\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\linewidth}{@{}lYc@{}}\toprule
+\otTete{Couple} & \otTete{Acide présent dans} & \otTete{$\pKa$}\\\midrule
+\ce{HCOOH}/\ce{HCOO-} & le venin de fourmi & 3,75\\
+\ce{C6H5COOH}/\ce{C6H5COO-} & les conservateurs E210 à E213 & 4,20\\
+\ce{CH3COOH}/\ce{CH3COO-} & le vinaigre & 4,76\\
+\ce{CO2,H2O}/\ce{HCO3-} & les boissons gazeuses & 6,3\\
+\ce{HClO}/\ce{ClO-} & l'eau des piscines & 7,5\\
+\ce{NH4+}/\ce{NH3} & les engrais & 9,2\\\bottomrule
+\end{tabularx}}
+\end{propriete}
+\begin{propriete}[Relation entre pH et pKa]
+En prenant le logarithme de l'expression de $K_\mathrm{A}$, on obtient, dans toute solution contenant le couple :
+\[\pH=\pKa+\log\frac{[\ce{A-}]_\text{éq}}{[\ce{AH}]_\text{éq}}.\]
+En particulier, $\pH=\pKa$ lorsque $[\ce{A-}]_\text{éq}=[\ce{AH}]_\text{éq}$.
+\end{propriete}
+\begin{savoirfaire}[Calculer le pH d'une solution d'acide faible]
+Dresser le tableau d'avancement de la réaction avec l'eau pour une concentration apportée $c$. À l'équilibre,
+$[\ce{A-}]=[\ce{H3O+}]=h$ et $[\ce{AH}]=c-h$ : écrire $K_\mathrm{A}=\dfrac{h^2}{c-h}$, puis résoudre l'équation du second
+degré $h^2+K_\mathrm{A}h-K_\mathrm{A}c=0$ et ne garder que la racine positive.
+\end{savoirfaire}
+\begin{exemple}
+Pour l'acide éthanoïque ($K_\mathrm{A}=\num{1.7e-5}$) à $c=\qty{1,0e-2}{mol.L^{-1}}$, la racine positive est
+$h=\qty{4,0e-4}{mol.L^{-1}}$, d'où $\pH=3{,}39$ : on retrouve l'avancement calculé par dichotomie au chapitre~7.
+\end{exemple}
+\essSection{4}{Prédominance, indicateurs et tampons}
+\begin{propriete}[Diagramme de prédominance]
+L'espèce qui \textbf{prédomine} est celle dont la concentration est la plus grande. D'après la relation
+$\pH=\pKa+\log\left([\ce{A-}]/[\ce{AH}]\right)$ : si $\pH<\pKa$, la forme acide AH prédomine ; si $\pH>\pKa$, la forme
+basique \ce{A-} prédomine.
+\end{propriete}
+\schema{09-predominance}
+\begin{codecote}[0.58]
+\begin{pythoncol}
+import numpy as np
+import matplotlib.pyplot as plt
+pKa = 4.76     # acide éthanoïque
+pH = np.linspace(2, 8, 300)
+aB = 1 / (1 + 10**(pKa - pH))
+plt.plot(pH, 1 - aB, label="CH3COOH")
+plt.plot(pH, aB, label="CH3COO-")
+plt.xlabel("pH")
+plt.legend()
+plt.show()
+\end{pythoncol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+La proportion de la forme basique vaut
+$\alpha=\dfrac{[\ce{A-}]}{[\ce{A-}]+[\ce{AH}]}=\dfrac{1}{1+10^{\,\pKa-\pH}}$, d'après la relation entre pH et $\pKa$.
+Le programme trace les deux \textbf{diagrammes de distribution} du couple : les courbes se croisent à $\pH=\pKa$.
+\end{codecote}
+\schema{09-python-distribution}
+\begin{propriete}[Indicateurs colorés]
+Un indicateur coloré acide-base est un couple $\mathrm{HIn}/\mathrm{In}^-$ dont les deux formes ont des couleurs
+différentes. La couleur observée est celle de la forme qui prédomine nettement ; autour de $\pKa$, les deux formes
+coexistent et les couleurs se mélangent : c'est la \textbf{zone de virage}, large d'environ deux unités de pH.
+\end{propriete}
+\begin{definition}[Solution tampon]
+Une \textbf{solution tampon} contient un acide faible et sa base conjuguée en quantités comparables. Son pH, voisin du
+$\pKa$ du couple, \textbf{varie peu} par ajout modéré d'acide ou de base, ou par dilution modérée. Le sang est tamponné
+à $\pH=7{,}4$ par le couple \ce{CO2,H2O}/\ce{HCO3-} (exercice~12).
+\end{definition}
+\begin{experience}[Déterminer un pKa par pH-métrie]
+On mélange un volume d'une solution d'acide éthanoïque et un volume égal d'une solution d'éthanoate de sodium de même
+concentration : alors $[\ce{AH}]_\text{éq}\approx[\ce{A-}]_\text{éq}$. Après étalonnage du pH-mètre, on mesure
+$\pH=4{,}8$ à 25~°C : c'est le $\pKa$ du couple. En répétant la mesure pour d'autres proportions, on vérifie la relation
+$\pH=\pKa+\log\left([\ce{A-}]/[\ce{AH}]\right)$.
+\end{experience}
+\begin{rediger}
+Préciser toujours la température lorsqu'on utilise $K_\mathrm{e}$ ou un $\pKa$. Conclure une comparaison par une phrase :
+« le $\pKa$ de l'acide méthanoïque est plus petit, cet acide est plus fort : à même concentration, son taux d'avancement
+final est plus grand et son pH plus faible ». Vérifier qu'un résultat de pH est cohérent avec le diagramme de
+prédominance.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-9-1}
+\begin{exercice}[1]{Le produit ionique de l'eau}
+À 25~°C, $K_\mathrm{e}=\num{1.0e-14}$ ; à 60~°C, $K_\mathrm{e}=\num{9.6e-14}$.
+\begin{questions}
+\item Écrire l'équation de la réaction d'autoprotolyse de l'eau et l'expression de $K_\mathrm{e}$.
+\item Une boisson a un pH de 2,0 à 25~°C. Calculer $[\ce{H3O+}]$ puis $[\ce{HO-}]$.
+\item Une eau savonneuse a un pH de 11,0 à 25~°C. Calculer $[\ce{HO-}]$.
+\item Montrer que le pH d'une eau neutre vaut $\frac12\,\mathrm{p}K_\mathrm{e}$. Calculer le pH d'une eau pure à 60~°C.
+Cette eau est-elle acide ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-2}
+\begin{exercice}[1]{Acide fort ou acide faible ?}
+On dispose de deux solutions de même concentration apportée $c=\qty{1,0e-2}{mol.L^{-1}}$ : une solution d'acide
+chlorhydrique, de pH 2,0, et une solution d'acide éthanoïque, de pH 3,4.
+\begin{questions}
+\item Définir un acide fort et un acide faible.
+\item Écrire l'équation de la réaction de chaque acide avec l'eau, avec le symbole adapté.
+\item Calculer le taux d'avancement final de chaque réaction. Conclure.
+\item Laquelle des deux solutions contient le plus de molécules d'acide non dissociées ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-3}
+\begin{exercice}[1]{Écrire des constantes d'acidité}
+On considère les couples \ce{HCOOH}/\ce{HCOO-}, \ce{NH4+}/\ce{NH3} et \ce{HClO}/\ce{ClO-}.
+\begin{questions}
+\item Pour chaque couple, écrire l'équation de la réaction de l'acide avec l'eau et l'expression de la constante
+d'acidité.
+\item Les $\pKa$ valent, dans le désordre : 9,2 ; 3,75 ; 7,5. Attribuer chaque valeur à son couple à l'aide du tableau
+de l'essentiel, puis calculer les trois constantes $K_\mathrm{A}$.
+\item Classer les trois acides du plus fort au plus faible.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-4}
+\begin{exercice}[1]{Lire un diagramme de prédominance}
+L'acide benzoïque \ce{C6H5COOH}, conservateur alimentaire, a un $\pKa$ de 4,2.
+\schema{09-ex04}
+\begin{questions}
+\item Reproduire le diagramme de prédominance du couple et y placer les trois boissons.
+\item Quelle forme du conservateur prédomine dans chaque boisson ?
+\item Pour le soda, calculer le rapport $\dfrac{[\ce{C6H5COOH}]}{[\ce{C6H5COO-}]}$. Que peut-on dire de la forme
+basique ?
+\item Dans quelle boisson les deux formes sont-elles présentes en quantités égales ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-5}
+\begin{exercice}[1]{Du pH à la concentration}
+Toutes les solutions sont à 25~°C.
+\begin{questions}
+\item Calculer le pH d'une solution d'acide nitrique (acide fort) de concentration \qty{2,0e-3}{mol.L^{-1}}.
+\item Calculer le pH d'une solution de soude de concentration \qty{1,0e-3}{mol.L^{-1}}.
+\item Un déboucheur de canalisations dilué a un pH de 10,4. Calculer la concentration en ions hydroxyde apportés.
+\item Quel volume d'eau faut-il ajouter à 10,0~mL de la solution d'acide nitrique pour que son pH augmente d'une
+unité ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-9-6}
+\begin{exercice}[2]{Comparer la force de deux acides}
+On prépare une solution d'acide méthanoïque et une solution d'acide éthanoïque, toutes deux à
+$c=\qty{1,0e-2}{mol.L^{-1}}$.
+\begin{donnees}
+$\pKa(\ce{HCOOH}/\ce{HCOO-})=3{,}75$ ; $\pKa(\ce{CH3COOH}/\ce{CH3COO-})=4{,}76$.
+\end{donnees}
+\begin{questions}
+\item Sans calcul, prévoir laquelle des deux solutions a le pH le plus faible. Justifier.
+\item \capacite{Capacité mathématique}Pour l'acide méthanoïque, montrer que $h=[\ce{H3O+}]_\text{éq}$ vérifie
+$h^2+K_\mathrm{A}h-K_\mathrm{A}c=0$, puis calculer $h$ et le pH.
+\item Le pH de la solution d'acide éthanoïque vaut 3,39. Calculer le taux d'avancement final des deux réactions avec
+l'eau. Le classement est-il cohérent avec les $\pKa$ ?
+\item Les deux solutions sont diluées dix fois. Comment chaque taux d'avancement final évolue-t-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-7}
+\begin{exercice}[2]{Exploiter un diagramme de distribution}
+Le graphique représente les proportions des deux formes du couple de l'acide éthanoïque en fonction du pH.
+\schema{09-ex07}
+\begin{questions}
+\item Identifier la courbe associée à chaque forme. Justifier.
+\item Déterminer graphiquement le $\pKa$ du couple.
+\item Déterminer les proportions des deux formes à pH 3,8, puis le rapport $[\ce{CH3COO-}]/[\ce{CH3COOH}]$.
+\item Retrouver ce rapport par le calcul à l'aide de la relation entre pH et $\pKa$.
+\item Dans le vinaigre, de pH voisin de 2,8, sous quelle forme l'acide éthanoïque se trouve-t-il presque
+exclusivement ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-8}
+\begin{exercice}[2]{Le pH d'une solution d'acide méthanoïque}
+On dissout de l'acide méthanoïque dans de l'eau : la concentration apportée vaut $c=\qty{5,0e-3}{mol.L^{-1}}$.
+\begin{donnees}
+$K_\mathrm{A}=\num{1.8e-4}$ à 25~°C.
+\end{donnees}
+\begin{questions}
+\item Dresser le tableau d'avancement de la réaction de l'acide avec l'eau, pour un volume $V$ de solution.
+\item \capacite{Capacité mathématique}Établir l'équation du second degré vérifiée par $h=[\ce{H3O+}]_\text{éq}$, puis
+la résoudre. En déduire le pH de la solution.
+\item Calculer le taux d'avancement final.
+\item On utilise parfois l'approximation $h\approx\sqrt{K_\mathrm{A}\,c}$, valable si l'acide est peu dissocié.
+Calculer le pH approché et commenter l'écart.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-9}
+\begin{exercice}[2]{Le bleu de bromothymol}
+Le bleu de bromothymol (BBT) est un indicateur coloré : sa forme acide HIn est jaune, sa forme basique \ce{In-} est
+bleue. Le $\pKa$ du couple vaut 7,1 ; la zone de virage s'étend de 6,0 à 7,6.
+\schema{09-ex09}
+\begin{questions}
+\item Pourquoi un indicateur coloré change-t-il de couleur selon le pH ?
+\item Prévoir la couleur du BBT dans le suc gastrique (pH 2), dans l'eau de mer (pH 8,2) et dans une eau pure à
+25~°C.
+\item Calculer le rapport $[\ce{In-}]/[\ce{HIn}]$ à pH 7,4.
+\item Pourquoi la zone de virage est-elle large d'environ deux unités de pH ?
+\item Quelques gouttes suffisent. Pourquoi faut-il éviter d'en verser davantage dans la solution étudiée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-10}
+\begin{exercice}[2]{Une solution tampon}
+On dissout 0,100~mol d'acide éthanoïque et 0,100~mol d'éthanoate de sodium dans de l'eau, de façon à obtenir 1,0~L de
+solution S.
+\begin{donnees}
+$\pKa(\ce{CH3COOH}/\ce{CH3COO-})=4{,}76$ ; on admet que les quantités d'acide et de base conjuguée ne sont pas
+modifiées de façon notable par leurs réactions avec l'eau.
+\end{donnees}
+\begin{questions}
+\item Montrer que le pH de la solution S est égal au $\pKa$ du couple.
+\item On ajoute \qty{1,0e-3}{mol} de chlorure d'hydrogène, qui transforme une partie des ions éthanoate en acide
+éthanoïque. Déterminer les nouvelles quantités, puis le nouveau pH.
+\item On ajoute la même quantité de chlorure d'hydrogène dans 1,0~L d'eau pure. Calculer le pH obtenu.
+\item Comparer les deux variations de pH. Comment qualifie-t-on la solution S ?
+\item Citer une situation où un tel contrôle du pH est vital.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-11}
+\begin{exercice}[2]{Tracer un diagramme de distribution}
+Le programme suivant calcule la proportion $\alpha$ de la forme basique d'un couple de $\pKa$ donné, pour trois valeurs
+du pH.
+\begin{python}
+pKa = 4.76
+def alpha(pH):
+    return 1 / (1 + 10**(pKa - pH))
+for pH in (3.76, 4.76, 5.76):
+    print(round(alpha(pH), 3))
+\end{python}
+\begin{console}
+0.091
+0.5
+0.909
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Établir l'expression de $\alpha$ utilisée par la fonction, à partir de la relation
+entre pH et $\pKa$.
+\item Interpréter les trois valeurs affichées.
+\item Que vaut la proportion de la forme acide à $\pH=\pKa+1$ ? Quelle symétrie le diagramme de distribution
+présente-t-il ?
+\item Modifier le programme pour qu'il affiche la proportion de la forme acide à pH 7,4 pour le couple
+\ce{CO2,H2O}/\ce{HCO3-}, de $\pKa$ 6,1 à 37~°C. Quelle valeur obtient-on ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-9-12}
+\begin{exercice}[3]{Le pH du sang}
+\begin{docu}{1}{Une constante vitale}
+Le pH du sang artériel est maintenu entre 7,35 et 7,45. Le principal système tampon du sang est le couple
+\ce{CO2,H2O}/\ce{HCO3-} : le dioxyde de carbone dissous, produit par la respiration cellulaire, est éliminé dans l'air
+expiré, tandis que les reins régulent la concentration en ions hydrogénocarbonate.
+\end{docu}
+\begin{docu}{2}{Effort et hyperventilation}
+Lors d'un effort intense, la production de dioxyde de carbone et d'acide lactique augmente : le pH du sang diminue
+légèrement, ce qui accélère la ventilation. À l'inverse, une hyperventilation prolongée élimine trop de dioxyde de
+carbone et fait monter le pH : c'est l'alcalose respiratoire.
+\end{docu}
+\begin{donnees}
+$\pKa(\ce{CO2,H2O}/\ce{HCO3-})=6{,}1$ à 37~°C ; dans le sang, $[\ce{HCO3-}]\approx\qty{24}{mmol.L^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la réaction du dioxyde de carbone dissous, noté \ce{CO2,H2O}, avec l'eau, qui forme des ions
+hydrogénocarbonate.
+\item Quelle forme du couple prédomine à pH 7,4 ? Justifier à l'aide d'un diagramme de prédominance.
+\item \capacite{Capacité mathématique}Calculer le rapport $[\ce{HCO3-}]/[\ce{CO2,H2O}]$ à pH 7,4, puis la concentration
+en dioxyde de carbone dissous.
+\item Expliquer pourquoi un effort intense fait baisser le pH du sang, et pourquoi l'organisme réagit en accélérant la
+ventilation.
+\item \initiative Montrer qu'une diminution de moitié de $[\ce{CO2,H2O}]$, à $[\ce{HCO3-}]$ constante, fait monter le
+pH d'environ 0,3 unité. Quel document ce calcul illustre-t-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-13}
+\begin{exercice}[3]{Le degré Dornic d'un lait}
+\begin{docu}{1}{L'acidité d'un lait}
+La fermentation du lactose produit de l'acide lactique \ce{C3H6O3} : plus un lait vieillit, plus il est acide.
+L'acidité s'exprime en degrés Dornic : 1~°D correspond à 0,10~g d'acide lactique par litre. Un lait frais titre moins
+de 18~°D ; au-delà de 25~°D, il caille à l'ébullition.
+\end{docu}
+\begin{donnees}
+$M(\ce{C3H6O3})=\qty{90,1}{g.mol^{-1}}$ ; $\pKa(\text{acide lactique/ion lactate})=3{,}86$, soit
+$K_\mathrm{A}=\num{1.4e-4}$.
+\end{donnees}
+\begin{questions}
+\item Un lait titre 16~°D. Ce lait est-il frais ? Calculer la concentration molaire en acide lactique correspondante.
+\item \capacite{Capacité mathématique}Calculer le pH d'une solution d'acide lactique de même concentration, puis son
+taux d'avancement final.
+\item Le pH du lait vaut en réalité 6,7. Sous quelle forme du couple l'acide lactique s'y trouve-t-il
+majoritairement ? Proposer une explication à l'écart entre les deux pH.
+\item \initiative Dans un yaourt, le pH vaut 4,5. Calculer le rapport entre les deux formes du couple. Le résultat
+est-il cohérent avec le goût acide du yaourt ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-14}
+\begin{exercice}[3]{Un conservateur et son efficacité}
+\begin{docu}{1}{L'acide benzoïque, conservateur E210}
+L'acide benzoïque \ce{C6H5COOH} et les benzoates (E210 à E213) empêchent le développement des levures et des
+moisissures dans les boissons. Seule la forme acide \ce{C6H5COOH}, capable de traverser la membrane des
+micro-organismes, est réellement active. La réglementation européenne limite sa concentration à 150~mg par litre dans
+les boissons non alcoolisées.
+\end{docu}
+\begin{donnees}
+$\pKa(\ce{C6H5COOH}/\ce{C6H5COO-})=4{,}20$ ; $M(\ce{C6H5COOH})=\qty{122,1}{g.mol^{-1}}$ ; solubilité de l'acide
+benzoïque dans l'eau à 25~°C : 2,9~g$\cdot$L$^{-1}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la concentration molaire maximale autorisée en conservateur. La solubilité permet-elle de l'atteindre ?
+\item Dans un soda de pH 3,2, calculer la fraction du conservateur sous forme active.
+\item Même question dans un thé glacé de pH 5,5. Comparer l'efficacité du conservateur dans les deux boissons.
+\item \initiative Un fabricant souhaite conserver une boisson de pH 6,0 avec ce conservateur. Que lui
+conseilleriez-vous ? Justifier par un calcul.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-9-15}
+\begin{exercice}[3]{Désinfecter l'eau d'une piscine}
+\begin{docu}{1}{Le chlore des piscines}
+Le « chlore » dissous dans l'eau d'une piscine se répartit entre l'acide hypochloreux \ce{HClO} et l'ion hypochlorite
+\ce{ClO-}. Seul l'acide hypochloreux, qui pénètre dans les micro-organismes, est fortement désinfectant : il est
+environ cent fois plus efficace que l'ion hypochlorite.
+\end{docu}
+\begin{docu}{2}{Le réglage du pH}
+Les piscinistes recommandent de maintenir le pH entre 7,2 et 7,4 : ce compromis préserve l'efficacité du chlore tout
+en restant confortable pour la peau et les yeux, dont le pH de surface est proche de 7.
+\end{docu}
+\schema{09-ex15}
+\begin{donnees}
+$\pKa(\ce{HClO}/\ce{ClO-})=7{,}5$ à 25~°C.
+\end{donnees}
+\begin{questions}
+\item Écrire la réaction de l'acide hypochloreux avec l'eau et l'expression de sa constante d'acidité.
+\item À l'aide du graphique, déterminer la fraction d'acide hypochloreux à pH 7,2, puis à pH 8,2.
+\item Retrouver ces deux valeurs par le calcul.
+\item Un baigneur constate que l'eau de sa piscine, à pH 8,2, verdit malgré un apport correct de chlore. Expliquer, puis
+indiquer comment rétablir la désinfection sans ajouter de chlore.
+\item \initiative À l'aide des deux documents, justifier la plage de pH recommandée.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

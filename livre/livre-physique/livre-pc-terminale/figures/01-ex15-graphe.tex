@@ -1,0 +1,20 @@
+% pH mesuré en fonction de -log(c/c°) : modèle et régression (corrigé de l'exercice 15, chapitre 1)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=112mm,height=68mm,xmin=0,xmax=6.6,ymin=0,ymax=6.6,
+  xtick={0,1,...,6},ytick={0,1,...,6},
+  xlabel={$-\log(c/c^{\circ})$},ylabel={pH},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk},
+  legend style={at={(0.03,0.97)},anchor=north west,draw=otRule,fill=white,font=\otLight\fontsize{7.5}{9}\selectfont,
+    cells={anchor=west},row sep=0.5mm}]
+\addplot[otNavy,dashed,line width=0.8pt,domain=0:6.5] {x};
+\addlegendentry{modèle : pH $=-\log(c/c^{\circ})$}
+\addplot[otGreenDark,line width=1pt,domain=0.6:5.4] {0.973*x+0.111};
+\addlegendentry{régression sur les cinq premiers points}
+\addplot[only marks,mark=*,mark size=1.8pt,otInk] coordinates {(1,1.10)(2,2.04)(3,3.02)(4,4.01)(5,4.98)};
+\addlegendentry{mesures}
+\addplot[only marks,mark=*,mark size=2.2pt,otOrange] coordinates {(6,5.81)};
+\node[pcLegende,anchor=north west] at (axis cs:6.12,5.72) {écart dû au\\\ce{CO2} dissous};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Les cinq premiers points sont proches du modèle ; le dernier s'en écarte nettement.}

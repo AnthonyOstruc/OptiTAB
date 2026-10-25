@@ -1,0 +1,649 @@
+% !TEX root = ../main.tex
+%% Chapitre 12 — Espaces vectoriels et applications linéaires
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), deuxième semestre :
+%% A) espaces vectoriels (structure, sous-espaces, Vect, familles, sommes directes) ;
+%% B) dimension finie (bases extraite/incomplète, dimension, Grassmann,
+%% supplémentaires) ; C) applications linéaires (noyau, image, détermination,
+%% endomorphismes, projecteurs, symétries, théorème du rang, formes linéaires et
+%% hyperplans) ; D) sous-espaces affines et équations linéaires u(x) = a.
+%% Résultats vérifiés par verifications/chapitre_12.py.
+
+\begin{ouverture}[espaces]{12}{Espaces vectoriels et applications linéaires}{Partie 2 · Deuxième semestre}
+  {Structure\enspace·\enspace Vect\enspace·\enspace Bases et dimension\enspace·\enspace
+   Sommes directes\enspace·\enspace Noyau et image\enspace·\enspace Théorème du rang}
+  \objectif{Reconnaître un $\K$-espace vectoriel, un sous-espace, un $\operatorname{Vect}$.}
+  \objectif{Manier familles libres, génératrices, bases et coordonnées.}
+  \objectif{Calculer des dimensions : base extraite, base incomplète, formule de Grassmann.}
+  \objectif{Décomposer un espace en somme directe et exploiter les supplémentaires.}
+  \objectif{Étudier une application linéaire : noyau, image, rang, projecteurs et symétries.}
+  \objectif{Résoudre géométriquement une équation linéaire $u(x)=a$ : sous-espaces affines.}
+  \prerequis{Structures algébriques : groupes, anneaux, corps, morphismes (chapitre 8).}
+  \prerequis{Systèmes linéaires et pivot de Gauss (chapitre 9) ; polynômes (chapitre 10).}
+  \prerequis{Équations différentielles linéaires (chapitre 4) ; suites récurrentes (chapitre 5).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{La structure d'espace vectoriel}
+
+\begin{definition}[Espace vectoriel sur $\K$]
+Soit $\K=\R$ ou $\Cx$. Un \textbf{$\K$-espace vectoriel} est un ensemble $E$
+muni d'une addition qui en fait un groupe commutatif (neutre $0_E$) et d'une
+multiplication externe $(\lambda,x)\mapsto\lambda x$ vérifiant, pour tous
+$\lambda,\mu\in\K$ et $x,y\in E$ :
+\[
+\lambda(x+y)=\lambda x+\lambda y,\quad
+(\lambda+\mu)x=\lambda x+\mu x,\quad
+\lambda(\mu x)=(\lambda\mu)x,\quad
+1\cdot x=x .
+\]
+Les éléments de $E$ sont les \emph{vecteurs}, ceux de $\K$ les
+\emph{scalaires}. On a $\lambda x=0_E$ si et seulement si $\lambda=0$ ou
+$x=0_E$.
+\end{definition}
+
+\begin{exemple}[Le paysage des espaces usuels]
+$\K^{n}$ (les $n$-uplets), $\K[X]$ (les polynômes), $\mathcal{M}_{n,p}(\K)$
+(les matrices), $\K^{\N}$ (les suites), et plus généralement l'ensemble
+$\K^{\Omega}$ des fonctions d'un ensemble $\Omega$ dans $\K$ — ou dans
+n'importe quel espace vectoriel. Un produit fini $E_1\times\dots\times E_k$
+d'espaces vectoriels en est un, composante par composante. Toute l'algèbre
+linéaire s'applique d'un coup à ces mondes en apparence très différents.
+\end{exemple}
+
+\begin{definition}[Combinaison linéaire]
+Une \textbf{combinaison linéaire} d'une famille finie $(x_1,\dots,x_p)$ de
+vecteurs de $E$ est un vecteur $\lambda_1x_1+\dots+\lambda_px_p$ avec
+$\lambda_i\in\K$. Pour une famille infinie $(x_i)_{i\in I}$, on impose à la
+famille de scalaires $(\lambda_i)_{i\in I}$ d'être \emph{presque nulle}
+(nulle sauf pour un nombre fini d'indices), et la somme est alors finie.
+\end{definition}
+
+\essSection{2}{Sous-espaces vectoriels et $\operatorname{Vect}$}
+
+\begin{theoreme}[Caractérisation des sous-espaces]
+Une partie $F$ de $E$ est un \textbf{sous-espace vectoriel} si et seulement
+si $0_E\in F$ et $F$ est stable par combinaison linéaire :
+\[
+\forall x,y\in F,\ \forall\lambda\in\K,\qquad x+\lambda y\in F .
+\]
+Un sous-espace est lui-même un espace vectoriel. Toute intersection de
+sous-espaces vectoriels est un sous-espace vectoriel.
+\end{theoreme}
+
+\begin{exemple}
+Le sous-espace nul $\ens{0_E}$ ; une droite vectorielle $\K u$ ($u\neq0$) ;
+un plan vectoriel de $\R^{3}$ ; $\K_n[X]$ (degré $\leqslant n$) dans
+$\K[X]$ ; l'ensemble des solutions d'un système linéaire \emph{homogène}
+dans $\K^{p}$ ; les suites bornées dans $\R^{\N}$. En revanche une réunion
+de deux droites distinctes n'est jamais un sous-espace : la somme de deux
+vecteurs directeurs sort des deux droites.
+\end{exemple}
+
+\begin{definition}[Sous-espace engendré]
+Pour $A\subseteq E$, $\operatorname{Vect}(A)$ est l'ensemble des
+combinaisons linéaires (finies) de vecteurs de $A$. C'est le \emph{plus
+petit} sous-espace vectoriel contenant $A$ : tout sous-espace contenant $A$
+contient $\operatorname{Vect}(A)$. On note
+$\operatorname{Vect}(x_1,\dots,x_p)$ pour une famille finie.
+\end{definition}
+
+\begin{savoirfaire}[Montrer qu'une partie est un sous-espace]
+Deux voies, toujours les mêmes : vérifier $0\in F$ puis la stabilité
+$x+\lambda y\in F$ — ou, plus rapide quand c'est possible, reconnaître $F$
+comme un $\operatorname{Vect}$, une intersection de sous-espaces connus, ou
+le noyau d'une application linéaire (section 6).
+\end{savoirfaire}
+
+\essSection{3}{Familles libres, génératrices, bases}
+
+\begin{definition}[Libre, génératrice, base]
+Une famille $(x_1,\dots,x_p)$ de vecteurs de $E$ est :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \textbf{génératrice} de $E$ si $\operatorname{Vect}(x_1,\dots,x_p)=E$ ;
+  \item \textbf{libre} si $\lambda_1x_1+\dots+\lambda_px_p=0$ entraîne
+    $\lambda_1=\dots=\lambda_p=0$ (sinon elle est \emph{liée}) ;
+  \item une \textbf{base} de $E$ si elle est libre et génératrice : tout
+    $x\in E$ s'écrit alors de façon \emph{unique}
+    $x=\lambda_1x_1+\dots+\lambda_px_p$, et les $\lambda_i$ sont les
+    \textbf{coordonnées} de $x$ dans la base.
+\end{itemize}
+\end{definition}
+
+\begin{propriete}[Outils de liberté]
+Une famille d'un vecteur est libre si et seulement s'il est non nul ; deux
+vecteurs sont liés si et seulement s'ils sont colinéaires. Si
+$(x_1,\dots,x_p)$ est libre et $x\notin\operatorname{Vect}(x_1,\dots,x_p)$,
+alors $(x_1,\dots,x_p,x)$ est libre. Enfin, toute famille de polynômes non
+nuls \emph{à degrés deux à deux distincts} est libre — en particulier les
+familles « à degrés échelonnés » $(P_0,\dots,P_n)$ avec $\deg P_k=k$, qui
+forment des bases de $\K_n[X]$.
+\end{propriete}
+
+\begin{exemple}[Bases canoniques]
+$\K^{n}$ : les $e_i=(0,\dots,1,\dots,0)$ ; $\K_n[X]$ : $(1,X,\dots,X^{n})$ ;
+$\K[X]$ : $(X^{k})_{k\in\N}$ ; $\mathcal{M}_{n,p}(\K)$ : les matrices
+élémentaires $E_{i,j}$. Et $(1,X-1,(X-1)^{2},\dots,(X-1)^{n})$ est une
+autre base de $\K_n[X]$, échelonnée en degré : les coordonnées y sont
+données par la formule de Taylor (chapitre 10).
+\end{exemple}
+
+\essSection{4}{Dimension finie}
+
+\begin{theoreme}[Existence de bases]
+$E$ est dit \textbf{de dimension finie} s'il possède une famille génératrice
+finie. Alors :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \emph{base extraite} : de toute famille génératrice finie on peut
+    extraire une base ;
+  \item \emph{base incomplète} : toute famille libre peut être complétée en
+    une base, en piochant dans une famille génératrice donnée.
+\end{itemize}
+\end{theoreme}
+
+\begin{theoreme}[Dimension]
+Dans un espace engendré par $n$ vecteurs, toute famille de $n+1$ vecteurs
+est liée. Toutes les bases de $E$ ont donc le même nombre d'éléments, la
+\textbf{dimension} $\dim E$. En dimension $n$, une famille de $n$ vecteurs
+est une base dès qu'elle est libre \emph{ou} génératrice : la moitié du
+travail suffit.
+\end{theoreme}
+
+\begin{propriete}[Dimensions à connaître]
+$\dim\K^{n}=n$ ; $\dim\K_n[X]=n+1$ ; $\dim\mathcal{M}_{n,p}(\K)=np$ ;
+$\dim(E\times F)=\dim E+\dim F$. L'ensemble des solutions de $y'=a(x)y$ est
+une droite vectorielle ; celui des solutions de $y''+ay'+by=0$ (coefficients
+constants), comme celui des suites vérifiant $u_{n+2}=au_{n+1}+bu_n$, est de
+dimension $2$ : deux conditions initiales déterminent tout. Le \textbf{rang}
+$\operatorname{rg}(x_1,\dots,x_p)$ est la dimension de
+$\operatorname{Vect}(x_1,\dots,x_p)$.
+\end{propriete}
+
+\essSection{5}{Sous-espaces, sommes et supplémentaires}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{theoreme}[Sommes et sommes directes]
+La \textbf{somme} $F+G=\ens{f+g\mid f\in F,\ g\in G}$ est un sous-espace.
+Elle est \textbf{directe}, notée $F\oplus G$, si la décomposition de tout
+vecteur de $F+G$ en $f+g$ est \emph{unique}, ce qui équivaut à
+$F\cap G=\ens{0}$. On dit que $F$ et $G$ sont \textbf{supplémentaires} dans
+$E$ si $E=F\oplus G$ : tout vecteur de $E$ se décompose alors de façon
+unique $x=f+g$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.92,line cap=round]
+  \fill[otNavy,opacity=0.06] (-1.7,-0.55) -- (1.15,-0.95) -- (1.7,0.55) -- (-1.15,0.95) -- cycle;
+  \draw[otNavy,line width=0.7pt] (-1.7,-0.55) -- (1.15,-0.95) -- (1.7,0.55) -- (-1.15,0.95) -- cycle;
+  \draw[otGreenDark,line width=1pt] (-0.42,-1.45) -- (0.72,2.5);
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (1.05,-0.33) -- (1.45,1.05);
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (0.4,1.38) -- (1.45,1.05);
+  \draw[otNavy,line width=0.8pt,-{Stealth[length=1.9mm]}] (0,0) -- (1.05,-0.33);
+  \draw[otGreenDark,line width=0.8pt,-{Stealth[length=1.9mm]}] (0,0) -- (0.4,1.38);
+  \draw[otInk,line width=1.1pt,-{Stealth[length=2.2mm]}] (0,0) -- (1.45,1.05);
+  \fill[otInk] (0,0) circle (1.3pt);
+  \node[font=\scriptsize,text=otInk,anchor=west] at (1.5,1.12) {$x$};
+  \node[font=\scriptsize,text=otNavy] at (1.08,-0.6) {$f$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=east] at (0.32,1.45) {$g$};
+  \node[font=\scriptsize,text=otNavy] at (-1.35,-0.78) {$F$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (0.74,2.35) {$G$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$E=F\oplus G$ : chaque $x$ se décompose de façon unique en
+$f+g$, comme un plan et une droite non incluse dans $\R^{3}$.}
+\end{minipage}
+
+\begin{theoreme}[Dimension des sous-espaces ; formule de Grassmann]
+Si $F$ est un sous-espace de $E$ de dimension finie, alors
+$\dim F\leqslant\dim E$, avec égalité si et seulement si $F=E$. Pour deux
+sous-espaces de dimension finie :
+\[
+\dim(F+G)=\dim F+\dim G-\dim(F\cap G) .
+\]
+Tout sous-espace $F$ de $E$ possède un supplémentaire, et
+\[
+E=F\oplus G
+\iff
+F\cap G=\ens{0}\ \text{et}\ \dim F+\dim G=\dim E
+\iff
+F+G=E\ \text{et}\ \dim F+\dim G=\dim E .
+\]
+Concaténer une base de $F$ et une base de $G$ donne alors une base de $E$,
+dite \emph{adaptée} à la décomposition.
+\end{theoreme}
+
+\begin{savoirfaire}[Montrer que $E=F\oplus G$]
+En dimension finie, le plus efficace est presque toujours :
+$F\cap G=\ens{0}$ (un seul petit calcul) \emph{plus} le compte des
+dimensions $\dim F+\dim G=\dim E$. L'analyse-synthèse — supposer $x=f+g$,
+en déduire $f$ et $g$, puis vérifier — reste la méthode universelle, valable
+même en dimension infinie (fonctions paires et impaires, exercice 10).
+\end{savoirfaire}
+
+\essSection{6}{Applications linéaires : noyau, image, rang}
+
+\begin{definition}[Application linéaire]
+$u:E\to F$ est \textbf{linéaire} si $u(x+\lambda y)=u(x)+\lambda u(y)$ pour
+tous $x,y\in E$, $\lambda\in\K$. L'ensemble $\mathcal{L}(E,F)$ des
+applications linéaires est un espace vectoriel ; la composée de deux
+applications linéaires est linéaire, et la composition est bilinéaire. Un
+\textbf{isomorphisme} est une application linéaire bijective ; sa réciproque
+est alors automatiquement linéaire.
+\end{definition}
+
+\begin{theoreme}[Noyau et image]
+Pour $u\in\mathcal{L}(E,F)$ :
+$\operatorname{Ker}u=\ens{x\in E\mid u(x)=0}$ est un sous-espace de $E$,
+$\operatorname{Im}u=u(E)$ un sous-espace de $F$ — plus généralement, image
+directe et image réciproque d'un sous-espace sont des sous-espaces. Et :
+\[
+u\ \text{injective}\iff\operatorname{Ker}u=\ens{0},
+\qquad
+u\ \text{surjective}\iff\operatorname{Im}u=F .
+\]
+Si $(x_i)_{i\in I}$ engendre $E$, alors
+$\operatorname{Im}u=\operatorname{Vect}\bigl(u(x_i)\bigr)_{i\in I}$. Le
+\textbf{rang} de $u$ est $\operatorname{rg}u=\dim\operatorname{Im}u$ ; on a
+$\operatorname{rg}(v\circ u)\leqslant\min(\operatorname{rg}u,\operatorname{rg}v)$,
+et le rang est invariant par composition par un isomorphisme.
+\end{theoreme}
+
+\begin{theoreme}[Détermination par une base]
+Si $(e_i)_{i\in I}$ est une base de $E$ et $(f_i)_{i\in I}$ une famille
+quelconque de $F$, il existe une \emph{unique} $u\in\mathcal{L}(E,F)$ telle
+que $u(e_i)=f_i$ pour tout $i$ : une application linéaire est entièrement
+décidée par l'image d'une base. De même, si $E=E_1\oplus E_2$, une
+application linéaire se définit en la prescrivant sur $E_1$ et sur $E_2$.
+Conséquences : deux espaces de dimension finie sont isomorphes si et
+seulement s'ils ont la même dimension, et
+$\dim\mathcal{L}(E,F)=\dim E\times\dim F$.
+\end{theoreme}
+
+\essSection{7}{Endomorphismes : projecteurs et symétries}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{theoreme}[Projecteurs et symétries]
+$\bigl(\mathcal{L}(E),+,\circ\bigr)$ est un anneau (non commutatif dès que
+$\dim E\geqslant2$) ; ses inversibles forment le \emph{groupe linéaire}
+$\operatorname{GL}(E)$. Si $E=F\oplus G$ et $x=f+g$ :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item le \textbf{projecteur} sur $F$ parallèlement à $G$ est $p(x)=f$ ;
+    il vérifie $p^{2}=p$, $\operatorname{Im}p=F=\operatorname{Ker}(\mathrm{id}-p)$
+    et $\operatorname{Ker}p=G$ ;
+  \item la \textbf{symétrie} par rapport à $F$ parallèlement à $G$ est
+    $s(x)=f-g=2p(x)-x$ ; elle vérifie $s^{2}=\mathrm{id}$.
+\end{itemize}
+Réciproquement, tout $p$ vérifiant $p^{2}=p$ est le projecteur sur
+$\operatorname{Im}p$ parallèlement à $\operatorname{Ker}p$ (et
+$E=\operatorname{Ker}p\oplus\operatorname{Im}p$) ; tout $s$ vérifiant
+$s^{2}=\mathrm{id}$ est la symétrie associée à $p=\frac12(s+\mathrm{id})$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.0,line cap=round]
+  \draw[otNavy,line width=1pt] (-1.5,-0.5) -- (1.8,0.6);
+  \draw[otGreenDark,line width=0.9pt] (-0.55,-1.5) -- (0.55,1.5);
+  \fill[otInk] (0,0) circle (1.2pt);
+  \draw[otInk,line width=1pt,-{Stealth[length=2mm]}] (0,0) -- (1.35,1.15);
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (1.35,1.15) -- (1.05,0.35);
+  \draw[otNavy,line width=0.9pt,-{Stealth[length=2mm]}] (0,0) -- (1.05,0.35);
+  \draw[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (1.35,1.15) -- (0.75,-0.45);
+  \draw[otGreenDark,line width=0.9pt,-{Stealth[length=2mm]}] (0,0) -- (0.75,-0.45);
+  \node[font=\scriptsize,text=otInk,anchor=south west] at (1.3,1.1) {$x$};
+  \node[font=\scriptsize,text=otNavy,anchor=north west] at (1.05,0.3) {$p(x)$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=north west] at (0.72,-0.5) {$s(x)$};
+  \node[font=\scriptsize,text=otNavy,anchor=west] at (1.82,0.6) {$F$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south] at (0.55,1.52) {$G$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Projection sur $F$ parallèlement à $G$, et symétrie :
+$s(x)=2p(x)-x$. Se faire \emph{toujours} ce dessin.}
+\end{minipage}
+
+\essSection{8}{Théorème du rang, hyperplans, sous-espaces affines}
+
+\begin{theoreme}[Théorème du rang]
+Soit $u\in\mathcal{L}(E,F)$ avec $\dim E=n$ finie. Si $S$ est un
+supplémentaire de $\operatorname{Ker}u$ dans $E$, alors $u$ induit un
+\emph{isomorphisme} de $S$ sur $\operatorname{Im}u$ (forme géométrique).
+En particulier :
+\[
+\dim E=\dim\operatorname{Ker}u+\operatorname{rg}u .
+\]
+Si $\dim E=\dim F$ finies, alors $u$ injective $\iff$ surjective $\iff$
+bijective — et un endomorphisme inversible à gauche \emph{ou} à droite est
+inversible.
+\end{theoreme}
+
+\begin{theoreme}[Formes linéaires et hyperplans]
+Une \textbf{forme linéaire} sur $E$ est une application linéaire
+$\varphi:E\to\K$ ; dans une base, $\varphi(x)=a_1x_1+\dots+a_nx_n$. Un
+\textbf{hyperplan} est le noyau d'une forme linéaire non nulle. Si $H$ est
+un hyperplan et $D$ une droite non incluse dans $H$, alors $E=H\oplus D$ ;
+en dimension $n$, les hyperplans sont exactement les sous-espaces de
+dimension $n-1$. Deux équations $\varphi(x)=0$ et $\psi(x)=0$ définissent le
+même hyperplan si et seulement si $\varphi$ et $\psi$ sont proportionnelles.
+Enfin, l'intersection de $m$ hyperplans est de dimension au moins $n-m$, et
+tout sous-espace de dimension $n-m$ est intersection de $m$ hyperplans :
+c'est la lecture géométrique des systèmes linéaires.
+\end{theoreme}
+
+\begin{definition}[Sous-espaces affines]
+Un \textbf{sous-espace affine} de $E$ est une partie $\mathcal{A}=x_0+F$ où
+$F$ est un sous-espace vectoriel, la \emph{direction} de $\mathcal{A}$
+(l'écriture $B=A+\vec u$ se lit $\overrightarrow{AB}=\vec u$). Deux
+sous-espaces affines de même direction sont égaux ou disjoints ; une
+intersection non vide de sous-espaces affines est un sous-espace affine.
+\end{definition}
+
+\begin{theoreme}[Structure des solutions de $u(x)=a$]
+Soit $u\in\mathcal{L}(E,F)$ et $a\in F$. L'ensemble des solutions de
+$u(x)=a$ est soit vide, soit le sous-espace affine
+$x_0+\operatorname{Ker}u$, où $x_0$ est une solution particulière :
+\emph{solution générale = solution particulière + solution homogène}.
+Systèmes linéaires, équations différentielles linéaires, suites
+arithmético-géométriques, interpolation : un seul et même énoncé.
+\end{theoreme}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Sous-espace ou pas ?}
+Les parties suivantes sont-elles des sous-espaces vectoriels ?
+\begin{questions}
+  \item $\ens{(x,y)\in\R^{2}\mid x+2y=0}$ et
+    $\ens{(x,y)\in\R^{2}\mid x+y=1}$ ;
+  \item $\ens{(x,y)\in\R^{2}\mid xy=0}$ ;
+  \item $\ens{f\in\R^{\R}\mid f(1)=0}$ et $\ens{f\in\R^{\R}\mid f(1)=1}$ ;
+  \item $\ens{P\in\R[X]\mid\deg P=3}$ ;
+  \item l'ensemble des suites réelles bornées.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Dans un Vect, ou pas ?}
+Dans $\R^{3}$, on pose $u=(1,1,1)$ et $v=(0,1,2)$.
+\begin{questions}
+  \item Le vecteur $(1,2,3)$ appartient-il à $\operatorname{Vect}(u,v)$ ?
+    Et $(1,0,0)$ ?
+  \item Décrire $\operatorname{Vect}(u,v)$ par une équation cartésienne.
+  \item À quelle condition sur $c$ le vecteur $(1,2,c)$ est-il dans
+    $\operatorname{Vect}(u,v)$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Libres ou liées ?}
+Étudier la liberté des familles suivantes :
+\begin{questions}
+  \item $\bigl((1,0,1),(1,1,0),(0,1,1)\bigr)$ dans $\R^{3}$ ;
+  \item $\bigl((1,2,3),(2,4,6)\bigr)$ dans $\R^{3}$ ;
+  \item $\bigl((1,1,0),(0,1,1),(1,0,-1)\bigr)$ dans $\R^{3}$
+    (donner une relation de liaison) ;
+  \item $(1,X,X^{2},\dots,X^{n})$ dans $\R[X]$, puis $(\cos,\sin)$ dans
+    $\R^{\R}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Une base échelonnée de $\R_3[X]$}
+\begin{questions}
+  \item Montrer que $\mathcal{B}=\bigl(1,\,X-1,\,(X-1)^{2},\,(X-1)^{3}\bigr)$
+    est une base de $\R_3[X]$.
+  \item Déterminer les coordonnées de $X^{3}$ dans $\mathcal{B}$.
+  \item Que donne, en général, la formule de Taylor en $1$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Noyau et image d'une application linéaire}
+Soit $u:\R^{3}\to\R^{2}$ définie par $u(x,y,z)=(x+y-z,\ 2x-y)$.
+\begin{questions}
+  \item Vérifier que $u$ est linéaire.
+  \item Déterminer une base de $\operatorname{Ker}u$.
+  \item Déterminer $\operatorname{Im}u$ et $\operatorname{rg}u$. Le
+    théorème du rang est-il confirmé ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Linéaire ou pas ?}
+Les applications suivantes sont-elles linéaires ?
+\begin{questions}
+  \item $f(x,y)=(x+y,\ x-y)$ et $g(x,y)=(x+1,\ y)$ sur $\R^{2}$ ;
+  \item $h(x,y)=xy$ de $\R^{2}$ dans $\R$ ;
+  \item la dérivation $P\mapsto P'$ sur $\R[X]$, et la translation
+    $P\mapsto P(X+1)$ ;
+  \item l'évaluation $\varphi:f\mapsto f(2)$ de $\R^{\R}$ dans $\R$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Un projecteur à la loupe}
+Soit $p:\R^{2}\to\R^{2}$ définie par
+$p(x,y)=\Bigl(\dfrac{x+y}{2},\ \dfrac{x+y}{2}\Bigr)$.
+\begin{questions}
+  \item Vérifier que $p$ est linéaire et que $p\circ p=p$.
+  \item Déterminer $\operatorname{Im}p$ et $\operatorname{Ker}p$ ; de quel
+    projecteur s'agit-il ? Faire un dessin.
+  \item On pose $s=2p-\mathrm{id}$. Calculer $s(x,y)$, vérifier
+    $s\circ s=\mathrm{id}$ et interpréter géométriquement.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Rangs et dimensions}
+\begin{questions}
+  \item Déterminer $\operatorname{rg}\bigl((1,1,0),(0,1,1),(1,0,-1)\bigr)$
+    et $\operatorname{rg}\bigl((1,2),(2,4),(3,6)\bigr)$.
+  \item Quelle est la dimension de $\ens{(x,y,z)\in\R^{3}\mid x+y+z=0}$ ?
+    En donner une base.
+  \item Montrer que $(1+X,\,1-X,\,X^{2})$ est une base de $\R_2[X]$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Des espaces de solutions}
+\begin{questions}
+  \item Rappeler pourquoi l'ensemble des solutions de $y''+y=0$ est un
+    espace vectoriel, et vérifier que $(\cos,\sin)$ en est une famille
+    libre. Admettant que cet espace est de dimension $2$, qu'en déduit-on ?
+  \item Soit $E$ l'ensemble des suites réelles vérifiant
+    $u_{n+2}=u_{n+1}+u_n$. Montrer que
+    $u\mapsto(u_0,u_1)$ est un isomorphisme de $E$ sur $\R^{2}$ ; en
+    déduire $\dim E=2$.
+  \item Montrer que les suites géométriques $(\varphi^{n})$ et
+    $(\psi^{n})$, où $\varphi=\frac{1+\sqrt5}{2}$ et
+    $\psi=\frac{1-\sqrt5}{2}$, forment une base de $E$, et retrouver la
+    formule de Binet pour la suite de Fibonacci (chapitre 5).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Supplémentaires : deux grands classiques}
+\begin{questions}
+  \item Dans $\R^{3}$, on pose $F=\ens{(x,y,z)\mid x+y+z=0}$ et
+    $G=\operatorname{Vect}\bigl((1,1,1)\bigr)$. Montrer que
+    $\R^{3}=F\oplus G$ et décomposer $(1,2,3)$.
+  \item Dans $\R^{\R}$, montrer que toute fonction s'écrit de façon unique
+    comme somme d'une fonction paire et d'une fonction impaire. Que donne
+    la décomposition pour $\exp$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La formule de Grassmann en action}
+\begin{questions}
+  \item Montrer que deux plans vectoriels distincts de $\R^{3}$ se coupent
+    toujours selon une droite.
+  \item Dans $\R^{3}$, expliciter cette droite pour
+    $F=\operatorname{Vect}\bigl((1,0,0),(0,1,0)\bigr)$ et
+    $G=\operatorname{Vect}\bigl((0,0,1),(1,1,1)\bigr)$.
+  \item Deux sous-espaces de dimension $3$ de $\R^{5}$ peuvent-ils être
+    d'intersection nulle ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Base incomplète, base extraite}
+\begin{questions}
+  \item Compléter la famille libre $\bigl((1,1,0),(0,1,1)\bigr)$ en une
+    base de $\R^{3}$ à l'aide d'un vecteur de la base canonique.
+  \item Extraire une base de $\R^{2}$ de la famille génératrice
+    $\bigl((1,0),(2,0),(0,1),(1,1)\bigr)$.
+  \item Déterminer un supplémentaire de
+    $\operatorname{Vect}\bigl(1+X+X^{2},\,X\bigr)$ dans $\R_2[X]$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Détermination d'une application linéaire}
+Soit $u$ l'unique endomorphisme de $\R^{2}$ tel que $u(1,1)=(2,0)$ et
+$u(1,-1)=(0,4)$.
+\begin{questions}
+  \item Pourquoi $u$ existe-t-il et est-il unique ?
+  \item Exprimer $u(x,y)$ pour tout $(x,y)\in\R^{2}$, et calculer $u(1,0)$.
+  \item Montrer que $u$ est un automorphisme de $\R^{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le théorème du rang en pratique}
+Soit $u:\R^{4}\to\R^{3}$ dont la matrice dans les bases canoniques est
+$A=\begin{pmatrix}1&2&0&1\\0&1&1&1\\1&3&1&2\end{pmatrix}$.
+\begin{questions}
+  \item Déterminer $\operatorname{rg}u$.
+  \item Donner une base de $\operatorname{Ker}u$ et une base de
+    $\operatorname{Im}u$, et vérifier le théorème du rang.
+  \item L'application $u$ est-elle injective ? surjective ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Projecteurs et symétries : les caractérisations}
+Soit $p\in\mathcal{L}(E)$ un projecteur ($p^{2}=p$).
+\begin{questions}
+  \item Montrer que $\mathrm{id}-p$ est un projecteur et que
+    $\operatorname{Ker}(\mathrm{id}-p)=\operatorname{Im}p$.
+  \item Montrer que $E=\operatorname{Ker}p\oplus\operatorname{Im}p$,
+    en écrivant $x=\bigl(x-p(x)\bigr)+p(x)$.
+  \item Soit $s(x,y)=(y,x)$ sur $\R^{2}$. Vérifier $s^{2}=\mathrm{id}$,
+    déterminer les deux droites $\operatorname{Ker}(s-\mathrm{id})$ et
+    $\operatorname{Ker}(s+\mathrm{id})$, et reconnaître $s$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Hyperplans de $\R^{3}$}
+Soit $\varphi(x,y,z)=x-2y+z$ et $H=\operatorname{Ker}\varphi$.
+\begin{questions}
+  \item Justifier que $H$ est un hyperplan et en donner une base.
+  \item Trouver une droite $D$ telle que $\R^{3}=H\oplus D$.
+  \item Montrer que $-2x+4y-2z=0$ définit le même hyperplan. Deux équations
+    non proportionnelles peuvent-elles définir le même hyperplan ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{L'interpolation, vue par l'algèbre linéaire}
+Soit $\Phi:\R_2[X]\to\R^{3}$, $P\mapsto\bigl(P(0),P(1),P(2)\bigr)$.
+\begin{questions}
+  \item Montrer que $\Phi$ est linéaire et injective, puis que c'est un
+    isomorphisme.
+  \item En déduire, sans aucun calcul, l'existence et l'unicité du polynôme
+    de degré au plus $2$ prenant des valeurs prescrites en $0,1,2$
+    (chapitre 10).
+  \item Expliciter les trois polynômes $L_0,L_1,L_2$ dont les images par
+    $\Phi$ forment la base canonique de $\R^{3}$, et vérifier
+    $L_0+L_1+L_2=1$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Solution particulière + solution homogène}
+\begin{questions}
+  \item Décrire l'ensemble des solutions du système
+    $\begin{cases}x-y=1\\x+y+z=3\end{cases}$ comme sous-espace affine de
+    $\R^{3}$ : point particulier et direction.
+  \item Résoudre $u_{n+1}=2u_n+3$ avec $u_0=1$ par la même méthode :
+    suite constante particulière, puis solutions homogènes (chapitre 5).
+  \item Même lecture pour $y'=y+1$ : donner la solution générale.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Familles libres de fonctions}
+\begin{questions}
+  \item Soient $a_1<a_2<\dots<a_n$ des réels. Montrer que la famille des
+    fonctions $x\mapsto\mathrm{e}^{a_ix}$ est libre dans $\R^{\R}$.
+    \emph{Diviser une relation de liaison par $\mathrm{e}^{a_nx}$ et faire
+    $x\to+\infty$, puis itérer.}
+  \item Montrer que la famille $\bigl(x\mapsto|x-a|\bigr)_{a\in\R}$ est
+    libre. \emph{Penser à la dérivabilité en chaque point $a$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Endomorphismes nilpotents : premiers pas}
+Soit $E$ de dimension $n$ et $u\in\mathcal{L}(E)$ \emph{nilpotent} :
+$u^{p}=0$ et $u^{p-1}\neq0$ pour un certain $p\geqslant1$ (l'\emph{indice}).
+\begin{questions}
+  \item Soit $x$ tel que $u^{p-1}(x)\neq0$. Montrer que
+    $\bigl(x,u(x),\dots,u^{p-1}(x)\bigr)$ est libre. En déduire
+    $p\leqslant n$.
+  \item Vérifier que la dérivation est nilpotente sur $\R_n[X]$, d'indice
+    $n+1$.
+  \item Montrer que $\mathrm{id}-u$ est inversible, d'inverse
+    $\mathrm{id}+u+u^{2}+\dots+u^{p-1}$ (chapitres 8 et 9).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Noyaux itérés}
+Soit $u\in\mathcal{L}(E)$, $E$ de dimension finie $n$.
+\begin{questions}
+  \item Montrer que la suite des noyaux
+    $\operatorname{Ker}u^{0}\subseteq\operatorname{Ker}u\subseteq
+    \operatorname{Ker}u^{2}\subseteq\dots$ est croissante.
+  \item Montrer que si $\operatorname{Ker}u^{k}=\operatorname{Ker}u^{k+1}$
+    pour un indice $k$, alors $\operatorname{Ker}u^{m}=\operatorname{Ker}u^{k}$
+    pour tout $m\geqslant k$.
+  \item En déduire que la suite stationne au plus tard au rang $n$.
+  \item Expliciter la suite des noyaux pour la dérivation sur $\R_3[X]$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Deux projecteurs qui commutent}
+Soient $p,q$ deux projecteurs de $E$ tels que $p\circ q=q\circ p$.
+\begin{questions}
+  \item Montrer que $p\circ q$ est un projecteur.
+  \item Montrer que
+    $\operatorname{Im}(p\circ q)=\operatorname{Im}p\cap\operatorname{Im}q$.
+    \emph{Utiliser la caractérisation $y\in\operatorname{Im}p\iff p(y)=y$.}
+  \item Montrer que
+    $\operatorname{Ker}(p\circ q)=\operatorname{Ker}p+\operatorname{Ker}q$.
+    \emph{Pour l'inclusion directe, écrire $x=\bigl(x-q(x)\bigr)+q(x)$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Les hyperplans de polynômes}
+Dans $E=\R_3[X]$ (de dimension $4$), on pose, pour $a\in\R$,
+$H_a=\ens{P\in E\mid P(a)=0}$.
+\begin{questions}
+  \item Montrer que $H_a$ est un hyperplan de $E$ et que
+    $H_a=(X-a)\,\R_2[X]$.
+  \item Montrer que $H_0\cap H_1\cap H_2$ est une droite vectorielle, dont
+    on donnera un générateur.
+  \item Plus généralement, que vaut
+    $\dim(H_{a_0}\cap\dots\cap H_{a_m})$ pour $a_0,\dots,a_m$ deux à deux
+    distincts ($m\leqslant3$) ? Commenter avec l'énoncé « l'intersection
+    de $m$ hyperplans est de dimension au moins $n-m$ ».
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Quand $E=\operatorname{Ker}u\oplus\operatorname{Im}u$}
+Soit $E$ de dimension finie et $u\in\mathcal{L}(E)$. Montrer l'équivalence
+des quatre assertions :
+\begin{questions}
+  \item $E=\operatorname{Ker}u\oplus\operatorname{Im}u$ ;
+  \item $\operatorname{Ker}u^{2}=\operatorname{Ker}u$ ;
+  \item $\operatorname{Im}u^{2}=\operatorname{Im}u$ ;
+  \item $\operatorname{rg}u^{2}=\operatorname{rg}u$.
+\end{questions}
+Vérifier que tout projecteur les satisfait, mais que la dérivation sur
+$\R_2[X]$ ne satisfait aucune d'elles.
+\end{exercice}
+
+\input{chapitres/defis/defi-12}

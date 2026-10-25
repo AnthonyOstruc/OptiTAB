@@ -1,0 +1,18 @@
+% Figures vectorielles de géométrie, communes aux énoncés et aux corrigés.
+\ProvidesPackage{figures-geometrie}[2026/10/20 Figures de geometrie OptiTAB]
+\newif\ifotGeoCorrige
+\newcommand{\geoSolution}[1]{\ifotGeoCorrige #1\fi}
+\newcommand{\geoEnonce}[1]{\ifotGeoCorrige\else #1\fi}
+\NewDocumentCommand{\figureGeo}{O{enonce} m}{%
+  \par\nopagebreak\vspace{2mm}%
+  \begingroup
+  \ifstrequal{#1}{corrige}{\otGeoCorrigetrue}{\otGeoCorrigefalse}%
+  \noindent\begin{minipage}{\linewidth}%
+  \centering\input{figures/#2.tex}\par
+  \end{minipage}\par
+  \endgroup\vspace{1mm}}
+\tikzset{geoTrait/.style={otNavy,line width=.8pt},
+  geoAide/.style={otGreenDark,line width=.75pt,dashed},
+  geoVecteur/.style={otNavy,line width=.9pt,-{Stealth[length=1.8mm]}},
+  geoReponse/.style={otGreenDark,line width=.9pt},
+  geoLabel/.style={fill=white,inner sep=1pt,text=otInk}}

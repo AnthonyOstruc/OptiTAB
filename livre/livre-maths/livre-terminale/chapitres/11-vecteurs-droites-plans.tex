@@ -1,0 +1,458 @@
+% !TEX root = ../main.tex
+%% Chapitre 11 — Vecteurs, droites et plans de l'espace
+%% Sources : frontend/cours/resume/terminal/resume_vecteurs_droites_plans_espace_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_manipulation_vecteurs_droites_plans_terminal.txt
+%% Tous les calculs ont été vérifiés par programme (calcul exact).
+%% Exercices 3, 13 et 14 : rédigés ou complétés pour le livre.
+
+\begin{ouverture}[espace]{11}{Vecteurs, droites et plans de l'espace}{Partie 2 · Géométrie dans l'espace}
+  {Vecteurs de l'espace\enspace·\enspace Colinéarité\enspace·\enspace Droites et plans\enspace·\enspace
+   Positions relatives\enspace·\enspace Sections}
+  \objectif{Calculer avec les vecteurs de l'espace : relation de Chasles, combinaisons linéaires.}
+  \objectif{Caractériser une droite par un point et un vecteur directeur, un plan par un point et deux vecteurs non colinéaires.}
+  \objectif{Démontrer un alignement, un parallélisme ou la coplanarité de quatre points.}
+  \objectif{Étudier les positions relatives de droites et de plans ; utiliser le théorème du toit.}
+  \objectif{Construire la section d'un cube ou d'un tétraèdre par un plan.}
+  \prerequis{Vecteurs du plan, colinéarité, coordonnées (Seconde, Première).}
+  \prerequis{Le cube, le pavé droit et le tétraèdre (collège).}
+\end{ouverture}
+\miseEnPageSouple
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Vecteurs de l'espace}
+
+\noindent
+\begin{minipage}[c]{0.58\linewidth}
+\begin{definition}[Vecteurs de l'espace]
+\raggedright
+Les notions de vecteur, de somme et de produit par un réel s'étendent à l'espace avec les mêmes règles que dans le plan :
+\begin{itemize}[leftmargin=1.2em,itemsep=0.3mm,topsep=0.6mm]
+  \item relation de Chasles : $\vect{AB}+\vect{BC}=\vect{AC}$ ;
+  \item $\vect{AB}=\vect{DC}$ si et seulement si $ABCD$ est un parallélogramme ;
+  \item $I$ est le milieu de $[AB]$ si et seulement si $\vect{AI}=\frac12\vect{AB}$.
+\end{itemize}
+Une \textbf{combinaison linéaire} de $\vec u$ et $\vec v$ est un vecteur de la forme $a\vec u+b\vec v$, avec $a$ et $b$ réels.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\centering
+\begin{tikzpicture}[otEspace,scale=2.5]
+  \otCube
+  \draw[otVec] (A) -- (B);
+  \draw[otVec] (B) -- (F);
+  \draw[otVec] (F) -- (G);
+  \draw[otVecN] (A) -- (G);
+\end{tikzpicture}\\[0.5mm]
+\legende{$\vect{AG}=\vect{AB}+\vect{BF}+\vect{FG}=\vect{AB}+\vect{AE}+\vect{AD}$.}
+\end{minipage}
+
+\begin{propriete}[Colinéarité]
+Deux vecteurs $\vec u$ et $\vec v$ sont \textbf{colinéaires} si l'un est le produit de l'autre par un réel : $\vec v=k\vec u$. Ainsi :
+\begin{itemize}[leftmargin=1.2em,itemsep=0.3mm,topsep=0.6mm]
+  \item les points $A$, $B$, $C$ sont alignés si et seulement si $\vect{AB}$ et $\vect{AC}$ sont colinéaires ;
+  \item les droites $(AB)$ et $(CD)$ sont parallèles si et seulement si $\vect{AB}$ et $\vect{CD}$ sont colinéaires.
+\end{itemize}
+Dans un repère, $\vect{AB}$ a pour coordonnées $(x_B-x_A\pv y_B-y_A\pv z_B-z_A)$ ; deux vecteurs sont colinéaires si et
+seulement si leurs coordonnées sont proportionnelles.
+\end{propriete}
+
+\essSection{2}{Droites et plans de l'espace}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{definition}[Droite, plan]
+\raggedright
+La droite passant par $A$ et de \textbf{vecteur directeur} $\vec u\neq\vec0$ est l'ensemble des points $M$ tels que $\vect{AM}=t\vec u$,
+avec $t$ réel.\\[1mm]
+Le plan passant par $A$ et dirigé par deux vecteurs \textbf{non colinéaires} $\vec u$ et $\vec v$ est l'ensemble des points $M$ tels que
+\[\vect{AM}=x\vec u+y\vec v,\qquad x,\ y\in\R.\]
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1]
+  \fill[otNavyTint] (-0.6,-0.5) -- (3.4,-0.5) -- (4.4,1.7) -- (0.4,1.7) -- cycle;
+  \draw[otNavy!45,line width=0.5pt] (-0.6,-0.5) -- (3.4,-0.5) -- (4.4,1.7) -- (0.4,1.7) -- cycle;
+  \coordinate (A) at (0.3,0); \coordinate (U) at (1.5,0); \coordinate (V) at (0.85,0.75);
+  \coordinate (M) at (3.1,1.2);
+  \draw[otCache] ($(A)!2!(U)$) -- (M) -- ($(A)!1.6!(V)$);
+  \draw[otVecN] (A) -- (U) node[midway,below,font=\small] {$\vec u$};
+  \draw[otVecN] (A) -- (V) node[midway,left,font=\small] {$\vec v$};
+  \draw[otVec] (A) -- (M);
+  \node[otPt] at (A) {}; \node[otSommet,anchor=north east] at (A) {$A$};
+  \node[otPtV] at (M) {}; \node[otSommet,anchor=south west] at (M) {$M$};
+  \node[font=\small,text=otNavy] at (3.9,0) {$\mathcal{P}$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Ici $\vect{AM}=2\vec u+1{,}6\,\vec v$.}
+\end{minipage}
+
+\begin{propriete}[Vecteurs coplanaires]
+Trois vecteurs sont \textbf{coplanaires} si leurs représentants de même origine sont dans un même plan. Si $\vec u$ et $\vec v$ ne sont
+pas colinéaires, $\vec u$, $\vec v$ et $\vec w$ sont coplanaires si et seulement s'il existe des réels $a$ et $b$ tels que
+$\vec w=a\vec u+b\vec v$. Quatre points $A$, $B$, $C$, $D$ sont coplanaires si et seulement si $\vect{AB}$, $\vect{AC}$ et
+$\vect{AD}$ sont coplanaires.
+\end{propriete}
+
+\begin{savoirfaire}[Démontrer que trois vecteurs sont coplanaires]
+On cherche des réels $a$ et $b$ tels que $\vec w=a\vec u+b\vec v$ : par une décomposition (relation de Chasles) dans une figure, ou en
+résolvant un système de trois équations à deux inconnues en coordonnées. On résout avec deux équations, puis on \textbf{vérifie} la
+troisième : si elle est fausse, les vecteurs ne sont pas coplanaires.
+\end{savoirfaire}
+
+\begin{exemple}[Coplanarité en coordonnées]
+Soit $\vec u\,(1\pv0\pv1)$, $\vec v\,(0\pv1\pv2)$, $\vec w\,(2\pv3\pv8)$ et $\vec t\,(1\pv1\pv2)$. On cherche $a$ et $b$ tels que
+$\vec w=a\vec u+b\vec v$ : les deux premières coordonnées donnent $a=2$ et $b=3$, et la troisième est vérifiée car
+$a+2b=8$. Donc $\vec u$, $\vec v$, $\vec w$ sont \textbf{coplanaires}. Pour $\vec t$ : $a=1$, $b=1$, mais $a+2b=3\neq2$ :
+$\vec u$, $\vec v$, $\vec t$ ne sont \textbf{pas} coplanaires.
+\end{exemple}
+
+\essSection{3}{Positions relatives}
+
+\noindent
+\begin{minipage}[t]{0.6\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{19mm}Y@{}}
+\toprule
+\otTete{Objets} & \otTete{Positions possibles} \\
+\midrule
+\otNom{Deux droites} & coplanaires : sécantes ou parallèles (strictement ou confondues) ; ou \textbf{non coplanaires} (ni sécantes ni
+parallèles) \\
+\otNom{Droite et plan} & sécants en un point ; ou parallèles : strictement parallèles, ou droite incluse dans le plan \\
+\otNom{Deux plans} & sécants suivant une droite ; ou parallèles : strictement parallèles, ou confondus \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.36\linewidth}\vspace{0pt}
+\centering
+\begin{tikzpicture}[otEspace,scale=2.3]
+  \otCube
+  \draw[otGreenDark,line width=1.4pt] (A) -- (B);
+  \draw[otOrange,line width=1.4pt] (C) -- (G);
+  \draw[otNavy,line width=1.4pt] (H) -- (G);
+\end{tikzpicture}\\[0.5mm]
+\legende{$(AB)$ et $(CG)$ sont non coplanaires ; $(AB)$ et $(HG)$ sont parallèles.}
+\end{minipage}
+
+\begin{propriete}[Parallélisme]
+\begin{itemize}[leftmargin=1.2em,itemsep=0.4mm,topsep=0.5mm]
+  \item Une droite de vecteur directeur $\vec w$ est parallèle à un plan dirigé par $\vec u$ et $\vec v$ si et seulement si $\vec w$,
+    $\vec u$ et $\vec v$ sont coplanaires.
+  \item Deux plans sont parallèles si et seulement si deux droites sécantes de l'un sont parallèles à l'autre.
+  \item Si deux plans sont parallèles, tout plan qui coupe l'un coupe l'autre, et les deux droites d'intersection sont parallèles.
+\end{itemize}
+\end{propriete}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Théorème du toit]
+\raggedright
+Si deux plans sécants $\mathcal{P}_1$ et $\mathcal{P}_2$ contiennent respectivement deux droites parallèles $d_1$ et $d_2$, alors leur
+droite d'intersection $\Delta$ est parallèle à $d_1$ et à $d_2$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \coordinate (O) at (0,0); \coordinate (T) at (0,2.4);
+  \fill[otNavyTint] (O) -- (T) -- (-1.8,2.9) -- (-1.8,0.5) -- cycle;
+  \fill[otGreenTint] (O) -- (T) -- (1.7,3.15) -- (1.7,0.75) -- cycle;
+  \draw[otNavy!50,line width=0.5pt] (T) -- (-1.8,2.9) -- (-1.8,0.5) -- (O);
+  \draw[otGreenDark!60,line width=0.5pt] (T) -- (1.7,3.15) -- (1.7,0.75) -- (O);
+  \draw[otInk,line width=1.2pt] (0,-0.25) -- (0,2.7) node[above,font=\small,inner sep=1pt] {$\Delta$};
+  \draw[otNavy,line width=1.1pt] (-0.9,0.25) -- (-0.9,2.65) node[above,font=\small,inner sep=1pt] {$d_1$};
+  \draw[otGreenDark,line width=1.1pt] (0.85,0.37) -- (0.85,2.77) node[above,font=\small,inner sep=1pt] {$d_2$};
+  \node[font=\small,text=otNavy] at (-1.45,0.95) {$\mathcal{P}_1$};
+  \node[font=\small,text=otGreenDark] at (1.35,1.15) {$\mathcal{P}_2$};
+\end{tikzpicture}
+\end{minipage}
+
+\essSection{4}{Section d'un solide par un plan}
+
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+\begin{savoirfaire}[Construire une section]
+\raggedright
+\begin{itemize}[leftmargin=1.2em,itemsep=0.4mm,topsep=0.3mm]
+  \item Deux points du plan situés sur une même face se relient : on obtient un côté de la section.
+  \item Les côtés situés sur deux faces parallèles sont \textbf{parallèles}.
+  \item Pour atteindre une autre face, on prolonge un côté jusqu'à une arête ou une droite de cette face.
+\end{itemize}
+\textbf{Exemple.} $I$ et $J$ sont les milieux de $[AB]$ et $[BC]$. La section par le plan $(IJG)$ coupe la face $EFGH$ suivant la
+parallèle à $(IJ)$ passant par $G$, c'est-à-dire $(GE)$ : c'est le trapèze $IJGE$.
+\end{savoirfaire}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[otEspace,scale=2.5]
+  \otPaveCoord{1}{1}{1}
+  \coordinate (I) at (0.5,0,0); \coordinate (J) at (1,0.5,0);
+  \fill[otGreen,opacity=0.22] (I) -- (J) -- (G) -- (E) -- cycle;
+  \otPaveAretes\otPaveNoms
+  \draw[otGreenDark,line width=0.9pt] (J) -- (G) -- (E) -- (I);
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (I) -- (J);
+  \node[otPtV] at (I) {}; \node[otSommet,anchor=north] at (I) {$I$};
+  \node[otPtV] at (J) {}; \node[otSommet,anchor=west] at (J) {$J$};
+\end{tikzpicture}\\[0.5mm]
+\legende{$(IJ)\parallel(EG)$ : faces opposées $ABCD$ et $EFGH$.}
+\end{minipage}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Dans l'espace, deux droites non parallèles ne sont pas forcément sécantes : elles peuvent être non coplanaires.
+  \item Deux vecteurs directeurs d'un plan doivent être non colinéaires.
+  \item Pour la coplanarité, trouver $a$ et $b$ avec deux équations ne suffit pas : il faut vérifier la troisième.
+  \item Dans une figure en perspective, deux droites qui semblent se couper ne se coupent pas forcément.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Opérations sur les vecteurs de l'espace}
+Dans un repère de l'espace, on considère $\vec u\,(2\pv-1\pv3)$, $\vec v\,(1\pv4\pv-2)$ et $\vec w\,(0\pv2\pv1)$.
+\begin{questions}
+  \item Calculer les coordonnées de $\vec u+\vec v$, de $3\vec u-2\vec v$ et de $\vec u+\vec v+\vec w$.
+  \item Les vecteurs $\vec u$ et $\vec v$ sont-ils colinéaires ?
+  \item Déterminer les coordonnées du vecteur $\vect{AB}$, où $A(1\pv2\pv3)$ et $B(4\pv-1\pv5)$, puis celles du milieu $I$ de $[AB]$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Vecteurs directeurs et alignement}
+On considère les points $A(1\pv2\pv3)$, $B(3\pv4\pv5)$ et $C(2\pv3\pv4)$.
+\begin{questions}
+  \item Calculer les coordonnées des vecteurs $\vect{AB}$ et $\vect{AC}$.
+  \item Les vecteurs $\vect{AB}$ et $\vect{AC}$ sont-ils colinéaires ? Les points $A$, $B$ et $C$ sont-ils alignés ?
+  \item Donner deux vecteurs directeurs de la droite $(AB)$. Quelle est la position du point $C$ sur le segment $[AB]$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Décompositions dans un cube}
+\begin{codecote}[0.62]
+$ABCDEFGH$ est un cube. On exprimera les vecteurs demandés à l'aide de $\vect{AB}$, $\vect{AD}$ et $\vect{AE}$, sans utiliser de
+coordonnées.
+\begin{questions}
+  \item Exprimer $\vect{AG}$, $\vect{EC}$, $\vect{BH}$ et $\vect{DF}$.
+  \item Simplifier $\vect{AB}+\vect{FG}+\vect{HD}$.
+  \item Démontrer que $\vect{EC}+\vect{BH}+\vect{DF}=\vect{AG}$.
+  \item On note $I$ le centre de la face $BCGF$. Exprimer $\vect{AI}$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.4]
+  \otCube
+  \coordinate (I) at (1,0.5,0.5);
+  \node[otPtV] at (I) {}; \node[otSommet,anchor=west] at (I) {$I$};
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Configuration dans un cube}
+\begin{codecote}[0.62]
+On considère un cube $ABCDEFGH$ d'arête $1$, et l'on se place dans le repère $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$.
+\begin{questions}
+  \item Donner les coordonnées des huit sommets du cube.
+  \item Exprimer $\vect{AG}$ comme combinaison linéaire de $\vect{AB}$, $\vect{AD}$ et $\vect{AE}$.
+  \item Donner un vecteur directeur de la droite $(AC)$.
+  \item Les vecteurs $\vect{EF}$ et $\vect{EH}$ dirigent-ils le plan $(EFG)$ ?
+  \item Les points $A$, $C$, $F$ et $H$ sont-ils coplanaires ?
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.4]
+  \otCube
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (A) -- (G) (A) -- (C);
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\begin{exercice}[2]{Combinaisons linéaires et coplanarité}
+On considère les vecteurs $\vec u\,(1\pv2\pv0)$, $\vec v\,(0\pv1\pv1)$ et $\vec w\,(2\pv5\pv1)$.
+\begin{questions}
+  \item Les vecteurs $\vec u$ et $\vec v$ sont-ils colinéaires ? Peuvent-ils diriger un plan ?
+  \item Exprimer $\vec w$ comme combinaison linéaire de $\vec u$ et $\vec v$. Que peut-on en déduire ?
+  \item Le vecteur $\vec t\,(3\pv7\pv2)$ est-il une combinaison linéaire de $\vec u$ et $\vec v$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Coplanarité de points}
+Dans un repère, on considère les points $A(0\pv0\pv0)$, $B(2\pv1\pv0)$, $C(1\pv2\pv1)$, $D(3\pv3\pv1)$ et $E(1\pv0\pv2)$.
+\begin{questions}
+  \item Calculer les coordonnées de $\vect{AB}$, $\vect{AC}$ et $\vect{AD}$. Justifier que $A$, $B$ et $C$ définissent un plan.
+  \item Les points $A$, $B$, $C$ et $D$ sont-ils coplanaires ? Quelle est la nature du quadrilatère $ABDC$ ?
+  \item Le point $E$ appartient-il au plan $(ABC)$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Vecteurs coplanaires dans un cube}
+\begin{codecote}[0.6]
+$ABCDEFGH$ est un cube ; $I$ et $J$ sont les milieux respectifs des segments $[EF]$ et $[BC]$.
+\begin{questions}
+  \item Démontrer, à l'aide d'une décomposition vectorielle, que $\vect{IJ}=-\frac12\vect{CE}-\frac12\vect{CG}$. Que peut-on en
+    déduire pour les vecteurs $\vect{IJ}$, $\vect{CE}$ et $\vect{CG}$ ?
+  \item Retrouver ce résultat dans le repère $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.4]
+  \otCube
+  \coordinate (I) at (0.5,0,1); \coordinate (J) at (1,0.5,0);
+  \draw[otVec] (I) -- (J);
+  \node[otPtV] at (I) {}; \node[otSommet,anchor=south] at (I) {$I$};
+  \node[otPtV] at (J) {}; \node[otSommet,anchor=north west] at (J) {$J$};
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\begin{exercice}[2]{Vecteurs coplanaires dans un pavé droit}
+\begin{codecote}[0.56]
+$ABCDEFGH$ est un pavé droit et $I$ est le milieu de l'arête $[BF]$. On pose $AB=a$, $AD=b$, $AE=c$ et l'on se place dans le repère
+$\big(A\pv\tfrac1a\vect{AB},\tfrac1b\vect{AD},\tfrac1c\vect{AE}\big)$.
+\begin{questions}
+  \item Les vecteurs $\vect{CA}$, $\vect{DE}$ et $\vect{DG}$ sont-ils coplanaires ? Justifier par les coordonnées, puis par une
+    décomposition vectorielle.
+  \item Les vecteurs $\vect{AI}$, $\vect{DF}$ et $\vect{HE}$ sont-ils coplanaires ?
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=1.5]
+  \otPave{2.2}{1.3}{1.2}
+  \coordinate (I) at (2.2,0,0.6);
+  \node[otPtV] at (I) {}; \node[otSommet,anchor=west] at (I) {$I$};
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Un point hors d'un plan}
+Dans un repère, on considère les points $A(1\pv0\pv0)$, $B(2\pv1\pv0)$, $C(0\pv1\pv1)$ et $D(3\pv2\pv1)$.
+\begin{questions}
+  \item Calculer les coordonnées de $\vect{AB}$, $\vect{AC}$ et $\vect{AD}$.
+  \item Montrer que les points $A$, $B$ et $C$ ne sont pas alignés. Que définissent-ils ?
+  \item Montrer qu'il n'existe pas de réels $a$ et $b$ tels que $\vect{AD}=a\vect{AB}+b\vect{AC}$.
+  \item En déduire que $D$ n'appartient pas au plan $(ABC)$, puis que $ABCD$ est un tétraèdre.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Positions relatives de droites et d'un plan}
+Dans un repère, on considère :
+\begin{itemize}[leftmargin=1.4em,itemsep=0.3mm,topsep=0.5mm]
+  \item la droite $d_1$ passant par $A(1\pv0\pv1)$ et de vecteur directeur $\vec{u_1}\,(2\pv1\pv-1)$ ;
+  \item la droite $d_2$ passant par $B(0\pv2\pv0)$ et de vecteur directeur $\vec{u_2}\,(1\pv-1\pv2)$ ;
+  \item le plan $\mathcal{P}$ passant par $C(0\pv0\pv1)$ et dirigé par $\vec{v_1}\,(1\pv1\pv0)$ et $\vec{v_2}\,(0\pv1\pv1)$.
+\end{itemize}
+\begin{questions}
+  \item Justifier que $\vec{v_1}$ et $\vec{v_2}$ dirigent bien un plan. Les vecteurs $\vec{u_1}$ et $\vec{u_2}$ sont-ils colinéaires ?
+  \item Montrer que $\vec{u_1}$ est une combinaison linéaire de $\vec{v_1}$ et $\vec{v_2}$, mais pas $\vec{u_2}$.
+  \item Le point $A$ appartient-il à $\mathcal{P}$ ? En déduire la position relative de $d_1$ et de $\mathcal{P}$.
+  \item Montrer que $d_2$ coupe $\mathcal{P}$ et déterminer les coordonnées du point d'intersection.
+  \item Les droites $d_1$ et $d_2$ sont-elles sécantes ? Conclure sur leur position relative.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Section d'un tétraèdre par un plan de milieux}
+\begin{codecote}[0.58]
+$ABCD$ est un tétraèdre ; $I$, $J$, $K$ et $L$ sont les milieux respectifs des arêtes $[AB]$, $[AC]$, $[CD]$ et $[BD]$.
+\begin{questions}
+  \item Montrer que les droites $(IJ)$ et $(KL)$ sont parallèles à $(BC)$.
+  \item Montrer que les droites $(JK)$ et $(IL)$ sont parallèles à $(AD)$.
+  \item En déduire que les points $I$, $J$, $K$ et $L$ sont coplanaires et que $IJKL$ est un parallélogramme.
+  \item Quelle est la section du tétraèdre par le plan $(IJK)$ ? Que peut-on dire de cette section si $AD=BC$ ?
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[scale=1.25]
+  \coordinate (A) at (0,0); \coordinate (B) at (1.6,-0.9); \coordinate (C) at (3,0.15); \coordinate (D) at (1.35,2.35);
+  \coordinate (I) at ($(A)!0.5!(B)$); \coordinate (J) at ($(A)!0.5!(C)$);
+  \coordinate (K) at ($(C)!0.5!(D)$); \coordinate (L) at ($(B)!0.5!(D)$);
+  \fill[otGreen,opacity=0.2] (I) -- (J) -- (K) -- (L) -- cycle;
+  \draw[otVu] (A) -- (B) -- (C) -- (D) -- cycle; \draw[otVu] (B) -- (D);
+  \draw[otCache] (A) -- (C);
+  \draw[otGreenDark,line width=0.9pt] (I) -- (L) -- (K);
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (I) -- (J) -- (K);
+  \foreach \p/\a in {I/north east,J/north west,K/west,L/south east}{\node[otPtV] at (\p) {}; \node[otSommet,anchor=\a] at (\p) {$\p$};}
+  \node[otSommet,anchor=east] at (A) {$A$}; \node[otSommet,anchor=north] at (B) {$B$};
+  \node[otSommet,anchor=west] at (C) {$C$}; \node[otSommet,anchor=south] at (D) {$D$};
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\begin{exercice}[3]{Vecteurs coplanaires dans un tétraèdre}
+\begin{codecote}[0.58]
+$ABCD$ est un tétraèdre ; $I$, $J$ et $K$ sont les milieux respectifs de $[AB]$, $[AC]$ et $[AD]$.
+\begin{questions}
+  \item Montrer que $\vect{BC}=2\vect{IJ}$. Les vecteurs $\vect{IJ}$, $\vect{JK}$ et $\vect{BC}$ sont-ils coplanaires ?
+  \item On se place dans le repère $\big(A\pv\vect{AB},\vect{AC},\vect{AD}\big)$. Donner les coordonnées de $\vect{BI}$,
+    $\vect{CJ}$ et $\vect{DK}$.
+  \item Les vecteurs $\vect{BI}$, $\vect{CJ}$ et $\vect{DK}$ sont-ils coplanaires ? Interpréter géométriquement.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[scale=1.25]
+  \coordinate (A) at (0,0); \coordinate (B) at (1.6,-0.9); \coordinate (C) at (3,0.15); \coordinate (D) at (1.35,2.35);
+  \coordinate (I) at ($(A)!0.5!(B)$); \coordinate (J) at ($(A)!0.5!(C)$); \coordinate (K) at ($(A)!0.5!(D)$);
+  \draw[otVu] (A) -- (B) -- (C) -- (D) -- cycle; \draw[otVu] (B) -- (D);
+  \draw[otCache] (A) -- (C);
+  \draw[otGreenDark,line width=0.9pt] (I) -- (K);
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (I) -- (J) -- (K);
+  \foreach \p/\a in {I/north,J/south,K/east}{\node[otPtV] at (\p) {}; \node[otSommet,anchor=\a] at (\p) {$\p$};}
+  \node[otSommet,anchor=east] at (A) {$A$}; \node[otSommet,anchor=north] at (B) {$B$};
+  \node[otSommet,anchor=west] at (C) {$C$}; \node[otSommet,anchor=south] at (D) {$D$};
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\begin{exercice}[3]{Le théorème du toit dans un cube}
+\begin{codecote}[0.58]
+$ABCDEFGH$ est un cube. On note $K$ le centre de la face $ABFE$ et $L$ celui de la face $DCGH$.
+\begin{questions}
+  \item Justifier que les points $B$, $C$, $H$ et $E$ sont coplanaires, ainsi que $A$, $D$, $G$ et $F$.
+  \item Montrer que $K$ appartient aux plans $(BCE)$ et $(ADG)$.
+  \item Justifier que ces deux plans sont sécants. À l'aide du théorème du toit, montrer que leur intersection est la parallèle à
+    $(BC)$ passant par $K$.
+  \item Montrer que cette droite passe par $L$.
+  \item Vérifier ces résultats dans le repère $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$.
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.4]
+  \otPaveCoord{1}{1}{1}
+  \fill[otNavy,opacity=0.1] (B) -- (C) -- (H) -- (E) -- cycle;
+  \fill[otGreen,opacity=0.16] (A) -- (D) -- (G) -- (F) -- cycle;
+  \otPaveAretes\otPaveNoms
+  \coordinate (K) at (0.5,0,0.5); \coordinate (L) at (0.5,1,0.5);
+  \draw[otOrange,line width=1.1pt] ($(K)!-0.25!(L)$) -- ($(K)!1.25!(L)$);
+  \node[otPtV] at (K) {}; \node[otSommet,anchor=north west] at (K) {$K$};
+  \node[otPtV] at (L) {}; \node[otSommet,anchor=south east] at (L) {$L$};
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}
+
+\begin{exercice}[3]{Section d'un cube par un plan}
+\begin{codecote}[0.58]
+$ABCDEFGH$ est un cube. On note $I$, $J$ et $K$ les milieux respectifs des arêtes $[AD]$, $[AE]$ et $[FG]$.
+\begin{questions}
+  \item Les droites $(IJ)$ et $(EH)$ sont dans la face $ADHE$. Construire leur point d'intersection $P$.
+  \item En déduire l'intersection des plans $(IJK)$ et $(EFG)$, en justifiant.
+  \item Construire la section du cube par le plan $(IJK)$, en laissant apparents les traits de construction.
+  \item Dans le repère $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$, vérifier que le point $M$ de coordonnées
+    $\left(\frac12\pv1\pv0\right)$, milieu de $[CD]$, appartient au plan $(IJK)$. Quelle est la nature de la section ?
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.4]
+  \otCube
+  \coordinate (I) at (0,0.5,0); \coordinate (J) at (0,0,0.5); \coordinate (K) at (1,0.5,1);
+  \foreach \p/\a in {I/south east,J/east,K/south east}{\node[otPtV] at (\p) {}; \node[otSommet,anchor=\a] at (\p) {$\p$};}
+\end{tikzpicture}
+\end{codecote}
+\end{exercice}

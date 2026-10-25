@@ -1,0 +1,154 @@
+
+PAGE PDF 1
+MPSI– Physique-chimie
+DM3 : Régimes transitoires – À rendre le 05/11/2025
+DM3 : Régimes transitoires
+Vous devez rendre une copie par groupe de 3 (ou 2, mais je préfère 3). Attention, tous les membres du groupe doivent
+avoir fait tout le DM ! Il ne s’agit pas de partager le travail.
+Exercice 1 : Convertisseur Boost
+On se propose d’étudier le circuit suivant qui représente un convertisseur de type boost dont le but est de convertir
+une tension continue uin en une autre tension continue uout > uin. Ce type de circuit est notamment utilisé pour
+générer des tensions élevées dans les appareils fonctionnant sur batterie.
+uin
+L
+i
+K2
+iout
+K1
+uout
+Les interrupteurs K1 et K2 sont commandés électroniquement, ils s’ouvrent et se ferment de manière cyclique.
+Lorsque K1 est ouvet, K2 est fermé et lorsque K1 est fermé, K2 est ouvert. K1 est fermé pendant un temps noté ton
+et est ouvert pendant un temps noté toff. La période ton + toff du cycle complet est notée T.
+t
+K1 fermé, K2 ouvert
+K1 ouvert, K2 fermé
+ton
+toff
+T
+0
+Le rapport r = ton
+T
+est appelé le rapport cyclique du signal de commande de l’interrupteur.
+On considère que le circuit fonctionne en régime permanent, c’est à dire que la tension de sortie uout est constante
+au cours du temps, l’intensité i évolue de façon périodique.
+1. Lors de la phase où K1 est fermé, exprimer le taux de variation di
+dt en fonction de uin et L.
+2. En déduire l’expression de i(t), on notera imin l’intensité au moment où l’interrupteur K1 se ferme. Montrer
+qu’au moment où K1 s’ouvre l’intensité vaut :
+imax = imin + uinton
+L
+3. Lorsque l’interrupteur K1 est ouvert, déterminer di
+dt en fonction de uin, uout et L.
+4. En déduire l’expression de i(t) lors de cette phase, c’est à dire pour t ∈[ton, ton + toff].
+5. Justifier que i(ton + toff) = i(0) = imin. Tracer l’évolution temporelle de i(t).
+6. En déduire l’expression de uout en fonction de uin et r. On vérifiera que l’on a bien uout > uin
+7. Montrer que lors de la phase où l’interrupteur K1 est fermé on peut écrire :
+i(t) = imin + ∆i
+ton
+t
+et pendant la phase où l’interrupteur K1 est ouvert :
+i(t) = imin + ∆i(T −t)
+toff
+avec ∆i = imax −imin
+8. Déterminer les expressions de l’énergie Eon fournie par le générateur pendant la phase où K1 est fermé et de
+l’énergie Eoff fournie par le générateur pendant la phase où K1 est ouvert, en fonction de uin, imin, ton, toff et
+∆i.
+Exprimer l’énergie totale fournie par le générateur sur un cycle complet.
+2025–2026
+page 1/3
+
+
+PAGE PDF 2
+MPSI– Physique-chimie
+DM3 : Régimes transitoires – À rendre le 05/11/2025
+9. Déterminer de même l’énergie Eout consommée par le circuit alimenté par le convertisseur pendant un cycle
+complet, en déduire la valeur du rendement de ce convertisseur. Commenter.
+Exercice 2 : Décharge d’un condensateur dans un circuit RC parallèle
+On considère le circuit représenté sur la figure 1. Pour les applications numériques, on prendra E = 15,0 V, r = 10 Ω,
+R2 = R3 = R = 10 kΩ, C1 = 30 nF.
+E
+r
+C1
+u1
+R2
+C2
+u2
+D
+R3
+A
+C
+B
+K
+Figure 1 – Schéma du circuit étudié
+Au départ, l’interrupteur est en position B depuis longtemps et tous les condensateurs sont déchargés. À l’instant
+t = 0, on le place dans la position A.
+1. Déterminer l’équation différentielle vérifiée par la tension u1 pour t > 0.
+2. Résoudre cette équation ; on exprimera u1(t) en fonction de E, r et C1.
+3. Tracer sans justification l’allure de u1(t). On fera en particulier figurer sur ce graphique les éventuelles asymptotes,
+ainsi que la tangente à l’origine (leurs équations ne sont pas demandées).
+4. Déterminer la durée t1 au bout de laquelle on peut considérer que le condensateur est chargé (il a alors atteint
+99,9 % de sa charge maximale).
+5. On laisse l’interrupteur en position A pendant t2 = 1,0 ms. Déduire des questions précédentes la valeur de u1(t2).
+Lorsque t = t2, on bascule l’interrupteur en position C. Pour toutes les questions qui suivent, on effectuera un
+décalage de l’origine des temps : on posera t′ = t −t2 et, afin d’alléger l’écriture, on écrira t au lieu de t′.
+6. Déterminer l’équation différentielle vérifiée par u2 pour t > 0. On vérifiera qu’on peut la mettre sous la forme :
+d2u2
+dt2 + ω0
+Q
+du2
+dt + ω2
+0u2 = ω2
+0U,
+(1)
+et on indiquera les expressions de Q, ω0 et U en fonction de C1, C2 et R .
+7. Montrer que, quelles que soient les valeurs des composants, on n’obtiendra jamais d’oscillations.
+Dans la suite du problème, on posera C1 = 3C , C2 = 2C et τ = 6RC.
+8. Déterminer les valeurs de C et de τ.
+9. Résoudre l’équation différentielle vérifiée par u2 ; on exprimera u2(t) en fonction de E et τ.
+10. En déduire l’expression de u1(t) en fonction de E et τ.
+11. Faire l’étude des variations des fonctions u1 et u2, et tracer l’allure des graphes des deux fonctions sur une même
+figure (ne pas effectuer les applications numériques).
+12. En exploitant la loi des nœuds au point D, établir un bilan de puissance, et expliquer ce qu’il advient de l’énergie
+initialement emmagasinée dans le condensateur de capacité C1.
+13. En déduire à quel composant parmi les condensateurs de capacités C1 et C2, ainsi que le résistor de résistance
+R3, correspond chacune des courbes représentées sur la figure 2.
+14. Quel commentaire peut-on faire quant au comportement énergétique du condensateur de capacité C2 ?
+2025–2026
+page 2/3
+
+
+PAGE PDF 3
+MPSI– Physique-chimie
+DM3 : Régimes transitoires – À rendre le 05/11/2025
+0
+0,1
+0,2
+0,3
+0,4
+0,5
+0,6
+0,7
+0,8
+0,9
+1
+−40
+−35
+−30
+−25
+−20
+−15
+−10
+−5
+0
+5
+10
+15
+20
+Temps (ms)
+Puissance (mW)
+Courbe 1
+Courbe 2
+Courbe 3
+Figure 2 – Puissance consommée en fonction du temps par les deux condensateurs et la résistance R3
+2025–2026
+page 3/3

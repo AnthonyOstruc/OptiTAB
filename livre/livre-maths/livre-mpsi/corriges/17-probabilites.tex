@@ -1,0 +1,417 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 17 — Probabilités sur un univers fini
+%% Résultats vérifiés par verifications/chapitre_17.py.
+
+\corrigesChapitre{17}{Probabilités sur un univers fini}
+\corrigesSouples
+
+\begin{blocLivre}{cor-17-1}
+\begin{corrige}{1}{Modéliser une expérience}
+\demarche{Univers équiprobable : compter les cas favorables (chapitre 16).}
+\begin{questions}
+  \item $\Omega=\ens{1,\dots,6}^{2}$, $36$ issues équiprobables. La somme
+    vaut $7$ pour les $6$ couples $(1,6),\dots,(6,1)$ :
+    $P=\dfrac{6}{36}=\res{\dfrac16}$.
+  \item $\Omega=\ens{P,F}^{3}$, $8$ issues ; exactement deux piles :
+    $\dbinom32=3$ issues, $P=\res{\dfrac38}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-2}
+\begin{corrige}{2}{Les règles de calcul}
+\demarche{Union, différence, contraire : trois formules, aucun piège.}
+$P(A\cup B)=\dfrac12+\dfrac25-\dfrac15=\res{\dfrac{7}{10}}$ ;
+$P(A\setminus B)=P(A)-P(A\cap B)=\res{\dfrac{3}{10}}$ ;
+$P\bigl(\overline A\cap\overline B\bigr)
+=P\bigl(\overline{A\cup B}\bigr)=1-\dfrac{7}{10}=\res{\dfrac{3}{10}}$.
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-3}
+\begin{corrige}{3}{Tirages sans remise}
+\demarche{Multiplier le long de l'arbre : composées.}
+\begin{questions}
+  \item $P(R_1\cap R_2)=P(R_1)\,P(R_2\mid R_1)
+    =\dfrac35\times\dfrac24=\res{\dfrac{3}{10}}$.
+  \item Après une rouge, il reste $2$ rouges sur $4$ boules :
+    $P(R_2\mid R_1)=\res{\dfrac12}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-4}
+\begin{corrige}{4}{La formule des probabilités totales}
+\demarche{Les urnes forment un système complet : on somme les feuilles
+rouges de l'arbre.}
+Avec le système complet $\ens{U_A,U_B}$ :
+\[
+P(R)=P(R\mid U_A)P(U_A)+P(R\mid U_B)P(U_B)
+=\frac23\cdot\frac12+\frac13\cdot\frac12=\res{\frac12} .
+\]
+L'arbre a deux étages : choix de l'urne ($\frac12$, $\frac12$), puis
+couleur ($\frac23$ ou $\frac13$ vers le rouge).
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-5}
+\begin{corrige}{5}{La formule de Bayes}
+\demarche{Totales pour le dénominateur, Bayes pour remonter du test à la
+maladie.}
+\begin{questions}
+  \item $P(+)=0{,}01\times0{,}95+0{,}99\times0{,}10
+    =0{,}0095+0{,}099=\res{0{,}1085}$.
+  \item $P(M\mid+)=\dfrac{0{,}0095}{0{,}1085}=\dfrac{19}{217}
+    \approx\res{8{,}8\,\%}$ : moins d'un positif sur dix est réellement
+    malade ! La maladie est si rare que les faux positifs ($10\,\%$ de
+    $99\,\%$) écrasent les vrais positifs ($95\,\%$ de $1\,\%$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-6}
+\begin{corrige}{6}{Uniforme et Bernoulli}
+\demarche{König-Huygens fait tous les calculs de variance.}
+\begin{questions}
+  \item $\mathrm{E}(X)=\dfrac{1+\dots+6}{6}=\res{\dfrac72}$ ;
+    $\mathrm{E}(X^{2})=\dfrac{91}{6}$, d'où
+    $\mathrm{V}(X)=\dfrac{91}{6}-\dfrac{49}{4}=\res{\dfrac{35}{12}}$.
+  \item $\mathrm{E}(Y)=1\cdot p+0=p$ et
+    $\mathrm{E}(Y^{2})=p$ (car $Y^{2}=Y$) :
+    $\mathrm{V}(Y)=p-p^{2}=\res{p(1-p)}$, maximale en
+    $p=\dfrac12$ (valeur $\frac14$) : l'incertitude est maximale pour une
+    pièce équilibrée.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-7}
+\begin{corrige}{7}{La loi binomiale}
+\demarche{k succès parmi n répétitions : combinaison fois probabilité d'une
+issue.}
+\begin{questions}
+  \item $P(X=2)=\dbinom52\Bigl(\dfrac13\Bigr)^{2}\Bigl(\dfrac23\Bigr)^{3}
+    =\res{\dfrac{80}{243}}$ ; la somme des $P(X=k)$ vaut
+    $\bigl(\frac13+\frac23\bigr)^{5}=1$ — c'est la formule du binôme
+    (chapitre 16).
+  \item $\mathrm{E}(X)=np=\res{\dfrac53}$,
+    $\mathrm{V}(X)=np(1-p)=\res{\dfrac{10}{9}}$.
+  \item Le nombre de succès lors de $5$ répétitions indépendantes d'une
+    expérience réussissant avec probabilité $\frac13$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-8}
+\begin{corrige}{8}{Espérance : transfert et linéarité}
+\demarche{Le transfert évite de chercher la loi de f(X).}
+\begin{questions}
+  \item $\mathrm{E}\bigl(X^{2}\bigr)=\dfrac{1+4+\dots+36}{6}
+    =\res{\dfrac{91}{6}}\neq\Bigl(\dfrac72\Bigr)^{2}$ : l'écart est
+    précisément la variance.
+  \item $\mathrm{E}(2X+3)=2\times\dfrac72+3=\res{10}$.
+  \item $\ind A$ vaut $1$ avec probabilité $P(A)$ et $0$ sinon :
+    $\mathrm{E}(\ind A)=P(A)$ — les probabilités sont des espérances
+    d'indicatrices, le pont entre les chapitres.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-9}
+\begin{corrige}{9}{Indépendance : exemples et pièges}
+\demarche{Vérifier la formule produit — pour toutes les sous-familles.}
+\begin{questions}
+  \item $P(A)=\dfrac12$, $P(B)=\dfrac12$ ; et $A\cap B$ (premier pair
+    \emph{et} somme paire, i.e. les deux pairs) : $\dfrac{9}{36}=\dfrac14
+    =P(A)P(B)$ : \res{\text{indépendants}}.
+  \item $P(A)=P(B)=P(C)=\dfrac12$ et chaque intersection double vaut
+    $\dfrac14$ : deux à deux indépendants. Mais
+    $A\cap B\subseteq C$, donc
+    $P(A\cap B\cap C)=\dfrac14\neq\dfrac18=P(A)P(B)P(C)$ : la famille
+    n'est \res{\text{pas mutuellement indépendante}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-10}
+\begin{corrige}{10}{Loi conjointe et lois marginales}
+\demarche{Les marginales se lisent en sommant lignes et colonnes — et ne
+suffisent pas à reconstruire la table.}
+\begin{questions}
+  \item Chaque marginale vaut $\bigl(\frac12,\frac12\bigr)$ : lois de
+    Bernoulli $\mathcal{B}\bigl(\frac12\bigr)$ ; et
+    $\frac14=\frac12\times\frac12$ dans chaque case :
+    \res{\text{indépendantes}}.
+  \item Mêmes marginales $\bigl(\frac12,\frac12\bigr)$, mais
+    $P(X=0,Y=1)=0\neq\frac14$ : \res{\text{dépendantes}} (ici $Y=X$ !).
+    Deux couples peuvent avoir les mêmes marginales et des lois conjointes
+    radicalement différentes.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-11}
+\begin{corrige}{11}{Minimum et maximum de deux dés}
+\demarche{Pour un minimum, viser P(U supérieur ou égal à k) : les deux dés
+doivent dépasser k.}
+\begin{questions}
+  \item $(U\geqslant k)=(X\geqslant k)\cap(Y\geqslant k)$, et par
+    indépendance $P(U\geqslant k)=\Bigl(\dfrac{7-k}{6}\Bigr)^{2}$. D'où
+    $P(U=k)=P(U\geqslant k)-P(U\geqslant k+1)=\res{\dfrac{13-2k}{36}}$ :
+    la loi charge les petites valeurs.
+  \item $\mathrm{E}(U)=\displaystyle\sum_{k=1}^{6}P(U\geqslant k)
+    =\frac{36+25+16+9+4+1}{36}=\res{\frac{91}{36}}$ (sommer les queues :
+    l'astuce reine pour les variables entières). Et $U+V=X+Y$ donne
+    $\mathrm{E}(V)=7-\dfrac{91}{36}=\res{\dfrac{161}{36}}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-12}
+\begin{corrige}{12}{Variance d'une somme, covariance}
+\demarche{min × max = produit : la covariance de (U,V) se calcule sans leur
+loi conjointe.}
+\begin{questions}
+  \item Par indépendance,
+    $\mathrm{E}(XY)=\mathrm{E}(X)\mathrm{E}(Y)=\dfrac{49}{4}$ et
+    $\mathrm{V}(X+Y)=2\,\mathrm{V}(X)=\res{\dfrac{35}{6}}$.
+  \item $UV=XY$ toujours, donc
+    $\mathrm{E}(UV)=\dfrac{49}{4}$ et
+    \[
+    \operatorname{Cov}(U,V)=\frac{49}{4}-\frac{91}{36}\cdot\frac{161}{36}
+    =\res{\frac{1225}{1296}}>0 :
+    \]
+    un grand minimum va de pair avec un grand maximum — corrélation
+    positive, conforme à l'intuition.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-13}
+\begin{corrige}{13}{La binomiale comme somme de Bernoulli}
+\demarche{Écrire la binomiale comme somme rend tous ses paramètres
+gratuits.}
+\begin{questions}
+  \item Une issue avec succès aux positions d'une partie $I$ de cardinal
+    $k$ a pour probabilité $p^{k}(1-p)^{n-k}$ (indépendance), et il y a
+    $\binom nk$ telles parties : $P(S=k)=\binom nk p^{k}(1-p)^{n-k}$.
+  \item Linéarité : $\mathrm{E}(S)=np$ ; indépendance (donc
+    décorrélation) : $\mathrm{V}(S)=\sum\mathrm{V}(X_i)=\res{np(1-p)}$.
+  \item $X+Y$ est une somme de $n+m$ Bernoulli indépendantes (lemme des
+    coalitions) : $X+Y\sim\res{\mathcal{B}(n+m,p)}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-14}
+\begin{corrige}{14}{Décorrélées mais pas indépendantes}
+\demarche{Une covariance nulle ne voit que les moyennes ; l'indépendance
+exige bien plus — sauf pour les indicatrices.}
+\begin{questions}
+  \item $\mathrm{E}(X)=0$ et $\mathrm{E}(XY)=\mathrm{E}(X^{3})=0$ :
+    $\operatorname{Cov}(X,Y)=\res{0}$.
+  \item $P(X=0,\,Y=1)=0$ alors que
+    $P(X=0)P(Y=1)=\dfrac13\cdot\dfrac23\neq0$ : \res{\text{pas
+    indépendantes}} — $Y$ est même une fonction de $X$ !
+  \item $\mathrm{E}(\ind A\ind B)=P(A\cap B)$ :
+    $\operatorname{Cov}(\ind A,\ind B)=P(A\cap B)-P(A)P(B)$, nulle si et
+    seulement si $A$ et $B$ sont indépendants : pour les indicatrices,
+    décorrélation et indépendance coïncident.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-15}
+\begin{corrige}{15}{Points fixes d'une permutation aléatoire}
+\demarche{Découper en indicatrices : l'espérance ignore la dépendance.}
+\begin{questions}
+  \item $P(\sigma(i)=i)=\dfrac{(n-1)!}{n!}=\dfrac1n$, et par linéarité
+    $\mathrm{E}(X)=n\cdot\dfrac1n=\res{1}$ — déjà vu par double comptage
+    au chapitre 16, désormais en une ligne.
+  \item $X(X-1)$ compte les couples ordonnés $(i,j)$, $i\neq j$, de
+    points fixes :
+    $\mathrm{E}\bigl(X(X-1)\bigr)=n(n-1)\cdot\dfrac{(n-2)!}{n!}=1$, d'où
+    $\mathrm{E}(X^{2})=2$ et $\mathrm{V}(X)=2-1=\res{1}$ : espérance et
+    variance valent $1$, quel que soit $n$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-16}
+\begin{corrige}{16}{Markov et Tchebychev : premiers usages}
+\demarche{Des bornes universelles : grossières, mais sans aucune hypothèse
+sur la loi.}
+\begin{questions}
+  \item Markov : $P(X\geqslant10)\leqslant\dfrac{2}{10}=\res{\dfrac15}$.
+  \item Tchebychev :
+    $P\bigl(|X-3{,}5|\geqslant2\bigr)\leqslant\dfrac{35/12}{4}
+    =\dfrac{35}{48}\approx0{,}73$. Exactement : l'événement est
+    $X\in\ens{1,6}$, de probabilité $\res{\dfrac13}$. La borne est très
+    large — sa force est d'être valable pour \emph{toute} variable de
+    même variance.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-17}
+\begin{corrige}{17}{La loi faible des grands nombres}
+\demarche{La variance de la moyenne fond en 1/n : Tchebychev fait le reste.}
+\begin{questions}
+  \item $\mathrm{E}(M_n)=\dfrac12$ et, par indépendance,
+    $\mathrm{V}(M_n)=\dfrac{1}{n^{2}}\cdot n\cdot\dfrac14=\res{\dfrac{1}{4n}}$.
+  \item Tchebychev :
+    $P\bigl(|M_n-\tfrac12|\geqslant\varepsilon\bigr)
+    \leqslant\dfrac{1}{4n\varepsilon^{2}}$.
+  \item $\dfrac{1}{4n\times0{,}01}\leqslant0{,}05$ donne
+    $\res{n\geqslant500}$ lancers. (La vraie probabilité est alors bien
+    plus petite encore : la borne est prudente.)
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-18}
+\begin{corrige}{18}{Le paradoxe des anniversaires}
+\demarche{Passer au complémentaire : tous distincts se calcule en chaîne.}
+\begin{questions}
+  \item Par les probabilités composées (ou l'équiprobabilité des
+    $365^{n}$ listes) : la $k$-ième personne évite les $k-1$ jours déjà
+    pris avec probabilité $\dfrac{365-(k-1)}{365}$, d'où le produit.
+  \item Pour $n=23$, le produit vaut $\approx0{,}493$ : la probabilité
+    d'une coïncidence est $\approx\res{0{,}507}$. Surprenant, mais
+    $23$ personnes forment déjà $\binom{23}2=253$ paires — c'est le
+    nombre de paires, pas de personnes, qui gouverne. ($n=50$ :
+    plus de $96\,\%$.)
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-19}
+\begin{corrige}{19}{Dérangements : la loi des points fixes}
+\demarche{Choisir les points fixes, déranger le reste, puis laisser n
+partir à l'infini.}
+\begin{questions}
+  \item D'après le chapitre 16,
+    $P(X=k)=\dfrac{\binom nk D_{n-k}}{n!}
+    =\res{\dfrac{1}{k!}\cdot\dfrac{D_{n-k}}{(n-k)!}}$
+    (simplification des factorielles).
+  \item $\dfrac{D_m}{m!}\to\mathrm{e}^{-1}$ (chapitre 16), donc à $k$
+    fixé :
+    $P(X=k)\to\res{\dfrac{\mathrm{e}^{-1}}{k!}}$ — la loi de Poisson de
+    paramètre $1$, dont espérance et variance valent $1$ : tout concorde
+    avec l'exercice 15.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-20}
+\begin{corrige}{20}{Concentration de la binomiale et sondages}
+\demarche{Majorer p(1-p) par 1/4 rend la borne utilisable sans connaître p.}
+\begin{questions}
+  \item $p(1-p)=\dfrac14-\bigl(p-\tfrac12\bigr)^{2}\leqslant\dfrac14$ ;
+    comme $\mathrm{V}(F)=\dfrac{p(1-p)}{n}$, Tchebychev donne
+    $P\bigl(|F-p|\geqslant\varepsilon\bigr)
+    \leqslant\res{\dfrac{1}{4n\varepsilon^{2}}}$, borne indépendante du
+    paramètre inconnu.
+  \item $\dfrac{1}{4n\times0{,}0025}\leqslant0{,}05$ exige
+    $\res{n\geqslant2000}$ personnes — l'ordre de grandeur des sondages
+    réels.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-21}
+\begin{corrige}{21}{Le problème de Monty Hall}
+\demarche{La bonne question : quand gagne-t-on en changeant ? Exactement
+quand le premier choix était mauvais.}
+\begin{questions}
+  \item La voiture est placée uniformément ; le choix initial est correct
+    avec probabilité $\dfrac13$. En \emph{gardant}, on gagne exactement
+    dans ce cas : $P=\dfrac13$. En \emph{changeant}, on gagne exactement
+    quand le choix initial était mauvais (l'animateur a alors éliminé
+    l'unique autre porte vide, le changement tombe sur la voiture) :
+    $P=\res{\dfrac23}$.
+  \item L'ouverture n'est pas une information neutre : l'animateur peut
+    \emph{toujours} ouvrir une porte vide, quel que soit le choix. Le
+    conditionnement par son geste laisse donc
+    $P(\text{choix correct})=\frac13$ inchangée — le « 50-50 »
+    confondrait avec une ouverture au hasard qui aurait pu révéler la
+    voiture.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-22}
+\begin{corrige}{22}{L'espérance du maximum}
+\demarche{Le maximum se contrôle par sa fonction de répartition ; sommer
+les queues donne l'espérance.}
+\begin{questions}
+  \item $(M\leqslant k)=\bigcap_i(X_i\leqslant k)$ : par indépendance
+    $P(M\leqslant k)=\bigl(\tfrac kN\bigr)^{n}$, et
+    \[
+    \mathrm{E}(M)=\sum_{k\geqslant1}P(M\geqslant k)
+    =\res{\sum_{k=0}^{N-1}\Bigl(1-\Bigl(\frac kN\Bigr)^{n}\Bigr)} .
+    \]
+  \item $n=2$, $N=6$ :
+    $\sum_{k=0}^{5}\bigl(1-\tfrac{k^{2}}{36}\bigr)=6-\tfrac{55}{36}
+    =\dfrac{161}{36}$ — l'espérance du maximum de deux dés
+    (exercice 11).
+  \item $\dfrac{\mathrm{E}(M)}{N}=\dfrac1N\sum_{k=0}^{N-1}
+    \Bigl(1-\bigl(\tfrac kN\bigr)^{n}\Bigr)$ est une somme de Riemann :
+    elle tend vers
+    $\displaystyle\int_{0}^{1}(1-t^{n})\,\mathrm{d}t=\res{\frac{n}{n+1}}$
+    (chapitre 15) : avec $n$ tirages, le maximum monte à la fraction
+    $\frac{n}{n+1}$ de l'échelle.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-23}
+\begin{corrige}{23}{La marche aléatoire symétrique}
+\demarche{Espérance nulle, variance n : la marche vit à l'échelle racine
+de n ; le binôme central gouverne les retours.}
+\begin{questions}
+  \item $\mathrm{E}(S_n)=0$ et, par indépendance
+    ($\mathrm{V}(\varepsilon_i)=1$) : $\mathrm{V}(S_n)=\res{n}$.
+    Tchebychev : $P\bigl(|S_n|\geqslant a\sqrt n\bigr)\leqslant\dfrac{1}{a^{2}}$ —
+    la marche s'éloigne typiquement en $\sqrt n$, pas en $n$.
+  \item $S_{2n}=0$ exige exactement $n$ pas $+1$ parmi $2n$ :
+    $P(S_{2n}=0)=\dbinom{2n}{n}4^{-n}
+    \sim\res{\dfrac{1}{\sqrt{\pi n}}}$ (équivalent du binôme central,
+    chapitres 11, 15 et 16) : les retours en $0$ se raréfient comme
+    $1/\sqrt n$ — lentement.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-17-24}
+\begin{corrige}{24}{Weierstrass par Bernstein}
+\demarche{Près de x, la continuité uniforme contrôle f ; loin de x, la
+concentration binomiale rend les poids négligeables.}
+\begin{questions}
+  \item $B_n(1)(x)=\sum_k\binom nk x^{k}(1-x)^{n-k}=1$ (binôme), et
+    $B_n(t\mapsto t)(x)=\mathrm{E}\bigl(\tfrac{S_n}{n}\bigr)=x$.
+  \item Écrivons
+    $B_n(f)(x)-f(x)
+    =\mathrm{E}\bigl(f(\tfrac{S_n}{n})-f(x)\bigr)$ et séparons selon
+    $\bigl|\tfrac{S_n}{n}-x\bigr|<\delta$ ou non. Sur le premier
+    événement, $|f(\tfrac{S_n}{n})-f(x)|\leqslant\varepsilon$ (continuité
+    uniforme, chapitre 15) ; sur le second, il est majoré par
+    $2\max|f|$, et la concentration (exercice 20) donne
+    $P\bigl(|\tfrac{S_n}{n}-x|\geqslant\delta\bigr)
+    \leqslant\dfrac{1}{4n\delta^{2}}$. En combinant :
+    \[
+    \bigl|B_n(f)(x)-f(x)\bigr|
+    \leqslant\varepsilon+\frac{2\max|f|}{4n\delta^{2}} ,
+    \]
+    borne \emph{indépendante de $x$}.
+  \item Pour $n$ assez grand, le second terme passe sous $\varepsilon$ :
+    $\sup_{x}|B_n(f)(x)-f(x)|\leqslant2\varepsilon$. Ainsi
+    \res{\text{toute fonction continue sur un segment est limite uniforme
+    de polynômes}} — le théorème de Weierstrass, démontré par les
+    probabilités : le plus beau pont du programme entre hasard et
+    analyse.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-17}

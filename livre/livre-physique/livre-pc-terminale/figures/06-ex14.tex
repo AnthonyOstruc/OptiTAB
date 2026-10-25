@@ -1,0 +1,11 @@
+% Transmission du rayonnement gamma du technétium 99m à travers le plomb (exercice 14, chapitre 6)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=52mm,xmin=0,xmax=2.15,ymin=0,ymax=110,
+  xtick={0,0.3,...,2.1},ytick={0,25,50,75,100},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={épaisseur de plomb (mm)},ylabel={part du rayonnement transmise (\%)}]
+\addplot[otNavy,line width=1pt,domain=0:2.1,samples=120] {100*2^(-x/0.30)};
+\addplot[only marks,mark=*,mark size=1.6pt,otNavy] coordinates {(0.3,50)(0.6,25)(0.9,12.5)};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Chaque épaisseur de 0,30 mm de plomb divise par deux le rayonnement transmis : c'est la couche de demi-atténuation.}

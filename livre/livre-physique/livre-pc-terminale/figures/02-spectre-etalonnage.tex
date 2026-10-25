@@ -1,0 +1,23 @@
+% Spectre d'absorption d'un colorant bleu et droite d'étalonnage (L'essentiel, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otUV,name=spectre,width=74mm,height=46mm,ymax=1.15,ytick={0,0.5,1},
+  xtick={400,500,600,700},title={\otMedium\fontsize{7.5}{9}\selectfont Spectre d'absorption},
+  title style={yshift=-1mm}]
+\addplot[otNavy,line width=0.9pt,domain=400:750] {0 \bandeUV{630}{38}{1.0} \bandeUV{410}{28}{0.08}};
+\draw[otGreenDark,dashed,line width=0.6pt] (axis cs:630,0) -- (axis cs:630,1.0);
+\node[pcLegende,anchor=south] at (axis cs:630,1.02) {$\lambda_{\max}=630$ nm};
+\end{axis}
+\begin{axis}[otMesures,at={(spectre.east)},anchor=west,xshift=16mm,width=74mm,height=46mm,
+  xmin=0,xmax=9,ymin=0,ymax=1.2,xtick={0,2,...,8},ytick={0,0.4,0.8,1.2},
+  xlabel={$c$ ($\upmu$mol$\cdot$L$^{-1}$)},ylabel={$A$},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk},
+  title={\otMedium\fontsize{7.5}{9}\selectfont Droite d'étalonnage à 630 nm},title style={yshift=-1mm}]
+\addplot[otGreenDark,line width=0.9pt,domain=0:8.8] {0.1305*x};
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] coordinates {(1,0.13)(2,0.26)(4,0.52)(6,0.79)(8,1.04)};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.45) -- (axis cs:3.45,0.45) -- (axis cs:3.45,0);
+\node[pcLegende,anchor=south west,text=otOrange!75!black] at (axis cs:0.1,0.46) {$A=0{,}45$};
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:3.5,0.12) {$c\approx3{,}4$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{On mesure à $\lambda_{\max}$ ; la droite d'étalonnage traduit $A=k\,c$ et permet de lire la concentration d'une solution inconnue.}

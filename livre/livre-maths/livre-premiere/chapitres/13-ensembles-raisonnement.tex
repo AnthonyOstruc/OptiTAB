@@ -1,0 +1,216 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[ensembles]{13}{Ensembles et raisonnement}{Partie 5 · Méthodes transversales}
+{Ensembles\enspace·\enspace Logique\enspace·\enspace Quantificateurs\enspace·\enspace Démonstrations}
+\objectif{Utiliser les opérations sur les ensembles et les intervalles.}
+\objectif{Distinguer implication, réciproque et contraposée.}
+\objectif{Nier une proposition et identifier les rôles des lettres.}
+\objectif{Rédiger des preuves par cas, par contraposée ou par l’absurde.}
+\prerequis{Ensembles de nombres, calcul littéral et intervalles.}
+\prerequis{Parité des entiers et fonctions du second degré.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Ensembles, intervalles et couples}
+\begin{definition}
+$x\in A$ signifie que $x$ est un élément de $A$ ; $A\subseteq B$ que tout
+élément de $A$ appartient à $B$. L'ensemble vide est noté $\varnothing$.
+$A\cap B$ contient les éléments communs ; $A\cup B$ ceux de l'un ou de l'autre.
+Dans un univers $E$, le complémentaire est $E\setminus A$, aussi noté $\overline A$.
+Le cardinal $\operatorname{Card}(A)$ compte les éléments d'un ensemble fini.
+\end{definition}
+\begin{propriete}
+Un couple est ordonné : $(a;b)$ et $(b;a)$ ne sont pas en général identiques.
+Le produit cartésien $A\times B$ est l'ensemble des couples $(a;b)$ avec
+$a\in A$ et $b\in B$. Si les deux ensembles sont finis,
+$\operatorname{Card}(A\times B)=\operatorname{Card}(A)\operatorname{Card}(B)$.
+\end{propriete}
+\begin{center}
+\begin{tikzpicture}[scale=.8]
+\draw[otMuted,rounded corners](0,0)rectangle(7,3);
+\fill[otNavy,opacity=.12](2.5,1.5)circle(1.2);
+\fill[otGreen,opacity=.2](4.2,1.5)circle(1.2);
+\draw[otNavy](2.5,1.5)circle(1.2);\draw[otGreenDark](4.2,1.5)circle(1.2);
+\node at(2,1.5){$A$};\node at(4.8,1.5){$B$};\node[above]at(3.35,1.5){$A\cap B$};
+\node at(.4,2.6){$E$};
+\end{tikzpicture}
+\par\legende{La réunion inclut les deux disques ; l’intersection est leur zone commune.}
+\end{center}
+
+\begin{attention}
+Ne pas confondre appartenance et inclusion : $2\in\{2;4\}$ mais
+$\{2\}\subseteq\{2;4\}$. Une borne exclue d'un intervalle n'en est pas un élément.
+\end{attention}
+
+\clearpage
+\essSection{2}{Implication, réciproque et conditions}
+\begin{definition}
+L'implication « si $P$, alors $Q$ » affirme que $Q$ est vraie dès que $P$
+est vraie. Sa réciproque est « si $Q$, alors $P$ ».
+Sa contraposée est « si non $Q$, alors non $P$ » ; elle lui est équivalente.
+Une équivalence réunit une implication et sa réciproque.
+\end{definition}
+\begin{propriete}
+Dans $P\Rightarrow Q$, $P$ est une condition suffisante pour $Q$ ; $Q$ est
+une condition nécessaire pour $P$. Exemple : être multiple de 4 suffit
+pour être pair ; être pair est nécessaire pour être multiple de 4.
+\end{propriete}
+\essSection{3}{Quantifier, nier et démontrer}
+\begin{propriete}
+La négation de « pour tout $x$, $P(x)$ » est « il existe $x$ pour lequel $P(x)$
+est fausse ». La négation de « il existe $x$ tel que $P(x)$ » est
+« pour tout $x$, $P(x)$ est fausse ». Nier « $P$ et $Q$ » donne « non $P$ ou non $Q$ ».
+Nier « $P$ ou $Q$ » donne « non $P$ et non $Q$ ».
+\end{propriete}
+\begin{savoirfaire}
+Une preuve directe enchaîne des propriétés connues. Une preuve par cas
+traite toutes les possibilités. Une preuve par contraposée démontre la
+contraposée. Une preuve par l'absurde suppose le contraire de la conclusion
+et obtient une contradiction. Un contre-exemple suffit à réfuter une affirmation universelle.
+\end{savoirfaire}
+\begin{attention}
+Une identité est vraie pour toutes les valeurs autorisées ; une équation
+demande de chercher des valeurs de l'inconnue. Dans une famille $f_m(x)$,
+$x$ peut être une variable et $m$ un paramètre. Un test sur quelques nombres
+ne démontre pas une affirmation « pour tout ».
+\end{attention}
+
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-13-1}
+\begin{exercice}[1]{Appartenance et opérations}
+On donne $E=\{1;2;3;4;5;6\}$, $A=\{2;4;6\}$ et $B=\{1;2;3\}$.\begin{questions}
+\item Déterminer $A\cap B$, $A\cup B$ et $E\setminus A$.
+\item Corriger si nécessaire : $2\subseteq A$ et $\{2\}\in A$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-2}
+\begin{exercice}[1]{Réunir des intervalles}
+On donne $A=[-2;3]$ et $B=]1;5[$.\begin{questions}
+\item Déterminer $A\cap B$ et $A\cup B$.
+\item Donner le complémentaire de $A$ dans $\R$.
+\end{questions}
+\label{figlivre-r13-02-intervalles-ex}
+\figureLivre{r13-02-intervalles}
+
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-3}
+\begin{exercice}[1]{Construire des couples}
+On pose $A=\{a;b\}$ et $B=\{0;1;2\}$.\begin{questions}
+\item Lister $A\times B$ et donner son cardinal.
+\item Le couple $(1;a)$ appartient-il à $A\times B$ ? À $B\times A$ ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-4}
+\begin{exercice}[1]{Trouver un contre-exemple}
+Réfuter les deux affirmations suivantes :\begin{questions}
+\item « Pour tout réel $x$, $x^2\geq x$. »
+\item « Si $x^2=4$, alors $x=2$. »
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-5}
+\begin{exercice}[1]{Nier une phrase quantifiée}
+Pour chacune des phrases suivantes, écrire sa négation puis donner la valeur de vérité des deux phrases :\begin{questions}
+\item « Pour tout réel $x$, $x^2\geq0$. »
+\item « Il existe un réel $x$ tel que $x^2=-1$. »
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-13-6}
+\begin{exercice}[2]{Réciproque et contraposée}
+On considère l’implication « si $x>2$, alors $x^2>4$ », pour $x$ réel.\begin{questions}
+\item Justifier cette implication.
+\item Écrire sa réciproque et décider si elle est vraie.
+\item Écrire sa contraposée et sa valeur de vérité.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-7}
+\begin{exercice}[2]{Nécessaire ou suffisante}
+Pour un entier $n$, comparer les propriétés P : « $n$ est multiple de 4 » et Q : « $n$ est pair ».\begin{questions}
+\item Quelle implication est toujours vraie ?
+\item Compléter : P est une condition \ldots\ pour Q ; Q est une condition \ldots\ pour P.
+\item Donner un exemple montrant que l’équivalence est fausse.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-8}
+\begin{exercice}[2]{Variable, inconnue et paramètre}
+\begin{questions}
+\item Quel est le statut de $x$ dans l’identité $x^2-1=(x-1)(x+1)$ ?
+\item Dans l’équation $x^2-1=0$, quel est le rôle de $x$ et quelles sont ses valeurs solutions ?
+\item Dans $f_m(x)=x^2-mx+1$, distinguer variable et paramètre.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-9}
+\begin{exercice}[2]{Complémentaires et connecteurs}
+Dans $E=\{1;\ldots;8\}$, A est l’ensemble des entiers pairs et B celui des entiers inférieurs ou égaux à 4.\begin{questions}
+\item Calculer $E\setminus(A\cup B)$.
+\item Calculer $(E\setminus A)\cap(E\setminus B)$ et comparer.
+\item Expliquer l’égalité obtenue en utilisant « et » et « ou ».
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-10}
+\begin{exercice}[2]{Lire une quantification implicite}
+On rappelle : « f est croissante sur I » signifie que pour tous $a,b\in I$ tels que $a<b$, $f(a)\leq f(b)$.\begin{questions}
+\item Écrire la négation de cette définition.
+\item Montrer que $f(x)=x^2$ n’est pas croissante sur $\R$.
+\item Montrer directement qu’elle est croissante sur $[0;+\infty[$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-11}
+\begin{exercice}[2]{Démontrer par disjonction des cas}
+\begin{questions}
+\item Montrer que $n(n+1)$ est pair pour tout entier naturel $n$, en distinguant $n$ pair et $n$ impair.
+\item Montrer que $|x|\geq x$ pour tout réel $x$, en distinguant le signe de $x$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-13-12}
+\begin{exercice}[3]{Une preuve par contraposée}
+On veut démontrer : « si le carré d’un entier est impair, alors cet entier est impair ».\begin{questions}
+\item Écrire la contraposée.
+\item La démontrer en écrivant un entier pair sous la forme $2k$.
+\item Démontrer aussi la réciproque et formuler l’équivalence obtenue.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-13}
+\begin{exercice}[3]{Une preuve par l'absurde}
+On veut montrer que $\sqrt2$ n’est pas rationnel. On suppose au contraire $\sqrt2=p/q$, avec $p,q$ entiers positifs sans facteur commun.\begin{questions}
+\item En déduire $p^2=2q^2$ puis montrer que $p$ est pair.
+\item Écrire $p=2k$ et montrer que $q$ est pair.
+\item Identifier la contradiction et conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-14}
+\begin{exercice}[3]{Une transformation sous condition}
+Résoudre $\dfrac{x^2-1}{x-1}=2$.\begin{questions}
+\item Préciser le domaine et simplifier sous cette condition.
+\item Résoudre l’équation simplifiée puis conclure.
+\item Expliquer l’erreur d’une résolution qui multiplierait sans conserver la valeur interdite.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-13-15}
+\begin{exercice}[3]{Quantifier une famille de trinômes}
+Pour un réel $m$, on pose $P_m(x)=x^2-2mx+1$.\begin{questions}
+\item Écrire $P_m$ sous forme canonique.
+\item Déterminer les $m$ tels que « pour tout réel $x$, $P_m(x)\geq0$ ».
+\item Déterminer les $m$ tels que « pour tout réel $x$, $P_m(x)>0$ ».
+\item Écrire la négation de la phrase de la question 2 et trouver les $m$ correspondants.
+\item Présenter oralement, en deux minutes, la distinction entre les questions 2 et 3.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

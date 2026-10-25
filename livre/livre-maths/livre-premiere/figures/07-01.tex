@@ -1,0 +1,17 @@
+\begin{tikzpicture}[x=0.5cm,y=0.5cm,font=\fontsize{8.5}{10}\selectfont,text=otInk,line cap=round,line join=round]
+\draw[otRule!65,line width=.25pt,step=1] (0,0) grid (5,7);
+\draw[otMuted,-{Stealth[length=1.4mm]}](0,0)--(5.3,0)node[right]{$x$};
+\draw[otMuted,-{Stealth[length=1.4mm]}](0,0)--(0,7.3)node[above]{$y$};
+\node[below left,inner sep=2pt]at(0,0){$O$};
+\draw[otMuted](2,-.07)--(2,.07) node[below=2pt,fill=white,inner sep=.4pt]{\scriptsize $2$};
+\draw[otMuted](4,-.07)--(4,.07) node[below=2pt,fill=white,inner sep=.4pt]{\scriptsize $4$};
+\draw[otMuted](-.07,2)--(.07,2) node[left=2pt,fill=white,inner sep=.4pt]{\scriptsize $2$};
+\draw[otMuted](-.07,4)--(.07,4) node[left=2pt,fill=white,inner sep=.4pt]{\scriptsize $4$};
+\draw[otMuted](-.07,6)--(.07,6) node[left=2pt,fill=white,inner sep=.4pt]{\scriptsize $6$};
+\coordinate (A) at (1,2);\fill[otNavy](A) circle(1.6pt) node[left,inner sep=2pt]{$A$};
+\coordinate (B) at (4,6);\fill[otNavy](B) circle(1.6pt) node[above right,inner sep=2pt]{$B$};
+\draw[geoVecteur](A)--(B);
+\geoSolution{\coordinate (I) at (2.5,4);\fill[otNavy](I) circle(1.6pt) node[left,inner sep=2pt]{$I$};}
+\geoSolution{\draw[geoAide](1,2)--node[below,geoLabel]{$3$}(4,2)--node[right,geoLabel]{$4$}(4,6);}
+\end{tikzpicture}\par\smallskip
+\geoEnonce{\legende{Les points $A$ et $B$ dans un repère orthonormé.}}\geoSolution{\legende{Le triangle de côtés 3 et 4 donne $AB=5$ ; $I$ est le milieu.}}

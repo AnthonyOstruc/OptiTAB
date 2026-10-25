@@ -1,0 +1,13 @@
+% Énergie mécanique au cours du temps, sans et avec frottements (L'essentiel, chapitre 16)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=92mm,height=48mm,xmin=0,xmax=10,ymin=0,ymax=1.25,
+  xtick=\empty,ytick=\empty,xlabel={$t$},ylabel={énergie},clip=false]
+\addplot[otGreenDark,line width=1.2pt,domain=0:10] {1};
+\addplot[otRed!80!black,line width=1.2pt,domain=0:10,samples=50] {exp(-x/9)};
+\node[pcLegende,anchor=south east,text=otGreenDark] at (axis cs:9.8,1.02) {$E_\mathrm{m}$ constante : sans frottement};
+\node[pcLegende,anchor=north east,text=otRed!80!black] at (axis cs:9.8,0.4) {$E_\mathrm{m}$ diminue : frottements};
+\draw[otOrange!85!black,line width=0.7pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (axis cs:6,0.513) -- (axis cs:6,0.985);
+\node[pcLegende,anchor=west,text=otOrange!85!black] at (axis cs:6.1,0.75) {$\Delta E_\mathrm{m}=W(\vec{f})<0$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{L'énergie perdue par le système est dissipée, le plus souvent sous forme thermique, dans le système et son environnement.}

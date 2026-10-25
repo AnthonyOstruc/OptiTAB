@@ -1,0 +1,94 @@
+\editionPage[\pdfbookmark[0]{Fiches outils}{bm-outils-debut-parent}]{outils-debut}{Fiche outil}{Mesures et formules utiles}{À consulter au fil des chapitres.}
+\begin{blocEdition}{outils-debut}
+
+\editionEtape{Contours et aires}
+\begin{tabularx}{\linewidth}{@{}lYY@{}}\toprule
+Figure & Périmètre & Aire\\\midrule
+Rectangle & $2(L+\ell)$ & $L\ell$\\[2mm]
+Carré & $4c$ & $c^2$\\[2mm]
+Triangle & somme des côtés & base $\times$ hauteur associée / 2\\[2mm]
+Parallélogramme & somme des côtés & base $\times$ hauteur associée\\[2mm]
+Disque / cercle & $2\pi r$ pour le cercle & $\pi r^2$ pour le disque\\\bottomrule
+\end{tabularx}
+\editionEtape{Volumes}
+Pavé : $L\ell h$ ; prisme droit et cylindre : aire de la base $\times$ hauteur ;
+pyramide et cône : aire de la base $\times$ hauteur / 3 ; boule de rayon $r$ : $\frac43\pi r^3$.
+\editionEtape{Unités}
+$1$ km = $1000$ m ; $1$ m = $100$ cm ; $1$ m$^2$ = $10000$ cm$^2$ ;
+$1$ m$^3$ = $1000$ L ; $1$ L = $1000$ mL ; $1$ mL = $1$ cm$^3$.
+Une vitesse en km/h se divise par 3,6 pour obtenir des m/s.
+\editionRetenir{La hauteur d’un triangle est perpendiculaire à la base choisie. Un côté oblique n’est pas automatiquement une hauteur.}
+
+\end{blocEdition}
+\editionPage{outils-2}{Fiche outil}{Données : quartiles et boîtes à moustaches}{À consulter au fil des chapitres.}
+\begin{blocEdition}{outils-2}
+
+\editionEtape{Un exemple complet}
+La série de pointures $36\,;37\,;37\,;38\,;38\,;38\,;39\,;40\,;40\,;42\,;43\,;44$ compte
+$N=12$ valeurs. La moyenne vaut $472/12\approx39{,}3$. La médiane est la moyenne des
+6\textsuperscript{e} et 7\textsuperscript{e} valeurs : $(38+39)/2=38{,}5$.
+\editionEtape{Quartiles}
+$12\times0{,}25=3$ : $Q_1$ est la 3\textsuperscript{e} valeur, soit 37.
+$12\times0{,}75=9$ : $Q_3$ est la 9\textsuperscript{e} valeur, soit 40.
+Au moins 25 \% des pointures sont inférieures ou égales à 37, au moins 75 \%
+inférieures ou égales à 40.
+\editionEtape{Boîte à moustaches}
+\begin{center}\begin{tikzpicture}[x=.62cm,font=\small]
+\draw[otMuted,->](35,0)--(45.5,0);
+\foreach\t in{35,...,45}{\draw[otMuted](\t,.07)--(\t,-.07)node[below,font=\tiny]{\t};}
+\draw[geoTrait](36,.7)--(37,.7) (40,.7)--(44,.7) (36,.55)--(36,.85) (44,.55)--(44,.85);
+\draw[geoTrait](37,.4)rectangle(40,1);\draw[geoTrait,line width=1.4pt](38.5,.4)--(38.5,1);
+\end{tikzpicture}\end{center}
+Minimum 36, $Q_1=37$, médiane 38,5, $Q_3=40$, maximum 44 ; l’étendue vaut 8.
+\editionRetenir{La boîte contient environ la moitié centrale des valeurs ; sa longueur $Q_3-Q_1$ mesure leur dispersion.}
+
+\end{blocEdition}
+\editionPage{outils-3}{Fiche outil}{Décomposer en facteurs premiers avec un algorithme}{À consulter au fil des chapitres.}
+\begin{blocEdition}{outils-3}
+
+\editionEtape{Une procédure en français structuré}
+Choisir un entier $N\ge2$. Mettre reste à N et diviseur à 2.
+Répéter jusqu’à ce que reste soit égal à 1 :\par
+\begin{itemize}
+\item si le reste de la division de reste par diviseur vaut 0, afficher
+diviseur et remplacer reste par reste / diviseur ;
+\item sinon, augmenter diviseur de 1.
+\end{itemize}
+La boucle conditionnelle teste donc de nouveau le même diviseur après une division réussie.
+En blocs, employer « répéter jusqu’à reste = 1 » et une condition à deux branches.
+\editionEtape{Exemple pour 84}
+On affiche 2, puis 2, puis 3, puis 7. Les quotients successifs après
+division sont 42, 21, 7 et 1. La décomposition vaut
+$84=2^2\times3\times7$. Un diviseur composé ne sera pas affiché :
+ses facteurs premiers auraient été retirés auparavant.
+\editionEtape{Contrôles}
+Multiplier les facteurs affichés pour retrouver N.
+Tester un nombre premier, par exemple 13 : un seul facteur est affiché.
+La procédure doit refuser 0, 1 et les entrées non entières dans ce cadre.
+Elle termine, car soit le reste diminue par une division, soit le diviseur
+augmente jusqu’à atteindre un diviseur du reste.
+
+\end{blocEdition}
+\editionPage{outils-4}{Fiche outil}{Rédiger un raisonnement géométrique}{À consulter au fil des chapitres.}
+\begin{blocEdition}{outils-4}
+
+\editionEtape{Une longueur avec Pythagore}
+« Le triangle ABC est rectangle en A. D’après le théorème de Pythagore,
+$BC^2=AB^2+AC^2$. Donc… Comme BC est une longueur positive, BC = … ».
+Pour prouver qu’un triangle n’est pas rectangle, citer la contraposée.
+\editionEtape{Un parallélisme avec Thalès}
+« A, M, B sont alignés dans cet ordre, ainsi que A, N, C.
+On compare $AM/AB$ et $AN/AC$ : … Les deux rapports sont égaux.
+D’après la réciproque du théorème de Thalès, $(MN)\parallel(BC)$. »
+Si les rapports diffèrent, conclure avec la contraposée.
+\editionEtape{Un angle avec la trigonométrie}
+« Dans ABC rectangle en A, pour l’angle $\widehat B$, le côté AC est opposé et
+AB adjacent. Donc $\tan\widehat B=AC/AB$. La fonction inverse donne
+$\widehat B\approx\ldots^\circ$. » Nommer l’angle évite un rapport inversé.
+\editionEtape{Une égalité de vecteurs}
+« ABCD est un parallélogramme, donc $\vect{AB}=\vect{DC}$. » Pour démontrer
+qu’un quadrilatère est un parallélogramme, établir une égalité de vecteurs
+en respectant l’ordre des lettres.
+\editionRetenir{Une rédaction courte suffit si elle contient les hypothèses utiles, la propriété, le calcul et la conclusion.}
+
+\end{blocEdition}

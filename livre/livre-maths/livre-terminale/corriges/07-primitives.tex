@@ -1,0 +1,210 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 7 — Primitives
+%% Tous les résultats ont été vérifiés par calcul formel (sympy) : chaque primitive a été dérivée.
+
+\corrigesChapitre{7}{Primitives}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Primitives usuelles}
+\methode{on écrit $F(x)=G(x)+C$, puis la condition donne $C$}
+\begin{questions}
+  \item $F(x)=x^{3}+2x+C$ et $F(0)=C=3$ :\\ $\res{F(x)=x^{3}+2x+3}$
+  \item $F(x)=x^{5}+C$ et $F(1)=1+C=2$ :\\ $\res{F(x)=x^{5}+1}$
+  \item $\res{F(x)=7x-2x^{2}+5}$
+  \item $F(x)=e^{x}+C$ et $F(0)=1+C=1$ : $\res{F(x)=e^{x}}$
+  \item $\res{F(x)=\sin x}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Linéarité}
+\begin{questions}
+  \item $\res{F(x)=\dfrac{x^{4}}{2}-\dfrac{5x^{2}}{2}+4x+1}$
+  \item $\res{F(x)=\dfrac{x^{3}}{3}+\dfrac{3x^{2}}{2}+x+2}$
+  \item $F(x)=6e^{x}-3x+C$ et $F(0)=6+C=0$ :\\ $\res{F(x)=6e^{x}-3x-6}$
+  \item $F(x)=4\sin x+2\cos x+C$ et $F(0)=2+C=1$ :\\ $\res{F(x)=4\sin x+2\cos x-1}$
+  \item $(x\sqrt x)'=\sqrt x+\frac{x}{2\sqrt x}=\frac32\sqrt x$ : une primitive de $\sqrt x$ est $\frac23x\sqrt x$. Avec $F(1)=\frac23+2+C=3$ :
+    $\res{F(x)=\dfrac23x\sqrt x+2\sqrt x+\dfrac13}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Exponentielles et fonctions trigonométriques}
+\methode{une primitive de $f(ax+b)$ est $\frac1aF(ax+b)$}
+\begin{questions}
+  \item $\res{F(x)=\dfrac13e^{3x}}$
+  \item $\res{F(x)=\dfrac12e^{2x+1}}$
+  \item $F(x)=-\frac12\cos(2x)+C$ et $F(0)=-\frac12+C=0$ :\\ $\res{F(x)=\dfrac{1-\cos(2x)}{2}}$
+  \item $\res{F(x)=\dfrac15\sin(5x)+\dfrac15}$
+  \item $F(x)=3e^{x}-\sin(2x)+C$ et $F(0)=3+C=2$ :\\ $\res{F(x)=3e^{x}-\sin(2x)-1}$
+  \item $f(x)=\frac12+\frac12\cos(2x)$ :\\ $\res{F(x)=\dfrac x2+\dfrac{\sin(2x)}{4}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Composées avec une fonction affine}
+\begin{questions}
+  \item $\frac13\times\frac{(3x-2)^{5}}{5}$ : $\res{F(x)=\dfrac{(3x-2)^{5}}{15}}$
+  \item $2x+5>0$ sur l'intervalle : $\res{F(x)=\dfrac12\ln(2x+5)}$
+  \item $\res{F(x)=-\dfrac13\cos(3x-1)}$
+  \item $\res{F(x)=\dfrac14\sin(4x+2)}$
+  \item $\res{F(x)=\dfrac15e^{5x-3}}$
+  \item Ici $a=-1$ et une primitive de $\frac{1}{u^{2}}$ est $-\frac1u$ : $\res{F(x)=\dfrac{1}{1-x}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Reconnaître une forme $u'f(u)$}
+\begin{questions}
+  \item $u'u^{3}$ avec $u=x^{2}+1$ : $\res{F(x)=\dfrac{\left(x^{2}+1\right)^{4}}{4}}$
+  \item $\frac{u'}{u}$ avec $u=x^{2}+1>0$ : $\res{F(x)=\ln\left(x^{2}+1\right)}$
+  \item $\frac12u'e^{u}$ avec $u=x^{2}$ : $\res{F(x)=\dfrac12e^{x^{2}}}$
+  \item $\frac12\times\frac{u'}{\sqrt u}$ avec $u=2x+3>0$ : $\res{F(x)=\sqrt{2x+3}}$
+  \item $\frac{u'}{u^{2}}$ avec $u=x+1$ : $\res{F(x)=-\dfrac{1}{x+1}}$
+  \item $u'e^{u}$ avec $u=\sin x$ : $\res{F(x)=e^{\sin x}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Fonctions rationnelles}
+\begin{questions}
+  \item $\big(\ln(-x)\big)'=\frac{-1}{-x}=\frac1x$ : $\res{F(x)=\ln(-x)}$
+  \item $\frac{u'}{u}$ avec $u=x^{3}+1>0$ : $\res{F(x)=\ln\left(x^{3}+1\right)}$
+  \item $\frac13u'u^{-3}$ avec $u=3x+1$ : $\res{F(x)=-\dfrac{1}{6(3x+1)^{2}}}$
+  \item $f(x)=\frac1x-\frac{1}{x^{2}}$ : $\res{F(x)=\ln x+\dfrac1x}$
+  \item $\frac52\times\frac{u'}{u}$ avec $u=2x-3>0$ :\\ $\res{F(x)=\dfrac52\ln(2x-3)}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{Racines et puissances}
+\begin{questions}
+  \item $\left(x^{2}\sqrt x\right)'=2x\sqrt x+\frac{x^{2}}{2\sqrt x}=\frac52x\sqrt x$ : $\res{F(x)=\dfrac25x^{2}\sqrt x}$
+  \item $\res{F(x)=2\sqrt x}$
+  \item $f(x)=\sqrt{x+1}-\frac{1}{\sqrt{x+1}}$, et une primitive de $\sqrt{x+1}$ est $\frac23(x+1)\sqrt{x+1}$ :\\
+    $F(x)=\frac23(x+1)\sqrt{x+1}-2\sqrt{x+1}$,\\ soit $\res{F(x)=\dfrac23(x-2)\sqrt{x+1}}$
+  \item $\res{F(x)=-\dfrac{1}{x+2}}$
+  \item $\frac12\times\frac{u'}{\sqrt u}$ avec $u=x^{2}+2x+3=(x+1)^{2}+2>0$ :\\ $\res{F(x)=\sqrt{x^{2}+2x+3}}$
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Vérifier une primitive}
+\begin{questions}
+  \item $F'(x)=e^{x}+(x-1)e^{x}=xe^{x}=f(x)$ : $F$ est bien une primitive de $f$.
+  \item $G'(x)=\cos x-\cos x+x\sin x=x\sin x$ : c'est bien une primitive de $g$.
+  \item $\res{e^{x}+\sin x}$ ;\quad $\res{\dfrac{x^{3}}{3}+\dfrac{e^{2x}}{2}}$ ;\quad $\res{\ln x-\dfrac1x}$
+  \item $F_1'(x)=2\sin x\cos x$ et $F_2'(x)=2\cos x\sin x$ : ce sont deux primitives de $\res{x\mapsto2\sin x\cos x}$, c'est-à-dire
+    de $x\mapsto\sin(2x)$. Et $F_1-F_2=\sin^{2}x+\cos^{2}x=\res{1}$ : deux primitives d'une même fonction sur un intervalle
+    diffèrent d'une constante.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{9}{Primitives par identification}
+\methode{on dérive la forme proposée, puis on identifie les coefficients}
+\begin{questions}
+  \item $F'(x)=ae^{x}+(ax+b)e^{x}=(ax+a+b)e^{x}$. Comme $e^{x}>0$, $F'=f$ si et seulement si $ax+a+b=x$ pour tout $x$ :
+    $a=1$ et $a+b=0$. Donc $\res{F(x)=(x-1)e^{x}}$.
+  \item La dérivée est $(2ax+a+2b)e^{2x}$ : $2a=1$ et $a+2b=0$, soit $a=\frac12$, $b=-\frac14$ et $\res{F(x)=\left(\dfrac x2-\dfrac14\right)e^{2x}}$.
+  \item La dérivée est $\left(ax^{2}+(2a+b)x+b+c\right)e^{x}$. Par identification, $a=1$, $2a+b=0$ et $b+c=0$, donc
+    $\res{F(x)=\left(x^{2}-2x+2\right)e^{x}}$.
+  \item $(x\ln x-x)'=\ln x+x\times\frac1x-1=\ln x$. Puis la dérivée de $ax^{2}\ln x+bx^{2}$ est $2ax\ln x+ax+2bx=x\left(2a\ln x+a+2b\right)$ :
+    il suffit que $2a=1$ et $a+2b=0$, soit $\res{F(x)=\dfrac{x^{2}}{2}\ln x-\dfrac{x^{2}}{4}}$.
+  \item La dérivée est $(cx+a+d)\cos x+(c-b-ax)\sin x$. Il suffit que $c=1$, $a+d=0$, $a=0$ et $c-b=0$, soit $a=0$, $b=1$,
+    $c=1$, $d=0$ : $\res{F(x)=\cos x+x\sin x}$. Vérification : $F'(x)=-\sin x+\sin x+x\cos x=x\cos x$.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{10}{Décomposer pour trouver une primitive}
+\partieExo{A}{Une division}
+\begin{questions}
+  \item $ax+b+\frac{c}{x+1}=\frac{(ax+b)(x+1)+c}{x+1}=\frac{ax^{2}+(a+b)x+b+c}{x+1}$. Par identification : $a=1$, $a+b=3$ et $b+c=1$,
+    d'où $\res{f(x)=x+2-\dfrac{1}{x+1}}$.
+  \item $F(x)=\frac{x^{2}}{2}+2x-\ln(x+1)+C$ ($x+1>0$ sur $I$) et $F(0)=C=0$ : $\res{F(x)=\dfrac{x^{2}}{2}+2x-\ln(x+1)}$.
+\end{questions}
+\partieExo{B}{Une différence de deux fractions}
+\begin{questions}[resume]
+  \item $\frac1x-\frac{1}{x+1}=\frac{(x+1)-x}{x(x+1)}=\frac{1}{x(x+1)}=g(x)$.
+  \item Les primitives de $g$ sont $G(x)=\ln x-\ln(x+1)+C=\ln\left(\frac{x}{x+1}\right)+C$. Comme $\frac{x}{x+1}\to1$ en $+\infty$, $G$ tend
+    vers $C$ : la primitive cherchée est $\res{G(x)=\ln\left(\dfrac{x}{x+1}\right)}$ ($C=0$).
+  \item Avec $u(x)=x^{2}+x>0$ et $u'(x)=2x+1$ : $\res{H(x)=\ln\left(x^{2}+x\right)}$. Avec la décomposition :
+    $H_2(x)=\ln x+\ln(x+1)=\ln\big(x(x+1)\big)=\ln\left(x^{2}+x\right)$ : les deux résultats coïncident.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{De la vitesse à la position}
+\partieExo{A}{Un freinage}
+\begin{questions}
+  \item $v(t)=0\iff t=5$ : arrêt au bout de $\res{5\text{ s}}$. L'accélération est $a(t)=v'(t)=\res{-5\text{ m/s}^{2}}$ (la voiture ralentit).
+  \item $x(t)=25t-\frac52t^{2}+C$ avec $x(0)=0$, donc $C=0$. Distance de freinage : $x(5)=125-62{,}5=\res{62{,}5\text{ m}}$.
+  \item $v(t)=50-5t$ s'annule en $t=10$ et $x(t)=50t-\frac52t^{2}$, donc $x(10)=\res{250\text{ m}}$ : en doublant la vitesse, on
+    \textbf{quadruple} la distance de freinage (elle vaut $\frac{v_0^{2}}{10}$, proportionnelle au carré de la vitesse initiale).
+\end{questions}
+\partieExo{B}{Une chute avec frottements}
+\noindent
+\begin{minipage}[t]{0.54\linewidth}\vspace{0pt}\raggedright
+\begin{questions}[start=4]
+  \item $e^{-t/5}\to0$, donc $\res{\lim v(t)=50\text{ m/s}}$ ($180$~km/h) : c'est la vitesse limite.
+    $v(t)=45\iff e^{-t/5}=0{,}1\iff t=5\ln10\approx\res{11{,}5\text{ s}}$.
+  \item $a(t)=v'(t)=50\times\frac15e^{-t/5}=10e^{-t/5}$ et $a(0)=\res{10\text{ m/s}^{2}}$ : au départ, la vitesse est nulle, il n'y a
+    pas de frottement et l'on retrouve l'accélération de la pesanteur, $g\approx9{,}8$~m/s$^{2}$.
+  \item $d(t)=50t+250e^{-t/5}+C$ et $d(0)=250+C=0$ :\\ $\res{d(t)=50t+250e^{-t/5}-250}$.\\
+    $d(10)=250+250e^{-2}\approx\res{284\text{ m}}$.
+  \item $d(t)-(50t-250)=250e^{-t/5}\to0$. À terme, tout se passe comme si le parachutiste tombait à $50$~m/s avec un
+    « retard » de $250$~m, soit $5$~s.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=68mm, height=54mm, xmin=0, xmax=31, ymin=0, ymax=1400,
+  xtick={5,10,20,30}, ytick={250,500,1000}, yticklabels={$250$,$500$,$1\,000$},
+  xlabel={$t$}, xlabel style={at={(1,0)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}, scaled y ticks=false]
+  \addplot[otGreen,dashed,line width=0.8pt,domain=5:30] {50*x-250};
+  \addplot[otNavy,line width=1.2pt,domain=0:30,samples=120] {50*x+250*exp(-x/5)-250};
+  \node[anchor=north west,font=\scriptsize,text=otGreenDark] at (axis cs:20,700) {$y=50t-250$};
+  \node[anchor=south east,font=\scriptsize,text=otNavy] at (axis cs:17,820) {$d(t)$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{La courbe de $d$ se rapproche de son asymptote.}
+\end{minipage}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Étude d'une primitive}
+\partieExo{A}{Sans calculer $F$}
+\begin{questions}
+  \item $e^{-x^{2}}>0$, donc $f(x)$ est du signe de $x$. Comme $F'=f$, la fonction $F$ est $\res{\text{décroissante sur }\intOF{-\infty}{0}}$
+    et $\res{\text{croissante sur }\intFO{0}{+\infty}}$.
+    Son minimum est $F(0)=0$, donc $\res{F(x)\geq0}$ pour tout réel $x$.
+  \item $G'(x)=-F'(-x)=-f(-x)=-(-x)e^{-x^{2}}=f(x)$ : $G$ est une primitive de $f$ et $G(0)=F(0)=0$. Par unicité de la primitive
+    qui vaut $0$ en $0$, $G=F$, c'est-à-dire $F(-x)=F(x)$ : $\res{F\text{ est paire}}$.
+  \item $f'(x)=e^{-x^{2}}+x\times\left(-2x\right)e^{-x^{2}}=\left(1-2x^{2}\right)e^{-x^{2}}$, et $F''=f'$. $F$ est convexe sur
+    $\intFF{-\frac{\sqrt2}{2}}{\frac{\sqrt2}{2}}$ et concave ailleurs : points d'inflexion d'abscisses $\res{\pm\dfrac{\sqrt2}{2}}$.
+\end{questions}
+\partieExo{B}{Expression de $F$}
+\noindent
+\begin{minipage}[t]{0.5\linewidth}\vspace{0pt}\raggedright
+\begin{questions}[start=4]
+  \item Avec $u(x)=-x^{2}$, $u'(x)=-2x$ et $f=-\frac12u'e^{u}$ : les primitives de $f$ sont $-\frac12e^{-x^{2}}+C$, et $F(0)=-\frac12+C=0$
+    donne $\res{F(x)=\dfrac12\left(1-e^{-x^{2}}\right)}$.
+  \item $-x^{2}\to-\infty$ en $\pm\infty$, donc $e^{-x^{2}}\to0$ et $\res{\lim_{\pm\infty}F=\frac12}$ : la droite $y=\frac12$ est asymptote.
+    Comme $0<e^{-x^{2}}\leq1$, on a $\res{0\leq F(x)<\frac12}$.
+  \item Voir la figure ci-contre.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.46\linewidth}\vspace{1mm}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=74mm, xmin=-3.3, xmax=3.5, ymin=-0.62, ymax=0.82,
+  unit vector ratio=1 3, xtick={-3,-2,-1,1,2,3}, ytick={0.5}, yticklabels={$\frac12$}]
+  \draw[otGreen,dashed,line width=0.6pt] (axis cs:-3.3,0.5) -- (axis cs:3.3,0.5);
+  \addplot[otGreenDark,line width=0.9pt,domain=-3.2:3.2,samples=160] {x*exp(-x^2)};
+  \addplot[otNavy,line width=1.3pt,domain=-3.2:3.2,samples=160] {0.5*(1-exp(-x^2))};
+  \node[anchor=south,font=\scriptsize,text=otNavy] at (axis cs:2.3,0.52) {$F$};
+  \node[anchor=north,font=\scriptsize,text=otGreenDark] at (axis cs:-1.1,-0.42) {$f$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{$F$ est paire, $f$ est impaire ; l'échelle verticale est dilatée.}
+\end{minipage}
+\end{corrige}

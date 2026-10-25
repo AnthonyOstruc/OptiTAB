@@ -1,0 +1,85 @@
+\corrigesChapitre{12}{Chaînes de Markov à deux ou trois états}
+\begin{corrige}{1}{Lire une transition}
+\begin{questions}
+\item $0{,}2$, coefficient de la ligne $A$, colonne $B$.
+\item $0{,}7$.
+\item $0{,}8+0{,}2=1$ et $0{,}3+0{,}7=1$.
+\end{questions}
+\end{corrige}
+\begin{corrige}{2}{Une première distribution}
+\begin{questions}
+\item $\pi_1=(0{,}8;0{,}2)$.
+\item $\pi_2=(0{,}8^2+0{,}2\times0{,}3;0{,}8\times0{,}2+0{,}2\times0{,}7)=(0{,}7;0{,}3)$.
+\item Les coefficients sont positifs et totalisent $1$.
+\end{questions}
+\end{corrige}
+\begin{corrige}{3}{Invariant}
+\begin{questions}
+\item Le premier coefficient vaut $0{,}48+0{,}12=0{,}6$, le second $0{,}12+0{,}28=0{,}4$.
+\item Elle reste $(0{,}6;0{,}4)$.
+\item Les proportions probabilistes se conservent, même si un individu peut changer d’état.
+\end{questions}
+\end{corrige}
+\begin{corrige}{4}{Une matrice admissible ?}
+\begin{questions}
+\item Non : une somme de ligne n’est pas égale à $1$.
+\item La première somme vaut $1{,}1$.
+\item Remplacer $0{,}6$ par $0{,}5$ ; la première ligne devient $(0{,}5;0{,}5)$.
+\end{questions}
+\end{corrige}
+\begin{corrige}{5}{Récurrence à deux états}
+\begin{questions}
+\item Probabilités totales : $0{,}8a_n+0{,}3(1-a_n)$.
+\item $a_n=0{,}6+0{,}4(0{,}5)^n$.
+\item $(0{,}6;0{,}4)$ car le terme géométrique tend vers zéro.
+\end{questions}
+\end{corrige}
+\begin{corrige}{6}{Une précision}
+\begin{questions}
+\item $0{,}4(0{,}5)^n\leq0{,}001$.
+\item $2^n\geq400$, donc $n=9$.
+\item Pour $n=8$, l’écart vaut $0{,}0015625$ ; pour $n=9$, $0{,}00078125$.
+\end{questions}
+\end{corrige}
+\begin{corrige}{7}{Trois états : invariant}
+\begin{questions}
+\item $a=a/2+b/4$, $b=a/2+b/2+c/2$, $c=b/4+c/2$.
+\item $a=b/2,c=b/2$ et $a+b+c=1$ donnent $(a;b;c)=(1/4;1/2;1/4)$.
+\item Le produit redonne $(1/4;1/2;1/4)$ ; les coefficients sont tous positifs.
+\end{questions}
+\end{corrige}
+\begin{corrige}{8}{Trois états : deux étapes}
+\begin{questions}
+\item $\pi_1=(1/2;1/2;0)$.
+\item $\pi_2=(3/8;1/2;1/8)$.
+\item $1/8$, coefficient d’arrivée en $C$.
+\end{questions}
+\end{corrige}
+\begin{corrige}{9}{Périodicité et invariant}
+\begin{questions}
+\item $\pi_{2k}=(1;0)$, $\pi_{2k+1}=(0;1)$.
+\item $(1/2;1/2)$.
+\item Le départ choisi alterne entre deux distributions différentes ; il ne converge pas, malgré l’existence d’un invariant.
+\end{questions}
+\end{corrige}
+\begin{corrige}{10}{Prouver la formule à trois états}
+\begin{questions}
+\item $b_{n+1}=(a_n+b_n+c_n)/2=1/2$.
+\item $a_{n+1}=a_n/2+b_n/4$ et $c_{n+1}=b_n/4+c_n/2$ ; soustraire donne la formule. Comme $d_0=1$, $d_n=2^{-n}$.
+\item Pour $n\geq1$, $a_n+c_n=1/2$ ; combiner somme et différence donne $a_n=1/4+2^{-(n+1)}$, $c_n=1/4-2^{-(n+1)}$.
+\end{questions}
+\end{corrige}
+\begin{corrige}{11}{Sommes de lignes des puissances}
+\begin{questions}
+\item Ils représentent des probabilités. Les produits et sommes qui construisent les puissances restent positifs ou nuls.
+\item $\sum_j(P^2)_{ij}=\sum_kp_{ik}\sum_jp_{kj}=\sum_kp_{ik}=1$.
+\item Le même calcul remplace la première matrice par $P^n$ ; si ses lignes totalisent $1$, celles de $P^{n+1}$ aussi.
+\end{questions}
+\end{corrige}
+\begin{corrige}{12}{Colonnes ou lignes ?}
+\begin{questions}
+\item Une matrice $m\times m$ ne peut se multiplier à droite par une ligne $1\times m$ dans cet ordre pour $m>1$.
+\item $\pi_{n+1}=\pi_nP$.
+\item $V_{n+1}=P^{\mathsf T}V_n$, avec la transposée. La convention doit être changée de façon cohérente ; le livre suit les lignes du programme.
+\end{questions}
+\end{corrige}

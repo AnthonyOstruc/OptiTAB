@@ -1,0 +1,7 @@
+print("     *")
+print("    ***")
+print("   *o***")
+print("  ***o***")
+print(" *o*****o*")
+print("    | |")
+print("  =======")

@@ -1,0 +1,395 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[spectre]{2}{Méthodes physiques d'analyse}{Partie 1 · Constitution et transformations de la matière}
+{Beer-Lambert\enspace·\enspace Kohlrausch\enspace·\enspace Gaz parfait\enspace·\enspace Spectroscopies IR et UV-visible}
+\objectif{Exploiter la loi de Beer-Lambert pour déterminer une concentration.}
+\objectif{Mesurer une conductivité et exploiter la loi de Kohlrausch ou une droite d'étalonnage.}
+\objectif{Déterminer une quantité de matière de gaz avec l'équation d'état du gaz parfait.}
+\objectif{Identifier un groupe caractéristique ou une espèce chimique à l'aide d'un spectre IR ou UV-visible.}
+\objectif{Citer les domaines de validité de ces relations.}
+\prerequis{Absorbance, spectre d'absorption et couleur d'une solution.}
+\prerequis{Concentration en quantité de matière, dilution, volume molaire.}
+\prerequis{Groupes caractéristiques et familles fonctionnelles.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Absorbance et loi de Beer-Lambert}
+\begin{definition}[Absorbance]
+Une espèce colorée absorbe une partie de la lumière qui traverse sa solution. Le spectrophotomètre
+compare l'intensité lumineuse $I_0$ reçue en l'absence d'espèce absorbante à l'intensité $I$ transmise par la
+solution ; l'absorbance $A=\log\left(I_0/I\right)$ est une grandeur positive et sans unité. Le spectre
+d'absorption $A=f(\lambda)$ présente un maximum à la longueur d'onde $\lambda_{\max}$.
+\end{definition}
+\schema{02-spectrophotometre}
+\begin{loi}[Loi de Beer-Lambert]
+À une longueur d'onde $\lambda$ donnée, l'absorbance d'une solution diluée d'une espèce colorée vaut
+\[A=\varepsilon(\lambda)\times\ell\times c,\]
+avec $\varepsilon$ le coefficient d'absorption molaire (en L$\cdot$mol$^{-1}\cdot$cm$^{-1}$), $\ell$ l'épaisseur de
+solution traversée (en cm) et $c$ la concentration (en \molL). Pour une cuve et une longueur d'onde fixées,
+$A=k\,c$. Lorsque plusieurs espèces absorbent, leurs absorbances s'additionnent.
+\end{loi}
+\begin{attention}
+La loi n'est valable que pour des solutions diluées (en pratique, une absorbance inférieure à 1,5 environ),
+une lumière monochromatique et une solution limpide, dans laquelle l'espèce dosée ne réagit pas.
+Une solution trop concentrée doit être diluée avant la mesure.
+\end{attention}
+\begin{savoirfaire}[Doser une espèce colorée par étalonnage]
+\begin{questions}
+\item Tracer le spectre de l'espèce et régler le spectrophotomètre à $\lambda_{\max}$, où la mesure est la plus sensible.
+\item Faire le « blanc » avec le solvant, puis mesurer l'absorbance de solutions étalons de concentrations connues.
+\item Tracer $A=f(c)$ : les points s'alignent sur une droite passant par l'origine, d'équation $A=k\,c$.
+\item Mesurer l'absorbance de la solution à doser, au besoin diluée pour rester dans la gamme d'étalonnage,
+et en déduire $c=A/k$.
+\end{questions}
+\end{savoirfaire}
+\schema{02-spectre-etalonnage}
+\essSection{2}{Conductivité et loi de Kohlrausch}
+\begin{definition}[Conductance et conductivité]
+Une solution ionique conduit le courant électrique. La conductance $G=I/U$ (en siemens, S) d'une portion de
+solution comprise entre deux plaques dépend de leur aire $S$ et de leur distance $L$ : $G=\sigma\,S/L$.
+La conductivité $\sigma$ (en S$\cdot$m$^{-1}$) ne dépend que de la solution et de sa température. Un conductimètre
+étalonné affiche directement $\sigma$, souvent en mS$\cdot$cm$^{-1}$.
+\end{definition}
+\begin{loi}[Loi de Kohlrausch]
+La conductivité d'une solution diluée est la somme des contributions de ses ions :
+\[\sigma=\sum_i\lambda_i\,[X_i],\]
+où $\lambda_i$ est la conductivité molaire ionique de l'ion $X_i$ (en S$\cdot$m$^2\cdot$mol$^{-1}$) et $[X_i]$ sa
+concentration (en mol$\cdot$m$^{-3}$). Pour une solution d'un seul soluté de concentration $c$, $\sigma=k\,c$ :
+la conductivité est proportionnelle à la concentration.
+\end{loi}
+\begin{center}\small\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l*{7}{c}@{}}\toprule
+Ion & \ce{H3O+} & \ce{HO-} & \ce{Na+} & \ce{K+} & \ce{Ag+} & \ce{Ca^2+} & \ce{Mg^2+}\\
+$\lambda$ (mS$\cdot$m$^2\cdot$mol$^{-1}$) & 35,0 & 19,9 & 5,01 & 7,35 & 6,19 & 11,9 & 10,6\\\midrule
+Ion & \ce{Cl-} & \ce{NO3-} & \ce{CH3COO-} & \ce{HCO3-} & \ce{SO4^2-} & \ce{NH4+} &\\
+$\lambda$ (mS$\cdot$m$^2\cdot$mol$^{-1}$) & 7,63 & 7,14 & 4,09 & 4,45 & 16,0 & 7,35 &\\\bottomrule
+\end{tabular}\par\smallskip
+\legende{Conductivités molaires ioniques à 25 °C. Les ions oxonium et hydroxyde conduisent nettement mieux que les autres.}
+\end{center}
+\begin{attention}
+Dans la loi de Kohlrausch, les concentrations s'expriment en mol$\cdot$m$^{-3}$ : 1 mmol$\cdot$L$^{-1}$ = 1 mol$\cdot$m$^{-3}$.
+De plus, 1 mS$\cdot$cm$^{-1}$ = 0,1 S$\cdot$m$^{-1}$. La loi n'est valable que pour des solutions diluées,
+de concentration inférieure à $10^{-2}$ \molL\ environ.
+\end{attention}
+\schema{02-cellule}
+\essSection{3}{Quantité de matière d'un gaz}
+\begin{loi}[Équation d'état du gaz parfait]
+\[pV=nRT,\]
+avec $p$ la pression (en Pa), $V$ le volume (en m$^3$), $n$ la quantité de matière (en mol),
+$T$ la température absolue (en K, $T=\theta+273{,}15$) et $R=\qty{8,314}{J.mol^{-1}.K^{-1}}$.
+Le volume molaire $V_\mathrm{m}=RT/p$ ne dépend pas de la nature du gaz : environ \qty{24,0}{L.mol^{-1}} à 20 °C sous 1 bar.
+\end{loi}
+\begin{attention}
+Le modèle du gaz parfait décrit bien les gaz sous faible pression (jusqu'à quelques bars), loin de leur
+liquéfaction. Il devient approximatif sous forte pression, par exemple dans une bouteille de plongée.
+Convertir systématiquement : 1 bar = $10^5$ Pa, 1 hPa = 100 Pa, 1 L = $10^{-3}$ m$^3$.
+\end{attention}
+\schema{02-capteur-pression}
+\essSection{4}{Spectroscopies UV-visible et infrarouge}
+\begin{propriete}[Spectre UV-visible et couleur]
+Une solution absorbe surtout autour de $\lambda_{\max}$ ; sa couleur perçue est la couleur complémentaire de la
+couleur absorbée. La position de $\lambda_{\max}$ et l'allure du spectre, comparées à des données tabulées,
+permettent d'identifier une espèce chimique.
+\end{propriete}
+\schema{02-cercle}
+\begin{definition}[Spectre infrarouge]
+Un spectre IR représente la transmittance $T$ (en \%) en fonction du nombre d'onde $\sigma=1/\lambda$, exprimé en
+cm$^{-1}$, de 4\,000 à 500 cm$^{-1}$ environ, l'axe étant orienté vers la gauche. Chaque type de liaison absorbe
+dans un domaine caractéristique : une bande d'absorption est un « creux » du spectre. Au-dessus de 1\,500 cm$^{-1}$,
+les bandes identifient les groupes caractéristiques ; en dessous, la zone d'empreinte est propre à chaque molécule.
+\end{definition}
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{}lcY@{}}\toprule
+\otTete{Liaison} & \otTete{Nombre d'onde (cm$^{-1}$)} & \otTete{Allure de la bande}\\\midrule
+O--H d'un alcool libre & 3\,580 -- 3\,670 & fine, forte\\
+O--H d'un alcool lié (liaisons hydrogène) & 3\,200 -- 3\,400 & large, forte\\
+O--H d'un acide carboxylique & 2\,500 -- 3\,200 & très large, moyenne\\
+N--H d'une amine ou d'un amide & 3\,100 -- 3\,500 & moyenne ; deux bandes pour \ce{-NH2}\\
+C--H & 2\,800 -- 3\,100 & moyenne à forte\\
+C--H d'un aldéhyde & 2\,650 -- 2\,800 & deux bandes fines, moyennes\\
+C=O d'un ester & 1\,700 -- 1\,740 & fine, forte\\
+C=O d'un aldéhyde ou d'une cétone & 1\,650 -- 1\,730 & fine, forte\\
+C=O d'un acide carboxylique & 1\,680 -- 1\,710 & forte\\
+C=O d'un amide & 1\,650 -- 1\,700 & forte\\
+C=C & 1\,625 -- 1\,685 & moyenne\\
+C--O & 1\,050 -- 1\,450 & forte\\\bottomrule
+\end{tabularx}\end{center}
+\schema{02-spectres-ir}
+\begin{savoirfaire}[Exploiter un spectre infrarouge]
+Repérer les bandes situées au-dessus de 1\,500 cm$^{-1}$ et les associer aux liaisons à l'aide de la table.
+Utiliser aussi l'absence d'une bande : sans bande vers 1\,700 cm$^{-1}$, la molécule ne possède pas de liaison C=O.
+Conclure sur la famille fonctionnelle, puis confronter le résultat aux autres données (formule brute, réaction).
+\end{savoirfaire}
+\begin{rediger}
+Écrire « on observe une bande large et forte vers 3\,300 cm$^{-1}$, caractéristique de la liaison O--H d'un alcool
+lié », en précisant toujours la grandeur (nombre d'onde, et non longueur d'onde) et l'unité. Pour un dosage,
+justifier le choix de la méthode et vérifier que la mesure se situe dans le domaine de validité de la loi utilisée.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-2-1}
+\begin{exercice}[1]{Appliquer la loi de Beer-Lambert}
+Pour une solution de sulfate de cuivre(II), le coefficient d'absorption molaire des ions \ce{Cu^2+} vaut
+$\varepsilon=\qty{12}{L.mol^{-1}.cm^{-1}}$ à 800 nm. La cuve a une épaisseur $\ell=\qty{1,00}{cm}$.
+\begin{questions}
+\item Calculer l'absorbance d'une solution de concentration $c=\qty{5,0e-2}{mol.L^{-1}}$.
+\item Une autre solution a une absorbance de 0,42. Calculer sa concentration.
+\item On mesure l'absorbance de la première solution dans une cuve de 2,00 cm. Quelle valeur obtient-on ?
+\item Pourquoi ne peut-on pas utiliser directement la loi pour une solution d'absorbance égale à 3,2 ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-2}
+\begin{exercice}[1]{Calculer une conductivité}
+\begin{donnees}
+$\lambda(\ce{Na+})=5{,}01$ ; $\lambda(\ce{Cl-})=7{,}63$ ; $\lambda(\ce{K+})=7{,}35$ ; $\lambda(\ce{NO3-})=7{,}14$,
+en mS$\cdot$m$^2\cdot$mol$^{-1}$.
+\end{donnees}
+\begin{questions}
+\item Exprimer la concentration $c=\qty{2,0}{mmol.L^{-1}}$ en mol$\cdot$m$^{-3}$.
+\item Calculer la conductivité d'une solution de chlorure de sodium de concentration $c$, en mS$\cdot$m$^{-1}$,
+puis en mS$\cdot$cm$^{-1}$.
+\item À la même concentration, une solution de nitrate de potassium conduit-elle mieux ou moins bien ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-3}
+\begin{exercice}[1]{La quantité de matière d'un gaz}
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $M(\mathrm{He})=\qty{4,0}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Un ballon de 4,2 L contient de l'hélium à 20 °C sous une pression de \qty{1,05e5}{Pa}. Calculer la quantité
+de matière d'hélium, puis sa masse.
+\item Une bouteille de plongée de 12 L contient de l'air sous 200 bar à 20 °C. Calculer la quantité de matière
+donnée par le modèle du gaz parfait. Pourquoi ce résultat n'est-il qu'approché ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-4}
+\begin{exercice}[1]{De la couleur au spectre}
+\begin{donnees}
+Couleurs complémentaires : rouge et cyan ; vert et magenta ; bleu et jaune.
+Domaines approximatifs : bleu 430 -- 490 nm ; vert 500 -- 560 nm ; jaune 560 -- 590 nm ; rouge 620 -- 750 nm.
+\end{donnees}
+\begin{questions}
+\item Une solution de permanganate de potassium absorbe surtout à 525 nm. Quelle couleur absorbe-t-elle ?
+Quelle est sa couleur perçue ?
+\item Une solution de tartrazine, colorant alimentaire jaune, absorbe-t-elle plutôt vers 430 nm ou vers 650 nm ? Justifier.
+\item À quelle longueur d'onde faut-il régler le spectrophotomètre pour doser chacune de ces espèces ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-5}
+\begin{exercice}[1]{Lire un spectre infrarouge}
+L'espèce X est l'éthanol, l'éthanal ou l'acide éthanoïque. On dispose de son spectre infrarouge.
+\schema{02-ex05-ir}
+\begin{questions}
+\item Associer les bandes observées au-dessus de 1\,500 cm$^{-1}$ aux liaisons correspondantes, à l'aide de la table du cours.
+\item Quelle bande, absente du spectre, permet d'éliminer deux des trois espèces ? Identifier X.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-2-6}
+\begin{exercice}[2]{Doser un colorant alimentaire}
+Une boisson pour sportifs est colorée par le bleu brillant FCF (E133), dont le maximum d'absorption se situe
+à 630 nm. On mesure l'absorbance de solutions étalons dans une cuve de 1,00 cm.
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{5}{c}@{}}\toprule
+$c$ ($\upmu$mol$\cdot$L$^{-1}$) & 1,0 & 2,0 & 4,0 & 6,0 & 8,0\\
+$A$ à 630 nm & 0,13 & 0,26 & 0,52 & 0,79 & 1,04\\\bottomrule
+\end{tabular}\end{center}
+La boisson, diluée deux fois, a une absorbance de 0,62.
+\begin{donnees}
+$M(\text{E133})=\qty{792,8}{g.mol^{-1}}$ ; dose journalière admissible (DJA) : 6 mg par kilogramme de masse
+corporelle et par jour (Autorité européenne de sécurité des aliments, 2010).
+\end{donnees}
+\begin{questions}
+\item Justifier le choix de la longueur d'onde de travail.
+\item Montrer que les mesures vérifient la loi de Beer-Lambert et déterminer le coefficient $k$ tel que $A=k\,c$.
+\item En déduire la concentration en quantité de matière, puis en masse, du colorant dans la boisson.
+\item Quel volume de boisson un adolescent de 60 kg devrait-il boire chaque jour pour atteindre la DJA ? Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-7}
+\begin{exercice}[2]{Contrôler un sérum physiologique}
+Un sérum physiologique est une solution de chlorure de sodium annoncée à 0,9 \% (9,0 g par litre).
+On le dilue vingt fois, puis on mesure la conductivité de la solution diluée : $\sigma=\qty{0,928}{mS.cm^{-1}}$.
+Une gamme de solutions étalons de chlorure de sodium donne, à la même température :
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{5}{c}@{}}\toprule
+$c$ (mmol$\cdot$L$^{-1}$) & 2,0 & 4,0 & 6,0 & 8,0 & 10,0\\
+$\sigma$ (mS$\cdot$cm$^{-1}$) & 0,246 & 0,488 & 0,727 & 0,962 & 1,195\\\bottomrule
+\end{tabular}\end{center}
+\begin{donnees}
+$M(\ce{NaCl})=\qty{58,44}{g.mol^{-1}}$ ; matériel : pipettes jaugées de 5,0 et 10,0 mL, fioles jaugées de 100,0 et 200,0 mL.
+\end{donnees}
+\begin{questions}
+\item Proposer un protocole de dilution. Pourquoi faut-il diluer le sérum avant la mesure ?
+\item Modéliser la gamme par une relation $\sigma=k\,c$ et déterminer $k$.
+\item Déterminer la concentration du sérum, puis sa concentration en masse. L'indication de l'étiquette est-elle vérifiée ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-8}
+\begin{exercice}[2]{Deux colorants dans un sirop}
+Un sirop de menthe contient deux colorants : la tartrazine E102 (jaune) et le bleu patenté V E131 (bleu).
+On dilue le sirop dix fois et on mesure, dans une cuve de 1,00 cm : $A_{638}=0{,}53$ et $A_{427}=0{,}51$.
+\schema{02-ex08-spectres}
+\begin{donnees}
+Coefficients d'absorption molaire (L$\cdot$mol$^{-1}\cdot$cm$^{-1}$) : tartrazine : $2{,}70\times10^4$ à 427 nm,
+négligeable à 638 nm ; bleu patenté : $1{,}06\times10^5$ à 638 nm et $3{,}0\times10^3$ à 427 nm.
+\end{donnees}
+\begin{questions}
+\item Expliquer pourquoi le sirop paraît vert.
+\item Pourquoi exploite-t-on d'abord la mesure à 638 nm ? En déduire la concentration du bleu patenté dans le sirop dilué.
+\item À l'aide de l'additivité des absorbances, déterminer la concentration de la tartrazine dans le sirop dilué.
+\item Quelle erreur relative commettrait-on en attribuant toute l'absorbance à 427 nm à la tartrazine ?
+\item En déduire les concentrations des deux colorants dans le sirop.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-9}
+\begin{exercice}[2]{Trois isomères, trois spectres}
+Le propanal, la propanone et le prop-2-én-1-ol ont la même formule brute \ce{C3H6O}.
+\schema{02-ex09-ir}
+\begin{questions}
+\item Écrire la formule semi-développée de chaque espèce et nommer sa famille fonctionnelle.
+\item Attribuer chaque spectre à une espèce, en justifiant à l'aide des bandes caractéristiques.
+\item Quelle bande permet de distinguer le propanal de la propanone ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-10}
+\begin{exercice}[2]{Doser un comprimé effervescent par une mesure de pression}
+Un comprimé effervescent contient de l'hydrogénocarbonate de sodium \ce{NaHCO3} et de l'acide citrique.
+On le place dans un erlenmeyer contenant de l'eau, que l'on ferme aussitôt ; un capteur mesure la pression.
+L'erlenmeyer contient $V=\qty{1,10}{L}$ de gaz, à 20 °C. La pression passe de 1\,015 hPa à 1\,352 hPa.
+\begin{donnees}
+\ce{HCO3- + AH -> A- + CO2(g) + H2O(l)} (AH : acide, en excès) ; $R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ;
+$M(\ce{NaHCO3})=\qty{84,0}{g.mol^{-1}}$ ; étiquette : 1,30 g d'hydrogénocarbonate de sodium par comprimé.
+\end{donnees}
+\begin{questions}
+\item Exprimer, puis calculer, la quantité de dioxyde de carbone formée.
+\item En déduire la masse d'hydrogénocarbonate de sodium du comprimé et l'écart relatif à l'indication de l'étiquette.
+\item Une partie du dioxyde de carbone reste dissoute dans l'eau. Dans quel sens cela fausse-t-il le résultat ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-11}
+\begin{exercice}[2]{La conductivité d'une eau minérale}
+L'étiquette d'une eau minérale indique sa composition, en mg$\cdot$L$^{-1}$ :
+\begin{center}\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l*{8}{c}@{}}\toprule
+Ion & \ce{Ca^2+} & \ce{Mg^2+} & \ce{Na+} & \ce{K+} & \ce{HCO3-} & \ce{SO4^2-} & \ce{Cl-} & \ce{NO3-}\\
+mg$\cdot$L$^{-1}$ & 80 & 26 & 6,5 & 1,0 & 360 & 14 & 10 & 3,8\\
+$M$ (g$\cdot$mol$^{-1}$) & 40,08 & 24,31 & 22,99 & 39,10 & 61,02 & 96,06 & 35,45 & 62,00\\\bottomrule
+\end{tabular}\end{center}
+\begin{questions}
+\item Calculer la concentration en quantité de matière de chaque ion, en mmol$\cdot$L$^{-1}$.
+\item Vérifier l'électroneutralité de l'eau à partir de ces concentrations.
+\item Calculer la conductivité prévue par la loi de Kohlrausch, avec les valeurs de $\lambda$ du cours.
+\item On mesure $\sigma=\qty{0,58}{mS.cm^{-1}}$ à 25 °C. Proposer une explication à l'écart observé.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-2-12}
+\begin{exercice}[3]{Contrôle qualité d'un antiseptique}
+\begin{docu}{1}{Composition d'une solution antiseptique}
+Pour 100 mL : solution d'hypochlorite de sodium correspondant à 500 mg de chlore actif ; permanganate de
+potassium \ce{KMnO4} : 0,0010 g ; excipients. Le permanganate, qui colore la solution en rose, protège
+l'hypochlorite de la lumière. Les teneurs réelles doivent rester à $\pm5$ \% des valeurs annoncées.
+\end{docu}
+\begin{docu}{2}{Gamme d'étalonnage à 525 nm}
+\centering\small\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}l*{5}{c}@{}}
+$c(\ce{MnO4-})$ ($\upmu$mol$\cdot$L$^{-1}$) & 20 & 40 & 60 & 80 & 100\\
+$A$ & 0,049 & 0,095 & 0,145 & 0,191 & 0,241
+\end{tabular}\par\raggedright
+La solution antiseptique, placée dans la même cuve, a une absorbance $A=0{,}150$ à 525 nm.
+\end{docu}
+\schema{02-ex12-spectres}
+\begin{donnees}
+$M(\mathrm{K})=\qty{39,10}{g.mol^{-1}}$ ; $M(\mathrm{Mn})=\qty{54,94}{g.mol^{-1}}$ ; $M(\mathrm{O})=\qty{16,00}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Justifier le choix de la longueur d'onde de 525 nm et montrer que l'ion hypochlorite ne gêne pas le dosage.
+\item Vérifier que la gamme d'étalonnage suit la loi de Beer-Lambert et déterminer $k$.
+\item \initiative La solution antiseptique est-elle conforme pour sa teneur en permanganate de potassium ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-13}
+\begin{exercice}[3]{Le gonflage d'un coussin de sécurité}
+\begin{docu}{1}{Un gonflage en quelques dizaines de millisecondes}
+Lors d'un choc, un capteur déclenche la décomposition d'un solide qui libère du diazote. Dans les premiers
+générateurs, ce solide était l'azoture de sodium : \ce{2 NaN3(s) -> 2 Na(s) + 3 N2(g)}. Le sodium formé est
+ensuite neutralisé par d'autres réactifs. L'azoture, toxique, a depuis été remplacé dans la plupart des générateurs.
+\end{docu}
+\begin{docu}{2}{Caractéristiques retenues}
+Volume du coussin gonflé : 60 L. Juste après le gonflage, on admet que le diazote est à 80 °C sous une
+pression de \qty{1,20e5}{Pa}.
+\end{docu}
+\begin{donnees}
+$R=\qty{8,314}{J.mol^{-1}.K^{-1}}$ ; $M(\mathrm{Na})=\qty{22,99}{g.mol^{-1}}$ ; $M(\mathrm{N})=\qty{14,01}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Le modèle du gaz parfait est-il adapté pour décrire le diazote du coussin ? Justifier.
+\item Calculer la quantité de diazote contenue dans le coussin gonflé.
+\item \initiative Déterminer la masse d'azoture de sodium que devait contenir le générateur.
+\item Après le choc, le diazote se refroidit à 20 °C. Quelle serait sa pression si le volume restait de 60 L ?
+Pourquoi le coussin se dégonfle-t-il alors par ses évents ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-14}
+\begin{exercice}[3]{De la menthe au laboratoire}
+\begin{docu}{1}{Une oxydation contrôlée}
+Le menthol, extrait de l'huile essentielle de menthe, peut être oxydé en menthone, une cétone utilisée en parfumerie.
+Le produit brut est analysé par spectroscopie infrarouge avant purification.
+\end{docu}
+\schema{02-ex14-menthol}
+\begin{questions}
+\item Recopier les formules topologiques. Entourer et nommer le groupe caractéristique de chaque molécule.
+\item Écrire la formule brute du menthol et celle de la menthone. La transformation modifie-t-elle la chaîne carbonée ?
+\item Attribuer les spectres 1 et 2 au menthol et à la menthone, en justifiant.
+\item \initiative Que peut-on conclure du spectre 3 du produit brut ? Faut-il purifier le produit ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-2-15}
+\begin{exercice}[3]{La salinité de l'eau de mer}
+On cherche à estimer la salinité d'une eau de mer, en la traitant comme une solution de chlorure de sodium.
+On la dilue cent fois et on mesure : $\sigma=\qty{0,712}{mS.cm^{-1}}$. On utilise la même gamme d'étalonnage que
+dans l'exercice 7, modélisée cette fois par une fonction affine.
+\begin{codecote}[0.68]
+\begin{pythoncol}
+import numpy as np
+c = np.array([2.0, 4.0, 6.0, 8.0, 10.0])
+s = np.array([0.246, 0.488, 0.727, 0.962, 1.195])
+a, b = np.polyfit(c, s, 1)
+print(round(a, 4), round(b, 3))
+print(round((0.712 - b) / a, 2))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+0.1186 0.012
+5.9
+\end{consolecol}
+\end{codecote}
+\begin{donnees}
+$M(\ce{NaCl})=\qty{58,44}{g.mol^{-1}}$ ; salinité moyenne des océans : environ 35 g de sels par kilogramme d'eau ;
+$\lambda(\ce{Na+})=5{,}01$ et $\lambda(\ce{Cl-})=7{,}63$ mS$\cdot$m$^2\cdot$mol$^{-1}$.
+\end{donnees}
+\begin{questions}
+\item \capacite{Capacité numérique}Que représentent les deux nombres affichés à la première ligne ? Et la valeur
+affichée à la seconde ligne ?
+\item En déduire la concentration « équivalente en chlorure de sodium » de l'eau de mer, puis sa salinité en g$\cdot$L$^{-1}$.
+\item La loi de Kohlrausch prévoit quelle conductivité pour l'eau de mer non diluée ? Pourquoi fallait-il diluer ?
+\item \initiative Discuter la validité du résultat, sachant que l'eau de mer contient aussi d'autres ions
+(\ce{Mg^2+}, \ce{SO4^2-}, \ce{Ca^2+}, \ce{K+}…).
+\end{questions}
+\end{exercice}
+\end{blocLivre}

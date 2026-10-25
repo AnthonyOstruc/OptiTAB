@@ -1,0 +1,19 @@
+% Mise en page de la passe pédagogique complète.
+\ProvidesPackage{relecture-livre}[2026/10/20 Relecture pedagogique OptiTAB]
+\NewDocumentCommand{\figureLivre}{O{enonce} m}{\figureGeo[#1]{#2}}
+\newcommand{\demarche}[1]{%
+  \par{\otLight\fontsize{9}{12}\selectfont\color{otMuted}#1}\par\vspace{1.4mm}}
+\newsavebox{\otBlocLivreBox}
+\newlength{\otBlocEspacement}
+\setlength{\otBlocEspacement}{4mm}
+\newenvironment{blocLivre}[1]{%
+  \def\otBlocLivreId{#1}%
+  \par\addvspace{\otBlocEspacement}\noindent
+  \begin{lrbox}{\otBlocLivreBox}\begin{minipage}{\linewidth}%
+}{%
+  \end{minipage}\end{lrbox}%
+  \ifdim\dimexpr\ht\otBlocLivreBox+\dp\otBlocLivreBox\relax>\textheight
+    \PackageError{relecture-livre}{Bloc trop haut : \otBlocLivreId}{Repartir son contenu avant de livrer.}%
+  \fi
+  \typeout{OTBLOC|\otBlocLivreId|\the\dimexpr\ht\otBlocLivreBox+\dp\otBlocLivreBox\relax}%
+  \noindent\usebox{\otBlocLivreBox}\par}

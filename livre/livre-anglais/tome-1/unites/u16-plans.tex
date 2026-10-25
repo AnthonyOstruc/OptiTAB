@@ -1,0 +1,454 @@
+%% =====================================================================
+%%  Unit 16 — My plans  (Parler de ses projets)
+%%  Pistes : 16.01–16.04 dialogues · 16.05–16.06 vocabulaire · 16.07–16.08 grammaire
+%%           16.09 prononciation · 16.10–16.13 exercices (textes en annexe)
+%% =====================================================================
+
+\newcommand{\otIllusUnXVI}{\otIllusDuo{trip/104/86/15/0.10,summer/190/92/20/0.09,vacation/122/14/13/0.08,
+  soon/150/8/11/0.08,travel/196/22/12/0.07,next/100/50/12/0.07}{emma}{What are you going to do?}{lea}{I'm going to travel!}}
+
+% Carte schématique de la Route 66 (exercice 6)
+\newcommand{\otRouteSoixanteSix}{%
+  \begin{tikzpicture}[x=1mm,y=1mm,font=\fontsize{8.4}{10}\selectfont]
+    \fill[otNavyTint,rounded corners=2mm] (-4,-4) rectangle (162,40);
+    \fill[otNavy!12] (-4,-4) -- (-4,40) -- (2,40) .. controls (4,28) and (0,14) .. (3,-4) -- cycle;
+    \node[rotate=90,text=otNavy!60,font=\otSemi\fontsize{6.4}{8}\selectfont] at (-0.8,18) {\enb{PACIFIC OCEAN}};
+    \draw[otOrange,line width=2.2pt,line cap=round,line join=round]
+      (8,10) .. controls (18,12) and (24,16) .. (32,18) .. controls (42,20) and (48,15) .. (55,15)
+      .. controls (64,15) and (70,13) .. (78,13) .. controls (86,13) and (92,11) .. (98,12)
+      .. controls (110,14) and (120,17) .. (128,20) .. controls (136,23) and (144,28) .. (150,30);
+    \foreach \x/\y/\v/\a in {8/10/Los Angeles/below,32/18/Flagstaff/below,55/15/Albuquerque/below,
+      78/13/Amarillo/below,98/12/Oklahoma City/below,128/20/St.\ Louis/below,150/30/Chicago/above}{%
+      \fill[white,draw=otOrangeDark,line width=0.9pt] (\x,\y) circle (1.5);
+      \node[\a=1.6mm,text=otInk] at (\x,\y) {\enb{\v}};}
+    \otDessinIcone{etoile}{otGreenDark}{otNavyTint}{6mm}{(36,31)}
+    \node[right,text=otGreenDark,font=\otSemi\fontsize{8}{10}\selectfont] at (39,31) {\enb{Grand Canyon}};
+    \draw[otGreenDark,dashed,line width=0.5pt] (35,28.5) -- (32.6,19.8);
+    \node[draw=otInk,fill=white,line width=0.8pt,rounded corners=1mm,inner sep=1.2mm,
+      font=\otBold\fontsize{9}{10}\selectfont] at (113,33) {\enb{ROUTE 66}};
+    \node[text=otMuted,font=\fontsize{7.4}{9}\selectfont] at (113,26.5) {\enb{2,448 miles · 3,940 km}};
+  \end{tikzpicture}}
+
+\unite{16}{My plans}{Parler de ses projets}{otIllusUnXVI}
+
+\situation{Épisode 16}{Mi-décembre. À l'approche des fêtes, chacun parle de ses projets au studio :
+Emma rentre à Londres, et les parents de Léa vont venir la voir à New York ! Le soir, au café, Jack
+raconte à Sam le grand voyage qu'il prépare pour l'été.}
+
+\begin{objectifs}
+\item parler de vos projets et de vos intentions avec \en{be going to} ;
+\item poser des questions sur les projets des autres ;
+\item situer une action dans le futur : \en{tomorrow}, \en{next week}, \en{in two weeks}… ;
+\item parler de voyages et de vacances ;
+\item comprendre l'anglais parlé : \en{gonna}, \en{wanna}.
+\end{objectifs}
+
+\auprogramme
+  {Parler de ses projets et de ses intentions}
+  {\en{be going to}\par\vspace{0.6mm}Les expressions du futur}
+  {Voyages, vacances, projets : 24 expressions}
+  {\en{gonna}, \en{wanna} : l'anglais parlé}
+  {Le \en{road trip} américain}
+
+\semaine{casque/otNavy/Dialogues/Écouter et lire les deux scènes,
+  bulle/otGreenDark/Vocabulaire/Apprendre les 24 expressions,
+  blocs/otViolet/Grammaire/be going to et le futur,
+  sons/otOrangeDark/Sons et culture/gonna et le road trip,
+  crayon/otNavy/Exercices/12 exercices corrigés,
+  coche/otGreenDark/Bilan/L'essentiel et le test express}
+
+\clearpage
+%% ---------------------------------------------------------------------
+\rubrique{ecouter}{Projets de vacances}
+
+\begin{dialogue}{1}{What are you going to do?}{Vendredi 12 décembre, au studio. Dernière réunion avant
+  les vacances de Noël.}{16.01}{16.02}
+\dit{emma}{So, Léa, \hl{what are you going to do} for Christmas?\note{1}}{Alors, Léa, qu'est-ce que tu vas faire pour Noël ?}
+\dit{lea}{\hl{My parents are going to visit} me! They arrive on December twentieth.}{Mes parents vont venir me voir ! Ils arrivent le 20 décembre.}
+\dit{emma}{That's wonderful! \hl{Are you going to show} them the city?}{C'est merveilleux ! Tu vas leur faire visiter la ville ?}
+\dit{lea}{Yes! We're going to see the big Christmas tree, and \hl{we're going to go} ice skating.}{Oui ! On va voir le grand sapin de Noël, et on va faire du patin à glace.}
+\dit{jack}{And you, Emma? \hl{Are you going to fly} to London?}{Et toi, Emma ? Tu vas prendre l'avion pour Londres ?}
+\dit{emma}{\hl{Yes, I am}. I'm going to spend two weeks with my family.\note{2}}{Oui. Je vais passer deux semaines avec ma famille.}
+\dit{lea}{What about you, Jack?}{Et toi, Jack ?}
+\dit{jack}{\hl{I'm not going to travel}. I'm going to stay home… and sleep!\note{3}}{Je ne vais pas voyager. Je vais rester chez moi… et dormir !}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{1} \en{\textbf{What are you going to do?}} \en{be going to} + base verbale exprime un
+  \textbf{projet}, une intention : c'est le futur proche du français (« je vais… »).
+\pointnote{2} \en{\textbf{Yes, I am.}} La réponse courte reprend \en{be} : \en{Yes, I am} / \en{No,
+  I'm not}.
+\pointnote{3} \en{\textbf{I'm not going to travel.}} Négation : \en{be} + \en{not} + \en{going to} +
+  base verbale.
+\end{comprendre}
+
+\begin{dialogue}{2}{A road trip}{Le soir, au café où travaille Sam. Jack a étalé une carte des
+  États-Unis sur le comptoir.}{16.03}{16.04}
+\dit{sam}{Hey, that's a big map! What's the plan?}{Hé, c'est une grande carte, ça ! C'est quoi, le projet ?}
+\dit{jack}{\hl{Next summer}, I'm going to drive across America, on Route 66!\note{4}}{L'été prochain, je vais traverser l'Amérique en voiture, par la Route 66 !}
+\dit{sam}{From Chicago to Los Angeles? That's crazy! \hl{How long is it going to take}?}{De Chicago à Los Angeles ? C'est fou ! Ça va prendre combien de temps ?}
+\dit{jack}{About three weeks. \hl{I'm gonna rent} a car and sleep in motels.\note{5}}{Environ trois semaines. Je vais louer une voiture et dormir dans des motels.}
+\dit{sam}{Are you going to see the Grand Canyon?}{Tu vas voir le Grand Canyon ?}
+\dit{jack}{Of course! It's \hl{on the way}.}{Bien sûr ! C'est sur la route.}
+\dit{sam}{Hey, can I come with you? \hl{I wanna see} the desert!}{Hé, je peux venir avec toi ? Je veux voir le désert !}
+\dit{jack}{Sure! But you're going to pay for the gas!}{Bien sûr ! Mais c'est toi qui vas payer l'essence !}
+\end{dialogue}
+
+\begin{comprendre}
+\pointnote{4} \en{\textbf{Next summer}} Les expressions du futur se placent en début ou en fin de
+  phrase : \en{next summer}, \en{next week}, \en{tomorrow}. Attention : pas de \en{the} devant \en{next}.
+\pointnote{5} \en{\textbf{I'm gonna rent…}} À l'oral, \en{going to} se prononce souvent \en{gonna}, et
+  \en{want to}, \en{wanna}. On les entend partout, mais on ne les écrit pas (sauf dans un texto).
+\end{comprendre}
+
+%% ---------------------------------------------------------------------
+\rubrique{mots}{Les mots de l'unité}
+
+Voici les 24 expressions de l'unité. En américain, les vacances se disent \en{vacation} ; au
+Royaume-Uni, \en{holiday}.
+
+\begin{vocabulaire}{Voyages et vacances}{16.05}
+\categorie{Voyager}
+\mot{a trip}{ə ˈtrɪp}{un voyage}
+\mot{travel}{ˈtrævəl}{voyager}
+\mot{a vacation}{ə veɪˈkeɪʃən}{des vacances \registre{américain}}
+\mot{visit}{ˈvɪzɪt}{rendre visite à ; visiter}
+\mot{stay}{steɪ}{rester, séjourner}
+\mot{fly}{flaɪ}{prendre l'avion, voler}
+\mot{a flight}{ə ˈflaɪt}{un vol}
+\mot{rent a car}{ˌrent ə ˈkɑːr}{louer une voiture}
+\categorie{Préparer son voyage}
+\mot{a suitcase}{ə ˈsuːtkeɪs}{une valise}
+\mot{pack}{pæk}{faire ses bagages}
+\mot{the beach}{ðə ˈbiːtʃ}{la plage}
+\mot{the mountains}{ðə ˈmaʊntənz}{la montagne}
+\mot{go camping}{ˌɡoʊ ˈkæmpɪŋ}{faire du camping}
+\end{vocabulaire}
+
+\begin{vocabulaire}{Parler de l'avenir}{16.06}
+\categorie{Quand ?}
+\mot{tomorrow}{təˈmɑːroʊ}{demain}
+\mot{this weekend}{ðɪs ˈwiːkend}{ce week-end}
+\mot{next month}{ˌnekst ˈmʌnθ}{le mois prochain}
+\mot{next year}{ˌnekst ˈjɪr}{l'année prochaine}
+\mot{in two weeks}{ɪn ˌtuː ˈwiːks}{dans deux semaines}
+\mot{soon}{suːn}{bientôt}
+\mot{one day}{ˌwʌn ˈdeɪ}{un jour}
+\categorie{Les projets}
+\mot{a plan}{ə ˈplæn}{un projet}
+\mot{What are you going to do?}{ˌwʌt ɑːr juː ˌɡoʊɪŋ tə ˈduː}{Qu'est-ce que tu vas faire ?}
+\mot{I'm going to travel.}{aɪm ˌɡoʊɪŋ tə ˈtrævəl}{Je vais voyager.}
+\mot{I'm not going to work.}{aɪm ˌnɑːt ˌɡoʊɪŋ tə ˈwɝːk}{Je ne vais pas travailler.}
+\end{vocabulaire}
+
+%% ---------------------------------------------------------------------
+\rubrique[be going to]{grammaire}{\en{be going to} : parler de ses projets}
+
+\otIntertitre[otViolet]{1 · \en{be going to} + base verbale}
+\begin{center}\otTableau
+\begin{tabular}{@{}l@{\hspace{8mm}}>{\enOn}l<{\enOff}@{\hspace{8mm}}l@{}}
+\otTH{Forme} & \otTH{Exemple} & \otTH{Français}\\\midrule
+affirmation      & I'\textbf{m going to} travel. / She'\textbf{s going to} travel. & je vais voyager…\\
+négation         & I'\textbf{m not going to} work. / They \textbf{aren't going to} work. & je ne vais pas…\\
+question         & \textbf{Are} you \textbf{going to} fly? / What \textbf{is} he \textbf{going to} do? & tu vas… ?\\
+réponses courtes & Yes, I \textbf{am}. / No, she \textbf{isn't}. & oui / non\\\bottomrule
+\end{tabular}\end{center}
+
+\begin{regle}[Quand l'employer ?]
+\begin{etapes}
+\item Pour un \textbf{projet} déjà décidé : \en{I'm going to visit my parents next week.}
+\item Pour une prévision évidente, quand on voit les signes : \en{Look at the clouds! It's going to rain.}
+\item \en{be} change avec le sujet ; \en{going to} ne change jamais ; le verbe reste à la base verbale.
+\end{etapes}
+\end{regle}
+
+\blocaudio{16.07}{Écoutez et répétez}{Six phrases avec \en{be going to}.}
+
+\otIntertitre[otViolet]{2 · Les expressions du futur}
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\enOn}l<{\enOff}@{\hspace{6mm}}l@{\hspace{14mm}}>{\enOn}l<{\enOff}@{\hspace{6mm}}l@{}}
+\otTH{Anglais} & \otTH{Français} & \otTH{Anglais} & \otTH{Français}\\\midrule
+tonight      & ce soir           & next week           & la semaine prochaine\\
+tomorrow     & demain            & next summer         & l'été prochain\\
+this weekend & ce week-end       & in two weeks        & dans deux semaines\\
+soon         & bientôt           & one day             & un jour\\\bottomrule
+\end{tabular}\end{center}
+
+\blocaudio{16.08}{Écoutez et répétez}{Une question sur les projets, puis sa réponse.}
+
+\begin{attention}[Les pièges des francophones]
+\fauxjuste{I going to travel.}{I'm going to travel.}
+\fauxjuste{I'm going travel.}{I'm going to travel.}
+\fauxjuste{She's going to visits Boston.}{She's going to visit Boston.}
+\fauxjuste{the next week}{next week}
+\fauxjuste{I go to travel next summer.}{I'm going to travel next summer.}
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique[gonna et wanna]{sons}{\en{gonna}, \en{wanna} : l'anglais parlé}
+
+Dans la conversation, les Américains « avalent » certains mots. \en{going to} devient \en{gonna}
+\phon{ˈɡʌnə}, \en{want to} devient \en{wanna} \phon{ˈwɑːnə}, \en{got to} devient \en{gotta}
+\phon{ˈɡɑːtə}. Ce n'est pas de l'anglais incorrect : c'est l'anglais parlé de tous les jours. Il
+faut savoir le reconnaître ; à l'écrit, gardez toujours la forme complète.
+
+\begin{phrases}{16.09}{Écoutez la forme parlée et répétez-la. La forme écrite est indiquée en gras.}
+\phrase[I'm gonna travel.]{I'm going to travel.}{à l'oral : \en{I'm gonna travel}}
+\phrase[What are you gonna do?]{What are you going to do?}{à l'oral : \en{What are you gonna do?}}
+\phrase[We're gonna be late!]{We're going to be late!}{à l'oral : \en{We're gonna be late!}}
+\phrase[I wanna go home.]{I want to go home.}{à l'oral : \en{I wanna go home}}
+\phrase[Do you wanna come?]{Do you want to come?}{à l'oral : \en{Do you wanna come?}}
+\phrase[I gotta go!]{I've got to go!}{à l'oral : \en{I gotta go!} (« je dois y aller »)}
+\end{phrases}
+
+\begin{attention}[À l'oral seulement]
+\en{gonna} ne remplace \en{going to} que devant un verbe : \en{I'm gonna travel}. Quand on dit où l'on
+va, on garde \en{going to} : \en{I'm going to London} (jamais \en{I'm gonna London}).
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique{culture}{Le road trip américain}
+
+\begin{culture}[La Route 66]
+Ouverte en 1926, la Route 66 reliait Chicago à Los Angeles sur 2\,448 miles, soit près de
+4\,000\,km. Les Américains l'appellent \en{the Mother Road} ou \en{the Main Street of America}.
+Remplacée par les autoroutes en 1985, elle reste le rêve des amateurs de \en{road trip} : motels aux
+enseignes au néon, \en{diners} des années cinquante et paysages de désert.
+\end{culture}
+
+\begin{paire}
+\begin{culture}[Les parcs nationaux]
+Le premier parc national du monde, Yellowstone, a été créé aux États-Unis en 1872. Le pays en compte
+aujourd'hui 63, dont le Grand Canyon, en Arizona, profond de plus de 1\,800 mètres.
+\end{culture}
+\begin{culture}[Miles et gallons]
+Sur la route, les distances sont en \en{miles} (1 mile ≈ 1,6\,km) et la vitesse en \en{miles per
+hour} : 65\,mph ≈ 105\,km/h. L'essence (\en{gas}) se vend au \en{gallon} (≈ 3,8 litres).
+\end{culture}
+\end{paire}
+
+%% ---------------------------------------------------------------------
+\rubrique{pratique}{Exercices}
+
+\exercice[ecrire,niveau=1]{En voyage}{Écrivez l'expression anglaise.}
+\begin{questions}[2][french]
+\item un voyage → \enb{\trou[34mm]{a trip}}
+\item louer une voiture → \enb{\trou[34mm]{rent a car}}
+\item une valise → \enb{\trou[34mm]{a suitcase}}
+\item prendre l'avion → \enb{\trou[34mm]{fly}}
+\item des vacances (US) → \enb{\trou[34mm]{a vacation}}
+\item faire ses bagages → \enb{\trou[34mm]{pack}}
+\item la plage → \enb{\trou[34mm]{the beach}}
+\item bientôt → \enb{\trou[34mm]{soon}}
+\end{questions}
+
+\exercice[ecrire,niveau=1]{\en{be going to}}{Complétez avec \en{be going to} et le verbe entre
+parenthèses.}
+\begin{anglais}
+\begin{questions}
+\item Emma \trou[46mm]{is going to fly} to London. \hfill (fly)
+\item Léa's parents \trou[46mm]{are going to visit} New York. \hfill (visit)
+\item We \trou[46mm]{are going to rent} a car. \hfill (rent)
+\item Jack \trou[46mm]{isn't going to work} on Christmas Day. \hfill (not work)
+\item They \trou[46mm]{aren't going to take} the bus. \hfill (not take)
+\item \trou[46mm]{Are you going to travel} this summer? \hfill (you / travel)
+\item What \trou[46mm]{is Sam going to do} tonight? \hfill (Sam / do)
+\end{questions}
+\end{anglais}
+
+\exercice[lire,ecrire,niveau=2]{L'agenda de Léa}{Voici le programme de Léa pendant les vacances.
+Répondez aux questions par une réponse courte ou une phrase complète.}
+\begin{center}
+\begin{tcolorbox}[enhanced,width=128mm,colback=white,colframe=otRule,boxrule=0.6pt,arc=2mm,
+  left=4mm,right=4mm,top=3mm,bottom=3mm,
+  title={\otSemi\fontsize{9}{11}\selectfont\enb{Léa's holiday plans}},coltitle=white,colbacktitle=otGreenDark,
+  fonttitle=\otSemi,attach boxed title to top left={xshift=4mm,yshift=-2.5mm},boxed title style={arc=1mm,boxrule=0pt}]
+\vspace{2mm}\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{@{}>{\otSemi\fontsize{9}{11}\selectfont\color{otGreenDark}\enOn}l<{\enOff}@{\hspace{6mm}}>{\enOn}l<{\enOff}@{}}
+Sat., Dec. 20 & Mom and Dad arrive at JFK airport, 5 p.m.\\
+Sun., Dec. 21 & Rockefeller Center: the Christmas tree + ice skating\\
+Wed., Dec. 24 & Christmas Eve: dinner at Mrs.\ Lopez's apartment\\
+Sat., Dec. 27 & The Museum of Modern Art with Jack's sister Kate\\
+Wed., Dec. 31 & New Year's Eve in Times Square!\\
+\end{tabular}
+\end{tcolorbox}
+\end{center}
+\begin{anglais}
+\begin{questions}
+\item Are Léa's parents going to arrive on December 20th? \hfill \trou[50mm]{Yes, they are.}
+\item Are they going to arrive in the morning? \hfill \trou[50mm]{No, they aren't.}
+\item Is Léa going to go ice skating on December 24th? \hfill \trou[50mm]{No, she isn't.}
+\item Where are they going to have dinner on Christmas Eve? \hfill \trou[50mm]{At Mrs. Lopez's apartment.}
+\item Where are they going to be on December 31st? \hfill \trou[50mm]{In Times Square.}
+\end{questions}
+\end{anglais}
+
+\exercice[ecrire,niveau=2]{Posez la question}{Écrivez la question avec \en{be going to}.}
+\begin{questions}
+\item \en{you} / \en{travel} / \en{this summer} \hfill \enb{\trou[76mm]{Are you going to travel this summer?}}
+\item \en{Emma} / \en{fly} / \en{to London} \hfill \enb{\trou[76mm]{Is Emma going to fly to London?}}
+\item \en{what} / \en{you} / \en{do} / \en{tomorrow} \hfill \enb{\trou[76mm]{What are you going to do tomorrow?}}
+\item \en{where} / \en{they} / \en{stay} \hfill \enb{\trou[76mm]{Where are they going to stay?}}
+\item \en{Jack} / \en{rent} / \en{a car} \hfill \enb{\trou[76mm]{Is Jack going to rent a car?}}
+\end{questions}
+
+\exercice[ecrire,niveau=2]{Dans l'ordre}{Remettez les mots dans l'ordre pour former une phrase.}
+\begin{anglais}
+\begin{questions}[1][english]
+\item \etiq{going} \etiq{I'm} \etiq{travel} \etiq{to} \etiq{.}\hfill\trou[66mm]{I'm going to travel.}
+\item \etiq{summer} \etiq{she's} \etiq{to} \etiq{next} \etiq{going} \etiq{fly} \etiq{.}\hfill\trou[66mm]{She's going to fly next summer.}
+\item \etiq{not} \etiq{we're} \etiq{to} \etiq{going} \etiq{work} \etiq{.}\hfill\trou[66mm]{We're not going to work.}
+\item \etiq{you} \etiq{going} \etiq{are} \etiq{stay} \etiq{to} \etiq{?}\hfill\trou[66mm]{Are you going to stay?}
+\item \etiq{weeks} \etiq{in} \etiq{two} \etiq{see} \etiq{you} \etiq{!}\hfill\trou[66mm]{See you in two weeks!}
+\end{questions}
+\end{anglais}
+
+\exercice[lire,niveau=2]{Le grand projet de Jack}{Jack envoie son itinéraire à Sam. Lisez le message et
+la carte, puis indiquez si chaque phrase est vraie (V) ou fausse (F).}
+\begin{center}\otRouteSoixanteSix\end{center}
+\begin{anglais}
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,fontupper=\fontsize{10.6}{14.2}\selectfont]
+Hi Sam! Here's my plan. I'm going to start in Chicago on June 15th. I'm going to drive about 300
+miles a day, and I'm going to stop in St.\ Louis, Oklahoma City and Albuquerque. In Arizona, I'm going
+to see the Grand Canyon. I'm not going to sleep in hotels: I'm going to stay in motels, and I'm going
+to camp in the national parks. The trip is going to take three weeks, and I'm going to finish in Los
+Angeles… on the beach! Are you going to come with me? — Jack
+\end{tcolorbox}
+\begin{questions}[2]
+\item Jack is going to start in Los Angeles. \hfill\trou[9mm]{F}
+\item He's going to drive about 300 miles a day. \hfill\trou[9mm]{V}
+\item He's going to see the Grand Canyon. \hfill\trou[9mm]{V}
+\item He's going to sleep in hotels. \hfill\trou[9mm]{F}
+\item The trip is going to take three months. \hfill\trou[9mm]{F}
+\item He's going to finish on the beach. \hfill\trou[9mm]{V}
+\end{questions}
+\end{anglais}
+
+\exercice[ecouter,niveau=1,piste=16.10]{Maintenant ou plus tard ?}{Écoutez chaque phrase, dite deux
+fois. Parle-t-on d'une action en cours (maintenant) ou d'un projet (plus tard) ? Cochez.}
+\begin{questions}[3]
+\item \choix{maintenant}\quad\choix{plus tard}
+\item \choix{maintenant}\quad\choix{plus tard}
+\item \choix{maintenant}\quad\choix{plus tard}
+\item \choix{maintenant}\quad\choix{plus tard}
+\item \choix{maintenant}\quad\choix{plus tard}
+\item \choix{maintenant}\quad\choix{plus tard}
+\end{questions}
+
+\exercice[ecouter,ecrire,niveau=2,piste=16.11]{Les projets de chacun}{Quatre personnes parlent de
+leurs projets pour les vacances. Associez chaque personne à son projet : écrivez la lettre.}
+\begin{anglais}
+\noindent\begin{minipage}[t]{0.40\linewidth}
+\begin{questions}[1][english]
+\item Emma \hfill\trou[9mm]{c}
+\item Sam \hfill\trou[9mm]{a}
+\item Mrs.\ Lopez \hfill\trou[9mm]{d}
+\item Maya \hfill\trou[9mm]{b}
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.54\linewidth}
+\begin{questions}[1][english]
+\item[a.] play concerts with a band
+\item[b.] go skiing in Vermont
+\item[c.] see her family in London
+\item[d.] cook for twelve people
+\item[e.] go to the beach in Florida
+\end{questions}
+\end{minipage}
+\end{anglais}
+
+\exercice[ecouter,ecrire,niveau=2,piste=16.12]{Dictée à trous}{Mrs.\ Lopez parle avec Léa dans
+l'escalier. Écoutez et complétez.}
+\begin{anglais}
+\noindent\begin{tabular}{@{}l@{\hspace{6mm}}l@{}}
+\otNomDit{lopez} & Léa, what are you \trou{going} to do for Christmas?\\[1.8mm]
+\otNomDit{lea}   & My parents are going to \trou{visit} me!\\[1.8mm]
+\otNomDit{lopez} & How nice! How \trou{long} are they going to stay?\\[1.8mm]
+\otNomDit{lea}   & Two \trou{weeks}. They're going to \trou{fly} back on January third.\\[1.8mm]
+\otNomDit{lopez} & Are they going to \trou{stay} with you?\\[1.8mm]
+\otNomDit{lea}   & No, they \trou{aren't}. They're going to stay in a \trou{hotel}.\\
+\end{tabular}
+\end{anglais}
+
+\exercice[ecrire,niveau=2]{Traduisez}{Traduisez en anglais.}
+\begin{questions}[1][french]
+\item Qu'est-ce que tu vas faire ce week-end ?\lignes{1}
+\item Je vais rendre visite à mes parents.\lignes{1}
+\item Nous n'allons pas prendre l'avion.\lignes{1}
+\item Tu vas louer une voiture ? — Oui. \textit{(réponse courte)}\lignes{1}
+\item L'été prochain, ils vont faire du camping.\lignes{1}
+\item Elle va arriver dans deux semaines.\lignes{1}
+\item Regarde ces nuages ! Il va pleuvoir.\lignes{1}
+\item Un jour, je vais voir le Grand Canyon.\lignes{1}
+\end{questions}
+
+\exercice[ecrire,niveau=3]{Mes projets}{En six phrases, présentez vos projets pour l'année prochaine :
+un voyage, un projet personnel, ce que vous n'allez pas faire.}
+\lignes{6}
+
+\exercice[ecouter,parler,niveau=3,piste=16.13]{À vous de parler !}{Emma vous interroge sur vos projets.
+Répondez \textbf{à voix haute} pendant chaque pause.}
+\begin{center}\otTableau
+\begin{tabular}{@{}>{\otSemi\fontsize{8.6}{10}\selectfont\color{otNavy}}l@{\hspace{3mm}}>{\enOn}p{70mm}<{\enOff}@{\hspace{6mm}}p{78mm}@{}}
+ & \otTH{Emma dit\ldots} & \otTH{Vous\ldots}\\\midrule
+1. & What are you going to do this weekend? & dites deux choses que vous allez faire.\\
+2. & Are you going to travel next summer? & répondez et dites où.\\
+3. & How are you going to travel? & dites comment (avion, voiture, train).\\
+4. & Are you going to work tomorrow? & répondez par une réponse courte.\\
+5. & Great! Do you wanna have a coffee? & acceptez.\\\bottomrule
+\end{tabular}\end{center}
+
+%% ---------------------------------------------------------------------
+\rubrique{bilan}{Faites le point}
+
+\begin{essentiel}
+\begin{minipage}[t]{0.54\linewidth}
+\otEssTitre{Les phrases clés}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}>{\enOn\otSemi\fontsize{9.4}{11}\selectfont}l<{\enOff}@{\hspace{3mm}}>{\fontsize{9.2}{11}\selectfont\color{white!78!otNavy}}l@{}}
+What are you going to do?    & Qu'est-ce que tu vas faire ?\\
+I'm going to travel.         & Je vais voyager.\\
+I'm not going to work.       & Je ne vais pas travailler.\\
+Are you going to fly?        & Tu vas prendre l'avion ?\\
+Yes, I am. / No, I'm not.    & Oui. / Non.\\
+See you next week!           & À la semaine prochaine !\\
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.41\linewidth}
+\otEssTitre{\en{be going to}}
+{\fontsize{9.2}{11.6}\selectfont \en{am / is / are} + \en{going to} + base verbale : projet, intention,
+prévision évidente\par}
+\otEssTitre{Le futur}
+{\fontsize{9.2}{11.6}\selectfont \en{tomorrow} · \en{next week} (sans \en{the}) · \en{in two weeks} ·
+\en{soon}\par}
+\otEssTitre{À l'oral}
+{\fontsize{9.2}{11.6}\selectfont \en{going to} → \en{gonna} · \en{want to} → \en{wanna}\par}
+\end{minipage}
+\end{essentiel}
+
+\begin{jesais}
+\item parler de mes projets avec \en{be going to} ;
+\item poser des questions sur les projets des autres et y répondre ;
+\item employer les expressions du futur (\en{tomorrow}, \en{next week}…) ;
+\item parler de voyages et de vacances ;
+\item reconnaître \en{gonna} et \en{wanna} à l'oral ;
+\item présenter le \en{road trip} américain et la Route 66.
+\end{jesais}
+
+\clearpage
+\begin{testexpress}
+\qcm[c]{« Je vais voyager » se dit :}{\en{I go to travel.}}{\en{I going to travel.}}{\en{I'm going to travel.}}
+\qcm[a]{« Tu vas louer une voiture ? » se dit :}{\en{Are you going to rent a car?}}{\en{Do you going to rent a car?}}{\en{You are going rent a car?}}
+\qcm[b]{\en{Is she going to fly?} — Réponse négative :}{\en{No, she doesn't.}}{\en{No, she isn't.}}{\en{No, she not.}}
+\qcm[b]{« la semaine prochaine » se dit :}{\en{the next week}}{\en{next week}}{\en{the week next}}
+\qcm[c]{« dans deux semaines » se dit :}{\en{since two weeks}}{\en{two weeks ago}}{\en{in two weeks}}
+\qcm[a]{« Il va pleuvoir » (on voit les nuages) se dit :}{\en{It's going to rain.}}{\en{It goes to rain.}}{\en{It's raining.}}
+\qcm[c]{À l'oral, \en{I'm going to travel} devient souvent :}{\en{I'm wanna travel.}}{\en{I'm gotta travel.}}{\en{I'm gonna travel.}}
+\qcm[b]{« des vacances », en américain, se dit :}{\en{holidays}}{\en{a vacation}}{\en{a congé}}
+\qcm[a]{La Route 66 relie :}{Chicago et Los Angeles}{New York et Boston}{Miami et Seattle}
+\qcm[c]{Un \en{mile} fait environ :}{500 mètres}{1 kilomètre}{1,6 kilomètre}
+\end{testexpress}
+
+\noindent{\fontsize{9.6}{12}\selectfont\color{otMuted}Niveau visé (CECRL, niveau A1) : « peut parler
+de ses projets en termes simples ». Les corrigés de l'unité sont page~\pageref{cor-u16-1} ; les textes
+des pistes d'exercices, page~\pageref{trans-16.10}.\par}

@@ -1,0 +1,488 @@
+%% =====================================================================
+%%  objets.sty — bibliothèque d'illustrations vectorielles OptiTAB Maternelle
+%%  Chaque objet est un « pic » TikZ tenant dans un carré d'environ 1 x 1,
+%%  centré sur l'origine. Couleur principale : mat/c ; secondaire : mat/c2.
+%% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{objets}[2026/10/23 Illustrations OptiTAB Maternelle]
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,calc,shapes.geometric,decorations.pathmorphing}
+
+\definecolor{matTrait}{HTML}{2B2F45}
+\definecolor{matRouge}{HTML}{E8574B}
+\definecolor{matOrange}{HTML}{F2A33A}
+\definecolor{matJaune}{HTML}{F6D04D}
+\definecolor{matVert}{HTML}{6BBF59}
+\definecolor{matVertFonce}{HTML}{3F8F3A}
+\definecolor{matBleu}{HTML}{4A90D9}
+\definecolor{matCiel}{HTML}{BFE3F7}
+\definecolor{matViolet}{HTML}{9B6BC9}
+\definecolor{matRose}{HTML}{F28DB2}
+\definecolor{matBrun}{HTML}{A9744F}
+\definecolor{matGris}{HTML}{9AA3B2}
+\definecolor{matPeau}{HTML}{F6CFA8}
+\definecolor{matCreme}{HTML}{FFF6E0}
+
+\tikzset{
+  % Les couleurs passées aux illustrations peuvent être des mélanges (matBrun!80) :
+  % on les fige sous un nom simple pour pouvoir les teinter ensuite (\matC!50).
+  mat/c/.code={\colorlet{matCouleurA}{#1}\def\matC{matCouleurA}}, mat/c=matRouge,
+  mat/c2/.code={\colorlet{matCouleurB}{#1}\def\matCC{matCouleurB}}, mat/c2=matVert,
+  mat/n/.store in=\matN, mat/n=1,
+  mat/l/.store in=\matL, mat/l=3,
+  mat contour/.style={line width=1.1pt,draw=matTrait,line join=round,line cap=round},
+  mat fin/.style={line width=.7pt,draw=matTrait,line join=round,line cap=round},
+  mat reflet/.style={fill=white,opacity=.55},
+}
+
+%% ----------------------------------------------------------------- fruits
+\tikzset{pics/pomme/.style={code={
+  \draw[mat fin,fill=matVert] (0.04,0.40) .. controls (0.12,0.60) and (0.34,0.62) .. (0.42,0.52) .. controls (0.32,0.40) and (0.14,0.38) .. cycle;
+  \draw[mat contour,fill=\matC] (0,0.30) .. controls (-0.12,0.42) and (-0.50,0.42) .. (-0.48,0.02) .. controls (-0.46,-0.34) and (-0.22,-0.50) .. (0,-0.42) .. controls (0.22,-0.50) and (0.46,-0.34) .. (0.48,0.02) .. controls (0.50,0.42) and (0.12,0.42) .. cycle;
+  \draw[mat contour] (0,0.30) .. controls (0.01,0.40) .. (0.07,0.52);
+  \fill[mat reflet] (-0.28,0.10) ellipse (0.06 and 0.12);
+}}}
+\tikzset{pics/poire/.style={code={
+  \draw[mat contour,fill=\matC] (0,0.46) .. controls (-0.14,0.46) and (-0.16,0.20) .. (-0.24,0.06) .. controls (-0.42,-0.14) and (-0.40,-0.48) .. (0,-0.48) .. controls (0.40,-0.48) and (0.42,-0.14) .. (0.24,0.06) .. controls (0.16,0.20) and (0.14,0.46) .. (0,0.46) -- cycle;
+  \draw[mat contour] (0,0.46) -- (0.04,0.58);
+  \draw[mat fin,fill=matVert] (0.04,0.54) .. controls (0.14,0.66) and (0.30,0.62) .. (0.32,0.56) .. controls (0.22,0.50) and (0.10,0.50) .. cycle;
+  \fill[mat reflet] (-0.18,-0.12) ellipse (0.05 and 0.11);
+}}}
+\tikzset{pics/fraise/.style={code={
+  \draw[mat contour,fill=\matC] (0,-0.50) .. controls (-0.30,-0.30) and (-0.44,0.02) .. (-0.40,0.20) .. controls (-0.34,0.38) and (0.34,0.38) .. (0.40,0.20) .. controls (0.44,0.02) and (0.30,-0.30) .. cycle;
+  \foreach \x/\y in {-0.18/0.10,0/0.14,0.18/0.10,-0.10/-0.08,0.10/-0.08,0/-0.26,-0.24/-0.06,0.24/-0.06}{\fill[matJaune!70!white] (\x,\y) ellipse (0.025 and 0.04);}
+  \draw[mat fin,fill=matVert] (-0.30,0.28) -- (-0.12,0.24) -- (-0.08,0.40) -- (0,0.26) -- (0.08,0.40) -- (0.12,0.24) -- (0.30,0.28) -- (0.10,0.36) -- (0,0.50) -- (-0.10,0.36) -- cycle;
+}}}
+\tikzset{pics/banane/.style={code={
+  \draw[mat contour,fill=matJaune] (-0.46,0.30) .. controls (-0.40,-0.30) and (0.20,-0.46) .. (0.48,-0.06) .. controls (0.30,-0.18) and (-0.16,-0.12) .. (-0.34,0.34) -- cycle;
+  \draw[mat contour,fill=matBrun] (-0.46,0.30) -- (-0.48,0.38) -- (-0.36,0.40) -- (-0.34,0.34);
+}}}
+\tikzset{pics/carotte/.style={code={
+  \draw[mat contour,fill=matOrange] (-0.14,0.30) -- (0.14,0.30) .. controls (0.12,0.0) and (0.04,-0.30) .. (0,-0.50) .. controls (-0.04,-0.30) and (-0.12,0.0) .. cycle;
+  \draw[mat fin] (-0.08,0.10) -- (0.0,0.10) (0.0,-0.10) -- (0.07,-0.10);
+  \draw[mat fin,fill=matVert] (0,0.30) .. controls (-0.20,0.44) and (-0.18,0.56) .. (-0.12,0.56) .. controls (-0.06,0.48) .. (0,0.36) .. controls (0.04,0.52) .. (0.10,0.58) .. controls (0.20,0.52) and (0.18,0.42) .. (0,0.30);
+}}}
+\tikzset{pics/cerise/.style={code={
+  \draw[mat contour] (0,0.04) .. controls (0.02,0.30) and (0.14,0.46) .. (0.26,0.52);
+  \draw[mat fin,fill=matVert] (0.22,0.50) .. controls (0.28,0.64) and (0.44,0.62) .. (0.48,0.56) .. controls (0.40,0.48) and (0.30,0.46) .. cycle;
+  \draw[mat contour,fill=\matC] (0,-0.18) circle (0.24);
+  \fill[mat reflet] (-0.09,-0.10) ellipse (0.04 and 0.07);
+}}}
+%% ----------------------------------------------------------------- objets du quotidien
+\tikzset{pics/ballon/.style={code={
+  \draw[mat contour,fill=\matC] (0,0) circle (0.45);
+  \begin{scope}\clip (0,0) circle (0.45);
+    \fill[\matCC] (-0.5,-0.10) .. controls (-0.1,0.05) and (0.1,0.05) .. (0.5,-0.10) -- (0.5,0.10) .. controls (0.1,0.25) and (-0.1,0.25) .. (-0.5,0.10) -- cycle;
+  \end{scope}
+  \draw[mat fin] (-0.45,-0.10) .. controls (-0.1,0.05) and (0.1,0.05) .. (0.45,-0.10) (-0.45,0.10) .. controls (-0.1,0.25) and (0.1,0.25) .. (0.45,0.10);
+  \draw[mat contour] (0,0) circle (0.45);
+  \fill[mat reflet] (-0.22,0.22) ellipse (0.06 and 0.09);
+}}}
+\tikzset{pics/etoile/.style={code={
+  \draw[mat contour,fill=\matC] (90:0.50) -- (126:0.21) -- (162:0.48) -- (198:0.21) -- (234:0.48) -- (270:0.21) -- (306:0.48) -- (342:0.21) -- (18:0.48) -- (54:0.21) -- cycle;
+}}}
+\tikzset{pics/coeur/.style={code={
+  \draw[mat contour,fill=\matC] (0,-0.44) .. controls (-0.20,-0.24) and (-0.48,-0.04) .. (-0.46,0.18) .. controls (-0.44,0.42) and (-0.10,0.48) .. (0,0.22) .. controls (0.10,0.48) and (0.44,0.42) .. (0.46,0.18) .. controls (0.48,-0.04) and (0.20,-0.24) .. cycle;
+  \fill[mat reflet] (-0.26,0.20) ellipse (0.05 and 0.09);
+}}}
+\tikzset{pics/fleur/.style={code={
+  \draw[mat contour,draw=matVertFonce] (0,-0.05) -- (0,-0.50);
+  \draw[mat fin,fill=matVert] (0,-0.32) .. controls (0.12,-0.20) and (0.26,-0.24) .. (0.28,-0.30) .. controls (0.18,-0.36) and (0.08,-0.36) .. cycle;
+  \foreach \a in {90,162,234,306,378}{\draw[mat fin,fill=\matC] (0,0.16) ++(\a:0.17) circle (0.13);}
+  \draw[mat fin,fill=matJaune] (0,0.16) circle (0.11);
+}}}
+\tikzset{pics/soleil/.style={code={
+  \foreach \a in {0,45,...,315}{\draw[mat contour,draw=matOrange] (\a:0.33) -- (\a:0.48);}
+  \draw[mat contour,fill=matJaune] (0,0) circle (0.26);
+}}}
+\tikzset{pics/nuage/.style={code={
+  \draw[mat contour,fill=white] (-0.40,-0.14) .. controls (-0.54,-0.14) and (-0.54,0.10) .. (-0.36,0.10) .. controls (-0.36,0.30) and (-0.06,0.34) .. (0.0,0.18) .. controls (0.10,0.34) and (0.38,0.28) .. (0.34,0.08) .. controls (0.52,0.08) and (0.52,-0.14) .. (0.38,-0.14) -- cycle;
+}}}
+\tikzset{pics/maison/.style={code={
+  \draw[mat contour,fill=\matC] (-0.36,-0.46) rectangle (0.36,0.06);
+  \draw[mat contour,fill=matRouge!80!matBrun] (-0.46,0.04) -- (0,0.48) -- (0.46,0.04) -- cycle;
+  \draw[mat fin,fill=matBrun] (-0.10,-0.46) rectangle (0.10,-0.16);
+  \draw[mat fin,fill=matCiel] (0.16,-0.18) rectangle (0.30,-0.04);
+}}}
+\tikzset{pics/sapin/.style={code={
+  \draw[mat contour,fill=matBrun] (-0.07,-0.50) rectangle (0.07,-0.34);
+  \draw[mat contour,fill=matVert] (0,0.50) -- (0.22,0.16) -- (0.12,0.16) -- (0.34,-0.12) -- (0.20,-0.12) -- (0.42,-0.36) -- (-0.42,-0.36) -- (-0.20,-0.12) -- (-0.34,-0.12) -- (-0.12,0.16) -- (-0.22,0.16) -- cycle;
+}}}
+\tikzset{pics/arbre/.style={code={
+  \draw[mat contour,fill=matBrun] (-0.08,-0.50) -- (-0.06,-0.04) -- (0.06,-0.04) -- (0.08,-0.50) -- cycle;
+  \draw[mat contour,fill=matVert] (0,0.50) .. controls (-0.30,0.52) and (-0.48,0.30) .. (-0.40,0.10) .. controls (-0.52,-0.06) and (-0.30,-0.20) .. (-0.14,-0.10) .. controls (-0.04,-0.20) and (0.14,-0.20) .. (0.18,-0.10) .. controls (0.36,-0.20) and (0.52,-0.02) .. (0.40,0.12) .. controls (0.48,0.32) and (0.28,0.52) .. (0,0.50) -- cycle;
+}}}
+\tikzset{pics/champignon/.style={code={
+  \draw[mat contour,fill=matCreme] (-0.12,-0.48) .. controls (-0.14,-0.20) and (-0.12,-0.04) .. (-0.10,0.0) -- (0.10,0.0) .. controls (0.12,-0.04) and (0.14,-0.20) .. (0.12,-0.48) -- cycle;
+  \draw[mat contour,fill=\matC] (-0.46,0.0) .. controls (-0.46,0.36) and (0.46,0.36) .. (0.46,0.0) -- cycle;
+  \fill[white] (-0.20,0.14) circle (0.06) (0.12,0.20) circle (0.05) (0.28,0.07) circle (0.04);
+}}}
+\tikzset{pics/gateau/.style={code={
+  \draw[mat contour,fill=\matC] (-0.32,-0.46) -- (-0.40,0.02) -- (0.40,0.02) -- (0.32,-0.46) -- cycle;
+  \draw[mat fin] (-0.20,-0.46) -- (-0.24,0.02) (0,-0.46) -- (0,0.02) (0.20,-0.46) -- (0.24,0.02);
+  \draw[mat contour,fill=matCreme] (-0.42,0.02) .. controls (-0.50,0.20) and (-0.30,0.30) .. (-0.18,0.26) .. controls (-0.12,0.42) and (0.12,0.42) .. (0.18,0.26) .. controls (0.30,0.30) and (0.50,0.20) .. (0.42,0.02) -- cycle;
+  \draw[mat fin,fill=matRouge] (0,0.42) circle (0.08);
+}}}
+\tikzset{pics/bonbon/.style={code={
+  \draw[mat contour,fill=\matCC] (-0.24,0) -- (-0.48,0.18) -- (-0.44,-0.18) -- cycle (0.24,0) -- (0.48,0.18) -- (0.44,-0.18) -- cycle;
+  \draw[mat contour,fill=\matC] (0,0) ellipse (0.26 and 0.20);
+  \fill[mat reflet] (-0.08,0.07) ellipse (0.07 and 0.04);
+}}}
+\tikzset{pics/verre/.style={code={
+  \draw[mat contour,fill=matCiel!60] (-0.30,0.46) -- (-0.22,-0.46) -- (0.22,-0.46) -- (0.30,0.46);
+  \fill[\matC,opacity=.6] (-0.27,0.10) -- (-0.22,-0.43) -- (0.22,-0.43) -- (0.27,0.10) -- cycle;
+  \draw[mat contour] (-0.30,0.46) -- (-0.22,-0.46) -- (0.22,-0.46) -- (0.30,0.46);
+}}}
+\tikzset{pics/assiette/.style={code={
+  \draw[mat contour,fill=white] (0,0) ellipse (0.50 and 0.22);
+  \draw[mat fin,fill=matCiel!40] (0,0) ellipse (0.32 and 0.13);
+}}}
+\tikzset{pics/crayon/.style={code={
+  % Crayon horizontal de longueur mat/l, pointe à droite, extrémité gauche en x=0.
+  \draw[mat contour,fill=\matC] (0,-0.13) rectangle (\matL-0.42,0.13);
+  \draw[mat contour,fill=matCreme] (\matL-0.42,-0.13) -- (\matL,0) -- (\matL-0.42,0.13) -- cycle;
+  \draw[mat fin,fill=\matC] (\matL-0.12,-0.04) -- (\matL,0) -- (\matL-0.12,0.04) -- cycle;
+  \draw[mat contour,fill=matRose] (0,-0.13) rectangle (-0.16,0.13);
+}}}
+\tikzset{pics/ruban/.style={code={
+  % Bande rectiligne de longueur mat/l, extrémité gauche en x=0.
+  \draw[mat contour,fill=\matC,rounded corners=1.5pt] (0,-0.13) rectangle (\matL,0.13);
+}}}
+\tikzset{pics/serpent/.style={code={
+  % Serpent rectiligne de longueur totale mat/l (queue en x=0, tête à droite).
+  \draw[mat contour,fill=\matC] (0,0) .. controls (0.10,0.16) .. (0.40,0.17) -- (\matL-0.50,0.17) -- (\matL-0.50,-0.17) -- (0.40,-0.17) .. controls (0.10,-0.16) .. (0,0) -- cycle;
+  \foreach \k in {0.6,1.2,...,\matL}{\ifdim\k pt<\dimexpr\matL pt-0.7pt\relax\fill[\matCC] (\k,0) circle (0.06);\fi}
+  \draw[mat fin,draw=matRouge] (\matL,0) -- (\matL+0.14,0) -- (\matL+0.20,0.05) (\matL+0.14,0) -- (\matL+0.20,-0.05);
+  \draw[mat contour,fill=\matC] (\matL-0.24,0) ellipse (0.28 and 0.22);
+  \fill[white] (\matL-0.16,0.08) circle (0.055); \fill[matTrait] (\matL-0.15,0.08) circle (0.028);
+}}}
+\tikzset{pics/brique/.style={code={
+  % Brique de construction vue de face, longueur mat/l, hauteur 0.42 (plots en plus), coin bas gauche en (0,0).
+  \pgfmathtruncatemacro\matNb{max(1,round(\matL/0.42))}
+  \foreach \k in {1,...,\matNb}{\draw[mat fin,fill=\matC] ({(\k-0.5)*\matL/\matNb-0.09},0.40) rectangle ({(\k-0.5)*\matL/\matNb+0.09},0.52);}
+  \draw[mat contour,fill=\matC] (0,0) rectangle (\matL,0.42);
+  \fill[white,opacity=.35] (0.06,0.30) rectangle (\matL-0.06,0.36);
+}}}
+\tikzset{pics/chaussette/.style={code={
+  \draw[mat contour,fill=\matC] (-0.18,0.48) -- (0.14,0.48) -- (0.14,-0.06) .. controls (0.14,-0.20) and (0.36,-0.24) .. (0.40,-0.34) .. controls (0.44,-0.48) and (0.20,-0.54) .. (0.04,-0.44) -- (-0.18,-0.26) -- cycle;
+  \fill[\matCC] (-0.18,0.30) rectangle (0.14,0.40);
+  \draw[mat contour] (-0.18,0.48) -- (0.14,0.48) -- (0.14,-0.06) .. controls (0.14,-0.20) and (0.36,-0.24) .. (0.40,-0.34) .. controls (0.44,-0.48) and (0.20,-0.54) .. (0.04,-0.44) -- (-0.18,-0.26) -- cycle;
+}}}
+\tikzset{pics/perle/.style={code={
+  \draw[mat contour,fill=\matC] (0,0) circle (0.30);
+  \fill[mat reflet] (-0.11,0.11) circle (0.06);
+}}}
+\tikzset{pics/jeton/.style={code={
+  \draw[mat contour,fill=\matC] (0,0) circle (0.28);
+}}}
+\tikzset{pics/bougie/.style={code={
+  \draw[mat contour,fill=\matC] (-0.10,-0.46) rectangle (0.10,0.20);
+  \draw[mat fin] (0,0.20) -- (0,0.28);
+  \draw[mat fin,fill=matOrange] (0,0.28) .. controls (-0.10,0.36) and (-0.04,0.48) .. (0,0.52) .. controls (0.04,0.48) and (0.10,0.36) .. (0,0.28);
+}}}
+\tikzset{pics/cle/.style={code={
+  \draw[mat contour,fill=\matC] (-0.30,0) circle (0.18);
+  \fill[white] (-0.30,0) circle (0.07);
+  \draw[mat contour,fill=\matC] (-0.13,-0.05) rectangle (0.46,0.05);
+  \draw[mat contour,fill=\matC] (0.30,-0.05) rectangle (0.36,-0.20) (0.40,-0.05) rectangle (0.46,-0.16);
+}}}
+\tikzset{pics/valise/.style={code={
+  \draw[mat contour] (-0.14,0.30) -- (-0.14,0.42) -- (0.14,0.42) -- (0.14,0.30);
+  \draw[mat contour,fill=\matC,rounded corners=3pt] (-0.48,-0.40) rectangle (0.48,0.30);
+  \draw[mat fin] (-0.30,-0.40) -- (-0.30,0.30) (0.30,-0.40) -- (0.30,0.30);
+}}}
+\tikzset{pics/boite/.style={code={
+  % Boîte ouverte vue de face (largeur 1, hauteur 0.7).
+  \draw[mat contour,fill=\matC!35] (-0.50,-0.36) rectangle (0.50,0.30);
+  \draw[mat contour,fill=\matC!60] (-0.50,0.30) -- (-0.62,0.46) -- (-0.38,0.46) -- (-0.30,0.30);
+  \draw[mat contour,fill=\matC!60] (0.50,0.30) -- (0.62,0.46) -- (0.38,0.46) -- (0.30,0.30);
+}}}
+\tikzset{pics/panier/.style={code={
+  \draw[mat contour] (-0.36,0.04) .. controls (-0.36,0.50) and (0.36,0.50) .. (0.36,0.04);
+  \draw[mat contour,fill=matBrun!70] (-0.48,0.06) -- (0.48,0.06) -- (0.36,-0.42) -- (-0.36,-0.42) -- cycle;
+  \draw[mat fin] (-0.44,-0.10) -- (0.44,-0.10) (-0.40,-0.26) -- (0.40,-0.26);
+}}}
+\tikzset{pics/chaise/.style={code={
+  \draw[mat contour,fill=\matC] (-0.30,-0.02) rectangle (0.30,0.06);
+  \draw[mat contour] (-0.26,-0.02) -- (-0.26,-0.50) (0.26,-0.02) -- (0.26,-0.50) (-0.26,0.06) -- (-0.26,0.50);
+  \draw[mat contour,fill=\matC] (-0.32,0.24) rectangle (-0.20,0.50);
+}}}
+\tikzset{pics/table/.style={code={
+  % Table vue de côté, plateau large (2 unités) ; dessus en y=0.
+  \draw[mat contour,fill=matBrun!70] (-1,-0.10) rectangle (1,0);
+  \draw[mat contour,draw=matBrun!70!black] (-0.85,-0.10) -- (-0.85,-0.95) (0.85,-0.10) -- (0.85,-0.95);
+}}}
+\tikzset{pics/bocal/.style={code={
+  % Bocal (largeur 2, hauteur 1.6), fond en y=0.
+  % mat/n=0 : bocal vide (sans eau), pour y ranger des objets.
+  \ifnum\matN>0 \fill[matCiel!50] (-0.92,0.05) rectangle (0.92,1.20);\fi
+  \draw[mat contour] (-0.80,1.50) -- (-0.80,1.40) .. controls (-1.05,1.30) and (-1.00,0.0) .. (-0.80,0.0) -- (0.80,0.0) .. controls (1.00,0.0) and (1.05,1.30) .. (0.80,1.40) -- (0.80,1.50);
+}}}
+%% ----------------------------------------------------------------- véhicules
+\tikzset{pics/voiture/.style={code={
+  \draw[mat contour,fill=\matC] (-0.50,-0.20) -- (-0.50,0.04) -- (-0.34,0.08) -- (-0.20,0.30) -- (0.18,0.30) -- (0.34,0.08) -- (0.50,0.04) -- (0.50,-0.20) -- cycle;
+  \draw[mat fin,fill=matCiel] (-0.16,0.08) -- (-0.08,0.24) -- (0.00,0.24) -- (0.00,0.08) -- cycle (0.06,0.08) -- (0.06,0.24) -- (0.14,0.24) -- (0.24,0.08) -- cycle;
+  \draw[mat contour,fill=matTrait] (-0.28,-0.22) circle (0.13) (0.28,-0.22) circle (0.13);
+  \fill[matGris] (-0.28,-0.22) circle (0.05) (0.28,-0.22) circle (0.05);
+}}}
+\tikzset{pics/bateau/.style={code={
+  \draw[mat contour,fill=\matC] (-0.48,-0.14) -- (0.48,-0.14) -- (0.32,-0.42) -- (-0.32,-0.42) -- cycle;
+  \draw[mat contour] (0,-0.14) -- (0,0.48);
+  \draw[mat contour,fill=white] (0.04,0.44) -- (0.04,-0.06) -- (0.36,-0.06) -- cycle;
+  \draw[mat contour,fill=\matCC] (-0.04,0.36) -- (-0.04,-0.06) -- (-0.30,-0.06) -- cycle;
+}}}
+\tikzset{pics/wagon/.style={code={
+  % Wagon vu de côté, largeur 1, roues en bas ; mat/c = couleur.
+  \draw[mat contour,fill=\matC] (-0.44,-0.18) rectangle (0.44,0.34);
+  \draw[mat contour,fill=matTrait] (-0.24,-0.24) circle (0.11) (0.24,-0.24) circle (0.11);
+}}}
+\tikzset{pics/locomotive/.style={code={
+  \draw[mat contour,fill=\matC] (-0.46,-0.18) rectangle (0.30,0.12);
+  \draw[mat contour,fill=\matC] (-0.46,0.12) rectangle (-0.10,0.44);
+  \draw[mat fin,fill=matCiel] (-0.38,0.20) rectangle (-0.18,0.36);
+  \draw[mat contour,fill=matTrait] (0.06,0.12) rectangle (0.18,0.34);
+  \draw[mat contour,fill=matTrait] (-0.28,-0.24) circle (0.12) (0.14,-0.24) circle (0.12);
+  \draw[mat contour] (0.30,-0.10) -- (0.48,-0.10);
+}}}
+%% ----------------------------------------------------------------- animaux
+\tikzset{pics/poisson/.style={code={
+  \draw[mat contour,fill=\matC] (0.22,0) -- (0.50,0.22) -- (0.46,-0.22) -- cycle;
+  \draw[mat contour,fill=\matC] (-0.48,0) .. controls (-0.30,0.30) and (0.10,0.30) .. (0.26,0) .. controls (0.10,-0.30) and (-0.30,-0.30) .. (-0.48,0) -- cycle;
+  \draw[mat fin] (-0.06,0.18) .. controls (0.0,0.06) and (0.0,-0.06) .. (-0.06,-0.18);
+  \fill[white] (-0.28,0.05) circle (0.06); \fill[matTrait] (-0.29,0.05) circle (0.03);
+}}}
+\tikzset{pics/oiseau/.style={code={
+  \draw[mat contour,fill=\matC] (0.10,-0.02) -- (0.46,0.14) -- (0.42,-0.14) -- cycle;
+  \draw[mat contour,fill=\matC] (-0.06,-0.04) ellipse (0.30 and 0.26);
+  \draw[mat contour,fill=\matC] (-0.30,0.22) circle (0.17);
+  \draw[mat fin,fill=matOrange] (-0.46,0.24) -- (-0.58,0.20) -- (-0.46,0.16) -- cycle;
+  \fill[matTrait] (-0.34,0.26) circle (0.03);
+  \draw[mat fin,fill=\matCC] (-0.10,0.0) .. controls (0.0,0.12) and (0.18,0.10) .. (0.18,-0.04) .. controls (0.10,-0.12) and (-0.04,-0.10) .. cycle;
+  \draw[mat fin] (-0.12,-0.30) -- (-0.14,-0.42) (0.02,-0.30) -- (0.02,-0.42);
+}}}
+\tikzset{pics/coccinelle/.style={code={
+  \draw[mat contour,fill=matTrait] (0,0.30) circle (0.14);
+  \draw[mat contour,fill=\matC] (0,0.20) .. controls (-0.46,0.20) and (-0.46,-0.42) .. (0,-0.44) .. controls (0.46,-0.42) and (0.46,0.20) .. (0,0.20) -- cycle;
+  \draw[mat fin] (0,0.20) -- (0,-0.44);
+  \foreach \x/\y in {-0.18/0.0,0.18/0.0,-0.16/-0.24,0.16/-0.24}{\fill[matTrait] (\x,\y) circle (0.06);}
+  \fill[white] (-0.05,0.33) circle (0.025) (0.05,0.33) circle (0.025);
+}}}
+\tikzset{pics/escargot/.style={code={
+  \draw[mat contour,fill=matJaune!60] (-0.50,-0.30) -- (0.38,-0.30) .. controls (0.46,-0.30) and (0.50,-0.20) .. (0.44,-0.10) .. controls (0.40,0.02) and (0.40,0.14) .. (0.42,0.22) -- (0.36,0.22) .. controls (0.32,0.10) and (0.26,0.0) .. (0.22,-0.10) -- (-0.40,-0.18) -- cycle;
+  \draw[mat fin] (0.40,0.22) -- (0.36,0.40) (0.42,0.22) -- (0.50,0.38);
+  \draw[mat contour,fill=\matC] (-0.08,0.0) circle (0.30);
+  \draw[mat fin] (-0.08,0.0) .. controls (0.12,0.0) and (0.10,0.20) .. (-0.06,0.18) .. controls (-0.20,0.16) and (-0.20,-0.06) .. (-0.06,-0.10) .. controls (0.08,-0.12) and (0.18,0.02) .. (0.14,0.12);
+  \fill[matTrait] (0.40,0.10) circle (0.025);
+}}}
+\tikzset{pics/papillon/.style={code={
+  \draw[mat contour,fill=\matC] (0,0.04) .. controls (-0.20,0.48) and (-0.52,0.42) .. (-0.44,0.12) .. controls (-0.40,-0.02) and (-0.20,0.0) .. (0,0.04) -- cycle;
+  \draw[mat contour,fill=\matC] (0,0.04) .. controls (0.20,0.48) and (0.52,0.42) .. (0.44,0.12) .. controls (0.40,-0.02) and (0.20,0.0) .. (0,0.04) -- cycle;
+  \draw[mat contour,fill=\matCC] (0,0.0) .. controls (-0.16,-0.06) and (-0.40,-0.18) .. (-0.30,-0.36) .. controls (-0.20,-0.46) and (-0.04,-0.24) .. (0,0.0) -- cycle;
+  \draw[mat contour,fill=\matCC] (0,0.0) .. controls (0.16,-0.06) and (0.40,-0.18) .. (0.30,-0.36) .. controls (0.20,-0.46) and (0.04,-0.24) .. (0,0.0) -- cycle;
+  \draw[mat contour,fill=matTrait] (0,-0.02) ellipse (0.05 and 0.30);
+  \draw[mat fin] (0,0.26) .. controls (-0.04,0.38) .. (-0.12,0.46) (0,0.26) .. controls (0.04,0.38) .. (0.12,0.46);
+}}}
+\tikzset{pics/canard/.style={code={
+  \draw[mat contour,fill=\matC] (-0.46,-0.06) .. controls (-0.46,-0.36) and (0.30,-0.40) .. (0.40,-0.14) .. controls (0.46,0.04) and (0.24,0.06) .. (0.16,0.0) .. controls (0.0,-0.04) and (-0.30,0.10) .. (-0.46,-0.06) -- cycle;
+  \draw[mat contour,fill=\matC] (0.20,0.22) circle (0.17);
+  \draw[mat fin,fill=matOrange] (0.34,0.26) -- (0.52,0.20) -- (0.34,0.14) -- cycle;
+  \fill[matTrait] (0.24,0.27) circle (0.03);
+  \draw[mat fin] (-0.20,-0.10) .. controls (-0.06,0.0) and (0.08,-0.06) .. (0.10,-0.16);
+}}}
+\tikzset{pics/lapin/.style={code={
+  \draw[mat contour,fill=\matC] (-0.13,0.22) ellipse (0.08 and 0.26) (0.13,0.22) ellipse (0.08 and 0.26);
+  \fill[matRose] (-0.13,0.24) ellipse (0.035 and 0.17) (0.13,0.24) ellipse (0.035 and 0.17);
+  \draw[mat contour,fill=\matC] (0,-0.18) circle (0.28);
+  \fill[matTrait] (-0.10,-0.12) circle (0.035) (0.10,-0.12) circle (0.035);
+  \fill[matRose] (0,-0.22) ellipse (0.05 and 0.035);
+  \draw[mat fin] (0,-0.25) -- (0,-0.31) (-0.06,-0.33) .. controls (-0.03,-0.36) .. (0,-0.31) .. controls (0.03,-0.36) .. (0.06,-0.33);
+}}}
+\tikzset{pics/ours/.style={code={
+  \draw[mat contour,fill=\matC] (-0.28,0.26) circle (0.12) (0.28,0.26) circle (0.12);
+  \fill[\matC!50!white] (-0.28,0.26) circle (0.06) (0.28,0.26) circle (0.06);
+  \draw[mat contour,fill=\matC] (0,0) circle (0.38);
+  \draw[mat fin,fill=\matC!45!white] (0,-0.12) ellipse (0.16 and 0.12);
+  \fill[matTrait] (-0.13,0.07) circle (0.04) (0.13,0.07) circle (0.04) (0,-0.07) ellipse (0.05 and 0.035);
+  \draw[mat fin] (0,-0.10) -- (0,-0.16) (-0.05,-0.18) .. controls (-0.02,-0.20) .. (0,-0.16) .. controls (0.02,-0.20) .. (0.05,-0.18);
+}}}
+\tikzset{pics/chat/.style={code={
+  \draw[mat contour,fill=\matC] (-0.34,0.12) -- (-0.30,0.46) -- (-0.08,0.28) -- (0.08,0.28) -- (0.30,0.46) -- (0.34,0.12) .. controls (0.42,-0.20) and (0.20,-0.40) .. (0,-0.40) .. controls (-0.20,-0.40) and (-0.42,-0.20) .. (-0.34,0.12) -- cycle;
+  \fill[matTrait] (-0.13,0.02) ellipse (0.04 and 0.06) (0.13,0.02) ellipse (0.04 and 0.06);
+  \fill[matRose] (0,-0.10) -- (-0.04,-0.06) -- (0.04,-0.06) -- cycle;
+  \draw[mat fin] (-0.08,-0.12) -- (-0.36,-0.08) (-0.08,-0.14) -- (-0.36,-0.18) (0.08,-0.12) -- (0.36,-0.08) (0.08,-0.14) -- (0.36,-0.18);
+}}}
+\tikzset{pics/souris/.style={code={
+  \draw[mat contour] (0.36,-0.18) .. controls (0.56,-0.10) and (0.56,0.12) .. (0.46,0.20);
+  \draw[mat contour,fill=matGris!70] (-0.46,-0.20) .. controls (-0.40,0.20) and (0.10,0.24) .. (0.38,-0.20) -- cycle;
+  \draw[mat contour,fill=matGris!70] (-0.20,0.10) circle (0.12);
+  \fill[matRose] (-0.20,0.10) circle (0.06);
+  \fill[matTrait] (-0.34,-0.06) circle (0.025);
+  \fill[matRose] (-0.47,-0.16) circle (0.03);
+}}}
+\tikzset{pics/fromage/.style={code={
+  \draw[mat contour,fill=matJaune] (-0.44,-0.30) -- (0.44,-0.30) -- (0.44,0.06) -- (-0.44,0.30) -- cycle;
+  \draw[mat fin] (-0.44,0.30) -- (0.44,0.06);
+  \fill[matOrange!80] (-0.10,-0.10) circle (0.07) (0.20,-0.18) circle (0.05) (0.26,-0.02) circle (0.04);
+}}}
+\tikzset{pics/elephant/.style={code={
+  \draw[mat contour,fill=matGris] (-0.40,-0.44) rectangle (-0.26,-0.10) (0.08,-0.44) rectangle (0.22,-0.10);
+  \draw[mat contour,fill=matGris] (-0.48,-0.14) .. controls (-0.52,0.30) and (0.20,0.36) .. (0.26,0.06) .. controls (0.30,-0.18) and (-0.40,-0.24) .. (-0.48,-0.14) -- cycle;
+  \draw[mat contour,fill=matGris] (0.26,0.18) circle (0.22);
+  \draw[mat contour,fill=matGris] (0.40,0.06) .. controls (0.50,-0.10) and (0.48,-0.30) .. (0.54,-0.40) -- (0.46,-0.42) .. controls (0.40,-0.30) and (0.38,-0.12) .. (0.30,0.0);
+  \draw[mat contour,fill=matGris!70] (0.16,0.22) .. controls (0.0,0.34) and (-0.06,0.06) .. (0.10,0.02) -- cycle;
+  \fill[matTrait] (0.34,0.24) circle (0.03);
+  \draw[mat fin] (-0.48,0.0) -- (-0.58,-0.12);
+}}}
+\tikzset{pics/fourmi/.style={code={
+  \draw[mat fin] (-0.10,-0.04) -- (-0.18,-0.30) (0,-0.04) -- (0,-0.30) (0.10,-0.04) -- (0.20,-0.30);
+  \draw[mat fin,fill=matTrait] (-0.30,0.0) ellipse (0.16 and 0.12) (0.0,0.0) ellipse (0.10 and 0.08) (0.24,0.04) circle (0.09);
+  \draw[mat fin] (0.28,0.12) -- (0.36,0.28) (0.22,0.12) -- (0.26,0.30);
+}}}
+%% ----------------------------------------------------------------- jeux et nombres
+\tikzset{pics/de/.style={code={
+  % Face de dé de 0.9 de côté, mat/n points (1 à 6).
+  \draw[mat contour,fill=white,rounded corners=2.5pt] (-0.45,-0.45) rectangle (0.45,0.45);
+  \ifcase\matN\or
+    \fill[matTrait] (0,0) circle (0.09);
+  \or
+    \fill[matTrait] (-0.22,0.22) circle (0.09) (0.22,-0.22) circle (0.09);
+  \or
+    \fill[matTrait] (-0.22,0.22) circle (0.09) (0,0) circle (0.09) (0.22,-0.22) circle (0.09);
+  \or
+    \fill[matTrait] (-0.22,0.22) circle (0.09) (0.22,0.22) circle (0.09) (-0.22,-0.22) circle (0.09) (0.22,-0.22) circle (0.09);
+  \or
+    \fill[matTrait] (-0.22,0.22) circle (0.09) (0.22,0.22) circle (0.09) (0,0) circle (0.09) (-0.22,-0.22) circle (0.09) (0.22,-0.22) circle (0.09);
+  \or
+    \fill[matTrait] (-0.22,0.24) circle (0.09) (0.22,0.24) circle (0.09) (-0.22,0) circle (0.09) (0.22,0) circle (0.09) (-0.22,-0.24) circle (0.09) (0.22,-0.24) circle (0.09);
+  \fi
+}}}
+\tikzset{pics/main/.style={code={
+  % Main droite vue paume, mat/n doigts levés (0 à 5), en commençant par le pouce.
+  % Doigts levés dessinés derrière la paume, doigts repliés posés devant elle.
+  \def\matLeve##1##2{\draw[mat contour,fill=matPeau,rounded corners=3pt] (##1-0.066,-0.02) rectangle (##1+0.066,##2);
+    \fill[white,opacity=.7,rounded corners=1.5pt] (##1-0.036,##2-0.105) rectangle (##1+0.036,##2-0.025);}
+  \def\matPlie##1{\draw[mat contour,fill=matPeau,rounded corners=3pt] (##1-0.066,-0.03) rectangle (##1+0.066,0.17);}
+  \ifnum\matN>1 \matLeve{-0.200}{0.46}\fi
+  \ifnum\matN>2 \matLeve{-0.066}{0.53}\fi
+  \ifnum\matN>3 \matLeve{0.068}{0.49}\fi
+  \ifnum\matN>4 \matLeve{0.202}{0.38}\fi
+  % Pouce levé : bien écarté et dépassant le haut de la paume, avec un ongle comme les autres doigts levés.
+  \ifnum\matN>0 \begin{scope}[rotate around={30:(-0.25,-0.22)}]
+    \draw[mat contour,fill=matPeau,rounded corners=3pt] (-0.32,-0.22) rectangle (-0.18,0.27);
+    \fill[white,opacity=.7,rounded corners=1.5pt] (-0.286,0.165) rectangle (-0.214,0.245);
+  \end{scope}\fi
+  \draw[mat contour,fill=matPeau,rounded corners=3pt] (-0.30,0.12) -- (0.30,0.12) -- (0.30,-0.22) .. controls (0.30,-0.46) and (0.16,-0.53) .. (0,-0.53) .. controls (-0.16,-0.53) and (-0.30,-0.46) .. (-0.30,-0.22) -- cycle;
+  \ifnum\matN<2 \matPlie{-0.200}\fi
+  \ifnum\matN<3 \matPlie{-0.066}\fi
+  \ifnum\matN<4 \matPlie{0.068}\fi
+  \ifnum\matN<5 \matPlie{0.202}\fi
+  \ifnum\matN<1 \draw[mat contour,fill=matPeau,rounded corners=3pt,rotate around={14:(-0.28,-0.22)}] (-0.30,-0.29) rectangle (0.06,-0.15);\fi
+}}}
+\tikzset{pics/pion/.style={code={
+  \draw[mat contour,fill=\matC] (-0.24,-0.40) -- (-0.12,0.04) -- (0.12,0.04) -- (0.24,-0.40) -- cycle;
+  \draw[mat contour,fill=\matC] (0,0.20) circle (0.17);
+}}}
+%% ----------------------------------------------------------------- balance de Roberval
+\tikzset{pics/balance/.style={code={
+  % Balance de type Roberval : plateaux au-dessus du fléau, qui restent horizontaux.
+  % mat/n : -1 penche à gauche, 0 équilibre, 1 penche à droite.
+  % Centre du dessus du plateau : extrémité du fléau (±1.05 tourné) + (0, 0.44).
+  \pgfmathsetmacro{\matAng}{-8*\matN}
+  \draw[mat contour,fill=matGris!60] (-0.78,-0.96) rectangle (0.78,-0.84);
+  \draw[mat contour,fill=matGris!60] (-0.13,-0.84) -- (-0.07,0.0) -- (0.07,0.0) -- (0.13,-0.84) -- cycle;
+  \coordinate (matG) at (\matAng+180:1.05);
+  \coordinate (matD) at (\matAng:1.05);
+  \draw[mat contour] (matG) -- ++(0,0.36) (matD) -- ++(0,0.36);
+  \begin{scope}[rotate=\matAng]
+    \draw[mat contour,fill=matGris!80] (-1.12,-0.05) rectangle (1.12,0.05);
+  \end{scope}
+  \fill[matTrait] (0,0) circle (0.06);
+  \draw[mat contour,fill=matJaune!55] ($(matG)+(-0.40,0.36)$) -- ($(matG)+(0.40,0.36)$) -- ($(matG)+(0.50,0.44)$) -- ($(matG)+(-0.50,0.44)$) -- cycle;
+  \draw[mat contour,fill=matJaune!55] ($(matD)+(-0.40,0.36)$) -- ($(matD)+(0.40,0.36)$) -- ($(matD)+(0.50,0.44)$) -- ($(matD)+(-0.50,0.44)$) -- cycle;
+}}}
+\tikzset{pics/plume/.style={code={
+  \draw[mat contour,fill=white] (-0.40,-0.40) .. controls (-0.30,0.10) and (0.10,0.46) .. (0.42,0.46) .. controls (0.40,0.10) and (0.0,-0.30) .. (-0.40,-0.40) -- cycle;
+  \draw[mat fin] (-0.46,-0.46) -- (0.30,0.34);
+}}}
+\tikzset{pics/boule/.style={code={
+  \draw[mat contour,fill=matGris] (0,0) circle (0.42);
+  \draw[mat fin] (-0.30,0.18) .. controls (0,0.30) and (0.20,0.20) .. (0.36,0.10);
+  \fill[mat reflet] (-0.18,0.16) circle (0.06);
+}}}
+\tikzset{pics/pasteque/.style={code={
+  \draw[mat contour,fill=matVertFonce] (0,0) ellipse (0.50 and 0.38);
+  \foreach \x in {-0.30,-0.10,0.10,0.30}{\draw[line width=1.6pt,matVert] (\x,-0.34) .. controls (\x+0.06,0) .. (\x,0.34);}
+  \draw[mat contour] (0,0) ellipse (0.50 and 0.38);
+}}}
+%% ----------------------------------------------------------------- mascotte
+\tikzset{pics/opti/.style={code={
+  % Opti la chouette, environ 1 x 1.2.
+  \draw[mat contour,fill=matOrange] (-0.18,-0.56) -- (-0.10,-0.48) -- (-0.02,-0.56) (0.02,-0.56) -- (0.10,-0.48) -- (0.18,-0.56);
+  \draw[mat contour,fill=otNavy] (-0.42,0.36) -- (-0.30,0.62) -- (-0.14,0.44) -- (0.14,0.44) -- (0.30,0.62) -- (0.42,0.36) .. controls (0.56,0.0) and (0.48,-0.48) .. (0,-0.50) .. controls (-0.48,-0.48) and (-0.56,0.0) .. (-0.42,0.36) -- cycle;
+  \draw[mat fin,fill=otNavy!70] (-0.40,0.0) .. controls (-0.58,-0.16) and (-0.50,-0.36) .. (-0.32,-0.36) -- cycle (0.40,0.0) .. controls (0.58,-0.16) and (0.50,-0.36) .. (0.32,-0.36) -- cycle;
+  \fill[otGreen!35!white] (0,-0.12) ellipse (0.26 and 0.30);
+  \foreach \y in {-0.04,-0.18,-0.32}{\draw[mat fin,draw=otGreen] (-0.08,\y) .. controls (-0.04,\y-0.05) .. (0,\y) .. controls (0.04,\y-0.05) .. (0.08,\y);}
+  \draw[mat contour,fill=white] (-0.17,0.28) circle (0.15) (0.17,0.28) circle (0.15);
+  \fill[matTrait] (-0.15,0.28) circle (0.07) (0.15,0.28) circle (0.07);
+  \fill[white] (-0.13,0.31) circle (0.025) (0.17,0.31) circle (0.025);
+  \draw[mat fin,fill=matOrange] (-0.06,0.16) -- (0.06,0.16) -- (0,0.04) -- cycle;
+}}}
+%% ----------------------------------------------------------------- pictogrammes de consigne
+\tikzset{pics/picto colorier/.style={code={
+  \begin{scope}[rotate=-35]
+  \draw[mat fin,fill=matJaune] (-0.08,-0.32) rectangle (0.08,0.24);
+  \draw[mat fin,fill=matCreme] (-0.08,-0.32) -- (0,-0.48) -- (0.08,-0.32) -- cycle;
+  \fill[matTrait] (-0.02,-0.44) -- (0,-0.48) -- (0.02,-0.44) -- cycle;
+  \draw[mat fin,fill=matRose] (-0.08,0.24) rectangle (0.08,0.34);
+  \end{scope}
+  \draw[line width=2.4pt,matRouge,line cap=round] (-0.42,-0.30) .. controls (-0.30,-0.20) and (-0.22,-0.40) .. (-0.10,-0.30);
+}}}
+\tikzset{pics/picto entourer/.style={code={
+  \fill[matBleu] (0,0) circle (0.12);
+  \draw[line width=1.8pt,matRouge,line cap=round] (0.30,0.10) .. controls (0.40,0.40) and (-0.40,0.42) .. (-0.38,0.0) .. controls (-0.36,-0.40) and (0.40,-0.36) .. (0.34,0.0) -- (0.24,0.18);
+}}}
+\tikzset{pics/picto relier/.style={code={
+  \fill[matBleu] (-0.34,0.20) circle (0.10);
+  \fill[matVert] (0.34,-0.20) circle (0.10);
+  \draw[line width=1.8pt,matRouge,line cap=round] (-0.30,0.18) -- (0.30,-0.18);
+}}}
+\tikzset{pics/picto barrer/.style={code={
+  \fill[matBleu] (0,0) circle (0.18);
+  \draw[line width=2.2pt,matRouge,line cap=round] (-0.32,-0.32) -- (0.32,0.32) (-0.32,0.32) -- (0.32,-0.32);
+}}}
+\tikzset{pics/picto dessiner/.style={code={
+  \draw[line width=1.6pt,matRouge,line cap=round] (-0.40,-0.20) circle (0.0) (-0.42,-0.30) rectangle (-0.02,0.10);
+  \begin{scope}[shift={(0.20,0.10)},rotate=-35]
+  \draw[mat fin,fill=matJaune] (-0.07,-0.28) rectangle (0.07,0.22);
+  \draw[mat fin,fill=matCreme] (-0.07,-0.28) -- (0,-0.42) -- (0.07,-0.28) -- cycle;
+  \end{scope}
+}}}
+\tikzset{pics/picto tracer/.style={code={
+  \draw[line width=1.8pt,matRouge,dash pattern=on 3pt off 2.4pt,line cap=round,-{Stealth[length=2.6mm]}] (-0.42,-0.24) .. controls (-0.20,0.40) and (0.10,-0.40) .. (0.42,0.24);
+}}}
+\tikzset{pics/picto dire/.style={code={
+  \draw[mat fin,fill=white] (-0.44,-0.10) .. controls (-0.44,0.36) and (0.44,0.36) .. (0.44,-0.02) .. controls (0.44,-0.30) and (0.0,-0.34) .. (-0.18,-0.26) -- (-0.36,-0.42) -- (-0.30,-0.20) .. controls (-0.40,-0.16) .. (-0.44,-0.10) -- cycle;
+  \fill[matTrait] (-0.16,0.0) circle (0.04) (0,0.0) circle (0.04) (0.16,0.0) circle (0.04);
+}}}
+\tikzset{pics/picto manipuler/.style={code={
+  \draw[mat fin,fill=matRouge] (-0.40,-0.36) rectangle (-0.08,-0.04);
+  \draw[mat fin,fill=matBleu] (0.06,-0.36) rectangle (0.38,-0.04);
+  \draw[mat fin,fill=matJaune] (-0.16,-0.04) rectangle (0.16,0.28);
+}}}
+%% ----------------------------------------------------------------- objets ajoutés pour la MS et la GS
+\tikzset{pics/chapeau/.style={code={
+  % Chapeau haut-de-forme posé, vu de face (largeur 1.1, bord en y=-0.32).
+  \draw[mat contour,fill=\matC] (-0.34,-0.30) -- (-0.30,0.42) -- (0.30,0.42) -- (0.34,-0.30) -- cycle;
+  \draw[mat fin,fill=matRouge] (-0.33,-0.18) -- (0.33,-0.18) -- (0.326,-0.06) -- (-0.326,-0.06) -- cycle;
+  \draw[mat contour,fill=\matC] (0,-0.32) ellipse (0.55 and 0.11);
+}}}
+\tikzset{pics/pierre/.style={code={
+  \draw[mat contour,fill=matGris!45] (0,0) ellipse (0.50 and 0.28);
+  \fill[white,opacity=.4] (-0.18,0.08) ellipse (0.16 and 0.06);
+}}}
+\tikzset{pics/cube/.style={code={
+  % Cube de construction vu de face (un carré) : la perspective n’est pas utilisée en maternelle.
+  \draw[mat contour,fill=\matC,rounded corners=1.5pt] (-0.40,-0.40) rectangle (0.40,0.40);
+  \fill[white,opacity=.35] (-0.30,0.24) rectangle (0.30,0.30);
+}}}
+\endinput

@@ -1,0 +1,180 @@
+\begin{ouverture}[denombrement]{8}{Nombres premiers et petit théorème de Fermat}{Arithmétique}{Décomposition · Primalité · Crible · Chiffrement}
+\objectif{Étudier la primalité et décomposer un entier.}
+\objectif{Démontrer l’infinitude des nombres premiers.}
+\objectif{Utiliser le petit théorème de Fermat.}
+\objectif{Comprendre un chiffrement modulaire sur un exemple.}
+\prerequis{PGCD, Bézout, Gauss et congruences.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Les briques multiplicatives des entiers}
+Un nombre premier est un entier $p\geq2$ dont les seuls diviseurs positifs sont $1$ et $p$. Le nombre $1$ n'est pas premier.
+Si $n\geq2$ est composé, $n=ab$ avec $2\leq a\leq b$ ; alors $a\leq\sqrt n$ et $a$ possède un diviseur premier. Pour tester la primalité, il suffit donc de chercher un diviseur premier au plus égal à $\sqrt n$.
+\begin{theoreme}
+Tout entier $n\geq2$ se décompose en produit de nombres premiers ; cette décomposition est unique à l'ordre des facteurs près.
+\end{theoreme}
+L'existence se prouve par récurrence forte : un entier est premier ou produit de deux entiers plus petits, que l'on décompose.
+Pour l'unicité, Gauss implique qu'un premier divisant un produit divise un facteur. En comparant deux décompositions, on identifie puis simplifie un premier commun, et on poursuit.
+\essSection{2}{Il y en a une infinité}
+\begin{demonstration}[Preuve d'Euclide]
+Supposer une liste finie $p_1,\ldots,p_r$ contenant tous les nombres premiers.
+L'entier $N=p_1\cdots p_r+1>1$ possède un diviseur premier $q$.
+Aucun $p_i$ ne divise $N$, car le reste serait $1$. Ainsi $q$ n'est pas dans la liste : contradiction.
+On ne prétend pas que $N$ est toujours premier ; son diviseur premier suffit.
+\end{demonstration}
+\figurelivre{e08-crible.pdf}{Crible d'Ératosthène jusqu'à $50$ : garder chaque premier rencontré et éliminer ses multiples à partir de son carré. Les nombres conservés sont les nombres premiers.}
+\begin{python}
+def crible(n):
+    premiers = [True]*(n+1)
+    premiers[0] = False
+    if n >= 1: premiers[1] = False
+    p = 2
+    while p*p <= n:
+        if premiers[p]:
+            for k in range(p*p, n+1, p):
+                premiers[k] = False
+        p += 1
+    return [k for k in range(n+1) if premiers[k]]
+\end{python}
+On suppose $n\in\N$. Chaque composé possède un facteur premier au plus sa racine carrée, ce qui explique l'arrêt.
+\essSection{3}{Fermat : une implication à respecter}
+\begin{theoreme}[Petit théorème de Fermat]
+Si $p$ est premier et $p\nmid a$, alors $a^{p-1}\equiv1\pmod p$.
+Pour tout entier $a$, $a^p\equiv a\pmod p$.
+\end{theoreme}
+Une preuve possible : lorsque $p\nmid a$, les restes de $a,2a,\ldots,(p-1)a$ permutent les restes non nuls modulo $p$.
+Le produit donne $a^{p-1}(p-1)!\equiv(p-1)!$ ; ce dernier facteur est inversible modulo $p$, donc on simplifie.
+\begin{attention}
+La réciproque est fausse. Si $a^{n-1}\not\equiv1\pmod n$ avec $a$ premier à $n$, on sait que $n$ est composé. Si la congruence vaut $1$, cela ne prouve pas que $n$ est premier.
+Par exemple $341=11\times31$ et $2^{10}\equiv1\pmod{341}$, donc $2^{340}\equiv1$ bien que $341$ soit composé.
+\end{attention}
+\essSection{4}{Décomposer par un algorithme}
+\begin{python}
+def facteurs(n):
+    resultat = []
+    d = 2
+    while d*d <= n:
+        while n % d == 0:
+            resultat.append(d)
+            n //= d
+        d += 1
+    if n > 1: resultat.append(n)
+    return resultat
+\end{python}
+On suppose $n\geq2$. Chaque facteur retiré est premier, car les plus petits facteurs possibles ont déjà été retirés. À la sortie, le dernier facteur éventuel est premier.
+\essSection{5}{Un chiffrement affine, exemple pédagogique}
+Coder les lettres de $0$ à $25$ ; chiffrer par $y\equiv ax+b\pmod{26}$.
+Le déchiffrement est possible si $\operatorname{PGCD}(a,26)=1$ : avec un inverse $u$, $x\equiv u(y-b)\pmod{26}$.
+Ces petits systèmes servent à comprendre l'arithmétique ; ils ne constituent pas une protection moderne. Le dossier RSA étudie un autre principe sur des nombres volontairement petits.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Premiers ou composés}
+
+\begin{questions}
+\item Classer $1,2,21,29$.
+\item Pourquoi suffit-il de tester $2,3,5$ pour $29$ ?
+\item Décomposer $84$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Décomposition et diviseurs}
+$360=2^3\times3^2\times5$.
+\begin{questions}
+\item Combien a-t-il de diviseurs positifs ?
+\item Donner le PGCD de $360$ et $84$.
+\item Donner leur PPCM.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Fermat direct}
+
+\begin{questions}
+\item Calculer $2^{12}$ modulo $13$ par Fermat.
+\item En déduire $2^{100}$ modulo $13$.
+\item Pourquoi $a=13$ ne permet-il pas d’utiliser la première forme du théorème modulo $13$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Un chiffrement}
+$y\equiv5x+8\pmod{26}$, avec A codé $0$, B codé $1$.
+\begin{questions}
+\item Chiffrer A et B.
+\item Vérifier que $21$ est l’inverse de $5$.
+\item Écrire la formule de déchiffrement.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Primalité de $223$}
+
+\begin{questions}
+\item Jusqu’à quelle borne faut-il chercher un diviseur premier ?
+\item Tester les nombres premiers concernés.
+\item Conclure.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Crible}
+
+\begin{questions}
+\item Pourquoi éliminer les multiples de $p$ à partir de $p^2$ ?
+\item Donner les nombres premiers au plus $20$.
+\item Tester le programme pour $n=0$ et $n=1$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Décomposition algorithmique}
+
+\begin{questions}
+\item Appliquer \code{facteurs} à $180$.
+\item Reconstituer le produit.
+\item Pourquoi le dernier facteur résiduel, s’il est supérieur à $1$, est-il premier ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Un inverse par Fermat}
+
+\begin{questions}
+\item Utiliser Fermat pour exprimer un inverse de $a$ modulo un premier $p$ lorsque $p\nmid a$.
+\item Calculer un inverse de $3$ modulo $7$.
+\item Comparer à Bézout.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Un faux test de primalité}
+$341=11\times31$.
+\begin{questions}
+\item Verifier $2^{10}\equiv1\pmod{341}$.
+\item En déduire $2^{340}\equiv1$.
+\item Quelle conclusion erronée faut-il éviter ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{L’infinité, sans faux raccourci}
+
+\begin{questions}
+\item Former $N=2\times3\times5\times7\times11\times13+1$.
+\item Montrer qu’il peut être composé.
+\item Pourquoi la preuve d’infinitude reste-t-elle valide ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{RSA miniature, guidé}
+On prend $p=5,q=11,n=55$ et $e=3$. Pour le message $m=7$, on chiffre $c\equiv m^3\pmod{55}$.
+\begin{questions}
+\item Calculer $c$.
+\item Vérifier $3\times27\equiv1\pmod{40}$.
+\item Calculer \code{pow(13, 27, 55)} et commenter.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Racine rationnelle, prolongement}
+$P(x)=a_nx^n+\cdots+a_0$ a des coefficients entiers. Une racine est $p/q$, fraction irréductible avec $q>0$.
+\begin{questions}
+\item Multiplier $P(p/q)=0$ par $q^n$.
+\item Montrer que $q\mid a_n$.
+\item Montrer que $p\mid a_0$ si $p\ne0$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

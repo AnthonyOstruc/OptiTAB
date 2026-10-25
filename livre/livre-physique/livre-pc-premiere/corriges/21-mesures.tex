@@ -1,0 +1,192 @@
+% !TEX root = ../main.tex
+\corrigesChapitre{21}{Mesures et incertitudes}
+\corrigesSouples
+
+\begin{blocLivre}{cor-21-1}
+\begin{corrige}{1}{Lire un histogramme}
+\demarche{La hauteur de chaque barre est l'effectif de la classe ; la moyenne se situe près du « centre de gravité » de l'histogramme.}
+\begin{questions}
+\item $1+3+6+5+3+2=\res{20}$ mesures ; la classe la plus fournie est \res{\text{[\qty{1,42}{s} ; \qty{1,44}{s}[}}, avec 6 mesures.
+\item $6+5=11$ mesures sur 20, soit \res{\qty{55}{\percent}}.
+\item L'histogramme est à peu près symétrique autour de \res{\qty{1,44}{s}}.
+\item Chaque élève déclenche et arrête le chronomètre avec un \res{\text{temps de réaction}} différent ; le repérage du passage du pendule
+et le lâcher varient aussi.
+\end{questions}
+\schema[corrige]{21-ex01}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-2}
+\begin{corrige}{2}{Moyenne et écart-type à la calculatrice}
+\demarche{Saisir la liste, lire $\overline{x}$ et $s$ ($\sigma_{n-1}$ ou $s_x$), puis appliquer $u=\dfrac{s}{\sqrt{n}}$.}
+\begin{questions}
+\item $\overline{v}=\dfrac{2725}{8}=\res{\qty{340,6}{m.s^{-1}}}$.
+\item $s=\res{\qty{2,8}{m.s^{-1}}}$.
+\item $u=\dfrac{2{,}8}{\sqrt{8}}=\res{\qty{0,98}{m.s^{-1}}}$.
+\item $u$ arrondie à \qty{1}{m.s^{-1}}, d'où $v=\res{\qty{341}{m.s^{-1}}}$ avec $u(v)=\res{\qty{1}{m.s^{-1}}}$.
+\end{questions}
+\piege{Lire $\sigma_n$ au lieu de $\sigma_{n-1}$ : l'écart-type expérimental se calcule avec $n-1$ au dénominateur.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-3}
+\begin{corrige}{3}{Deux thermomètres}
+\demarche{Mesures uniques : évaluation de type B, avec $\dfrac{\text{1 graduation}}{\sqrt{12}}$ pour une lecture et $\dfrac{a}{\sqrt{3}}$ pour une précision $\pm a$.}
+\begin{questions}
+\item $\theta_1=\res{\qty{21,0}{\degreeCelsius}}$ ; $u=\dfrac{1}{\sqrt{12}}=\res{\qty{0,29}{\degreeCelsius}}$.
+\item $u=\dfrac{0{,}2}{\sqrt{3}}=\res{\qty{0,12}{\degreeCelsius}}$.
+\item $\theta_1=\qty{21,0}{\degreeCelsius}$ avec $u=\qty{0,3}{\degreeCelsius}$ (\qty{1,4}{\percent}) ; $\theta_2=\qty{21,4}{\degreeCelsius}$ avec $u=\qty{0,1}{\degreeCelsius}$ (\qty{0,5}{\percent}) : le
+thermomètre électronique a une incertitude relative \res{\text{près de trois fois plus faible}}.
+\item L'écart, \qty{0,4}{\degreeCelsius}, est du même ordre que les incertitudes-types : les mesures sont \res{\text{compatibles}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-4}
+\begin{corrige}{4}{Écrire un résultat}
+\demarche{On arrondit d'abord l'incertitude-type ; son dernier chiffre fixe le rang du dernier chiffre de la valeur.}
+\begin{questions}
+\item (a) $u=\qty{0,02}{g}$, donc $m=\res{\qty{12,35}{g}}$ ; (b) $u=\qty{0,2}{mL}$, donc $V=\res{\qty{24,8}{mL}}$.
+\item (c) $u=\qty{0,03}{s}$, donc $t=\res{\qty{1,23}{s}}$ ; (d) $u=\qty{0,0009}{mol.L^{-1}}$, donc $c=\res{\qty{0,0512}{mol.L^{-1}}}$, soit
+$c=(5{,}12\pm0{,}09)\times10^{-2}~\unit{mol.L^{-1}}$.
+\item $\dfrac{0{,}02}{12{,}35}\approx\res{\qty{0,16}{\percent}}$.
+\item L'incertitude porte sur les centièmes : les chiffres des millièmes et des dix-millièmes \res{\text{ne sont pas significatifs}}.
+\end{questions}
+\retiens{C'est l'incertitude-type qui fixe le nombre de chiffres significatifs du résultat.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-5}
+\begin{corrige}{5}{Quatre séries de mesures}
+\demarche{La largeur du nuage de points traduit les erreurs aléatoires ; un nuage décalé par rapport à la référence révèle une erreur systématique.}
+\begin{questions}
+\item Les séries \res{\text{B et D}} (écarts-types voisins de \qty{0,1}{m.s^{-2}}, contre \qty{0,02}{m.s^{-2}} pour A et C).
+\item Les séries \res{\text{C et D}} : leurs moyennes, \qty{9,60}{m.s^{-2}} et \qty{10,01}{m.s^{-2}}, sont nettement décalées de \qty{9,81}{m.s^{-2}}.
+\item La série \res{\text{A}} : peu dispersée et centrée sur la référence.
+\item Hauteur de chute \res{\text{mal mesurée}}, chronomètre \res{\text{déclenché en retard}} (durée trop courte, $g$ trop grand) ou freinage par l'air.
+\end{questions}
+\schema[corrige]{21-ex05}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-6}
+\begin{corrige}{6}{Statistiques et histogramme, en Python}
+\demarche{Le programme reproduit le travail fait au tableur : moyenne, écart-type, incertitude-type, puis comptage des effectifs par classe.}
+\begin{questions}
+\item Des \res{\text{entiers}} évitent les arrondis des nombres décimaux et simplifient les bornes des classes. La boucle parcourt les classes
+de \qty{2}{cs}, compte les valeurs de chacune et affiche autant d'étoiles.
+\item $u=\dfrac{2{,}68}{\sqrt{20}}=\qty{0,60}{cs}$ : $T=\res{\qty{1,4385}{s}}$ avec $u(T)=\res{\qty{0,0060}{s}}$.
+\item Mêmes effectifs (1, 3, 6, 5, 3, 2) : c'est \res{\text{le même histogramme}}, couché à l'horizontale.
+\item Moyenne : \code{=MOYENNE(A1:A20)} ; écart-type : \code{=ECARTYPE.STANDARD(A1:A20)} ;\newline
+effectif de la classe : \code{=NB.SI.ENS(A1:A20;">=1,42";A1:A20;"<1,44")}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-7}
+\begin{corrige}{7}{Pipette jaugée ou éprouvette graduée ?}
+\demarche{Deux mesures uniques, donc deux évaluations de type B ; on compare ensuite les incertitudes-types relatives.}
+\begin{questions}
+\item $u=\dfrac{0{,}03}{\sqrt{3}}=\res{\qty{0,017}{mL}}$ : $V=\qty{20,00}{mL}$ avec $u=\qty{0,02}{mL}$.
+\item $u=\dfrac{0{,}5}{\sqrt{12}}=\res{\qty{0,14}{mL}}$.
+\item Pipette : $\dfrac{0{,}017}{20}=\res{\qty{0,085}{\percent}}$ ; éprouvette : $\dfrac{0{,}14}{20}=\res{\qty{0,7}{\percent}}$ : la pipette est environ \res{\text{huit fois plus précise}}.
+\item La \res{\text{pipette jaugée}} : la concentration de la solution étalon dépend directement du volume prélevé.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-8}
+\begin{corrige}{8}{Mesurer $g$ par chute libre}
+\demarche{Série de mesures indépendantes : évaluation de type A sur la moyenne, puis comparaison à la référence.}
+\begin{questions}
+\item $g=\dfrac{2\times1{,}000}{0{,}452^2}=\res{\qty{9,79}{m.s^{-2}}}$.
+\item $\overline{g}=\res{\qty{9,86}{m.s^{-2}}}$ ; $s=\res{\qty{0,13}{m.s^{-2}}}$.
+\item $u=\dfrac{0{,}13}{\sqrt{10}}=\qty{0,04}{m.s^{-2}}$ : $g=\res{\qty{9,86}{m.s^{-2}}}$ avec $u(g)=\res{\qty{0,04}{m.s^{-2}}}$.
+\item L'écart, \qty{0,05}{m.s^{-2}}, est \res{\text{du même ordre que $u$}} : le résultat est compatible avec la référence.
+\end{questions}
+\schema[corrige]{21-ex08-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-9}
+\begin{corrige}{9}{Une période ou dix périodes ?}
+\demarche{Pour B, on divise par 10 la durée mesurée et son incertitude-type ; on compare ensuite les trois incertitudes.}
+\begin{questions}
+\item $u=\dfrac{0{,}080}{\sqrt{10}}=\qty{0,025}{s}$ : $T=\res{\qty{1,43}{s}}$ avec $u=\res{\qty{0,03}{s}}$.
+\item $T=\dfrac{14{,}36}{10}=\qty{1,436}{s}$ ; $u(10\,T)=\dfrac{0{,}085}{\sqrt{10}}=\qty{0,027}{s}$, d'où $u(T)=\qty{0,0027}{s}$ : $T=\res{\qty{1,436}{s}}$ avec $u=\res{\qty{0,003}{s}}$.
+\item $u=\dfrac{0{,}002}{\sqrt{10}}=\qty{0,0006}{s}$ : $T=\res{\qty{1,4362}{s}}$ avec $u=\res{\qty{0,0006}{s}}$.
+\item Le temps de réaction perturbe chaque déclenchement et chaque arrêt, quelle que soit la durée mesurée : sur dix périodes, son
+effet est \res{\text{divisé par dix}}. Le capteur supprime le temps de réaction : il est environ \res{\text{quarante fois}} plus précis que A.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-10}
+\begin{corrige}{10}{Le voltmètre numérique}
+\demarche{« Unité du dernier chiffre » : \qty{0,01}{V} sur le calibre \qty{20}{V}, \qty{0,1}{V} sur le calibre \qty{200}{V}.}
+\begin{questions}
+\item $a=0{,}005\times4{,}52+2\times0{,}01=\res{\qty{0,043}{V}}$.
+\item $u=\dfrac{0{,}043}{\sqrt{3}}=\qty{0,025}{V}$ : $U=\res{\qty{4,52}{V}}$ avec $u=\res{\qty{0,02}{V}}$.
+\item $a=0{,}005\times4{,}5+2\times0{,}1=\qty{0,22}{V}$, $u=\qty{0,13}{V}$ : $U=\res{\qty{4,5}{V}}$ avec $u=\res{\qty{0,1}{V}}$.
+\item $\dfrac{0{,}02}{4{,}52}\approx\qty{0,4}{\percent}$ contre $\dfrac{0{,}1}{4{,}5}\approx\qty{2,2}{\percent}$ : le calibre \res{\qty{20}{V}}, le plus petit calibre supérieur à la valeur mesurée.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-11}
+\begin{corrige}{11}{Identifier un métal}
+\demarche{On compare le résultat aux valeurs tabulées en évaluant chaque écart en nombre d'incertitudes-types.}
+\begin{questions}
+\item $\overline{\rho}=\res{\qty{7,116}{g.cm^{-3}}}$ ; $s=\res{\qty{0,085}{g.cm^{-3}}}$.
+\item $u=\dfrac{0{,}085}{\sqrt{10}}=\qty{0,027}{g.cm^{-3}}$ : $\rho=\res{\qty{7,12}{g.cm^{-3}}}$ avec $u=\res{\qty{0,03}{g.cm^{-3}}}$.
+\item Écart au zinc : \qty{0,01}{g.cm^{-3}}, inférieur à $u$ ; à l'étain : \qty{0,17}{g.cm^{-3}}, environ $6\,u$ ; fer et aluminium très loin : c'est
+du \res{\text{zinc}}.
+\item Une mesure isolée est aussi dispersée que la série ($s=\qty{0,085}{g.cm^{-3}}$) : \qty{7,25}{g.cm^{-3}} n'est qu'à $1{,}6\,s$ de la moyenne. C'est
+la \res{\text{moyenne des dix mesures}}, trois fois plus précise, qu'il faut comparer.
+\end{questions}
+\schema[corrige]{21-ex11-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-12}
+\begin{corrige}{12}{Le sérum physiologique}
+\demarche{Une valeur très éloignée des autres doit être expliquée avant d'être écartée.}
+\begin{questions}
+\item $\overline{t}=\res{\qty{9,05}{g.L^{-1}}}$ ; $s=\res{\qty{0,21}{g.L^{-1}}}$.
+\item La valeur \res{\qty{9,6}{g.L^{-1}}}. Sans elle : $\overline{t}=\qty{9,00}{g.L^{-1}}$ et $s=\qty{0,12}{g.L^{-1}}$ ; elle se situe à $\dfrac{0{,}6}{0{,}12}=\res{5}$ écarts-types de la moyenne.
+\item $u=\dfrac{0{,}12}{\sqrt{11}}=\qty{0,036}{g.L^{-1}}$ : $t=\res{\qty{9,00}{g.L^{-1}}}$ avec $u=\res{\qty{0,04}{g.L^{-1}}}$.
+\item L'écart à l'étiquette (\qty{9,0}{g.L^{-1}}) est nul à $u$ près : le résultat est \res{\text{en accord}} avec l'étiquette.
+\end{questions}
+\schema[corrige]{21-ex12}
+\piege{Écarter une valeur qui « dérange » sans avoir identifié d'erreur de manipulation.}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-13}
+\begin{corrige}{13}{Le temps de réaction}
+\demarche{Convertir la distance en mètres avant d'appliquer $t=\sqrt{\dfrac{2\,d}{g}}$ ; puis évaluation de type A sur la moyenne.}
+\begin{questions}
+\item $t=\sqrt{\dfrac{2\times0{,}152}{9{,}81}}=\res{\qty{0,176}{s}}$.
+\item $u=\dfrac{0{,}009}{\sqrt{10}}=\qty{0,003}{s}$ : $t=\res{\qty{0,183}{s}}$ avec $u=\res{\qty{0,003}{s}}$.
+\item Il déclenche environ \res{\qty{0,18}{s}} trop tard : la durée mesurée est trop courte (erreur systématique). Ce retard varie d'un
+essai à l'autre (de l'ordre de \qty{0,01}{s}) et s'ajoute à celui de l'arrêt : les mesures sont \res{\text{dispersées}}.
+\item \res{\text{Non}} : les erreurs dues aux réflexes atteignent plusieurs centièmes de seconde, autant que l'écart à départager. Les
+compétitions utilisent un chronométrage électronique.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-14}
+\begin{corrige}{14}{Une balance à vérifier}
+\demarche{Comparer l'écart à l'étalon avec l'incertitude-type : un écart très supérieur à $u$ révèle une erreur systématique.}
+\begin{questions}
+\item $\overline{m}=\res{\qty{50,030}{g}}$ ; $s=\res{\qty{0,007}{g}}$ ; $u=\dfrac{0{,}007}{\sqrt{10}}=\res{\qty{0,002}{g}}$.
+\item L'écart, \qty{0,030}{g}, vaut environ $15\,u$ : le résultat n'est pas compatible ; la balance présente une \res{\text{erreur systématique}} de
+\qty{+0,03}{g}.
+\item Cent pesées réduiraient $u$ (à \qty{0,0007}{g} environ), mais la moyenne resterait \qty{50,03}{g} : la répétition \res{\text{ne corrige pas}} le décalage.
+\item \res{\text{Étalonner}} la balance, ou retrancher \qty{0,03}{g} à chaque pesée ; une pesée par différence (avec la tare) élimine aussi ce
+décalage constant.
+\end{questions}
+\schema[corrige]{21-ex14-cor}
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-21-15}
+\begin{corrige}{15}{Le volume d'une goutte}
+\demarche{Mesurer vingt gouttes d'un coup puis diviser par vingt : l'incertitude-type est elle aussi divisée par vingt.}
+\begin{questions}
+\item $\overline{V}_{20}=\res{\qty{0,99}{mL}}$ ; $s=\qty{0,042}{mL}$ ; $u=\dfrac{0{,}042}{\sqrt{5}}=\res{\qty{0,019}{mL}}$.
+\item $V=\dfrac{0{,}99}{20}=\res{\qty{0,0495}{mL}}$ avec $u=\dfrac{0{,}019}{20}=\res{\qty{0,0009}{mL}}$ : une goutte vaut environ \qty{0,05}{mL}.
+\item Une seule lecture : $u=\dfrac{0{,}05}{\sqrt{12}}=\qty{0,014}{mL}$, soit \res{\qty{29}{\percent}} de la goutte, contre \res{\qty{1,8}{\percent}} avec vingt gouttes :
+la méthode est \res{\text{seize fois plus précise}}.
+\item À une goutte près, $V_\text{éq}$ est connu à environ \res{\qty{0,05}{mL}} : moins de \qty{0,5}{\percent} pour un volume de l'ordre de \qty{12}{mL}.
+\end{questions}
+\retiens{Mesurer une grande quantité (vingt gouttes, dix périodes) puis diviser améliore la précision : l'erreur de lecture est partagée.}
+\end{corrige}
+\end{blocLivre}

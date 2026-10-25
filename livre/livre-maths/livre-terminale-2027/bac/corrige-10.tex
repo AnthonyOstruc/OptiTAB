@@ -1,0 +1,121 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 10 — résultats vérifiés par programme (bac_s10.py)
+
+\corrigeSujet{10}
+
+\begin{corrigeBac}{5}{Dénombrement et loi binomiale}
+\partieExo{A}{Dénombrement}
+\begin{questions}
+  \item Une grille est une $20$-liste de réponses, chacune choisie parmi $4$ : il y a $\res{4^{20}}=1\,099\,511\,627\,776$ grilles,
+    soit environ $1{,}1\times10^{12}$. \pts{0,5 pt}
+  \item On choisit les $k$ questions auxquelles la réponse est exacte : $\binom{20}{k}$ choix. Pour chacune, la réponse est imposée ; pour
+    chacune des $20-k$ autres, il y a $3$ réponses fausses possibles, soit $3^{20-k}$ choix. Par le principe multiplicatif, on obtient
+    $\binom{20}{k}\times3^{20-k}$ grilles. \pts{0,75 pt}
+\end{questions}
+\partieExo{B}{Nombre de réponses exactes}
+\begin{questions}[resume]
+  \item Les grilles étant équiprobables,
+    \[P(X=k)=\frac{\binom{20}{k}\times3^{20-k}}{4^{20}}=\binom{20}{k}\times\frac{1}{4^{k}}\times\frac{3^{20-k}}{4^{20-k}}
+      =\binom{20}{k}\left(\frac14\right)^{k}\left(\frac34\right)^{20-k}.\]
+    Ainsi $X$ suit la loi binomiale $\res{\mathcal{B}\left(20\pv\tfrac14\right)}$, d'où $E(X)=20\times\frac14=\res{5}$ et
+    $V(X)=20\times\frac14\times\frac34=\res{3{,}75}$. \pts{1 pt}
+  \item $P(X\geq10)=1-P(X\leq9)\approx\res{0{,}014}$ (calculatrice). \pts{0,5 pt}
+  \item Le nombre de réponses exactes suit la loi $\mathcal{B}\left(n\pv\frac14\right)$ : la probabilité d'au moins une réponse exacte
+    vaut $1-\left(\frac34\right)^{n}$ et, comme $\ln0{,}75<0$,
+    \[1-0{,}75^{n}\geq0{,}999\iff0{,}75^{n}\leq0{,}001\iff n\ln0{,}75\leq\ln0{,}001\iff n\geq\frac{\ln0{,}001}{\ln0{,}75}\approx24{,}01.\]
+    Il faut au minimum $\res{25}$ questions. \pts{0,75 pt}
+\end{questions}
+\partieExo{C}{Un barème qui neutralise le hasard}
+\begin{questions}[resume]
+  \item Le candidat donne $X$ réponses exactes et $20-X$ fausses : $N=X-\frac13(20-X)=\res{\tfrac43X-\tfrac{20}3}$. Par linéarité,
+    $E(N)=\frac43\times5-\frac{20}3=\res{0}$ et $V(N)=\left(\frac43\right)^{2}\times3{,}75=\res{\tfrac{20}3}\approx6{,}67$. En moyenne,
+    répondre au hasard rapporte une note nulle : le barème neutralise le hasard. \pts{1 pt}
+  \item $N\geq10\iff\frac43X\geq\frac{50}3\iff X\geq12{,}5\iff X\geq13$, d'où $P(N\geq10)=P(X\geq13)\approx\res{0{,}000\,2}$.
+    Obtenir la moyenne en répondant au hasard est pratiquement impossible. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{4}{Géométrie : un hexagone dans un cube}
+\begin{questions}
+  \item $D(0\pv1\pv0)$, $F(1\pv0\pv1)$ et $O\left(\frac12\pv\frac12\pv\frac12\right)$. Pour les milieux des arêtes :
+    $I\left(\frac12\pv0\pv0\right)$, $J\left(1\pv\frac12\pv0\right)$, $K\left(1\pv1\pv\frac12\right)$, $L\left(\frac12\pv1\pv1\right)$,
+    $M\left(0\pv\frac12\pv1\right)$ et $N\left(0\pv0\pv\frac12\right)$. \pts{0,75 pt}
+  \item a) $\vect{DF}\,(1\pv-1\pv1)$ a pour coordonnées les coefficients de $x$, $y$ et $z$ dans l'équation de $\mathcal{P}$ : il est normal
+    à $\mathcal{P}$. De plus $\frac12-\frac12+\frac12-\frac12=0$ : $O\in\mathcal{P}$. Le plan $\mathcal{P}$ passe par le milieu de $[DF]$ et
+    est orthogonal à $(DF)$ : c'est le $\res{\text{plan médiateur de }[DF]}$.\\
+    b) On remplace dans $x-y+z-\frac12$ : $I$ donne $\frac12-0+0-\frac12=0$, $J$ donne $1-\frac12+0-\frac12=0$, $K$ donne
+    $1-1+\frac12-\frac12=0$, $L$ donne $\frac12-1+1-\frac12=0$, $M$ donne $0-\frac12+1-\frac12=0$ et $N$ donne $0-0+\frac12-\frac12=0$. Les
+    six points appartiennent à $\mathcal{P}$ : chacun d'eux est $\res{\text{équidistant de }D\text{ et de }F}$. \pts{1 pt}
+  \item Avec $D(0\pv1\pv0)$ et $\vect{DF}\,(1\pv-1\pv1)$ : $(DF):\ (t\pv1-t\pv t)$, $t\in\R$. En reportant dans l'équation de $\mathcal{P}$ :
+    $t-(1-t)+t-\frac12=3t-\frac32=0$, soit $t=\frac12$ : l'intersection est le point $O$. Comme $(DF)\perp\mathcal{P}$, $O$ est le projeté
+    orthogonal de $D$ sur $\mathcal{P}$, et la distance de $D$ au plan $\mathcal{P}$ est $DO=\sqrt{3\times\frac14}=\res{\tfrac{\sqrt3}{2}}$. \pts{0,75 pt}
+  \item a) $\vect{OI}\left(0\pv-\frac12\pv-\frac12\right)$, $\vect{OJ}\left(\frac12\pv0\pv-\frac12\right)$ et $\vect{IJ}\left(\frac12\pv\frac12\pv0\right)$,
+    d'où $OI=OJ=IJ=\sqrt{\frac14+\frac14}=\res{\tfrac{\sqrt2}{2}}$ : le triangle $OIJ$ est $\res{\text{équilatéral}}$.\\
+    b) Les six côtés de l'hexagone mesurent $\frac{\sqrt2}{2}$ et chacun de ses angles est formé de deux angles de $60^\circ$ : l'hexagone,
+    de centre $O$, est régulier. Son aire vaut $6\times\frac{\sqrt3}{4}\times\left(\frac{\sqrt2}{2}\right)^{2}=\res{\tfrac{3\sqrt3}{4}}\approx1{,}30$ u.a. \pts{1 pt}
+  \item La base est contenue dans $\mathcal{P}$, donc la hauteur issue de $D$ est $DO=\frac{\sqrt3}{2}$ :
+    $V=\frac13\times\frac{3\sqrt3}{4}\times\frac{\sqrt3}{2}=\frac13\times\frac98=\res{\tfrac38}$ unité de volume. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Suite et logarithme}
+\partieExo{A}{Étude d'une fonction}
+\begin{questions}
+  \item $f'(x)=e^{-x}-x\,e^{-x}=(1-x)\,e^{-x}\geq0$ sur $\intFF01$ : $f$ est croissante sur $\intFF01$, avec $f(0)=0$ et $f(1)=e^{-1}$.
+    Pour $x\in\intFF01$, on a donc $0\leq f(x)\leq\frac1e\leq1$ : $f(x)\in\intFF01$. \pts{0,75 pt}
+\end{questions}
+\partieExo{B}{Étude de la suite}
+\begin{questions}[resume]
+  \item $u_1=1\times e^{-1}=\res{\tfrac1e}\approx0{,}368$ et $u_2=\frac1e\times e^{-1/e}=\res{e^{-1-\frac1e}}\approx0{,}255$. \pts{0,5 pt}
+  \item \etape{Initialisation} $u_0=1$ et $0<1\leq1$.\\
+    \etape{Hérédité} Si $0<u_n\leq1$, alors $u_{n+1}=u_n\,e^{-u_n}>0$ comme produit de deux nombres strictement positifs, et
+    $u_{n+1}=f(u_n)\leq1$ d'après la partie A.\\
+    \etape{Conclusion} Pour tout entier naturel $n$, $0<u_n\leq1$. \pts{0,75 pt}
+  \item $u_{n+1}-u_n=u_n\left(e^{-u_n}-1\right)$. Comme $u_n>0$, on a $-u_n<0$ donc $e^{-u_n}<1$ : $u_{n+1}-u_n<0$. La suite est
+    $\res{\text{décroissante}}$ et minorée par $0$ : elle converge. \pts{0,75 pt}
+  \item $f$ est continue, donc $\ell=f(\ell)$, soit $\ell\left(1-e^{-\ell}\right)=0$. Or $e^{-\ell}=1\iff\ell=0$ : dans tous les cas,
+    $\res{\ell=0}$. \pts{0,5 pt}
+  \item a) Tant que $u_n\geq s$, on calcule le terme suivant.
+\begin{codecote}[0.46]
+\begin{pythoncol}
+def seuil(s):
+    u = 1
+    n = 0
+    while u >= s:
+        u = u * exp(-u)
+        n = n + 1
+    return n
+\end{pythoncol}
+\cote
+b) $u_{96}\approx0{,}010\,04$ et $u_{97}\approx0{,}009\,94$ : $\res{u_{97}}$ est le premier terme strictement inférieur à $0{,}01$. La
+convergence vers $0$ est lente.
+\end{codecote}
+    \pts{0,75 pt}
+  \item a) Pour tout $n$, $u_n>0$ et $\ln(u_{n+1})=\ln(u_n)+\ln\left(e^{-u_n}\right)=\ln(u_n)-u_n$.\\
+    b) Ainsi $u_k=\ln(u_k)-\ln(u_{k+1})$ pour tout $k$. En sommant de $k=0$ à $k=n$, les termes se simplifient deux à deux :
+    $u_0+\dots+u_n=\ln(u_0)-\ln(u_{n+1})=\res{-\ln(u_{n+1})}$, car $\ln(u_0)=\ln1=0$. Comme $\lim u_{n+1}=0$ avec $u_{n+1}>0$ et
+    $\lim\limits_{X\to0}\ln X=-\infty$, la somme tend vers $\res{+\infty}$, bien que $u_n$ tende vers $0$. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{4}{Fonction : un modèle logistique}
+\begin{questions}
+  \item $f(0)=\frac{10}{1+9}=\res{1}$ : au début de l'expérience, il y a $1\,000$ bactéries. Comme $\lim\limits_{t\to+\infty}e^{-0{,}5t}=0$,
+    $\res{\lim\limits_{t\to+\infty}f(t)=10}$ : la population se stabilise autour de $10\,000$ bactéries. \pts{0,5 pt}
+  \item $f=\frac{10}{u}$ avec $u(t)=1+9e^{-0{,}5t}$ et $u'(t)=-4{,}5\,e^{-0{,}5t}$, donc
+    $f'(t)=-\dfrac{10\,u'(t)}{u(t)^{2}}=\dfrac{45\,e^{-0{,}5t}}{\left(1+9e^{-0{,}5t}\right)^{2}}>0$ : $f$ est $\res{\text{strictement croissante}}$. \pts{0,5 pt}
+  \item On note $X=e^{-0{,}5t}$. Alors $10-f(t)=\dfrac{10+90X-10}{1+9X}=\dfrac{90X}{1+9X}$, d'où
+    $0{,}05\,f(t)\left(10-f(t)\right)=0{,}05\times\dfrac{10}{1+9X}\times\dfrac{90X}{1+9X}=\dfrac{45X}{(1+9X)^{2}}=f'(t)$. \pts{0,5 pt}
+  \item $f(t)>9\iff10>9+81e^{-0{,}5t}\iff e^{-0{,}5t}<\frac1{81}\iff-0{,}5t<-\ln81\iff t>2\ln81=8\ln3$. Or $8\ln3\approx8{,}789$ :
+    la population dépasse $9\,000$ bactéries au bout d'environ $\res{8\text{ h }47\text{ min}}$. \pts{0,75 pt}
+  \item Le dénominateur et $22{,}5\,e^{-0{,}5t}$ sont strictement positifs : $f''(t)$ est du signe de $9e^{-0{,}5t}-1$. Or
+    $9e^{-0{,}5t}-1\geq0\iff e^{-0{,}5t}\geq\frac19\iff t\leq2\ln9$. Ainsi $f$ est convexe sur $\intFF0{2\ln9}$ et concave sur
+    $\intFO{2\ln9}{+\infty}$ ; $f''$ s'annule en changeant de signe en $2\ln9$, et $f(2\ln9)=\frac{10}{1+1}=5$ : le point d'inflexion est
+    $\res{\left(2\ln9\pv5\right)}$, avec $2\ln9\approx4{,}39$. La vitesse de croissance $f'$ est maximale au bout d'environ $4$ h $24$ min,
+    lorsque la population atteint la moitié de sa valeur limite. \pts{0,75 pt}
+  \item a) En multipliant numérateur et dénominateur par $e^{0{,}5t}$ : $f(t)=\dfrac{10\,e^{0{,}5t}}{e^{0{,}5t}+9}=20\times\dfrac{u'(t)}{u(t)}$
+    avec $u(t)=e^{0{,}5t}+9>0$. Une primitive de $f$ est $\res{F(t)=20\ln\left(e^{0{,}5t}+9\right)}$.\\
+    b) $m=\dfrac{1}{10}\Big(F(10)-F(0)\Big)=2\Big(\ln\left(e^{5}+9\right)-\ln10\Big)=\res{2\ln\dfrac{e^{5}+9}{10}}\approx\res{5{,}51}$ : en
+    moyenne, sur les dix premières heures, la population compte environ $5\,510$ bactéries. \pts{1 pt}
+\end{questions}
+\end{corrigeBac}

@@ -1,0 +1,778 @@
+%% =====================================================================
+%%  Chapitre 3 — Variables
+%%  Tout le code est vérifié par outils/verifier_code.py (Shell IDLE simulé).
+%% =====================================================================
+\chapitre{3}{Variables}{Give names to your values}{illusVariables}
+
+\histoire{In chapter~2, every number had to be typed straight into the calculations. Change one
+price, and you had to hunt for it everywhere in your program. \textbf{Variables} solve this problem:
+they let you give a name to a value, then use the name instead of the value. They are the memory of
+your programs. In this chapter, you learn to create and update variables, to choose good names, and
+to picture what really happens inside the computer when you write \py{x = 5}.}
+
+\begin{objectifs}
+\item create a variable and use it in calculations;
+\item read \py{=} correctly: \enquote{the name on the left now refers to the value on the right};
+\item update a variable, including with \py{+=}, \py{-=} and \py{*=};
+\item choose names that are valid and clear;
+\item picture variables as names attached to values in memory;
+\item follow the values of variables line by line with a trace table;
+\item swap two variables in a single line.
+\end{objectifs}
+
+\auprogramme
+  {variable, assignment, names and objects, trace table}
+  {\py{=}, \py{+=}, \py{-=}, \py{*=}, \py{type()}, multiple assignment}
+  {trace tables and memory diagrams}
+  {meaningful names in \py{snake\_case}; constants in capitals}
+  {a holiday planner you can update in one line}
+
+\seances[4]{livre/otNavy/Name your values/Why variables and how assignment works (3.1--3.2),
+  engrenage/otViolet/Inside the memory/Names and objects and the rules for names (3.3--3.4),
+  boucle/otTeal/Change and check/Updating variables and types and errors (3.5--3.8),
+  crayon/otGreenDark/Practise/Mini-project and exercises and review (3.9--3.11)}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Why variables?}
+
+Remember the holiday budget of chapter~2: the number of travellers, \py{2}, appeared seven times in
+the program. A \textbf{variable} lets you write it only once, under a name:
+
+\begin{console}
+>>> travellers = 2
+>>> travellers
+2
+>>> travellers * 89.5
+179.0
+\end{console}
+
+The first line creates a variable named \py{travellers} and gives it the value \py{2}. Notice that
+Python displays nothing: it has simply memorised the value. From then on, each time you write the
+name \py{travellers}, Python replaces it with its value. The instruction \py{travellers = 2} is
+called an \textbf{assignment}.
+
+\begin{definition}{variable}
+A name that refers to a value stored in the computer's memory. You create a variable by
+\textbf{assigning} it a value with the sign \py{=}: \py{price = 4.5}.
+\end{definition}
+
+\soustitre{Variables in a program}
+In a program, variables make calculations readable: each value has a name that says what it is.
+
+\begin{code}{file=cinema.py}
+# cinema.py - the price of an evening at the cinema
+ticket_price = 9.5
+popcorn_price = 4
+people = 3
+total = people * (ticket_price + popcorn_price)
+print("Total for the evening:", total)
+\end{code}
+\begin{sortie}
+Total for the evening: 40.5
+\end{sortie}
+
+Read line~5 aloud: \enquote{the total is the number of people times the price of a ticket plus a
+popcorn}. The calculation explains itself. And if the price of a ticket changes, you only change line~2.
+
+\begin{regle}[The assignment]
+\py{name = expression}\quad Python first \textbf{evaluates the expression on the right}, then
+\textbf{attaches the name on the left} to the result. The name is always on the left, alone.
+\end{regle}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Assignment step by step}
+
+\soustitre{The right-hand side first}
+In \py{total = people * (ticket\_price + popcorn\_price)}, Python does nothing with \py{total} until
+it has calculated the right-hand side. The right-hand side can use any variables that already exist.
+
+\soustitre{Changing the value of a variable}
+A variable can change its value as often as you like: that is why it is called a \emph{variable}. A
+new assignment replaces the old value, which is forgotten:
+
+\begin{console}
+>>> score = 10
+>>> score = 15
+>>> score
+15
+\end{console}
+
+\soustitre{\texorpdfstring{\py{x = x + 1}}{x = x + 1} is not an equation}
+In mathematics, $x = x + 1$ is impossible. In Python, it is one of the most common instructions! Read
+it as an assignment: \enquote{calculate \py{x + 1} with the current value of \py{x}, then give the
+result to \py{x}.}
+
+\begin{console}
+>>> score = 10
+>>> score = score + 5
+>>> score
+15
+\end{console}
+
+\begin{attention}[The sign = does not mean \enquote{equals}]
+In Python, \py{=} means \enquote{give this value to this name}. That is why the name must be on the
+left: \py{10 = x} makes no sense. Python even guesses what you may have meant (the sign \py{==}, which
+compares two values, is for chapter~7).
+\begin{console}
+>>> 10 = x
+SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?
+\end{console}
+\end{attention}
+
+\soustitre{Following a program with a trace table}
+To understand a program with several variables, programmers draw a \textbf{trace table}: one line
+per instruction, one column per variable, and the value of each variable after the instruction.
+Here is a short program and its trace table; the value that changes at each step is highlighted.
+
+\begin{gauche}[0.4]
+\begin{code}{file=trace.py}
+a = 5
+b = a * 2
+a = a + 1
+b = b - a
+print(a, b)
+\end{code}
+\end{gauche}\begin{droite}[0.6]
+\begin{suivi}{2}
+\otTH{Line} & \otTH{Instruction} & \otTH{a} & \otTH{b}\\\midrule
+1 & \py{a = 5} & \nv{5} & \\
+2 & \py{b = a * 2} & \av{5} & \nv{10}\\
+3 & \py{a = a + 1} & \nv{6} & \av{10}\\
+4 & \py{b = b - a} & \av{6} & \nv{4}\\
+\end{suivi}
+\end{droite}
+\rattacher
+\begin{sortie}
+6 4
+\end{sortie}
+
+At line~2, \py{b} receives \py{10}, calculated with the value of \py{a} at that moment. When \py{a}
+changes at line~3, \py{b} does not change: it remembers \py{10}, not the calculation \py{a * 2}.
+
+\begin{atoi}[Your own trace table]
+Draw the trace table of this program and predict what it displays. Then check with Python.
+\begin{code}{file=trace2.py}
+x = 3
+y = x + 4
+x = y * 2
+y = x - y
+print(x, y)
+\end{code}
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{hood}{Names and objects}
+
+What really happens in the computer's memory when you write \py{age = 15}? Python creates an
+\textbf{object} that represents the integer 15, then attaches the \textbf{name} \py{age} to it, like
+a label tied to a box with a string.
+
+\begin{memoire}[after \py{age = 15}]
+\nomvar{age}{(0,0)}{n}
+\objet{int}{15}{(3.6,0)}{o}
+\lien{n}{o}
+\end{memoire}
+
+Every value in Python is an object, and every object has a \textbf{type} (here \py{int}) and a
+\textbf{value} (here 15). A variable is not a box that contains the value: it is a \textbf{name} that
+\emph{refers to} an object.
+
+\soustitre{A new assignment moves the label}
+When you write \py{age = 16}, Python creates a new object, 16, and moves the label \py{age} onto it.
+The object 15 is no longer attached to any name: Python will automatically free the memory it uses.
+
+\begin{memoire}[after \py{age = 16}]
+\nomvar{age}{(0,0)}{n}
+\objet{int}{16}{(3.6,0)}{o}
+\objet{int}{15}{(3.6,1.6)}{a}
+\lien{n}{o}
+\draw[otLienAncien] (n.north east) -- (a.west);
+\node[anchor=west,font=\otRegular\fontsize{8}{9}\selectfont,text=otMuted] at (a.east) {\ forgotten};
+\end{memoire}
+
+\soustitre{Two names for the same object}
+An assignment can attach a second name to an object that already exists. After \py{a = 42} then
+\py{b = a}, the two names refer to the \emph{same} object:
+
+\begin{memoire}[after \py{a = 42} and \py{b = a}]
+\nomvar{a}{(0,0.65)}{na}
+\nomvar{b}{(0,-0.65)}{nb}
+\objet{int}{42}{(3.6,0)}{o}
+\lien{na}{o}
+\lien{nb}{o}
+\end{memoire}
+
+What happens to \py{b} if you now give a new value to \py{a}? The label \py{a} moves to a new object,
+and \py{b} stays where it was:
+
+\begin{console}
+>>> a = 42
+>>> b = a
+>>> a = 43
+>>> b
+42
+\end{console}
+
+\begin{memoire}[after \py{a = 43}]
+\nomvar{a}{(0,0.65)}{na}
+\nomvar{b}{(0,-0.65)}{nb}
+\objet{int}{43}{(3.6,0.65)}{o1}
+\objet{int}{42}{(3.6,-0.65)}{o2}
+\lien{na}{o1}
+\lien{nb}{o2}
+\end{memoire}
+
+\begin{regle}[Names and objects]
+A variable is a name attached to an object. An assignment never copies or modifies an object: it
+attaches a name to it. Reassigning a name moves the label, and the other names are not affected.
+\end{regle}
+
+\begin{culture}[The type belongs to the object]
+In Python, a variable has no fixed type: the same name can refer to a number, then to a piece of
+text. It is the \emph{object} that has a type. This is called \textbf{dynamic typing}. It makes
+Python flexible, but it also means you must choose your names carefully, so that you always know what
+they refer to.
+\end{culture}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Naming variables}
+
+\soustitre{The rules}
+Python accepts a name only if it respects three rules:
+\begin{itemize}
+\item it contains only letters, digits and underscores \py{\_}; no spaces, no hyphens, no other
+  signs;
+\item it does not start with a digit: \py{place2} is valid, \py{2nd\_place} is not;
+\item it is not one of Python's \textbf{keywords}, the words reserved by the language.
+\end{itemize}
+Python is case-sensitive: \py{age}, \py{Age} and \py{AGE} are three different names.
+
+\begin{console}
+>>> 2nd_place = "Ana"
+SyntaxError: invalid decimal literal
+>>> my name = "Ana"
+SyntaxError: invalid syntax
+>>> user-name = "Ana"
+SyntaxError: cannot assign to expression here. Maybe you meant '==' instead of '='?
+>>> class = 3
+SyntaxError: invalid syntax
+\end{console}
+
+The third message is surprising: Python reads \py{user-name} as the calculation \py{user minus name},
+and you cannot assign a value to a calculation. The last one fails because \py{class} is a keyword.
+
+\begin{encadre}{cle}{Python's 35 keywords}[You cannot use them as names]
+\begin{tabularx}{\linewidth}{@{}*{7}{>{\ttfamily\color{otCodeEncre}}X}@{}}
+False & None & True & and & as & assert & async\\
+await & break & class & continue & def & del & elif\\
+else & except & finally & for & from & global & if\\
+import & in & is & lambda & nonlocal & not & or\\
+pass & raise & return & try & while & with & yield\\
+\end{tabularx}
+\end{encadre}
+
+You don't need to learn this list: IDLE colours keywords in orange as soon as you type them, which
+warns you immediately.
+
+\soustitre{The conventions}
+A valid name is not necessarily a good name. Python programmers follow the conventions of PEP~8:
+\begin{itemize}
+\item names of variables in lower case, words separated by underscores: \py{ticket\_price},
+  \py{number\_of\_guests}. This style is called \textbf{snake\_case};
+\item names that say what the value represents: \py{price\_per\_night} rather than \py{p} or
+  \py{x2};
+\item for a value that should never change in the program, a \textbf{constant}, capital letters:
+  \py{VAT\_RATE = 0.2}, \py{SECONDS\_PER\_DAY = 86400}.
+\end{itemize}
+
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,left=4mm,right=4mm]
+\renewcommand{\arraystretch}{1.3}%
+\begin{tabularx}{\linewidth}{@{}p{34mm}p{22mm}Y@{}}
+\otTH{Name} & \otTH{Valid?} & \otTH{Comment}\\\midrule
+\py{price\_per\_night} & \otCheck & perfect: clear, in snake\_case\\
+\py{pricePerNight} & \otCheck & valid, but not the Python style (this is \enquote{camelCase})\\
+\py{p} & \otCheck & valid, but says nothing\\
+\py{price per night} & \otCroix & spaces are forbidden\\
+\py{price-per-night} & \otCroix & hyphens are read as minus signs\\
+\py{3rd\_night} & \otCroix & starts with a digit\\
+\py{MAX\_GUESTS} & \otCheck & a constant\\
+\end{tabularx}
+\end{tcolorbox}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Updating variables}
+
+Programs constantly update variables: a score increases, a balance decreases, a price goes up by a
+percentage. Python offers a shortcut for these updates: \py{score += 5} means exactly the same as
+\py{score = score + 5}.
+
+\begin{console}
+>>> balance = 100
+>>> balance -= 30
+>>> balance += 50
+>>> balance *= 1.02
+>>> balance
+122.4
+\end{console}
+
+\begin{suivi}[What happened to the balance]{1}
+\otTH{Line} & \otTH{Instruction} & \otTH{balance}\\\midrule
+1 & \py{balance = 100} & \nv{100}\\
+2 & \py{balance -= 30} \hspace{3mm}{\color{otMuted}withdraw 30} & \nv{70}\\
+3 & \py{balance += 50} \hspace{3mm}{\color{otMuted}deposit 50} & \nv{120}\\
+4 & \py{balance *= 1.02} \hspace{3mm}{\color{otMuted}add 2\,\% interest} & \nv{122.4}\\
+\end{suivi}
+
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt,left=4mm,right=4mm]
+\otEtiquette{otNavy}{Augmented assignment}\par\vspace{1.4mm}
+\renewcommand{\arraystretch}{1.25}%
+\begin{tabularx}{\linewidth}{@{}p{30mm}p{40mm}Y@{}}
+\py{x += 3} & \py{x = x + 3} & add\\
+\py{x -= 3} & \py{x = x - 3} & subtract\\
+\py{x *= 3} & \py{x = x * 3} & multiply\\
+\py{x /= 3} & \py{x = x / 3} & divide (gives a float)\\
+\py{x //= 3}\quad\py{x \%= 3} & \py{x = x // 3}\quad\py{x = x \% 3} & quotient, remainder\\
+\py{x **= 3} & \py{x = x ** 3} & power\\
+\end{tabularx}
+\end{tcolorbox}
+
+\begin{definition}{augmented assignment}
+An instruction such as \py{x += 3} that updates a variable using its current value. It is a shorter
+way of writing \py{x = x + 3}.
+\end{definition}
+
+\begin{atoi}[A game of points]
+A player starts with 0 points. She wins 50 points, loses 20, then her score is tripled by a bonus.
+Write the program with \py{+=}, \py{-=} and \py{*=}, and display the final score.
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{learn}{Variables and types}
+
+A variable can refer to any kind of value: an integer, a float, but also a piece of text, which
+Python calls a \py{str} (for \emph{string}), or a truth value, \py{True} or \py{False}, of type
+\py{bool}. You will study strings in chapter~4 and truth values in chapter~7.
+
+\begin{code}{file=profile.py}
+name = "Ana"           # str: a piece of text
+age = 15               # int: a whole number
+height = 1.62          # float: a decimal number
+likes_python = True    # bool: True or False
+print(name, "is", age, "years old and", height, "m tall.")
+print("Next year,", name, "will be", age + 1)
+print(type(name), type(age), type(height), type(likes_python))
+\end{code}
+\begin{sortie}
+Ana is 15 years old and 1.62 m tall.
+Next year, Ana will be 16
+<class 'str'> <class 'int'> <class 'float'> <class 'bool'>
+\end{sortie}
+
+Notice the difference between \py{"Ana"}, with quotes, which is a piece of text, and \py{name},
+without quotes, which is the name of a variable. \py{print(name)} displays \py{Ana};
+\py{print("name")} displays the word \py{name}.
+
+\begin{attention}[One name, one meaning]
+Python lets you write \py{x = 5} and then \py{x = "five"}: the same name now refers to a string. Your
+program becomes very hard to follow. Give each variable one role, and keep the same type for it from
+beginning to end.
+\end{attention}
+
+%% ---------------------------------------------------------------------
+\rubrique{debug}{Errors with variables}
+
+\cas{1}{A typing mistake in a name}
+Python cannot guess that \py{prise} is a typo for \py{price}: for it, it is another name, which does
+not exist. Fortunately, it suggests the closest existing name.
+\begin{console}
+>>> price = 4.5
+>>> prise * 2
+Traceback (most recent call last):
+  File "<pyshell#1>", line 1, in <module>
+    prise * 2
+NameError: name 'prise' is not defined. Did you mean: 'price'?
+\end{console}
+
+\cas{2}{The wrong case}
+\begin{console}
+>>> price = 4.5
+>>> Price * 2
+Traceback (most recent call last):
+  File "<pyshell#1>", line 1, in <module>
+    Price * 2
+NameError: name 'Price' is not defined. Did you mean: 'price'?
+\end{console}
+
+\cas{3}{A variable used before it exists}
+Python runs a program from top to bottom. A variable only exists from the line where it is assigned:
+using it earlier causes a \py{NameError}.
+\begin{code}{file=too_early.py, bug}
+print("Total:", total)
+total = 3 * 4.5
+\end{code}
+\begin{erreur}
+Traceback (most recent call last):
+  File "too_early.py", line 1, in <module>
+    print("Total:", total)
+NameError: name 'total' is not defined
+\end{erreur}
+
+\cas{4}{A variable that does not follow}
+This is not an error message but a misunderstanding, very common among beginners. The instruction
+\py{total = price * 3} gives \py{total} a number, calculated once and for all: if \py{price} changes
+afterwards, \py{total} does not change.
+\begin{code}{file=not_updated.py}
+price = 4
+total = price * 3
+price = 5
+print("Total:", total)
+\end{code}
+\begin{sortie}
+Total: 12
+\end{sortie}
+To update the total, you must calculate it again after changing the price.
+
+%% ---------------------------------------------------------------------
+\rubrique{pro}{Good names and handy tricks}
+
+\soustitre{Choose names for the reader}
+Compare these two programs. They do exactly the same thing:
+
+\begin{gauche}
+\begin{code}{file=bad_names.py}
+a = 12.5
+b = 35
+c = a * b
+print(c)
+\end{code}
+\end{gauche}\begin{droite}
+\begin{code}{file=good_names.py}
+hourly_rate = 12.5
+hours = 35
+weekly_pay = hourly_rate * hours
+print(weekly_pay)
+\end{code}
+\end{droite}
+
+The second one needs no comment: the names explain everything. Good names are the best
+documentation. Avoid single letters (except in very short calculations), meaningless names such as
+\py{data} or \py{thing}, and the letters \py{l}, \py{O} and \py{I} on their own, which look like the
+digits \py{1} and \py{0}.
+
+\soustitre{Several assignments in one line}
+Python can assign several variables at once, separating the names and the values with commas:
+
+\begin{console}
+>>> width, height = 8, 5
+>>> width * height
+40
+\end{console}
+
+\soustitre{Swapping two variables}
+To swap the values of two variables, the classic method uses a third, temporary variable: you cannot
+write \py{a = b} then \py{b = a}, because the first assignment has already lost the value of
+\py{a}. Python offers a much more elegant method:
+
+\begin{console}
+>>> a, b = 1, 2
+>>> a, b = b, a
+>>> a, b
+(2, 1)
+\end{console}
+
+Python first evaluates the whole right-hand side, \py{b, a}, that is \py{2, 1}; only then does it
+assign the two values to \py{a} and \py{b}. (The parentheses in the answer of the Shell indicate a
+\emph{tuple}, a group of values that you will study in chapter~19.)
+
+\begin{pratique}[Constants at the top]
+Put the values your program depends on at the top of the file, with clear names, and constants in
+capitals: \py{VAT\_RATE = 0.2}. Anyone who reads the program sees at once what can be adjusted, and
+a change happens in one single place.
+\end{pratique}
+
+%% ---------------------------------------------------------------------
+\rubrique{build}{Mini-project: a smarter holiday planner}
+
+Let's rewrite the holiday budget of chapter~2 with variables. All the data go at the top of the
+program, under clear names; the calculations use only names; the display comes last. This
+three-part structure\,---\,\textbf{data, calculations, display}\,---\,is that of countless
+professional programs.
+
+\begin{code}{file=holiday_planner.py}
+# holiday_planner.py - the Lisbon budget, now with variables
+
+# Data
+travellers = 2
+nights = 6
+days = 7
+flight_price = 89.5      # return ticket, per person
+room_price = 74          # per night, for the room
+food_per_day = 25        # per person
+museum_pass = 21.5       # per person
+months = 6               # months left to save
+
+# Calculations
+flights = travellers * flight_price
+hotel = nights * room_price
+food = travellers * days * food_per_day
+museums = travellers * museum_pass
+total = flights + hotel + food + museums
+
+# Display
+print("=== HOLIDAY IN LISBON ===")
+print("Travellers:", travellers)
+print("Flights:", flights)
+print("Hotel:", hotel)
+print("Food:", food)
+print("Museums:", museums)
+print("Total:", total)
+print("Per person:", round(total / travellers, 2))
+print("To save each month:", round(total / months, 2))
+\end{code}
+\begin{sortie}
+=== HOLIDAY IN LISBON ===
+Travellers: 2
+Flights: 179.0
+Hotel: 444
+Food: 350
+Museums: 43.0
+Total: 1016.0
+Per person: 508.0
+To save each month: 169.33
+\end{sortie}
+
+The results are exactly those of chapter~2. But now, if Leo's sister joins the trip, you change
+\textbf{one single line}, and every result follows:
+
+\begin{code}{file=holiday_planner.py, variante, first=4, marks={1}}
+travellers = 3
+\end{code}
+\begin{sortie}
+=== HOLIDAY IN LISBON ===
+Travellers: 3
+Flights: 268.5
+Hotel: 444
+Food: 525
+Museums: 64.5
+Total: 1302.0
+Per person: 434.0
+To save each month: 217.0
+\end{sortie}
+
+The hotel does not change, since the room price is per night: the program reflects the real rules
+of the budget, written once and for all.
+
+\begin{atoi}[One more night]
+The friends decide to stay one more night. Which variables must you change? Make the change and run
+the program: what is the new total for three travellers?
+\end{atoi}
+
+%% ---------------------------------------------------------------------
+\rubrique{practice}{Exercises}
+
+\exercice[type=read,niveau=1]{Fill in the trace table}{Copy and complete the trace table of this
+program, then write what it displays.}
+\begin{code}{file=trace3.py}
+a = 4
+b = a * 3
+a = b - a
+b = b // a
+print(a, b)
+\end{code}
+\begin{suivi}{2}
+\otTH{Line} & \otTH{Instruction} & \otTH{a} & \otTH{b}\\\midrule
+1 & \py{a = 4} & \trou[12mm]{} & \trou[12mm]{}\\
+2 & \py{b = a * 3} & \trou[12mm]{} & \trou[12mm]{}\\
+3 & \py{a = b - a} & \trou[12mm]{} & \trou[12mm]{}\\
+4 & \py{b = b // a} & \trou[12mm]{} & \trou[12mm]{}\\
+\end{suivi}
+
+\exercice[type=predict,niveau=1]{Does it follow?}{What does this program display? Explain why
+\py{y} does not change at line~3.}
+\begin{code}{file=follow.py}
+x = 10
+y = x
+x = x + 5
+print(x, y)
+\end{code}
+\ecranvide{1}
+
+\exercice[type=explain,niveau=1]{Valid or not?}{For each name, say whether Python accepts it. If it
+does not, explain why; if it does, say whether it follows the Python conventions.}
+\begin{questions}[2]
+\item \py{age}
+\item \py{2fast}
+\item \py{first\_name}
+\item \py{first-name}
+\item \py{\_count}
+\item \py{class}
+\item \py{Class}
+\item \py{my score}
+\item \py{totalPrice}
+\item \py{MAX\_SPEED}
+\end{questions}
+
+\exercice[type=write,niveau=1]{The rectangle}{A rectangle is 7.5~m wide and 4~m high. Write a
+program that stores these two measurements in variables, calculates the area and the perimeter, and
+displays them as below.}
+\cible{rectangle}
+\begin{sortie}
+Area: 30.0 square metres
+Perimeter: 23.0 metres
+\end{sortie}
+
+\exercice[type=complete,niveau=2]{The shopping list}{Complete the program so that it displays the
+output below. A loaf of bread costs 1.25 euros and a bottle of milk 0.75 euros.}
+\begin{code}{file=shopping.py, trous}
+bread_price = 1.25
+milk_price = ________
+milk_bottles = 3
+total = bread_price + __________ * milk_bottles
+print("Total:", _____)
+\end{code}
+\cible{courses}
+\begin{sortie}
+Total: 3.5
+\end{sortie}
+
+\exercice[type=fix,niveau=2]{The weekly pay}{This program should calculate a weekly pay, but it
+stops with an error. Correct it: there are two mistakes.}
+\begin{code}{file=weekly_pay.py, bug}
+hourly_rate = 12.5
+hours = 35
+weekly_pay = hourly_rate * hour
+print("Weekly pay:", Weekly_pay)
+\end{code}
+\begin{erreur}
+Traceback (most recent call last):
+  File "weekly_pay.py", line 3, in <module>
+    weekly_pay = hourly_rate * hour
+NameError: name 'hour' is not defined. Did you mean: 'hours'?
+\end{erreur}
+\cible{salaire}
+\begin{sortie}
+Weekly pay: 437.5
+\end{sortie}
+
+\exercice[type=write,niveau=2]{Swap!}{The variable \py{left} contains \py{"red"} and the variable
+\py{right} contains \py{"blue"}. Write a program that swaps their values, first with a temporary
+variable, then with Python's one-line method, and displays the result as below.}
+\cible{echange}
+\begin{sortie}
+Before: red blue
+After the first swap: blue red
+After the second swap: red blue
+\end{sortie}
+
+\exercice[type=write,niveau=2]{Average speed}{A train travels 150~km in 2.5~hours. Write a program
+that stores the distance and the duration in variables and displays the average speed, in km/h and
+in metres per second, rounded to the hundredth. (To convert km/h into m/s, divide by 3.6.)}
+\cible{vitesse}
+\begin{sortie}
+Average speed: 60.0 km/h
+That is 16.67 m/s
+\end{sortie}
+
+\exercice[type=predict,niveau=2]{Augmented assignments}{Draw the trace table of this program and
+predict what it displays.}
+\begin{code}{file=points.py}
+points = 10
+points += 5
+points *= 2
+points -= 4
+points //= 3
+print(points)
+\end{code}
+\ecranvide{1}
+
+\exercice[type=write,niveau=2]{Pancakes for six}{A pancake recipe for 4 people needs 250~g of flour,
+500~ml of milk and 2 eggs. Write a program that calculates the quantities for any number of guests:
+store the number of guests in a variable, calculate a multiplying factor, and display the quantities
+for 6 guests as below. Then check that it works for 2 guests.}
+\cible{crepes}
+\begin{sortie}
+Pancakes for 6 people:
+Flour: 375.0 g
+Milk: 750.0 ml
+Eggs: 3.0
+\end{sortie}
+
+\exercice[type=read,niveau=2]{Draw the memory}{Draw the memory diagram (names and objects) after
+each line of this program. Then say what \py{print(a, b)} would display.}
+\begin{code}{file=memory.py}
+a = 3
+b = a
+a = 7
+\end{code}
+
+\exercice[type=challenge,niveau=3]{Digit games}{The variable \py{n} contains the number 4728. Using
+\py{//} and \py{\%}, store each of its four digits in a variable (\py{thousands}, \py{hundreds},
+\py{tens}, \py{units}), then display the sum of its digits and the number written backwards. Your
+program must still work if you replace 4728 by any other four-digit number.}
+\cible{chiffres}
+\begin{sortie}
+Sum of the digits: 21
+Backwards: 8274
+\end{sortie}
+
+%% ---------------------------------------------------------------------
+\rubrique{review}{Chapter review}
+
+\begin{essentiel}
+\otEssTitre{Creating and using a variable}
+\py{name = expression}: Python evaluates the right-hand side, then attaches the name to the result.
+The name can then be used in any expression.
+\begin{code}{mini}
+price = 4.5
+quantity = 3
+total = price * quantity   # 13.5
+\end{code}
+
+\otEssTitre{Changing a value}
+A new assignment replaces the value; the old one is forgotten. \py{x = x + 1}, or \py{x += 1}, means
+\enquote{the new value of \py{x} is its old value plus 1}. Augmented assignments: \py{+=}, \py{-=},
+\py{*=}, \py{/=}, \py{//=}, \py{\%=}, \py{**=}.
+
+\otEssTitre{Names and objects}
+A variable is a \textbf{name attached to an object}; the object has a type and a value. Several names
+can refer to the same object; reassigning one name never changes the others. A variable computed from
+others does not follow their later changes.
+
+\otEssTitre{Names}
+Letters, digits and \py{\_}; never a digit first; no keyword; case matters. Convention:
+\py{snake\_case} for variables, \py{UPPER\_CASE} for constants, and always meaningful names.
+
+\otEssTitre{Two handy tricks}
+\py{width, height = 8, 5} assigns two variables at once; \py{a, b = b, a} swaps them.
+\end{essentiel}
+
+\begin{quiz}
+\qcm{After \py{x = 4} and \py{x = x * 3}, what is the value of \py{x}?}{\py{4}}{\py{12}}{\py{7}}
+\qcm{What does \py{price = 9.5} display in the Shell?}{nothing}{\py{9.5}}{\py{price = 9.5}}
+\qcm{Which name is valid?}{\py{2nd\_try}}{\py{second-try}}{\py{second\_try}}
+\qcm{What is the value of \py{n} after \py{n = 10}, then \py{n -= 3}?}{\py{3}}{\py{7}}{\py{-3}}
+\begin{qcmcode}{What does this program display?}{\py{5 5}}{\py{8 5}}{\py{8 8}}
+\begin{code}{mini}
+a = 5
+b = a
+a = a + 3
+print(a, b)
+\end{code}
+\end{qcmcode}
+\qcm{Which instruction swaps \py{a} and \py{b}?}{\py{a = b}}{\py{a, b = b, a}}{\py{a == b}}
+\qcm{What is the convention for the name of a constant?}{\py{vat\_rate}}{\py{VatRate}}{\py{VAT\_RATE}}
+\qcm{What is the type of \py{"42"}?}{\py{int}}{\py{str}}{\py{float}}
+\qcm{A program uses \py{total} on line~2 and creates it on line~5. What happens?}{it works}{a
+  \py{NameError}}{a \py{SyntaxError}}
+\qcm{Which name is the most readable?}{\py{x}}{\py{np}}{\py{number\_of\_players}}
+\end{quiz}
+
+\begin{jesais}
+\item create a variable and use it in an expression;
+\item explain what \py{x = x + 1} does;
+\item update a variable with \py{+=}, \py{-=}, \py{*=} and the other augmented assignments;
+\item draw a trace table and a memory diagram for a short program;
+\item choose valid names that follow the conventions;
+\item recognise and fix a \py{NameError};
+\item assign several variables at once and swap two variables.
+\end{jesais}

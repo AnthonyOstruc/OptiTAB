@@ -1,0 +1,112 @@
+%% =====================================================================
+%%  How to use this book : la structure d'un chapitre et les repères
+%% =====================================================================
+\liminaire{mode}{How to use this book}{A chapter in seven steps, always in the same order}
+
+The twenty chapters of this book are all built on the same model. After an opening page that
+presents the big picture, your goals and your study plan, each chapter goes through seven kinds of
+sections, which you can recognise by their colour and their icon.\par\vspace{5mm}
+
+\newcommand{\otEtape}[4]{% clé de rubrique, titre, texte, durée
+  \noindent\begin{tikzpicture}[baseline=(t.north)]
+    \fill[\otRubCoul{#1},rounded corners=2.4mm] (0,-11mm) rectangle (11mm,0);
+    \otDessinIcone{\otRubIco{#1}}{white}{\otRubCoul{#1}}{6.6mm}{(5.5mm,-5.5mm)}
+    \node[anchor=north west,inner sep=0pt] (t) at (0,0) {};
+  \end{tikzpicture}\hspace{4mm}%
+  \begin{minipage}[t]{\dimexpr\linewidth-15mm\relax}
+    {\otSemi\fontsize{7.2}{9}\selectfont\color{\otRubCoul{#1}}\otCaps[12]{\otRubNom{#1}}}\hspace{2mm}%
+    {\otSemi\fontsize{12}{14}\selectfont #2}\hfill{\otRegular\fontsize{8.4}{10}\selectfont\color{otMuted}#4}\par\vspace{1mm}
+    {\fontsize{10.2}{13}\selectfont #3\par}
+  \end{minipage}\par\vspace{4.6mm}}
+
+\otEtape{learn}{The lessons}{New ideas, one at a time, each with short programs that you run
+  and modify. Little \enquote{Your turn} tasks let you try straight away.}{90 min}
+\otEtape{hood}{How Python works}{What really happens inside the computer when your program runs.
+  Understanding the machine makes everything else easier.}{15 min}
+\otEtape{debug}{Errors and how to fix them}{The mistakes that everybody makes with the new ideas
+  of the chapter, the messages Python shows, and how to correct them.}{15 min}
+\otEtape{pro}{Professional habits}{The way experienced programmers write and organise their code,
+  from your very first programs.}{10 min}
+\otEtape{build}{A mini-project}{A small complete program, built step by step, that uses everything
+  in the chapter.}{20 min}
+\otEtape{practice}{Exercises}{Twelve progressive exercises: predict, fix, complete, write\ldots{} All
+  are solved and explained at the end of the book.}{45 min}
+\otEtape{review}{Chapter review}{The essentials on one page, a ten-question quiz and a checklist to
+  see what you have mastered.}{15 min}
+
+After every four chapters, a \textbf{guided project} and a \textbf{checkpoint} help you combine and
+consolidate what you have learnt.
+
+\clearpage
+\otIntertitre{Code, output and errors}
+\begin{code}{file=example.py}
+# A program file: type it in the IDLE editor
+print("Hello!")
+\end{code}
+\begin{sortie}
+Hello!
+\end{sortie}
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt]
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight\arraybackslash}p{30mm}@{\hspace{5mm}}Y@{}}
+\textbf{Light box} & A \textbf{program} that you type in the editor. Its file name is at the top;
+  the line numbers in the margin are not part of the code.\\[2.4mm]
+\textbf{Dark box: Output} & What the program displays when you run it. Text that the user types on
+  the keyboard is shown in {\color{otGreenDark}\ttfamily\bfseries green}.\\[2.4mm]
+\textbf{Dark box: Python shell} & A conversation with Python in the IDLE Shell. Type only what comes
+  after the prompt \py{>>>}.\\[2.4mm]
+\textbf{Red edge: Error message} & What Python displays when something goes wrong. Read it from the
+  bottom up.\\[2.4mm]
+\otRepere{1}\hspace{1mm}\otRepere{2} & Numbered markers link a line of code to its explanation
+  just below.\\
+\end{tabularx}
+\end{tcolorbox}
+
+\otIntertitre{The boxes}
+\begin{paire}
+\begin{regle}[Key idea]
+The rule or idea to remember.
+\end{regle}
+\begin{attention}[Watch out]
+A trap to avoid:\par\vspace{1mm}
+\fauxjuste{print "Hi"}{print("Hi")}
+\end{attention}
+\end{paire}
+\begin{paire}
+\begin{astuce}[Tip]
+Practical advice to learn faster.
+\end{astuce}
+\begin{pratique}[Pro habit]
+How professionals do it.
+\end{pratique}
+\end{paire}
+\begin{paire}
+\begin{culture}[Did you know?]
+History, anecdotes and the world of programming.
+\end{culture}
+\begin{definition}{key term}
+A word of the programmer's vocabulary, defined simply. All of them are in the glossary.
+\end{definition}
+\end{paire}
+
+\otIntertitre{The exercises}
+\begin{tcolorbox}[otBase,colback=white,colframe=otRule,boxrule=0.5pt]
+\begin{tabularx}{\linewidth}{@{}p{34mm}Y@{}}
+\otBadgeType{predict} & say what a program displays, without running it\\[1.6mm]
+\otBadgeType{fix} & find and correct the mistakes in a program\\[1.6mm]
+\otBadgeType{complete} & fill in the blanks of a program\\[1.6mm]
+\otBadgeType{write} & write a program from scratch\\[1.6mm]
+\otBadgeType{shell} & experiment in the Python shell\\[1.6mm]
+\otBadgeType{read} & read some code or an error message and answer questions\\[1.6mm]
+\otBadgeType{explain} & explain in your own words\\[1.6mm]
+\otBadgeType{challenge} & a harder problem, to go further\\[2.6mm]
+\otDifficulte{1}\hspace{2mm}\otDifficulte{3} & the difficulty, from one dot (easy) to three dots (demanding)\\[1.6mm]
+{\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}solution p.~123} & where to find the solution, at the end of the book\\
+\end{tabularx}
+\end{tcolorbox}
+
+\otIntertitre{At the end of the book}
+\begin{tcbraster}[raster columns=3,raster equal height=rows,raster column skip=3.5mm,raster before skip=1mm]
+\otCartePrg{coche}{otGreenDark}{Solutions}{Every exercise solved, with the reasoning, the complete code and its output, and the classic mistakes.}
+\otCartePrg{livre}{otNavy}{Glossary}{Every key term of the volume with a short definition and the chapter where it is explained.}
+\otCartePrg{telecharger}{otOrangeDark}{Code online}{All the programs of the book, ready to run, to download from the website.}
+\end{tcbraster}

@@ -1,0 +1,17 @@
+% Transfert d'un ion hydrogène entre deux couples (L'essentiel, chapitre 1)
+\def\nom{\otSemi\fontsize{7.2}{9}\selectfont}%
+\begin{tikzpicture}[x=1mm,y=1mm,
+  esp/.style={rounded corners=1.6mm,minimum width=33mm,minimum height=12.5mm,align=center,inner sep=1.4mm}]
+\node[esp,fill=otNavyTint,draw=otNavy!45] (a1) at (0,27) {{\nom\color{otNavy}\otCaps[8]{Acide 1}}\\[0.8mm]\ce{CH3COOH}};
+\node[esp,fill=otNavyTint,draw=otNavy!45] (b1) at (66,27) {{\nom\color{otNavy}\otCaps[8]{Base 1}}\\[0.8mm]\ce{CH3COO-}};
+\node[esp,fill=otGreenTint,draw=otGreen] (b2) at (0,0) {{\nom\color{otGreenDark}\otCaps[8]{Base 2}}\\[0.8mm]\ce{NH3}};
+\node[esp,fill=otGreenTint,draw=otGreen] (a2) at (66,0) {{\nom\color{otGreenDark}\otCaps[8]{Acide 2}}\\[0.8mm]\ce{NH4+}};
+\draw[pcFlecheN] (a1) -- node[above,pcLegende]{cède un ion \ce{H+}} (b1);
+\draw[pcFleche] (b2) -- node[below,pcLegende]{capte un ion \ce{H+}} (a2);
+\draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.4mm]}] (a1.south) -- (b2.north)
+  node[midway,fill=otGreen,circle,inner sep=0.6pt,text=white,font=\otSemi\fontsize{6.5}{7}\selectfont]{H$^{+}$};
+\node[pcLegende,anchor=west] at (86,27) {couple 1 : \ce{CH3COOH}/\ce{CH3COO-}};
+\node[pcLegende,anchor=west] at (86,0) {couple 2 : \ce{NH4+}/\ce{NH3}};
+\node[anchor=north,inner sep=0pt] at (33,-11) {\ce{CH3COOH(aq) + NH3(aq) -> CH3COO^-(aq) + NH4^+(aq)}};
+\end{tikzpicture}
+\par\smallskip\legende{L'acide du couple 1 cède un ion hydrogène, que la base du couple 2 capte.}

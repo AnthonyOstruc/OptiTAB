@@ -1,0 +1,12 @@
+% Décroissance de l'activité du carbone 14 dans un échantillon mort (exercice 8, chapitre 6)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=104mm,height=54mm,xmin=0,xmax=31000,ymin=0,ymax=1.1,
+  xtick={0,5000,...,30000},ytick={0,0.2,...,1},scaled x ticks=false,
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={$t$ (années)},ylabel={$A/A_0$}]
+\addplot[otNavy,line width=1pt,domain=0:30000,samples=150] {2^(-x/5700)};
+\solution{\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.261) -- (axis cs:11050,0.261) -- (axis cs:11050,0);
+\addplot[only marks,mark=*,mark size=1.8pt,otGreenDark] coordinates {(11050,0.261)};
+\node[pcLegende,anchor=south west,text=otGreenDark] at (axis cs:11500,0.29) {$A/A_0=0{,}26$ : $t\approx\num{11000}$ ans};}
+\end{axis}
+\end{tikzpicture}

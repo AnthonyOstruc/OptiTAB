@@ -1,0 +1,146 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type Mines-Ponts — vérifié par verifications/eval_cc.py.
+
+\corrigeSujetEval{C2}{Sujet type Mines-Ponts}
+\enParties
+
+\begin{corrigeEval}[Les polynômes de Legendre]{7 points}{}
+\begin{questions}
+  \item Symétrie et bilinéarité découlent de la linéarité de l'intégrale ;
+    $\langle P,P\rangle=\int_{-1}^{1}P^{2}\geqslant0$. Si
+    $\langle P,P\rangle=0$, la fonction continue et positive $P^{2}$ est nulle
+    sur $\intFF{-1}{1}$ : $P$ a une infinité de racines, donc $P=0$. C'est
+    un \res{\text{produit scalaire}}. \pts{1 pt}
+  \item $U_1=X^{2}-1$, $U_2=X^{4}-2X^{2}+1$,
+    $U_3=X^{6}-3X^{4}+3X^{2}-1$ ; en dérivant :
+    \[\res{L_0=1,\quad L_1=X,\quad L_2=\frac{3X^{2}-1}{2},\quad L_3=\frac{5X^{3}-3X}{2}}.\]
+    $U_n$ est de degré $2n$, de terme dominant $X^{2n}$, donc
+    $U_n^{(n)}$ est de degré $n$, de terme dominant
+    $\frac{(2n)!}{n!}X^{n}$ : $\deg L_n=n$ et
+    $\res{c_n=\dfrac{(2n)!}{2^{n}(n!)^{2}}}$. $U_n$ est pair, et chaque
+    dérivation change la parité : $L_n$ a la \res{\text{parité de }n}.
+    \pts{1,5 pt}
+  \item Par la formule de Leibniz,
+    $U_n^{(n)}=\sum_{k=0}^{n}\binom nk\bigl[(X-1)^{n}\bigr]^{(k)}\bigl[(X+1)^{n}\bigr]^{(n-k)}$.
+    En $1$, seul le terme $k=n$ subsiste ($(X-1)^{n}$ et ses dérivées
+    d'ordre $<n$ s'y annulent) : $U_n^{(n)}(1)=n!\,2^{n}$, d'où
+    $\res{L_n(1)=1}$, et par parité $\res{L_n(-1)=(-1)^{n}}$. \pts{1 pt}
+  \item $\pm1$ sont racines d'ordre $n$ de $U_n$, donc racines de
+    $U_n^{(k)}$ pour $k\leqslant n-1$. Pour $Q\in\R_{n-1}[X]$, une
+    intégration par parties donne, les termes de bord étant nuls :
+    \[\int_{-1}^{1}U_n^{(n)}Q=-\int_{-1}^{1}U_n^{(n-1)}Q'=\dots=(-1)^{n}\int_{-1}^{1}U_nQ^{(n)}=0,\]
+    car $Q^{(n)}=0$. Donc $\res{L_n\perp\R_{n-1}[X]}$. Les $L_k$,
+    $k\leqslant n$, sont deux à deux orthogonaux et non nuls, donc libres :
+    $n+1$ vecteurs de $\R_n[X]$, \res{\text{base orthogonale}}. \pts{2 pts}
+  \item $L_n-c_nX^{n}\in\R_{n-1}[X]$ est orthogonal à $L_n$, donc
+    $\lVert L_n\rVert^{2}=\langle L_n,c_nX^{n}\rangle$. Les mêmes intégrations
+    par parties, avec $(X^{n})^{(n)}=n!$, donnent
+    \[\lVert L_n\rVert^{2}=\frac{c_n}{2^{n}n!}(-1)^{n}n!\int_{-1}^{1}(t^{2}-1)^{n}\,\mathrm{d}t
+      =\frac{c_n}{2^{n}}\cdot\frac{2^{2n+1}(n!)^{2}}{(2n+1)!}
+      =\frac{(2n)!}{2^{n}(n!)^{2}}\cdot\frac{2^{n+1}(n!)^{2}}{(2n+1)!}=\res{\frac{2}{2n+1}}.\]
+    \pts{1,5 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=3.2cm,y=2.1cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-1.12,0) -- (1.2,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-1.12) -- (0,1.2);
+  \draw[otRule,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (-1,-1) rectangle (1,1);
+  \draw[otMuted!60,line width=0.9pt] (-1,1) -- (1,1);
+  \draw[otNavy!45,line width=1pt] (-1,-1) -- (1,1);
+  \draw[otGreenDark,line width=1.1pt] plot[domain=-1:1,samples=60] (\x,{(3*\x*\x-1)/2});
+  \draw[otOrange,line width=1.1pt] plot[domain=-1:1,samples=80] (\x,{(5*\x*\x*\x-3*\x)/2});
+  \draw[otNavy,line width=1.1pt] plot[domain=-1:1,samples=100] (\x,{(35*\x*\x*\x*\x-30*\x*\x+3)/8});
+  \node[font=\scriptsize,anchor=north] at (-1,-1.02) {$-1$};
+  \node[font=\scriptsize,anchor=north] at (1,-1.02) {$1$};
+  \node[font=\scriptsize,text=otMuted,anchor=south] at (-0.55,1) {$L_0$};
+  \node[font=\scriptsize,text=otNavy!60,anchor=west] at (0.62,0.55) {$L_1$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=north] at (0.18,-0.5) {$L_2$};
+  \node[font=\scriptsize,text=otOrange!85!black,anchor=north] at (0.45,-0.72) {$L_3$};
+  \node[font=\scriptsize,text=otNavy,anchor=south west] at (0.06,0.39) {$L_4$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{$L_0,\dots,L_4$ sur $\intFF{-1}{1}$ : $L_n$ vaut $1$ en $1$, a la
+parité de $n$ et possède $n$ racines simples dans $\intOO{-1}{1}$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Les racines de $L_n$]{3 points}{}
+\begin{questions}[start=6]
+  \item Sur chacun des intervalles délimités par $-1,x_1,\dots,x_p,1$, $L_n$
+    ne change pas de signe (ses autres racines dans $\intOO{-1}{1}$ sont de
+    multiplicité paire) ; en chaque $x_i$, $L_n$ et $Q$ changent tous deux
+    de signe. Ainsi $L_nQ$ \res{\text{garde un signe constant}} sur
+    $\intFF{-1}{1}$, et n'est pas le polynôme nul : $\langle L_n,Q\rangle\neq0$.
+    Si l'on avait $p<n$, on aurait $Q\in\R_{n-1}[X]$ et
+    $\langle L_n,Q\rangle=0$ par la question 4 : contradiction. Donc
+    $p\geqslant n=\deg L_n$, d'où $p=n$ : $L_n$ a
+    \res{n\text{ racines simples dans }\intOO{-1}{1}}. \pts{3 pts}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[La méthode de Gauss]{7 points}{}
+\begin{questions}[start=7]
+  \item Un $P\in\R_{n-1}[X]$ est égal à son interpolé de Lagrange :
+    $P=\sum_iP(x_i)\ell_i$. En intégrant :
+    $\res{\int_{-1}^{1}P=\sum_iw_iP(x_i)}$. \pts{1 pt}
+  \item $P=QL_n+R$ avec $\deg Q\leqslant n-1$ et $\deg R\leqslant n-1$.
+    D'une part $\int_{-1}^{1}QL_n=\langle Q,L_n\rangle=0$ ; d'autre part
+    $P(x_i)=R(x_i)$. Donc
+    $\int_{-1}^{1}P=\int_{-1}^{1}R=\sum_iw_iR(x_i)=\res{\sum_iw_iP(x_i)}$.
+    \pts{1,5 pt}
+  \item Pour $P=\prod(X-x_i)^{2}$, de degré $2n$ : $\int_{-1}^{1}P>0$
+    (fonction continue, positive, non nulle) alors que
+    $\sum_iw_iP(x_i)=0$ : la formule est \res{\text{fausse en degré }2n}.
+    Avec $\ell_i^{2}$, de degré $2n-2$ :
+    $0<\int_{-1}^{1}\ell_i^{2}=\sum_jw_j\ell_i(x_j)^{2}=w_i$ ; et avec $P=1$ :
+    $\sum_iw_i=2$. \res{\text{Les poids sont positifs, de somme }2}.
+    \pts{1,5 pt}
+  \item $n=2$ : $L_2=\frac{3X^{2}-1}{2}$, nœuds $\pm\frac{1}{\sqrt3}$ ; par
+    symétrie $w_1=w_2$, de somme $2$ : $\res{w_1=w_2=1}$. $n=3$ :
+    $L_3=\frac{X(5X^{2}-3)}{2}$, nœuds $0$, $\pm\sqrt{\frac35}$ ; $w_1=w_3$
+    par symétrie, $2w_1+w_2=2$, et l'exactitude pour $X^{2}$ donne
+    $2w_1\cdot\frac35=\frac23$ : $\res{w_1=w_3=\frac59,\ w_2=\frac89}$.
+    \pts{2 pts}
+  \item La valeur exacte est $2\operatorname{sh}1\approx2{,}3504$. Gauss à
+    deux points : $\approx2{,}3427$ (erreur $\approx8\cdot10^{-3}$) ; à trois
+    points : $\frac59\times2{,}6306+\frac89\approx2{,}3503$ (erreur
+    $\approx7\cdot10^{-5}$) ; trapèzes en $-1,0,1$ :
+    $\frac{\mathrm{e}^{-1}}{2}+1+\frac{\mathrm{e}}{2}\approx2{,}5431$ (erreur
+    $\approx0{,}19$). \res{\text{Avec trois évaluations, Gauss est près de
+    3000 fois plus précis}}. \pts{1 pt}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=3.4cm,y=2.2cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (-1.12,0) -- (1.2,0);
+  \draw[otOrange,line width=1.1pt] plot[domain=-1:1,samples=80] (\x,{(5*\x*\x*\x-3*\x)/2});
+  \foreach \xx/\ww/\lab in {-0.7746/0.5556/{\frac59},0/0.8889/{\frac89},0.7746/0.5556/{\frac59}}{
+    \fill[otGreenDark!30,rounded corners=0.6pt] ({\xx-0.045},0) rectangle ({\xx+0.045},\ww);
+    \fill[otGreenDark] (\xx,0) circle (1.8pt);
+    \node[font=\scriptsize,text=otGreenDark,anchor=south] at (\xx,\ww) {$w=\lab$};}
+  \node[font=\scriptsize,anchor=north] at (-1,-0.02) {$-1$};
+  \node[font=\scriptsize,anchor=north] at (1,-0.02) {$1$};
+  \node[font=\scriptsize,anchor=north] at (-0.7746,-0.04) {$-\sqrt{3/5}$};
+  \node[font=\scriptsize,anchor=north] at (0.7746,-0.04) {$\sqrt{3/5}$};
+  \node[font=\scriptsize,anchor=north] at (0,-0.04) {$0$};
+  \node[font=\scriptsize,text=otOrange!85!black,anchor=west] at (1.0,1.05) {$L_3$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{La méthode de Gauss à trois points : les nœuds sont les racines de
+$L_3$, les poids (barres vertes) valent $\frac59,\frac89,\frac59$.}
+\end{minipage}\end{center}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Une relation de récurrence]{3 points}{}
+\begin{questions}[start=12]
+  \item $XL_n\in\R_{n+1}[X]$ se décompose dans la base orthogonale
+    $(L_0,\dots,L_{n+1})$ ; pour $k\leqslant n-2$,
+    $\langle XL_n,L_k\rangle=\langle L_n,XL_k\rangle=0$ car
+    $XL_k\in\R_{n-1}[X]$. Donc $XL_n=\alpha L_{n+1}+\beta L_n+\gamma L_{n-1}$,
+    et $\beta=0$ car $XL_n$ et $L_n$ sont de parités opposées. Les termes
+    dominants donnent $c_n=\alpha c_{n+1}$, soit
+    $\alpha=\frac{c_n}{c_{n+1}}=\frac{n+1}{2n+1}$ ; l'évaluation en $1$ donne
+    $1=\alpha+\gamma$, soit $\gamma=\frac{n}{2n+1}$. D'où
+    \[\res{(n+1)\,L_{n+1}=(2n+1)\,X\,L_n-n\,L_{n-1}}.\]
+    Pour $n=3$ :
+    $4L_4=7X\cdot\frac{5X^{3}-3X}{2}-3\cdot\frac{3X^{2}-1}{2}$, soit
+    $\res{L_4=\dfrac{35X^{4}-30X^{2}+3}{8}}$. \pts{3 pts}
+\end{questions}
+\end{corrigeEval}

@@ -1,0 +1,18 @@
+% Orientation des molécules d'eau polaires près d'une règle chargée positivement (corrigé de l'exercice 8, chapitre 6)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  aO/.style={circle,fill=otRed!85,minimum size=4.4mm,inner sep=0pt},
+  aH/.style={circle,fill=white,draw=otInk!55,line width=0.4pt,minimum size=2.8mm,inner sep=0pt}]
+% molécule d'eau dont l'oxygène pointe vers la droite (vers la règle)
+\newcommand{\eau}[2]{%
+  \draw[otInk!70,line width=0.8pt] (#1-0.33,#2+0.26) -- (#1,#2) -- (#1-0.33,#2-0.26);
+  \node[aH] at (#1-0.33,#2+0.26) {}; \node[aH] at (#1-0.33,#2-0.26) {}; \node[aO] at (#1,#2) {};}
+\begin{scope}[shift={(3.3,0)}]
+  \filldraw[fill=otOrange!25,draw=otOrange!80!black,line width=0.5pt,rounded corners=0.5mm] (-0.14,-1.2) rectangle (0.14,1.2);
+  \foreach \yy in {-0.8,-0.4,0,0.4,0.8}{\node[font=\otSemi\fontsize{7}{8}\selectfont,text=otRed!80!black] at (0,\yy) {$+$};}
+\end{scope}
+\foreach \x/\y in {1.6/0.75,2.4/0.1,1.5/-0.6,0.7/0.3,2.2/-1.0,0.6/-0.9,2.3/1.1}{\eau{\x}{\y}}
+\draw[otGreenDark,line width=1pt,-{Stealth[length=2.4mm]}] (0.2,1.55) -- (2.5,1.55) node[midway,above,pcLegende,text=otGreenDark] {attraction vers la règle};
+\node[pcLegende,anchor=west,align=left] at (3.7,0.5) {règle chargée\\positivement};
+\node[pcLegende,anchor=north,align=center] at (1.5,-1.35) {chaque molécule tourne son pôle $\delta^{-}$ (oxygène) vers la règle};
+\end{tikzpicture}
+\par\smallskip\legende{Les molécules polaires s'orientent dans le champ créé par la règle et sont attirées : le filet d'eau est dévié.}

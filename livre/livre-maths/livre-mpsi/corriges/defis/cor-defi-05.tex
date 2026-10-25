@@ -1,0 +1,103 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 5 — vérifié par verifications/defis_01_05.py.
+
+\begin{blocLivre}{cor-5-25a}
+\begin{corrige}{25}{La suite logistique, de la convergence au chaos}
+\demarche{Stabilité de $\intFF{0}{1}$, monotonie sur un intervalle stable où
+$f_a$ est croissante, puis un changement de variable trigonométrique qui
+rend la dynamique explicite.}
+\partieExo{A}{Premières propriétés}
+\begin{questions}
+  \item Pour $x\in\intFF{0}{1}$, $0\leqslant x(1-x)\leqslant\frac14$
+    (maximum en $\frac12$), donc $0\leqslant f_a(x)\leqslant\frac a4\leqslant1$.
+    Par récurrence, $\res{u_n\in\intFF{0}{1}}$ pour tout $n$.
+  \item $f_a(x)=x\iff x\,(a-1-ax)=0\iff x=0$ ou $x=1-\frac1a$, ce
+    second point étant dans $\intOF{0}{1}$ si et seulement si $a>1$.
+    Points fixes : $0$, et $\res{\ell_a=1-\tfrac1a}$ si $a>1$.
+  \item $f_a(x)-x=x(a-1-ax)\leqslant0$ sur $\intFF{0}{1}$ lorsque
+    $a\leqslant1$ : la suite décroît, est minorée par $0$, converge vers
+    un point fixe de la fonction continue $f_a$, donc vers $\res{0}$.
+\end{questions}
+\partieExo{B}{Convergence vers l'équilibre}
+\begin{questions}[resume]
+  \item $f_a'(x)=a(1-2x)$, donc
+    $f_a'(\ell_a)=a\bigl(\tfrac2a-1\bigr)=\res{2-a}$, et $|2-a|<1$ pour
+    $1<a<3$.
+  \item $1-2u_{n+1}=1-4u_n+4u_n^{2}=(1-2u_n)^{2}$, d'où par récurrence
+    $1-2u_n=(1-2u_0)^{2^{n}}$ et
+    $\res{u_n=\dfrac{1-(1-2u_0)^{2^{n}}}{2}}$. Pour
+    $u_0\in\intOO{0}{1}$, $|1-2u_0|<1$ : $u_n\to\frac12$, avec une erreur
+    $\frac12|1-2u_0|^{2^{n}}$ — le nombre de décimales exactes double à
+    chaque pas (convergence quadratique, comme Héron au chapitre 11).
+  \item $\ell_a\in\intOF{0}{\frac12}$ et
+    $u_1=f_a(u_0)\in\intOF{0}{\frac a4}\subseteq\intOF{0}{\frac12}$. Sur
+    $J=\intOF{0}{\frac12}$, $f_a'\geqslant0$ et
+    $f_a(J)\subseteq\intOF{0}{\frac a4}\subseteq J$ : $J$ est stable et
+    $f_a$ y est croissante, donc $(u_n)_{n\geqslant1}$ est monotone.
+    Si $u_1<\ell_a$ : $f_a(x)>x$ sur $\intOO{0}{\ell_a}$, la suite croît,
+    majorée par $\ell_a$ (car $f_a(\intOF{0}{\ell_a})\subseteq\intOF{0}{\ell_a}$),
+    et sa limite, point fixe strictement positif, est $\ell_a$. Si
+    $u_1\geqslant\ell_a$ : la suite décroît et reste au-dessus de
+    $\ell_a$. Dans les deux cas, $\res{u_n\to\ell_a}$. Pour
+    $2<a\leqslant3$, la convergence a encore lieu mais en oscillant autour
+    de $\ell_a$ (figure de l'énoncé), puisque $f_a'(\ell_a)<0$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-5-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Le chaos ($a=4$)}
+\begin{questions}[start=7]
+  \item $f_4\bigl(\sin^{2}x\bigr)=4\sin^{2}x\,(1-\sin^{2}x)=(2\sin x\cos x)^{2}
+    =\sin^{2}(2x)$ ; par récurrence, $\res{u_n=\sin^{2}\bigl(2^{n}\theta\bigr)}$.
+  \item Pour $\theta=\pi/5$ : $u_1=\sin^{2}(2\pi/5)$ et
+    $u_2=\sin^{2}(4\pi/5)=\sin^{2}(\pi-\pi/5)=u_0$ : la suite est
+    périodique de période $2$, de valeurs (avec
+    $\cos(2\pi/5)=\frac{\sqrt5-1}{4}$, chapitre 3)
+    \[
+    \sin^{2}\frac\pi5=\frac{1-\cos(2\pi/5)}{2}=\res{\frac{5-\sqrt5}{8}},
+    \qquad
+    \sin^{2}\frac{2\pi}5=\res{\frac{5+\sqrt5}{8}} .
+    \]
+    Pour $\theta=\pi/7$ : $u_3=\sin^{2}(8\pi/7)=\sin^{2}(\pi+\pi/7)=u_0$,
+    alors que $u_1,u_2\neq u_0$ : période $3$. (Un théorème de Li et Yorke,
+    1975, affirme que « période trois implique chaos ».)
+  \item L'écart des angles vaut $2^{n}\varepsilon$ ; dès qu'il dépasse
+    l'ordre de $1$, les valeurs $\sin^{2}$ n'ont plus de rapport. Pour
+    $\varepsilon=10^{-6}$ : $2^{n}\geqslant10^{6}$ dès
+    $n\geqslant\frac{6\ln10}{\ln2}\approx20$ — la figure confirme. Pour
+    $\varepsilon=10^{-16}$ : $n\approx53$. Une erreur d'arrondi
+    microscopique rend donc imprévisible, au-delà d'une cinquantaine
+    d'itérations, une suite pourtant parfaitement déterministe : c'est la
+    \res{\text{sensibilité aux conditions initiales}}.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[x=0.38cm,y=2.9cm,line cap=round,line join=round]
+  \draw[otRule,line width=0.3pt] (0,0.5) -- (30,0.5) (0,1) -- (30,1);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (31,0);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0,0) -- (0,1.15);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (17,0) -- (17,1.05);
+  \draw[otNavy,line width=0.8pt] (0,0.0873) -- (1,0.3188) -- (2,0.8687) -- (3,0.4563) --
+    (4,0.9923) -- (5,0.0304) -- (6,0.1179) -- (7,0.4159) -- (8,0.9717) -- (9,0.1100) --
+    (10,0.3916) -- (11,0.9530) -- (12,0.1793) -- (13,0.5887) -- (14,0.9685) --
+    (15,0.1219) -- (16,0.4280) -- (17,0.9793) -- (18,0.0812) -- (19,0.2983) --
+    (20,0.8373) -- (21,0.5450) -- (22,0.9919) -- (23,0.0321) -- (24,0.1242) --
+    (25,0.4350) -- (26,0.9831) -- (27,0.0664) -- (28,0.2479) -- (29,0.7457) -- (30,0.7585);
+  \draw[otGreenDark,line width=0.8pt,dash pattern=on 2.5pt off 1.2pt] (0,0.0873) -- (1,0.3188) --
+    (2,0.8687) -- (3,0.4562) -- (4,0.9923) -- (5,0.0304) -- (6,0.1179) -- (7,0.4160) --
+    (8,0.9718) -- (9,0.1097) -- (10,0.3906) -- (11,0.9521) -- (12,0.1825) -- (13,0.5967) --
+    (14,0.9626) -- (15,0.1441) -- (16,0.4933) -- (17,0.9998) -- (18,0.0007) -- (19,0.0029) --
+    (20,0.0114) -- (21,0.0451) -- (22,0.1723) -- (23,0.5705) -- (24,0.9801) -- (25,0.0779) --
+    (26,0.2873) -- (27,0.8190) -- (28,0.5930) -- (29,0.9654) -- (30,0.1336);
+  \foreach \v in {0,10,20,30}{\node[font=\tiny,text=otMuted,below] at (\v,0) {$\v$};}
+  \node[font=\tiny,text=otMuted,anchor=east] at (0,1) {$1$};
+  \node[font=\scriptsize,text=otMuted,anchor=west] at (31,0) {$n$};
+  \node[font=\scriptsize,text=otMuted,anchor=south] at (17,1.05) {$n\approx17$ : les suites se séparent};
+\end{tikzpicture}\\[0.5mm]
+\legende{Pour $a=4$, deux suites issues de $\theta=0{,}3$ (trait plein) et
+$\theta=0{,}3+10^{-6}$ (tirets) : indiscernables pendant une quinzaine
+d'itérations, puis sans aucun rapport.}
+\end{center}
+\end{corrigeSuite}
+\end{blocLivre}

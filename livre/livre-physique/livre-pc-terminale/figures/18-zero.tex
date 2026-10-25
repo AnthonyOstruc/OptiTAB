@@ -1,0 +1,14 @@
+% Pression d'un gaz à volume constant en fonction de la température : le zéro absolu (L'essentiel, chapitre 18)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=104mm,height=50mm,xmin=-300,xmax=100,ymin=0,ymax=1400,
+  xtick={-300,-200,...,100},ytick={0,200,...,1400},
+  xlabel={$\theta$ (\unit{\degreeCelsius})},ylabel={$p$ (hPa)}]
+\addplot[otMuted,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=-273.15:0,samples=2] {1000*(x+273.15)/273.15};
+\addplot[otNavy,line width=0.9pt,domain=0:90,samples=2] {1000*(x+273.15)/273.15};
+\addplot[only marks,mark=*,mark size=1.6pt,otRed!80!black] coordinates {(0,1000) (20,1073) (40,1146) (60,1220) (80,1293)};
+\fill[otGreenDark] (axis cs:-273.15,0) circle (1.8pt);
+\node[pcLegende,anchor=south west,text=otGreenDark,align=left] at (axis cs:-205,30) {$p=0$ pour\\ $\theta=\qty{-273,15}{\degreeCelsius}$};
+\node[pcLegende,anchor=south east] at (axis cs:-20,1060) {mesures};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{À volume constant, la pression varie linéairement avec la température ; prolongée, la droite coupe l'axe à \qty{-273,15}{\degreeCelsius}, le zéro absolu (\qty{0}{K}).}

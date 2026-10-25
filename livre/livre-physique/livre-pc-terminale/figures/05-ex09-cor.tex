@@ -1,0 +1,29 @@
+% Hydratation de l'éthène : flèches courbes des actes 1 et 2 (corrigé de l'exercice 9, chapitre 5)
+{\setchemfig{atom sep=2.1em}\def\titreActe#1{\makebox[13mm][l]{\otSemi\fontsize{7.5}{9}\selectfont\color{otNavy}#1}}%
+\titreActe{Acte 1}%
+\schemestart
+\chemfig{H_2C=[@{hy1}]CH_2}
+\+
+\chemfig{@{hy2}H-[@{hy3}]@{hy4}\charge{90=\|,135:4.2pt=\cplus}{O}(-[1]H)-[7]H}
+\arrow
+\chemfig{H_3C-\charge{270:2.6pt=\cplus}{C}H_2}
+\+
+\chemfig{H-\charge{90=\|,270=\|}{O}-H}
+\schemestop
+\hspace{13mm}%
+\chemmove{%
+  \draw[pcCourbe] ([yshift=2pt]hy1) .. controls +(75:7mm) and +(115:6mm) .. (hy2.north);
+  \draw[pcCourbe] ([yshift=-1pt]hy3) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]hy4.south);}
+\par\vspace{7mm}
+\titreActe{Acte 2}%
+\schemestart
+\chemfig{H_3C-@{hy5}\charge{270:2.6pt=\cplus}{C}H_2}
+\+
+\chemfig{H-@{hy6}\charge{90=\|,270=\|}{O}-H}
+\arrow
+\chemfig{H_3C-CH_2-\charge{90=\|,135:4.4pt=\cplus}{O}(-[1]H)-[7]H}
+\schemestop
+\hspace{13mm}%
+\chemmove{%
+  \draw[pcCourbe] ([yshift=2pt]hy6.north) .. controls +(110:7mm) and +(70:6mm) .. ([yshift=0.5pt]hy5.north);}}
+\par\smallskip\legende{Acte 1 : le doublet de la liaison double capte un ion \ce{H+}. Acte 2 : un doublet non liant de l'eau se lie au carbocation.}

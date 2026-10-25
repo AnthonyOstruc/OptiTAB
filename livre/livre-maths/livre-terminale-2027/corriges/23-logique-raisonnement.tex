@@ -1,0 +1,168 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 23 — Ensembles, logique et raisonnement (édition 2027-2028)
+%% Tous les résultats ont été vérifiés par programme (verifier_edition_2027.py).
+
+\corrigesChapitre{23}{Ensembles, logique et raisonnement}
+
+\begin{deuxcolonnes}
+
+\begin{corrige}{1}{Notations ensemblistes}
+\begin{questions}
+  \item $A=\ens{2\pv4\pv6\pv8\pv10}$ ($5$ éléments), $B=\ens{3\pv6\pv9}$ ($3$), $A\cap B=\ens{6}$ ($1$),\\
+    $A\cup B=\ens{2\pv3\pv4\pv6\pv8\pv9\pv10}$ ($7$) et $\overline{A}=\ens{1\pv3\pv5\pv7\pv9}$ ($5$).
+  \item $5+3-1=7$ : l'égalité est vérifiée. $A$ et $B$ ne sont pas disjoints : en ajoutant leurs cardinaux, on compterait
+    deux fois l'élément $6$.
+  \item $\overline{A\cup B}=\ens{1\pv5\pv7}$ ; $\overline{A}=\ens{1\pv3\pv5\pv7\pv9}$,\\
+    $\overline{B}=\ens{1\pv2\pv4\pv5\pv7\pv8\pv10}$, donc\\ $\overline{A}\cap\overline{B}=\ens{1\pv5\pv7}$ :
+    $\res{\overline{A\cup B}=\overline{A}\cap\overline{B}}$.
+  \item Vrai, vrai, vrai, vrai ; $B\subset A$ est \res{\text{faux}} car $3\in B$ et $3\notin A$.
+  \item La liste \code{[2, 3, 4, 6, 8, 9, 10]} : les éléments de $\res{A\cup B}$. Le « \code{or} » de Python traduit la réunion.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Vrai ou faux ?}
+\begin{questions}
+  \item \res{\text{Faux}} : pour $x=\frac12$, $x^{2}=\frac14<\frac12$.
+  \item \res{\text{Vrai}} : $x=0$ convient ($0^{2}=2\times0$), de même que $x=2$.
+  \item \res{\text{Faux}} : pour $n=2$, $2^{n}=4$ et $n^{2}=4$, or $4>4$ est faux (pour $n=3$ aussi : $8<9$).
+  \item \res{\text{Vrai}} : en posant $X=e^{x}>0$,\\
+    $e^{x}+e^{-x}-2=X+\frac1X-2=\frac{(X-1)^{2}}{X}\geq0$.
+  \item \res{\text{Faux}} : sa négation « pour tout réel $x$, $e^{x}\neq0$ » est vraie, car $e^{x}>0$ pour tout réel $x$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Écrire des négations}
+\methode{« et » devient « ou », « pour tout » devient « il existe »}
+\begin{questions}
+  \item $\res{x<2\text{ ou }y\geq0}$
+  \item Il existe un réel $x$ tel que $\res{f(x)\leq0}$.
+  \item Pour tout entier naturel $n$, $\res{u_n>0}$.
+  \item Pour tout réel $M$, il existe un entier naturel $n$ tel que $\res{u_n>M}$.
+  \item Au moins un élève de la classe a \res{\text{moins de } 18 \text{ ans}}.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Réciproque et contraposée}
+\begin{questions}
+  \item Vraie. Réciproque « si $x^{2}=9$, alors $x=3$ » : \res{\text{fausse}} ($x=-3$). Contraposée « si $x^{2}\neq9$, alors
+    $x\neq3$ » : \res{\text{vraie}}.
+  \item Vraie : $n=6k=3\times2k$. Réciproque : \res{\text{fausse}} ($3$ est divisible par $3$, pas par $6$). Contraposée « si $n$
+    n'est pas divisible par $3$, il ne l'est pas par $6$ » : \res{\text{vraie}}.
+  \item Vraie : pour tout $n$, $u_n\geq u_0$. Réciproque : \res{\text{fausse}} : $u_n=\frac1{n+1}$ est minorée par $0$ et
+    décroissante. Contraposée « une suite non minorée n'est pas croissante » : \res{\text{vraie}}.
+  \item Vraie (chapitre 4). Réciproque : \res{\text{fausse}} : $x\mapsto|x|$ est continue en $0$ mais pas dérivable en $0$.
+    Contraposée « si $f$ n'est pas continue en $a$, elle n'est pas dérivable en $a$ » : \res{\text{vraie}}.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Condition nécessaire, condition suffisante}
+\begin{questions}
+  \item \res{\text{Suffisante}} : si $x>2$, alors $x^{2}>4$. Pas nécessaire : $x=-3$ vérifie $x^{2}>4$.
+  \item \res{\text{Nécessaire et suffisante}} : $(q^{n})$ converge vers $0$ si et seulement si $-1<q<1$ ; pour $q=1$ la limite
+    vaut $1$, et pour $q\leq-1$ ou $q>1$ la suite ne converge pas vers $0$.
+  \item \res{\text{Nécessaire}} : en un extremum local d'une fonction dérivable sur $\R$, la dérivée s'annule. Pas suffisante :
+    $f(x)=x^{3}$ vérifie $f'(0)=0$, mais $f$ est strictement croissante.
+  \item \res{\text{Nécessaire et suffisante}} : si $n$ est pair, $n^{2}$ l'est ; réciproquement, voir l'exercice 7.
+  \item \res{\text{Nécessaire et suffisante}} : c'est la caractérisation de l'orthogonalité.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Raisonner par disjonction des cas}
+\begin{questions}
+  \item Si $n=2k$ : $n^{2}+n+1=2(2k^{2}+k)+1$. Si $n=2k+1$ : $n^{2}+n+1=2(2k^{2}+3k+1)+1$. Dans les deux cas,
+    $\res{n^{2}+n+1\text{ est impair}}$.
+  \item Si $n=3k$, $n$ est divisible par $3$. Si $n=3k+1$, $2n+1=3(2k+1)$. Si $n=3k+2$, $n+1=3(k+1)$. Dans chaque cas, un
+    facteur est divisible par $3$, donc le produit aussi.
+  \item Si $x<-2$ : $-2x-1=5$, soit $x=-3$, qui convient. Si $-2\leq x<1$ : $3=5$, impossible. Si $x\geq1$ : $2x+1=5$, soit
+    $x=2$, qui convient. $\res{S=\ens{-3\pv2}}$.
+  \item Si $x\geq1$ : $\max(x\pv1)=x$, $\min(x\pv1)=1$, produit $x$. Si $x<1$ : $\max=1$, $\min=x$, produit $x$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{Contraposée et absurde}
+\begin{questions}
+  \item Contraposée : si $n$ est impair, $n=2k+1$ et $n^{2}=2(2k^{2}+2k)+1$ est impair. Donc \res{\text{si } n^{2} \text{ est pair, } n \text{ est pair}}.
+  \item Contraposée : si $n$ est impair, $n=2k+1$ et $n^{2}-1=4k(k+1)$. Comme $k(k+1)$ est pair, $n^{2}-1$ est divisible par $8$.
+  \item Supposons $\frac{\ln3}{\ln2}=\frac pq$ avec $p,q\in\mathbb{N}^{*}$. Alors $q\ln3=p\ln2$, soit $\ln\left(3^{q}\right)=\ln\left(2^{p}\right)$,
+    d'où $3^{q}=2^{p}$ car $\ln$ est strictement croissante. Or $3^{q}$ est impair et $2^{p}$ pair ($p\geq1$) : contradiction.
+    Le nombre $\frac{\ln3}{\ln2}$ est \res{\text{irrationnel}}.
+  \item Si $e^{x}=-x^{2}$, alors $0<e^{x}=-x^{2}\leq0$ : contradiction. \res{\text{Aucun réel ne convient.}}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Raisonner par équivalence}
+\begin{questions}
+  \item $\sqrt{-1+2}=1\neq-1$. L'étape « élever au carré » n'est qu'une \textbf{implication}. Correctement :
+    $\sqrt{x+2}=x$ équivaut à « $x\geq0$ et $x+2=x^{2}$ », soit « $x\geq0$ et ($x=2$ ou $x=-1$) », d'où $\res{S=\ens2}$.
+  \item L'équation a un sens pour $x>0$ et $x-2>0$, soit $x>2$. Pour $x>2$, elle équivaut à $\ln\big(x(x-2)\big)=\ln3$, soit
+    $x^{2}-2x-3=0$, de solutions $3$ et $-1$. Avec $x>2$ : $\res{S=\ens3}$.
+  \item Avec $X=e^{x}>0$ :\\ $(X-1)(X-2)\leq0\iff1\leq X\leq2$,\\ soit $0\leq x\leq\ln2$ : $\res{S=\intFF{0}{\ln2}}$.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{9}{Récurrence : réussir et échouer}
+\begin{questions}
+  \item \etape{Initialisation}$4^{0}+2=3$. \etape{Hérédité}Si $4^{n}+2=3k$, alors $4^{n+1}+2=4\left(4^{n}+2\right)-6=3(4k-2)$.
+    \etape{Conclusion}Pour tout $n$, $\res{3\text{ divise }4^{n}+2}$.
+  \item \etape{Initialisation}$2^{4}=16\geq16$. \etape{Hérédité}Si $2^{n}\geq n^{2}$ avec $n\geq4$, alors
+    $2^{n+1}\geq2n^{2}\geq(n+1)^{2}$, car $2n^{2}-(n+1)^{2}=(n-1)^{2}-2\geq0$ pour $n\geq3$. Pour $n=3$, $2^{3}=8<9$ : la propriété est
+    \res{\text{fausse pour } n=3}.
+  \item $10^{n+1}+1=10\left(10^{n}+1\right)-9$ : si $9$ divise $10^{n}+1$, il divise $10^{n+1}+1$. Mais l'\textbf{initialisation} échoue :
+    $10^{0}+1=2$. En fait, $10^{n}-1=99\dots9$ est divisible par $9$, donc $10^{n}+1=\left(10^{n}-1\right)+2$ a pour reste $\res{2}$ :
+    $P(n)$ est fausse pour tout $n$. L'hérédité seule ne prouve rien.
+\end{questions}
+\end{corrige}
+
+\end{deuxcolonnes}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{10}{Suites et quantificateurs}
+\begin{questions}
+  \item Pour tout réel $M$, il existe un entier naturel $n$ tel que $u_n>M$.
+  \item Pour $n\geq3$ : $u_n-(n-3)=n^{2}-4n+3=(n-1)(n-3)\geq0$. Soit $M$ un réel : pour un entier $n\geq3$ tel que $n>M+3$,
+    on a $u_n\geq n-3>M$. Donc $(u_n)$ \res{\text{n'est pas majorée}}.
+  \item \res{\text{Non}} : $v_{n+1}-v_n=\frac{1}{n+1}-\frac{1}{n+2}>0$, donc $(v_n)$ est croissante, et $v_n\leq1$ pour tout $n$ :
+    elle est majorée.
+  \item $(u_n)$ n'étant pas majorée, $A$ n'est pas un majorant : il existe $N$ tel que $u_N>A$. La suite étant croissante, pour
+    tout $n\geq N$, $u_n\geq u_N>A$. Ceci vaut pour tout réel $A$ : \res{(u_n)\text{ tend vers }+\infty}.
+  \item Si une suite croissante ne tend pas vers $+\infty$, alors elle est \res{\text{majorée}} ; d'après le théorème de
+    convergence monotone, elle converge.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{11}{Majorant ou maximum ?}
+\begin{questions}
+  \item Si $f$ admet un maximum en $x_0$, le réel $M=f(x_0)$ convient : pour tout $x$, $f(x)\leq M$.
+  \item $f'(x)=(1-x)e^{-x}$, du signe de $1-x$ : $f$ est croissante sur $\intOF{-\infty}{1}$ et décroissante sur
+    $\intFO{1}{+\infty}$. Elle admet un maximum en $1$, égal à $\res{f(1)=e^{-1}}$.
+  \item $e^{-x}>0$, donc $g(x)<1$ : $g$ est majorée par $1$. Supposons que $g$ admette un maximum en $x_0$. Or
+    $g'(x)=e^{-x}>0$ : $g$ est strictement croissante, donc $g(x_0+1)>g(x_0)$, ce qui contredit la définition du maximum.
+  \item \res{\text{Non}} : $g$ est majorée sur $\R$ sans admettre de maximum.
+  \item Négation : pour tout réel $m$, il existe un réel $x$ tel que $g(x)<m$. Comme $\lim\limits_{x\to-\infty}e^{-x}=+\infty$,
+    on a $\lim\limits_{x\to-\infty}g(x)=-\infty$ : pour tout réel $m$, $g(x)<m$ dès que $x$ est assez petit. Donc $g$
+    \res{\text{n'est pas minorée}}.
+\end{questions}
+\end{corrige}
+
+%% ---------------------------------------------------------------------
+\begin{corrige}{12}{Rédiger une démonstration}
+\partieExo{A}{Une copie à corriger}
+\begin{questions}
+  \item Il manque la phrase d'introduction (ensemble de définition, « pour tout $x>0$ ») ; le symbole $\Rightarrow$ remplace à tort
+    « donc » ; la dérivée est un calcul, pas une conséquence. \textbf{Erreur de raisonnement :} $f'(1)=0$ ne suffit pas à
+    affirmer que $f$ a un maximum en $1$.
+  \item \res{\text{Non}} : $h(x)=(x-1)^{3}$ vérifie $h'(1)=0$, mais $h$ est strictement croissante, sans extremum en $1$.
+  \item Soit $f$ définie sur $\intOO{0}{+\infty}$ par $f(x)=\ln x-x+1$. Elle est dérivable et, pour tout $x>0$,
+    $f'(x)=\frac1x-1=\frac{1-x}{x}$. Comme $x>0$, $f'(x)$ est du signe de $1-x$ : $f$ est croissante sur $\intOF{0}{1}$ et
+    décroissante sur $\intFO{1}{+\infty}$. Elle admet donc un maximum en $1$, égal à $f(1)=0$. Par conséquent, pour tout réel
+    $x>0$, $f(x)\leq0$, c'est-à-dire $\res{\ln x\leq x-1}$.
+\end{questions}
+\partieExo{B}{Une conséquence}
+\begin{questions}[resume]
+  \item Pour $x>0$, $\frac1x>0$, donc $\ln\frac1x\leq\frac1x-1$, soit $-\ln x\leq\frac1x-1$, c'est-à-dire
+    $\res{\ln x\geq1-\frac1x}$.
+  \item La fonction $f$ est strictement croissante sur $\intOF{0}{1}$ et strictement décroissante sur $\intFO{1}{+\infty}$ : pour
+    tout $x\neq1$, $f(x)<f(1)=0$. L'égalité $\ln x=x-1$ n'a donc lieu que pour $\res{x=1}$.
+\end{questions}
+\end{corrige}

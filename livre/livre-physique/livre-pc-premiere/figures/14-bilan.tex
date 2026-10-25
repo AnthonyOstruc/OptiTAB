@@ -1,0 +1,13 @@
+% Bilan de puissance d'un circuit : générateur et récepteur ; rendement d'un convertisseur (L'essentiel, chapitre 14)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  bloc/.style={draw=otNavy,fill=otNavy!8,line width=0.7pt,rounded corners=1.5mm,minimum width=2.3cm,minimum height=0.95cm,align=center,font=\otMedium\fontsize{8}{10}\selectfont,text=otInk},
+  flux/.style={line width=4pt,-{Triangle[length=2.6mm,width=6.5mm]}}]
+\node[bloc] (g) at (0,0) {générateur\\(pile)};
+\node[bloc] (r) at (5.2,0) {récepteur\\(lampe, moteur…)};
+\draw[flux,otOrange] (-3.2,0) -- (g.west) node[pos=0.45,pcLegende,anchor=south,text=otOrange!80!black,yshift=1.5mm] {$E\,I$ (chimique)};
+\draw[flux,otGreen] (g.east) -- (r.west) node[pos=0.5,pcLegende,anchor=south,text=otGreenDark,yshift=1.5mm] {$U\,I$ (électrique)};
+\draw[flux,otRed!70,line width=2pt,-{Triangle[length=2mm,width=4mm]}] (g.south) -- ++(0,-1.0) node[pcLegende,anchor=north,text=otRed!80!black] {$r\,I^2$ (effet Joule)};
+\draw[flux,otGreen!70!black] (r.east) -- ++(2.0,0) node[pcLegende,anchor=west,text=otGreenDark,align=left] {puissance\\utile};
+\draw[flux,otRed!70,line width=2pt,-{Triangle[length=2mm,width=4mm]}] (r.south) -- ++(0,-1.0) node[pcLegende,anchor=north,text=otRed!80!black] {pertes};
+\end{tikzpicture}
+\par\smallskip\legende{Générateur : $E\,I=U\,I+r\,I^2$. Tout convertisseur reçoit une puissance, en restitue une partie utile et dissipe le reste : $\eta=\dfrac{P_\mathrm{utile}}{P_\mathrm{reçue}}<1$.}

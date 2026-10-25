@@ -1,0 +1,15 @@
+% Trois boissons sur l'échelle de pH, pour le conservateur E210 (exercice 4, chapitre 9)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otMuted,line width=0.7pt,-{Stealth[length=2.2mm]}] (1.2,0) -- (10.9,0) node[pcLegende,anchor=north west,yshift=-1mm] {pH};
+\foreach \x in {2,3,...,7}{%
+  \draw[otMuted,line width=0.5pt] ({\x*1.4-0.8},-0.09) -- ({\x*1.4-0.8},0.09);
+  \node[pcLegende,anchor=north,text=otMuted] at ({\x*1.4-0.8},-0.12) {\x};}
+\solution{\draw[otNavy,line width=0.9pt] ({4.2*1.4-0.8},-0.14) -- ({4.2*1.4-0.8},0.14);
+  \node[pcLegende,anchor=south,text=otNavy] at ({4.2*1.4-0.8},0.72) {$\pKa=4{,}2$};
+  \node[pcLegendeG,text=otNavy] at (2.6,0.52) {\ce{C6H5COOH}};
+  \node[pcLegendeG,text=otGreenDark] at (9.3,0.52) {\ce{C6H5COO-}};}
+\foreach \x/\nom in {2.5/{soda},4.2/{jus de tomate},5.5/{eau pétillante}}{%
+  \fill[otOrange] ({\x*1.4-0.8},0) circle (0.09);
+  \node[pcLegende,anchor=north,text=otOrange!80!black,align=center] at ({\x*1.4-0.8},-0.46) {\nom\\pH \x};}
+\end{tikzpicture}
+\par\smallskip\legende{Le pH de trois boissons contenant le conservateur E210.}

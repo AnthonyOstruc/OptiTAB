@@ -1,0 +1,446 @@
+% !TEX root = ../main.tex
+%% Chapitre 2 — Limites de fonctions
+%% Sources : frontend/cours/resume/terminal/resume_limites_fonctions_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_limites_fonctions.txt
+%% Exercices 12 à 14 : problèmes inédits rédigés pour le livre.
+%% Les questions utilisant ln ont été remplacées (ln n'est vu qu'au chapitre 5).
+
+\begin{ouverture}[fonctions]{2}{Limites de fonctions}{Partie 1 · Analyse}
+  {Limites à l'infini\enspace·\enspace Asymptotes\enspace·\enspace Formes indéterminées\enspace·\enspace
+   Croissances comparées}
+  \objectif{Déterminer une limite en l'infini ou en un réel, à gauche et à droite.}
+  \objectif{Lever une forme indéterminée : factorisation, simplification, quantité conjuguée.}
+  \objectif{Utiliser la composition, les théorèmes de comparaison et des gendarmes.}
+  \objectif{Connaître et utiliser les croissances comparées de $x^{n}$ et de $e^{x}$.}
+  \objectif{Interpréter graphiquement une limite à l'aide d'une asymptote.}
+  \prerequis{Limites de suites, opérations et formes indéterminées (chapitre 1).}
+  \prerequis{Fonction exponentielle : propriétés et dérivée (Première).}
+  \prerequis{Dérivée d'un produit, d'un quotient (Première).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Limite en l'infini}
+
+\begin{definition}[Limite finie en $+\infty$]
+La fonction $f$ a pour limite le réel $\ell$ en $+\infty$ si tout intervalle ouvert contenant $\ell$
+contient toutes les valeurs $f(x)$ pour $x$ assez grand. On note $\displaystyle\lim_{x\to+\infty}f(x)=\ell$.
+La droite d'équation $y=\ell$ est alors \textbf{asymptote horizontale} à la courbe $\Cf$ en $+\infty$.
+\end{definition}
+
+\begin{definition}[Limite infinie en $+\infty$]
+$\displaystyle\lim_{x\to+\infty}f(x)=+\infty$ si tout intervalle $\intOO{A}{+\infty}$ contient toutes les
+valeurs $f(x)$ pour $x$ assez grand. On définit de même les limites en $-\infty$ et les limites égales à $-\infty$.
+\end{definition}
+
+\essSection{2}{Limite en un réel}
+
+\begin{definition}[Limite infinie en un réel $a$]
+$\displaystyle\lim_{x\to a}f(x)=+\infty$ si tout intervalle $\intOO{A}{+\infty}$ contient toutes les valeurs
+$f(x)$ pour $x$ assez proche de $a$. La droite d'équation $x=a$ est alors \textbf{asymptote verticale} à $\Cf$.
+\end{definition}
+
+Lorsque $x$ tend vers $a$ en restant inférieur à $a$, on parle de \textbf{limite à gauche}, notée
+$\displaystyle\lim_{x\to a^{-}}f(x)$ ; en restant supérieur à $a$, de \textbf{limite à droite}, notée
+$\displaystyle\lim_{x\to a^{+}}f(x)$. La fonction $f$ admet une limite en $a$ si et seulement si ces deux
+limites existent et sont égales.
+
+\vspace{3mm}
+\noindent
+\begin{minipage}[t]{0.32\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=54mm, height=40mm, xmin=0, xmax=9.5, ymin=0, ymax=3,
+  xtick=\empty, ytick=\empty, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west}]
+  \draw[otGreen,dashed,line width=0.6pt] (axis cs:0,2) -- (axis cs:9.5,2);
+  \addplot[otNavy,line width=1.1pt,domain=0:9.3,samples=80] {2-1.6/(x+0.8)};
+  \node[anchor=south east,font=\scriptsize,text=otGreenDark] at (axis cs:9.5,2.05) {$y=\ell$};
+\end{axis}
+\end{tikzpicture}\\[1mm]
+\legende{Asymptote horizontale :\\ $\displaystyle\lim_{x\to+\infty}f(x)=\ell$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=54mm, height=40mm, xmin=0, xmax=5, ymin=-3, ymax=5,
+  xtick=\empty, ytick=\empty, xlabel={$x$}, xlabel style={at={(1,0.375)},anchor=west}]
+  \draw[otGreen,dashed,line width=0.6pt] (axis cs:2,-3) -- (axis cs:2,5);
+  \addplot[otNavy,line width=1.1pt,domain=0:1.76,samples=80] {1+1/(x-2)};
+  \addplot[otNavy,line width=1.1pt,domain=2.25:5,samples=80] {1+1/(x-2)};
+  \node[anchor=north west,font=\scriptsize,text=otGreenDark] at (axis cs:2.05,-1.6) {$x=a$};
+\end{axis}
+\end{tikzpicture}\\[1mm]
+\legende{Asymptote verticale :\\ $\displaystyle\lim_{x\to a^{+}}f(x)=+\infty$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=54mm, height=40mm, xmin=0, xmax=8.5, ymin=0, ymax=5.2,
+  xtick=\empty, ytick=\empty, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west}]
+  \draw[otGreen,dashed,line width=0.6pt] (axis cs:0,0.5) -- (axis cs:8.5,4.75);
+  \addplot[otNavy,line width=1.1pt,domain=0:8.3,samples=80] {0.5*x+0.5+1.5/(x+0.5)};
+  \node[anchor=north west,font=\scriptsize,text=otGreenDark] at (axis cs:5.6,3.1) {$y=ax+b$};
+\end{axis}
+\end{tikzpicture}\\[1mm]
+\legende{Asymptote oblique :\\ $\displaystyle\lim_{x\to+\infty}\big[f(x)-(ax+b)\big]=0$}
+\end{minipage}
+
+\essSection{3}{Limites de référence}
+
+{\renewcommand{\arraystretch}{1.6}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\otSemi\fontsize{7.5}{10}\selectfont\leavevmode\color{otNavy}}p{19mm}YYY@{}}
+\toprule
+ & {\otSemi\fontsize{8.5}{11}\selectfont limite $+\infty$}
+ & {\otSemi\fontsize{8.5}{11}\selectfont limite $0$}
+ & {\otSemi\fontsize{8.5}{11}\selectfont autre limite} \\
+\midrule
+\otCaps[8]{En $+\infty$} & $x^{n}$ ($n\geq1$), $\sqrt{x}$, $e^{x}$ & $\dfrac{1}{x^{n}}$, $\dfrac{1}{\sqrt{x}}$ & \\
+\otCaps[8]{En $-\infty$} & $x^{n}$ si $n$ est pair & $\dfrac{1}{x^{n}}$, $e^{x}$ & $x^{n}\to-\infty$ si $n$ est impair \\
+\otCaps[8]{En $0$} & $\dfrac{1}{x^{2}}$ ;\enspace $\dfrac{1}{x}$ et $\dfrac{1}{\sqrt{x}}$ en $0^{+}$ & $x^{n}$, $\sqrt{x}$ en $0^{+}$
+  & $\dfrac{1}{x}\to-\infty$ en $0^{-}$\newline $\dfrac{e^{x}-1}{x}\to1$\newline $\dfrac{\sin x}{x}\to1$\,(\textsuperscript{*}) \\
+\bottomrule
+\end{tabularx}}
+\par\vspace{1mm}
+\legende{(*) Résultat admis ici, démontré au chapitre 6 (fonctions trigonométriques).}
+
+\essSection{4}{Opérations, formes indéterminées et composition}
+
+Les règles de calcul sur les sommes, produits et quotients sont les mêmes que pour les suites
+(chapitre 1), avec les quatre formes indéterminées :\quad
+$\infty-\infty$\quad $0\times\infty$\quad $\dfrac{\infty}{\infty}$\quad $\dfrac{0}{0}$.
+
+\begin{savoirfaire}[Lever une indétermination]
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Polynôme ou fonction rationnelle en $\pm\infty$ : factoriser par le terme de plus haut degré.
+  \item Forme $\frac00$ en un réel $a$ : factoriser numérateur et dénominateur par $(x-a)$, puis simplifier.
+  \item Racines carrées : multiplier et diviser par la quantité conjuguée.
+  \item Reconnaître un taux d'accroissement : $\dfrac{g(x)-g(a)}{x-a}$ tend vers $g'(a)$ si $g$ est dérivable en $a$.
+\end{itemize}
+\end{savoirfaire}
+
+\begin{theoreme}[Limite d'une fonction composée]
+$a$, $b$ et $c$ désignent des réels ou $\pm\infty$. Si $\displaystyle\lim_{x\to a}u(x)=b$ et
+$\displaystyle\lim_{X\to b}g(X)=c$, alors $\displaystyle\lim_{x\to a}g\big(u(x)\big)=c$.
+\end{theoreme}
+
+\begin{exemple}
+$\displaystyle\lim_{x\to+\infty}e^{-x^{2}}$ : on pose $X=-x^{2}$. Comme $\displaystyle\lim_{x\to+\infty}(-x^{2})=-\infty$
+et $\displaystyle\lim_{X\to-\infty}e^{X}=0$, on obtient $\displaystyle\lim_{x\to+\infty}e^{-x^{2}}=0$.
+\end{exemple}
+
+\essSection{5}{Comparaison et encadrement}
+
+\begin{theoreme}[Comparaison]
+Si, pour $x$ assez grand, $f(x)\geq g(x)$ et $\displaystyle\lim_{x\to+\infty}g(x)=+\infty$, alors
+$\displaystyle\lim_{x\to+\infty}f(x)=+\infty$. Même énoncé en $-\infty$ ou en un réel $a$, et pour $-\infty$
+en inversant l'inégalité.
+\end{theoreme}
+
+\begin{theoreme}[Théorème des gendarmes]
+Si, au voisinage de $a$ (réel ou $\pm\infty$), $g(x)\leq f(x)\leq h(x)$, et si $g$ et $h$ ont la même limite
+réelle $\ell$ en $a$, alors $\displaystyle\lim_{x\to a}f(x)=\ell$.
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\otIntertitre{Exemple}
+Pour tout $x\neq0$, $-1\leq\sin\left(\frac1x\right)\leq1$, donc
+\[ -x^{2}\leq x^{2}\sin\left(\frac1x\right)\leq x^{2}. \]
+Comme $\displaystyle\lim_{x\to0}(-x^{2})=\lim_{x\to0}x^{2}=0$, le théorème des gendarmes donne
+$\displaystyle\lim_{x\to0}x^{2}\sin\left(\frac1x\right)=0$, bien que la fonction oscille de plus en plus
+vite près de $0$.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, axis lines=middle, width=72mm, height=46mm,
+  xmin=-0.62, xmax=0.62, ymin=-0.38, ymax=0.38, xtick=\empty, ytick=\empty,
+  xlabel={$x$}, xlabel style={at={(1,0.5)},anchor=west}]
+  \addplot[otNavy,dashed,line width=0.6pt,domain=-0.6:0.6,samples=60] {x^2};
+  \addplot[otNavy,dashed,line width=0.6pt,domain=-0.6:0.6,samples=60] {-x^2};
+  \addplot[otGreen,line width=0.8pt,domain=0.004:0.6,samples=700] {x^2*sin(deg(1/x))};
+  \addplot[otGreen,line width=0.8pt,domain=-0.6:-0.004,samples=700] {x^2*sin(deg(1/x))};
+  \node[anchor=south,font=\scriptsize,text=otNavy] at (axis cs:-0.5,0.26) {$y=x^{2}$};
+  \node[anchor=north,font=\scriptsize,text=otNavy] at (axis cs:-0.5,-0.26) {$y=-x^{2}$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{La courbe est prise en étau entre deux paraboles.}
+\end{minipage}
+
+\essSection{6}{Croissances comparées}
+
+\begin{theoreme}[Croissances comparées]
+Pour tout entier naturel $n\geq1$ :
+\[
+  \lim_{x\to+\infty}\frac{e^{x}}{x^{n}}=+\infty \qquad\qquad
+  \lim_{x\to+\infty}x^{n}e^{-x}=0 \qquad\qquad
+  \lim_{x\to-\infty}x^{n}e^{x}=0
+\]
+\end{theoreme}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+En $+\infty$, l'exponentielle « l'emporte » sur toute puissance de $x$ : même si $x^{3}$ est plus grand
+que $e^{x}$ sur un intervalle, l'exponentielle finit toujours par la dépasser, puis par la distancer.
+\par\vspace{2mm}
+\begin{demonstration}[pour $n=1$]
+On montre (exercice 13) que $e^{x}>\dfrac{x^{2}}{2}$ pour tout $x\geq0$. Pour $x>0$, on en déduit
+$\dfrac{e^{x}}{x}>\dfrac{x}{2}$, et le théorème de comparaison conclut.
+\end{demonstration}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=72mm, height=58mm, xmin=0, xmax=5.8, ymin=0, ymax=210,
+  xtick={1,2,3,4,5}, ytick={50,100,150,200}, xlabel={$x$}, xlabel style={at={(1,0)},anchor=west},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otMuted,line width=0.8pt,domain=0:5.7,samples=60] {x^2};
+  \addplot[otNavy,line width=1.1pt,domain=0:5.7,samples=80] {x^3};
+  \addplot[otGreen,line width=1.3pt,domain=0:5.33,samples=80] {exp(x)};
+  \fill[otGreen] (axis cs:4.536,93.3) circle (1.6pt);
+  \node[anchor=west,font=\scriptsize,text=otGreenDark] at (axis cs:4.62,86) {$e^{x}$ dépasse $x^{3}$};
+  \node[anchor=south east,font=\scriptsize,text=otGreenDark] at (axis cs:5.3,195) {$e^{x}$};
+  \node[anchor=west,font=\scriptsize,text=otNavy] at (axis cs:5.62,182) {$x^{3}$};
+  \node[anchor=west,font=\scriptsize,text=otMuted] at (axis cs:5.62,32) {$x^{2}$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{À partir de $x\approx4{,}54$, $e^{x}>x^{3}$ définitivement.}
+\end{minipage}
+
+\essSection{7}{Pour aller plus loin : asymptote oblique}
+
+\begin{savoirfaire}[Asymptote oblique]
+Si $\displaystyle\lim_{x\to+\infty}\big[f(x)-(ax+b)\big]=0$, la droite $\Delta$ d'équation $y=ax+b$ est
+asymptote oblique à $\Cf$ en $+\infty$. En pratique :
+\begin{enumerate}[label=\otLabel{\arabic*.},leftmargin=1.6em,itemsep=0.6mm,topsep=0.8mm]
+  \item écrire $f(x)=ax+b+r(x)$ avec $\displaystyle\lim_{x\to+\infty}r(x)=0$ (division euclidienne pour une fonction rationnelle) ;
+  \item le signe de $r(x)=f(x)-(ax+b)$ donne la position de $\Cf$ par rapport à $\Delta$.
+\end{enumerate}
+Cette notion est hors programme : dans les sujets, elle est toujours guidée.
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Ne pas confondre $\displaystyle\lim_{x\to a}f(x)$ et $f(a)$ : la fonction n'est pas forcément définie en $a$.
+  \item Pour un quotient dont le dénominateur tend vers $0$, étudier \emph{son signe} : limites à gauche et à droite.
+  \item « $\frac{1}{0}$ » n'est pas un résultat : on écrit $\frac{1}{0^{+}}$ ou $\frac{1}{0^{-}}$ pour conclure à $+\infty$ ou $-\infty$.
+  \item Une forme indéterminée n'est pas une réponse : il faut transformer l'expression.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Limites usuelles}
+Calculer les limites suivantes.
+\begin{tasks}(3)
+  \task $\displaystyle\lim_{x\to2}\left(3x^{2}-2x+1\right)$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{1}{x^{3}}$
+  \task $\displaystyle\lim_{x\to+\infty}x^{4}$
+  \task $\displaystyle\lim_{x\to+\infty}\sqrt{x+1}$
+  \task $\displaystyle\lim_{x\to-\infty}e^{x}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Opérations sur les limites}
+Calculer les limites suivantes.
+\begin{tasks}(3)
+  \task $\displaystyle\lim_{x\to+\infty}\left(\frac{1}{x}+3\right)$
+  \task $\displaystyle\lim_{x\to2}5x^{2}$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{2x+1}{3x-2}$
+  \task $\displaystyle\lim_{x\to3}\frac{x^{2}+1}{x-1}$
+  \task $\displaystyle\lim_{x\to+\infty}\left(x\times\frac{1}{x^{2}}\right)$
+\end{tasks}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Formes indéterminées}
+Lever l'indétermination, puis calculer la limite.
+\begin{tasks}(3)
+  \task $\displaystyle\lim_{x\to1}\frac{x^{2}-1}{x-1}$
+  \task $\displaystyle\lim_{x\to1}\frac{x^{3}-1}{x^{2}-1}$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{x^{2}-3x+2}{2x^{2}+x-1}$
+  \task $\displaystyle\lim_{x\to+\infty}\left(x^{2}-x\right)$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{x^{2}+1}{x^{3}-2x}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Racines carrées et quantité conjuguée}
+Calculer les limites suivantes, en utilisant si nécessaire la quantité conjuguée.
+\begin{tasks}(2)
+  \task $\displaystyle\lim_{x\to0}\frac{\sqrt{1+x}-1}{x}$
+  \task $\displaystyle\lim_{x\to1}\frac{\sqrt{x}-1}{x-1}$
+  \task $\displaystyle\lim_{x\to+\infty}\left(\sqrt{x^{2}+x}-x\right)$
+  \task $\displaystyle\lim_{x\to+\infty}\left(\sqrt{x^{2}+2x+1}-x\right)$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{\sqrt{x^{2}+1}-x}{x}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Limites à gauche et à droite}
+\begin{questions}
+  \item Calculer $\displaystyle\lim_{x\to0^{+}}\frac{1}{x}$ et $\displaystyle\lim_{x\to0^{-}}\frac{1}{x}$.
+  \item Calculer $\displaystyle\lim_{x\to0^{+}}\sqrt{x}$. Peut-on parler de limite à gauche en $0$ ?
+  \item Calculer $\displaystyle\lim_{x\to2^{+}}\frac{x^{2}-4}{x-2}$ et $\displaystyle\lim_{x\to2^{-}}\frac{x^{2}-4}{x-2}$. Conclure.
+  \item La fonction $f$ définie sur $\R^{*}$ par $f(x)=\dfrac{|x|}{x}$ admet-elle une limite en $0$ ?
+  \item Calculer $\displaystyle\lim_{x\to1^{+}}\frac{x^{2}-1}{x-1}$ et $\displaystyle\lim_{x\to1^{-}}\frac{x^{2}-1}{x-1}$. Conclure.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Théorème de comparaison}
+À l'aide d'une minoration, démontrer les limites suivantes.
+\begin{tasks}(2)
+  \task $\displaystyle\lim_{x\to+\infty}\left(x^{2}+3x+1\right)=+\infty$
+  \task $\displaystyle\lim_{x\to+\infty}\left(x^{3}-5x\right)=+\infty$
+  \task $\displaystyle\lim_{x\to+\infty}\sqrt{x^{2}+x}=+\infty$
+  \task $\displaystyle\lim_{x\to+\infty}\left(2x^{2}-x+10\right)=+\infty$
+  \task $\displaystyle\lim_{x\to+\infty}\left(x^{4}+x^{2}-100\right)=+\infty$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Théorème des gendarmes}
+À l'aide d'un encadrement, calculer les limites suivantes.
+\begin{tasks}(2)
+  \task $\displaystyle\lim_{x\to0}x^{2}\sin\left(\frac{1}{x}\right)$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{\sin x}{x}$
+  \task $\displaystyle\lim_{x\to0}x\cos\left(\frac{1}{x}\right)$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{x+\sin x}{x+\cos x}$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{x^{2}+\cos x}{x^{2}+1}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Exponentielle et croissances comparées}
+Calculer les limites suivantes.
+\begin{tasks}(3)
+  \task $\displaystyle\lim_{x\to0}\frac{e^{x}-1}{x}$
+  \task $\displaystyle\lim_{x\to0}\frac{e^{3x}-1}{x}$
+  \task $\displaystyle\lim_{x\to+\infty}\frac{e^{x}}{x^{2}}$
+  \task $\displaystyle\lim_{x\to-\infty}xe^{x}$
+  \task $\displaystyle\lim_{x\to0}\frac{e^{2x}-e^{x}}{x}$
+  \task $\displaystyle\lim_{x\to+\infty}\left(x^{3}-e^{x}\right)$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Limites trigonométriques}
+On admet que $\displaystyle\lim_{x\to0}\frac{\sin x}{x}=1$ (ce résultat est démontré au chapitre 6), et on rappelle
+que, pour tout réel $x$, $1-\cos(2x)=2\sin^{2}x$. Calculer les limites suivantes.
+\begin{tasks}(3)
+  \task $\displaystyle\lim_{x\to0}\frac{\sin(2x)}{x}$
+  \task $\displaystyle\lim_{x\to0}\frac{\sin(3x)}{\sin(5x)}$
+  \task $\displaystyle\lim_{x\to0}\frac{1-\cos(2x)}{x^{2}}$
+  \task $\displaystyle\lim_{x\to0}\frac{\tan x}{x}$
+  \task $\displaystyle\lim_{x\to0}\frac{\sin(x^{2})}{x^{2}}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Asymptotes}
+Pour chacune des fonctions suivantes, déterminer l'ensemble de définition, puis les asymptotes à sa courbe.
+Pour les asymptotes obliques, on pourra écrire la fonction sous la forme $ax+b+\dfrac{c}{x-d}$.
+\begin{tasks}(3)
+  \task $f(x)=\dfrac{x^{2}-1}{x-2}$
+  \task $g(x)=\dfrac{2x+1}{x+3}$
+  \task $h(x)=\dfrac{x^{3}+1}{x^{2}-1}$
+  \task $k(x)=\dfrac{x^{2}+2x}{x+1}$
+  \task $m(x)=\dfrac{x^{2}-4}{x^{2}+1}$
+\end{tasks}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Devoir de synthèse}
+\partieExo{A}{Limites usuelles et opérations}
+\begin{questions}
+  \item Calculer $\displaystyle\lim_{x\to3}\left(2x^{2}-5x+1\right)$ et $\displaystyle\lim_{x\to+\infty}\frac{3x^{2}+2x-1}{x^{2}+5}$.
+  \item Calculer $\displaystyle\lim_{x\to+\infty}\left(x^{3}-2x^{2}\right)$.
+\end{questions}
+\partieExo{B}{Formes indéterminées}
+\begin{questions}[resume]
+  \item Calculer $\displaystyle\lim_{x\to2}\frac{x^{2}-4}{x-2}$ et $\displaystyle\lim_{x\to+\infty}\frac{2x^{2}-x+1}{3x^{2}+4x-2}$.
+  \item Calculer $\displaystyle\lim_{x\to+\infty}\left(\sqrt{x^{2}+1}-x\right)$.
+\end{questions}
+\partieExo{C}{Théorème des gendarmes}
+\begin{questions}[resume]
+  \item Calculer $\displaystyle\lim_{x\to+\infty}\frac{2x+\sin x}{x+1}$ et $\displaystyle\lim_{x\to0}x^{2}\cos\left(\frac{1}{x}\right)$.
+\end{questions}
+\partieExo{D}{Asymptotes}
+\begin{questions}[resume]
+  \item Déterminer les asymptotes à la courbe de $f(x)=\dfrac{3x+2}{x-1}$.
+  \item Déterminer les asymptotes à la courbe de $g(x)=\dfrac{x^{2}-1}{x+2}$.
+\end{questions}
+\partieExo{E}{Trigonométrie et exponentielle}
+\begin{questions}[resume]
+  \item Calculer $\displaystyle\lim_{x\to0}\frac{\sin(4x)}{x}$, $\displaystyle\lim_{x\to+\infty}\frac{e^{x}}{x^{3}}$ et $\displaystyle\lim_{x\to-\infty}x^{2}e^{x}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Une fonction rationnelle et ses asymptotes}
+On considère la fonction $f$ définie sur $\R\setminus\{1\}$ par $f(x)=\dfrac{x^{2}-3x+6}{x-1}$, et on note
+$\Cf$ sa courbe représentative.
+\partieExo{A}{Limites et asymptotes}
+\begin{questions}
+  \item Déterminer trois réels $a$, $b$ et $c$ tels que, pour tout $x\neq1$, $f(x)=ax+b+\dfrac{c}{x-1}$.
+  \item Calculer les limites de $f$ à gauche et à droite en $1$. Interpréter graphiquement.
+  \item Calculer les limites de $f$ en $-\infty$ et en $+\infty$.
+  \item Montrer que la droite $\Delta$ d'équation $y=x-2$ est asymptote à $\Cf$ en $-\infty$ et en $+\infty$.
+  \item Étudier la position relative de $\Cf$ et de $\Delta$.
+\end{questions}
+\partieExo{B}{Variations}
+\begin{questions}[resume]
+  \item Montrer que, pour tout $x\neq1$, $f'(x)=\dfrac{(x-3)(x+1)}{(x-1)^{2}}$.
+  \item Dresser le tableau de variations complet de $f$, puis tracer $\Delta$, les asymptotes et $\Cf$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Croissances comparées : démonstration et application}
+\partieExo{A}{Démonstration}
+\begin{questions}
+  \item On considère la fonction $k$ définie sur $\intFO{0}{+\infty}$ par $k(x)=e^{x}-x-1$.
+    Étudier les variations de $k$, puis en déduire que, pour tout $x\geq0$, $e^{x}\geq1+x$.
+  \item On considère la fonction $h$ définie sur $\intFO{0}{+\infty}$ par $h(x)=e^{x}-\dfrac{x^{2}}{2}$.
+    Montrer que $h$ est croissante, puis que, pour tout $x\geq0$, $e^{x}>\dfrac{x^{2}}{2}$.
+  \item En déduire que $\displaystyle\lim_{x\to+\infty}\frac{e^{x}}{x}=+\infty$.
+  \item En déduire $\displaystyle\lim_{x\to+\infty}xe^{-x}$, puis $\displaystyle\lim_{x\to-\infty}xe^{x}$ (on pourra poser $X=-x$).
+\end{questions}
+\partieExo{B}{Application}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=x^{2}e^{-x}$, et on note $\Cf$ sa courbe.
+\begin{questions}[resume]
+  \item \begin{questions}
+      \item Calculer $\displaystyle\lim_{x\to-\infty}f(x)$.
+      \item Vérifier que, pour tout $x\neq0$, $\dfrac{e^{x}}{x^{2}}=\dfrac14\left(\dfrac{e^{x/2}}{x/2}\right)^{2}$.
+        En déduire $\displaystyle\lim_{x\to+\infty}f(x)$ et interpréter graphiquement.
+    \end{questions}
+  \item Montrer que, pour tout réel $x$, $f'(x)=x(2-x)e^{-x}$, puis dresser le tableau de variations de $f$.
+  \item En déduire que, pour tout $x\geq0$, $0\leq x^{2}e^{-x}\leq\dfrac{4}{e^{2}}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La vitesse limite d'un parachutiste}
+Lors d'un saut, avant l'ouverture du parachute, on modélise la vitesse (en m/s) d'un parachutiste,
+$t$ secondes après le saut, par $v(t)=50\left(1-e^{-t/5}\right)$, pour $t\geq0$.
+\begin{questions}
+  \item Calculer $v(0)$.
+  \item Calculer $\displaystyle\lim_{t\to+\infty}v(t)$. Interpréter graphiquement, puis physiquement.
+  \item Étudier les variations de $v$, puis montrer que $v(t)<50$ pour tout $t\geq0$.
+  \item \begin{questions}
+      \item Déterminer une équation de la tangente $T$ à la courbe de $v$ au point d'abscisse $0$.
+      \item Déterminer l'abscisse $\tau$ du point d'intersection de $T$ et de l'asymptote. Calculer $v(\tau)$ et
+        l'exprimer en pourcentage de la vitesse limite.
+    \end{questions}
+  \item Compléter la fonction Python suivante pour qu'elle renvoie le premier instant entier (en secondes)
+    à partir duquel la vitesse atteint 99\,\% de la vitesse limite. Quelle valeur renvoie-t-elle ?
+\begin{python}
+from math import exp
+
+def instant():
+    t = 0
+    v = 0
+    while v < ...:
+        t = t + 1
+        v = ...
+    return t
+\end{python}
+\end{questions}
+\end{exercice}

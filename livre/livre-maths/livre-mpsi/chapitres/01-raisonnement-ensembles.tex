@@ -1,0 +1,804 @@
+% !TEX root = ../main.tex
+%% Chapitre 1 — Raisonnement et vocabulaire ensembliste
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Raisonnement et vocabulaire ensembliste » :
+%%   a) rudiments de logique ; b) ensembles ; c) applications et relations.
+%% Résultats numériques et identités vérifiés par verifications/chapitre_01.py.
+
+%% --- Mini-diagrammes de Venn (utilisés dans la synthèse) --------------
+\newcommand{\otVenn}[2]{%
+  \begin{tikzpicture}
+    \draw[otMuted,line width=0.5pt,rounded corners=1.5mm] (-1.85,-1.2) rectangle (1.85,1.2);
+    \node[anchor=north west,font=\scriptsize,text=otMuted,inner sep=2pt] at (-1.85,1.2) {$E$};
+    #1
+    \draw[otNavy,line width=0.7pt] (-0.42,0) circle (0.75);
+    \draw[otGreenDark,line width=0.7pt] (0.42,0) circle (0.75);
+    \node[font=\scriptsize,text=otNavy] at (-1.0,0.62) {$A$};
+    \node[font=\scriptsize,text=otGreenDark] at (1.0,0.62) {$B$};
+    \node[anchor=north,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk] at (0,-1.3) {#2};
+  \end{tikzpicture}}
+
+\begin{ouverture}[ensembles]{1}{Raisonnement et vocabulaire ensembliste}{Partie 1 · Premier semestre}
+  {Logique\enspace·\enspace Raisonnements\enspace·\enspace Récurrences\enspace·\enspace
+   Ensembles\enspace·\enspace Applications\enspace·\enspace Relations}
+  \objectif{Manipuler propositions, connecteurs et quantificateurs, et écrire la négation d'un énoncé.}
+  \objectif{Choisir le bon mode de raisonnement : contraposée, absurde, disjonction de cas, analyse-synthèse.}
+  \objectif{Rédiger une récurrence simple, double ou forte.}
+  \objectif{Maîtriser les opérations sur les parties d'un ensemble, le produit cartésien et les partitions.}
+  \objectif{Étudier une application : images directes et réciproques, injectivité, surjectivité, bijectivité.}
+  \objectif{Reconnaître une relation d'équivalence, une relation d'ordre.}
+  \prerequis{Ensembles de nombres usuels $\N$, $\Z$, $\Q$, $\R$ et calcul littéral du lycée.}
+  \prerequis{Raisonnement par récurrence rencontré en Terminale.}
+  \prerequis{Vocabulaire des fonctions : image, antécédent, courbe représentative.}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Propositions et quantificateurs}
+
+\begin{definition}[Proposition]
+Une \textbf{proposition} est un énoncé mathématique qui est soit vrai, soit faux.
+À partir de deux propositions $P$ et $Q$, on forme les propositions
+$\text{non}(P)$, «~$P$ et $Q$~», «~$P$ ou $Q$~» (le « ou » est inclusif),
+$P\Rightarrow Q$ («~$P$ implique $Q$~») et $P\Leftrightarrow Q$
+(«~$P$ équivaut à $Q$~»).
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+L'implication $P\Rightarrow Q$ est fausse dans un seul cas : lorsque $P$ est
+vraie et $Q$ fausse. En particulier, si $P$ est fausse, l'implication
+$P\Rightarrow Q$ est vraie, quelle que soit $Q$.\par\vspace{2mm}
+L'équivalence $P\Leftrightarrow Q$ signifie «~$P\Rightarrow Q$ \emph{et}
+$Q\Rightarrow P$~» : démontrer une équivalence, c'est démontrer
+\emph{deux} implications.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabular}{@{}cc|cc@{}}
+\toprule
+$P$ & $Q$ & $P\Rightarrow Q$ & $P\Leftrightarrow Q$ \\
+\midrule
+V & V & V & V \\
+V & F & \textcolor{otRed}{F} & F \\
+F & V & V & F \\
+F & F & V & V \\
+\bottomrule
+\end{tabular}}\\[1mm]
+\legende{Table de vérité de l'implication et de l'équivalence.}
+\end{minipage}
+
+\begin{definition}[Réciproque, contraposée, négation d'une implication]
+Soit l'implication $P\Rightarrow Q$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item Sa \textbf{réciproque} est $Q\Rightarrow P$ : elle n'a, en général, pas la même valeur de vérité.
+  \item Sa \textbf{contraposée} est $\text{non}(Q)\Rightarrow\text{non}(P)$ :
+    elle est \emph{toujours} équivalente à $P\Rightarrow Q$.
+  \item Sa \textbf{négation} est «~$P$ et $\text{non}(Q)$~» — ce n'est pas une implication !
+\end{itemize}
+\end{definition}
+
+\begin{propriete}[Négations usuelles]
+$\text{non}(P\text{ et }Q)$ est «~$\text{non}(P)$ ou $\text{non}(Q)$~» ;
+$\text{non}(P\text{ ou }Q)$ est «~$\text{non}(P)$ et $\text{non}(Q)$~» ;
+$\text{non}(\text{non}(P))$ est $P$.
+\end{propriete}
+
+\otIntertitre{Quantificateurs}
+Le quantificateur \textbf{universel} $\forall$ se lit « pour tout » ; le
+quantificateur \textbf{existentiel} $\exists$ se lit « il existe (au moins
+un) ». Le symbole $\exists\,!$ signifie « il existe un unique ».
+La négation échange les deux quantificateurs :
+\[
+  \text{non}\bigl(\forall x\in E,\ P(x)\bigr)\ :\ \exists x\in E,\ \text{non}\bigl(P(x)\bigr)
+  \qquad\qquad
+  \text{non}\bigl(\exists x\in E,\ P(x)\bigr)\ :\ \forall x\in E,\ \text{non}\bigl(P(x)\bigr)
+\]
+
+\begin{attention}[L'ordre des quantificateurs est essentiel]
+On ne peut pas échanger $\forall$ et $\exists$ :
+«~$\forall x\in\R,\ \exists y\in\R,\ y>x$~» est vraie (pour chaque $x$, on
+peut choisir $y=x+1$, qui \emph{dépend} de $x$), alors que
+«~$\exists y\in\R,\ \forall x\in\R,\ y>x$~» est fausse (un même $y$ devrait
+dépasser tous les réels, y compris $y$ lui-même).
+Par ailleurs, les quantificateurs appartiennent au langage mathématique :
+on ne les emploie jamais comme abréviations dans une phrase rédigée.
+\end{attention}
+
+\essSection{2}{Les modes de raisonnement}
+
+{\renewcommand{\arraystretch}{1.5}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\otSemi\fontsize{7.5}{10}\selectfont\leavevmode\color{otNavy}}p{30mm}Y@{}}
+\toprule
+\otCaps[6]{Direct} & Pour montrer $P\Rightarrow Q$ : on suppose $P$ vraie et on en déduit $Q$ par une chaîne de déductions. \\
+\otCaps[6]{Contraposition} & Au lieu de $P\Rightarrow Q$, on démontre $\text{non}(Q)\Rightarrow\text{non}(P)$, qui lui est équivalente. \\
+\otCaps[6]{Par l'absurde} & Pour montrer qu'une proposition $P$ est vraie, on suppose $\text{non}(P)$ et on aboutit à une contradiction. \\
+\otCaps[6]{Disjonction de cas} & On découpe la situation en plusieurs cas qui recouvrent toutes les possibilités, et on conclut dans chacun d'eux. \\
+\otCaps[6]{Analyse-synthèse} & Pour déterminer tous les objets vérifiant une propriété : l'\emph{analyse} suppose qu'un objet convient et en déduit sa forme (condition nécessaire) ; la \emph{synthèse} vérifie que les candidats trouvés conviennent (condition suffisante). \\
+\bottomrule
+\end{tabularx}}
+
+\begin{definition}[Condition nécessaire, condition suffisante]
+Si $P\Rightarrow Q$ est vraie, on dit que $Q$ est une \textbf{condition
+nécessaire} de $P$ (pour que $P$ soit vraie, il faut que $Q$ le soit), et que
+$P$ est une \textbf{condition suffisante} de $Q$ (pour que $Q$ soit vraie, il
+suffit que $P$ le soit).
+\end{definition}
+
+\begin{demonstration}[modèle : $\sqrt{2}$ est irrationnel (par l'absurde)]
+Supposons $\sqrt{2}\in\Q$ : il existe des entiers $p$ et $q$ premiers entre
+eux, avec $q\geq1$, tels que $\sqrt{2}=\dfrac{p}{q}$. En élevant au carré,
+$p^{2}=2q^{2}$, donc $p^{2}$ est pair, donc $p$ est pair (par contraposée :
+si $p$ était impair, $p^{2}$ serait impair). Écrivons $p=2k$ : alors
+$4k^{2}=2q^{2}$, soit $q^{2}=2k^{2}$ : $q$ est pair à son tour. Ainsi $p$ et
+$q$ sont tous deux pairs, ce qui contredit le fait qu'ils sont premiers entre
+eux. Donc $\sqrt{2}\notin\Q$.
+\end{demonstration}
+
+\essSection{3}{Les raisonnements par récurrence}
+
+\begin{theoreme}[Récurrence simple]
+Soit $P(n)$ une propriété dépendant d'un entier naturel $n$, et $n_0\in\N$. Si :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Initialisation} $P(n_0)$ est vraie ;
+  \item \etape{Hérédité} pour tout entier $k\geq n_0$, $P(k)\Rightarrow P(k+1)$ ;
+\end{itemize}
+alors $P(n)$ est vraie pour tout entier $n\geq n_0$.
+\end{theoreme}
+
+\begin{theoreme}[Récurrence double, récurrence forte]
+Avec les mêmes notations :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Double} si $P(n_0)$ et $P(n_0+1)$ sont vraies, et si pour tout
+    $k\geq n_0$, $\bigl(P(k)\text{ et }P(k+1)\bigr)\Rightarrow P(k+2)$, alors
+    $P(n)$ est vraie pour tout $n\geq n_0$ ;
+  \item \etape{Forte} si $P(n_0)$ est vraie, et si pour tout $k\geq n_0$,
+    $\bigl(P(n_0)\text{ et }P(n_0+1)\text{ et }\cdots\text{ et }P(k)\bigr)\Rightarrow P(k+1)$,
+    alors $P(n)$ est vraie pour tout $n\geq n_0$.
+\end{itemize}
+Ces principes sont liés à la propriété fondamentale suivante : \emph{toute
+partie non vide de $\N$ possède un plus petit élément}.
+\end{theoreme}
+
+\begin{attention}
+Dans l'hérédité, on fixe \emph{un} entier $k$ et on suppose $P(k)$ vraie
+(hypothèse de récurrence) : on ne suppose jamais « $P(n)$ vraie pour tout
+$n$ », ce qui serait supposer la conclusion. L'initialisation est
+indispensable : la propriété « $4^{n}+1$ est divisible par $3$ » est
+héréditaire, puisque $4^{k+1}+1=4(4^{k}+1)-3$, et pourtant elle est fausse
+pour tout entier $n$.
+\end{attention}
+
+\essSection{4}{Ensembles et parties}
+
+\begin{definition}[Appartenance, inclusion]
+$x\in E$ signifie que $x$ est un \textbf{élément} de l'ensemble $E$.
+Un ensemble $A$ est \textbf{inclus} dans $E$, noté $A\subset E$, lorsque tout
+élément de $A$ appartient à $E$ : on dit que $A$ est une \textbf{partie} (ou
+un sous-ensemble) de $E$. L'ensemble des parties de $E$ se note
+$\parties{E}$ ; l'ensemble vide se note $\varnothing$.
+Deux ensembles sont égaux lorsqu'ils ont les mêmes éléments :
+$A=B\iff\bigl(A\subset B\text{ et }B\subset A\bigr)$ (\emph{double inclusion}).
+\end{definition}
+
+\begin{exemple}
+Pour $E=\ens{1,2,3}$ : $\parties{E}=\bigl\{\varnothing,\ens{1},\ens{2},\ens{3},
+\ens{1,2},\ens{1,3},\ens{2,3},\ens{1,2,3}\bigr\}$, qui compte $2^{3}=8$ éléments.
+Attention à distinguer $1\in E$, $\ens{1}\subset E$ et $\ens{1}\in\parties{E}$.
+\end{exemple}
+
+\begin{definition}[Opérations sur les parties]
+Soient $A$ et $B$ deux parties de $E$.
+La \textbf{réunion} $A\cup B$, l'\textbf{intersection} $A\cap B$, la
+\textbf{différence} $A\setminus B=\ens{x\in A \mid x\notin B}$ et le
+\textbf{complémentaire} $\overline{A}=E\setminus A$ (aussi noté $A^{c}$)
+sont définis par :
+\[
+  x\in A\cup B\iff\bigl(x\in A\text{ ou }x\in B\bigr)
+  \qquad\qquad
+  x\in A\cap B\iff\bigl(x\in A\text{ et }x\in B\bigr).
+\]
+$A$ et $B$ sont \textbf{disjoints} lorsque $A\cap B=\varnothing$.
+\end{definition}
+
+\begin{center}
+\otVenn{\fill[otNavySoft] (-0.42,0) circle (0.75);\fill[otNavySoft] (0.42,0) circle (0.75);}{$A\cup B$}\hfill
+\otVenn{\begin{scope}\clip (-0.42,0) circle (0.75);\fill[otNavySoft] (0.42,0) circle (0.75);\end{scope}}{$A\cap B$}\hfill
+\otVenn{\fill[otNavySoft] (-0.42,0) circle (0.75);\begin{scope}\clip (-0.42,0) circle (0.75);\fill[white] (0.42,0) circle (0.75);\end{scope}}{$A\setminus B$}\hfill
+\otVenn{\fill[otNavySoft,rounded corners=1.5mm] (-1.85,-1.2) rectangle (1.85,1.2);\fill[white] (-0.42,0) circle (0.75);}{$\overline{A}$}
+\end{center}
+
+\begin{propriete}[Règles de calcul]
+Pour toutes parties $A$, $B$, $C$ de $E$ :
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Distributivité} $A\cap(B\cup C)=(A\cap B)\cup(A\cap C)$ et
+    $A\cup(B\cap C)=(A\cup B)\cap(A\cup C)$ ;
+  \item \etape{Lois de De Morgan} $\overline{A\cup B}=\overline{A}\cap\overline{B}$
+    et $\overline{A\cap B}=\overline{A}\cup\overline{B}$ ;
+  \item $\overline{\overline{A}}=A$ ;\quad $A\setminus B=A\cap\overline{B}$ ;\quad
+    $A\subset B\iff\overline{B}\subset\overline{A}$.
+\end{itemize}
+\end{propriete}
+
+\begin{definition}[Produit cartésien]
+Le \textbf{produit cartésien} $E\times F$ est l'ensemble des couples $(x,y)$
+avec $x\in E$ et $y\in F$. Plus généralement, $E_1\times\cdots\times E_n$ est
+l'ensemble des $n$-uplets $(x_1,\dots,x_n)$ avec $x_i\in E_i$ pour tout $i$.
+On note $E^{n}=E\times\cdots\times E$ ($n$ facteurs).
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.58\linewidth}
+\begin{definition}[Recouvrement disjoint, partition]
+Des parties $A_1,\dots,A_p$ de $E$ forment un \textbf{recouvrement disjoint}
+de $E$ lorsqu'elles sont deux à deux disjointes et que leur réunion est $E$.
+Si de plus aucune n'est vide, on parle de \textbf{partition} de $E$ : tout
+élément de $E$ appartient alors à une et une seule des parties $A_i$.
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\centering
+\begin{tikzpicture}
+  \draw[otMuted,line width=0.6pt,rounded corners=1.8mm] (0,0) rectangle (4.4,2.5);
+  \draw[otNavy!60,line width=0.6pt] (1.5,0) .. controls (1.2,0.9) and (1.8,1.7) .. (1.4,2.5);
+  \draw[otNavy!60,line width=0.6pt] (3.0,0) .. controls (3.3,0.8) and (2.7,1.8) .. (3.1,2.5);
+  \draw[otNavy!60,line width=0.6pt] (1.33,1.3) .. controls (2.2,1.0) and (2.6,1.6) .. (3.0,1.25);
+  \node[font=\scriptsize,text=otInk] at (0.75,1.25) {$A_1$};
+  \node[font=\scriptsize,text=otInk] at (2.2,1.9) {$A_2$};
+  \node[font=\scriptsize,text=otInk] at (2.2,0.55) {$A_3$};
+  \node[font=\scriptsize,text=otInk] at (3.8,1.25) {$A_4$};
+  \node[anchor=south west,font=\scriptsize,text=otMuted,inner sep=2pt] at (0,2.55) {$E$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Une partition de $E$ en quatre parties.}
+\end{minipage}
+
+\essSection{5}{Applications}
+
+\begin{definition}[Application, graphe]
+Une \textbf{application} $f:E\to F$ associe à \emph{tout} élément $x$ de $E$
+un \emph{unique} élément de $F$, noté $f(x)$. $E$ est l'ensemble de départ,
+$F$ l'ensemble d'arrivée. Le \textbf{graphe} de $f$ est la partie
+$\Gamma_f=\ens{(x,f(x)) \mid x\in E}$ de $E\times F$.
+L'ensemble des applications de $E$ dans $F$ se note $\mathscr{F}(E,F)$ ou
+$F^{E}$. Une \textbf{famille} $(x_i)_{i\in I}$ d'éléments de $E$ est une
+application de l'ensemble d'indices $I$ dans $E$.
+\end{definition}
+
+\begin{definition}[Indicatrice, restriction]
+La \textbf{fonction indicatrice} d'une partie $A$ de $E$ est l'application
+$\ind{A}:E\to\ens{0,1}$ qui vaut $1$ sur $A$ et $0$ ailleurs.
+La \textbf{restriction} de $f:E\to F$ à une partie $A$ de $E$ est
+l'application $f|_{A}:A\to F$ qui coïncide avec $f$ sur $A$ ; on dit alors
+que $f$ est un \textbf{prolongement} de $f|_{A}$ à $E$.
+\end{definition}
+
+\begin{definition}[Image directe, image réciproque]
+Soient $f:E\to F$, $A\subset E$ et $B\subset F$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item L'\textbf{image directe} de $A$ est $f(A)=\ens{f(x) \mid x\in A}\subset F$ :
+    l'ensemble des images des éléments de $A$.
+  \item L'\textbf{image réciproque} de $B$ est
+    $f^{-1}(B)=\ens{x\in E \mid f(x)\in B}\subset E$ :
+    l'ensemble des antécédents des éléments de $B$.
+\end{itemize}
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[line cap=round]
+  % Image directe
+  \draw[otNavy,line width=0.7pt] (0,0) ellipse (1.05 and 1.45);
+  \draw[otGreenDark,line width=0.7pt] (4.6,0) ellipse (1.05 and 1.45);
+  \node[font=\scriptsize,text=otNavy] at (0,1.75) {$E$};
+  \node[font=\scriptsize,text=otGreenDark] at (4.6,1.75) {$F$};
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=2mm]}] (1.35,1.25) .. controls (2.3,1.7) .. (3.25,1.25);
+  \node[font=\small,text=otInk] at (2.3,1.8) {$f$};
+  \fill[otNavySoft] (0,-0.25) ellipse (0.62 and 0.8);
+  \draw[otNavy,line width=0.6pt] (0,-0.25) ellipse (0.62 and 0.8);
+  \node[font=\scriptsize,text=otNavy] at (0,-0.25) {$A$};
+  \fill[otGreenTint] (4.6,-0.25) ellipse (0.55 and 0.7);
+  \draw[otGreenDark,line width=0.6pt] (4.6,-0.25) ellipse (0.55 and 0.7);
+  \node[font=\scriptsize,text=otGreenDark] at (4.6,-0.25) {$f(A)$};
+  \draw[otGreen,line width=0.7pt,-{Stealth[length=1.8mm]}] (0.68,-0.1) -- (3.98,-0.1);
+  \node[anchor=north,align=center,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk] at (2.3,-1.7)
+    {Image directe : $f(A)$ regroupe\\les images des éléments de $A$.};
+  % Image réciproque
+  \begin{scope}[shift={(8.6,0)}]
+  \draw[otNavy,line width=0.7pt] (0,0) ellipse (1.05 and 1.45);
+  \draw[otGreenDark,line width=0.7pt] (4.6,0) ellipse (1.05 and 1.45);
+  \node[font=\scriptsize,text=otNavy] at (0,1.75) {$E$};
+  \node[font=\scriptsize,text=otGreenDark] at (4.6,1.75) {$F$};
+  \draw[otMuted,line width=0.6pt,-{Stealth[length=2mm]}] (1.35,1.25) .. controls (2.3,1.7) .. (3.25,1.25);
+  \node[font=\small,text=otInk] at (2.3,1.8) {$f$};
+  \fill[otNavySoft] (0,-0.25) ellipse (0.68 and 0.85);
+  \draw[otNavy,line width=0.6pt] (0,-0.25) ellipse (0.68 and 0.85);
+  \node[font=\scriptsize,text=otNavy] at (0,-0.25) {$f^{-1}(B)$};
+  \fill[otGreenTint] (4.6,-0.25) ellipse (0.55 and 0.7);
+  \draw[otGreenDark,line width=0.6pt] (4.6,-0.25) ellipse (0.55 and 0.7);
+  \node[font=\scriptsize,text=otGreenDark] at (4.6,-0.25) {$B$};
+  \draw[otGreen,line width=0.7pt,{Stealth[length=1.8mm]}-] (0.74,-0.1) -- (3.98,-0.1);
+  \node[anchor=north,align=center,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk] at (2.3,-1.7)
+    {Image réciproque : $f^{-1}(B)$ regroupe\\les antécédents de $B$.};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{attention}
+La notation $f^{-1}(B)$ a un sens pour \emph{toute} application $f$ : elle ne
+suppose pas que $f$ est bijective, et ne désigne pas une application
+réciproque. Ainsi, pour $f:x\mapsto x^{2}$ de $\R$ dans $\R$,
+$f^{-1}(\ens{4})=\ens{-2,2}$ alors que $f$ n'est pas bijective.
+\end{attention}
+
+\begin{definition}[Composition]
+Si $f:E\to F$ et $g:F\to G$, la \textbf{composée} $g\circ f:E\to G$ est
+définie par $(g\circ f)(x)=g\bigl(f(x)\bigr)$. La composition est associative :
+$h\circ(g\circ f)=(h\circ g)\circ f$.
+\end{definition}
+
+\begin{definition}[Injection, surjection, bijection]
+Soit $f:E\to F$.
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item $f$ est \textbf{injective} si tout élément de $F$ a \emph{au plus} un antécédent :
+    $\forall (x,x')\in E^{2},\ f(x)=f(x')\Rightarrow x=x'$.
+  \item $f$ est \textbf{surjective} si tout élément de $F$ a \emph{au moins} un antécédent :
+    $\forall y\in F,\ \exists x\in E,\ y=f(x)$, c'est-à-dire $f(E)=F$.
+  \item $f$ est \textbf{bijective} si elle est injective et surjective : tout
+    élément de $F$ a \emph{exactement} un antécédent.
+\end{itemize}
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[line cap=round,
+  pt/.style={circle,fill=otNavy,inner sep=0pt,minimum size=3.2pt},
+  ptv/.style={circle,fill=otGreenDark,inner sep=0pt,minimum size=3.2pt},
+  fl/.style={otMuted,line width=0.55pt,-{Stealth[length=1.6mm]}}]
+  \foreach \dx/\titre in {0/{injective, non surjective},5.3/{surjective, non injective},10.6/{bijective}}{%
+    \draw[otNavy,line width=0.6pt] (\dx,0) ellipse (0.55 and 1.15);
+    \draw[otGreenDark,line width=0.6pt] (\dx+2.1,0) ellipse (0.55 and 1.15);
+    \node[anchor=north,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk] at (\dx+1.05,-1.35) {\titre};}
+  % injective non surjective : 3 -> 4
+  \foreach \y in {0.7,0,-0.7}{\node[pt] at (0,\y) {};}
+  \foreach \y in {0.85,0.3,-0.3,-0.85}{\node[ptv] at (2.1,\y) {};}
+  \draw[fl] (0.1,0.7) -- (2.0,0.85);
+  \draw[fl] (0.1,0) -- (2.0,0.3);
+  \draw[fl] (0.1,-0.7) -- (2.0,-0.85);
+  % surjective non injective : 4 -> 3
+  \foreach \y in {0.85,0.3,-0.3,-0.85}{\node[pt] at (5.3,\y) {};}
+  \foreach \y in {0.7,0,-0.7}{\node[ptv] at (7.4,\y) {};}
+  \draw[fl] (5.4,0.85) -- (7.3,0.7);
+  \draw[fl] (5.4,0.3) -- (7.3,0.7);
+  \draw[fl] (5.4,-0.3) -- (7.3,0);
+  \draw[fl] (5.4,-0.85) -- (7.3,-0.7);
+  % bijective : 3 -> 3
+  \foreach \y in {0.7,0,-0.7}{\node[pt] at (10.6,\y) {};}
+  \foreach \y in {0.7,0,-0.7}{\node[ptv] at (12.7,\y) {};}
+  \draw[fl] (10.7,0.7) -- (12.6,0);
+  \draw[fl] (10.7,0) -- (12.6,0.7);
+  \draw[fl] (10.7,-0.7) -- (12.6,-0.7);
+\end{tikzpicture}
+\end{center}
+
+\begin{theoreme}[Bijection réciproque]
+Si $f:E\to F$ est bijective, il existe une unique application
+$f^{-1}:F\to E$, appelée \textbf{réciproque} de $f$, telle que
+$f^{-1}\circ f=\mathrm{Id}_E$ et $f\circ f^{-1}=\mathrm{Id}_F$.
+Elle est caractérisée par : $y=f(x)\iff x=f^{-1}(y)$.
+$f^{-1}$ est elle-même bijective, et $(f^{-1})^{-1}=f$.
+Cette notation est compatible avec l'image réciproque : si $f$ est bijective,
+l'image réciproque de $B$ par $f$ est l'image directe de $B$ par $f^{-1}$.
+\end{theoreme}
+
+\begin{propriete}[Composées]
+La composée de deux injections est injective ; la composée de deux
+surjections est surjective ; la composée de deux bijections est bijective,
+avec $(g\circ f)^{-1}=f^{-1}\circ g^{-1}$ (attention à l'ordre).
+\end{propriete}
+
+\begin{savoirfaire}[Étudier l'injectivité et la surjectivité]
+\begin{itemize}[label={\color{otGreenDark}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item \etape{Injectivité} partir de $f(x)=f(x')$ et montrer $x=x'$
+    (ou : montrer que $x\neq x'\Rightarrow f(x)\neq f(x')$ par contraposée).
+  \item \etape{Surjectivité} partir d'un $y\in F$ quelconque et \emph{résoudre}
+    l'équation $f(x)=y$ d'inconnue $x\in E$.
+  \item \etape{Bijectivité} résoudre $f(x)=y$ : si cette équation possède une
+    unique solution pour chaque $y\in F$, alors $f$ est bijective, et la
+    formule obtenue donne $f^{-1}$.
+  \item Pour conclure \emph{négativement}, un contre-exemple explicite suffit.
+\end{itemize}
+\end{savoirfaire}
+
+\essSection{6}{Relations binaires}
+
+\begin{definition}[Relation binaire]
+Une \textbf{relation binaire} $\mathcal{R}$ sur un ensemble $E$ associe à
+certains couples $(x,y)\in E^{2}$ la mention « $x$ est en relation avec $y$ »,
+notée $x\,\mathcal{R}\,y$. Elle est :
+\textbf{réflexive} si $\forall x\in E$, $x\,\mathcal{R}\,x$ ;
+\textbf{symétrique} si $x\,\mathcal{R}\,y\Rightarrow y\,\mathcal{R}\,x$ ;
+\textbf{antisymétrique} si $\bigl(x\,\mathcal{R}\,y$ et $y\,\mathcal{R}\,x\bigr)\Rightarrow x=y$ ;
+\textbf{transitive} si $\bigl(x\,\mathcal{R}\,y$ et $y\,\mathcal{R}\,z\bigr)\Rightarrow x\,\mathcal{R}\,z$.
+\end{definition}
+
+\begin{definition}[Relation d'équivalence, classes]
+Une relation \textbf{réflexive, symétrique et transitive} est une
+\textbf{relation d'équivalence}. La \textbf{classe d'équivalence} de $x$ est
+$\mathrm{cl}(x)=\ens{y\in E \mid x\,\mathcal{R}\,y}$.
+Les classes d'équivalence forment une \emph{partition} de $E$.
+\end{definition}
+
+\begin{exemple}[Congruences]
+Soit $c>0$ un réel (ou $c\geq1$ un entier). La relation « $x\equiv y\ [c]$ »,
+définie par $x-y\in c\,\Z$, est une relation d'équivalence sur $\R$ (ou sur
+$\Z$). Par exemple, $17\equiv 2\ [5]$ et, dans $\R$,
+$\frac{9\pi}{4}\equiv\frac{\pi}{4}\ [2\pi]$.
+\end{exemple}
+
+\begin{definition}[Relation d'ordre]
+Une relation \textbf{réflexive, antisymétrique et transitive} est une
+\textbf{relation d'ordre}. L'ordre est \textbf{total} si deux éléments
+quelconques sont toujours comparables ($x\,\mathcal{R}\,y$ ou
+$y\,\mathcal{R}\,x$) ; sinon, il est \textbf{partiel}.
+\end{definition}
+
+\begin{exemple}
+$\leq$ est un ordre total sur $\R$. L'inclusion $\subset$ est un ordre
+partiel sur $\parties{E}$ dès que $E$ a au moins deux éléments :
+$\ens{1}$ et $\ens{2}$ ne sont pas comparables. La divisibilité est un ordre
+partiel sur $\N^{*}$ : $2$ et $3$ ne se divisent pas l'un l'autre.
+\end{exemple}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item La négation de $P\Rightarrow Q$ n'est pas une implication : c'est « $P$ et $\text{non}(Q)$ ».
+  \item Ne pas confondre réciproque et contraposée : seule la contraposée équivaut à l'implication.
+  \item «~$\forall x,\ \exists y$~» et «~$\exists y,\ \forall x$~» ne disent pas la même chose :
+    dans le premier cas, $y$ peut dépendre de $x$.
+  \item Distinguer $\in$ et $\subset$ : $x\in E$, mais $\ens{x}\subset E$ et $\ens{x}\in\parties{E}$.
+  \item $f(A\cap A')\subset f(A)\cap f(A')$, et l'inclusion peut être stricte :
+    l'égalité n'est garantie que si $f$ est injective.
+  \item Pour montrer qu'une application n'est pas injective (ou pas surjective),
+    un contre-exemple explicite suffit — le rédiger !
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Vrai ou faux ?}
+Pour chacune des propositions suivantes, dire si elle est vraie ou fausse,
+et justifier brièvement.
+\begin{questions}
+  \item $\forall x\in\R,\ x^{2}\geq0$.
+  \item $\exists x\in\R,\ x^{2}=-1$.
+  \item $\forall x\in\R,\ \exists y\in\R,\ y>x$.
+  \item $\exists y\in\R,\ \forall x\in\R,\ y>x$.
+  \item $\forall n\in\N,\ n^{2}+n$ est pair.
+  \item $\forall x\in\R,\ \bigl(x^{2}=4\Rightarrow x=2\bigr)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Écrire avec des quantificateurs}
+Soit $f:\R\to\R$ une fonction et $(u_n)_{n\in\N}$ une suite réelle. Écrire
+avec des quantificateurs les énoncés suivants.
+\begin{questions}
+  \item $f$ est majorée sur $\R$.
+  \item $f$ n'est pas majorée sur $\R$ (négation du précédent).
+  \item La suite $(u_n)$ est croissante.
+  \item $f$ s'annule au moins une fois.
+  \item $f$ est paire.
+  \item Tout réel admet au moins un antécédent par $f$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Nier des énoncés quantifiés}
+Écrire la négation de chacun des énoncés suivants (sans employer de négation
+devant un quantificateur).
+\begin{questions}
+  \item $\forall x\in\R,\ f(x)>0$.
+  \item $\exists x\in\intFF{0}{1},\ f(x)=0$.
+  \item $\forall y\in\R,\ \exists x\in\R,\ f(x)=y$.
+  \item $\forall\varepsilon>0,\ \exists N\in\N,\ \forall n\geq N,\ |u_n-\ell|\leq\varepsilon$.
+  \item $\forall x\in\R,\ \bigl(x\in A\Rightarrow x\in B\bigr)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Implication, réciproque, contraposée}
+On considère, pour un entier naturel $n$ et un réel $x$, les implications :
+\[
+  (\mathrm{I}_1)\ :\ \text{« si $n$ est multiple de $4$, alors $n$ est pair »}
+  \qquad\qquad
+  (\mathrm{I}_2)\ :\ \text{« } x\geq1\Rightarrow x^{2}\geq1\text{ »}.
+\]
+\begin{questions}
+  \item Énoncer la réciproque et la contraposée de $(\mathrm{I}_1)$.
+    Parmi $(\mathrm{I}_1)$, sa réciproque et sa contraposée, lesquelles sont vraies ?
+  \item Mêmes questions pour $(\mathrm{I}_2)$.
+  \item Compléter avec « nécessaire », « suffisante » ou « nécessaire et
+    suffisante » : être multiple de $4$ est une condition \ldots{} pour qu'un
+    entier soit pair ; être pair est une condition \ldots{} pour qu'un entier
+    soit multiple de $4$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Opérations sur les parties}
+\begin{questions}
+  \item Dans $E=\ens{1,2,\dots,10}$, on pose $A=\ens{1,2,3,4,5}$ et
+    $B=\ens{4,5,6,7}$. Déterminer $A\cup B$, $A\cap B$, $A\setminus B$,
+    $B\setminus A$, $\overline{A}$, $\overline{B}$, puis vérifier sur cet
+    exemple que $\overline{A\cup B}=\overline{A}\cap\overline{B}$.
+  \item Dans $\R$, on pose $I=\intFO{-1}{3}$ et $J=\intOF{1}{5}$.
+    Déterminer $I\cap J$, $I\cup J$, $I\setminus J$ et $\R\setminus I$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Produit cartésien et ensemble des parties}
+\begin{questions}
+  \item On pose $E=\ens{a,b}$ et $F=\ens{1,2,3}$. Écrire en extension
+    l'ensemble $E\times F$. Combien a-t-il d'éléments ?
+  \item Écrire en extension $\parties{E}$ pour $E=\ens{1,2,3}$.
+  \item Les affirmations suivantes sont-elles vraies ?
+    $\varnothing\in\parties{E}$ ;\quad $\varnothing\subset\parties{E}$ ;\quad
+    $\ens{1}\in\parties{E}$ ;\quad $1\in\parties{E}$ ;\quad
+    $\ens{\ens{1}}\subset\parties{E}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Images directes et réciproques : calculs}
+On considère l'application $f:\R\to\R$, $x\mapsto x^{2}$.
+\begin{questions}
+  \item Déterminer les images directes $f\bigl(\intFF{1}{2}\bigr)$,
+    $f\bigl(\intFF{-2}{1}\bigr)$ et $f(\R)$.
+  \item Déterminer les images réciproques $f^{-1}(\ens{4})$,
+    $f^{-1}\bigl(\intFF{1}{4}\bigr)$ et $f^{-1}\bigl(\intFF{-2}{-1}\bigr)$.
+  \item Soit $g:\R\to\R$, $x\mapsto2x+1$. Déterminer
+    $g\bigl(\intFF{0}{1}\bigr)$ et $g^{-1}\bigl(\intFF{0}{1}\bigr)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Injective ? surjective ?}
+Pour chacune des applications suivantes, dire si elle est injective, si elle
+est surjective, si elle est bijective. Justifier (un contre-exemple suffit
+pour une réponse négative).
+\begin{tasks}(2)
+  \task $f_1:\R\to\R$, $x\mapsto2x+1$
+  \task $f_2:\R\to\R$, $x\mapsto x^{2}$
+  \task $f_3:\R\to\R_{+}$, $x\mapsto x^{2}$
+  \task $f_4:\R_{+}\to\R$, $x\mapsto x^{2}$
+  \task $f_5:\N\to\N$, $n\mapsto n+1$
+  \task $f_6:\Z\to\Z$, $n\mapsto n+1$
+\end{tasks}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Raisonner par contraposée}
+\begin{questions}
+  \item Soit $n\in\N$. Montrer que si $n^{2}$ est pair, alors $n$ est pair.
+  \item Soient $x$ et $y$ deux réels. Montrer que si
+    $(x+1)(y-1)=(x-1)(y+1)$, alors $x=y$.
+  \item Soit $n\in\N$. Montrer que si $n^{2}-1$ n'est pas divisible par $8$,
+    alors $n$ est pair.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Raisonner par l'absurde}
+\begin{questions}
+  \item En s'inspirant de la démonstration du cours pour $\sqrt{2}$,
+    montrer que $\sqrt{3}$ est irrationnel. \emph{On pourra utiliser le fait
+    que si $3$ divise $p^{2}$, alors $3$ divise $p$.}
+  \item Montrer que la somme d'un rationnel et d'un irrationnel est
+    irrationnelle.
+  \item Montrer qu'il n'existe pas de plus petit réel strictement positif.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Raisonner par disjonction de cas}
+\begin{questions}
+  \item Montrer que, pour tout $n\in\N$, $\dfrac{n(n+1)}{2}$ est un entier.
+  \item Montrer que, pour tout $n\in\Z$, $3$ divise $n(n^{2}+2)$.
+  \item Résoudre dans $\R$ l'équation $|x-1|+|x+2|=5$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Raisonner par analyse-synthèse}
+\begin{questions}
+  \item Montrer que toute fonction $f:\R\to\R$ s'écrit de manière unique
+    comme la somme d'une fonction paire et d'une fonction impaire.
+  \item Déterminer toutes les fonctions $f:\R\to\R$ telles que :
+    \[ \forall(x,y)\in\R^{2},\qquad f(x)\,f(y)-f(xy)=x+y. \]
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Récurrences simples}
+Démontrer par récurrence les propriétés suivantes.
+\begin{questions}
+  \item Pour tout entier $n\geq1$ :
+    $\displaystyle\sum_{k=1}^{n}k^{2}=\frac{n(n+1)(2n+1)}{6}$.
+  \item Pour tout entier naturel $n$ : $2^{n}>n$.
+  \item Pour tout entier $n\geq4$ : $n!\geq2^{n}$.
+  \item Pour tout entier naturel $n$ : $7$ divise $3^{2n+1}+2^{n+2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Récurrence double, récurrence forte}
+\begin{questions}
+  \item On définit la suite $(u_n)$ par $u_0=2$, $u_1=5$ et, pour tout
+    $n\in\N$, $u_{n+2}=5u_{n+1}-6u_n$. Montrer que, pour tout $n\in\N$,
+    $u_n=2^{n}+3^{n}$.
+  \item Montrer, par récurrence forte, que tout entier $n\geq2$ admet au
+    moins un diviseur premier.
+  \item On définit la suite $(v_n)$ par $v_1=1$ et, pour tout $n\geq1$,
+    $v_{n+1}=v_1+v_2+\dots+v_n$. Calculer $v_2$, $v_3$, $v_4$, puis montrer
+    que, pour tout $n\geq2$, $v_n=2^{\,n-2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Calculs ensemblistes}
+Soient $A$, $B$ et $C$ trois parties d'un ensemble $E$. Démontrer les
+égalités et équivalences suivantes.
+\begin{questions}
+  \item $A\setminus(A\setminus B)=A\cap B$.
+  \item $A\cup(B\cap C)=(A\cup B)\cap(A\cup C)$.
+  \item $A\setminus(B\cup C)=(A\setminus B)\cap(A\setminus C)$.
+  \item $A\cup B=A\cap B\iff A=B$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La différence symétrique}
+Pour $A$ et $B$ parties d'un ensemble $E$, on pose
+$A\,\triangle\,B=(A\setminus B)\cup(B\setminus A)$.
+\begin{questions}
+  \item Montrer que $A\,\triangle\,B=(A\cup B)\setminus(A\cap B)$.
+  \item Déterminer $A\,\triangle\,\varnothing$, $A\,\triangle\,A$ et
+    $A\,\triangle\,E$.
+  \item Montrer que $A\,\triangle\,B=\varnothing\iff A=B$.
+  \item Dans $E=\ens{1,2,\dots,8}$, calculer
+    $\ens{1,2,3,4}\,\triangle\,\ens{3,4,5,6}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{La fonction indicatrice}
+Soient $A$ et $B$ deux parties d'un ensemble $E$. On rappelle que
+$\ind{A}:E\to\ens{0,1}$ vaut $1$ sur $A$ et $0$ ailleurs.
+\begin{questions}
+  \item Montrer que $A=B\iff\ind{A}=\ind{B}$, et que
+    $A\subset B\iff\ind{A}\leq\ind{B}$.
+  \item Montrer que $\ind{A\cap B}=\ind{A}\,\ind{B}$ et que
+    $\ind{\overline{A}}=1-\ind{A}$.
+  \item En déduire que $\ind{A\cup B}=\ind{A}+\ind{B}-\ind{A}\,\ind{B}$.
+  \item Retrouver, à l'aide des questions précédentes, la loi de De Morgan
+    $\overline{A\cup B}=\overline{A}\cap\overline{B}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Images directes et réciproques : propriétés}
+Soient $f:E\to F$ une application, $A$ et $A'$ deux parties de $E$, $B$ et
+$B'$ deux parties de $F$.
+\begin{questions}
+  \item Montrer que si $A\subset A'$, alors $f(A)\subset f(A')$.
+  \item Montrer que $f(A\cup A')=f(A)\cup f(A')$.
+  \item Montrer que $f(A\cap A')\subset f(A)\cap f(A')$, puis donner un
+    exemple où cette inclusion est stricte.
+  \item Montrer que $f^{-1}(B\cup B')=f^{-1}(B)\cup f^{-1}(B')$ et que
+    $f^{-1}(B\cap B')=f^{-1}(B)\cap f^{-1}(B')$.
+  \item Montrer que $A\subset f^{-1}\bigl(f(A)\bigr)$ et que
+    $f\bigl(f^{-1}(B)\bigr)\subset B$, et donner un exemple où chacune de ces
+    inclusions est stricte.
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{Composition, injectivité et surjectivité}
+Soient $f:E\to F$ et $g:F\to G$ deux applications.
+\begin{questions}
+  \item Montrer que si $f$ et $g$ sont injectives, alors $g\circ f$ est
+    injective ; que si $f$ et $g$ sont surjectives, alors $g\circ f$ est
+    surjective.
+  \item Montrer que si $g\circ f$ est injective, alors $f$ est injective.
+  \item Montrer que si $g\circ f$ est surjective, alors $g$ est surjective.
+  \item Donner un exemple où $g\circ f$ est bijective, mais où $f$ n'est pas
+    surjective et $g$ n'est pas injective.
+  \item Soient $f:E\to F$ et $g:F\to E$ telles que $g\circ f=\mathrm{Id}_E$.
+    Montrer que $f$ est injective et que $g$ est surjective.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Bijections explicites}
+\begin{questions}
+  \item On définit $f:\N\to\Z$ par : $f(n)=\dfrac{n}{2}$ si $n$ est pair, et
+    $f(n)=-\dfrac{n+1}{2}$ si $n$ est impair. Calculer $f(0)$, $f(1)$,
+    $f(2)$, $f(3)$, $f(4)$, puis montrer que $f$ est bijective.
+  \item Montrer que $g:\R\setminus\ens{1}\to\R\setminus\ens{2}$,
+    $x\mapsto\dfrac{2x+1}{x-1}$, est bijective et expliciter sa réciproque.
+  \item Montrer que $h:\R\to\intOO{-1}{1}$,
+    $x\mapsto\dfrac{x}{1+|x|}$, est bijective et expliciter sa réciproque.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Équations ensemblistes}
+Soient $A$ et $B$ deux parties d'un ensemble $E$. Les inconnues $X$, $Y$ des
+équations suivantes sont des parties de $E$.
+\begin{questions}
+  \item Résoudre le système : $A\cap X=\varnothing$ et $A\cup X=E$.
+  \item On suppose $A\subset B$. Montrer que les solutions de l'équation
+    $A\cup X=B$ sont exactement les parties $X$ de $E$ telles que
+    $B\setminus A\subset X\subset B$. Que se passe-t-il si
+    $A\not\subset B$ ?
+  \item Montrer que si $A\cap X=A\cap Y$ et $A\cup X=A\cup Y$, alors $X=Y$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Relations d'équivalence}
+\begin{questions}
+  \item Sur $\R$, on définit la relation $\mathcal{R}$ par :
+    $x\,\mathcal{R}\,y\iff x-y\in\Z$.
+    \begin{questions}
+      \item Montrer que $\mathcal{R}$ est une relation d'équivalence.
+      \item Décrire la classe de $0$, puis celle de $\frac{1}{2}$.
+      \item Montrer que chaque classe d'équivalence contient un et un seul
+        élément de $\intFO{0}{1}$.
+    \end{questions}
+  \item Sur $\R$, on définit la relation $\mathcal{S}$ par :
+    $x\,\mathcal{S}\,y\iff x^{2}=y^{2}$. Montrer que $\mathcal{S}$ est une
+    relation d'équivalence et décrire la classe d'un réel $x$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La divisibilité, un ordre partiel}
+Sur $\N^{*}$, on considère la relation de divisibilité : $a\mid b$ lorsqu'il
+existe $k\in\N^{*}$ tel que $b=ka$.
+\begin{questions}
+  \item Montrer que $\mid$ est une relation d'ordre sur $\N^{*}$.
+  \item Cet ordre est-il total ?
+  \item Montrer que $1$ est le plus petit élément de $(\N^{*},\mid)$.
+    L'ensemble $\N^{*}$ possède-t-il un plus grand élément pour cet ordre ?
+  \item On munit $\parties{E}$ de l'inclusion, pour $E$ ayant au moins deux
+    éléments. Vérifier que $\subset$ est une relation d'ordre partiel, et
+    préciser le plus petit et le plus grand élément de
+    $\bigl(\parties{E},\subset\bigr)$.
+  \item Dans $(\N^{*},\mid)$, l'ensemble $\ens{4,6}$ admet-il un plus petit
+    majorant ? \emph{On décrira l'ensemble des majorants de $\ens{4,6}$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le théorème de Cantor}
+L'objectif de ce problème est de montrer qu'il n'existe pas de surjection
+d'un ensemble $E$ sur l'ensemble de ses parties $\parties{E}$ — autrement
+dit, que $\parties{E}$ est toujours « strictement plus gros » que $E$.
+\partieExo{A}{Observations sur un ensemble fini}
+On pose $E=\ens{1,2,3}$, et on considère l'application $f:E\to\parties{E}$
+définie par $f(1)=\ens{1,2}$, $f(2)=\varnothing$ et $f(3)=\ens{1,3}$.
+\begin{questions}
+  \item L'application $f$ est-elle injective ? surjective ?
+  \item On pose $D=\ens{x\in E \mid x\notin f(x)}$. Déterminer $D$, puis
+    vérifier que $D$ n'a pas d'antécédent par $f$.
+  \item Combien d'applications de $E$ dans $\parties{E}$ existe-t-il ?
+    Combien faudrait-il d'éléments à l'ensemble d'arrivée pour qu'une
+    surjection soit possible ?
+\end{questions}
+\partieExo{B}{Le cas général}
+Soit maintenant $E$ un ensemble quelconque et $f:E\to\parties{E}$ une
+application. On pose, comme ci-dessus,
+$D=\ens{x\in E \mid x\notin f(x)}$.
+\begin{questions}[resume]
+  \item On raisonne par l'absurde, en supposant $f$ surjective : il existe
+    alors $a\in E$ tel que $f(a)=D$. Montrer que l'hypothèse $a\in D$ conduit
+    à une contradiction, puis que l'hypothèse $a\notin D$ conduit également à
+    une contradiction.
+  \item Conclure : énoncer le théorème démontré.
+  \item En déduire qu'il n'existe pas de surjection de $\N$ sur
+    $\parties{\N}$. \emph{Ce résultat, dû à Georg Cantor (1891), montre qu'il
+    existe « plusieurs infinis » : l'infini de $\parties{\N}$ est strictement
+    plus grand que celui de $\N$.}
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-01}

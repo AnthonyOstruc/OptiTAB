@@ -1,0 +1,178 @@
+\begin{ouverture}[equadiff]{6}{Primitives et équations différentielles}{Analyse et évolution}{Familles de solutions · Condition initiale · Euler}
+\objectif{Reconnaître et déterminer des primitives.}
+\objectif{Vérifier une solution d’équation différentielle.}
+\objectif{Résoudre les équations $y\,\!^{\prime}=ay+b$.}
+\objectif{Comparer modèle continu et approximation par Euler.}
+\prerequis{Dérivation, exponentielle et récurrences affines.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Remonter d'une dérivée à une fonction}
+\begin{definition}
+Une primitive de $f$ sur un intervalle $I$ est une fonction $F$ dérivable telle que $F\,\!^{\prime}=f$ sur $I$.
+Si $F$ est une primitive, toutes les primitives sur cet intervalle sont $F+C$, où $C$ est une constante réelle.
+\end{definition}
+\begin{demonstration}
+Si $F$ et $G$ sont deux primitives, $(F-G)'=0$ sur l'intervalle. Une fonction de dérivée nulle sur un intervalle est constante, donc $F-G=C$.
+L'hypothèse d'intervalle compte : sur deux morceaux disjoints, les constantes peuvent être différentes.
+\end{demonstration}
+\begin{center}\begin{tabular}{c|c}Fonction & Une primitive\\\hline
+$x^n$ ($n\in\N$)&$x^{n+1}/(n+1)$\\
+$1/x$ sur $]0,+\infty[$&$\ln x$\\
+$\mathrm e^{ax+b}$ ($a\ne0$)&$\mathrm e^{ax+b}/a$\\
+$2uu'$&$u^2$\\
+$u'\mathrm e^u$&$\mathrm e^u$\\
+$u'/u$ ($u>0$)&$\ln u$\end{tabular}\end{center}
+\begin{exemple}[Reconnaître une forme]
+Une primitive de $6x(x^2+1)^2$ est $(x^2+1)^3$, car sa dérivée vaut $3(x^2+1)^2\times2x$.
+Pour $2x/(x^2+1)$, une primitive est $\ln(x^2+1)$.
+Toujours dériver la proposition pour la contrôler.
+\end{exemple}
+\essSection{2}{Une équation portant sur une fonction}
+Une équation différentielle relie une fonction inconnue et ses dérivées. Vérifier une solution consiste à calculer la dérivée puis à substituer les expressions dans l'équation, pour tout point du domaine.
+Une condition initiale impose une valeur, par exemple $y(0)=y_0$.
+\begin{theoreme}[$y\,\!^{\prime}=ay$]
+Les solutions sur $\R$ sont $y(t)=C\mathrm e^{at}$ avec $C\in\R$. Avec $y(0)=y_0$, la solution unique est $y(t)=y_0\mathrm e^{at}$.
+\end{theoreme}
+\begin{demonstration}
+Pour une solution $y$, poser $g(t)=y(t)\mathrm e^{-at}$. Alors $g\,\!^{\prime}(t)=(y\,\!^{\prime}-ay)\mathrm e^{-at}=0$.
+Donc $g=C$, d'où $y=C\mathrm e^{at}$. La réciproque se vérifie en dérivant.
+\end{demonstration}
+\essSection{3}{Ajouter un terme constant}
+\begin{savoirfaire}[$y\,\!^{\prime}=ay+b$]
+Si $a\ne0$, la solution constante est $\ell=-b/a$. Poser $z=y-\ell$ : $z\,\!^{\prime}=az$.
+Ainsi $y(t)=\ell+C\mathrm e^{at}$ ; avec $y(0)=y_0$, $C=y_0-\ell$.
+Si $a=0$, l'équation est $y\,\!^{\prime}=b$, donc $y(t)=bt+C$.
+\end{savoirfaire}
+\begin{exemple}[Refroidissement]
+Le modèle $T\,\!^{\prime}=-0{,}2(T-20)$, $T(0)=80$ donne $T(t)=20+60\mathrm e^{-0{,}2t}$.
+La température tend vers $20$, celle de l'environnement supposée constante. Le coefficient $0{,}2$ dépend de l'unité de temps.
+\end{exemple}
+\figurelivre{c06-equadiff.pdf}{La solution exacte du refroidissement et les valeurs d'Euler avec pas $1$. Euler utilise des segments de tangente et donne une approximation, pas une identité.}
+\essSection{4}{Du continu au discret : Euler}
+Pour $y\,\!^{\prime}=f(t,y)$ et un pas $h>0$, la méthode d'Euler donne
+$t_{n+1}=t_n+h$ et $y_{n+1}=y_n+h f(t_n,y_n)$.
+Pour le refroidissement, $T_{n+1}=(1-0{,}2h)T_n+4h$ : on retrouve une suite arithmético-géométrique.
+\begin{python}
+def euler_refroidissement(h, n):
+    t, temperature = 0.0, 80.0
+    points = [(t, temperature)]
+    for k in range(n):
+        temperature += h*(-0.2*temperature + 4)
+        t += h
+        points.append((t, temperature))
+    return points
+\end{python}
+Un pas trop grand peut produire un comportement artificiel. Réduire $h$ et comparer à une solution connue permet de contrôler l'approximation. Les équations non linéaires, comme la logistique, peuvent être explorées sur un exemple guidé sans théorie générale exigée.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Primitives usuelles}
+
+\begin{questions}
+\item Donner toutes les primitives de $3x^2-4$.
+\item Donner celles de $\mathrm e^{2x}$.
+\item Donner celles de $1/x$ sur $]0,+\infty[$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Reconnaître une composée}
+
+\begin{questions}
+\item Donner une primitive de $2x\mathrm e^{x^2}$.
+\item Donner une primitive de $2x/(x^2+3)$.
+\item Donner une primitive de $4x(x^2+1)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Condition initiale}
+
+\begin{questions}
+\item Trouver $F$ telle que $F\,\!^{\prime}(x)=2x$ et $F(0)=3$.
+\item Trouver $G$ telle que $G\,\!^{\prime}(x)=\mathrm e^x$ et $G(1)=0$.
+\item Pourquoi la constante ne doit-elle pas être oubliée ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Vérifier une solution}
+$y(t)=4+3\mathrm e^{-2t}$.
+\begin{questions}
+\item Calculer $y\,\!^{\prime}$.
+\item Vérifier $y\,\!^{\prime}=-2y+8$.
+\item Donner la condition initiale satisfaite.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Résoudre sans terme constant}
+
+\begin{questions}
+\item Résoudre $y\,\!^{\prime}=3y$, $y(0)=2$.
+\item Résoudre $z\,\!^{\prime}=-z/2$, $z(0)=10$.
+\item Donner leurs limites quand $t\to+\infty$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Déplacer un équilibre continu}
+$y\,\!^{\prime}=-0{,}5y+6$, $y(0)=2$.
+\begin{questions}
+\item Trouver une solution constante.
+\item Donner la solution du problème.
+\item Déterminer le temps pour dépasser $11$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Cas $a=0$}
+On considère $y\,\!^{\prime}=ay+5$ avec $a=0$ et $y(2)=9$.
+\begin{questions}
+\item Pourquoi la formule avec $-b/a$ ne s’applique-t-elle pas ?
+\item Résoudre directement.
+\item Vérifier la condition donnée.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Euler à la main}
+$y\,\!^{\prime}=-y$, $y(0)=1$. On choisit $h=0{,}5$.
+\begin{questions}
+\item Écrire la récurrence d’Euler.
+\item Calculer les valeurs aux temps $0{,}5$ et $1$.
+\item Comparer à la solution exacte au temps $1$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Pourquoi une seule constante ?}
+$F$ et $G$ sont primitives de la même fonction sur un intervalle $I$.
+\begin{questions}
+\item Dériver $F-G$.
+\item En déduire la forme de $G$.
+\item Donner un exemple montrant que l’hypothèse d’intervalle est utile.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Pas trop grand}
+Pour $y\,\!^{\prime}=-2y$, $y(0)=1$, Euler donne $y_{n+1}=(1-2h)y_n$.
+\begin{questions}
+\item Étudier les valeurs obtenues pour $h=1$.
+\item Comparer au signe de la solution exacte.
+\item Que se passe-t-il pour $h=0{,}25$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Logistique : vérification guidée}
+$y(t)=100/(1+4\mathrm e^{-t})$.
+\begin{questions}
+\item Calculer $y(0)$ et sa limite en $+\infty$.
+\item Vérifier $y\,\!^{\prime}=y(1-y/100)$.
+\item Pourquoi cette vérification ne constitue-t-elle pas une méthode générale de résolution ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Modèles discret et continu}
+Une quantité suit $u_n=50+30(0{,}8)^n$.
+\begin{questions}
+\item Trouver $k$ pour que $y(t)=50+30\mathrm e^{-kt}$ coïncide avec $u_n$ aux temps entiers.
+\item Écrire une équation différentielle satisfaite par $y$.
+\item Ce modèle continu est-il l’Euler de pas $1$ de cette équation ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

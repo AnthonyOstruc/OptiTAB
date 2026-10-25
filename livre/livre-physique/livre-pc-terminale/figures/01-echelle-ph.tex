@@ -1,0 +1,29 @@
+% Échelle de pH et exemples de la vie courante (L'essentiel, chapitre 1)
+\pgfdeclarehorizontalshading{pcEchellePH}{100bp}{color(0bp)=(otRed!80);color(25bp)=(otOrange!85);
+  color(50bp)=(otGreen!70);color(75bp)=(cyan!40!otNavy!70);color(100bp)=(otNavyDark)}
+\begin{tikzpicture}[x=10mm,y=1mm,
+  ex/.style={font=\otLight\fontsize{7.3}{8.6}\selectfont,text=otInk,inner sep=1pt,align=left},
+  fil/.style={draw=otMuted,line width=0.4pt}]
+\shade[shading=pcEchellePH] (0,0) rectangle (14,6);
+\draw[otInk!45,line width=0.4pt] (0,0) rectangle (14,6);
+\foreach \k in {0,...,14}{%
+  \draw[otInk!60,line width=0.4pt] (\k,0) -- (\k,-1.4);
+  \node[below,font=\otMedium\fontsize{7.5}{9}\selectfont,text=otInk] at (\k,-1.4) {\k};}
+% Exemples : position, hauteur du filet, ancre, texte
+\foreach \x/\h/\a/\t in {1.5/12/south east/{suc gastrique\\[-0.2mm]$\approx 1{,}5$},
+  2.4/12/south west/{jus de citron\\[-0.2mm]$\approx 2{,}4$},
+  7.0/30/south/{eau pure à 25 °C\\[-0.2mm]$7{,}0$},
+  7.4/21/south west/{sang\\[-0.2mm]$\approx 7{,}4$},
+  8.1/12/south west/{eau de mer\\[-0.2mm]$\approx 8{,}1$},
+  12/12/south east/{eau de Javel\\[-0.2mm]$\approx 12$},
+  13.5/12/south west/{déboucheur\\[-0.2mm]$\approx 13{,}5$}}{%
+  \draw[fil] (\x,6) -- (\x,\h);
+  \fill[otInk] (\x,6) circle (0.5mm);
+  \node[ex,anchor=\a] at (\x,\h) {\t};}
+\draw[otRed!80!black,line width=0.8pt,{Stealth[length=2mm]}-] (0,-9) -- (6.2,-9)
+  node[midway,below,font=\otMedium\fontsize{7.5}{9}\selectfont,text=otRed!80!black]{solution acide};
+\draw[otNavy,line width=0.8pt,-{Stealth[length=2mm]}] (7.8,-9) -- (14,-9)
+  node[midway,below,font=\otMedium\fontsize{7.5}{9}\selectfont,text=otNavy]{solution basique};
+\node[font=\otMedium\fontsize{7.5}{9}\selectfont,text=otGreenDark] at (7,-9) {neutre};
+\end{tikzpicture}
+\par\smallskip\legende{Échelle de pH à 25 °C ; les valeurs des produits courants sont indicatives.}

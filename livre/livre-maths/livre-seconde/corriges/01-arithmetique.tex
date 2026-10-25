@@ -1,0 +1,97 @@
+\clearpage\pagestyle{otMain}\fontsize{11}{15}\selectfont
+\corrigesChapitre{1}{Arithmétique et nombres entiers}
+\begin{blocLivre}{cor-1-1}
+\begin{corrige}{1}{Reconnaître un multiple}
+\demarche{Tester la définition, y compris pour zéro et les nombres négatifs.}
+On cherche un quotient entier par 6. On a $-36=6\times(-6)$, $0=6\times0$ et $42=6\times7$. Les quotients $14/6$ et $55/6$ ne sont pas entiers. Les trois nombres cherchés sont donc $\res{-36,0,42}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-2}
+\begin{corrige}{2}{Diviseurs positifs}
+\demarche{Former des paires de facteurs sans oublier les petits diviseurs.}
+On regroupe les facteurs par paires. Pour 36 : $1\times36$, $2\times18$, $3\times12$, $4\times9$, $6\times6$. Pour 24 : $1\times24$, $2\times12$, $3\times8$, $4\times6$. Les diviseurs communs sont $\res{1,2,3,4,6,12}$ ; le plus grand est 12.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-3}
+\begin{corrige}{3}{Parité sans calcul lourd}
+\demarche{Reconnaître les écritures générales de la parité.}
+Le premier nombre est de la forme $2k$ : il est pair. Le deuxième est de la forme $2k+1$ : il est impair. Comme $137=2\times68+1$, son carré est impair d’après la propriété démontrée dans le cours. On peut contrôler : $137^2=18769$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-4}
+\begin{corrige}{4}{Rendre irréductible}
+\demarche{Diviser les deux termes par leur PGCD.}
+Le PGCD de 90 et 126 est 18 : $90/126=5/7$. Celui de 132 et 84 est 12 : $-132/84=-11/7$. Les couples $(5,7)$ et $(11,7)$ n’ont plus de diviseur commun autre que 1. Les résultats sont $\res{5/7}$ et $\res{-11/7}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-5}
+\begin{corrige}{5}{Additionner des fractions}
+\demarche{Choisir un dénominateur commun avant de sommer.}
+Un dénominateur commun est 30 : $A=25/30-14/30+3/30=14/30$. On simplifie par 2. Ainsi $\res{A=7/15}$. L’ordre de grandeur est cohérent : $0{,}83-0{,}47+0{,}10$ vaut environ $0{,}46$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-6}
+\begin{corrige}{6}{Somme de multiples}
+\demarche{Introduire deux entiers, puis factoriser le diviseur commun.}
+Il existe des entiers $m,n$ tels que $a=9m$ et $b=9n$. Alors $a+b=9(m+n)$ et $2a-3b=9(2m-3n)$. Les deux expressions entre parenthèses sont entières. Elles donnent exactement les écritures exigées par la définition de multiple de 9.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-7}
+\begin{corrige}{7}{Deux entiers consécutifs}
+\demarche{Utiliser une expression générale, puis une disjonction de cas.}
+Écrire les entiers $n$ et $n+1$. Leur somme est $2n+1$, donc impaire. Pour le produit, distinguer deux cas : si $n$ est pair, il fournit le facteur 2 ; si $n$ est impair, $n+1$ est pair. Dans chaque cas, $n(n+1)$ est multiple de 2.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-8}
+\begin{corrige}{8}{Tester une divisibilité en Python}
+\demarche{Traduire « le reste est nul » en test logique.}
+Le symbole \code{\%} donne le reste de la division. Les deux tests valent respectivement \code{True} et \code{False}, car les restes sont 0 et 5. Une fonction possible est :
+\begin{python}
+def multiple(a, b):
+    return a % b == 0
+\end{python}
+Le domaine $b\ne0$ doit être respecté lors de l’appel. Cette fonction renvoie un booléen, pas un reste.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-9}
+\begin{corrige}{9}{Le dernier multiple}
+\demarche{Encadrer le nombre entre deux multiples consécutifs.}
+La division euclidienne donne $1000=17\times58+14$. Le multiple cherché est donc $\res{986}$. Le suivant vaut $17\times59=1003>1000$. En Python, \code{1000 // 17} renvoie 58, puis \code{17 * 58} renvoie 986. Les deux comparaisons prouvent que l’on a bien le dernier multiple admissible.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-10}
+\begin{corrige}{10}{Une affirmation à réfuter}
+\demarche{Séparer réfutation par exemple et preuve générale.}
+Elle est fausse : $1+5=6$ n’est pas multiple de 4. En revanche, la somme de deux impairs est toujours paire : $(2m+1)+(2n+1)=2(m+n+1)$. Un contre-exemple suffit à réfuter la première phrase ; une écriture générale démontre la seconde.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-11}
+\begin{corrige}{11}{Des colis identiques}
+\demarche{Interpréter le nombre de groupes comme un diviseur commun.}
+Le nombre de colis doit diviser 84 et 126. Leur PGCD est 42 : il est donc impossible de dépasser 42 colis, et cette valeur convient. Chaque colis contient $84/42=2$ cahiers et $126/42=3$ stylos. La réponse est $\res{42\text{ colis de 2 cahiers et 3 stylos}}$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-12}
+\begin{corrige}{12}{Un départ simultané}
+\demarche{Chercher le premier multiple commun strictement positif.}
+Le temps écoulé doit être un multiple positif de 12 et de 18. Les premiers multiples de 12 sont 12, 24, 36 ; ceux de 18 sont 18, 36. Le plus petit commun est 36. Les navettes se retrouvent donc à $\res{8\text{ h }36}$. On vérifie $36=3\times12=2\times18$.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-13}
+\begin{corrige}{13}{Un carré et sa parité}
+\demarche{Utiliser une contraposée, puis éprouver une généralisation.}
+On raisonne par contraposée : si $n$ était impair, son carré serait impair. Cela prouve la première implication. La seconde formulation est fausse : $n=2$ donne $n^2=4$, multiple de 4, alors que 2 n’est pas multiple de 4. La bonne conclusion reste « $n$ est pair ».
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-14}
+\begin{corrige}{14}{Un entier mystérieux}
+\demarche{Réduire d’abord la liste des candidats, puis utiliser la dernière contrainte.}
+Un multiple commun de 6 et de 8 est multiple de 24. Dans l’intervalle demandé, les seuls candidats sont 216 et 240, puisque $24\times8=192$ et $24\times11=264$. Les sommes de chiffres valent 9 et 6. Ainsi $\res{216}$ est l’unique solution.
+\end{corrige}
+\end{blocLivre}
+\begin{blocLivre}{cor-1-15}
+\begin{corrige}{15}{Une fraction qui se simplifie toujours}
+\demarche{Factoriser et contrôler la condition de simplification.}
+On factorise : $3n+3=3(n+1)$ et $6n+6=6(n+1)$. Pour $n\ge1$, le facteur $n+1$ est non nul ; il peut être simplifié. On obtient $\res{1/2}$. Pour $n=-1$, le dénominateur est nul : la fraction initiale n’a pas de sens. Une simplification ne rétablit pas une valeur exclue.
+\end{corrige}
+\end{blocLivre}

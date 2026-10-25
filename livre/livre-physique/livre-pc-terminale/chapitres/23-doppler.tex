@@ -1,0 +1,348 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[doppler]{23}{Effet Doppler}{Partie 4 · Ondes et signaux}
+{Émetteur en mouvement\enspace·\enspace Décalage Doppler\enspace·\enspace Mesure de vitesses\enspace·\enspace Décalage vers le rouge}
+\objectif{Décrire et interpréter qualitativement les observations correspondant à une manifestation de l'effet Doppler.}
+\objectif{Établir l'expression du décalage Doppler pour un observateur fixe et un émetteur mobile, à une dimension.}
+\objectif{Exploiter l'expression du décalage Doppler pour des ondes acoustiques et électromagnétiques.}
+\objectif{Déterminer une vitesse à partir d'un décalage Doppler mesuré.}
+\objectif{Calculer une vitesse et une fréquence émise à partir de deux fréquences mesurées, en Python.}
+\prerequis{Période, fréquence, longueur d'onde, célérité : $\lambda=v\,T$ (classe de première).}
+\prerequis{Ondes électromagnétiques, spectres de raies (classes de seconde et de première).}
+\prerequis{Mouvement rectiligne uniforme (chapitre~13).}
+\end{ouverture}
+\essentiel
+\essSection{1}{Le phénomène}
+\begin{definition}[Effet Doppler]
+Lorsqu'un émetteur d'ondes se déplace par rapport à un récepteur, la fréquence reçue $f_\mathrm{R}$ diffère de la fréquence
+émise $f_\mathrm{E}$ : elle est plus élevée quand l'émetteur se rapproche, plus basse quand il s'éloigne. C'est l'\textbf{effet
+Doppler}. Le son de la sirène d'une ambulance paraît plus aigu à son approche, plus grave après son passage. La
+différence $\Delta f=f_\mathrm{R}-f_\mathrm{E}$ est le \textbf{décalage Doppler}.
+\end{definition}
+\schema{23-fronts}
+\essSection{2}{L'expression du décalage Doppler}
+\begin{savoirfaire}[Établir l'expression de la fréquence reçue]
+Un émetteur se rapproche à la vitesse $v_\mathrm{E}$ d'un récepteur fixe, sur une même droite ; l'onde se propage à la
+célérité $v$. L'émetteur émet un maximum à la date 0, puis le suivant à la date $T_\mathrm{E}$. Entre-temps, le premier
+maximum a parcouru $v\,T_\mathrm{E}$ et l'émetteur $v_\mathrm{E}\,T_\mathrm{E}$ : les deux maximums sont séparés de
+\[\lambda_\mathrm{R}=(v-v_\mathrm{E})\,T_\mathrm{E}\qquad\text{d'où}\qquad f_\mathrm{R}=\frac{v}{\lambda_\mathrm{R}}=f_\mathrm{E}\,\frac{v}{v-v_\mathrm{E}}.\]
+Si l'émetteur s'éloigne, on remplace $v_\mathrm{E}$ par $-v_\mathrm{E}$ : $f_\mathrm{R}=f_\mathrm{E}\,\dfrac{v}{v+v_\mathrm{E}}$.
+\end{savoirfaire}
+\schema{23-demonstration}
+\begin{loi}[Décalage Doppler]
+Pour un émetteur qui se rapproche d'un récepteur fixe,
+\[\Delta f=f_\mathrm{R}-f_\mathrm{E}=f_\mathrm{E}\,\frac{v_\mathrm{E}}{v-v_\mathrm{E}}\approx f_\mathrm{E}\,\frac{v_\mathrm{E}}{v}\quad\text{si }v_\mathrm{E}\ll v ;\]
+le décalage est négatif si l'émetteur s'éloigne. Le décalage relatif $\dfrac{|\Delta f|}{f_\mathrm{E}}$ est voisin de $\dfrac{v_\mathrm{E}}{v}$ :
+mesurer un décalage permet de mesurer une vitesse.
+\end{loi}
+\begin{exemple}
+Une voiture roulant à \qty{90}{km.h^{-1}} (\qty{25}{m.s^{-1}}) klaxonne à \qty{900}{Hz}. Le son, de célérité \qty{340}{m.s^{-1}}, est
+perçu à $900\times\dfrac{340}{315}=\qty{971,4}{Hz}$ à son approche et à $900\times\dfrac{340}{365}=\qty{838,4}{Hz}$ quand elle s'éloigne.
+L'approximation donne $\Delta f\approx\qty{66}{Hz}$ au lieu de \qty{71,4}{Hz} : elle n'est valable que si $v_\mathrm{E}\ll v$.
+\end{exemple}
+\essSection{3}{Des vitesses mesurées par effet Doppler}
+\begin{propriete}[Applications]
+\begin{itemize}
+\item Les \textbf{radars routiers} émettent une onde électromagnétique qui se réfléchit sur le véhicule ; la réflexion
+sur une cible mobile double le décalage : $\Delta f\approx2\,f\,\dfrac{v_\mathrm{E}}{c}$ pour une cible qui se déplace dans l'axe.
+\item L'\textbf{échographie Doppler} mesure la vitesse du sang dans les vaisseaux par réflexion d'ultrasons.
+\item En \textbf{astrophysique}, les raies du spectre d'une étoile ou d'une galaxie qui s'éloigne sont décalées vers les
+grandes longueurs d'onde (« vers le rouge ») : $\dfrac{\lambda_\mathrm{R}-\lambda_\mathrm{E}}{\lambda_\mathrm{E}}\approx\dfrac{v_\mathrm{E}}{c}$. Ce décalage a
+révélé l'expansion de l'Univers et permet de détecter des planètes autour d'autres étoiles.
+\end{itemize}
+\end{propriete}
+\schema{23-spectre}
+\begin{codecote}[0.64]
+\begin{pythoncol}
+v = 340.0                         # m/s
+f_app, f_eloi = 971.4, 838.4      # Hz
+vE = v * (f_app - f_eloi) / (f_app + f_eloi)
+fE = f_app * (v - vE) / v
+print(round(vE, 1), round(3.6 * vE), round(fE))
+\end{pythoncol}
+\begin{consolecol}
+25.0 90 900
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+À partir des fréquences mesurées à l'approche et à l'éloignement, le programme calcule la vitesse de l'émetteur, en
+\unit{m.s^{-1}} et en \unit{km.h^{-1}}, puis la fréquence émise : on retrouve la voiture de l'exemple, sans connaître à
+l'avance la fréquence de son klaxon.
+\end{codecote}
+\begin{attention}
+Les relations $f_\mathrm{R}=f_\mathrm{E}\,\dfrac{v}{v\mp v_\mathrm{E}}$ supposent un récepteur fixe dans le milieu de propagation et un
+émetteur qui se déplace sur la droite qui les joint. Pour une onde réfléchie par une cible mobile, comme dans un radar,
+le décalage est doublé.
+\end{attention}
+\begin{experience}[Mesurer une vitesse par effet Doppler]
+Un émetteur d'ultrasons de \qty{40}{kHz}, fixé sur un chariot, se rapproche puis s'éloigne d'un récepteur relié à une
+interface d'acquisition. L'analyse spectrale du signal reçu donne la fréquence pendant chaque phase ; on en déduit la
+vitesse du chariot, que l'on compare à celle obtenue par chronophotographie. Une application de smartphone permet de
+même d'étudier le son d'une voiture qui passe.
+\end{experience}
+\begin{rediger}
+Préciser l'émetteur, le récepteur et le sens du mouvement : « l'émetteur se rapproche, donc $f_\mathrm{R}>f_\mathrm{E}$ ».
+Écrire la relation exacte avant d'utiliser l'approximation $v_\mathrm{E}\ll v$, et justifier cette dernière par un ordre de
+grandeur.
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-23-1}
+\begin{exercice}[1]{La sirène des pompiers}
+La sirène d'un camion de pompiers émet alternativement deux notes de fréquences \qty{435}{Hz} et \qty{488}{Hz}. Le camion roule
+à \qty{72}{km.h^{-1}}.
+\begin{donnees}
+Célérité du son dans l'air : $v=\qty{340}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Décrire ce qu'entend un piéton immobile pendant que le camion se rapproche, puis s'éloigne.
+\item Calculer la fréquence perçue pour la note de \qty{435}{Hz} à l'approche, puis à l'éloignement.
+\item Calculer la fréquence perçue à l'approche pour la note de \qty{488}{Hz}.
+\item Les pompiers, assis dans le camion, entendent-ils un effet Doppler ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-2}
+\begin{exercice}[1]{Un émetteur qui s'éloigne}
+Un émetteur s'éloigne à la vitesse $v_\mathrm{E}$ d'un récepteur fixe ; l'onde se propage à la célérité $v$.
+\begin{questions}
+\item L'émetteur émet un maximum à la date 0 et le suivant à la date $T_\mathrm{E}$. Quelle distance l'émetteur a-t-il parcourue
+entre ces deux dates ? Dans quel sens ?
+\item Montrer que deux maximums successifs reçus sont séparés de $\lambda_\mathrm{R}=(v+v_\mathrm{E})\,T_\mathrm{E}$.
+\item En déduire l'expression de la fréquence reçue en fonction de $f_\mathrm{E}$, $v$ et $v_\mathrm{E}$.
+\item La fréquence reçue est-elle plus grande ou plus petite que la fréquence émise ? Retrouver ce résultat sur le
+schéma des fronts d'onde de l'essentiel.
+\end{questions}
+\schema{23-fronts}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-3}
+\begin{exercice}[1]{Le sifflet du train}
+Un train roulant à \qty{144}{km.h^{-1}} siffle en traversant une gare ; le sifflet émet un son de \qty{500}{Hz}.
+\begin{donnees}
+$v=\qty{340}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Convertir la vitesse du train en \unit{m.s^{-1}}.
+\item Calculer la fréquence perçue par un voyageur sur le quai à l'approche du train, puis après son passage.
+\item Calculer le rapport de ces deux fréquences. Le changement de hauteur est-il perceptible ?
+\item Le sifflet est-il entendu à la même fréquence par le conducteur ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-4}
+\begin{exercice}[1]{Quand l'approximation est-elle valable ?}
+Un émetteur de fréquence \qty{1000}{Hz} se rapproche d'un récepteur ; le son se propage à \qty{340}{m.s^{-1}}.
+\begin{questions}
+\item Calculer le décalage Doppler exact pour $v_\mathrm{E}=\qty{10}{m.s^{-1}}$, \qty{50}{m.s^{-1}} et \qty{100}{m.s^{-1}}.
+\item Calculer pour les mêmes vitesses le décalage approché $f_\mathrm{E}\,v_\mathrm{E}/v$.
+\item Calculer l'écart relatif entre les deux valeurs pour \qty{10}{m.s^{-1}}. Conclure sur la validité de l'approximation.
+\item Pourquoi l'approximation est-elle toujours excellente pour les ondes lumineuses et les véhicules terrestres ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-5}
+\begin{exercice}[1]{Une étoile qui s'éloigne}
+Au laboratoire, la raie H$\alpha$ de l'hydrogène a pour longueur d'onde \qty{656,28}{nm}. Dans le spectre d'une étoile, elle est
+mesurée à \qty{656,50}{nm}.
+\begin{donnees}
+$c=\qty{3,00e8}{m.s^{-1}}$ ; $\dfrac{\lambda_\mathrm{R}-\lambda_\mathrm{E}}{\lambda_\mathrm{E}}\approx\dfrac{v_\mathrm{E}}{c}$.
+\end{donnees}
+\begin{questions}
+\item La raie est-elle décalée vers le rouge ou vers le bleu ? L'étoile se rapproche-t-elle ou s'éloigne-t-elle ?
+\item Calculer la vitesse de l'étoile par rapport à la Terre, en \unit{km.s^{-1}}.
+\item Pourquoi doit-on mesurer la longueur d'onde avec une très grande précision ?
+\item Quelle composante de la vitesse de l'étoile cette méthode mesure-t-elle ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-23-6}
+\begin{exercice}[2]{Le radar routier}
+Un radar fixe émet une onde électromagnétique de fréquence $f=\qty{24,125}{GHz}$ en direction des véhicules qui
+arrivent ; son faisceau fait un angle $\alpha=25^\circ$ avec la route. Pour une onde réfléchie par un véhicule de vitesse $v_\mathrm{E}$,
+le décalage vaut $\Delta f=\dfrac{2\,f\,v_\mathrm{E}\cos\alpha}{c}$. Pour une voiture, il mesure $\Delta f=\qty{3,95}{kHz}$.
+\begin{donnees}
+$c=\qty{3,00e8}{m.s^{-1}}$. Pour une vitesse inférieure à \qty{100}{km.h^{-1}}, on retient la vitesse mesurée diminuée de
+\qty{5}{km.h^{-1}}.
+\end{donnees}
+\begin{questions}
+\item Pourquoi le décalage fait-il intervenir le facteur 2 ? et le facteur $\cos\alpha$ ?
+\item Calculer la vitesse de la voiture, en \unit{m.s^{-1}} puis en \unit{km.h^{-1}}.
+\item La route est limitée à \qty{90}{km.h^{-1}}. Le conducteur est-il en infraction ?
+\item Quel décalage le radar mesurerait-il pour une voiture roulant exactement à \qty{90}{km.h^{-1}} ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-7}
+\begin{exercice}[2]{La vitesse d'une voiture au bord de la route}
+On reprend le programme de l'essentiel. Un élève enregistre le bruit d'une voiture qui passe : le son le plus intense
+a pour fréquence \qty{1062}{Hz} à l'approche et \qty{878}{Hz} à l'éloignement.
+\begin{questions}
+\item \capacite{Capacité numérique}Montrer que les deux fréquences mesurées vérifient $f_\text{app}\,(v-v_\mathrm{E})=f_\text{éloi}\,(v+v_\mathrm{E})$,
+puis justifier la ligne de calcul de \code{vE}.
+\item Justifier la ligne de calcul de \code{fE}.
+\item Quelles valeurs faut-il modifier dans le programme ? Calculer la vitesse de la voiture et la fréquence émise.
+\item L'élève était placé à quelques mètres de la route. Pourquoi les fréquences mesurées juste au moment du passage ne
+doivent-elles pas être utilisées ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-8}
+\begin{exercice}[2]{L'échographie Doppler}
+Une sonde émet des ultrasons de \qty{4,0}{MHz} dans une artère. L'onde réfléchie par les globules rouges présente un
+décalage $\Delta f=\dfrac{2\,f\,v\cos\theta}{c_\mathrm{t}}$, où $v$ est la vitesse du sang, $\theta=60^\circ$ l'angle entre le faisceau et
+l'artère, et $c_\mathrm{t}=\qty{1540}{m.s^{-1}}$ la célérité des ultrasons dans les tissus.
+\begin{questions}
+\item L'appareil mesure $\Delta f=\qty{1,3}{kHz}$. Calculer la vitesse du sang.
+\item Ce décalage est-il audible ? Les échographes le diffusent souvent par un haut-parleur : pourquoi est-ce utile ?
+\item Quel décalage correspondrait à une vitesse de \qty{1,0}{m.s^{-1}}, signe d'un rétrécissement de l'artère ?
+\item Pourquoi ne faut-il pas placer la sonde perpendiculairement à l'artère ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-9}
+\begin{exercice}[2]{Vers le mur du son}
+Un avion émet un son de fréquence \qty{1000}{Hz} et vole vers un observateur à la vitesse $v_\mathrm{E}$. Le son se propage à
+\qty{340}{m.s^{-1}}.
+\begin{questions}
+\item Calculer la longueur d'onde du son à l'arrêt, puis devant l'avion lorsque $v_\mathrm{E}=0{,}9\,v$.
+\item Quelle fréquence l'observateur perçoit-il alors ?
+\item Que devient $\lambda_\mathrm{R}$ lorsque $v_\mathrm{E}$ tend vers $v$ ? Décrire ce qui se passe pour les fronts d'onde.
+\item Expliquer le « bang » entendu au passage d'un avion supersonique.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-10}
+\begin{exercice}[2]{Une étoile double}
+Dans le spectre d'une étoile appartenant à un système double, la raie H$\alpha$ oscille périodiquement entre \qty{656,10}{nm} et
+\qty{656,46}{nm}. Au laboratoire, elle vaut \qty{656,28}{nm} ; le système, dans son ensemble, ne s'éloigne pas de la Terre.
+\begin{donnees}
+$c=\qty{3,00e8}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Interpréter l'oscillation de la raie.
+\item Quand l'étoile se rapproche-t-elle de la Terre ? Quand s'en éloigne-t-elle ?
+\item Calculer la valeur maximale de la vitesse de l'étoile dans la direction de la Terre.
+\item Pourquoi ne détecte-t-on aucun décalage si l'orbite est vue de face ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-11}
+\begin{exercice}[2]{Le son d'une moto}
+Un micro placé au bord d'une route enregistre le son d'une moto qui passe à vitesse constante.
+\schema{23-ex11}
+\begin{donnees}
+$v=\qty{340}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Relever la fréquence perçue à l'approche et à l'éloignement de la moto.
+\item Établir l'expression de la vitesse de la moto en fonction de ces deux fréquences, puis la calculer, en
+\unit{m.s^{-1}} et en \unit{km.h^{-1}}.
+\item Calculer la fréquence du son émis par la moto.
+\item À quel moment la moto est-elle passée devant le micro ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-23-12}
+\begin{exercice}[3]{L'expansion de l'Univers}
+\begin{docu}{1}{La découverte de Hubble}
+En 1929, Edwin Hubble constate que les galaxies lointaines s'éloignent de nous à une vitesse proportionnelle à leur
+distance : $v=H_0\,d$. On détermine leur vitesse par le décalage vers le rouge de leurs raies.
+\end{docu}
+\begin{docu}{2}{Trois galaxies}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Galaxie & A & B & C \\
+Distance (Mpc) & 20 & 50 & 100 \\
+Raie H$\alpha$ mesurée (nm) & 659,4 & 663,9 & 671,7 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Au laboratoire, la raie H$\alpha$ vaut \qty{656,3}{nm}. Un mégaparsec vaut \qty{3,086e19}{km}.
+\end{docu}
+\begin{donnees}
+$c=\qty{3,00e5}{km.s^{-1}}$ ; une année vaut \qty{3,156e7}{s}.
+\end{donnees}
+\begin{questions}
+\item Calculer la vitesse d'éloignement de chaque galaxie.
+\item \initiative Les mesures vérifient-elles la loi de Hubble ? Estimer la valeur de $H_0$, en \unit{km.s^{-1}} par mégaparsec.
+\item L'inverse $1/H_0$ donne un ordre de grandeur de l'âge de l'Univers. Le calculer en années, pour $H_0=\qty{70}{km.s^{-1}}$
+par mégaparsec.
+\item Une galaxie lointaine présente un décalage de la raie H$\alpha$ de \qty{70}{nm}. L'approximation utilisée reste-t-elle
+valable ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-13}
+\begin{exercice}[3]{À la recherche des exoplanètes}
+\begin{docu}{1}{Une étoile qui oscille}
+Une planète et son étoile tournent autour de leur centre de masse commun : l'étoile se rapproche et s'éloigne
+périodiquement de la Terre. En 1995, Michel Mayor et Didier Queloz détectent ainsi la première planète autour d'une
+étoile semblable au Soleil, 51~Pegasi~b : la vitesse de l'étoile dans la direction de la Terre oscille avec une amplitude
+de \qty{56}{m.s^{-1}} et une période de 4,23~jours.
+\end{docu}
+\begin{docu}{2}{Un spectrographe de précision}
+Le spectrographe utilisé mesurait la position des raies d'absorption de l'étoile avec une précision relative de l'ordre
+de $10^{-8}$.
+\end{docu}
+\begin{donnees}
+$c=\qty{3,00e8}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Pourquoi l'étoile se déplace-t-elle ? Comment ce mouvement se traduit-il dans son spectre ?
+\item Calculer le décalage relatif maximal des raies, puis le décalage maximal d'une raie de \qty{500}{nm}.
+\item \initiative Le spectrographe permettait-il de détecter ce décalage ? Expliquer pourquoi cette découverte a demandé
+une technologie exceptionnelle.
+\item Jupiter fait osciller le Soleil à la vitesse maximale de \qty{12,5}{m.s^{-1}}. Une planète comme Jupiter serait-elle plus
+facile ou plus difficile à détecter que 51~Pegasi~b ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-14}
+\begin{exercice}[3]{Écouter un satellite}
+\begin{docu}{1}{Un satellite en orbite basse}
+Un petit satellite universitaire émet une balise radio de fréquence \qty{437}{MHz}. Lors de son passage au-dessus d'une
+station au sol, la composante de sa vitesse dans la direction de la station varie de \qty{+7}{km.s^{-1}} (il s'approche) à
+\qty{-7}{km.s^{-1}} (il s'éloigne).
+\end{docu}
+\begin{docu}{2}{Le récepteur}
+La bande passante du récepteur de la station n'est que de quelques kilohertz : un opérateur ou un logiciel doit ajuster
+en permanence la fréquence d'écoute.
+\end{docu}
+\begin{donnees}
+$c=\qty{3,00e8}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer le décalage Doppler maximal, puis l'excursion totale de fréquence pendant un passage.
+\item Pourquoi faut-il ajuster la fréquence d'écoute ?
+\item \initiative Le satellite émet aussi des données à \qty{2,4}{GHz}. Le problème est-il plus ou moins gênant à cette fréquence ?
+\item Au moment où le satellite passe au plus près de la station, quel est le décalage ? Justifier.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-23-15}
+\begin{exercice}[3]{Le radar météorologique}
+\begin{docu}{1}{Mesurer le vent dans les nuages}
+Un radar météorologique émet une onde de \qty{5,6}{GHz}. Les gouttes de pluie emportées par le vent la réfléchissent ; le
+décalage mesuré vaut $\Delta f=\dfrac{2\,f\,v_\mathrm{r}}{c}$, où $v_\mathrm{r}$ est la vitesse des gouttes dans la direction du radar,
+comptée positivement quand elles se rapprochent.
+\end{docu}
+\begin{docu}{2}{Une mesure}
+Dans la direction nord, à \qty{40}{km} du radar, le décalage vaut \qty{+560}{Hz} ; dans la direction sud, à la même distance, il
+vaut \qty{-560}{Hz}.
+\end{docu}
+\begin{donnees}
+$c=\qty{3,00e8}{m.s^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Calculer la vitesse des gouttes dans la direction nord, en \unit{m.s^{-1}} et en \unit{km.h^{-1}}.
+\item \initiative En exploitant les deux mesures, déterminer la direction et le sens du vent.
+\item Quel décalage mesurerait-on pour une pluie poussée vers le radar à \qty{8}{m.s^{-1}} ?
+\item Pourquoi le radar ne peut-il pas mesurer un vent soufflant perpendiculairement à son faisceau ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}

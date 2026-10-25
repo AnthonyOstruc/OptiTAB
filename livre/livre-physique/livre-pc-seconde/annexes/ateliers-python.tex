@@ -1,0 +1,70 @@
+\editionPage{ateliers-python}{Atelier numérique 1}{Positions et vecteurs vitesse}{Python · Matplotlib · Données construites en mètres et secondes}
+\begin{python}
+import matplotlib.pyplot as plt
+t = [0, .2, .4, .6, .8]
+x = [0, .2, .8, 1.8, 3.2]
+y = [0, .1, .2, .3, .4]
+vx = []; vy = []
+for i in range(len(t)-1):
+    dt = t[i+1] - t[i]
+    vx.append((x[i+1]-x[i])/dt)
+    vy.append((y[i+1]-y[i])/dt)
+fig, ax = plt.subplots()
+ax.plot(x, y, 'o', label='Positions')
+ax.quiver(x[:-1], y[:-1], vx, vy,
+          angles='xy', scale_units='xy', scale=5,
+          color='green', label='Vitesses approchees')
+ax.set(xlabel='x (m)', ylabel='y (m)')
+ax.set_aspect('equal', adjustable='box')
+ax.grid(); ax.legend(); plt.show()
+print(vx, vy)
+\end{python}
+\editionEtape{Chercher et vérifier}
+Pourquoi quatre vecteurs pour cinq positions ? Que représente le facteur \texttt{scale=5} ? Changer les données pour un mouvement rectiligne uniforme.
+\editionRetenir{Le programme affiche $v_x=[1;3;5;7]$ et $v_y=[0,5;0,5;0,5;0,5]$ en m/s. Chaque vecteur utilise deux positions. Ici 1 m/s produit une flèche de 0,2 unité de l'axe spatial : c'est une échelle de représentation, pas une durée de déplacement.}
+\editionPage{atelier-ohm}{Atelier numérique 2}{Caractéristique d'un conducteur}{Python · NumPy et Matplotlib · Courant converti en ampères}
+\begin{python}
+import numpy as np
+import matplotlib.pyplot as plt
+i_ma = np.array([0, 10, 20, 30, 40])
+u = np.array([0.01, 2.00, 4.02, 5.99, 8.01])
+i = i_ma / 1000
+a, b = np.polyfit(i, u, 1)
+print('Pente en ohms :', a)
+print('Decalage en volts :', b)
+plt.scatter(i, u, label='Mesures')
+plt.plot(i, a*i+b, label='Ajustement affine')
+plt.xlabel('I (A)'); plt.ylabel('U (V)')
+plt.grid(); plt.legend(); plt.show()
+\end{python}
+\editionEtape{Chercher et vérifier}
+Pourquoi convertir l'intensité ? La pente donne environ 199,9 ohms et le décalage environ 0,008 V. Discuter ce décalage à l'échelle d'une incertitude de lecture de 0,03 V. Estimer le point de fonctionnement sous 6,0 V avec un modèle ohmique de 200 ohms.
+\editionRetenir{La pente dépend des unités des axes. Le petit décalage est inférieur à l'incertitude annoncée ; un modèle passant par l'origine paraît ici acceptable. Sous 6,0 V, $I\simeq30$ mA.}
+\editionPage{atelier-statistique}{Atelier numérique 3}{Variabilité et histogramme}{Tableur ou Python · Mesures indépendantes d'un volume}
+\begin{python}
+import numpy as np
+import matplotlib.pyplot as plt
+v = np.array([9.8, 9.9, 10.0, 10.0, 10.1, 10.2])
+moyenne = v.mean()
+s = v.std(ddof=1)  # ecart-type d'echantillon
+u = s / np.sqrt(len(v))
+print(moyenne, s, u)
+classes = [9.75, 9.95, 10.15, 10.35]
+plt.hist(v, bins=classes, edgecolor='white')
+plt.xlabel('Volume (mL)'); plt.ylabel('Effectif')
+plt.show()
+\end{python}
+\editionEtape{Transposer dans un tableur}
+Placer les six valeurs dans une colonne. Calculer leur moyenne et l'écart-type d'échantillon avec les fonctions adaptées du logiciel ; construire des classes de largeur 0,20 mL. Comparer les effectifs à ceux du programme.
+\editionRetenir{On obtient une moyenne de 10,0 mL, $s\simeq0,141$ mL et $u(\bar V)\simeq0,058$ mL. Les classes ont pour effectifs 2, 3 et 1. L'écart-type des valeurs individuelles et l'incertitude sur la moyenne sont différents.}
+\editionPage{atelier-microcontroleur}{Atelier numérique 4}{Commander et acquérir}{Algorithmes à adapter au matériel réellement utilisé}
+\editionEtape{Produire un son}
+Une sortie numérique peut commander un transducteur adapté. Pour un signal carré de fréquence 500 Hz, la période vaut 2 ms : maintenir l'état haut pendant 1 ms, puis l'état bas pendant 1 ms, et répéter. La durée d'exécution et les temporisations de la carte doivent être prises en compte ; une fonction de génération dédiée est préférable quand elle est disponible.
+\begin{docu}{1}{Pseudocode de production}
+Choisir la sortie et le transducteur selon la documentation.\par
+Répéter pendant la durée choisie : état haut ; attendre $T/2$ ; état bas ; attendre $T/2$.\par
+Vérifier la fréquence avec un microphone ou un dispositif d'acquisition.\end{docu}
+\editionEtape{Acquérir un capteur}
+Lire le code ; le convertir en tension avec la référence et la résolution de la carte ; retrouver la résistance du capteur ; appliquer l'étalonnage ; vérifier les domaines avant affichage. Utiliser la même référence électrique que le circuit et respecter les tensions admissibles.
+\editionRetenir{Le programme traite un modèle de mesure. Changer de carte, de capteur ou de tension de référence demande de revoir les paramètres et de vérifier la chaîne avec une mesure connue.}
+

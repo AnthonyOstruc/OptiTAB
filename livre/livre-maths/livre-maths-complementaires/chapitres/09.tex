@@ -1,0 +1,164 @@
+\begin{ouverture}[binomiale]{9}{Lois discrètes et loi binomiale}{Probabilités et répétitions}{Uniforme · Bernoulli · Pascal · Espérance}
+\objectif{Identifier une loi uniforme, de Bernoulli ou binomiale.}
+\objectif{Construire et utiliser le triangle de Pascal.}
+\objectif{Calculer des probabilités exactes et cumulées.}
+\objectif{Interpréter espérance, variance et écart type.}
+\prerequis{Probabilités, indépendance et sommes.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Décrire une variable aléatoire discrète}
+Une variable aléatoire associe un nombre à chaque issue. Sa loi indique les valeurs possibles et leurs probabilités ; ces dernières sont positives ou nulles et leur somme vaut $1$.
+Son espérance est $E(X)=\sum x_iP(X=x_i)$, sa variance $V(X)=\sum(x_i-E(X))^2P(X=x_i)$ et son écart type $\sigma(X)=\sqrt{V(X)}$.
+L'espérance est une moyenne théorique ; elle n'est pas nécessairement une valeur possible de $X$.
+\begin{definition}[Deux lois élémentaires]
+Uniforme sur $\{1,\ldots,n\}$ : chaque valeur a probabilité $1/n$ et $E(X)=(n+1)/2$.
+Bernoulli de paramètre $p$ : $P(X=1)=p$, $P(X=0)=1-p$ ;
+$E(X)=p$, $V(X)=p(1-p)$ et $\sigma(X)=\sqrt{p(1-p)}$.
+\end{definition}
+Pour l'uniforme, l'espérance vaut $(1+\cdots+n)/n=(n+1)/2$.
+Pour Bernoulli, $E(X)=p$ et $E(X^2)=p$, d'où $V(X)=p-p^2$.
+\essSection{2}{Répéter indépendamment}
+Un schéma de Bernoulli répète $n$ fois la même épreuve, indépendamment, avec la même probabilité $p$ de succès. Le nombre de succès suit la loi binomiale $\mathcal B(n,p)$.
+Un tirage sans remise dans une petite population ne satisfait généralement pas ces hypothèses : le paramètre change au cours des tirages.
+\figurelivre{c09-bernoulli.pdf}{Un arbre à trois répétitions. Chaque chemin contenant deux succès et un échec porte la probabilité $p^2(1-p)$ ; il y a trois chemins de ce type.}
+\essSection{3}{Compter les chemins : Pascal}
+Le coefficient $\binom nk$ compte les façons de placer $k$ succès parmi $n$ répétitions. Il vérifie $\binom n0=\binom nn=1$, $\binom nk=\binom n{n-k}$ et
+$\binom{n+1}k=\binom n{k-1}+\binom nk$.
+\begin{center}\begin{tabular}{c|rrrrrr}$n$&&&&&&\\\hline
+0&1\\1&1&1\\2&1&2&1\\3&1&3&3&1\\4&1&4&6&4&1\\5&1&5&10&10&5&1\end{tabular}\end{center}
+Chaque coefficient intérieur s'obtient en additionnant les deux coefficients immédiatement au-dessus. La formule avec les factorielles, $\binom nk=n!/[k!(n-k)!]$, est un outil possible, pas un substitut au sens du coefficient.
+\essSection{4}{La formule binomiale}
+\begin{propriete}[Résultats d'espérance et d'écart type admis]
+Si $X\sim\mathcal B(n,p)$, alors, pour $0\leq k\leq n$,
+\[P(X=k)=\binom nkp^k(1-p)^{n-k},\quad E(X)=np,\quad V(X)=np(1-p).\]
+\end{propriete}
+Pour $n=2$, la loi est $(1-p)^2,2p(1-p),p^2$. Son espérance est $2p(1-p)+2p^2=2p$, ce qui illustre la formule générale.
+\begin{exemple}
+Pour $X\sim\mathcal B(5,0{,}2)$,
+$P(X=2)=10\times0{,}2^2\times0{,}8^3=0{,}2048$.
+$P(X\geq1)=1-P(X=0)=1-0{,}8^5=0{,}67232$.
+\end{exemple}
+\figurelivre{c09-binomiale.pdf}{Diagramme des probabilités pour $\mathcal B(10,0{,}3)$. L'espérance vaut $3$ et l'écart type $\sqrt{2{,}1}$ ; le diagramme représente des masses, pas une densité continue.}
+\essSection{5}{Calculatrice, logiciel et notation des événements}
+Pour une variable entière, $P(X<k)=P(X\leq k-1)$ et $P(X\geq k)=1-P(X\leq k-1)$.
+On peut calculer une probabilité cumulée en additionnant les masses :
+\begin{python}
+from math import comb
+def binom_cumul(n, p, k):
+    return sum(comb(n, j)*p**j*(1-p)**(n-j)
+               for j in range(k+1))
+\end{python}
+Cette fonction est utilisée pour $n\in\N$, $0\leq p\leq1$, $0\leq k\leq n$. Au chapitre suivant, les cumuls permettront de construire des intervalles de fluctuation.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Uniforme discrète}
+On lance un dé équilibré à six faces numérotées de $1$ à $6$.
+\begin{questions}
+\item Donner la loi de $X$, le résultat.
+\item Calculer $E(X)$.
+\item Calculer $P(X\geq5)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Bernoulli}
+$P(X=1)=0{,}3$ et $P(X=0)=0{,}7$.
+\begin{questions}
+\item Identifier la loi.
+\item Calculer l’espérance et la variance.
+\item Calculer l’écart type à $10^{-3}$ près.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Pascal}
+
+\begin{questions}
+\item Écrire la ligne $n=4$.
+\item En déduire $\binom52$.
+\item Utiliser la symétrie pour donner $\binom53$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Identifier le modèle}
+
+\begin{questions}
+\item Dix lancers indépendants d’une pièce équilibrée : quelle loi pour le nombre de piles ?
+\item Trois tirages sans remise dans une urne de cinq boules : pourquoi la binomiale ne s’applique-t-elle pas automatiquement ?
+\item Quel est le paramètre $n$ si l’on répète vingt fois une expérience ?
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Une loi complète}
+$X\sim\mathcal B(3,1/2)$.
+\begin{questions}
+\item Donner toutes les probabilités.
+\item Calculer $P(X\geq2)$.
+\item Calculer l’espérance directement à partir de la loi.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Au moins un défaut}
+Les pièces sont supposées indépendantes, chacune défectueuse avec probabilité $0{,}02$. On en prélève $20$.
+\begin{questions}
+\item Donner la loi du nombre de défauts.
+\item Calculer la probabilité d’au moins un défaut.
+\item Interpréter l’espérance.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Cumuler}
+$X\sim\mathcal B(4,0{,}2)$.
+\begin{questions}
+\item Calculer $P(X=0)$ et $P(X=1)$.
+\item Calculer $P(X\leq1)$.
+\item Calculer $P(X\geq2)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Choisir une taille}
+Chaque tentative indépendante réussit avec probabilité $0{,}1$.
+\begin{questions}
+\item Exprimer la probabilité d’au moins un succès en $n$ tentatives.
+\item Déterminer le plus petit $n$ donnant une probabilité au moins $0{,}95$.
+\item Expliquer pourquoi on ne peut additionner $n$ fois $0{,}1$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Gagner ou perdre}
+Un jeu coûte $2$ euros. Une réussite de probabilité $0{,}3$ rapporte $5$ euros, sinon rien.
+\begin{questions}
+\item Exprimer le gain net à l’aide d’une Bernoulli $X$.
+\item Calculer le gain moyen.
+\item Sur $100$ parties indépendantes, donner l’espérance du gain net total.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Prouver la symétrie}
+
+\begin{questions}
+\item Expliquer pourquoi choisir les $k$ places de succès détermine les $n-k$ places d’échec.
+\item En déduire $\binom nk=\binom n{n-k}$.
+\item Les probabilités $P(X=k)$ et $P(X=n-k)$ sont-elles toujours égales ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Un paramètre inconnu}
+$X\sim\mathcal B(12,p)$ et $E(X)=3$.
+\begin{questions}
+\item Déterminer $p$.
+\item Calculer l’écart type.
+\item Calculer la probabilité de zéro succès.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Détecter un faux modèle}
+Une boîte contient exactement deux produits défectueux et huit corrects. On en tire trois sans remise.
+\begin{questions}
+\item Pourquoi $\mathcal B(3,0{,}2)$ serait-elle un modèle inexact ?
+\item Calculer la probabilité que les trois soient corrects par un arbre.
+\item Comparer à $0{,}8^3$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

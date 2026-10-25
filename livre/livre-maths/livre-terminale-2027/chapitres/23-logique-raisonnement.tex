@@ -1,0 +1,364 @@
+% !TEX root = ../main.tex
+%% Chapitre 23 — Ensembles, logique et raisonnement (édition 2027-2028)
+%% Partie transversale « Vocabulaire ensembliste et logique » du programme de Terminale
+%% (arrêté du 26 février 2026, BO n° 14 du 2 avril 2026, applicable à la rentrée 2027).
+%% Chapitre inédit rédigé pour l'édition 2027-2028. Résultats vérifiés par programme : verifier_edition_2027.py.
+
+\begin{ouverture}[logique]{23}{Ensembles, logique et raisonnement}{Partie 4 · Algorithmique et logique}
+  {Ensembles\enspace·\enspace Propositions\enspace·\enspace Quantificateurs\enspace·\enspace
+   Implication\enspace·\enspace Raisonnements\enspace·\enspace Rédaction}
+  \objectif{Utiliser les notations ensemblistes : $\in$, $\subset$, $\varnothing$, $\cap$, $\cup$, complémentaire, $\mathrm{Card}$.}
+  \objectif{Formuler la négation d'une proposition, avec un ou deux quantificateurs, et utiliser un contre-exemple.}
+  \objectif{Distinguer implication, réciproque, contraposée et équivalence, condition nécessaire et condition suffisante.}
+  \objectif{Choisir un raisonnement : disjonction des cas, contraposée, absurde, équivalence, récurrence.}
+  \objectif{Rédiger une démonstration claire, avec un vocabulaire juste : c'est aussi ce qu'évalue l'épreuve du bac.}
+  \prerequis{Raisonnement par récurrence (chapitre 1) ; dénombrement (chapitre 15).}
+  \prerequis{Listes en compréhension en Python (chapitre 22).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Ensembles}
+
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+{\renewcommand{\arraystretch}{1.42}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}l@{\hspace{4mm}}Y@{}}
+\toprule
+\otTete{Notation} & \otTete{Se lit, signifie} \\
+\midrule
+$x\in E$ & $x$ appartient à $E$ ; $x\notin E$ : $x$ n'appartient pas à $E$ \\
+$A\subset E$ & $A$ est inclus dans $E$ : tout élément de $A$ est dans $E$ \\
+$\varnothing$ & l'ensemble vide, inclus dans tout ensemble \\
+$A\cap B$ & intersection : éléments de $A$ \textbf{et} de $B$ \\
+$A\cup B$ & réunion : éléments de $A$ \textbf{ou} de $B$ (ou des deux) \\
+$\overline{A}$ ou $E\setminus A$ & complémentaire de $A$ dans $E$ \\
+$\mathrm{Card}(A)$ & cardinal (nombre d'éléments) d'un ensemble fini $A$ \\
+$A\times B$ & produit cartésien : couples $(a\pv b)$ avec $a\in A$, $b\in B$ \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}
+  \fill[otNavyTint,rounded corners=2mm] (-2.4,-1.55) rectangle (2.4,1.55);
+  \begin{scope}
+    \clip (-0.55,0) circle (1.05);
+    \fill[otGreen,opacity=0.55] (0.55,0) circle (1.05);
+  \end{scope}
+  \draw[otNavy,line width=0.9pt] (-0.55,0) circle (1.05);
+  \draw[otNavy,line width=0.9pt] (0.55,0) circle (1.05);
+  \node[font=\small,text=otNavy] at (-1.15,0.15) {$A$};
+  \node[font=\small,text=otNavy] at (1.15,0.15) {$B$};
+  \node[font=\scriptsize,text=otGreenDark] at (0,-0.1) {$A\cap B$};
+  \node[font=\small,text=otMuted,anchor=north east] at (2.35,1.5) {$E$};
+\end{tikzpicture}\\[0.5mm]
+\legende{En vert, l'intersection $A\cap B$.}
+\end{minipage}
+
+\begin{propriete}[Complémentaire, réunion et intersection]
+Pour toutes parties $A$ et $B$ d'un ensemble $E$ :\enspace $\overline{A\cup B}=\overline{A}\cap\overline{B}$\enspace et\enspace
+$\overline{A\cap B}=\overline{A}\cup\overline{B}$. Si $E$ est fini et si $A$ et $B$ sont \textbf{disjoints}
+($A\cap B=\varnothing$), alors $\mathrm{Card}(A\cup B)=\mathrm{Card}(A)+\mathrm{Card}(B)$.
+\end{propriete}
+
+\essSection{2}{Propositions, connecteurs et quantificateurs}
+
+\begin{definition}[Proposition]
+Une \textbf{proposition} est un énoncé mathématique qui est soit vrai, soit faux. Avec des propositions $P$ et $Q$, on forme
+« $P$ et $Q$ » (vraie quand les deux le sont), « $P$ ou $Q$ » (vraie quand l'une \emph{au moins} l'est : le « ou » est
+\textbf{inclusif}) et la \textbf{négation} « non $P$ ».
+\end{definition}
+
+\noindent
+\begin{minipage}[t]{0.49\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.45}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}Y@{\hspace{3mm}}Y@{}}
+\toprule
+\otTete{Proposition} & \otTete{Négation} \\
+\midrule
+$P$ et $Q$ & (non $P$) ou (non $Q$) \\
+$P$ ou $Q$ & (non $P$) et (non $Q$) \\
+$x\leq3$ & $x>3$ \\
+$0<x\leq3$ & $x\leq0$ ou $x>3$ \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.45}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}Y@{\hspace{3mm}}Y@{}}
+\toprule
+\otTete{Proposition} & \otTete{Négation} \\
+\midrule
+pour tout $x$, $P(x)$ & il existe $x$ tel que non $P(x)$ \\
+il existe $x$ tel que $P(x)$ & pour tout $x$, non $P(x)$ \\
+\bottomrule
+\end{tabularx}}
+\par\vspace{1.5mm}
+\legende{Les symboles $\forall$ (« pour tout ») et $\exists$ (« il existe ») sont des abréviations : ils ne sont pas exigibles.}
+\end{minipage}
+
+\begin{savoirfaire}[Montrer qu'une proposition « pour tout » est fausse]
+Il suffit d'exhiber un \textbf{contre-exemple}. « Pour tout réel $x$, $x^{2}\geq x$ » est fausse : pour $x=\frac12$,
+$x^{2}=\frac14<\frac12$. En revanche, des exemples, même nombreux, ne démontrent jamais une proposition « pour tout ».
+\end{savoirfaire}
+
+\essSection{3}{Implication, réciproque, contraposée, équivalence}
+
+\noindent
+\begin{minipage}[c]{0.55\linewidth}
+\begin{definition}[Implication et équivalence]
+\raggedright
+« $P\Rightarrow Q$ » (si $P$, alors $Q$) signifie que, chaque fois que $P$ est vraie, $Q$ l'est aussi.
+\begin{itemize}[leftmargin=1.2em,itemsep=0.4mm,topsep=0.6mm]
+  \item Sa \textbf{réciproque} est $Q\Rightarrow P$ : elle peut être fausse.
+  \item Sa \textbf{contraposée} est (non $Q$) $\Rightarrow$ (non $P$) : elle a toujours la même valeur de vérité.
+  \item $P\iff Q$ ($P$ \textbf{équivaut} à $Q$) : l'implication et sa réciproque sont vraies.
+\end{itemize}
+\end{definition}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+{\renewcommand{\arraystretch}{1.5}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\leavevmode\color{otNavy}\otSemi\fontsize{7.5}{10}\selectfont}l@{\hspace{2.5mm}}Y@{}}
+\toprule
+\multicolumn{2}{@{}l}{\otTete{Exemple}} \\
+\midrule
+Implication & $x=2\Rightarrow x^{2}=4$ : vraie \\
+Réciproque & $x^{2}=4\Rightarrow x=2$ : fausse ($x=-2$) \\
+Contraposée & $x^{2}\neq4\Rightarrow x\neq2$ : vraie \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}
+
+\begin{definition}[Condition nécessaire, condition suffisante]
+Lorsque $P\Rightarrow Q$ est vraie, on dit que $P$ est une \textbf{condition suffisante} pour $Q$, et que $Q$ est une
+\textbf{condition nécessaire} pour $P$. Si $P\iff Q$, chacune est une condition nécessaire et suffisante pour l'autre.\\[1mm]
+\emph{Exemple :} « $x>2$ » est suffisante pour « $x^{2}>4$ », mais pas nécessaire ($x=-3$).
+\end{definition}
+
+\essSection{4}{Les raisonnements}
+
+{\renewcommand{\arraystretch}{1.5}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\leavevmode\color{otNavy}\otSemi\fontsize{8}{10}\selectfont}p{29mm}YY@{}}
+\toprule
+ & \otTete{Principe} & \otTete{Exemple} \\
+\midrule
+Disjonction des cas & On examine tous les cas possibles, qui recouvrent toutes les situations. &
+  $n(n+1)$ est pair : si $n$ est pair, $n$ l'est ; sinon, $n+1$ l'est. \\
+Contraposée & Pour montrer $P\Rightarrow Q$, on montre (non $Q$) $\Rightarrow$ (non $P$). &
+  Si $n^{2}$ est pair, $n$ est pair : on montre que si $n$ est impair, $n^{2}$ est impair. \\
+Absurde & On suppose le contraire de ce que l'on veut montrer et l'on aboutit à une contradiction. &
+  $\sqrt2$ n'est pas rationnel (démonstration ci-dessous). \\
+Équivalence & On transforme la proposition par des étapes \textbf{réversibles}. &
+  Pour $x>0$ : $\ln x\leq1\iff x\leq e$. \\
+Récurrence & Initialisation, puis hérédité : si $P(n)$ est vraie, alors $P(n+1)$ l'est. &
+  Inégalité de Bernoulli (chapitre 1). \\
+\bottomrule
+\end{tabularx}}
+
+\begin{demonstration}[$\sqrt2$ n'est pas un nombre rationnel]
+Supposons par l'absurde que $\sqrt2=\frac pq$, avec $p$ et $q$ entiers naturels non nuls et la fraction \textbf{irréductible}.
+Alors $p^{2}=2q^{2}$, donc $p^{2}$ est pair et, par contraposée, $p$ est pair : $p=2p'$. Il vient $4p'^{2}=2q^{2}$, soit
+$q^{2}=2p'^{2}$ : $q$ est pair lui aussi. La fraction $\frac pq$ serait simplifiable par $2$, ce qui contredit l'hypothèse.
+Donc $\sqrt2$ n'est pas rationnel.
+\end{demonstration}
+
+\essSection{5}{Rédiger une démonstration}
+
+\noindent
+\begin{minipage}[t]{0.5\linewidth}\vspace{0pt}
+\begin{savoirfaire}[Bien rédiger]
+\raggedright
+\begin{enumerate}[leftmargin=1.3em,itemsep=0.4mm,topsep=0.5mm,label={\color{otGreenDark}\arabic*.}]
+  \item Annoncer ce que l'on montre : « Montrons que\dots », « Supposons que\dots ».
+  \item Enchaîner avec des connecteurs justes : \emph{donc}, \emph{or}, \emph{car}, \emph{d'où}, \emph{ainsi}, \emph{par conséquent}.
+  \item Citer la propriété utilisée : « d'après le théorème des valeurs intermédiaires\dots ».
+  \item Conclure par une phrase qui répond à la question posée.
+\end{enumerate}
+\end{savoirfaire}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.46\linewidth}\vspace{0pt}
+\begin{attention}[Pièges fréquents]
+\raggedright
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.2em,itemsep=0.5mm,topsep=0.5mm]
+  \item Le symbole $\Rightarrow$ n'est pas une abréviation de « donc » au milieu d'une phrase.
+  \item Élever au carré n'est pas une étape réversible : $x=-2\Rightarrow x^{2}=4$, mais pas l'inverse.
+  \item La négation de « $x\leq3$ » est « $x>3$ », et non « $x\geq3$ ».
+  \item Réciproque et contraposée sont deux choses différentes.
+\end{itemize}
+\end{attention}
+\end{minipage}
+
+\begin{exemple}[Les deux points de maîtrise de la langue au bac]
+À partir de la session 2027, l'épreuve écrite de spécialité réserve deux points sur vingt à la maîtrise de la langue :
+orthographe, construction des phrases, vocabulaire, organisation du raisonnement. Les exercices 11 et 12 de ce chapitre
+t'entraînent à rédiger ; la grille officielle est présentée au début des sujets type bac.
+\end{exemple}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Notations ensemblistes}
+On note $E=\ens{1\pv2\pv3\pv\dots\pv10}$, $A$ l'ensemble des nombres pairs de $E$ et $B$ l'ensemble des multiples de $3$
+appartenant à $E$.
+\begin{questions}
+  \item Écrire $A$, $B$, $A\cap B$, $A\cup B$ et $\overline{A}$ en extension, puis donner le cardinal de chacun.
+  \item Vérifier que $\mathrm{Card}(A\cup B)=\mathrm{Card}(A)+\mathrm{Card}(B)-\mathrm{Card}(A\cap B)$. Pourquoi ne peut-on pas
+    simplement ajouter $\mathrm{Card}(A)$ et $\mathrm{Card}(B)$ ?
+  \item Déterminer $\overline{A\cup B}$ et $\overline{A}\cap\overline{B}$. Que constate-t-on ?
+  \item Vrai ou faux : $6\in A$ ;\enspace $\ens{6}\subset A$ ;\enspace $\varnothing\subset B$ ;\enspace $A\cap B\subset B$ ;\enspace
+    $B\subset A$.
+  \item Que contient la liste Python \code{[n for n in range(1, 11) if n \% 2 == 0 or n \% 3 == 0]} ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Vrai ou faux ?}
+Pour chacune des propositions suivantes, dire si elle est vraie ou fausse, puis le démontrer : par un contre-exemple si elle est
+fausse, par un raisonnement si elle est vraie.
+\begin{questions}
+  \item Pour tout réel $x$, $x^{2}\geq x$.
+  \item Il existe un réel $x$ tel que $x^{2}=2x$.
+  \item Pour tout entier naturel $n$, $2^{n}>n^{2}$.
+  \item Pour tout réel $x$, $e^{x}+e^{-x}\geq2$.
+  \item Il existe un réel $x$ tel que $e^{x}=0$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Écrire des négations}
+Écrire la négation de chacune des propositions suivantes, sans utiliser le mot « non ».
+\begin{questions}
+  \item $x\geq2$ et $y<0$.
+  \item Pour tout réel $x$, $f(x)>0$.
+  \item Il existe un entier naturel $n$ tel que $u_n\leq0$.
+  \item La suite $(u_n)$ est majorée, c'est-à-dire : il existe un réel $M$ tel que, pour tout entier naturel $n$, $u_n\leq M$.
+  \item Tous les élèves de la classe ont $18$ ans ou plus.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Réciproque et contraposée}
+Pour chacune des implications suivantes, dire si elle est vraie, puis énoncer sa réciproque et sa contraposée et dire si elles
+sont vraies.
+\begin{questions}
+  \item Si $x=3$, alors $x^{2}=9$.
+  \item Si un entier $n$ est divisible par $6$, alors il est divisible par $3$.
+  \item Si une suite $(u_n)$ est croissante, alors elle est minorée.
+  \item Si une fonction $f$ est dérivable en $a$, alors elle est continue en $a$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Condition nécessaire, condition suffisante}
+Compléter chaque phrase par « nécessaire », « suffisante » ou « nécessaire et suffisante », en justifiant.
+\begin{questions}
+  \item La condition « $x>2$ » est une condition \dots\ pour que $x^{2}>4$.
+  \item Pour un réel $q$, la condition « $-1<q<1$ » est une condition \dots\ pour que la suite $(q^{n})$ converge vers $0$.
+  \item Pour une fonction $f$ dérivable sur $\R$, la condition « $f'(a)=0$ » est une condition \dots\ pour que $f$ admette un
+    extremum local en $a$.
+  \item Pour un entier $n$, la condition « $n$ est pair » est une condition \dots\ pour que $n^{2}$ soit pair.
+  \item Pour deux vecteurs $\vec u$ et $\vec v$ de l'espace, « $\vec u\cdot\vec v=0$ » est une condition \dots\ pour que $\vec u$
+    et $\vec v$ soient orthogonaux.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Raisonner par disjonction des cas}
+\begin{questions}
+  \item Montrer que, pour tout entier naturel $n$, le nombre $n^{2}+n+1$ est impair.
+  \item Montrer que, pour tout entier naturel $n$, le nombre $n(n+1)(2n+1)$ est divisible par $3$. On distinguera trois cas
+    selon le reste de la division de $n$ par $3$.
+  \item Résoudre dans $\R$ l'équation $|x-1|+|x+2|=5$, en distinguant les cas $x<-2$, $-2\leq x<1$ et $x\geq1$.
+  \item Montrer que, pour tout réel $x$, $\max(x\pv1)\times\min(x\pv1)=x$, où $\max(a\pv b)$ et $\min(a\pv b)$ désignent le
+    plus grand et le plus petit des deux réels $a$ et $b$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Contraposée et absurde}
+\begin{questions}
+  \item Soit $n$ un entier. Montrer par contraposée que, si $n^{2}$ est pair, alors $n$ est pair.
+  \item Soit $n$ un entier. Montrer par contraposée que, si $n^{2}-1$ n'est pas divisible par $8$, alors $n$ est pair. On
+    pourra écrire un entier impair sous la forme $2k+1$ et remarquer que $k(k+1)$ est pair.
+  \item Montrer par l'absurde que $\dfrac{\ln3}{\ln2}$ n'est pas un nombre rationnel. On pourra supposer que
+    $\dfrac{\ln3}{\ln2}=\dfrac pq$, avec $p$ et $q$ entiers naturels non nuls, et comparer les parités de $3^{q}$ et $2^{p}$.
+  \item Montrer par l'absurde qu'il n'existe pas de réel $x$ tel que $e^{x}=-x^{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Raisonner par équivalence}
+\begin{questions}
+  \item Un élève résout $\sqrt{x+2}=x$ en écrivant : « $\sqrt{x+2}=x\iff x+2=x^{2}\iff x=2$ ou $x=-1$ ». Montrer que $-1$
+    n'est pas solution. Quelle étape n'est pas une équivalence ? Résoudre correctement l'équation.
+  \item Résoudre l'équation $\ln x+\ln(x-2)=\ln3$, en commençant par préciser l'ensemble sur lequel elle a un sens.
+  \item Résoudre l'inéquation $e^{2x}-3e^{x}+2\leq0$, en remarquant que $e^{2x}-3e^{x}+2=\left(e^{x}-1\right)\left(e^{x}-2\right)$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Récurrence : réussir et échouer}
+\begin{questions}
+  \item Montrer par récurrence que, pour tout entier naturel $n$, $4^{n}+2$ est divisible par $3$.
+  \item Montrer par récurrence que, pour tout entier $n\geq4$, $2^{n}\geq n^{2}$. On pourra vérifier que, pour $n\geq3$,
+    $2n^{2}-(n+1)^{2}=(n-1)^{2}-2\geq0$. La propriété est-elle vraie pour $n=3$ ?
+  \item On considère la proposition $P(n)$ : « $10^{n}+1$ est divisible par $9$ ». Montrer que, si $P(n)$ est vraie, alors
+    $P(n+1)$ est vraie. Peut-on en conclure que $P(n)$ est vraie pour tout $n$ ? Calculer le reste de la division de $10^{n}+1$
+    par $9$ et conclure.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Suites et quantificateurs}
+On rappelle qu'une suite $(u_n)$ est \textbf{majorée} s'il existe un réel $M$ tel que, pour tout entier naturel $n$, $u_n\leq M$,
+et qu'elle \textbf{tend vers} $+\infty$ si, pour tout réel $A$, il existe un rang $N$ tel que, pour tout $n\geq N$, $u_n>A$.
+\begin{questions}
+  \item Écrire, avec des quantificateurs, ce que signifie « la suite $(u_n)$ n'est pas majorée ».
+  \item On pose $u_n=n^{2}-3n$. Montrer que, pour tout $n\geq3$, $u_n\geq n-3$. En déduire que $(u_n)$ n'est pas majorée.
+  \item L'implication « si $(u_n)$ est croissante, alors $(u_n)$ n'est pas majorée » est-elle vraie ? On pourra étudier la suite
+    définie par $v_n=1-\dfrac{1}{n+1}$.
+  \item \textbf{Démonstration du programme.} Soit $(u_n)$ une suite croissante et non majorée, et $A$ un réel. Justifier qu'il
+    existe un rang $N$ tel que $u_N>A$, puis que $u_n>A$ pour tout $n\geq N$. Conclure.
+  \item Énoncer la contraposée du résultat de la question 4. Qu'affirme-t-elle pour une suite croissante qui ne tend pas vers
+    $+\infty$ ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Majorant ou maximum ?}
+Soit $f$ une fonction définie sur $\R$. On dit que $f$ est \textbf{majorée} sur $\R$ s'il existe un réel $M$ tel que, pour tout
+réel $x$, $f(x)\leq M$, et que $f$ \textbf{admet un maximum} sur $\R$ s'il existe un réel $x_0$ tel que, pour tout réel $x$,
+$f(x)\leq f(x_0)$.
+\begin{questions}
+  \item Montrer que, si $f$ admet un maximum sur $\R$, alors $f$ est majorée sur $\R$.
+  \item On pose $f(x)=x\,e^{-x}$. Étudier les variations de $f$ et montrer que $f$ admet un maximum sur $\R$, dont on donnera la
+    valeur.
+  \item On pose $g(x)=1-e^{-x}$. Montrer que $g$ est majorée par $1$ sur $\R$, puis montrer par l'absurde que $g$ n'admet pas de
+    maximum sur $\R$.
+  \item La réciproque de la propriété de la question 1 est-elle vraie ? Justifier.
+  \item Écrire la négation de « $g$ est minorée sur $\R$ », puis montrer que $g$ n'est pas minorée sur $\R$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Rédiger une démonstration}
+\partieExo{A}{Une copie à corriger}
+On veut démontrer que, pour tout réel $x>0$, $\ln x\leq x-1$. Un élève rédige :\par\vspace{1mm}
+\begin{tcolorbox}[enhanced,colback=white,colframe=otRule,boxrule=0.5pt,arc=1.5mm,left=3mm,right=3mm,top=1.5mm,bottom=1.5mm,
+  fontupper=\itshape\fontsize{10}{13.5}\selectfont]
+on pose $f(x)=\ln x-x+1$ $\Rightarrow$ $f'(x)=\frac1x-1$ $\Rightarrow$ $f'(1)=0$ donc $f$ a un maximum en $1$
+$\Rightarrow$ $f(x)\leq f(1)=0$ $\Rightarrow$ $\ln x\leq x-1$
+\end{tcolorbox}
+\begin{questions}
+  \item Relever les maladresses de rédaction et l'erreur de raisonnement de cette copie.
+  \item La condition $f'(1)=0$ suffit-elle à affirmer que $f$ admet un maximum en $1$ ? Donner un contre-exemple avec une autre
+    fonction.
+  \item Rédiger une démonstration correcte et complète, en phrases.
+\end{questions}
+\partieExo{B}{Une conséquence}
+\begin{questions}[resume]
+  \item En déduire que, pour tout réel $x>0$, $\ln x\geq1-\dfrac1x$. On pourra appliquer l'inégalité à $\dfrac1x$.
+  \item Déterminer tous les réels $x>0$ pour lesquels $\ln x=x-1$. Rédiger la réponse en une ou deux phrases.
+\end{questions}
+\end{exercice}

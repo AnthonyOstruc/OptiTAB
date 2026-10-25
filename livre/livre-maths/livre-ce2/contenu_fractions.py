@@ -1,0 +1,73 @@
+from modele import C,E
+
+C('Reconnaître des fractions égales','Fractions','Dès P1',
+ 'Je représente une même quantité avec plusieurs écritures fractionnaires.','Bandes de même longueur à plier et à découper.',
+ 'Plie une bande en deux et une bande identique en quatre. Superpose une moitié et deux quarts. Explique pourquoi les quantités sont égales.',
+ ['Le dénominateur indique le nombre de parts égales du tout ; le numérateur indique le nombre de parts prises.','Des fractions égales peuvent avoir des nombres différents : 1/2 = 2/4.','Je compare toujours des fractions d’un même tout ou de touts de même taille.'],
+ 'Trois quarts et six huitièmes recouvrent la même partie : 3/4 = 6/8. Chaque quart a été partagé en deux.',('fraccompare',[[3,4],[6,8]]),
+ 'Représente 1/3 avec des sixièmes.','1/3 = 2/6 : chaque tiers est partagé en deux parts égales.',[
+ E('Écris les deux fractions coloriées. Sont-elles égales ?','1/2 et 5/10 ; oui, elles représentent la même part du tout.',('fraccompare',[[1,2],[5,10]]),'F(1,2)==F(5,10)'),
+ E('Colorie la moitié de la bande. Écris cette quantité avec des huitièmes.','4 parts sur 8 ; 1/2 = 4/8.',('fracbar',[0,8,False]),'F(1,2)==F(4,8)'),
+ E('Complète : 1/2 = …/6 ; 1/3 = …/12 ; 3/4 = …/12.','3 ; 4 ; 9.',None,'F(1,2)==F(3,6) and F(1,3)==F(4,12) and F(3,4)==F(9,12)'),
+ E('Relève les fractions égales à 1/2 : 2/4 ; 2/6 ; 3/6 ; 4/8 ; 5/12.','2/4, 3/6 et 4/8.'),
+ E('Complète : 2/5 = …/10 ; 2/3 = …/6 ; 3/3 = …/12.','4 ; 4 ; 12.',None,'F(2,5)==F(4,10) and F(2,3)==F(4,6) and 1==F(12,12)'),
+ E('Dessine deux bandes identiques pour justifier 2/3 = 4/6.','Une bande avec 2 tiers coloriés et l’autre avec 4 sixièmes ; les zones coloriées ont la même longueur.'),
+ E('Un gâteau est partagé en 12 parts égales. Lina prend 6 parts. Quelle fraction du gâteau prend-elle ? Donne deux écritures.','6/12 = 1/2 du gâteau.',None,'F(6,12)==F(1,2)'),
+ E('Écris le tout avec des cinquièmes, des neuvièmes et des douzièmes.','5/5 = 1 ; 9/9 = 1 ; 12/12 = 1.'),
+ E('Noé dit que 2/4 est plus grand que 1/2 parce que 2 est plus grand que 1. Vérifie avec des bandes.','Les parts n’ont pas la même taille : deux quarts couvrent exactement une moitié.')],
+ 'Faire plier et superposer deux bandes identiques avant de compléter les écritures.',
+ 'On ne compare pas les numérateurs seuls quand les dénominateurs diffèrent. Les fractions du livre sont au plus égales à 1.')
+
+C('Comparer des fractions','Fractions','P2-P4',
+ 'Je justifie une comparaison en tenant compte de la taille des parts.','Bandes de fractions et papier quadrillé.',
+ 'Sur deux bandes identiques, colorie 3/8 puis 3/4. Compare la taille des parts. Essaie ensuite de comparer 5/6 et 7/12.',
+ ['À dénominateur égal, le plus grand numérateur donne la plus grande fraction.','À numérateur égal, plus les parts sont petites, plus la quantité prise est petite.','Si un dénominateur est un multiple de l’autre, je peux partager pour obtenir le même dénominateur.'],
+ '5/6 = 10/12. Donc 7/12 < 5/6, car 7 douzièmes sont moins que 10 douzièmes.',('fraccompare',[[7,12],[10,12]]),
+ 'Compare 3/4 et 5/8 avec des huitièmes.','3/4 = 6/8 ; donc 3/4 > 5/8.',[
+ E('Compare les fractions des deux bandes et explique.','3/8 < 3/4 : on prend trois parts, mais les huitièmes sont plus petits.',('fraccompare',[[3,8],[3,4]]),'F(3,8)<F(3,4)'),
+ E('Complète avec < ou > : 5/12 … 8/12 ; 7/10 … 3/10.','< ; >.',None,'F(5,12)<F(8,12) and F(7,10)>F(3,10)'),
+ E('Compare : 2/3 et 2/9 ; 5/8 et 5/12.','2/3 > 2/9 ; 5/8 > 5/12.',None,'F(2,3)>F(2,9) and F(5,8)>F(5,12)'),
+ E('Compare avec des dixièmes : 2/5 et 5/10.','2/5 = 4/10 ; donc 2/5 < 5/10.',None,'F(2,5)<F(5,10)'),
+ E('Compare : 3/4 et 5/8 ; 2/3 et 7/12. Utilise des parts de même taille.','3/4 = 6/8 > 5/8 ; 2/3 = 8/12 > 7/12.',None,'F(3,4)>F(5,8) and F(2,3)>F(7,12)'),
+ E('Range : 1/4 ; 3/4 ; 2/4 ; 4/4.','1/4 < 2/4 < 3/4 < 4/4.'),
+ E('Lina mange 2/6 d’un gâteau. Sami mange 1/3 d’un gâteau identique. Qui en mange le plus ?','Ils mangent la même quantité : 2/6 = 1/3.',None,'F(2,6)==F(1,3)'),
+ E('Une bande est coloriée aux 3/5, l’autre aux 7/10. Les bandes sont identiques. Laquelle est la plus coloriée ?','La deuxième : 3/5 = 6/10, et 6/10 < 7/10.',None,'F(3,5)<F(7,10)'),
+ E('Noé dit que 4/12 est plus grand que 4/6 parce que 12 est plus grand que 6. Corrige.','À numérateur égal, les douzièmes sont plus petits que les sixièmes. Donc 4/12 < 4/6.',None,'F(4,12)<F(4,6)')],
+ 'Utiliser des bandes identiques et faire nommer la taille des parts avant de compter.',
+ 'Les changements de dénominateur restent accompagnés d’un dessin si nécessaire ; aucun produit en croix n’est utilisé.')
+
+C('Mesurer avec des fractions d’unité','Fractions et longueurs','À partir de P3',
+ 'Je mesure et je trace quand une unité entière ne suffit pas.','Bande unité u, règle en quarts et règle en dixièmes des outils.',
+ 'Plie une bande unité en quatre parts égales. Reporte cette unité plusieurs fois. Mesure une longueur qui dépasse deux unités mais n’atteint pas trois unités.',
+ ['Une unité de longueur est choisie avant la mesure. Dans les outils, u mesure 4 cm.','Je partage cette unité en parts égales pour mesurer des longueurs plus précises.','Je peux écrire des unités entières et une fraction d’unité : 2 u + 3/4 u.'],
+ 'Depuis zéro, je compte deux unités entières puis trois quarts : la longueur vaut 2 u + 3/4 u.',('unitlength',[4,2,3]),
+ 'Avec la règle en dixièmes, comment tracer 1 u + 1/2 u ?','1/2 = 5/10 ; je vais jusqu’à 1 u puis encore 5 dixièmes.',[
+ E('Lis la longueur du segment vert en unités u et en fractions d’unité.','1 u + 3/4 u.',('unitlength',[4,1,3])),
+ E('Sur ta feuille, avec la règle des outils, trace un segment de 3/4 u.','Depuis zéro jusqu’au troisième quart ; il mesure 3 cm pour l’unité u de 4 cm.'),
+ E('Sur ta feuille, trace un segment de 2 u + 1/4 u avec la règle en quarts.','Deux unités et un quart ; avec la fiche outil, la longueur est de 9 cm.'),
+ E('Avec une règle en dixièmes, quelles graduations permettent de tracer 1/2 u puis 1/5 u ?','5/10 u ; 2/10 u.',None,'F(1,2)==F(5,10) and F(1,5)==F(2,10)'),
+ E('Sur ta feuille, trace 1 u + 3/5 u avec la règle en dixièmes.','1 u + 6/10 u, soit 6 cm et 4 mm avec l’unité u de 4 cm.'),
+ E('Sur une règle en huitièmes, quelle graduation correspond à 3/4 u ?','6/8 u.',None,'F(3,4)==F(6,8)'),
+ E('Une bande dépasse 2 u + 7/10 u mais n’atteint pas 2 u + 8/10 u. Encadre sa longueur.','2 u + 7/10 u < longueur < 2 u + 8/10 u.'),
+ E('Une petite bande mesure 1/4 u. Comment retrouver une bande unité entière ?','Reporter quatre fois la longueur de la petite bande, bout à bout sans trou ni chevauchement.'),
+ E('Lina mesure depuis le bord de la feuille au lieu du zéro de sa règle. Explique pourquoi elle peut se tromper.','Le bord peut être avant zéro. Il faut aligner une extrémité du segment avec la graduation zéro.')],
+ 'Faire reporter physiquement l’unité et ses quarts. Garder la bande unité visible.',
+ 'Une fraction désigne une partie de l’unité choisie. Au-delà de 1 u, on écrit des unités entières plus une fraction au plus égale à 1.')
+
+C('Additionner et soustraire des fractions','Fractions','P2 puis P3-P5',
+ 'Je réunis ou je retire des parts après les avoir rendues comparables.','Bandes de fractions identiques.',
+ 'Sur une bande, place une moitié puis un quart, sans les superposer. Partage la moitié en quarts. Quelle fraction de la bande est occupée ?',
+ ['À même dénominateur, je réunis ou je retire les parts en gardant leur taille.','Si un dénominateur est un multiple de l’autre, je peux transformer une écriture pour avoir des parts de même taille.','Le tout s’écrit par exemple 4/4 ou 12/12. Je peux chercher la fraction qui manque pour l’obtenir.'],
+ '1/2 + 1/4 = 2/4 + 1/4 = 3/4. Une moitié vaut deux quarts.',('fracjoin',[[1,2],[1,4],'+']),
+ 'Calcule 3/4 - 1/2 avec des quarts.','3/4 - 2/4 = 1/4.',[
+ E('Calcule : 3/12 + 5/12 ; 9/10 - 4/10.','8/12 ; 5/10.',None,'F(3,12)+F(5,12)==F(8,12) and F(9,10)-F(4,10)==F(5,10)'),
+ E('Complète pour obtenir le tout : 5/8 + … = 1 ; 7/12 + … = 1.','3/8 ; 5/12.',None,'F(5,8)+F(3,8)==1 and F(7,12)+F(5,12)==1'),
+ E('Calcule avec des sixièmes : 1/3 + 1/6 ; 5/6 - 1/3.','3/6, soit 1/2 ; 3/6, soit 1/2.',None,'F(1,3)+F(1,6)==F(1,2) and F(5,6)-F(1,3)==F(1,2)'),
+ E('Calcule avec des huitièmes : 1/2 + 1/8 ; 3/4 - 1/8.','5/8 ; 5/8.',None,'F(1,2)+F(1,8)==F(5,8) and F(3,4)-F(1,8)==F(5,8)'),
+ E('Calcule : 2/5 + 3/10 ; 11/12 - 1/3.','7/10 ; 7/12.',None,'F(2,5)+F(3,10)==F(7,10) and F(11,12)-F(1,3)==F(7,12)'),
+ E('Écris le complément de 3/4 pour obtenir 1. Donne-le en quarts puis en douzièmes.','1/4 = 3/12.',None,'1-F(3,4)==F(1,4)==F(3,12)'),
+ E('Lina mange 1/4 d’un gâteau et Sami 3/8 du même gâteau. Quelle fraction reste ?','1/4 = 2/8 ; ils mangent 5/8 ; il reste 3/8.',None,'1-F(1,4)-F(3,8)==F(3,8)'),
+ E('Un ruban de longueur 1 u perd un morceau de 1/3 u puis un morceau de 1/6 u. Quelle longueur reste ?','1/2 u, car 1/3 + 1/6 = 3/6 = 1/2.',None,'1-F(1,3)-F(1,6)==F(1,2)'),
+ E('Noé écrit 1/2 + 1/4 = 2/6. Vérifie avec des bandes et corrige.','On ne réunit pas des moitiés et des quarts en additionnant leurs tailles. 1/2 + 1/4 = 3/4.',None,'F(1,2)+F(1,4)==F(3,4)')],
+ 'Faire changer les parts par découpage, puis montrer les mêmes étapes dans l’écriture.',
+ 'Les dénominateurs restent au plus égaux à 12 ; un dénominateur est multiple de l’autre quand ils diffèrent. Les résultats restent entre 0 et 1.')

@@ -1,0 +1,48 @@
+\renewcommand{\otNiveau}{Terminale · Option}
+\renewcommand{\otSousTitre}{Cours et exercices corrigés}
+\renewcommand{\otCleardoublepage}{\clearpage}
+\usepackage{xurl}
+\urlstyle{same}
+\linespread{1.04}
+\clubpenalty=10000\widowpenalty=10000\displaywidowpenalty=10000
+\setlength{\parskip}{1.8mm}
+\setlength{\headheight}{16pt}
+\renewcommand{\otFootText}[1]{{\otLight\fontsize{6.5}{8}\selectfont\color{otMuted}#1}}
+\fancypagestyle{otMain}{\fancyhf{}\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[LE]{\otHeadNum\hspace{0.8em}\otHeadText{\leftmark}}
+\fancyhead[RO]{\otHeadText{\rightmark}\hspace{0.8em}\otHeadNum}
+\fancyfoot[LE]{\otThumb\otFootNum\hspace{1.2em}\otFootText{OptiTAB · Terminale}}
+\fancyfoot[RO]{\otThumb\otFootText{\OptionLivre}\hspace{1.2em}\otFootNum}}
+\newcommand{\figurelivre}[2]{\par\addvspace{3mm}\noindent\begin{minipage}{\linewidth}\centering
+\includegraphics[width=0.94\linewidth,height=58mm,keepaspectratio]{#1}\par\vspace{1mm}
+{\otLight\fontsize{8.5}{11}\selectfont\color{otMuted}\raggedright #2\par}\end{minipage}\par\vspace{2mm}}
+\newcommand{\souscours}[1]{\par\addvspace{4mm}\Needspace{5\baselineskip}\noindent
+{\otSemi\fontsize{12}{15}\selectfont\color{otNavy}#1}\par\nopagebreak\vspace{1mm}}
+\newcommand{\repere}[2]{\par\addvspace{2mm}\noindent\hyperref[#1]{{\otMedium\fontsize{9}{12}\selectfont\color{otGreenDark}#2 · p.~\pageref*{#1}}}\par}
+\newcommand{\fiche}[2]{\clearpage\gdef\otHeadTag{}\markboth{#1}{#1}\noindent{\raggedright\hyphenpenalty=10000\otLight\fontsize{24}{29}\selectfont\color{otInk}#1\par}\vspace{2mm}{\otLight\fontsize{10}{13}\selectfont\color{otMuted}#2\par}\vspace{4mm}\noindent{\color{otNavy}\rule{16mm}{1.3pt}}{\color{otRule}\rule[.45pt]{\dimexpr\linewidth-16mm\relax}{.4pt}}\par\vspace{6mm}}
+\renewcommand{\exercices}{\par\ifdim\pagetotal<.45\textheight\addvspace{4mm}\else\clearpage\fi}
+\patchcmd{\otDansCe}{L'essentiel}{Le cours}{}{}
+\patchcmd{\otEntete}{\otBesoinPlace{9\baselineskip}}{\ifotCorriges\otBesoinPlace{5\baselineskip}\else\otBesoinPlace{9\baselineskip}\fi}{}{}
+\patchcmd{\otEntete}{\addvspace{6.5mm}}{\addvspace{4.5mm}}{}{}
+\patchcmd{\otEntete}{\addvspace{6.5mm}}{\addvspace{4.5mm}}{}{}
+\newcommand{\figurepetite}[2]{\par\addvspace{2mm}\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=.94\linewidth,height=32mm,keepaspectratio]{#1}\par\vspace{1mm}{\otLight\fontsize{8.5}{11}\selectfont\color{otMuted}\raggedright #2\par}\end{minipage}\par\vspace{1mm}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\providecommand{\square}{\mdlgwhtsquare}
+\renewcommand{\code}[1]{\leavevmode\mbox{\NoAutoSpacing\otMono\fontsize{8.4}{11}\selectfont\color{otNavyDark}\detokenize{#1}}}
+\renewcommand{\otQRCours}{\begin{tikzpicture}\node[fill=otNavyTint,rounded corners=2mm,inner sep=4mm,text width=47mm]
+{{\otSemi\fontsize{8.5}{11}\selectfont\color{otNavy}Mon carnet de méthodes}\par\vspace{1mm}
+{\otLight\fontsize{8}{11}\selectfont Après une erreur, écrire sa cause et refaire une question analogue sans corrigé.}};\end{tikzpicture}}
+\renewcommand{\essentiel}{\clearpage\markright{Le cours}\phantomsection\label{ess-\otChapNum}
+\otPageTitre{Le cours}{Comprendre · Justifier · Appliquer}\vspace{-4mm}}
+\makeatletter
+\renewcommand{\corrigesChapitre}[2]{\clearpage\gdef\otChapNum{#1}\gdef\otChapTitle{#2}
+\global\otCorrigestrue\gdef\otAccent{otGreenDark}\global\otSoupletrue
+\gdef\otHeadTag{\otTwoDigits{\otChapNum}}\markboth{Solutions · #2}{Solutions · #2}
+\phantomsection\label{corchap-#1}\pdfbookmark[1]{#1 · #2}{bm-corchap-#1}
+\otPageTitre{Solutions · #1}{#2}}
+\apptocmd{\corrigesChapitre}{\fontsize{10.5}{13.3}\selectfont\setlength{\parskip}{1mm}\setlist[questions,1]{label=\otLabel{\arabic*.},leftmargin=1.7em,labelsep=.45em,itemsep=.3em,topsep=.2em,partopsep=0pt,parsep=.2em}}{}{}
+\makeatother
+\lstset{literate={*}{{\char42}}1 {-}{{\char45}}1 {>}{{\char62}}1 {<}{{\char60}}1}

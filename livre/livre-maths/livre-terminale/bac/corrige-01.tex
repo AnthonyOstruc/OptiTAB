@@ -1,0 +1,132 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type bac n° 1 — résultats vérifiés par programme (bac_s1.py)
+
+\corrigeSujet{1}
+
+\begin{corrigeBac}{5}{Probabilités}
+\partieExo{A}{Une commande au hasard}
+\begin{questions}
+  \item On note $\overline R$ l'événement « la commande est livrée à domicile ».
+\begin{center}
+\begin{tikzpicture}[otArbre, level distance=20mm, level 1/.style={sibling distance=16mm}, level 2/.style={sibling distance=8mm}]
+  \node {}
+    child {node {$R$}
+      child {node {$L$} edge from parent node[otPoids] {$0{,}05$}}
+      child {node {$\overline L$} edge from parent node[otPoids] {$0{,}95$}}
+      edge from parent node[otPoids] {$0{,}7$}}
+    child {node {$\overline R$}
+      child {node {$L$} edge from parent node[otPoids] {$0{,}12$}}
+      child {node {$\overline L$} edge from parent node[otPoids] {$0{,}88$}}
+      edge from parent node[otPoids] {$0{,}3$}};
+\end{tikzpicture}
+\end{center}
+    \pts{0,5 pt}
+  \item $P(R\cap L)=P(R)\times P_R(L)=0{,}7\times0{,}05=\res{0{,}035}$. \pts{0,5 pt}
+  \item $R$ et $\overline R$ forment une partition de l'univers ; d'après la formule des probabilités totales :
+    $P(L)=P(R\cap L)+P(\overline R\cap L)=0{,}035+0{,}3\times0{,}12=0{,}035+0{,}036=\res{0{,}071}$. \pts{0,75 pt}
+  \item $P_L(\overline R)=\dfrac{P(\overline R\cap L)}{P(L)}=\dfrac{0{,}036}{0{,}071}\approx\res{0{,}507}$ : un colis en retard a un peu plus
+    d'une chance sur deux d'avoir été livré à domicile. \pts{0,75 pt}
+\end{questions}
+\partieExo{B}{Une série de commandes}
+\begin{questions}[resume]
+  \item On répète $50$ fois, de façon identique et indépendante, une épreuve de Bernoulli dont le succès « le colis arrive en retard »
+    a pour probabilité $0{,}071$. Donc $X$ suit la loi binomiale $\res{\mathcal{B}(50\pv0{,}071)}$. \pts{0,5 pt}
+  \item $P(X\leq2)=P(X=0)+P(X=1)+P(X=2)\approx\res{0{,}301}$ (calculatrice). \pts{0,75 pt}
+  \item $E(X)=50\times0{,}071=\res{3{,}55}$ : sur un grand nombre de séries de $50$ commandes, il y a en moyenne $3{,}55$ colis en retard
+    par série. \pts{0,5 pt}
+\end{questions}
+\partieExo{C}{Un nombre minimal de commandes}
+\begin{questions}[resume]
+  \item Sur $n$ commandes, la probabilité qu'aucun colis ne soit en retard est $0{,}929^{n}$. On cherche $n$ tel que
+    $1-0{,}929^{n}\geq0{,}99$, soit $0{,}929^{n}\leq0{,}01$. La fonction $\ln$ étant croissante :
+    $n\ln0{,}929\leq\ln0{,}01$, puis, comme $\ln0{,}929<0$, $n\geq\dfrac{\ln0{,}01}{\ln0{,}929}\approx62{,}5$. Il faut au moins
+    $\res{63}$ commandes. \pts{0,75 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{5}{Géométrie dans l'espace}
+\begin{questions}
+  \item $B(1\pv0\pv0)$, $D(0\pv1\pv0)$, $E(0\pv0\pv1)$ et $G(1\pv1\pv1)$. \pts{0,5 pt}
+  \item $\vect{BD}\,(-1\pv1\pv0)$, $\vect{BE}\,(-1\pv0\pv1)$, $\vect{BG}\,(0\pv1\pv1)$, $\vect{DE}\,(0\pv-1\pv1)$, $\vect{DG}\,(1\pv0\pv1)$ et
+    $\vect{EG}\,(1\pv1\pv0)$ ont tous pour norme $\sqrt{1+1}=\sqrt2$. Les quatre faces sont des triangles équilatéraux : $BDEG$ est un
+    $\res{\text{tétraèdre régulier}}$. \pts{0,75 pt}
+  \item a) $\vec n\cdot\vect{BE}=-1+0+1=0$ et $\vec n\cdot\vect{BG}=0-1+1=0$, avec $\vect{BE}$ et $\vect{BG}$ non colinéaires : $\vec n$
+    est normal au plan $(BEG)$.\\
+    b) Une équation est de la forme $x-y+z+d=0$, et $B$ donne $1+d=0$ : $\res{(BEG):\ x-y+z-1=0}$. \pts{1 pt}
+  \item a) $\Delta$ passe par $D(0\pv1\pv0)$ et est dirigée par $\vec n$ : $\res{\Delta:\ (t\pv1-t\pv t)}$, $t\in\R$.\\
+    b) En reportant dans l'équation du plan : $t-(1-t)+t-1=3t-2=0$, soit $t=\frac23$ : $\res{H\left(\tfrac23\pv\tfrac13\pv\tfrac23\right)}$.\\
+    c) $\left(\frac{1+0+1}{3}\pv\frac{0+0+1}{3}\pv\frac{0+1+1}{3}\right)=\left(\frac23\pv\frac13\pv\frac23\right)$ : $H$ est bien le centre de
+    gravité de $BEG$. \pts{1,5 pt}
+  \item $\vect{DH}=\frac23\vec n$, donc $DH=\frac23\sqrt3=\res{\tfrac{2\sqrt3}{3}}$. L'aire de $BEG$ vaut $\frac{\sqrt3}{4}\times\big(\sqrt2\big)^2=\frac{\sqrt3}{2}$,
+    d'où $V=\frac13\times\frac{\sqrt3}{2}\times\frac{2\sqrt3}{3}=\res{\tfrac13}$. \pts{0,75 pt}
+  \item Le tétraèdre de sommet $A$ est $ABDE$ : sa base $ABD$ est un triangle rectangle d'aire $\frac12$ et sa hauteur est $AE=1$, d'où un
+    volume $\frac13\times\frac12\times1=\frac16$. Il en est de même pour les trois autres coins, et $1-4\times\frac16=\frac13$. \pts{0,5 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{6}{Fonction exponentielle et intégration}
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item En $-\infty$ : $x+1\to-\infty$ et $e^{-x}\to+\infty$, donc $\res{\lim\limits_{x\to-\infty}f(x)=-\infty}$. En $+\infty$ :
+    $f(x)=\frac{x}{e^{x}}+e^{-x}$ et, par croissances comparées, $\res{\lim\limits_{x\to+\infty}f(x)=0}$ : l'axe des abscisses est
+    asymptote à $\mathcal{C}_f$ en $+\infty$. \pts{1 pt}
+  \item $f'(x)=1\times e^{-x}+(x+1)\times\left(-e^{-x}\right)=-x\,e^{-x}$, du signe de $-x$ car $e^{-x}>0$.
+\begin{center}
+\begin{tableau}
+  \otTab[2]{$x$/0.8,$f'(x)$/0.8,$f$/1.6}{$-\infty$,$0$,$+\infty$}
+  \tkzTabLine{,+,z,-,}
+  \tkzTabVar{-/$-\infty$,+/$1$,-/$0$}
+\end{tableau}
+\end{center}
+    \pts{1,25 pt}
+  \item $f(-1)=0$ et $f'(-1)=e$ : $\res{T:\ y=e(x+1)}$. \pts{0,5 pt}
+\end{questions}
+\partieExo{B}{Une équation}
+\begin{questions}[resume]
+  \item Sur $\intFO0{+\infty}$, $f$ est continue et strictement décroissante, de $f(0)=1$ vers $0$. Comme $\frac12\in\intOF01$, le
+    corollaire du théorème des valeurs intermédiaires assure l'existence d'une unique solution $\alpha$. La calculatrice donne
+    $f(1{,}67)\approx0{,}503$ et $f(1{,}68)\approx0{,}499$, d'où $\res{1{,}67<\alpha<1{,}68}$. \pts{1 pt}
+  \item Sur $\intOF{-\infty}0$, $f$ est continue et strictement croissante de $-\infty$ à $1$ : l'équation y a aussi une unique solution
+    (environ $-0{,}77$). Au total, l'équation admet $\res{\text{deux solutions}}$ sur $\R$. \pts{0,5 pt}
+\end{questions}
+\partieExo{C}{Convexité et aire}
+\begin{questions}[resume]
+  \item $f''(x)$ est du signe de $x-1$ : $f$ est concave sur $\intOF{-\infty}1$ et convexe sur $\intFO1{+\infty}$. La dérivée seconde
+    s'annule en changeant de signe en $1$ : le point d'inflexion est $\res{\left(1\pv\tfrac2e\right)}$. \pts{0,75 pt}
+  \item Sur $\intFF01$, $f\geq0$ : l'aire vaut $\mathcal{A}=\int_0^1(x+1)e^{-x}\,\mathrm{d}x$. Avec $u(x)=x+1$ et $v(x)=-e^{-x}$ :
+\begin{codecote}[0.56]
+\raggedright
+$\mathcal{A}=\Big[-(x+1)e^{-x}\Big]_0^1+\int_0^1e^{-x}\,\mathrm{d}x$\\[1mm]
+$\phantom{\mathcal{A}}=\left(1-\frac2e\right)+\left(1-\frac1e\right)$\\[1mm]
+$\phantom{\mathcal{A}}=\res{2-\tfrac3e}\approx\res{0{,}90}$ u.a.
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, width=62mm, unit vector ratio=, height=40mm, xmin=-1.6, xmax=4.2, ymin=-0.9, ymax=1.35,
+  xtick={-1,1,2,3}, ytick={1}]
+  \addplot[name path=f,otNavy,line width=1pt,domain=-1.25:4,samples=80] {(x+1)*exp(-x)};
+  \path[name path=ax] (axis cs:0,0) -- (axis cs:1,0);
+  \addplot[otGreen,opacity=0.3] fill between[of=f and ax,soft clip={domain=0:1}];
+  \addplot[otGreenDark,line width=0.7pt,domain=-1.25:-0.7] {2.718*(x+1)};
+\end{axis}
+\end{tikzpicture}
+\end{codecote}
+    \pts{1 pt}
+\end{questions}
+\end{corrigeBac}
+
+\begin{corrigeBac}{4}{Suites et algorithmique}
+\begin{questions}
+  \item $u_1=\sqrt2\approx1{,}414$ et $u_2=\sqrt{2+\sqrt2}\approx\res{1{,}848}$. \pts{0,5 pt}
+  \item $g'(x)=\frac{1}{2\sqrt{2+x}}>0$ : $g$ est croissante. Soit $\mathcal{P}(n)$ : « $0\leq u_n\leq u_{n+1}\leq2$ ».\\
+    \etape{Initialisation} $u_0=0$ et $u_1=\sqrt2$ : $0\leq0\leq\sqrt2\leq2$.\\
+    \etape{Hérédité} Si $0\leq u_n\leq u_{n+1}\leq2$, la fonction $g$ étant croissante, $g(0)\leq g(u_n)\leq g(u_{n+1})\leq g(2)$, soit
+    $\sqrt2\leq u_{n+1}\leq u_{n+2}\leq2$, et donc $0\leq u_{n+1}\leq u_{n+2}\leq2$.\\
+    \etape{Conclusion} La propriété est vraie pour tout entier naturel $n$. \pts{1,5 pt}
+  \item La suite est croissante et majorée par $2$ : elle converge vers un réel $\ell\in\intFF02$. Comme $g$ est continue, $\ell=g(\ell)$,
+    soit $\ell^2=2+\ell$, puis $(\ell-2)(\ell+1)=0$ : $\res{\ell=2}$, puisque $\ell\geq0$. \pts{1 pt}
+  \item a) La boucle continue tant que $2-u_n\geq e$ : \code{while 2 - u >= e:}\\
+    b) \code{seuil(0.001)} renvoie $\res{6}$ : $u_5\approx1{,}9976$ et $u_6\approx1{,}9994$. À partir du rang $6$, les termes approchent la
+    limite $2$ à moins de $10^{-3}$ près (la suite étant croissante). \pts{1 pt}
+\end{questions}
+\end{corrigeBac}

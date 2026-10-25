@@ -1,0 +1,59 @@
+%% =====================================================================
+%%  4e de couverture — Anglais, tome 1 (toujours sur une page paire)
+%% =====================================================================
+\clearpage\ifodd\value{page}\otPageNotes\clearpage\fi
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)}]
+  \fill[otNavy] (0,0) rectangle (210mm,297mm);
+  \draw[white,opacity=0.05,line width=0.3pt,step=7mm] (0,0) grid (210mm,297mm);
+  \fill[otGreen] (0,0) rectangle (210mm,2.4mm);
+
+  \node[anchor=north west,inner sep=0pt,text width=165mm,text=white,font=\otBold\fontsize{22}{27}\selectfont]
+    at (24mm,262mm) {Vous partez de zéro ?\\Cette méthode est faite pour vous.};
+  \fill[otGreen] (24mm,236mm) rectangle (54mm,237.4mm);
+  \node[anchor=north west,inner sep=0pt,text width=150mm,text=white,opacity=0.9,
+    font=\otRegular\fontsize{11}{16}\selectfont] at (24mm,228mm)
+    {Avec Léa, une Française qui s'installe à New York, apprenez l'anglais dont vous avez
+     réellement besoin : vous présenter, parler de votre quotidien, vous débrouiller en ville,
+     inviter, raconter. Chaque mot est expliqué en français, chaque son est enregistré,
+     chaque exercice est corrigé.};
+
+  % Trois arguments
+  \foreach \n/\ico/\titre/\txt in {0/bulle/Une méthode complète/20 unités : dialogues\, vocabulaire\, grammaire\, prononciation\, culture et exercices.,
+      1/casque/L'audio partout/Plus de 250 pistes à scanner avec votre téléphone\, en version lente et normale.,
+      2/blocs/Pensée pour les francophones/Les pièges du français anticipés\, et des corrigés qui expliquent chaque réponse.}{%
+    \pgfmathsetmacro{\x}{24+\n*55}
+    \fill[white,opacity=0.07,rounded corners=2mm] (\x mm,140mm) rectangle ++(51mm,48mm);
+    \fill[otGreen,rounded corners=1.6mm] (\x mm+4mm,174mm) rectangle ++(10mm,10mm);
+    \otDessinIcone{\ico}{white}{otGreen}{6.4mm}{(\x mm+9mm,179mm)}
+    \node[anchor=north west,inner sep=0pt,text width=44mm,text=white,align=left] at (\x mm+4mm,170mm)
+      {{\otSemi\fontsize{10.4}{12.4}\selectfont\titre}\par\vspace{1.4mm}
+       {\otRegular\fontsize{8.8}{11.4}\selectfont\color{white!80!otNavy}\txt}};}
+
+  % Au programme
+  \node[anchor=north west,inner sep=0pt,text width=162mm,text=white,align=left] at (24mm,128mm)
+    {{\otSemi\fontsize{7.5}{9}\selectfont\color{otGreen}\otCaps[12]{Au programme}}\par\vspace{2.4mm}
+     {\otRegular\fontsize{10}{14}\selectfont Saluer et se présenter\enspace·\enspace Épeler, compter, donner son numéro\enspace·\enspace
+      Présenter sa famille\enspace·\enspace Raconter sa journée\enspace·\enspace Dire ce qu'on aime\enspace·\enspace
+      Demander son chemin\enspace·\enspace Faire des achats\enspace·\enspace Commander au restaurant\enspace·\enspace
+      Parler du temps qu'il fait\enspace·\enspace Inviter\enspace·\enspace Raconter un voyage}};
+
+  % Échelle des niveaux
+  \foreach \n/\niv in {0/A1,1/A2,2/B1,3/B2,4/C1}{%
+    \pgfmathsetmacro{\x}{24+\n*20}
+    \ifnum\n=0 \fill[otGreen,rounded corners=1mm] (\x mm,72mm) rectangle ++(18mm,9mm);
+    \else \fill[white,opacity=0.12,rounded corners=1mm] (\x mm,72mm) rectangle ++(18mm,9mm);\fi
+    \node[text=white,font=\otBold\fontsize{10}{11}\selectfont] at (\x mm+9mm,76.5mm) {\niv};
+    \node[anchor=north,text=white,opacity=0.7,font=\otRegular\fontsize{6.8}{8}\selectfont] at (\x mm+9mm,70mm) {Tome \the\numexpr\n+1\relax};}
+  \node[anchor=west,text=white,opacity=0.85,font=\otRegular\fontsize{9}{11}\selectfont,text width=60mm] at (128mm,76mm)
+    {Une collection en cinq tomes, du niveau débutant au niveau C1.};
+
+  % Pied : logo, site, emplacement du code-barres
+  \node[anchor=south west,inner sep=0pt] at (24mm,24mm) {\includegraphics[width=44mm]{logo-blanc}};
+  \node[anchor=base west,inner sep=0pt,text=white,opacity=0.75,font=\otMedium\fontsize{9.5}{11}\selectfont]
+    at (24mm,16mm) {\otSite};
+  \fill[white] (146mm,16mm) rectangle (186mm,40mm);
+  \node[text=otMuted,font=\otRegular\fontsize{7}{9}\selectfont,align=center] at (166mm,28mm) {ISBN\\à paraître};
+\end{scope}
+\end{tikzpicture}

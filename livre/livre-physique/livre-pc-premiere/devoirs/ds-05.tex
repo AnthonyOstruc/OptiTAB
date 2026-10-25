@@ -1,0 +1,69 @@
+% !TEX root = ../main.tex
+%% Devoir surveillé n° 5 — chapitres 14 à 16 (valeurs vérifiées : verifications/devoirs.py)
+
+\devoirDS{5}{Chapitres 14 à 16}{{Le vélo à assistance électrique : puissance et énergie électriques}/7,{La descente à ski : travail et énergie cinétique}/7,{La balle qui rebondit : énergie mécanique, en Python}/6}
+
+\begin{exoBac}{7}{Le vélo à assistance électrique}
+Un vélo à assistance électrique est équipé d'une batterie et d'un moteur qui aide le cycliste jusqu'à \qty{25}{km/h}.
+\begin{docu}{1}{Caractéristiques}
+Batterie : tension nominale \qty{36}{V}, capacité \qty{10}{A.h} ; elle est modélisée par une source réelle de tension, de force
+électromotrice $E=\qty{37,0}{V}$ et de résistance interne $r=\qty{0,15}{\ohm}$. Moteur : puissance électrique reçue \qty{250}{W} à pleine
+assistance, rendement \qty{80}{\percent}. Prix de l'électricité : 0,25~€ le kilowattheure.
+\end{docu}
+\begin{questions}
+\item Calculer l'énergie stockée dans la batterie chargée, en wattheures puis en joules.
+\item À pleine assistance, la batterie fournit \qty{250}{W} sous \qty{36}{V}. Calculer l'intensité du courant.
+\item Vérifier, à l'aide du modèle de la batterie, que la tension à ses bornes vaut bien environ \qty{36}{V}. Calculer la puissance
+dissipée par effet Joule dans la batterie.
+\item Calculer la puissance mécanique fournie par le moteur. Que devient le reste de la puissance reçue ?
+\item Calculer l'autonomie à pleine assistance, puis la distance parcourue à \qty{25}{km/h}.
+\item Combien coûte une recharge complète de la batterie ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{7}{La descente à ski}
+Un skieur de masse $m=\qty{70}{kg}$ (équipement compris) part sans vitesse du point A, en haut d'une piste rectiligne, et descend
+jusqu'au point B. Sa vitesse mesurée en B vaut $v_\mathrm{B}=\qty{20,0}{m.s^{-1}}$.
+\schema{ds5-piste}
+\begin{donnees}
+$g=\qty{9,81}{N.kg^{-1}}$. On suppose que la force de frottement exercée par la neige et l'air est constante et opposée au mouvement.
+\end{donnees}
+\begin{questions}
+\item Calculer le dénivelé $h$ entre A et B.
+\item Calculer le travail du poids du skieur entre A et B.
+\item En l'absence de frottement, quelle serait la vitesse du skieur en B ? L'exprimer en \unit{km/h}.
+\item Calculer l'énergie cinétique réelle du skieur en B, puis le travail de la force de frottement entre A et B.
+\item En déduire la valeur de la force de frottement.
+\item Calculer la variation de l'énergie mécanique du skieur et le pourcentage d'énergie perdu. Sous quelle forme cette
+énergie est-elle transférée ?
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{6}{La balle qui rebondit}
+Une balle de tennis de masse $m=\qty{58}{g}$ est lâchée sans vitesse d'une hauteur de \qty{1,500}{m}. Une vidéo donne l'altitude $y$ de la
+balle toutes les \qty{0,05}{s} pendant sa chute ; un programme exploite ces mesures ($g=\qty{9,81}{N.kg^{-1}}$).
+\begin{python}
+m, g, dt = 0.058, 9.81, 0.05
+y = [1.500, 1.488, 1.451, 1.390, 1.304, 1.193, 1.059]     # m
+for i in range(1, len(y) - 1):
+    v = (y[i - 1] - y[i + 1]) / (2 * dt)
+    Ec = 0.5 * m * v**2
+    Ep = m * g * y[i]
+    print(round(Ec, 3), round(Ep, 3), round(Ec + Ep, 3))
+\end{python}
+\begin{console}
+0.007 0.847 0.854
+0.028 0.826 0.853
+0.063 0.791 0.854
+0.113 0.742 0.854
+0.174 0.679 0.853
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Que calcule la ligne \code{v = ...} ? Pourquoi la boucle ne traite-t-elle ni la première ni la dernière position ?
+\item Que représentent les trois nombres affichés sur chaque ligne ? Retrouver par le calcul la valeur 0.847.
+\item Comment évolue l'énergie mécanique de la balle pendant la chute ? Conclure.
+\item Après le premier rebond, la balle remonte jusqu'à \qty{1,10}{m}. Calculer l'énergie mécanique perdue lors du rebond et la
+fraction de l'énergie initiale qu'elle représente.
+\item Que devient l'énergie perdue ?
+\end{questions}
+\end{exoBac}

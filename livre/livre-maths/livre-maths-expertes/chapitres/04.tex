@@ -1,0 +1,168 @@
+\begin{ouverture}[courbe]{4}{Équations polynomiales}{Nombres complexes}{Second degré · Racines · Factorisation · Degré}
+\objectif{Résoudre un second degré à coefficients réels dans $\C$.}
+\objectif{Factoriser à partir d’une racine connue.}
+\objectif{Résoudre un troisième degré guidé.}
+\objectif{Démontrer la borne du nombre de racines.}
+\prerequis{Second degré réel, division et identités remarquables.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Le second degré dans $\C$}
+Pour $az^2+bz+c=0$ avec $a,b,c\in\R$ et $a\ne0$, poser $\Delta=b^2-4ac$.
+Si $\Delta\geq0$, les solutions réelles usuelles restent valables.
+\begin{propriete}[Discriminant négatif]
+Si $\Delta<0$, les deux solutions sont
+$z_1=(-b+\mathrm i\sqrt{-\Delta})/(2a)$ et $z_2=\bar z_1$.
+Le polynôme se factorise en $a(z-z_1)(z-z_2)$.
+\end{propriete}
+\begin{exemple}
+Pour $z^2-2z+5=0$, $\Delta=-16$, donc $z=1\pm2\mathrm i$.
+Le produit $(z-1-2\mathrm i)(z-1+2\mathrm i)=(z-1)^2+4$ retrouve le polynôme.
+\end{exemple}
+La complétion du carré $a[(z+b/(2a))^2-\Delta/(4a^2)]$ explique les formules.
+\essSection{2}{Une identité de factorisation}
+\begin{theoreme}
+Pour $n\geq1$,
+$z^n-a^n=(z-a)(z^{n-1}+az^{n-2}+\cdots+a^{n-1})$.
+\end{theoreme}
+\begin{demonstration}
+Développer le produit : les termes intermédiaires se compensent deux à deux, ne laissant que $z^n-a^n$.
+Si $P(z)=\sum_{k=0}^np_kz^k$ et $P(a)=0$, alors
+$P(z)=P(z)-P(a)=\sum_{k=1}^np_k(z^k-a^k)$.
+Chaque terme est divisible par $z-a$, donc $P(z)=(z-a)Q(z)$, avec $Q$ de degré $n-1$ si $P$ est de degré $n$.
+\end{demonstration}
+\essSection{3}{Une racine connue fait baisser le degré}
+\begin{savoirfaire}
+Pour $P(z)=z^3-2z^2+z-2$, vérifier $P(2)=0$.
+Écrire $P(z)=(z-2)(z^2+uz+v)$ ; développer et identifier les coefficients.
+On obtient $u=0,v=1$, donc $P(z)=(z-2)(z^2+1)$ et les solutions sont $2,\mathrm i,-\mathrm i$.
+La vérification des coefficients et des solutions sécurise le calcul.
+\end{savoirfaire}
+\figurelivre{e04-racines.pdf}{Les trois racines $2,\mathrm i,-\mathrm i$ de $z^3-2z^2+z-2$ dans le plan complexe. Les coefficients réels rendent les racines non réelles conjuguées deux à deux.}
+\essSection{4}{Combien de racines au maximum ?}
+\begin{theoreme}
+Un polynôme non nul de degré $n$ possède au plus $n$ racines distinctes dans $\C$.
+\end{theoreme}
+\begin{demonstration}
+Une constante non nulle n'a aucune racine. Supposer le résultat vrai au degré $n-1$.
+Au degré $n$, si aucune racine n'existe, la borne est respectée. Sinon choisir une racine $a$ et écrire $P=(z-a)Q$.
+Toute autre racine est une racine de $Q$, de degré $n-1$ ; il y en a au plus $n-1$. Avec $a$, cela donne au plus $n$.
+\end{demonstration}
+Ce résultat borne le nombre de racines ; il ne démontre pas à lui seul qu'il y en a exactement $n$. Le théorème fondamental de l'algèbre n'est pas requis pour cette preuve.
+Le polynôme nul, dont tous les coefficients sont nuls, est exclu : il s'annule partout.
+\essSection{5}{Approfondir sans changer de méthode}
+Si un polynôme est à coefficients réels, $P(\bar z)=\overline{P(z)}$ : toute racine non réelle entraîne sa conjuguée.
+Pour un trinôme $a(z-z_1)(z-z_2)$, l'identification donne $z_1+z_2=-b/a$ et $z_1z_2=c/a$.
+Des équations à coefficients complexes peuvent être étudiées sur des exemples, en cherchant d'abord une racine carrée d'un complexe. Cette extension est un problème possible, distinct de la formule du second degré réel exigible.
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Un second degré}
+
+\begin{questions}
+\item Résoudre $z^2+1=0$.
+\item Résoudre $z^2+4=0$.
+\item Factoriser $z^2+4$ dans $\C$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Discriminant}
+
+\begin{questions}
+\item Résoudre $z^2-2z+5=0$.
+\item Donner la somme et le produit des racines.
+\item Vérifier les coefficients par ces deux valeurs.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Différence de puissances}
+
+\begin{questions}
+\item Factoriser $z^3-1$.
+\item Factoriser $z^4-16$ par $z-2$.
+\item Quel est le degré du quotient dans ce second cas ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Vérifier une racine}
+$P(z)=z^3-3z^2+4z-2$.
+\begin{questions}
+\item Calculer $P(1)$.
+\item Vérifier $P(z)=(z-1)(z^2-2z+2)$.
+\item Résoudre $P(z)=0$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Troisième degré}
+$P(z)=z^3-2z^2+z-2$.
+\begin{questions}
+\item Vérifier que $2$ est racine.
+\item Trouver le quotient par $z-2$.
+\item Donner toutes les racines.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Coefficient dominant}
+$2z^2+4z+10=0$.
+\begin{questions}
+\item Calculer le discriminant.
+\item Résoudre.
+\item Écrire la factorisation avec son coefficient dominant.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Racines conjuguées}
+Un polynôme réel admet $2+\mathrm i$ comme racine.
+\begin{questions}
+\item Quelle autre racine est imposée ?
+\item Calculer le produit des deux facteurs associés.
+\item S’il est de degré $3$ et admet aussi $-1$, donner un polynôme unitaire possible.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une équation bicarrée}
+
+\begin{questions}
+\item Résoudre $z^4+5z^2+4=0$ en posant $w=z^2$.
+\item Résoudre les deux équations obtenues sur $z$.
+\item Vérifier le nombre maximal de solutions.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{Racine double}
+$P(z)=(z-1)^2(z+2)$.
+\begin{questions}
+\item Développer $P$.
+\item Combien a-t-il de racines distinctes ?
+\item Pourquoi cela ne contredit-il pas le théorème sur le degré ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une identité de polynômes}
+Deux polynômes de degré au plus $2$ prennent les mêmes valeurs en trois points distincts.
+\begin{questions}
+\item Considérer leur différence.
+\item Justifier qu’elle est nulle.
+\item En déduire une méthode pour vérifier une identité de degré au plus $2$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Carrée d’un complexe, guidée}
+On cherche les $w=x+\mathrm iy$ tels que $w^2=3+4\mathrm i$.
+\begin{questions}
+\item Écrire les équations sur $x,y$.
+\item Utiliser $|w|^2=|3+4\mathrm i|$ pour trouver $x^2,y^2$.
+\item Donner les deux solutions.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Preuve par le degré}
+
+\begin{questions}
+\item Pourquoi une constante non nulle n’a-t-elle pas de racine ?
+\item Si $P=(z-a)Q$, pourquoi toute racine différente de $a$ annule-t-elle $Q$ ?
+\item Conclure l’étape de récurrence sur le degré.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

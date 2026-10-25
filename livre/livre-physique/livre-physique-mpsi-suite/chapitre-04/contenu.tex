@@ -1,0 +1,711 @@
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\begin{scope}[shift={(current page.south west)},x=1mm,y=1mm]
+\fill[otNavy](0,0)rectangle(210,297);\fill[otNavyDark](0,0)rectangle(210,88);
+\draw[white,opacity=.055,step=7mm](0,0)grid(210,297);
+\node[anchor=north west,inner sep=0pt]at(23,278){\includegraphics[width=57mm]{images/logo-blanc.png}};
+\node[anchor=west,text=otGreen,font=\otSemi\fontsize{12}{15}\selectfont]at(24,235){MPSI\quad /\quad PHYSIQUE};
+\node[anchor=west,text=white,font=\sffamily\bfseries\fontsize{52}{56}\selectfont]at(22,211){Physique};
+\node[anchor=north west,text=white,text width=158mm,font=\otLight\fontsize{31}{38}\selectfont]at(24,191){L’oscillateur harmonique};
+\fill[otGreen](24,149)rectangle(54,150.4);
+\node[anchor=north west,text=white,text width=153mm,font=\sffamily\fontsize{11}{16}\selectfont]at(24,139){Cours développé et schémas vectoriels\par 24 exercices et corrigés expliqués\par 3 défis, TP, activité numérique, DM et DS\par Parcours sur des supports authentiques};
+\draw[white,opacity=.6,-{Stealth}] (24,46)--(185,46);
+\draw[white,opacity=.6,-{Stealth}] (28,17)--(28,81);
+\draw[otGreen,line width=1.8pt] plot[domain=0:6,samples=180] ({30+24*\x},{46+27*cos(deg(3*\x))});
+\node[anchor=west,text=white,font=\otSemi\fontsize{9}{12}\selectfont]at(24,8){CHAPITRE 04\quad /\quad COLLECTION OPTITAB\quad /\quad OCTOBRE 2026};
+\end{scope}\end{tikzpicture}\null
+
+\Page{Collection OptiTAB}{Physique MPSI}{titre}
+\thispagestyle{mpsiFront}
+\vspace{8mm}\begin{center}\includegraphics[width=63mm]{images/logo-couleur.png}\par\vspace{15mm}
+{\otSemi\color{otGreenDark}CLASSE PRÉPARATOIRE SCIENTIFIQUE}\par\vspace{5mm}
+{\otLight\fontsize{23}{29}\selectfont Cours et exercices corrigés}\par\vspace{12mm}
+{\fontsize{18}{24}\selectfont L’oscillateur harmonique}\par\vspace{8mm}
+Chapitre 04\par 24 exercices progressifs ; 3 défis avancés\par TP, numérique, DM et DS avec barèmes\par\vspace{12mm}
+Collection OptiTAB\par\href{https://www.optitab.net}{optitab.net}\end{center}
+\vfill\source{Édition de travail du 25 octobre 2026. Énoncés OptiTAB originaux, figures vectorielles et corrigés indépendants. Les supports extérieurs sont identifiés à la fin du chapitre.}
+
+
+\Page{Pour ouvrir le chapitre}{Avant-propos et mode d’emploi}{avant}
+\thispagestyle{mpsiFront}
+Ce chapitre prolonge le manuel de physique MPSI dans la charte de la collection. Il traite les oscillations idéales d’une masse sur ressort et d’un circuit LC, avec conditions initiales, phase et bilan énergétique. Le programme de référence est l’\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{arrêté du 5 janvier 2021}, annexe 2, rubrique 1.4 / oscillateur harmonique.
+\Sub{Comprendre, chercher, vérifier}
+Lire un résultat ne suffit pas à se l’approprier. Redessiner le système, orienter les grandeurs, retrouver les équations puis expliquer leurs limites : ces gestes relient le cours aux problèmes. Une réponse numérique doit comporter une unité, un nombre raisonnable de chiffres et une interprétation.
+\begin{loi}{Un parcours en quatre étapes}
+1. Faire le diagnostic p.\,\pageref{diagnostic} et reprendre les prérequis fragiles.\par
+2. Travailler le cours p.\,\pageref{cours-1} et refaire les exemples.\par
+3. Chercher les exercices p.\,\pageref{td1}, puis les défis et évaluations.\par
+4. Corriger, expliquer l’erreur puis refaire une question sans solution.
+\end{loi}
+\Sub{Utiliser les corrigés}
+Les solutions commencent p.\,\pageref{corr-diag}. Avant de les lire, utiliser les indications p.\,\pageref{indices}. Le barème du DM et du DS sert à distinguer mise en équation, calcul et interprétation ; ce n’est pas un barème officiel de concours.
+\Sub{Travailler sur de vrais sujets}
+Les pages p.\,\pageref{sources-1} et suivantes donnent les liens, les questions ciblées et des repères de correction de supports réellement publiés. Conserver leurs données et figures d’origine. Les énoncés OptiTAB sont des créations pédagogiques, clairement distinguées de ces documents.
+\begin{methode}{Une fiche de progrès}
+Après chaque exercice, noter S (réussi seul), A (réussi avec aide) ou R (à reprendre). Choisir une question à refaire deux jours plus tard. Une solution comprise doit pouvoir être reconstruite, pas seulement reconnue.
+\end{methode}
+\source{© OptiTAB, 2026. Les séries de données créées pour le TP et le numérique sont signalées comme simulations. Les références des auteurs extérieurs restent attachées aux documents d’origine.}
+
+
+\Page{Collection OptiTAB}{Sommaire}{sommaire}
+\thispagestyle{mpsiFront}
+\begingroup\setlength{\parskip}{0pt}\fontsize{10}{13.5}\selectfont
+\source{MPSI · Physique · Plan de l’ouvrage}
+\input{plan}
+\endgroup
+\vspace{2mm}\hrule\vspace{2mm}
+\tocresource{Parcours et ressources du chapitre 04}{ressources}
+\source{La pagination concerne ce fascicule. Les autres chapitres sont des volumes séparés ou en préparation ; aucune page fictive n’est attribuée.}
+
+
+\Page{Collection OptiTAB}{Parcours et ressources}{ressources}
+\thispagestyle{mpsiFront}
+\tocresource{Diagnostic}{diagnostic}
+\tocresource{Cours et méthodes}{cours-1}
+\tocresource{Travaux pratiques}{tp}
+\tocresource{Activité numérique}{numerique}
+\tocresource{24 exercices progressifs}{td1}
+\tocresource{Trois défis avancés}{defi1}
+\tocresource{Devoir maison}{dm}
+\tocresource{Devoir surveillé de 2 heures}{ds1}
+\tocresource{Indications progressives}{indices}
+\tocresource{Corrigés du diagnostic}{corr-diag}
+\tocresource{Corrigés des exercices}{corr-td1}
+\tocresource{Corrigés des défis}{corr-defi1}
+\tocresource{Corrigé et barème du DM}{corr-dm}
+\tocresource{Corrigé et barème du DS}{corr-ds1}
+\tocresource{Supports authentiques et références}{sources-1}
+\begin{docu}{Mon objectif de travail}\checkline{Je refais une démonstration.}\checkline{Je réussis une application sans aide.}\checkline{Je justifie le choix d’un modèle.}\checkline{Je corrige une évaluation et repère la capacité à reprendre.}\end{docu}
+
+\Page{Chapitre 04 / Programme officiel}{L’oscillateur harmonique}{chapitre-04}
+Une masse se déplace tandis qu’un ressort se déforme ; dans un circuit LC, le courant et la tension se relaient. Ces situations partagent la même équation. L’oscillateur harmonique sert de modèle de référence avant l’étude des pertes au chapitre 05.
+\begin{loi}{Notions et capacités travaillées}
+Établir et reconnaître l’équation harmonique ; la résoudre avec deux conditions initiales. Définir amplitude, phase, période, fréquence et pulsation. Comparer les réalisations mécanique et électrique et construire leur bilan énergétique.
+\end{loi}
+
+\Sub{Prérequis}
+Dérivée seconde, fonctions sinus et cosinus ; énergie cinétique ; force de rappel linéaire $F_x=-kx$ ; relations de C et L. La loi $m\ddot x=\sum F_x$ est rappelée ici et sera développée en mécanique.
+
+\begin{methode}{La méthode du chapitre}
+Repérer l’équilibre, choisir l’écart à cet équilibre, écrire l’équation de mouvement puis les deux conditions initiales. Fixer les coefficients avant de convertir en amplitude et phase. Vérifier l’énergie.
+\end{methode}
+
+\source{Concordance : annexe 2 de l’arrêté du 5 janvier 2021, rubrique 1.4 / oscillateur harmonique. Page interne 15 (page PDF 52). La rubrique 1.4 est répartie entre chapitres 04, 05 et 06 ; les frottements puis le forçage sinusoïdal sont traités ensuite.}
+
+\Page{Diagnostic / 15 min}{Avant d’ouvrir le cours}{diagnostic}
+\begin{questions}
+\item Dériver $x=A\cos(\omega t+\varphi)$ une puis deux fois.
+\item Donner la relation entre $T$, $f$ et $\omega$.
+\item Une équation $\ddot x+100x=0$ a quelle pulsation ? Quelle unité porte le coefficient 100 ?
+\item Que vaut la force d’un ressort si l’écart à l’équilibre est positif ?
+\item Écrire l’énergie cinétique et l’énergie potentielle élastique d’une masse m sur un ressort k.
+\item Rappeler les énergies de C et L.
+\item Un cosinus est-il déterminé par sa seule valeur à l’origine ?
+\item Si $x(0)=A>0$ et $v(0)=0$, dans quel sens la vitesse évolue-t-elle juste après ?
+\end{questions}
+\begin{docu}{Bilan personnel}
+\checkline{Les conversions et les unités sont maîtrisées.}\checkline{Je peux orienter un schéma et annoncer les hypothèses.}\checkline{Je sais expliquer une condition initiale.}Corrigé p.\,\pageref{corr-diag}.
+\end{docu}
+
+
+\Page{Cours / 1}{Reconnaître le modèle harmonique}{cours-1}
+Un système oscillant peut s’éloigner puis revenir autour d’un équilibre. Le modèle harmonique suppose une force de rappel proportionnelle à l’écart, ou une relation équivalente entre les variables d’un circuit, et aucune dissipation.
+\begin{loi}{L’équation de référence}
+$\result{\ddot x+\omega_0^2x=0}$, avec $\omega_0>0$. L’accélération est opposée au déplacement. $\omega_0$ se mesure en rad/s et $\omega_0^2$ en s$^{-2}$.
+\end{loi}
+\fig{sinus}{La vitesse est en quadrature avec le déplacement ; les deux courbes partagent la même pulsation.}\Sub{Pourquoi le mouvement ne s’arrête pas à l’équilibre}
+La force s’annule à l’équilibre mais la vitesse y est maximale. La masse continue donc son mouvement ; l’inertie et le rappel transforment alternativement énergie cinétique et énergie potentielle.
+\begin{piege}{Le signe du rappel est décisif}
+$\ddot x-\omega_0^2x=0$ décrit des exponentielles et un équilibre instable. Une erreur de signe ne constitue pas un simple décalage de phase.
+\end{piege}
+
+
+\Page{Cours / 2}{Masse et ressort horizontal}{cours-2}
+Une masse m se déplace sans frottement sur un support horizontal. Les forces verticales se compensent ; l’axe x mesure l’écart par rapport à l’équilibre du ressort. La force de rappel est $F_x=-kx$.
+\fig{ressort}{L’origine du déplacement est l’équilibre, pas nécessairement le point d’attache du ressort.}\begin{loi}{De la dynamique à l’oscillation}
+$m\ddot x=-kx$, donc $\omega_0=\sqrt{k/m}$, $T_0=2\pi\sqrt{m/k}$ et $f_0=1/T_0$.
+\end{loi}
+\Sub{Application}
+Avec $m=0{,}20$ kg et $k=20$ N/m, $\omega_0=10$ rad/s, $T_0=0{,}628$ s et $f_0=1{,}592$ Hz. Une masse plus grande ralentit le mouvement ; une raideur plus grande l’accélère.
+\begin{methode}{Les hypothèses à annoncer}
+Le ressort est utilisé dans son domaine linéaire ; sa masse est négligée ; le guidage assure un seul degré de liberté ; les frottements et les pertes sont négligés. Une amplitude excessive peut invalider le modèle.
+\end{methode}
+
+
+\Page{Cours / 3}{Résoudre avec deux conditions initiales}{cours-3}
+\begin{loi}{La forme la plus sûre pour commencer}
+$x(t)=a\cos(\omega_0t)+b\sin(\omega_0t)$. Si $x(0)=x_0$ et $v(0)=v_0$, alors $a=x_0$ et $b=v_0/\omega_0$ : \[\result{x=x_0\cos(\omega_0t)+(v_0/\omega_0)\sin(\omega_0t)}\]
+\end{loi}
+\Sub{Démonstration}
+Chacun des deux termes satisfait l’équation. À l’origine, le sinus s’annule et le cosinus vaut un : $x(0)=a$. En dérivant, $v(0)=\omega_0b$. Les deux conditions fixent donc les deux constantes indépendantes.
+\Sub{Exemple avec lancement}
+$\omega_0=10$ rad/s, $x_0=3$ cm, $v_0=0{,}40$ m/s : $x=0{,}03\cos(10t)+0{,}04\sin(10t)$ en mètres. La vitesse initiale positive interdit de représenter le départ comme une simple libération depuis une position extrême.
+\fig{sinus}{Les deux fonctions sinus et cosinus forment une base pour toutes les conditions initiales.}\begin{methode}{Un triple contrôle}
+Évaluer x(0), puis v(0), puis $\ddot x+\omega_0^2x$. Ces trois vérifications évitent d’accepter une solution qui satisfait seulement l’équation.
+\end{methode}
+
+
+\Page{Cours / 4}{Amplitude et phase sans ambiguïté}{cours-4}
+\begin{loi}{Une autre écriture de la même solution}
+$x=A\cos(\omega_0t+\varphi)$ avec $A\geq0$. On a $A=\sqrt{x_0^2+(v_0/\omega_0)^2}$, $A\cos\varphi=x_0$ et $-A\omega_0\sin\varphi=v_0$. Pour $A>0$, $\varphi=\operatorname{atan2}(-v_0/\omega_0,x_0)$ à $2\pi$ près.
+\end{loi}
+\Sub{Pourquoi une tangente ne suffit pas}
+$\tan\varphi=-v_0/(\omega_0x_0)$ ne distingue pas des angles séparés de $\pi$. Le signe de x et celui de v fixent le quadrant. Si $A=0$, le système reste à l’équilibre et la phase est indéterminée.
+\Sub{Exemple du lancement}
+$x_0=0{,}03$ m et $v_0/\omega_0=0{,}04$ m donnent $A=0{,}05$ m et $\varphi=-0{,}9273$ rad. À l’origine, le cosinus vaut $0{,}6$ et le sinus $-0{,}8$ : la position et la vitesse sont correctement retrouvées.
+\begin{piege}{La phase dépend de l’origine des temps}
+Changer l’origine temporelle modifie $\varphi$, mais ne change ni l’amplitude ni la période. Une différence de phase doit être définie entre grandeurs de même fréquence et dans une convention précise.
+\end{piege}
+
+
+\Page{Cours / 5}{Période, fréquence et lecture d’un graphe}{cours-5}
+\begin{loi}{Des grandeurs distinctes}
+$T_0=2\pi/\omega_0$ ; $f_0=1/T_0$ ; $\omega_0=2\pi f_0$. L’amplitude est le maximum de l’écart à l’équilibre. Pour $x=x_e+A\cos(\omega_0t+\varphi)$, elle vaut $(x_{\max}-x_{\min})/2$, et $x_e=(x_{\max}+x_{\min})/2$.
+\end{loi}
+\fig{sinus}{Entre deux maxima du même signal, il s’écoule une période ; entre un maximum et le minimum suivant, une demi-période.}\Sub{Mesurer plusieurs cycles}
+Si N périodes occupent $t_b-t_a$, estimer $T=(t_b-t_a)/N$. Pour une même précision de datation des extrémités, augmenter N réduit l’incertitude relative. Ne pas compter un demi-cycle comme un cycle complet.
+\Sub{Isochronisme}
+Dans le modèle harmonique, la période est indépendante de l’amplitude. Une variation nette de la période avec l’amplitude indique une limite du modèle, une perturbation ou une erreur de mesure. L’isochronisme ne signifie pas seulement que la pulsation est constante au cours d’une courbe donnée.
+
+
+\Page{Cours / 6}{L’énergie d’un oscillateur mécanique}{cours-6}
+\begin{loi}{Un échange sans dissipation}
+$\mathcal E=\tfrac12mv^2+\tfrac12kx^2=\tfrac12kA^2$. Sa dérivée vaut $v(m\ddot x+kx)=0$. L’énergie est constante ; $\mathcal E_c$ et $\mathcal E_p$ s’échangent périodiquement.
+\end{loi}
+\fig{energies}{L’énergie cinétique est maximale au passage par l’équilibre ; l’énergie potentielle aux positions extrêmes.}\Sub{Deux conséquences utiles}
+À l’équilibre, $v_{\max}=\omega_0A$. À un déplacement x, $v^2=\omega_0^2(A^2-x^2)$. L’énergie donne le module de la vitesse ; son signe dépend du sens du mouvement.
+\Sub{Exemple}
+Pour $m=0{,}20$ kg, $k=20$ N/m et $A=5$ cm : $\mathcal E=25$ mJ et $v_{\max}=0{,}50$ m/s. Au point $x=3$ cm, $|v|=0{,}40$ m/s ; les deux signes correspondent aux deux passages par cette position.
+
+
+\Page{Cours / 7}{Le circuit LC idéal}{cours-7}
+\fig{lc}{Le courant i entre par l’armature positive de C. Il circule ensuite dans L ; les deux tensions réceptrices se somment à zéro.}\begin{loi}{Équation électrique}
+$u_L+u_C=0$, $u_L=L\dot i$ et $i=C\dot u_C$. Donc $\ddot u_C+u_C/(LC)=0$ et $\omega_0=1/\sqrt{LC}$. En charge q, $\ddot q+q/(LC)=0$ avec $i=\dot q$.
+\end{loi}
+\Sub{Condition initiale usuelle}
+Pour $u_C(0)=U_0$ et $i(0)=0$, $u_C=U_0\cos(\omega_0t)$ et $i=-C\omega_0U_0\sin(\omega_0t)$. Le signe négatif traduit le fait que le condensateur se décharge d’abord dans le sens opposé au courant de référence.
+\Sub{Exemple}
+$L=100$ mH et $C=1\ \mu\mathrm{ F}$ donnent $\omega_0=3162$ rad/s et $T_0=1{,}987$ ms. Avec $U_0=3$ V, le courant maximal en module vaut $U_0\sqrt{C/L}=9{,}49$ mA.
+\begin{piege}{Un composant réel dissipe}
+La résistance de la bobine, les connexions et les instruments amortissent une expérience réelle. Le LC idéal constitue une référence ; il n’annonce pas des oscillations indéfinies dans tout montage.
+\end{piege}
+
+
+\Page{Cours / 8}{Énergie électrique et analogie}{cours-8}
+\begin{loi}{Le bilan du LC}
+$\mathcal E=\tfrac12Li^2+\tfrac12Cu_C^2$. Sa dérivée vaut $i(L\dot i+u_C)=0$. En charge q, $\mathcal E=\tfrac12L\dot q^2+q^2/(2C)$.
+\end{loi}
+\Sub{Un dictionnaire utile}
+\begin{tabularx}{\linewidth}{@{}Y Y@{}}\toprule
+Mécanique & Électricité\\\midrule
+Déplacement $x$ & Charge $q$\\
+Vitesse $\dot x$ & Courant $i=\dot q$\\
+Masse $m$ & Inductance $L$\\
+Raideur $k$ & Inverse de capacité $1/C$\\
+Énergie cinétique $m\dot x^2/2$ & Énergie magnétique $Li^2/2$\\
+Énergie potentielle $kx^2/2$ & Énergie électrique $q^2/(2C)$\\\bottomrule
+\end{tabularx}
+\fig{energies}{Les mêmes courbes normalisées décrivent les deux réserves d’énergie du LC et du système masse-ressort.}\begin{methode}{Comparer les bonnes variables}
+L’analogie la plus directe porte sur x et q. Si l’on choisit u comme variable électrique, il faut aussi transformer les coefficients énergétiques : q = Cu.
+\end{methode}
+
+
+\Page{Cours / 9}{Le portrait de phase}{cours-9}
+Un portrait de phase trace la vitesse en fonction de la position, au fil du temps. Il représente les états successifs du système et non un trajet dans l’espace physique.
+\begin{loi}{L’énergie définit une ellipse}
+$x^2/A^2+v^2/(\omega_0^2A^2)=1$. Les demi-axes sont A et $\omega_0A$. Dans les coordonnées réduites $(x/A,v/(\omega_0A))$, la courbe est un cercle.
+\end{loi}
+\fig{phase}{Le sens de parcours découle de la dynamique ; il ne se choisit pas arbitrairement.}\Sub{Lire les états}
+Aux extrêmes de x, v = 0 ; aux passages par x = 0, $|v|$ est maximal. Au point $(A,0)$, l’accélération vaut $-\omega_0^2A$, donc la trajectoire descend. Une même ellipse représente toutes les phases pour la même énergie.
+\begin{piege}{Les échelles des axes comptent}
+Un portrait dessiné avec deux unités différentes peut paraître circulaire sans que les demi-axes physiques soient égaux. Pour retrouver $\omega_0$, prendre le rapport $v_{\max}/A$ en unités SI.
+\end{piege}
+
+
+\Page{Cours / 10}{Déplacer l’équilibre}{cours-10}
+Une force constante $F_0$ agit sur la masse en plus du rappel : $m\ddot x=-kx+F_0$. Le mouvement n’est plus centré sur x = 0, mais reste harmonique autour d’un autre équilibre.
+\begin{loi}{Translation de variable}
+$x_e=F_0/k$. Poser $X=x-x_e$ donne $\ddot X+\omega_0^2X=0$. La solution est $x=x_e+(x_0-x_e)\cos(\omega_0t)+(v_0/\omega_0)\sin(\omega_0t)$.
+\end{loi}
+\Sub{Ressort vertical}
+Avec l’axe vers le bas et l’allongement $z$ depuis la longueur à vide, $m\ddot z=mg-kz$. L’équilibre est $z_e=mg/k$. La pesanteur déplace l’équilibre mais ne modifie pas la pulsation dans ce modèle linéaire.
+\Sub{Échelon dans un LC série}
+Une source constante E impose $LC\ddot u_C+u_C=E$. Poser $U=u_C-E$. Avec $u_C(0)=0$ et $i(0)=0$, $u_C=E(1-\cos\omega_0t)$. Sans perte, la tension atteint 2E ; elle ne se stabilise pas à E.
+\begin{piege}{Le permanent harmonique idéal}
+Une excitation constante ne garantit pas une convergence si le système n’est pas amorti. La solution particulière fixe le centre d’oscillation ; le régime libre conserve son amplitude.
+\end{piege}
+
+
+\Page{Cours / 11}{Déterminer un paramètre par oscillation}{cours-11}
+\begin{loi}{Deux relations expérimentales}
+Masse-ressort : $T^2=(4\pi^2/k)m$ ; LC : $T^2=4\pi^2LC$. Une droite permet de tester le modèle et de limiter l’effet d’une seule lecture.
+\end{loi}
+\Sub{Une estimation de raideur}
+Mesurer plusieurs masses et plusieurs périodes. Ajuster $T^2=am+b$. Dans le modèle de ressort sans masse, $k=4\pi^2/a$ et b = 0. Une ordonnée non nulle peut suggérer une masse mobile supplémentaire ou un biais ; elle ne permet pas à elle seule d’en identifier la cause.
+\Sub{Incertitude sur une mesure isolée}
+Si $k=4\pi^2m/T^2$ et si m et T sont indépendants : $u(k)/k=\sqrt{[u(m)/m]^2+[2u(T)/T]^2}$. Le facteur 2 sur l’incertitude relative de période est essentiel.
+\fig{ressort}{Un modèle de masse ponctuelle doit inclure les accessoires qui se déplacent avec le chariot.}\begin{methode}{Ce que l’on teste}
+Comparer la période à différentes amplitudes, suivre une éventuelle diminution d’amplitude et examiner les résidus de l’ajustement. Un faible amortissement peut laisser la période presque constante tout en révélant des pertes.
+\end{methode}
+
+
+\Page{Pratique / TP}{Mesurer une raideur par la période}{tp}
+\begin{questions}
+\item Installer un chariot guidé horizontalement, relié à un ressort ; mesurer toute la masse mobile. Choisir une amplitude compatible avec le domaine linéaire.
+\item Enregistrer x(t). Déterminer l’équilibre, l’amplitude et la durée de dix périodes si l’enregistrement le permet.
+\item Recommencer avec plusieurs masses et ajuster $T^2=am+b$. En déduire k ; examiner b et les résidus.
+\item Comparer deux amplitudes initiales. Discuter isochronisme et décroissance de l’amplitude.
+\item Comparer $v_{\max}$ estimé par dérivation à $\omega_0A$, en expliquant la sensibilité au bruit.
+\end{questions}
+\begin{docu}{Série simulée pour préparer le traitement}
+$m$ (kg) : $0{,}10$, $0{,}15$, $0{,}20$, $0{,}25$.\par $T$ (s) : $0{,}444$, $0{,}544$, $0{,}628$, $0{,}702$.\par Ces valeurs sont des résultats arrondis du modèle $k=20$ N/m, pas des mesures effectuées.
+\end{docu}
+\begin{methode}{Attendu}
+Schéma et hypothèses, chronométrage expliqué, ajustement avec unités, résultat et incertitude, limites physiques et discussion d’un éventuel amortissement.
+\end{methode}
+
+
+\Page{Pratique / Numérique}{Comparer une intégration à l’exact}{numerique}
+Euler appliqué naïvement à un oscillateur sans perte crée de l’énergie. Le code suivant permet de mesurer cette dérive, puis de la comparer à un schéma qui met à jour la vitesse avant la position.
+\begin{verbatim}
+import numpy as np
+w, h, N = 10.0, 0.001, 10000
+x, v = np.zeros(N+1), np.zeros(N+1)
+x[0] = 0.05
+for n in range(N):
+    v[n+1] = v[n] - h*w*w*x[n]
+    x[n+1] = x[n] + h*v[n]  # Euler explicite
+energy = 0.5*(v*v + w*w*x*x)
+t = h*np.arange(N+1)
+exact = 0.05*np.cos(w*t)
+\end{verbatim}
+\begin{questions}
+\item Tracer x et la solution exacte, puis le rapport d’énergie à l’énergie initiale.
+\item Démontrer $\mathcal E_{n+1}=(1+h^2\omega_0^2)\mathcal E_n$ pour Euler explicite.
+\item Remplacer la mise à jour de x par $x_{n+1}=x_n+h v_{n+1}$. Comparer la dérive et réduire h.
+\item Expliquer pourquoi un résultat numérique oscillant n’est pas nécessairement un bon résultat physique.
+\end{questions}
+\begin{piege}{Une croissance artificielle}
+Le modèle exact conserve l’énergie. Une croissance dans cette expérience numérique signale un défaut du schéma ou du pas, et ne prouve aucune instabilité physique du ressort.
+\end{piege}
+
+
+\Page{Bilan de cours}{Les réflexes à conserver}{synthese}
+\begin{loi}{L’essentiel avec ses hypothèses}
+Sans dissipation, autour d’un équilibre stable linéaire : $\ddot X+\omega_0^2X=0$.\par $X=X_0\cos\omega_0t+(V_0/\omega_0)\sin\omega_0t$.\par $A=\sqrt{X_0^2+(V_0/\omega_0)^2}$ ; $T_0=2\pi/\omega_0$.\par Ressort : $\omega_0=\sqrt{k/m}$ ; LC : $\omega_0=1/\sqrt{LC}$.\par Énergie conservée : $mv^2/2+kX^2/2$ ou $Li^2/2+q^2/(2C)$.
+\end{loi}
+\Sub{À refaire}
+\begin{questions}
+\item Établir l’équation à partir des forces ou des lois de maille.
+\item Fixer les deux constantes avec les deux conditions initiales.
+\item Retrouver amplitude et quadrant de phase.
+\item Établir l’ellipse de phase à partir de l’énergie.
+\end{questions}
+
+\begin{docu}{Avant de rendre}
+\checkline{L’origine est l’équilibre pertinent.}\checkline{Les deux conditions initiales sont satisfaites.}\checkline{Amplitude et déplacement initial sont distingués.}\checkline{L’énergie et les limites physiques sont vérifiées.}
+\end{docu}
+
+
+\Page{Exercices / Applications}{Identifier le mouvement}{td1}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E01}{Une pulsation à identifier}{Niveau 1}{8 min}
+\begin{questions}
+\item Résoudre $\ddot x+400x=0$ pour $x(0)=2$ cm, $v(0)=0$. Donner période et fréquence.
+\end{questions}
+
+\ex{E02}{Une masse et une raideur}{Niveau 1}{10 min}
+\begin{questions}
+\item $m=0{,}50$ kg, $k=50$ N/m. Établir l’équation pour l’écart x à l’équilibre et calculer $T_0$. Que devient la période si la masse est multipliée par quatre ?
+\end{questions}
+
+\ex{E03}{Un lancement à l’équilibre}{Niveau 1}{10 min}
+\begin{questions}
+\item $\omega_0=5$ rad/s ; $x(0)=0$, $v(0)=0{,}20$ m/s. Donner x(t), l’amplitude et une phase dans l’écriture cosinus.
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Fixer amplitude et phase}{td2}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E04}{Deux conditions non nulles}{Niveau 2}{12 min}
+\begin{questions}
+\item $\omega_0=10$ rad/s, $x_0=3$ cm, $v_0=0{,}40$ m/s. Déterminer x(t), A et la phase.
+\end{questions}
+
+\ex{E05}{Le quadrant oublié}{Niveau 2}{12 min}
+\begin{questions}
+\item $x_0=-2$ cm et $v_0=0$ pour $\omega_0=8$ rad/s. Une copie propose $A=2$ cm et $\varphi=0$ car $\tan\varphi=0$. Corriger et expliquer.
+\end{questions}
+
+\ex{E06}{Retrouver une vitesse initiale}{Niveau 2}{12 min}
+\begin{questions}
+\item $x=0{,}06\cos(4t+\pi/3)$ en SI. Calculer $x(0),v(0),v_{\max}$ et $a(0)$.
+\end{questions}
+
+
+
+\Page{Exercices / Applications}{Lire les oscillations}{td3}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E07}{Un enregistrement décentré}{Niveau 1}{10 min}
+\begin{questions}
+\item Un signal oscille entre 3 et 11 cm et deux maxima successifs sont séparés de 0,80 s. Donner équilibre, amplitude, période, fréquence et pulsation.
+\end{questions}
+
+\ex{E08}{Le premier passage}{Niveau 2}{15 min}
+\begin{questions}
+\item Une masse est libérée sans vitesse à $x=A>0$. Quand passe-t-elle pour la première fois à x = A/2 ? Donner le signe et la valeur de la vitesse à cet instant.
+\end{questions}
+
+\ex{E09}{Un déphasage à lire}{Niveau 2}{12 min}
+\begin{questions}
+\item Pour $x=A\cos\omega_0t$ et $v=-A\omega_0\sin\omega_0t$, écrire v sous forme cosinus. Donner sa phase relativement à x et expliquer le signe.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Utiliser l’énergie}{td4}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E10}{Une énergie à deux instants}{Niveau 1}{12 min}
+\begin{questions}
+\item $m=0{,}2$ kg, $k=20$ N/m, $A=5$ cm. Calculer l’énergie totale puis les deux énergies à x = 3 cm.
+\end{questions}
+
+\ex{E11}{Retrouver une amplitude}{Niveau 2}{12 min}
+\begin{questions}
+\item À un instant, $x=4$ cm et $v=-0{,}30$ m/s, avec $\omega_0=10$ rad/s. Donner A ; préciser si la masse s’approche de l’équilibre.
+\end{questions}
+
+\ex{E12}{Une ellipse de phase}{Niveau 2}{15 min}
+\begin{questions}
+\item Un portrait possède les demi-axes $A=2$ cm et $v_{\max}=0{,}50$ m/s. Déterminer $\omega_0$, T et k pour m = 0,10 kg. Indiquer le sens de parcours.
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Passer à l’électricité}{td5}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E13}{Un circuit LC}{Niveau 1}{12 min}
+\begin{questions}
+\item $L=10$ mH, $C=10\ \mu\mathrm{ F}$, $u_C(0)=5$ V et $i(0)=0$ avec $i=C\dot u_C$. Donner u, i et la période.
+\end{questions}
+
+\ex{E14}{Une intensité initiale}{Niveau 2}{15 min}
+\begin{questions}
+\item LC idéal : $L=0{,}10$ H, $C=1\ \mu\mathrm{ F}$, $u_C(0)=0$, $i(0)=10$ mA dans $i=C\dot u_C$. Donner l’amplitude de tension et l’énergie.
+\end{questions}
+
+\ex{E15}{Une tension nulle, une réserve pleine}{Niveau 2}{12 min}
+\begin{questions}
+\item Une capacité de 2 $\mu\mathrm{ F}$ initialement à 10 V oscille avec L = 50 mH. Calculer l’énergie et le courant maximal. Où est l’énergie lorsque uC = 0 ?
+\end{questions}
+
+
+
+\Page{Exercices / Méthodes}{Changer l’équilibre}{td6}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E16}{Une force constante}{Niveau 2}{15 min}
+\begin{questions}
+\item $m=0{,}20$ kg, $k=20$ N/m, $F_0=1$ N est appliquée à t = 0 ; $x(0)=v(0)=0$. Déterminer l’équilibre et x(t), puis le maximum de x.
+\end{questions}
+
+\ex{E17}{Un ressort vertical}{Niveau 2}{18 min}
+\begin{questions}
+\item m = 0,10 kg, k = 10 N/m, g = 10 m/s$^2$. L’allongement z est positif vers le bas. On lâche la masse au ressort non allongé. Donner z(t) et sa plage de variation.
+\end{questions}
+
+\ex{E18}{LC sous un échelon}{Niveau 2}{18 min}
+\begin{questions}
+\item Un LC série idéal reçoit E constant à partir de t = 0. La capacité est déchargée et le courant nul. Établir uC(t). Calculer le maximum de tension et l’énergie stockée à cet instant.
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Exploiter des mesures}{td7}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E19}{Raideur et incertitude}{Niveau 2}{15 min}
+\begin{questions}
+\item m = 0,200 kg, u(m) = 0,002 kg, T = 0,630 s, u(T) = 0,005 s, indépendants. Déterminer k et u(k).
+\end{questions}
+
+\ex{E20}{Dix périodes}{Niveau 1}{12 min}
+\begin{questions}
+\item Dix périodes occupent 6,28 s. Chaque date extrême a une incertitude-type 0,02 s, indépendante de l’autre. Donner T et u(T).
+\end{questions}
+
+\ex{E21}{Deux ressorts}{Niveau 3}{20 min}
+\begin{questions}
+\item Une masse est attachée entre deux ressorts horizontaux de raideurs k1 et k2, chacun fixé à un mur. Démontrer la raideur effective pour un déplacement depuis l’équilibre et donner la période.
+\end{questions}
+
+
+
+\Page{Exercices / Approfondissement}{Vérifier un modèle}{td8}
+\source{Énoncés OptiTAB originaux. Les durées sont indicatives ; justifier toute réponse.}
+\ex{E22}{Un pendule dans le modèle linéaire}{Niveau 3}{20 min}
+\begin{questions}
+\item On admet $\ddot\theta+(g/\ell)\sin\theta=0$. À petits angles, établir la période. Pour $\ell=1$ m et g = 9,81 m/s$^2$, calculer sa valeur et discuter l’influence de la masse.
+\end{questions}
+
+\ex{E23}{Une énergie numérique qui augmente}{Niveau 3}{20 min}
+\begin{questions}
+\item Euler explicite : $x_{n+1}=x_n+hv_n$ et $v_{n+1}=v_n-h\omega_0^2x_n$. Établir le facteur de croissance de $v^2+\omega_0^2x^2$. Pour h = 0,01 s et $\omega_0=10$ rad/s, calculer le facteur après 100 pas.
+\end{questions}
+
+\ex{E24}{Un état après un choc}{Niveau 3}{25 min}
+\begin{questions}
+\item Une masse m à l’équilibre reçoit une impulsion de quantité de mouvement J, puis oscille librement sur k. On admet $m[v(0^+)-v(0^-)]=J$ et x continue. Déterminer x(t), l’amplitude et l’énergie injectée.
+\end{questions}
+
+
+
+\Page{Défi avancé / D1}{Une impulsion au bon moment}{defi1}
+\label{ex-D1}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi1}.}
+Un oscillateur de masse m, de pulsation $\omega_0$, possède une amplitude A. À un instant où x = 0 et v = $+\omega_0A$, une impulsion J s’applique dans le sens positif.\begin{questions}
+\item Déterminer la nouvelle amplitude et la variation d’énergie.
+\item Comparer avec la même impulsion appliquée à x = A et v = 0.
+\item Pour m = 0,20 kg, $\omega_0=10$ rad/s, A = 5 cm et J = 0,02 kg·m/s, effectuer les deux calculs.
+\item À quel moment une impulsion donnée augmente-t-elle le plus l’énergie ? Que change son sens ?
+\end{questions}
+
+
+\Page{Défi avancé / D2}{Couper une alimentation au bon instant}{defi2}
+\label{ex-D2}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi2}.}
+Un LC série idéal, initialement déchargé et sans courant, reçoit une source E. À $t=t_s$, la source est remplacée par un fil sans rompre la boucle.\begin{questions}
+\item Écrire l’état juste avant puis juste après la commutation.
+\item Déterminer la nouvelle amplitude de tension en régime libre.
+\item Exprimer l’énergie restante en fonction de $t_s$ et rechercher les dates qui la maximisent ou l’annulent.
+\item Calculer pour L = 10 mH, C = 10 $\mu\mathrm{ F}$, E = 5 V, $t_s=T_0/4$.
+\end{questions}
+
+
+\Page{Défi avancé / D3}{Peut-on identifier toute la mécanique ?}{defi3}
+\label{ex-D3}\source{Problème OptiTAB original. Niveau 3 ; 40 à 60 minutes. Indices p.\,\pageref{indices} ; corrigé p.\,\pageref{corr-defi3}.}
+On observe x(t) sans mesurer les forces. L’ajustement donne une pulsation $\omega_0$ et une amplitude A. La masse mobile est inconnue.\begin{questions}
+\item Peut-on déterminer séparément m et k ? Identifier la combinaison observable.
+\item On ajoute une masse connue $\Delta m$ ; la période passe de $T_1$ à $T_2$. Établir m et k.
+\item Calculer pour $\Delta m=0{,}10$ kg, $T_1=0{,}60$ s et $T_2=0{,}80$ s.
+\item Proposer un contrôle avec une troisième masse et expliquer le rôle d’un éventuel décalage d’équilibre.
+\end{questions}
+
+
+\Page{Évaluation / DM}{Deux expériences, une même équation}{dm}
+\source{Devoir maison OptiTAB original ; 1 h 30 à 2 h ; calculatrice autorisée. Barème pédagogique sur 20.}
+Un oscillateur masse-ressort a m = 0,20 kg et k = 20 N/m. Un LC idéal a L = 100 mH. On veut la même pulsation propre.\begin{questions}
+\item Calculer $\omega_0$ et la capacité nécessaire. \textbf{3 points}
+\item Pour $x_0=3$ cm, $v_0=0{,}40$ m/s, donner x(t), amplitude et phase. \textbf{5 points}
+\item Établir l’énergie mécanique et son partage à t = 0. \textbf{3 points}
+\item Dans le LC, $u_0=2$ V et $i_0=0$. Donner u(t), i(t) et l’énergie totale. \textbf{4 points}
+\item Tracer qualitativement les deux portraits réduits et proposer un protocole qui teste l’isochronisme. \textbf{5 points}
+\end{questions}
+
+
+\Page{Évaluation / DS / 1 sur 2}{Osciller et échanger de l’énergie}{ds1}
+\source{Devoir surveillé OptiTAB original ; durée 2 h ; calculatrice autorisée ; note sur 20. Les deux pages forment un seul sujet.}
+\Sub{A / Masse-ressort / 8 points}
+m = 0,25 kg, k = 25 N/m ; x mesure l’écart à l’équilibre. On donne $x_0=-4$ cm et $v_0=0{,}30$ m/s.
+\begin{questions}
+\item Établir l’équation et calculer pulsation et période. \textbf{2 points}
+\item Résoudre puis déterminer amplitude et phase en justifiant le quadrant. \textbf{3 points}
+\item Calculer l’énergie totale et le module maximal de la vitesse. \textbf{2 points}
+\item Le mobile se rapproche-t-il initialement de l’équilibre ? \textbf{1 point}
+\end{questions}
+\Sub{B / Circuit LC / 7 points}
+L = 20 mH, C = 5 $\mu\mathrm{ F}$ ; $u_C(0)=4$ V et i(0) = 0, avec $i=C\dot u_C$.
+\begin{questions}
+\item Établir l’équation et donner uC(t). \textbf{3 points}
+\item Donner le courant, son module maximal et l’énergie totale. \textbf{3 points}
+\item Où est l’énergie au premier instant où uC = 0 ? \textbf{1 point}
+\end{questions}
+
+
+\Page{Évaluation / DS / 2 sur 2}{Approfondir et conclure}{ds2}
+\Sub{C / Déplacement de l’équilibre / 5 points}
+Une masse m est sur un ressort k. À t = 0, une force constante F0 est appliquée ; x(0) = 0 et v(0) = 0.
+\begin{questions}
+\item Déterminer le nouvel équilibre et résoudre le mouvement. \textbf{3 points}
+\item Calculer le déplacement maximal et montrer que le travail de F0 entre le départ et ce maximum égale l’énergie stockée dans le ressort. \textbf{2 points}
+\end{questions}
+\begin{docu}{Gestion du temps}
+Lecture : 10 min ; parties A et B : 70 min ; partie C : 30 min ; vérification : 10 min. Une expression littérale, une unité et une interprétation accompagnent les résultats.
+\end{docu}
+
+
+\Page{Aides progressives}{Des indices pour repartir}{indices}
+\Sub{Défi D1}
+1. La position reste continue ; la vitesse gagne J/m. 2. Calculer l’énergie immédiatement avant et après. 3. Le terme croisé Jv explique l’effet de phase.
+\Sub{Défi D2}
+1. Utiliser la réponse à l’échelon LC. 2. uC et iL restent continus. 3. L’amplitude libre dépend des deux réserves, pas seulement de la tension à la coupure.
+\Sub{Défi D3}
+1. La période fixe k/m. 2. Soustraire les deux relations de T². 3. L’équilibre modifie le centre ; l’ajout de masse modifie l’inertie.
+\Sub{Exercices}
+E05 : déterminer cosφ et sinφ, pas seulement tanφ. E08 : prendre le premier angle positif. E12 : convertir les centimètres avant le rapport des axes. E18 : translater la tension de E. E24 : l’impulsion fixe la vitesse après le choc.
+\Sub{Évaluations}
+Dans le DM, conserver les unités SI même si la capacité calculée est grande. Dans le DS, une amplitude positive impose un choix cohérent de phase ; vérifier la vitesse initiale par dérivation.
+
+
+\Page{Corrigés / Diagnostic}{Réactiver les bons réflexes}{corr-diag}
+\Sub{D1 à D3}
+$v=-A\omega\sin(\omega t+\varphi)$ et $\ddot x=-A\omega^2\cos(\omega t+\varphi)$. $f=1/T$ et $\omega=2\pi f$. La pulsation vaut $10$ rad/s ; le coefficient de x porte l’unité s$^{-2}$.
+\Sub{D4 à D6}
+Pour $x>0$, $F_x=-kx<0$. $\mathcal E_c=mv^2/2$, $\mathcal E_p=kx^2/2$ ; $\mathcal E_C=Cu^2/2$ et $\mathcal E_L=Li^2/2$.
+\Sub{D7 et D8}
+Il faut deux conditions indépendantes, par exemple x et v à une date. Pour $x(0)=A>0$, l’accélération initiale est négative : la vitesse devient négative juste après le départ.
+
+
+\Page{Corrigés / Exercices}{Identifier le mouvement}{corr-td1}
+\sol{E01}{Une pulsation à identifier}
+$\omega_0=20$ rad/s ; $x=0{,}020\cos20t$ m ; $T_0=\pi/10=0{,}3142$ s ; $f_0=10/\pi=3{,}183$ Hz.
+\sol{E02}{Une masse et une raideur}
+$\ddot x+100x=0$ ; $T_0=0{,}6283$ s. Comme $T_0\propto\sqrt m$, la nouvelle période est doublée. La pulsation est divisée par deux.
+\sol{E03}{Un lancement à l’équilibre}
+$x=0{,}040\sin5t$ m ; $A=4$ cm et $\varphi=-\pi/2$ dans $A\cos(5t+\varphi)$. La pente initiale est positive.
+
+
+\Page{Corrigés / Exercices}{Fixer amplitude et phase}{corr-td2}
+\sol{E04}{Deux conditions non nulles}
+$x=0{,}03\cos10t+0{,}04\sin10t$ m ; $A=0{,}05$ m ; $\varphi=\operatorname{atan2}(-0{,}04,0{,}03)=-0{,}9273$ rad. Vérifier les deux conditions en dérivant.
+\sol{E05}{Le quadrant oublié}
+La phase doit vérifier $A\cos\varphi=-2$ cm : $\varphi=\pi$ à $2\pi$ près. La tangente seule ne distingue pas 0 de $\pi$. $x=-0{,}02\cos8t$ m.
+\sol{E06}{Retrouver une vitesse initiale}
+$x(0)=0{,}030$ m ; $v(0)=-0{,}24\sin(\pi/3)=-0{,}2078$ m/s ; $v_{\max}=0{,}24$ m/s ; $a(0)=-16\times0{,}03=-0{,}48$ m/s$^2$.
+
+
+\Page{Corrigés / Exercices}{Lire les oscillations}{corr-td3}
+\sol{E07}{Un enregistrement décentré}
+Équilibre 7 cm, amplitude 4 cm, période 0,80 s, fréquence 1,25 Hz et pulsation $2{,}5\pi=7{,}854$ rad/s. L’amplitude n’est ni 11 cm ni 8 cm.
+\sol{E08}{Le premier passage}
+$x=A\cos\omega_0t$ ; premier passage à $\omega_0t=\pi/3$, donc $t=T_0/6$. $v=-A\omega_0\sin(\pi/3)=-\sqrt3A\omega_0/2$.
+\sol{E09}{Un déphasage à lire}
+$v=A\omega_0\cos(\omega_0t+\pi/2)$. La phase de v dépasse celle de x de $\pi/2$. À t = 0 la vitesse est nulle et devient négative, ce qui est cohérent avec le rappel.
+
+
+\Page{Corrigés / Exercices}{Utiliser l’énergie}{corr-td4}
+\sol{E10}{Une énergie à deux instants}
+$\mathcal E=kA^2/2=0{,}025$ J ; à 3 cm, $\mathcal E_p=0{,}009$ J et $\mathcal E_c=0{,}016$ J. La vitesse a un module de 0,40 m/s.
+\sol{E11}{Retrouver une amplitude}
+$A=\sqrt{x^2+(v/\omega_0)^2}=5$ cm. Puisque x > 0 et v < 0, la masse se rapproche de l’équilibre. L’énergie seule ne détermine pas ce sens.
+\sol{E12}{Une ellipse de phase}
+$\omega_0=v_{\max}/A=25$ rad/s ; $T=0{,}2513$ s ; $k=m\omega_0^2=62{,}5$ N/m. Dans le plan (x,v), le parcours est horaire car l’accélération est négative au point (A,0).
+
+
+\Page{Corrigés / Exercices}{Passer à l’électricité}{corr-td5}
+\sol{E13}{Un circuit LC}
+$\omega_0=3162{,}3$ rad/s ; $u=5\cos\omega_0t$ V ; $i=-0{,}1581\sin\omega_0t$ A ; $T=1{,}987$ ms. Le courant initial est nul mais sa pente est négative.
+\sol{E14}{Une intensité initiale}
+$u=(I_0/(C\omega_0))\sin\omega_0t$. Son amplitude vaut $I_0\sqrt{L/C}=3{,}162$ V. L’énergie initiale est $LI_0^2/2=5\ \mu\mathrm{ J}$.
+\sol{E15}{Une tension nulle, une réserve pleine}
+$\mathcal E=100\ \mu\mathrm{ J}$ ; $I_{\max}=U_0\sqrt{C/L}=63{,}25$ mA. À uC = 0, toute l’énergie est magnétique dans la bobine idéale, pas dissipée.
+
+
+\Page{Corrigés / Exercices}{Changer l’équilibre}{corr-td6}
+\sol{E16}{Une force constante}
+$x_e=F_0/k=0{,}05$ m, $\omega_0=10$ rad/s ; $x=0{,}05(1-\cos10t)$ m. Le maximum vaut 0,10 m, atteint à $t=\pi/10$ s. Le système oscille autour de 5 cm.
+\sol{E17}{Un ressort vertical}
+$z_e=mg/k=0{,}10$ m ; $\omega_0=10$ rad/s. Avec z(0) = 0 et v(0) = 0, $z=0{,}10(1-\cos10t)$ m, entre 0 et 0,20 m. La pesanteur déplace le centre sans modifier la pulsation.
+\sol{E18}{LC sous un échelon}
+$LC\ddot u+u=E$ ; $u=E(1-\cos\omega_0t)$. Le maximum 2E est atteint à $\pi/\omega_0$ avec i = 0. L’énergie est alors $C(2E)^2/2=2CE^2$, égale à l’énergie fournie $E\Delta q=2CE^2$.
+
+
+\Page{Corrigés / Exercices}{Exploiter des mesures}{corr-td7}
+\sol{E19}{Raideur et incertitude}
+$k=4\pi^2m/T^2=19{,}89$ N/m. L’incertitude relative vaut $\sqrt{0{,}01^2+(2\times0{,}005/0{,}630)^2}=0{,}01876$, donc u(k) = 0,373 N/m. On peut présenter k = 19,9 N/m, u(k) = 0,4 N/m.
+\sol{E20}{Dix périodes}
+T = 0,628 s ; $u(T)=\sqrt{0{,}02^2+0{,}02^2}/10=0{,}00283$ s. Mesurer plusieurs cycles réduit l’incertitude sur une période si le comptage est correct.
+\sol{E21}{Deux ressorts}
+Un déplacement x allonge un ressort et raccourcit l’autre ; les variations des deux forces de rappel s’ajoutent : $F_x=-(k_1+k_2)x$. Ainsi $T=2\pi\sqrt{m/(k_1+k_2)}$. Les précontraintes fixent l’équilibre, pas ce coefficient linéaire.
+
+
+\Page{Corrigés / Exercices}{Vérifier un modèle}{corr-td8}
+\sol{E22}{Un pendule dans le modèle linéaire}
+$\sin\theta\simeq\theta$ donne $\omega_0=\sqrt{g/\ell}$ et $T=2\pi\sqrt{\ell/g}=2{,}006$ s. La masse n’apparaît pas ; l’approximation exige des angles en radians suffisamment petits. L’équation non linéaire ne prédit plus un isochronisme exact.
+\sol{E23}{Une énergie numérique qui augmente}
+Les termes croisés s’annulent : $v_{n+1}^2+\omega_0^2x_{n+1}^2=(1+h^2\omega_0^2)(v_n^2+\omega_0^2x_n^2)$. Le facteur est $1{,}01^{100}=2{,}705$. Cette croissance est numérique et contredit l’énergie exacte constante.
+\sol{E24}{Un état après un choc}
+Avant le choc x = 0 et v = 0. Après, x0 = 0 et v0 = J/m. Donc $x=J\sin(\omega_0t)/(m\omega_0)$ ; $A=|J|/\sqrt{mk}$ ; $\mathcal E=J^2/(2m)$. L’impulsion est un modèle d’action très brève ; la force pendant le choc n’est pas décrite par le seul ressort.
+
+
+\Page{Corrigé du défi D1}{Une impulsion au bon moment}{corr-defi1}
+La variation d’énergie cinétique au choc vaut $\Delta\mathcal E=Jv^-+J^2/(2m)$. Au passage positif par l’équilibre, $v^-=\omega_0A$ ; l’amplitude devient $A'=|A+J/(m\omega_0)|$.
+À la position extrême, $v^-=0$ ; $\Delta\mathcal E=J^2/(2m)$ et $A'=\sqrt{A^2+[J/(m\omega_0)]^2}$.
+Numériquement, $J/(m\omega_0)=0{,}010$ m. Au passage par l’équilibre : $A'=6$ cm, $\Delta\mathcal E=0{,}011$ J. À l’extrême : $A'=\sqrt{0{,}0026}=5{,}099$ cm, $\Delta\mathcal E=0{,}001$ J.
+L’impulsion positive augmente au mieux l’énergie lorsque la vitesse est maximale et positive. Une impulsion opposée peut au contraire diminuer l’énergie si le terme croisé négatif dépasse $J^2/(2m)$. La phase d’application est donc déterminante.
+
+
+\Page{Corrigé du défi D2}{Couper une alimentation au bon instant}{corr-defi2}
+Avant la coupure, $u_s=E(1-\cos\omega_0t_s)$ et $i_s=CE\omega_0\sin\omega_0t_s$. Après remplacement de la source, ces deux valeurs sont conservées. Pour $t'=t-t_s$,
+\[u=u_s\cos\omega_0t'+\frac{i_s}{C\omega_0}\sin\omega_0t'.\]
+L’amplitude vaut $A_u=E\sqrt{(1-\cos\theta)^2+\sin^2\theta}=2E|\sin(\theta/2)|$, avec $\theta=\omega_0t_s$. L’énergie est $\mathcal E=CA_u^2/2=CE^2(1-\cos\theta)$.
+Elle est maximale pour $t_s=(n+1/2)T_0$ et nulle pour $t_s=nT_0$. Au quart de période, $u_s=E=5$ V, $i_s=CE\omega_0=0{,}1581$ A ; $A_u=5\sqrt2=7{,}071$ V et $\mathcal E=250\ \mu\mathrm{ J}$. Le courant initial non nul explique que l’amplitude finale dépasse la tension à la coupure.
+
+
+\Page{Corrigé du défi D3}{Peut-on identifier toute la mécanique ?}{corr-defi3}
+Une courbe seule donne $k/m=\omega_0^2$, mais pas k et m séparément : multiplier les deux par la même constante laisse x(t) inchangé à conditions initiales identiques.
+Avec la masse ajoutée, $T_1^2=4\pi^2m/k$ et $T_2^2=4\pi^2(m+\Delta m)/k$. Donc
+\[k=\frac{4\pi^2\Delta m}{T_2^2-T_1^2},\qquad m=\frac{\Delta mT_1^2}{T_2^2-T_1^2}.\]
+On trouve $m=0{,}12857$ kg et $k=14{,}099$ N/m. Une troisième masse doit respecter la même droite $T^2(m_{\rm ajouté})$. Un ressort vertical peut changer d’allongement d’équilibre lors de l’ajout, sans changer la forme de cette relation si le domaine reste linéaire. Les incertitudes sur deux périodes voisines peuvent fortement affecter la différence de leurs carrés.
+
+
+\Page{Corrigé / DM / Sur 20}{Deux expériences, une même équation}{corr-dm}
+\Sub{1 et 2 / 8 points}
+$\omega_0=10$ rad/s ; $C=1/(L\omega_0^2)=0{,}10$ F (3). $x=0{,}03\cos10t+0{,}04\sin10t$ m ; A = 5 cm ; $\varphi=-0{,}9273$ rad (coefficients 2 ; amplitude 1 ; phase et vérification 2). La grande capacité choisie sert ici à illustrer l’analogie, pas à imposer un montage usuel.
+\Sub{3 / 3 points}
+$\mathcal E_p(0)=9$ mJ ; $\mathcal E_c(0)=16$ mJ ; $\mathcal E=25$ mJ. Sa dérivée s’annule par l’équation de mouvement.
+\Sub{4 / 4 points}
+$u=2\cos10t$ V ; $i=C\dot u=-2\sin10t$ A ; $\mathcal E=Cu_0^2/2=0{,}20$ J. Les unités et le signe de i doivent être justifiés.
+\Sub{5 / 5 points}
+En variables x/A et v/($\omega_0$A), et de même u/Au et i/($C\omega_0A_u$), le portrait est circulaire et parcouru dans le sens horaire (2). Mesurer plusieurs périodes pour plusieurs amplitudes, comparer avec les incertitudes, suivre les pertes et conserver les autres paramètres (3).
+
+
+\Page{Corrigé / DS / 1 sur 2}{Calculer et interpréter}{corr-ds1}
+\Sub{A / 8 points}
+$m\ddot x=-kx$, $\omega_0=10$ rad/s, T = 0,6283 s (2). $x=-0{,}04\cos10t+0{,}03\sin10t$ m ; A = 0,05 m et $\varphi=\operatorname{atan2}(-0{,}03,-0{,}04)=-2{,}4981$ rad (3). $\mathcal E=kA^2/2=31{,}25$ mJ ; $v_{\max}=0{,}50$ m/s (2). x < 0 et v > 0 : il s’approche de l’équilibre (1).
+\Sub{B / 7 points}
+$\ddot u+u/(LC)=0$ ; $\omega_0=3162{,}3$ rad/s ; $u=4\cos\omega_0t$ V (3). $i=-C\omega_0\,4\sin\omega_0t$ ; $I_{\max}=63{,}25$ mA ; $\mathcal E=40\ \mu\mathrm{ J}$ (3). Lorsque u = 0, l’énergie est entièrement magnétique (1).
+
+
+\Page{Corrigé / DS / 2 sur 2}{Calculer et interpréter}{corr-ds2}
+\Sub{C / 5 points}
+$x_e=F_0/k$ ; pour X = x - xe, $\ddot X+(k/m)X=0$. Ainsi $x=(F_0/k)(1-\cos\omega_0t)$ (3). $x_{\max}=2F_0/k$, atteint à $\pi/\omega_0$. Le travail vaut $F_0x_{\max}=2F_0^2/k$, égal à $kx_{\max}^2/2$ ; la vitesse est alors nulle (2).
+\begin{methode}{Un signe doit avoir un sens}
+Le courant négatif au début de la décharge n’est pas une anomalie. Une phase dans un autre intervalle est acceptable si les conditions initiales sont satisfaites à 2π près.
+\end{methode}
+
+
+\Page{Support authentique / 1}{DS réel / Un chariot oscillant}{sources-1}
+\source{Source consultée le 25 octobre 2026. Archive de révision SUP, site MP* Condorcet ; DS5 du 7 janvier 2023 ; problème I, partie I, questions 1 à 5, page PDF 1.}
+\begin{loi}{Accéder au document d’origine}
+\href{https://cahier-de-prepa.fr/mp*-condorcet/download?id=98&v=66f32}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 30 minutes. Garder le graphe original : il donne une position absolue x, et non directement l’écart à l’équilibre. Mesurer plusieurs périodes.
+\Sub{Repères de correction indépendants}
+$x_e=\ell_0$. La lecture donne environ $\ell_0=10$ cm, A = 5 cm, x(0) = 15 cm et v(0) = 0 ; T est voisin de 0,71 à 0,72 s. Avec m = 0,10 kg, $k=4\pi^2m/T^2\simeq7{,}7$ à 7,8 N/m, cohérent avec 7,78 N/m indiqué ensuite. $x=\ell_0+A\cos\omega_0t$. Pour un lancement à l’équilibre, $x=\ell_0+(v_0/\omega_0)\sin\omega_0t$. L’exigence de longueur non négative impose $|v_0|\leq\omega_0\ell_0\simeq0{,}88$ m/s.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Support authentique / 2}{Concours réel / Isochronisme}{sources-2}
+\source{Source consultée le 25 octobre 2026. CCINP 2024, filière MP, Physique-chimie ; partie III.1, Q19 a à c, pages imprimées 11/19 et 12/19 (PDF 11 et 12).}
+\begin{loi}{Accéder au document d’origine}
+\href{https://www.concours-commun-inp.fr/_resource/annales\%20\%C3\%A9crits/2024/MP/2024_MP2PC.pdf?download=true}{Ouvrir le sujet original et conserver ses figures et données.}
+\end{loi}
+\Sub{Parcours de travail}
+Prévoir 20 minutes. Pour rester dans les outils de ce chapitre, admettre le résultat de Q18 : $J_F\ddot\theta=-m_jg\Delta\sin\theta$. Le théorème du moment cinétique nécessaire à sa démonstration sera étudié ultérieurement. Traiter ensuite les trois points de Q19.
+\Sub{Repères de correction indépendants}
+À petits angles, $\sin\theta\simeq\theta$, d’où $\omega_{os}=\sqrt{m_jg\Delta/J_F}$. L’isochronisme signifie que la période ne dépend pas de l’amplitude dans ce modèle. La phase étudiée va d’un extrême à l’autre : sa durée vaut une demi-période, $\tau_{os}=\pi\sqrt{J_F/(m_jg\Delta)}$. Utiliser une période entière doublerait à tort la durée. Le reste du sujet demande d’autres chapitres.
+\source{Ce parcours ne reproduit pas l’épreuve complète. Les questions non ciblées peuvent demander des chapitres ultérieurs. Le temps de travail proposé concerne uniquement cette sélection.}
+
+\Page{Références et suivi}{Préparer la suite}{references}
+\Sub{Référence réglementaire}
+\href{https://www.education.gouv.fr/bo/21/Special1/ESRS2035779A.htm}{Bulletin officiel spécial n° 1 du 11 février 2021, arrêté du 5 janvier 2021.}\par
+\href{https://cache.media.education.gouv.fr/file/SPE1-MEN-MESRI-4-2-2021/64/8/spe779_annexe_1373648.pdf}{Annexe officielle regroupée}, rubrique 1.4 / oscillateur harmonique. Page interne 15 (page PDF 52). La rubrique 1.4 est répartie entre chapitres 04, 05 et 06 ; les frottements puis le forçage sinusoïdal sont traités ensuite.
+\Sub{Nature des contenus}
+Le cours, les 24 exercices, les trois défis et les évaluations OptiTAB sont rédigés pour cette collection. Les graphiques sont calculés avec les équations annoncées. Les supports authentiques sont identifiés sur les pages précédentes ; leurs énoncés et figures restent dans le document d’origine.
+\Sub{Compétences à confirmer}
+\checkline{Je peux retrouver l’équation sans mémoriser une suite de signes.}
+\checkline{Je vérifie les conditions initiales et les limites.}
+\checkline{Je peux confronter un calcul, un graphe et un bilan énergétique.}
+\checkline{Je sais corriger mon DS et refaire une question sans aide.}
+\begin{methode}{Prochaine étape}
+Le chapitre 05 réintroduit les pertes : l’énergie décroît et les racines de l’équation déterminent un retour oscillant, critique ou apériodique.
+\end{methode}
+

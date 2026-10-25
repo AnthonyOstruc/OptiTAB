@@ -1,0 +1,20 @@
+% Fonctionnement de la pile cuivre-argent reliée à un conducteur ohmique (corrigé de l'exercice 3, chapitre 8)
+\begin{tikzpicture}
+\pcPile{pcCuivre}{pcBleu}{pcArgent}{pcEau}
+\draw[pcFil] (pileG) -- (-0.4,4.4) -- (6.6,4.4) -- (pileD);
+\pcResistance{(3.1,4.4)}
+\draw[pcElectron] (0.3,4.75) -- (1.9,4.75) node[pos=0.5,above=-1pt,font=\small,text=otNavy] {$\mathrm{e}^-$};
+\draw[pcElectron] (4.3,4.75) -- (5.9,4.75) node[pos=0.5,above=-1pt,font=\small,text=otNavy] {$\mathrm{e}^-$};
+\draw[pcCourant] (1.9,4.05) -- (0.3,4.05) node[pos=0.5,below=-1pt,font=\small,text=otRed!80!black] {$I$};
+\draw[pcCourant] (5.9,4.05) -- (4.3,4.05) node[pos=0.5,below=-1pt,font=\small,text=otRed!80!black] {$I$};
+\draw[pcIon] (2.45,3.45) -- (1.45,3.45);
+\node[pcLegende,anchor=west] at (2.45,3.45) {\ce{NO3-}};
+\draw[pcIon] (3.75,3.45) -- (4.75,3.45);
+\node[pcLegende,anchor=east] at (3.75,3.45) {\ce{K+}};
+\node[pcLegende] at (3.1,2.3) {pont salin};
+\node[pcLegendeG,anchor=east] at (-0.7,3.55) {pôle $-$\\anode};
+\node[pcLegendeG,anchor=west] at (6.9,3.55) {pôle $+$\\cathode};
+\node[pcLegende,anchor=north,align=center] at (0,-0.15) {oxydation :\\\ce{Cu -> Cu^2+ + 2 e-}};
+\node[pcLegende,anchor=north,align=center] at (6.2,-0.15) {réduction :\\\ce{Ag+ + e- -> Ag}};
+\end{tikzpicture}
+\par\smallskip\legende{Les électrons vont du cuivre vers l'argent ; les ions du pont salin migrent vers l'électrode de signe opposé à leur charge.}

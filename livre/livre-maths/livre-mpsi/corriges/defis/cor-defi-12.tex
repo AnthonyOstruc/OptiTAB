@@ -1,0 +1,75 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 12 — vérifié par verifications/defis_11_15.py.
+
+\begin{blocLivre}{cor-12-25a}
+\begin{corrige}{25}{L'opérateur de différence et la formule de Newton}
+\demarche{$\Delta$ fait baisser le degré de un : il est nilpotent, et la base
+binomiale est exactement celle où il « décale » les vecteurs.}
+\partieExo{A}{Un endomorphisme nilpotent}
+\begin{questions}
+  \item La linéarité est immédiate. Si $P=a_dX^{d}+a_{d-1}X^{d-1}+\cdots$,
+    le binôme donne $P(X+1)=a_dX^{d}+(da_d+a_{d-1})X^{d-1}+\cdots$, donc
+    $\Delta P=d\,a_dX^{d-1}+\cdots$ : $\Delta(E)\subseteq E$, et pour
+    $d\geqslant1$, $\deg\Delta P=d-1$ avec \res{\text{coefficient dominant }d\,a_d}.
+  \item $\Delta P=0$ si et seulement si $P$ est constant :
+    $\res{\operatorname{Ker}\Delta=\R_0[X]}$. Donc
+    $\operatorname{rg}\Delta=(n+1)-1=n$ ; comme
+    $\operatorname{Im}\Delta\subseteq\R_{n-1}[X]$, de dimension $n$ :
+    $\res{\operatorname{Im}\Delta=\R_{n-1}[X]}$. Chaque application de
+    $\Delta$ fait baisser le degré, d'où $\Delta^{n+1}=0$ ; et
+    $\Delta^{n}(X^{n})=n!\neq0$.
+  \item $\Delta1=0$, $\Delta X=1$, $\Delta X^{2}=2X+1$,
+    $\Delta X^{3}=3X^{2}+3X+1$ :
+    \[
+    \operatorname{Mat}(\Delta)=\begin{pmatrix}0&1&1&1\\0&0&2&3\\0&0&0&3\\0&0&0&0\end{pmatrix}
+    \quad(\text{triangulaire stricte, de rang }3).
+    \]
+\end{questions}
+\partieExo{B}{La base binomiale et la formule de Newton}
+\begin{questions}[resume]
+  \item $\deg H_k=k$ : famille échelonnée, donc base de $E$. Puis
+    \[
+    \Delta H_k=\frac{X(X-1)\cdots(X-k+2)}{k!}\bigl((X+1)-(X-k+1)\bigr)
+    =\frac{X\cdots(X-k+2)}{(k-1)!}=\res{H_{k-1}} .
+    \]
+    Dans cette base, la matrice de $\Delta$ a des $1$ juste au-dessus de la
+    diagonale et des $0$ ailleurs : $\Delta$ « décale » la base.
+  \item Si $P=\sum_kc_kH_k$, alors $\Delta^{j}P=\sum_{k\geqslant j}c_kH_{k-j}$
+    et, comme $H_0(0)=1$ et $H_m(0)=0$ pour $m\geqslant1$ :
+    $\bigl(\Delta^{j}P\bigr)(0)=c_j$, d'où la formule. Pour $X^{3}$, la
+    diagonale de la table donne $0,1,6,6$ :
+    $\res{X^{3}=H_1+6H_2+6H_3}$.
+  \item Pour $m<0$,
+    $H_k(m)=(-1)^{k}\dfrac{(-m)(-m+1)\cdots(-m+k-1)}{k!}=(-1)^{k}\dbinom{k-m-1}{k}\in\Z$,
+    et pour $m\geqslant0$, $H_k(m)=\binom mk$ : des coordonnées entières
+    donnent des valeurs entières. Réciproquement,
+    $\bigl(\Delta^{k}P\bigr)(0)=\sum_{j=0}^{k}(-1)^{k-j}\binom kj P(j)$ est
+    entier si $P$ prend des valeurs entières. Exemple :
+    $\frac{X(X+1)}{2}=\res{H_2+H_1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-12-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Sommation discrète}
+\begin{questions}[start=7]
+  \item $\sum_{k=0}^{m-1}P(k)=\sum_{k=0}^{m-1}\bigl(Q(k+1)-Q(k)\bigr)=Q(m)-Q(0)$
+    (télescopage), exactement comme $\int_a^bf=F(b)-F(a)$.
+  \item La table de $k^{2}$ ($0,1,4,9$ ; puis $1,3,5$ ; puis $2,2$) donne
+    $X^{2}=H_1+2H_2$, et comme $\Delta H_{k+1}=H_k$, $Q=H_2+2H_3$
+    convient. Ainsi
+    \[
+    \sum_{k=0}^{m-1}k^{2}=\binom m2+2\binom m3=\res{\frac{(m-1)m(2m-1)}{6}} .
+    \]
+    De même $X^{3}=H_1+6H_2+6H_3$ donne $Q=H_2+6H_3+6H_4$ et
+    \[
+    \sum_{k=0}^{m-1}k^{3}=\binom m2+6\binom m3+6\binom m4
+    =\frac{m(m-1)}{4}\bigl(2+4(m-2)+(m-2)(m-3)\bigr)
+    =\res{\Bigl(\frac{m(m-1)}{2}\Bigr)^{2}} ,
+    \]
+    soit $T_{m-1}^{2}$ : le théorème de Nicomaque, retrouvé par l'algèbre
+    linéaire.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

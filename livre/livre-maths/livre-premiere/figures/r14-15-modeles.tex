@@ -1,0 +1,10 @@
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=100mm,height=55mm,
+axis lines=left,xmin=0,xmax=20,ymin=480,ymax=1020,
+xtick={0,5,10,15,16,17,20},ytick={500,600,800,1000},xlabel={$\text{semaines}$},ylabel={$\text{stock}$},
+every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-4mm,font=\small,text=otMuted},
+every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,yshift=1mm,font=\small,text=otMuted}]
+\addplot[otNavy,thick,domain=0:20,samples=90]{500+500*exp(-.1*x)};
+\addplot[otMuted,dashed,domain=0:20,samples=90]{600};
+\addplot[only marks,otGreenDark,mark size=1.5pt]coordinates{(0,1000.0000000)(1,950.0000000)(2,905.0000000)(3,864.5000000)(4,828.0500000)(5,795.2450000)(6,765.7205000)(7,739.1484500)(8,715.2336050)(9,693.7102445)(10,674.3392200)(11,656.9052980)(12,641.2147682)(13,627.0932914)(14,614.3839623)(15,602.9455660)(16,592.6510094)(17,583.3859085)(18,575.0473176)(19,567.5425859)(20,560.7883273)};
+\end{axis}\end{tikzpicture}
+\par\smallskip\legende{Courbe bleue : $W$ ; points verts : $u_n$. La comparaison exacte explique les seuils 16 et 17.}

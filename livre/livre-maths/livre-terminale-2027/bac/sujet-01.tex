@@ -1,0 +1,127 @@
+% !TEX root = ../main.tex
+%% Sujet type bac n° 1 — sujet inédit OptiTAB (calculs vérifiés par programme : bac_s1.py)
+
+\sujetBac{1}{Probabilités conditionnelles et loi binomiale/5,Géométrie dans l'espace/4,Fonction exponentielle et intégration/5,Suites et algorithmique/4}
+
+\begin{exoBac}{5}{Probabilités}
+Un site de vente en ligne propose deux modes de livraison : en point relais ou à domicile. On sait que $70\,\%$ des commandes sont
+livrées en point relais et les autres à domicile. Par ailleurs, $5\,\%$ des colis livrés en point relais arrivent en retard,
+contre $12\,\%$ des colis livrés à domicile.
+
+On choisit une commande au hasard et l'on note $R$ l'événement « la commande est livrée en point relais » et $L$ l'événement
+« le colis arrive en retard ». Les résultats seront arrondis au millième.
+
+\partieExo{A}{Une commande au hasard}
+\begin{questions}
+  \item Représenter la situation par un arbre pondéré.
+  \item Calculer la probabilité que la commande soit livrée en point relais et arrive en retard.
+  \item Démontrer que $P(L)=0{,}071$.
+  \item Un client reçoit son colis en retard. Quelle est la probabilité qu'il ait été livré à domicile ?
+\end{questions}
+
+\partieExo{B}{Une série de commandes}
+On considère $50$ commandes, dont on admet que les délais de livraison sont indépendants. On note $X$ le nombre de colis arrivés en
+retard parmi ces $50$ commandes.
+\begin{questions}[resume]
+  \item Justifier que $X$ suit une loi binomiale dont on précisera les paramètres.
+  \item Calculer la probabilité qu'au plus deux colis arrivent en retard.
+  \item Calculer l'espérance de $X$ et interpréter ce résultat.
+\end{questions}
+
+\partieExo{C}{Un nombre minimal de commandes}
+\begin{questions}[resume]
+  \item Déterminer le nombre minimal de commandes à considérer pour que la probabilité qu'au moins un colis arrive en retard soit
+    supérieure ou égale à $0{,}99$.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Géométrie dans l'espace}
+\begin{codecote}[0.6]
+On considère un cube $ABCDEFGH$ d'arête $1$ et l'on se place dans le repère orthonormé $\big(A\pv\vect{AB},\vect{AD},\vect{AE}\big)$.
+On s'intéresse au solide $BDEG$, dont les sommets sont quatre sommets du cube.
+\begin{questions}
+  \item Donner les coordonnées des points $B$, $D$, $E$ et $G$.
+  \item Démontrer que les six arêtes du solide $BDEG$ ont la même longueur. Quelle est la nature de ce solide ?
+  \item \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Montrer que le vecteur $\vec n\,(1\pv-1\pv1)$ est normal au plan $(BEG)$.
+      \item En déduire une équation cartésienne du plan $(BEG)$.
+    \end{enumerate}
+\end{questions}
+\cote
+\centering
+\begin{tikzpicture}[otEspace,scale=2.3]
+  \otPaveCoord{1}{1}{1}
+  \fill[otGreen,opacity=0.16] (B) -- (E) -- (G) -- cycle;
+  \otPaveAretes\otPaveNoms
+  \draw[otGreenDark,line width=0.9pt] (B) -- (E) -- (G) -- cycle;
+  \draw[otGreenDark,line width=0.9pt,dash pattern=on 2.2pt off 1.6pt] (D) -- (B) (D) -- (E) (D) -- (G);
+\end{tikzpicture}
+\end{codecote}
+\begin{questions}[start=4]
+  \item On note $\Delta$ la droite passant par $D$ et orthogonale au plan $(BEG)$.
+    \begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.4mm,topsep=0.4mm]
+      \item Déterminer une représentation paramétrique de la droite $\Delta$.
+      \item Déterminer les coordonnées du point $H$, intersection de la droite $\Delta$ et du plan $(BEG)$.
+      \item Montrer que $H$ est le centre de gravité du triangle $BEG$, c'est-à-dire le point de coordonnées
+        $\left(\frac{x_B+x_E+x_G}{3}\pv\frac{y_B+y_E+y_G}{3}\pv\frac{z_B+z_E+z_G}{3}\right)$.
+    \end{enumerate}
+  \item Calculer la longueur $DH$, puis le volume du solide $BDEG$. On rappelle que le volume d'un tétraèdre est
+    $V=\frac13\times\mathcal{B}\times h$, et que l'aire d'un triangle équilatéral de côté $c$ est $\frac{\sqrt3}{4}c^2$.
+  \item Retrouver ce volume en retirant au cube les quatre tétraèdres de sommets respectifs $A$, $C$, $F$ et $H$.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{5}{Fonction exponentielle et intégration}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=(x+1)\,e^{-x}$, et l'on note $\mathcal{C}_f$ sa courbe représentative dans un
+repère orthonormé.
+
+\partieExo{A}{Étude de la fonction}
+\begin{questions}
+  \item Déterminer les limites de $f$ en $-\infty$ et en $+\infty$. Interpréter graphiquement la limite en $+\infty$.
+  \item Montrer que, pour tout réel $x$, $f'(x)=-x\,e^{-x}$. En déduire le tableau de variations complet de $f$.
+  \item Déterminer une équation de la tangente $T$ à $\mathcal{C}_f$ au point d'abscisse $-1$.
+\end{questions}
+
+\partieExo{B}{Une équation}
+\begin{questions}[resume]
+  \item Montrer que l'équation $f(x)=\frac12$ admet une unique solution $\alpha$ sur l'intervalle $\intFO{0}{+\infty}$. Donner un
+    encadrement de $\alpha$ d'amplitude $10^{-2}$.
+  \item Combien l'équation $f(x)=\frac12$ admet-elle de solutions sur $\R$ ? Justifier.
+\end{questions}
+
+\partieExo{C}{Convexité et aire}
+\begin{questions}[resume]
+  \item On admet que $f''(x)=(x-1)\,e^{-x}$. Étudier la convexité de $f$ et préciser les coordonnées du point d'inflexion de $\mathcal{C}_f$.
+  \item À l'aide d'une intégration par parties, calculer l'aire, en unités d'aire, du domaine compris entre $\mathcal{C}_f$, l'axe des
+    abscisses et les droites d'équations $x=0$ et $x=1$. On en donnera la valeur exacte puis une valeur approchée au centième.
+\end{questions}
+\end{exoBac}
+
+\begin{exoBac}{4}{Suites et algorithmique}
+On considère la suite $(u_n)$ définie par $u_0=0$ et, pour tout entier naturel $n$, $u_{n+1}=\sqrt{2+u_n}$.
+\begin{questions}
+  \item Calculer $u_1$ et $u_2$ ; on donnera la valeur exacte puis une valeur approchée de $u_2$ au millième.
+  \item On considère la fonction $g$ définie sur $\intFO{-2}{+\infty}$ par $g(x)=\sqrt{2+x}$. Justifier que $g$ est croissante, puis
+    démontrer par récurrence que, pour tout entier naturel $n$, $0\leq u_n\leq u_{n+1}\leq2$.
+  \item En déduire que la suite $(u_n)$ converge, puis déterminer sa limite $\ell$.
+  \item On considère la fonction Python ci-contre, où \code{sqrt} désigne la racine carrée.
+\begin{codecote}[0.46]
+\begin{pythoncol}
+from math import sqrt
+
+def seuil(e):
+    u = 0
+    n = 0
+    while ... :
+        u = sqrt(2 + u)
+        n = n + 1
+    return n
+\end{pythoncol}
+\cote
+\begin{enumerate}[label=\alph*),leftmargin=1.4em,itemsep=0.6mm,topsep=0mm]
+  \item Compléter la condition de la boucle pour que \code{seuil(e)} renvoie le plus petit entier $n$ tel que $2-u_n<e$.
+  \item Que renvoie \code{seuil(0.001)} ? Interpréter.
+\end{enumerate}
+\end{codecote}
+\end{questions}
+\end{exoBac}

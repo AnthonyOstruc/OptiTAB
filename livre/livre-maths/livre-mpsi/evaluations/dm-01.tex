@@ -1,0 +1,67 @@
+% !TEX root = ../main.tex
+%% Devoir maison n° 1 — L'inégalité arithmético-géométrique (chapitres 1, 2, 6)
+%% Résultats vérifiés par verifications/eval_dm.py.
+
+\sujetEval{DM1}{MPSI · Devoir maison}{Devoir maison \numero1}
+  {À rendre en une semaine\\L'inégalité arithmético-géométrique\\Chapitres 1, 2 et 6}{3}
+  {Partie A/La preuve de Cauchy/Q1 à Q4,Partie B/La preuve par la tangente/Q5 et Q6,%
+   Partie C/Applications/Q7 à Q11}
+\enParties
+\consigne{Les parties B et C peuvent être abordées indépendamment de la
+partie A, en admettant l'inégalité.}
+
+Pour $n\geqslant1$ et $x_1,\dots,x_n$ réels strictement positifs, on note
+\[A_n=\frac{x_1+x_2+\dots+x_n}{n}\qquad\text{et}\qquad G_n=\bigl(x_1x_2\cdots x_n\bigr)^{1/n}\]
+leurs moyennes \emph{arithmétique} et \emph{géométrique}. L'objet du problème
+est de démontrer de deux façons l'inégalité $G_n\leqslant A_n$, avec égalité si
+et seulement si les $x_i$ sont tous égaux, puis d'en tirer quelques
+conséquences.
+
+\begin{exoEval}[La preuve de Cauchy]{}{}
+Pour $n\geqslant1$, on note $\mathcal{P}(n)$ l'assertion : « pour tous réels
+$x_1,\dots,x_n>0$, on a $G_n\leqslant A_n$ ».
+\begin{questions}
+  \item Démontrer $\mathcal{P}(2)$ et préciser le cas d'égalité.
+  \item Soit $n\geqslant1$ tel que $\mathcal{P}(n)$ soit vraie, et
+    $x_1,\dots,x_{2n}>0$. On note $A',G'$ (resp. $A'',G''$) les moyennes
+    arithmétique et géométrique de $x_1,\dots,x_n$ (resp. de
+    $x_{n+1},\dots,x_{2n}$). Montrer que $G_{2n}=\sqrt{G'G''}$, puis en
+    déduire $\mathcal{P}(2n)$. Conclure que $\mathcal{P}(2^{k})$ est vraie
+    pour tout $k\in\N$.
+  \item Soit $n\geqslant2$ tel que $\mathcal{P}(n)$ soit vraie, et
+    $x_1,\dots,x_{n-1}>0$ de moyenne arithmétique $A$. En appliquant
+    $\mathcal{P}(n)$ aux $n$ réels $x_1,\dots,x_{n-1},A$, montrer
+    $\mathcal{P}(n-1)$.
+  \item En déduire que $\mathcal{P}(n)$ est vraie pour tout $n\geqslant1$.
+    \emph{On parle de récurrence « en avant, puis en arrière ».}
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[La preuve par la tangente]{}{}
+\begin{questions}[start=5]
+  \item Montrer que pour tout $t>0$, $\ln t\leqslant t-1$, avec égalité si
+    et seulement si $t=1$. Interpréter graphiquement.
+  \item En appliquant cette inégalité aux réels $t_i=\dfrac{x_i}{A_n}$,
+    retrouver l'inégalité $G_n\leqslant A_n$ et montrer qu'il y a égalité si
+    et seulement si $x_1=x_2=\dots=x_n$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Applications]{}{}
+\begin{questions}[start=7]
+  \item On appelle moyenne \emph{harmonique} des $x_i$ le réel
+    $H_n=\dfrac{n}{\frac{1}{x_1}+\dots+\frac{1}{x_n}}$. Montrer que
+    $H_n\leqslant G_n\leqslant A_n$.
+  \item Soit $n\geqslant1$. En appliquant l'inégalité aux $n+1$ réels
+    $1+\frac1n,\dots,1+\frac1n$ ($n$ fois) et $1$, montrer que la suite de
+    terme général $u_n=\bigl(1+\frac1n\bigr)^{n}$ est strictement
+    croissante.
+  \item Montrer que $n!\leqslant\Bigl(\dfrac{n+1}{2}\Bigr)^{n}$ pour tout
+    $n\geqslant1$, avec égalité seulement pour $n=1$.
+  \item En écrivant $x=\frac x2+\frac x2$, déterminer le minimum sur
+    $\intOO{0}{+\infty}$ de la fonction $x\mapsto x+\dfrac{4}{x^{2}}$, sans
+    la dériver.
+  \item Parmi les pavés droits de dimensions $x,y,z>0$ telles que
+    $x+y+z=3$, lesquels ont le plus grand volume ?
+\end{questions}
+\end{exoEval}

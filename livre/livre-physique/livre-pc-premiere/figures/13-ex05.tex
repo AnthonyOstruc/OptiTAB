@@ -1,0 +1,46 @@
+% Quatre situations : vecteurs vitesse à deux instants voisins ; variation de vitesse et forces au corrigé (exercice 5, chapitre 13)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  vit/.style={otNavy,line width=1pt,-{Stealth[length=2mm]}},
+  dv/.style={otGreenDark,line width=1.2pt,-{Stealth[length=2mm]}},
+  sf/.style={otOrange!85!black,line width=1.3pt,-{Stealth[length=2.3mm]}}]
+% a) ascenseur qui monte en ralentissant
+\begin{scope}
+  \draw[otInk!60,line width=0.5pt] (-0.35,0) rectangle (0.35,0.7);
+  \draw[vit] (-0.15,0.8) -- ++(0,1.6) node[pcLegende,anchor=east,text=otNavy,pos=0.6] {$\vec{v}_i$};
+  \draw[vit] (0.15,0.8) -- ++(0,0.9) node[pcLegende,anchor=west,text=otNavy,pos=0.6] {$\vec{v}_{i+1}$};
+  \node[pcLegendeG,anchor=north,align=center] at (0,-0.15) {a) ascenseur qui\\monte en ralentissant};
+  \solution{\draw[dv] (0.75,2.4) -- ++(0,-0.7); \node[pcLegende,anchor=west,text=otGreenDark] at (0.8,2.1) {$\Delta\vec{v}$};
+    \draw[sf] (0.75,1.4) -- ++(0,-0.9); \node[pcLegende,anchor=west,text=otOrange!85!black] at (0.8,1.0) {$\sum\vec{F}$};}
+\end{scope}
+% b) balle lancée vers le haut, au sommet de sa trajectoire
+\begin{scope}[shift={(3.4,0)}]
+  \draw[otMuted!70,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] (-1.1,0.4) .. controls (-0.4,2.4) and (0.4,2.4) .. (1.1,0.4);
+  \fill[otInk] (-0.25,1.86) circle (0.05); \fill[otInk] (0.25,1.86) circle (0.05);
+  \draw[vit] (-0.25,1.86) -- ++(0.8,0.25) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_i$};
+  \draw[vit] (0.25,1.86) -- ++(0.8,-0.25) node[pcLegende,anchor=west,text=otNavy] {$\vec{v}_{i+1}$};
+  \node[pcLegendeG,anchor=north,align=center] at (0,-0.15) {b) balle lancée,\\près du sommet};
+  \solution{\draw[dv] (-0.6,1.4) -- ++(0,-0.5); \node[pcLegende,anchor=east,text=otGreenDark] at (-0.65,1.15) {$\Delta\vec{v}$};
+    \draw[sf] (0.0,1.5) -- ++(0,-0.9); \node[pcLegende,anchor=west,text=otOrange!85!black] at (0.05,0.9) {$\sum\vec{F}=\vec{P}$};}
+\end{scope}
+% c) voiture dans un virage à vitesse constante
+\begin{scope}[shift={(7.0,0.2)}]
+  \draw[otMuted,line width=0.4pt] (160:1.5) arc (160:20:1.5);
+  \fill[otInk] (0,0) circle (0.04);
+  \fill[otInk] (110:1.5) circle (0.05); \fill[otInk] (70:1.5) circle (0.05);
+  \draw[vit] (110:1.5) -- ++(20:0.95) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_i$};
+  \draw[vit] (70:1.5) -- ++(-20:0.95) node[pcLegende,anchor=south west,text=otNavy] {$\vec{v}_{i+1}$};
+  \node[pcLegendeG,anchor=north,align=center] at (0,-0.35) {c) virage pris à\\vitesse constante};
+  \solution{\draw[dv] (-0.15,1.4) -- (-0.15,0.85); \node[pcLegende,anchor=east,text=otGreenDark] at (-0.2,1.1) {$\Delta\vec{v}$};
+    \draw[sf] (0.15,1.4) -- (0.15,0.5); \node[pcLegende,anchor=west,text=otOrange!85!black] at (0.2,0.8) {$\sum\vec{F}$};}
+\end{scope}
+% d) palet en mouvement rectiligne uniforme
+\begin{scope}[shift={(10.2,0)}]
+  \draw[otMuted,line width=0.4pt] (-0.3,1.0) -- (2.3,1.0);
+  \fill[otInk] (0,1.0) circle (0.05); \fill[otInk] (1.1,1.0) circle (0.05);
+  \draw[vit] (0,1.25) -- ++(1.0,0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_i$};
+  \draw[vit] (1.1,1.25) -- ++(1.0,0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_{i+1}$};
+  \node[pcLegendeG,anchor=north,align=center] at (1.0,-0.15) {d) palet sur coussin\\d'air, ligne droite};
+  \solution{\node[pcLegende,anchor=north,text=otGreenDark,align=center] at (1.0,0.75) {$\Delta\vec{v}=\vec{0}$\\$\sum\vec{F}=\vec{0}$};}
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Vecteurs vitesse d'un système à deux instants voisins.\solution{ En vert, la variation de vitesse ; en orange, la direction et le sens de la somme des forces.}}

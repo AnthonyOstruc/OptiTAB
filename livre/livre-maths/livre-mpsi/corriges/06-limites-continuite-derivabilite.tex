@@ -1,0 +1,489 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 6 — Limites, continuité, dérivabilité, convexité
+%% Résultats vérifiés par verifications/chapitre_06.py.
+
+\corrigesChapitre{6}{Limites, continuité, dérivabilité, convexité}
+\corrigesSouples
+
+\begin{blocLivre}{cor-6-1}
+\begin{corrige}{1}{Calculs de limites}
+\demarche{Simplifier, reconnaître un taux d'accroissement, ou comparer les croissances.}
+\begin{questions}
+  \item $\dfrac{x^{2}-1}{x-1}=x+1\xrightarrow[x\to1]{}\res{2}$.
+  \item C'est le taux d'accroissement de $\sin$ en $0$ :
+    limite $=\sin'(0)=\cos0=\res{1}$.
+  \item Quantité conjuguée : $\dfrac{\sqrt{x+1}-1}{x}=\dfrac{1}{\sqrt{x+1}+1}
+    \xrightarrow[x\to0]{}\res{\dfrac12}$.
+  \item $x\,\mathrm{e}^{1/x}=\dfrac{\mathrm{e}^{u}}{u}$ avec $u=\dfrac1x\to+\infty$ :
+    limite $\res{+\infty}$ (croissances comparées).
+  \item Taux d'accroissement de $\ln$ en $1$ : limite $=\ln'(1)=\res{1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-2}
+\begin{corrige}{2}{Limites à gauche, à droite}
+\demarche{Examiner séparément les deux côtés ; une limite existe quand ils coïncident.}
+\begin{questions}
+  \item À gauche de $2$ : $\lfloor x\rfloor=1$, limite $1$ ; à droite :
+    $\lfloor x\rfloor=2$, limite $2$. Les deux diffèrent :
+    \res{\text{pas de limite en }2}.
+  \item $\dfrac{|x|}{x}=-1$ pour $x<0$ et $1$ pour $x>0$ : limites $-1$ et
+    $1$, pas de limite en $0$.
+  \item Quand $x\to0$, $-\dfrac{1}{x^{2}}\to-\infty$, donc par composition
+    $\mathrm{e}^{-1/x^{2}}\to\res{0}$ — même limite des deux côtés.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-3}
+\begin{corrige}{3}{Prolongement par continuité}
+\demarche{Une limite finie en 0 permet de prolonger ; son absence l'interdit.}
+\begin{questions}
+  \item Taux d'accroissement de $\exp$ en $0$ : $f(x)\to1$. Prolongeable par
+    $\res{f(0)=1}$.
+  \item Croissance comparée : $x\ln x\to0$. Prolongeable par $\res{g(0)=0}$.
+  \item $|x\sin\frac1x|\leq|x|\to0$ : prolongeable par $\res{h(0)=0}$.
+  \item Pas de limite en $0$ (voir l'exemple du cours et l'exercice 9) :
+    \res{\text{non prolongeable}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-4}
+\begin{corrige}{4}{Le TVI en action}
+\demarche{Continuité + changement de signe = existence ; stricte monotonie = unicité.}
+\begin{questions}
+  \item $f(x)=x^{3}+x-1$ est continue, $f(0)=-1<0<1=f(1)$ : le TVI donne
+    une solution dans $\intOO{0}{1}$. Et $f'(x)=3x^{2}+1>0$ : $f$ est
+    strictement croissante, la solution est \res{\text{unique}}
+    ($\alpha\approx0{,}68$).
+  \item Pour $P$ de degré impair et de coefficient dominant positif :
+    $P(x)\to-\infty$ en $-\infty$ et $+\infty$ en $+\infty$ : $P$ prend des
+    valeurs des deux signes, et le TVI conclut (de même si le coefficient
+    dominant est négatif).
+  \item $g(x)=\cos x-x$ est continue, $g(0)=1>0$ et $g(1)=\cos1-1<0$ :
+    une solution dans $\intOO{0}{1}$ ($\approx0{,}739$).
+  \item $h(x)=x^{5}-x-1$ : $h(1)=-1<0<29=h(2)$ : une solution dans
+    $\res{\intOO{1}{2}}$ ($\approx1{,}167$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-5}
+\begin{corrige}{5}{Dérivabilité en un point}
+\demarche{Revenir au taux d'accroissement, côté par côté si nécessaire.}
+\begin{questions}
+  \item $\dfrac{|x|-0}{x-0}=\dfrac{|x|}{x}$ : limites $-1$ à gauche, $1$ à
+    droite. Dérivées latérales distinctes : \res{|x|\text{ non dérivable en }0}
+    (point anguleux).
+  \item $\dfrac{\sqrt x-0}{x-0}=\dfrac{1}{\sqrt x}\to+\infty$ : non
+    dérivable en $0$ ; la courbe y admet une \res{\text{tangente verticale}}.
+  \item Pour $x>0$, $x|x|=x^{2}$, dérivée $2x$ ; pour $x<0$, $-x^{2}$,
+    dérivée $-2x$ ; en $0$, le taux $\dfrac{x|x|}{x}=|x|\to0$. Donc
+    dérivable sur $\R$ avec $\res{(x|x|)'=2|x|}$.
+  \item Continuité en $1$ : $a+b=1$ ; égalité des dérivées latérales :
+    $a=2$. D'où $\res{a=2,\ b=-1}$ — et le raccord est alors de classe
+    $\mathscr{C}^{1}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-6}
+\begin{corrige}{6}{Tangentes et développement limité d'ordre 1}
+\demarche{Tangente en $a$ : $y=f(a)+f'(a)(x-a)$ ; le DL1 en est la version « approximation ».}
+\begin{questions}
+  \item $f(1)=-1$ et $f'(x)=3x^{2}-2$ donne $f'(1)=1$ : tangente
+    $\res{y=x-2}$.
+  \item $\sqrt{1+h}=1+\dfrac{h}{2}+h\varepsilon(h)$ et
+    $\mathrm{e}^{h}=1+h+h\varepsilon(h)$.
+  \item $\sqrt{1{,}02}\approx1+\dfrac{0{,}02}{2}=\res{1{,}01}$ (valeur
+    exacte $1{,}00995\dots$) ; $\mathrm{e}^{0{,}05}\approx\res{1{,}05}$
+    (valeur exacte $1{,}05127\dots$) : l'erreur est de l'ordre de $h^{2}$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-7}
+\begin{corrige}{7}{Rolle et accroissements finis : premiers pas}
+\demarche{Vérifier les hypothèses avant d'invoquer le théorème — puis exploiter la conclusion.}
+\begin{questions}
+  \item $f$ est polynomiale (continue, dérivable) et
+    $f(-\sqrt3)=f(\sqrt3)=0$ : Rolle s'applique. $f'(x)=3x^{2}-3$ s'annule
+    en $\res{c=\pm1}$, tous deux dans l'intervalle ouvert.
+  \item $|\sin'|=|\cos|\leq1$ : l'inégalité des accroissements finis donne
+    $|\sin a-\sin b|\leq|a-b|$ — $\sin$ est $1$-lipschitzienne.
+  \item Il existe $c\in\intOO{1}{1{,}1}$ tel que
+    $\ln(1{,}1)-\ln1=\dfrac{0{,}1}{c}$ ; or $1<c<1{,}1$ donne
+    $\dfrac{0{,}1}{1{,}1}<\dfrac{0{,}1}{c}<0{,}1$, soit
+    $\res{\dfrac{1}{11}\leq\ln(1{,}1)\leq\dfrac{1}{10}}$
+    (valeur exacte : $0{,}0953\dots$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-8}
+\begin{corrige}{8}{Convexité : premiers exemples}
+\demarche{Le signe de la dérivée seconde décide ; une tangente bien choisie fournit l'inégalité.}
+\begin{questions}
+  \item $(x^{2})''=2>0$, $\exp''=\exp>0$,
+    $\Bigl(\dfrac1x\Bigr)''=\dfrac{2}{x^{3}}>0$ sur $\intOO{0}{+\infty}$ :
+    convexes. $\ln''(x)=-\dfrac{1}{x^{2}}<0$ et
+    $(\sqrt x)''=-\dfrac{1}{4}x^{-3/2}<0$ : concaves.
+  \item $\exp$ convexe est au-dessus de sa tangente en $0$, d'équation
+    $y=1+x$ : $\mathrm{e}^{x}\geq1+x$. $\ln$ concave est sous sa tangente
+    en $1$, d'équation $y=x-1$ : $\ln x\leq x-1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-9}
+\begin{corrige}{9}{Caractérisation séquentielle}
+\demarche{Deux suites qui tendent vers le point, deux comportements : pas de limite.}
+\begin{questions}
+  \item Avec $x_n=\dfrac{1}{2n\pi}\to0$ : $\sin\dfrac{1}{x_n}=\sin(2n\pi)=0$ ;
+    avec $y_n=\dfrac{1}{\frac{\pi}{2}+2n\pi}\to0$ :
+    $\sin\dfrac{1}{y_n}=1$. Deux limites différentes :
+    \res{\text{pas de limite en }0}.
+  \item \etape{En 0} $|f(x)|\leq|x|\to0=f(0)$ : $f$ est continue en $0$.
+    \etape{En $a\neq0$} par densité (chapitre 5), il existe une suite de
+    rationnels $r_n\to a$ et une suite d'irrationnels $s_n\to a$ ; alors
+    $f(r_n)=r_n\to a$ et $f(s_n)=0\to0$. Si $f$ était continue en $a$, ces
+    deux limites vaudraient $f(a)$, d'où $a=0$ : contradiction. Donc $f$
+    n'est continue \res{\text{qu'en }0}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-10}
+\begin{corrige}{10}{Autour des grands théorèmes}
+\demarche{Segment → segment ; intervalle → intervalle ; la dichotomie divise l'incertitude par 2.}
+\begin{questions}
+  \item $\cos$ est continue et décroissante sur $\intFF{0}{\pi}$ :
+    l'image est le segment $\res{\intFF{-1}{1}}$. L'image de $\intOO{0}{1}$
+    par $x\mapsto\frac1x$ est $\intOO{1}{+\infty}$ : un intervalle, mais non
+    borné — les bornes atteintes exigent un \emph{segment}.
+  \item Chaque étape divise la longueur par $2$ : il faut $n$ tel que
+    $\dfrac{1}{2^{n}}\leq10^{-3}$, soit $2^{n}\geq1000$ :
+    $\res{n=10}$ itérations suffisent.
+  \item $f$ est continue sur le segment $\intFF{0}{2}$ : les bornes sont
+    atteintes. L'étude de $f'(x)=(1-x)\mathrm{e}^{-x}$ donne un maximum
+    $\res{f(1)=\mathrm{e}^{-1}}$ et un minimum $\res{f(0)=0}$
+    (car $f(2)=2\mathrm{e}^{-2}>0$).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-11}
+\begin{corrige}{11}{Points fixes}
+\demarche{Le TVI appliqué à $f(x)-x$ fait tout le travail.}
+\begin{questions}
+  \item $g(x)=f(x)-x$ est continue, avec $g(0)=f(0)\geq0$ et
+    $g(1)=f(1)-1\leq0$ : le TVI fournit $c$ avec $g(c)=0$, c'est-à-dire
+    $f(c)=c$.
+  \item Si $f$ est décroissante et $c<c'$ sont deux points fixes :
+    $c=f(c)\geq f(c')=c'$ — contradiction. Unicité.
+  \item $f(x)=\dfrac{x}{2}$ envoie $\intOO{0}{1}$ dans lui-même, est
+    continue, mais son seul point fixe ($0$) est hors de l'intervalle
+    ouvert : le théorème exige le segment.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-12}
+\begin{corrige}{12}{Le théorème de la bijection}
+\demarche{Stricte monotonie + continuité + limites aux bornes : la bijection est servie.}
+\begin{questions}
+  \item $f'(x)=1+\dfrac1x>0$ : $f$ est strictement croissante et continue
+    sur $\intOO{0}{+\infty}$, avec $f\to-\infty$ en $0^{+}$ et $+\infty$ en
+    $+\infty$ : bijection de $\intOO{0}{+\infty}$ sur $\res{\R}$.
+  \item L'équation $f(x)=2$ a donc une unique solution $\alpha$. Et
+    $f(1{,}55)=1{,}55+\ln1{,}55\approx1{,}988<2$ tandis que
+    $f(1{,}56)\approx2{,}005>2$ : $\res{\alpha\in\intOO{1{,}55}{1{,}56}}$.
+  \item $f'$ ne s'annule pas, donc $f^{-1}$ est dérivable et
+    \[
+      \bigl(f^{-1}\bigr)'(2)=\frac{1}{f'(\alpha)}=\frac{1}{1+\frac1\alpha}
+      =\res{\frac{\alpha}{\alpha+1}}\approx0{,}61.
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-13}
+\begin{corrige}{13}{Rolle et les polynômes}
+\demarche{Chaque paire de racines consécutives nourrit un théorème de Rolle.}
+\begin{questions}
+  \item Entre deux racines $\alpha<\beta$ : la fonction polynomiale est
+    continue, dérivable, et s'annule aux deux bornes — Rolle fournit une
+    racine de la dérivée dans $\intOO{\alpha}{\beta}$.
+  \item $P(-2)=-1$, $P(0)=1$, $P(1)=-1$, $P(2)=3$ : trois changements de
+    signe, donc (TVI) au moins trois racines ; un polynôme de degré $3$ en
+    a au plus trois : exactement \res{\text{trois racines réelles}}, une
+    dans chacun des intervalles $\intOO{-2}{0}$, $\intOO{0}{1}$,
+    $\intOO{1}{2}$.
+  \item $P'=3X^{2}-3$ s'annule en $\pm1$ : $-1\in\intOO{-2}{0}$ et
+    $1\in\intOO{0}{2}$ — une racine de $P'$ entre deux racines consécutives
+    de $P$, conformément à la question 1.
+  \item Rolle entre les racines $1$ et $2$ de $f$, puis entre les racines
+    $2$ et $3$ : $f'$ s'annule en deux points distincts ; Rolle appliqué à
+    $f'$ entre ces deux points donne un zéro de $f''$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-14}
+\begin{corrige}{14}{Des inégalités par accroissements finis}
+\demarche{L'égalité des accroissements finis localise un $c$ ; l'encadrement de $f'(c)$ fait le reste.}
+\begin{questions}
+  \item Il existe $c\in\intOO{1}{1+x}$ tel que $\ln(1+x)=\dfrac{x}{c}$ ;
+    et $1<c<1+x$ donne $\dfrac{x}{1+x}<\ln(1+x)<x$ (les inégalités larges
+    couvrant le cas limite).
+  \item $|\arctan'|=\dfrac{1}{1+x^{2}}\leq1$ : $\arctan$ est
+    $1$-lipschitzienne.
+  \item L'égalité des accroissements finis pour $\ln$ entre $n$ et $n+1$
+    donne $\ln(n+1)-\ln n=\dfrac1c$ avec $n<c<n+1$, d'où l'encadrement
+    $\dfrac{1}{n+1}\leq\ln(n+1)-\ln n\leq\dfrac1n$ — celui-là même qui
+    fonde l'étude de la constante d'Euler.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-15}
+\begin{corrige}{15}{Limite de la dérivée}
+\demarche{Le taux d'accroissement peut converger alors que la dérivée oscille : les deux notions diffèrent.}
+\begin{questions}
+  \item Taux en $0$ : $\Bigl|\dfrac{f(x)}{x}\Bigr|=|x\sin\frac1x|\leq|x|\to0$ :
+    $f$ est dérivable en $0$ avec $f'(0)=0$. Pour $x\neq0$ :
+    $f'(x)=2x\sin\dfrac1x-\cos\dfrac1x$ ; le premier terme tend vers $0$,
+    mais $\cos\dfrac1x$ oscille (valeurs $\pm1$ sur les suites
+    $\frac{1}{2n\pi}$ et $\frac{1}{(2n+1)\pi}$) : $f'$ n'a pas de limite en
+    $0$. La réciproque du théorème de la limite de la dérivée est donc
+    fausse : \emph{dérivable n'implique pas} $\mathscr{C}^{1}$.
+  \item $\Bigl|\dfrac{g(x)}{x}\Bigr|=\sqrt x\,\Bigl|\sin\dfrac1x\Bigr|\leq\sqrt x\to0$ :
+    $g$ est dérivable en $0$, avec $g'(0)=0$.
+  \item Sur $\intOO{0}{+\infty}$ : $h'(x)=\dfrac{1}{x^{2}}\mathrm{e}^{-1/x}\to0$
+    quand $x\to0^{+}$ (croissances comparées avec $u=\frac1x$), et $h'=0$
+    sur $\intOO{-\infty}{0}$ ; $h$ est continue en $0$. Le théorème de la
+    limite de la dérivée donne $h$ dérivable en $0$ avec $h'(0)=0$, et $h'$
+    continue : $h$ est de classe $\res{\mathscr{C}^{1}}$ sur $\R$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-16}
+\begin{corrige}{16}{La formule de Leibniz}
+\demarche{Avec un facteur polynomial, la somme de Leibniz ne garde que trois termes.}
+\begin{questions}
+  \item Les dérivées de $x^{2}$ au-delà de l'ordre $2$ sont nulles :
+    \[
+      \bigl(x^{2}\mathrm{e}^{x}\bigr)^{(n)}
+      =\binom{n}{0}x^{2}\mathrm{e}^{x}+\binom{n}{1}2x\,\mathrm{e}^{x}+\binom{n}{2}2\,\mathrm{e}^{x}
+      =\res{\bigl(x^{2}+2nx+n(n-1)\bigr)\mathrm{e}^{x}}.
+    \]
+  \item En $0$, pour $n=10$ : $10\times9=\res{90}$.
+  \item De même, avec $\cos^{(k)}(x)=\cos\bigl(x+k\frac{\pi}{2}\bigr)$ :
+    \[
+      (x\cos x)^{(n)}=x\cos\Bigl(x+\frac{n\pi}{2}\Bigr)
+      +n\cos\Bigl(x+\frac{(n-1)\pi}{2}\Bigr).
+    \]
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-17}
+\begin{corrige}{17}{Des inégalités par convexité}
+\demarche{Concave : au-dessus de ses cordes ; l'inégalité de la corde est souvent la bonne.}
+\begin{questions}
+  \item $\sin$ est concave sur $\intFF{0}{\pi}$ ($\sin''=-\sin\leq0$) :
+    sur $\intFF{0}{\frac{\pi}{2}}$, sa courbe est au-dessus de la corde
+    joignant $(0,0)$ à $\bigl(\frac{\pi}{2},1\bigr)$, d'équation
+    $y=\dfrac{2x}{\pi}$ : d'où $\sin x\geq\dfrac{2x}{\pi}$.
+  \item La concavité de $\ln$ donne
+    $\ln\bigl(\theta a+(1-\theta)b\bigr)\geq\theta\ln a+(1-\theta)\ln b
+    =\ln\bigl(a^{\theta}b^{1-\theta}\bigr)$, et l'exponentielle (croissante)
+    conclut : $a^{\theta}b^{1-\theta}\leq\theta a+(1-\theta)b$.
+  \item $\theta=\dfrac12$ : $\sqrt{ab}\leq\dfrac{a+b}{2}$ — l'inégalité
+    arithmético-géométrique, obtenue au chapitre 2 par un simple carré ;
+    la convexité, elle, se généralise sans effort à $n$ termes
+    (exercice 23).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-18}
+\begin{corrige}{18}{Convexité et points d'inflexion}
+\demarche{Le signe de $f''$ découpe la droite réelle ; l'inflexion est le point de bascule.}
+\begin{questions}
+  \item $f''(x)=6x-6$ : concave sur $\intOF{-\infty}{1}$, convexe ensuite ;
+    point d'inflexion $\res{(1,-2)}$.
+  \item $g''(x)=\dfrac{2(1-x^{2})}{(1+x^{2})^{2}}$ : convexe sur
+    $\intFF{-1}{1}$, concave au-delà ; deux points d'inflexion
+    $\res{(\pm1,\ln2)}$.
+  \item $f'(1)=-3$ : tangente $y=-3(x-1)-2=-3x+1$. Au point d'inflexion,
+    la courbe \emph{traverse} sa tangente : au-dessous pour $x<1$ (zone
+    concave), au-dessus pour $x>1$ (zone convexe).
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-19}
+\begin{corrige}{19}{La méthode de Newton pour $\sqrt2$}
+\demarche{La tangente remplace la courbe ; l'erreur est élevée au carré à chaque pas.}
+\noindent
+\begin{minipage}[c]{0.6\linewidth}
+\begin{questions}
+  \item La tangente en $(x_n,x_n^{2}-2)$ a pour équation
+    $y=(x_n^{2}-2)+2x_n(x-x_n)$ ; elle coupe l'axe en
+    $x_{n+1}=x_n-\dfrac{x_n^{2}-2}{2x_n}
+    =\res{\dfrac12\Bigl(x_n+\dfrac{2}{x_n}\Bigr)}$.
+  \item Pour $x\in\intFF{\sqrt2}{2}$, l'inégalité arithmético-géométrique
+    donne $f(x)=\dfrac{x+2/x}{2}\geq\sqrt{x\cdot\dfrac2x}=\sqrt2$, et
+    $f(x)\leq x$ équivaut à $x^{2}\geq2$ : l'intervalle est stable et la
+    suite décroît. Décroissante et minorée par $\sqrt2$ : elle converge,
+    vers l'unique point fixe $\geq\sqrt2$, qui vérifie $\ell=\frac{\ell+2/\ell}{2}$,
+    soit $\ell^{2}=2$ : $\res{\ell=\sqrt2}$.
+  \item $x_{n+1}-\sqrt2=\dfrac{x_n^{2}-2\sqrt2\,x_n+2}{2x_n}
+    =\dfrac{(x_n-\sqrt2)^{2}}{2x_n}$, et $x_n\geq\sqrt2$ donne la
+    majoration annoncée.
+  \item Erreurs successives : $0{,}0858$ ; $0{,}0025$ ; $2{,}1\cdot10^{-6}$ ;
+    $1{,}6\cdot10^{-12}$ — le nombre de décimales exactes \emph{double}
+    (environ) à chaque itération : convergence \emph{quadratique}.
+\end{questions}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.5,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.6mm]}] (0.8,0) -- (2.35,0);
+  \draw[otNavy,line width=1pt] plot[domain=0.95:2.15,samples=40] ({\x},{0.55*(\x*\x-2)});
+  \draw[otGreen,line width=0.8pt] (1.28,-0.25) -- (2.18,1.73);
+  \fill[otInk] (2,1.1) circle (1.1pt);
+  \draw[otRule!90!otMuted,densely dotted,line width=0.5pt] (2,1.1) -- (2,0);
+  \fill[otGreenDark] (1.5,0) circle (1.1pt);
+  \fill[otGreenDark] (2,0) circle (1.1pt);
+  \fill[otNavy] (1.414,0) circle (1.1pt);
+  \node[below,font=\tiny,text=otGreenDark] at (2.06,-0.04) {$x_0$};
+  \node[below,font=\tiny,text=otGreenDark] at (1.56,-0.04) {$x_1$};
+  \node[below,font=\tiny,text=otNavy] at (1.37,-0.06) {$\sqrt2$};
+  \node[font=\scriptsize,text=otNavy] at (1.18,0.6) {$y=x^{2}-2$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Newton : la tangente en $x_0$ pointe déjà presque sur $\sqrt2$.}
+\end{minipage}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-20}
+\begin{corrige}{20}{Variations sur Rolle}
+\demarche{Multiplier par une exponentielle bien choisie transforme la condition visée en un Rolle ordinaire.}
+\begin{questions}
+  \item $g(x)=\mathrm{e}^{-x}f(x)$ est continue sur $\intFF{a}{b}$,
+    dérivable sur $\intOO{a}{b}$, avec $g(a)=g(b)=0$. Rolle donne $c$ tel
+    que $g'(c)=\mathrm{e}^{-c}\bigl(f'(c)-f(c)\bigr)=0$ ; comme
+    $\mathrm{e}^{-c}\neq0$ : $\res{f'(c)=f(c)}$.
+  \item Même argument avec $g(x)=\mathrm{e}^{-\lambda x}f(x)$ :
+    $g'=\mathrm{e}^{-\lambda x}(f'-\lambda f)$, d'où un $c$ avec
+    $f'(c)=\lambda f(c)$.
+  \item Soit $x_0$ un point où $f$ atteint un extremum global non nul —
+    disons un maximum $f(x_0)>0$. C'est un extremum en un point intérieur
+    de $\R$ : $f'(x_0)=0$. (Au passage : l'existence de $x_0$ vient du fait
+    que $f$, petite à l'infini, « culmine » quelque part — résultat admis
+    dans l'énoncé.)
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-21}
+\begin{corrige}{21}{Fonctions lipschitziennes et itération}
+\demarche{Une contraction rapproche tous les points de son point fixe, à vitesse géométrique.}
+\begin{questions}
+  \item Si $|f(x)-f(y)|\leq K|x-y|$, alors $f(x_n)\to f(a)$ dès que
+    $x_n\to a$ : $f$ est continue (caractérisation séquentielle, ou
+    directement avec $\delta=\varepsilon/K$).
+  \item $\dfrac{\sqrt x-\sqrt0}{x-0}=\dfrac{1}{\sqrt x}\to+\infty$ : aucune
+    constante $K$ ne peut majorer tous les taux d'accroissement près de
+    $0$.
+  \item \etape{Existence} $g(x)=f(x)-x$ est continue avec $g(a)\geq0\geq g(b)$
+    (car $f$ est à valeurs dans $\intFF{a}{b}$) : le TVI fournit un point
+    fixe $\ell$. \etape{Unicité} si $\ell'$ en est un autre :
+    $|\ell-\ell'|=|f(\ell)-f(\ell')|\leq k|\ell-\ell'|$ avec $k<1$, donc
+    $\ell=\ell'$. \etape{Convergence} l'inégalité des accroissements finis
+    donne $|u_{n+1}-\ell|\leq k\,|u_n-\ell|$, d'où par récurrence
+    $|u_n-\ell|\leq k^{n}|u_0-\ell|\to0$.
+  \item $\cos$ envoie $\intFF{0}{1}$ dans $\intFF{\cos1}{1}\subset\intFF{0}{1}$,
+    et $|\cos'|=|\sin|\leq\sin1\approx0{,}84<1$ sur $\intFF{0}{1}$ : la
+    suite $u_{n+1}=\cos(u_n)$ converge vers l'unique solution de
+    $\cos\ell=\ell$ ($\ell\approx0{,}739$), à vitesse géométrique de raison
+    $\sin1$.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-22}
+\begin{corrige}{22}{Le théorème de Darboux}
+\demarche{Un minimum intérieur est un point critique : tout repose sur les bornes atteintes.}
+\begin{questions}
+  \item $g$ est continue sur le segment $\intFF{a}{b}$ (différence de
+    fonctions continues, car dérivables) : elle y atteint son minimum, en
+    un point $c$.
+  \item $g'(a)=f'(a)-\lambda<0$ : le taux d'accroissement
+    $\dfrac{g(x)-g(a)}{x-a}$ a une limite strictement négative en $a$, donc
+    $g(x)<g(a)$ pour $x$ proche de $a$ à droite — le minimum n'est pas en
+    $a$. Symétriquement, $g'(b)>0$ donne $g(x)<g(b)$ juste avant $b$ :
+    $c\neq b$.
+  \item $c$ est donc intérieur : c'est un minimum local en un point
+    intérieur d'une fonction dérivable, d'où $g'(c)=0$, c'est-à-dire
+    $\res{f'(c)=\lambda}$ : toute dérivée vérifie la propriété des valeurs
+    intermédiaires.
+  \item La fonction $x\mapsto\lfloor x\rfloor$ saute de $0$ à $1$ sans
+    prendre la valeur $\frac12$ : elle viole la propriété des valeurs
+    intermédiaires, donc \res{\text{elle n'est la dérivée d'aucune fonction}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-23}
+\begin{corrige}{23}{Jensen et la comparaison des moyennes}
+\demarche{Jensen avec les poids $\frac1n$ : toute la hiérarchie des moyennes en découle.}
+\begin{questions}
+  \item Jensen pour $\ln$ (concave), avec $\lambda_i=\dfrac1n$ :
+    $\ln A=\ln\Bigl(\dfrac{1}{n}\sum x_i\Bigr)\geq\dfrac1n\sum\ln x_i=\ln G$,
+    et l'exponentielle donne $\res{G\leq A}$.
+  \item Cette inégalité appliquée aux $\dfrac{1}{x_i}$ s'écrit
+    $\dfrac1G\leq\dfrac{1}{H}$\,, c'est-à-dire $\res{H\leq G}$
+    (la moyenne géométrique des inverses est l'inverse de $G$).
+  \item La convexité de $x\mapsto x^{2}$ (Jensen) donne
+    $A^{2}=\Bigl(\dfrac1n\sum x_i\Bigr)^{2}\leq\dfrac1n\sum x_i^{2}=Q^{2}$,
+    d'où $\res{A\leq Q}$.
+  \item Côtés $x$ et $y$ avec $x+y=p$ fixé : l'aire vaut
+    $xy=G^{2}\leq A^{2}=\Bigl(\dfrac{p}{2}\Bigr)^{2}$, avec égalité si et
+    seulement si $x=y$ : le \res{\text{carré}} maximise l'aire.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-6-24}
+\begin{corrige}{24}{Vitesses de convergence}
+\demarche{Comparer les erreurs, pas seulement les limites : géométrique contre quadratique.}
+\begin{questions}
+  \item Le point fixe est $2$ et $u_{n+1}-2=\dfrac{u_n-2}{2}$ : par
+    récurrence, $|u_n-2|=2\cdot\Bigl(\dfrac12\Bigr)^{n}$ — chaque itération
+    divise l'erreur par $2$ (un chiffre binaire par pas).
+  \item $f'(x)=\dfrac{1}{2\sqrt{2+x}}\leq\dfrac{1}{2\sqrt2}$ sur
+    $\intFF{0}{2}$ : l'inégalité des accroissements finis donne
+    $|v_{n+1}-2|\leq\dfrac{1}{2\sqrt2}|v_n-2|$, d'où
+    $|v_n-2|\leq2\Bigl(\dfrac{1}{2\sqrt2}\Bigr)^{n}$. Asymptotiquement, le
+    rapport des erreurs tend vers $|f'(2)|=\dfrac14$ : géométrique, de
+    raison $\dfrac14$.
+  \item Pour Héron : $w_{n+1}-\sqrt2=\dfrac{(w_n-\sqrt2)^{2}}{2w_n}$ —
+    l'erreur est \emph{élevée au carré} (convergence quadratique).
+  \item Après $10$ itérations : (a) erreur $\sim2^{-9}\approx2\cdot10^{-3}$,
+    soit $\approx3$ décimales ; (b) erreur $\sim(1/4)^{10}\approx10^{-6}$,
+    soit $\approx6$ décimales ; (c) le nombre de décimales \emph{double} à
+    chaque pas : bien plus de $100$ décimales exactes en théorie — en
+    pratique, la précision machine est atteinte dès $n=5$. Hiérarchie
+    claire : la convergence quadratique de Newton écrase les convergences
+    géométriques.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\input{corriges/defis/cor-defi-06}

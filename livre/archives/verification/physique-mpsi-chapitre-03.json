@@ -1,0 +1,403 @@
+{
+  "chapitre": 3,
+  "titre": "Circuits linéaires du premier ordre",
+  "pages": 54,
+  "pages_prevues": 54,
+  "pagination_conforme": true,
+  "positions": {
+    "titre": 2,
+    "avant": 3,
+    "sommaire": 4,
+    "ressources": 5,
+    "chapitre-03": 6,
+    "diagnostic": 7,
+    "cours-1": 8,
+    "cours-2": 9,
+    "cours-3": 10,
+    "cours-4": 11,
+    "cours-5": 12,
+    "cours-6": 13,
+    "cours-7": 14,
+    "cours-8": 15,
+    "cours-9": 16,
+    "cours-10": 17,
+    "cours-11": 18,
+    "tp": 19,
+    "numerique": 20,
+    "synthese": 21,
+    "td1": 22,
+    "td2": 23,
+    "td3": 24,
+    "td4": 25,
+    "td5": 26,
+    "td6": 27,
+    "td7": 28,
+    "td8": 29,
+    "defi1": 30,
+    "defi2": 31,
+    "defi3": 32,
+    "dm": 33,
+    "ds1": 34,
+    "ds2": 35,
+    "indices": 36,
+    "corr-diag": 37,
+    "corr-td1": 38,
+    "corr-td2": 39,
+    "corr-td3": 40,
+    "corr-td4": 41,
+    "corr-td5": 42,
+    "corr-td6": 43,
+    "corr-td7": 44,
+    "corr-td8": 45,
+    "corr-defi1": 46,
+    "corr-defi2": 47,
+    "corr-defi3": 48,
+    "corr-dm": 49,
+    "corr-ds1": 50,
+    "corr-ds2": 51,
+    "sources-1": 52,
+    "sources-2": 53,
+    "references": 54
+  },
+  "exercices": 24,
+  "defis": 3,
+  "dm": 1,
+  "ds": 1,
+  "sources": [
+    {
+      "titre": "DM réel / Charge très rapide",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/dm3_elec.pdf",
+      "cible": "MPSI, schleck.ovh ; DM3 à rendre le 5 novembre 2025 ; exercice 2, questions 1 à 5, page 2/3.",
+      "travail": "Prévoir 20 minutes. Travailler seulement la première phase de charge sur le schéma original. La phase suivante comporte deux capacités et relève du deuxième ordre.",
+      "corrige": "Lors de la charge en position A, $rC_1\\dot u_1+u_1=E$ et $u_1(0)=0$. Donc $u_1=E(1-e^{-t/(rC_1)})$. Avec $r=10\\ \\Omega$ et $C_1=30$ nF, $\\tau=0{,}30\\ \\mathrm{\\mu s}$. Atteindre $99{,}9\\,\\%$ demande $t_1=\\tau\\ln1000=2{,}072\\ \\mathrm{\\mu s}$. À 1 ms, $u_1$ est pratiquement égal à 15 V dans ce modèle."
+    },
+    {
+      "titre": "DS réel / Une bobine au démarrage",
+      "url": "https://mpsi.schleck.ovh/fichiers/devoirs/2025-2026/ds3_elec_chimie.pdf",
+      "cible": "MPSI, schleck.ovh ; DS3 du 13 novembre 2025 ; exercice 2, partie I, questions 1 à 6, page 2/4.",
+      "travail": "Prévoir 25 minutes. Établir le courant dans la bobine réelle et différencier la tension inductive de la tension totale. On peut ensuite lire les questions 7 et 8 sur l’ouverture du circuit.",
+      "corrige": "$L\\dot i+(R+r)i=E$, $\\tau=L/(R+r)$ ; si le courant initial est nul, $i=E(1-e^{-t/\\tau})/(R+r)$. Au régime final, $I_0=E/(R+r)$, $U_0=rI_0$, $\\mathcal E_L=LI_0^2/2$ et $P_{J,b}=rI_0^2$. L’ouverture sans trajet de décharge tend à produire une forte tension : elle ne justifie pas un saut instantané du courant dans le modèle de bobine idéale."
+    }
+  ],
+  "placements_figures": 10,
+  "figures_distinctes": 6,
+  "controles": [
+    {
+      "nom": "E03-u",
+      "valeur": 7.792723352971346,
+      "attendu": 7.79272335297,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "E04-seuil",
+      "valeur": 0.005545177444479563,
+      "attendu": 0.00554517744448,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E08-C",
+      "valeur": 4.3280851226668904e-07,
+      "attendu": 4.32808512267e-07,
+      "tolerance": 1e-16
+    },
+    {
+      "nom": "E09-u",
+      "valeur": 0.8120116994196761,
+      "attendu": 0.81201169942,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "E11-zéro",
+      "valeur": 0.002027325540540822,
+      "attendu": 0.00202732554054,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E13-tau",
+      "valeur": 0.004,
+      "attendu": 0.004,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E15-perte",
+      "valeur": 2.4999999999999998e-05,
+      "attendu": 2.5e-05,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "E20-u",
+      "valeur": 3.1622776601683795e-05,
+      "attendu": 3.16227766017e-05,
+      "tolerance": 1e-15
+    },
+    {
+      "nom": "E22-max",
+      "valeur": 4.38635147178003,
+      "attendu": 4.38635147178,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "D2-Rmin",
+      "valeur": 115.1292546497023,
+      "attendu": 115.1292546497,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "DM-tseuil",
+      "valeur": 0.8239592165010823,
+      "attendu": 0.823959216501,
+      "tolerance": 1e-10
+    },
+    {
+      "nom": "DM-chargé-t",
+      "valeur": 0.8798589894180588,
+      "attendu": 0.88,
+      "tolerance": 0.001
+    },
+    {
+      "nom": "DS-WG",
+      "valeur": 3.9999999999999996e-05,
+      "attendu": 4e-05,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "R1-tau",
+      "valeur": 3e-07,
+      "attendu": 3e-07,
+      "tolerance": 1e-12
+    },
+    {
+      "nom": "RC-résidu-0-0",
+      "valeur": 5.0,
+      "attendu": 5.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-0-0.001",
+      "valeur": 5.0,
+      "attendu": 5.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-0-0.005",
+      "valeur": 5.0,
+      "attendu": 5.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-énergie-0",
+      "valeur": 4.9999999999999996e-05,
+      "attendu": 4.9999999999999996e-05,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-8-0",
+      "valeur": 3.0,
+      "attendu": 3.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-8-0.01",
+      "valeur": 3.0,
+      "attendu": 3.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-8-0.05",
+      "valeur": 3.0,
+      "attendu": 3.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-énergie-8",
+      "valeur": -3e-05,
+      "attendu": -2.9999999999999997e-05,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-2-0",
+      "valeur": 10.0,
+      "attendu": 10.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-2-0.002",
+      "valeur": 10.0,
+      "attendu": 10.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-résidu-2-0.01",
+      "valeur": 10.0,
+      "attendu": 10.0,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "RC-énergie-2",
+      "valeur": 0.00015999999999999999,
+      "attendu": 0.00015999999999999999,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Euler-récurrence-0.01",
+      "valeur": 0.6339676587267709,
+      "attendu": 0.6339676587267709,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Euler-récurrence-0.1",
+      "valeur": 0.6513215599000001,
+      "attendu": 0.6513215599,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "Euler-récurrence-0.5",
+      "valeur": 0.75,
+      "attendu": 0.75,
+      "tolerance": 1e-09
+    },
+    {
+      "nom": "DM-seuil-avec-voltmètre",
+      "valeur": 0.8798589894180588,
+      "attendu": 0.88,
+      "tolerance": 0.001
+    },
+    {
+      "nom": "code-publie-execute",
+      "valeur": 1,
+      "attendu": 1,
+      "tolerance": 0
+    }
+  ],
+  "erreurs_compilation": [],
+  "textes_hors_page": [],
+  "collisions_candidates": [],
+  "liens": 60,
+  "liens_invalides": [],
+  "sha256": "70d26a352d5a3ea6a6e142106f9bae3eb780518457d92c59e5c7d210e3bb8de6",
+  "relecture_visuelle": {
+    "date": "2026-10-25",
+    "pages_relues": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54
+    ],
+    "methode": "Inspection de toutes les pages rendues avec Poppler en planches de quatre ; r?inspection isol?e des pages modifi?es ? 100 dpi.",
+    "constat": "Aucun d?bordement, texte tronqu? ou chevauchement de figure rep?r? dans le rendu final.",
+    "pages_reinspectees": [
+      9,
+      20
+    ]
+  },
+  "empreintes_pages_relues": {
+    "page-01.png": "3fd36b2e35347fd048b323efe553e3ee212ca2206f7d20d9a23ea4a2e7c0e5f4",
+    "page-02.png": "740b5622cd1d584635fc203943cae5c9f0291bff900b03221b116f739693dcb0",
+    "page-03.png": "0d6d430cf6e27f4d2b665b4090be8e1a6dca9bd8f218d5737f75b7650911f2cb",
+    "page-04.png": "8554f115e0e62498b49ad37f3f603ca9281e18891be7a22a9f9ce08b1553caec",
+    "page-05.png": "66b0c9636ea136fef4dbc93a7efdcad715d81191db2907e8892f8df7da0d524d",
+    "page-06.png": "16f8235741f47f99d82f0495aa560c42a8235a510f2e13215c7fff911bd3948b",
+    "page-07.png": "9df90e2249f0bfdd483b8b1012dcb3596ead947a9142126430c49bfde9686ba0",
+    "page-08.png": "cd7e7368abe38b123c4df5b1209e4ebd1d0ec816593ab65dfd96b27de6d2473f",
+    "page-09.png": "9504228a0f23f77209fa419c161fb8f532a0f62e8d7f15d8c645a0294c0ace23",
+    "page-10.png": "6ae8d11fef7c7ebe767b071affc7081f7e8c0abc8919492cea330efdabf06fd7",
+    "page-11.png": "12e5ee5e668c0820d61de78c6aaed154948fb6008fd2925169b8ffb73fb9750d",
+    "page-12.png": "248ea17682310e7cad56dacfc5bca47ba2d060c0ad159f250669a4a7be4c49a4",
+    "page-13.png": "f7a8166e70ffb579809330daf31540a82247bc65e5d14b76dea2cfab97c05024",
+    "page-14.png": "487cc42984c1206208f5d92c8677f67fd84d967b9436732ce6e53ec0bd0dc2b7",
+    "page-15.png": "b30b9b78e4308484e66738019f129f43ac238055ab23d4b625c79d3bcebae8da",
+    "page-16.png": "66f9da68765fd974e743c0f521e391e1c81600ef9347520fd69afafc5993bcd1",
+    "page-17.png": "36462bc27484d06dd4412488d464c51f4377ef3be63b9af42e5647765f2a2240",
+    "page-18.png": "b380fc1cbc8b9dd7c95b642b0c2782642b089b229b62a71a89bc2232c4104ab9",
+    "page-19.png": "26544eb4d8e0c0b344b91d67f7334f1388981ae631f8e5b21793f5bbac97226f",
+    "page-20.png": "2cac89857d9f729b5e5fed58cf7fb16bed7d29e67d3ba48ef230e9f4acd5c194",
+    "page-21.png": "ed7489377d9cbe2c1034e4bfe6a669993813cc169b22e426a7380076abbf23e1",
+    "page-22.png": "3652300bd2ad20ab68124abadb03c902a77a949ff9bc71c06f0606dccb33ff0e",
+    "page-23.png": "295d17a7670f0754a1fc8d50ca0b3d472f3a0ba9b1d07d52b88b4672aae0edb5",
+    "page-24.png": "e300907f541a5090d4d850ad797077d32f9ff6347392ea8a99609640a2854380",
+    "page-25.png": "0892a091a0dbaac2c97fbb23effb1f6207ded671ec9f3619b89657662177727f",
+    "page-26.png": "cda50d1b956760b41dae0390d70a1733ffa6f4e0f223ce00f1da15a832bce868",
+    "page-27.png": "020e47610a6562e0cb14bc6bf9efd410bfe51eab130f00e9e09ba820a4690531",
+    "page-28.png": "e33152c5aaa5659dc8c5f19c02b272c2a75700bcdab340770fc374d9f4dc4de0",
+    "page-29.png": "acd085e576afbd5dfd45df2adc2e9005cf03347c8a1b621d72ab0406def5efc3",
+    "page-30.png": "fe27106f4d8864df596e5d0136e74e3141f48c4f94e3e4d3a78dac61fa2dbf53",
+    "page-31.png": "7c07cbfeaac16b6b8f1a5478a280799c0e6347f0d99236b37b64d55af052e674",
+    "page-32.png": "cef83777084cee26af32252cc5f1e205f534c4457904fa3df52f3ed460cd479d",
+    "page-33.png": "a7ff0d413488c718a532b19c96f58a4f8c09823b004cd7b557a5c6463f77ba9c",
+    "page-34.png": "de1a0cabcdde359b8efde8003c1dd25a17c47f9b3647af242577d313ff6273ed",
+    "page-35.png": "09d38db9f133b1f1f3bf75ad5341fa8f258eca9e3a27e9537fe87f1213adcd17",
+    "page-36.png": "385034156050d5a0f962275721f5423c11cb52077339339c50eebc31cfb2135c",
+    "page-37.png": "bd85ab8c764e370d1b35355c70e1141b2fba69c6cc1b92528750fff8a14ff261",
+    "page-38.png": "0965604bc180d9351c10fd1cd178caa1864b66a03f6433d47f774e58c8ca5be8",
+    "page-39.png": "424f34baadac7623c60affbe4bfdcc106967045e7a41aa1a019e5e80e95b6889",
+    "page-40.png": "61b4593e0d99fc2733c321cbbab73e94956f08155ebb79aadb1f67d4757e7504",
+    "page-41.png": "90c359a90adde1d386699d72977f2fab1300d7cff15ce5076fc1a4e83485622f",
+    "page-42.png": "51fa5bb44e37d1ae5b170f7d9b399ed4a0a75a16159bb8e57ff027c3c7fd04a3",
+    "page-43.png": "59ab4749ba6f8bade4d16cafd43c368bb9d12e0977a5b8d4ede621de860ec9c4",
+    "page-44.png": "69515fe2195c637584c87ed0111fe3da5993ffda78034cd01d05bc26b1b86cfe",
+    "page-45.png": "10e40869436ab74348a6dcfc2bcafef75baecd0f42ff7fb78c428d6f51335db8",
+    "page-46.png": "4de1ed66c711acccfd3e7180ed1e5a587bb468783f8ea6f0e008d580db33c802",
+    "page-47.png": "ed603a0e6d54365b4a4eaca4427633c987a01bf41fc517401924ac4e9d84ad50",
+    "page-48.png": "3368a7c10d85a60f8c11654e83fbc9447354a1fea2b1c55f124fff1cd147df62",
+    "page-49.png": "5811dd2fa68ef1b3bf1af44c74b505ab5d895bb6d593f794cf6a4f29b3303373",
+    "page-50.png": "6f576a17b90d42330109aeaba573f3c7e319182f515b39038b45d22b72f8724b",
+    "page-51.png": "d8a25888418f7e665439d6f0854f87d898acbed5c1665260827a7b76ab787990",
+    "page-52.png": "764219a737262d0d21bc7f745b58e5c5981d308d386441edad69faf267d1f37b",
+    "page-53.png": "7a2721ebcd3cb4e167131db40782fdef7f2b197b96fc79697b4a663f58d7dea1",
+    "page-54.png": "02d0c336f997d1c98a08810fb79692698084627647d52309b8df910816375e1e"
+  },
+  "livraisons": [
+    "C:\\Users\\SWEELCO-AT\\Desktop\\SWINDER\\OptiTABV2\\output\\pdf\\France\\Physique-chimie\\OptiTAB - Physique - MPSI - Chapitre 03 - Circuits lineaires du premier ordre.pdf",
+    "C:\\Users\\SWEELCO-AT\\Desktop\\Livres OptiTAB - Lycée\\OptiTAB - Physique - MPSI - Chapitre 03 - Circuits lineaires du premier ordre.pdf"
+  ]
+}

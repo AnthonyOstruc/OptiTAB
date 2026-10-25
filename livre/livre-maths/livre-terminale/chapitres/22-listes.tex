@@ -1,0 +1,500 @@
+% !TEX root = ../main.tex
+%% Chapitre 22 — Listes
+%% Sources : frontend/cours/resume/terminal/resume_algorithme_listes_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_algorithme_listes.txt
+%% Tous les programmes ont été exécutés : les affichages indiqués sont exacts.
+%% Exercices 6 à 10 : exercices inédits rédigés pour le livre.
+
+\begin{ouverture}[listes]{22}{Listes}{Partie 4 · Algorithmique et programmation}
+  {Création\enspace·\enspace Indices\enspace·\enspace Méthodes\enspace·\enspace Parcours\enspace·\enspace
+   Listes en compréhension}
+  \objectif{Créer une liste et accéder à ses éléments par leur indice.}
+  \objectif{Modifier une liste à l'aide de ses méthodes : ajout, insertion, suppression, tri.}
+  \objectif{Parcourir une liste par ses valeurs ou par ses indices.}
+  \objectif{Construire une liste par ajouts successifs ou en compréhension.}
+  \objectif{Utiliser des listes pour traiter une série statistique, trier ou simuler.}
+  \prerequis{Boucles \code{for} et \code{while}, accumulateurs (chapitre 21).}
+  \prerequis{Statistiques descriptives : moyenne, médiane, écart-type.}
+\end{ouverture}
+\miseEnPageSouple
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Créer une liste et accéder à ses éléments}
+
+\begin{definition}[Liste]
+Une \textbf{liste} est une suite \emph{ordonnée} et \emph{modifiable} de valeurs, écrites entre crochets et séparées par des
+virgules, par exemple \code{L = [12, 15, 18, 10, 14]}. Chaque élément est repéré par son \textbf{indice} : le premier a l'indice $0$, le dernier l'indice \code{len(L) - 1}, aussi noté $-1$.
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[x=12mm,y=1mm]
+  \foreach \v [count=\i from 0] in {12,15,18,10,14} {
+    \draw[otNavy,fill=otNavyTint,line width=0.6pt] (\i,0) rectangle ++(1,8);
+    \node at (\i+0.5,4) {$\v$};
+    \node[font=\otSemi\fontsize{8}{9}\selectfont,text=otNavy] at (\i+0.5,11) {\i};
+    \pgfmathtruncatemacro\neg{\i-5}
+    \node[font=\fontsize{8}{9}\selectfont,text=otMuted] at (\i+0.5,-3.2) {$\neg$};
+  }
+  \node[anchor=east,font=\small] at (-0.15,4) {\code{L =}};
+  \node[anchor=west,font=\scriptsize,text=otNavy] at (5.2,11) {indices positifs};
+  \node[anchor=west,font=\scriptsize,text=otMuted] at (5.2,-3.2) {indices négatifs};
+  \draw[otGreenDark,line width=1.1pt,rounded corners=1mm] (1.06,0.9) rectangle (2.94,7.1);
+  \node[anchor=north,font=\scriptsize,text=otGreenDark] at (2,-6.5) {\code{L[1:3]} $\to$ \code{[15, 18]}};
+\end{tikzpicture}
+\end{center}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYl@{}}
+\toprule
+\otTete{Instruction} & \otTete{Rôle} & \otTete{Résultat} \\
+\midrule
+\code{L[0]} & premier élément & \code{12} \\
+\code{L[-1]} & dernier élément & \code{14} \\
+\code{len(L)} & nombre d'éléments & \code{5} \\
+\code{L[1:3]} & indices $1$ et $2$ & \code{[15, 18]} \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}\vspace{0pt}
+\begin{propriete}[Modifier un élément]
+\raggedright
+\code{L[1] = 16} remplace l'élément d'indice $1$ : \code{L} devient \code{[12, 16, 18, 10, 14]}. Un indice qui n'existe pas, comme
+\code{L[5]}, provoque une erreur \code{IndexError}.
+\end{propriete}
+\end{minipage}
+
+\essSection{2}{Méthodes et fonctions utiles}
+
+\noindent
+\begin{minipage}[t]{0.55\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYl@{}}
+\toprule
+\otTete{Méthode} & \otTete{Effet} & \otTete{\code{L} devient} \\
+\midrule
+\code{L.append(5)} & ajoute à la fin & \code{[3, 1, 2, 5]} \\
+\code{L.insert(0, 7)} & insère à l'indice $0$ & \code{[7, 3, 1, 2, 5]} \\
+\code{L.remove(1)} & supprime la 1\textsuperscript{re} occurrence & \code{[7, 3, 2, 5]} \\
+\code{L.pop()} & retire et renvoie le dernier & \code{[7, 3, 2]} \\
+\code{L.sort()} & trie dans l'ordre croissant & \code{[2, 3, 7]} \\
+\code{L.reverse()} & inverse l'ordre & \code{[7, 3, 2]} \\
+\bottomrule
+\end{tabularx}}\\[1mm]
+\legende{Méthodes appliquées successivement à \code{L = [3, 1, 2]}.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.41\linewidth}\vspace{0pt}
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+\toprule
+\otTete{Fonction} & \otTete{Renvoie} \\
+\midrule
+\code{sum(L)} & la somme des éléments \\
+\code{min(L)} & le plus petit élément \\
+\code{max(L)} & le plus grand élément \\
+\code{sorted(L)} & une \emph{copie} triée \\
+\code{x in L} & \code{True} si \code{x} est dans \code{L} \\
+\code{L.index(x)} & l'indice de la 1\textsuperscript{re} occurrence \\
+\code{L.count(x)} & le nombre d'occurrences \\
+\bottomrule
+\end{tabularx}}
+\end{minipage}
+
+\essSection{3}{Parcourir une liste}
+
+\begin{codecote}[0.52]
+\begin{pythoncol}
+fruits = ["pomme", "banane", "orange"]
+for f in fruits:
+    print(f, end=" ")
+\end{pythoncol}
+
+\smallskip
+\begin{consolecol}
+pomme banane orange
+\end{consolecol}
+\cote
+\begin{pythoncol}
+for i in range(len(fruits)):
+    print(i, fruits[i])
+\end{pythoncol}
+
+\smallskip
+\begin{consolecol}
+0 pomme
+1 banane
+2 orange
+\end{consolecol}
+\end{codecote}
+
+\begin{propriete}[Deux façons de parcourir]
+Le parcours \textbf{par valeurs} (\code{for x in L:}) suffit quand seules les valeurs comptent ; le parcours \textbf{par indices}
+(\code{for i in range(len(L)):}) est nécessaire quand on a besoin de la position, par exemple pour modifier \code{L[i]} ou comparer
+deux éléments voisins.
+\end{propriete}
+
+\essSection{4}{Construire une liste}
+
+\begin{savoirfaire}[Construire la liste des termes d'une suite]
+\begin{codecote}[0.44]
+\begin{pythoncol}
+u = [3]
+for k in range(5):
+    u.append(2 * u[-1] - 1)
+print(u)
+\end{pythoncol}
+\cote
+On part de la liste \code{[3]} contenant $u_0$ ; à chaque tour, on calcule le terme suivant à partir du dernier, \code{u[-1]}, et on
+l'ajoute avec \code{append}.
+\begin{consolecol}
+[3, 5, 9, 17, 33, 65]
+\end{consolecol}
+\end{codecote}
+\end{savoirfaire}
+
+\begin{definition}[Liste en compréhension]
+L'écriture \code{[expression for x in …]} construit en une ligne la liste des valeurs de l'expression ; on peut ajouter un filtre
+\code{if condition}.\\[1mm]
+\code{[k**2 for k in range(1, 6)]} $\to$ \code{[1, 4, 9, 16, 25]}\\
+\code{[x for x in [15, 8, 18, 10, 16] if x >= 12]} $\to$ \code{[15, 18, 16]}
+\end{definition}
+
+\begin{exemple}[Une affectation ne copie pas une liste]
+\begin{codecote}[0.4]
+\begin{pythoncol}
+L = [1, 2, 3]
+M = L
+M.append(4)
+print(L)
+N = L.copy()
+N.append(5)
+print(L, N)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+[1, 2, 3, 4]
+[1, 2, 3, 4] [1, 2, 3, 4, 5]
+\end{consolecol}
+
+\smallskip
+\centering
+\begin{tikzpicture}[x=7mm,y=7mm]
+  \foreach \v [count=\i from 0] in {1,2,3,4} {
+    \draw[otNavy,fill=otNavyTint] (\i,0) rectangle ++(1,1); \node at (\i+0.5,0.5) {\small$\v$}; }
+  \foreach \v [count=\i from 0] in {1,2,3,4,5} {
+    \draw[otGreenDark,fill=otGreenTint] (\i,-2) rectangle ++(1,1); \node at (\i+0.5,-1.5) {\small$\v$}; }
+  \tikzset{nomvar/.style={draw=otMuted,fill=white,rounded corners=0.8mm,minimum width=6.5mm,minimum height=5mm,inner sep=0pt}}
+  \node[nomvar] (l) at (-2.2,1.05) {\code{L}};
+  \node[nomvar] (m) at (-2.2,-0.05) {\code{M}};
+  \node[nomvar] (n) at (-2.2,-1.5) {\code{N}};
+  \draw[otFleche] (l.east) -- (-0.08,0.65);
+  \draw[otFleche] (m.east) -- (-0.08,0.35);
+  \draw[otFleche] (n.east) -- (-0.08,-1.5);
+\end{tikzpicture}\\[0.5mm]
+\legende{\code{L} et \code{M} désignent la même liste ; \code{N} est une copie.}
+\end{codecote}
+\end{exemple}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Le premier élément a l'indice $0$ : une liste de $n$ éléments a pour indices $0$, $1$, …, $n-1$.
+  \item \code{L.sort()} modifie \code{L} et ne renvoie rien : écrire \code{L = L.sort()} remplace la liste par \code{None}. Pour obtenir
+    une copie triée, on utilise \code{sorted(L)}.
+  \item \code{M = L} ne copie pas la liste : \code{M} et \code{L} désignent la \emph{même} liste, et modifier l'une modifie l'autre.
+    Pour une copie indépendante : \code{M = L.copy()}.
+  \item \code{L.remove(x)} et \code{L.index(x)} provoquent une erreur si \code{x} n'est pas dans la liste : on teste d'abord
+    \code{if x in L:}.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Créer une liste et accéder à ses éléments}
+\begin{questions}
+  \item On pose \code{notes = [12, 15, 18, 10, 14]}. Écrire les instructions qui affichent la première note, la dernière note et la
+    note du milieu.
+  \item On pose \code{fruits = ["pomme", "banane", "orange", "kiwi"]}. Donner la valeur de :
+\begin{tasks}[label=\alph*)](4)
+  \task \code{fruits[2]}
+  \task \code{fruits[-2]}
+  \task \code{fruits[1:3]}
+  \task \code{len(fruits)}
+\end{tasks}
+  \item Que se passe-t-il si l'on demande \code{fruits[4]} ? Expliquer.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Modifier une liste}
+\begin{questions}
+  \item Partir d'une liste vide \code{nombres = []}, y ajouter $5$, $10$ et $15$ avec \code{append}, puis insérer $8$ à l'indice $1$
+    avec \code{insert}. Donner le contenu de la liste après chaque étape.
+  \item Partir de \code{couleurs = ["rouge", "bleu", "vert", "bleu"]}, supprimer le premier \code{"bleu"} avec \code{remove}, puis
+    remplacer \code{"vert"} par \code{"jaune"}.
+  \item On exécute ensuite \code{x = couleurs.pop()}. Que valent \code{x} et \code{couleurs} ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Rechercher dans une liste}
+\begin{questions}
+  \item On pose \code{notes = [15, 12, 18, 12, 10]}. Donner la valeur de :
+\begin{tasks}[label=\alph*)](2)
+  \task \code{len(notes)}
+  \task \code{notes.index(12)}
+  \task \code{notes.count(12)}
+  \task \code{13 in notes}
+\end{tasks}
+  \item On pose \code{eleves = ["Alice", "Bob", "Charlie", "Alice"]}. Donner la valeur de :
+\begin{tasks}[label=\alph*)](3)
+  \task \code{"Alice" in eleves}
+  \task \code{eleves.index("Alice")}
+  \task \code{eleves.count("Alice")}
+\end{tasks}
+  \item Pourquoi l'instruction \code{notes.index(13)} provoque-t-elle une erreur ? Écrire quelques lignes qui affichent la position de
+    $13$ s'il est dans la liste, et « absent » sinon.
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Trier une liste}
+\begin{questions}
+  \item Avec \code{notes = [15, 8, 20, 12]}, trier la liste avec \code{sort}, puis l'inverser avec \code{reverse}. Afficher la liste à
+    chaque étape.
+  \item Trier la liste \code{prenoms = ["Charlie", "Alice", "Bob"]} par ordre alphabétique, puis afficher le premier et le dernier
+    prénom.
+  \item Qu'affiche le programme suivant ? Quelle différence y a-t-il entre \code{sorted(L)} et \code{L.sort()} ?
+\begin{python}
+L = [15, 8, 20, 12]
+M = sorted(L)
+print(L)
+print(M)
+\end{python}
+  \item Pourquoi l'instruction \code{L = L.sort()} est-elle une erreur ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Parcourir une liste}
+\begin{questions}
+  \item Avec \code{notes = [14, 12, 16, 10, 18]}, calculer la somme et la moyenne des notes à l'aide d'une boucle \code{for}.
+  \item Avec \code{nombres = [5, 8, 12, 3, 15]}, déterminer le plus grand nombre à l'aide d'une boucle, sans utiliser \code{max}.
+  \item Écrire un programme qui affiche le plus petit élément de \code{nombres} et son indice, sans utiliser \code{min}.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Listes en compréhension}
+\begin{questions}
+  \item Construire en compréhension :
+\begin{tasks}[label=\alph*)](2)
+  \task les carrés des entiers de $1$ à $10$ ;
+  \task les multiples de $7$ inférieurs à $100$ ;
+  \task les termes $u_0$, …, $u_9$ de la suite $u_n=3n+2$ ;
+  \task les diviseurs positifs de $36$.
+\end{tasks}
+  \item On pose \code{xs = [k / 4 for k in range(9)]} et \code{ys = [x**2 - 2*x for x in xs]}. Donner \code{xs} et \code{ys}, puis
+    placer les points $(x\pv y)$ dans un repère. Quelle courbe obtient-on ? Quel est le minimum de la fonction sur $\intFF{0}{2}$ ?
+  \item Calculer la somme $1^{2}+2^{2}+\dots+10^{2}$ avec \code{sum} et une liste en compréhension. Vérifier le résultat avec la
+    formule $\frac{n(n+1)(2n+1)}{6}$.
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[2]{Statistiques d'une série de notes}
+\begin{codecote}[0.52]
+\raggedright
+Un élève a obtenu les notes suivantes ce trimestre :\\[1mm]
+\code{notes = [12, 15, 8, 17, 10, 14, 15, 9]}\\[1mm]
+On veut calculer les indicateurs de la série à l'aide de listes, sans fonction statistique toute faite.
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=64mm, height=34mm, ybar, bar width=2.4mm, bar shift=0pt, xmin=7, xmax=18, ymin=0, ymax=2.6,
+  xtick={8,...,17}, ytick={1,2}, xlabel={note}, xlabel style={at={(1,0)},anchor=north east,yshift=-3.5mm}]
+  \addplot[fill=otNavySoft,draw=otNavy,line width=0.4pt] coordinates {(8,1) (9,1) (10,1) (12,1) (14,1) (15,2) (17,1)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Effectif de chaque note.}
+\end{codecote}
+\begin{questions}
+  \item Calculer la moyenne $m$ à l'aide de \code{sum} et \code{len}.
+  \item La variance est $V=\frac1n\sum(x_i-m)^{2}$. Calculer $V$ à l'aide d'une liste en compréhension, puis l'écart-type
+    $\sigma=\sqrt V$.
+  \item Écrire une fonction \code{mediane(L)} qui renvoie la médiane d'une liste de nombres, que son effectif soit pair ou impair.
+    Calculer la médiane des notes.
+  \item Calculer l'étendue de la série et la proportion de notes supérieures ou égales à $10$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le tri par sélection}
+\begin{codecote}[0.55]
+\begin{pythoncol}
+def tri_selection(L):
+    n = len(L)
+    for i in range(n - 1):
+        imin = i
+        for j in range(i + 1, n):
+            if L[j] < L[imin]:
+                imin = j
+        L[i], L[imin] = L[imin], L[i]
+    return L
+\end{pythoncol}
+\cote
+À chaque tour de la boucle extérieure, on cherche le plus petit élément de la partie non triée, \code{L[i]}, …, \code{L[n - 1]}, et on
+l'échange avec \code{L[i]}.\\[1mm]
+C'est l'un des algorithmes de tri les plus simples ; il sert de référence pour comparer des méthodes plus rapides.
+\end{codecote}
+\begin{questions}
+  \item Donner le contenu de la liste à la fin de chaque tour de la boucle extérieure lors de l'appel
+    \code{tri\_selection([5, 2, 8, 1, 9])}.
+  \item Expliquer pourquoi, à la fin du tour d'indice $i$, les éléments \code{L[0]}, …, \code{L[i]} sont rangés dans l'ordre
+    croissant et à leur place définitive.
+  \item Montrer que, pour une liste de $n$ éléments, la comparaison \code{L[j] < L[imin]} est effectuée $\frac{n(n-1)}{2}$ fois.
+    Calculer ce nombre pour $n=5$ et pour $n=1\,000$.
+  \item Par combien est multiplié, environ, le nombre de comparaisons lorsque la taille de la liste double ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le crible d'Ératosthène}
+Pour obtenir tous les nombres premiers jusqu'à $n$, on écrit les entiers de $2$ à $n$, puis on barre les multiples de chaque nombre
+non barré, en commençant par $2$.
+\begin{python}
+def crible(n):
+    est = [True] * (n + 1)
+    est[0] = False
+    est[1] = False
+    for i in range(2, n + 1):
+        if est[i]:
+            for j in range(2 * i, n + 1, i):
+                est[j] = False
+    return [k for k in range(n + 1) if est[k]]
+\end{python}
+\begin{codecote}[0.55]
+\begin{questions}
+  \item Que contient la liste \code{est} au départ ? Que signifie \code{est[k] == True} à la fin du programme ?
+  \item Pourquoi la boucle intérieure commence-t-elle à \code{2 * i} ? Quels nombres sont barrés lors du tour $i=3$ ?
+  \item Que renvoie \code{crible(50)} ? Combien y a-t-il de nombres premiers inférieurs ou égaux à $100$ ? à $1\,000$ ?
+  \item Justifier qu'il suffit d'effectuer les tours pour lesquels $i^{2}\leq n$, et que la boucle intérieure peut commencer à
+    \code{i * i}.
+\end{questions}
+\cote
+\centering
+\scalebox{0.86}{\begin{tikzpicture}[x=7.2mm,y=-7.2mm]
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (0,0) {1};
+\node[draw=otRule,fill=otGreenTint,text=otGreenDark,minimum size=7.2mm,inner sep=0pt,font=\otSemi\fontsize{8}{9}\selectfont] at (1,0) {2};
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (2,0) {3};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,0) {4};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,0.28) -- (3.2800000000000002,-0.28);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,0) {5};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,0) {6};
+\draw[otMuted!80,line width=0.5pt] (4.72,0.28) -- (5.28,-0.28);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (6,0) {7};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,0) {8};
+\draw[otMuted!80,line width=0.5pt] (6.72,0.28) -- (7.28,-0.28);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,0) {9};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,0) {10};
+\draw[otMuted!80,line width=0.5pt] (8.72,0.28) -- (9.28,-0.28);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (0,1) {11};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,1) {12};
+\draw[otMuted!80,line width=0.5pt] (0.72,1.28) -- (1.28,0.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (2,1) {13};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,1) {14};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,1.28) -- (3.2800000000000002,0.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,1) {15};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,1) {16};
+\draw[otMuted!80,line width=0.5pt] (4.72,1.28) -- (5.28,0.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (6,1) {17};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,1) {18};
+\draw[otMuted!80,line width=0.5pt] (6.72,1.28) -- (7.28,0.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,1) {19};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,1) {20};
+\draw[otMuted!80,line width=0.5pt] (8.72,1.28) -- (9.28,0.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (0,2) {21};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,2) {22};
+\draw[otMuted!80,line width=0.5pt] (0.72,2.2800000000000002) -- (1.28,1.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (2,2) {23};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,2) {24};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,2.2800000000000002) -- (3.2800000000000002,1.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,2) {25};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,2) {26};
+\draw[otMuted!80,line width=0.5pt] (4.72,2.2800000000000002) -- (5.28,1.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (6,2) {27};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,2) {28};
+\draw[otMuted!80,line width=0.5pt] (6.72,2.2800000000000002) -- (7.28,1.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,2) {29};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,2) {30};
+\draw[otMuted!80,line width=0.5pt] (8.72,2.2800000000000002) -- (9.28,1.72);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (0,3) {31};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,3) {32};
+\draw[otMuted!80,line width=0.5pt] (0.72,3.2800000000000002) -- (1.28,2.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (2,3) {33};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,3) {34};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,3.2800000000000002) -- (3.2800000000000002,2.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,3) {35};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,3) {36};
+\draw[otMuted!80,line width=0.5pt] (4.72,3.2800000000000002) -- (5.28,2.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (6,3) {37};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,3) {38};
+\draw[otMuted!80,line width=0.5pt] (6.72,3.2800000000000002) -- (7.28,2.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,3) {39};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,3) {40};
+\draw[otMuted!80,line width=0.5pt] (8.72,3.2800000000000002) -- (9.28,2.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (0,4) {41};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (1,4) {42};
+\draw[otMuted!80,line width=0.5pt] (0.72,4.28) -- (1.28,3.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (2,4) {43};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (3,4) {44};
+\draw[otMuted!80,line width=0.5pt] (2.7199999999999998,4.28) -- (3.2800000000000002,3.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (4,4) {45};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (5,4) {46};
+\draw[otMuted!80,line width=0.5pt] (4.72,4.28) -- (5.28,3.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (6,4) {47};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (7,4) {48};
+\draw[otMuted!80,line width=0.5pt] (6.72,4.28) -- (7.28,3.7199999999999998);
+\node[draw=otRule,fill=white,text=otInk,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (8,4) {49};
+\node[draw=otRule,fill=otNavyTint!45,text=otMuted!70,minimum size=7.2mm,inner sep=0pt,font=\fontsize{8}{9}\selectfont] at (9,4) {50};
+\draw[otMuted!80,line width=0.5pt] (8.72,4.28) -- (9.28,3.7199999999999998);
+\end{tikzpicture}}\\[1mm]
+\legende{Après le premier tour ($i=2$) : les multiples de $2$ sont barrés.}
+\end{codecote}
+\end{exercice}
+
+\begin{exercice}[3]{Simuler la somme de deux dés}
+On lance deux dés équilibrés et on note $S$ la somme obtenue. Le programme suivant simule $n=10\,000$ lancers.
+\begin{python}
+from random import randint
+
+effectifs = [0] * 13
+n = 10000
+for k in range(n):
+    s = randint(1, 6) + randint(1, 6)
+    effectifs[s] = effectifs[s] + 1
+frequences = [effectifs[s] / n for s in range(2, 13)]
+\end{python}
+\code{randint(1, 6)} renvoie un entier au hasard entre $1$ et $6$ (inclus). Une exécution a donné les effectifs suivants.\par
+\nopagebreak\smallskip
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccccccccc@{}}
+\toprule
+\otTete{Somme $s$} & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ & $11$ & $12$ \\
+\midrule
+\otTete{Effectif} & $274$ & $591$ & $841$ & $1\,214$ & $1\,354$ & $1\,642$ & $1\,354$ & $1\,090$ & $801$ & $533$ & $306$ \\
+\bottomrule
+\end{tabular*}}
+\begin{questions}
+  \item Pourquoi la liste \code{effectifs} a-t-elle $13$ éléments ? À la fin du programme, que valent \code{effectifs[0]} et
+    \code{effectifs[1]} ?
+  \item Justifier que, pour $s$ entier de $2$ à $12$, $P(S=s)=\frac{6-|s-7|}{36}$.
+  \item Calculer les fréquences obtenues et les comparer aux probabilités. Quelle est la somme la plus fréquente ?
+  \item À l'aide de l'inégalité de Bienaymé-Tchebychev, majorer la probabilité que la fréquence $F$ de la somme $7$ sur $10\,000$
+    lancers s'écarte de $\frac16$ d'au moins $0{,}01$. Le résultat de la simulation est-il surprenant ?
+\end{questions}
+\end{exercice}

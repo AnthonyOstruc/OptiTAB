@@ -1,0 +1,15 @@
+% Mouvement d'un haltère dissymétrique lancé : seul le centre de masse décrit une parabole (L'essentiel, chapitre 14)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[pcTraj] plot[domain=0:10,samples=60] (\x,{0.2+1.25*\x-0.125*\x*\x});
+\foreach \k in {0,...,5}{%
+  \pgfmathsetmacro\xg{2*\k}\pgfmathsetmacro\yg{0.2+1.25*\xg-0.125*\xg*\xg}\pgfmathsetmacro\ang{20+62*\k}%
+  \begin{scope}[shift={(\xg,\yg)},rotate=\ang]
+    \draw[otInk!70,line width=1pt] (-0.25,0) -- (0.75,0);
+    \fill[otNavy!75] (-0.25,0) circle (0.2);
+    \fill[otNavy!40] (0.75,0) circle (0.12);
+  \end{scope}
+  \fill[otRed!80!black] (\xg,\yg) circle (0.055);}
+\node[pcLegende,text=otRed!80!black,anchor=south] at (4,3.65) {centre de masse G};
+\draw[otRed!60,line width=0.4pt] (4,3.62) -- (4,3.25);
+\end{tikzpicture}
+\par\smallskip\legende{Positions successives d'un haltère lancé : il tourne sur lui-même, mais son centre de masse G, plus proche de la grosse boule, décrit une parabole.}

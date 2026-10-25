@@ -1,0 +1,85 @@
+% !TEX root = ../main.tex
+%% Sujet type CCINP — quatre exercices (algèbre linéaire, probabilités,
+%% polynômes, analyse). Résultats vérifiés par verifications/eval_cc.py.
+
+\sujetEval{C1}{Sujet type CCINP · Mathématiques}{Sujet type CCINP}
+  {Durée : \textbf{4 heures}\\Calculatrice interdite\\Programme de première année}{4}
+  {Exercice 1/La matrice $J$/5 pts,Exercice 2/Records/5 pts,%
+   Exercice 3/Polynômes de Bernoulli/5 pts,Exercice 4/L'équation de Cauchy/5 pts}
+\consigne{Sujet inédit, conçu dans l'esprit de l'épreuve de mathématiques
+de la banque CCINP : quatre exercices indépendants, de longueur et de
+difficulté comparables. Les candidats sont invités à encadrer les résultats
+de leurs calculs.}
+
+\begin{exoEval}{5 points}{La matrice $J$}
+Soit $n\geqslant2$ et $J\in\mathcal{M}_n(\R)$ la matrice dont tous les
+coefficients valent $1$. Pour $a,b\in\R$, on pose $M(a,b)=aI_n+bJ$.
+\begin{questions}
+  \item Calculer $J^{2}$. Déterminer le rang de $J$, puis une base de son
+    image et la dimension de son noyau.
+  \item Montrer que $\R^{n}=\operatorname{Ker}J\oplus\operatorname{Im}J$
+    (on identifie $\R^{n}$ et $\mathcal{M}_{n,1}(\R)$), et en déduire que
+    $J$ est semblable à $\operatorname{diag}(n,0,\dots,0)$.
+  \item Montrer que $M(a,b)\,M(c,d)=M(ac,\ ad+bc+nbd)$. Que peut-on en
+    déduire pour l'ensemble des matrices $M(a,b)$ ?
+  \item Montrer que $M(a,b)$ est inversible si et seulement si $a\neq0$ et
+    $a+nb\neq0$, et déterminer alors son inverse sous la forme $M(c,d)$.
+  \item Pour $p\in\N$, montrer que
+    $M(a,b)^{p}=a^{p}I_n+\dfrac{(a+nb)^{p}-a^{p}}{n}\,J$, et calculer
+    $\det M(a,b)$.
+  \item Application : pour $n=3$, calculer $(2I_3+J)^{-1}$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}{5 points}{Records}
+Soit $n\geqslant1$. On reçoit successivement $n$ candidats, tous de niveaux
+différents ; leurs rangs (du moins bon, $1$, au meilleur, $n$) forment une
+permutation $\sigma$ de $\ens{1,\dots,n}$, choisie selon la loi uniforme.
+Pour $1\leqslant k\leqslant n$, on dit que le $k$-ième candidat est un
+\emph{record} si $\sigma(k)>\sigma(i)$ pour tout $i<k$ ; on note $R_k$ cet
+événement et $N_n$ le nombre de records.
+\begin{questions}
+  \item Montrer que $P(R_k)=\dfrac1k$.
+  \item Soient $1\leqslant j<k\leqslant n$. Montrer que
+    $P(R_j\cap R_k)=\dfrac{1}{jk}$. Que peut-on en déduire ?
+  \item Calculer l'espérance et la variance de $N_n$ ; on notera
+    $H_n=\sum_{k=1}^{n}\frac1k$.
+  \item Montrer que $H_n\sim\ln n$. En déduire, à l'aide de l'inégalité de
+    Bienaymé-Tchebychev, que pour tout $\varepsilon>0$,
+    $P\Bigl(\Bigl|\dfrac{N_n}{H_n}-1\Bigr|\geqslant\varepsilon\Bigr)\xrightarrow[n\to+\infty]{}0$.
+  \item Déterminer la loi de $N_3$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}{5 points}{Polynômes de Bernoulli}
+\begin{questions}
+  \item Montrer qu'il existe une unique suite $(B_n)_{n\in\N}$ de polynômes
+    réels telle que $B_0=1$ et, pour tout $n\geqslant1$,
+    \[B_n'=nB_{n-1}\qquad\text{et}\qquad\int_0^{1}B_n(t)\,\mathrm{d}t=0.\]
+  \item Calculer $B_1$, $B_2$, $B_3$. Montrer que $B_n$ est unitaire de
+    degré $n$.
+  \item Montrer que $B_n(1)=B_n(0)$ pour $n\geqslant2$, puis que
+    $B_n(X+1)-B_n(X)=nX^{n-1}$ pour $n\geqslant1$.
+  \item En déduire que pour $N\geqslant1$ et $p\geqslant1$ :
+    $\sum_{k=0}^{N-1}k^{p}=\dfrac{B_{p+1}(N)-B_{p+1}(0)}{p+1}$. Retrouver la
+    somme des carrés des $N-1$ premiers entiers.
+  \item Montrer que $B_n(1-X)=(-1)^{n}B_n(X)$ pour tout $n$. En déduire que
+    $B_{2p+1}\bigl(\frac12\bigr)=B_{2p+1}(0)=0$ pour $p\geqslant1$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}{5 points}{L'équation de Cauchy}
+Soit $f:\R\to\R$ telle que $f(x+y)=f(x)+f(y)$ pour tous réels $x,y$. On pose
+$a=f(1)$.
+\begin{questions}
+  \item Montrer que $f(0)=0$, que $f$ est impaire, et que $f(nx)=nf(x)$ pour
+    tous $n\in\Z$ et $x\in\R$.
+  \item Montrer que $f(r)=ar$ pour tout rationnel $r$.
+  \item On suppose $f$ continue. Montrer que $f(x)=ax$ pour tout réel $x$.
+  \item On suppose seulement $f$ croissante. Montrer que la conclusion
+    subsiste.
+  \item Soit $g:\R\to\R$ continue telle que
+    $g\bigl(\frac{x+y}{2}\bigr)=\frac{g(x)+g(y)}{2}$ pour tous $x,y$. Montrer
+    que $g$ est affine. \emph{Considérer $x\mapsto g(x)-g(0)$.}
+\end{questions}
+\end{exoEval}

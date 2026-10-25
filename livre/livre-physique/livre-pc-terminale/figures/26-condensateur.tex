@@ -1,0 +1,26 @@
+% Condensateur : deux armatures portant des charges opposées, et son symbole (L'essentiel, chapitre 26)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otRed!25] (0,0) rectangle (0.25,2.4);
+\fill[otNavy!25] (1.25,0) rectangle (1.5,2.4);
+\fill[otOrange!10] (0.25,0) rectangle (1.25,2.4);
+\draw[otInk!70,line width=0.5pt] (0,0) rectangle (0.25,2.4) (1.25,0) rectangle (1.5,2.4);
+\foreach \y in {0.3,0.75,...,2.1}{
+  \node[font=\otSemi\fontsize{8}{9}\selectfont,text=otRed!80!black] at (0.42,\y) {$+$};
+  \node[font=\otSemi\fontsize{8}{9}\selectfont,text=otNavy] at (1.08,\y) {$-$};}
+\node[pcLegende,anchor=south] at (0.125,2.45) {armature};
+\node[pcLegende,anchor=south] at (1.375,2.75) {armature};
+\node[pcLegende,anchor=north,align=center] at (0.75,-0.08) {isolant\\ (diélectrique)};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.2mm]}-{Stealth[length=1.2mm]}] (0.25,2.62) -- (1.25,2.62) node[pos=0.5,pcLegende,anchor=south] {$e$};
+\node[pcLegende,anchor=west,text=otRed!80!black] at (-1.2,1.2) {$+q$};
+\node[pcLegende,anchor=west,text=otNavy] at (1.65,1.2) {$-q$};
+% symbole
+\begin{scope}[shift={(4.2,1.2)}]
+\draw[otInk!80,line width=0.7pt] (-1.2,0) -- (-0.12,0) (0.12,0) -- (1.2,0);
+\draw[otInk!80,line width=1.4pt] (-0.12,-0.4) -- (-0.12,0.4) (0.12,-0.4) -- (0.12,0.4);
+\node[pcLegende,anchor=south] at (0,0.45) {$C$};
+\draw[otNavy,line width=0.6pt,-{Stealth[length=1.5mm]}] (0.9,-0.65) -- (-0.9,-0.65) node[pos=0.5,pcLegende,anchor=north,text=otNavy] {$u_C$};
+\node[pcLegende,anchor=north,text=otRed!80!black] at (-0.3,-0.05) {$q$};
+\node[pcLegende,anchor=south,align=center] at (0,0.9) {symbole};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Les armatures portent des charges opposées, $+q$ et $-q$ ; la charge $q$ de l'armature positive est proportionnelle à la tension : $q=C\,u_C$.}

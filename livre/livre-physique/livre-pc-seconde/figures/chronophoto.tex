@@ -1,0 +1,16 @@
+\begin{tikzpicture}[font=\fontsize{8.5}{10.5}\selectfont,
+ line width=.7pt,>=Stealth, every node/.style={align=center},
+ fleche/.style={->,line width=1pt,otGreenDark},
+ guide/.style={otMuted,dashed,line width=.5pt},
+ lab/.style={fill=white,inner sep=1.5pt,text=otInk},
+ rayon/.style={thick,postaction={decorate},decoration={markings,
+ mark=at position .35 with {\arrow{Stealth}},
+ mark=at position .75 with {\arrow{Stealth}}}}]
+\draw[->,otMuted] (-.3,0)--(10.3,0) node[right]{$x$ (m)};
+\foreach \x/\lab/\val in {0/0/0,.6/1/{0,20},2.4/2/{0,80},5.4/3/{1,80},9.6/4/{3,20}}{
+\fill[otNavy] (\x,0) circle (.06);\node[above] at (\x,.1){$M_{\lab}$};\node[below] at(\x,-.08){$\val$};}
+\node at (5,1.2){Entre deux images : $\Delta t=0,20$ s};
+\solution{\draw[fleche] (.6,0)--(2.1,0);\node[text=otGreenDark] at(1.35,-.9){$\vect v_1$ : 3,0 m/s};
+\draw[fleche] (5.4,0)--(8.9,0);\node[text=otGreenDark] at (7.2,-.9){$\vect v_3$ : 7,0 m/s};}
+\end{tikzpicture}\par\smallskip\legende{Positions : 3 cm sur le dessin pour 1 m ; vecteurs du corrigé : 1 cm pour 2 m/s. Deux échelles distinctes.}
+

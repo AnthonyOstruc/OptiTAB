@@ -1,0 +1,18 @@
+% Diagramme de distribution du couple de l'acide éthanoïque (exercice 7, chapitre 9)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=100mm,height=52mm,xmin=2.4,xmax=7.3,ymin=0,ymax=1.08,
+  xtick={2.5,3,...,7},ytick={0,0.1,...,1},
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},
+  xlabel={pH},ylabel={proportion de chaque forme}]
+\addplot[otNavy,line width=1pt,domain=2.4:7.2,samples=160] {1/(1+10^(x-4.76))};
+\addplot[otGreenDark,line width=1pt,domain=2.4:7.2,samples=160] {1/(1+10^(4.76-x))};
+\node[pcLegende,text=otNavy,anchor=west] at (axis cs:2.55,0.84) {courbe 1};
+\node[pcLegende,text=otGreenDark,anchor=west] at (axis cs:6.05,0.84) {courbe 2};
+\solution{\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt]
+  (axis cs:3.8,0) -- (axis cs:3.8,0.901) -- (axis cs:2.4,0.901)
+  (axis cs:3.8,0.099) -- (axis cs:2.4,0.099)
+  (axis cs:4.76,0) -- (axis cs:4.76,0.5) -- (axis cs:2.4,0.5);}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Proportions des deux formes du couple de l'acide éthanoïque en fonction du pH.}

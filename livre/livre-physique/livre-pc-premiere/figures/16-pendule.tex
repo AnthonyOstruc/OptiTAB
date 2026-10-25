@@ -1,0 +1,15 @@
+% Pendule simple : échanges entre énergie potentielle et énergie cinétique (L'essentiel, chapitre 16)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[otMuted!35] (-1.6,3.0) rectangle (1.6,3.18);
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] (0,3.0) -- (0,0.0);
+\draw[otMuted!80,line width=0.4pt,dash pattern=on 1.5pt off 1.5pt] ({-2.8*sin(35)},{3.0-2.8*cos(35)}) arc (235:305:2.8);
+\foreach \a/\op in {-35/1,0/1,35/0.35}{%
+  \draw[otInk!70,line width=0.6pt,opacity=\op] (0,3.0) -- ({2.8*sin(\a)},{3.0-2.8*cos(\a)});
+  \shade[ball color=otOrange!60,opacity=\op] ({2.8*sin(\a)},{3.0-2.8*cos(\a)}) circle (0.16);}
+\draw[otMuted,line width=0.4pt,dash pattern=on 1.5pt off 1.2pt] ({-2.8*sin(35)},{3.0-2.8*cos(35)}) -- (2.4,{3.0-2.8*cos(35)}) (0,0.2) -- (2.4,0.2);
+\draw[otInk!70,line width=0.4pt,{Stealth[length=1.3mm]}-{Stealth[length=1.3mm]}] (2.3,0.2) -- (2.3,{3.0-2.8*cos(35)}) node[pos=0.5,pcLegende,anchor=west] {$h$};
+\node[pcLegende,anchor=east,align=right] at ({-2.8*sin(35)-0.25},{3.0-2.8*cos(35)}) {position extrême :\\$E_\mathrm{c}=0$, $E_\mathrm{p}$ maximale};
+\node[pcLegende,anchor=north,align=center] at (0,-0.05) {position la plus basse :\\$E_\mathrm{p}$ minimale, $E_\mathrm{c}$ maximale};
+\draw[otGreenDark,line width=1pt,-{Stealth[length=2mm]}] (0.2,0.2) -- (1.2,0.2) node[pcLegende,anchor=south,text=otGreenDark] {$\vec{v}$};
+\end{tikzpicture}
+\par\smallskip\legende{Sans frottement, le pendule remonte à la même hauteur de l'autre côté : $\dfrac{1}{2}\,m\,v_\mathrm{max}^2=m\,g\,h$.}

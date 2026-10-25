@@ -1,0 +1,18 @@
+% Spectre d absorption du bleu patenté V, sans commentaire (devoir n° 1, exercice 1)
+\begin{tikzpicture}
+\begin{axis}[otUV,width=92mm,height=50mm,ymax=1.0,ytick={0,0.2,...,0.8},
+  yticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=1},
+  xtick={400,450,...,750}]
+\fill[violet!70,opacity=0.55] (axis cs:400,0) rectangle (axis cs:430,0.035);
+\fill[blue!65,opacity=0.55] (axis cs:430,0) rectangle (axis cs:490,0.035);
+\fill[cyan!70,opacity=0.55] (axis cs:490,0) rectangle (axis cs:500,0.035);
+\fill[green!60!black,opacity=0.55] (axis cs:500,0) rectangle (axis cs:560,0.035);
+\fill[yellow!85!orange,opacity=0.55] (axis cs:560,0) rectangle (axis cs:590,0.035);
+\fill[orange,opacity=0.55] (axis cs:590,0) rectangle (axis cs:620,0.035);
+\fill[red!75,opacity=0.55] (axis cs:620,0) rectangle (axis cs:750,0.035);
+\addplot[otNavy,line width=1pt,domain=400:750] {0 \bandeUV{638}{34}{0.80} \bandeUV{415}{30}{0.05}};
+\draw[otGreenDark,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:638,0) -- (axis cs:638,0.80);
+\node[pcLegende,anchor=south,text=otGreenDark] at (axis cs:638,0.81) {$\lambda_{\max}=\qty{638}{nm}$};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Absorbance d'une solution de bleu patenté V en fonction de la longueur d'onde.}

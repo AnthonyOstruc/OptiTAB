@@ -1,0 +1,24 @@
+% Trajectoire parabolique d'un projectile : vitesse initiale, flèche et portée (L'essentiel, chapitre 15)
+\begin{tikzpicture}[x=1.45cm,y=1.45cm]
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,0) -- (6.6,0) node[pcLegende,anchor=north east] {$x$};
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (0,0) -- (0,2.55) node[pcLegende,anchor=north east] {$z$};
+\node[pcLegende,anchor=north east] at (0,0) {$O$};
+\draw[otNavy,line width=1pt,domain=0:5.911,samples=80] plot (\x,{-0.1705*\x*\x+0.8391*\x+1.0});
+\fill[otInk] (0,1.0) circle (0.04);
+\draw[otMuted,line width=0.4pt] (-0.08,1.0) -- (0.08,1.0) node[pcLegende,anchor=east,xshift=-2.5mm] {$h$};
+\draw[pcVitesse] (0,1.0) -- ++(40:1.0) node[pcLegende,anchor=south,text=otNavy] {$\vec{v}_0$};
+\draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (0,1.0) -- (0.9,1.0);
+\draw[otMuted,line width=0.4pt] (0.55,1.0) arc[start angle=0,end angle=40,radius=0.55];
+\node[pcLegende,anchor=west] at (0.58,1.18) {$\alpha$};
+% sommet
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (2.461,0) -- (2.461,2.032);
+\fill[otOrange] (2.461,2.032) circle (0.04);
+\node[pcLegende,anchor=south,text=otOrange!80!black] at (2.461,2.05) {sommet : $v_z=0$};
+\node[pcLegende,anchor=west,text=otOrange!80!black] at (2.5,0.95) {flèche $z_\mathrm{S}$};
+% portée
+\fill[otGreenDark] (5.911,0) circle (0.045);
+\draw[otGreenDark,line width=0.6pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (0,-0.32) -- (5.911,-0.32)
+  node[pos=0.5,pcLegende,anchor=north,text=otGreenDark] {portée (au sol, $z=0$)};
+\draw[pcAcc] (4.4,1.0) -- (4.4,0.45) node[pcLegende,anchor=north,text=otRed!80!black] {$\vec{a}=\vec{g}$};
+\end{tikzpicture}
+\par\smallskip\legende{Lancée de la hauteur $h$, la boule décrit un arc de parabole ; son accélération est constante, égale à $\vec{g}$.}

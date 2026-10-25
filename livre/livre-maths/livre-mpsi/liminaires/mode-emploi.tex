@@ -1,0 +1,104 @@
+%% =====================================================================
+%%  Mode d'emploi
+%% =====================================================================
+\thispagestyle{otFront}
+\phantomsection\pdfbookmark[0]{Mode d'emploi}{bm-mode-emploi}
+\otPageTitre{Mode d'emploi}{Comment ce livre est organisé}
+
+%% --- Les quatre rubriques ------------------------------------------
+\otIntertitre{Chaque chapitre, une synthèse puis quatre rubriques}
+{\fontsize{10}{13.5}\selectfont
+La synthèse \textbf{L'essentiel} ouvre chaque chapitre : définitions,
+théorèmes, démonstrations à connaître, méthodes et pièges. Les
+vingt-cinq exercices suivent, classés en quatre rubriques.\par}
+\vspace{2.5mm}
+\begin{tcbraster}[raster columns=2,raster equal height,raster column skip=4mm,raster row skip=2.5mm]
+\tcbset{colback=otNavyTint,colframe=otNavyTint,boxrule=0pt,arc=2mm,
+  left=3.5mm,right=3mm,top=2.5mm,bottom=2.5mm}%
+\begin{tcolorbox}
+  \otRond[otNavy]{1}\hspace{1.5mm}{\otSemi\fontsize{7.6}{10}\selectfont\color{otNavy}\otCaps[12]{Applications}}\par
+  \vspace{1.2mm}{\raggedright\fontsize{9.5}{12.5}\selectfont Huit exercices pour vérifier le cours.}
+\end{tcolorbox}
+\begin{tcolorbox}
+  \otRond[otNavy]{2}\hspace{1.5mm}{\otSemi\fontsize{7.6}{10}\selectfont\color{otNavy}\otCaps[12]{Entraînement}}\par
+  \vspace{1.2mm}{\raggedright\fontsize{9.5}{12.5}\selectfont Dix exercices de méthode, niveau colles et DS.}
+\end{tcolorbox}
+\begin{tcolorbox}
+  \otRond[otNavy]{3}\hspace{1.5mm}{\otSemi\fontsize{7.6}{10}\selectfont\color{otNavy}\otCaps[12]{Approfondissement}}\par
+  \vspace{1.2mm}{\raggedright\fontsize{9.5}{12.5}\selectfont Six problèmes dans l'esprit des concours.}
+\end{tcolorbox}
+\begin{tcolorbox}[colback=otGreenTint,colframe=otGreenTint]
+  \otRond[otGreenDark]{4}\hspace{1.5mm}{\otSemi\fontsize{7.6}{10}\selectfont\color{otGreenDark}\otCaps[12]{Défi}}\par
+  \vspace{1.2mm}{\raggedright\fontsize{9.5}{12.5}\selectfont Un problème de synthèse, vers un résultat célèbre.}
+\end{tcolorbox}
+\end{tcbraster}
+
+\vspace{4.5mm}
+%% --- Anatomie d'un exercice ----------------------------------------
+\otIntertitre{Anatomie d'un exercice}
+\begin{tcolorbox}[colback=white,colframe=otRule,boxrule=0.4pt,arc=2mm,
+  left=5mm,right=5mm,top=9mm,bottom=4mm]
+\begin{tikzpicture}
+  \useasboundingbox (0,-9mm) rectangle (\linewidth,4mm);
+  \node[anchor=west,fill=otNavy,rounded corners=1.6pt,inner sep=0pt,minimum width=7mm,
+    minimum height=6.2mm,text=white,font=\otBold\fontsize{10}{10}\selectfont] (num) at (0,0) {17};
+  \node[anchor=west,inner sep=0pt,text=otInk,font=\otSemi\fontsize{10.5}{13}\selectfont]
+    (tit) at (10.5mm,0) {Images directes et images réciproques};
+  \node[anchor=east,inner sep=0pt,text=otMuted,font=\otMedium\fontsize{7}{9}\selectfont]
+    (ref) at (\linewidth,0) {Corrigé p.~64};
+  \node[anchor=east,inner sep=0pt] (dots) at ([xshift=-3mm]ref.west) {\otDots{2}};
+  \node[anchor=west,inner sep=0pt,text=otInk,font=\fontsize{10.5}{13}\selectfont]
+    at (10.5mm,-7mm) {Soit $f:E\to F$ une application et $A$, $B$ deux parties de $E$.};
+  \foreach \n/\c in {1/num,2/tit,3/dots,4/ref}{%
+    \node[circle,fill=otGreen,inner sep=0pt,minimum size=4.4mm,text=white,
+      font=\otBold\fontsize{7}{8}\selectfont] at ([yshift=6.5mm]\c.north) {\n};
+    \draw[otGreen,line width=0.5pt] ([yshift=4.3mm]\c.north) -- ([yshift=0.6mm]\c.north);}
+\end{tikzpicture}
+\end{tcolorbox}
+\vspace{2mm}
+{\fontsize{10}{13.5}\selectfont
+\begin{tabular}{@{}p{78mm}@{\hspace{6mm}}p{78mm}@{}}
+\otRond{1}\enspace Le numéro, à reporter dans le tableau de bord. &
+\otRond{3}\enspace Le niveau de difficulté, de 1 à 3 points.\\[2mm]
+\otRond{2}\enspace Le titre, qui annonce la notion travaillée. &
+\otRond{4}\enspace La page du corrigé (lien cliquable dans le PDF).
+\end{tabular}}
+
+\vspace{4.5mm}
+%% --- Les corrigés ---------------------------------------------------
+\otIntertitre{Des corrigés qui expliquent}
+\begin{minipage}[c]{96mm}
+\begin{tcolorbox}[colback=white,colframe=otRule,boxrule=0.4pt,arc=2mm,
+  left=5mm,right=5mm,top=4mm,bottom=4mm]
+\otLabel{1.}\enspace\methode{raisonner par double inclusion}\\[1mm]
+\hspace*{1.4em}$f^{-1}(F\setminus B)=\res{E\setminus f^{-1}(B)}$
+\end{tcolorbox}
+\end{minipage}\hfill
+\begin{minipage}[c]{62mm}
+\fontsize{10}{13.5}\selectfont
+\otRond{5}\enspace La méthode à retenir, rappelée avant chaque raisonnement.\par\vspace{2.5mm}
+\otRond{6}\enspace Le résultat final, surligné en vert.
+\end{minipage}
+
+\vspace{4.5mm}
+%% --- Les évaluations ------------------------------------------------
+\otIntertitre{Seize sujets pour s'évaluer}
+{\fontsize{10}{13.5}\selectfont
+La partie \textbf{Évaluations} propose seize sujets inédits — six DS, quatre
+DM, deux examens et quatre sujets type concours — corrigés avec un barème
+détaillé.\par}
+
+\vspace{4.5mm}
+%% --- En ligne -------------------------------------------------------
+\begin{tcolorbox}[colback=otNavyTint,colframe=otNavyTint,boxrule=0pt,arc=2mm,
+  left=5mm,right=5mm,top=3mm,bottom=3mm]
+\begin{minipage}[c]{24mm}
+{\color{otNavy}\qrcode[height=18mm,nolink]{\otURL}}
+\end{minipage}\hspace{5mm}%
+\begin{minipage}[c]{120mm}
+{\otSemi\fontsize{11}{14}\selectfont\color{otNavy}Et aussi en ligne}\par\vspace{1.5mm}
+{\fontsize{10}{13.5}\selectfont Retrouvez les cours, les fiches de synthèse et d'autres
+exercices sur \textbf{\otSite}. Scannez le code avec votre téléphone pour y accéder.}
+\end{minipage}
+\end{tcolorbox}
+\clearpage

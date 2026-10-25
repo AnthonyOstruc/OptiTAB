@@ -1,0 +1,10 @@
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\foreach \x/\txt in {0/Réfraction,4.3/Incidence limite,8.6/Réflexion totale}{
+\begin{scope}[shift={(\x,0)}]\fill[otNavyTint](-1.8,-2)rectangle(1.8,0);\draw[otInk](-1.8,0)--(1.8,0);\draw[normal](0,-2)--(0,1.7);\node[lab]at(0,2.2){\txt};\node[lab]at(-1.1,-1.9){$n_1$};\node[lab]at(-1.1,1.5){$n_2<n_1$};\end{scope}}
+\draw[ray](-.8,-1.8)--(0,0);\draw[raytwo](0,0)--(1.4,1.5);
+\draw[ray](3.1,-1.5)--(4.3,0);\draw[raytwo](4.3,0)--(6,0);
+\draw[ray](7,-1)--(8.6,0);\draw[raytwo](8.6,0)--(10.2,-1);
+\node[lab]at(0,-2.5){$i<i_c$};\node[lab]at(4.3,-2.5){$i=i_c$};\node[lab]at(8.6,-2.5){$i>i_c$};
+
+\end{tikzpicture}

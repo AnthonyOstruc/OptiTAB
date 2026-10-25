@@ -1,0 +1,31 @@
+% Échelle d'électronégativité et liaisons polarisées (L'essentiel, chapitre 5)
+\begin{tikzpicture}[x=60mm,y=1mm]
+\draw[otMuted,line width=0.5pt,-{Stealth[length=2mm]}] (2.05,0) -- (3.62,0) node[right,pcLegende,text=otMuted] {$\chi$};
+\foreach \e/\v/\h in {H/2.20/0,C/2.55/0,I/2.66/1,Br/2.96/0,N/3.04/1,Cl/3.16/0,O/3.44/0}{%
+  \draw[otNavy,line width=0.6pt] (\v,-1.2) -- (\v,1.2);
+  \draw[otRule,line width=0.4pt] (\v,1.2) -- (\v,1.2+4*\h) (\v,-1.2) -- (\v,-1.2-4*\h);
+  \node[anchor=south,font=\otMedium\fontsize{8.5}{10}\selectfont,text=otInk] at (\v,1.5+4*\h) {\e};
+  \node[anchor=north,pcLegende,text=otMuted] at (\v,-1.5-4*\h) {\num{\v}};}
+\node[pcLegende,anchor=east,text=otMuted] at (2.05,0) {électronégativité\\de Pauling};
+\end{tikzpicture}
+\par\vspace{4mm}
+{\setchemfig{atom sep=2.1em}\renewcommand{\arraystretch}{1}%
+\begin{tabular}{@{}c@{\hspace{16mm}}c@{\hspace{16mm}}c@{}}
+\chemfig{@{pa1}C(-[2]H)(-[4]H)(-[6]H)-@{pa2}\charge{90=\|,0=\|,270=\|}{Cl}}%
+\chemmove{\node[pcDelta,anchor=south west] at ([xshift=1pt,yshift=1pt]pa1.north east) {\dplus};
+  \node[pcDelta,anchor=south] at ([yshift=4.5pt]pa2.north) {\dmoins};}
+&
+\chemfig{@{pb1}C(-[2]H)(-[4]H)(-[6]H)-@{pb2}\charge{90=\|,270=\|}{O}-@{pb3}H}%
+\chemmove{\node[pcDelta,anchor=south west] at ([xshift=1pt,yshift=1pt]pb1.north east) {\dplus};
+  \node[pcDelta,anchor=south] at ([yshift=4.5pt]pb2.north) {\dmoins};
+  \node[pcDelta,anchor=south] at ([yshift=1pt]pb3.north) {\dplus};}
+&
+\chemfig{@{pc1}C(-[3]H)(-[5]H)=@{pc2}\charge{90=\|,270=\|}{O}}%
+\chemmove{\node[pcDelta,anchor=south west] at ([xshift=1pt,yshift=1pt]pc1.north east) {\dplus};
+  \node[pcDelta,anchor=south] at ([yshift=4.5pt]pc2.north) {\dmoins};}\\[1mm]
+{\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}chlorométhane} &
+{\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}méthanol} &
+{\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}méthanal}
+\end{tabular}}
+\par\smallskip\legende{L'atome le plus électronégatif d'une liaison polarisée porte une charge partielle négative $\delta^-$ ; une liaison C--H
+($\Delta\chi=0{,}35$) est considérée comme non polarisée.}

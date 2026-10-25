@@ -1,0 +1,107 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 3 — vérifié par verifications/defis_01_05.py.
+
+\begin{blocLivre}{cor-3-25a}
+\begin{corrige}{25}{Le théorème de Napoléon}
+\demarche{Un triangle équilatéral direct s'écrit $a+jb+j^{2}c=0$ : toute la
+géométrie du problème devient du calcul dans $\Cx$, avec la seule règle
+$j^{3}=1$, $1+j+j^{2}=0$.}
+\partieExo{A}{Une caractérisation des triangles équilatéraux}
+\begin{questions}
+  \item $j^{3}=\mathrm{e}^{2\mathrm{i}\pi}=1$ ; comme $j\neq1$,
+    $1+j+j^{2}=\dfrac{1-j^{3}}{1-j}=0$ ; et
+    $\overline{j}=\mathrm{e}^{-2\mathrm{i}\pi/3}=\mathrm{e}^{4\mathrm{i}\pi/3}=j^{2}$.
+  \item $(a,b,c)$ est équilatéral direct si et seulement si la rotation
+    de centre $a$ et d'angle $\frac{\pi}{3}$ envoie $b$ sur $c$, soit
+    $c-a=\mathrm{e}^{\mathrm{i}\pi/3}(b-a)$. Or
+    $\mathrm{e}^{\mathrm{i}\pi/3}=-j^{2}$ ($j^{2}=\mathrm{e}^{4\mathrm{i}\pi/3}
+    =-\mathrm{e}^{\mathrm{i}\pi/3}$), donc la condition s'écrit
+    $c=(1+j^{2})a-j^{2}b=-ja-j^{2}b$. En multipliant par $j^{2}$ (et
+    $j^{4}=j$) : $j^{2}c=-a-jb$, soit $\res{a+jb+j^{2}c=0}$.
+\end{questions}
+\partieExo{B}{Le théorème}
+\begin{questions}[resume]
+  \item $A'$ est l'image de $C$ par la rotation de centre $B$ et d'angle
+    $-\frac{\pi}{3}$ (vers l'extérieur, puisque $ABC$ est direct) ;
+    réciproquement, $C$ est l'image de $A'$ par la rotation de centre $B$
+    et d'angle $\frac{\pi}{3}$ : $c-b=\mathrm{e}^{\mathrm{i}\pi/3}(a'-b)$.
+    Ainsi $(b,a',c)$ est équilatéral direct, $b+ja'+j^{2}c=0$, d'où
+    \[
+    \res{a'=-j^{2}b-jc},\qquad b'=-j^{2}c-ja,\qquad c'=-j^{2}a-jb .
+    \]
+  \item $3p=b+c+a'=(1-j^{2})b+(1-j)c$, et de même
+    $3q=(1-j^{2})c+(1-j)a$, $3r=(1-j^{2})a+(1-j)b$. Dans
+    $3(p+jq+j^{2}r)$, le coefficient de $a$ vaut
+    $j(1-j)+j^{2}(1-j^{2})=j-j^{4}=0$, celui de $b$ vaut
+    $(1-j^{2})+j^{2}(1-j)=1-j^{3}=0$, celui de $c$ vaut
+    $(1-j)+j(1-j^{2})=1-j^{3}=0$. Donc $\res{p+jq+j^{2}r=0}$ : par la
+    partie A, \res{PQR\text{ est équilatéral}} (et direct).
+  \item $3(p+q+r)=\bigl((1-j^{2})+(1-j)\bigr)(a+b+c)
+    =(2-j-j^{2})(a+b+c)=3(a+b+c)$, puisque $j+j^{2}=-1$ : les deux
+    triangles ont le \res{\text{même centre de gravité}}.
+\end{questions}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-3-25b}
+\begin{corrigeSuite}
+\partieExo{C}{Longueurs et point de Fermat}
+\begin{questions}[start=6]
+  \item $j(a'-a)=-j^{3}b-j^{2}c-ja=-b-j^{2}c-ja=b'-b$, et de même
+    $j(b'-b)=c'-c$. Multiplier par $j$, c'est tourner de
+    $\frac{2\pi}{3}$ : $\res{AA'=BB'=CC'}$, et les vecteurs
+    $\overrightarrow{AA'}$, $\overrightarrow{BB'}$, $\overrightarrow{CC'}$
+    se déduisent l'un de l'autre par des rotations de $\frac{2\pi}{3}$ :
+    les droites font deux à deux des angles de $\frac{\pi}{3}$.
+  \item $P$ et $Q$ sont à distances $CP=\dfrac{\alpha}{\sqrt3}$ et
+    $CQ=\dfrac{\beta}{\sqrt3}$ de $C$, et
+    $\widehat{PCQ}=\dfrac{\pi}{6}+\widehat{C}+\dfrac{\pi}{6}$ (figure).
+    Al-Kashi donne
+    \[
+    PQ^{2}=\frac{\alpha^{2}+\beta^{2}}{3}
+    -\frac{2\alpha\beta}{3}\cos\Bigl(\widehat{C}+\frac{\pi}{3}\Bigr)
+    =\frac{\alpha^{2}+\beta^{2}}{3}-\frac{\alpha\beta\cos\widehat{C}}{3}
+    +\frac{\alpha\beta\sin\widehat{C}}{\sqrt3} .
+    \]
+    Avec $\alpha\beta\cos\widehat{C}=\frac{\alpha^{2}+\beta^{2}-\gamma^{2}}{2}$
+    (Al-Kashi dans $ABC$) et $\alpha\beta\sin\widehat{C}=2\mathcal{S}$ :
+    $\res{PQ^{2}=\dfrac{\alpha^{2}+\beta^{2}+\gamma^{2}}{6}
+    +\dfrac{2}{\sqrt3}\,\mathcal{S}}$ — expression symétrique en
+    $\alpha,\beta,\gamma$, ce qui redonne $PQ=QR=RP$.
+  \item Pour $ABC$ équilatéral de côté $\ell$ :
+    $\mathcal{S}=\frac{\sqrt3}{4}\ell^{2}$, donc
+    $PQ^{2}=\frac{\ell^{2}}{2}+\frac{\ell^{2}}{2}$ et $\res{PQ=\ell}$.
+    Chaque centre, par exemple $P$, est le symétrique de $A$ par rapport
+    au centre $G$ de $ABC$ : $PQR$ est l'image de $ABC$ par la symétrie
+    de centre $G$.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[scale=0.95,line cap=round,line join=round]
+  \coordinate (C) at (0,0);
+  \coordinate (B) at (3.2,0);
+  \coordinate (A) at (70:2.6);
+  \coordinate (P) at (-30:1.848);
+  \coordinate (Q) at (100:1.501);
+  \draw[otInk,line width=0.9pt] (A) -- (C) -- (B);
+  \draw[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (A) -- (B);
+  \draw[otGreenDark,line width=1pt] (C) -- (P) (C) -- (Q);
+  \draw[otGreenDark,line width=1.2pt] (P) -- (Q);
+  \draw[otNavy,line width=0.6pt] (0.75,0) arc[start angle=0,end angle=70,radius=0.75];
+  \draw[otGreen!70!black,line width=0.6pt] (0.55,0) arc[start angle=0,end angle=-30,radius=0.55];
+  \draw[otGreen!70!black,line width=0.6pt] (70:0.55) arc[start angle=70,end angle=100,radius=0.55];
+  \foreach \p in {A,B,C}{\fill[otInk] (\p) circle (1.4pt);}
+  \foreach \p in {P,Q}{\fill[otGreenDark] (\p) circle (1.5pt);}
+  \node[font=\small,anchor=north east] at (C) {$C$};
+  \node[font=\small,anchor=west] at (B) {$B$};
+  \node[font=\small,anchor=south west] at (A) {$A$};
+  \node[font=\small,text=otGreenDark,anchor=north west] at (P) {$P$};
+  \node[font=\small,text=otGreenDark,anchor=east] at (Q) {$Q$};
+  \node[font=\scriptsize,text=otNavy] at (35:1.05) {$\widehat{C}$};
+  \node[font=\scriptsize,text=otGreen!60!black] at (-15:0.85) {$\frac{\pi}{6}$};
+  \node[font=\scriptsize,text=otGreen!60!black] at (85:0.85) {$\frac{\pi}{6}$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Dans le triangle $PCQ$ : $CP=\alpha/\sqrt3$, $CQ=\beta/\sqrt3$ et
+l'angle en $C$ vaut $\widehat{C}+\pi/3$.}
+\end{center}
+\end{corrigeSuite}
+\end{blocLivre}

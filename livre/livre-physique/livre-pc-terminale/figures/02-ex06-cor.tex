@@ -1,0 +1,14 @@
+% Droite d'étalonnage du colorant E133 et lecture de la solution diluée (corrigé de l'exercice 6, chapitre 2)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=104mm,height=56mm,xmin=0,xmax=9,ymin=0,ymax=1.2,xtick={0,1,...,8},ytick={0,0.2,...,1.2},
+  xlabel={$c$ ($\upmu$mol$\cdot$L$^{-1}$)},ylabel={$A$},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\addplot[otGreenDark,line width=0.9pt,domain=0:8.8] {0.1305*x};
+\addplot[only marks,mark=*,mark size=1.8pt,otInk] coordinates {(1,0.13)(2,0.26)(4,0.52)(6,0.79)(8,1.04)};
+\draw[otOrange,line width=0.7pt,dash pattern=on 2pt off 1.5pt] (axis cs:0,0.62) -- (axis cs:4.75,0.62) -- (axis cs:4.75,0);
+\node[pcLegende,anchor=south west,text=otOrange!75!black] at (axis cs:0.1,0.63) {$A=0{,}62$};
+\node[pcLegende,anchor=south west,text=otOrange!75!black] at (axis cs:4.8,0.04) {$4{,}75$};
+\node[pcLegende,anchor=north west,text=otGreenDark] at (axis cs:6.3,0.62) {$A=0{,}1305\,c$};
+\end{axis}
+\end{tikzpicture}

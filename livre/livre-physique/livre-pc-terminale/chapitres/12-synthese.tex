@@ -1,0 +1,359 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[synthese]{12}{Stratégies de synthèse organique}{Partie 1 · Constitution et transformations de la matière}
+{Étapes d'une synthèse\enspace·\enspace Rendement\enspace·\enspace Substitution, addition, élimination\enspace·\enspace Protection et chimie verte}
+\objectif{Identifier les étapes d'un protocole : transformation, isolement, purification, identification.}
+\objectif{Justifier un montage à reflux et les choix expérimentaux d'une synthèse.}
+\objectif{Déterminer le rendement d'une synthèse, y compris multiétapes.}
+\objectif{Classer une réaction : substitution, addition, élimination ; modification de chaîne ou de groupe.}
+\objectif{Comprendre une stratégie de protection et les principes d'une chimie plus respectueuse de l'environnement.}
+\prerequis{Familles fonctionnelles et groupes caractéristiques (chapitre~11).}
+\prerequis{Facteurs cinétiques et catalyse (chapitre~4) ; équilibre et estérification (chapitre~7).}
+\prerequis{Quantité de matière, réactif limitant.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Les étapes d'une synthèse}
+\begin{definition}[Les quatre étapes]
+Une synthèse organique s'organise en quatre étapes : la \textbf{transformation} des réactifs (souvent sous chauffage à
+reflux), l'\textbf{isolement} du produit brut (filtration, décantation, extraction), sa \textbf{purification}
+(recristallisation, distillation, lavages) et son \textbf{identification} (CCM, température de fusion, spectroscopie
+infrarouge), accompagnée si besoin d'un contrôle de pureté.
+\end{definition}
+\schema{12-etapes}
+\begin{propriete}[Le chauffage à reflux]
+Chauffer accélère la transformation (facteur cinétique) ; le réfrigérant vertical condense les vapeurs, qui retombent
+dans le ballon : on chauffe ainsi \textbf{sans perte de matière}, même à ébullition.
+\end{propriete}
+\schema{12-montage}
+\essSection{2}{Le rendement}
+\begin{definition}[Rendement d'une synthèse]
+Le rendement compare la quantité de produit réellement obtenue à la quantité maximale attendue, déterminée par le
+réactif limitant :
+\[\eta=\frac{n_{\text{obtenue}}}{n_{\max}}=\frac{m_{\text{obtenue}}}{m_{\max}},\qquad 0\leq\eta\leq1.\]
+Une transformation non totale, des réactions parasites et les pertes de l'isolement et de la purification font que
+$\eta<1$.
+\end{definition}
+\begin{exemple}
+Pour synthétiser de l'aspirine (\ce{C9H8O4}, $M=\qty{180,2}{g.mol^{-1}}$), on part de 5,00~g d'acide salicylique
+(\ce{C7H6O3}, $M=\qty{138,1}{g.mol^{-1}}$), réactif limitant : $n_{\max}=\frac{5{,}00}{138{,}1}=\qty{3,62e-2}{mol}$,
+soit $m_{\max}=\num{3.62e-2}\times180{,}2=\qty{6,52}{g}$. On isole 4,2~g d'aspirine pure :
+$\eta=\frac{4{,}2}{6{,}52}=0{,}64$, soit 64~\%.
+\end{exemple}
+\begin{codecote}[0.56]
+\begin{pythoncol}
+etapes = [0.85, 0.90, 0.70]
+r = 1.0
+for e in etapes:
+    r = r * e
+print(round(r, 3))
+\end{pythoncol}
+\begin{consolecol}
+0.535
+\end{consolecol}
+\cote
+\fontsize{9.5}{12.5}\selectfont
+\capacite{Capacité numérique}\par\smallskip
+Pour une synthèse en plusieurs étapes, le rendement global est le \textbf{produit} des rendements de chaque étape :
+trois étapes pourtant honorables (85~\%, 90~\%, 70~\%) ne conservent que 54~\% du réactif de départ. Réduire le nombre
+d'étapes est l'un des premiers leviers d'une synthèse efficace.
+\end{codecote}
+\essSection{3}{Catégories de réactions et stratégie}
+\begin{definition}[Substitution, addition, élimination]
+Dans une \textbf{substitution}, un atome ou un groupe est remplacé par un autre : \ce{R-Br + HO- -> R-OH + Br-}. Dans
+une \textbf{addition}, deux réactifs se lient grâce à l'ouverture d'une liaison multiple :
+\ce{CH2=CH2 + H2O -> CH3-CH2OH}. Dans une \textbf{élimination}, le substrat perd un petit groupe d'atomes et forme une
+liaison multiple : \ce{CH3-CHOH-CH3 -> CH3-CH=CH2 + H2O}. Selon qu'elle touche le squelette ou le groupe
+caractéristique, la réaction modifie la \textbf{chaîne} ou le \textbf{groupe}.
+\end{definition}
+\begin{propriete}[Protéger une fonction]
+Lorsqu'un réactif porte plusieurs groupes réactifs, une réaction peut se produire au mauvais endroit. On
+\textbf{protège} alors le groupe à préserver (on le transforme en un groupe inerte), on réalise la réaction souhaitée,
+puis on \textbf{déprotège}. C'est la stratégie de la synthèse peptidique : pour lier l'acide aminé A à l'acide aminé B
+dans l'ordre choisi, on bloque le groupe amine de A et le groupe carboxyle de B avant le couplage.
+\end{propriete}
+\schema{12-protection}
+\essSection{4}{Optimiser et verdir une synthèse}
+\begin{propriete}[Les leviers d'optimisation]
+Pour accélérer : élever la température, utiliser un catalyseur (chapitre~4). Pour augmenter le rendement d'une
+transformation non totale : introduire un réactif bon marché en excès, ou éliminer un produit au fur et à mesure, ce
+qui maintient $Q_\mathrm{r}<K$ (chapitre~7). Un catalyseur, lui, ne modifie jamais l'état final.
+\end{propriete}
+\begin{definition}[Économie d'atomes]
+L'économie d'atomes d'une réaction mesure la part de la masse des réactifs que l'on retrouve dans le produit visé :
+\[\mathrm{EA}=\frac{M(\text{produit visé})}{\sum M(\text{réactifs})}\times100,\]
+les masses molaires étant comptées avec les nombres stœchiométriques. Une addition a une économie d'atomes de
+100~\% ; une substitution en a toujours une plus faible, car elle rejette un sous-produit.
+\end{definition}
+\begin{propriete}[Vers une chimie plus verte]
+Une synthèse plus respectueuse de l'environnement cherche à : réduire le nombre d'étapes et les déchets (économie
+d'atomes élevée), remplacer les réactifs et solvants dangereux, travailler à température modérée, catalyser, et
+utiliser des matières premières renouvelables.
+\end{propriete}
+\begin{rediger}
+Pour un rendement, citer le réactif limitant, la quantité maximale attendue puis la quantité obtenue, et conclure en
+pourcentage. Pour une catégorie de réaction, nommer la liaison créée ou rompue : « la double liaison C$=$C s'ouvre :
+c'est une addition ».
+\end{rediger}
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-12-1}
+\begin{exercice}[1]{Les étapes d'un protocole}
+Protocole de synthèse de l'éthanoate de 3-méthylbutyle (arôme de banane) : « \textit{(1) Dans un ballon, introduire
+20~mL de 3-méthylbutan-1-ol, 30~mL d'acide éthanoïque, quelques gouttes d'acide sulfurique et de la pierre ponce.
+(2) Chauffer à reflux 40~minutes. (3) Verser le contenu refroidi dans de l'eau salée glacée, puis séparer la phase
+organique à l'ampoule à décanter. (4) La laver avec une solution d'hydrogénocarbonate de sodium, puis la sécher.
+(5) Vérifier la pureté par chromatographie sur couche mince.} »
+\begin{questions}
+\item Attribuer chacune des phrases numérotées à l'une des quatre étapes d'une synthèse.
+\item Quel est le rôle de l'acide sulfurique ? celui de la pierre ponce ?
+\item Pourquoi chauffe-t-on à reflux plutôt que dans un bécher ouvert ?
+\item À quelle famille le produit appartient-il ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-2}
+\begin{exercice}[1]{Le montage à reflux}
+Le schéma représente un montage de chauffage à reflux dont les légendes ont été remplacées par des lettres.
+\schema{12-ex02}
+\begin{questions}
+\item Nommer les éléments A à E.
+\item Dans quel sens l'eau circule-t-elle dans l'élément B ? Pourquoi ?
+\item Expliquer la phrase : « le reflux permet de chauffer sans perdre de matière ».
+\item Quel élément du montage joue un rôle de sécurité vis-à-vis des vapeurs inflammables ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-3}
+\begin{exercice}[1]{Calculer un rendement}
+Lors d'une synthèse de l'éthanoate d'éthyle \ce{CH3-COO-C2H5}, le réactif limitant est l'acide éthanoïque, introduit à
+raison de 0,100~mol. Après purification, on isole 5,9~g d'ester.
+\begin{donnees}
+$M(\text{ester})=\qty{88,1}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la réaction d'estérification entre l'acide éthanoïque et l'éthanol.
+\item Quelle est la quantité maximale d'ester attendue ? la masse correspondante ?
+\item Calculer le rendement de la synthèse.
+\item Citer deux raisons pour lesquelles le rendement n'atteint pas 100~\%.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-4}
+\begin{exercice}[1]{Substitution, addition ou élimination ?}
+On considère les transformations suivantes.
+\begin{questions}[label=\otLabel{\Alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item \ce{CH2=CH2 + H2O -> CH3-CH2-OH}
+\item \ce{CH3-CH2-CH2-Br + HO- -> CH3-CH2-CH2-OH + Br-}
+\item \ce{CH3-CHOH-CH3 -> CH3-CH=CH2 + H2O}
+\item \ce{CH2=CH2 + H2 -> CH3-CH3}
+\end{questions}
+\begin{questions}
+\item Classer chaque transformation : substitution, addition ou élimination. Justifier.
+\item Pour la transformation B, préciser l'atome ou le groupe remplacé et le groupe entrant.
+\item Laquelle de ces transformations est mise en jeu dans une polymérisation ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-5}
+\begin{exercice}[1]{Chaîne ou groupe ?}
+Pour chaque transformation, indiquer si elle modifie la chaîne carbonée, le groupe caractéristique, ou les deux.
+\begin{questions}[label=\otLabel{\alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item \ce{CH3-CH2-OH -> CH3-COOH} (fabrication du vinaigre) ;
+\item $n\,\ce{CH2=CH2 ->}\ \ce{-(CH2-CH2)_{$n$}-}$ (polymérisation) ;
+\item \ce{CH3-CH2-CH2-OH -> CH3-CH2-CH2-Br} ;
+\item \ce{CH3-COOH + CH3-OH -> CH3-COO-CH3 + H2O}.
+\end{questions}
+\begin{questions}
+\item Justifier chaque réponse en comparant squelettes et groupes caractéristiques.
+\item Parmi ces transformations, laquelle est une substitution ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-12-6}
+\begin{exercice}[2]{La synthèse de l'aspirine}
+Au laboratoire, on synthétise l'aspirine \ce{C9H8O4} à partir de 5,00~g d'acide salicylique \ce{C7H6O3} et d'un excès
+d'anhydride éthanoïque, sous chauffage à reflux pendant 20~minutes. Le mélange refroidi est versé sur de la glace :
+l'aspirine cristallise. Après filtration sur Büchner, recristallisation et séchage, on pèse 4,2~g de cristaux, dont la
+température de fusion mesurée vaut 135~°C (valeur attendue : 136~°C).
+\begin{donnees}
+$M(\ce{C7H6O3})=\qty{138,1}{g.mol^{-1}}$ ; $M(\ce{C9H8O4})=\qty{180,2}{g.mol^{-1}}$ ; une mole d'acide salicylique
+donne au plus une mole d'aspirine.
+\end{donnees}
+\begin{questions}
+\item Identifier, dans le protocole, les quatre étapes de la synthèse.
+\item Pourquoi l'anhydride éthanoïque est-il introduit en excès ?
+\item Calculer la masse maximale d'aspirine attendue, puis le rendement.
+\item Que permet de conclure la mesure de la température de fusion ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-7}
+\begin{exercice}[2]{Choisir les bonnes conditions}
+On étudie l'estérification \ce{CH3COOH + C2H5OH <=> CH3COOC2H5 + H2O}, lente et non totale ($K=4{,}0$, chapitre~7).
+Quatre propositions sont faites pour améliorer la synthèse :
+\begin{questions}[label=\otLabel{\alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item ajouter quelques gouttes d'acide sulfurique ;
+\item chauffer le mélange ;
+\item introduire l'éthanol en large excès ;
+\item éliminer l'eau au fur et à mesure de sa formation.
+\end{questions}
+\begin{questions}
+\item Pour chaque proposition, indiquer si elle augmente la vitesse de la transformation, son rendement final, ou les
+deux. Justifier à l'aide des chapitres 4 et 7.
+\item Pourquoi un catalyseur ne peut-il pas augmenter le rendement final ?
+\item Quelle grandeur du chapitre 7 l'élimination de l'eau fait-elle varier, et dans quel sens ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-8}
+\begin{exercice}[2]{L'économie d'atomes}
+Deux voies de synthèse du propan-2-ol sont envisagées :
+\begin{questions}[label=\otLabel{\Alph*.},leftmargin=1.9em,itemsep=0pt,parsep=0.15em]
+\item addition d'eau sur le propène : \ce{CH3-CH=CH2 + H2O -> CH3-CHOH-CH3} ;
+\item substitution sur le 2-bromopropane : \ce{CH3-CHBr-CH3 + NaOH -> CH3-CHOH-CH3 + NaBr}.
+\end{questions}
+\begin{donnees}
+$M(\ce{C3H6})=\qty{42,1}{g.mol^{-1}}$ ; $M(\ce{H2O})=\qty{18,0}{g.mol^{-1}}$ ;
+$M(\ce{C3H7Br})=\qty{123,0}{g.mol^{-1}}$ ; $M(\ce{NaOH})=\qty{40,0}{g.mol^{-1}}$ ;
+$M(\ce{C3H8O})=\qty{60,1}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Rappeler la définition de l'économie d'atomes.
+\item Calculer l'économie d'atomes de chaque voie.
+\item Quel sous-produit la voie B rejette-t-elle ? Commenter.
+\item Pourquoi une addition a-t-elle toujours une économie d'atomes de 100~\% ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-9}
+\begin{exercice}[2]{Le rendement d'une synthèse multiétapes}
+Une molécule est préparée en trois étapes successives, de rendements respectifs 85~\%, 90~\% et 70~\%. Le programme
+calcule le rendement global et la quantité finale obtenue à partir de 0,50~mol de réactif.
+\begin{python}
+etapes = [0.85, 0.90, 0.70]
+r = 1.0
+for e in etapes:
+    r = r * e
+print(round(r, 3), round(0.50 * r, 3))
+\end{python}
+\begin{console}
+0.535 0.268
+\end{console}
+\begin{questions}
+\item \capacite{Capacité numérique}Justifier que le rendement global est le produit des rendements des étapes.
+\item Interpréter les deux nombres affichés.
+\item L'équipe peut porter une seule étape à 95~\%. Laquelle choisir pour le meilleur gain ? Calculer le nouveau
+rendement global.
+\item Quel serait le rendement global d'une synthèse équivalente en une seule étape de rendement 70~\% ? Conclure.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-10}
+\begin{exercice}[2]{Pourquoi protéger ?}
+On veut synthétiser le dipeptide Gly--Ala, dans lequel le groupe carboxyle de la glycine (Gly) est lié au groupe amine
+de l'alanine (Ala). Or chaque acide aminé porte à la fois un groupe amine et un groupe carboxyle.
+\schema{12-ex10}
+\begin{questions}
+\item Expliquer pourquoi un simple mélange de Gly et d'Ala conduit à quatre dipeptides différents. Les désigner.
+\item Quelle stratégie permet d'obtenir uniquement Gly--Ala ? Décrire les étapes dans l'ordre.
+\item Pourquoi faut-il, à la fin, une étape de déprotection ?
+\item Chaque étape supplémentaire a un rendement imparfait. Quel est le prix à payer de cette stratégie ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-11}
+\begin{exercice}[2]{La juste durée du reflux}
+Pour une estérification conduite à reflux, on mesure le rendement obtenu en arrêtant la synthèse à différentes durées
+de chauffage.
+\schema{12-ex11}
+\begin{questions}
+\item Décrire l'évolution du rendement avec la durée de chauffage. Pourquoi apparaît-il un palier ?
+\item Quelle durée de chauffage recommander ? Justifier.
+\item Reproduire l'allure de la courbe et tracer celle attendue avec un catalyseur. Justifier.
+\item Quel levier faudrait-il utiliser pour dépasser la valeur du palier ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\rubrique{Objectif bac}
+\begin{blocLivre}{ex-12-12}
+\begin{exercice}[3]{Deux routes vers l'ibuprofène}
+\begin{docu}{1}{Des années 1960 aux années 1990}
+L'ibuprofène a longtemps été produit par la synthèse « Boots » : six étapes, et une économie d'atomes globale de
+40~\% seulement. Dans les années 1990, le procédé « BHC » l'a remplacée : trois étapes catalytiques, dont les
+catalyseurs sont récupérés et réutilisés, et une économie d'atomes de 77~\%. Ce procédé a reçu un prix de chimie
+verte.
+\end{docu}
+\begin{donnees}
+$M(\text{ibuprofène})=\qty{206,3}{g.mol^{-1}}$ ; somme des masses molaires des réactifs engagés :
+\qty{514,5}{g.mol^{-1}} pour la voie Boots, \qty{266,8}{g.mol^{-1}} pour la voie BHC.
+\end{donnees}
+\begin{questions}
+\item Vérifier les deux valeurs d'économie d'atomes annoncées.
+\item \initiative Pour une tonne d'ibuprofène produite, estimer la masse de sous-produits rejetés par chaque voie.
+\item En quoi la réduction du nombre d'étapes améliore-t-elle aussi le rendement global ?
+\item Citer deux principes de la chimie verte illustrés par le procédé BHC.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-13}
+\begin{exercice}[3]{Assembler un dipeptide sans fausse note}
+\begin{docu}{1}{Le plan de synthèse}
+Pour préparer le dipeptide Ala--Gly, un laboratoire suit le plan suivant, chaque étape ayant un rendement de 90~\% :
+(1) protection du groupe amine de l'alanine ; (2) protection du groupe carboxyle de la glycine ; (3) couplage : le
+groupe carboxyle libre de l'alanine réagit avec le groupe amine libre de la glycine ; (4) déprotections, qui libèrent
+le dipeptide.
+\end{docu}
+\begin{questions}
+\item Quel groupe caractéristique le couplage crée-t-il ? De quelle famille, vue au chapitre~11, le dipeptide
+relève-t-il ?
+\item Pourquoi les étapes 1 et 2 sont-elles indispensables ? Que se formerait-il sans elles ?
+\item Justifier l'ordre des protections choisi : pourquoi bloque-t-on l'amine de l'alanine et non son carboxyle ?
+\item \initiative Calculer le rendement global du plan de synthèse.
+\item La synthèse industrielle des peptides enchaîne des dizaines de couplages. Commenter la contrainte que fait peser
+le rendement de chaque étape.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-14}
+\begin{exercice}[3]{La synthèse du paracétamol}
+\begin{docu}{1}{Le protocole}
+Dans un ballon, dissoudre 5,45~g de 4-aminophénol dans 15~mL d'eau tiède ; ajouter lentement 6,0~mL d'anhydride
+éthanoïque (excès), puis chauffer à reflux 15~minutes. Verser dans l'eau glacée : le paracétamol cristallise. Filtrer
+sur Büchner, recristalliser dans l'eau chaude, sécher à l'étuve. Masse obtenue : 6,0~g. Température de fusion
+mesurée : 169~°C (valeur de référence : 170~°C).
+\end{docu}
+\begin{donnees}
+$M(\text{4-aminophénol})=\qty{109,1}{g.mol^{-1}}$ ; $M(\text{paracétamol})=\qty{151,2}{g.mol^{-1}}$ ; une mole de
+4-aminophénol donne au plus une mole de paracétamol.
+\end{donnees}
+\begin{questions}
+\item Le 4-aminophénol porte un groupe hydroxyle et un groupe amine ; l'anhydride réagit ici avec le groupe amine pour
+former un amide. Quel groupe du paracétamol en résulte ?
+\item Identifier les quatre étapes de la synthèse dans le protocole.
+\item Calculer la masse maximale de paracétamol attendue, puis le rendement.
+\item \initiative La recristallisation fait perdre environ 10~\% du produit brut. Quel rendement aurait-on sans
+elle ? Pourquoi la conserve-t-on malgré tout ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-15}
+\begin{exercice}[3]{Une estérification plus verte}
+\begin{docu}{1}{Deux procédés pour un même ester}
+Procédé A, classique : acide éthanoïque et éthanol, acide sulfurique concentré, chauffage à reflux à 80~°C pendant
+une heure ; rendement 67~\%. Procédé B, enzymatique : les mêmes réactifs, une lipase immobilisée comme catalyseur,
+40~°C pendant trois heures, sans autre solvant ; rendement 90~\% grâce à l'élimination de l'eau par un tamis
+moléculaire ; l'enzyme est réutilisée plus de vingt fois.
+\end{docu}
+\begin{donnees}
+$M(\ce{CH3COOH})=\qty{60,1}{g.mol^{-1}}$ ; $M(\ce{C2H5OH})=\qty{46,1}{g.mol^{-1}}$ ;
+$M(\ce{CH3COOC2H5})=\qty{88,1}{g.mol^{-1}}$.
+\end{donnees}
+\begin{questions}
+\item Écrire l'équation de la réaction et calculer son économie d'atomes. Dépend-elle du procédé ?
+\item Expliquer pourquoi le procédé B atteint 90~\% de rendement malgré une constante d'équilibre inchangée.
+\item Comparer les deux procédés du point de vue de l'énergie et de la sécurité.
+\item \initiative Relever, dans le procédé B, trois choix qui relèvent de la chimie verte.
+\end{questions}
+\end{exercice}
+\end{blocLivre}

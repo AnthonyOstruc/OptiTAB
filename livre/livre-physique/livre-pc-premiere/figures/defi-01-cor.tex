@@ -1,0 +1,19 @@
+% Ordres de grandeur du défi « le dernier souffle de César » (corrigé du défi D01)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=150mm,height=62mm,ymode=log,ymin=0.1,ymax=1e46,
+  ybar,bar width=14mm,xmin=0.4,xmax=4.6,xtick={1,2,3,4},
+  xticklabels={{molécules de\\l'atmosphère},{inspirations\\dans l'atmosphère},{molécules dans\\une inspiration},{molécules de César\\par inspiration}},
+  xticklabel style={align=center,font=\otLight\fontsize{7.5}{9}\selectfont,text=otInk},
+  ytick={1,1e10,1e20,1e30,1e40},
+  yticklabels={$1$,$10^{10}$,$10^{20}$,$10^{30}$,$10^{40}$},
+  grid=none,ymajorgrids=true,axis x line*=bottom,
+  ylabel={nombre (échelle logarithmique)},ylabel style={font=\small}]
+\addplot[fill=otNavy!35,draw=otNavy] coordinates {(1,1.06e44) (2,8.4e21) (3,1.25e22)};
+\addplot[fill=otGreen!60,draw=otGreenDark] coordinates {(4,1.5)};
+\node[pcLegende,anchor=south] at (axis cs:1,1.06e44) {$\num{1.1e44}$};
+\node[pcLegende,anchor=south] at (axis cs:2,8.4e21) {$\num{8.4e21}$};
+\node[pcLegende,anchor=south] at (axis cs:3,1.25e22) {$\num{1.3e22}$};
+\node[pcLegende,anchor=south,text=otGreenDark] at (axis cs:4,1.5) {environ 1,5};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Une inspiration contient un peu plus de molécules que l'atmosphère ne contient d'inspirations : chaque inspiration renferme donc, en moyenne, plus d'une molécule de n'importe quelle inspiration passée.}

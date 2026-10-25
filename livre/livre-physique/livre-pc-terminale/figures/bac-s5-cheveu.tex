@@ -1,0 +1,20 @@
+% Diffraction d'un faisceau laser par un cheveu (sujet type bac 5, exercice 3)
+\begin{tikzpicture}[x=1mm,y=1mm]
+\filldraw[fill=otInk!75,draw=otInk,rounded corners=1pt] (0,-3) rectangle (22,3);
+\node[pcLegende,anchor=south] at (11,3.4) {laser};
+\draw[otRed!80!black,line width=1pt] (22,0) -- (40,0);
+\fill[otInk] (40,0) circle (0.9);
+\node[pcLegende,anchor=north] at (40,-1.2) {cheveu};
+\draw[otRed!80!black!60,line width=0.5pt] (40,0) -- (128,9.25) (40,0) -- (128,-9.25);
+\draw[otRed!80!black!60,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (40,0) -- (128,0);
+\fill[otMuted!25] (128,-22) rectangle (131,22);
+\node[pcLegende,anchor=south] at (129.5,22.4) {écran};
+\foreach \y/\l in {0/9,18.5/5,-18.5/5,27/3,-27/3}{}
+\fill[otRed!80!black] (126.7,-9.25) rectangle (128,9.25);
+\foreach \c in {13.9,-13.9}{\fill[otRed!80!black!55] (126.7,\c-3.6) rectangle (128,\c+3.6);}
+\draw[otMuted,line width=0.5pt] (40,0) ++(0:18) arc[start angle=0,end angle=6,radius=18];
+\node[pcLegende,anchor=west] at (59,1.2) {$\theta$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (134,-9.25) -- (134,9.25) node[pos=0.5,pcLegende,anchor=west] {$L$};
+\draw[otMuted,line width=0.4pt,{Stealth[length=1.4mm]}-{Stealth[length=1.4mm]}] (40,-16) -- (128,-16) node[pos=0.5,pcLegende,anchor=north] {$D$};
+\end{tikzpicture}
+\par\smallskip\legende{La tache centrale de diffraction, de largeur $L$, est observée sur un écran placé à la distance $D$ du cheveu (échelle non respectée).}

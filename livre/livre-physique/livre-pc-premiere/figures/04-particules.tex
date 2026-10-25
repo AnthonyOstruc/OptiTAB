@@ -1,0 +1,24 @@
+% Synthèse de l'eau à l'échelle des molécules : état initial et état final (exercice 1, chapitre 4)
+\begin{tikzpicture}[x=1cm,y=1cm,
+  atH/.style={fill=white,draw=otInk!70,line width=0.45pt},
+  atO/.style={fill=otRed!85,draw=otRed!60!black,line width=0.45pt},
+  pics/hdeux/.style={code={\filldraw[atH] (-0.08,0) circle (0.11); \filldraw[atH] (0.08,0) circle (0.11);}},
+  pics/odeux/.style={code={\filldraw[atO] (-0.1,0) circle (0.14); \filldraw[atO] (0.1,0) circle (0.14);}},
+  pics/eau/.style={code={\filldraw[atH] (-0.15,-0.11) circle (0.1); \filldraw[atH] (0.15,-0.11) circle (0.1);
+    \filldraw[atO] (0,0) circle (0.15);}}]
+\foreach \bx/\titre in {0/état initial,6/état final}{
+  \filldraw[fill=otNavy!4,draw=otNavy!45,line width=0.6pt,rounded corners=2mm] (\bx,0) rectangle ++(4.4,3);
+  \node[pcLegendeG,anchor=north] at (\bx+2.2,-0.1) {\titre};}
+\foreach \x/\y in {0.6/2.4,1.7/2.5,0.9/1.4,2.1/1.6,0.5/0.5,1.6/0.6}{\pic at (\x,\y) {hdeux};}
+\foreach \x/\y in {3.0/2.4,3.7/1.7,2.9/0.9,3.8/0.5}{\pic at (\x,\y) {odeux};}
+\foreach \x/\y in {6.6/2.4,7.7/2.5,8.8/2.3,6.9/1.4,8.1/1.5,7.2/0.5}{\pic at (\x,\y) {eau};}
+\pic at (9.6,0.7) {odeux};
+\draw[otGreenDark,line width=1pt,-{Stealth[length=2.5mm]}] (4.7,1.5) -- (5.7,1.5);
+\solution{
+  \node[pcLegende,anchor=south,align=center,text=otNavy] at (2.2,3.05) {6 $\ce{H2}$ : de quoi réagir 3 fois\\4 $\ce{O2}$ : de quoi réagir 4 fois};
+  \node[pcLegende,anchor=south,align=center,text=otGreenDark] at (8.2,3.05) {6 $\ce{H2O}$ formées\\1 $\ce{O2}$ en excès};
+  \draw[otOrange!85!black,line width=0.8pt,dash pattern=on 2pt off 1.2pt] (9.6,0.7) circle (0.33);}
+\filldraw[atH] (3.05,-0.75) circle (0.1); \node[pcLegende,anchor=west] at (3.18,-0.75) {atome H};
+\filldraw[atO] (5.0,-0.75) circle (0.13); \node[pcLegende,anchor=west] at (5.16,-0.75) {atome O};
+\end{tikzpicture}
+\par\smallskip\legende{Un mélange de dihydrogène et de dioxygène réagit : $\ce{2H2 + O2 -> 2H2O}$.}

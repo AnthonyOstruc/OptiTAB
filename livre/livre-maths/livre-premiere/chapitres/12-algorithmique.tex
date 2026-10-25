@@ -1,0 +1,216 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[listes]{12}{Algorithmique et programmation}{Partie 5 · Méthodes transversales}
+{Variables\enspace·\enspace Conditions\enspace·\enspace Boucles\enspace·\enspace Fonctions et listes}
+\objectif{Lire et écrire des programmes Python courts.}
+\objectif{Créer, parcourir et modifier une liste.}
+\objectif{Programmer des termes, des sommes et des seuils.}
+\objectif{Décomposer une simulation en fonctions et vérifier ses résultats.}
+\prerequis{Calcul numérique et suites.}
+\prerequis{Les exercices de simulation utilisent les chapitres 9 à 11.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Variables, tests et fonctions}
+\begin{definition}
+Une affectation comme \code{u = 3} associe une valeur à un nom. En langage
+naturel, on peut la noter $u\leftarrow3$. Le signe \code{==} teste l'égalité.
+Les types courants sont les entiers, les nombres décimaux et les booléens.
+Une fonction définie avec \code{def} reçoit des arguments et renvoie une
+valeur avec \code{return}. L'indentation organise les blocs.
+\end{definition}
+\begin{propriete}[Choisir une boucle]
+La boucle \code{for k in range(n)} effectue $n$ passages, avec $k$ de 0 à $n-1$.
+La boucle \code{while condition} continue tant que la condition est vraie.
+Il faut actualiser les variables de la condition et étudier l'arrêt.
+Un \code{if} exécute un bloc selon un test ; \code{else} traite l'autre cas.
+\end{propriete}
+\begin{savoirfaire}[Suivre l'état d'un programme]
+Construire un tableau avec une ligne par passage et une colonne par variable.
+Distinguer la valeur avant le passage et la valeur après l'affectation.
+Pour un compteur, préciser ce qu'il compte : termes, itérations ou succès.
+\end{savoirfaire}
+\begin{center}
+\begin{tikzpicture}[node distance=11mm]
+\node[otBloc](a){Initialiser $u$ et $n$};
+\node[otTest,below=of a](b){Seuil atteint ?};
+\node[otBloc,right=24mm of b](c){Actualiser $u$ et $n$};
+\node[otBorne,below=of b](d){Renvoyer $n$};
+\draw[otFleche](a)--(b);\draw[otFleche](b)--node[right,font=\scriptsize]{oui}(d);
+\draw[otFleche](b)--node[above,font=\scriptsize]{non}(c);
+\coordinate (reprise) at ([yshift=4mm]b.north);
+\draw[otFleche](c.north)|-(reprise);
+\fill[otMuted](reprise)circle(.6pt);
+\end{tikzpicture}
+\par\legende{Une boucle de seuil demande une initialisation et une actualisation cohérentes.}
+\end{center}
+
+\clearpage
+\essSection{2}{Créer et manipuler des listes}
+\begin{definition}
+Une liste regroupe des valeurs ordonnées : \code{L = [3, 1, 4]}.
+Les indices commencent à 0 ; \code{L[0]} vaut 3 et \code{L[-1]} vaut 4.
+\code{len(L)} donne la longueur et \code{sum(L)} la somme.
+\end{definition}
+\begin{propriete}
+\code{L.append(x)} ajoute $x$ à la fin ; \code{L[i] = x} modifie une valeur ;
+\code{L.pop(i)} supprime et renvoie la valeur d'indice $i$.
+On peut parcourir directement les valeurs avec \code{for x in L}.
+On peut aussi parcourir les indices avec \code{for i in range(len(L))}.
+\end{propriete}
+\begin{savoirfaire}[Compréhension et filtrage]
+\code{[k*k for k in range(6)]} crée les carrés de 0 à 5.
+\code{[x for x in L if x > 0]} sélectionne les éléments positifs.
+Une liste peut servir à stocker les termes d'une suite, des valeurs d'une fonction
+ou les résultats d'une simulation.
+\end{savoirfaire}
+\essSection{3}{Tester et organiser un programme}
+\begin{propriete}
+Décomposer une tâche en fonctions rend chaque étape contrôlable.
+Tester les cas usuels et les cas limites autorisés : $n=0$, liste à un élément,
+seuil déjà atteint. Vérifier les hypothèses : dénominateur non nul, liste non vide,
+entier positif. Une simulation ne démontre pas une propriété générale.
+\end{propriete}
+\begin{attention}
+Une boucle sur \code{range(n)} ne va pas jusqu'à $n$ inclus. Pour calculer
+$u_0,\ldots,u_n$, il y a $n$ transitions mais $n+1$ valeurs à conserver.
+Le signe \code{**} désigne une puissance ; \code{\textasciicircum} ne la remplace pas en Python.
+\end{attention}
+
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-12-1}
+\begin{exercice}[1]{Suivre des affectations}
+Exécuter mentalement le code, puis donner les valeurs finales de \code{a} et \code{b}.
+\begin{python}
+a = 3
+b = 5
+a = a + b
+b = a - b
+a = a - b
+\end{python}
+Quel effet global a ce programme ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-2}
+\begin{exercice}[1]{Tester une condition}
+Que renvoie la fonction pour 7, 8 et 0 ? Expliquer le test.
+\begin{python}
+def traitement(n):
+    if n % 2 == 0:
+        return n//2
+    return 3*n + 1
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-3}
+\begin{exercice}[1]{Définir une fonction}
+Écrire une fonction Python pour $f(x)=x^2-3x+2$, puis calculer \code{f(0)}, \code{f(2)} et \code{f(5)}. Faut-il modifier le nom de la variable dans la formule mathématique ?
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-4}
+\begin{exercice}[1]{Modifier une liste}
+Donner l'état de la liste après chaque ligne et les valeurs finales de \code{len(L)} et \code{sum(L)}.
+\begin{python}
+L = [3, 1, 4]
+L.append(2)
+L[1] = 5
+L.pop(0)
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-5}
+\begin{exercice}[1]{Comprendre une liste en compréhension}
+Donner les deux listes créées, puis leurs longueurs.
+\begin{python}
+L = [k*k for k in range(6)]
+P = [x for x in L if x % 2 == 0]
+\end{python}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-12-6}
+\begin{exercice}[2]{Calculer une factorielle}
+Pour un entier $n\geq0$, écrire une fonction renvoyant $n!$, avec $0!=1$.\begin{questions}
+\item Quel produit accumuler à chaque passage ?
+\item Calculer les résultats pour 0, 1 et 5.
+\item Pourquoi une initialisation à 0 serait-elle fausse ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-7}
+\begin{exercice}[2]{Accumuler une somme}
+Écrire une fonction \code{somme(n)} qui calcule $1+2+\cdots+n$ pour $n\geq0$, par une boucle. Vérifier pour $n=0$ et $n=10$, puis comparer à $n(n+1)/2$.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-8}
+\begin{exercice}[2]{Trouver un premier seuil}
+Une suite vérifie $u_0=100$ et $u_{n+1}=u_n+30$.\begin{questions}
+\item Écrire une boucle qui renvoie le premier rang tel que $u_n\geq500$.
+\item Vérifier le résultat avec la formule explicite.
+\item Que renverrait le même principe si le seuil était déjà atteint au rang 0 ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-9}
+\begin{exercice}[2]{Additionner les termes d'une suite}
+On veut calculer les $n$ premiers termes de la suite $u_k=2\times3^k$, de $k=0$ à $k=n-1$.\begin{questions}
+\item Écrire une fonction de somme par actualisations successives.
+\item Calculer le résultat pour $n=4$.
+\item Donner une formule et traiter le cas $n=0$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-10}
+\begin{exercice}[2]{Compter les lettres sans autre collection}
+Pour un texte non vide, écrire une fonction qui renvoie la fréquence d’une lettre, en parcourant le texte avec une boucle. Tester sur \code{BANANE} pour A et B.
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-11}
+\begin{exercice}[2]{Calculer les moments d'une loi}
+Les listes \code{valeurs} et \code{probas} ont la même longueur et décrivent une loi de probabilité valide. Écrire une fonction renvoyant espérance et variance, puis la tester sur $[-1,0,2]$ et $[0{,}2,0{,}5,0{,}3]$.
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-12-12}
+\begin{exercice}[3]{Construire la suite de Fibonacci}
+On définit $F_0=0$, $F_1=1$ et $F_{n+2}=F_{n+1}+F_n$.\begin{questions}
+\item Écrire une fonction qui renvoie la liste de $F_0$ à $F_n$, pour $n\geq0$.
+\item Donner cette liste pour $n=7$.
+\item Chercher le premier rang où le terme dépasse 1000 et vérifier le terme précédent.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-13}
+\begin{exercice}[3]{Expérimenter avec Syracuse}
+À partir d’un entier positif, on le divise par 2 s’il est pair ; sinon on le remplace par $3n+1$.\begin{questions}
+\item Donner les termes à partir de 6 jusqu’à 1.
+\item Écrire une fonction qui s’arrête à 1 ou après un nombre maximal d’étapes.
+\item Pourquoi la borne sur le nombre d’étapes garantit-elle la fin du programme, indépendamment d’une propriété générale de la suite ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-14}
+\begin{exercice}[3]{Une approximation par Newton}
+On cherche une valeur approchée de $\sqrt2$, racine positive de $f(x)=x^2-2$.\begin{questions}
+\item Pour $a>0$, montrer que la tangente à la courbe de $f$ au point d’abscisse $a$ coupe l’axe des abscisses au point d’abscisse $(a+2/a)/2$. La méthode de Newton pose donc $x_0=1$ et $x_{k+1}=(x_k+2/x_k)/2$.
+\item Écrire une fonction calculant $x_n$.
+\item Calculer $x_1$ et $x_2$ exactement.
+\item Expérimenter avec $n=5$ et comparer le carré obtenu à 2.
+\item Vérifier que les termes calculés restent positifs, ce qui autorise la division.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-12-15}
+\begin{exercice}[3]{Un mini-projet Monte-Carlo}
+On veut estimer simultanément l’aire sous $y=x^2$ dans le carré unité et le nombre $\pi$.\begin{questions}
+\item Écrire une fonction qui tire $n\geq1$ points, avec une graine fixée, et renvoie les deux estimations.
+\item Expliquer pourquoi on peut réutiliser les mêmes points pour les deux comptes.
+\item Proposer des contrôles automatiques simples des valeurs renvoyées.
+\end{questions}
+\label{figlivre-r12-15-zones-ex}
+\figureLivre{r12-15-zones}
+
+\end{exercice}
+\end{blocLivre}

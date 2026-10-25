@@ -1,0 +1,25 @@
+% Diagramme des niveaux d'énergie de l'atome d'hydrogène : absorption (1 vers 2) et émission (3 vers 2) d'un photon (L'essentiel, chapitre 20)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (0,-4.3) -- (0,0.5) node[pcLegende,anchor=south] {$E$ (eV)};
+\fill[white] (-0.12,-3.05) rectangle (0.12,-2.9);
+\draw[otInk!70,line width=0.5pt] (-0.12,-3.08) -- (0.12,-2.98) (-0.12,-2.97) -- (0.12,-2.87);
+\foreach \y/\v/\n in {0/{0}/{$n=\infty$ : atome ionisé},-0.55/{-0{,}85}/{$n=4$},-1.05/{-1{,}51}/{$n=3$},-2.0/{-3{,}40}/{$n=2$},-4.0/{-13{,}6}/{$n=1$ : état fondamental}}{%
+  \draw[otNavy,line width=0.9pt] (0.25,\y) -- (4.6,\y);
+  \node[pcLegende,anchor=east] at (-0.05,\y) {$\v$};
+  \node[pcLegende,anchor=west] at (4.65,\y) {\n};}
+\node[pcLegende,text=otMuted,anchor=west] at (4.65,-0.27) {$n=5,6\dots$};
+\draw[otNavy!50,line width=0.5pt] (0.25,-0.35) -- (4.6,-0.35) (0.25,-0.22) -- (4.6,-0.22);
+% absorption
+\draw[otGreenDark,line width=1.1pt,-{Stealth[length=2.4mm]}] (2.5,-4.0) -- (2.5,-2.04);
+\draw[otGreenDark,line width=0.9pt,-{Stealth[length=2mm]},decorate,
+  decoration={snake,amplitude=0.7mm,segment length=2.6mm,post length=2mm}] (0.35,-3.1) -- (2.42,-3.1);
+\node[pcLegende,anchor=north west,text=otGreenDark] at (0.3,-3.25) {photon absorbé\\\qty{10,2}{eV} (UV)};
+\node[pcLegendeG,anchor=west,text=otGreenDark] at (2.58,-3.0) {absorption};
+% émission
+\draw[red!75!black,line width=1.1pt,-{Stealth[length=2.4mm]}] (3.3,-1.05) -- (3.3,-1.96);
+\draw[red!75!black,line width=0.9pt,-{Stealth[length=2mm]},decorate,
+  decoration={snake,amplitude=0.7mm,segment length=2.6mm,post length=2mm}] (3.4,-1.5) -- (5.6,-1.5);
+\node[pcLegende,anchor=west,text=red!75!black] at (5.65,-1.5) {photon émis\\\qty{1,89}{eV} (rouge)};
+\node[pcLegendeG,anchor=east,text=red!75!black] at (3.22,-1.5) {émission};
+\end{tikzpicture}
+\par\smallskip\legende{Échelle non respectée. Un atome n'échange avec la lumière que des photons d'énergie égale à l'écart entre deux de ses niveaux.}

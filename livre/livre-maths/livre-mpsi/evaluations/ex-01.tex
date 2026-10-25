@@ -1,0 +1,82 @@
+% !TEX root = ../main.tex
+%% Examen du premier semestre — chapitres 1 à 10
+%% Résultats vérifiés par verifications/eval_ex.py.
+
+\sujetEval{EX1}{MPSI · Concours blanc}{Examen du premier semestre}
+  {Durée : \textbf{4 heures}\\Calculatrice interdite\\Chapitres 1 à 10}{4}
+  {Exercice 1/Le pentagone régulier/4 pts,Exercice 2/Une équation singulière/4 pts,%
+   Exercice 3/Nombres de Mersenne/4 pts,Problème/Fibonacci et matrices/8 pts}
+\consigne{Les trois exercices et le problème sont indépendants. La
+présentation, la lisibilité et la précision des raisonnements entrent pour
+une part importante dans l'appréciation des copies.}
+
+\begin{exoEval}{4 points}{Le pentagone régulier}
+On note $\omega=\mathrm{e}^{2\mathrm{i}\pi/5}$, $\alpha=\omega+\omega^{4}$ et
+$\beta=\omega^{2}+\omega^{3}$.
+\begin{questions}
+  \item Montrer que $1+\omega+\omega^{2}+\omega^{3}+\omega^{4}=0$.
+  \item Montrer que $\alpha=2\cos\frac{2\pi}{5}$ et $\beta=2\cos\frac{4\pi}{5}$,
+    puis calculer $\alpha+\beta$ et $\alpha\beta$.
+  \item En déduire les valeurs exactes de $\cos\frac{2\pi}{5}$ et de
+    $\cos\frac{4\pi}{5}$.
+  \item Calculer la longueur $c$ du côté du pentagone régulier inscrit dans
+    le cercle unité, de sommets $1,\omega,\dots,\omega^{4}$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}{4 points}{Une équation singulière}
+On considère l'équation différentielle $(E)$ : $x\,y'-2y=x^{3}$.
+\begin{questions}
+  \item Résoudre $(E)$ sur $\intOO{0}{+\infty}$ et sur $\intOO{-\infty}{0}$.
+  \item Déterminer toutes les fonctions $y$ dérivables sur $\R$ qui
+    vérifient $(E)$ en tout point de $\R$. L'ensemble obtenu est-il une
+    droite affine de solutions, comme pour une équation $y'+a(x)y=b(x)$ ?
+  \item Montrer que par tout point $(x_0,y_0)$ avec $x_0\neq0$ passe une
+    infinité de solutions sur $\R$, et qu'aucune solution ne passe par
+    $(0,y_0)$ si $y_0\neq0$.
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}{4 points}{Nombres de Mersenne}
+\begin{questions}
+  \item Soient $a,b\in\N^{*}$. Montrer que $2^{a}-1$ divise $2^{ab}-1$.
+  \item Soient $a,b\in\N^{*}$ et $a=bq+r$ la division euclidienne de $a$
+    par $b$. Montrer que $2^{a}-1=2^{r}\bigl(2^{bq}-1\bigr)+2^{r}-1$, puis que
+    \[(2^{a}-1)\wedge(2^{b}-1)=2^{a\wedge b}-1.\]
+  \item Montrer que si $2^{n}-1$ est premier ($n\geqslant2$), alors $n$ est
+    premier. La réciproque est-elle vraie ? \emph{On pourra examiner
+    $n=11$.}
+\end{questions}
+\end{exoEval}
+
+\begin{exoEval}[Problème]{8 points}{Fibonacci, matrices et polynômes}
+La suite de Fibonacci est définie par $F_0=0$, $F_1=1$ et
+$F_{n+2}=F_{n+1}+F_n$ pour $n\in\N$. On pose
+\[A=\begin{pmatrix}1&1\\1&0\end{pmatrix},\qquad
+  \varphi=\frac{1+\sqrt5}{2},\qquad\psi=\frac{1-\sqrt5}{2}.\]
+\partieExo{A}{Puissances de $A$}
+\begin{questions}
+  \item Montrer que pour tout $n\geqslant1$,
+    $A^{n}=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}$.
+  \item En écrivant $A^{m+n}=A^{m}A^{n}$, montrer que pour $m\geqslant0$ et
+    $n\geqslant1$ : $F_{m+n}=F_{m+1}F_n+F_mF_{n-1}$. En déduire
+    $F_{2n}=F_n\,(F_{n+1}+F_{n-1})$.
+\end{questions}
+\partieExo{B}{Un détour par les polynômes}
+\begin{questions}[start=3]
+  \item Montrer que pour tout $n\geqslant1$, le reste de la division
+    euclidienne de $X^{n}$ par $X^{2}-X-1$ est $F_nX+F_{n-1}$.
+  \item Vérifier que $A^{2}=A+I_2$, et en déduire que
+    $A^{n}=F_nA+F_{n-1}I_2$ pour $n\geqslant1$.
+  \item En évaluant en $\varphi$ et en $\psi$, établir la formule de Binet :
+    $F_n=\dfrac{\varphi^{n}-\psi^{n}}{\sqrt5}$. En déduire un équivalent de
+    $F_n$ et la limite de $\dfrac{F_{n+1}}{F_n}$.
+\end{questions}
+\partieExo{C}{Arithmétique}
+\begin{questions}[start=6]
+  \item Montrer par récurrence l'identité de Cassini :
+    $F_{n+1}F_{n-1}-F_n^{2}=(-1)^{n}$ pour $n\geqslant1$.
+  \item En déduire que deux termes consécutifs de la suite de Fibonacci sont
+    premiers entre eux.
+\end{questions}
+\end{exoEval}

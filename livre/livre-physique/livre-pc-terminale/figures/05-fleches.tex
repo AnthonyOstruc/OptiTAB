@@ -1,0 +1,32 @@
+% Flèches courbes de deux actes élémentaires (L'essentiel, chapitre 5)
+{\setchemfig{atom sep=2.2em}%
+\schemestart
+\chemfig{H-@{fa1}\charge{90=\|,0=\|,270=\|,135:3.6pt=\cmoins}{O}}
+\+
+\chemfig{@{fa2}H-[@{fa3}]@{fa4}\charge{90=\|,135:4.2pt=\cplus}{O}(-[1]H)-[7]H}
+\arrow
+\chemfig{H-\charge{90=\|,270=\|}{O}-H}
+\+
+\chemfig{H-\charge{90=\|,270=\|}{O}-H}
+\schemestop
+\chemmove{%
+  \draw[pcCourbe] ([xshift=1.8pt,yshift=0.6pt]fa1.east) .. controls +(55:7mm) and +(110:6mm) .. (fa2.north);
+  \draw[pcCourbe] ([yshift=-1pt]fa3) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]fa4.south);}
+\par\vspace{1mm}{\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}acte acide-base : l'ion hydroxyde capte un ion \ce{H+} de l'ion oxonium}
+\par\vspace{5mm}
+\schemestart
+\chemfig{H-@{fb1}\charge{90=\|,0=\|,270=\|,135:3.6pt=\cmoins}{O}}
+\+
+\chemfig{@{fb2}H_3C-[@{fb3}]@{fb4}\charge{90=\|,0=\|,270=\|}{Cl}}
+\arrow
+\chemfig{H-\charge{90=\|,270=\|}{O}-CH_3}
+\+
+\chemfig{\charge{0=\|,90=\|,180=\|,270=\|,45:4.2pt=\cmoins}{Cl}}
+\schemestop
+\chemmove{%
+  \draw[pcCourbe] ([xshift=1.8pt,yshift=0.6pt]fb1.east) .. controls +(55:8mm) and +(120:6mm) .. ([xshift=-3pt]fb2.north east);
+  \draw[pcCourbe] ([yshift=-1pt]fb3) .. controls +(-90:4.2mm) and +(-90:4.2mm) .. ([yshift=-0.2pt]fb4.south);
+  \node[pcDelta,anchor=south west] at ([xshift=0.5pt,yshift=0.5pt]fb2.north east) {\dplus};
+  \node[pcDelta,anchor=south] at ([yshift=4.5pt]fb4.north) {\dmoins};}
+\par\vspace{1mm}{\otLight\fontsize{7.5}{9}\selectfont\color{otMuted}acte de substitution : la liaison C--O se forme pendant que la liaison C--Cl se rompt}}
+\par\smallskip\legende{Chaque flèche courbe part d'un doublet d'électrons (non liant ou liant) et pointe vers l'atome qui le reçoit.}

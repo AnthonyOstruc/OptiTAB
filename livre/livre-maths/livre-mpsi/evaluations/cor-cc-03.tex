@@ -1,0 +1,155 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type Centrale-Supélec — vérifié par verifications/eval_cc.py.
+
+\corrigeSujetEval{C3}{Sujet type Centrale-Supélec}
+\enParties
+
+\begin{corrigeEval}[Généralités]{3 points}{}
+\begin{questions}
+  \item Les événements $(X_k=i)_{1\leqslant i\leqslant n}$ forment un
+    système complet ; la formule des probabilités totales donne
+    \[P(X_{k+1}=j)=\sum_{i=1}^{n}P(X_k=i)\,P(X_{k+1}=j\mid X_k=i)=\sum_{i=1}^{n}(\mu_k)_i\,p_{ij}=(\mu_kP)_j\]
+    (les termes où $P(X_k=i)=0$ étant nuls par convention). Donc
+    $\res{\mu_{k+1}=\mu_kP}$, et par récurrence $\res{\mu_k=\mu_0P^{k}}$.
+    \pts{1,5 pt}
+  \item Les coefficients de $PQ$ sont des sommes de produits de réels
+    positifs ; avec $\mathbf{1}={}^{t}(1,\dots,1)$, « $P$ stochastique »
+    signifie $P\geqslant0$ et $P\mathbf{1}=\mathbf{1}$, et
+    $(PQ)\mathbf{1}=P(Q\mathbf{1})=P\mathbf{1}=\mathbf{1}$ :
+    \res{PQ\text{ est stochastique}}. De même $\mu P\geqslant0$ et
+    $(\mu P)\mathbf{1}=\mu\mathbf{1}=1$. \pts{1,5 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Une chaîne à deux états]{4 points}{}
+\begin{questions}[start=3]
+  \item Calculs directs ; par exemple, $R^{2}$ a pour premier coefficient
+    $\frac{b^{2}+ab}{(a+b)^{2}}=\frac{b}{a+b}$, et
+    \[R+(1-a-b)S=\frac{1}{a+b}\begin{pmatrix}b+(1-a-b)a&a-(1-a-b)a\\b-(1-a-b)b&a+(1-a-b)b\end{pmatrix}
+      =\begin{pmatrix}1-a&a\\b&1-b\end{pmatrix}=P.\]
+    \pts{1 pt}
+  \item $R$ et $S$ commutent, et leurs produits croisés sont nuls : par
+    récurrence (ou par la formule du binôme),
+    $\res{P^{k}=R+(1-a-b)^{k}S}$. Si $(a,b)\neq(1,1)$, alors
+    $|1-a-b|<1$, donc $P^{k}\to R$ et $\mu_k=\mu_0P^{k}\to\mu_0R$ ; or
+    chaque ligne de $R$ vaut $\pi$ et $\mu_0$ est de somme $1$, donc
+    $\res{\mu_k\to\pi=\bigl(\tfrac{b}{a+b},\tfrac{a}{a+b}\bigr)}$. Passer à la
+    limite dans $\mu_{k+1}=\mu_kP$ donne $\pi P=\pi$. Si $a=b=1$, $P$ échange
+    les deux états : $\mu_k$ oscille et ne converge que si
+    $\mu_0=\bigl(\frac12,\frac12\bigr)$. \pts{2 pts}
+  \item État $1$ = soleil, état $2$ = pluie : $a=0{,}3$, $b=0{,}4$, d'où
+    $\pi=\bigl(\frac47,\frac37\bigr)$ : à long terme, la proportion de jours
+    ensoleillés est $\res{\dfrac47\approx57\,\%}$. \pts{1 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Le théorème de convergence]{6 points}{}
+\begin{questions}[start=6]
+  \item Une ligne de $Q$ vaut $1=\sum_jq_{ij}\geqslant n\delta$. Comme
+    $\sum_ix_i=0$, $\sum_ix_i\delta=0$, d'où la formule. Les
+    $q_{ij}-\delta$ étant positifs :
+    \[\lVert xQ\rVert_1\leqslant\sum_j\sum_i|x_i|(q_{ij}-\delta)=\sum_i|x_i|\sum_j(q_{ij}-\delta)
+      =\res{(1-n\delta)\lVert x\rVert_1}.\]
+    \pts{2 pts}
+  \item $\mu_{k+1}-\mu_k=(\mu_k-\mu_{k-1})Q$, et $\mu_k-\mu_{k-1}$ est de
+    somme nulle : la question 6 et une récurrence donnent
+    $\lVert\mu_{k+1}-\mu_k\rVert_1\leqslant(1-n\delta)^{k}\lVert\mu_1-\mu_0\rVert_1$.
+    Pour chaque $j$, la série $\sum_k\bigl((\mu_{k+1})_j-(\mu_k)_j\bigr)$ est
+    absolument convergente (comparaison à une série géométrique de raison
+    $1-n\delta<1$, ou majorée par $0$ si $n\delta=1$) : la suite
+    $\bigl((\mu_k)_j\bigr)$ converge. La limite $\pi$ est positive, de somme
+    $1$, et le passage à la limite dans $\mu_{k+1}=\mu_kQ$ donne
+    $\res{\pi Q=\pi}$. \pts{2 pts}
+  \item Si $\pi$ et $\pi'$ sont stationnaires,
+    $\pi-\pi'=(\pi-\pi')Q$ est de somme nulle, donc
+    $\lVert\pi-\pi'\rVert_1\leqslant(1-n\delta)\lVert\pi-\pi'\rVert_1$, ce qui
+    impose $\pi=\pi'$ si $n\delta>0$ : \res{\text{unicité}}. Enfin
+    $\mu_k-\pi=(\mu_0-\pi)Q^{k}$ et $\lVert\mu_0-\pi\rVert_1\leqslant2$ :
+    $\res{\lVert\mu_k-\pi\rVert_1\leqslant2(1-n\delta)^{k}}$. \pts{2 pts}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[Le classement PageRank]{7 points}{}
+\begin{questions}[start=9]
+  \item Les pages $1,2,3,4$ ont respectivement $2,1,1,2$ liens :
+    \[\res{P=\begin{pmatrix}0&\frac12&\frac12&0\\0&0&1&0\\1&0&0&0\\\frac12&0&\frac12&0\end{pmatrix}},\qquad
+      \Bigl(\tfrac25,\tfrac15,\tfrac25,0\Bigr)P=\Bigl(\tfrac25,\tfrac15,\tfrac25,0\Bigr).\]
+    La partie C ne s'applique pas : $P$ a des coefficients nuls. La page $4$,
+    vers laquelle ne pointe aucun lien, n'est jamais revisitée et reçoit un
+    score nul ; plus généralement, une page sans lien sortant, ou un groupe
+    de pages se citant entre elles, peut « piéger » l'internaute et rendre
+    le classement non unique. \pts{1,5 pt}
+  \item Avec probabilité $\alpha$, l'internaute suit un lien ; avec
+    probabilité $1-\alpha$, il se « téléporte » sur une page tirée au hasard.
+    $G$ est stochastique (combinaison convexe de $P$ et de
+    $\frac1nJ$) et ses coefficients sont $\geqslant\delta=\frac{1-\alpha}{n}$,
+    avec $1-n\delta=\alpha$ : la partie C donne
+    \res{\text{un unique }\pi\text{ stationnaire, et }\lVert\mu_k-\pi\rVert_1\leqslant2\alpha^{k}}.
+    \pts{1,5 pt}
+  \item La quatrième colonne de $P$ est nulle :
+    $\pi_4=(\pi G)_4=\alpha\sum_i\pi_ip_{i4}+\frac{1-\alpha}{4}\sum_i\pi_i=\res{\frac{1-\alpha}{4}}$,
+    soit $\frac{3}{80}=0{,}0375$ pour $\alpha=0{,}85$. \pts{1 pt}
+  \item \begin{enumerate}[label=\alph*)]
+      \item Comme $\sum_i\mu_i=1$ : $(\mu G)_j=\alpha(\mu P)_j+\frac{1-\alpha}{n}$,
+        c'est l'expression de \texttt{nu[j]}. Au $p$-ième passage,
+        \texttt{mu} et \texttt{nu} représentent $\mu_{p-1}$ et $\mu_p$, et la
+        question 7 (avec $\lVert\mu_1-\mu_0\rVert_1\leqslant2$) donne
+        $\lVert\mu_p-\mu_{p-1}\rVert_1\leqslant2\alpha^{p-1}\to0$ : la boucle
+        se termine. Le test est vrai dès que $2\alpha^{p-1}<10^{-6}$, soit
+        $p-1>\frac{14{,}51}{0{,}1625}\approx89{,}3$ : \res{\text{au plus }91\text{ passages}}.
+      \item Classement : \res{3,\ 1,\ 2,\ 4}. La page $3$ passe devant la
+        page $1$ : elle reçoit des liens de trois pages, dont la page $1$,
+        bien classée, alors que la page $1$ n'est citée que par $3$ et $4$.
+        On retrouve $\pi_4=0{,}0375$.
+      \item Le calcul de \texttt{nu} coûte de l'ordre de $n^{2}$ opérations
+        (une somme de $n$ termes pour chacune des $n$ coordonnées), ce qui
+        est inenvisageable pour des milliards de pages, alors que la matrice
+        est presque entièrement nulle. On parcourt plutôt les liens :
+    \end{enumerate}
+\begin{python}
+def pagerank_creux(succ, alpha, eps):
+    n = len(succ)
+    mu = [1 / n] * n
+    while True:
+        nu = [(1 - alpha) / n] * n
+        for i in range(n):
+            for j in succ[i]:
+                nu[j] = nu[j] + alpha * mu[i] / len(succ[i])
+        if sum(abs(nu[j] - mu[j]) for j in range(n)) < eps:
+            return nu
+        mu = nu
+\end{python}
+    Chaque passage coûte un nombre d'opérations proportionnel à $n$ plus le
+    nombre de liens ; avec
+    \texttt{succ = [[1, 2], [2], [0], [0, 2]]} (pages numérotées à partir de
+    $0$), on retrouve les valeurs de la question b). \pts{3 pts}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=0.22cm,y=0.62cm,line cap=round]
+  \foreach \yy/\lab in {0/1,-2/10^{-2},-4/10^{-4},-6/10^{-6}}{
+    \draw[otRule,line width=0.3pt] (0,\yy) -- (30.5,\yy);
+    \node[font=\scriptsize,anchor=east] at (-0.3,\yy) {$\lab$};}
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-7.3) -- (31.5,-7.3);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0,-7.3) -- (0,0.8);
+  \foreach \k in {0,10,20,30} \node[font=\scriptsize,anchor=north] at (\k,-7.35) {$\k$};
+  \node[font=\scriptsize,anchor=west] at (31.5,-7.3) {$k$};
+  \draw[otNavy,line width=1pt] (0,0.301) -- (30,{0.301-30*0.07058});
+  \foreach \k/\v in {0/-0.278,1/-0.803,2/-0.874,3/-1.015,4/-1.386,5/-1.688,6/-1.758,7/-1.899,8/-2.271,9/-2.572,
+    10/-2.643,11/-2.784,12/-3.155,13/-3.457,14/-3.527,15/-3.668,16/-4.04,17/-4.341,18/-4.412,19/-4.552,
+    20/-4.924,21/-5.225,22/-5.296,23/-5.437,24/-5.808,25/-6.11,26/-6.18,27/-6.321,28/-6.693,29/-6.994,30/-7.065}
+    \fill[otOrange] (\k,\v) circle (1.5pt);
+  \node[font=\scriptsize,text=otNavy,anchor=south west] at (17,-0.5) {borne $2\alpha^{k}$};
+  \node[font=\scriptsize,text=otOrange!85!black,anchor=north east] at (13,-3.8) {$\lVert\mu_k-\pi\rVert_1$};
+\end{tikzpicture}\hspace{8mm}%
+\begin{tikzpicture}[x=1cm,y=8cm,line cap=round]
+  \foreach \p/\v/\lab in {1/0.3797/{0{,}380},2/0.1989/{0{,}199},3/0.3839/{0{,}384},4/0.0375/{0{,}038}}{
+    \fill[otGreenDark,rounded corners=0.6pt] ({\p-0.3},0) rectangle ({\p+0.3},\v);
+    \node[font=\scriptsize,anchor=south] at (\p,\v) {$\lab$};
+    \node[font=\scriptsize,anchor=north] at (\p,-0.005) {page \p};}
+  \draw[otMuted,line width=0.5pt] (0.4,0) -- (4.6,0);
+\end{tikzpicture}\\*[0.5mm]
+\legende{À gauche, l'écart $\lVert\mu_k-\pi\rVert_1$ (échelle logarithmique)
+décroît bien plus vite que la borne $2\alpha^{k}$ de la partie C. À droite, le
+PageRank des quatre pages pour $\alpha=0{,}85$.}
+\end{minipage}\end{center}
+\end{corrigeEval}

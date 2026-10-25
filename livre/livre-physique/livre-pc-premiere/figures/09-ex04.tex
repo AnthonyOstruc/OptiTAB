@@ -1,0 +1,24 @@
+% Plaque de chromatographie à exploiter, avec une règle graduée (exercice 4, chapitre 9)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\filldraw[fill=white,draw=otInk!55,line width=0.5pt] (-1.2,0) rectangle (1.2,4.0);
+\draw[otMuted,line width=0.4pt,dash pattern=on 1pt off 1pt] (-1.2,0.5) -- (1.2,0.5);
+\draw[otGreenDark,line width=0.5pt,dash pattern=on 2pt off 1pt] (-1.2,3.5) -- (1.2,3.5);
+\foreach \x/\l in {-0.8/1,-0.27/2,0.27/3,0.8/4}{\fill[otMuted] (\x,0.5) circle (0.035); \node[pcLegendeG,anchor=north] at (\x,0.42) {\l};}
+% 1 : produit brut ; 2 : produit recristallisé ; 3 : réactif ; 4 : produit de référence (échelle 0,5 cm par cm réel)
+\fill[otNavy!70] (-0.8,2.0) ellipse (0.12 and 0.08) (-0.27,2.0) ellipse (0.12 and 0.08) (0.8,2.0) ellipse (0.12 and 0.08);
+\fill[otOrange!80] (-0.8,2.9) ellipse (0.11 and 0.07) (0.27,2.9) ellipse (0.11 and 0.07);
+\solution{
+  \foreach \xx/\yy/\ll/\cc in {-1.75/3.5/{6,0 cm}/otGreenDark,-2.35/2.9/{4,8 cm}/otOrange!80!black,-2.95/2.0/{3,0 cm}/otNavy}{
+    \draw[\cc,line width=0.6pt,{Stealth[length=1.5mm]}-{Stealth[length=1.5mm]}] (\xx,0.5) -- (\xx,\yy);
+    \draw[\cc,line width=0.4pt,dash pattern=on 1pt off 1pt] (\xx,\yy) -- (-1.2,\yy);
+    \node[pcLegende,text=\cc,rotate=90,anchor=south] at (\xx,{(0.5+\yy)/2}) {\ll};}
+  \draw[otMuted,line width=0.4pt,dash pattern=on 1pt off 1pt] (-2.95,0.5) -- (-1.2,0.5);
+  \node[pcLegende,anchor=west,text=otNavy] at (-1.15,1.75) {};}
+% règle : 1 cm réel = 0,5 unité
+\begin{scope}[shift={(1.7,0.5)}]
+  \draw[otInk!70,line width=0.5pt] (0,0) -- (0,3.0);
+  \foreach \k in {0,...,6}{\draw[otInk!70,line width=0.4pt] (0,{0.5*\k}) -- (0.18,{0.5*\k}); \node[pcLegende,anchor=west] at (0.2,{0.5*\k}) {\k};}
+  \node[pcLegende,anchor=south] at (0.2,3.1) {cm};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{Dépôts : 1, produit brut ; 2, produit recristallisé ; 3, réactif ; 4, produit de référence.}

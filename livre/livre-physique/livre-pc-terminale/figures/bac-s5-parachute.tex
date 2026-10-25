@@ -1,0 +1,13 @@
+% Vitesse d'un parachutiste en chute, calculée par la méthode d'Euler (sujet type bac 5, exercice 2)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,otLecture,width=118mm,height=56mm,xmin=0,xmax=25.5,ymin=0,ymax=65,
+  xtick={0,5,...,25},ytick={0,10,...,60},
+  xlabel={$t$ (s)},ylabel={$v$ (\unit{m.s^{-1}})}]
+\addplot[otNavy,line width=1pt] table[x index=0,y index=1] {figures/donnees/bac-s5-parachute.dat};
+\solution{\addplot[otMuted,line width=0.5pt,dash pattern=on 2pt off 1.5pt,domain=0:25,samples=2] {56.0};
+  \addplot[otRed!80!black,line width=0.6pt,dash pattern=on 2pt off 1.5pt,domain=0:5.7,samples=2] {9.81*x};
+  \node[pcLegende,anchor=south east,text=otMuted,fill=white,inner sep=1pt] at (axis cs:25,56.8) {$v_\mathrm{lim}=\qty{56}{m.s^{-1}}$};
+  \node[pcLegende,anchor=west,text=otRed!80!black,fill=white,inner sep=1pt] at (axis cs:5.9,57) {pente à l'origine : $g$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Vitesse du parachutiste, avant l'ouverture du parachute, calculée avec un pas de \qty{0,1}{s}.}

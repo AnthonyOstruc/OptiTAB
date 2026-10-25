@@ -1,0 +1,28 @@
+% Lunette afocale : objectif, oculaire et faisceau issu d'un point à l'infini (sujet type bac 4, exercice 2)
+% Échelle du dessin : f'1 = 90 mm, f'2 = 22 mm, tan(alpha) = 0,06
+\begin{tikzpicture}[x=0.88mm,y=1mm]
+\draw[otMuted,line width=0.4pt] (-26,0) -- (138,0);
+\draw[otNavy,line width=1pt,{Stealth[length=2mm]}-{Stealth[length=2mm]}] (0,-11) -- (0,11);
+\draw[otNavy,line width=1pt,{Stealth[length=1.6mm]}-{Stealth[length=1.6mm]}] (112,-10) -- (112,10);
+\node[pcLegende,anchor=south,text=otNavy] at (0,11.5) {objectif $L_1$};
+\node[pcLegende,anchor=south,text=otNavy] at (112,10.5) {oculaire $L_2$};
+\node[pcLegende,anchor=north west] at (0.3,-0.6) {$O_1$};
+\node[pcLegende,anchor=north west] at (112.3,-0.6) {$O_2$};
+\fill[otInk] (90,0) circle (0.7);
+\node[pcLegende,anchor=south] at (90,0.8) {$F'_1=F_2$};
+\fill[otInk] (134,0) circle (0.7);
+\node[pcLegende,anchor=north] at (134,-0.8) {$F'_2$};
+% Faisceau incident, incliné de l'angle alpha sur l'axe
+\foreach \y in {-6,0,6}{\draw[otRed!80!black,line width=0.6pt] (-26,{\y+1.56}) -- (0,\y);}
+\draw[otRed!80!black,line width=0.6pt,-{Stealth[length=1.6mm]}] (-26,1.56) -- (-15,0.9);
+\draw[otMuted,line width=0.4pt] (-26,1.56) -- (-14,1.56);
+\node[pcLegende,anchor=south] at (-18,1.7) {$\alpha$};
+\solution{\foreach \y in {-6,0,6}{\draw[otRed!80!black,line width=0.6pt] (0,\y) -- (90,-5.4) -- (112,{-0.2444*\y-6.72});
+    \draw[otRed!80!black,line width=0.6pt,-{Stealth[length=1.6mm]}] (112,{-0.2444*\y-6.72}) -- (132,{-0.2444*\y-6.72+4.91});}
+  \draw[otRed!80!black,line width=0.4pt,dash pattern=on 1.5pt off 1pt] (90,-5.4) -- (112,0);
+  \draw[otRed!80!black,line width=0.4pt,dash pattern=on 1.5pt off 1pt] (90,0) -- (90,-5.4);
+  \fill[otRed!80!black] (90,-5.4) circle (0.8);
+  \node[pcLegende,anchor=north,text=otRed!80!black] at (90,-6) {$B_1$};
+  \node[pcLegende,anchor=north east,text=otRed!80!black,align=right] at (140,-11) {faisceau émergent\\parallèle à $(B_1O_2)$};}
+\end{tikzpicture}
+\par\smallskip\legende{Lunette afocale (échelle non respectée) : un faisceau parallèle issu d'un point de l'astre, incliné de l'angle $\alpha$ sur l'axe, arrive sur l'objectif.}

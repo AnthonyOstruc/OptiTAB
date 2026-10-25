@@ -1,0 +1,118 @@
+% !TEX program = lualatex
+%% OptiTAB - Première spécialité - Livre complet.
+\documentclass[11pt,twoside,openany]{book}
+\usepackage{optitab-livre}
+\usepackage{figures-geometrie}
+\usepackage{relecture-livre}
+\usepackage{edition-france}
+\usepackage{longtable}
+\pgfplotsset{otGraphe/.append style={clip=true}}
+% Repères lisibles : les graduations indiquent les échelles de chaque axe.
+\pgfplotsset{otLivreGraphe/.style={
+  axis lines=middle,
+  axis line style={otMuted,line width=0.5pt,-{Stealth[length=2mm]}},
+  tick style={otMuted,line width=0.4pt},major tick length=2pt,
+  ticklabel style={font=\otLight\fontsize{7}{8}\selectfont,text=otMuted},
+  grid=major,grid style={otRule!70,line width=0.3pt},
+  xlabel={$x$},ylabel={$y$},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west,font=\small,text=otMuted},
+  every axis y label/.style={at={(current axis.above origin)},anchor=south,font=\small,text=otMuted},
+  clip=true}}
+\newcommand{\otDecoseconddegre}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (132mm,47mm)--(210mm,47mm);
+  \draw[white,opacity=.25] (171mm,18mm)--(171mm,118mm);
+  \draw[otGreen,line width=1.8pt] plot[domain=-1.8:1.8,samples=75]
+    ({(171+20*\x)*1mm},{(47+16*\x*\x)*1mm});
+  \fill[white] (171mm,47mm) circle (1.5mm);}
+\newcommand{\otDecovecteursplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.7,line width=1.5pt,-{Stealth[length=3mm]}] (130mm,47mm)--(199mm,61mm);
+  \draw[otGreen,line width=1.8pt,-{Stealth[length=3mm]}] (130mm,47mm)--(157mm,105mm);
+  \draw[white,opacity=.35,dashed] (157mm,105mm)--(168mm,55mm);
+  \fill[white] (130mm,47mm) circle (1.5mm);}
+\newcommand{\otDecocercleplan}{%
+  \otDecoGrille
+  \draw[white,opacity=.25] (130mm,73mm)--(210mm,73mm) (170mm,36mm)--(170mm,116mm);
+  \draw[otGreen,line width=1.8pt] (170mm,73mm) circle (30mm);
+  \draw[white,opacity=.75,line width=1.2pt] (162mm,116.5mm)--(210mm,80.5mm);
+  \draw[white,opacity=.45,dashed] (170mm,73mm)--(188mm,97mm);
+  \fill[white] (188mm,97mm) circle (1.6mm);}
+\newcommand{\otDecoensembles}{%
+  \otDecoGrille
+  \fill[white,opacity=.10] (155mm,76mm) circle (22mm);
+  \fill[otGreen,opacity=.2] (181mm,76mm) circle (22mm);
+  \draw[white,opacity=.8,line width=1.3pt] (155mm,76mm) circle (22mm);
+  \draw[otGreen,line width=1.7pt] (181mm,76mm) circle (22mm);}
+\newcommand{\otBrouillon}[2]{%
+  \par\vspace{6mm}\otIntertitre{#1}
+  \begin{tikzpicture}
+    \foreach \k in {0,...,#2}{\draw[otRule,line width=.35pt] (0.2pt,-\k*7mm)--({\linewidth-0.2pt},-\k*7mm);}
+  \end{tikzpicture}\par}
+\hypersetup{pdftitle={Mathématiques - Première spécialité - Livre complet},
+  pdfsubject={Première France 2026-2027 : cours, 224 exercices corrigés et deux sujets blancs},pdfauthor={OptiTAB}}
+\begin{document}
+\pagenumbering{alph}
+\input{couverture/premiere}
+\pagenumbering{arabic}
+\input{liminaires/titre}
+\input{liminaires/copyright}
+\input{liminaires/avant-propos}
+\input{liminaires/mode-emploi}
+\input{liminaires/parcours}
+\input{liminaires/sommaire}
+\input{liminaires/tableau-de-bord}
+\input{chapitres/01-second-degre}
+\input{chapitres/02-suites-numeriques}
+\input{chapitres/03-derivation}
+\input{chapitres/04-variations-optimisation}
+\input{chapitres/05-exponentielle}
+\input{chapitres/06-trigonometrie}
+\input{chapitres/07-produit-scalaire}
+\input{chapitres/08-geometrie-reperee}
+\input{chapitres/09-probabilites-conditionnelles}
+\input{chapitres/10-variables-aleatoires}
+\input{chapitres/11-statistiques-simulations}
+\input{chapitres/12-algorithmique}
+\input{chapitres/13-ensembles-raisonnement}
+\input{chapitres/14-automatismes-syntheses}
+\input{annexes/defis-enonces}
+\input{annexes/indices-defis}
+\input{annexes/preparation-epreuve}
+\input{annexes/sujets-enonces}
+\input{annexes/demonstrations}
+\partieCorriges
+\input{corriges/01-second-degre}
+\clearpage
+\input{corriges/02-suites-numeriques}
+\clearpage
+\input{corriges/03-derivation}
+\clearpage
+\input{corriges/04-variations-optimisation}
+\clearpage
+\input{corriges/05-exponentielle}
+\clearpage
+\input{corriges/06-trigonometrie}
+\clearpage
+\input{corriges/07-produit-scalaire}
+\clearpage
+\input{corriges/08-geometrie-reperee}
+\clearpage
+\input{corriges/09-probabilites-conditionnelles}
+\clearpage
+\input{corriges/10-variables-aleatoires}
+\clearpage
+\input{corriges/11-statistiques-simulations}
+\clearpage
+\input{corriges/12-algorithmique}
+\clearpage
+\input{corriges/13-ensembles-raisonnement}
+\clearpage
+\input{corriges/14-automatismes-syntheses}
+\input{annexes/defis-corriges}
+\input{annexes/sujets-corriges}
+\clearpage
+\input{annexes/couverture-programme}
+\input{liminaires/references}
+\input{couverture/quatrieme}
+\end{document}

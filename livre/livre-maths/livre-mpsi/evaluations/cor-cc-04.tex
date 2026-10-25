@@ -1,0 +1,119 @@
+% !TEX root = ../main.tex
+%% Corrigé du sujet type X-ENS — vérifié par verifications/eval_cc.py.
+
+\corrigeSujetEval{C4}{Sujet type X-ENS}
+\enParties
+
+\begin{corrigeEval}[L'inégalité de Hardy]{6 points}{}
+\begin{questions}
+  \item $nA_n-(n-1)A_{n-1}=(a_1+\dots+a_n)-(a_1+\dots+a_{n-1})=\res{a_n}$
+    (aussi pour $n=1$, avec $A_0=0$). \pts{0,5 pt}
+  \item En remplaçant $a_n$, puis avec $2A_{n-1}A_n\leqslant A_{n-1}^{2}+A_n^{2}$ :
+    \[A_n^{2}-2a_nA_n=(1-2n)A_n^{2}+2(n-1)A_{n-1}A_n
+      \leqslant(1-2n)A_n^{2}+(n-1)\bigl(A_{n-1}^{2}+A_n^{2}\bigr)
+      =\res{(n-1)A_{n-1}^{2}-nA_n^{2}}.\]
+    \pts{1,5 pt}
+  \item Le membre de droite est télescopique : en sommant de $1$ à $N$,
+    \[\sum_{n=1}^{N}\bigl(A_n^{2}-2a_nA_n\bigr)\leqslant0\cdot A_0^{2}-NA_N^{2}\leqslant0,\]
+    d'où $\sum A_n^{2}\leqslant2\sum a_nA_n$. Par l'inégalité de
+    Cauchy-Schwarz :
+    $\sum_{n\leqslant N}A_n^{2}\leqslant2\bigl(\sum a_n^{2}\bigr)^{1/2}\bigl(\sum A_n^{2}\bigr)^{1/2}$.
+    Si $\sum_{n\leqslant N}A_n^{2}>0$, on divise par sa racine et l'on
+    élève au carré :
+    $\res{\sum_{n=1}^{N}A_n^{2}\leqslant4\sum_{n=1}^{N}a_n^{2}}$ (évident
+    sinon). \pts{2,5 pts}
+  \item Les sommes partielles de la série à termes positifs $\sum A_n^{2}$
+    sont majorées par $4\sum_{n=1}^{+\infty}a_n^{2}$ : elle converge, et le
+    passage à la limite donne \res{\text{l'inégalité de Hardy}}. \pts{1,5 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[La constante 4 est optimale]{4 points}{}
+\begin{questions}[start=5]
+  \item $t\mapsto\frac{1}{\sqrt t}$ décroît : pour $k\geqslant1$,
+    $\int_k^{k+1}\frac{\mathrm{d}t}{\sqrt t}\leqslant\frac{1}{\sqrt k}\leqslant\int_{k-1}^{k}\frac{\mathrm{d}t}{\sqrt t}$
+    (la seconde pour $k\geqslant2$). En sommant :
+    \[2\sqrt{n+1}-2=\int_1^{n+1}\frac{\mathrm{d}t}{\sqrt t}\leqslant\sum_{k=1}^{n}\frac{1}{\sqrt k}
+      \leqslant1+\int_1^{n}\frac{\mathrm{d}t}{\sqrt t}=\res{2\sqrt n-1}.\]
+    \pts{1,5 pt}
+  \item Pour $n\leqslant N$, $A_n\geqslant\frac{2(\sqrt{n+1}-1)}{n}\geqslant0$, donc,
+    avec $\sqrt{n+1}\leqslant\sqrt{2n}$ :
+    \[A_n^{2}\geqslant\frac{4\bigl(n+2-2\sqrt{n+1}\bigr)}{n^{2}}\geqslant\frac4n-\frac{8\sqrt2}{n^{3/2}}.\]
+    La série de Riemann $\sum n^{-3/2}$ converge ; avec
+    $K=8\sqrt2\sum_{n\geqslant1}n^{-3/2}$ :
+    $\res{\sum_{n=1}^{N}A_n^{2}\geqslant4H_N-K}$. Si l'inégalité de Hardy
+    valait avec une constante $C$, on aurait, pour tout $N$,
+    $4H_N-K\leqslant C\sum_{n\leqslant N}a_n^{2}=CH_N$, soit
+    $C\geqslant4-\frac{K}{H_N}$ ; comme $H_N\to+\infty$, \res{C\geqslant4}.
+    \pts{2,5 pts}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[L'inégalité de Carleman]{6 points}{}
+\begin{questions}[start=7]
+  \item Le produit est télescopique :
+    $\prod_{k=1}^{n}\dfrac{(k+1)^{k}}{k^{k-1}}=\dfrac{2^{1}\cdot3^{2}\cdots(n+1)^{n}}{1^{0}\cdot2^{1}\cdots n^{n-1}}$.
+    Par récurrence : $c_1=2$, et si $c_1\cdots c_n=(n+1)^{n}$, alors
+    $c_1\cdots c_{n+1}=(n+1)^{n}\cdot\dfrac{(n+2)^{n+1}}{(n+1)^{n}}=(n+2)^{n+1}$ :
+    $\res{c_1\cdots c_n=(n+1)^{n}}$. \pts{1 pt}
+  \item Par l'inégalité arithmético-géométrique :
+    \[G_n=\frac{\bigl(a_1c_1\cdots a_nc_n\bigr)^{1/n}}{(c_1\cdots c_n)^{1/n}}
+      \leqslant\frac{1}{n+1}\cdot\frac1n\sum_{k=1}^{n}a_kc_k
+      =\res{\frac{1}{n(n+1)}\sum_{k=1}^{n}a_kc_k}.\]
+    \pts{1,5 pt}
+  \item $\frac{1}{n(n+1)}=\frac1n-\frac1{n+1}$ : la somme vaut
+    $\frac1k-\frac1{N+1}\leqslant\frac1k$. En sommant l'inégalité de la
+    question 8 et en échangeant les sommes (somme sur $1\leqslant k\leqslant n\leqslant N$) :
+    \[\sum_{n=1}^{N}G_n\leqslant\sum_{k=1}^{N}a_kc_k\sum_{n=k}^{N}\frac{1}{n(n+1)}
+      \leqslant\sum_{k=1}^{N}\frac{a_kc_k}{k}=\res{\sum_{k=1}^{N}a_k\Bigl(1+\frac1k\Bigr)^{k}},\]
+    car $\frac{c_k}{k}=\frac{(k+1)^{k}}{k^{k}}$. \pts{2 pts}
+  \item Avec $\bigl(1+\frac1k\bigr)^{k}<\mathrm{e}$ :
+    $\sum_{n\leqslant N}G_n\leqslant\mathrm{e}\sum_{n=1}^{+\infty}a_n$ ; la série
+    à termes positifs $\sum G_n$ a ses sommes partielles majorées, donc
+    converge, et $\res{\sum G_n\leqslant\mathrm{e}\sum a_n}$. \pts{1,5 pt}
+\end{questions}
+\end{corrigeEval}
+
+\begin{corrigeEval}[La constante $\mathrm{e}$ est optimale]{4 points}{}
+\begin{questions}[start=11]
+  \item $\ln$ est croissante : $\int_{k-1}^{k}\ln\leqslant\ln k\leqslant\int_k^{k+1}\ln$. En
+    sommant ($\ln1=0$) :
+    \[n\ln n-n+1=\int_1^{n}\ln t\,\mathrm{d}t\leqslant\ln n!\leqslant\int_1^{n+1}\ln t\,\mathrm{d}t=(n+1)\ln(n+1)-n.\]
+    En divisant par $n$, les deux bornes valent $\ln n-1+o(1)$ (car
+    $\ln(n+1)=\ln n+o(1)$ et $\frac{\ln(n+1)}{n}\to0$) ; donc
+    $\frac1n\ln n!-\ln\frac{n}{\mathrm{e}}\to0$ et, par continuité de
+    l'exponentielle, $\res{(n!)^{1/n}\sim\dfrac{n}{\mathrm{e}}}$. \pts{2 pts}
+  \item Pour $n\leqslant N$, $G_n=(n!)^{-1/n}\sim\frac{\mathrm{e}}{n}$ : il
+    existe $n_0$ (ne dépendant que de $\varepsilon$) tel que
+    $G_n\geqslant(1-\varepsilon)\frac{\mathrm{e}}{n}$ pour $n>n_0$, d'où
+    $\res{\sum_{n=1}^{N}G_n\geqslant(1-\varepsilon)\,\mathrm{e}\,(H_N-H_{n_0})}$.
+    Si l'inégalité de Carleman valait avec une constante $C$, on aurait
+    $(1-\varepsilon)\mathrm{e}(H_N-H_{n_0})\leqslant C\,H_N$ pour tout $N$ ;
+    comme $H_N\to+\infty$, $C\geqslant(1-\varepsilon)\mathrm{e}$, et ce pour
+    tout $\varepsilon$ : $\res{C\geqslant\mathrm{e}}$. La constante
+    $\mathrm{e}$ est optimale. \pts{2 pts}
+\end{questions}
+\begin{center}\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=1.75cm,y=1.35cm,line cap=round]
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0.8,1) -- (6.4,1);
+  \draw[otMuted,line width=0.5pt,-{Stealth[length=1.5mm]}] (0.8,1) -- (0.8,4.35);
+  \foreach \k in {1,...,6} \node[font=\scriptsize,anchor=north] at (\k,0.98) {$10^{\k}$};
+  \node[font=\scriptsize,anchor=west] at (6.4,1) {$N$};
+  \foreach \yy in {1,2,3,4} \node[font=\scriptsize,anchor=east] at (0.78,\yy) {$\yy$};
+  \draw[otNavy,line width=0.7pt,dash pattern=on 3pt off 2pt] (0.8,4) -- (6.2,4);
+  \draw[otGreenDark,line width=0.7pt,dash pattern=on 3pt off 2pt] (0.8,2.71828) -- (6.2,2.71828);
+  \draw[otNavy,line width=1pt] (1,2.435) -- (2,2.909) -- (3,3.193) -- (4,3.37) -- (5,3.487) -- (6,3.568);
+  \draw[otGreenDark,line width=1pt] (1,1.519) -- (2,1.937) -- (3,2.166) -- (4,2.294) -- (5,2.375) -- (6,2.43);
+  \foreach \k/\h/\c in {1/2.435/1.519,2/2.909/1.937,3/3.193/2.166,4/3.37/2.294,5/3.487/2.375,6/3.568/2.43}{
+    \fill[otNavy] (\k,\h) circle (1.7pt);
+    \fill[otGreenDark] (\k,\c) circle (1.7pt);}
+  \node[font=\scriptsize,text=otNavy,anchor=south east] at (6.2,4.02) {$4$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=south east] at (6.2,2.74) {$\mathrm{e}$};
+  \node[font=\scriptsize,text=otNavy,anchor=north west] at (3.05,3.12) {Hardy : $\sum A_n^{2}\big/\sum a_n^{2}$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=north west] at (3.05,2.1) {Carleman : $\sum G_n\big/\sum a_n$};
+\end{tikzpicture}\\*[0.5mm]
+\legende{Pour les suites tronquées des parties B et D, les quotients
+s'approchent de $4$ et de $\mathrm{e}$, mais très lentement (l'écart est de
+l'ordre de $\frac{1}{\ln N}$).}
+\end{minipage}\end{center}
+\end{corrigeEval}

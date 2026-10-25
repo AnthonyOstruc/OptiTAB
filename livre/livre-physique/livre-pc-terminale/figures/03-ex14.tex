@@ -1,0 +1,16 @@
+% Titrage conductimétrique d'un mélange d'acide chlorhydrique et d'acide éthanoïque (exercice 14, chapitre 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,width=110mm,height=58mm,xmin=0,xmax=20.5,ymin=0,ymax=1.4,
+  xtick={0,2,...,20},ytick={0,0.2,...,1.4},xlabel={$V_\mathrm{B}$ (mL)},ylabel={$\sigma$ (mS$\cdot$cm$^{-1}$)},
+  every axis x label/.style={at={(axis description cs:1,0)},anchor=north east,yshift=-5mm,font=\small,text=otInk},
+  every axis y label/.style={at={(axis description cs:0,1)},anchor=south west,xshift=1mm,font=\small,text=otInk}]
+\solution{\addplot[otGreenDark,line width=0.7pt,domain=0:5.4] {-0.14353*x+0.86638};
+\addplot[otGreenDark,line width=0.7pt,domain=2.5:15.5] {0.03815*x+0.12479};
+\addplot[otGreenDark,line width=0.7pt,domain=12.5:20.3] {0.10970*x-0.86931};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:4.08,0.28) -- (axis cs:4.08,0);
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:13.9,0.655) -- (axis cs:13.9,0);
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:4.2,0.15) {$V_\mathrm{E1}\approx4{,}1$ mL};
+\node[pcLegende,anchor=north west,text=otOrange!75!black] at (axis cs:14.0,0.15) {$V_\mathrm{E2}\approx13{,}9$ mL};}
+\addplot[only marks,mark=*,mark size=1.6pt,otInk] table[x index=0,y index=1] {figures/donnees/03-melange-sigma.dat};
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,211 @@
+% !TEX root = ../main.tex
+\begin{ouverture}[sommes]{10}{Variables aléatoires}{Partie 4 · Probabilités et statistiques}
+{Lois\enspace·\enspace Espérance\enspace·\enspace Variance\enspace·\enspace Linéarité}
+\objectif{Déterminer la loi d’une variable aléatoire réelle.}
+\objectif{Calculer et interpréter une espérance et une dispersion.}
+\objectif{Utiliser la linéarité et la formule de König-Huygens.}
+\objectif{Étudier un gain net et un choix de prévision.}
+\prerequis{Univers fini, probabilités et évènements.}
+\prerequis{Moyennes pondérées et calculs de carrés.}
+\end{ouverture}
+\essentiel
+\essSection{1}{Associer un nombre à chaque issue}
+\begin{definition}
+Sur un univers fini $\Omega$, une variable aléatoire réelle est une fonction
+$X:\Omega\to\R$. L'évènement $\{X=a\}$ rassemble les issues qui donnent la valeur $a$.
+La loi de $X$ liste ses valeurs distinctes $x_i$ et les probabilités
+$p_i=P(X=x_i)$, toutes positives ou nulles et de somme 1.
+\end{definition}
+\begin{exemple}
+Pour deux lancers indépendants d'une pièce équilibrée, le nombre de faces
+vaut 0, 1 ou 2, avec les probabilités $1/4$, $1/2$ et $1/4$.
+$P(X\leq1)=P(X=0)+P(X=1)=3/4$.
+\end{exemple}
+\begin{center}
+\begin{tikzpicture}\begin{axis}[otLivreGraphe,width=101mm,height=51mm,xmin=-.5,xmax=2.7,ymin=0,ymax=.65,xtick={0,1,2},ytick={.25,.5},xlabel={$x_i$},ylabel={$P(X=x_i)$}]
+\addplot[ycomb,otNavy,thick,mark=*,mark size=2pt]coordinates{(0,.25)(1,.5)(2,.25)};
+\end{axis}\end{tikzpicture}
+\par\legende{Une loi discrète se représente par des masses aux valeurs possibles.}
+\end{center}
+
+\essSection{2}{Calculer une espérance}
+\begin{definition}
+L'espérance est la moyenne théorique pondérée : $E(X)=\sum_i x_ip_i$.
+Elle peut être une valeur que $X$ ne prend jamais. Pour un gain net, un jeu
+est équitable si son espérance est nulle.
+\end{definition}
+\begin{attention}
+L'espérance n'est pas une promesse sur une réalisation. Pour établir la loi,
+regrouper toutes les issues qui produisent la même valeur.
+\end{attention}
+
+\clearpage
+\essSection{3}{Mesurer la dispersion}
+\begin{definition}
+Avec $\mu=E(X)$, la variance est $V(X)=E((X-\mu)^2)=\sum_i(x_i-\mu)^2p_i$.
+L'écart type est $\sigma(X)=\sqrt{V(X)}$ ; il s'exprime dans la même unité que $X$.
+La variance est positive ou nulle et vaut 0 pour une variable constante.
+\end{definition}
+\begin{theoreme}[König-Huygens]
+$V(X)=E(X^2)-E(X)^2$, avec $E(X^2)=\sum_i x_i^2p_i$.
+La preuve repose sur le développement du carré et figure dans les démonstrations de référence.
+\end{theoreme}
+\essSection{4}{Transformer et additionner des variables}
+\begin{propriete}[Linéarité de l'espérance]
+Pour deux variables définies sur le même univers et des réels $a,b$,
+$E(aX+bY)=aE(X)+bE(Y)$. L'indépendance n'est pas nécessaire.
+Pour une constante $c$, $E(c)=c$ et donc $E(aX+c)=aE(X)+c$.
+\end{propriete}
+\begin{propriete}
+$V(aX+c)=a^2V(X)$ et $\sigma(aX+c)=|a|\sigma(X)$.
+Ajouter une constante décale les valeurs sans changer la dispersion.
+Pour une variable de Bernoulli de paramètre $p$, $E(X)=p$ et $V(X)=p(1-p)$.
+\end{propriete}
+\begin{savoirfaire}[Vérifier un calcul]
+Contrôler que les probabilités totalisent 1. Calculer d'abord $E(X)$ et $E(X^2)$,
+puis la variance. Vérifier que celle-ci est positive ou nulle.
+Conserver les fractions exactes jusqu'à l'arrondi final.
+\end{savoirfaire}
+
+\exercices
+
+\rubrique{Découverte}
+\begin{blocLivre}{ex-10-1}
+\begin{exercice}[1]{Une variable indicatrice}
+On lance un dé équilibré. La variable $X$ vaut 1 si le résultat est pair et 0 sinon.\begin{questions}
+\item Donner la loi de $X$.
+\item Calculer $E(X)$ et $P(X\leq0)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-2}
+\begin{exercice}[1]{Lire et exploiter une loi}
+$X$ prend les valeurs $-1$, 0 et 2 avec les probabilités $0{,}2$, $0{,}5$ et $0{,}3$.\begin{questions}
+\item Calculer $P(X\leq0)$ et $P(X>1)$.
+\item Calculer $E(X)$ et $E(X^2)$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-3}
+\begin{exercice}[1]{Compléter une loi}
+Une variable prend les valeurs 0, 1, 2 et 3 avec les probabilités $0{,}1$, $0{,}2$, $p$ et $0{,}4$.\begin{questions}
+\item Déterminer $p$.
+\item Calculer l’espérance puis la variance.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-4}
+\begin{exercice}[1]{Une loi de Bernoulli}
+$X$ vaut 1 avec probabilité $0{,}3$ et 0 avec probabilité $0{,}7$.\begin{questions}
+\item Calculer $E(X)$ et $V(X)$ à partir des définitions.
+\item En déduire l’écart type, à $10^{-3}$ près.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-5}
+\begin{exercice}[1]{Un jeu équitable}
+Un dé équilibré donne un gain net de 5 euros si le 6 sort et une perte de 1 euro sinon. On note $G$ le gain net.\begin{questions}
+\item Donner la loi et l’espérance de $G$.
+\item Calculer sa variance. Que signifie l’équité du jeu ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Entraînement}
+\begin{blocLivre}{ex-10-6}
+\begin{exercice}[2]{Calculer la dispersion de deux façons}
+On reprend $X$ de valeurs $-1$, 0 et 2, de probabilités $1/5$, $1/2$ et $3/10$.\begin{questions}
+\item Calculer la variance par König-Huygens.
+\item Refaire le calcul avec la moyenne des carrés des écarts.
+\item Donner l’écart type exact.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-7}
+\begin{exercice}[2]{Un changement d'unité}
+On sait $E(X)=2/5$ et $V(X)=31/25$. On définit $Y=3X-2$.\begin{questions}
+\item Calculer $E(Y)$, $V(Y)$ et $\sigma(Y)$.
+\item Si les valeurs de $X$ sont $-1$, 0 et 2, donner les valeurs de $Y$ et leurs probabilités, celles de $X$ étant $1/5$, $1/2$ et $3/10$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-8}
+\begin{exercice}[2]{Même moyenne, risques différents}
+Le gain A vaut $-2$ ou 2 avec probabilités égales ; le gain B vaut $-1$ ou 1 avec probabilités égales.\begin{questions}
+\item Comparer leurs espérances, variances et écarts types.
+\item Comparer leurs probabilités d’un gain strictement positif.
+\item Expliquer ce que permet de comparer la variance dans cet exemple.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-9}
+\begin{exercice}[2]{Linéarité sans indépendance}
+On lance un dé équilibré et on pose $X$ égal au résultat, puis $Y=7-X$.\begin{questions}
+\item Donner $E(X)$ et $E(Y)$.
+\item Calculer $E(X+Y)$ et $V(X+Y)$.
+\item Montrer que $X$ et $Y$ ne sont pas indépendantes en comparant les évènements $X=1$ et $Y=6$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-10}
+\begin{exercice}[2]{Deux variables sur le même univers}
+On lance deux pièces équilibrées indépendantes. $X$ est le nombre de faces et $Y$ vaut 1 si la première pièce donne face, 0 sinon. On pose $Z=X-2Y$.\begin{questions}
+\item Construire le tableau des valeurs de $X$, $Y$ et $Z$ sur les quatre issues.
+\item Calculer $E(Z)$ par linéarité.
+\item Donner la loi de $Z$ et vérifier son espérance et sa variance.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-11}
+\begin{exercice}[2]{Choisir une valeur de prévision}
+$X$ prend les valeurs $-1$, 1 et 3 avec probabilités $1/4$, $1/2$ et $1/4$.\begin{questions}
+\item Calculer $E(X)$ et $E(X^2)$.
+\item Pour un réel $a$, montrer que $E((X-a)^2)=(a-1)^2+2$.
+\item Quelle valeur de $a$ minimise cette erreur quadratique moyenne ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\clearpage
+\rubrique{Problèmes}
+\begin{blocLivre}{ex-10-12}
+\begin{exercice}[3]{Une loterie et son prix d'entrée}
+Parmi 100 tickets équiprobables, 3 rapportent 20 euros, 10 rapportent 5 euros et les autres ne rapportent rien. Le prix d’un ticket est $m$ euros.\begin{questions}
+\item Donner la loi du lot brut $L$ et son espérance.
+\item Exprimer l’espérance du gain net $G=L-m$ et déterminer le prix équitable.
+\item Pour $m=2$, calculer $E(G)$ et $V(G)$.
+\item Calculer la probabilité d’un gain net strictement positif pour $m=2$.
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-13}
+\begin{exercice}[3]{Un jeu sur trois pièces}
+On lance trois pièces équilibrées indépendantes. Le lot brut est de 4 euros par face obtenue. On paie 5 euros pour jouer et on note $X$ le nombre de faces.\begin{questions}
+\item Établir la loi de $X$ en comptant les huit issues.
+\item Calculer $E(X)$ et $V(X)$.
+\item Calculer l’espérance et la variance du gain net $G=4X-5$.
+\item Quelle mise rendrait le jeu équitable ? Quelle est la probabilité de gain positif avec la mise de 5 euros ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-14}
+\begin{exercice}[3]{Un modèle de garantie}
+Une entreprise reçoit 15 euros pour une garantie. Une réparation de 500 euros est nécessaire avec probabilité $0{,}02$, et aucune dépense sinon. $G$ désigne le résultat net d’une garantie.\begin{questions}
+\item Donner la loi de $G$ et calculer son espérance.
+\item Calculer sa variance et son écart type.
+\item Pour 100 garanties, quel est le résultat total espéré ? L’indépendance est-elle nécessaire pour cette dernière réponse ?
+\end{questions}
+\end{exercice}
+\end{blocLivre}
+\begin{blocLivre}{ex-10-15}
+\begin{exercice}[3]{Une aire aléatoire}
+Le triangle a pour sommets $A(0;0)$, $B(1;0)$ et $C(0;H)$, où $H$ vaut 1, 2 ou 4 avec probabilités $1/2$, $1/4$ et $1/4$. On note $S$ son aire.\begin{questions}
+\item Exprimer $S$ en fonction de $H$ et établir sa loi.
+\item Calculer $E(S)$, $V(S)$ et $P(S\geq1)$.
+\item Pour un réel $a$, montrer que $E((S-a)^2)=(a-1)^2+3/8$.
+\item Quelle aire fixe constitue la meilleure prévision au sens de cette erreur quadratique ?
+\end{questions}
+\label{figlivre-r10-15-triangle-ex}
+\figureLivre{r10-15-triangle}
+
+\end{exercice}
+\end{blocLivre}

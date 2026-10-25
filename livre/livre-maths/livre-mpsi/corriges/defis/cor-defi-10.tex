@@ -1,0 +1,89 @@
+% !TEX root = ../../main.tex
+%% Corrigé du défi du chapitre 10 — vérifié par verifications/defis_06_10.py.
+
+\begin{blocLivre}{cor-10-25a}
+\begin{corrige}{25}{Le théorème de Gauss-Lucas}
+\demarche{La dérivée logarithmique transforme « $P'(z)=0$ » en une somme
+nulle ; en conjuguant, cette somme devient une relation barycentrique à
+poids positifs.}
+\partieExo{A}{La dérivée logarithmique}
+\begin{questions}
+  \item $P=\lambda\prod_k(X-a_k)^{m_k}$, et la dérivée d'un produit donne
+    $P'=\lambda\sum_k m_k(X-a_k)^{m_k-1}\prod_{j\neq k}(X-a_j)^{m_j}$. En
+    divisant par $P$ : $\res{\dfrac{P'}{P}=\sum_{k=1}^{p}\dfrac{m_k}{X-a_k}}$.
+  \item En $z$ (qui n'annule pas $P$) :
+    $0=\dfrac{P'(z)}{P(z)}=\sum_k\dfrac{m_k}{z-a_k}$. En conjuguant, et
+    puisque $\dfrac{1}{\overline{z-a_k}}=\dfrac{z-a_k}{|z-a_k|^{2}}$ :
+    $\res{\sum_k m_k\,\dfrac{z-a_k}{|z-a_k|^{2}}=0}$.
+  \item Posons $w_k=\dfrac{m_k}{|z-a_k|^{2}}>0$ : la relation s'écrit
+    $\bigl(\sum_kw_k\bigr)z=\sum_kw_ka_k$, donc $z=\sum_k\theta_ka_k$ avec
+    $\theta_k=\dfrac{w_k}{\sum_jw_j}\geqslant0$ et $\sum\theta_k=1$. Si $z$
+    est aussi racine de $P$, c'est l'un des $a_k$ ($\theta_k=1$). Toute
+    racine de $P'$ est donc dans l'\res{\text{enveloppe convexe}} des
+    racines de $P$.
+\end{questions}
+\partieExo{B}{Exemples}
+\begin{questions}[resume]
+  \item $P'=nX^{n-1}$ : seule racine $\res{0}$ (multiplicité $n-1$),
+    centre du polygone régulier formé par les racines $n$-ièmes de
+    l'unité — leur isobarycentre.
+  \item $P=X^{3}-2\mathrm{i}X^{2}-X+2\mathrm{i}$, donc
+    $P'=3X^{2}-4\mathrm{i}X-1$, de discriminant $-16+12=-4=(2\mathrm{i})^{2}$ :
+    racines $\dfrac{4\mathrm{i}\pm2\mathrm{i}}{6}$, soit $\res{\mathrm{i}}$
+    et $\res{\tfrac{\mathrm{i}}{3}}$. Et
+    \[
+    \mathrm{i}=\tfrac14\cdot1+\tfrac14\cdot(-1)+\tfrac12\cdot2\mathrm{i},
+    \qquad
+    \tfrac{\mathrm{i}}{3}=\tfrac{5}{12}\cdot1+\tfrac{5}{12}\cdot(-1)
+    +\tfrac16\cdot2\mathrm{i} :
+    \]
+    deux barycentres à poids positifs, conformément au théorème.
+\end{questions}
+\begin{center}
+\begin{tikzpicture}[scale=1.15,line cap=round,line join=round]
+  \draw[otMuted,line width=0.4pt,-{Stealth[length=1.5mm]}] (-1.6,0) -- (1.7,0);
+  \draw[otMuted,line width=0.4pt,-{Stealth[length=1.5mm]}] (0,-0.3) -- (0,2.4);
+  \fill[otNavy!10] (1,0) -- (0,2) -- (-1,0) -- cycle;
+  \draw[otNavy,line width=0.8pt] (1,0) -- (0,2) -- (-1,0) -- cycle;
+  \foreach \p/\n/\a in {(1,0)/1/north,(-1,0)/-1/north,(0,2)/2\mathrm{i}/west}{%
+    \fill[otNavy] \p circle (2pt);
+    \node[font=\scriptsize,text=otNavy,anchor=\a] at \p {$\n$};}
+  \filldraw[fill=otGreen,draw=otGreenDark,line width=0.5pt] (0,1) circle (1.9pt);
+  \filldraw[fill=otGreen,draw=otGreenDark,line width=0.5pt] (0,0.3333) circle (1.9pt);
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (0.08,1) {$\mathrm{i}$};
+  \node[font=\scriptsize,text=otGreenDark,anchor=west] at (0.08,0.36) {$\mathrm{i}/3$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Les racines $\mathrm{i}$ et $\mathrm{i}/3$ de $P'$ sont dans le
+triangle des racines de $P$.}
+\end{center}
+\end{corrige}
+\end{blocLivre}
+
+\begin{blocLivre}{cor-10-25b}
+\begin{corrigeSuite}
+\begin{questions}[start=6]
+  \item Entre deux racines consécutives $a_k<a_{k+1}$, Rolle fournit une
+    racine de $P'$ dans $\intOO{a_k}{a_{k+1}}$ : $p-1$ racines. Chaque
+    $a_k$ est par ailleurs racine de $P'$ de multiplicité $m_k-1$. Au
+    total, $(p-1)+\sum_k(m_k-1)=n-1=\deg P'$ racines dans
+    $\intFF{a_1}{a_p}$ : \res{P'\text{ est scindé sur }\R}, et ses racines
+    sont bien dans l'enveloppe convexe (le segment $\intFF{a_1}{a_p}$).
+\end{questions}
+\partieExo{C}{Conséquences}
+\begin{questions}[start=7]
+  \item Si $P=\lambda\bigl(X^{n}-\sigma_1X^{n-1}+\cdots\bigr)$, où
+    $\sigma_1$ est la somme des racines, alors
+    $P'=\lambda\bigl(nX^{n-1}-(n-1)\sigma_1X^{n-2}+\cdots\bigr)$, dont la
+    somme des racines vaut $\frac{(n-1)\sigma_1}{n}$ (Viète). Les moyennes
+    valent toutes deux $\res{\dfrac{\sigma_1}{n}}$.
+  \item Un disque est convexe : il contient tous les barycentres à poids
+    positifs de ses points. Par Gauss-Lucas, les racines de $P'$ sont dans
+    $D$ ; en réappliquant le théorème à $P'$, celles de $P''$ aussi, et
+    ainsi de suite. Enfin
+    $P^{(n-1)}=\lambda\bigl(n!\,X-(n-1)!\,\sigma_1\bigr)$ a pour unique
+    racine $\res{\dfrac{\sigma_1}{n}}$, l'isobarycentre des racines de $P$ :
+    les dérivées successives « contractent » les racines vers leur centre
+    de gravité.
+\end{questions}
+\end{corrigeSuite}
+\end{blocLivre}

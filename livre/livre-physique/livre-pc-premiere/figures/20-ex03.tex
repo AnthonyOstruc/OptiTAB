@@ -1,0 +1,16 @@
+% Diagramme simplifié des niveaux d'énergie de l'atome d'hydrogène ; au corrigé, transitions 2 vers 1 et 3 vers 1 (exercices 3 et 10, chapitre 20)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[otInk!70,line width=0.5pt,-{Stealth[length=2mm]}] (0,-4.3) -- (0,0.5) node[pcLegende,anchor=south] {$E$ (eV)};
+\fill[white] (-0.12,-3.05) rectangle (0.12,-2.9);
+\draw[otInk!70,line width=0.5pt] (-0.12,-3.08) -- (0.12,-2.98) (-0.12,-2.97) -- (0.12,-2.87);
+\foreach \y/\v/\n in {0/{0}/{$n=\infty$},-0.55/{-0{,}85}/{$n=4$},-1.05/{-1{,}51}/{$n=3$},-2.0/{-3{,}40}/{$n=2$},-4.0/{-13{,}6}/{$n=1$}}{%
+  \draw[otNavy,line width=0.9pt] (0.25,\y) -- (3.6,\y);
+  \node[pcLegende,anchor=east] at (-0.05,\y) {$\v$};
+  \node[pcLegende,anchor=west] at (3.65,\y) {\n};}
+\solution{
+  \draw[violet!80!black,line width=1.1pt,-{Stealth[length=2.4mm]}] (1.2,-2.0) -- (1.2,-3.96);
+  \node[pcLegende,anchor=east,text=violet!80!black,align=right] at (1.12,-3.3) {\qty{10,2}{eV}\\\qty{122}{nm}};
+  \draw[violet!80!black,line width=1.1pt,-{Stealth[length=2.4mm]}] (2.4,-1.05) -- (2.4,-3.96);
+  \node[pcLegende,anchor=west,text=violet!80!black] at (2.48,-3.3) {\qty{12,1}{eV}\\\qty{103}{nm}};}
+\end{tikzpicture}
+\par\smallskip\legende{\enonce{Niveaux d'énergie de l'atome d'hydrogène (échelle non respectée).}\solution{Les deux transitions vers le niveau fondamental émettent des photons UV.}}

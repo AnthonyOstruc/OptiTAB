@@ -1,0 +1,35 @@
+% Loi fondamentale de la statique des fluides et vases communicants (L'essentiel, chapitre 12)
+\begin{tikzpicture}[x=1cm,y=1cm]
+% Récipient et axe vertical
+\fill[otNavy!14] (0,0) rectangle (3.4,2.6);
+\draw[pcSurface] (0,2.6) -- (3.4,2.6);
+\draw[pcVerre] (0,3.0) -- (0,0) -- (3.4,0) -- (3.4,3.0);
+\node[pcLegende,anchor=south] at (1.7,2.62) {$P_\mathrm{atm}$};
+\draw[otInk,line width=0.6pt,-{Stealth[length=2mm]}] (-0.9,-0.2) -- (-0.9,3.2) node[pcLegende,anchor=south] {$z$};
+\foreach \y/\n/\x in {1.9/1/1.0,0.6/2/2.2}{%
+  \fill[otInk] (\x,\y) circle (0.05);
+  \node[pcLegendeG,anchor=south west] at (\x,\y) {\n};
+  \draw[otMuted,line width=0.4pt,dash pattern=on 2pt off 1.5pt] (-0.9,\y) -- (\x,\y);
+  \draw[otInk,line width=0.5pt] (-0.98,\y) -- (-0.82,\y);
+  \node[pcLegende,anchor=east] at (-1.0,\y) {$z_{\n}$};}
+\node[pcLegende,anchor=west] at (1.15,1.68) {$P_1$};
+\node[pcLegende,anchor=west] at (2.35,0.38) {$P_2$};
+\node[pcLegende,anchor=north,fill=white,draw=otRule,inner sep=2.5pt] at (1.7,-0.25) {$P_2-P_1=\rho\,g\,(z_1-z_2)$};
+% Vases communicants
+\begin{scope}[shift={(5.2,0)}]
+  \fill[otNavy!14] (0,0) rectangle (4.3,0.5);
+  \fill[otNavy!14] (0,0.5) rectangle (1.2,2.2);
+  \fill[otNavy!14] (2.2,0.5) -- (1.962,2.2) -- (3.038,2.2) -- (2.8,0.5) -- cycle;
+  \fill[otNavy!14] (3.9,0.5) rectangle (4.3,2.2);
+  \draw[pcVerre] (0,3.0) -- (0,0) -- (4.3,0) -- (4.3,3.0);
+  \draw[pcVerre] (1.2,3.0) -- (1.2,0.5) -- (2.2,0.5) -- (1.85,3.0);
+  \draw[pcVerre] (3.15,3.0) -- (2.8,0.5) -- (3.9,0.5) -- (3.9,3.0);
+  \draw[otGreenDark,line width=0.6pt,dash pattern=on 3pt off 1.5pt] (-0.2,2.2) -- (4.5,2.2);
+  \node[pcLegende,anchor=north,align=center] at (2.15,-0.25) {la surface libre est à la même\\hauteur dans toutes les branches};
+  \fill[otInk] (0.6,1.0) circle (0.05); \node[pcLegendeG,anchor=south] at (0.6,1.03) {A};
+  \fill[otInk] (4.1,1.0) circle (0.05); \node[pcLegendeG,anchor=south] at (4.1,1.03) {B};
+  \node[pcLegende,anchor=west,text=otGreenDark] at (4.5,2.2) {même niveau};
+  \node[pcLegende,anchor=west] at (4.5,1.0) {$P_\mathrm{A}=P_\mathrm{B}$};
+\end{scope}
+\end{tikzpicture}
+\par\smallskip\legende{L'axe $(Oz)$ est vertical, orienté vers le haut : la pression augmente quand on descend ; elle est la même en tout point d'un même plan horizontal d'un même liquide.}

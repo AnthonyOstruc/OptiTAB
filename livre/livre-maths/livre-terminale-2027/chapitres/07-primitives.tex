@@ -1,0 +1,318 @@
+% !TEX root = ../main.tex
+%% Chapitre 7 — Primitives
+%% Sources : frontend/cours/resume/terminal/resume_primitives_terminal.txt
+%%           frontend/exercices/terminal_spé_Maths/exercice_primitives.txt
+%% Le changement de variable n'est pas au programme : l'exercice « Substitution » devient « Reconnaître une forme u'f(u) ».
+%% L'intégration par parties est traitée au chapitre 9 (Calcul intégral), où sont déplacés les exercices correspondants ;
+%% ici, les mêmes primitives sont obtenues par identification (exercice 9).
+%% Exercices 10, 11 et 12 : problèmes inédits rédigés pour le livre.
+
+\begin{ouverture}[primitives]{7}{Primitives}{Partie 1 · Analyse}
+  {Définition\enspace·\enspace Primitives usuelles\enspace·\enspace Linéarité\enspace·\enspace
+   Formes composées\enspace·\enspace Identification}
+  \objectif{Vérifier qu'une fonction est une primitive d'une fonction donnée.}
+  \objectif{Déterminer une primitive à l'aide du tableau des primitives usuelles et de la linéarité.}
+  \objectif{Reconnaître une forme $u'u^{n}$, $\dfrac{u'}{u}$, $u'e^{u}$, $\dfrac{u'}{\sqrt u}$\,… pour trouver une primitive.}
+  \objectif{Déterminer la primitive qui prend une valeur donnée en un point.}
+  \objectif{Chercher une primitive d'une forme donnée par identification.}
+  \prerequis{Dérivées des fonctions usuelles et des fonctions composées (chapitre 3).}
+  \prerequis{Fonctions logarithme et trigonométriques (chapitres 5 et 6).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Primitives d'une fonction}
+
+\begin{definition}[Primitive]
+Soit $f$ une fonction définie sur un intervalle $I$. Une \textbf{primitive} de $f$ sur $I$ est une fonction $F$ dérivable sur $I$
+telle que $F'(x)=f(x)$ pour tout $x\in I$.\\[1mm]
+\emph{Exemple :} $F(x)=\dfrac{x^{3}}{3}-x$ est une primitive de $f(x)=x^{2}-1$ sur $\R$, tout comme $x\mapsto\dfrac{x^{3}}{3}-x+5$.
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.54\linewidth}
+\begin{theoreme}[Ensemble des primitives]
+\raggedright
+Toute fonction continue sur un intervalle $I$ admet des primitives sur $I$ (admis ; voir le chapitre 9).\\[1mm]
+Si $F$ est l'une d'elles, les primitives de $f$ sur $I$ sont les fonctions $x\mapsto F(x)+C$, où $C$ décrit $\R$.\\[1mm]
+Pour tout $x_0\in I$ et tout réel $y_0$, il existe une \textbf{unique} primitive $G$ de $f$ sur $I$ telle que $G(x_0)=y_0$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[otGraphe, unit vector ratio=1 0.8, width=68mm, xmin=-2.4, xmax=2.6, ymin=-3.7, ymax=3.8,
+  xtick={-2,-1,1,2}, ytick={-3,-2,-1,1,2,3}]
+  \addplot[otNavy!35,line width=0.8pt,domain=-2.25:2.25,samples=80] {x^3/3-x-2};
+  \addplot[otNavy!35,line width=0.8pt,domain=-2.25:2.25,samples=80] {x^3/3-x-1};
+  \addplot[otNavy!35,line width=0.8pt,domain=-2.25:2.25,samples=80] {x^3/3-x};
+  \addplot[otNavy!35,line width=0.8pt,domain=-2.25:2.25,samples=80] {x^3/3-x+2};
+  \addplot[otNavy,line width=1.3pt,domain=-2.25:2.25,samples=80] {x^3/3-x+1};
+  \fill[otGreen] (axis cs:0,1) circle (1.8pt);
+  \node[anchor=south west,otEtiquette,font=\scriptsize,text=otGreenDark] at (axis cs:0.05,1.05) {$(0\pv1)$};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Des primitives de $x\mapsto x^{2}-1$ ; une seule passe par $(0\pv1)$.}
+\end{minipage}
+
+\begin{demonstration}[deux primitives diffèrent d'une constante]
+Si $F$ et $G$ sont deux primitives de $f$ sur $I$, alors $(G-F)'=f-f=0$ sur l'intervalle $I$ : la fonction $G-F$ est
+constante. Réciproquement, $(F+C)'=F'=f$. Enfin, $G(x_0)=y_0$ impose $C=y_0-F(x_0)$, d'où l'unicité.
+\end{demonstration}
+
+\begin{savoirfaire}[Déterminer la primitive qui vérifie une condition]
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.4mm,topsep=0.5mm,label={\color{otNavy}\arabic*.}]
+  \item On détermine \emph{une} primitive $G$ de $f$ à l'aide des tableaux et de la linéarité.
+  \item Les primitives de $f$ sont alors les fonctions $F=G+C$, avec $C$ réel.
+  \item On traduit la condition $F(x_0)=y_0$ pour calculer $C$.
+\end{enumerate}
+\end{savoirfaire}
+
+\begin{exemple}[$f(x)=3x^{2}-4x+1$ sur $\R$, avec $F(1)=2$]
+$G(x)=x^{3}-2x^{2}+x$ est une primitive de $f$, donc $F(x)=x^{3}-2x^{2}+x+C$. Or $F(1)=1-2+1+C=C$, d'où $C=2$ et
+$F(x)=x^{3}-2x^{2}+x+2$. \emph{Vérification :} $F'(x)=3x^{2}-4x+1=f(x)$.
+\end{exemple}
+
+\essSection{2}{Primitives usuelles}
+
+{\renewcommand{\arraystretch}{1.85}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\leavevmode\color{otNavy}}p{38mm}YY@{}}
+\toprule
+{\otSemi\fontsize{8.5}{11}\selectfont\color{otInk}Fonction $f$} & {\otSemi\fontsize{8.5}{11}\selectfont Une primitive $F$} &
+{\otSemi\fontsize{8.5}{11}\selectfont Sur l'intervalle} \\
+\midrule
+$a$ (constante) & $ax$ & $\R$ \\
+$x^{n}$ ($n$ entier naturel) & $\dfrac{x^{n+1}}{n+1}$ & $\R$ \\
+$\dfrac{1}{x^{2}}$ & $-\dfrac1x$ & $\intOO{-\infty}{0}$ ou $\intOO{0}{+\infty}$ \\
+$\dfrac{1}{x^{n}}$ ($n\geq2$) & $-\dfrac{1}{(n-1)x^{n-1}}$ & $\intOO{-\infty}{0}$ ou $\intOO{0}{+\infty}$ \\
+$\dfrac{1}{\sqrt x}$ & $2\sqrt x$ & $\intOO{0}{+\infty}$ \\
+$\dfrac1x$ & $\ln x$ & $\intOO{0}{+\infty}$ \\
+$e^{x}$ & $e^{x}$ & $\R$ \\
+$\cos x$\enspace /\enspace $\sin x$ & $\sin x$\enspace /\enspace $-\cos x$ & $\R$ \\
+\bottomrule
+\end{tabularx}}
+\par\vspace{1.5mm}
+\legende{Chaque ligne se vérifie en dérivant $F$ : c'est le tableau des dérivées lu « à l'envers ».}
+
+\essSection{3}{Opérations et formes composées}
+
+\begin{propriete}[Linéarité]
+Si $F$ et $G$ sont des primitives de $f$ et $g$ sur $I$, et $k$ un réel, alors $F+G$ est une primitive de $f+g$ et $kF$
+une primitive de $kf$. Il n'existe en revanche \textbf{aucune règle} pour un produit ou un quotient.
+\end{propriete}
+
+{\renewcommand{\arraystretch}{1.85}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}>{\leavevmode\color{otNavy}}p{38mm}YY@{}}
+\toprule
+{\otSemi\fontsize{8.5}{11}\selectfont\color{otInk}Forme de $f$} & {\otSemi\fontsize{8.5}{11}\selectfont Une primitive $F$} &
+{\otSemi\fontsize{8.5}{11}\selectfont Condition sur $I$} \\
+\midrule
+$u'u^{n}$ ($n$ entier naturel) & $\dfrac{u^{n+1}}{n+1}$ & \\
+$\dfrac{u'}{u^{2}}$ & $-\dfrac1u$ & $u$ ne s'annule pas sur $I$ \\
+$\dfrac{u'}{\sqrt u}$ & $2\sqrt u$ & $u>0$ sur $I$ \\
+$\dfrac{u'}{u}$ & $\ln u$ & $u>0$ sur $I$ \\
+$u'e^{u}$ & $e^{u}$ & \\
+$u'\cos u$\enspace /\enspace $u'\sin u$ & $\sin u$\enspace /\enspace $-\cos u$ & \\
+\bottomrule
+\end{tabularx}}
+\par\vspace{1.5mm}
+\legende{$u$ est une fonction dérivable sur $I$. Cas particulier : si $F$ est une primitive de $f$, alors $x\mapsto\frac1aF(ax+b)$ est une primitive de $x\mapsto f(ax+b)$.}
+
+\begin{savoirfaire}[Reconnaître une forme composée]
+On repère une fonction $u$ dont la dérivée apparaît, \textbf{à une constante multiplicative près}. Pour $f(x)=xe^{x^{2}}$ :
+avec $u(x)=x^{2}$, $u'(x)=2x$ et $f=\frac12\,u'e^{u}$, donc $F(x)=\frac12\,e^{x^{2}}$ est une primitive de $f$ sur $\R$.
+\end{savoirfaire}
+
+\begin{savoirfaire}[Chercher une primitive par identification]
+Pour $f(x)=xe^{x}$, on cherche $F$ de la forme $F(x)=(ax+b)e^{x}$. Alors $F'(x)=(ax+a+b)e^{x}$, et $F'=f$ dès que $a=1$
+et $a+b=0$ : $F(x)=(x-1)e^{x}$ convient. \emph{On vérifie toujours le résultat en dérivant.}
+\end{savoirfaire}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Une primitive d'un produit n'est pas le produit des primitives : il faut reconnaître une forme ou procéder par identification.
+  \item Ne pas oublier le facteur $\frac1a$ : une primitive de $e^{3x}$ est $\frac13e^{3x}$, et non $3e^{3x}$.
+  \item Une primitive de $\frac{1}{x^{2}}$ est $-\frac1x$, et non $\ln\left(x^{2}\right)$ ; $\ln u$ n'a de sens que si $u>0$ sur $I$.
+  \item $xe^{x^{2}}$ a une primitive simple (forme $u'e^{u}$), mais $e^{x^{2}}$ n'en a aucune qui s'exprime avec les fonctions usuelles.
+  \item Une primitive se vérifie en une ligne : il suffit de la dériver.
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Découverte}
+
+\begin{exercice}[1]{Primitives usuelles}
+Pour chacune des fonctions $f$ suivantes, définies sur $\R$, déterminer la primitive $F$ de $f$ qui vérifie la condition indiquée.
+\begin{tasks}(2)
+  \task $f(x)=3x^{2}+2$,\enspace $F(0)=3$
+  \task $f(x)=5x^{4}$,\enspace $F(1)=2$
+  \task $f(x)=7-4x$,\enspace $F(0)=5$
+  \task $f(x)=e^{x}$,\enspace $F(0)=1$
+  \task $f(x)=\cos x$,\enspace $F(0)=0$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[1]{Linéarité}
+Déterminer la primitive $F$ de $f$ qui vérifie la condition indiquée.
+\begin{tasks}(2)
+  \task $f(x)=2x^{3}-5x+4$ sur $\R$,\enspace $F(0)=1$
+  \task $f(x)=x^{2}+3x+1$ sur $\R$,\enspace $F(0)=2$
+  \task $f(x)=6e^{x}-3$ sur $\R$,\enspace $F(0)=0$
+  \task $f(x)=4\cos x-2\sin x$ sur $\R$,\enspace $F(0)=1$
+  \task $f(x)=\sqrt x+\dfrac{1}{\sqrt x}$ sur $\intOO{0}{+\infty}$,\enspace $F(1)=3$
+\end{tasks}
+Pour la dernière, on pourra dériver la fonction $x\mapsto x\sqrt x$.
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Exponentielles et fonctions trigonométriques}
+Déterminer la primitive $F$ sur $\R$ de chacune des fonctions suivantes qui vérifie la condition indiquée.
+\begin{tasks}(2)
+  \task $f(x)=e^{3x}$,\enspace $F(0)=\dfrac13$
+  \task $f(x)=e^{2x+1}$,\enspace $F(0)=\dfrac e2$
+  \task $f(x)=\sin(2x)$,\enspace $F(0)=0$
+  \task $f(x)=\cos(5x)$,\enspace $F(0)=\dfrac15$
+  \task $f(x)=3e^{x}-2\cos(2x)$,\enspace $F(0)=2$
+  \task $f(x)=\cos^{2}x$,\enspace $F(0)=0$
+\end{tasks}
+Pour la dernière, on utilisera l'égalité $\cos^{2}x=\dfrac{1+\cos(2x)}{2}$.
+\end{exercice}
+
+\begin{exercice}[2]{Composées avec une fonction affine}
+Déterminer une primitive de chacune des fonctions suivantes, sur l'intervalle indiqué.
+\begin{tasks}(2)
+  \task $f(x)=(3x-2)^{4}$ sur $\R$
+  \task $f(x)=\dfrac{1}{2x+5}$ sur $\intOO{-\frac52}{+\infty}$
+  \task $f(x)=\sin(3x-1)$ sur $\R$
+  \task $f(x)=\cos(4x+2)$ sur $\R$
+  \task $f(x)=e^{5x-3}$ sur $\R$
+  \task $f(x)=\dfrac{1}{(1-x)^{2}}$ sur $\intOO{-\infty}{1}$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Reconnaître une forme $u'f(u)$}
+Pour chaque fonction, identifier une fonction $u$ et la forme de $f$ ($u'u^{n}$, $\frac{u'}{u}$, $u'e^{u}$, $\frac{u'}{\sqrt u}$…),
+puis donner une primitive de $f$ sur l'intervalle indiqué.
+\begin{tasks}(2)
+  \task $f(x)=2x\left(x^{2}+1\right)^{3}$ sur $\R$
+  \task $f(x)=\dfrac{2x}{x^{2}+1}$ sur $\R$
+  \task $f(x)=xe^{x^{2}}$ sur $\R$
+  \task $f(x)=\dfrac{1}{\sqrt{2x+3}}$ sur $\intOO{-\frac32}{+\infty}$
+  \task $f(x)=\dfrac{1}{(x+1)^{2}}$ sur $\intOO{-1}{+\infty}$
+  \task $f(x)=\cos x\,e^{\sin x}$ sur $\R$
+\end{tasks}
+\end{exercice}
+
+\begin{exercice}[2]{Fonctions rationnelles}
+Déterminer une primitive de chacune des fonctions suivantes, sur l'intervalle indiqué.
+\begin{tasks}(2)
+  \task $f(x)=\dfrac1x$ sur $\intOO{-\infty}{0}$
+  \task $f(x)=\dfrac{3x^{2}}{x^{3}+1}$ sur $\intOO{-1}{+\infty}$
+  \task $f(x)=\dfrac{1}{(3x+1)^{3}}$ sur $\intOO{-\frac13}{+\infty}$
+  \task $f(x)=\dfrac{x-1}{x^{2}}$ sur $\intOO{0}{+\infty}$
+  \task $f(x)=\dfrac{5}{2x-3}$ sur $\intOO{\frac32}{+\infty}$
+\end{tasks}
+Pour la première, on pourra dériver la fonction $x\mapsto\ln(-x)$.
+\end{exercice}
+
+\begin{exercice}[2]{Racines et puissances}
+Déterminer une primitive de chacune des fonctions suivantes, sur l'intervalle indiqué.
+\begin{tasks}(2)
+  \task $f(x)=x\sqrt x$ sur $\intOO{0}{+\infty}$
+  \task $f(x)=\dfrac{1}{\sqrt x}$ sur $\intOO{0}{+\infty}$
+  \task $f(x)=\dfrac{x}{\sqrt{x+1}}$ sur $\intOO{-1}{+\infty}$
+  \task $f(x)=\dfrac{1}{(x+2)^{2}}$ sur $\intOO{-2}{+\infty}$
+  \task $f(x)=\dfrac{x+1}{\sqrt{x^{2}+2x+3}}$ sur $\R$
+\end{tasks}
+Indications : dériver $x\mapsto x^{2}\sqrt x$ pour la première ; écrire $x=(x+1)-1$ pour la troisième.
+\end{exercice}
+
+\begin{exercice}[2]{Vérifier une primitive}
+\begin{questions}
+  \item Vérifier que $F(x)=(x-1)e^{x}$ définit une primitive de $f(x)=xe^{x}$ sur $\R$.
+  \item Vérifier que $G(x)=\sin x-x\cos x$ définit une primitive de $g(x)=x\sin x$ sur $\R$.
+  \item Déterminer une primitive de chacune des fonctions suivantes.
+\begin{tasks}(3)
+  \task $x\mapsto e^{x}+\cos x$ sur $\R$
+  \task $x\mapsto x^{2}+e^{2x}$ sur $\R$
+  \task $x\mapsto\dfrac1x+\dfrac{1}{x^{2}}$ sur $\intOO{0}{+\infty}$
+\end{tasks}
+  \item Montrer que $F_1(x)=\sin^{2}x$ et $F_2(x)=-\cos^{2}x$ sont deux primitives d'une même fonction, que l'on précisera.
+    Calculer $F_1(x)-F_2(x)$ : ce résultat était-il prévisible ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Problèmes}
+
+\begin{exercice}[3]{Primitives par identification}
+Dans chaque question, $a$, $b$, $c$, $d$ désignent des réels à déterminer.
+\begin{questions}
+  \item Déterminer $a$ et $b$ pour que $F(x)=(ax+b)e^{x}$ définisse une primitive de $f(x)=xe^{x}$ sur $\R$.
+  \item Déterminer $a$ et $b$ pour que $x\mapsto(ax+b)e^{2x}$ soit une primitive de $x\mapsto xe^{2x}$ sur $\R$.
+  \item Déterminer $a$, $b$ et $c$ pour que $x\mapsto\left(ax^{2}+bx+c\right)e^{x}$ soit une primitive de $x\mapsto x^{2}e^{x}$ sur $\R$.
+  \item Vérifier que $x\mapsto x\ln x-x$ est une primitive de $\ln$ sur $\intOO{0}{+\infty}$. Déterminer ensuite $a$ et $b$ pour que
+    $x\mapsto ax^{2}\ln x+bx^{2}$ soit une primitive de $x\mapsto x\ln x$ sur $\intOO{0}{+\infty}$.
+  \item Déterminer $a$, $b$, $c$ et $d$ pour que $x\mapsto(ax+b)\cos x+(cx+d)\sin x$ soit une primitive de $x\mapsto x\cos x$ sur $\R$.
+\end{questions}
+{\small\color{otMuted}Ces primitives peuvent aussi s'obtenir par intégration par parties (chapitre 9).}
+\end{exercice}
+
+\begin{exercice}[3]{Décomposer pour trouver une primitive}
+\partieExo{A}{Une division}
+On considère la fonction $f$ définie sur $I=\intOO{-1}{+\infty}$ par $f(x)=\dfrac{x^{2}+3x+1}{x+1}$.
+\begin{questions}
+  \item Déterminer trois réels $a$, $b$ et $c$ tels que, pour tout $x\in I$, $f(x)=ax+b+\dfrac{c}{x+1}$.
+  \item En déduire la primitive $F$ de $f$ sur $I$ telle que $F(0)=0$.
+\end{questions}
+\partieExo{B}{Une différence de deux fractions}
+On considère la fonction $g$ définie sur $\intOO{0}{+\infty}$ par $g(x)=\dfrac{1}{x(x+1)}$.
+\begin{questions}[resume]
+  \item Vérifier que, pour tout $x>0$, $g(x)=\dfrac1x-\dfrac{1}{x+1}$.
+  \item En déduire les primitives de $g$ sur $\intOO{0}{+\infty}$, puis celle qui tend vers $0$ en $+\infty$.
+  \item Déterminer une primitive de $h(x)=\dfrac{2x+1}{x^{2}+x}$ sur $\intOO{0}{+\infty}$ de deux façons : en reconnaissant une forme
+    $\frac{u'}{u}$, puis en écrivant $h(x)=\frac1x+\frac{1}{x+1}$. Vérifier que les deux résultats coïncident.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{De la vitesse à la position}
+Un mobile se déplace sur un axe. Si $v(t)$ désigne sa vitesse à l'instant $t$, la distance parcourue $x(t)$ est une primitive
+de $v$, et son accélération est $a(t)=v'(t)$. Les temps sont en secondes, les distances en mètres.
+\partieExo{A}{Un freinage}
+Une voiture roulant à $25$~m/s (soit $90$~km/h) freine à l'instant $t=0$. Sa vitesse est $v(t)=25-5t$ jusqu'à l'arrêt.
+\begin{questions}
+  \item À quel instant la voiture s'arrête-t-elle ? Quelle est son accélération pendant le freinage ?
+  \item Déterminer la distance $x(t)$ parcourue depuis le début du freinage, puis la distance de freinage.
+  \item Avec la même accélération, quelle serait la distance de freinage à $50$~m/s ($180$~km/h) ? Commenter.
+\end{questions}
+\partieExo{B}{Une chute avec frottements}
+La vitesse d'un parachutiste, avant l'ouverture du parachute, est $v(t)=50\left(1-e^{-t/5}\right)$ pour $t\geq0$.
+\begin{questions}[resume]
+  \item Calculer la limite de $v(t)$ lorsque $t$ tend vers $+\infty$ et l'interpréter. À quel instant la vitesse atteint-elle $45$~m/s ?
+  \item Montrer que l'accélération est $a(t)=10e^{-t/5}$. Calculer $a(0)$ et interpréter.
+  \item Déterminer la distance $d(t)$ parcourue depuis l'instant $0$. Calculer $d(10)$, arrondie au mètre.
+  \item Montrer que $d(t)-(50t-250)$ tend vers $0$ lorsque $t$ tend vers $+\infty$. Interpréter.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Étude d'une primitive}
+On considère la fonction $f$ définie sur $\R$ par $f(x)=xe^{-x^{2}}$, et l'on note $F$ la primitive de $f$ sur $\R$ telle que $F(0)=0$.
+\partieExo{A}{Sans calculer $F$}
+\begin{questions}
+  \item Étudier le signe de $f(x)$. En déduire les variations de $F$ sur $\R$, puis le signe de $F(x)$.
+  \item On pose $G(x)=F(-x)$. Calculer $G'(x)$, puis en déduire que $G=F$. Que peut-on en conclure pour $F$ ?
+  \item Calculer $f'(x)$ et en déduire la convexité de $F$. Préciser les abscisses des points d'inflexion de sa courbe.
+\end{questions}
+\partieExo{B}{Expression de $F$}
+\begin{questions}[resume]
+  \item En reconnaissant une forme $u'e^{u}$, montrer que $F(x)=\dfrac12\left(1-e^{-x^{2}}\right)$ pour tout réel $x$.
+  \item Calculer les limites de $F$ en $-\infty$ et en $+\infty$, puis montrer que $0\leq F(x)<\dfrac12$ pour tout réel $x$.
+  \item Tracer l'allure des courbes de $f$ et de $F$.
+\end{questions}
+\end{exercice}

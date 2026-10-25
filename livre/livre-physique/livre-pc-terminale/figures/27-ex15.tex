@@ -1,0 +1,17 @@
+% Histogramme de 20 000 valeurs simulées de l'indice n = sin i / sin r (exercice 15, chapitre 27)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=112mm,height=40mm,xmin=1.42,xmax=1.66,ymin=0,ymax=2200,
+  xtick={1.44,1.48,...,1.64},ytick={0,500,...,2000},grid=none,ymajorgrids=true,
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/fixed zerofill,/pgf/number format/precision=2},
+  yticklabel style={/pgf/number format/1000 sep={\,}},
+  xlabel={$n$},ylabel={effectif}]
+\addplot[ybar interval,fill=otNavy!22,draw=otNavy,line width=0.4pt] table[x index=0,y index=1] {figures/donnees/27-mc-indice-histo.dat};
+\solution{\fill[otGreenDark,opacity=0.10] (axis cs:1.446,0) rectangle (axis cs:1.598,2050);
+  \draw[otGreenDark,line width=0.9pt] (axis cs:1.52,0) -- (axis cs:1.52,2050);
+  \node[pcLegende,anchor=south,text=otGreenDark] at (axis cs:1.52,2050) {crown : 1,52};
+  \draw[otRed!80!black,line width=0.9pt] (axis cs:1.62,0) -- (axis cs:1.62,2050);
+  \node[pcLegende,anchor=south,text=otRed!80!black] at (axis cs:1.62,2050) {flint : 1,62};
+  \node[pcLegende,anchor=north,text=otGreenDark,fill=white,inner sep=1pt] at (axis cs:1.47,1980) {$\bar n\pm2\,u$};}
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{Indices calculés avec \num{20000} couples d'angles tirés au hasard, chacun uniformément dans un intervalle de $\pm\ang{1}$ autour de la valeur lue.}

@@ -1,0 +1,14 @@
+% Titrage conductimétrique de l'acide chlorhydrique par la soude (L'essentiel, chapitre 3)
+\begin{tikzpicture}
+\begin{axis}[otMesures,otAxesBout,width=112mm,height=58mm,xmin=0,xmax=4.2,ymin=0,ymax=0.5,
+  xtick={0,0.5,...,4},ytick={0,0.1,...,0.5},xlabel={$V_\mathrm{B}$ (mL)},ylabel={$\sigma$ (mS$\cdot$cm$^{-1}$)}]
+\addplot[otGreenDark,line width=0.7pt,domain=0:2.3] {0.4263-0.15175*x};
+\addplot[otGreenDark,line width=0.7pt,domain=1.65:4.1] {0.1228+0.1133*(x-2)};
+\addplot[only marks,mark=*,mark size=1.7pt,otInk] table[x index=0,y index=1] {figures/donnees/03-hcl-naoh-sigma.dat};
+\draw[otOrange,line width=0.6pt,dash pattern=on 2pt off 1.5pt] (axis cs:2,0.1228) -- (axis cs:2,0);
+\node[pcLegende,anchor=south west,text=otOrange!75!black] at (axis cs:2.05,0.008) {$V_\mathrm{E}=2{,}0$ mL};
+\node[pcLegende,anchor=north west,align=left] at (axis cs:0.05,0.145) {avant l'équivalence :\\\ce{H3O+} ($\lambda=35{,}0$) remplacé\\par \ce{Na+} ($\lambda=5{,}01$) : $\sigma$ diminue};
+\node[pcLegende,anchor=north west,align=left] at (axis cs:2.2,0.495) {après l'équivalence :\\ajout de \ce{Na+} et de \ce{HO-}\\($\lambda=19{,}9$) : $\sigma$ augmente};
+\end{axis}
+\end{tikzpicture}
+\par\smallskip\legende{20,0 mL d'acide chlorhydrique à \qty{1,00e-2}{mol.L^{-1}} et 180 mL d'eau, titrés par la soude à \qty{0,100}{mol.L^{-1}} ; l'eau ajoutée rend la dilution négligeable.}

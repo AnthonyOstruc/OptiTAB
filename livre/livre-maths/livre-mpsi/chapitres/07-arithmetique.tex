@@ -1,0 +1,571 @@
+% !TEX root = ../main.tex
+%% Chapitre 7 — Arithmétique des entiers relatifs
+%% Programme officiel MPSI/MP2I (BO spécial n°1 du 11/02/2021), premier semestre,
+%% section « Arithmétique dans l'ensemble des entiers relatifs » :
+%%   a) divisibilité et division euclidienne ; b) PGCD et algorithme d'Euclide ;
+%%   c) entiers premiers entre eux ; d) nombres premiers ; e) congruences.
+%% Résultats vérifiés par verifications/chapitre_07.py.
+
+\begin{ouverture}[arithmetique]{7}{Arithmétique des entiers relatifs}{Partie 1 · Premier semestre}
+  {Division euclidienne\enspace·\enspace PGCD et Euclide\enspace·\enspace Bézout et Gauss\enspace·\enspace
+   Nombres premiers\enspace·\enspace Congruences}
+  \objectif{Manipuler divisibilité et division euclidienne dans $\Z$.}
+  \objectif{Calculer un PGCD par l'algorithme d'Euclide, et un couple de Bézout par l'algorithme étendu.}
+  \objectif{Utiliser les théorèmes de Bézout et de Gauss, et résoudre des équations diophantiennes.}
+  \objectif{Maîtriser les nombres premiers : crible, décomposition, valuations $p$-adiques.}
+  \objectif{Calculer avec les congruences : restes, inverses modulo $n$, critères de divisibilité.}
+  \objectif{Appliquer le petit théorème de Fermat.}
+  \prerequis{Raisonnements : récurrence, analyse-synthèse, absurde (chapitre 1).}
+  \prerequis{Toute partie non vide de $\N$ possède un plus petit élément (chapitre 1).}
+  \prerequis{Congruences modulo un réel : notation $a\equiv b\ [c]$ (chapitres 1 et 2).}
+\end{ouverture}
+
+%% =====================================================================
+%%  L'ESSENTIEL
+%% =====================================================================
+\essentiel
+
+\essSection{1}{Divisibilité et division euclidienne}
+
+\begin{definition}[Divisibilité dans $\Z$]
+Pour $a,b\in\Z$ : $a$ \textbf{divise} $b$ (noté $a\mid b$) s'il existe
+$k\in\Z$ tel que $b=ka$ ; on dit que $a$ est un \emph{diviseur} de $b$ et
+$b$ un \emph{multiple} de $a$. Propriétés : si $a\mid b$ et $b\mid c$,
+alors $a\mid c$ ; si $d\mid a$ et $d\mid b$, alors $d$ divise toute
+\emph{combinaison} $au+bv$ ($u,v\in\Z$). Enfin, $a\mid b$ et $b\mid a$ si
+et seulement si $b=\pm a$ (entiers \emph{associés}).
+\end{definition}
+
+\begin{theoreme}[Division euclidienne]
+Pour tout $a\in\Z$ et tout $b\in\N^{*}$, il existe un \emph{unique} couple
+$(q,r)\in\Z\times\N$ tel que
+\[
+  a=bq+r\qquad\text{et}\qquad0\leq r<b.
+\]
+$q$ est le \textbf{quotient}, $r$ le \textbf{reste}. Attention aux
+négatifs : $-37=5\times(-8)+3$, de reste $3$ (et non $-2$).
+\end{theoreme}
+
+\essSection{2}{PGCD et algorithme d'Euclide}
+
+\begin{definition}[PGCD, PPCM]
+Pour $a,b\in\N$ non tous deux nuls, le \textbf{PGCD} $a\wedge b$ est le plus
+grand élément de l'ensemble des diviseurs communs à $a$ et $b$. Théorème
+clé : \emph{les diviseurs communs à $a$ et $b$ sont exactement les diviseurs
+de $a\wedge b$} — ainsi $a\wedge b$ est aussi le plus grand diviseur commun
+au sens de la divisibilité. On a $(ka)\wedge(kb)=k\,(a\wedge b)$ pour
+$k\in\N^{*}$, et la définition s'étend aux entiers relatifs par
+$a\wedge b=|a|\wedge|b|$. Le \textbf{PPCM} $a\vee b$ est défini de même avec
+les multiples communs strictement positifs, et
+\[
+  (a\wedge b)\,(a\vee b)=|ab|.
+\]
+\end{definition}
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\begin{theoreme}[Algorithme d'Euclide]
+Si $a=bq+r$ est la division euclidienne de $a$ par $b$, alors
+\[
+  a\wedge b=b\wedge r :
+\]
+les diviseurs communs de $(a,b)$ et de $(b,r)$ sont les mêmes. En itérant,
+la suite des restes décroît strictement : le \emph{dernier reste non nul}
+est le PGCD. Exemple :
+\[
+  252=1\times198+54,\quad 198=3\times54+36,
+\]
+\[
+  54=1\times36+18,\quad 36=2\times18+0,
+\]
+donc $252\wedge198=18$.
+\end{theoreme}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.21,line cap=round]
+  \draw[otNavy,line width=1pt] (0,0) rectangle (21,15);
+  \fill[otNavyTint] (0,0) rectangle (15,15);
+  \draw[otNavy,line width=0.7pt] (15,0) -- (15,15);
+  \fill[otGreenTint] (15,0) rectangle (21,6);
+  \fill[otGreenTint] (15,6) rectangle (21,12);
+  \draw[otGreenDark,line width=0.7pt] (15,6) -- (21,6) (15,12) -- (21,12);
+  \fill[otGreen!45] (15,12) rectangle (18,15);
+  \fill[otGreen!45] (18,12) rectangle (21,15);
+  \draw[otGreenDark,line width=0.7pt] (18,12) -- (18,15);
+  \node[font=\scriptsize,text=otNavy] at (7.5,7.5) {$15\times15$};
+  \node[font=\tiny,text=otGreenDark] at (18,3) {$6\times6$};
+  \node[font=\tiny,text=otGreenDark] at (18,9) {$6\times6$};
+  \node[font=\tiny,text=otGreenDark,above] at (16.5,15.2) {$3$};
+  \node[font=\scriptsize,text=otMuted,below] at (10.5,-0.5) {$21$};
+  \node[font=\scriptsize,text=otMuted,left] at (-0.5,7.5) {$15$};
+\end{tikzpicture}\\[0.5mm]
+\legende{Euclide en image : on retire des carrés du rectangle $21\times15$ ;
+le dernier carré ($3\times3$) est le PGCD.}
+\end{minipage}
+
+\begin{savoirfaire}[L'algorithme d'Euclide étendu : un couple de Bézout]
+En \emph{remontant} les divisions de l'algorithme d'Euclide, on exprime le
+PGCD comme combinaison $au+bv$. Sur l'exemple :
+$18=54-36=54-(198-3\times54)=4\times54-198
+=4\,(252-198)-198$, d'où
+\[
+  18=4\times252-5\times198.
+\]
+\end{savoirfaire}
+
+\essSection{3}{Entiers premiers entre eux : Bézout et Gauss}
+
+\begin{theoreme}[Bézout]
+Deux entiers $a$ et $b$ sont \textbf{premiers entre eux} ($a\wedge b=1$) si
+et seulement s'il existe $u,v\in\Z$ tels que
+\[
+  au+bv=1.
+\]
+Conséquence : tout rationnel s'écrit de manière unique sous \emph{forme
+irréductible} $\frac{p}{q}$ avec $p\wedge q=1$ et $q\geq1$.
+\end{theoreme}
+
+\begin{theoreme}[Gauss et ses corollaires]
+\begin{itemize}[label={\color{otNavy}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.8mm]
+  \item \etape{Gauss} si $a\mid bc$ et $a\wedge b=1$, alors $a\mid c$.
+  \item Si $a$ et $b$ divisent $n$ et $a\wedge b=1$, alors $ab\mid n$.
+  \item Si $a$ et $b$ sont premiers avec $n$, alors $ab$ est premier avec $n$.
+\end{itemize}
+Le PGCD se définit aussi pour une famille finie ; attention : des entiers
+peuvent être \emph{premiers entre eux dans leur ensemble} sans l'être
+\emph{deux à deux} — ainsi $6$, $10$, $15$.
+\end{theoreme}
+
+\essSection{4}{Nombres premiers}
+
+\begin{definition}
+Un entier $p\geq2$ est \textbf{premier} si ses seuls diviseurs positifs sont
+$1$ et $p$. Pour tester la primalité de $n$, il suffit d'essayer les
+diviseurs premiers $\leq\sqrt n$ (si $n=ab$ avec $1<a\leq b$, alors
+$a\leq\sqrt n$).
+\end{definition}
+
+\begin{theoreme}[Euclide]
+L'ensemble des nombres premiers est \emph{infini}.
+\end{theoreme}
+
+\begin{demonstration}[à connaître]
+Supposons par l'absurde qu'il n'y ait qu'un nombre fini de premiers
+$p_1,\dots,p_n$, et posons $N=p_1p_2\cdots p_n+1$. L'entier $N\geq2$ admet
+un diviseur premier $p$ (chapitre 1, récurrence forte). Mais $p$ est l'un
+des $p_i$, donc $p$ divise $N-p_1\cdots p_n=1$ : absurde.
+\end{demonstration}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+\begin{theoreme}[Décomposition en facteurs premiers]
+Tout entier $n\geq2$ s'écrit de manière \emph{unique} (à l'ordre près)
+comme produit de nombres premiers :
+\[
+  n=p_1^{\alpha_1}\,p_2^{\alpha_2}\cdots p_r^{\alpha_r}.
+\]
+Exemples : $360=2^{3}\times3^{2}\times5$,\quad
+$1001=7\times11\times13$,\quad $2024=2^{3}\times11\times23$.
+\end{theoreme}
+\vspace{1mm}
+Le \emph{crible d'Ératosthène} (ci-contre) énumère les premiers : on raye
+les multiples de $2$, puis de $3$, de $5$, de $7$ — et tout entier $\leq50$
+non rayé est premier.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62,line cap=round]
+  \foreach \k in {2,...,50}{%
+    \pgfmathtruncatemacro{\col}{mod(\k-1,10)}%
+    \pgfmathtruncatemacro{\row}{(\k-1-\col)/10}%
+    \pgfmathtruncatemacro{\prem}{(\k==2)||(\k==3)||(\k==5)||(\k==7)||(\k==11)||(\k==13)||(\k==17)||(\k==19)||(\k==23)||(\k==29)||(\k==31)||(\k==37)||(\k==41)||(\k==43)||(\k==47) ? 1 : 0}%
+    \ifnum\prem=1
+      \fill[otGreen] (\col*0.78,-\row*0.78) circle (0.31);
+      \node[text=white,font=\otSemi\fontsize{5.5}{6}\selectfont] at (\col*0.78,-\row*0.78) {\k};
+    \else
+      \draw[otRule,line width=0.4pt] (\col*0.78,-\row*0.78) circle (0.31);
+      \node[text=otMuted!75,font=\otLight\fontsize{5.5}{6}\selectfont] at (\col*0.78,-\row*0.78) {\k};
+    \fi}
+\end{tikzpicture}\\[0.5mm]
+\legende{Le crible d'Ératosthène jusqu'à $50$ : quinze nombres premiers survivent.}
+\end{minipage}
+
+\essSection{5}{Valuations $p$-adiques}
+
+\begin{definition}
+Pour $p$ premier et $n\in\N^{*}$, la \textbf{valuation $p$-adique}
+$v_p(n)$ est l'exposant de $p$ dans la décomposition de $n$ (c'est le plus
+grand $k$ tel que $p^{k}\mid n$). Ainsi $v_2(96)=5$ et $v_3(96)=1$.
+\end{definition}
+
+\begin{propriete}
+Pour tous $a,b\in\N^{*}$ et tout premier $p$ :
+\[
+  v_p(ab)=v_p(a)+v_p(b) ;\qquad
+  a\mid b\iff\forall p\ \text{premier},\ v_p(a)\leq v_p(b) ;
+\]
+\[
+  v_p(a\wedge b)=\min\bigl(v_p(a),v_p(b)\bigr),\qquad
+  v_p(a\vee b)=\max\bigl(v_p(a),v_p(b)\bigr).
+\]
+On retrouve ainsi $(a\wedge b)(a\vee b)=ab$, puisque
+$\min+\max=$ somme. Autre conséquence utile : le nombre de diviseurs
+positifs de $n=\prod p_i^{\alpha_i}$ vaut $\prod(\alpha_i+1)$.
+\end{propriete}
+
+\essSection{6}{Congruences et petit théorème de Fermat}
+
+\begin{definition}[Congruence modulo $n$]
+Pour $n\in\N^{*}$ : $a\equiv b\ [n]$ signifie $n\mid a-b$, c'est-à-dire que
+$a$ et $b$ ont le même reste modulo $n$. C'est une relation d'équivalence
+(chapitre 1), \emph{compatible} avec les opérations : si $a\equiv b\ [n]$
+et $c\equiv d\ [n]$, alors
+\[
+  a+c\equiv b+d\ [n],\qquad ac\equiv bd\ [n],\qquad a^{k}\equiv b^{k}\ [n].
+\]
+(Les anneaux $\Z/n\Z$ sont hors programme.)
+\end{definition}
+
+\begin{savoirfaire}[Inverse modulo $n$ et congruences linéaires]
+$a$ possède un \textbf{inverse modulo $n$} (un entier $u$ tel que
+$au\equiv1\ [n]$) si et seulement si $a\wedge n=1$ : c'est le théorème de
+Bézout, et l'algorithme d'Euclide étendu \emph{calcule} cet inverse. Pour
+résoudre $ax\equiv b\ [n]$ avec $a\wedge n=1$ : multiplier par l'inverse de
+$a$. Exemple : $5\times3\equiv1\ [7]$, donc
+$5x\equiv3\ [7]\iff x\equiv9\equiv2\ [7]$.
+\end{savoirfaire}
+
+\begin{theoreme}[Petit théorème de Fermat]
+Soit $p$ un nombre premier. Pour tout entier $a$ :
+\[
+  a^{p}\equiv a\ [p],
+\]
+et si de plus $p$ ne divise pas $a$ :
+$a^{p-1}\equiv1\ [p]$.
+Exemple : $2^{10}\equiv1\ [11]$, d'où le reste de $2^{2026}$ modulo $11$ :
+$2026=10\times202+6$, donc $2^{2026}\equiv2^{6}=64\equiv9\ [11]$.
+\end{theoreme}
+
+\begin{attention}[Pièges fréquents]
+\begin{itemize}[label={\color{otOrange}\textbullet},leftmargin=1.4em,itemsep=0.6mm,topsep=0.5mm]
+  \item Le reste d'une division euclidienne est toujours dans
+    $\intFO{0}{b}$ : pour $a<0$, ne pas se tromper de quotient.
+  \item On ne divise pas une congruence : $6\equiv2\ [4]$ mais
+    $3\not\equiv1\ [4]$ — on \emph{multiplie par un inverse}, quand il existe.
+  \item Gauss exige $a\wedge b=1$ : $4\mid2\times6$ mais $4$ ne divise ni
+    $2$ ni $6$.
+  \item Premiers entre eux \emph{dans leur ensemble} n'implique pas
+    \emph{deux à deux} ($6$, $10$, $15$).
+  \item $1$ n'est pas premier — et $2$ est le seul premier pair.
+  \item Fermat demande $p$ \emph{premier} : $2^{560}\equiv1\ [561]$
+    n'empêche pas $561=3\times11\times17$ (voir l'exercice 23).
+\end{itemize}
+\end{attention}
+
+%% =====================================================================
+%%  EXERCICES
+%% =====================================================================
+\exercices
+\rubrique{Applications}
+
+\begin{exercice}[1]{Divisibilité : premiers pas}
+\begin{questions}
+  \item Dresser la liste des diviseurs positifs de $60$.
+  \item Déterminer tous les entiers $n\in\N^{*}$ tels que $n$ divise $n+6$.
+  \item Montrer que si $d$ divise $a$ et $b$, alors $d$ divise $au+bv$ pour
+    tous entiers $u,v$.
+  \item Montrer que, pour tout $n\in\Z$, le produit $n(n+1)(n+2)$ est
+    divisible par $6$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Division euclidienne}
+\begin{questions}
+  \item Effectuer la division euclidienne de $1234$ par $56$, puis celle de
+    $-37$ par $5$.
+  \item Soit $n\geq1$. Déterminer le quotient et le reste de la division
+    euclidienne de $n^{2}$ par $n+1$.
+    \emph{On remarquera que $n^{2}=(n+1)(n-1)+1$.}
+  \item Quels sont les restes possibles d'un carré parfait modulo $4$ ?
+    \emph{Distinguer selon la parité.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{L'algorithme d'Euclide}
+Calculer à l'aide de l'algorithme d'Euclide, en détaillant les divisions :
+\begin{questions}
+  \item $252\wedge198$ ;
+  \item $1071\wedge462$ ;
+  \item $2024\wedge2026$ — que dire, en général, du PGCD de deux entiers
+    pairs consécutifs ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Couples de Bézout}
+\begin{questions}
+  \item En remontant l'algorithme d'Euclide de l'exercice précédent,
+    déterminer $(u,v)\in\Z^{2}$ tel que $252u+198v=18$.
+  \item Déterminer de même un couple $(u,v)$ tel que $17u+5v=1$.
+  \item Le couple trouvé est-il unique ? Donner un autre couple solution
+    pour la question 2.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{PGCD et PPCM par les décompositions}
+\begin{questions}
+  \item Décomposer $180$ et $84$ en facteurs premiers, puis en déduire
+    $180\wedge84$ et $180\vee84$.
+  \item Vérifier sur cet exemple la relation
+    $(a\wedge b)(a\vee b)=ab$.
+  \item Calculer $15\wedge28$ et $15\vee28$. Que remarque-t-on ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Congruences : calculs de restes}
+\begin{questions}
+  \item Déterminer le reste de $2^{10}$ modulo $7$.
+    \emph{Remarquer que $2^{3}\equiv1\ [7]$.}
+  \item Déterminer le reste de $3^{100}$ modulo $8$.
+  \item Quel est le chiffre des unités de $7^{2026}$ ?
+  \item Justifier que $10\equiv1\ [9]$, et en déduire le reste de
+    $1\,234\,567$ modulo $9$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Crible et tests de primalité}
+\begin{questions}
+  \item Dresser le crible d'Ératosthène jusqu'à $50$ et donner la liste des
+    nombres premiers obtenus.
+  \item Justifier que, pour tester la primalité de $n$, il suffit d'essayer
+    les diviseurs premiers inférieurs ou égaux à $\sqrt n$.
+  \item Les entiers $191$ et $323$ sont-ils premiers ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[1]{Décomposition en facteurs premiers}
+\begin{questions}
+  \item Décomposer en facteurs premiers : $360$, $1001$ et $2024$.
+  \item En déduire $360\wedge2024$.
+  \item Combien $360$ possède-t-il de diviseurs positifs ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Entraînement}
+
+\begin{exercice}[2]{Des PGCD astucieux}
+\begin{questions}
+  \item Montrer que, pour tous entiers $a$, $b$, $q$ :
+    $a\wedge b=b\wedge(a-qb)$. Quel algorithme cette propriété justifie-t-elle ?
+  \item Montrer que, pour tout $n\in\N$ : $n\wedge(n+1)=1$.
+  \item Montrer que, pour tout $n\in\N^{*}$ : $(2n+1)\wedge n=1$.
+  \item Montrer que, pour tout $n\in\N^{*}$ : $(n^{2}+n)\wedge(2n+1)=1$.
+    \emph{On pourra remarquer que $4(n^{2}+n)=(2n+1)^{2}-1$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Équations diophantiennes $ax+by=c$}
+\begin{questions}
+  \item À quelle condition sur $c$ l'équation $ax+by=c$ (d'inconnues
+    $x,y\in\Z$) possède-t-elle des solutions ?
+  \item Résoudre dans $\Z^{2}$ l'équation $17x+5y=1$, puis l'équation
+    $17x+5y=4$.
+  \item Résoudre dans $\Z^{2}$ l'équation $12x+18y=30$ : la simplifier,
+    trouver une solution particulière, puis décrire toutes les solutions.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le lemme de Gauss en action}
+\begin{questions}
+  \item Montrer que si $7$ divise $3n$, alors $7$ divise $n$.
+  \item Déterminer tous les entiers $n$ tels que $9$ divise $6n$.
+  \item Montrer que si $p$ est premier et $p\mid a^{2}$, alors $p\mid a$.
+  \item Mettre la fraction $\dfrac{2024}{2576}$ sous forme irréductible.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Premiers entre eux}
+\begin{questions}
+  \item Montrer que, pour tout $n$, la fraction $\dfrac{2n+1}{3n+2}$ est
+    irréductible.
+    \emph{Chercher une combinaison de $2n+1$ et $3n+2$ égale à $\pm1$.}
+  \item Vérifier que $6$, $10$ et $15$ sont premiers entre eux dans leur
+    ensemble, mais que deux quelconques d'entre eux ne le sont jamais.
+  \item Montrer que si $a\wedge b=1$, alors $(a+b)\wedge ab=1$.
+    \emph{Raisonner avec un diviseur premier commun.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Inverses modulo $n$}
+\begin{questions}
+  \item Montrer que $a$ possède un inverse modulo $n$ si et seulement si
+    $a\wedge n=1$.
+  \item Déterminer l'inverse de $5$ modulo $7$, puis celui de $17$ modulo
+    $26$ (algorithme d'Euclide étendu).
+  \item Résoudre la congruence $5x\equiv3\ [7]$.
+  \item Résoudre la congruence $17x\equiv4\ [26]$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Critères de divisibilité}
+\begin{questions}
+  \item En utilisant $10\equiv1\ [9]$, démontrer le critère de divisibilité
+    par $9$ (et par $3$) : un entier est congru, modulo $9$, à la somme de
+    ses chiffres.
+  \item En utilisant $10\equiv-1\ [11]$, démontrer le critère de
+    divisibilité par $11$ (somme alternée des chiffres).
+  \item L'entier $8\,791\,236$ est-il divisible par $9$ ? par $11$ ?
+  \item Déterminer le chiffre $x$ pour que $\overline{53x4}$ soit divisible
+    par $9$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Le petit théorème de Fermat}
+\begin{questions}
+  \item Vérifier directement que $2^{10}\equiv1\ [11]$.
+  \item Déterminer le reste de $2^{2026}$ modulo $11$.
+  \item Montrer que, pour tout entier $n$ : $11$ divise $n^{11}-n$.
+  \item Déterminer le reste de $7^{222}$ modulo $13$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Valuations $p$-adiques}
+\begin{questions}
+  \item Calculer $v_2(96)$, $v_3(96)$ et $v_2(2024)$.
+  \item Démontrer que $v_p(ab)=v_p(a)+v_p(b)$.
+  \item Justifier la caractérisation
+    $a\mid b\iff\forall p,\ v_p(a)\leq v_p(b)$, et en déduire les formules
+    du PGCD et du PPCM par les valuations.
+  \item Montrer que $\sqrt2$ est irrationnel en comparant la parité des
+    valuations $2$-adiques dans l'égalité $p^{2}=2q^{2}$.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Nombres de Mersenne}
+Pour $n\geq2$, on pose $M_n=2^{n}-1$.
+\begin{questions}
+  \item Rappeler la factorisation de $a^{k}-1$ par $a-1$, et en déduire que
+    si $d$ divise $n$, alors $2^{d}-1$ divise $2^{n}-1$.
+  \item En déduire que si $M_n$ est premier, alors $n$ est premier.
+  \item La réciproque est-elle vraie ? \emph{Examiner $M_{11}=2047$.}
+  \item Donner les valeurs de $n\leq13$ pour lesquelles $M_n$ est premier.
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[2]{Systèmes de congruences}
+\begin{questions}
+  \item Résoudre le système : $x\equiv2\ [5]$ et $x\equiv3\ [7]$.
+    \emph{Écrire $x=2+5k$ et résoudre une congruence en $k$.}
+  \item \emph{(Problème de Sun Zi, {\upshape III}\textsuperscript{e} siècle.)}
+    Une bande de singes se partage un tas de noix : par paquets de $3$, il
+    en reste $2$ ; par paquets de $5$, il en reste $3$ ; par paquets de
+    $7$, il en reste $2$. Combien y a-t-il de noix, au minimum ?
+\end{questions}
+\end{exercice}
+
+\rubrique{Approfondissement}
+
+\begin{exercice}[3]{L'infinité des nombres premiers, et au-delà}
+\begin{questions}
+  \item Rédiger soigneusement la démonstration d'Euclide de l'infinité des
+    nombres premiers.
+  \item Montrer qu'il existe une infinité de nombres premiers de la forme
+    $4k+3$. \emph{Par l'absurde : s'il n'y en avait qu'un nombre fini
+    $q_1,\dots,q_r$, considérer $N=4q_1\cdots q_r-1$, et remarquer qu'un
+    produit d'entiers congrus à $1$ modulo $4$ est congru à $1$ modulo $4$.}
+  \item Montrer que, pour tout $n\geq2$, les $n-1$ entiers consécutifs
+    $n!+2,\ n!+3,\ \dots,\ n!+n$ sont tous composés. Qu'en déduit-on sur
+    les « trous » entre nombres premiers ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Les nombres de Fermat}
+Pour $n\in\N$, on pose $F_n=2^{2^{n}}+1$.
+\begin{questions}
+  \item Calculer $F_0,\dots,F_4$ et admettre qu'ils sont premiers. Fermat
+    conjectura que tous les $F_n$ le sont ; Euler réfuta :
+    $641\mid F_5$.
+  \item Démontrer par récurrence que, pour tout $n\geq1$ :
+    \[
+      F_0\,F_1\cdots F_{n-1}=F_n-2.
+    \]
+    \emph{Utiliser $(2^{2^{n}}-1)(2^{2^{n}}+1)=2^{2^{n+1}}-1$.}
+  \item En déduire que deux nombres de Fermat distincts sont premiers entre
+    eux. \emph{Un diviseur commun diviserait $2$ ; or les $F_n$ sont impairs.}
+  \item En déduire une nouvelle démonstration de l'infinité des nombres
+    premiers (G.~Pólya).
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{La formule de Legendre}
+\begin{questions}
+  \item Soit $p$ premier et $n\in\N^{*}$. En comptant les multiples de $p$,
+    de $p^{2}$, de $p^{3}$, \dots{} parmi $1,2,\dots,n$, justifier la
+    \emph{formule de Legendre} :
+    \[
+      v_p(n!)=\Bigl\lfloor\frac{n}{p}\Bigr\rfloor
+      +\Bigl\lfloor\frac{n}{p^{2}}\Bigr\rfloor
+      +\Bigl\lfloor\frac{n}{p^{3}}\Bigr\rfloor+\cdots
+    \]
+  \item Calculer $v_2(10!)$ et $v_5(100!)$.
+  \item Par combien de zéros l'écriture décimale de $100!$ se
+    termine-t-elle ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Le théorème de Wilson}
+\begin{questions}
+  \item Soit $p$ premier. Montrer que les seuls entiers $x\in\ens{1,\dots,p-1}$
+    qui sont leur propre inverse modulo $p$ sont $1$ et $p-1$.
+    \emph{Résoudre $x^{2}\equiv1\ [p]$ en factorisant.}
+  \item En regroupant chaque facteur de $(p-1)!$ avec son inverse modulo
+    $p$, montrer le \emph{théorème de Wilson} :
+    \[
+      (p-1)!\equiv-1\ [p].
+    \]
+  \item Vérifier le théorème pour $p=5$ et $p=7$.
+  \item Réciproquement, montrer que si $n\geq2$ est composé, alors
+    $(n-1)!\not\equiv-1\ [n]$. \emph{Un diviseur $d$ de $n$ avec
+    $1<d<n$ divise $(n-1)!$.}
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Un menteur de Fermat : le nombre 561}
+Le petit théorème de Fermat fournit un test de \emph{non}-primalité. Ce test
+peut-il se tromper dans l'autre sens ? On étudie $N=561=3\times11\times17$.
+\begin{questions}
+  \item Vérifier que $560$ est divisible par $2$, par $10$ et par $16$.
+  \item Soit $a$ un entier premier avec $561$. À l'aide du petit théorème
+    de Fermat modulo $3$, $11$ et $17$ successivement, montrer que
+    $a^{560}\equiv1$ modulo $3$, modulo $11$ et modulo $17$.
+  \item En déduire que $561$ divise $a^{560}-1$, puis que, pour \emph{tout}
+    entier $a$ : $a^{561}\equiv a\ [561]$.
+  \item Conclure : $561$ « passe » le test de Fermat sans être premier (on
+    parle de \emph{nombre de Carmichael}). Quelle précaution cela
+    impose-t-il aux tests de primalité ?
+\end{questions}
+\end{exercice}
+
+\begin{exercice}[3]{Triplets pythagoriciens}
+Un \emph{triplet pythagoricien primitif} est un triplet $(x,y,z)$ d'entiers
+strictement positifs, premiers entre eux dans leur ensemble, tels que
+$x^{2}+y^{2}=z^{2}$.
+\begin{questions}
+  \item Montrer que $x$ et $y$ ne peuvent être tous deux impairs
+    \emph{(raisonner modulo $4$)}, ni tous deux pairs. On suppose désormais
+    $y$ pair.
+  \item Montrer que $(z-x)\wedge(z+x)=2$, puis que
+    $\dfrac{z-x}{2}\cdot\dfrac{z+x}{2}=\Bigl(\dfrac{y}{2}\Bigr)^{2}$ avec
+    $\dfrac{z-x}{2}$ et $\dfrac{z+x}{2}$ premiers entre eux.
+  \item En admettant (conséquence des valuations) que si un produit de deux
+    entiers premiers entre eux est un carré, chacun est un carré, montrer
+    qu'il existe $m>n\geq1$ premiers entre eux tels que
+    \[
+      x=m^{2}-n^{2},\qquad y=2mn,\qquad z=m^{2}+n^{2}.
+    \]
+  \item Vérifier que ces formules donnent bien des triplets
+    pythagoriciens, et retrouver $(3,4,5)$, $(5,12,13)$ et $(20,21,29)$.
+\end{questions}
+\end{exercice}
+
+\input{chapitres/defis/defi-07}

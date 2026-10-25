@@ -1,0 +1,12 @@
+% Teintes du milieu réactionnel avant, à et après l'équivalence (L'essentiel, chapitre 5)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \x/\c/\t/\u in {0/green!6/avant l'équivalence/{la goutte violette\\se décolore aussitôt},
+  4/red!35!blue!18/à l'équivalence/{une teinte rose pâle\\persiste},
+  8/red!50!blue!55/après l'équivalence/{la solution devient\\franchement violette}}{
+  \pic at (\x,0) {erlen={niveau=0.8,liquide=\c}};
+  \node[pcLegendeG,anchor=north] at (\x,-0.15) {\t};
+  \node[pcLegende,anchor=north,align=center] at (\x,-0.55) {\u};}
+\fill[red!55!blue!75] (0,3.05) .. controls (-0.12,2.87) and (-0.12,2.74) .. (0,2.73)
+  .. controls (0.12,2.74) and (0.12,2.87) .. (0,3.05);
+\end{tikzpicture}
+\par\smallskip\legende{Titrage des ions fer(II) par les ions permanganate : la première goutte en excès colore durablement la solution.}

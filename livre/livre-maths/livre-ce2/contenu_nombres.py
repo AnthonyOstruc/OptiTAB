@@ -1,0 +1,55 @@
+from modele import C,E
+
+C('Lire et écrire jusqu’à 10 000','Nombres','P1 puis P2',
+ 'Je relie les chiffres, les mots et les quantités jusqu’à 10 000.','Matériel de numération, cartes de rangs et ardoise.',
+ 'Assemble 2 milliers, 3 centaines, 4 dizaines et 6 unités. Nomme la quantité. Remplace les dizaines par zéro dizaine et explique ce qui change.',
+ ['Un millier vaut 1 000 unités. Dix centaines forment un millier.','La valeur d’un chiffre dépend de sa place. Dans 2 346, le 3 vaut 300.','Un zéro garde la place d’un rang vide : 2 306 contient zéro dizaine isolée.'],
+ '2 346 = 2 000 + 300 + 40 + 6. Je lis « deux-mille-trois-cent-quarante-six ».',('place4',[2,3,4,6]),
+ 'Écris trois-mille-quatre-vingt-deux et explique chaque chiffre.','3 082 : 3 milliers, aucune centaine, 8 dizaines et 2 unités.',[
+ E('Écris le nombre du tableau, puis écris-le en lettres.','4 205 ; quatre-mille-deux-cent-cinq.',('place4',[4,2,0,5])),
+ E('Écris en chiffres : mille-soixante ; sept-mille-huit ; neuf-mille-cent-vingt.','1 060 ; 7 008 ; 9 120.'),
+ E('Écris en lettres : 2 480 ; 6 003.','deux-mille-quatre-cent-quatre-vingts ; six-mille-trois.'),
+ E('Dans 5 726, quelle est la valeur de chacun des chiffres 5, 7 et 2 ?','5 000 ; 700 ; 20.'),
+ E('Écris le nombre : 8 milliers, 4 dizaines et 9 unités.','8 049. Le zéro marque l’absence de centaine isolée.'),
+ E('Complète : 3 998 ; 3 999 ; … ; … ; … .','4 000 ; 4 001 ; 4 002.'),
+ E('Une école compte 1 208 livres. Écris ce nombre en lettres et décompose-le.','mille-deux-cent-huit ; 1 208 = 1 000 + 200 + 8.'),
+ E('Avec les chiffres 0, 2, 5 et 8 utilisés une fois chacun, écris le plus petit nombre à quatre chiffres.','2 058. Un nombre à quatre chiffres ne commence pas par zéro.'),
+ E('Lina écrit « six-mille-trente-quatre » : 6 304. Explique et corrige.','6 034. Trente-quatre correspond à 3 dizaines et 4 unités, sans centaine.')],
+ 'Faire lire le nombre en montrant les rangs ; revenir au matériel pour distinguer 6 034 et 6 304.',
+ 'Les nombres supérieurs à 1 000 apparaissent dès P1 ; le champ jusqu’à 10 000 est travaillé au plus tard en P2.')
+
+C('Échanger et décomposer les nombres','Nombres','P1-P2 puis reprises',
+ 'Je regroupe et je décompose une même quantité de plusieurs façons.','Cartes milliers, centaines, dizaines et unités.',
+ 'Prends 2 milliers, 14 centaines, 3 dizaines et 17 unités. Fais les échanges pour n’avoir qu’un chiffre par rang. Explique pourquoi le total ne change pas.',
+ ['10 unités = 1 dizaine ; 10 dizaines = 1 centaine ; 10 centaines = 1 millier.','Je peux décomposer un nombre sans changer sa valeur : 3 400, c’est aussi 34 centaines.','Je distingue le chiffre d’un rang et le nombre de groupes entiers de ce rang.'],
+ '2 milliers + 14 centaines + 3 dizaines + 17 unités = 3 447 unités. Je regroupe les centaines et les unités.',('exchanges4',None),
+ 'Combien de centaines entières contient 4 735 ? Combien reste-t-il d’unités ?','47 centaines entières et 35 unités : 4 735 = 4 700 + 35.',[
+ E('Calcule la quantité : 3 milliers, 12 centaines, 4 dizaines et 16 unités.','4 256 unités.',None,'3000+1200+40+16==4256'),
+ E('Décompose 6 082 sous forme d’une somme de milliers, centaines, dizaines et unités.','6 082 = 6 000 + 80 + 2.'),
+ E('Complète : 4 700 = … centaines ; 2 350 = … dizaines.','47 centaines ; 235 dizaines.',None,'47*100==4700 and 235*10==2350'),
+ E('Dans 7 462, donne le chiffre des centaines puis le nombre de centaines entières.','Le chiffre des centaines est 4 ; il y a 74 centaines entières et 62 unités.'),
+ E('Écris 5 018 sous la forme : (… × 1 000) + (… × 10) + … .','(5 × 1 000) + (1 × 10) + 8.'),
+ E('Complète : 8 000 = … milliers = … centaines = … dizaines.','8 milliers ; 80 centaines ; 800 dizaines.'),
+ E('On veut 1 260 feuilles. Elles sont vendues seulement par lots de 100. Combien de lots faut-il acheter ?','13 lots : 12 lots donnent seulement 1 200 feuilles ; 13 lots en donnent 1 300.'),
+ E('Une réserve contient 26 centaines et 48 unités. Quelle est la quantité totale ?','2 648 unités.',None,'26*100+48==2648'),
+ E('Noé dit que 3 405 contient seulement 4 centaines. Précise ce qui est juste et ce qui ne l’est pas.','4 est le chiffre des centaines. Le nombre contient 34 centaines entières et 5 unités.')],
+ 'Faire constituer des paquets et distinguer « chiffre » et « nombre de groupes entiers ».',
+ 'Les écritures avec plus de neuf unités dans un rang sont volontaires ; on les regroupe sans changer la quantité.')
+
+C('Comparer, ranger et graduer','Nombres','P1-P2 puis reprises',
+ 'Je compare et je place les nombres en tenant compte de la graduation.','Cartes nombres et bandes graduées.',
+ 'Range cinq cartes de nombres. Sur une bande de 2 000 à 3 000, construis des intervalles égaux de 100. Place 2 400 puis situe 2 450.',
+ ['Je compare d’abord le nombre de chiffres, puis les chiffres de gauche à droite.','Entre deux graduations voisines, l’écart reste le même. Je cherche sa valeur avant de placer un nombre.','Encadrer, c’est donner un nombre plus petit et un plus grand ; deux dizaines consécutives se suivent.'],
+ '4 250 < 4 280 car les milliers et centaines sont égaux, puis 5 dizaines sont moins que 8 dizaines.',('scaledline',[2000,3000,100,[]]),
+ 'Encadre 6 473 entre deux centaines consécutives.','6 400 < 6 473 < 6 500.',[
+ E('Écris les nombres manquants sous les graduations.','3 200 ; 3 500 ; 3 700.',('scaledline',[3000,3800,100,[3200,3500,3700]])),
+ E('Complète avec <, > ou = : 4 098 … 4 108 ; 7 060 … 7 006 ; 10 000 … 9 999.','< ; > ; >.'),
+ E('Range dans l’ordre croissant : 6 243 ; 6 234 ; 6 300 ; 5 999 ; 6 239.','5 999 < 6 234 < 6 239 < 6 243 < 6 300.'),
+ E('Encadre 3 786 entre deux dizaines consécutives, puis entre deux milliers consécutifs.','3 780 < 3 786 < 3 790 ; 3 000 < 3 786 < 4 000.'),
+ E('Complète la suite : 4 970 ; 4 980 ; … ; … ; … .','4 990 ; 5 000 ; 5 010. Le pas est de 10.'),
+ E('Quel nombre correspond au point vert ? Explique le pas.','6 500 ; le pas vaut 100.',('markedline',[6000,7000,100,6500])),
+ E('Écris trois nombres différents strictement compris entre 2 405 et 2 410.','Par exemple 2 406, 2 407 et 2 408.'),
+ E('Un compteur indique 8 995. Il avance de 10 unités. Quel nombre indique-t-il ?','9 005.',None,'8995+10==9005'),
+ E('Lina dit que 4 087 est plus grand que 4 700 parce que 87 est plus grand que 7. Corrige.','4 087 < 4 700 : les milliers sont égaux, mais 0 centaine est moins que 7 centaines.')],
+ 'Comparer les cartes en cachant les chiffres à droite et faire marquer les intervalles égaux.',
+ 'Compter les intervalles, pas seulement les traits ; 10 intervalles de 100 représentent 1 000.')

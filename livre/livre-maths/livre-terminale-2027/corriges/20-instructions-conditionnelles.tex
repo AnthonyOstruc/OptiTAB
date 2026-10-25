@@ -1,0 +1,438 @@
+% !TEX root = ../main.tex
+%% Corrigés — Chapitre 20 — Instructions conditionnelles
+%% Tous les programmes ont été exécutés (Python 3) : les affichages reproduits sont exacts.
+
+\corrigesChapitre{20}{Instructions conditionnelles}
+\corrigesSouples
+
+\begin{corrige}{1}{Tests simples et comparaisons}
+\begin{questions}
+  \item Trois cas s'excluent mutuellement : on les traite avec \code{if}, \code{elif} et \code{else}.
+\begin{codecote}
+\begin{pythoncol}
+n = 15
+if n > 0:
+    print("Positif")
+elif n < 0:
+    print("Négatif")
+else:
+    print("Zéro")
+\end{pythoncol}
+\cote
+\begin{consolecol}
+Positif
+\end{consolecol}
+\end{codecote}
+    Pour \code{n = -4}, la première condition est fausse et la deuxième vraie : \resc{Négatif}. Pour \code{n = 0}, les deux conditions
+    sont fausses, c'est le bloc \code{else} qui s'exécute : \resc{Zéro}.
+  \item Le seuil $18$ est inclus : on utilise \code{>=}.
+\begin{codecote}
+\begin{pythoncol}
+age = 20
+if age >= 18:
+    print("Accès autorisé")
+else:
+    print("Accès refusé")
+\end{pythoncol}
+\cote
+\begin{consolecol}
+Accès autorisé
+\end{consolecol}
+\end{codecote}
+    Cas limite : pour \code{age = 18}, la condition \code{age >= 18} est vraie et l'accès est autorisé ; avec \code{age > 18}, il serait
+    refusé à tort.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{2}{Opérateurs logiques}
+\begin{questions}
+  \item La condition s'écrit \code{age >= 18 and age <= 65}, ou \code{18 <= age <= 65}. Pour \code{age = 25}, les deux comparaisons
+    sont vraies : le programme affiche \resc{Accès autorisé}.
+  \item Trois conditions reliées par \code{or} : une seule vraie suffit.
+\begin{python}
+jour = "Samedi"
+carte = False
+if jour == "Samedi" or jour == "Dimanche" or carte:
+    print("Remise accordée")
+else:
+    print("Pas de remise")
+\end{python}
+\begin{console}
+Remise accordée
+\end{console}
+    Attention : écrire \code{jour == "Samedi" or "Dimanche"} est une erreur classique. Une chaîne non vide étant considérée comme vraie,
+    cette condition est \emph{toujours} vérifiée : il faut répéter la comparaison \code{jour == "Dimanche"}.
+  \item On évalue chaque expression pour \code{x = 7}.\par\nopagebreak
+\begin{tasks}[label=\alph*)](2)
+  \task \resc{True}, car $7>5$ et $7<10$.
+  \task \resc{True} : $7$ est impair, \code{7 \% 2} vaut \code{1}.
+  \task \resc{False}, car \code{x == 7} est vrai.
+  \task \resc{True} : \code{x < 3} est faux, donc \code{not (x < 3)} est vrai.
+\end{tasks}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{3}{Structures \code{if}, \code{elif}, \code{else}}
+\begin{questions}
+  \item Les seuils sont testés du plus petit au plus grand.
+\begin{codecote}
+\begin{pythoncol}
+age = 14
+if age < 13:
+    categorie = "Accord parental"
+elif age < 16:
+    categorie = "Interdit -16"
+elif age < 18:
+    categorie = "Interdit -18"
+else:
+    categorie = "Adulte"
+print("Catégorie :", categorie)
+\end{pythoncol}
+\cote
+\begin{consolecol}
+Catégorie : Interdit -16
+\end{consolecol}
+
+\medskip
+Le test \code{age < 13} est faux ; le test \code{age < 16} est vrai : son bloc est exécuté et les tests suivants sont ignorés.
+\end{codecote}
+  \item La fonction affecte le prix dans chaque branche, puis le renvoie.
+\begin{codecote}
+\begin{pythoncol}
+def prix_billet(age):
+    if age < 4:
+        prix = 0
+    elif age < 18:
+        prix = 8
+    elif age < 65:
+        prix = 15
+    else:
+        prix = 10
+    return prix
+\end{pythoncol}
+\cote
+Pour \code{67}, les trois premiers tests sont faux : on exécute le bloc \code{else}, et \code{prix\_billet(67)} renvoie \resc{10}.
+\end{codecote}
+  \item La fonction renvoie $8$ pour les âges de $\res{4 \text{ à } 17 \text{ ans}}$ : on n'examine \code{age < 18} que si \code{age < 4}
+    est faux. Si l'on testait \code{age < 18} en premier, un enfant de $2$ ans paierait $8$\,€ : la branche « gratuit » ne serait jamais
+    atteinte.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{4}{Conditions imbriquées}
+\begin{questions}
+  \item Le test du jour n'a de sens que pour les adultes de moins de $65$ ans : il est placé \emph{à l'intérieur} de la branche
+    correspondante.
+\begin{codecote}
+\begin{pythoncol}
+age = 25
+jour = "Lundi"
+if age < 18:
+    tarif = 7
+elif age < 65:
+    if jour == "Lundi":
+        tarif = 9
+    else:
+        tarif = 12
+else:
+    tarif = 8
+print("Tarif :", tarif, "€")
+\end{pythoncol}
+\cote
+\begin{consolecol}
+Tarif : 9 €
+\end{consolecol}
+\end{codecote}
+  \item \code{membre\_premium} vaut \code{False} : on passe dans le \code{else}. Les deux conditions \code{points > 1000} et
+    \code{email\_valide} sont vraies : le programme affiche \resc{Accès VIP accordé}.
+  \item L'accès est accordé si le client est premium, \emph{ou} s'il a plus de $1\,000$ points \emph{et} un e-mail valide :
+\begin{python}
+if membre_premium or (points > 1000 and email_valide):
+    print("Accès VIP accordé")
+else:
+    print("Accès VIP refusé")
+\end{python}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{5}{Problèmes de synthèse}
+\partieExo{A}{Le prix d'un billet d'avion}
+\begin{questions}
+  \item Le prix de base dépend de la destination ; les trois ajustements sont des tests \code{if} \emph{indépendants}, examinés l'un
+    après l'autre.
+\begin{codecote}
+\begin{pythoncol}
+destination = "Londres"
+jours_avance = 45
+classe = "Economique"
+membre_club = True
+if destination == "Paris":
+    prix = 100
+elif destination == "Londres":
+    prix = 150
+elif destination == "New York":
+    prix = 500
+if jours_avance > 30:
+    prix = prix * 0.80
+if classe == "Affaires":
+    prix = prix + 50
+if membre_club:
+    prix = prix * 0.90
+print("Prix final :", prix, "€")
+\end{pythoncol}
+\cote
+\begin{consolecol}
+Prix final : 108.0 €
+\end{consolecol}
+
+\medskip
+\etape{Destination} $150$\,€.\\[0.6mm]
+\etape{Réservation à 45 jours} $150\times0{,}80=120$\,€.\\[0.6mm]
+\etape{Classe économique} pas de supplément.\\[0.6mm]
+\etape{Membre du club} $120\times0{,}90=\res{108}$\,€.
+
+\medskip
+Le résultat est un flottant, \code{108.0}, car on a multiplié par \code{0.80}.
+\end{codecote}
+\end{questions}
+\partieExo{B}{Un contrôle d'accès}
+\begin{questions}[start=2]
+  \item On suit les tests dans l'ordre pour chaque appel.
+\begin{python}
+print(acces(True, 15, "Employé"))
+print(acces(True, 17.5, "Stagiaire"))
+\end{python}
+\begin{console}
+Accès limité accordé
+Accès refusé - stagiaire après 17 h
+\end{console}
+    Premier appel : badge valide, $15$\,h est dans les horaires, niveau \code{"Employé"}. Second appel : $17{,}5$ est dans les horaires,
+    le niveau est \code{"Stagiaire"} et \code{heure > 17} est vrai.
+  \item Aucune branche n'est exécutée : la variable \code{message} ne reçoit jamais de valeur et l'instruction \code{return message}
+    provoque l'erreur \resc{UnboundLocalError}. On ajoute un cas par défaut à la fin de la structure :
+\begin{python}
+    elif niveau == "Stagiaire":
+        ...
+    else:
+        message = "Accès refusé - niveau inconnu"
+    return message
+\end{python}
+    Une structure \code{if … elif} sans \code{else} doit être examinée avec soin : un cas imprévu n'y est pas traité.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{6}{Années bissextiles}
+\begin{questions}
+  \item On traduit la règle : « divisible par $4$ \emph{et} non divisible par $100$ », \emph{ou} « divisible par $400$ ».
+\begin{codecote}[0.76]
+\begin{pythoncol}
+def bissextile(a):
+    if (a % 4 == 0 and a % 100 != 0) or a % 400 == 0:
+        return True
+    else:
+        return False
+
+for a in [1900, 2000, 2024, 2025, 2100]:
+    print(a, bissextile(a))
+\end{pythoncol}
+\cote
+\begin{consolecol}
+1900 False
+2000 True
+2024 True
+2025 False
+2100 False
+\end{consolecol}
+\end{codecote}
+    $1900$ et $2100$ sont divisibles par $100$ mais pas par $400$ ; $2000$ est divisible par $400$. La condition étant déjà un booléen,
+    on peut aussi écrire directement :
+\begin{python}
+def bissextile(a):
+    return (a % 4 == 0 and a % 100 != 0) or a % 400 == 0
+\end{python}
+  \item La fonction réutilise \code{bissextile}.
+\begin{codecote}
+\begin{pythoncol}
+def jours_fevrier(a):
+    if bissextile(a):
+        return 29
+    else:
+        return 28
+\end{pythoncol}
+\cote
+\code{jours\_fevrier(2024)} renvoie \code{29} et \code{jours\_fevrier(2100)} renvoie \code{28}.
+\end{codecote}
+  \item Les multiples de $4$ de $2004$ à $2100$ sont au nombre de $\frac{2100-2004}{4}+1=25$. Parmi eux, seul $2100$ est divisible par
+    $100$, et il n'est pas divisible par $400$ : il y a $\res{24}$ années bissextiles, ce que confirme un comptage par programme.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{7}{L'équation du second degré}
+\begin{questions}
+  \item On calcule le discriminant, puis on distingue trois cas selon son signe.
+\begin{python}
+from math import sqrt
+
+def resoudre(a, b, c):
+    delta = b**2 - 4*a*c
+    if delta > 0:
+        x1 = (-b - sqrt(delta)) / (2*a)
+        x2 = (-b + sqrt(delta)) / (2*a)
+        print("Deux solutions :", x1, "et", x2)
+    elif delta == 0:
+        print("Une solution :", -b / (2*a))
+    else:
+        print("Aucune solution réelle")
+\end{python}
+  \item Les quatre appels a), b), c) et d) affichent successivement :
+\begin{codecote}[0.5]
+\begin{consolecol}
+Deux solutions : 1.0 et 2.0
+Une solution : -1.0
+Aucune solution réelle
+Deux solutions : -0.5 et 1.0
+\end{consolecol}
+\cote
+Discriminants respectifs : $\Delta=9-8=1$ ; $\Delta=4-4=0$ ; $\Delta=-4$ ; $\Delta=1+8=9$, d'où $x=\frac{1\pm3}{4}$, soit $-0{,}5$
+et $1$.
+\end{codecote}
+  \item Mathématiquement, $\Delta=0{,}6^{2}-4\times0{,}1\times0{,}9=0$. Mais Python calcule \code{0.6**2} $\to$ \code{0.36} et
+    \code{4*0.1*0.9} $\to$ \code{0.36000000000000004} : \code{delta} vaut \code{-5.551115123125783e-17}. Il est \emph{strictement
+    négatif}, et le programme conclut à tort qu'il n'y a pas de solution. On teste d'abord la nullité avec une tolérance :
+\begin{python}
+    if abs(delta) < 1e-9:
+        print("Une solution :", -b / (2*a))
+    elif delta > 0:
+        ...
+\end{python}
+    Le programme affiche alors \code{Une solution : -2.9999999999999996}, c'est-à-dire $\res{-3}$ à $10^{-15}$ près.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{8}{Un impôt par tranches}
+\begin{questions}
+  \item Pour $20\,000$\,€ : seule la part entre $10\,000$ et $20\,000$ est taxée, à 10\,\% : $0{,}10\times10\,000=\res{1\,000}$\,€.\\
+    Pour $50\,000$\,€ : $0{,}10\times15\,000+0{,}30\times25\,000=1\,500+7\,500=\res{9\,000}$\,€.
+  \item Une branche par tranche ; la constante de chaque formule est l'impôt dû sur les tranches inférieures.
+\begin{codecote}[0.61]
+\begin{pythoncol}
+def impot(r):
+    if r <= 10000:
+        return 0
+    elif r <= 25000:
+        return 0.10 * (r - 10000)
+    elif r <= 75000:
+        return 1500 + 0.30 * (r - 25000)
+    else:
+        return 16500 + 0.45 * (r - 75000)
+\end{pythoncol}
+\cote
+$1\,500=0{,}10\times15\,000$ est l'impôt dû sur les $25\,000$ premiers euros, et $16\,500=1\,500+0{,}30\times50\,000$ l'impôt dû sur les
+$75\,000$ premiers euros.
+\end{codecote}
+  \item On calcule \code{impot(r) / r} pour chaque revenu.
+\begin{codecote}[0.5]
+{\renewcommand{\arraystretch}{1.35}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}YYY@{}}
+\toprule
+\otTete{Revenu (€)} & \otTete{Impôt (€)} & \otTete{Taux moyen} \\
+\midrule
+$25\,000$ & $1\,500$ & $\res{6\,\%}$ \\
+$50\,000$ & $9\,000$ & $\res{18\,\%}$ \\
+$100\,000$ & $27\,750$ & $\res{27{,}75\,\%}$ \\
+\bottomrule
+\end{tabularx}}
+\cote
+Le taux moyen augmente avec le revenu : l'impôt est \emph{progressif}. Il reste nettement inférieur à 45\,\%, car seule la part qui
+dépasse $75\,000$\,€ est taxée à ce taux.
+\end{codecote}
+  \item On compare les deux formules voisines à chaque seuil.
+\begin{codecote}[0.5]
+\raggedright
+\vspace{0.5mm}
+En $25\,000$ : $0{,}10\times15\,000=1\,500$\\ et $1\,500+0{,}30\times0=1\,500$.\\[1mm]
+En $75\,000$ : $1\,500+0{,}30\times50\,000=16\,500$\\ et $16\,500+0{,}45\times0=16\,500$.\\[1.5mm]
+Les formules se raccordent : la fonction $r\mapsto\text{impot}(r)$ est $\res{\text{continue}}$, affine par morceaux et sans saut. Un
+euro de revenu en plus augmente l'impôt de $0{,}45$\,€ au plus : franchir un seuil ne fait jamais baisser le revenu après impôt.
+\cote
+\centering
+\begin{tikzpicture}
+\begin{axis}[otSchema, width=66mm, height=46mm, xmin=0, xmax=108, ymin=0, ymax=31,
+  xtick={10,25,75,100}, ytick={1.5,16.5,27.75}, yticklabels={$1{,}5$,$16{,}5$,$27{,}75$},
+  xlabel={$r$ (k€)}, xlabel style={at={(1,0)},anchor=north east,yshift=-3.5mm},
+  grid=major, grid style={otRule!70,line width=0.3pt}]
+  \addplot[otNavy,line width=0.9pt] coordinates {(0,0) (10,0) (25,1.5) (75,16.5) (100,27.75)};
+  \addplot[only marks,mark=*,mark size=1.3pt,otGreenDark] coordinates {(10,0) (25,1.5) (75,16.5)};
+\end{axis}
+\end{tikzpicture}\\[0.5mm]
+\legende{Impôt (en k€) selon le revenu : pentes successives $0$ ; $0{,}10$ ; $0{,}30$ ; $0{,}45$.}
+\end{codecote}
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{9}{Le piège des nombres flottants}
+\begin{questions}
+  \item Les instructions affichent \resc{False} puis \resc{0.30000000000000004}. Les nombres $0{,}1$ et $0{,}2$ n'ont pas d'écriture
+    finie en base $2$ (comme $\frac13$ en base $10$) : l'ordinateur en stocke des valeurs approchées, et l'arrondi de leur somme n'est pas
+    celui de $0{,}3$.
+  \item L'appel \code{est\_rectangle(5, 12, 13)} renvoie \resc{True}, car $25+144=169$.\\
+    L'appel \code{est\_rectangle(0.5, 1.2, 1.3)} renvoie \resc{False} : \code{0.5**2 + 1.2**2} donne \code{1.69} mais \code{1.3**2}
+    donne \code{1.6900000000000002}. Pourtant
+    $0{,}25+1{,}44=1{,}69=1{,}3^{2}$ : d'après la réciproque du théorème de Pythagore, ce triangle (le triangle $5$, $12$, $13$ réduit dix
+    fois) est $\res{\text{rectangle}}$.
+  \item On remplace l'égalité par un écart très petit :
+\begin{python}
+def est_rectangle(a, b, c):
+    return abs(c**2 - (a**2 + b**2)) < 1e-9
+\end{python}
+    \code{est\_rectangle(0.5, 1.2, 1.3)} renvoie maintenant \code{True}.
+\end{questions}
+\end{corrige}
+
+\begin{corrige}{10}{La nature d'un triangle}
+\partieExo{A}{Ranger trois nombres dans l'ordre croissant}
+\begin{questions}
+  \item On suit les trois tests lors de l'appel \code{ranger(5, 3, 4)}.
+\begin{codecote}[0.5]
+{\renewcommand{\arraystretch}{1.3}\arrayrulecolor{otRule}%
+\begin{tabularx}{\linewidth}{@{}lYccc@{}}
+\toprule
+\otTete{Test} & \otTete{Vrai ?} & \code{a} & \code{b} & \code{c} \\
+\midrule
+\code{a > b} & oui : échange & $3$ & $5$ & $4$ \\
+\code{b > c} & oui : échange & $3$ & $4$ & $5$ \\
+\code{a > b} & non & $3$ & $4$ & $5$ \\
+\bottomrule
+\end{tabularx}}
+\cote
+La fonction renvoie $\res{(3\pv4\pv5)}$ : les valeurs sont rangées dans l'ordre croissant.
+\end{codecote}
+  \item Après le premier test, \code{b} contient le plus grand des deux nombres \code{a} et \code{b} ; après le deuxième, \code{c}
+    contient le plus grand des trois. Le troisième test range alors \code{a} et \code{b} : à la fin, \code{a <= b <= c}.
+\end{questions}
+\partieExo{B}{La nature du triangle}
+\begin{questions}[start=3]
+  \item Comme $a\leq b\leq c$, l'égalité $a=c$ impose $a=b=c$ : les trois côtés sont égaux.
+  \item Un triangle isocèle rectangle vérifie à la fois \code{iso} et \code{rect}. Si l'on testait \code{iso} d'abord, la
+    fonction renverrait « isocèle » et s'arrêterait (\code{return} termine la fonction) : le cas « isocèle rectangle » ne serait
+    jamais atteint. On teste toujours le cas le plus particulier en premier.
+  \item Les six appels renvoient successivement :
+\begin{codecote}[0.4]
+\begin{consolecol}
+rectangle
+isocèle
+pas un triangle
+pas un triangle
+quelconque
+isocèle rectangle
+\end{consolecol}
+\cote
+\etape{a)} $3^{2}+4^{2}=5^{2}$.\\[0.6mm]
+\etape{b)} Côtés rangés : $(2\pv2\pv3)$, et $3<4$.\\[0.6mm]
+\etape{c)} Rangés : $(1\pv2\pv4)$ ; or $4\geq1+2$.\\[0.6mm]
+\etape{d)} $3\geq1+2$ : triangle aplati (points alignés).\\[0.6mm]
+\etape{e)} $36\neq16+25$ et les côtés sont distincts.\\[0.6mm]
+\etape{f)} \code{sqrt(2)**2} vaut \code{2.0000000000000004} et non \code{2} : sans tolérance, la fonction répondrait « isocèle ».
+\end{codecote}
+\end{questions}
+\end{corrige}

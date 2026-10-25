@@ -1,0 +1,173 @@
+\begin{ouverture}[continuite]{3}{Limites, continuité et équations}{Analyse et modèles}{Asymptotes · Valeurs intermédiaires · Dichotomie}
+\objectif{Lire et calculer une limite dans un contexte.}
+\objectif{Utiliser la continuité et le théorème des valeurs intermédiaires.}
+\objectif{Justifier l’existence et l’unicité d’une solution.}
+\objectif{Encadrer une solution par balayage ou dichotomie.}
+\prerequis{Fonctions usuelles, variations, exponentielle et logarithme.}
+\end{ouverture}
+\essentiel
+
+\essSection{1}{Lire le comportement aux bornes}
+Une limite décrit les valeurs de $f(x)$ lorsque $x$ se rapproche d'une borne de son domaine, ou devient très grand en valeur absolue. On distingue une limite à gauche et à droite si la fonction n'a pas le même comportement des deux côtés.
+\begin{propriete}[Repères usuels]
+À $+\infty$, $x^2,x^3,\sqrt x,\mathrm e^x,\ln x$ tendent vers $+\infty$ et $1/x\to0$.
+À $-\infty$, $x^2\to+\infty$, $x^3\to-\infty$, $1/x\to0$, $\mathrm e^x\to0$.
+À $0^+$, $1/x\to+\infty$, $\sqrt x\to0$, $\ln x\to-\infty$.
+\end{propriete}
+Si $f(x)\to L$ en $+\infty$ ou $-\infty$, $y=L$ est une asymptote horizontale. Si $f(x)\to\pm\infty$ quand $x\to a$ d'un côté au moins, $x=a$ est une asymptote verticale.
+\figurelivre{c03-asymptotes.pdf}{La courbe $y=2+1/(x-1)$ admet les asymptotes $x=1$ et $y=2$. Les branches ne traversent pas la valeur interdite $x=1$.}
+\essSection{2}{Calculer sans traiter l'infini comme un nombre}
+Pour un quotient de polynômes, factoriser par le terme dominant. Par exemple,
+\[\frac{3x^2+x}{2x^2+1}=\frac{3+1/x}{2+1/x^2}\longrightarrow\frac32\quad(x\to+\infty).\]
+\begin{attention}[Formes indéterminées]
+$\infty-\infty$, $0\times\infty$, $\infty/\infty$ et $0/0$ ne donnent aucune conclusion à eux seuls.
+Une factorisation, une simplification ou une comparaison doit lever l'indétermination.
+\end{attention}
+Pour $x\ne1$, $(x^2-1)/(x-1)=x+1$ ; la limite en $1$ vaut $2$ même si le quotient initial n'y est pas défini.
+\essSection{3}{Continuité et solutions}
+Intuitivement, une fonction continue sur un intervalle se représente sans rupture. Les fonctions usuelles sont continues sur leur domaine ; une fonction dérivable sur un intervalle y est continue (résultat admis).
+\begin{theoreme}[Valeurs intermédiaires, admis]
+Si $f$ est continue sur $[a,b]$, toute valeur comprise entre $f(a)$ et $f(b)$ est atteinte au moins une fois sur $[a,b]$.
+Si $f$ est de plus strictement monotone, chaque valeur comprise entre ces deux bornes est atteinte exactement une fois.
+\end{theoreme}
+\begin{savoirfaire}[Existence, puis unicité]
+Pour $f(x)=x^3+x-1$ sur $[0,1]$, $f$ est continue, $f(0)=-1$ et $f(1)=1$ : il existe une racine.
+Comme $f\,\!^{\prime}(x)=3x^2+1>0$, $f$ est strictement croissante : cette racine est unique.
+Une courbe seule ne remplace pas ces deux arguments.
+\end{savoirfaire}
+Sur un intervalle ouvert, on combine la stricte monotonie avec les limites aux bornes pour déterminer les valeurs atteintes.
+Une fonction continue strictement monotone possède une réciproque définie sur son image. Par exemple, le carré sur $[0,+\infty[$ a pour réciproque la racine carrée. Sur tout $\R$, le carré n'est pas injectif et n'a pas de réciproque unique.
+\essSection{4}{Encadrer une solution}
+Un balayage teste des valeurs espacées d'un pas fixe ; une dichotomie divise par deux un intervalle où la fonction continue change de signe. L'unicité n'est pas nécessaire au maintien d'au moins une racine dans l'intervalle, mais elle permet d'identifier celle que l'on approche.
+\begin{python}
+def dichotomie(f, a, b, precision):
+    assert precision > 0 and a < b
+    assert f(a) * f(b) <= 0
+    if f(a) == 0: return a, a
+    if f(b) == 0: return b, b
+    while b - a > precision:
+        m = (a + b) / 2
+        if f(m) == 0: return m, m
+        if f(a) * f(m) <= 0:
+            b = m
+        else:
+            a = m
+    return a, b
+\end{python}
+Après $n$ divisions, la largeur vaut $(b_0-a_0)/2^n$ si aucun zéro exact n'a été rencontré.
+Pour $x^3+x-1$, les signes en $0{,}682$ et $0{,}683$ donnent un encadrement de largeur $0{,}001$.
+\begin{exemple}[Une autre méthode, guidée]
+La tangente à la courbe en $x_n$ coupe l'axe des abscisses en $x_{n+1}=x_n-f(x_n)/f\,\!^{\prime}(x_n)$ : c'est la méthode de Newton. Elle peut être rapide, mais exige une dérivée non nulle et des précautions de convergence. La dichotomie, avec ses hypothèses, fournit un encadrement garanti.
+\end{exemple}
+
+\exercices
+\markright{Prendre confiance}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Prendre confiance}
+\begin{exercice}[1]{Limites usuelles}
+
+\begin{questions}
+\item Donner les limites de $1/x$ en $0^+$ et $0^-$.
+\item Donner la limite de $\sqrt{x+1}$ en $+\infty$.
+\item Donner la limite de $3+\mathrm e^{-x}$ en $+\infty$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Asymptotes}
+$f(x)=4+2/(x+3)$.
+\begin{questions}
+\item Donner son domaine.
+\item Déterminer ses asymptotes.
+\item Peut-on calculer $f(-3)$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Factoriser}
+
+\begin{questions}
+\item Calculer $\lim_{x\to+\infty}(5x+2)/(x+7)$.
+\item Calculer $\lim_{x\to+\infty}(2x^2-1)/(x^3+1)$.
+\item Calculer $\lim_{x\to2}(x^2-4)/(x-2)$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[1]{Carré et réciproque}
+
+\begin{questions}
+\item Pourquoi $x\mapsto x^2$ n’est-elle pas strictement monotone sur $\R$ ?
+\item Donner sa réciproque sur $[0,+\infty[$.
+\item Résoudre $\sqrt x=3$ et préciser le domaine.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Appliquer et relier}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Appliquer et relier}
+\begin{exercice}[2]{Une racine unique}
+$f(x)=x^3+2x-2$.
+\begin{questions}
+\item Justifier une racine dans $[0,1]$.
+\item Justifier son unicité sur $\R$.
+\item L’encadrer entre deux centièmes consécutifs.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Compter les solutions}
+$f$ est continue, strictement croissante sur $[-2,0]$, puis strictement décroissante sur $[0,3]$. On sait $f(-2)=-1$, $f(0)=4$, $f(3)=1$.
+\begin{questions}
+\item Combien de solutions possède $f(x)=2$ ?
+\item Combien pour $f(x)=0$ ?
+\item Combien pour $f(x)=4$ ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Une inéquation avec un zéro}
+$g(x)=\mathrm e^x+x$ sur $\R$.
+\begin{questions}
+\item Montrer que $g$ est strictement croissante.
+\item Justifier une unique solution $\alpha$ à $g(x)=0$.
+\item Résoudre $g(x)\leq0$ à l’aide de $\alpha$.
+\end{questions}
+\end{exercice}
+\begin{exercice}[2]{Précision de la dichotomie}
+
+\begin{questions}
+\item Après dix divisions de $[0,1]$, quelle est la largeur ?
+\item Combien de divisions garantissent une largeur au plus $10^{-4}$ ?
+\item Si l’on rend le milieu, majorer l’erreur après ces divisions.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup
+\clearpage
+\markright{Chercher et argumenter}
+\begingroup\renewcommand{\otBesoinPlace}[1]{}\begin{minipage}{\linewidth}
+\rubrique{Chercher et argumenter}
+\begin{exercice}[3]{La continuité est nécessaire}
+On définit $f(x)=-1$ pour $x<0$ et $f(x)=1$ pour $x\geq0$.
+\begin{questions}
+\item Comparer $f(-1)$ et $f(1)$ à zéro.
+\item Existe-t-il un zéro sur $[-1,1]$ ?
+\item Quelle hypothèse du théorème manque ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une limite trompeuse}
+$h(x)=\sqrt{x^2+x}-x$ pour $x>0$.
+\begin{questions}
+\item Identifier la forme indéterminée en $+\infty$.
+\item Multiplier par l’expression conjuguée.
+\item En déduire la limite.
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Newton sur un exemple}
+Pour approcher $\sqrt2$, on applique Newton à $f(x)=x^2-2$, avec $x_0=1{,}5$.
+\begin{questions}
+\item Établir $x_{n+1}=(x_n+2/x_n)/2$.
+\item Calculer $x_1$ puis $x_2$ à $10^{-6}$ près.
+\item Pourquoi $x_0=0$ serait-il impossible ?
+\end{questions}
+\end{exercice}
+\begin{exercice}[3]{Une recette de résolution}
+On cherche $\ln x+x=2$ sur $]0,+\infty[$.
+\begin{questions}
+\item Prouver l’existence et l’unicité.
+\item Encadrer la solution entre $1{,}55$ et $1{,}56$.
+\item Proposer un algorithme dont le résultat est un intervalle de largeur au plus $10^{-5}$.
+\end{questions}
+\end{exercice}
+\end{minipage}\endgroup

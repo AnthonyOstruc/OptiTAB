@@ -1,0 +1,83 @@
+% !TEX root = ../../main.tex
+%% Défi du chapitre 1 — Points fixes et théorème de Cantor-Bernstein
+%% Résultats vérifiés par verifications/defis_01_05.py.
+
+\rubrique{Défi}
+
+\begin{defi}{Points fixes et théorème de Cantor-Bernstein}{1 h 30}
+Soit $E$ un ensemble. Une application $\varphi:\parties{E}\to\parties{E}$
+est dite \emph{croissante} si, pour toutes parties $X,Y$ de $E$,
+$X\subseteq Y\implies\varphi(X)\subseteq\varphi(Y)$. Le but du problème est
+de montrer qu'une telle application possède toujours un point fixe, puis
+d'en tirer un théorème célèbre : s'il existe une injection de $E$ dans $F$
+et une injection de $F$ dans $E$, alors $E$ et $F$ sont en bijection.
+
+\partieExo{A}{Le théorème du point fixe de Knaster-Tarski}
+Soit $\varphi:\parties{E}\to\parties{E}$ croissante. On pose
+\[
+\mathcal{A}=\ens{X\in\parties{E}\mid X\subseteq\varphi(X)}
+\qquad\text{et}\qquad
+A=\bigcup_{X\in\mathcal{A}}X .
+\]
+\begin{questions}
+  \item Montrer que $\mathcal{A}$ n'est pas vide.
+  \item Soit $X\in\mathcal{A}$. Montrer que $X\subseteq\varphi(A)$ ; en
+    déduire que $A\subseteq\varphi(A)$.
+  \item Montrer que $\varphi(A)\in\mathcal{A}$, puis que $\varphi(A)=A$.
+  \item Montrer que $A$ est le \emph{plus grand} point fixe de $\varphi$ :
+    tout $Y$ vérifiant $\varphi(Y)=Y$ est inclus dans $A$.
+  \item L'hypothèse de croissance est-elle utile ? Étudier
+    $X\mapsto E\setminus X$ pour $E$ non vide.
+\end{questions}
+
+\partieExo{B}{Le théorème de Cantor-Bernstein}
+Soient $E$, $F$ deux ensembles, $f:E\to F$ et $g:F\to E$ deux applications
+\emph{injectives}. Pour $X\subseteq E$, on pose
+$\varphi(X)=E\setminus g\bigl(F\setminus f(X)\bigr)$.
+\begin{questions}[resume]
+  \item Montrer que $\varphi$ est croissante.
+  \item Soit $A$ un point fixe de $\varphi$. Montrer que
+    $E\setminus A=g\bigl(F\setminus f(A)\bigr)$.
+  \item On définit $h:E\to F$ par $h(x)=f(x)$ si $x\in A$, et
+    $h(x)=g^{-1}(x)$ si $x\in E\setminus A$. Justifier que $h$ est bien
+    définie, puis montrer que $h$ est bijective.
+\end{questions}
+
+\medskip
+\begin{center}
+\begin{tikzpicture}[line cap=round]
+  \foreach \xx/\hh/\bb/\nom in {0/A/E\setminus A/E, 5/f(A)/F\setminus f(A)/F}{%
+    \begin{scope}[xshift=\xx cm]
+      \begin{scope}
+        \clip[rounded corners=3mm] (0,0) rectangle (2.5,3.2);
+        \fill[otGreen!16] (0,1.55) rectangle (2.5,3.2);
+      \end{scope}
+      \draw[otNavy,line width=0.8pt,rounded corners=3mm] (0,0) rectangle (2.5,3.2);
+      \draw[otNavy,line width=0.5pt,dash pattern=on 2pt off 1.5pt] (0,1.55) -- (2.5,1.55);
+      \node[font=\small,text=otGreenDark] at (1.25,2.38) {$\hh$};
+      \node[font=\small,text=otNavy] at (1.25,0.78) {$\bb$};
+      \node[font=\small,text=otNavy,above] at (1.25,3.22) {$\nom$};
+    \end{scope}}
+  \draw[otGreenDark,line width=1pt,-{Stealth[length=2.2mm]}]
+    (2.6,2.38) to[bend left=14] node[above,font=\small] {$f$} (4.9,2.38);
+  \draw[otNavy,line width=1pt,-{Stealth[length=2.2mm]}]
+    (4.9,0.78) to[bend left=14] node[below,font=\small] {$g$} (2.6,0.78);
+\end{tikzpicture}\\[0.5mm]
+\legende{Le découpage de Cantor-Bernstein : $f$ envoie $A$ sur $f(A)$, et
+$g$ envoie le reste de $F$ exactement sur le reste de $E$.}
+\end{center}
+
+\partieExo{C}{Applications}
+\begin{questions}[resume]
+  \item On prend $E=\intFF{0}{1}$, $F=\intFO{0}{1}$, $f(x)=x/2$ et
+    $g(y)=y$. Déterminer les points fixes de l'application $\varphi$ de la
+    partie B, puis expliciter la bijection $h$ obtenue à partir du plus
+    grand d'entre eux. Faire un dessin.
+  \item En utilisant les injections $n\mapsto(n,0)$ et
+    $(p,q)\mapsto2^{p}3^{q}$ (unicité de la décomposition en facteurs
+    premiers, chapitre 7), montrer que $\N$ et $\N\times\N$ sont en
+    bijection.
+  \item Montrer qu'il n'existe aucune injection de $\parties{E}$ dans
+    $E$. \emph{On pourra utiliser le théorème de Cantor (exercice 24).}
+\end{questions}
+\end{defi}

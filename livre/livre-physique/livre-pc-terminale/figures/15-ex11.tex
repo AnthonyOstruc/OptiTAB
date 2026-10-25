@@ -1,0 +1,14 @@
+% Principe d'un accélérateur linéaire à tubes de glissement (exercice 11, chapitre 15)
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \xa/\xb/\s in {0.6/1.4/+,1.9/3.0/-,3.5/4.95/+,5.45/7.3/-}{%
+  \filldraw[fill=otRule!50,draw=otInk!70,line width=0.6pt,rounded corners=1pt] (\xa,-0.35) rectangle (\xb,0.35);
+  \node[pcLegende] at ({(\xa+\xb)/2},0.6) {$\s$};}
+\draw[otRed!80!black,line width=0.8pt,-{Stealth[length=2mm]}] (-0.6,0) -- (8.2,0);
+\fill[otRed!80!black] (-0.6,0) circle (0.07);
+\node[pcLegende,anchor=north,text=otRed!80!black] at (-0.6,-0.1) {protons};
+\foreach \xx in {1.65,3.25,5.2}{\draw[otGreenDark,line width=0.5pt] (\xx,-0.6) -- (\xx,-0.45);}
+\node[pcLegende,anchor=north,text=otGreenDark,align=center] at (2.3,-0.65) {intervalles accélérateurs :\\$U=\qty{50}{kV}$};
+\node[pcLegende,anchor=north west,align=left] at (5.6,-0.55) {tubes : champ nul,\\de plus en plus longs};
+\solution{\node[pcLegende,anchor=south,text=otNavy] at (1.0,0.85) {$L_1=\qty{15}{cm}$};}
+\end{tikzpicture}
+\par\smallskip\legende{Les protons sont accélérés dans chaque intervalle entre deux tubes ; la polarité des tubes s'inverse pendant qu'ils les traversent.}

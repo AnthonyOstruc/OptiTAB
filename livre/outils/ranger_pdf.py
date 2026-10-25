@@ -13,7 +13,8 @@
 complet « OptiTAB - Matière - Niveau - Type.pdf », souvent selon l'ancien rangement
 (…/output/pdf/France/…, livre-maths/output, livre-physique/output) et leurs rapports dans
 output/verification|sources|archives. Ce script les renomme et les range, déplace les rapports
-dans archives/, et ne modifie jamais le contenu d'un PDF.
+dans archives/verification, efface les sauvegardes zippées et les anciennes versions, et ne
+modifie jamais le contenu d'un PDF.
 """
 import hashlib
 import json
@@ -38,7 +39,8 @@ VOLUMES_PYTHON = {"Volume 1": "Volume 1 - First Steps"}
 ACCENTS = {"Signaux electriques dans l ARQS": "Signaux électriques dans l'ARQS",
            "Circuits lineaires": "Circuits linéaires"}
 # Dossiers de travail que les anciens scripts créent dans output/ : on les range dans archives/
-BALAYAGE = {"verification": "verification", "sources": "sources", "archives": "anciennes-versions"}
+# (None : sauvegardes zippées et anciennes versions, inutiles depuis que tout est sur GitHub → effacées)
+BALAYAGE = {"verification": "verification", "sources": None, "archives": None}
 
 
 def classer(nom):
@@ -78,23 +80,17 @@ def sha(p):
 
 
 def deplacer(src, dst):
-    """Déplace src vers dst ; si dst existe déjà, garde le plus récent (l'autre part en archives)."""
+    """Déplace src vers dst ; si dst existe déjà, garde le plus récent et efface l'autre
+    (le propriétaire ne garde pas les anciennes versions : l'historique Git suffit)."""
     dst.parent.mkdir(parents=True, exist_ok=True)
     if not dst.exists():
         shutil.move(str(src), str(dst))
         return
-    if sha(src) == sha(dst):
-        src.unlink()
-        return
-    recent, ancien = (src, dst) if src.stat().st_mtime >= dst.stat().st_mtime else (dst, src)
-    n, cible = 1, ARCHIVES / "anciennes-versions" / f"{ancien.stem} (remplacé){ancien.suffix}"
-    while cible.exists():
-        n += 1
-        cible = cible.with_name(f"{ancien.stem} (remplacé {n}){ancien.suffix}")
-    cible.parent.mkdir(parents=True, exist_ok=True)
-    shutil.move(str(ancien), str(cible))
-    if recent is src:
+    if src.stat().st_mtime >= dst.stat().st_mtime:
+        dst.unlink()
         shutil.move(str(src), str(dst))
+    else:
+        src.unlink()
 
 
 def deja_range(f):
@@ -112,10 +108,13 @@ def ranger():
         for f in sorted(p for p in perdu.rglob("*") if p.is_file()):
             deplacer(f, OUTPUT / f.relative_to(perdu))
         shutil.rmtree(perdu, ignore_errors=True)
-    # 1. dossiers de travail → archives/
+    # 1. dossiers de travail : les rapports vont dans archives/, le reste est effacé
     for nom, cible in BALAYAGE.items():
         d = OUTPUT / nom
         if d.is_dir():
+            if cible is None:
+                shutil.rmtree(d, ignore_errors=True)
+                continue
             for f in sorted(p for p in d.rglob("*") if p.is_file()):
                 deplacer(f, ARCHIVES / cible / f.relative_to(d))
     # 2. PDF et zip livrés : renommés et posés directement dans le dossier de leur matière

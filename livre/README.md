@@ -19,8 +19,7 @@ livre/
 ├── SUIVI-LIVRES.md              ← état d'avancement de tous les livres
 ├── OptiTAB - Suivi des livres.xlsx
 ├── outils/ranger_pdf.py         ← range les PDF livrés et refait le catalogue
-└── archives/                    ← textes officiels des programmes, rapports de vérification,
-                                   sources zippées
+└── archives/                    ← textes officiels des programmes, rapports de vérification
 ```
 
 ## Les dossiers de sources
@@ -60,5 +59,5 @@ python -X utf8 outils/ranger_pdf.py
 ```
 
 Le script renomme chaque PDF (« OptiTAB - Mathématiques - CE1 - Manuel complet.pdf » devient
-« 05 - CE1.pdf ») et le pose directement dans le dossier de sa matière, déplace les rapports dans `archives/` et refait
+« 05 - CE1.pdf ») et le pose directement dans le dossier de sa matière, déplace les rapports dans `archives/verification`, efface les anciennes versions et refait
 `output/README.md`. Il ne modifie jamais le contenu d'un PDF.

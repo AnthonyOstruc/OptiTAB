@@ -1108,7 +1108,7 @@ onBeforeUnmount(() => {
           </nav>
 
           <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
-            <div class="cours-content" ref="contentRef" v-html="renderedContent" />
+            <div class="cours-content sci-doc" ref="contentRef" v-html="renderedContent" />
           </div>
 
           <section class="related-resources" aria-labelledby="related-resources-title">

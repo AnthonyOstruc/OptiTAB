@@ -95,7 +95,7 @@
         </nav>
 
         <div class="cours-content-outer" :style="zoomStyle" ref="coursOuterRef">
-          <div class="cours-content" ref="coursContentRef" v-html="renderedContent"></div>
+          <div class="cours-content sci-doc" ref="coursContentRef" v-html="renderedContent"></div>
         </div>
         <div v-if="selectedCours.video_url" class="cours-video">
           <h3>Vidéo explicative</h3>
@@ -161,7 +161,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import { useZoom } from '@/composables/useZoom'
 import { getCours } from '@/api/cours'
 import { useSubjectsStore } from '@/stores/subjects/index'
-import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
+import { renderContentWithImages, renderMath, tuneMathOverflow } from '@/utils/scientificRenderer'
 
 const route = useRoute()
 const router = useRouter()
@@ -501,6 +501,7 @@ async function typesetAndFix() {
   } catch (error) {
     console.warn('[MathJax] Erreur:', error)
   }
+  tuneMathOverflow(inner)
   measureContentHeightForCours()
   fixBottomGap()
 }
@@ -548,6 +549,8 @@ function prepareScrollableContent() {
 
   const wrapForScroll = (nodes, { wrapperTag = 'div', wrapperAttr, targetAttr, scrollType }) => {
     Array.from(nodes).forEach((node) => {
+      // Le format structuré gère lui-même tableaux et formules
+      if (node.closest('.otm')) return
       node.setAttribute(targetAttr, 'true')
 
       const specificWrapper = node.closest(`[${wrapperAttr}]`)
@@ -824,7 +827,7 @@ watch(() => route.query.q, (val) => {
 
 <style scoped>
 .cours-section {
-  background: #fff;
+  background: #f4f6fb;
   min-height: 100vh;
   padding: 0;
   position: relative;
@@ -864,6 +867,7 @@ watch(() => route.query.q, (val) => {
 :deep(.dashboard-main) {
   padding-top: 0 !important;
   padding-left: 0 !important;
+  background: #f4f6fb !important;
 }
 
 :deep(.dashboard-main.with-mobile-nav) {
@@ -874,13 +878,15 @@ watch(() => route.query.q, (val) => {
   padding: 0;
   margin: 0 0 1rem 0;
   display: flex;
-  background: white;
+  background: transparent;
   padding-top: 1.5rem;
   padding-bottom: 1rem;
 }
 
 .cours-body {
   width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
   padding: 0 2rem 1.5rem 2rem;
   text-align: center;
 }
@@ -1082,8 +1088,8 @@ watch(() => route.query.q, (val) => {
   }
 }
 
-/* Pleine largeur sur mobile (utiliser tout l'espace) */
-/* Styles pour le contenu du cours */
+/* Carte de lecture : le cours est présenté sur une feuille
+   blanche posée sur le fond doux de la page */
 .cours-content {
   text-align: left;
   max-width: 100%;
@@ -1091,17 +1097,19 @@ watch(() => route.query.q, (val) => {
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
-  line-height: 1.6;
-  color: #333;
-  /* Réduire le padding global pour limiter les grands espaces verticaux */
-  padding: 1rem 0 100px 0; /* Espace en bas pour la barre d'outils mobile */
-  background: transparent;
+  line-height: 1.75;
+  color: #1f2937;
+  background: #ffffff;
+  border: 1px solid #e3e9f4;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  padding: 1.75rem 2rem 2.25rem;
 }
 
-/* Sur mobile, le DashboardLayout gère déjà le padding pour la nav bar */
 @media (max-width: 768px) {
   .cours-content {
-    padding-bottom: 1rem;
+    padding: 1.1rem 0.9rem 1.5rem;
+    border-radius: 14px;
   }
 }
 
@@ -1144,32 +1152,32 @@ watch(() => route.query.q, (val) => {
 }
 
 /* Styles pour les titres dans le contenu */
-.cours-content :deep(h1),
-.cours-content :deep(h2),
-.cours-content :deep(h3),
-.cours-content :deep(h4),
-.cours-content :deep(h5),
-.cours-content :deep(h6) {
+.cours-content :deep(h1:not(.otm *)),
+.cours-content :deep(h2:not(.otm *)),
+.cours-content :deep(h3:not(.otm *)),
+.cours-content :deep(h4:not(.otm *)),
+.cours-content :deep(h5:not(.otm *)),
+.cours-content :deep(h6:not(.otm *)) {
   color: #193e8e;
   /* Réduire l'espace vertical autour des titres pour éviter les grands blancs */
   margin-top: 0.25rem !important;
   margin-bottom: 0.5rem !important;
 }
 
-.cours-content :deep(p) { margin-top: 0; margin-bottom: 0.5rem; }
+.cours-content :deep(p:not(.otm *)) { margin-top: 0; margin-bottom: 0.5rem; }
 
 /* Limiter l'espace quand un titre suit un bloc */
-.cours-content :deep(div) + :deep(h1),
-.cours-content :deep(div) + :deep(h2),
-.cours-content :deep(div) + :deep(h3),
-.cours-content :deep(div) + :deep(h4),
-.cours-content :deep(div) + :deep(h5),
-.cours-content :deep(div) + :deep(h6) {
+.cours-content :deep(div:not(.otm *)) + :deep(h1),
+.cours-content :deep(div:not(.otm *)) + :deep(h2),
+.cours-content :deep(div:not(.otm *)) + :deep(h3),
+.cours-content :deep(div:not(.otm *)) + :deep(h4),
+.cours-content :deep(div:not(.otm *)) + :deep(h5),
+.cours-content :deep(div:not(.otm *)) + :deep(h6) {
   margin-top: 0.4rem !important;
 }
 
-.cours-content :deep(ul),
-.cours-content :deep(ol) {
+.cours-content :deep(ul:not(.otm *)),
+.cours-content :deep(ol:not(.otm *)) {
   margin-bottom: 0.5rem;
   padding-left: 1.5rem;
 }

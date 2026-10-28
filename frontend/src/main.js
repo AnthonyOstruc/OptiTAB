@@ -12,6 +12,8 @@ import 'katex/dist/katex.min.css'
 import 'mathlive'
 import '@/styles/global.css'
 import '@/styles/notions-layout.css'
+import '@/styles/scientific-content.css'
+import '@/styles/optitab-doc.css'
 
 // Supprimer les icônes MathLive globalement
 if (typeof document !== 'undefined') {

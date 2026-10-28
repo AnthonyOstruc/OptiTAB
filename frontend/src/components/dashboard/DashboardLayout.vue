@@ -249,6 +249,9 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   padding: 1.5rem 2rem 1.5rem;
   /* Zone de scroll principale (iOS friendly) */
   overflow-y: auto;
+  /* Réserver la place de la barre de défilement pour éviter que le contenu
+     se décale quand elle apparaît/disparaît (Chrome desktop) */
+  scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
   /* Réduit l'effet de rebond proche du header/footer sur navigateurs compatibles */
   overscroll-behavior-y: contain;

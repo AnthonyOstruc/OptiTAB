@@ -160,7 +160,6 @@
                         Demander de l'aide
                       </a>
                     </div>
-                    <div class="help-empty-box" aria-hidden="true"></div>
                   </div>
                 </template>
               </div>
@@ -185,11 +184,6 @@
               </div>
             </div>
             </div>
-            <div
-              v-if="!statementOnlyMode && filteredExercices.length > 0"
-              class="footer-clearance"
-              aria-hidden="true"
-            />
           </template>
           <div v-else class="empty-coming">
             <div class="empty-card">
@@ -224,6 +218,7 @@ import Pagination from '@/components/common/Pagination.vue'
 import Tabs from '@/components/common/Tabs.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import { useZoom } from '@/composables/useZoom'
+import { tuneMathOverflow } from '@/utils/scientificRenderer'
 
 defineOptions({ name: 'ExercisesByNotion' })
 
@@ -813,12 +808,18 @@ function ensureCurrentPageValid() {
   }
 }
 
-const zoomStyle = createZoomStyle({
+const desktopZoomStyle = createZoomStyle({
   cssVar: '--exercices-zoom',
-  heightVar: '--exercices-content-height',
-  mobileZoomAdjustment: (z) => Math.max(0.45, z * 0.75),
-  forceTransformOnMobile: true
+  heightVar: '--exercices-content-height'
 })
+
+// Sur mobile : aucun zoom (même approche que les pages gratuites).
+// Le contenu est rendu à 100 % avec les styles responsive, donc aucune
+// compensation de hauteur n'est nécessaire : pas de vide en bas de page,
+// pas de barre de défilement qui bouge.
+const zoomStyle = computed(() => viewportWidth.value <= 768
+  ? { '--exercices-zoom': 1, zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto' }
+  : desktopZoomStyle.value)
 
 
 function measureContentHeightForExercices() {
@@ -874,6 +875,7 @@ async function typesetAndFix() {
   } catch (e) {
     console.warn('[MathJax] Erreur:', e)
   }
+  tuneMathOverflow(inner)
   measureContentHeightForExercices()
   fixBottomGap()
   clampScrollToContentEnd()
@@ -1658,7 +1660,7 @@ function initFirstVisitFlag() {
 }
 
 .exercices-section {
-  background: #fff;
+  background: #f4f6fb;
   min-height: 0;
   padding: 0;
   position: relative;
@@ -1688,6 +1690,7 @@ function initFirstVisitFlag() {
 :deep(.dashboard-main) {
   padding-top: 0 !important;
   padding-left: 0 !important;
+  background: #f4f6fb !important;
 }
 
 :deep(.dashboard-main.with-mobile-nav) {
@@ -1703,6 +1706,8 @@ function initFirstVisitFlag() {
 
 .exercices-body {
   width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
   padding: 0 2rem 1.5rem 2rem;
 }
 
@@ -1826,7 +1831,7 @@ function initFirstVisitFlag() {
   border-radius: 14px;
   padding: 22px 26px;
   max-width: 680px;
-  min-width: 420px;
+  min-width: min(420px, 100%);
   text-align: center;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
@@ -1895,10 +1900,11 @@ function initFirstVisitFlag() {
 
 .exercices-controls {
   margin-bottom: 1.5rem;
-  padding: 0.75rem 1rem;
-  background: transparent;
-  border-radius: 0;
-  border: none;
+  padding: 0.9rem 1.1rem;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e3e9f4;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -2287,13 +2293,7 @@ function initFirstVisitFlag() {
 
 .help-cta {
   margin-top: 1rem;
-}
-
-.help-empty-box {
-  margin-top: 0.85rem;
-  height: 120px;
-  background: #fff;
- 
+  margin-bottom: 0.5rem;
 }
 
 .help-card {

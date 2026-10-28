@@ -1,0 +1,486 @@
+/* ============================================================
+   OptiTAB — Rendu des contenus scientifiques
+   (cours, fiches de synthèse, exercices, corrections)
+
+   Classe de portée : .sci-doc, appliquée à chaque conteneur de
+   contenu rendu en v-html (cours, fiches, énoncés, solutions).
+
+   Règle d'or : aucune formule, aucun tableau, aucune image ne
+   doit JAMAIS déborder ni casser la mise en page, sur aucun
+   écran. Ce qui est trop large défile horizontalement, en place.
+   ============================================================ */
+
+.sci-doc {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.75;
+  /* Verrou de sécurité : rien ne peut pousser la page sur le côté */
+  overflow-x: clip;
+}
+
+/* Les blocs du contenu (encadrés colorés des cours inclus)
+   restent toujours dans la colonne de lecture */
+.sci-doc div,
+.sci-doc p,
+.sci-doc ul,
+.sci-doc ol,
+.sci-doc blockquote,
+.sci-doc figure,
+.sci-doc section {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ancres du sommaire : ne pas coller au bord haut */
+.sci-doc h1,
+.sci-doc h2,
+.sci-doc h3,
+.sci-doc h4 {
+  scroll-margin-top: 90px;
+  overflow-wrap: break-word;
+}
+
+.sci-doc ul,
+.sci-doc ol {
+  padding-left: 1.4rem;
+}
+
+/* ------------------------------------------------------------
+   Formules MathJax (v3, sortie SVG) — et compat v2 / KaTeX
+   ------------------------------------------------------------ */
+
+/* Formules en display : bloc centré. Si la formule est plus
+   large que la colonne, elle défile horizontalement en place. */
+.sci-doc mjx-container[display="true"],
+.sci-doc .MathJax_Display,
+.sci-doc .MathJax_SVG_Display,
+.sci-doc .katex-display {
+  display: block !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  margin: 0.9em auto !important;
+  padding: 2px 2px 6px;
+  text-align: center !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #c6d2e8 transparent;
+}
+
+/* Une formule plus large que l'écran se réduit pour tenir :
+   le SVG garde ses proportions, rien n'est jamais coupé. */
+.sci-doc mjx-container svg {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Les formules en ligne ne dépassent jamais du paragraphe */
+.sci-doc mjx-container:not([display="true"]) {
+  max-width: 100% !important;
+}
+
+/* Formule trop longue pour être réduite lisiblement (< ~70 %) :
+   JS lui ajoute .mjx-scrollable → taille normale + défilement. */
+.sci-doc mjx-container.mjx-scrollable {
+  display: block !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  margin: 0.5em 0 !important;
+  padding: 2px 2px 6px;
+  text-align: left !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #c6d2e8 transparent;
+}
+
+.sci-doc mjx-container.mjx-scrollable svg {
+  max-width: none !important;
+}
+
+.sci-doc mjx-container.mjx-scrollable::-webkit-scrollbar {
+  height: 6px;
+}
+
+.sci-doc mjx-container.mjx-scrollable::-webkit-scrollbar-thumb {
+  background: #c6d2e8;
+  border-radius: 999px;
+}
+
+.sci-doc mjx-container.mjx-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Barres de défilement discrètes des formules et tableaux */
+.sci-doc mjx-container[display="true"]::-webkit-scrollbar,
+.sci-doc .MathJax_Display::-webkit-scrollbar,
+.sci-doc .katex-display::-webkit-scrollbar,
+.sci-doc table:not(.otm-table)::-webkit-scrollbar,
+.sci-doc [data-formula-scroll-wrapper]::-webkit-scrollbar,
+.sci-doc [data-table-scroll-wrapper]::-webkit-scrollbar,
+.sci-doc pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+.sci-doc mjx-container[display="true"]::-webkit-scrollbar-thumb,
+.sci-doc .MathJax_Display::-webkit-scrollbar-thumb,
+.sci-doc .katex-display::-webkit-scrollbar-thumb,
+.sci-doc table:not(.otm-table)::-webkit-scrollbar-thumb,
+.sci-doc [data-formula-scroll-wrapper]::-webkit-scrollbar-thumb,
+.sci-doc [data-table-scroll-wrapper]::-webkit-scrollbar-thumb,
+.sci-doc pre::-webkit-scrollbar-thumb {
+  background: #c6d2e8;
+  border-radius: 999px;
+}
+
+.sci-doc mjx-container[display="true"]::-webkit-scrollbar-track,
+.sci-doc .MathJax_Display::-webkit-scrollbar-track,
+.sci-doc .katex-display::-webkit-scrollbar-track,
+.sci-doc table:not(.otm-table)::-webkit-scrollbar-track,
+.sci-doc [data-formula-scroll-wrapper]::-webkit-scrollbar-track,
+.sci-doc [data-table-scroll-wrapper]::-webkit-scrollbar-track,
+.sci-doc pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Wrappers de défilement créés en JS par certaines pages
+   (Cours, Fiches) : leur donner enfin leur comportement. */
+.sci-doc [data-formula-scroll-wrapper],
+.sci-doc [data-table-scroll-wrapper],
+.sci-doc [data-horizontal-scroll-wrapper]:not([data-formula-inline-scroll-wrapper]) {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #c6d2e8 transparent;
+}
+
+/* Les wrappers de formules en ligne ne changent rien sur desktop
+   (la formule reste dans la phrase) ; sur mobile ils empêchent une
+   formule longue de pousser la page. */
+.sci-doc [data-formula-inline-scroll-wrapper] {
+  display: inline;
+}
+
+@media (max-width: 768px) {
+  .sci-doc [data-formula-inline-scroll-wrapper] {
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    vertical-align: middle;
+    scrollbar-width: none;
+  }
+
+  .sci-doc [data-formula-inline-scroll-wrapper]::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Un wrapper qui contient une formule déjà contrainte ne doit pas
+   créer de double barre */
+.sci-doc [data-formula-scroll-wrapper] mjx-container[display="true"] {
+  overflow-x: visible !important;
+}
+
+/* ------------------------------------------------------------
+   Structure pédagogique des énoncés, étapes et solutions
+   (classes générées par le rendu des exercices)
+   ------------------------------------------------------------ */
+
+/* Titre de question : bien détaché, souligné */
+.sci-doc .sd-question {
+  font-weight: 800;
+  color: #193e8e;
+  margin: 1.35rem 0 0.65rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid #dbeafe;
+  line-height: 1.5;
+}
+
+.sci-doc .sd-question:first-child {
+  margin-top: 0.15rem;
+}
+
+/* En-tête d'étape : badge numéroté + intitulé en gras.
+   Grille à retrait suspendu : le texte qui passe à la ligne reste
+   aligné sous le texte, jamais sous le badge. */
+.sci-doc .sd-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.55rem;
+  align-items: baseline;
+  margin: 1.1rem 0 0.45rem;
+  line-height: 1.65;
+}
+
+.sci-doc .sd-step:first-child {
+  margin-top: 0.15rem;
+}
+
+.sci-doc .sd-badge {
+  display: inline-block;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 0.16rem 0.62rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  vertical-align: 0.08em;
+}
+
+.sci-doc .sd-badge--method {
+  background: #0e9f6e;
+}
+
+.sci-doc .sd-step-text {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Point principal : puce ronde nette, texte aligné */
+.sci-doc .sd-item {
+  position: relative;
+  padding-left: 1.1rem;
+  margin: 0.45rem 0;
+  line-height: 1.7;
+}
+
+.sci-doc .sd-item::before {
+  content: '';
+  position: absolute;
+  left: 0.1rem;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3b82f6;
+}
+
+/* Sous-point : guide vertical, comme une correction rédigée */
+.sci-doc .sd-sub {
+  position: relative;
+  margin: 0.3rem 0 0.3rem 0.5rem;
+  padding: 0.1rem 0 0.1rem 0.95rem;
+  border-left: 3px solid #dbe6f7;
+  line-height: 1.7;
+}
+
+.sci-doc .sd-sub + .sd-sub {
+  margin-top: 0.15rem;
+}
+
+/* Tiret : sous-détail d'un sous-point, avec retrait suspendu.
+   Le tiret est en flux (pas en absolu) pour rester sur la même
+   ligne de base que le texte, même avec une grande fraction. */
+.sci-doc .sd-dash {
+  margin: 0.25rem 0 0.25rem 1.45rem;
+  padding-left: 0.95rem;
+  text-indent: -0.95rem;
+  line-height: 1.7;
+}
+
+.sci-doc .sd-dash::before {
+  content: '–\00a0';
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Ligne simple */
+.sci-doc .sd-line {
+  margin: 0.4rem 0;
+  line-height: 1.7;
+}
+
+/* Bloc de formule display issu du rendu des exercices */
+.sci-doc .mathjax-block {
+  max-width: 100%;
+  margin: 0.55rem 0;
+}
+
+/* ------------------------------------------------------------
+   Tableaux
+   ------------------------------------------------------------ */
+
+/* Présentation unifiée « manuel scolaire » : cadre net arrondi,
+   quadrillage fin, en-têtes marqués. Les bordures bricolées en ligne
+   dans le contenu sont neutralisées (!important) ; les couleurs de
+   fond autorées (lignes de signes, etc.) sont conservées. */
+.sci-doc table:not(.otm-table) {
+  display: block;
+  /* Le tableau épouse son contenu, centré — jamais de cadre vide
+     à droite (le width:100% bricolé en ligne est neutralisé).
+     max-width !important : les max-width 600/700px écrits en ligne
+     ne doivent JAMAIS dépasser la colonne de lecture. */
+  width: max-content !important;
+  max-width: 100% !important;
+  overflow-x: auto;
+  margin: 1.1rem auto !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 2px solid #8aa6cc !important;
+  border-radius: 12px;
+  background: #ffffff;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #c6d2e8 transparent;
+}
+
+.sci-doc table:not(.otm-table) th,
+.sci-doc table:not(.otm-table) td {
+  border: none !important;
+  border-right: 1px solid #d6dfee !important;
+  border-bottom: 1px solid #d6dfee !important;
+  padding: 0.55rem 0.9rem !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  min-width: 2.2rem;
+}
+
+.sci-doc table:not(.otm-table) tr > th:last-child,
+.sci-doc table:not(.otm-table) tr > td:last-child {
+  border-right: none !important;
+}
+
+.sci-doc table:not(.otm-table) tr:last-child > th,
+.sci-doc table:not(.otm-table) tr:last-child > td {
+  border-bottom: none !important;
+}
+
+/* Cellule d'asymptote d'un tableau de variations : les limites
+   (±∞) sont placées aux coins, de part et d'autre d'une double
+   barre verticale, comme dans un manuel. La cellule reçoit une
+   taille garantie pour que les deux valeurs ne se chevauchent pas. */
+.sci-doc td[style*="position:relative"]:has(> div[style*="position:absolute"]),
+.sci-doc td[style*="position: relative"]:has(> div[style*="position: absolute"]) {
+  min-width: 5.4rem;
+  height: 3.4rem;
+}
+
+.sci-doc td[style*="position:relative"]:has(> div[style*="position:absolute"])::after,
+.sci-doc td[style*="position: relative"]:has(> div[style*="position: absolute"])::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  border-left: 1.5px solid #64748b;
+  border-right: 1.5px solid #64748b;
+}
+
+/* Flèches de variation (↗ ↘) : plus grandes, bien lisibles
+   (classe ajoutée par tuneMathOverflow) */
+.sci-doc td.sd-var-arrow {
+  font-size: 1.45em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Première ligne et première colonne : rôle d'en-tête, séparées
+   par un trait plus fort, comme dans un tableau de variations */
+.sci-doc table:not(.otm-table) tr:first-child > th,
+.sci-doc table:not(.otm-table) tr:first-child > td {
+  background: #eaf2fd;
+  color: #1e3a8a;
+  font-weight: 700;
+  border-bottom: 2px solid #8aa6cc !important;
+}
+
+.sci-doc table:not(.otm-table) tr > th:first-child,
+.sci-doc table:not(.otm-table) tr > td:first-child {
+  background: #eaf2fd;
+  color: #1e3a8a;
+  font-weight: 700;
+  border-right: 2px solid #8aa6cc !important;
+}
+
+/* Un tableau déjà dans un wrapper de scroll redevient un vrai tableau */
+.sci-doc [data-table-scroll-wrapper] table:not(.otm-table) {
+  display: table;
+  width: auto;
+  max-width: none;
+  overflow-x: visible;
+  margin: 0 auto;
+}
+
+/* ------------------------------------------------------------
+   Images et figures
+   ------------------------------------------------------------ */
+
+.sci-doc img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 10px;
+}
+
+.sci-doc figure {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sci-doc figcaption {
+  font-size: 0.9em;
+  color: #64748b;
+}
+
+/* ------------------------------------------------------------
+   Code et texte préformaté
+   ------------------------------------------------------------ */
+
+.sci-doc pre {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+
+.sci-doc code {
+  overflow-wrap: anywhere;
+}
+
+/* ------------------------------------------------------------
+   Confort de lecture mobile
+   ------------------------------------------------------------ */
+
+/* Le grand conteneur décoratif que l'éditeur ajoute autour de
+   certains contenus (fond gris + padding 20px) est neutralisé :
+   c'est la carte de lecture blanche de la page qui fait l'écrin. */
+.sci-doc > div[style*="background:#f9f9f9"],
+.sci-doc > div[style*="background: #f9f9f9"] {
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .sci-doc {
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+
+  /* Les encadrés colorés des cours : padding plus compact que
+     les 15-20px fixés en ligne, pour gagner de la largeur utile */
+  .sci-doc div[style*="border-left"] {
+    padding: 12px 12px !important;
+    margin: 12px 0 !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Contenus au format structuré (OptiTAB v1, classe .otm) :
+   la formule centrée est déjà espacée par son bloc .otm-math
+   ------------------------------------------------------------ */
+.sci-doc .otm .otm-math > mjx-container[display="true"] {
+  margin: 0 auto !important;
+}

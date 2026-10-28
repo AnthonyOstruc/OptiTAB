@@ -30,7 +30,7 @@
         </header>
         
         <!-- Contenu du cours -->
-        <div class="cours-content" v-html="renderedContent"></div>
+        <div class="cours-content sci-doc" v-html="renderedContent"></div>
         
         <!-- Vidéo du cours si disponible -->
         <div v-if="cours.video_url" class="cours-video">

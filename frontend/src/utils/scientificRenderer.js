@@ -2,6 +2,10 @@
  * Utilitaire pour le rendu scientifique des contenus (cours, exercices, etc.)
  */
 
+import { isOptitabDoc, renderOptitabDoc } from './optitabDoc'
+
+export { isOptitabDoc, renderOptitabDoc }
+
 /**
  * Traite le texte LaTeX et HTML de base
  */
@@ -177,16 +181,23 @@ function normalizeInlineImageSources(html, { imageType = 'cours' } = {}) {
 export function renderContentWithImages(content, images = [], options = {}) {
   if (!content) return ''
 
-  const looksLikeHtml = /<\s*(h[1-6]|p|div|table|ul|ol|li|img|section|article|header|footer|span|br|hr)\b/i.test(content)
-  let processedText = looksLikeHtml ? content : markdownToHtml(content)
   const imageType = options?.imageType || options?.type || 'cours'
+  let processedText
 
-  processedText = unescapeLatex(processedText)
-  const { autoShiftHeadings = false, headingOffset = 0 } = options || {}
-  if (autoShiftHeadings && /<h1/i.test(processedText)) {
-    processedText = shiftHeadingLevels(processedText, 1)
-  } else if (headingOffset) {
-    processedText = shiftHeadingLevels(processedText, headingOffset)
+  if (isOptitabDoc(content)) {
+    const context = imageType === 'synthesis' || imageType === 'sheet' || imageType === 'sheets' ? 'sheet' : 'course'
+    processedText = renderOptitabDoc(content, { context: options?.context || context })
+  } else {
+    const looksLikeHtml = /<\s*(h[1-6]|p|div|table|ul|ol|li|img|section|article|header|footer|span|br|hr)\b/i.test(content)
+    processedText = looksLikeHtml ? content : markdownToHtml(content)
+
+    processedText = unescapeLatex(processedText)
+    const { autoShiftHeadings = false, headingOffset = 0 } = options || {}
+    if (autoShiftHeadings && /<h1/i.test(processedText)) {
+      processedText = shiftHeadingLevels(processedText, 1)
+    } else if (headingOffset) {
+      processedText = shiftHeadingLevels(processedText, headingOffset)
+    }
   }
 
   processedText = normalizeInlineImageSources(processedText, { imageType })
@@ -289,6 +300,62 @@ export function getImageUrl(imagePath, type = 'cours') {
 }
 
 /**
+ * Ajuste les formules MathJax après rendu.
+ * Par défaut une formule trop large se réduit pour tenir (CSS max-width).
+ * Mais si la réduction la rendrait trop petite (< ~70 %), elle repasse à
+ * taille normale et défile horizontalement (classe .mjx-scrollable) :
+ * toujours lisible, jamais coupée.
+ */
+export function tuneMathOverflow(root) {
+  if (typeof document === 'undefined') return
+  const scope = root instanceof Element ? root : document.body
+  if (!scope) return
+
+  const entries = []
+  scope.querySelectorAll('.sci-doc mjx-container').forEach((container) => {
+    const svg = container.querySelector('svg')
+    if (!svg) return
+    container.classList.remove('mjx-scrollable')
+    entries.push({ container, svg })
+  })
+  if (!entries.length) return
+
+  // Mesures groupées pour limiter les reflows (2 au total).
+  // setProperty(..., 'important') : nécessaire pour battre le
+  // max-width !important de la feuille de style globale.
+  entries.forEach(({ svg }) => { svg.style.setProperty('max-width', 'none', 'important') })
+  entries.forEach((entry) => { entry.natural = entry.svg.getBoundingClientRect().width })
+  entries.forEach(({ svg }) => { svg.style.removeProperty('max-width') })
+  entries.forEach((entry) => { entry.rendered = entry.svg.getBoundingClientRect().width })
+
+  entries.forEach(({ container, natural, rendered }) => {
+    if (!natural || !rendered) return
+    if (rendered / natural < 0.7) {
+      container.classList.add('mjx-scrollable')
+    }
+  })
+
+  // Ponctuation liée à une formule aussi large que la ligne : la laisser
+  // passer à la ligne plutôt que de déborder
+  scope.querySelectorAll('.otm-nb').forEach((span) => {
+    span.classList.remove('otm-nb--libre')
+    const block = span.parentElement && span.parentElement.closest('p, li, td, th, div')
+    if (block && span.getBoundingClientRect().width > block.clientWidth - 4) {
+      span.classList.add('otm-nb--libre')
+    }
+  })
+
+  // Tableaux de variations : agrandir les flèches ↗ ↘ pour une
+  // lecture digne d'un manuel
+  scope.querySelectorAll('.sci-doc td').forEach((td) => {
+    const text = (td.textContent || '').trim()
+    if (text === '↗' || text === '↘') {
+      td.classList.add('sd-var-arrow')
+    }
+  })
+}
+
+/**
  * Rend le contenu MathJax
  */
 export function renderMath() {
@@ -298,9 +365,11 @@ export function renderMath() {
         if (window.MathJax.typesetClear) {
           window.MathJax.typesetClear()
         }
-        window.MathJax.typesetPromise().catch((err) => {
-          console.warn('[MathJax] Erreur lors du rendu:', err)
-        })
+        window.MathJax.typesetPromise()
+          .then(() => tuneMathOverflow())
+          .catch((err) => {
+            console.warn('[MathJax] Erreur lors du rendu:', err)
+          })
       } catch (error) {
         console.warn('[MathJax] Erreur:', error)
       }

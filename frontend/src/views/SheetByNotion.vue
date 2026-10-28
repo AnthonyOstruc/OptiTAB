@@ -90,7 +90,7 @@
           </nav>
 
           <div class="sheet-content-outer" :style="zoomStyle" ref="outerRef">
-            <div class="sheet-content" ref="innerRef" v-html="rendered"></div>
+            <div class="sheet-content sci-doc" ref="innerRef" v-html="rendered"></div>
           </div>
 
           <!-- Bouton retour en haut -->
@@ -120,7 +120,7 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import { getSynthesisSheets, getSynthesisSheet } from '@/api/synthesis'
 import { useSubjectsStore } from '@/stores/subjects/index'
-import { renderContentWithImages } from '@/utils/scientificRenderer'
+import { renderContentWithImages, tuneMathOverflow } from '@/utils/scientificRenderer'
 import { useZoom } from '@/composables/useZoom'
 
 const props = defineProps({
@@ -316,6 +316,7 @@ async function typesetAndFix() {
   } catch (error) {
     console.warn('[MathJax] Erreur:', error)
   }
+  tuneMathOverflow(inner)
   measureContentHeightForSheets()
   fixBottomGap()
 }
@@ -668,7 +669,7 @@ watch(() => route.query.q, (val) => {
 
 <style scoped>
 .sheet-by-notion-page {
-  background: #fff;
+  background: #f4f6fb;
   min-height: 100vh;
   padding: 0;
   text-align: left;
@@ -685,6 +686,7 @@ watch(() => route.query.q, (val) => {
 :deep(.dashboard-main) {
   padding-top: 0 !important;
   padding-left: 0 !important;
+  background: #f4f6fb !important;
 }
 
 :deep(.dashboard-main.with-mobile-nav) {
@@ -695,13 +697,15 @@ watch(() => route.query.q, (val) => {
   padding: 0;
   margin: 0 0 1rem 0;
   display: flex;
-  background: white;
+  background: transparent;
   padding-top: 1.5rem;
   padding-bottom: 1rem;
 }
 
 .sheet-content-wrapper {
   width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
   padding: 0 2rem 1.5rem 2rem;
 }
 
@@ -762,25 +766,34 @@ watch(() => route.query.q, (val) => {
 }
 
 .sheet-title { font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 800; margin: 0.25rem 0 0.5rem; color: #193e8e; text-align: center; }
-.sheet-content { 
+
+.sheet-container {
+  padding-bottom: calc(3em + env(safe-area-inset-bottom, 0px));
+}
+/* Carte de lecture : la fiche est présentée sur une feuille
+   blanche posée sur le fond doux de la page */
+.sheet-content {
   text-align: left;
   max-width: 100%;
-  overflow-x: visible; /* Les tableaux gèrent leur propre scroll */
+  overflow-x: visible; /* Les tableaux et formules gèrent leur propre scroll */
   overflow-y: visible;
-  -webkit-overflow-scrolling: touch; /* Smooth scroll sur iOS */
+  -webkit-overflow-scrolling: touch;
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
-  line-height: 1.6;
-  color: #333;
-  padding: 1rem 0 100px 0; /* Espace en bas pour la barre d'outils mobile */
-  background: transparent;
+  line-height: 1.75;
+  color: #1f2937;
+  background: #ffffff;
+  border: 1px solid #e3e9f4;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  padding: 1.75rem 2rem 2.25rem;
 }
 
-/* Sur mobile, le DashboardLayout gère déjà le padding pour la nav bar */
 @media (max-width: 768px) {
   .sheet-content {
-    padding-bottom: 1rem;
+    padding: 1.1rem 0.9rem 1.5rem;
+    border-radius: 14px;
   }
 }
 
@@ -822,18 +835,18 @@ watch(() => route.query.q, (val) => {
   box-shadow: inset 0 -2px 0 #fde68a;
 }
 /* Styles pour les titres dans le contenu */
-.sheet-content :deep(h1),
-.sheet-content :deep(h2),
-.sheet-content :deep(h3),
-.sheet-content :deep(h4),
-.sheet-content :deep(h5),
-.sheet-content :deep(h6) {
+.sheet-content :deep(h1:not(.otm *)),
+.sheet-content :deep(h2:not(.otm *)),
+.sheet-content :deep(h3:not(.otm *)),
+.sheet-content :deep(h4:not(.otm *)),
+.sheet-content :deep(h5:not(.otm *)),
+.sheet-content :deep(h6:not(.otm *)) {
   color: #193e8e;
   margin-top: 0.25rem !important;
   margin-bottom: 0.5rem !important;
 }
 
-.sheet-content :deep(p) { margin-top: 0; margin-bottom: 0.5rem; }
+.sheet-content :deep(p:not(.otm *)) { margin-top: 0; margin-bottom: 0.5rem; }
 
 /* Mise à l'échelle automatique du contenu */
 .sheet-content :deep(table) {
@@ -852,8 +865,8 @@ watch(() => route.query.q, (val) => {
   padding: 8px 12px;
 }
 
-.sheet-content :deep(.MathJax),
-.sheet-content :deep(mjx-container) {
+.sheet-content :deep(.MathJax:not(.otm *)),
+.sheet-content :deep(mjx-container:not(.otm *)) {
   max-width: 100% !important;
   white-space: normal !important;
   display: inline-block !important;
@@ -862,7 +875,7 @@ watch(() => route.query.q, (val) => {
 
 .sheet-content :deep(.MathJax_Display),
 .sheet-content :deep(.MathJax_SVG_Display),
-.sheet-content :deep(mjx-container[display="true"]) {
+.sheet-content :deep(mjx-container[display="true"]:not(.otm *)) {
   max-width: 100% !important;
   white-space: normal !important;
   display: block !important;

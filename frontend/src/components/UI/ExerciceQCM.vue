@@ -127,14 +127,14 @@
           class="content-section problem-section"
         >
           <div class="content-wrapper">
-            <div class="problem-content" v-html="renderInstructionWithImages(ex.question)" @click="handleImageClick"></div>
+            <div class="problem-content sci-doc" v-html="renderInstructionWithImages(ex.question)" @click="handleImageClick"></div>
           </div>
         </div>
         
         <!-- Solution Tab (pour exercices multiples, visible si noté) -->
         <div v-show="activeTab === 'solution'" class="content-section solution-section-tab" v-if="isGraded && solution">
           <div class="content-wrapper solution-wrapper">
-            <div class="solution-tab-content" v-html="renderSolutionContent(solution)" @click="handleImageClick"></div>
+            <div class="solution-tab-content sci-doc" v-html="renderSolutionContent(solution)" @click="handleImageClick"></div>
           </div>
         </div>
       </template>
@@ -144,21 +144,21 @@
         <!-- Problem Tab -->
         <div v-show="activeTab === 'problem'" class="content-section problem-section">
           <div class="content-wrapper">
-            <div class="problem-content" v-html="renderInstructionWithImages(instruction)" @click="handleImageClick"></div>
+            <div class="problem-content sci-doc" v-html="renderInstructionWithImages(instruction)" @click="handleImageClick"></div>
           </div>
         </div>
 
         <!-- Method Tab -->
         <div v-show="activeTab === 'method'" class="content-section steps-section" v-if="etapes">
           <div class="content-wrapper">
-            <div class="steps-content" v-html="renderInstructionWithImages(etapes)" @click="handleImageClick"></div>
+            <div class="steps-content sci-doc" v-html="renderInstructionWithImages(etapes)" @click="handleImageClick"></div>
           </div>
         </div>
 
         <!-- Solution Tab -->
         <div v-show="activeTab === 'solution'" class="content-section answer-section" v-if="solution">
           <div class="content-wrapper">
-            <div class="answer-content" v-html="renderInstructionWithImages(solution)" @click="handleImageClick"></div>
+            <div class="answer-content sci-doc" v-html="renderInstructionWithImages(solution)" @click="handleImageClick"></div>
           </div>
         </div>
       </template>
@@ -307,6 +307,7 @@ import { getExerciceImages } from '@/api'
 import { sendContactMessage } from '@/api/contact'
 import { useUserStore } from '@/stores/user'
 import { useToast } from '@/composables/useToast'
+import { tuneMathOverflow, isOptitabDoc, renderOptitabDoc } from '@/utils/scientificRenderer'
 
 // Props
 const props = defineProps({
@@ -409,6 +410,10 @@ const difficultyStars = computed(() => {
   return stars[props.difficulty] || stars.medium
 })
 
+const isStructuredExercise = computed(() =>
+  [props.instruction, props.etapes, props.solution].some((text) => isOptitabDoc(text))
+)
+
 const tabContentStyles = computed(() => {
   const backgrounds = {
     problem: '#f5f7ff',
@@ -416,7 +421,10 @@ const tabContentStyles = computed(() => {
     solution: '#f0fdf4'
   }
   // Si c'est un onglet ex0, ex1, ex2, etc., utiliser le background 'problem'
-  const bg = activeTab.value.startsWith('ex') ? '#f5f7ff' : (backgrounds[activeTab.value] || '#f5f7ff')
+  // Contenu structuré : page blanche, les encadrés portent leurs propres couleurs
+  const bg = isStructuredExercise.value
+    ? '#ffffff'
+    : activeTab.value.startsWith('ex') ? '#f5f7ff' : (backgrounds[activeTab.value] || '#f5f7ff')
   
   return {
     background: bg,
@@ -566,30 +574,82 @@ function unescapeLatex(text) {
       return `<div class=\"mathjax-block\">${mathBlock}</div>`
     }
 
-    // Segment texte: markdown léger puis rendu par lignes
+    // Segment texte: markdown léger puis structuration pédagogique par lignes
     let textPart = seg.value
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/\*([^*]+)\*/g, '<em>$1</em>')
 
     const lines = textPart.split('\n')
     const processed = lines.map((line) => {
-      if (line.trim() === '') return '<br/>'
+      const leadingSpaces = (line.match(/^\s*/) || [''])[0].length
+      let content = line.trim()
 
-      const bulletMatch = line.match(/^(?:(\s*))\s*●\s+(.+)$/)
+      if (content === '') return '<br/>'
+
+      // Retirer les espacements LaTeX décoratifs ($\qquad$, $\qquad\quad$,
+      // $\quad$…) en début de ligne : l'indentation est gérée par le CSS.
+      let hadQquad = false
+      content = content.replace(/^(?:\$(?:\\qquad|\\quad|\s)+\$\s*)+/, () => {
+        hadQquad = true
+        return ''
+      }).trim()
+
+      // Lignes de saut purement décoratives ($\\$) : la structure gère le rythme
+      if (content === '' || /^(?:\$\\\\\$\s*)+$/.test(content)) return ''
+      content = content.replace(/\s*(?:\$\\\\\$\s*)+$/, '')
+
+      // Ligne de balisage HTML (tableaux multi-lignes, images, etc.) :
+      // la laisser telle quelle, sans l'envelopper dans un bloc
+      if (/^<\/?(table|thead|tbody|tfoot|tr|td|th|div|section|ul|ol|li|figure|figcaption|img|br|hr|p|span)\b/i.test(content)) {
+        return content
+      }
+
+      // Puce principale (●) ou secondaire (•)
+      const bulletMatch = content.match(/^[●•]\s*(.*)$/)
       if (bulletMatch) {
-        const indentSpaces = Math.max(bulletMatch[1] ? bulletMatch[1].length : 0, 4)
-        const marginLeft = indentSpaces * 6
-        return `<div class=\"step-bullet\" style=\"margin-left: ${marginLeft}px;\"><span class=\"bullet-symbol\">●</span> <span class=\"bullet-text\">${bulletMatch[2]}</span></div>`
+        let c = bulletMatch[1].trim()
+        if (c === '' || /^(?:\$\\\\\$\s*)+$/.test(c)) return ''
+
+        // « Étape N » → badge numéroté
+        const step = c.match(/^(?:<strong>\s*)?[ÉE]tape\s*(\d+)\s*:?\s*(?:<\/strong>)?\s*:?\s*(.*)$/)
+        if (step) {
+          let rest = step[2].trim()
+          if (rest.includes('</strong>') && !rest.includes('<strong>')) rest = `<strong>${rest}`
+          return `<div class="sd-step"><span class="sd-badge">Étape ${step[1]}</span><span class="sd-step-text">${rest}</span></div>`
+        }
+
+        // « Méthode » → badge méthode
+        const method = c.match(/^(?:<strong>\s*)?M[ée]thode\s*:?\s*(?:<\/strong>)?\s*:?\s*(.*)$/)
+        if (method) {
+          let rest = method[1].trim()
+          if (rest.includes('</strong>') && !rest.includes('<strong>')) rest = `<strong>${rest}`
+          return `<div class="sd-step"><span class="sd-badge sd-badge--method">Méthode</span><span class="sd-step-text">${rest}</span></div>`
+        }
+
+        // Sous-point (indenté ou précédé de $\qquad$) ou point principal
+        if (hadQquad || leadingSpaces >= 6) {
+          return `<div class="sd-sub">${c}</div>`
+        }
+        return `<div class="sd-item">${c}</div>`
       }
 
-      const indentMatch = line.match(/^(\s+)(.+)$/)
-      if (indentMatch && !indentMatch[2].includes('<div') && !indentMatch[2].includes('<strong') && !indentMatch[2].includes('●')) {
-        const indentSpaces = indentMatch[1].length
-        const marginLeft = indentSpaces * 6
-        return `<div class=\"step-line\" style=\"margin-left: ${marginLeft}px;\">${indentMatch[2]}</div>`
+      // Tiret : sous-détail d'un sous-point (ex. « - Quand x → … »)
+      const dashMatch = content.match(/^[-–]\s+(.*)$/)
+      if (dashMatch) {
+        return `<div class="sd-dash">${dashMatch[1].trim()}</div>`
       }
 
-      return `<div class=\"step-title\">${line}</div>`
+      // Titre de question
+      if (/^<strong>\s*Question\b/i.test(content)) {
+        return `<div class="sd-question">${content}</div>`
+      }
+
+      // Ligne indentée sans puce : continuation d'un sous-point
+      if (hadQquad || leadingSpaces >= 4) {
+        return `<div class="sd-sub sd-cont">${content}</div>`
+      }
+
+      return `<div class="sd-line">${content}</div>`
     })
 
     return processed.join('')
@@ -597,8 +657,10 @@ function unescapeLatex(text) {
 
   let result = htmlParts.join('')
   result = result
+    // Les blocs structurés portent leurs propres marges : retirer les <br/> autour
+    .replace(/(?:<br\/>\s*)+(<div class="sd-(?:step|question))/g, '$1')
+    .replace(/(sd-(?:step|question)[^>]*>.*?<\/div>)(?:\s*<br\/>)+/g, '$1')
     .replace(/(<br\/>\s*){3,}/g, '<br/><br/>')
-    .replace(/  +/g, '&nbsp;&nbsp;')
 
   return result
 }
@@ -653,10 +715,12 @@ function resolveImageDimensions(image) {
   return { width: safeWidth, height: safeHeight }
 }
 
-function renderInstructionWithImages(instruction) {
+function renderInstructionWithImages(instruction, context = 'exercise') {
   if (!instruction) return ''
 
-  let processedText = unescapeLatex(instruction)
+  let processedText = isOptitabDoc(instruction)
+    ? renderOptitabDoc(instruction, { context })
+    : unescapeLatex(instruction)
 
   if (!exerciceImages.value || exerciceImages.value.length === 0) {
     return processedText
@@ -710,6 +774,7 @@ function renderInstructionWithImages(instruction) {
 }
 function renderSolutionContent(solutionText) {
   if (!solutionText) return ''
+  if (isOptitabDoc(solutionText)) return renderInstructionWithImages(solutionText)
   // Traiter le texte de la solution avec support Markdown basique et LaTeX
   let html = unescapeLatex(solutionText)
   // Convertir les retours à la ligne en <br>
@@ -725,7 +790,7 @@ function renderMath() {
     const doTypeset = () => {
       try {
         if (window.MathJax && window.MathJax.typesetPromise) {
-          return window.MathJax.typesetPromise()
+          return window.MathJax.typesetPromise().then(() => tuneMathOverflow())
         }
       } catch (_) {}
       return Promise.resolve()
@@ -1392,15 +1457,15 @@ watch(activeTab, () => {
 }
 
 /* Amélioration des étapes de résolution - Version simple et propre */
-.steps-content :deep(ul),
-.steps-content :deep(ol) {
+.steps-content :deep(ul:not(.otm *)),
+.steps-content :deep(ol:not(.otm *)) {
   padding-left: 0 !important;
   margin: 1rem 0;
   list-style: none;
   text-align: left;
 }
 
-.steps-content :deep(li) {
+.steps-content :deep(li:not(.otm *)) {
   position: relative;
   padding: 0.75rem 0 !important;
   padding-left: 0 !important;
@@ -1411,13 +1476,13 @@ watch(activeTab, () => {
   text-indent: 0 !important;
 }
 
-.steps-content :deep(li::before) {
+.steps-content :deep(li:not(.otm *)::before) {
   content: "";
   display: none;
 }
 
 /* Styles spécifiques pour les numéros d'étapes */
-.steps-content :deep(p) {
+.steps-content :deep(p:not(.otm *)) {
   margin: 0.5rem 0 !important;
   padding-left: 0 !important;
   text-align: left !important;
@@ -1434,57 +1499,13 @@ watch(activeTab, () => {
   text-align: center;
 }
 
-/* Styles pour les titres de questions */
-.step-title {
-  display: block;
-  line-height: 1.6;
-  margin: 0rem 0 0rem 0; /* Marges ultra réduites à zéro */
-  font-weight: 600;
-  color: #1e293b;
-  white-space: normal;
-  word-wrap: break-word;
-  padding-left: 0; /* Pas d'indentation pour les titres */
-}
-
-/* Styles pour les lignes d'étapes avec indentation */
-.step-line {
-  display: block;
-  line-height: 1.6;
-  margin: 0rem 0; /* Marges à zéro */
-  white-space: normal;
-  word-wrap: break-word;
-}
-
-/* Styles pour les puces dans les étapes */
-.step-bullet {
-  display: block;
-  line-height: 1.6;
-  margin: 0rem 0; /* Marges à zéro */
-  position: relative;
-  min-height: 1.2em;
-  white-space: normal;
-  word-wrap: break-word;
-}
-
-.bullet-symbol {
-  color: #3b82f6;
-  font-weight: bold;
-  font-size: 1.2em;
-  margin-right: 4px; /* Petit espace supplémentaire */
-  display: inline-block;
-  width: 20px;
-  text-align: center;
-  vertical-align: top;
-}
-
-.bullet-text {
-  display: inline-block;
-  vertical-align: top;
-  line-height: 1.4;
-}
+/* La structure pédagogique (sd-step, sd-badge, sd-item, sd-sub,
+   sd-question, sd-line) est stylée globalement dans
+   src/styles/scientific-content.css : le CSS scopé ne s'applique
+   pas au contenu injecté en v-html. */
 
 /* Styles pour les paragraphes dans les étapes */
-.steps-content :deep(p) {
+.steps-content :deep(p:not(.otm *)) {
   margin: 0.75rem 0 !important;
   line-height: 1.6;
 }
@@ -1764,30 +1785,12 @@ watch(activeTab, () => {
   }
 }
 
-/* MathJax Styles - ajustés pour s'adapter sans scroll horizontal */
+/* MathJax : le comportement (défilement horizontal en place des
+   formules trop larges) est géré globalement par
+   src/styles/scientific-content.css via la classe .sci-doc. */
 .exercice-card :deep(.mathjax-block) {
   max-width: 100%;
-  overflow: visible;
   margin: 1rem 0;
-}
-
-.exercice-card :deep(.MathJax),
-.exercice-card :deep(.MathJax svg),
-.exercice-card :deep(.MathJax_SVG),
-.exercice-card :deep(.MathJax_SVG_Display svg),
-.exercice-card :deep(mjx-container),
-.exercice-card :deep(mjx-container[display="true"]) {
-  max-width: 100% !important;
-  white-space: normal !important;
-  overflow: visible !important;
-}
-
-.exercice-card :deep(.MathJax_Display),
-.exercice-card :deep(.MathJax_SVG_Display) {
-  max-width: 100% !important;
-  white-space: normal !important;
-  margin: 1.25rem 0;
-  text-align: center !important;
 }
 
 /* Responsive Design */
@@ -1798,12 +1801,41 @@ watch(activeTab, () => {
   }
 
   .header-top {
-    padding: 16px 20px;
+    padding: 14px 16px 12px;
     flex-wrap: wrap;
   }
-  
+
+  /* En-tête mobile : drapeau, étoiles et contrôles sur une ligne,
+     titre en pleine largeur en dessous (jamais écrasé) */
+  .header-first-row {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    min-height: 0;
+  }
+
+  .header-slot--left {
+    order: 1;
+    width: auto;
+  }
+
+  .difficulty-indicator {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .header-slot--right {
+    order: 3;
+  }
+
   .exercice-title {
-    font-size: 1.25rem;
+    order: 4;
+    flex: 1 1 100%;
+    width: 100%;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    text-align: center;
+    text-wrap: balance;
+    overflow-wrap: break-word;
   }
 
   .tabs-container {
@@ -1869,23 +1901,6 @@ watch(activeTab, () => {
     font-size: 1.1rem;
   }
   
-  /* MathJax responsive - garder la taille normale */
-  .exercice-card :deep(.MathJax_Display) {
-    margin: 1rem 0;
-    max-width: none !important;
-  }
-  
-  .exercice-card :deep(.MathJax) {
-    max-width: none !important;
-  }
-  
-  .exercice-card :deep(.MathJax_SVG) {
-    max-width: none !important;
-  }
-  
-  .exercice-card :deep(mjx-container) {
-    max-width: none !important;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1993,34 +2008,17 @@ watch(activeTab, () => {
     font-size: 0.9rem;
   }
   
-  /* MathJax responsive - garder la taille normale */
-  .exercice-card :deep(.MathJax_Display) {
-    margin: 0.75rem 0;
-    max-width: none !important;
-  }
-  
-  .exercice-card :deep(.MathJax) {
-    max-width: none !important;
-  }
-  
-  .exercice-card :deep(.MathJax_SVG) {
-    max-width: none !important;
-  }
-  
-  .exercice-card :deep(mjx-container) {
-    max-width: none !important;
-  }
 }
 
 /* Text content styles */
-.exercice-card :deep(p) {
+.exercice-card :deep(p:not(.otm *)) {
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
   margin: 0 0 1rem 0;
 }
 
-.exercice-card :deep(p:last-child) {
+.exercice-card :deep(p:not(.otm *):last-child) {
   margin-bottom: 0;
 }
 
@@ -2034,22 +2032,22 @@ watch(activeTab, () => {
   color: #1e293b;
 }
 
-.exercice-card :deep(ul),
-.exercice-card :deep(ol) {
+.exercice-card :deep(ul:not(.otm *)),
+.exercice-card :deep(ol:not(.otm *)) {
   padding-left: 0;
   margin: 1rem 0;
 }
 
 @media (max-width: 768px) {
-  .exercice-card :deep(ul),
-  .exercice-card :deep(ol) {
+  .exercice-card :deep(ul:not(.otm *)),
+  .exercice-card :deep(ol:not(.otm *)) {
     padding-left: 0;
   }
 }
 
 @media (max-width: 480px) {
-  .exercice-card :deep(ul),
-  .exercice-card :deep(ol) {
+  .exercice-card :deep(ul:not(.otm *)),
+  .exercice-card :deep(ol:not(.otm *)) {
     padding-left: 0;
   }
 }

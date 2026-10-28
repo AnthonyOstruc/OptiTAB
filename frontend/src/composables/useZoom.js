@@ -158,22 +158,25 @@ export function useZoom(options = {}) {
           height: 'auto'
         }
       } else {
-        // Fallback transform pour mobile et navigateurs sans support zoom
+        // Fallback transform pour les navigateurs sans support du zoom natif.
+        // transform: scale() ne change pas la hauteur de layout, donc on fixe
+        // explicitement la hauteur visuelle (même calcul que les fixBottomGap()
+        // des vues) — une marge négative entrerait en conflit avec eux et
+        // laisserait un grand vide en bas de page.
         const style = {
           ...baseStyle,
           transform: `scale(${z})`,
           transformOrigin: 'top left',
           width: `${widthPercent}%`,
-          height: 'auto',
           minHeight: 'auto'
         }
-        
-        // Seulement appliquer la hauteur si elle est mesurée et valide
-        if (contentHeight.value > 0 && Number.isFinite(z) && z < 1) {
-          const marginBottom = -Math.ceil(contentHeight.value * (1 - z))
-          style.marginBottom = `${marginBottom}px`
+
+        if (contentHeight.value > 0 && Number.isFinite(z) && z > 0 && z < 1) {
+          style.height = `${Math.ceil(contentHeight.value * z)}px`
+        } else {
+          style.height = 'auto'
         }
-        
+
         return style
       }
     })

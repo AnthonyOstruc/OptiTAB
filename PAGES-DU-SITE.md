@@ -16,16 +16,18 @@ Inventaire de toutes les pages du site (tiré du fichier des routes `frontend/sr
 
 | Espace | Pages | 🟢 Refaites | 🟡 Retouchées | ⚪ Inchangées | ↪ Anciennes adresses |
 |---|:---:|:---:|:---:|:---:|:---:|
-| Hors connexion | 39 | 13 | 4 | 22 | – |
+| Hors connexion | 39 | 13 | 25 | 1 | – |
 | Avec connexion (élève ou parent) | 15 | 4 | 11 | 0 | 16 |
 | Administration | 24 | 0 | 0 | 24 | – |
-| **Total** | **78** | **17** | **15** | **46** | **16** |
+| **Total** | **78** | **17** | **36** | **25** | **16** |
 
 Une même page peut avoir plusieurs adresses (anciens liens conservés) : elles sont regroupées sur une seule ligne.
 
 ---
 
 ## 1. Pages hors connexion
+
+Depuis le 3 novembre 2026, toutes les pages publiques ont l'en-tête et le pied de page de la vitrine (version épurée « logo + contact + action » pour les pages publicitaires et de paiement). Les pages 🟡 ci-dessous gardent leur contenu d'origine ; ressources gratuites : colonne de lecture centrée.
 
 ### Vitrine et présentation
 
@@ -38,29 +40,29 @@ Une même page peut avoir plusieurs adresses (anciens liens conservés) : elles 
 | 🟢 | `/about` | **À propos** | L'histoire en frise (de l'ingénieur à la plateforme), chiffres réels, engagements, mot pour les parents, réseaux sociaux |
 | 🟢 | `/contact` | **Contact** | WhatsApp, e-mail ou formulaire au choix, réponses rapides (tarifs, mot de passe oublié…), sujet pré-rempli possible (`/contact?sujet=Partenariat`) |
 | 🟡 | `/calculator` | Outil de calcul | Accessible sans compte. Connecté : dans le nouvel espace. Graphique recentré sur téléphone et tablette (il débordait à 768 px) |
-| ⚪ | `/aide-grapheur` | Aide du grapheur | |
+| 🟡 | `/aide-grapheur` | Aide du grapheur | |
 
 ### Ressources gratuites
 
 | État | Adresse | Page | Remarque |
 |:---:|---|---|---|
-| ⚪ | `/ressources-gratuites` | Accueil des ressources gratuites | |
+| 🟡 | `/ressources-gratuites` | Accueil des ressources gratuites | |
 | 🟡 | `/ressources-gratuites/cours` | Liste des cours gratuits | Peut s'ouvrir directement sur une classe (`?niveau=6ème`) depuis « Choisis ta classe » de l'accueil |
 | 🟡 | `/ressources-gratuites/exercices` | Liste des exercices gratuits | Même ajout (même page technique) |
 | 🟡 | `/ressources-gratuites/syntheses` | Liste des fiches de synthèse | Même ajout (même page technique) |
-| ⚪ | `/ressources-gratuites/cours/…` (3 formats d'adresse) | Un cours gratuit | |
-| ⚪ | `/ressources-gratuites/exercices/notion/:id` | Exercices gratuits d'un chapitre | |
-| ⚪ | `/ressources-gratuites/exercices/…` (4 formats d'adresse) | Un exercice gratuit | |
-| ⚪ | `/ressources-gratuites/syntheses/…` (3 formats d'adresse) | Une fiche de synthèse gratuite | |
+| 🟡 | `/ressources-gratuites/cours/…` (3 formats d'adresse) | Un cours gratuit | |
+| 🟡 | `/ressources-gratuites/exercices/notion/:id` | Exercices gratuits d'un chapitre | |
+| 🟡 | `/ressources-gratuites/exercices/…` (4 formats d'adresse) | Un exercice gratuit | |
+| 🟡 | `/ressources-gratuites/syntheses/…` (3 formats d'adresse) | Une fiche de synthèse gratuite | |
 
 ### Blog
 
 | État | Adresse | Page |
 |:---:|---|---|
-| ⚪ | `/blog` | Liste des articles |
-| ⚪ | `/blog/categorie/:slug` | Articles d'une catégorie |
-| ⚪ | `/blog/tag/:slug` | Articles d'un mot-clé |
-| ⚪ | `/blog/:slug` | Un article |
+| 🟡 | `/blog` | Liste des articles |
+| 🟡 | `/blog/categorie/:slug` | Articles d'une catégorie |
+| 🟡 | `/blog/tag/:slug` | Articles d'un mot-clé |
+| 🟡 | `/blog/:slug` | Un article |
 
 ### Pages légales
 
@@ -77,22 +79,22 @@ Une même page peut avoir plusieurs adresses (anciens liens conservés) : elles 
 
 | État | Adresse | Page |
 |:---:|---|---|
-| ⚪ | `/start` (aussi `/commencer`) | Page d'arrivée publicité |
-| ⚪ | `/plateforme-maths` | Page d'arrivée « plateforme de maths » |
-| ⚪ | `/bases-methode` | Page d'arrivée « bases et méthode » |
-| ⚪ | `/exercices-corriges` (aussi `/exercices-corriges-pas-a-pas`) | Page d'arrivée « exercices corrigés » |
-| ⚪ | `/diagnostic-maths-gratuit` | Diagnostic gratuit |
-| ⚪ | `/diagnostic-merci` | Remerciement après le diagnostic |
-| ⚪ | `/avis` (aussi `/optitab`, `/instagram`, `/facebook`, `/tiktok`, `/youtube`, `/snapchat`) | Page « lien en bio » (témoignages) |
+| 🟡 | `/start` (aussi `/commencer`) | Page d'arrivée publicité |
+| 🟡 | `/plateforme-maths` | Page d'arrivée « plateforme de maths » |
+| 🟡 | `/bases-methode` | Page d'arrivée « bases et méthode » |
+| 🟡 | `/exercices-corriges` (aussi `/exercices-corriges-pas-a-pas`) | Page d'arrivée « exercices corrigés » |
+| 🟡 | `/diagnostic-maths-gratuit` | Diagnostic gratuit |
+| 🟡 | `/diagnostic-merci` | Remerciement après le diagnostic |
+| 🟡 | `/avis` (aussi `/optitab`, `/instagram`, `/facebook`, `/tiktok`, `/youtube`, `/snapchat`) | Page « lien en bio » (témoignages) |
 
 ### Paiement et compte
 
 | État | Adresse | Page |
 |:---:|---|---|
-| ⚪ | `/paiement` | Régler un cours particulier |
-| ⚪ | `/paiement/merci` | Confirmation de paiement d'un cours |
-| ⚪ | `/billing/success` | Confirmation d'abonnement |
-| ⚪ | `/billing/cancel` | Paiement d'abonnement annulé |
+| 🟡 | `/paiement` | Régler un cours particulier |
+| 🟡 | `/paiement/merci` | Confirmation de paiement d'un cours |
+| 🟡 | `/billing/success` | Confirmation d'abonnement |
+| 🟡 | `/billing/cancel` | Paiement d'abonnement annulé |
 | ⚪ | `/password-reset` | Nouveau mot de passe |
 
 ### Divers
@@ -193,13 +195,11 @@ Depuis le 3 novembre 2026, toutes ces pages s'affichent dans le **nouvel espace*
 | ⚪ | Fenêtres de connexion, d'inscription et de mot de passe oublié | Tout le site |
 | ⚪ | Bouton WhatsApp flottant | Pages hors connexion |
 
-## Prochaines pages à passer au nouveau design
+## Prochaines étapes possibles
 
-Par ordre d'importance pour l'abonnement :
+Tout le site a désormais le nouveau cadre et les couleurs OptiTAB. Pour aller plus loin, page par page :
 
-1. Ressources gratuites (accueil, listes, et pages d'un cours, d'un exercice, d'une fiche)
-2. Fenêtres de connexion et d'inscription
-3. Contenu des pages Mon compte, Abonnement et Historique (le cadre est déjà le nouveau)
-4. Pages de paiement et de confirmation (dont `/paiement` pour régler un cours particulier)
-5. Blog (liste et articles)
-6. Pages publicitaires (`/start`, `/plateforme-maths`…)
+1. Contenu des pages publicitaires (`/start`, `/plateforme-maths`, `/bases-methode`, `/exercices-corriges`, diagnostic) au style de l'accueil
+2. Contenu des listes de ressources gratuites et du blog
+3. Mise en page de Mon compte, Abonnement et Historique (couleurs déjà harmonisées)
+4. Page `/password-reset` (nouveau mot de passe)

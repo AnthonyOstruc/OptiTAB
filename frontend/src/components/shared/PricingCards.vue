@@ -73,7 +73,7 @@
               <svg class="feature-icon" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
               </svg>
-              {{ feature }}
+              {{ formatFeature(feature) }}
             </li>
           </ul>
 
@@ -156,6 +156,12 @@ const RECOMMENDED_PLAN_TYPE = 'accompagne'
 // Format francais : virgule decimale et espace insecable avant l'euro.
 const formatPrice = (value) =>
   `${Number(value || 0).toFixed(2).replace('.', ',')} €`
+
+// Les avantages saisis en base n'ont pas toujours de majuscule initiale.
+const formatFeature = (text) => {
+  const value = String(text || '').trim()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+}
 
 const normalizePeriod = (period) => {
   if (!period) return ''
@@ -354,7 +360,7 @@ onMounted(async () => {
   width: 40px;
   height: 40px;
   border: 3px solid #e5e5e5;
-  border-top-color: #2563eb;
+  border-top-color: #1b3c8e;
   border-radius: 50%;
   margin: 0 auto 1rem;
   animation: spin 0.8s linear infinite;
@@ -401,7 +407,7 @@ onMounted(async () => {
 
 .pricing-tab.active {
   background: white;
-  color: #1e40af;
+  color: #122a66;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -458,19 +464,19 @@ onMounted(async () => {
 }
 
 .pricing-card:hover {
-  border-color: #2563eb;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+  border-color: #1b3c8e;
+  box-shadow: 0 8px 24px rgba(27, 60, 142, 0.12);
   transform: translateY(-4px);
 }
 
 .pricing-card.is-popular {
-  border-color: #2563eb;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+  border-color: #1b3c8e;
+  box-shadow: 0 8px 24px rgba(27, 60, 142, 0.15);
   position: relative;
 }
 
 .pricing-card.is-current {
-  border-color: #10b981;
+  border-color: #3b8544;
 }
 
 .card-badge-area {
@@ -497,7 +503,7 @@ onMounted(async () => {
 }
 
 .badge-savings {
-  background: #10b981;
+  background: #3b8544;
   color: white;
 }
 
@@ -556,7 +562,7 @@ onMounted(async () => {
 .feature-icon {
   width: 20px;
   height: 20px;
-  color: #10b981;
+  color: #3b8544;
   flex-shrink: 0;
   margin-top: 0.1rem;
 }
@@ -568,7 +574,7 @@ onMounted(async () => {
 .card-button {
   width: 100%;
   padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #1b3c8e 0%, #122a66 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -579,9 +585,9 @@ onMounted(async () => {
 }
 
 .card-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #122a66 0%, #122a66 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 12px rgba(27, 60, 142, 0.3);
 }
 
 .card-button:disabled {

@@ -67,7 +67,6 @@ const routes = [
   { path: '/historique-exercices', name: 'ExercisesHistory', component: () => import('@/views/ExercisesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/historique-quiz', name: 'QuizzesHistory', component: () => import('@/views/QuizzesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/calculator', name: 'Calculator', component: () => import('@/views/Calculator.vue') },
-  { path: '/test-filtrage-strict', name: 'TestFiltrageStrict', component: () => import('@/views/TestFiltrageStrict.vue') },
   {
     path: '/admin',
     component: () => import('@/views/admin/AdminLayout.vue'),

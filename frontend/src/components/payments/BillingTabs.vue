@@ -50,8 +50,8 @@ onMounted(() => {
 }
 
 .tab {
-  border: 1px solid #1e40af;
-  background: #2563eb;
+  border: 1px solid #122a66;
+  background: #1b3c8e;
   color: #ffffff;
   padding: 0.6rem 1.2rem;
   border-radius: 999px;
@@ -62,25 +62,25 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.22);
+  box-shadow: 0 6px 14px rgba(27, 60, 142, 0.22);
 }
 
 .tab:hover {
-  background: #1e40af;
-  border-color: #1e40af;
+  background: #122a66;
+  border-color: #122a66;
   transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(30, 64, 175, 0.25);
+  box-shadow: 0 10px 20px rgba(18, 42, 102, 0.25);
 }
 
 .tab.active {
-  background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
-  border-color: #1e40af;
-  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.28);
+  background: linear-gradient(90deg, #1b3c8e 0%, #122a66 100%);
+  border-color: #122a66;
+  box-shadow: 0 12px 26px rgba(27, 60, 142, 0.28);
 }
 
 .tab:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35), 0 8px 20px rgba(30, 64, 175, 0.25);
+  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.35), 0 8px 20px rgba(18, 42, 102, 0.25);
 }
 
 .icon {
@@ -92,7 +92,7 @@ onMounted(() => {
   .tab {
     font-size: 0.9rem;
     padding: 0.5rem 0.9rem;
-    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+    box-shadow: 0 4px 10px rgba(27, 60, 142, 0.18);
   }
 }
 </style>

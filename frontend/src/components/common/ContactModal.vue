@@ -506,7 +506,7 @@ onBeforeUnmount(() => {
 
 .btn-submit {
   padding: 0.65rem 1.25rem;
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
+  background: linear-gradient(135deg, #2a38b7 0%, #1b3c8e 100%);
   color: white;
   border: none;
   border-radius: 8px;

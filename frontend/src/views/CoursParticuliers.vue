@@ -1,2621 +1,1177 @@
 <template>
-  <component :is="layoutComponent">
-    <div class="cours-particuliers-zoom" :style="coursParticuliersZoomStyle">
-      <div
-        ref="coursParticuliersContentRef"
-        class="cours-particuliers-page"
-        :class="{ 'public-layout': !isAuthenticated }"
-      >
-      <!-- Hero Section -->
-      <section class="hero-section">
-        <div class="hero-decoration">
-          <div class="decoration-circle circle-1"></div>
-          <div class="decoration-circle circle-2"></div>
-        </div>
-        
-        <div class="hero-content">
-          <div class="hero-badge">
-            <span class="badge-icon">🎓</span>
-            <span>Cours particuliers en ligne — Maths • Physique‑Chimie • Informatique</span>
-          </div>
-          
-          <h1 class="hero-title">
-            Cours particuliers de maths <span class="title-highlight">en ligne</span>
-          </h1>
-          
-          <p class="hero-subtitle">
-            Soutien scolaire en ligne : cours particuliers et aide aux devoirs (maths, physique-chimie, informatique) du collège au lycée, en prépa et à l’université.
-          </p>
-          
-          <div class="hero-cta">
-            <button @click="openContactModal('Réserver un cours')" class="btn-primary">
-              Réserver un cours
-            </button>
-            <a href="#professeur" class="btn-secondary" @click.prevent="scrollToProfesseur">
-              Rencontrer le professeur
-            </a>
-          </div>
-          
-          <div class="hero-reviews">
-            <GoogleReviewsCompact />
-          </div>
-        </div>
-      </section>
-
-      <!-- Trust Indicators -->
-      <section class="trust-section">
-        <div class="trust-container">
-          <div class="trust-item">
-            <div class="trust-icon">📅</div>
-            <div class="trust-content">
-              <span class="trust-number">15+</span>
-              <span class="trust-label">Années d'expérience</span>
-            </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon">🏆</div>
-            <div class="trust-content">
-              <span class="trust-number">95%</span>
-              <span class="trust-label">Taux de réussite</span>
-            </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon">👥</div>
-            <div class="trust-content">
-              <span class="trust-number">300+</span>
-              <span class="trust-label">Élèves accompagnés</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Features Section -->
-      <section class="features-section">
-        <div class="section-container">
-          <div class="section-header">
-            <h2 class="section-title">Pourquoi choisir nos cours particuliers ?</h2>
-            <p class="section-subtitle">
-              Un accompagnement complet pour garantir votre réussite
+  <!-- Visiteur : gabarit vitrine. Élève connecté : la page s'affiche dans son espace. -->
+  <component :is="isAuthenticated ? DashboardLayout : VitrineLayout">
+    <div class="vt-scope cp">
+      <!-- 1. Accroche -->
+      <section class="vt-page-hero cp-hero">
+        <div class="vt-container cp-hero__inner">
+          <div class="cp-hero__copy">
+            <h1 class="cp-hero__h1">
+              <span class="vt-kicker cp-hero__kicker">Cours particuliers en ligne · maths, physique-chimie, informatique</span>
+              <span class="vt-sr-only"> – </span>
+              <span class="vt-page-hero__title cp-hero__title">Un prof qui explique, <em>jusqu’à ce que ce soit clair.</em></span>
+            </h1>
+            <p class="vt-page-hero__lead">
+              Je m’appelle Anthony. Ingénieur diplômé de l’<span class="vt-nowrap">ISAE-SUPAERO</span>, j’accompagne depuis plus de 15 ans des élèves
+              du collège à la prépa. En visio, à votre rythme, avec un suivi même entre les cours.
             </p>
-          </div>
-
-          <div class="features-grid">
-            <div class="feature-card">
-              <div class="feature-icon">👨‍🏫</div>
-              <h3 class="feature-title">Professeur expérimenté</h3>
-              <p class="feature-desc">
-                Diplômé d'une Grande École d'Ingénieur avec 15+ années d'enseignement réussies.
-              </p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon">🎯</div>
-              <h3 class="feature-title">Méthode personnalisée</h3>
-              <p class="feature-desc">
-                Programme adapté à votre niveau et vos objectifs pour progresser efficacement.
-              </p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon">📈</div>
-              <h3 class="feature-title">Résultats mesurables</h3>
-              <p class="feature-desc">
-                Suivi régulier de vos progrès avec évaluations et feedback personnalisés.
-              </p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon">⏰</div>
-              <h3 class="feature-title">Horaires flexibles</h3>
-              <p class="feature-desc">
-                Cours adaptés à votre emploi du temps, 100% en ligne.
-              </p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon">💡</div>
-              <h3 class="feature-title">Support complet</h3>
-              <p class="feature-desc">
-                Accès aux ressources OptiTAB et support entre les cours pour vos questions.
-              </p>
-            </div>
-
-            <div class="feature-card">
-              <div class="feature-icon">🎓</div>
-              <h3 class="feature-title">Préparation aux examens</h3>
-              <p class="feature-desc">
-                Entraînement ciblé pour réussir vos contrôles, examens et concours avec confiance.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Professeur Section -->
-      <section class="professeur-section" id="professeur">
-        <div class="section-container">
-          <div class="professeur-card">
-            <div class="professeur-header-section">
-              <div class="professeur-image-wrapper">
-                <img 
-                  src="/images/professeurs/anthony.jpg" 
-                  alt="Anthony - Professeur de Mathématiques, Physique et Informatique"
-                  class="professeur-image"
-                />
-              </div>
-              <div class="professeur-header">
-                <h2 class="professeur-name">Anthony</h2>
-                <p class="professeur-role">Fondateur & Professeur Expert</p>
-              </div>
-              <div class="professeur-badge">Fondateur</div>
-            </div>
-            
-            <div class="professeur-content">
-
-              <div class="professeur-specialties">
-                <span class="specialty-tag">Mathématiques</span>
-                <span class="specialty-tag">Physique</span>
-                <span class="specialty-tag">Informatique</span>
-                <span class="specialty-tag">Chimie</span>
-              </div>
-
-              <div class="professeur-description">
-                <h3 class="description-title">Présentation</h3>
-                <p>
-                  Diplômé de l'ISAE-SUPAERO et de l'École Supérieure d'Ingénieurs ESIB, ingénieur calculateur de structures dans un bureau d'études reconnu, 
-                  je mets mon expertise et plus de 15 ans d'expérience en enseignement privé à votre service. Mon objectif ? Vous accompagner 
-                  vers l'excellence et vous ouvrir les portes des meilleures écoles.
-                </p>
-                <p>
-                  Je dispense des cours particuliers depuis maintenant plusieurs années. Avant de lancer OptiTAB, j'ai d'abord été professeur particulier au sein de plusieurs plateformes comme <a href="https://groupe-reussite.fr/" target="_blank" rel="noopener noreferrer" class="inline-link">Groupe Réussite</a>. J'y accompagnais des élèves de tous niveaux — du collège jusqu'aux classes préparatoires en passant par le lycée — en mathématiques et en physique-chimie. J'étais libre du choix de mes tarifs, de mes matières, de mon emploi du temps et de ma manière de travailler.
-                </p>
-                <p>
-                  L'accompagnement y était vraiment très qualitatif, mais j'ai souhaité aller encore plus loin en créant OptiTAB afin d'aider les élèves, quel que soit leur parcours, à progresser durablement et à révéler leur plein potentiel.
-                </p>
-                <p>
-                  Que vous soyez en prépa ou au bac, j'adapte mon approche à votre niveau et vos objectifs pour maximiser vos chances de réussite.
-                </p>
-                <p>
-                  Ensemble, transformons vos difficultés en forces et atteignons vos objectifs académiques avec confiance.
-                </p>
-              </div>
-
-              <div class="professeur-highlights">
-                <div class="highlight-item">
-                  <span class="highlight-icon">🎓</span>
-                  <span class="highlight-text">Diplômé Grande École d'Ingénieur</span>
-                </div>
-                <div class="highlight-item">
-                  <span class="highlight-icon">📊</span>
-                  <span class="highlight-text">300+ élèves accompagnés avec succès</span>
-                </div>
-                <div class="highlight-item">
-                  <span class="highlight-icon">⭐</span>
-                  <span class="highlight-text">95% de taux de réussite aux examens</span>
-                </div>
-                <div class="highlight-item">
-                  <span class="highlight-icon">💼</span>
-                  <span class="highlight-text">15+ années d'expérience dans l'enseignement</span>
-                </div>
-              </div>
-
-              <div class="professeur-verification">
-                <p class="verification-text">
-                  Vérifiez mon identité et mes qualifications pour vous rassurer :
-                </p>
-                <div class="professeur-social-links">
-                  <a href="https://www.linkedin.com/in/anthony-tabet-a34aa6192/" target="_blank" rel="noopener noreferrer" class="social-link linkedin-link">
-                    <svg class="social-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="currentColor"/>
-                    </svg>
-                    <span class="social-text">LinkedIn</span>
-                  </a>
-                  <a href="https://groupe-reussite.fr/cours-particuliers-cours-particuliers-niveaux-ligne-domicile-3452/" target="_blank" rel="noopener noreferrer" class="social-link groupe-link">
-                    <span class="social-icon">👥</span>
-                    <span class="social-text">Groupe Réussite</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Méthodologie Section -->
-      <section class="methodologie-section">
-        <div class="section-container">
-          <div class="section-header">
-            <h2 class="section-title">Méthodologie</h2>
-            <p class="section-subtitle">
-              Une approche pédagogique centrée sur vos besoins individuels
-            </p>
-          </div>
-
-          <div class="methodologie-content">
-            <p class="methodologie-intro">
-              Je centre mon approche pédagogique sur les besoins individuels des élèves, en rendant les concepts de mathématiques, 
-              de physique et d'informatique captivants pour tous. En combinant des méthodes innovantes, une adaptation personnalisée 
-              et un engagement constant, je guide mes élèves vers une maîtrise approfondie des matières enseignées.
-            </p>
-
-            <div class="methodologie-grid">
-              <div class="methodologie-card">
-                <div class="methodologie-icon">🎯</div>
-                <h3 class="methodologie-title">Adaptation personnalisée</h3>
-                <p class="methodologie-desc">
-                  J'adapte mes cours aux besoins individuels de chaque élève pour assurer une compréhension maximale.
-                </p>
-              </div>
-
-              <div class="methodologie-card">
-                <div class="methodologie-icon">💡</div>
-                <h3 class="methodologie-title">Simplicité et clarté</h3>
-                <p class="methodologie-desc">
-                  Je simplifie les concepts complexes pour les rendre accessibles et faciles à comprendre.
-                </p>
-              </div>
-
-              <div class="methodologie-card">
-                <div class="methodologie-icon">🤝</div>
-                <h3 class="methodologie-title">Engagement interactif</h3>
-                <p class="methodologie-desc">
-                  J'encourage la participation active des élèves pour maintenir leur intérêt et favoriser la compréhension.
-                </p>
-              </div>
-
-              <div class="methodologie-card">
-                <div class="methodologie-icon">📝</div>
-                <h3 class="methodologie-title">Feedback régulier</h3>
-                <p class="methodologie-desc">
-                  Je fournis un feedback constructif pour aider les élèves à identifier leurs forces et leurs faiblesses.
-                </p>
-              </div>
-
-              <div class="methodologie-card">
-                <div class="methodologie-icon">🌟</div>
-                <h3 class="methodologie-title">Encouragement et soutien</h3>
-                <p class="methodologie-desc">
-                  Je crée un environnement positif où les erreurs sont considérées comme des occasions d'apprentissage et où le soutien est toujours disponible.
-                </p>
-              </div>
-
-              <div class="methodologie-card">
-                <div class="methodologie-icon">🎯</div>
-                <h3 class="methodologie-title">Objectifs clairs</h3>
-                <p class="methodologie-desc">
-                  Ensemble, nous fixons des objectifs spécifiques et mesurables pour suivre les progrès.
-                </p>
-              </div>
-
-              <div class="methodologie-card methodologie-card-featured">
-                <div class="methodologie-icon">⏰</div>
-                <h3 class="methodologie-title">Disponibilité 7 jours sur 7</h3>
-                <p class="methodologie-desc">
-                  Les élèves peuvent me contacter à tout moment pour des questions ou des clarifications. Je m'engage à répondre dans les 3h pour un soutien continu en dehors des cours.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tarifs Section -->
-      <section class="tarifs-section">
-        <div class="section-container">
-          <!-- Intro Section -->
-          <div class="section-header">
-            <h2 class="section-title">Tarifs clairs, adaptés à votre niveau</h2>
-            <p class="section-subtitle">
-              Tarifs adaptés à votre niveau. Formule à l'heure ou packs d'heures à prix réduit. Sans engagement.
-            </p>
-          </div>
-
-          <!-- Tabs -->
-          <div class="tarifs-tabs">
-            <button 
-              v-for="tab in tarifTabs" 
-              :key="tab.id"
-              @click="activeTab = tab.id"
-              :class="['tarif-tab', { 'active': activeTab === tab.id }]"
-            >
-              {{ tab.label }}
-            </button>
-          </div>
-
-          <!-- Pricing Grid -->
-          <div class="tarifs-grid">
-            <!-- À l'heure -->
-            <article class="tarif-card">
-              <div class="card-header">
-                <h3 class="plan-title">À l'heure</h3>
-                <p class="plan-subtitle">Flexibilité totale</p>
-              </div>
-              
-              <div class="price-section">
-                <div class="price">
-                  <span class="amount">{{ getCurrentPrice('hourly') }}€</span>
-                  <span class="period">/ heure</span>
-                </div>
-                <p class="current-level-info">{{ getCurrentLevelLabel() }}</p>
-              </div>
-              
-              <ul class="features">
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Cours ponctuel quand vous en avez besoin</span>
-                </li>
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Idéal pour rattraper une notion</span>
-                </li>
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Sans engagement</span>
-                </li>
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Paiement à la séance</span>
-                </li>
-              </ul>
-              
-              <button @click="openContactModal('Réserver un cours')" class="cta-btn">
-                Réserver un cours
+            <div class="vt-page-hero__actions">
+              <button type="button" class="vt-btn vt-btn--primary" data-cta-name="tutoring_contact" data-cta-location="hero" @click="scrollTo('reserver')">
+                Demander un premier échange gratuit
+                <ArrowRightIcon aria-hidden="true" />
               </button>
-              
-              <p class="security-note">🔒 Pas de carte bancaire</p>
-            </article>
+              <button type="button" class="vt-btn vt-btn--ghost" @click="scrollTo('tarifs')">Voir les tarifs</button>
+            </div>
+            <ul class="vt-page-hero__reassure">
+              <li>Premier échange gratuit</li>
+              <li>Sans engagement</li>
+              <li>Réponse sous 24&nbsp;h</li>
+            </ul>
+          </div>
 
-            <!-- Packs -->
-            <article class="tarif-card tarif-card-recommended">
-              <div class="badge">⭐ Le plus populaire</div>
-              
-              <div class="card-header">
-                <h3 class="plan-title">Packs</h3>
-                <p class="plan-subtitle">Meilleur prix et visibilité</p>
-              </div>
-              
-              <div class="price-section">
-                <div class="price">
-                  <span class="price-from">À partir de</span>
-                  <span class="amount">{{ getPackPricePerHour(20) }}€</span>
-                  <span class="period">/ heure</span>
-                </div>
-                <p class="pack-info">{{ getCurrentLevelLabel() }}</p>
-                <div class="packs-list">
-                  <div class="pack-item">
-                    <div class="pack-info-left">
-                      <span class="pack-hours">Pack 5h</span>
-                      <span class="pack-per-hour">{{ getPackPricePerHour(5) }}€ / heure</span>
-                    </div>
-                    <span class="pack-price">{{ getPackPrice(5) }}€</span>
-                  </div>
-                  <div class="pack-item">
-                    <div class="pack-info-left">
-                      <span class="pack-hours">Pack 10h</span>
-                      <span class="pack-per-hour">{{ getPackPricePerHour(10) }}€ / heure</span>
-                    </div>
-                    <span class="pack-price">{{ getPackPrice(10) }}€</span>
-                  </div>
-                  <div class="pack-item">
-                    <div class="pack-info-left">
-                      <span class="pack-hours">Pack 20h</span>
-                      <span class="pack-per-hour">{{ getPackPricePerHour(20) }}€ / heure</span>
-                    </div>
-                    <span class="pack-price">{{ getPackPrice(20) }}€</span>
-                  </div>
-                </div>
-                <p class="pack-note">(heures à utiliser dans les 6 mois qui viennent)</p>
-              </div>
-              
-              <ul class="features">
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Choisissez 5, 10 ou 20 heures</span>
-                </li>
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Tarif dégressif</span>
-                </li>
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Plan personnalisé et ressources</span>
-                </li>
-                <li>
-                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>Heures à utiliser dans les 6 mois qui viennent</span>
-                </li>
+          <figure class="cp-portrait">
+            <div class="cp-portrait__photo">
+              <img
+                src="/images/professeurs/anthony.jpg"
+                alt="Anthony Tabet, professeur de mathématiques, physique-chimie et informatique"
+                width="479"
+                height="521"
+                fetchpriority="high"
+              />
+            </div>
+            <figcaption class="cp-portrait__card">
+              <p class="cp-portrait__name">Anthony Tabet</p>
+              <p class="cp-portrait__role">Fondateur d’OptiTAB · Ingénieur <span class="vt-nowrap">ISAE-SUPAERO</span></p>
+              <ul class="cp-portrait__tags">
+                <li>Maths</li>
+                <li>Physique-chimie</li>
+                <li>Informatique</li>
               </ul>
-              
-              <button @click="openContactModal('Choisir un pack')" class="cta-btn">
-                Choisir un pack
-              </button>
-              
-              <p class="security-note">🔒 Pas de carte bancaire</p>
+              <a :href="GOOGLE_REVIEWS_URL" target="_blank" rel="noopener noreferrer" class="cp-portrait__rating">
+                <span class="cp-stars" aria-hidden="true">★★★★★</span>
+                <span><strong>5/5</strong> sur Google</span>
+              </a>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 2. Chiffres -->
+      <section class="cp-stats" aria-label="En quelques chiffres">
+        <div class="vt-container">
+          <ul class="cp-stats__list">
+            <li v-for="stat in coursStats" :key="stat.libelle">
+              <span class="cp-stats__value">{{ stat.valeur }}</span>
+              <span class="cp-stats__label">{{ stat.libelle }}</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 3. Pour qui -->
+      <section class="vt-section">
+        <div class="vt-container">
+          <header v-reveal class="vt-heading">
+            <p class="vt-kicker">Pour qui&nbsp;?</p>
+            <h2 class="vt-title">Quelle que soit la situation, on part de là où vous en êtes</h2>
+            <p class="vt-lead">Du collège à la prépa et à l’université, en mathématiques, physique-chimie et informatique.</p>
+          </header>
+          <div class="cp-who">
+            <article v-for="(item, i) in coursPourQui" :key="item.titre" v-reveal="i * 80" class="vt-card cp-who__card">
+              <span class="cp-icon"><component :is="ICONES[item.icone]" aria-hidden="true" /></span>
+              <h3 class="cp-who__title">{{ item.titre }}</h3>
+              <p class="cp-who__text">{{ item.texte }}</p>
             </article>
           </div>
+        </div>
+      </section>
 
-          <!-- Micro-copy rassurante -->
-          <div class="tarifs-reassurance">
+      <!-- 4. Le professeur -->
+      <section id="professeur" class="vt-section vt-section--soft">
+        <div class="vt-container cp-prof">
+          <div v-reveal class="cp-prof__aside">
+            <div class="cp-prof__photo">
+              <img src="/images/professeurs/anthony.jpg" alt="" width="479" height="521" loading="lazy" />
+            </div>
+            <blockquote class="cp-prof__quote">
+              «&nbsp;Ensemble, transformons vos difficultés en forces et atteignons vos objectifs avec confiance. »
+            </blockquote>
+          </div>
+
+          <div v-reveal="100" class="cp-prof__copy">
+            <p class="vt-kicker">Votre professeur</p>
+            <h2 class="vt-title">Ingénieur avant d’être prof, et passionné par la transmission</h2>
             <p>
-              Aucun frais caché • Sans engagement • Facture fournie • 
-              Variables selon matière et niveau • Remise fratrie/pack possible
+              Diplômé de l’<span class="vt-nowrap">ISAE-SUPAERO</span> et de l’ESIB, je suis ingénieur calculateur de structures dans un bureau d’études.
+              J’utilise chaque jour les maths et la physique que j’enseigne&nbsp;: je sais à quoi elles servent, et comment les
+              rendre concrètes.
+            </p>
+            <p>
+              Depuis plus de 15 ans, je donne des cours particuliers, d’abord sur des plateformes reconnues comme Groupe
+              Réussite, auprès d’élèves du collège à la prépa. J’ai ensuite créé OptiTAB pour aller plus loin&nbsp;: donner à
+              chaque élève une méthode claire et les outils pour progresser durablement, même entre deux cours.
+            </p>
+            <ul class="vt-checks cp-prof__list">
+              <li>Diplômé d’une grande école d’ingénieurs (<span class="vt-nowrap">ISAE-SUPAERO</span>)</li>
+              <li>Plus de 300 élèves accompagnés, du collège à la prépa</li>
+              <li>95 % de réussite aux examens</li>
+              <li>Disponible 7 jours sur 7 pour les questions entre les cours</li>
+            </ul>
+            <p class="cp-prof__verify">
+              Vérifiez mon parcours&nbsp;:
+              <a href="https://www.linkedin.com/in/anthony-tabet-a34aa6192/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              ·
+              <a href="https://groupe-reussite.fr/cours-particuliers-cours-particuliers-niveaux-ligne-domicile-3452/" target="_blank" rel="noopener noreferrer">Groupe Réussite</a>
             </p>
           </div>
-
         </div>
       </section>
 
-      <!-- Process Section -->
-      <section class="process-section">
-        <div class="section-container">
-          <div class="section-header">
-            <h2 class="section-title">Comment ça se passe ?</h2>
-            <p class="section-subtitle">
-              Un processus simple en 3 étapes pour commencer vos cours
+      <!-- 5. Le déroulement, étape par étape -->
+      <section id="deroulement" class="vt-section">
+        <div class="vt-container cp-flow">
+          <header v-reveal class="cp-flow__intro">
+            <p class="vt-kicker">Comment ça se passe</p>
+            <h2 class="vt-title">Du premier échange aux premiers progrès</h2>
+            <p class="vt-lead">
+              Un accompagnement simple et suivi, étape par étape. Vous savez toujours où en est l’élève et ce qui vient
+              ensuite.
             </p>
-          </div>
+            <button type="button" class="vt-btn vt-btn--primary cp-flow__cta" @click="scrollTo('reserver')">
+              Commencer par l’étape 1
+              <ArrowRightIcon aria-hidden="true" />
+            </button>
+          </header>
+          <VitrineTimeline v-reveal="100" :etapes="coursEtapes" />
+        </div>
+      </section>
 
-          <div class="process-grid">
-            <div class="process-card">
-              <div class="process-icon">🤝</div>
-              <h3 class="process-title">Premier contact</h3>
-              <p class="process-desc">
-                Échange personnalisé pour comprendre vos besoins et définir vos objectifs.
-              </p>
-            </div>
-
-            <div class="process-card">
-              <div class="process-icon">📋</div>
-              <h3 class="process-title">Programme personnalisé</h3>
-              <p class="process-desc">
-                Plan de cours adapté à votre rythme avec des objectifs clairs.
-              </p>
-            </div>
-
-            <div class="process-card">
-              <div class="process-icon">📈</div>
-              <h3 class="process-title">Cours & Progression</h3>
-              <p class="process-desc">
-                Sessions régulières avec suivi continu et feedback personnalisé.
-              </p>
-            </div>
+      <!-- 6. La méthode -->
+      <section class="vt-section vt-section--soft cp-method">
+        <div class="vt-container">
+          <header v-reveal class="vt-heading">
+            <p class="vt-kicker">Ma façon d’enseigner</p>
+            <h2 class="vt-title">Comprendre, s’entraîner, gagner en confiance</h2>
+          </header>
+          <div class="cp-method__grid">
+            <article v-for="(item, i) in coursMethode" :key="item.titre" v-reveal="i * 80" class="cp-method__item">
+              <span class="cp-icon cp-icon--green"><component :is="ICONES[item.icone]" aria-hidden="true" /></span>
+              <h3 class="cp-method__title">{{ item.titre }}</h3>
+              <p class="cp-method__text">{{ item.texte }}</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <!-- CTA Final -->
-      <section class="cta-final-section">
-        <div class="cta-final-container">
-          <p class="cta-final-subtitle">
-            Contactez-nous dès maintenant pour discuter de vos besoins et découvrir notre méthode personnalisée.
-          </p>
-          <div class="cta-final-buttons">
-            <button @click="openContactModal('Réserver un cours / pack')" class="btn-cta-primary">
-              Premier contact
-            </button>
-            <button @click="openContactModal('Demande d\'information')" class="btn-cta-secondary">
-              Poser une question
+      <!-- 7. Tarifs -->
+      <section id="tarifs" class="vt-section">
+        <div class="vt-container">
+          <header v-reveal class="vt-heading">
+            <p class="vt-kicker">Tarifs</p>
+            <h2 class="vt-title">Des tarifs clairs, selon le niveau</h2>
+            <p class="vt-lead">À l’heure, ou en pack d’heures pour un tarif plus doux. Sans engagement.</p>
+          </header>
+
+          <div v-reveal class="cp-levels" role="tablist" aria-label="Niveau">
+            <button
+              v-for="niveau in coursTarifs"
+              :key="niveau.id"
+              type="button"
+              role="tab"
+              :aria-selected="niveau.id === niveauId ? 'true' : 'false'"
+              :class="['cp-levels__tab', { 'is-active': niveau.id === niveauId }]"
+              @click="niveauId = niveau.id"
+            >
+              {{ niveau.label }}
             </button>
           </div>
-          <p class="cta-final-note">
-            🔒 Aucune carte bancaire requise • Sans engagement
+
+          <div v-reveal :class="['cp-prices', { 'cp-prices--3': vipPlan }]">
+            <article class="vt-card cp-price">
+              <p class="cp-price__name">À l’heure</p>
+              <p class="cp-price__hint">Pour un besoin ponctuel</p>
+              <p class="cp-price__amount"><strong>{{ tarif.heure }}&nbsp;€</strong><span>/ heure</span></p>
+              <ul class="vt-checks cp-price__list">
+                <li>Une séance quand vous en avez besoin</li>
+                <li>Idéal pour rattraper une notion</li>
+                <li>Réglée séance par séance</li>
+              </ul>
+              <button type="button" class="vt-btn vt-btn--ghost vt-btn--block" @click="scrollTo('reserver')">Réserver une séance</button>
+            </article>
+
+            <article class="vt-card cp-price cp-price--featured">
+              <span class="cp-price__flag">Le plus avantageux</span>
+              <p class="cp-price__name">Pack d’heures</p>
+              <p class="cp-price__hint">Pour un suivi régulier</p>
+              <p class="cp-price__amount"><span>dès</span><strong>{{ tarif.packs[20] }}&nbsp;€</strong><span>/ heure</span></p>
+              <table class="cp-packs">
+                <tbody>
+                  <tr v-for="heures in [5, 10, 20]" :key="heures">
+                    <th scope="row">{{ heures }}&nbsp;h</th>
+                    <td>{{ tarif.packs[heures] }}&nbsp;€/h</td>
+                    <td class="cp-packs__total">{{ heures * tarif.packs[heures] }}&nbsp;€</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="cp-price__save">
+                Soit <strong>{{ 20 * (tarif.heure - tarif.packs[20]) }}&nbsp;€ d’économie</strong> sur 20&nbsp;h par rapport à l’heure.
+              </p>
+              <button type="button" class="vt-btn vt-btn--primary vt-btn--block" @click="scrollTo('reserver')">Choisir un pack</button>
+            </article>
+
+            <article v-if="vipPlan" class="vt-card cp-price">
+              <p class="cp-price__name">{{ vipPlan.name }}</p>
+              <p class="cp-price__hint">Cours + plateforme, chaque mois</p>
+              <p class="cp-price__amount"><strong>{{ formatEur(vipPlan.price) }}</strong><span>/ mois</span></p>
+              <ul class="vt-checks cp-price__list">
+                <li v-for="feature in vipFeatures" :key="feature">{{ feature }}</li>
+              </ul>
+              <router-link to="/tarifs" class="vt-btn vt-btn--ghost vt-btn--block">Voir la formule</router-link>
+            </article>
+          </div>
+
+          <ul class="cp-price-notes">
+            <li>Heures de pack valables 6 mois</li>
+            <li>Facture fournie</li>
+            <li>Remise possible pour les frères et sœurs</li>
+            <li>Paiement sécurisé en ligne</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 8. Avis -->
+      <section v-if="shots.length" class="vt-section vt-section--soft">
+        <div class="vt-container">
+          <header v-reveal class="vt-heading">
+            <p class="vt-kicker">Ils en parlent</p>
+            <h2 class="vt-title">Des messages reçus après les résultats</h2>
+          </header>
+          <div v-reveal :class="['cp-shots', `cp-shots--${Math.min(shots.length, 3)}`]">
+            <TestimonialShot v-for="(shot, i) in shots.slice(0, 3)" :key="shot.id" :testimonial="shot" @open="openShot(i)" />
+          </div>
+          <p class="cp-shots__more">
+            <a :href="GOOGLE_REVIEWS_URL" target="_blank" rel="noopener noreferrer">
+              <span class="cp-stars" aria-hidden="true">★★★★★</span>
+              Voir tous les avis sur Google
+            </a>
           </p>
         </div>
       </section>
-      </div>
+
+      <!-- 9. Questions (fond gris si les avis sont masqués, pour garder l'alternance) -->
+      <section :class="['vt-section', { 'vt-section--soft': !shots.length }]">
+        <div class="vt-container cp-faq">
+          <header v-reveal class="cp-faq__intro">
+            <p class="vt-kicker">Questions fréquentes</p>
+            <h2 class="vt-title">Avant de commencer</h2>
+          </header>
+          <VitrineFaqList v-reveal="100" :items="coursFaq" />
+        </div>
+      </section>
+
+      <!-- 10. Réserver -->
+      <section id="reserver" class="vt-section cp-book">
+        <div class="vt-container cp-book__inner">
+          <div v-reveal class="cp-book__copy">
+            <p class="vt-kicker cp-book__kicker">Étape 1</p>
+            <h2 class="vt-title cp-book__title">Parlons de la situation de l’élève</h2>
+            <p class="cp-book__text">Le premier échange est gratuit et sans engagement. Voici ce qui se passe ensuite&nbsp;:</p>
+            <ol class="cp-book__steps">
+              <li><span>1</span>Vous remplissez ce formulaire (2 minutes).</li>
+              <li><span>2</span>Je vous recontacte sous 24&nbsp;h.</li>
+              <li><span>3</span>Nous faisons le point ensemble et fixons la première séance.</li>
+            </ol>
+            <div class="cp-book__alt">
+              <p>Vous préférez écrire directement&nbsp;?</p>
+              <a :href="whatsappUrl" target="_blank" rel="noopener noreferrer" data-cta-name="whatsapp" data-cta-location="tutoring_book">
+                <img src="/icons/whatsapp.svg" alt="" width="18" height="18" />
+                WhatsApp · {{ vitrineContact.whatsappAffiche }}
+              </a>
+              <a :href="`mailto:${vitrineContact.email}`">
+                <EnvelopeIcon aria-hidden="true" />
+                {{ vitrineContact.email }}
+              </a>
+            </div>
+          </div>
+          <div v-reveal="100" class="vt-card cp-book__form">
+            <VitrineContactForm mode="cours" :niveau-initial="tarif.formLevel" />
+          </div>
+        </div>
+      </section>
     </div>
-    
-    <!-- Bouton WhatsApp -->
-    <WhatsappChatButton
-      phone="33764040251"
-      message="Bonjour, j'aimerais en savoir plus sur les cours particuliers OptiTAB !"
-      tooltip="Questions ? Contactez-nous sur WhatsApp !"
-    />
-    
-    <!-- Modal de contact -->
-    <ContactModal 
-      :isOpen="isContactModalOpen" 
-      :initialSubject="contactModalSubject"
-      @close="closeContactModal"
-      @success="handleContactSuccess"
+
+    <ScreenshotLightbox
+      :open="lightboxOpen"
+      :items="shots"
+      :index="lightboxIndex"
+      @close="lightboxOpen = false"
+      @update:index="lightboxIndex = $event"
     />
   </component>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import {
+  ArrowRightIcon,
+  EnvelopeIcon,
+  PuzzlePieceIcon,
+  CalendarDaysIcon,
+  RocketLaunchIcon,
+  FaceSmileIcon,
+  AdjustmentsHorizontalIcon,
+  LightBulbIcon,
+  ChatBubbleLeftRightIcon,
+  FlagIcon
+} from '@heroicons/vue/24/outline'
+import VitrineLayout from '@/components/vitrine/VitrineLayout.vue'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
-import MainLayout from '@/components/layout/MainLayout.vue'
-import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
-import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
-import ContactModal from '@/components/common/ContactModal.vue'
+import VitrineTimeline from '@/components/vitrine/VitrineTimeline.vue'
+import VitrineFaqList from '@/components/vitrine/VitrineFaqList.vue'
+import VitrineContactForm from '@/components/vitrine/VitrineContactForm.vue'
+import TestimonialShot from '@/components/landing/TestimonialShot.vue'
+import ScreenshotLightbox from '@/components/landing/ScreenshotLightbox.vue'
+import { vReveal } from '@/components/vitrine/reveal'
 import { useUserStore } from '@/stores/user'
-import { useZoom } from '@/composables/useZoom'
+import { getPlans } from '@/api/subscriptions'
+import { getPublishedTestimonials } from '@/api/testimonials'
+import { vitrineContact, GOOGLE_REVIEWS_URL } from '@/config/vitrineContent'
+import {
+  coursStats,
+  coursPourQui,
+  coursEtapes,
+  coursMethode,
+  coursTarifs,
+  coursFaq
+} from '@/config/vitrineCoursParticuliers'
+import '@/styles/vitrine.css'
 
-// Store utilisateur pour vérifier l'authentification
 const userStore = useUserStore()
-
-// Layout dynamique selon l'authentification
 const isAuthenticated = computed(() => userStore.isAuthenticated)
-const layoutComponent = computed(() => isAuthenticated.value ? DashboardLayout : MainLayout)
 
-// Gestion du modal de contact
-const isContactModalOpen = ref(false)
-const contactModalSubject = ref('')
-
-const openContactModal = (subject = '') => {
-  contactModalSubject.value = subject
-  isContactModalOpen.value = true
+const ICONES = {
+  notion: PuzzlePieceIcon,
+  examen: CalendarDaysIcon,
+  prepa: RocketLaunchIcon,
+  confiance: FaceSmileIcon,
+  adapte: AdjustmentsHorizontalIcon,
+  clair: LightBulbIcon,
+  actif: ChatBubbleLeftRightIcon,
+  objectif: FlagIcon
 }
 
-const closeContactModal = () => {
-  isContactModalOpen.value = false
-  contactModalSubject.value = ''
-}
-
-const handleContactSuccess = (message) => {
-  alert(message)
-}
-
-// --- Zoom mobile (même logique que Home) ---
-const coursParticuliersContentRef = ref(null)
-
-function computeCoursParticuliersZoom(width) {
-  if (width <= 800) return 1
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  return 0.8
-}
-
-const {
-  contentHeight,
-  zoomLevel,
-  supportsNativeZoom,
-  detectMobileAndZoomSupport,
-  createZoomStyle,
-  updateViewportWidth,
-  measureContentHeight,
-  setupViewportListener,
-  cleanupViewportListener
-} = useZoom({ computeAutoZoom: computeCoursParticuliersZoom })
-
-const baseCoursParticuliersZoomStyle = createZoomStyle({
-  cssVar: '--cours-particuliers-zoom',
-  heightVar: '--cours-particuliers-content-height',
-  mobileZoomAdjustment: (z) => z
+// Niveau affiché dans les tarifs ; il pré-remplit aussi le formulaire de demande.
+const FORM_LEVEL = { college: 'Collège', lycee: 'Lycée', prepa: 'Prépa ou supérieur' }
+const niveauId = ref('lycee')
+const tarif = computed(() => {
+  const t = coursTarifs.find((item) => item.id === niveauId.value) || coursTarifs[1]
+  return { ...t, formLevel: FORM_LEVEL[t.id] }
 })
 
-// En mode mobile (transform: scale), certains navigateurs peuvent sous-estimer la hauteur et bloquer le scroll.
-// On laisse la hauteur "auto" et on compense l'espace vide avec une marge négative.
-const coursParticuliersZoomStyle = computed(() => {
-  const style = baseCoursParticuliersZoomStyle.value
-  if (zoomLevel.value === 1) {
-    return { ...style, zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto', marginBottom: '' }
-  }
-  if (supportsNativeZoom.value) return style
+const whatsappUrl = `https://wa.me/${vitrineContact.whatsapp}?text=${encodeURIComponent('Bonjour Anthony, j’aimerais des informations sur les cours particuliers.')}`
 
-  const z = Number(zoomLevel.value || 1)
-  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
-    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
-  }
-
-  const marginBottom = -Math.round(contentHeight.value * (1 - z))
-  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
-})
-
-let coursParticuliersResizeObserver = null
-const measureCoursParticuliersHeight = () => {
-  measureContentHeight(coursParticuliersContentRef)
+const scrollTo = (id) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-const handleViewportChange = async () => {
-  updateViewportWidth()
-  await nextTick()
-  measureCoursParticuliersHeight()
+const formatEur = (value) => {
+  const amount = Number(value)
+  if (!Number.isFinite(amount)) return ''
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: Number.isInteger(amount) ? 0 : 2 }).format(amount)
 }
 
-const handleResize = () => {
-  void handleViewportChange()
-}
+// Formule « cours + plateforme » configurée dans l'admin (type « particuliers »).
+const vipPlan = ref(null)
+const vipFeatures = computed(() => (vipPlan.value?.features || []).slice(0, 4))
 
-const handleOrientationChange = () => {
-  setTimeout(() => {
-    void handleViewportChange()
-  }, 200)
-}
-
-// Gestion des onglets de tarifs
-const activeTab = ref('lycee')
-const tarifTabs = [
-  { id: 'college', label: 'Collège' },
-  { id: 'lycee', label: 'Lycée' },
-  { id: 'prepa', label: 'Prépa / Grandes Écoles' }
-]
-
-// Prix selon le niveau et le type de formule
-const prices = {
-  college: {
-    hourly: 35,
-    pack: 30,
-    subscription: 120
-  },
-  lycee: {
-    hourly: 40,
-    pack: 32,
-    subscription: 140
-  },
-  prepa: {
-    hourly: 45,
-    pack: 40,
-    subscription: 180
-  }
-}
-
-function getCurrentPrice(type) {
-  return prices[activeTab.value]?.[type] || 0
-}
-
-function getCurrentLevelLabel() {
-  const labels = {
-    college: 'Collège',
-    lycee: 'Lycée',
-    prepa: 'Prépa / Grandes Écoles'
-  }
-  return labels[activeTab.value] || ''
-}
-
-function getPackPrice(hours, level = null) {
-  const selectedLevel = level || activeTab.value
-  const pricePerHour = getPackPricePerHour(hours, selectedLevel)
-  return Math.round(hours * pricePerHour)
-}
-
-function getPackPricePerHour(hours, level = null) {
-  const selectedLevel = level || activeTab.value
-  
-  // Tarif dégressif : le pack 20h est au prix de base, les autres sont plus chers
-  // Prix fixes par niveau et par nombre d'heures
-  const packPrices = {
-    college: {
-      5: 34,   // Pack 5h = 34€/h
-      10: 32,  // Pack 10h = 32€/h
-      20: 30   // Pack 20h = 30€/h
-    },
-    lycee: {
-      5: 39,   // Pack 5h = 39€/h
-      10: 37,  // Pack 10h = 37€/h
-      20: 35   // Pack 20h = 35€/h
-    },
-    prepa: {
-      5: 44,   // Pack 5h = 44€/h
-      10: 42,  // Pack 10h = 42€/h
-      20: 40   // Pack 20h = 40€/h (base)
-    }
-  }
-  
-  return packPrices[selectedLevel]?.[hours] || prices[selectedLevel]?.pack || 0
-}
-
-function getSubscriptionPrice(coursesPerMonth, level = null) {
-  const selectedLevel = level || activeTab.value
-  const basePrice = prices[selectedLevel]?.subscription || 0
-  // Prix de base pour 4 cours, ajusté selon le nombre de cours
-  if (coursesPerMonth === 4) {
-    return basePrice // 120€ Collège, 140€ Lycée, 180€ Prépa
-  } else if (coursesPerMonth === 8) {
-    // Calcul pour obtenir ~230€ pour Lycée (140 * 1.64 ≈ 230)
-    return Math.round(basePrice * 1.64)
-  } else if (coursesPerMonth === 12) {
-    // Calcul pour obtenir ~330€ pour Lycée (140 * 2.36 ≈ 330)
-    return Math.round(basePrice * 2.36)
-  }
-  return basePrice
-}
-
-function getSubscriptionPricePerHour(coursesPerMonth, level = null) {
-  const totalPrice = getSubscriptionPrice(coursesPerMonth, level)
-  return Math.round(totalPrice / coursesPerMonth)
-}
-
-function getSubscriptionPriceWeekly(coursesPerWeek, level = null) {
-  // Convertir cours par semaine en cours par mois (4 semaines)
-  const coursesPerMonth = coursesPerWeek * 4
-  const monthlyPrice = getSubscriptionPrice(coursesPerMonth, level)
-  // Prix hebdomadaire = prix mensuel / 4
-  return Math.round(monthlyPrice / 4)
-}
-
-watch(activeTab, async () => {
-  await nextTick()
-  measureCoursParticuliersHeight()
-})
-
-function scrollToProfesseur(e) {
-  e.preventDefault()
-  const element = document.getElementById('professeur')
-  if (element) {
-    // Chercher le conteneur scrollable du dashboard
-    const scrollContainer = document.querySelector('.dashboard-main')
-    const offset = 100 // Offset pour le header fixe
-    
-    if (scrollContainer) {
-      // Calculer la position relative au conteneur scrollable
-      const containerRect = scrollContainer.getBoundingClientRect()
-      const elementRect = element.getBoundingClientRect()
-      const offsetPosition = scrollContainer.scrollTop + (elementRect.top - containerRect.top) - offset
-      
-      scrollContainer.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    } else {
-      // Fallback si pas de conteneur dashboard
-      const rect = element.getBoundingClientRect()
-      const offsetPosition = window.pageYOffset + rect.top - offset
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    }
-  }
+// Témoignages publiés depuis l'admin (captures de messages).
+// Section masquée pour l'instant à la demande du propriétaire : repasser à true pour la réafficher.
+const AFFICHER_TEMOIGNAGES = false
+const shots = ref([])
+const lightboxOpen = ref(false)
+const lightboxIndex = ref(0)
+const openShot = (index) => {
+  lightboxIndex.value = index
+  lightboxOpen.value = true
 }
 
 onMounted(async () => {
-  try {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-  } catch (_) {
-    try { window.scrollTo(0, 0) } catch (_) {}
+  const [plansResult, shotsResult] = await Promise.allSettled([
+    getPlans(),
+    AFFICHER_TEMOIGNAGES ? getPublishedTestimonials() : Promise.resolve({ data: [] })
+  ])
+  if (plansResult.status === 'fulfilled') {
+    const plans = plansResult.value?.data?.plans || []
+    vipPlan.value = plans.find((plan) => plan.plan_type === 'particuliers') || null
   }
-
-  detectMobileAndZoomSupport()
-  setupViewportListener()
-
-  await nextTick()
-  measureCoursParticuliersHeight()
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', handleResize, { passive: true })
-    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
-
-    setTimeout(measureCoursParticuliersHeight, 250)
-
-    if (window.ResizeObserver && coursParticuliersContentRef.value) {
-      coursParticuliersResizeObserver = new ResizeObserver(() => {
-        measureCoursParticuliersHeight()
-      })
-      coursParticuliersResizeObserver.observe(coursParticuliersContentRef.value)
-    }
+  if (shotsResult.status === 'fulfilled') {
+    const list = shotsResult.value?.data
+    shots.value = Array.isArray(list) ? list : []
   }
-})
-
-onUnmounted(() => {
-  cleanupViewportListener()
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', handleResize)
-    window.removeEventListener('orientationchange', handleOrientationChange)
-  }
-  coursParticuliersResizeObserver?.disconnect?.()
-  coursParticuliersResizeObserver = null
 })
 </script>
 
 <style scoped>
-/* Variables - mêmes couleurs que le home */
-:root {
-  --primary: #2a38b7;
-  --primary-light: #667eea;
-  --dark: #0f172a;
-  --gray-dark: #475569;
-  --gray: #64748b;
-  --gray-light: #cbd5e1;
-  --gray-lighter: #f1f5f9;
-  --white: #ffffff;
+/* ---------- 1. Accroche ---------- */
+
+.cp-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 56px;
+  align-items: center;
 }
 
-/* Page Container */
-.cours-particuliers-zoom {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
+.cp-hero__h1 {
+  margin: 0;
 }
 
-.cours-particuliers-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 100%);
+.cp-hero__kicker {
+  display: block;
+  margin-bottom: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
 }
 
-/* Ajouter du padding-top quand on utilise le MainLayout (non connecté) */
-.cours-particuliers-page.public-layout {
-  padding-top: 80px;
+.cp-hero__title {
+  display: block;
 }
 
-/* Hero Section - Style comme le home */
-.hero-section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 2rem 60px 2rem;
-  text-align: center;
+.cp-portrait {
   position: relative;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.hero-decoration {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.cp-portrait__photo {
   overflow: hidden;
-  z-index: 0;
-  pointer-events: none;
+  padding: 24px 24px 0;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #fff 0%, #eef2fa 100%);
+  border: 1px solid var(--vt-line);
+  box-shadow: var(--vt-shadow-lg);
 }
 
-.decoration-circle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.8;
+.cp-portrait__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
-.circle-1 {
-  width: 500px;
-  height: 500px;
-  top: -150px;
-  right: -150px;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
-}
-
-.circle-2 {
-  width: 400px;
-  height: 400px;
-  bottom: -100px;
-  left: -100px;
-  background: radial-gradient(circle, rgba(42, 56, 183, 0.06) 0%, transparent 70%);
-}
-
-.hero-content {
+.cp-portrait__card {
   position: relative;
-  z-index: 1;
-  max-width: 900px;
-  margin: 0 auto;
+  margin: -64px 20px 0;
+  padding: 18px 20px;
+  border: 1px solid var(--vt-line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: var(--vt-shadow-lg);
+  text-align: center;
 }
 
-.hero-badge {
+.cp-portrait__name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--vt-ink);
+}
+
+.cp-portrait__role {
+  margin: 2px 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vt-muted);
+}
+
+.cp-portrait__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.cp-portrait__tags li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--vt-navy-50);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vt-navy);
+}
+
+.cp-portrait__rating {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, rgba(42, 56, 183, 0.1), rgba(102, 126, 234, 0.08));
-  border: 1px solid rgba(42, 56, 183, 0.2);
-  border-radius: 50px;
-  padding: 0.6rem 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #2a38b7;
-  margin-bottom: 1.5rem;
-  backdrop-filter: blur(10px);
-}
-
-.badge-icon {
-  font-size: 1.1rem;
-}
-
-.hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: var(--dark);
-  line-height: 1.15;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
-}
-
-.title-highlight {
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: var(--gray-dark);
-  line-height: 1.7;
-  margin-bottom: 2.5rem;
-  max-width: 750px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero-cta {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.btn-primary,
-.btn-cta-primary {
-  display: inline-block;
-  padding: 12px 24px;
-  background: #2563eb;
-  color: #ffffff;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--vt-ink-soft);
   text-decoration: none;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 1.05rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
-  border: none;
-  cursor: pointer;
 }
 
-.btn-primary:hover,
-.btn-cta-primary:hover {
-  background: #1e40af;
-  color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+.cp-portrait__rating:hover strong {
+  text-decoration: underline;
 }
 
-.btn-secondary,
-.btn-cta-secondary {
-  display: inline-block;
-  padding: 12px 24px;
-  background: #ffffff;
-  color: #1e293b;
-  text-decoration: none;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 1.05rem;
-  border: 2px solid #cbd5e1;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-  font-family: inherit;
+.cp-stars {
+  color: #f5b400;
+  letter-spacing: 1px;
 }
 
-.btn-secondary:hover,
-.btn-cta-secondary:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-  color: #0f172a;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+/* ---------- 2. Chiffres ---------- */
+
+.cp-stats {
+  border-bottom: 1px solid var(--vt-line);
 }
 
-.hero-reviews {
-  margin-top: 2rem;
-}
-
-/* Trust Section */
-.trust-section {
-  background: linear-gradient(135deg, #f0f4ff 0%, #f8f9ff 50%, #ffffff 100%);
-  padding: 3rem 2rem;
-  margin-bottom: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.trust-section::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.trust-section::after {
-  content: '';
-  position: absolute;
-  bottom: -50%;
-  left: -10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(42, 56, 183, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.trust-container {
-  max-width: 900px;
-  margin: 0 auto;
+.cp-stats__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  position: relative;
-  z-index: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.trust-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  justify-content: center;
-  padding: 1rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  border-radius: 12px;
-  border: 1px solid rgba(42, 56, 183, 0.1);
-}
-
-.trust-icon {
-  font-size: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.trust-content {
+.cp-stats__list li {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  gap: 2px;
+  padding: 30px 24px;
 }
 
-.trust-number {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #2a38b7;
-  line-height: 1;
-  margin-bottom: 0.25rem;
-  text-align: center;
-  width: 100%;
+.cp-stats__list li + li {
+  border-left: 1px solid var(--vt-line);
 }
 
-.trust-label {
-  font-size: 0.875rem;
-  color: var(--gray);
-  font-weight: 600;
-  text-align: center;
-  width: 100%;
-}
-
-/* Section commune */
-.section-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 2rem;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 1.25rem;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--dark);
-  margin-bottom: 1rem;
+.cp-stats__value {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  position: relative;
+  color: var(--vt-navy);
 }
 
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -0.75rem;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #2a38b7 0%, #667eea 100%);
-  border-radius: 2px;
+.cp-stats__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vt-muted);
 }
 
-.section-subtitle {
-  font-size: 1.15rem;
-  color: var(--gray-dark);
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
+/* ---------- Icônes ---------- */
+
+.cp-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--vt-navy-50);
+  color: var(--vt-navy);
 }
 
-/* Features Section */
-.features-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #f0f4ff 100%);
-  position: relative;
+.cp-icon--green {
+  background: var(--vt-green-50);
+  color: var(--vt-green-700);
 }
 
-.features-section::before {
-  content: '';
-  position: absolute;
-  top: 20%;
-  right: 5%;
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
-  pointer-events: none;
+.cp-icon :deep(svg) {
+  width: 24px;
+  height: 24px;
 }
 
-.features-section::after {
-  content: '';
-  position: absolute;
-  bottom: 20%;
-  left: 5%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(42, 56, 183, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
+/* ---------- 3. Pour qui ---------- */
 
-.features-grid {
+.cp-who {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  position: relative;
-  z-index: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
 }
 
-.feature-card {
-  background: var(--white);
-  border: 1px solid rgba(42, 56, 183, 0.1);
-  border-radius: 16px;
-  padding: 2.5rem;
-  transition: all 0.3s ease;
-  position: relative;
+.cp-who__card {
+  padding: 26px 22px;
+}
+
+.cp-who__title {
+  margin-top: 18px;
+  font-size: 18px;
+}
+
+.cp-who__text {
+  margin: 10px 0 0;
+  font-size: 15px;
+  color: var(--vt-muted);
+}
+
+/* ---------- 4. Professeur ---------- */
+
+.cp-prof {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: 64px;
+  align-items: center;
+}
+
+.cp-prof__photo {
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 20px 20px 0;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid var(--vt-line);
 }
 
-.feature-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #2a38b7 0%, #667eea 100%);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.feature-card:hover {
-  border-color: rgba(42, 56, 183, 0.3);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(42, 56, 183, 0.12);
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-}
-
-.feature-card:hover::before {
-  transform: scaleX(1);
-}
-
-.feature-card:hover .feature-icon {
-  transform: scale(1.05);
-}
-
-.feature-icon {
-  font-size: 3rem;
-  margin-bottom: 1.25rem;
+.cp-prof__photo img {
   display: block;
-  transition: transform 0.3s ease;
-}
-
-.feature-title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 0.75rem;
-}
-
-.feature-desc {
-  font-size: 1rem;
-  color: var(--gray);
-  line-height: 1.7;
-}
-
-/* Professeur Section */
-.professeur-section {
-  background: linear-gradient(180deg, #ffffff 0%, #f0f4ff 50%, #e0e7ff 100%);
-  position: relative;
-}
-
-.professeur-section::before {
-  content: '';
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(42, 56, 183, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.professeur-section::after {
-  content: '';
-  position: absolute;
-  bottom: 10%;
-  right: 10%;
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.professeur-card {
-  background: var(--white);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  position: relative;
-  z-index: 1;
-  padding: 2.5rem;
-}
-
-.professeur-header-section {
-  display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(42, 56, 183, 0.1);
-  position: relative;
-}
-
-.professeur-image-wrapper {
-  position: relative;
-  flex-shrink: 0;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.professeur-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-  color: #ffffff;
-  padding: 0.45rem 0.9rem;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
-  z-index: 2;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  flex-shrink: 0;
-}
-
-.professeur-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  height: auto;
 }
 
-.professeur-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.professeur-header {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-.professeur-name {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: var(--dark);
-  margin-bottom: 0.5rem;
-}
-
-.professeur-role {
-  font-size: 1.1rem;
-  color: #2a38b7;
+.cp-prof__quote {
+  margin: 18px 0 0;
+  padding: 16px 20px;
+  border-left: 3px solid var(--vt-green);
+  border-radius: 0 14px 14px 0;
+  background: #fff;
+  font-size: 16px;
   font-weight: 600;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--vt-ink-soft);
 }
 
-.professeur-specialties {
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
+.cp-prof__copy > p:not(.vt-kicker) {
+  margin: 16px 0 0;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--vt-ink-soft);
 }
 
-.specialty-tag {
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  color: #2a38b7;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border: 1px solid rgba(42, 56, 183, 0.15);
-}
-
-.professeur-description {
-  font-size: 1.05rem;
-  color: var(--gray);
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  text-align: justify;
-}
-
-.description-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 1rem;
+.cp-prof__copy .vt-title {
   margin-top: 0;
 }
 
-.professeur-description p {
-  margin-bottom: 1rem;
-}
-
-.professeur-description p:last-child {
-  margin-bottom: 0;
-}
-
-.professeur-description .inline-link {
-  color: #4338ca;
-  text-decoration: underline;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.professeur-description .inline-link:hover {
-  color: #3730a3;
-}
-
-.professeur-highlights {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.highlight-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  border-radius: 10px;
-  border: 1px solid rgba(42, 56, 183, 0.1);
-}
-
-.highlight-icon {
-  font-size: 1.5rem;
-}
-
-.highlight-text {
-  font-size: 0.9rem;
-  color: #2a38b7;
+.cp-prof__list {
+  margin-top: 22px;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 1.4;
+  color: var(--vt-ink);
 }
 
-/* Social Links */
-.professeur-verification {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(42, 56, 183, 0.1);
+.cp-prof__copy > .cp-prof__verify {
+  margin-top: 22px;
+  font-size: 14px;
+  color: var(--vt-muted);
 }
 
-.verification-text {
-  font-size: 0.95rem;
-  color: var(--gray-dark);
-  margin-bottom: 1rem;
-  font-style: italic;
-  line-height: 1.6;
-  text-align: center;
-}
-
-.professeur-social-links {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  border: 1px solid rgba(42, 56, 183, 0.15);
-  border-radius: 10px;
-  text-decoration: none;
-  color: #2a38b7;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  min-height: 44px;
-  box-sizing: border-box;
-}
-
-.social-link:hover {
-  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
-  border-color: rgba(42, 56, 183, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.15);
-}
-
-.social-link .social-icon {
-  font-size: 1.25rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.social-link .social-icon-svg {
-  width: 20px;
-  height: 20px;
-  color: #0A66C2;
-  flex-shrink: 0;
-}
-
-.social-link.linkedin-link:hover .social-icon-svg {
-  color: #004182;
-}
-
-.social-link .social-text {
-  color: #2a38b7;
-}
-
-/* Méthodologie Section */
-.methodologie-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #f0f4ff 100%);
-  position: relative;
-}
-
-.methodologie-section::before {
-  content: '';
-  position: absolute;
-  top: 20%;
-  right: 5%;
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.methodologie-section::after {
-  content: '';
-  position: absolute;
-  bottom: 20%;
-  left: 5%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(42, 56, 183, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.methodologie-content {
-  position: relative;
-  z-index: 1;
-}
-
-.methodologie-intro {
-  font-size: 1.2rem;
-  color: var(--gray-dark);
-  line-height: 2;
-  max-width: 900px;
-  margin: 0 auto 3rem;
-  text-align: justify;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-}
-
-.methodologie-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  position: relative;
-  z-index: 1;
-}
-
-@media (max-width: 1024px) {
-  .methodologie-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .methodologie-card-featured {
-    grid-column: span 2;
-  }
-}
-
-.methodologie-card {
-  background: var(--white);
-  border: 1px solid rgba(42, 56, 183, 0.1);
-  border-radius: 16px;
-  padding: 2rem;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.methodologie-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #2a38b7 0%, #667eea 100%);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.methodologie-card:hover {
-  border-color: rgba(42, 56, 183, 0.3);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(42, 56, 183, 0.12);
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-}
-
-.methodologie-card:hover::before {
-  transform: scaleX(1);
-}
-
-.methodologie-card-featured {
-  grid-column: span 2;
-  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
-  border-color: rgba(42, 56, 183, 0.2);
-}
-
-.methodologie-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.methodologie-card:hover .methodologie-icon {
-  transform: scale(1.1);
-}
-
-.methodologie-title {
-  font-size: 1.25rem;
+.cp-prof__verify a {
+  color: var(--vt-navy);
   font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 0.75rem;
 }
 
-.methodologie-desc {
-  font-size: 1rem;
-  color: var(--gray);
-  line-height: 1.7;
+/* ---------- 5. Déroulement ---------- */
+
+.cp-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 64px;
+  align-items: start;
 }
 
-/* Tarifs Section */
-.tarifs-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #f0f4ff 100%);
-  position: relative;
-  padding: 3rem 0;
+.cp-flow__intro {
+  position: sticky;
+  top: 104px;
 }
 
-.tarifs-tabs {
+.cp-flow__cta {
+  margin-top: 28px;
+}
+
+/* ---------- 6. Méthode ---------- */
+
+.cp-method__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.cp-method__title {
+  margin-top: 16px;
+  font-size: 17px;
+}
+
+.cp-method__text {
+  margin: 8px 0 0;
+  font-size: 15px;
+  color: var(--vt-muted);
+}
+
+/* ---------- 7. Tarifs ---------- */
+
+.cp-levels {
   display: flex;
-  background: #f1f5f9;
-  border-radius: 12px;
-  padding: 0.3rem;
-  margin: 2rem auto;
-  gap: 0.2rem;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  gap: 4px;
   width: fit-content;
   max-width: 100%;
+  margin: 0 auto 32px;
+  padding: 5px;
+  border-radius: 14px;
+  background: #e9edf5;
 }
 
-.tarif-tab {
-  padding: 0.6rem 1.4rem;
+.cp-levels__tab {
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 10px;
   background: transparent;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
+  font-family: var(--vt-font);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--vt-muted);
   white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.tarif-tab:hover {
-  color: #2a38b7;
-  background: rgba(255, 255, 255, 0.5);
+.cp-levels__tab:hover {
+  color: var(--vt-ink);
 }
 
-.tarif-tab.active {
-  background: white;
-  color: #2a38b7;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.cp-levels__tab.is-active {
+  background: #fff;
+  color: var(--vt-navy);
+  box-shadow: 0 2px 8px rgba(16, 32, 79, 0.1);
 }
 
-/* Tarifs Grid */
-.tarifs-grid {
+.cp-prices {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  margin: 2rem 0 3rem;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 820px;
+  margin: 0 auto;
+  align-items: stretch;
 }
 
-/* Tarif Card */
-.tarif-card {
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.15rem;
+.cp-prices--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: none;
+}
+
+.cp-price {
   position: relative;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 28px 24px 24px;
 }
 
-.tarif-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+.cp-price--featured {
+  border: 2px solid var(--vt-navy);
+  box-shadow: var(--vt-shadow-lg);
 }
 
-.tarif-card-recommended {
-  border-color: #2a38b7;
-  border-width: 3px;
-  box-shadow: 0 4px 16px rgba(42, 56, 183, 0.15);
-}
-
-.badge {
+.cp-price__flag {
   position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #78350f;
-  font-size: 0.75rem;
+  top: -13px;
+  left: 24px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--vt-navy);
+  font-size: 12px;
   font-weight: 700;
-  padding: 6px 16px;
-  border-radius: 20px;
-  white-space: nowrap;
-  z-index: 10;
+  color: #fff;
 }
 
-.card-header {
-  text-align: center;
-  margin-bottom: 0.75rem;
-  padding-top: 0.2rem;
-}
-
-.plan-title {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.plan-subtitle {
+.cp-price__name {
   margin: 0;
-  color: #64748b;
-  font-size: 0.8rem;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--vt-ink);
 }
 
-.price-section {
-  text-align: center;
-  padding: 0.75rem 0;
-  margin-bottom: 0.75rem;
-  border-bottom: 2px solid #f1f5f9;
+.cp-price__hint {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--vt-muted);
 }
 
-.price {
+.cp-price__amount {
   display: flex;
   align-items: baseline;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.price-from {
-  font-size: 0.7rem;
-  color: #64748b;
+  gap: 6px;
+  margin: 18px 0 16px;
+  font-size: 15px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--vt-muted);
 }
 
-.amount {
-  font-size: 2.1rem;
-  font-weight: 800;
-  color: #1e293b;
+.cp-price__amount strong {
+  font-size: 42px;
   line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--vt-ink);
 }
 
-.period {
-  font-size: 0.8rem;
-  color: #64748b;
-  font-weight: 500;
+.cp-price__list {
+  margin-bottom: 24px;
+  font-size: 15px;
+  color: var(--vt-ink-soft);
 }
 
-.price-levels {
-  margin-top: 1rem;
+.cp-price .vt-btn {
+  margin-top: auto;
+}
+
+.cp-packs {
+  width: 100%;
+  margin: 0 0 12px;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.cp-packs th,
+.cp-packs td {
+  padding: 9px 4px;
+  border-top: 1px solid var(--vt-line);
+  text-align: left;
+  color: var(--vt-ink-soft);
+}
+
+.cp-packs tr:first-child th,
+.cp-packs tr:first-child td {
+  border-top: 0;
+}
+
+.cp-packs th {
+  font-weight: 700;
+  color: var(--vt-ink);
+}
+
+.cp-packs__total {
+  text-align: right !important;
+  font-weight: 700;
+  color: var(--vt-ink) !important;
+}
+
+.cp-price__save {
+  margin: 0 0 22px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--vt-green-50);
+  font-size: 14px;
+  color: var(--vt-green-700);
+}
+
+.cp-price-notes {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 26px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vt-muted);
+}
+
+.cp-price-notes li::before {
+  content: '·';
+  margin-right: 8px;
+  color: var(--vt-green);
+  font-weight: 700;
+}
+
+/* ---------- 8. Avis ---------- */
+
+.cp-shots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin: 0 auto;
+}
+
+.cp-shots--1 {
+  grid-template-columns: minmax(0, 340px);
+  justify-content: center;
+}
+
+.cp-shots--2 {
+  grid-template-columns: repeat(2, minmax(0, 340px));
+  justify-content: center;
+}
+
+.cp-shots__more {
+  margin: 28px 0 0;
+  text-align: center;
+}
+
+.cp-shots__more a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--vt-navy);
+  text-decoration: none;
+}
+
+.cp-shots__more a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- 9. Questions ---------- */
+
+.cp-faq {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  gap: 56px;
+  align-items: start;
+}
+
+/* ---------- 10. Réserver ---------- */
+
+.cp-book {
+  background:
+    radial-gradient(700px 400px at 100% 0%, rgba(95, 172, 96, 0.18), transparent 60%),
+    var(--vt-navy);
+}
+
+.cp-book__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 56px;
+  align-items: start;
+}
+
+.cp-book__kicker {
+  color: var(--vt-green-300);
+}
+
+.cp .cp-book__title {
+  color: #fff;
+}
+
+.cp-book__text {
+  margin: 16px 0 0;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.cp-book__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cp-book__steps li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.cp-book__steps span {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  font-size: 0.85rem;
-  color: #64748b;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--vt-green-300);
 }
 
-.price-level-item {
-  font-weight: 600;
-  color: #475569;
-}
-
-.price-level-separator {
-  color: #cbd5e1;
-}
-
-.current-level-info {
-  margin-top: 0.4rem;
-  font-size: 0.7rem;
-  color: #2a38b7;
-  font-weight: 600;
-}
-
-.pack-info {
-  margin-top: 0.4rem;
-  font-size: 0.7rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.packs-list {
-  margin-top: 0.55rem;
+.cp-book__alt {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 10px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.pack-item {
-  padding: 0.55rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s ease;
-}
-
-.pack-item:hover {
-  background: linear-gradient(135deg, #e0e7ff 0%, #e8f0ff 100%);
-  transform: translateX(2px);
-}
-
-.pack-info-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.pack-hours {
-  font-weight: 700;
-  color: #2a38b7;
-  font-size: 0.7rem;
-}
-
-.pack-per-hour {
-  font-size: 0.55rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.pack-price {
-  color: #1e293b;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.pack-note {
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-  color: #64748b;
-  font-style: italic;
-  text-align: center;
-}
-
-.subscription-tiers {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.subscription-info {
-  margin-top: 0.75rem;
-  font-size: 0.875rem;
-  color: #2a38b7;
-  font-weight: 600;
-}
-
-.subscription-tier {
-  padding: 0.5rem 0.75rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  border-radius: 6px;
-  font-size: 0.8rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.tier-info-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.tier-courses {
-  font-weight: 700;
-  color: #2a38b7;
-  font-size: 0.85rem;
-  text-align: left;
-}
-
-.tier-per-hour {
-  font-size: 0.75rem;
-  color: #64748b;
-  font-weight: 500;
-  text-align: left;
-}
-
-.tier-price {
-  color: #1e293b;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.tarifs-note {
-  text-align: center;
-  margin: 2rem 0 1rem;
-  padding: 1rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-}
-
-.tarifs-note p {
+.cp-book__alt p {
   margin: 0;
-  font-size: 0.9rem;
-  color: #64748b;
-  font-weight: 500;
-  font-style: italic;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.15rem 0;
-  flex: 1;
-}
-
-.features li {
-  display: flex;
+.cp-book__alt a {
+  display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.4rem 0;
-  color: #475569;
-  font-size: 0.75rem;
+  gap: 10px;
+  width: fit-content;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
 }
 
-.check-icon {
+.cp-book__alt a:hover {
+  color: var(--vt-green-300);
+}
+
+.cp-book__alt img {
+  filter: brightness(0) invert(1);
+}
+
+.cp-book__alt svg {
   width: 18px;
   height: 18px;
-  color: #10b981;
-  flex-shrink: 0;
 }
 
-.cta-btn {
-  width: 100%;
-  background: linear-gradient(135deg, #2a38b7, #667eea);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 0.7rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.3);
-  text-decoration: none;
-  text-align: center;
-  display: block;
+.cp-book__form {
+  padding: 28px;
+  box-shadow: 0 30px 60px rgba(5, 14, 40, 0.3);
 }
 
-.cta-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(42, 56, 183, 0.4);
-}
+/* ---------- Tablette ---------- */
 
-.security-note {
-  text-align: center;
-  margin: 0.55rem 0 0 0;
-  padding-top: 0.55rem;
-  border-top: 1px solid #f1f5f9;
-  font-size: 0.65rem;
-  color: #94a3b8;
-}
-
-.tarifs-reassurance {
-  margin-top: 3rem;
-  text-align: center;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  border-radius: 12px;
-  border: 1px solid rgba(42, 56, 183, 0.1);
-}
-
-.tarifs-reassurance p {
-  font-size: 0.9rem;
-  color: var(--gray-dark);
-  line-height: 1.8;
-  margin: 0;
-  font-weight: 500;
-}
-
-.tarifs-cta {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-}
-
-.btn-tarif-primary {
-  padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
-  color: white;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.3);
-  display: inline-block;
-}
-
-.btn-tarif-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(42, 56, 183, 0.4);
-}
-
-.btn-tarif-secondary {
-  padding: 0.875rem 2rem;
-  background: var(--white);
-  color: #2a38b7;
-  border: 2px solid #2a38b7;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  display: inline-block;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.btn-tarif-secondary:hover {
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.2);
-}
-
-/* Process Section */
-.process-section {
-  background: #ffffff;
-  position: relative;
-}
-
-.process-section .section-container {
-  padding-bottom: 0;
-}
-
-.process-section::before {
-  content: none;
-  width: 0;
-  height: 0;
-}
-
-.process-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  position: relative;
-  z-index: 1;
-}
-
-.process-card {
-  text-align: center;
-  padding: 1.5rem;
-  background: var(--white);
-  border: 1px solid rgba(42, 56, 183, 0.1);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.process-card:hover {
-  border-color: rgba(42, 56, 183, 0.3);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(42, 56, 183, 0.12);
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-}
-
-.process-card:hover .process-icon {
-  transform: scale(1.1);
-}
-
-.process-icon {
-  font-size: 3.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem auto;
-  transition: transform 0.3s ease;
-  line-height: 1;
-}
-
-.process-title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--dark);
-  margin-bottom: 0.75rem;
-}
-
-.process-desc {
-  font-size: 1rem;
-  color: var(--gray);
-  line-height: 1.7;
-}
-
-/* CTA Final Section */
-.cta-final-section {
-  background: #ffffff;
-  position: relative;
-  padding-top: 0;
-  margin-top: 0;
-}
-
-.cta-final-section::before,
-.cta-final-section::after {
-  content: none;
-  width: 0;
-  height: 0;
-}
-
-.cta-final-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 2rem 3rem 2rem;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-.cta-final-subtitle {
-  font-size: 1.15rem;
-  color: var(--gray-dark);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.cta-final-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.cta-final-note {
-  font-size: 0.95rem;
-  color: var(--gray);
-  font-weight: 500;
-  margin-top: 0;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .professeur-card {
-    padding: 2rem;
-  }
-
-  .professeur-header-section {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.5rem;
-  }
-
-  .professeur-image-wrapper {
-    width: 120px;
-    height: 120px;
-  }
-
-  .professeur-content {
-    padding: 0;
-  }
-
-  .professeur-highlights {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* La page mobile garde une taille de texte naturelle, sans réduction par zoom. */
-@media (max-width: 800px) {
-  .cours-particuliers-page,
-  .cours-particuliers-page :deep(*) {
-    min-width: 0;
-    -webkit-hyphens: none;
-    hyphens: none;
-    word-break: normal;
-  }
-
-  .cours-particuliers-page.public-layout {
-    padding-top: 0;
-  }
-
-  .hero-section {
-    padding: 32px 20px 40px;
-  }
-
-  .hero-badge {
-    max-width: 100%;
-    padding: 10px 14px;
-    border-radius: 18px;
-    font-size: 0.8rem;
-    line-height: 1.5;
-  }
-
-  .badge-icon {
-    flex-shrink: 0;
-  }
-
-  .hero-title {
-    font-size: clamp(1.65rem, 5.7vw, 2.5rem);
-    line-height: 1.25;
-    overflow-wrap: normal;
-  }
-
-  .hero-subtitle,
-  .section-subtitle,
-  .methodologie-intro,
-  .cta-final-subtitle {
-    font-size: 1rem;
-    line-height: 1.65;
-  }
-
-  .hero-cta,
-  .cta-final-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .btn-primary,
-  .btn-secondary,
-  .btn-cta-primary,
-  .btn-cta-secondary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 360px;
-    min-height: 48px;
-    padding: 12px 16px;
-    font-family: inherit;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    white-space: normal;
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  .trust-section {
-    padding: 24px 16px;
-  }
-
-  .trust-container {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    max-width: 100%;
-  }
-
-  .trust-item {
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px 6px;
-  }
-
-  .trust-icon {
-    font-size: 1.75rem;
-  }
-
-  .trust-number {
-    font-size: 1.5rem;
-  }
-
-  .trust-label {
-    font-size: 0.8rem;
-    text-align: center;
-    line-height: 1.45;
-  }
-
-  .section-container {
-    padding: 32px 20px;
-  }
-
-  .section-header {
-    margin-bottom: 24px;
-  }
-
-  .section-title {
-    font-size: clamp(1.5rem, 4.6vw, 2rem);
-    line-height: 1.3;
-    overflow-wrap: normal;
-  }
-
-  .features-grid,
-  .methodologie-grid,
-  .process-grid,
-  .tarifs-grid {
+@media (max-width: 1080px) {
+  .cp-hero__inner,
+  .cp-prof,
+  .cp-flow,
+  .cp-faq,
+  .cp-book__inner {
     grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    gap: 40px;
   }
 
-  .methodologie-card-featured {
-    grid-column: auto;
+  .cp-portrait {
+    max-width: 340px;
   }
 
-  .feature-card,
-  .methodologie-card,
-  .process-card,
-  .tarif-card,
-  .professeur-card {
-    padding: 24px;
-  }
-
-  .feature-icon,
-  .methodologie-icon,
-  .process-icon {
-    font-size: 2.25rem;
-    margin-bottom: 12px;
-  }
-
-  .feature-title,
-  .methodologie-title,
-  .process-title {
-    font-size: 1.2rem;
-    line-height: 1.4;
-    margin-bottom: 8px;
-  }
-
-  .feature-desc,
-  .methodologie-desc,
-  .process-desc,
-  .professeur-description {
-    font-size: 0.95rem;
-    line-height: 1.65;
-  }
-
-  .methodologie-intro {
-    margin-bottom: 24px;
-  }
-
-  .professeur-header-section {
-    display: grid;
-    grid-template-columns: 88px minmax(0, 1fr);
-    gap: 12px 16px;
-    align-items: center;
-    text-align: left;
-    padding-bottom: 24px;
-    margin-bottom: 24px;
-  }
-
-  .professeur-image-wrapper {
-    grid-row: span 2;
-    width: 88px;
-    height: 88px;
-  }
-
-  .professeur-header {
-    text-align: left;
-  }
-
-  .professeur-name {
-    font-size: 1.5rem;
-    margin-bottom: 4px;
-  }
-
-  .professeur-role {
-    font-size: 0.9rem;
-    line-height: 1.45;
-  }
-
-  .professeur-badge {
+  .cp-flow__intro {
     position: static;
-    justify-self: start;
-    padding: 5px 10px;
-    font-size: 0.7rem;
   }
 
-  .professeur-specialties {
-    justify-content: flex-start;
-    gap: 8px;
-    margin-bottom: 20px;
+  .cp-prof__aside {
+    max-width: 380px;
   }
 
-  .specialty-tag {
-    max-width: 100%;
-    font-size: 0.85rem;
-    padding: 7px 10px;
+  .cp-who,
+  .cp-method__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .professeur-description {
-    text-align: left;
-    margin-bottom: 24px;
+  .cp-prices--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 820px;
   }
 
-  .description-title {
-    font-size: 1.25rem;
-    margin-bottom: 12px;
+  .cp-stats__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .professeur-highlights {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
+  .cp-stats__list li:nth-child(3) {
+    border-left: 0;
   }
 
-  .highlight-item {
-    align-items: flex-start;
-    padding: 12px;
-    gap: 10px;
-  }
-
-  .highlight-icon {
-    flex-shrink: 0;
-    font-size: 1.35rem;
-  }
-
-  .highlight-text,
-  .verification-text {
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-
-  .professeur-verification {
-    margin-top: 24px;
-    padding-top: 24px;
-  }
-
-  .verification-text {
-    text-align: left;
-    margin-bottom: 16px;
-  }
-
-  .professeur-social-links {
-    justify-content: flex-start;
-    gap: 12px;
-  }
-
-  .social-link {
-    max-width: 100%;
-    font-size: 0.9rem;
-    padding: 12px;
-  }
-
-  .tarifs-section {
-    padding: 16px 0;
-  }
-
-  .tarifs-tabs {
-    width: 100%;
-    padding: 6px;
-    gap: 6px;
-  }
-
-  .tarif-tab {
-    flex: 1 1 120px;
-    min-height: 44px;
-    padding: 10px 12px;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    white-space: normal;
-  }
-
-  .tarifs-grid {
-    gap: 28px;
-  }
-
-  .tarif-card {
-    border-radius: 16px;
-  }
-
-  .tarif-card-recommended {
-    padding-top: 32px;
-  }
-
-  .badge {
-    max-width: calc(100% - 32px);
-    white-space: normal;
-    text-align: center;
-    line-height: 1.4;
-  }
-
-  .plan-title {
-    font-size: 1.4rem;
-    margin-bottom: 6px;
-  }
-
-  .plan-subtitle,
-  .period,
-  .pack-hours,
-  .features li {
-    font-size: 0.95rem;
-  }
-
-  .price-section {
-    padding: 20px 0;
-    margin-bottom: 20px;
-  }
-
-  .amount {
-    font-size: 2.5rem;
-  }
-
-  .price-from,
-  .current-level-info,
-  .pack-info,
-  .pack-per-hour,
-  .pack-note,
-  .security-note,
-  .tarifs-reassurance p,
-  .cta-final-note {
-    font-size: 0.85rem;
-    line-height: 1.55;
-  }
-
-  .packs-list {
-    gap: 8px;
-    margin-top: 16px;
-  }
-
-  .pack-item {
-    gap: 12px;
-    padding: 12px;
-    flex-wrap: wrap;
-  }
-
-  .pack-price {
-    font-size: 1.1rem;
-  }
-
-  .features li {
-    align-items: flex-start;
-    padding: 8px 0;
-    gap: 10px;
-    line-height: 1.5;
-  }
-
-  .check-icon {
-    margin-top: 3px;
-  }
-
-  .cta-btn {
-    min-height: 48px;
-    padding: 12px 16px;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    white-space: normal;
-  }
-
-  .security-note {
-    margin-top: 16px;
-    padding-top: 16px;
-  }
-
-  .tarifs-reassurance {
-    margin-top: 24px;
-    padding: 20px;
-  }
-
-  .cta-final-container {
-    padding: 24px 20px;
+  .cp-stats__list li:nth-child(n + 3) {
+    border-top: 1px solid var(--vt-line);
   }
 }
 
-@media (max-width: 480px) {
-  .hero-section,
-  .section-container,
-  .cta-final-container {
+/* ---------- Téléphone ---------- */
+
+@media (max-width: 640px) {
+  .cp-hero__kicker {
+    font-size: 12px;
+  }
+
+  .cp-portrait {
+    max-width: 300px;
+  }
+
+  .cp-stats__list li {
+    padding: 20px 14px 20px 0;
+  }
+
+  .cp-stats__list li:nth-child(even) {
     padding-left: 16px;
-    padding-right: 16px;
   }
 
-  .feature-card,
-  .methodologie-card,
-  .process-card,
-  .tarif-card,
-  .professeur-card {
-    padding: 20px 16px;
+  .cp-stats__value {
+    font-size: 28px;
   }
 
-  .tarif-card-recommended {
-    padding-top: 32px;
-  }
-
-  .trust-container {
+  .cp-who,
+  .cp-method__grid,
+  .cp-prices,
+  .cp-prices--3,
+  .cp-shots,
+  .cp-shots--2 {
     grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
   }
 
-  .trust-item {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 16px;
-    padding: 16px 20px;
+  .cp-shots--1 {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .trust-content,
-  .trust-label {
-    align-items: flex-start;
-    text-align: left;
+  /* Icône à côté du titre : cartes plus compactes. */
+  .cp-who__card,
+  .cp-method__item {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: center;
   }
 
-  .trust-label {
-    font-size: 0.9rem;
+  .cp-who__card {
+    padding: 18px 16px;
   }
 
-  .professeur-header-section {
-    grid-template-columns: 70px minmax(0, 1fr);
-    column-gap: 12px;
+  .cp-who__card .cp-icon,
+  .cp-method__item .cp-icon {
+    width: 44px;
+    height: 44px;
   }
 
-  .professeur-image-wrapper {
-    width: 70px;
-    height: 70px;
+  .cp-who__title,
+  .cp-method__title {
+    margin-top: 0;
+  }
+
+  .cp-who__text,
+  .cp-method__text {
+    grid-column: 1 / -1;
+  }
+
+  .cp-method__grid {
+    gap: 22px;
+  }
+
+  .cp-levels {
+    width: 100%;
+  }
+
+  .cp-levels__tab {
+    flex: 1;
+    padding: 10px 8px;
+    font-size: 13px;
+    white-space: normal;
+  }
+
+  .cp-price {
+    padding: 26px 18px 20px;
+  }
+
+  .cp-price-notes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cp-book__form {
+    padding: 20px 16px;
   }
 }
 </style>

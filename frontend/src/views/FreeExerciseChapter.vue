@@ -915,7 +915,8 @@ function getExerciseAnchorId(exercise, index = 0) {
 .free-exercise-chapter-page {
   min-height: 100vh;
   background: #fff;
-  padding: 48px 24px 80px;
+  /* Colonne centrée (1040 px au plus) sur les grands écrans. */
+  padding: 48px max(24px, calc((100% - 1040px) / 2)) 80px;
   width: 100%;
   max-width: none;
 }

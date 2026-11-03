@@ -1,19 +1,26 @@
 <template>
-  <div class="main-layout">
-    <Header :variant="headerVariant" />
-    <main class="main-content">
+  <!-- Depuis le 2026-11-03, les pages publiques encore anciennes (ressources gratuites,
+       blog, pages publicitaires et de paiement…) prennent l'en-tête et le pied de page
+       de la vitrine. L'ancienne coque est conservée dans MainLayoutClassic.vue. -->
+  <VitrineLayout :landing="isLanding" :show-whatsapp="false">
+    <div class="main-content">
+      <div v-if="sousEntete" class="ml-tabs">
+        <component :is="sousEntete" />
+      </div>
       <slot />
-    </main>
-    <Footer :variant="footerVariant" />
-  </div>
+    </div>
+  </VitrineLayout>
 </template>
 
 <script setup>
-import Header from './Header.vue'
-import Footer from './Footer.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import VitrineLayout from '@/components/vitrine/VitrineLayout.vue'
+import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
+import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
 import '@/styles/public-document-mobile.css'
 
-defineProps({
+const props = defineProps({
   headerVariant: {
     type: String,
     default: 'default'
@@ -23,34 +30,50 @@ defineProps({
     default: 'default'
   }
 })
+
+const route = useRoute()
+
+const isLanding = computed(() => props.headerVariant === 'landing')
+
+// Onglets propres à certaines pages (auparavant dans l'ancien en-tête).
+const sousEntete = computed(() => {
+  if (isLanding.value) return null
+  const path = route.path || ''
+  if (path.startsWith('/ressources-gratuites/')) return FreeResourceTabs
+  if (path === '/calculator') return CalculatorTabs
+  return null
+})
 </script>
 
 <style scoped>
-.main-layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  /* Compenser le header fixe */
-  padding-top: 64px;
-}
 .main-content {
   flex: 1;
   min-width: 0;
   width: 100%;
   margin: 0 auto;
-  padding-bottom: 0;
-  /* Permettre au zoom de fonctionner - pas de max-width restrictif */
-  overflow-x: hidden;
-  /* Permettre le scroll vertical sur mobile */
-  overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: clip;
+}
+
+.ml-tabs {
+  position: sticky;
+  top: 72px;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e3e7ef;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(1.4) blur(10px);
+}
+
+@media (max-width: 960px) {
+  .ml-tabs {
+    top: 64px;
+    padding: 8px 8px;
+  }
 }
 
 @media (max-width: 880px) {
-  .main-layout {
-    padding-top: calc(60px + env(safe-area-inset-top, 0px));
-  }
-
   .main-content :deep(:is(h1, h2, h3, p, li, a, button, label, span)) {
     -webkit-hyphens: none;
     hyphens: none;
@@ -61,6 +84,16 @@ defineProps({
     word-break: normal;
   }
 }
+
+/* Anciens boutons « Retour » fixés pour l'ancien en-tête : ils prennent place
+   en haut du contenu, sous l'en-tête de la vitrine. */
+.main-content :deep(:is(.back-button--top-left, .back-button--top-left-dashboard, .back-button--main-notions, .back-button--sticky)) {
+  position: static !important;
+  inset: auto !important;
+  margin: 0 0 12px !important;
+  transform: none !important;
+}
+
 @media (max-width: 768px) {
   .main-content :deep(.calc .graph-actions) {
     flex-wrap: wrap;

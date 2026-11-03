@@ -206,7 +206,7 @@ export default {
   width: 64px;
   height: 64px;
   margin: 0 auto 20px;
-  background: #10b981;
+  background: #3b8544;
   border-radius: 50%;
   display: flex;
   align-items: center;

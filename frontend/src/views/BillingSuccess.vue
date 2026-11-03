@@ -286,7 +286,7 @@ onMounted(() => {
   width: 80px;
   height: 80px;
   margin-bottom: 1.5rem;
-  color: #10b981;
+  color: #3b8544;
   animation: scaleIn 0.4s ease-out;
 }
 .error-icon {
@@ -309,7 +309,7 @@ onMounted(() => {
   margin-bottom: 0.75rem;
 }
 .headline.success {
-  color: #059669;
+  color: #2f6d37;
 }
 .headline.error {
   color: #b91c1c;
@@ -324,7 +324,7 @@ onMounted(() => {
   color: #374151;
 }
 .account-created-hint {
-  color: #059669;
+  color: #2f6d37;
   font-size: 0.95rem;
   margin-top: -0.5rem;
   margin-bottom: 1.5rem;
@@ -355,7 +355,7 @@ onMounted(() => {
 }
 .progress-bar {
   fill: none;
-  stroke: #10b981;
+  stroke: #3b8544;
   stroke-width: 8;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.4s ease;
@@ -367,7 +367,7 @@ onMounted(() => {
   transform: translate(-50%, -50%);
   font-size: 1.5rem;
   font-weight: 700;
-  color: #10b981;
+  color: #3b8544;
 }
 
 /* Steps Indicator */
@@ -399,13 +399,13 @@ onMounted(() => {
   transition: all 0.3s ease;
 }
 .step.done .step-icon {
-  background: #10b981;
+  background: #3b8544;
   color: white;
 }
 .step.active .step-icon {
-  background: #10b981;
+  background: #3b8544;
   color: white;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 0 4px rgba(59, 133, 68, 0.2);
   animation: pulse 1.5s infinite;
 }
 .step-label {
@@ -428,7 +428,7 @@ onMounted(() => {
   transition: background 0.3s ease;
 }
 .step-line.done {
-  background: #10b981;
+  background: #3b8544;
 }
 
 /* Buttons */
@@ -450,13 +450,13 @@ onMounted(() => {
   font-size: 1rem;
 }
 .btn-primary {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #3b8544 0%, #2f6d37 100%);
   color: white;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 4px 14px rgba(59, 133, 68, 0.35);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 6px 20px rgba(59, 133, 68, 0.4);
 }
 .btn-secondary {
   background: #f9fafb;
@@ -477,7 +477,7 @@ onMounted(() => {
   100% { transform: scale(1); opacity: 1; }
 }
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2); }
-  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.1); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(59, 133, 68, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(59, 133, 68, 0.1); }
 }
 </style>

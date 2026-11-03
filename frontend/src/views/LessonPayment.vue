@@ -381,7 +381,7 @@ onMounted(async () => {
   font-family: inherit;
   font-size: 0.92rem;
   font-weight: 700;
-  color: #1e3a8a;
+  color: #122a66;
   cursor: pointer;
   transition: background 0.16s ease, border-color 0.16s ease;
 
@@ -430,7 +430,7 @@ onMounted(async () => {
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 12px 28px rgba(27, 60, 142, 0.3);
   }
 
   &:disabled {
@@ -454,7 +454,7 @@ onMounted(async () => {
     width: 16px;
     height: 16px;
     margin-top: 1px;
-    color: #16a34a;
+    color: #3b8544;
   }
 }
 

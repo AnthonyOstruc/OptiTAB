@@ -1,4 +1,4 @@
-import { faq as homeFaq } from '@/config/homeFaq.js'
+import { vitrineFaq } from '@/config/vitrineContent.js'
 import { FREE_RESOURCES_FAQ_BY_ROUTE } from '@/config/freeResourcesAuthority'
 import { getManualSeoOverrideByPath } from '@/config/manualSeoOverrides'
 import { FAQ as BIO_LANDING_FAQ } from '@/config/bioLandingContent'
@@ -563,18 +563,20 @@ export function setPageSeo({
 
 const ROUTE_SEO = {
   Home: {
-    title: DEFAULT_TITLE,
-    description: DEFAULT_DESCRIPTION,
+    title: 'Cours de maths en ligne et exercices corrigés | OptiTAB',
+    description:
+      'Cours de maths clairs, fiches de synthèse et plus de 3 300 exercices corrigés pas à pas, du CE2 à la Terminale. Essai gratuit, sans carte bancaire.',
     canonicalPath: '/',
+    // Les données structurées reprennent exactement la FAQ affichée sur l'accueil.
     jsonLdGraph: (() => {
-      const faqGraph = buildFaqJsonLd(homeFaq)
+      const faqGraph = buildFaqJsonLd(vitrineFaq)
       return faqGraph ? [faqGraph] : undefined
     })()
   },
   CoursParticuliers: {
-    title: 'Cours particuliers de maths en ligne du college a la prepa | OptiTAB',
+    title: 'Cours particuliers en ligne : maths, physique-chimie, informatique | OptiTAB',
     description:
-      'Cours particuliers de maths en ligne de la 6e a la prepa : explications claires, suivi regulier, exercices cibles et accompagnement pas a pas.',
+      'Cours particuliers en visio avec Anthony, ingénieur ISAE-SUPAERO, du collège à la prépa. Premier échange gratuit, sans engagement, dès 30 € de l’heure.',
     canonicalPath: '/cours-particuliers'
   },
   FreeCourses: {
@@ -634,19 +636,21 @@ const ROUTE_SEO = {
     ogType: 'article'
   },
   About: {
-    title: 'La methode : cours particuliers & plateforme maths',
+    title: 'À propos d’OptiTAB : notre histoire et notre méthode',
     description:
-      'OptiTAB combine plateforme de maths et cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI).',
+      'OptiTAB est né de plus de 15 ans de cours particuliers : des cours clairs, des fiches de synthèse et des exercices corrigés pas à pas, du CE2 à la Terminale.',
     canonicalPath: '/about'
   },
   Contact: {
-    title: 'Contact : WhatsApp & email',
-    description: 'Contactez OptiTAB (WhatsApp ou email) pour un cours particulier ou une question. Reponse rapide 7j/7.',
+    title: 'Contact : WhatsApp, e-mail et formulaire | OptiTAB',
+    description:
+      'Une question sur OptiTAB, un abonnement ou un cours particulier ? Écrivez-nous sur WhatsApp, par e-mail ou via le formulaire : réponse sous 24 h, 7 jours sur 7.',
     canonicalPath: '/contact'
   },
   TarifsPage: {
-    title: 'Tarifs abonnement maths en ligne sans engagement | OptiTAB',
-    description: 'Decouvre les tarifs OptiTAB pour acceder aux cours de maths, exercices corriges et fiches de synthese, avec annulation a tout moment.',
+    title: 'Tarifs : abonnement maths en ligne sans engagement | OptiTAB',
+    description:
+      'Pass 24 h, abonnement à la semaine ou au mois : accède aux cours, fiches et exercices corrigés de ta classe dès 3,99 €. Sans engagement, annulable à tout moment.',
     canonicalPath: '/tarifs'
   },
   GoogleAdsLanding: {
@@ -710,8 +714,7 @@ const ROUTE_SEO = {
       }
     ]
   },
-  CGV: { title: 'CGV', canonicalPath: '/cgv', noindex: true },
-  CGU: { title: 'CGU', canonicalPath: '/cgu', noindex: true },
+  CGV: { title: 'Conditions générales de vente | OptiTAB', canonicalPath: '/cgv', noindex: true },
   // Blog
   BlogList: {
     title: 'Blog maths : conseils, méthodes et astuces | OptiTAB',
@@ -734,18 +737,26 @@ const ROUTE_SEO = {
     description: 'Article de blog OptiTAB : conseils et méthodes en maths.',
     ogType: 'article'
   },
-  CGU: { title: 'CGU', canonicalPath: '/cgu', noindex: true },
-  Confidentialite: { title: 'Confidentialite', canonicalPath: '/confidentialite', noindex: true },
-  Legal: { title: 'Mentions legales', canonicalPath: '/legal', noindex: true },
-  Cookies: { title: 'Cookies', canonicalPath: '/cookies', noindex: true },
-  Conditions: { title: 'Conditions', canonicalPath: '/conditions', noindex: true }
+  CGU: { title: 'Conditions générales d’utilisation | OptiTAB', canonicalPath: '/cgu', noindex: true },
+  Confidentialite: { title: 'Politique de confidentialité | OptiTAB', canonicalPath: '/confidentialite', noindex: true },
+  Legal: { title: 'Mentions légales | OptiTAB', canonicalPath: '/legal', noindex: true },
+  Cookies: { title: 'Politique de cookies | OptiTAB', canonicalPath: '/cookies', noindex: true },
+  Conditions: { title: 'Conditions et informations légales | OptiTAB', canonicalPath: '/conditions', noindex: true },
+  NotFound: { title: 'Page introuvable | OptiTAB', noindex: true },
+  Dashboard: { title: 'Mon espace | OptiTAB', noindex: true },
+  Chapitres: { title: 'Mes chapitres | OptiTAB', noindex: true },
+  Chapitre: { title: 'Chapitre | OptiTAB', noindex: true }
 }
 
 const NOINDEX_ROUTE_NAMES = new Set([
   'PasswordReset',
   'NotFound',
   'Calculator',
-  'TestFiltrageStrict',
+  // Espace connecté
+  'Dashboard',
+  'Chapitres',
+  'Chapitre',
+  'ChildOverview',
   // Pages de versement : lien envoye au cas par cas, aucun interet a l'indexer.
   'LessonPayment',
   'LessonPaymentThanks'

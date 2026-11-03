@@ -1,1093 +1,160 @@
 <template>
-  <MainLayout>
-    <div class="confidentialite-zoom" :style="confidentialiteZoomStyle">
-      <div ref="confidentialiteContentRef" class="cgv-page public-document">
-      <!-- Header Section -->
-      <div class="cgv-header">
-        <div class="container">
-          <div class="header-content">
-            <h1 class="cgv-title">
-              Politique de Confidentialité
-            </h1>
-            <p class="cgv-subtitle">
-              <span class="gradient-text">OptiTAB</span> - Plateforme d'apprentissage
-            </p>
-            <div class="cgv-meta">
-              <span class="meta-text">Dernière mise à jour : 16 septembre 2025 • Site web : www.optitab.net</span>
-            </div>
-          </div>
-        </div>
+  <LegalPage
+    title="Politique de confidentialité"
+    intro="Quelles données nous collectons, pourquoi, avec qui elles sont partagées et comment exercer vos droits."
+    updated="2 novembre 2026"
+  >
+    <template #essentiel>
+      <ul>
+        <li>Nous collectons uniquement ce qui est utile au service : votre compte, votre classe et votre progression.</li>
+        <li>Vos données ne sont jamais vendues ni louées.</li>
+        <li>Vos données bancaires sont traitées par Stripe et ne passent jamais par nos serveurs.</li>
+        <li>Les statistiques et la publicité ne sont activées qu’avec votre accord.</li>
+        <li>Vous pouvez consulter, corriger ou supprimer vos données sur simple demande.</li>
+      </ul>
+    </template>
+
+    <section id="responsable">
+      <h2>Responsable du traitement</h2>
+      <p>
+        Le responsable du traitement est l’éditeur du site {{ legalInfo.marque }}, présenté dans les
+        <router-link to="/legal">mentions légales</router-link>.
+      </p>
+      <div class="lg-card">
+        <dl class="lg-facts">
+          <dt>Contact</dt>
+          <dd><a :href="`mailto:${legalInfo.email}`">{{ legalInfo.email }}</a></dd>
+          <dt>Responsable éditorial</dt>
+          <dd>{{ legalInfo.directeurPublication }}</dd>
+        </dl>
       </div>
+    </section>
 
-      <!-- Table of Contents -->
-      <div class="toc-section">
-        <div class="container">
-          <h2 class="toc-title">Sommaire</h2>
-          <div class="toc-list">
-            <a 
-              v-for="(section, index) in sections" 
-              :key="index"
-              :href="`#${section.id}`" 
-              :class="['toc-link', { 'active': activeSection === section.id }]"
-              @click="scrollToSection(section.id, $event)"
-            >
-              <span class="toc-number">{{ index + 1 }}</span>
-              <span class="toc-text">{{ section.title }}</span>
-              <span class="toc-arrow">→</span>
-            </a>
-          </div>
-        </div>
+    <section id="donnees">
+      <h2>Données collectées</h2>
+      <ul>
+        <li><strong>Votre compte :</strong> prénom, nom, adresse e-mail et mot de passe (enregistré sous forme chiffrée, jamais en clair). Si vous utilisez « Continuer avec Google », nous recevons votre nom, votre e-mail et votre identifiant Google.</li>
+        <li><strong>Votre profil scolaire :</strong> pays, classe, profil élève ou parent, et le lien entre un compte parent et un compte élève lorsque vous le créez.</li>
+        <li><strong>Votre activité :</strong> exercices réalisés, réponses, quiz rendus, points d’expérience et progression.</li>
+        <li><strong>Vos paiements :</strong> formule choisie, montant, date, statut et factures. Les données de carte bancaire sont saisies directement chez Stripe : nous n’y avons jamais accès.</li>
+        <li><strong>Vos échanges avec nous :</strong> messages envoyés par le formulaire de contact, par e-mail ou par WhatsApp, et adresse e-mail si vous vous inscrivez à la newsletter.</li>
+        <li><strong>Données techniques :</strong> journaux de connexion et, avec votre accord uniquement, mesures d’audience (voir la <router-link to="/cookies">politique de cookies</router-link>).</li>
+      </ul>
+    </section>
+
+    <section id="finalites">
+      <h2>Pourquoi nous les utilisons</h2>
+      <div class="lg-table-wrap">
+        <table class="lg-table">
+          <thead>
+            <tr><th scope="col">Utilisation</th><th scope="col">Base légale</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Créer et gérer votre compte, donner accès aux contenus de votre classe</td><td><span class="lg-tag">Contrat</span></td></tr>
+            <tr><td>Suivre votre progression et vos résultats</td><td><span class="lg-tag">Contrat</span></td></tr>
+            <tr><td>Encaisser les abonnements et pass, émettre les factures</td><td><span class="lg-tag">Contrat</span> <span class="lg-tag">Obligation légale</span></td></tr>
+            <tr><td>Répondre à vos questions et assurer le support</td><td><span class="lg-tag">Contrat</span></td></tr>
+            <tr><td>Envoyer la newsletter</td><td><span class="lg-tag lg-tag--vert">Consentement</span></td></tr>
+            <tr><td>Mesurer l’audience et nos campagnes publicitaires</td><td><span class="lg-tag lg-tag--vert">Consentement</span></td></tr>
+            <tr><td>Sécuriser le site et prévenir la fraude</td><td><span class="lg-tag lg-tag--orange">Intérêt légitime</span></td></tr>
+          </tbody>
+        </table>
       </div>
+    </section>
 
-      <!-- Content Sections -->
-      <div class="cgv-content">
-        <div class="container">
-          <div class="content-wrapper">
-            <!-- Section 1: Responsable éditorial et du traitement -->
-            <section id="responsable" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">1</span>
-                Responsable éditorial et du traitement
-              </h2>
-              <div class="section-content">
-                <h3 class="subsection-title">Responsable éditorial :</h3>
-                <div class="contact-info">
-                  <div class="contact-item">
-                    <strong>TABET Anthony</strong>
-                    <a href="https://www.linkedin.com/in/anthony-tabet-a34aa6192/" target="_blank" class="linkedin-link" title="Profil LinkedIn">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </a>
-                  </div>
-                  <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
-                  </div>
-                </div>
-                
-                <h3 class="subsection-title">Responsable du traitement des données :</h3>
-                <div class="contact-info">
-                  <div class="contact-item">
-                    <strong>OptiTAB</strong>
-                  </div>
-                  <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- Section 2: Données collectées -->
-            <section id="donnees" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">2</span>
-                Données collectées
-              </h2>
-              <div class="section-content">
-                <p>Lors de l'utilisation de la plateforme, nous pouvons collecter :</p>
-                <ul class="content-list">
-                  <li><strong>Informations d'inscription :</strong> nom, prénom, email, mot de passe.</li>
-                  <li><strong>Informations de paiement :</strong> carte bancaire ou autre moyen utilisé pour les abonnements.</li>
-                  <li><strong>Données d'utilisation :</strong> historique de connexion, pages visitées, activités sur la plateforme.</li>
-                  <li><strong>Contenu généré par l'utilisateur :</strong> données créées ou enregistrées par l'utilisateur sur son tableau de bord, telles que réponses aux exercices, notes, ou autres informations personnelles qu'il choisit de saisir.</li>
-                </ul>
-                <p>Toutes les données collectées sont utilisées exclusivement pour le fonctionnement et l'amélioration de nos services.</p>
-              </div>
-            </section>
-
-            <!-- Section 3: Finalité du traitement -->
-            <section id="finalite" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">3</span>
-                Finalité du traitement
-              </h2>
-              <div class="section-content">
-                <p>Les données sont utilisées pour :</p>
-                <ul class="content-list">
-                  <li>Gérer les comptes utilisateurs et l'accès aux services.</li>
-                  <li>Traiter les abonnements et paiements.</li>
-                  <li>Personnaliser l'expérience utilisateur.</li>
-                  <li>Envoyer des notifications, mises à jour et communications importantes.</li>
-                  <li>Améliorer et sécuriser la plateforme.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 4: Base légale du traitement -->
-            <section id="base" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">4</span>
-                Base légale du traitement
-              </h2>
-              <div class="section-content">
-                <p>Le traitement des données repose sur :</p>
-                <ul class="content-list">
-                  <li><strong>Exécution du contrat :</strong> gestion du compte et des abonnements.</li>
-                  <li><strong>Consentement :</strong> pour certaines communications marketing ou services optionnels.</li>
-                  <li><strong>Intérêt légitime :</strong> sécurité du site et amélioration du service.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 5: Partage des données -->
-            <section id="partage" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">5</span>
-                Partage des données
-              </h2>
-              <div class="section-content">
-                <p>OptiTAB ne vend ni ne loue vos données. Les informations peuvent être partagées uniquement avec :</p>
-                <ul class="content-list">
-                  <li>Prestataires techniques nécessaires au fonctionnement de la plateforme (hébergement, paiement sécurisé).</li>
-                  <li>Autorités légales si la loi l'exige.</li>
-                </ul>
-                <p>Les transferts hors Union Européenne (ex. Google Analytics, prestataires cloud) respectent les garanties légales (Clauses Contractuelles Types ou équivalent).</p>
-              </div>
-            </section>
-
-            <!-- Section 6: Sécurité des données -->
-            <section id="securite" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">6</span>
-                Sécurité des données
-              </h2>
-              <div class="section-content">
-                <p>Nous mettons en place des mesures techniques et organisationnelles pour protéger vos données :</p>
-                <ul class="content-list">
-                  <li>Chiffrement des informations sensibles (mot de passe, données financières).</li>
-                  <li>Sauvegardes régulières.</li>
-                  <li>Accès limité aux seules personnes autorisées.</li>
-                  <li>Tests et mises à jour réguliers pour prévenir toute faille de sécurité.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 7: Conservation des données -->
-            <section id="conservation" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">7</span>
-                Conservation des données
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li><strong>Données liées au compte :</strong> conservées tant que le compte existe, puis archivées pour 1 an maximum.</li>
-                  <li><strong>Données financières :</strong> conservées selon les obligations légales et fiscales.</li>
-                  <li><strong>Données anonymisées :</strong> utilisées à des fins statistiques.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 8: Droits des utilisateurs -->
-            <section id="droits" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">8</span>
-                Droits des utilisateurs
-              </h2>
-              <div class="section-content">
-                <p>Vous pouvez à tout moment :</p>
-                <ul class="content-list">
-                  <li>Accéder à vos données personnelles.</li>
-                  <li>Rectifier des informations inexactes.</li>
-                  <li>Supprimer votre compte et vos données (dans la limite des obligations légales).</li>
-                  <li>Demander la limitation du traitement ou vous opposer à certaines utilisations.</li>
-                  <li>Retirer votre consentement pour certaines communications.</li>
-                </ul>
-                <p>Pour exercer vos droits : <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a></p>
-                <p>Conformément au RGPD, une réponse sera fournie dans un délai d'un mois. Vous pouvez également saisir la CNIL en cas de problème.</p>
-              </div>
-            </section>
-
-            <!-- Section 9: Cookies et traceurs -->
-            <section id="cookies" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">9</span>
-                Cookies et traceurs
-              </h2>
-              <div class="section-content">
-                <p>OptiTAB utilise des cookies pour :</p>
-                <ul class="content-list">
-                  <li>Assurer le bon fonctionnement du site.</li>
-                  <li>Analyser la fréquentation du site (statistiques anonymes).</li>
-                  <li>Garder votre session active et personnaliser l'expérience utilisateur.</li>
-                </ul>
-                <p>Vous pouvez configurer votre navigateur pour refuser les cookies, mais certaines fonctionnalités pourraient être limitées.</p>
-                <p>Actuellement, seuls les cookies strictement nécessaires au fonctionnement de la plateforme sont utilisés. Aucun cookie de suivi ou publicitaire n'est présent. Cette liste sera mise à jour dès l'ajout de services d'analytics, de publicités ou d'autres cookies tiers.</p>
-              </div>
-            </section>
-
-            <!-- Section 10: Mineurs -->
-            <section id="mineurs" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">10</span>
-                Mineurs
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>Pour les utilisateurs de moins de 15 ans, l'inscription nécessite un consentement parental vérifié.</li>
-                  <li>Les parents ou tuteurs peuvent demander la suppression des données de leurs enfants à tout moment.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 11: Modifications de la Politique -->
-            <section id="modifications" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">11</span>
-                Modifications de la Politique
-              </h2>
-              <div class="section-content">
-                <p>OptiTAB peut modifier cette politique pour se conformer à la législation ou améliorer la transparence.</p>
-                <p>Les utilisateurs seront informés des changements. L'usage continu de la plateforme vaut acceptation de la nouvelle politique.</p>
-              </div>
-            </section>
-
-            <!-- Section 12: Contact -->
-            <section id="contact" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">12</span>
-                Contact
-              </h2>
-              <div class="section-content">
-                <p>Pour toute question relative à la confidentialité :</p>
-                <div class="contact-info">
-                  <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
-
-        <!-- Footer Note -->
-        <div class="cgv-footer">
-          <div class="container">
-            <div class="footer-note">
-              <p><strong>Note importante :</strong> Cette politique de confidentialité est régie par le droit français et le RGPD. En cas de litige, les tribunaux français seront compétents.</p>
-            </div>
-          </div>
-        </div>
+    <section id="destinataires">
+      <h2>Qui peut y avoir accès</h2>
+      <p>
+        Vos données sont réservées à l’équipe {{ legalInfo.marque }}. Nous ne les vendons ni ne les louons. Elles sont
+        confiées, pour le strict nécessaire, aux prestataires suivants :
+      </p>
+      <div class="lg-table-wrap">
+        <table class="lg-table">
+          <thead>
+            <tr><th scope="col">Prestataire</th><th scope="col">Rôle</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Render</th><td>Hébergement du site, du serveur et de la base de données</td></tr>
+            <tr><th scope="row">Amazon Web Services</th><td>Stockage des images et documents des cours (serveurs à Paris)</td></tr>
+            <tr><th scope="row">Stripe</th><td>Paiement sécurisé des abonnements, pass et cours particuliers</td></tr>
+            <tr><th scope="row">Google</th><td>Connexion avec Google, envoi des e-mails et, avec votre accord, mesure d’audience (Google Analytics)</td></tr>
+            <tr><th scope="row">Microsoft</th><td>Avec votre accord, analyse de l’expérience de navigation (Clarity)</td></tr>
+            <tr><th scope="row">Meta</th><td>Avec votre accord, mesure des campagnes publicitaires (Pixel) ; WhatsApp si vous nous écrivez par ce moyen</td></tr>
+          </tbody>
+        </table>
       </div>
+      <p>Vos données peuvent aussi être communiquées aux autorités lorsque la loi l’exige.</p>
+    </section>
 
-      </div>
-    </div>
+    <section id="transferts">
+      <h2>Transferts hors de l’Union européenne</h2>
+      <p>
+        Certains de ces prestataires sont établis aux États-Unis. Ces transferts sont encadrés par les garanties prévues
+        par le RGPD : décision d’adéquation de la Commission européenne (« Data Privacy Framework ») ou clauses
+        contractuelles types.
+      </p>
+    </section>
 
-    <!-- Bouton retour en haut -->
-      <button 
-        v-show="showBackToTop" 
-        @click="scrollToTop"
-        class="back-to-top"
-        title="Retour en haut"
-      >
-        ↑
-      </button>
+    <section id="conservation">
+      <h2>Durée de conservation</h2>
+      <ul>
+        <li><strong>Compte et progression :</strong> tant que votre compte existe, puis archivage d’un an au maximum.</li>
+        <li><strong>Factures et pièces comptables :</strong> 10 ans, comme l’impose le Code de commerce.</li>
+        <li><strong>Newsletter :</strong> jusqu’à votre désinscription, possible en un clic dans chaque e-mail.</li>
+        <li><strong>Cookies de mesure :</strong> 13 mois au maximum ; votre choix de cookies est mémorisé 6 mois.</li>
+      </ul>
+      <p>Au-delà, les données sont supprimées ou rendues anonymes, pour n’être utilisées qu’à des fins statistiques.</p>
+    </section>
 
-      <!-- Bouton WhatsApp flottant -->
-      <WhatsappChatButton
-        phone="33764040251"
-        message="Bonjour, j'ai une question sur la politique de confidentialité d'OptiTAB !"
-        tooltip="Une question ? Discutons sur WhatsApp !"
-      />
-  </MainLayout>
+    <section id="securite">
+      <h2>Sécurité</h2>
+      <ul>
+        <li>Mots de passe chiffrés et connexions protégées (HTTPS).</li>
+        <li>Paiements entièrement gérés par Stripe, certifié PCI-DSS.</li>
+        <li>Accès aux données limité aux seules personnes qui en ont besoin.</li>
+        <li>Sauvegardes régulières et mises à jour de sécurité.</li>
+      </ul>
+    </section>
+
+    <section id="droits">
+      <h2>Vos droits</h2>
+      <p>Conformément au RGPD et à la loi Informatique et Libertés, vous pouvez à tout moment :</p>
+      <ul>
+        <li>accéder à vos données et en obtenir une copie ;</li>
+        <li>les faire rectifier ou compléter ;</li>
+        <li>demander leur effacement, y compris la suppression de votre compte ;</li>
+        <li>vous opposer à leur utilisation ou en demander la limitation ;</li>
+        <li>récupérer vos données dans un format lisible (portabilité) ;</li>
+        <li>retirer votre consentement (newsletter, cookies) ;</li>
+        <li>définir des directives sur le sort de vos données après votre décès.</li>
+      </ul>
+      <p>
+        Écrivez-nous à <a :href="`mailto:${legalInfo.email}`">{{ legalInfo.email }}</a> : nous répondons dans un délai
+        d’un mois au maximum. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à
+        la CNIL sur <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">cnil.fr</a>.
+      </p>
+    </section>
+
+    <section id="mineurs">
+      <h2>Élèves mineurs</h2>
+      <ul>
+        <li>Avant 15 ans, l’inscription nécessite l’accord d’un parent ou du représentant légal.</li>
+        <li>À partir de 15 ans, l’élève peut consentir lui-même au traitement de ses données.</li>
+        <li>Les parents peuvent demander à tout moment l’accès aux données de leur enfant ou leur suppression.</li>
+      </ul>
+    </section>
+
+    <section id="modifications">
+      <h2>Modifications</h2>
+      <p>
+        Cette politique peut évoluer pour suivre la réglementation ou nos services. En cas de changement important, nous
+        vous prévenons par e-mail ou par une notification sur la plateforme.
+      </p>
+    </section>
+  </LegalPage>
 </template>
 
 <script setup>
-import MainLayout from '@/components/layout/MainLayout.vue'
-import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
-import { useZoom } from '@/composables/useZoom'
-
-// --- Mobile zoom (same logic as Home/About/CGV/CGU) ---
-const confidentialiteContentRef = ref(null)
-
-function computeConfidentialiteZoom(width) {
-  if (width <= 800) return 1
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  return 0.8
-}
-
-const {
-  contentHeight,
-  zoomLevel,
-  supportsNativeZoom,
-  detectMobileAndZoomSupport,
-  createZoomStyle,
-  updateViewportWidth,
-  measureContentHeight,
-  setupViewportListener,
-  cleanupViewportListener
-} = useZoom({ computeAutoZoom: computeConfidentialiteZoom })
-
-const baseConfidentialiteZoomStyle = createZoomStyle({
-  cssVar: '--confidentialite-zoom',
-  heightVar: '--confidentialite-content-height',
-  mobileZoomAdjustment: (z) => z
-})
-
-// On mobile (transform: scale), keep height auto to avoid scroll blocking on some browsers,
-// then compensate extra space with a negative margin.
-const confidentialiteZoomStyle = computed(() => {
-  const style = baseConfidentialiteZoomStyle.value
-  if (zoomLevel.value === 1) {
-    return { ...style, zoom: 1, transform: 'none', width: '100%', height: 'auto', minHeight: 'auto', marginBottom: '' }
-  }
-  if (supportsNativeZoom.value) return style
-
-  const z = Number(zoomLevel.value || 1)
-  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
-    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
-  }
-
-  const marginBottom = -Math.round(contentHeight.value * (1 - z))
-  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
-})
-
-let confidentialiteResizeObserver = null
-const measureConfidentialiteHeight = () => {
-  measureContentHeight(confidentialiteContentRef)
-}
-
-const handleViewportChange = async () => {
-  updateViewportWidth()
-  await nextTick()
-  measureConfidentialiteHeight()
-}
-
-const handleResize = () => {
-  void handleViewportChange()
-}
-
-const handleOrientationChange = () => {
-  setTimeout(() => {
-    void handleViewportChange()
-  }, 200)
-}
-
-// Date actuelle
-const currentDate = ref(new Date().toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-}))
-
-// Bouton retour en haut
-const showBackToTop = ref(false)
-
-// Section active pour la navigation
-const activeSection = ref('')
-
-// Sections pour le sommaire
-const sections = ref([
-  { id: 'responsable', title: 'Responsable éditorial et du traitement' },
-  { id: 'donnees', title: 'Données collectées' },
-  { id: 'finalite', title: 'Finalité du traitement' },
-  { id: 'base', title: 'Base légale du traitement' },
-  { id: 'partage', title: 'Partage des données' },
-  { id: 'securite', title: 'Sécurité des données' },
-  { id: 'conservation', title: 'Conservation des données' },
-  { id: 'droits', title: 'Droits des utilisateurs' },
-  { id: 'cookies', title: 'Cookies et traceurs' },
-  { id: 'mineurs', title: 'Mineurs' },
-  { id: 'modifications', title: 'Modifications de la Politique' },
-  { id: 'contact', title: 'Contact' }
-])
-
-// Fonction pour retourner en haut
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  })
-}
-
-// Fonction pour gérer l'affichage du bouton retour en haut
-const handleScroll = () => {
-  showBackToTop.value = window.scrollY > 300
-  
-  // Détecter la section active
-  const sections = document.querySelectorAll('.cgv-section')
-  let current = ''
-  
-  sections.forEach(section => {
-    const rect = section.getBoundingClientRect()
-    if (rect.top <= 100 && rect.bottom >= 100) {
-      current = section.id
-    }
-  })
-  
-  if (current) {
-    activeSection.value = current
-  }
-}
-
-// Fonction pour scroll vers une section
-const scrollToSection = (sectionId, event) => {
-  event.preventDefault()
-  const element = document.getElementById(sectionId)
-  if (element) {
-    const offset = 80 // Hauteur du header
-    const rect = element.getBoundingClientRect()
-    const elementTarget = window.pageYOffset + rect.top - offset
-    window.scrollTo({
-      top: elementTarget,
-      behavior: 'smooth'
-    })
-  }
-}
-
-// Lifecycle hooks
-onMounted(async () => {
-  detectMobileAndZoomSupport()
-  setupViewportListener()
-
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  // Définir la première section comme active au chargement
-  activeSection.value = 'responsable'
-
-  await nextTick()
-  measureConfidentialiteHeight()
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', handleResize, { passive: true })
-    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
-
-    setTimeout(measureConfidentialiteHeight, 250)
-
-    if (window.ResizeObserver && confidentialiteContentRef.value) {
-      confidentialiteResizeObserver = new ResizeObserver(() => {
-        measureConfidentialiteHeight()
-      })
-      confidentialiteResizeObserver.observe(confidentialiteContentRef.value)
-    }
-  }
-})
-
-onUnmounted(() => {
-  cleanupViewportListener()
-  window.removeEventListener('scroll', handleScroll)
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', handleResize)
-    window.removeEventListener('orientationchange', handleOrientationChange)
-  }
-  confidentialiteResizeObserver?.disconnect?.()
-  confidentialiteResizeObserver = null
-})
+import LegalPage from '@/components/vitrine/LegalPage.vue'
+import { legalInfo } from '@/config/legalInfo'
 </script>
-
-<style scoped>
-/* Page Container */
-.confidentialite-zoom {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
-}
-
-.cgv-page {
-  min-height: 100vh;
-  background: #ffffff;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.6;
-  color: #1f2937;
-}
-
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-/* Header Section - Style propre */
-.cgv-header {
-  background: #f8fafc;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 4rem 0;
-  padding-top: calc(4rem + 60px); /* 60px pour compenser le header fixe */
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.header-content {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.cgv-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #111827;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.03em;
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.cgv-subtitle {
-  font-size: 1.2rem;
-  color: #6b7280;
-  line-height: 1.4;
-  margin-bottom: 2.5rem;
-  font-weight: 500;
-}
-
-.cgv-meta {
-  margin-top: 1.5rem;
-}
-
-.meta-text {
-  font-size: 0.95rem;
-  color: #6b7280;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Table of Contents - Style propre */
-.toc-section {
-  background: white;
-  padding: 3rem 0;
-  margin: 0;
-}
-
-.toc-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 2rem;
-  text-align: center;
-  letter-spacing: -0.01em;
-}
-
-.toc-list {
-  max-width: 800px;
-  margin: 0 auto;
-  background: transparent;
-  border-radius: 0;
-  padding: 0;
-  border: none;
-  box-shadow: none;
-}
-
-.toc-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 0.5rem 0;
-  text-decoration: none;
-  color: #374151;
-  font-weight: 400;
-  transition: all 0.15s ease;
-  border-bottom: 1px solid #f3f4f6;
-  position: relative;
-  border-radius: 0;
-  margin-bottom: 0;
-}
-
-.toc-link:last-child {
-  border-bottom: none;
-}
-
-.toc-link:hover {
-  background: transparent;
-  color: #6366f1;
-}
-
-.toc-link:hover .toc-arrow {
-  transform: translateX(4px);
-  opacity: 1;
-}
-
-.toc-link.active {
-  background: white;
-  color: #374151;
-}
-
-.toc-link.active .toc-number {
-  background: #6366f1;
-  color: white;
-}
-
-.toc-number {
-  background: #6366f1;
-  color: white;
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.75rem;
-  flex-shrink: 0;
-}
-
-.toc-text {
-  font-size: 0.95rem;
-  flex: 1;
-  line-height: 1.5;
-  font-weight: 500;
-}
-
-.toc-arrow {
-  color: #9ca3af;
-  font-size: 0.8rem;
-  opacity: 0;
-  transform: translateX(0);
-  transition: all 0.15s ease;
-}
-
-.toc-link.active .toc-arrow {
-  opacity: 0;
-  color: #9ca3af;
-}
-
-/* Content - Style propre */
-.cgv-content {
-  background: white;
-  padding: 4rem 0;
-}
-
-.content-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0;
-}
-
-.cgv-section {
-  margin-bottom: 2.5rem;
-  padding: 0;
-  background: transparent;
-  border: none;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 3px solid #6366f1;
-  letter-spacing: -0.01em;
-}
-
-.section-number {
-  background: #6366f1;
-  color: white;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
-.section-content {
-  margin-left: 0;
-  padding: 0 0.5rem;
-}
-
-.subsection-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #374151;
-  margin: 1.5rem 0 0.75rem 0;
-  padding-left: 1rem;
-  border-left: 4px solid #6366f1;
-  letter-spacing: -0.005em;
-}
-
-.content-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-}
-
-.content-list li {
-  position: relative;
-  padding-left: 1.5rem;
-  margin-bottom: 0.75rem;
-  color: #4b5563;
-  line-height: 1.7;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-.content-list li::before {
-  content: "•";
-  color: #6366f1;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.contact-info {
-  background: transparent;
-  padding: 0;
-  border: none;
-  margin-top: 0.5rem;
-}
-
-.contact-item {
-  margin-bottom: 0.5rem;
-  color: #4b5563;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.linkedin-link {
-  color: #0077b5;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-}
-
-.linkedin-link:hover {
-  color: #005885;
-  transform: scale(1.1);
-}
-
-.contact-item:last-child {
-  margin-bottom: 0;
-}
-
-.link {
-  color: #6366f1;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.link:hover {
-  color: #4f46e5;
-  text-decoration: underline;
-}
-
-/* Footer - Style propre */
-.cgv-footer {
-  background: white;
-  border: none;
-  padding: 3rem 0;
-  margin-top: 0;
-}
-
-.footer-note {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  color: #6b7280;
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.footer-note strong {
-  color: #374151;
-  font-weight: 600;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .container {
-    padding: 0 1.5rem;
-  }
-
-  .cgv-header {
-    padding: 3rem 0;
-    padding-top: calc(3rem + 60px);
-  }
-
-  .cgv-title {
-    font-size: 2.2rem;
-  }
-
-  .toc-section {
-    padding: 2.5rem 0;
-  }
-
-  .cgv-content {
-    padding: 3rem 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1.25rem;
-  }
-
-  .cgv-header {
-    padding: 2rem 0;
-    padding-top: calc(2rem + 60px); /* 60px pour compenser le header fixe */
-  }
-
-  .header-content {
-    padding: 0 0.5rem;
-  }
-
-  .cgv-title {
-    font-size: 1.75rem;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-  }
-
-  .cgv-subtitle {
-    font-size: 1.05rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .cgv-meta {
-    margin-top: 1rem;
-  }
-
-  .meta-text {
-    font-size: 0.875rem;
-  }
-
-  .toc-section {
-    padding: 2rem 0;
-  }
-
-  .toc-title {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .toc-link {
-    padding: 0.75rem 0;
-    gap: 0.75rem;
-  }
-
-  .toc-text {
-    font-size: 0.9rem;
-  }
-
-  .toc-number {
-    width: 18px;
-    height: 18px;
-    font-size: 0.7rem;
-  }
-
-  .cgv-content {
-    padding: 2rem 0;
-  }
-
-  .cgv-section {
-    margin-bottom: 2rem;
-  }
-
-  .section-title {
-    font-size: 1.3rem;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.625rem;
-  }
-
-  .section-number {
-    width: 24px;
-    height: 24px;
-    font-size: 0.85rem;
-  }
-
-  .section-content {
-    padding: 0;
-  }
-
-  .subsection-title {
-    font-size: 1rem;
-    margin: 1.25rem 0 0.625rem 0;
-    padding-left: 0.875rem;
-  }
-
-  .content-list li {
-    font-size: 0.95rem;
-    padding-left: 1.25rem;
-    margin-bottom: 0.625rem;
-  }
-
-  .contact-item {
-    font-size: 0.9rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.6;
-  }
-
-  .cgv-footer {
-    padding: 2rem 0;
-  }
-
-  .footer-note {
-    padding: 1.5rem;
-    font-size: 0.9rem;
-    border-radius: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
-  }
-
-  .cgv-header {
-    padding: 1.5rem 0;
-    padding-top: calc(1.5rem + 60px); /* 60px pour compenser le header fixe */
-  }
-
-  .cgv-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.875rem;
-  }
-
-  .cgv-subtitle {
-    font-size: 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .meta-text {
-    font-size: 0.8rem;
-  }
-
-  .toc-section {
-    padding: 1.5rem 0;
-  }
-
-  .toc-title {
-    font-size: 1.25rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .toc-link {
-    padding: 0.625rem 0;
-    gap: 0.625rem;
-  }
-
-  .toc-text {
-    font-size: 0.85rem;
-  }
-
-  .toc-number {
-    width: 16px;
-    height: 16px;
-    font-size: 0.65rem;
-  }
-
-  .cgv-content {
-    padding: 1.5rem 0;
-  }
-
-  .cgv-section {
-    margin-bottom: 1.75rem;
-  }
-
-  .section-title {
-    font-size: 1.15rem;
-    gap: 0.625rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .section-number {
-    width: 22px;
-    height: 22px;
-    font-size: 0.8rem;
-  }
-
-  .subsection-title {
-    font-size: 0.95rem;
-    margin: 1rem 0 0.5rem 0;
-    padding-left: 0.75rem;
-  }
-
-  .content-list li {
-    font-size: 0.9rem;
-    padding-left: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .contact-item {
-    font-size: 0.85rem;
-    margin-bottom: 0.625rem;
-  }
-
-  .footer-note {
-    padding: 1.25rem;
-    font-size: 0.85rem;
-    border-radius: 8px;
-  }
-}
-
-/* Bouton retour en haut */
-.back-to-top {
-  position: fixed;
-  bottom: 100px;
-  right: 24px;
-  width: 48px;
-  height: 48px;
-  background: #6366f1;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-to-top:hover {
-  background: #4f46e5;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
-}
-
-.back-to-top:active {
-  transform: translateY(0);
-}
-
-@media (max-width: 768px) {
-  .back-to-top {
-    bottom: 80px;
-    right: 16px;
-    width: 44px;
-    height: 44px;
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .back-to-top {
-    bottom: 70px;
-    right: 12px;
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-}
-</style>

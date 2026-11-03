@@ -26,6 +26,9 @@ export function requireNiveau(to, from, next) {
  * Liste des routes qui nécessitent un niveau
  */
 export const routesRequiringNiveau = [
+  // Nouvel espace (2026-11-03)
+  'Chapitres',
+  'Chapitre',
   'Cours',
   'Exercises', 
   'Quiz',

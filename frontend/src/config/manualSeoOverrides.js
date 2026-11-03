@@ -2,21 +2,20 @@ import { normalizePathname } from '../composables/useDynamicSeo.js'
 
 export const MANUAL_SEO_OVERRIDES_BY_PATH = Object.freeze({
   '/': {
-    title: 'Plateforme de maths: cours, exercices corriges et fiches | OptiTAB',
+    title: 'Cours de maths en ligne et exercices corrigés | OptiTAB',
     description:
-      'Travaille les maths du college a la prepa avec des cours clairs, des exercices corriges pas a pas et des fiches de revision efficaces.',
+      'Cours de maths clairs, fiches de synthèse et plus de 3 300 exercices corrigés pas à pas, du CE2 à la Terminale. Essai gratuit, sans carte bancaire.',
     type: 'service',
-    level: 'college a prepa',
+    level: 'CE2 a Terminale',
     subject: 'mathematiques',
     notion: 'plateforme maths',
-    primaryKeyword: 'plateforme maths en ligne',
+    primaryKeyword: 'cours de maths en ligne',
     searchIntent: 'apprendre'
   },
   '/cours-particuliers': {
-    title: 'Cours particuliers de maths en ligne du college a la prepa | OptiTAB',
+    title: 'Cours particuliers en ligne : maths, physique-chimie, informatique | OptiTAB',
     description:
-      'Cours particuliers de maths en ligne de la 6e a la prepa : explications claires, suivi regulier, exercices cibles et accompagnement pas a pas.',
-    h1: 'Cours particuliers de maths en ligne',
+      'Cours particuliers en visio avec Anthony, ingénieur ISAE-SUPAERO, du collège à la prépa. Premier échange gratuit, sans engagement, dès 30 € de l’heure.',
     type: 'service',
     level: 'college a prepa',
     subject: 'mathematiques',
@@ -25,9 +24,9 @@ export const MANUAL_SEO_OVERRIDES_BY_PATH = Object.freeze({
     searchIntent: 'trouver un cours particulier'
   },
   '/tarifs': {
-    title: 'Tarifs maths en ligne: abonnement sans engagement | OptiTAB',
+    title: 'Tarifs : abonnement maths en ligne sans engagement | OptiTAB',
     description:
-      "Compare les offres OptiTAB pour acceder aux cours de maths, exercices corriges et fiches de revision, avec annulation possible a tout moment.",
+      'Pass 24 h, abonnement à la semaine ou au mois : accède aux cours, fiches et exercices corrigés de ta classe dès 3,99 €. Sans engagement, annulable à tout moment.',
     type: 'service',
     level: 'college a prepa',
     subject: 'mathematiques',
@@ -80,9 +79,9 @@ export const MANUAL_SEO_OVERRIDES_BY_PATH = Object.freeze({
     searchIntent: 'reviser'
   },
   '/about': {
-    title: 'Methode OptiTAB: progresser en maths avec rigueur',
+    title: 'À propos d’OptiTAB : notre histoire et notre méthode',
     description:
-      'Decouvre la methode OptiTAB pour apprendre les maths: explications claires, entrainement guide et suivi pedagogique du college a la prepa.',
+      'OptiTAB est né de plus de 15 ans de cours particuliers : des cours clairs, des fiches de synthèse et des exercices corrigés pas à pas, du CE2 à la Terminale.',
     type: 'service',
     level: 'college a prepa',
     subject: 'mathematiques',
@@ -91,9 +90,9 @@ export const MANUAL_SEO_OVERRIDES_BY_PATH = Object.freeze({
     searchIntent: 'comprendre'
   },
   '/contact': {
-    title: 'Contact OptiTAB: WhatsApp et email',
+    title: 'Contact : WhatsApp, e-mail et formulaire | OptiTAB',
     description:
-      'Contacte OptiTAB pour une question, un accompagnement ou un cours particulier de maths. Reponse rapide par WhatsApp ou email.',
+      'Une question sur OptiTAB, un abonnement ou un cours particulier ? Écrivez-nous sur WhatsApp, par e-mail ou via le formulaire : réponse sous 24 h, 7 jours sur 7.',
     type: 'service',
     level: 'college a prepa',
     subject: 'mathematiques',

@@ -2079,50 +2079,81 @@ function initFirstVisitFlag() {
 /* Responsive design for filters */
 @media (max-width: 680px) {
   .exercices-controls {
-    padding: 0.5rem;
-    margin: 0.5rem;
+    padding: 0.85rem;
+    margin: 0 0 1rem;
   }
 
   .controls-row {
     flex-direction: column;
-    gap: 1rem;
     align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .filter-cta {
+    margin: 0;
+    padding: 0.55rem 0.75rem;
+    border-radius: 12px;
+  }
+
+  .filter-cta-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+  }
+
+  .filter-cta-text {
+    white-space: normal;
+    font-size: 0.8rem;
+    line-height: 1.35;
   }
 
   .filter-row {
-    flex-direction: row;
-    gap: 0.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 
+  .filter-group,
   .filter-item {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.4rem;
-    flex: 0 1 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
   }
 
   .filter-label {
     font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .filter-divider {
-    display: block;
-    height: auto;
-    align-self: stretch;
+    display: none;
   }
 
   .filter-buttons {
-    gap: 0.25rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.35rem;
   }
 
-  .filter-btn {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.75rem;
-    min-width: 1.8rem;
+  .filter-btn,
+  .type-filter-btn {
+    min-width: 0;
+    min-height: 40px;
+    padding: 0.4rem 0.25rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+}
 
+@media (max-width: 420px) {
+  .type-filter-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* Navigation ultra-propre */

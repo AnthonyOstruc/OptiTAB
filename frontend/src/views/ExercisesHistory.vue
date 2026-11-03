@@ -341,18 +341,18 @@ const formatTime = (seconds) => {
 .summary-row .cell.count,
 .summary-row .cell.correct,
 .summary-row .cell.incorrect { text-align: center; font-weight: 600; }
-.summary-row .cell.correct { color: #16a34a; }
+.summary-row .cell.correct { color: #3b8544; }
 .summary-row .cell.incorrect { color: #dc2626; }
 .summary-row .cell.average { font-weight: 600; text-align: center; padding: 0.25rem 0.5rem; border-radius: 4px; }
-.summary-row .cell.average.excellent { color: #16a34a; background: #dcfce7; }
-.summary-row .cell.average.good { color: #2563eb; background: #dbeafe; }
+.summary-row .cell.average.excellent { color: #3b8544; background: #eaf4ea; }
+.summary-row .cell.average.good { color: #1b3c8e; background: #e4e8f1; }
 .summary-row .cell.average.average { color: #d97706; background: #fef3c7; }
 .summary-row .cell.average.poor { color: #dc2626; background: #fee2e2; }
 
 .sortable-header { display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; padding: 0.25rem; border-radius: 4px; gap: 0.35rem; }
 .sortable-header:hover { background-color: #f3f4f6; }
 .sort-icon { font-size: 1rem; color: #6b7280; font-weight: 700; }
-.sort-icon.active { color: #2563eb; font-weight: 700; }
+.sort-icon.active { color: #1b3c8e; font-weight: 700; }
 
 @media (max-width: 768px) {
   /* Masquer tableau desktop, afficher cartes mobile */
@@ -380,26 +380,26 @@ const formatTime = (seconds) => {
 .chapter-error { padding: 0.75rem; color: #dc2626; font-size: 0.85rem; }
 .chapter-row .cell { font-size: 0.85rem; }
 .chapter-row .cell.count, .chapter-row .cell.correct, .chapter-row .cell.incorrect, .chapter-row .cell.ratio, .chapter-row .cell.average { text-align: center; font-weight: 600; }
-.chapter-row .cell.correct { color: #16a34a; }
+.chapter-row .cell.correct { color: #3b8544; }
 .chapter-row .cell.incorrect { color: #dc2626; }
 
 /* Cartes d'exercices (liste) */
 .exercice-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 .exercice-card:hover { box-shadow: 0 4px 6px rgba(0,0,0,0.1); transform: translateY(-1px); }
-.exercice-card.correct { border-color: #10b981; }
+.exercice-card.correct { border-color: #3b8544; }
 .exercice-card.incorrect { border-color: #ef4444; }
 .exercice-card-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem; cursor: pointer; transition: background-color 0.2s; }
 .exercice-card-header:hover { background-color: #f9fafb; }
 .exercice-card-title-section { flex: 1; min-width: 0; }
 .exercice-card-title { font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.25rem 0; line-height: 1.4; }
 .clickable-title { cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
-.clickable-title:hover { color: #3b82f6; }
+.clickable-title:hover { color: #1b3c8e; }
 .navigation-icon { flex-shrink: 0; color: #6b7280; transition: color 0.2s; }
-.clickable-title:hover .navigation-icon { color: #3b82f6; }
+.clickable-title:hover .navigation-icon { color: #1b3c8e; }
 .exercice-breadcrumb-compact { font-size: 0.75rem; color: #6b7280; line-height: 1.3; }
 .exercice-card-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
 .exercice-status { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; font-weight: 600; }
-.status-correct { background: #d1fae5; color: #059669; }
+.status-correct { background: #dcefdc; color: #2f6d37; }
 .status-incorrect { background: #fee2e2; color: #dc2626; }
 .expand-toggle { background: none; border: 1px solid #e5e7eb; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6b7280; transition: all 0.2s; }
 .expand-toggle:hover { background-color: #f9fafb; border-color: #d1d5db; color: #374151; }
@@ -457,8 +457,8 @@ const formatTime = (seconds) => {
 
 .sort-select:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.1);
 }
 
 .sort-direction-btn {
@@ -468,7 +468,7 @@ const formatTime = (seconds) => {
   background: #ffffff;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: #1b3c8e;
   cursor: pointer;
   min-width: 48px;
   height: 42px;
@@ -507,7 +507,7 @@ const formatTime = (seconds) => {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+  background: linear-gradient(to right, #1b3c8e, #2a4fa3, #ec4899);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -588,7 +588,7 @@ const formatTime = (seconds) => {
 }
 
 .stat-item.highlight.excellent {
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  background: linear-gradient(135deg, #f0fdf4 0%, #eaf4ea 100%);
   border-color: #86efac;
 }
 
@@ -598,8 +598,8 @@ const formatTime = (seconds) => {
 }
 
 .stat-item.highlight.average {
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border-color: #93c5fd;
+  background: linear-gradient(135deg, #eef1f8 0%, #e4e8f1 100%);
+  border-color: #98a7cc;
 }
 
 .stat-item.highlight.poor {
@@ -631,7 +631,7 @@ const formatTime = (seconds) => {
 }
 
 .stat-value.success {
-  color: #059669;
+  color: #2f6d37;
 }
 
 .stat-value.error {
@@ -650,8 +650,8 @@ const formatTime = (seconds) => {
 }
 
 .stat-item.highlight.excellent .stat-value {
-  color: #047857;
-  background: rgba(16, 185, 129, 0.1);
+  color: #2f6d37;
+  background: rgba(59, 133, 68, 0.1);
 }
 
 .stat-item.highlight.good .stat-value {
@@ -660,8 +660,8 @@ const formatTime = (seconds) => {
 }
 
 .stat-item.highlight.average .stat-value {
-  color: #2563eb;
-  background: rgba(59, 130, 246, 0.1);
+  color: #1b3c8e;
+  background: rgba(27, 60, 142, 0.1);
 }
 
 .stat-item.highlight.poor .stat-value {

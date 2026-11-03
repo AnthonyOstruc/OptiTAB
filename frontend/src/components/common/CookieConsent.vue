@@ -10,10 +10,10 @@
       >
         <div class="cookie-banner__content">
           <div class="cookie-banner__text">
-            <strong>Votre vie privee compte.</strong>
+            <strong>Votre vie privée compte.</strong>
             <p>
               OptiTAB utilise des cookies essentiels pour le fonctionnement du site et des cookies de
-              statistiques et marketing/publicite pour mesurer l'audience et personnaliser nos campagnes.
+              statistiques et marketing/publicité pour mesurer l'audience et personnaliser nos campagnes.
               Vous pouvez accepter, refuser ou personnaliser votre choix.
               <router-link to="/cookies" class="cookie-link">En savoir plus</router-link>.
             </p>
@@ -29,14 +29,14 @@
 
     <transition name="cookie-fade">
       <div v-if="isPanelOpen" class="cookie-panel-backdrop" @click.self="closePanel">
-        <section class="cookie-panel" role="dialog" aria-modal="true" aria-label="Preferences de cookies">
+        <section class="cookie-panel" role="dialog" aria-modal="true" aria-label="Préférences de cookies">
           <header class="cookie-panel__header">
             <div>
-              <h3>Preferences de cookies</h3>
-              <p>Choisissez les categories que vous autorisez.</p>
+              <h3>Préférences de cookies</h3>
+              <p>Choisissez les catégories que vous autorisez.</p>
             </div>
             <button type="button" class="cookie-panel__close" @click="closePanel" aria-label="Fermer">
-              x
+              ×
             </button>
           </header>
 
@@ -44,7 +44,7 @@
             <div class="cookie-category">
               <div>
                 <h4>Essentiels</h4>
-                <p>Indispensables au fonctionnement du site (authentification, securite, navigation).</p>
+                <p>Indispensables au fonctionnement du site (authentification, sécurité, navigation).</p>
               </div>
               <span class="cookie-tag">Toujours actifs</span>
             </div>
@@ -53,7 +53,7 @@
               <div>
                 <h4>Statistiques</h4>
                 <p>
-                  Nous aide a mesurer l'audience et ameliorer l'experience (Google Analytics, Microsoft
+                  Nous aident à mesurer l’audience et à améliorer l’expérience (Google Analytics, Microsoft
                   Clarity).
                 </p>
               </div>
@@ -67,7 +67,7 @@
 
             <div class="cookie-category cookie-category--toggle">
               <div>
-                <h4>Marketing / Publicite</h4>
+                <h4>Marketing / Publicité</h4>
                 <p>
                   Active les traceurs publicitaires pour la mesure et l'optimisation de campagnes (Meta
                   Pixel).

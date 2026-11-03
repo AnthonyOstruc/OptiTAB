@@ -3,7 +3,6 @@ export const footerLinks = [
   { label: 'Cours particuliers', href: '/cours-particuliers' },
   { label: 'Tarifs', href: '/tarifs' },
   { label: 'Ressources gratuites', href: '/ressources-gratuites' },
-  { label: 'Outil de calcul', href: '/calculator' },
   { label: 'À propos', href: '/about' },
   { label: 'Blog', href: '/blog' },
   // Légal

@@ -230,7 +230,7 @@ onMounted(() => {
   width: 48px;
   height: 48px;
   border: 4px solid #e5e7eb;
-  border-top-color: #3b82f6;
+  border-top-color: #1b3c8e;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -314,7 +314,7 @@ onMounted(() => {
   width: 24px;
   height: 24px;
   min-width: 24px;
-  background: #3b82f6;
+  background: #1b3c8e;
   color: white;
   font-weight: 600;
   font-size: 0.875rem;

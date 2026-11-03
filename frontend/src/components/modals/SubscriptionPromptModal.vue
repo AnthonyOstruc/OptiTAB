@@ -210,7 +210,7 @@ onBeforeUnmount(() => {
 .sub-prompt-title {
   font-size: 1.35rem;
   font-weight: 800;
-  color: #1e3a8a;
+  color: #122a66;
   margin: 0 0 0.25rem;
 }
 

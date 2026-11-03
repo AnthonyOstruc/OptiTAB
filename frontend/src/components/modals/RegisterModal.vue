@@ -754,7 +754,7 @@ export default {
   border: 1px solid #fca5a5;
 }
 .register-feedback.success {
-  background: #dcfce7;
+  background: #eaf4ea;
   color: #166534;
   border: 1px solid #86efac;
 }

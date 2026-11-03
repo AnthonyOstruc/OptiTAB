@@ -210,7 +210,7 @@ export default {
   }
 
   &:focus {
-    outline: 2px solid #2563eb;
+    outline: 2px solid #1b3c8e;
     outline-offset: 2px;
   }
 }
@@ -231,7 +231,7 @@ export default {
   }
 }
 .form-input:focus {
-  border-color: #2563eb;
+  border-color: #1b3c8e;
   outline: none;
 }
 .form-error {

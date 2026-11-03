@@ -127,7 +127,7 @@ export default {
   -moz-appearance: none;
 }
 .form-input:focus {
-  border-color: #2563eb;
+  border-color: #1b3c8e;
   outline: none;
 }
 .form-error {

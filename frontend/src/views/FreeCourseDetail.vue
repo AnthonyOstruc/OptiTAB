@@ -1159,7 +1159,8 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .cours-section {
-  padding: 48px 2vw 60px;
+  /* Colonne de lecture centrée (1040 px au plus) sur les grands écrans. */
+  padding: 48px max(2vw, calc((100% - 1040px) / 2)) 60px;
   background: #fff;
   min-height: 100vh;
   position: relative;

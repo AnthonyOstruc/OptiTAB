@@ -1,7 +1,7 @@
 <template>
-  <section class="pricing-plans-section" id="tarifs">
+  <section class="pricing-plans-section" :id="sectionId || undefined">
     <!-- Header -->
-    <div class="pricing-header">
+    <div v-if="showHeader" class="pricing-header">
       <h2 class="pricing-title">
         Choisissez votre <span class="pricing-highlight">Abonnement Maths</span>
       </h2>
@@ -106,6 +106,13 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+
+// Valeurs par défaut = comportement historique (page Tarifs, ancien accueil).
+// La vitrine intègre ce bloc dans sa propre section « tarifs », avec son titre.
+defineProps({
+  showHeader: { type: Boolean, default: true },
+  sectionId: { type: String, default: 'tarifs' }
+})
 import { createCheckoutSession, createGuestCheckoutSession } from '@/api/subscriptions'
 import PricingCards from '@/components/shared/PricingCards.vue'
 import { useUserStore } from '@/stores/user'

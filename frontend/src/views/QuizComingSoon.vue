@@ -42,7 +42,7 @@ p { color: #475569; margin: 0.1rem 0; }
 .actions { margin-top: 1rem; }
 .btn {
   display: inline-block;
-  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  background: linear-gradient(135deg, #1b3c8e, #122a66);
   color: #fff;
   padding: 0.6rem 1rem;
   border-radius: 10px;

@@ -49,6 +49,7 @@ import { getExerciceDetail } from '@/api'
 import { useUserStore } from '@/stores/user'
 import { useExerciseStatus } from '@/composables/useExerciseStatus'
 import ExercisePageLayout from '@/components/common/ExercisePageLayout.vue'
+import { ESPACE_ROUTES, chapitreLink } from '@/config/espace'
 
 defineOptions({ name: 'ExerciceDetail' })
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
@@ -64,11 +65,14 @@ const exercice = ref(null)
 const loading = ref(true)
 const error = ref('')
 
+const notionDe = (ex) => {
+  const n = ex?.notion
+  return (n && typeof n === 'object' ? n.id : n) || null
+}
+
 const goBackToExercices = () => {
-  const target = exercice.value?.chapitre 
-    ? { name: 'Exercices', params: { chapitreId: String(exercice.value.chapitre) } }
-    : { name: 'Dashboard' }
-  router.push(target)
+  const notion = notionDe(exercice.value)
+  router.push(notion ? chapitreLink(notion, 'exercices', exercice.value.id) : ESPACE_ROUTES.chapitres)
 }
 
 const loadExercice = async () => {
@@ -83,7 +87,14 @@ const loadExercice = async () => {
       error.value = 'Exercice non trouvé'
       return
     }
-    
+
+    // Nouvel espace : l'exercice s'ouvre dans la page de son chapitre.
+    const notion = notionDe(exercice.value)
+    if (notion) {
+      router.replace(chapitreLink(notion, 'exercices', exercice.value.id))
+      return
+    }
+
     // Charger les statuts via le composable
     await loadStatuses()
   } catch (err) {

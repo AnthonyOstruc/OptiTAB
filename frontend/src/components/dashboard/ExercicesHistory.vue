@@ -558,7 +558,7 @@ defineExpose({
 
 .suggestion-title {
   font-weight: 800;
-  color: #1d4ed8;
+  color: #122a66;
 }
 
 .suggestion-subtitle {
@@ -638,7 +638,7 @@ defineExpose({
 }
 
 .suggestion-cta {
-  background: #2563eb;
+  background: #1b3c8e;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -649,12 +649,12 @@ defineExpose({
   white-space: nowrap;
   min-width: 150px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 4px 10px rgba(27, 60, 142, 0.15);
 }
 
 .suggestion-cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 8px 16px rgba(27, 60, 142, 0.2);
 }
 
 .suggestion-cta:active {
@@ -742,10 +742,10 @@ defineExpose({
 }
 
 /* Couleurs des valeurs - même palette que QuizHistory */
-.stat-card.exercice-completed .stat-value { color: #3b82f6; }
-.stat-card.exercice-correct .stat-value { color: #10b981; }
-.stat-card.exercice-percentage .stat-value { color: #10b981; }
-.stat-card.exercice-notions .stat-value { color: #8b5cf6; }
+.stat-card.exercice-completed .stat-value { color: #1b3c8e; }
+.stat-card.exercice-correct .stat-value { color: #3b8544; }
+.stat-card.exercice-percentage .stat-value { color: #3b8544; }
+.stat-card.exercice-notions .stat-value { color: #2a4fa3; }
 
 /* Statistiques par matière */
 .section-subtitle {
@@ -786,7 +786,7 @@ defineExpose({
 .matiere-average {
   font-size: 1rem;
   font-weight: 700;
-  color: #10b981;
+  color: #3b8544;
 }
 
 .matiere-count {
@@ -831,8 +831,8 @@ defineExpose({
 }
 
 .inline-mastery-btn.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #1b3c8e;
+  border-color: #1b3c8e;
 }
 
 .inline-mastery-icon {
@@ -854,12 +854,12 @@ defineExpose({
 }
 
 .exercice-card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+  border-color: #1b3c8e;
+  box-shadow: 0 2px 8px rgba(27, 60, 142, 0.08);
 }
 
 .exercice-card.correct {
-  border-left: 3px solid #10b981;
+  border-left: 3px solid #3b8544;
 }
 
 .exercice-card.incorrect {
@@ -901,7 +901,7 @@ defineExpose({
 }
 
 .clickable-title:hover {
-  color: #3b82f6;
+  color: #1b3c8e;
 }
 
 .navigation-icon {
@@ -911,7 +911,7 @@ defineExpose({
 }
 
 .clickable-title:hover .navigation-icon {
-  color: #3b82f6;
+  color: #1b3c8e;
 }
 
 .exercice-breadcrumb-compact {
@@ -940,8 +940,8 @@ defineExpose({
 }
 
 .status-correct {
-  background: #d1fae5;
-  color: #059669;
+  background: #dcefdc;
+  color: #2f6d37;
 }
 
 .status-incorrect {
@@ -1028,7 +1028,7 @@ defineExpose({
 
 /* Bouton Archive */
 .view-history-btn {
-  background: #3b82f6;
+  background: #1b3c8e;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -1039,7 +1039,7 @@ defineExpose({
   transition: background 0.2s ease;
 }
 .view-history-btn:hover { 
-  background: #2563eb;
+  background: #1b3c8e;
 }
 
 /* Tableau résumé matière/notion - Design épuré */
@@ -1118,7 +1118,7 @@ defineExpose({
   font-size: 0.875rem;
 }
 
-.summary-row .cell.correct { color: #10b981; }
+.summary-row .cell.correct { color: #3b8544; }
 .summary-row .cell.incorrect { color: #ef4444; }
 
 .summary-row .cell.average { text-align: center; }
@@ -1136,7 +1136,7 @@ defineExpose({
 }
 
 .summary-row .cell.average.excellent { 
-  background: #dcfce7; 
+  background: #eaf4ea; 
   color: #166534; 
 }
 .summary-row .cell.average.good { 
@@ -1186,8 +1186,8 @@ defineExpose({
 }
 
 .pg-page.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #1b3c8e;
+  border-color: #1b3c8e;
   color: #fff;
   font-weight: 600;
 }
@@ -1216,7 +1216,7 @@ defineExpose({
   color: #94a3b8; 
   font-weight: 600;
 }
-.sort-icon.active { color: #3b82f6; }
+.sort-icon.active { color: #1b3c8e; }
 
 
 /* Notion toggle */
@@ -1233,19 +1233,19 @@ defineExpose({
 }
 .notion-toggle:hover { background: #f3f4f6; }
 .notion-toggle.active { 
-  background: #dbeafe; 
-  color: #1e40af; 
-  border-color: #3b82f6;
+  background: #e4e8f1; 
+  color: #122a66; 
+  border-color: #1b3c8e;
   font-weight: 600;
 }
 .notion-toggle.active:hover { 
-  background: #bfdbfe; 
-  border-color: #2563eb;
+  background: #cfd8ec; 
+  border-color: #1b3c8e;
 }
 .notion-toggle .chevron { transition: transform 0.2s; color: #6b7280; }
 .notion-toggle .chevron.expanded { transform: rotate(180deg); color: #374151; }
-.notion-toggle.active .chevron { color: #1e40af; }
-.notion-toggle.active .chevron.expanded { color: #1e40af; }
+.notion-toggle.active .chevron { color: #122a66; }
+.notion-toggle.active .chevron.expanded { color: #122a66; }
 
 /* Details row under notion */
 .summary-details-row {
@@ -1285,13 +1285,13 @@ defineExpose({
 .chapter-row .cell.incorrect,
 .chapter-row .cell.ratio,
 .chapter-row .cell.average { text-align: center; font-weight: 600; }
-.chapter-row .cell.correct { color: #16a34a; }
+.chapter-row .cell.correct { color: #3b8544; }
 .chapter-row .cell.incorrect { color: #dc2626; }
 
 /* Couleurs des moyennes pour les chapitres - même système que les notions */
 .chapter-row .cell.average.excellent { 
-  color: #16a34a; 
-  background: #dcfce7;
+  color: #3b8544; 
+  background: #eaf4ea;
 }
 .chapter-row .cell.average.good { 
   color: #d97706; 
@@ -1322,7 +1322,7 @@ defineExpose({
   font-weight: 700;
 }
 .chapter-header .sort-icon.active {
-  color: #2563eb;
+  color: #1b3c8e;
   font-weight: 700;
 }
 
@@ -1378,8 +1378,8 @@ defineExpose({
 
 .sort-select:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.1);
 }
 
 .sort-direction-btn {
@@ -1389,7 +1389,7 @@ defineExpose({
   background: #ffffff;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: #1b3c8e;
   cursor: pointer;
   min-width: 48px;
   height: 42px;
@@ -1428,7 +1428,7 @@ defineExpose({
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+  background: linear-gradient(to right, #1b3c8e, #2a4fa3, #ec4899);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -1509,7 +1509,7 @@ defineExpose({
 }
 
 .stat-item.highlight.excellent {
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  background: linear-gradient(135deg, #f0fdf4 0%, #eaf4ea 100%);
   border-color: #86efac;
 }
 
@@ -1547,7 +1547,7 @@ defineExpose({
 }
 
 .stat-item .stat-value.success {
-  color: #059669;
+  color: #2f6d37;
 }
 
 .stat-item .stat-value.error {
@@ -1566,8 +1566,8 @@ defineExpose({
 }
 
 .stat-item.highlight.excellent .stat-value {
-  color: #047857;
-  background: rgba(16, 185, 129, 0.1);
+  color: #2f6d37;
+  background: rgba(59, 133, 68, 0.1);
 }
 
 .stat-item.highlight.good .stat-value {

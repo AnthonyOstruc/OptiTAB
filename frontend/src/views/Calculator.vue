@@ -10880,7 +10880,13 @@ async function initializeGraph() {
   .graph-layout {
     flex-direction: column;
   }
-  
+
+  /* Le graphique passe en pleine largeur (100vw) : sa zone doit l'être aussi,
+     sinon il est décentré et dépasse de l'écran (ex. à 768 px). */
+  .graph-main-area {
+    width: 100%;
+  }
+
   .graph-header {
     flex-direction: column;
     align-items: flex-start;

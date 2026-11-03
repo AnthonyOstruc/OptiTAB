@@ -154,18 +154,18 @@ defineEmits(['edit'])
 }
 
 .niveau-badge {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #1b3c8e 0%, #2a4fa3 100%);
   color: white;
   padding: 0.375rem 0.875rem;
   border-radius: 1.25rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 1px 3px rgba(27, 60, 142, 0.3);
 }
 
 .role-badge {
-  background: #e0e7ff;
-  color: #4338ca;
+  background: #dfe5f2;
+  color: #122a66;
   padding: 0.375rem 0.75rem;
   border-radius: 0.875rem;
   font-size: 0.8125rem;

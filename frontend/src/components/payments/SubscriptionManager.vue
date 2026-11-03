@@ -1844,13 +1844,13 @@ onMounted(() => {
 }
 
 .status-active {
-  background: #d1fae5;
+  background: #dcefdc;
   color: #065f46;
 }
 
 .status-trial {
-  background: #dbeafe;
-  color: #1e40af;
+  background: #e4e8f1;
+  color: #122a66;
 }
 
 .status-warning {
@@ -1869,8 +1869,8 @@ onMounted(() => {
 }
 
 .status-manual {
-  background: #ecfdf5;
-  color: #047857;
+  background: #eaf4ea;
+  color: #2f6d37;
 }
 
 .inline-message {
@@ -1889,7 +1889,7 @@ onMounted(() => {
 }
 
 .inline-message.msg-success {
-  background: #ecfdf5;
+  background: #eaf4ea;
   color: #065f46;
 }
 
@@ -1912,7 +1912,7 @@ onMounted(() => {
   width: 2.5rem;
   height: 2.5rem;
   border: 3px solid #e2e8f0;
-  border-top-color: #2563eb;
+  border-top-color: #1b3c8e;
   border-radius: 50%;
   margin: 0 auto 1rem;
   animation: spin 1s linear infinite;
@@ -1946,7 +1946,7 @@ onMounted(() => {
   letter-spacing: 0.08em;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #4f46e5;
+  color: #1b3c8e;
   margin-bottom: 0.4rem;
   display: inline-flex;
   align-items: center;
@@ -1979,10 +1979,10 @@ onMounted(() => {
   align-items: center;
   margin: 0.75rem 0 0;
   padding: 0.35rem 0.85rem;
-  background: #eef2ff;
+  background: #eef1f8;
   border-radius: 999px;
   font-size: 0.85rem;
-  color: #1e3a8a;
+  color: #122a66;
   font-weight: 500;
   max-width: 100%;
   word-break: break-word;
@@ -1990,7 +1990,7 @@ onMounted(() => {
 
 .plan-level-pill .pill-label {
   font-weight: 500;
-  color: #1e3a8a;
+  color: #122a66;
 }
 
 .plan-level-pill .pill-value {
@@ -2011,7 +2011,7 @@ onMounted(() => {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #3b82f6;
+  color: #1b3c8e;
 }
 
 .plan-level-switcher-control {
@@ -2038,8 +2038,8 @@ onMounted(() => {
 
 .plan-level-switcher select:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 2px rgba(27, 60, 142, 0.15);
 }
 
 .plan-level-switcher-hint {
@@ -2254,16 +2254,16 @@ onMounted(() => {
 }
 
 .level-reactivate-btn {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #3b8544, #2f6d37);
   border: none;
   color: white;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 2px 4px rgba(59, 133, 68, 0.2);
 }
 
 .level-reactivate-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669, #047857);
+  background: linear-gradient(135deg, #2f6d37, #2f6d37);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 8px rgba(59, 133, 68, 0.3);
 }
 
 .level-reactivate-btn:disabled {
@@ -2273,14 +2273,14 @@ onMounted(() => {
 }
 
 .level-upgrade-btn {
-  border: 1px solid #c7d2fe;
-  background: #eef2ff;
-  color: #4338ca;
+  border: 1px solid #cfd8ec;
+  background: #eef1f8;
+  color: #122a66;
   text-decoration: none;
 }
 
 .level-upgrade-btn:hover {
-  background: #e0e7ff;
+  background: #dfe5f2;
 }
 
 .level-cancel-btn:hover:not(:disabled) {
@@ -2299,7 +2299,7 @@ onMounted(() => {
 .feature-icon {
   width: 1.25rem;
   height: 1.25rem;
-  color: #10b981;
+  color: #3b8544;
   flex-shrink: 0;
 }
 
@@ -2449,7 +2449,7 @@ onMounted(() => {
 
 .invoice-level {
   margin: 0.2rem 0 0;
-  color: #1d4ed8;
+  color: #122a66;
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -2479,7 +2479,7 @@ onMounted(() => {
   padding: 0.55rem 0.9rem;
   border-radius: 8px;
   border: none;
-  background: #1d4ed8;
+  background: #122a66;
   color: white;
   font-weight: 600;
   font-size: 0.9rem;
@@ -2501,7 +2501,7 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: #007bff;
+  background: #1b3c8e;
   color: white;
   border-radius: 0.5rem;
   font-weight: 500;
@@ -2512,7 +2512,7 @@ onMounted(() => {
 }
 
 .upgrade-btn:hover {
-  background: #0056b3;
+  background: #122a66;
 }
 
 .pass-access {
@@ -2536,8 +2536,8 @@ onMounted(() => {
 }
 
 .pass-chip {
-  background: #eef2ff;
-  color: #3730a3;
+  background: #eef1f8;
+  color: #122a66;
   padding: 0.5rem 1rem;
   border-radius: 999px;
   font-weight: 600;
@@ -2558,13 +2558,13 @@ onMounted(() => {
 .manual-icon {
   width: 4rem;
   height: 4rem;
-  background: #ecfdf5;
+  background: #eaf4ea;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  color: #047857;
+  color: #2f6d37;
 }
 
 .manual-icon svg {
@@ -2622,14 +2622,14 @@ onMounted(() => {
   margin-bottom: 1.5rem;
   padding: 1.5rem;
   border-top: none;
-  border: 1px solid #e0e7ff;
+  border: 1px solid #dfe5f2;
   border-radius: 16px;
-  background: linear-gradient(135deg, #f5f3ff 0%, #eff6ff 100%);
+  background: linear-gradient(135deg, #f4f6fb 0%, #eef1f8 100%);
 }
 
 .gifted-card--pass {
-  border-color: #c7d2fe;
-  background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+  border-color: #cfd8ec;
+  background: linear-gradient(135deg, #ffffff 0%, #f4f6fb 100%);
 }
 
 .gifted-pass-badge {
@@ -2639,7 +2639,7 @@ onMounted(() => {
   gap: 0.5rem;
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #2a4fa3 0%, #1b3c8e 100%);
   border-radius: 8px;
   color: white;
   font-size: 0.85rem;
@@ -2698,7 +2698,7 @@ onMounted(() => {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #1b3c8e, #122a66);
   color: white;
   display: flex;
   align-items: center;
@@ -2754,11 +2754,11 @@ onMounted(() => {
 }
 
 .gifted-value.status-active {
-  color: #059669;
+  color: #2f6d37;
 }
 
 .gifted-value.status-trial {
-  color: #3b82f6;
+  color: #1b3c8e;
 }
 
 .gifted-value.status-warning {
@@ -2811,16 +2811,16 @@ onMounted(() => {
 }
 
 .gifted-reactivate-btn {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #3b8544, #2f6d37);
   border: none;
   color: white;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 2px 4px rgba(59, 133, 68, 0.2);
 }
 
 .gifted-reactivate-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669, #047857);
+  background: linear-gradient(135deg, #2f6d37, #2f6d37);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 8px rgba(59, 133, 68, 0.3);
 }
 
 .gifted-reactivate-btn:disabled {
@@ -2844,7 +2844,7 @@ onMounted(() => {
 .get-started-btn {
   display: inline-block;
   padding: 1rem 2rem;
-  background: #007bff;
+  background: #1b3c8e;
   color: white;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -2853,7 +2853,7 @@ onMounted(() => {
 }
 
 .get-started-btn:hover {
-  background: #0056b3;
+  background: #122a66;
   transform: translateY(-1px);
 }
 
@@ -3643,7 +3643,7 @@ onMounted(() => {
 }
 
 .confirm-btn {
-  background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+  background: linear-gradient(135deg, #1b3c8e 0%, #122a66 100%);
   color: #ffffff;
   border: none;
   border-radius: 10px;

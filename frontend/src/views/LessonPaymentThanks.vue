@@ -243,7 +243,7 @@ onBeforeUnmount(() => {
   margin: 0 0 4px;
   font-size: 2.1rem;
   font-weight: 800;
-  color: #1e3a8a;
+  color: #122a66;
   letter-spacing: -0.02em;
 }
 
@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
     color: #052e16;
 
     &:hover {
-      background: #22c55e;
+      background: #5fac60;
       color: #052e16;
     }
   }

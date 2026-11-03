@@ -49,13 +49,13 @@
           </h4>
           <p>Choisissez votre pays pour adapter le contenu à votre système éducatif</p>
 
-          <div v-if="!paysList || paysList.length === 0" class="empty-state">
+          <div v-if="paysDisponibles.length === 0" class="empty-state">
             <p>Aucun pays disponible pour le moment.</p>
           </div>
-          
+
           <div v-else class="options-grid">
             <SelectionCard
-              v-for="pays in paysList"
+              v-for="pays in paysDisponibles"
               :key="pays.id"
               :item="pays"
               type="pays"
@@ -218,6 +218,11 @@ const selectNiveau = (niveau) => {
 const saveConfiguration = () => {
   emit('save')
 }
+
+// Masquer les pays sans aucun niveau (sauf le pays actuel de l'utilisateur)
+const paysDisponibles = computed(() =>
+  (props.paysList || []).filter(pays => pays.nombre_niveaux !== 0 || props.userPays?.id === pays.id)
+)
 
 const restrictedLevels = computed(() => props.restrictedLevels || [])
 const selectionRestricted = computed(() => props.selectionRestricted && restrictedLevels.value.length > 0)

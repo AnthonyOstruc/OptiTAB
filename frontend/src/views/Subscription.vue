@@ -70,8 +70,6 @@
           <span>Voir les offres</span>
         </router-link>
       </div>
-
-      <Footer />
     </div>
   </DashboardLayout>
 </template>
@@ -79,7 +77,6 @@
 <script setup>
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SubscriptionManager from '@/components/payments/SubscriptionManager.vue'
-import Footer from '@/components/layout/Footer.vue'
 </script>
 
 <style scoped>
@@ -105,10 +102,10 @@ import Footer from '@/components/layout/Footer.vue'
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
-  border: 1px solid #bfdbfe;
+  background: linear-gradient(135deg, #eef1f8 0%, #f0f9ff 100%);
+  border: 1px solid #cfd8ec;
   border-radius: 999px;
-  color: #1e40af;
+  color: #122a66;
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
@@ -117,7 +114,7 @@ import Footer from '@/components/layout/Footer.vue'
 .badge-icon {
   width: 16px;
   height: 16px;
-  color: #3b82f6;
+  color: #1b3c8e;
 }
 
 .page-header h1 {
@@ -264,19 +261,19 @@ import Footer from '@/components/layout/Footer.vue'
   gap: 0.4rem;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: #2563eb;
+  background: #1b3c8e;
   color: #ffffff;
   font-weight: 600;
   font-size: 0.9rem;
   text-decoration: none;
   transition: all 0.18s ease;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 10px rgba(27, 60, 142, 0.2);
 }
 
 .back-button:hover {
-  background: #1e40af;
+  background: #122a66;
   transform: translateY(-1px);
-  box-shadow: 0 7px 16px rgba(30, 64, 175, 0.22);
+  box-shadow: 0 7px 16px rgba(18, 42, 102, 0.22);
 }
 
 .back-icon {

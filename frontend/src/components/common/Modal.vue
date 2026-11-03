@@ -170,7 +170,8 @@ export default {
 .modal-content {
   position: relative;
   background: $white;
-  border-radius: 12px;
+  border-radius: 16px;
+  font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   max-height: 90vh;
   overflow-y: auto;

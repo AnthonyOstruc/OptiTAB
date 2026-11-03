@@ -86,11 +86,11 @@ export default {
 }
 .strength-box.passed {
   background: #e6f9f1;
-  color: #10b981;
-  border-color: #10b981;
+  color: #3b8544;
+  border-color: #3b8544;
 }
 .strength-box.passed .icon svg {
-  stroke: #10b981;
+  stroke: #3b8544;
 }
 
 @media (max-width: 640px) {

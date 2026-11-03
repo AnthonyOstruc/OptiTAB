@@ -439,12 +439,12 @@ onMounted(() => {
 }
 
 .progress-step.active .step-number {
-  background-color: #667eea;
+  background-color: #1b3c8e;
   color: white;
 }
 
 .progress-step.completed .step-number {
-  background-color: #10b981;
+  background-color: #3b8544;
   color: white;
 }
 
@@ -455,11 +455,11 @@ onMounted(() => {
 }
 
 .progress-step.active .step-label {
-  color: #667eea;
+  color: #1b3c8e;
 }
 
 .progress-step.completed .step-label {
-  color: #10b981;
+  color: #3b8544;
 }
 
 .progress-line {
@@ -471,7 +471,7 @@ onMounted(() => {
 }
 
 .progress-line.completed {
-  background-color: #10b981;
+  background-color: #3b8544;
 }
 
 .modal-header h2 {
@@ -516,7 +516,7 @@ onMounted(() => {
   width: 40px;
   height: 40px;
   border: 3px solid #e5e7eb;
-  border-top: 3px solid #667eea;
+  border-top: 3px solid #1b3c8e;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
@@ -528,7 +528,7 @@ onMounted(() => {
 }
 
 .btn-retry {
-  background-color: #667eea;
+  background-color: #1b3c8e;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -539,7 +539,7 @@ onMounted(() => {
 }
 
 .btn-retry:hover {
-  background-color: #5a67d8;
+  background-color: #122a66;
 }
 
 .pays-grid, .niveaux-grid, .role-grid {
@@ -563,13 +563,13 @@ onMounted(() => {
 }
 
 .pays-card:hover, .niveau-card:hover, .role-card:hover {
-  border-color: #667eea;
+  border-color: #1b3c8e;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 4px 12px rgba(27, 60, 142, 0.1);
 }
 
 .pays-card.selected, .niveau-card.selected, .role-card.selected {
-  border-color: #667eea;
+  border-color: #1b3c8e;
   background-color: #f8fafc;
 }
 
@@ -603,7 +603,7 @@ onMounted(() => {
 }
 
 .selected-indicator {
-  color: #667eea;
+  color: #1b3c8e;
   flex-shrink: 0;
 }
 
@@ -629,12 +629,12 @@ onMounted(() => {
 }
 
 .btn-primary {
-  background-color: #667eea;
+  background-color: #1b3c8e;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #5a67d8;
+  background-color: #122a66;
 }
 
 .btn-primary:disabled {

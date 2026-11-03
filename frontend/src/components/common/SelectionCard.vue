@@ -187,9 +187,9 @@ const handleMouseEnter = () => {
 }
 
 .current-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  white-space: nowrap;
   background: #10b981;
   color: white;
   padding: 2px 8px;
@@ -269,8 +269,6 @@ const handleMouseEnter = () => {
   .current-badge {
     font-size: 10px;
     padding: 2px 6px;
-    top: 6px;
-    right: 6px;
   }
 
   .selected-indicator {

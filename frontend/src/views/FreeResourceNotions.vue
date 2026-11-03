@@ -40,7 +40,13 @@ const hiddenChaptersCount = ref(0)
 const levelOptions = ref([])
 const levelOptionsLoaded = ref(false)
 const isServerPaginated = ref(true)
-const selectedLevels = ref([])
+// Lien direct vers une classe depuis la vitrine : ?niveau=6ème
+const readRouteQueryLevel = () => {
+  const raw = route?.query?.niveau
+  const value = String((Array.isArray(raw) ? raw[0] : raw) || '').trim()
+  return value ? [value] : []
+}
+const selectedLevels = ref(readRouteQueryLevel())
 const showLevelFilter = ref(false)
 const filterDropdownRef = ref(null)
 const filterButtonRef = ref(null)

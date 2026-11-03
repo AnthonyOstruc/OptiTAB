@@ -710,7 +710,7 @@ defineExpose({
 
 .filter-select:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #1b3c8e;
 }
 
 .filter-select:disabled {
@@ -813,7 +813,7 @@ defineExpose({
   width: 28px;
   height: 28px;
   border: 2.5px solid #e2e8f0;
-  border-top: 2.5px solid #3b82f6;
+  border-top: 2.5px solid #1b3c8e;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 0.875rem;
@@ -895,14 +895,14 @@ defineExpose({
 }
 
 .pagination-page.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #1b3c8e;
+  border-color: #1b3c8e;
   color: white;
 }
 
 .pagination-page.active:hover {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: #1b3c8e;
+  border-color: #1b3c8e;
 }
 
 /* Pagination responsive: icônes seules en mobile */

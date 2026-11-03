@@ -42,8 +42,8 @@
   justify-content: center;
   padding: 2rem 1rem;
   background:
-    radial-gradient(circle at 20% 15%, rgba(59, 130, 246, 0.1), transparent 46%),
-    radial-gradient(circle at 85% 80%, rgba(99, 102, 241, 0.09), transparent 45%),
+    radial-gradient(circle at 20% 15%, rgba(27, 60, 142, 0.1), transparent 46%),
+    radial-gradient(circle at 85% 80%, rgba(27, 60, 142, 0.09), transparent 45%),
     #f8fafc;
 }
 
@@ -79,7 +79,7 @@
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #2563eb;
+  color: #1b3c8e;
 }
 
 .title {
@@ -120,13 +120,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #1b3c8e 0%, #1b3c8e 100%);
   color: #ffffff;
-  box-shadow: 0 14px 24px -18px rgba(37, 99, 235, 0.8);
+  box-shadow: 0 14px 24px -18px rgba(27, 60, 142, 0.8);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 16px 28px -18px rgba(37, 99, 235, 0.95);
+  box-shadow: 0 16px 28px -18px rgba(27, 60, 142, 0.95);
 }
 
 .btn-secondary {
@@ -136,7 +136,7 @@
 }
 
 .btn-secondary:hover {
-  background: #eef2ff;
+  background: #eef1f8;
 }
 
 @media (max-width: 640px) {

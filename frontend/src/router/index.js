@@ -4,7 +4,7 @@ import { useSubscriptionStore } from '@/stores/subscription'
 import { apiUtils } from '@/api/client'
 import * as analytics from '@/services/analytics'
 import { applyRouteSeo } from '@/services/seo'
-import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
+import { matiereMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
 import { buildCourseApiSlugFromRoute } from '@/utils/freeCourseSlug'
 import { buildSummaryApiSlugFromRoute } from '@/utils/freeSummarySlug'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
@@ -26,8 +26,26 @@ const ALWAYS_SCROLL_TO_TOP_ROUTES = [
   'BlogTag'
 ]
 
+// Anciennes adresses de l'espace connecté (listes de chapitres, cours, fiches,
+// exercices par chapitre) : elles renvoient toutes vers le nouvel espace. Leurs
+// noms sont conservés pour que les liens internes, favoris et notifications marchent.
+const versChapitres = () => ({ path: '/chapitres' })
+const versChapitre = (onglet) => (to) => {
+  const query = onglet ? { onglet } : {}
+  const exercice = String(to.hash || '').match(/^#ex-(\d+)/)
+  if (exercice) query.ex = exercice[1]
+  return { path: `/chapitre/${to.params.notionId}`, query, hash: '' }
+}
+
 const routes = [
-  { path: '/', name: 'Home', component: () => import('@/views/Home.vue') },
+  // Vitrine refaite le 2026-11-02. L'ancienne page (views/Home.vue) est conservée :
+  // la remettre en place = remplacer HomeVitrine.vue par Home.vue ci-dessous.
+  { path: '/', name: 'Home', component: () => import('@/views/HomeVitrine.vue') },
+  { path: '/apercu/accueil', redirect: '/' },
+  // Adresses de l'aperçu du nouvel espace (validé et mis en place le 2026-11-03).
+  { path: '/apercu/espace', redirect: (to) => ({ path: '/dashboard', query: to.query }) },
+  { path: '/apercu/espace/chapitres', redirect: (to) => ({ path: '/chapitres', query: to.query }) },
+  { path: '/apercu/espace/chapitre/:notionId', redirect: (to) => ({ path: `/chapitre/${to.params.notionId}`, query: to.query }) },
   { path: '/start', name: 'StartLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { path: '/commencer', redirect: '/start' },
   // Page "lien en bio" partagee sur tous les reseaux sociaux.
@@ -181,17 +199,22 @@ const routes = [
     component: () => import('@/views/FreeCourseDetail.vue'),
     props: { resourceType: 'summary' }
   },
-  { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/Dashboard.vue'), meta: { requiresAuth: true } },
-  { path: '/child/:childId', name: 'ChildOverview', component: () => import('@/views/ChildOverview.vue'), meta: { requiresAuth: true } },
+  // Espace connecté refait le 2026-11-03 (views/espace). Ancien tableau de bord
+  // conservé hors route : views/Dashboard.vue, views/ChildOverview.vue.
+  { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/espace/EspaceAccueil.vue'), meta: { requiresAuth: true } },
+  { path: '/chapitres', name: 'Chapitres', component: () => import('@/views/espace/EspaceChapitres.vue'), meta: { requiresAuth: true } },
+  { path: '/chapitre/:notionId', name: 'Chapitre', component: () => import('@/views/espace/EspaceChapitre.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
+  { path: '/child/:childId', name: 'ChildOverview', component: () => import('@/views/espace/EspaceEnfant.vue'), meta: { requiresAuth: true } },
 
   { path: '/account', name: 'Account', component: () => import('@/views/Account.vue'), meta: { requiresAuth: true } },
-  { path: '/pricing', name: 'Pricing', component: () => import('@/views/Pricing.vue'), meta: { requiresAuth: true } },
+  // Ancienne page de formules (appelait une adresse serveur disparue) : les formules sont sur /billing.
+  { path: '/pricing', name: 'Pricing', redirect: (to) => ({ path: '/billing', query: to.query, hash: to.hash }) },
   { path: '/billing', name: 'Billing', component: () => import('@/views/Billing.vue'), meta: { requiresAuth: true } },
   { path: '/billing/success', name: 'BillingSuccess', component: () => import('@/views/BillingSuccess.vue') },
   { path: '/billing/cancel', name: 'BillingCancel', component: () => import('@/views/BillingCancel.vue') },
   { path: '/subscription', name: 'Subscription', component: () => import('@/views/Subscription.vue'), meta: { requiresAuth: true } },
-  { path: '/exercises', name: 'Exercises', component: () => import('@/views/Exercises.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
-  { path: '/online-courses', name: 'OnlineCourses', component: () => import('@/views/OnlineCourses.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
+  { path: '/exercises', name: 'Exercises', redirect: versChapitres },
+  { path: '/online-courses', name: 'OnlineCourses', redirect: versChapitres },
   { path: '/quiz', name: 'Quiz', component: () => import('@/views/Quiz.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { 
     path: '/quiz/:matiereId', 
@@ -209,40 +232,14 @@ const routes = [
 // Accès direct : remplacé par une page énoncé simple
 { path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/HomeworkByNotion.vue'), meta: { requiresAuth: true, requiresSubscription: true }, beforeEnter: quizMiddleware },
   { path: '/quiz-coming-soon', name: 'QuizComingSoon', component: () => import('@/views/QuizComingSoon.vue'), meta: { requiresAuth: true } },
-  { 
-    path: '/course-notions/:matiereId', 
-    name: 'CourseNotions', 
-    component: () => import('@/views/CourseNotions.vue'), 
-    meta: { requiresAuth: true } 
-  },
-  // Cours par notion (chapitres supprimés)
-{ path: '/course-notion/:notionId', name: 'CourseByNotion', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
-{ path: '/cours/:matiereId/:notionId/:chapitreId', name: 'Cours', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
-{ path: '/cours/:matiereId/:notionId/:chapitreId/:coursId', name: 'CoursDetail', component: () => import('@/views/CoursDetail.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
-  { 
-    path: '/sheets', 
-    name: 'Sheets', 
-    component: () => import('@/views/SynthesisNotions.vue'), 
-    meta: { requiresAuth: true }, 
-    beforeEnter: matiereMiddleware 
-  },
-  {
-    path: '/tables-formules',
-    name: 'TablesFormules',
-    component: () => import('@/views/SynthesisNotions.vue'),
-    props: { sheetType: 'table', notionRouteName: 'TablesByNotion', pageTitle: 'Tables & Formules' },
-    meta: { requiresAuth: true },
-    beforeEnter: matiereMiddleware
-  },
-{ path: '/sheets-notion/:notionId', name: 'SynthesisByNotion', component: () => import('@/views/SheetByNotion.vue'), meta: { requiresAuth: true, requiresSubscription: true }, beforeEnter: matiereMiddleware },
-  {
-    path: '/tables-formules-notion/:notionId',
-    name: 'TablesByNotion',
-    component: () => import('@/views/SheetByNotion.vue'),
-    props: { sheetType: 'table', backRouteName: 'TablesFormules' },
-    meta: { requiresAuth: true, requiresSubscription: true },
-    beforeEnter: matiereMiddleware
-  },
+  { path: '/course-notions/:matiereId', name: 'CourseNotions', redirect: versChapitres },
+  { path: '/course-notion/:notionId', name: 'CourseByNotion', redirect: versChapitre(null) },
+  { path: '/cours/:matiereId/:notionId/:chapitreId', name: 'Cours', redirect: versChapitre(null) },
+  { path: '/cours/:matiereId/:notionId/:chapitreId/:coursId', name: 'CoursDetail', redirect: versChapitre(null) },
+  { path: '/sheets', name: 'Sheets', redirect: versChapitres },
+  { path: '/tables-formules', name: 'TablesFormules', redirect: versChapitres },
+  { path: '/sheets-notion/:notionId', name: 'SynthesisByNotion', redirect: versChapitre('fiche') },
+  { path: '/tables-formules-notion/:notionId', name: 'TablesByNotion', redirect: versChapitre('fiche') },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
   // Blog public.
@@ -258,25 +255,18 @@ const routes = [
   { path: '/legal', name: 'Legal', component: () => import('@/views/Legal.vue') },
   { path: '/cookies', name: 'Cookies', component: () => import('@/views/Cookies.vue') },
   { path: '/conditions', name: 'Conditions', component: () => import('@/views/Conditions.vue') },
-{ path: '/notions/:matiereId', name: 'Notions', component: () => import('@/views/Notions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
-  { 
-    path: '/exercicies/:matiereId', 
-    name: 'Themes', 
-    component: () => import('@/views/Themes.vue'), 
-    meta: { requiresAuth: true }, 
-    beforeEnter: exercicesMiddleware 
-  },
-{ path: '/theme-notions/:themeId', name: 'ThemeNotions', component: () => import('@/views/ThemeNotions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
-  // Exercices par notion directement
-{ path: '/exercices-notion/:notionId', name: 'ExercicesByNotion', component: () => import('@/views/ChapterExercises.vue'), meta: { requiresAuth: true, requiresSubscription: true }, beforeEnter: exercicesMiddleware },
-{ path: '/exercice/:exerciceId', name: 'ExerciceDetail', component: () => import('@/views/ExerciceDetail.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
-  { path: '/progress', name: 'Progress', component: () => import('@/views/Progress.vue'), meta: { requiresAuth: true } },
+  { path: '/notions/:matiereId', name: 'Notions', redirect: versChapitres },
+  { path: '/exercicies/:matiereId', name: 'Themes', redirect: versChapitres },
+  { path: '/theme-notions/:themeId', name: 'ThemeNotions', redirect: versChapitres },
+  { path: '/exercices-notion/:notionId', name: 'ExercicesByNotion', redirect: versChapitre('exercices') },
+  // Un exercice seul : la page retrouve son chapitre et y renvoie (?ex=).
+  { path: '/exercice/:exerciceId', name: 'ExerciceDetail', component: () => import('@/views/ExerciceDetail.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
+  { path: '/progress', name: 'Progress', redirect: versChapitres },
   { path: '/historique-exercices', name: 'ExercisesHistory', component: () => import('@/views/ExercisesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/historique-quiz', name: 'QuizzesHistory', component: () => import('@/views/QuizzesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/mes-quiz-rendus', name: 'QuizSubmissionsStudent', component: () => import('@/views/QuizSubmissionsStudent.vue'), meta: { requiresAuth: true } },
   { path: '/calculator', name: 'Calculator', component: () => import('@/views/Calculator.vue') },
   { path: '/aide-grapheur', name: 'HelpGraphe', component: () => import('@/views/HelpGraphe.vue') },
-  { path: '/test-filtrage-strict', name: 'TestFiltrageStrict', component: () => import('@/views/TestFiltrageStrict.vue') },
   {
     path: '/admin',
     component: () => import('@/views/admin/AdminLayout.vue'),
@@ -319,6 +309,15 @@ const router = createRouter({
     try {
       if (ALWAYS_SCROLL_TO_TOP_ROUTES.includes(to.name)) {
         return { top: 0, left: 0, behavior: 'auto' }
+      }
+
+      // Nouvel espace : changer d'exercice (?ex=) dans un chapitre ne fait pas défiler,
+      // la page gère elle-même la position.
+      if (
+        to.name === 'Chapitre' && from.name === to.name &&
+        to.params.notionId === from.params.notionId && to.query.onglet === from.query.onglet
+      ) {
+        return false
       }
 
       // 1) Gestion des ancres (hash)

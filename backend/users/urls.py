@@ -32,6 +32,7 @@ from users.views.profile_views import (
     UserListView,
     CheckEmailExistsView,
 )
+from users.views.progression_views import MyProgressionView, ChildProgressionView
 from users.views.social_auth_views import GoogleLoginView, GoogleOAuthCodeExchangeView, GoogleOAuthAccessTokenView
 from rest_framework.routers import DefaultRouter
 from users.views.notifications_views import UserNotificationViewSet
@@ -75,6 +76,7 @@ urlpatterns = [
     path('me/daily-login/', DailyLoginStreakView.as_view(), name='me_daily_login'),
     path('me/overview/', MyOverviewView.as_view(), name='me_overview'),
     path('me/recommendations/', RecommendationsView.as_view(), name='me_recommendations'),
+    path('me/progression/', MyProgressionView.as_view(), name='me_progression'),
     # Notifications
     path('', include(router.urls)),
     path('leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
@@ -86,6 +88,7 @@ urlpatterns = [
     path('me/children/<int:child_id>/remove/', RemoveChildView.as_view(), name='remove_child'),
     path('check-email-exists/', CheckEmailExistsView.as_view(), name='check_email_exists'),
     path('children/<int:child_id>/overview/', ChildOverviewView.as_view(), name='child_overview'),
+    path('children/<int:child_id>/progression/', ChildProgressionView.as_view(), name='child_progression'),
     path('me/update/', UpdateProfileView.as_view(), name='me_update'),  # pour modifier les coordonnées utilisateur
     path('me/change-password/', ChangePasswordView.as_view(), name='me_change_password'),
     path('me/niveau/', UpdateNiveauView.as_view(), name='me_niveau'),  # pour modifier le niveau utilisateur

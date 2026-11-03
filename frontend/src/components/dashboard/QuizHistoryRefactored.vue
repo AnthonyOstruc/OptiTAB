@@ -582,7 +582,7 @@ defineExpose({
 
 /* Bouton Archive */
 .view-history-btn {
-  background: #3b82f6;
+  background: #1b3c8e;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -593,7 +593,7 @@ defineExpose({
   transition: background 0.2s ease;
 }
 .view-history-btn:hover { 
-  background: #2563eb;
+  background: #1b3c8e;
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -630,9 +630,9 @@ defineExpose({
   color: #1e293b;
 }
 
-.stat-card.quiz-completed .stat-value { color: #3b82f6; }
-.stat-card.quiz-average .stat-value { color: #10b981; }
-.stat-card.quiz-notions .stat-value { color: #8b5cf6; }
+.stat-card.quiz-completed .stat-value { color: #1b3c8e; }
+.stat-card.quiz-average .stat-value { color: #3b8544; }
+.stat-card.quiz-notions .stat-value { color: #2a4fa3; }
 
 /* ─────────────────────────────────────────────────────────────────
    Tableau récapitulatif - Design clean
@@ -693,7 +693,7 @@ defineExpose({
   font-size: 0.875rem;
 }
 
-.summary-row .cell.correct { color: #10b981; }
+.summary-row .cell.correct { color: #3b8544; }
 .summary-row .cell.incorrect { color: #ef4444; }
 
 .summary-row .cell.average { text-align: center; }
@@ -710,7 +710,7 @@ defineExpose({
 }
 
 .avg-badge.avg-good { 
-  background: #dcfce7; 
+  background: #eaf4ea; 
   color: #166534; 
 }
 .avg-badge.avg-medium { 
@@ -741,7 +741,7 @@ defineExpose({
   color: #94a3b8; 
   font-weight: 600;
 }
-.sort-icon.active { color: #3b82f6; }
+.sort-icon.active { color: #1b3c8e; }
 
 /* Pagination du tableau */
 .summary-pagination {
@@ -781,8 +781,8 @@ defineExpose({
 }
 
 .pg-page.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #1b3c8e;
+  border-color: #1b3c8e;
   color: #fff;
   font-weight: 600;
 }
@@ -837,7 +837,7 @@ defineExpose({
 .matiere-average {
   font-size: 1rem;
   font-weight: 700;
-  color: #3b82f6;
+  color: #1b3c8e;
 }
 
 .matiere-count {
@@ -859,12 +859,12 @@ defineExpose({
 }
 
 .quiz-card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+  border-color: #1b3c8e;
+  box-shadow: 0 2px 8px rgba(27, 60, 142, 0.08);
 }
 
 .quiz-card.manual-quiz {
-  border-left: 3px solid #8b5cf6;
+  border-left: 3px solid #2a4fa3;
 }
 
 .quiz-card-content {
@@ -904,7 +904,7 @@ defineExpose({
 }
 
 .quiz-score.score-good {
-  background: #dcfce7;
+  background: #eaf4ea;
   color: #166534;
 }
 
@@ -944,8 +944,8 @@ defineExpose({
 .inline-mastery-btn.active {
   font-weight: 600;
   color: white;
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #1b3c8e;
+  border-color: #1b3c8e;
 }
 
 .inline-mastery-icon {
@@ -1003,8 +1003,8 @@ defineExpose({
 
 .sort-select:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.1);
 }
 
 .sort-direction-btn {
@@ -1110,7 +1110,7 @@ defineExpose({
 }
 
 .stat-item.highlight.avg-good {
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  background: linear-gradient(135deg, #f0fdf4 0%, #eaf4ea 100%);
   border-color: #86efac;
 }
 
@@ -1148,7 +1148,7 @@ defineExpose({
 }
 
 .stat-item .stat-value.success {
-  color: #059669;
+  color: #2f6d37;
 }
 
 .stat-item .stat-value.error {
@@ -1167,8 +1167,8 @@ defineExpose({
 }
 
 .stat-item.highlight.avg-good .stat-value {
-  color: #047857;
-  background: rgba(16, 185, 129, 0.1);
+  color: #2f6d37;
+  background: rgba(59, 133, 68, 0.1);
 }
 
 .stat-item.highlight.avg-medium .stat-value {

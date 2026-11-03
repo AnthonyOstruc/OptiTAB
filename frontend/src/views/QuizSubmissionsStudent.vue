@@ -247,11 +247,11 @@ function renderSolution(solution) {
   align-items: center;
   gap: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #1b3c8e;
 }
 
 .stat-card.moyenne {
-  border-left-color: #8b5cf6;
+  border-left-color: #2a4fa3;
 }
 
 .stat-icon {
@@ -285,7 +285,7 @@ function renderSolution(solution) {
   width: 48px;
   height: 48px;
   border: 4px solid #e5e7eb;
-  border-top-color: #3b82f6;
+  border-top-color: #1b3c8e;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -344,7 +344,7 @@ function renderSolution(solution) {
 }
 
 .submission-card.graded {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid #3b8544;
 }
 
 .submission-card.pending {
@@ -356,7 +356,7 @@ function renderSolution(solution) {
   justify-content: space-between;
   align-items: flex-start;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1b3c8e 0%, #132d6c 100%);
   color: white;
 }
 
@@ -388,9 +388,9 @@ function renderSolution(solution) {
 }
 
 .status-badge.graded {
-  background: rgba(16, 185, 129, 0.2);
-  color: #d1fae5;
-  border: 2px solid #10b981;
+  background: rgba(59, 133, 68, 0.2);
+  color: #dcefdc;
+  border: 2px solid #3b8544;
 }
 
 .card-body {
@@ -431,7 +431,7 @@ function renderSolution(solution) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1b3c8e 0%, #132d6c 100%);
   padding: 1.5rem;
   border-radius: 12px;
   margin-bottom: 1rem;
@@ -451,7 +451,7 @@ function renderSolution(solution) {
 
 .commentaire-box {
   background: #f8fafc;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #1b3c8e;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -459,7 +459,7 @@ function renderSolution(solution) {
 
 .commentaire-header {
   font-weight: 600;
-  color: #3b82f6;
+  color: #1b3c8e;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }
@@ -498,7 +498,7 @@ function renderSolution(solution) {
   justify-content: space-between;
   width: 100%;
   padding: 0.875rem 1rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #3b8544 0%, #2f6d37 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -506,12 +506,12 @@ function renderSolution(solution) {
   font-size: 0.95rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 2px 4px rgba(59, 133, 68, 0.3);
 }
 
 .solution-toggle:hover {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
+  background: linear-gradient(135deg, #2f6d37 0%, #2f6d37 100%);
+  box-shadow: 0 4px 8px rgba(59, 133, 68, 0.4);
   transform: translateY(-1px);
 }
 
@@ -522,7 +522,7 @@ function renderSolution(solution) {
 
 .solution-content {
   margin-top: 1rem;
-  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  background: linear-gradient(135deg, #f0fdf4 0%, #eaf4ea 100%);
   border: 2px solid #86efac;
   border-radius: 12px;
   overflow: hidden;
@@ -541,7 +541,7 @@ function renderSolution(solution) {
 }
 
 .solution-header {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  background: linear-gradient(135deg, #5fac60 0%, #3b8544 100%);
   color: white;
   padding: 0.75rem 1rem;
   font-weight: 600;

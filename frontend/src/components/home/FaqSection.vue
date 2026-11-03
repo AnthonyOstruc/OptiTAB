@@ -58,7 +58,7 @@ function toggle(idx) {
   margin-bottom: 10px;
 }
 .faq-highlight {
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
+  background: linear-gradient(135deg, #1b3c8e 0%, #667eea 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -76,14 +76,14 @@ function toggle(idx) {
 .faq-item {
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(42, 56, 183, 0.08);
-  border: 1.5px solid rgba(42, 56, 183, 0.1);
+  box-shadow: 0 2px 12px rgba(27, 60, 142, 0.08);
+  border: 1.5px solid rgba(27, 60, 142, 0.1);
   overflow: hidden;
   transition: all 0.3s ease;
 
   &:hover {
-    box-shadow: 0 4px 20px rgba(42, 56, 183, 0.12);
-    border-color: rgba(42, 56, 183, 0.2);
+    box-shadow: 0 4px 20px rgba(27, 60, 142, 0.12);
+    border-color: rgba(27, 60, 142, 0.2);
   }
 }
 .faq-question {
@@ -103,13 +103,13 @@ function toggle(idx) {
   transition: background 0.15s;
 }
 .faq-question:hover {
-  background: rgba(42, 56, 183, 0.05);
+  background: rgba(27, 60, 142, 0.05);
   color: #1e2a9a;
 }
 .faq-arrow {
   margin-left: 18px;
   transition: transform 0.25s, color 0.25s;
-  color: #2a38b7;
+  color: #1b3c8e;
 
   &.open {
     transform: rotate(180deg);

@@ -200,10 +200,6 @@
       <div class="faq-section">
         <FaqSection :faq="billingFaq" />
       </div>
-
-      
-
-      <Footer />
         </div>
       </div>
     </div>
@@ -294,7 +290,6 @@ import { checkEmailExists, createChildAccount } from '@/api/users'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import PricingCards from '@/components/shared/PricingCards.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
-import Footer from '@/components/layout/Footer.vue'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
@@ -816,10 +811,10 @@ async function handleCreateBeneficiaryAccount() {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
-  border: 1px solid #bfdbfe;
+  background: linear-gradient(135deg, #eef1f8 0%, #f0f9ff 100%);
+  border: 1px solid #cfd8ec;
   border-radius: 999px;
-  color: #1e40af;
+  color: #122a66;
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
@@ -828,7 +823,7 @@ async function handleCreateBeneficiaryAccount() {
 .badge-icon {
   width: 16px;
   height: 16px;
-  color: #3b82f6;
+  color: #1b3c8e;
 }
 
 .page-header h1 {
@@ -869,7 +864,7 @@ async function handleCreateBeneficiaryAccount() {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: #4c1d95;
+  color: #122a66;
   margin: 0 0 0.3rem;
 }
 
@@ -917,8 +912,8 @@ async function handleCreateBeneficiaryAccount() {
 
 .level-select-wrapper select:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.12);
 }
 
 .level-hint {
@@ -933,8 +928,8 @@ async function handleCreateBeneficiaryAccount() {
   align-items: center;
   gap: 0.35rem;
   padding: 0.45rem 1rem;
-  background: #eef2ff;
-  color: #3730a3;
+  background: #eef1f8;
+  color: #122a66;
   border-radius: 999px;
   font-weight: 600;
 }
@@ -966,7 +961,7 @@ async function handleCreateBeneficiaryAccount() {
 .level-access-chips .chip {
   background: #f3f4ff;
   color: #312e81;
-  border: 1px solid #c7d2fe;
+  border: 1px solid #cfd8ec;
   border-radius: 999px;
   padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
@@ -977,7 +972,7 @@ async function handleCreateBeneficiaryAccount() {
   display: inline-block;
   margin-left: 0.35rem;
   font-weight: 400;
-  color: #6366f1;
+  color: #1b3c8e;
 }
 
 /* Beneficiary Card (Offrir un abonnement) */
@@ -1031,7 +1026,7 @@ async function handleCreateBeneficiaryAccount() {
 }
 
 .toggle-input:checked + .toggle-switch {
-  background: #4f46e5;
+  background: #1b3c8e;
 }
 
 .toggle-input:checked + .toggle-switch::after {
@@ -1081,8 +1076,8 @@ async function handleCreateBeneficiaryAccount() {
 
 .beneficiary-form input[type="email"]:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.12);
 }
 
 .beneficiary-form input[type="email"].input-error {
@@ -1152,7 +1147,7 @@ async function handleCreateBeneficiaryAccount() {
 
 .pricing-tab.active {
   background: white;
-  color: #1e40af;
+  color: #122a66;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -1174,7 +1169,7 @@ async function handleCreateBeneficiaryAccount() {
   width: 40px;
   height: 40px;
   border: 3px solid #e5e5e5;
-  border-top-color: #2563eb;
+  border-top-color: #1b3c8e;
   border-radius: 50%;
   margin: 0 auto 1rem;
   animation: spin 0.8s linear infinite;
@@ -1219,19 +1214,19 @@ async function handleCreateBeneficiaryAccount() {
 }
 
 .pricing-card:hover {
-  border-color: #2563eb;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+  border-color: #1b3c8e;
+  box-shadow: 0 8px 24px rgba(27, 60, 142, 0.12);
   transform: translateY(-4px);
 }
 
 .pricing-card.is-popular {
-  border-color: #2563eb;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+  border-color: #1b3c8e;
+  box-shadow: 0 8px 24px rgba(27, 60, 142, 0.15);
   position: relative;
 }
 
 .pricing-card.is-current {
-  border-color: #10b981;
+  border-color: #3b8544;
 }
 
 /* Badge Area */
@@ -1259,7 +1254,7 @@ async function handleCreateBeneficiaryAccount() {
 }
 
 .badge-savings {
-  background: #10b981;
+  background: #3b8544;
   color: white;
 }
 
@@ -1325,7 +1320,7 @@ async function handleCreateBeneficiaryAccount() {
 .feature-icon {
   width: 20px;
   height: 20px;
-  color: #10b981;
+  color: #3b8544;
   flex-shrink: 0;
   margin-top: 0.125rem;
 }
@@ -1339,7 +1334,7 @@ async function handleCreateBeneficiaryAccount() {
 .card-button {
   width: 100%;
   padding: 1rem;
-  background: #2563eb;
+  background: #1b3c8e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -1351,9 +1346,9 @@ async function handleCreateBeneficiaryAccount() {
 }
 
 .card-button:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: #122a66;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 4px 12px rgba(27, 60, 142, 0.25);
 }
 
 .card-button:disabled {
@@ -1560,8 +1555,8 @@ async function handleCreateBeneficiaryAccount() {
 }
 
 .benefit-card:hover {
-  border-color: #2563eb;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
+  border-color: #1b3c8e;
+  box-shadow: 0 4px 16px rgba(27, 60, 142, 0.1);
   transform: translateY(-4px);
 }
 
@@ -2024,7 +2019,7 @@ async function handleCreateBeneficiaryAccount() {
 
   .pricing-card.recommended {
     border-width: 2px;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 4px 16px rgba(27, 60, 142, 0.15);
   }
 
   .pricing-badge-row {
@@ -2043,7 +2038,7 @@ async function handleCreateBeneficiaryAccount() {
   }
 
   .pricing-badge.savings {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, #3b8544 0%, #2f6d37 100%);
   }
 
   .card-header {
@@ -2101,12 +2096,12 @@ async function handleCreateBeneficiaryAccount() {
     font-size: 0.9375rem;
     font-weight: 700;
     letter-spacing: 0.01em;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 4px 12px rgba(27, 60, 142, 0.2);
   }
 
   .card-button:not(:disabled):hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 6px 16px rgba(27, 60, 142, 0.25);
   }
 
   .card-note {
@@ -2536,12 +2531,12 @@ async function handleCreateBeneficiaryAccount() {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #1b3c8e, #122a66);
   color: white;
 }
 
 .confirm-btn:hover {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
+  background: linear-gradient(135deg, #1b3c8e, #122a66);
   transform: translateY(-1px);
 }
 
@@ -2591,7 +2586,7 @@ async function handleCreateBeneficiaryAccount() {
 }
 
 .create-account-intro strong {
-  color: #1e40af;
+  color: #122a66;
 }
 
 .create-form {
@@ -2630,8 +2625,8 @@ async function handleCreateBeneficiaryAccount() {
 
 .form-group input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #1b3c8e;
+  box-shadow: 0 0 0 3px rgba(27, 60, 142, 0.1);
 }
 
 .form-group input.input-error {
@@ -2657,8 +2652,8 @@ async function handleCreateBeneficiaryAccount() {
 }
 
 .create-message.success {
-  background: #ecfdf5;
-  color: #047857;
+  background: #eaf4ea;
+  color: #2f6d37;
   border: 1px solid #a7f3d0;
 }
 

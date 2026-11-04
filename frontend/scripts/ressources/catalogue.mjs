@@ -3,8 +3,9 @@
 // et chapitre dans l'ordre du programme.
 import { CLASSES, CLASSE_PAR_NOM } from './classes.mjs'
 
-const TAILLE_PAGE = 100
-const ESSAIS = 5
+const TAILLE_PAGE = 20
+const TAILLE_PAGE_LEGERE = 100
+const ESSAIS = 6
 
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -13,11 +14,23 @@ async function lireJson(url) {
   for (let essai = 1; essai <= ESSAIS; essai++) {
     try {
       const reponse = await fetch(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(90000) })
-      if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`)
+      if (!reponse.ok) {
+        const erreur = new Error(`HTTP ${reponse.status}`)
+        erreur.retentable = reponse.status === 408 || reponse.status === 429 || reponse.status >= 500
+        const retryAfter = reponse.headers.get('retry-after')
+        erreur.delai = retryAfter
+          ? (/^\d+$/.test(retryAfter) ? Number(retryAfter) * 1000 : Date.parse(retryAfter) - Date.now())
+          : 0
+        await reponse.body?.cancel()
+        throw erreur
+      }
       return await reponse.json()
     } catch (e) {
       derniere = e
-      await pause(800 * essai)
+      if (e.retentable === false || essai === ESSAIS) break
+      const delai = Math.min(60000, Math.max(Math.min(2000 * 2 ** (essai - 1), 30000), e.delai || 0))
+      console.warn(`[ressources] ${e.message} ; nouvelle tentative ${essai + 1}/${ESSAIS} dans ${delai / 1000} s : ${url}`)
+      await pause(delai)
     }
   }
   throw new Error(`Lecture impossible de ${url} : ${derniere?.message || derniere}`)
@@ -30,15 +43,26 @@ const estLibre = (item) => String(item.is_locked) !== 'true' && item.is_locked !
 async function toutesLesPages(api, type, { jusquAuxPayants = false, leger = false } = {}) {
   const items = []
   for (let page = 1; ; page++) {
-    const params = new URLSearchParams({ type, page: String(page), page_size: String(leger ? 500 : TAILLE_PAGE) })
+    if (page > 1000) throw new Error(`Pagination sans fin pour le catalogue ${type}`)
+    const params = new URLSearchParams({ type, page: String(page), page_size: String(leger ? TAILLE_PAGE_LEGERE : TAILLE_PAGE) })
     if (leger) params.set('light', '1')
     else { params.set('full_content', '1'); params.set('include_images', '1') }
     const donnees = await lireJson(`${api}/api/free/learning-resources/?${params}`)
-    const resultats = Array.isArray(donnees) ? donnees : donnees.results || []
+    const resultats = Array.isArray(donnees) ? donnees : donnees?.results
+    if (!Array.isArray(resultats)) throw new Error(`Catalogue ${type} invalide, page ${page}`)
     items.push(...resultats)
+    if (!Array.isArray(donnees) && donnees.next && !resultats.length) {
+      throw new Error(`Catalogue ${type} incomplet, page ${page} vide avant la fin`)
+    }
     if (jusquAuxPayants && !resultats.some(estLibre)) break
-    if (Array.isArray(donnees) || !donnees.next || !resultats.length) break
+    if (Array.isArray(donnees) || !donnees.next) {
+      if (!jusquAuxPayants && Number.isInteger(donnees.count) && items.length !== donnees.count) {
+        throw new Error(`Catalogue ${type} incomplet : ${items.length}/${donnees.count} ressources`)
+      }
+      break
+    }
   }
+  console.log(`[ressources] catalogue ${type}${leger ? ' (léger)' : ''} : ${items.length} ressources lues`)
   return items
 }
 
@@ -56,12 +80,12 @@ export function slugifier(texte, max = 72) {
 const nombre = (v) => (v === null || v === undefined || v === '' ? null : Number(v))
 
 export async function chargerCatalogue(api) {
-  const [cours, fiches, exercices, tousExercices] = await Promise.all([
-    toutesLesPages(api, 'course'),
-    toutesLesPages(api, 'summary'),
-    toutesLesPages(api, 'exercise', { jusquAuxPayants: true }),
-    toutesLesPages(api, 'exercise', { leger: true })
-  ])
+  // Une seule requête à la fois : les contenus et leurs images sont volumineux,
+  // et le backend Render dispose aussi de ses requêtes visiteurs à traiter.
+  const cours = await toutesLesPages(api, 'course')
+  const fiches = await toutesLesPages(api, 'summary')
+  const exercices = await toutesLesPages(api, 'exercise', { jusquAuxPayants: true })
+  const tousExercices = await toutesLesPages(api, 'exercise', { leger: true })
 
   // Nombre total d'exercices corrigés par chapitre (gratuits et réservés aux abonnés).
   const totalParChapitre = new Map()

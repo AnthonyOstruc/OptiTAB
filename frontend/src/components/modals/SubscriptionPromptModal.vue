@@ -9,7 +9,7 @@
     @close="fermer"
   >
     <div class="sp">
-      <p class="sp-prix">
+      <p v-if="prixMinimum" class="sp-prix">
         <span class="sp-prix__des">Dès</span>
         <strong>{{ prixMinimum }}</strong>
       </p>
@@ -66,13 +66,14 @@ onMounted(async () => {
     const liste = Array.isArray(data?.plans) ? data.plans : Array.isArray(data) ? data : []
     if (liste.length) plans.value = liste
   } catch {
-    // Prix par défaut en cas de coupure réseau.
+    // Aucun montant affiché si le catalogue ne peut pas être vérifié.
   }
 })
 
 const prixMinimum = computed(() => {
   const prix = plans.value.map((p) => Number(p.price)).filter((p) => p > 0)
-  const min = prix.length ? Math.min(...prix) : 0
+  if (!prix.length) return null
+  const min = Math.min(...prix)
   return `${min.toFixed(2).replace('.', ',')} €`
 })
 

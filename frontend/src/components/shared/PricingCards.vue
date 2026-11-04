@@ -5,6 +5,11 @@
       <p>Chargement des offres...</p>
     </div>
 
+    <div v-else-if="loadError" class="empty-state" role="alert">
+      <p>Les tarifs sont momentanément indisponibles.</p>
+      <button type="button" class="card-button" @click="loadPlans">Réessayer</button>
+    </div>
+
     <template v-else>
       <div v-if="!subscriptionOnly" class="pricing-tabs">
         <button
@@ -91,7 +96,9 @@
             {{ getButtonLabel(card) }}
           </button>
 
-          <p class="card-note">Paiement sécurisé - Annulable à tout moment</p>
+          <p class="card-note">{{ card.type === 'pass'
+            ? 'Paiement unique sécurisé · Sans renouvellement'
+            : 'Paiement sécurisé · Annulable à tout moment' }}</p>
         </article>
       </div>
     </template>
@@ -147,6 +154,7 @@ const emit = defineEmits(['select', 'loaded'])
 
 const plans = ref(DEFAULT_PLANS)
 const loading = ref(true)
+const loadError = ref(false)
 const activeTab = ref('recurring')
 
 // Offre portant le badge « Le plus populaire ». Une seule ligne a changer
@@ -181,7 +189,8 @@ const cards = computed(() => {
   const subs = plans.value.filter(isSubscription)
   const passes = plans.value.filter(isOneTime)
 
-  const monthly = subs.find((p) => normalizePeriod(p.billing_period) === 'monthly')
+  const monthly = subs.filter((p) => normalizePeriod(p.billing_period) === 'monthly')
+    .sort((a, b) => Number(a.price) - Number(b.price))[0]
   const weekly = subs.find((p) => normalizePeriod(p.billing_period) === 'weekly')
   const passYear = passes.find((p) => normalizePeriod(p.billing_period) === 'yearly')
   const passMonth = passes.find((p) => (p.access_days || 0) >= 28 && (p.access_days || 0) < 365 && normalizePeriod(p.billing_period) !== 'yearly')
@@ -219,10 +228,7 @@ const cards = computed(() => {
   // Offre mise en avant. `savings` reste sur la formule mensuelle : ce
   // pourcentage compare l'hebdomadaire au mensuel, il n'aurait aucun sens
   // sur une autre carte.
-  const baseMonthly = subs
-    .filter((p) => normalizePeriod(p.billing_period) === 'monthly')
-    .slice()
-    .sort((a, b) => Number(a.price || 0) - Number(b.price || 0))[0]
+  const baseMonthly = monthly
 
   const recommended =
     subs.find((p) => p.plan_type === RECOMMENDED_PLAN_TYPE) || baseMonthly
@@ -238,10 +244,10 @@ const cards = computed(() => {
       // Le reste se lit comme une montee en gamme.
       return Number(a.price || 0) - Number(b.price || 0)
     })
-    .forEach((plan) => {
+    .forEach((plan, index) => {
       const period = normalizePeriod(plan.billing_period)
       recurringCards.push({
-        key: `s-${plan.id}`,
+        key: `s-${plan.id ?? plan.key ?? plan.stripe_price_id ?? index}`,
         title: plan.name,
         subtitle: PERIOD_SUBTITLE[period] || 'Sans engagement',
         price: Number(plan.price || 0),
@@ -249,8 +255,8 @@ const cards = computed(() => {
         features: plan.features?.length ? plan.features : baseFeatures,
         priceId: plan.stripe_price_id,
         cta: "S'abonner",
-        recommended: Boolean(recommended && plan.id === recommended.id),
-        savings: baseMonthly && plan.id === baseMonthly.id ? savings : null,
+        recommended: plan === recommended,
+        savings: plan === baseMonthly && savings > 0 ? savings : null,
         type: 'recurring'
       })
     })
@@ -328,20 +334,26 @@ const getButtonLabel = (card) => {
   return card.cta
 }
 
-onMounted(async () => {
+const loadPlans = async () => {
+  loading.value = true
+  loadError.value = false
+  plans.value = []
   try {
     const { data } = await getPlans()
-    const remote = data?.plans || []
-    if (remote.length) {
-      plans.value = remote
-    }
-    emit('loaded', plans.value)
+    const remote = Array.isArray(data?.plans) ? data.plans : Array.isArray(data) ? data : null
+    if (!remote) throw new Error('Catalogue des offres invalide')
+    plans.value = remote
+    emit('loaded', remote)
   } catch (e) {
+    loadError.value = true
     console.error('Erreur chargement plans:', e)
   } finally {
     loading.value = false
   }
-})
+}
+
+onMounted(loadPlans)
+
 </script>
 
 <style scoped lang="scss">
